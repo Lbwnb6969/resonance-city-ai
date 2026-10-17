@@ -30,6 +30,7 @@ const HouseStyles = preload("res://scripts/visual/city_creation_house_styles.gd"
 const StoneWallTexture = preload("res://资源/建筑参考/石砌街屋.png")
 const BuildingContext = preload("res://scripts/visual/city_creation_building_context.gd")
 const Junctions = preload("res://scripts/world/city_creation_junctions.gd")
+const RoofSurface=preload("res://scripts/visual/city_creation_roof_surface.gd")
 const JoinedRoofShader = preload("res://scripts/visual/shaders/creation_joined_roof.gdshader")
 const Gables = preload("res://scripts/visual/city_creation_gables.gd")
 const Tower = preload("res://scripts/visual/city_creation_tower.gd")
@@ -1273,6 +1274,9 @@ func _triangles(parent: Node3D, vertices: Array, color: Color) -> MeshInstance3D
 	parent.add_child(node)
 	return node
 
+func _roof_surface(parent:Node3D,vertices:Array,color:Color)->MeshInstance3D:
+	return RoofSurface.build(self,parent,vertices,color)
+
 func _quad(parent: Node3D, a: Vector3, b: Vector3, c: Vector3, d: Vector3, color: Color) -> MeshInstance3D:
 	return _triangles(parent,[a,b,c,a,c,d],color)
 
@@ -1594,7 +1598,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 			attic_windows.append(detail.window)
 		else: fascia.append_array(patch.vertices)
 	if not roofs.is_empty():
-		var mesh := _triangles(parent,roofs,palette[1])
+		var mesh := _roof_surface(parent,roofs,palette[1])
 		mesh.name="JoinedRoofSurface"
 		var key := "joined_roof/"+str(palette[1])
 		if not materials.has(key):

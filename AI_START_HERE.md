@@ -37,3 +37,5 @@ Phase1～9已完成，Eras.AVAILABLE_COUNT=4。下一步按第七章/Phase10验�
 阶段命令、截图与剩余性能工作见本地`验证记录/四库路线_2026-10-17/README.md`；PROJECT只记录当前状态。
 
 Phase10入口：`city_creation_citizen_motion.gd`为运行时标量路段，Life.citizen_position读取真实逻辑位置，flush_citizen在实际到达/进入视野/编辑/存档时发布节点姿态；不保存LOD状态。每帧16人判视锥、16屋扫描品质；tools/fixtures/city_creation_large_town_fixture.gd与tools/check_creation_large_town_live.gd提供300屋实景。当前Life实窗1.035ms仍未达标，最新路高优化须继续实窗复核。
+
+瓦片入口：`city_creation_roof_surface.gd`在实际面上预烘焙固定UV/平面法线；Renderer._roof_surface供连排屋、方塔、圆塔共用。`creation_joined_roof.gdshader`仅用UV导数求像素覆盖，做瓦缝/桶瓦法线积分过滤；不再用屏幕位置导数重算投影。

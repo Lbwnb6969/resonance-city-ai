@@ -35,7 +35,7 @@ static func build(renderer,parent: Node3D,body: StaticBody3D,house: Dictionary,c
 	var bell_top := center+Vector3.UP*0.78
 	var bell: Dictionary = _bell(renderer,parent,bell_top)
 	var roof := roof_vertices(center)
-	var cap: MeshInstance3D = renderer._triangles(parent,roof,roof_color)
+	var cap: MeshInstance3D = renderer._roof_surface(parent,roof,roof_color)
 	var roof_key := "joined_roof/"+str(roof_color)
 	if not renderer.materials.has(roof_key):
 		var material := ShaderMaterial.new()

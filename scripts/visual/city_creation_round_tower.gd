@@ -106,7 +106,7 @@ static func build(renderer,house: Dictionary) -> Node3D:
 	var roof_center := Vector3(center.x,eave,center.y)
 	var vertices := roof_vertices(roof_center)
 	var color: Color = palette[1]
-	var roof: MeshInstance3D = renderer._triangles(root,vertices,color)
+	var roof: MeshInstance3D = renderer._roof_surface(root,vertices,color)
 	roof.name="RoundTowerRoof"
 	var roof_key := "round_tower_roof/"+str(color)
 	if not renderer.materials.has(roof_key):

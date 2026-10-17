@@ -1,34 +1,40 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
 uniform vec4 roof_color : source_color = vec4(0.73,0.44,0.33,1.0);
-varying vec3 world_at;
 varying vec3 roof_normal;
+varying vec3 roof_contour;
+varying vec3 roof_downhill;
 
 float tile_hash(vec2 p) {
 	return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);
 }
 
 void vertex() {
-	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	roof_normal = normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	vec3 contour=vec3(NORMAL.z,0.0,-NORMAL.x);
+	if(dot(contour,contour)<0.0001){contour=vec3(1.0,0.0,0.0);}
+	contour=normalize(contour);
+	roof_contour=normalize((MODEL_MATRIX*vec4(contour,0.0)).xyz);
+	roof_downhill=normalize((MODEL_MATRIX*vec4(cross(contour,NORMAL),0.0)).xyz);
+}
+
+float pulse_integral(float x,float width){
+	return floor(x)*width+min(fract(x),width);
+}
+float filtered_joint(float at,float width,float footprint){
+	float half_pixel=footprint*0.5;
+	return clamp((pulse_integral(at+half_pixel,width)-pulse_integral(at-half_pixel,width))/footprint,0.0,1.0);
 }
 
 void fragment() {
-	// Shared mesh normals are smoothed around hipped ridges. Projection needs
-	// the geometric plane, otherwise the tile grid bends into triangular moire.
-	vec3 normal = normalize(cross(dFdx(world_at),dFdy(world_at)));
-	if (dot(normal,roof_normal)<0.0) { normal=-normal; }
-	// Use the actual roof plane: rows follow a contour, courses run downhill.
-	// This also rotates the barrel normals on X-facing and hipped roof faces.
-	vec3 contour = vec3(normal.z,0.0,-normal.x);
-	if (dot(contour,contour)<0.0001) {
-		contour = vec3(1.0,0.0,0.0);
-	}
-	contour = normalize(contour);
-	vec3 downhill = normalize(cross(contour,normal));
-	// Our 22 x 28 cm projected shingle scale, not TG's recovered row spacing.
-	vec2 tile = vec2(dot(world_at,contour)/0.22,dot(world_at,downhill)/0.28);
-	float detail = 1.0-smoothstep(0.35,1.05,max(fwidth(tile.x),fwidth(tile.y)));
+	vec3 normal=normalize(roof_normal);
+	vec3 contour=normalize(roof_contour);
+	vec3 downhill=normalize(roof_downhill);
+	vec2 tile=UV;
+	// Take derivatives before the discontinuous stagger, then integrate seams
+	// and barrel normals across the actual pixel footprint.
+	vec2 footprint=max(fwidth(tile),vec2(0.0001));
+	float detail=1.0-smoothstep(0.22,0.75,max(footprint.x,footprint.y));
 	tile.x += mod(floor(tile.y),2.0)*0.5;
 	vec2 cell = floor(tile);
 	vec2 uv = fract(tile);
@@ -36,11 +42,10 @@ void fragment() {
 	// This shared surface adapts that stable per-tile variation without nodes.
 	float seed = tile_hash(cell);
 	float tilt = tile_hash(cell+vec2(19.3,47.1));
-	float aa_x = max(fwidth(tile.x),0.005);
-	float aa_y = max(fwidth(tile.y),0.005);
-	float side_joint = 1.0-smoothstep(aa_x,0.07+aa_x,min(uv.x,1.0-uv.x));
-	float overlap = 1.0-smoothstep(aa_y,0.11+aa_y,uv.y);
-	float across = -cos(uv.x*PI)*0.19+(seed-0.5)*0.025;
+	float side_joint=filtered_joint(tile.x+0.035,0.07,footprint.x);
+	float overlap=filtered_joint(tile.y,0.11,footprint.y);
+	float barrel=(sin(PI*fract(tile.x+footprint.x*0.5))-sin(PI*fract(tile.x-footprint.x*0.5)))/(PI*footprint.x);
+	float across=-barrel*0.19+(seed-0.5)*0.025;
 	float along = 0.045+(tilt-0.5)*0.035;
 	vec3 tile_normal = normalize(normal+(contour*across-downhill*along)*detail);
 	NORMAL = normalize((VIEW_MATRIX*vec4(tile_normal,0.0)).xyz);
