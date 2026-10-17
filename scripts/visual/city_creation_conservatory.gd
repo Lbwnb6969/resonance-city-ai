@@ -8,6 +8,7 @@ const SPRING := 1.08
 const RISE := 0.50
 const FLOOR_OFFSET := 0.19
 var glass_material: ShaderMaterial
+var clockwork_glass_material: ShaderMaterial
 var evening := false
 var response := 0.0
 
@@ -17,16 +18,25 @@ func set_light(value: bool,amount: float = 0.0) -> void:
 	if glass_material!=null:
 		glass_material.set_shader_parameter("evening",1.0 if evening else 0.0)
 		glass_material.set_shader_parameter("response",response)
+	if clockwork_glass_material!=null:
+		clockwork_glass_material.set_shader_parameter("evening",1.0 if evening else 0.0)
+		clockwork_glass_material.set_shader_parameter("response",response)
 
-func _glass_material() -> ShaderMaterial:
+func _glass_material(clockwork: bool=false) -> ShaderMaterial:
+	if clockwork:
+		if clockwork_glass_material==null:
+			clockwork_glass_material=ShaderMaterial.new();clockwork_glass_material.shader=GlassShader
+			clockwork_glass_material.set_shader_parameter("warmth",1.0)
+			set_light(evening,response)
+		return clockwork_glass_material
 	if glass_material==null:
 		glass_material=ShaderMaterial.new()
 		glass_material.shader=GlassShader
 		set_light(evening,response)
 	return glass_material
 
-func ensure_material() -> ShaderMaterial:
-	return _glass_material()
+func ensure_material(clockwork: bool=false) -> ShaderMaterial:
+	return _glass_material(clockwork)
 
 func build(renderer,root: Node3D,house: Dictionary,plan: Dictionary) -> void:
 	if plan.is_empty(): return
@@ -92,7 +102,7 @@ func build(renderer,root: Node3D,house: Dictionary,plan: Dictionary) -> void:
 		if index==plan.cells.size()-1: _end_glass(faces,center,high,half,floor_y,along_x)
 		var mesh: MeshInstance3D = renderer._triangles(root,faces,Color.WHITE)
 		mesh.name="ConservatoryGlass_"+str(cell.id)
-		mesh.material_override=_glass_material()
+		mesh.material_override=_glass_material(renderer.state.house_era(house)=="clockwork")
 		mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		mesh.set_meta("creation_live_visual",true)
 		mesh.set_meta("house_id",str(house.id))

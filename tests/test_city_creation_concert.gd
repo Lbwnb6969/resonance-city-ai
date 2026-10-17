@@ -152,6 +152,11 @@ func _route_component_case() -> void:
 	# The closest isolated strip must not hide a reachable street within .9m.
 	life.graph = {"a":{"b":4.0},"b":{"a":4.0},"c":{"d":4.0},"d":{"c":4.0}}
 	life.positions = {"a":Vector3(0,.055,0),"b":Vector3(4,.055,0),"c":Vector3(0,.055,.4),"d":Vector3(4,.055,.4)}
+	# This synthetic graph also owns its component and attachment caches.
+	life._network.graph=life.graph;life._network.positions=life.positions
+	life._network.component_of={"a":"a","b":"a","c":"c","d":"c"}
+	life._network._route_cache.clear();life._network._route_searches.clear()
+	life._network._build_attachment_index()
 	_check(not life._route_from_position(Vector3(2,.155,.3), "b").is_empty(), "nearest disconnected edge does not suppress a truly reachable local component")
 	_check(life._route_from_position(Vector3(2,.155,2), "b").is_empty(), "route cannot jump from a far road across open ground")
 	life.free()

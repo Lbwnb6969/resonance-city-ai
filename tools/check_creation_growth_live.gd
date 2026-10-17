@@ -129,7 +129,7 @@ func _run() -> void:
 	if demo.music.audio_report.is_empty():
 		await _finish();return
 	identities=_identity()
-	_check(demo.music.get_child_count()==13 and demo.state.growth_memories.is_empty(),"fixed thirteen players start without invented chapter memories")
+	_check(demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.state.growth_memories.is_empty(),"fixed fixed players start without invented chapter memories")
 	demo.select_tool(0)
 	await _mouse(demo.journal.button.get_global_rect().get_center())
 	_check(demo.journal.panel.visible,"actual header button opens journal")
@@ -269,7 +269,7 @@ func _run() -> void:
 		await _wait()
 		demo.life.set_process(false)
 		_check(demo.gallery.last_opened_id==str(work.id) and demo.state.growth_memories==["dawn"] and demo.state.houses==work.world.houses and demo.town.house_roots.h1.get_meta("palette_colors")==demo.TownRenderer.FINISH_PALETTES.dawn,"actual saved-work card reconstructs earned finish and rendered palette")
-	_check(_identity()==identities and demo.music.get_child_count()==13,"all thirteen players, nine loop streams and cached short PCM streams survive colors, chapter and work restoration")
+	_check(_identity()==identities and demo.music.get_child_count()==demo.music.STEMS.size()+4,"all fixed players, shared loop streams and cached short PCM streams survive colors, chapter and work restoration")
 	facts.chapter=demo.journal.rows[0]
 	facts.collection_directory=demo.collection_directory
 	await _finish()

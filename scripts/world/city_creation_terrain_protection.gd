@@ -1,6 +1,8 @@
 extends RefCounted
 ## Target-elevation building/activity pads, followed by terrain-height roads.
 const CafePlans = preload("res://scripts/world/city_creation_cafe_layout_context.gd")
+const RoadHeights = preload("res://scripts/world/city_creation_road_heights.gd")
+const Roundabouts = preload("res://scripts/world/city_creation_roundabouts.gd")
 var cafes := CafePlans.new()
 var _layout_signature: Variant = null
 var _house_pads: Array = []
@@ -26,12 +28,14 @@ func build(city: RefCounted,road_profiles: Dictionary = {}) -> Array:
 			if samples[index].bridge or samples[index+1].bridge: continue
 			var low := minf(float(samples[index].y),float(samples[index+1].y))
 			var high := maxf(float(samples[index].y),float(samples[index+1].y))
-			var steep := (high-low)/maxf(0.000001,Vector2(samples[index].xz).distance_to(samples[index+1].xz))>0.24
+			var steep := (high-low)/maxf(0.000001,Vector2(samples[index].xz).distance_to(samples[index+1].xz))>RoadHeights.MAX_GRADE
 			# A half-metre terrain triangle cannot resolve individual .14m risers.
 			# Carve a continuous conservative bed; only the actual road mesh makes
 			# steps. The halo covers a complete terrain triangle under each edge.
 			result.append({"id":str(road.id)+"/"+str(index),"a":samples[index].xz,"b":samples[index+1].xz,"radius":float(road.width)*0.5+0.72,"target_y":low-(0.24 if steep else 0.075),"transition":0.65,"cut_only":true})
 	result.append_array(_court_pads)
+	for marker: Dictionary in Roundabouts.all(city.roads):
+		result.append({"id":"roundabout/"+marker.owner_id+str(marker.center),"a":marker.center,"b":marker.center,"radius":marker.radius,"target_y":city._ground_terrain.raw_height_at(marker.center),"transition":1.2,"priority":4.0})
 	return result
 
 func _prepare_layout(city: RefCounted) -> void:

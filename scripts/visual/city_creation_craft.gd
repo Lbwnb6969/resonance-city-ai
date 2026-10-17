@@ -8,6 +8,10 @@ const WOOD := Color("886347")
 const LIGHT_WOOD := Color("bc9569")
 const BRASS := Color("cbb276")
 const LEAF := Color("6b8866")
+var culture_roots: Dictionary = {}
+var culture_fingerprints: Dictionary = {}
+var mechanism_roots: Dictionary={}
+var mechanism_fingerprints: Dictionary={}
 var roots: Dictionary = {}
 var fingerprints: Dictionary = {}
 var placement_inputs: Dictionary = {}
@@ -26,6 +30,8 @@ func setup(parent: Node3D) -> void:
 	material.shader = CraftShader
 
 func progress(renderer) -> void:
+	_culture(renderer)
+	_mechanisms(renderer)
 	var live := {}
 	var footprints: Array = []
 	for house: Dictionary in renderer.state.houses: footprints.append([house.id,house.origin,house.cells,house.get("base_y",0.0),house.get("style","classic")])
@@ -59,6 +65,91 @@ func progress(renderer) -> void:
 		if not live.has(id):
 			_remove(id,roots,fingerprints)
 			placement_inputs.erase(id)
+
+func _mechanisms(renderer)->void:
+	var live: Dictionary={}
+	for house: Dictionary in renderer.state.houses:
+		var id:=str(house.id);var level: int=renderer.state.mechanism_level(id)
+		if level==0:continue
+		live[id]=true
+		var signature:=hash([house.origin,house.cells,house.get("base_y",0.),level,renderer.state.house_era(house),renderer._frontage_signature(house)])
+		if mechanism_fingerprints.get(id,-1)==signature:continue
+		_remove(id,mechanism_roots,mechanism_fingerprints)
+		var root:=Node3D.new();root.name="DeliveredClockwork_"+id;layer.add_child(root);root.set_meta("mechanism_level",level)
+		var wood: Material=renderer._material(Color("997147"));var brass: Material=renderer._material(Color("c8aa63"))
+		var entries: Array=renderer.state.house_entrances(id)
+		var chosen: Dictionary={};var side:=Vector2i.ZERO
+		var cells: Array=house.cells.duplicate();cells.sort_custom(func(a:Dictionary,b:Dictionary)->bool:return int(a.level)>int(b.level))
+		for cell: Dictionary in cells:
+			if cell.kind!="room":continue
+			for direction: Vector2i in SIDES:
+				if not renderer._neighbor_cell(house,cell,direction).is_empty():continue
+				var door:=false
+				for entry: Dictionary in entries:
+					if entry.cell_id==cell.id and entry.side==direction and int(cell.level)==0:door=true
+				if door:continue
+				chosen=cell;side=direction;break
+			if not chosen.is_empty():break
+		if not chosen.is_empty():
+			var frame:=Node3D.new();root.add_child(frame);frame.position=renderer._cell_position(house,chosen)+Vector3(side.x*.92,int(chosen.level)*1.7,side.y*.92);frame.rotation.y=atan2(float(side.x),float(side.y))
+			renderer._box(frame,Vector3(.31,.22,.18),Vector3(0,.48,.08),wood)
+			renderer._box(frame,Vector3(.33,.035,.19),Vector3(0,.60,.08),brass)
+			var cylinder: MeshInstance3D=renderer._cylinder(frame,.048,.048,.18,Vector3(0,.52,.18),brass,10);cylinder.rotation.z=PI*.5
+			for i in range(5):renderer._box(frame,Vector3(.012,.07,.018),Vector3(-.075+i*.037,.48,.19),brass)
+		if level>=2:
+			var highest: Dictionary=cells[0]
+			var at: Vector3=renderer._cell_position(house,highest)+Vector3(0,(int(highest.level)+1)*1.7+1.20,0)
+			var greenhouse: Dictionary=renderer.ConservatoryPlan.for_house(renderer.state,house)
+			if not greenhouse.is_empty():at.y=maxf(at.y,float(greenhouse.roof_top_y)+.12)
+			renderer._cylinder(root,.025,.025,.52,at+Vector3.UP*.26,brass,8)
+			renderer._box(root,Vector3(.58,.035,.045),at+Vector3.UP*.45,brass)
+			renderer._triangles(root,[at+Vector3(.27,.45,-.035),at+Vector3(.05,.45,-.035),at+Vector3(.05,.63,-.035)],Color("c8aa63"))
+		renderer._merge_meshes(root)
+		mechanism_roots[id]=root;mechanism_fingerprints[id]=signature
+	for id: String in mechanism_roots.keys():
+		if not live.has(id):_remove(id,mechanism_roots,mechanism_fingerprints)
+
+func _culture(renderer) -> void:
+	var live := {}
+	for house: Dictionary in renderer.state.houses:
+		var id := str(house.id); var level: int = renderer.state.culture_level(id)
+		if level == 0: continue
+		live[id]=true
+		var signature := hash([house.origin,house.cells,house.get("base_y",0.0),level,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house)])
+		if culture_fingerprints.get(id,-1)==signature: continue
+		_remove(id,culture_roots,culture_fingerprints)
+		var root := Node3D.new(); root.name="DeliveredArt_"+id; layer.add_child(root)
+		root.set_meta("culture_level",level)
+		var placed := false
+		var entries: Array = renderer.state.house_entrances(id)
+		var arcades: Array = renderer.ArcadePlan.for_house(renderer.state,house)
+		var cells: Array = house.cells.duplicate()
+		cells.sort_custom(func(a: Dictionary,b: Dictionary)->bool: return int(a.level)>int(b.level))
+		for cell: Dictionary in cells:
+			if cell.kind != "room": continue
+			for side: Vector2i in SIDES:
+				if not renderer._neighbor_cell(house,cell,side).is_empty(): continue
+				var door := false
+				for entry: Dictionary in entries:
+					if entry.cell_id==cell.id and entry.side==side and int(cell.level)==0: door=true
+				if door: continue
+				var cuts: Array = renderer.state.house_passages(id)
+				var cut := false
+				for opening: Dictionary in cuts:
+					if opening.cell_id==cell.id: cut=true
+				if cut: continue
+				var radius := .9
+				for arcade: Dictionary in arcades:
+					if arcade.cell_id==cell.id and arcade.side==side: radius-=float(arcade.retreat)
+				var face := Node3D.new(); root.add_child(face)
+				face.position=renderer._cell_position(house,cell)+Vector3(side.x*radius,int(cell.level)*1.7,side.y*radius)
+				face.rotation.y=atan2(float(side.x),float(side.y))
+				renderer.Renaissance.art(renderer,face,level); placed=true; break
+			if placed: break
+		renderer._merge_meshes(root)
+		culture_roots[id]=root; culture_fingerprints[id]=signature
+	for id: String in culture_roots.keys():
+		if not live.has(id): _remove(id,culture_roots,culture_fingerprints)
 
 func supply(renderer, statuses: Dictionary) -> void:
 	var live := {}

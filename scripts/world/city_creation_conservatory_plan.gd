@@ -7,6 +7,31 @@ const ROOF_HIGH := 1.81
 const ROOF_OVERHANG := 0.12
 const EPS := 0.002
 
+static func for_house(city: RefCounted,house: Dictionary)->Dictionary:
+	var terrace := choose(city.houses,house)
+	if city.house_era(house)!="clockwork" or not terrace.is_empty():return terrace
+	# A clear exposed row can carry a glazed winter garden above its mansard.
+	var tops := {}
+	for cell: Dictionary in house.cells:
+		if cell.kind!="room" or _covered(house,cell):continue
+		tops[Vector3i(int(cell.x),int(cell.level),int(cell.z))]=cell
+	var keys := tops.keys();keys.sort()
+	for key: Vector3i in keys:
+		for axis: String in ["x","z"]:
+			var step := Vector3i.RIGHT if axis=="x" else Vector3i.BACK
+			var cells: Array=[tops[key]]
+			for i in range(1,MAX_CELLS):
+				if not tops.has(key+step*i):break
+				cells.append(tops[key+step*i])
+			if cells.size()<2:continue
+			var ids: Array[String]=[];var bounds:=Rect2(_center(house,cells[0])-Vector2.ONE*.9,Vector2.ONE*UNIT)
+			for cell: Dictionary in cells:
+				ids.append(str(cell.id));bounds=bounds.merge(Rect2(_center(house,cell)-Vector2.ONE*.9,Vector2.ONE*UNIT))
+			var y:=float(house.get("base_y",0.))+(key.y+1)*FLOOR+1.0
+			if not _clear(city.houses,house,ids,bounds.grow(-.1),y):continue
+			return {"cells":cells,"cell_ids":ids,"center":bounds.get_center(),"bounds":bounds,"axis":axis,"level":key.y+1,"base_y":y,"roof_top_y":y+ROOF_HIGH,"on_roof":true,"signature":hash([ids,bounds,y,"clockwork"])}
+	return {}
+
 static func choose(houses: Array, house: Dictionary) -> Dictionary:
 	var terraces: Dictionary = {}
 	for cell: Dictionary in house.cells:

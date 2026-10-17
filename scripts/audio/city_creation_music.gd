@@ -1,7 +1,7 @@
 class_name CityCreationMusic
 extends Node
 ## Original D-major pentatonic morning miniature. PCM is rendered once on a
-## worker. Nine shared synchronized loops give districts distinct phrases
+## worker. Twelve shared synchronized loops give districts distinct phrases
 ## without adding a voice for every house or restarting the musical clock.
 const RATE := 22050
 const SHORT_GAIN_DB := -12.0
@@ -9,6 +9,7 @@ const SECONDS := 24.0
 const FRAMES := 529200
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const ThemePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
+const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Towers = preload("res://scripts/world/city_creation_towers.gd")
 const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.gd")
 const ReplyPCM = preload("res://scripts/audio/city_creation_reply_pcm.gd")
@@ -16,16 +17,22 @@ const Spatial = preload("res://scripts/audio/city_creation_spatial.gd")
 const PitchPluck = preload("res://scripts/audio/city_creation_pitch_pluck.gd")
 const ManualLinks = preload("res://scripts/world/city_creation_manual_links.gd")
 const BakeryCues = preload("res://scripts/audio/city_creation_bakery_cues.gd")
+const AcousticField = preload("res://scripts/audio/city_creation_acoustic_field.gd")
+var acoustic:=AcousticField.new()
+var _acoustic_timer:=0.0
+var _signature_phrase := -1
+var _signature_active: Dictionary={}
+var _tower_remote:=false
 var bakery_cues := BakeryCues.new()
 var reply:=DistrictReply.new()
 var spatial:=Spatial.new()
-const STEMS := ["foundation", "wood", "air", "terrace", "concert", "wood_deep", "wood_weave", "wood_market", "wood_sylvan"]
+const STEMS := ["foundation", "wood", "air", "terrace", "concert", "wood_deep", "wood_weave", "wood_market", "wood_sylvan", "renaissance_fugue", "clockwork_waltz", "modern_symphony"]
 const STYLE_TRACKS := {"warm":"wood", "deep":"wood_deep", "weave":"wood_weave", "market":"wood_market", "sylvan":"wood_sylvan"}
 
 const TRACK_STYLES := {"wood":"warm","wood_deep":"deep","wood_weave":"weave","wood_market":"market","wood_sylvan":"sylvan"}
 const STYLE_NAMES := {"warm":"暖庭","deep":"深流","weave":"织机","market":"市集长街","sylvan":"林间静谧"}
 const DEFAULT_ARRANGEMENT := {"adaptive":false,"base_style":"warm","weights":{"warm":1.0},"secondary":"","secondary_weight":0.0}
-const FINALE_GAINS := {"foundation":-10.0,"wood":-17.0,"wood_deep":-18.0,"wood_weave":-19.0,"wood_market":-25.0,"wood_sylvan":-25.0,"air":-14.0,"terrace":-17.0,"concert":-8.0}
+const FINALE_GAINS := {"foundation":-10.0,"wood":-17.0,"wood_deep":-18.0,"wood_weave":-19.0,"wood_market":-25.0,"wood_sylvan":-25.0,"air":-14.0,"terrace":-17.0,"concert":-8.0,"renaissance_fugue":-23.0,"clockwork_waltz":-24.0,"modern_symphony":-24.0}
 var _daily_arrangement: Dictionary = DEFAULT_ARRANGEMENT
 var _concert_arrangement: Dictionary = {}
 var _arrangement_concert_origin := INF
@@ -71,6 +78,44 @@ var _cafe_phrase := -1
 var _cafe_cues := 0
 var travel_source_gate: Callable
 var _travel_pending: Dictionary = {}
+var tram_source_gate: Callable
+var _tram_pending: Dictionary={}
+var _tram_active: Dictionary={}
+var _tram_player: AudioStreamPlayer
+var _tram_cues := 0
+var _tram_last := -10.0
+
+func clear_tram_cues()->void:
+	if _tram_player!=null and _tram_player.stream==_tram_active.get("stream"):_tram_player.stop()
+	_tram_pending.clear();_tram_active.clear();_tram_player=null;_tram_last=-10.
+
+func queue_tram_chime(car_id: String,station: String,at: Vector2)->void:
+	if muted or _loading or _playback_clock()-_tram_last<2.5:return
+	_tram_pending={"car_id":car_id,"station":station,"position":at,"at":_playback_clock()}
+
+func _tram_at_clock()->void:
+	if _tram_pending.is_empty():return
+	var event := _tram_pending
+	var clock := _playback_clock()
+	if muted or clock-float(event.at)>1.2 or (tram_source_gate.is_valid() and not tram_source_gate.call(event.car_id,event.station)):
+		_tram_pending={};return
+	if clock<ceilf(float(event.at)/.375)*.375:return
+	var phrase := posmod(int(floor(clock/3.)),8)
+	var kind := "tram_chime_%d"%phrase
+	var weight := acoustic.point_weight(event.position)
+	var remote := weight<=0.
+	for effect: AudioStreamPlayer in _effects:
+		if effect.playing:continue
+		play_effect_at(effect,_edit_streams[kind],event.position,.25 if remote else weight,remote)
+		_tram_player=effect;_tram_cues+=1;_tram_last=clock
+		_tram_active=event.duplicate();_tram_active.merge({"phrase":phrase,"stream":_edit_streams[kind],"remote":remote,"gain_weight":.25 if remote else weight})
+		_tram_pending={};break
+
+func tram_music_report()->Dictionary:
+	var audible: bool=not muted and _tram_player!=null and _tram_player.playing and not _tram_active.is_empty() and _tram_player.stream==_tram_active.stream
+	if audible and tram_source_gate.is_valid() and not tram_source_gate.call(_tram_active.car_id,_tram_active.station):
+		_tram_player.stop();audible=false
+	return {"audible":audible,"cues":_tram_cues,"car_id":_tram_active.get("car_id",""),"station":_tram_active.get("station",""),"position":_tram_active.get("position",Vector2.ZERO),"phrase":_tram_active.get("phrase",-1),"remote":_tram_active.get("remote",false),"gain_weight":_tram_active.get("gain_weight",0.),"pool_size":_effects.size(),"timbres":["celesta","bell"]}
 var _travel_active: Dictionary = {}
 var _travel_player: AudioStreamPlayer
 var _travel_stream: AudioStreamWAV
@@ -167,6 +212,8 @@ func play_house(house_id: String) -> bool:
 	if now-_pluck_last_usec<80000: return false
 	var plan := PitchPluck.plan(_pluck_city,house_id,_playback_clock())
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key): return false
+	if acoustic.point_weight(plan.position)<=0.0: return false
+	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id): return false
 	var selected: AudioStreamPlayer
 	for effect: AudioStreamPlayer in _effects:
 		if not effect.playing: selected=effect;break
@@ -192,7 +239,8 @@ func _prune_plucks() -> void:
 			_pluck_voices.erase(id)
 			continue
 		var plan: Dictionary = PitchPluck.plan(_pluck_city,str(voice.plan.house_id),_playback_clock())
-		if muted or concert_active or plan.is_empty() or plan.style!=voice.plan.style or plan.max_level!=voice.plan.max_level or plan.position!=voice.plan.position:
+		var visible: bool=not acoustic.visible_test.is_valid() or not _house_music.has(str(voice.plan.house_id)) or bool(acoustic.visible_test.call(str(voice.plan.house_id)))
+		if muted or concert_active or not visible or plan.is_empty() or acoustic.point_weight(voice.plan.position)<=0.0 or plan.style!=voice.plan.style or plan.max_level!=voice.plan.max_level or plan.position!=voice.plan.position:
 			player.stop()
 			_pluck_voices.erase(id)
 
@@ -215,7 +263,7 @@ func tower_count() -> int:
 
 
 func _tower_eligible(id: String) -> bool:
-	return not muted and _listener_focus.distance_to(_nearest_tower(id))<=14.0
+	return not muted and str(acoustic.zones.get(id,{}).get("zone","silent")) in ["focus","linked"] and _nearest_tower(id)!=Vector2.INF
 
 
 func _nearest_tower(id: String) -> Vector2:
@@ -233,10 +281,10 @@ func _nearest_tower(id: String) -> Vector2:
 func tower_music_report() -> Dictionary:
 	var owns_voice := _tower_player!=null and _tower_player.stream==_tower_stream
 	var positions: Array = _house_music.get(_tower_source,{}).get("tower_positions",[])
-	var audible := owns_voice and _tower_player.playing and not muted and positions.has(_tower_position) and _listener_focus.distance_to(_tower_position)<=14.0
+	var audible := owns_voice and _tower_player.playing and not muted and positions.has(_tower_position) and (_tower_remote or acoustic.weight(_tower_source)>0.0)
 	if owns_voice and _tower_player.playing and not audible: _tower_player.stop()
 	return {"audible":audible,"source_id":_tower_source if audible else "","elapsed":_tower_player.get_playback_position() if audible else 0.0,
-		"duration":TOWER_DURATION,"phrase":_tower_phrase,"cues":_tower_cues,"pool_size":_effects.size(),"count":_tower_count,"position":_tower_position if audible else Vector2.ZERO}
+		"duration":TOWER_DURATION,"phrase":_tower_phrase,"cues":_tower_cues,"pool_size":_effects.size(),"count":_tower_count,"position":_tower_position if audible else Vector2.ZERO,"remote":_tower_remote,"gain_weight":.25 if _tower_remote else acoustic.weight(_tower_source)}
 
 
 func _tower_at_phrase(phrase: int) -> void:
@@ -266,6 +314,11 @@ func _tower_at_phrase(phrase: int) -> void:
 		if reply.reserves_tower_gap(phrase): return
 		for id: String in _daily_houses:
 			if _tower_eligible(id): candidates.append(id)
+	# A single remote bell may mark the 24-second cycle. Ordinary distant
+	# houses remain silent; a tower is an explicit high-value horizon event.
+	if candidates.is_empty() and posmod(phrase,8)==0:
+		for id: String in _daily_houses:
+			if _nearest_tower(id)!=Vector2.INF: candidates.append(id)
 	if candidates.is_empty() or bool(cafe_music_report().audible) or bool(travel_music_report().audible): return
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
@@ -273,13 +326,14 @@ func _tower_at_phrase(phrase: int) -> void:
 		_tower_position=_nearest_tower(_tower_source)
 		_tower_player=effect
 		_tower_stream=_edit_streams["tower_bell_%d" % posmod(phrase,8)]
-		play_effect_at(effect,_tower_stream,_tower_position)
+		_tower_remote=str(acoustic.zones.get(_tower_source,{}).get("zone","silent")) not in ["focus","linked"]
+		play_effect_at(effect,_tower_stream,_tower_position,.25 if _tower_remote else acoustic.weight(_tower_source),_tower_remote)
 		_tower_cues+=1
 		return
 
 
 func _travel_eligible(event: Dictionary) -> bool:
-	return not muted and not concert_active and not _loading and _listener_focus.distance_to(event.position) <= 14.0 and travel_source_gate.is_valid() and travel_source_gate.call(event.kind,event.source_id,event.position)
+	return not muted and not concert_active and not _loading and acoustic.point_weight(event.position)>0.0 and acoustic.mode=="detail" and travel_source_gate.is_valid() and travel_source_gate.call(event.kind,event.source_id,event.position)
 
 
 func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2) -> void:
@@ -314,7 +368,7 @@ func _stepping_now(event: Dictionary, clock: float) -> void:
 		_travel_active.merge({"phrase":phrase,"duration":STEPPING_DURATION,"timbre":"water_marimba","note":note},true)
 		_travel_cooldowns[str(event.source_id)]=clock
 		_stepping_last=clock
-		play_effect_at(effect,_travel_stream,event.position)
+		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position))
 		_travel_cues+=1
 		return
 
@@ -357,7 +411,7 @@ func _travel_at_phrase(phrase: int) -> void:
 		_travel_active=event
 		_travel_active["phrase"]=phrase
 		_travel_cooldowns[str(event.source_id)]=_playback_clock()
-		play_effect_at(effect,_travel_stream,event.position)
+		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position))
 		_travel_cues+=1
 		return
 
@@ -371,7 +425,7 @@ func set_cafe_view(view: Dictionary) -> void:
 
 func _cafe_eligible(id: String) -> bool:
 	var row: Dictionary = _cafe_view.get(id,{})
-	return not muted and str(row.get("phase",""))=="tea" and int(row.get("arrived",0))>=2 and _house_music.has(id) and str(_house_music[id].role)=="garden_cafe" and _listener_focus.distance_to(_house_music[id].position)<=14.0
+	return not muted and str(row.get("phase",""))=="tea" and int(row.get("arrived",0))>=2 and _house_music.has(id) and str(_house_music[id].role)=="garden_cafe" and acoustic.focus_weight(id)>0.0 and acoustic.mode!="city"
 
 
 func cafe_music_report() -> Dictionary:
@@ -397,7 +451,7 @@ func _cafe_at_phrase(phrase: int) -> void:
 		_cafe_source=eligible[posmod(phrase,eligible.size())]
 		_cafe_player=effect
 		_cafe_stream=_edit_streams[kind]
-		play_effect_at(effect,_cafe_stream,_house_music[_cafe_source].position)
+		play_effect_at(effect,_cafe_stream,_house_music[_cafe_source].position,acoustic.focus_weight(_cafe_source)*(1.0-smoothstep(18.0,32.0,acoustic.zoom)))
 		_cafe_cues+=1
 		return
 
@@ -489,15 +543,18 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 	var linked: Array[String] = []
 	if audible and concert_active:
 		for house_id in context.get("chorus_house_ids", []):
-			if _house_music.has(str(house_id)) and not chorus.has(str(house_id)):
+			if _house_music.has(str(house_id)) and acoustic.weight(str(house_id))>0.0 and not chorus.has(str(house_id)):
 				chorus.append(str(house_id))
 		_refresh_linked_music()
 		linked.assign(_linked_ids)
 		for house_id: String in linked:
-			if not chorus.has(house_id): chorus.append(house_id)
+			if acoustic.weight(house_id)>0.0 and not chorus.has(house_id): chorus.append(house_id)
 		for house_id in context.get("ambient_house_ids", []):
-			if _house_music.has(str(house_id)) and not chorus.has(str(house_id)) and str(house_id) != _concert_venue:
+			if _house_music.has(str(house_id)) and acoustic.focus_weight(str(house_id))>0.0 and not chorus.has(str(house_id)) and str(house_id) != _concert_venue:
 				ambient.append(str(house_id))
+	elif audible:
+		for house_id: String in acoustic.focus_ids:
+			if house_id!=str(source.get("source_id","")): chorus.append(house_id)
 	var lead := str(source.get("source_id", "")) if audible else ""
 	var arcs: Array[Dictionary] = []
 	if audible and concert_active and lead != _concert_venue and not lead.is_empty():
@@ -535,6 +592,9 @@ func setup(state: RefCounted) -> void:
 		_effects.append(effect)
 	var themes: Array=[]
 	for key: String in STYLE_TRACKS.values(): themes.append(_players[key])
+	themes.append(_players.renaissance_fugue)
+	themes.append(_players.clockwork_waltz)
+	themes.append(_players.modern_symphony)
 	spatial.setup(self,themes,_players.concert,_effects)
 	spatial.set_listener(_listener_focus,_listener_right)
 	_worker = Thread.new()
@@ -561,12 +621,13 @@ func update_city(state: RefCounted) -> void:
 		if not groups.has(district_id): groups[district_id]={"houses":[],"style":str(district.get("style","warm")),"adaptive":bool(district.get("adaptive",false))}
 		groups[district_id].houses.append(house)
 		var count: int = towers.get(str(house.id),[]).size()
+		if house.get("signature","")=="bell_keep":count=maxi(1,count)
 		_tower_count+=count
 		var positions: Array[Vector2] = []
 		for cell: Dictionary in towers.get(str(house.id),[]):
 			positions.append(Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8))
 		_house_music[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
-			"district_id":str(district.get("id","")),"style":str(district.get("style","warm")),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
+			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":str(district.get("style","warm")),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
 		for cell: Dictionary in house.cells:
 			if cell.kind == "terrace":
 				terraces += 1
@@ -589,15 +650,30 @@ func update_city(state: RefCounted) -> void:
 	if not _house_music.has(_daily_source_id):
 		_daily_source_id = ""
 		_daily_district_id = ""
+	_refresh_acoustic()
 	if _tower_player!=null: tower_music_report()
 
 func set_listener_focus(at: Vector2) -> void:
 	_listener_focus = at
 	spatial.set_listener(at,_listener_right)
+	acoustic.set_view(at,acoustic.zoom,acoustic.visible_test,acoustic.point_visible_test)
+	_refresh_acoustic()
 
-func set_listener_frame(at: Vector2,right: Vector2) -> void:
+func set_listener_frame(at: Vector2,right: Vector2,view_zoom: float=-1.0,in_view: Callable=Callable(),point_in_view: Callable=Callable()) -> void:
 	_listener_right=right.normalized()
+	acoustic.set_view(at,acoustic.zoom if view_zoom<0 else view_zoom,in_view,point_in_view)
 	set_listener_focus(at)
+
+func _refresh_acoustic()->void:
+	var pairs: Array=reply._pairs.values()
+	pairs.append_array(manual_reply_pairs())
+	var events: Array=[]
+	if concert_active and not _concert_venue.is_empty(): events.append(_concert_venue)
+	if _tower_player!=null and _tower_player.playing and _tower_player.stream==_tower_stream: events.append(_tower_source)
+	acoustic.evaluate(_house_music,pairs,events)
+
+func acoustic_report()->Dictionary:
+	return acoustic.report()
 
 func _source_position(id: String) -> Vector2:
 	return _house_music[id].position if _house_music.has(id) else Vector2.INF
@@ -611,16 +687,8 @@ func spatial_music_report() -> Dictionary:
 	return result
 
 func _focused_houses() -> Array[String]:
-	var near: Array[String] = []
-	var nearest := ""
-	var distance := INF
-	for id: String in _daily_houses:
-		var value: float = _listener_focus.distance_to(_house_music[id].position)
-		if value <= 14.0: near.append(id)
-		if value < distance:
-			distance = value
-			nearest = id
-	if near.is_empty() and not nearest.is_empty(): near.append(nearest)
+	var near: Array[String]=[]
+	near.assign(acoustic.focus_ids.slice(0,2))
 	return near
 
 func _advance_daily_phrase(phrase: int) -> void:
@@ -635,6 +703,13 @@ func _advance_daily_phrase(phrase: int) -> void:
 	_daily_style = str(source.get("style","warm"))
 	_daily_improvement = int(source.get("improvement",0))
 	_daily_arrangement = source.get("mix",DEFAULT_ARRANGEMENT).duplicate(true)
+	if acoustic.mode=="city" and not acoustic.focus_ids.is_empty():
+		var weights: Dictionary={};var total:=0.0
+		for id: String in acoustic.focus_ids:
+			var style:=str(_house_music[id].style);var weight:=acoustic.focus_weight(id)
+			weights[style]=float(weights.get(style,0.0))+weight;total+=weight
+		for style: String in weights: weights[style]/=total
+		_daily_arrangement.weights=weights
 
 func _mix_label(arrangement: Dictionary) -> String:
 	var label: String=STYLE_NAMES[str(arrangement.base_style)]
@@ -726,6 +801,11 @@ func _source_schedule() -> Array[Dictionary]:
 
 
 func _source_for_phrase(phrase: int) -> Dictionary:
+	if _grand_active():
+		var era:String=GrandFestival.PHRASES[clampi(phrase,0,7)]
+		var id:String=_concert_venue if era=="tutti" else str(_concert_view.era_cast[era])
+		var row:Dictionary=_house_music.get(id,{})
+		return {"source_id":id,"phrase":phrase,"role":"finale" if era=="tutti" else "era_lead","timbre":{"pastoral":"wood","renaissance":"strings","clockwork":"horn","modern_eco":"warm_pad","tutti":"orchestra"}[era],"start":phrase*3.,"duration":3.,"finale":era=="tutti","era":era,"style":str(row.get("style","warm")),"improvement":int(row.get("improvement",0)),"mix":row.get("mix",DEFAULT_ARRANGEMENT)}
 	var answer := phrase % 2 == 1 and not _concert_houses.is_empty()
 	var finale := _ensemble_context and phrase == 7
 	if finale: answer = false
@@ -737,6 +817,7 @@ func _source_for_phrase(phrase: int) -> Dictionary:
 		# completed concerts; saved progress keeps the same cast on reload.
 		var rotation := int(_concert_view.get("completed_concerts",0))*3 if _ensemble_context else _concert_loop * 4
 		source_id = _concert_houses[(rotation + int(phrase / 2)) % _concert_houses.size()]
+		if str(acoustic.zones.get(source_id,{}).get("zone","silent"))=="silent": source_id=_concert_venue;answer=false
 	var result := {"source_id": source_id, "phrase": phrase, "role": "finale" if finale else ("answer" if answer else "lead"), "timbre": "wood" if phrase % 2 == 1 else "piano", "start": phrase * 3.0, "duration": 3.0,
 		"finale":finale,"style":str(_house_music.get(source_id, {}).get("style", "warm")),"improvement":int(_phrase_improvements.get(source_id,0))}
 	var arrangement:=_source_arrangement(source_id,phrase)
@@ -751,11 +832,19 @@ func active_source() -> Dictionary:
 		return result
 	var player: AudioStreamPlayer = _players.concert
 	result = _source_for_phrase(_concert_phrase())
-	result["audible"] = concert_active and not muted and player.playing and player.volume_db > -30.0 and _house_music.has(String(result.source_id))
+	if _grand_active():
+		var key:String={"pastoral":"wood","renaissance":"renaissance_fugue","clockwork":"clockwork_waltz","modern_eco":"modern_symphony","tutti":"concert"}[str(result.era)]
+		player=_players[key]
+	if _remote_concert() and not _grand_active(): result.source_id=_concert_venue;result.role="remote_concert"
+	result["audible"] = concert_active and not muted and player.playing and player.volume_db > -38.0 and _house_music.has(String(result.source_id)) and _long_acoustic_weight("concert")>0.0
 	return result
 
 
 func target_gain_db(key: String, during_concert: bool) -> float:
+	if _grand_active():return GrandFestival.gain(key,_concert_phrase())
+	if key=="modern_symphony":return -24.0 if during_concert else -21.0
+	if key=="clockwork_waltz":return -24.0 if during_concert else -21.0
+	if key=="renaissance_fugue": return -23.0 if during_concert else -19.0
 	if during_concert and _ensemble_context:
 		return concert_gain_for_phrase(key, _concert_phrase())
 	if key == "concert":
@@ -777,7 +866,8 @@ func target_gain_db(key: String, during_concert: bool) -> float:
 
 
 func concert_gain_for_phrase(key: String, phrase: int) -> float:
-	# Every house shares these nine voices. The final chord opens the
+	if _grand_active():return GrandFestival.gain(key,phrase)
+	# Every house shares these fixed voices. The final chord opens the
 	# harmonic colors once, regardless of how many houses join the response.
 	if phrase == 7:
 		if key in STYLE_TRACKS.values():
@@ -790,6 +880,9 @@ func concert_gain_for_phrase(key: String, phrase: int) -> float:
 	var improvement := int(source.improvement)
 	if key == "air": return -23.0+float(improvement)
 	if key == "terrace": return -25.0+float(improvement)*1.5
+	if key=="clockwork_waltz":return -24.0
+	if key=="modern_symphony":return -24.0
+	if key=="renaissance_fugue": return -23.0
 	return _style_gain_db(key,source.mix,-21.0)
 
 func daily_source() -> Dictionary:
@@ -799,7 +892,7 @@ func daily_source() -> Dictionary:
 	var player: AudioStreamPlayer = _players[STYLE_TRACKS[_daily_style]]
 	var phrase := clampi(int(player.get_playback_position()/3.0),0,7)
 	result["phrase"] = phrase
-	result.audible = not concert_active and not muted and player.playing and player.volume_db > -30.0
+	result.audible = not concert_active and not muted and player.playing and player.volume_db > -38.0 and acoustic.focus_weight(_daily_source_id)>0.0
 	return result
 
 
@@ -827,6 +920,7 @@ func music_report() -> Dictionary:
 	result["tower"] = tower_music_report()
 	result["reply"] = reply.report()
 	result["spatial"] = spatial_music_report()
+	result["acoustic"] = acoustic_report()
 	result["manual_pairs"] = manual_reply_pairs().duplicate(true)
 	_refresh_linked_music()
 	result["linked_chorus_ids"] = _linked_ids.duplicate() if concert_active else []
@@ -854,15 +948,132 @@ func queue_bakery_cue(kind: String,shop_id: String,home_id: String="") -> bool:
 func bakery_music_report() -> Dictionary:
 	return bakery_cues.report()
 
-func play_effect_at(player: AudioStreamPlayer,stream: AudioStreamWAV,at: Vector2=Vector2.INF) -> void:
+func record_completed_district_answer(from_id: String,to_id: String,from_era:String="",to_era:String="") -> void:
+	if _pluck_city!=null:_pluck_city.record_district_answer(from_id,to_id,from_era,to_era)
+
+func _signature_at_phrase(phrase: int) -> void:
+	if phrase==_signature_phrase:return
+	_signature_phrase=phrase
+	if muted or _loading:return
+	var source: String="";var kind: String="";var weight:=0.0
+	if concert_active and str(_house_music.get(_concert_venue,{}).get("signature",""))=="music_academy":
+		source=_concert_venue;kind="quartet";weight=.25 if _remote_concert() else acoustic.weight(source)
+	elif not concert_active and posmod(phrase,2)==0:
+		for id: String in _house_music:
+			if _house_music[id].signature=="watermill" and acoustic.focus_weight(id)>0.0:source=id;kind="waterwheel";weight=acoustic.focus_weight(id);break
+	if source.is_empty() and posmod(phrase,2)==1:
+		var candidate: String=str(_source_for_phrase(_concert_phrase()).source_id) if concert_active else ""
+		if not concert_active and acoustic.mode!="city":
+			var score:=0.0
+			for id: String in acoustic.focus_ids:
+				var current: float=float(_house_music[id].level_tier)+acoustic.focus_weight(id)*.2
+				if int(_house_music[id].level_tier)>=3 and current>score:score=current;candidate=id
+		if _house_music.has(candidate) and int(_house_music[candidate].level_tier)>=3:
+			source=candidate;kind="quality_flourish_%d"%int(_house_music[candidate].level_tier)
+			weight=acoustic.focus_weight(candidate)
+	if source.is_empty() and not concert_active and posmod(phrase,2)==1:
+		for id: String in acoustic.focus_ids:
+			if int(_house_music[id].mechanisms)>0:source=id;kind="musicbox";weight=acoustic.focus_weight(id);break
+	if source.is_empty() or weight<=0:return
+	var key: String="%s_%d"%[kind,posmod(phrase,8)]
+	if kind=="musicbox":key="tram_chime_%d"%posmod(phrase,8)
+	if not _edit_streams.has(key):return
+	for effect: AudioStreamPlayer in _effects:
+		if effect.playing:continue
+		var stream: AudioStreamWAV=_edit_streams[key]
+		play_effect_at(effect,stream,_house_music[source].position,weight,kind=="quartet" and _remote_concert())
+		_signature_active[effect.get_instance_id()]={"player":effect,"stream":stream,"kind":kind,"source_id":source,"phrase":phrase,"weight":weight}
+		break
+
+func signature_music_report() -> Array[Dictionary]:
+	var result: Array[Dictionary]=[]
+	for id: int in _signature_active.keys():
+		var row: Dictionary=_signature_active[id]
+		var owned: bool=row.player.stream==row.stream
+		var invalid: bool=not _house_music.has(str(row.source_id)) or (row.kind=="quartet" and (not concert_active or _concert_venue!=str(row.source_id)))
+		if invalid or not owned or not row.player.playing:
+			if invalid and owned:row.player.stop()
+			_signature_active.erase(id);continue
+		result.append({"kind":row.kind,"source_id":row.source_id,"phrase":row.phrase,"weight":row.weight,"elapsed":row.player.get_playback_position(),"audible":not muted and row.player.volume_linear>0})
+	return result
+
+func play_quality_upgrade(house_id: String, tier: int) -> bool:
+	if muted or _loading or not _house_music.has(house_id):return false
+	var key: String="quality_upgrade_%d"%posmod(floori(_playback_clock()/3.0),8)
+	if not _edit_streams.has(key):return false
+	for effect: AudioStreamPlayer in _effects:
+		if effect.playing:continue
+		var weight: float=acoustic.focus_weight(house_id)
+		play_effect_at(effect,_edit_streams[key],_house_music[house_id].position,weight if weight>0.0 else .25,weight<=0.0)
+		return true
+	return false
+
+func play_effect_at(player: AudioStreamPlayer,stream: AudioStreamWAV,at: Vector2=Vector2.INF,gain_weight: float=1.0,remote: bool=false) -> void:
 	# Every use of a pooled voice sets its position, including centered edits
 	# that preempt a previous spatial cue. Existing stream ownership stays real.
-	spatial.place_effect(player,at)
+	spatial.place_effect(player,at,remote)
+	player.volume_db=SHORT_GAIN_DB+linear_to_db(clampf(gain_weight,0.0,1.0))
 	player.stream=stream
 	player.play()
 
+func _remote_concert()->bool:
+	if _grand_active():return acoustic.focus_weight(str(_source_for_phrase(_concert_phrase()).source_id))<=0.
+	return concert_active and str(acoustic.zones.get(_concert_venue,{}).get("zone","silent")) in ["event","silent"]
+
+func _grand_active()->bool:
+	return concert_active and bool(_concert_view.get("grand_festival",false))
+
+func grand_festival_report()->Dictionary:
+	var active:=_grand_active();var source:Dictionary=_source_for_phrase(_concert_phrase()) if active else {}
+	var gains:Dictionary={}
+	if active:
+		for key:String in STEMS:gains[key]=GrandFestival.gain(key,int(source.phrase))
+	return {"active":active,"audible":active and not muted,"venue_id":_concert_venue,"source_id":str(source.get("source_id","")),"era":str(source.get("era","")),"phrase":int(source.get("phrase",-1)),"cast":_concert_view.get("era_cast",{}).duplicate(),"gains":gains,"remote":active and _remote_concert(),"elapsed":maxf(0.,_playback_clock()-_concert_clock_origin) if active else 0.}
+
+func _long_acoustic_weight(key: String)->float:
+	if _grand_active():return .25 if _remote_concert() else acoustic.focus_weight(str(_source_for_phrase(_concert_phrase()).source_id))
+	if key=="modern_symphony":return modern_music_report().weight
+	if key=="clockwork_waltz":return clockwork_music_report().weight
+	if key=="renaissance_fugue": return renaissance_music_report().weight
+	if concert_active and not _remote_concert(): return acoustic.weight(str(_source_for_phrase(_concert_phrase()).source_id))
+	if concert_active and key=="concert": return .25
+	return acoustic.focus_weight(_daily_source_id)
+
+
+func modern_music_report()->Dictionary:
+	var source:="";var weight:=0.
+	for id:String in _house_music:
+		if _house_music[id].era_theme!="modern_eco" and _house_music[id].role!="symphony_hall":continue
+		var current:=acoustic.focus_weight(id)
+		if concert_active and id==_concert_venue and _remote_concert():current=.25
+		if current>weight:weight=current;source=id
+	return {"source_id":source,"weight":weight,"track":"modern_symphony","timbres":["felt_piano","warm_pad","vibraphone","strings"]}
+
+func clockwork_music_report()->Dictionary:
+	var source := "";var weight := 0.
+	for id: String in _house_music:
+		if _house_music[id].era_theme!="clockwork" and _house_music[id].role!="clockmaker":continue
+		var current:=acoustic.focus_weight(id)
+		if concert_active and id==_concert_venue and _remote_concert():current=.25
+		if current>weight:weight=current;source=id
+	return {"source_id":source,"weight":weight,"track":"clockwork_waltz"}
+
+func renaissance_music_report() -> Dictionary:
+	var atelier := false; var weight := 0.0; var source := ""
+	for id: String in _house_music:
+		if _house_music[id].role == "atelier": atelier=true; break
+	if atelier:
+		for id: String in _house_music:
+			if _house_music[id].era_theme != "renaissance" and _house_music[id].role != "atelier" and int(_house_music[id].culture)==0: continue
+			var current := acoustic.focus_weight(id)
+			if current>weight: weight=current; source=id
+	return {"unlocked":atelier,"source_id":source,"weight":weight,"track":"renaissance_fugue"}
 
 func _process(delta: float) -> void:
+	_acoustic_timer-=delta
+	if _acoustic_timer<=0.0:
+		_acoustic_timer=.25
+		_refresh_acoustic()
 	_harmony_timer -= delta
 	if _harmony_timer<=0.0:
 		_harmony_timer=0.5
@@ -895,20 +1106,28 @@ func _process(delta: float) -> void:
 		_travel_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		reply.at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+		_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		bakery_cues.at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+		_tram_at_clock()
 	bakery_cues.report()
+	signature_music_report()
 	if not _travel_active.is_empty(): travel_music_report()
+	if not _tram_active.is_empty():tram_music_report()
 	_prune_plucks()
 	if not _pluck_active.is_empty(): house_pluck_report()
 	if _tower_player!=null: tower_music_report()
 	var source_id:=str(_source_for_phrase(_concert_phrase()).source_id) if concert_active else _daily_source_id
 	var source_at:=_source_position(source_id)
 	spatial.update(delta,source_at,source_at if concert_active else Vector2.INF)
+	spatial.set_concert_remote(_remote_concert())
+	spatial.set_theme_remote(_grand_active() and _remote_concert())
 	for key in _players:
-		if muted:
+		var weight:=_long_acoustic_weight(key)
+		if muted or weight<=0.0:
 			_players[key].volume_linear = 0.0
 			continue
-		var target := target_gain_db(key, concert_active)
+		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)
+		if not is_finite(_players[key].volume_db): _players[key].volume_db=-60.0
 		_players[key].volume_db = lerpf(_players[key].volume_db, target, 1.0 - exp(-delta * 2.8))
 
 
@@ -928,6 +1147,7 @@ func _exit_tree() -> void:
 
 
 func _render_bank() -> Dictionary:
+	var synthesis_started:=Time.get_ticks_usec()
 	var streams: Dictionary = {}
 	var report := {"rate": RATE, "frames": FRAMES, "seconds": SECONDS, "stem_count": STEMS.size(), "peaks": {}, "seam_steps": {}, "pcm_bytes": FRAMES * 2 * STEMS.size(), "synthesis": "original_procedural_miniature"}
 	var chords := [[50, 57, 62], [47, 54, 59], [45, 52, 57], [50, 57, 64], [50, 57, 62], [47, 54, 62], [45, 52, 59], [50, 57, 64]]
@@ -939,7 +1159,7 @@ func _render_bank() -> Dictionary:
 	day_mix.resize(FRAMES)
 	concert_mix.resize(FRAMES)
 	finale_mix.resize(FRAMES)
-	var maximum_gains := {"foundation": -6.5, "wood": -10.0, "air": -13.0, "terrace": -11.5, "concert": -60.0,"wood_deep":-10.0,"wood_weave":-10.0,"wood_market":-10.0,"wood_sylvan":-10.0}
+	var maximum_gains := {"foundation": -6.5, "wood": -10.0, "air": -13.0, "terrace": -11.5, "concert": -60.0,"wood_deep":-10.0,"wood_weave":-10.0,"wood_market":-10.0,"wood_sylvan":-10.0,"renaissance_fugue":-18.0,"clockwork_waltz":-18.0,"modern_symphony":-18.0}
 	report["theme_notes"] = {}
 	report["scale_pitch_classes"] = ThemePCM.PITCH_CLASSES
 	var absolute_bound := 0.0
@@ -965,6 +1185,8 @@ func _render_bank() -> Dictionary:
 					for n in range(3):
 						_add_note(samples,bar*3.0+0.12+n*0.5,0.68,chords[bar][n]+12,0.082 if n==0 else 0.063,"pluck",true)
 			"wood_market", "wood_sylvan":
+				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_note,_add_pulse)
+			"renaissance_fugue", "clockwork_waltz", "modern_symphony":
 				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_note,_add_pulse)
 			"air":
 				for i in range(8):
@@ -1054,6 +1276,15 @@ func _render_bank() -> Dictionary:
 		report.effect_peaks[kind]=peak
 		effect_peak=maxf(effect_peak,peak)
 		edits[kind]=_pcm_stream(samples,false)
+	# Actual station arrivals use a single chord-aligned celesta/bell doublet.
+	for bar in range(8):
+		var samples := PackedFloat32Array();samples.resize(int(RATE*.95))
+		_add_note(samples,.0,.68,int(chords[bar][0])+24,.052,"celesta",false)
+		_add_note(samples,.19,.68,int(chords[bar][2])+12,.044,"bell",false)
+		var peak := 0.
+		for sample: float in samples:peak=maxf(peak,absf(sample))
+		report.effect_peaks["tram_chime_%d"%bar]=peak;effect_peak=maxf(effect_peak,peak)
+		edits["tram_chime_%d"%bar]=_pcm_stream(samples,false)
 	# Resident crossings reuse the current chord and the four effect voices.
 	# One short arpeggio per real phrase leaves room for the daily melody.
 	for bar in range(8):
@@ -1106,6 +1337,53 @@ func _render_bank() -> Dictionary:
 	report["reply_notes"]=replies.events
 	report["reply_pcm_bytes"]=replies.bytes
 	effect_peak=maxf(effect_peak,float(replies.maximum))
+	var signature_notes: Array=[]
+	for bar in range(8):
+		var samples:=PackedFloat32Array();samples.resize(int(3.0*RATE))
+		for voice in range(4):
+			var midi: int=ThemePCM.quantize(int(chords[bar][voice%3])+12*(1 if voice>1 else 0))
+			_add_note(samples,.06+voice*.04,2.65,midi,.020,"strings",false)
+			signature_notes.append({"bar":bar,"voice":voice,"midi":midi,"timbre":"strings"})
+		edits["quartet_%d"%bar]=_pcm_stream(samples,false)
+		var peak:=0.0
+		for sample: float in samples:peak=maxf(peak,absf(sample))
+		report.effect_peaks["quartet_%d"%bar]=peak;effect_peak=maxf(effect_peak,peak)
+		samples=PackedFloat32Array();samples.resize(int(.45*RATE))
+		_add_note(samples,0,.38,int(chords[bar][0])+12,.035,"wood",false)
+		edits["waterwheel_%d"%bar]=_pcm_stream(samples,false)
+		peak=0.0
+		for sample: float in samples:peak=maxf(peak,absf(sample))
+		report.effect_peaks["waterwheel_%d"%bar]=peak;effect_peak=maxf(effect_peak,peak)
+	report["signature_notes"]=signature_notes
+	var flourishes: Array=[]
+	for bar in range(8):
+		for tier in range(3,6):
+			var samples:=PackedFloat32Array();samples.resize(int(.95*RATE))
+			for i in range(tier-1):
+				var midi: int=PitchPluck.pitch(bar,i,1)
+				_add_note(samples,i*.14,.48,midi,.022,"harp",false)
+				flourishes.append({"bar":bar,"tier":tier,"midi":midi,"start":i*.14,"timbre":"harp"})
+			if tier==5:
+				_add_note(samples,.04,.80,PitchPluck.pitch(bar,4,0),.015,"strings",false)
+				_add_note(samples,.30,.58,PitchPluck.pitch(bar,2,0),.014,"strings",false)
+			var key: String="quality_flourish_%d_%d"%[tier,bar]
+			edits[key]=_pcm_stream(samples,false)
+			var peak:=0.0
+			for sample: float in samples:peak=maxf(peak,absf(sample))
+			report.effect_peaks[key]=peak;effect_peak=maxf(effect_peak,peak)
+	report["quality_flourish_notes"]=flourishes
+	var upgrades: Array=[]
+	for bar in range(8):
+		var samples:=PackedFloat32Array();samples.resize(int(1.25*RATE))
+		for i in range(5):
+			var midi: int=PitchPluck.pitch(bar,i,0)
+			_add_note(samples,.10*i,.75,midi,.038,"harp",false)
+			upgrades.append({"bar":bar,"midi":midi,"start":.10*i,"timbre":"harp"})
+		var key: String="quality_upgrade_%d"%bar
+		var peak:=0.0
+		for sample: float in samples:peak=maxf(peak,absf(sample))
+		edits[key]=_pcm_stream(samples,false);report.effect_peaks[key]=peak;effect_peak=maxf(effect_peak,peak)
+	report["quality_upgrade_notes"]=upgrades
 	var plucks: Dictionary=PitchPluck.render(_add_note,_pcm_stream)
 	edits.merge(plucks.streams)
 	report.effect_peaks.merge(plucks.peaks)
@@ -1123,6 +1401,7 @@ func _render_bank() -> Dictionary:
 	# cap, any one output is bounded by 1.65 times the old absolute bound.
 	# Apply it even to centered beds for a conservative whole-pool bound.
 	report.mix_peaks["absolute_stereo_with_four_short_voices"] = report.mix_peaks.absolute_with_four_edit_voices*(1.0+Spatial.PAN_LIMIT)
+	report.synthesis_ms=float(Time.get_ticks_usec()-synthesis_started)/1000.
 	return {"streams": streams, "edits": edits, "report": report}
 
 
@@ -1145,6 +1424,15 @@ func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi:
 		var tone := sin(phase)
 		var envelope := 0.0
 		match timbre:
+			"felt_piano":
+				envelope=minf(t/.012,1.)*exp(-t*1.9)*minf((duration-t)/.16,1.)
+				tone=sin(phase)+.17*sin(phase*2.)*exp(-t*5.)+.035*sin(phase*3.)*exp(-t*7.)
+			"warm_pad":
+				envelope=pow(sin(PI*t/duration),2.)
+				tone=.72*sin(phase+.009*sin(TAU*.7*t))+.22*sin(phase*1.0015)+.08*sin(phase*2.)
+			"vibraphone":
+				envelope=minf(t/.005,1.)*exp(-t*2.25)*minf((duration-t)/.18,1.)*(.86+.14*cos(TAU*5.6*t))
+				tone=sin(phase)+.18*sin(phase*4.)*exp(-t*5.)+.045*sin(phase*10.)*exp(-t*9.)
 			"pad":
 				envelope = sin(PI * t / duration)
 				envelope *= envelope
@@ -1155,6 +1443,21 @@ func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi:
 			"air":
 				envelope = minf(t / 0.35, 1.0) * minf((duration - t) / 0.65, 1.0)
 				tone = sin(phase + 0.025 * sin(TAU * 4.6 * t)) + 0.07 * sin(phase * 2.0)
+			"horn":
+				envelope=minf(t/.12,1.)*minf((duration-t)/.25,1.)
+				tone=sin(phase+.012*sin(TAU*4.3*t))+.19*sin(phase*2.)+.065*sin(phase*3.)
+			"clarinet":
+				envelope=minf(t/.045,1.)*minf((duration-t)/.13,1.)
+				tone=sin(phase+.012*sin(TAU*4.8*t))+.29*sin(phase*3.)+.095*sin(phase*5.)
+			"celesta":
+				envelope=minf(t/.004,1.)*exp(-t*5.3)*minf((duration-t)/.12,1.)
+				tone=sin(phase)+.24*sin(phase*2.)*exp(-t*8.)+.085*sin(phase*4.)*exp(-t*12.)
+			"strings":
+				envelope=minf(t/.16,1.0)*minf((duration-t)/.23,1.0)
+				tone=sin(phase+.022*sin(TAU*5.0*t))+.22*sin(phase*2.0)+.10*sin(phase*3.0)+.04*sin(phase*4.0)
+			"harpsichord":
+				envelope=minf(t/.003,1.0)*exp(-t*5.0)*minf((duration-t)/.10,1.0)
+				tone=sin(phase)+.42*sin(phase*2.0)+.23*sin(phase*3.0)+.13*sin(phase*4.0)+.08*sin(phase*6.0)
 			"flute":
 				envelope=minf(t/0.055,1.0)*minf((duration-t)/0.12,1.0)
 				tone=sin(phase+0.018*sin(TAU*5.1*t))+0.09*sin(phase*2.0)+0.025*sin(phase*3.0)

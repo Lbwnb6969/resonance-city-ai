@@ -12,6 +12,8 @@ var _effect_sources: Dictionary = {}
 var _effect_players: Dictionary = {}
 var _names: Array[StringName] = []
 var _routes: Array[Dictionary] = []
+var _filters: Dictionary={}
+var _concert_filter: AudioEffectLowPassFilter
 
 func setup(owner: Node, theme_players: Array, concert_player: AudioStreamPlayer, effects: Array) -> void:
 	close()
@@ -23,6 +25,7 @@ func setup(owner: Node, theme_players: Array, concert_player: AudioStreamPlayer,
 	for player: AudioStreamPlayer in theme_players: _route(player,theme_bus.name)
 	var concert_bus := _make_bus(prefix+"Concert",concert_player.bus)
 	_concert=concert_bus.effect
+	_concert_filter=concert_bus.filter
 	_route(concert_player,concert_bus.name)
 	for index in range(effects.size()):
 		var player: AudioStreamPlayer = effects[index]
@@ -30,6 +33,7 @@ func setup(owner: Node, theme_players: Array, concert_player: AudioStreamPlayer,
 		_effect_panners[player.get_instance_id()]=short_bus.effect
 		_effect_sources[player.get_instance_id()]=Vector2.INF
 		_effect_players[player.get_instance_id()]=player
+		_filters[player.get_instance_id()]={"filter":short_bus.filter,"bus":short_bus.name}
 		_route(player,short_bus.name)
 
 func _make_bus(bus_name: String, send_to: StringName) -> Dictionary:
@@ -40,9 +44,11 @@ func _make_bus(bus_name: String, send_to: StringName) -> Dictionary:
 	var effect := AudioEffectPanner.new()
 	effect.pan=0.0
 	AudioServer.add_bus_effect(index,effect)
+	var filter:=AudioEffectLowPassFilter.new();filter.cutoff_hz=1800.0
+	AudioServer.add_bus_effect(index,filter);AudioServer.set_bus_effect_enabled(index,1,false)
 	var name_value := StringName(bus_name)
 	_names.append(name_value)
-	return {"name":name_value,"effect":effect}
+	return {"name":name_value,"effect":effect,"filter":filter}
 
 func _route(player: AudioStreamPlayer, to_bus: StringName) -> void:
 	_routes.append({"player":player,"original":player.bus,"spatial":to_bus})
@@ -66,11 +72,24 @@ func update(delta: float, theme_at: Vector2, concert_at: Vector2) -> void:
 			var panner: AudioEffectPanner=_effect_panners[id]
 			panner.pan=lerpf(panner.pan,map_pan(_effect_sources[id]),blend)
 
-func place_effect(effect: AudioStreamPlayer, at: Vector2 = Vector2.INF) -> void:
+func place_effect(effect: AudioStreamPlayer, at: Vector2 = Vector2.INF,remote: bool=false) -> void:
 	var panner: AudioEffectPanner = _effect_panners.get(effect.get_instance_id())
 	if panner!=null:
 		_effect_sources[effect.get_instance_id()]=at
 		panner.pan=map_pan(at)
+	if _filters.has(effect.get_instance_id()):
+		var index:=AudioServer.get_bus_index(_filters[effect.get_instance_id()].bus)
+		if index>=0: AudioServer.set_bus_effect_enabled(index,1,remote)
+
+func set_concert_remote(remote: bool)->void:
+	if _names.size()<2: return
+	var index:=AudioServer.get_bus_index(_names[1])
+	if index>=0: AudioServer.set_bus_effect_enabled(index,1,remote)
+
+func set_theme_remote(remote:bool)->void:
+	if _names.is_empty():return
+	var index:=AudioServer.get_bus_index(_names[0])
+	if index>=0:AudioServer.set_bus_effect_enabled(index,1,remote)
 
 func report() -> Dictionary:
 	var short_pans: Array[float] = []
@@ -93,5 +112,6 @@ func close() -> void:
 	_effect_panners.clear()
 	_effect_sources.clear()
 	_effect_players.clear()
+	_filters.clear();_concert_filter=null
 	_theme=null
 	_concert=null

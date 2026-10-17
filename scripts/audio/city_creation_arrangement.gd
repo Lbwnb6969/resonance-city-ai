@@ -1,7 +1,7 @@
 extends RefCounted
 ## Pure role-to-timbre arrangement. Weights are linear amplitudes, never dB.
 const STYLES := ["warm","deep","weave","market","sylvan"]
-const ROLE_STYLES := {"residential":"warm","venue":"deep","workshop":"weave","bakery":"market","garden_cafe":"sylvan"}
+const ROLE_STYLES := {"residential":"warm","venue":"deep","workshop":"weave","bakery":"market","garden_cafe":"sylvan","atelier":"deep","clockmaker":"weave","symphony_hall":"deep"}
 
 static func compose(houses: Array,base_style: String,adaptive: bool) -> Dictionary:
 	var result := {"adaptive":adaptive,"base_style":base_style,"weights":{base_style:1.0},

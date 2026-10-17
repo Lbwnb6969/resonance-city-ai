@@ -153,7 +153,7 @@ func _run() -> void:
 	for resident: Dictionary in single.residents:
 		if str(resident.home_id) != only_home: resident.paused = true
 	_advance(single, 8.0)
-	_check(single.cafe_status("h4").phase == "waiting" and single.cafe_status("h4").arrived == 1 and int(single_city.life_progress.tea_parties) == 0, "one seated guest waits without fake partner or settlement")
+	_check(single.cafe_status("h4").phase == "waitsecond" and single.cafe_status("h4").arrived == 1 and int(single_city.life_progress.tea_parties) == 0, "one seated guest waits without fake partner or settlement")
 	var single_position: Vector3 = single.cafe._resident(only_home).node.position
 	_check(not single.invite_concert("h4").ok and single.cafe.groups.size() == 1, "invalid concert request preserves actual waiting tea")
 	single_city.remove_road("r5")

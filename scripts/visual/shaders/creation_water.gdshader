@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "res://scripts/visual/shaders/creation_festival_wave.gdshaderinc"
 render_mode cull_disabled, diffuse_burley, specular_schlick_ggx;
 uniform vec4 water_deep : source_color = vec4(0.38,0.61,0.56,1.0);
 uniform vec4 water_shallow : source_color = vec4(0.46,0.63,0.52,1.0);
@@ -61,6 +62,9 @@ void fragment() {
 		water += vec3(0.11,0.14,0.12)*travel_wave*travel_ripple_strength*smoothstep(0.10,0.35,depth);
 	}
 	ALBEDO = mix(ground,water,water_cover);
+	float festival=festival_wave(distance(at,festival_origin))*water_cover;
+	ALBEDO=mix(ALBEDO,vec3(.95,.77,.35),festival*.56);
+	EMISSION=vec3(.58,.34,.08)*festival;
 	ROUGHNESS = mix(1.0,0.64,smoothstep(0.24,0.8,depth));
 	SPECULAR = mix(0.0,0.16,smoothstep(0.12,0.6,depth));
 }

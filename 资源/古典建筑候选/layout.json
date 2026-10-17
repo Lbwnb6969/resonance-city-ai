@@ -1,0 +1,18 @@
+{
+  "name":"古典建筑 · 小景 02",
+  "manifest":"res://资源/古典建筑候选/manifest.json",
+  "half_width":68,
+  "half_height":34,
+  "origin_y":200,
+  "land_rows":[[1,4],[0,6],[0,6],[0,6],[0,6],[0,6],[1,5]],
+  "placements":[
+    {"id":"classical_temple_01","cell":[3.8,0.9],"span":1.65},
+    {"id":"historic_church_01","cell":[1.1,2.3],"span":1.55},
+    {"id":"classical_civic_hall_01","cell":[4.6,3.8],"span":1.90},
+    {"id":"classical_amphitheater_01","cell":[1.9,5.1],"span":2.2},
+    {"id":"tree_tree_large_02_base","cell":[0.4,4.4],"span":0.35},
+    {"id":"tree_tree_small_01_base","cell":[6.1,2.2],"span":0.35}
+  ],
+  "path":[[2.4,0.0],[2.4,2.9],[5.6,2.9]],
+  "branches":[[[2.4,2.9],[2.4,5.8]],[[3.6,2.9],[3.8,1.8]],[[4.6,2.9],[4.6,4.4]],[[2.4,2.6],[1.1,2.9]]]
+}

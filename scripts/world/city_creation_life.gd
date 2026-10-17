@@ -2,12 +2,23 @@ class_name CityCreationLife
 extends Node3D
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
+const CitizenMotion=preload("res://scripts/world/city_creation_citizen_motion.gd")
+var view_camera:Camera3D
+var _visual_lod_cursor:=0
+var _lod_scalar_count:=0
+var _lod_visible_count:=0
+var _quality_inputs:Variant=null
+var _quality_cursor:=-1
+var profile_tick:=false
+var tick_profile:Dictionary={}
+var citizen_lod_stats:Dictionary={"scalar":0,"visible":0,"publications":0}
 const Bakery := preload("res://scripts/world/city_creation_bakery.gd")
 const Workshop := preload("res://scripts/world/city_creation_workshop.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
 const Passage := preload("res://scripts/world/city_creation_passage.gd")
 const Matinee := preload("res://scripts/world/city_creation_matinee.gd")
 const ConcertRelay := preload("res://scripts/world/city_creation_concert_relay.gd")
+const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Network := preload("res://scripts/world/city_creation_network.gd")
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
 const TerrainProtection := preload("res://scripts/world/city_creation_terrain_protection.gd")
@@ -18,6 +29,8 @@ var _district_link_pairs: Array=[]
 var district_link_rebuilds:=0
 const Cafe := preload("res://scripts/world/city_creation_cafe.gd")
 const Travel := preload("res://scripts/world/city_creation_travel.gd")
+const Tram := preload("res://scripts/world/city_creation_tram.gd")
+var tram: RefCounted
 var travel: RefCounted = Travel.new()
 var bakery: RefCounted
 var workshop: RefCounted
@@ -39,9 +52,12 @@ var concert_callback: Callable
 var concert_start_gate: Callable
 var production_callback: Callable
 var purchase_callback: Callable
+var quality_callback: Callable
+var _quality_timer:=0.0
 var craft_callback: Callable
 var cafe_callback: Callable
 var travel_callback: Callable
+var tram_callback: Callable
 const CONCERT_DURATION := 24.0
 var _concert: Dictionary = {}
 var _relay: Dictionary = {}
@@ -76,12 +92,47 @@ var budget_commit_stats: Dictionary = {}
 var _position_cache_stats: Dictionary = {}
 var _budget_started_usec := 0
 
+func flush_citizen(resident:Dictionary)->void:
+	var motion:RefCounted=resident.get("offscreen_motion")
+	if motion==null:return
+	var point:Vector3=motion.point();point.y=state.street_height(Vector2(point.x,point.z))+.10
+	resident.node.position=point;resident.node.rotation.y=motion.yaw
+	resident.node.get_child(0).visible=true
+	resident.erase("offscreen_motion")
+	citizen_lod_stats.publications+=1
+
+func flush_citizens()->void:
+	for resident:Dictionary in residents:flush_citizen(resident)
+
+func citizen_position(resident:Dictionary)->Vector3:
+	var motion:RefCounted=resident.get("offscreen_motion")
+	return motion.point() if motion!=null else resident.node.position
+
+func _update_citizen_lod(delta:float)->void:
+	if _visual_lod_cursor==0:_lod_scalar_count=0;_lod_visible_count=0
+	var end:=mini(residents.size(),_visual_lod_cursor+16)
+	for index in range(_visual_lod_cursor,end):
+		var resident:Dictionary=residents[index]
+		var point:=citizen_position(resident)
+		var visible:=view_camera==null or view_camera.is_position_in_frustum(point+Vector3.UP*.35)
+		var ticket:Dictionary=tram.tickets.get(str(resident.home_id),{})
+		var scalar:bool=not visible and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and ticket.get("state","")!="onboard"
+		if scalar:
+			if not resident.has("offscreen_motion"):resident.offscreen_motion=CitizenMotion.new(point,resident.node.rotation.y)
+			resident.node.get_child(0).visible=false;_lod_scalar_count+=1
+		else:
+			flush_citizen(resident);_lod_visible_count+=1
+	_visual_lod_cursor=end
+	if end>=residents.size():
+		_visual_lod_cursor=0;citizen_lod_stats.scalar=_lod_scalar_count;citizen_lod_stats.visible=_lod_visible_count
+
 func set_budget_hold(held: bool) -> void:
 	_budget_hold = held
 	if not held and not budget_sync_pending() and _budget_delta > 0.0:
 		_process(0.0)
 
 func begin_budget_sync() -> bool:
+	flush_citizens()
 	budget_prepare_ms=0.0
 	budget_commit_ms=0.0
 	var signature := _signature()
@@ -107,7 +158,7 @@ func begin_budget_sync() -> bool:
 	var protection_seed := TerrainProtection.new()
 	protection_seed.copy_cache_from(state._terrain_protection)
 	_budget_request = {"generation":_budget_generation,"revision":state.revision,"signature":signature,
-		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed},
+		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"districts":state.districts.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed},
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_started_usec = Time.get_ticks_usec()
 	if _budget_thread == null: _start_budget_worker()
@@ -197,6 +248,7 @@ func setup(city: RefCounted) -> void:
 	cancel_budget_sync()
 	var fresh := state != city
 	if state != city:
+		if tram!=null:tram.clear()
 		if bakery != null: bakery.clear()
 		if workshop != null: workshop.clear()
 		if cafe != null: cafe.clear()
@@ -210,6 +262,8 @@ func setup(city: RefCounted) -> void:
 		_wake_house_ids.clear()
 	state = city
 	if fresh:
+		_quality_inputs=null;_quality_cursor=-1
+		tram=Tram.new(self)
 		travel = Travel.new()
 		bakery = Bakery.new(self)
 		workshop = Workshop.new(self)
@@ -241,6 +295,7 @@ func _process(delta: float) -> void:
 	_budget_catching_up = false
 
 func _tick_life(delta: float) -> void:
+	var sampled:=Time.get_ticks_usec() if profile_tick else 0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if str(_concert.get("phase", "idle")) == "playing":
 		var until_completion := CONCERT_DURATION - float(_concert.elapsed)
@@ -250,15 +305,46 @@ func _tick_life(delta: float) -> void:
 			_tick_life(until_completion)
 			_tick_life(delta - until_completion)
 			return
+	_quality_timer-=delta
+	if _quality_timer<=0.0:
+		_quality_timer=.5
+		var inputs:=hash([state.revision,state.Quality.data(state)])
+		if inputs!=_quality_inputs:_quality_inputs=inputs;_quality_cursor=0
+	if _quality_cursor>=0:
+		_refresh_quality(_quality_cursor,16);_quality_cursor+=16
+		if _quality_cursor>=state.houses.size():_quality_cursor=-1
+	if profile_tick:tick_profile.quality=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
+	tram.tick(delta)
 	bakery.tick(delta)
 	workshop.tick(delta)
 	state.advance_resonance_afterglow(delta)
 	state.advance_matinee_rest(delta)
 	time += delta
+	if profile_tick:tick_profile.production=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
+	_update_citizen_lod(delta)
+	var has_trams:bool=not tram.cars.is_empty()
+	var walk_step:=delta*.83*float(state.signature_bonuses().walking)
 	var already_playing := str(_concert.get("phase", "idle")) == "playing"
 	if str(_concert.get("phase", "idle")) == "gathering": _refresh_resonance_membership()
+	if profile_tick:tick_profile.lod=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	for resident: Dictionary in residents:
 		if resident.has("cafe_visit"): continue
+		var motion:RefCounted=resident.get("offscreen_motion")
+		# A legal hidden leg needs only a scalar increment. At leg boundaries
+		# the normal route/state machine below still owns every transition.
+		if motion!=null and not has_trams and motion.leg==int(resident.index) and motion.progress+walk_step<motion.length:
+			var observe:bool=motion.watch_travel or (resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering")
+			var previous:Vector3=motion.point() if observe else Vector3.ZERO
+			motion.progress+=walk_step
+			if observe:
+				var point:Vector3=motion.point()
+				record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+				if resident.has("daily_snapshot"):_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+			continue
+		if has_trams:
+			if tram.tickets.get(str(resident.home_id),{}).get("state","") not in ["declined","completed"]:flush_citizen(resident)
+			if tram.intercept(resident,delta):continue
+			motion=resident.get("offscreen_motion")
 		if resident.paused: continue
 		if resident.has("daily_snapshot") and str(resident.dwell_id) == str(_concert.get("venue_id", "")):
 			continue
@@ -287,16 +373,25 @@ func _tick_life(delta: float) -> void:
 		if index >= route.size():
 			_arrive(resident)
 			continue
+		if motion!=null:
+			var old_leg:int=motion.leg
+			var previous:Vector3=motion.point()
+			resident.index=motion.advance(route,index,walk_step)
+			if old_leg!=motion.leg:motion.watch_travel=travel.has_sites_between(Vector2(previous.x,previous.z),Vector2(motion.target.x,motion.target.z))
+			var point:Vector3=motion.point()
+			record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+			if resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering":_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+			continue
 		var node: Node3D = resident.node
 		var previous_position := Vector2(node.position.x, node.position.z)
 		var target: Vector3 = route[index]
 		var remaining := node.position.distance_to(target)
-		if remaining < delta * 0.83:
+		if remaining < walk_step:
 			node.position = target
 			resident.index = index + 1
 		else:
 			var direction := (target - node.position).normalized()
-			node.position += direction * delta * 0.83
+			node.position += direction * walk_step
 			node.rotation.y = atan2(direction.x, direction.z)
 		node.position.y = state.street_height(Vector2(node.position.x,node.position.z))+0.10
 		record_travel("resident/"+str(resident.home_id),previous_position,Vector2(node.position.x,node.position.z))
@@ -304,6 +399,7 @@ func _tick_life(delta: float) -> void:
 			_wake_passed_houses(previous_position, Vector2(node.position.x, node.position.z))
 		var body: Node3D = node.get_child(0)
 		body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
+	if profile_tick:tick_profile.citizens=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	cafe.tick(delta)
 	if already_playing and str(_concert.get("phase", "idle")) == "playing":
 		var until_finish := CONCERT_DURATION - float(_concert.elapsed)
@@ -316,9 +412,10 @@ func _tick_life(delta: float) -> void:
 	# A newly started PCM performance belongs to the current real boundary.
 	# Old held time must never be spent inside that new twenty-four seconds.
 	if not _budget_catching_up: matinee.tick(delta)
+	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _signature() -> Array:
-	var result: Array = []
+	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state)]
 	# Only finite-support edits which can change walking or an activity need
 	# a new network. These are analytic AABBs: never prepare the height field
 	# on the main thread merely to decide whether preparation is necessary.
@@ -341,7 +438,7 @@ func _signature() -> Array:
 			first=false
 		if not first:
 			var role := str(house.get("role","residential"))
-			var reach := 10.5 if role=="garden_cafe" else (8.0 if role=="venue" else 3.5)
+			var reach := 10.5 if role=="garden_cafe" else (8.0 if role in ["venue","symphony_hall"] else 3.5)
 			regions.append(bounds.grow(reach))
 	# Published courtyards and tea approaches may lie inside a wide room ring.
 	for court: Dictionary in state._courtyard_plans_cache: regions.append(Rect2(court.bounds).grow(1.7))
@@ -373,7 +470,7 @@ func _signature() -> Array:
 		if affects.call(stroke,float(stroke.radius)+0.5): terrain.append(stroke.duplicate(true))
 	result.append(terrain)
 	for road: Dictionary in state.roads:
-		result.append([road.points.duplicate(true), float(road.width),str(road.get("style","path"))])
+		result.append([road.points.duplicate(true), float(road.width),str(road.get("style","path")),road.get("roundabouts",[]).duplicate(true)])
 	# Water geometry changes bridge elevations even when roads and entrances
 	# are untouched. Names, IDs and vegetation never invalidate a journey.
 	for water: Dictionary in state.waters:
@@ -390,9 +487,11 @@ func _signature() -> Array:
 	return result
 
 func _sync() -> void:
+	flush_citizens()
 	cancel_budget_sync()
 	last_revision = state.revision
 	_read_progress()
+	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:_end_concert(false)
 	var signature := _signature()
 	if signature == _network_signature: return
 	_network_signature = signature
@@ -400,7 +499,9 @@ func _sync() -> void:
 	_sync_people()
 
 func _sync_people() -> void:
+	_visual_lod_cursor=0
 	var started := Time.get_ticks_usec()
+	tram.sync()
 	travel.sync(state)
 	var travel_sync_ms := float(Time.get_ticks_usec()-started)/1000.0
 	started=Time.get_ticks_usec()
@@ -415,13 +516,13 @@ func _sync_people() -> void:
 	var concert_invalid := false
 	for house: Dictionary in state.houses:
 		var role := str(house.get("role", "residential"))
-		_roles[str(house.id)] = role
+		_roles[str(house.id)] = "venue" if role=="symphony_hall" else role
 		if role == "residential":
 			current_population += 2
 			homes.append(str(house.id))
 		elif connected_houses.has(house.id):
 			if role == "bakery": shops.append(str(house.id))
-			elif role == "venue": venues.append(str(house.id))
+			elif role in ["venue","symphony_hall"]: venues.append(str(house.id))
 	var roles_scan_ms := float(Time.get_ticks_usec()-started)/1000.0
 	var stops_pair_routes_ms := 0.0
 	var node_height_ms := 0.0
@@ -479,6 +580,7 @@ func _sync_people() -> void:
 	cafe.sync()
 	budget_commit_stats.cafe_ms = (Time.get_ticks_usec()-started)/1000.0
 	started = Time.get_ticks_usec()
+	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:concert_invalid=true
 	if not _concert.is_empty() and (concert_invalid or str(_roles.get(str(_concert.venue_id), "")) != "venue"):
 		_end_concert(false)
 	elif not _relay.is_empty() and not ConcertRelay.remaining_reachable(self,_relay):
@@ -491,6 +593,14 @@ func _sync_people() -> void:
 	started = Time.get_ticks_usec()
 	workshop.sync()
 	budget_commit_stats.workshop_ms = (Time.get_ticks_usec()-started)/1000.0
+
+func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
+	var workplaces := {}
+	for worker: Dictionary in bakery.workers: workplaces[str(worker.bakery_id)]=str(worker.home_id)
+	for worker: Dictionary in workshop.workers: workplaces[str(worker.workshop_id)]=str(worker.home_id)
+	var changes: Array[Dictionary]=state.refresh_quality(connected_houses,workplaces,first,count)
+	if not changes.is_empty() and quality_callback.is_valid(): quality_callback.call(changes)
+	return changes
 
 func bakery_status(id: String) -> Dictionary:
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
@@ -522,6 +632,7 @@ func _append_reachable(stops: Array[String], home: String, candidates: Array[Str
 			return
 
 func _pause_at_home(resident: Dictionary, place_at_door: bool=false) -> void:
+	flush_citizen(resident)
 	resident.paused = true
 	resident.wait = 0.0
 	resident.dwell_id = ""
@@ -611,6 +722,7 @@ func _attachment_crosses_wall(a: Vector2,b: Vector2) -> bool:
 	return _network._attachment_crosses_wall(a,b)
 
 func _arrive(resident: Dictionary) -> void:
+	flush_citizen(resident)
 	var reached := str(resident.destination_id)
 	if not connected_houses.has(reached):
 		_pause_at_home(resident)
@@ -665,6 +777,7 @@ func start_relay(venue_id: String) -> Dictionary:
 	return {"ok":true,"message":"庆典从这里出发，沿小路在 %d 座演奏庭依次奏响。" % venues.size()}
 
 func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
+	flush_citizens()
 	if _budget_hold or budget_sync_pending(): return {"ok":false,"message":"街道正在接合，完成后再邀请。"}
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if not _concert.is_empty(): return {"ok":false,"message":"街坊正在赴约，这场结束后再邀请。"}
@@ -674,6 +787,10 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 	var routes: Array = []
 	for resident: Dictionary in residents:
 		if resident.paused or (automatic and resident.has("cafe_visit")): continue
+		if state.concert_radius(venue_id)>22.0:
+			var house: Dictionary=state.houses[state._house_index(venue_id)]
+			var home: Dictionary=state.houses[state._house_index(str(resident.home_id))]
+			if Vector2(float(home.origin[0]),float(home.origin[1])).distance_to(Vector2(float(house.origin[0]),float(house.origin[1])))>state.concert_radius(venue_id):continue
 		var route := _route_from_position(resident.node.position, str(connected_houses[venue_id]))
 		if route.is_empty(): continue
 		candidates.append(resident)
@@ -703,6 +820,17 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 	_refresh_resonance_membership()
 	if automatic and concert_callback.is_valid(): concert_callback.call("invited", venue_id)
 	return {"ok":true,"message":"已邀请 %d 位街坊沿路来听演出。" % participants.size()}
+
+func invite_grand_festival(venue_id:String)->Dictionary:
+	if state.revision!=last_revision and not budget_sync_pending():_sync()
+	var index:int=state._house_index(venue_id)
+	if index<0 or state.houses[index].role!="symphony_hall" or not connected_houses.has(venue_id):return {"ok":false,"message":"先为交响音乐厅接上街道。"}
+	var cast:Dictionary=GrandFestival.cast(self,venue_id)
+	if cast.size()!=4:return {"ok":false,"message":"沿街道连起田园、文艺复兴、钟表与现代四种风貌，便能全城合奏。"}
+	var result:=invite_concert(venue_id)
+	if not result.ok:return result
+	_concert.grand_festival=true;_concert.era_cast=cast
+	return {"ok":true,"message":"四时代交响盛典 · %d位街坊沿路赴约，到齐后接力24秒。"%_concert.participants.size()}
 
 ## Whole-neighborhood membership is derived from actual positions/districts,
 ## independent of which residents can reach the invitation. Rebuild only when
@@ -735,9 +863,9 @@ func _refresh_resonance_membership() -> void:
 		_resonance_bins[bucket].append({"id":id,"at":at})
 		if not has_venue: continue
 		var distance := at.distance_to(venue_origin)
-		if id == venue_id or _concert.get("participants", []).has(id) or distance <= 22.0 or (not venue_district.is_empty() and str(state.district_at(at).get("id", "")) == venue_district):
+		if id == venue_id or _concert.get("participants", []).has(id) or distance <= state.concert_radius(venue_id) or (not venue_district.is_empty() and str(state.district_at(at).get("id", "")) == venue_district):
 			_chorus_house_ids.append(id)
-		elif distance <= 32.0:
+		elif distance <= state.concert_radius(venue_id)+10.0:
 			_ambient_house_ids.append(id)
 	for id in _wake_house_ids.keys():
 		if not existing.has(id): _wake_house_ids.erase(id)
@@ -763,6 +891,7 @@ func concert_view() -> Dictionary:
 	result.afterglow = state.resonance_afterglow.duplicate()
 	result.afterglow_house_ids = state.resonance_afterglow.keys()
 	result.festival_ready_ids = state.festival_ready_venues()
+	if _concert.get("grand_festival",false):result.grand_festival=true;result.era_cast=_concert.era_cast.duplicate()
 	return result
 
 func matinee_status(venue_id: String) -> Dictionary:
@@ -797,6 +926,7 @@ func _resume_concert_participant(resident: Dictionary) -> bool:
 	return true
 
 func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
+	flush_citizens()
 	if _concert.is_empty(): return
 	var venue := str(_concert.venue_id)
 	if completed and _concert.get("source", "manual") == "auto":
@@ -805,6 +935,13 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 	if completed:
 		_refresh_resonance_membership()
 		var duration: float = state.record_concert_completion(venue)
+		var districts := {}
+		for id: String in _concert.participants:
+			var district: Dictionary=state.district_for_house(id)
+			if not district.is_empty(): districts[str(district.id)]=true
+		var venue_district: Dictionary=state.district_for_house(venue)
+		if not venue_district.is_empty(): districts[str(venue_district.id)]=true
+		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1)
 		state.grant_resonance_afterglow(_chorus_house_ids, maxf(0.0, duration - completion_remainder))
 	var next_venue := ""
 	if completed and not _relay.is_empty() and ConcertRelay.remaining_reachable(self,_relay):
@@ -852,6 +989,7 @@ func _resident_checkpoint(resident: Dictionary) -> Dictionary:
 	return result
 
 func checkpoint() -> Dictionary:
+	flush_citizens()
 	# Manual save may follow an edit before the next process frame.
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	var people: Array[Dictionary] = []
@@ -865,6 +1003,7 @@ func checkpoint() -> Dictionary:
 	return result
 
 func restore_checkpoint(data: Dictionary) -> void:
+	flush_citizens()
 	_relay.clear()
 	travel.clear_observations()
 	if state.revision != last_revision and not budget_sync_pending(): _sync()

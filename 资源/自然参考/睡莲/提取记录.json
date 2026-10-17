@@ -1,0 +1,193 @@
+{
+  "method": "original mesh byte copies; named archive DDS/BC7 decode, no resize or gamma conversion",
+  "texture_index": "C:\\Steam\\steamapps\\common\\Tiny Glade\\compiled-assets\\texture-package\\79347cbf031c3702d82f293b7a8637c6.bin",
+  "texture_index_sha256": "6a54f7d5e8f8111abd6e6c579a49cd25ece6766a7dfa60dfe38c2d4c316c02d0",
+  "meshes": [
+    {
+      "source": "C:\\Steam\\steamapps\\common\\Tiny Glade\\assets\\meshes\\lilypad.json",
+      "source_sha256": "9481c7db56abf6b0ee7b711fd570644734df96dc7b67b76add40372327319451",
+      "bytes": 2400,
+      "vertices": 12,
+      "triangles": 16,
+      "nondegenerate_triangles": 10,
+      "double_sided": false,
+      "attributes": {
+        "Vertex_Position": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "ddeeafa78aea5a5f3176cf73d050b40e5f4b573036f79c1c7b7910ee86e754b0"
+        },
+        "Vertex_Normal": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "4c36d8ba03877d0193e8b3d86b106ceda28c81d8ff14827ffaad1d1059e3e307"
+        },
+        "Vertex_Color": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "33e768feb4830c5fd4a482a8e1daeda53ac4aa7a2453ba4592c4252b6fe63a3d"
+        },
+        "Vertex_UV": {
+          "type": [
+            "float",
+            2
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "fa218314cbb9e7c8c83cdd479124af94e67518a9914fee5f3e5678dfd9885fcd"
+        },
+        "stem": {
+          "type": [
+            "int",
+            1
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "7aa5c1c5c3c2cfe80fee1813b7630f46246156459d79d56e9e9c2648fc1c7db9"
+        },
+        "wind_bend": {
+          "type": [
+            "float",
+            1
+          ],
+          "elements": 12,
+          "float32_or_int32_sha256": "17b0761f87b081d5cf10757ccc89f12be355c70e2e29df288b65b30710dcbcd1"
+        },
+        "indices": {
+          "type": [
+            "int",
+            1
+          ],
+          "elements": 48,
+          "float32_or_int32_sha256": "c2300d59d04a4be9301122525947d7ab446d4e6f749aef968306865086ff0e7d"
+        }
+      },
+      "bounds": [
+        [
+          -0.33000001311302185,
+          0.0,
+          -0.33000001311302185
+        ],
+        [
+          0.33000001311302185,
+          0.0,
+          0.33000001311302185
+        ]
+      ],
+      "xz_radius": 0.3300000249379272,
+      "transform": "identity; original local coordinates and every source byte retained",
+      "output": "叶.json",
+      "output_sha256": "9481c7db56abf6b0ee7b711fd570644734df96dc7b67b76add40372327319451",
+      "byte_identical": true
+    },
+    {
+      "source": "C:\\Steam\\steamapps\\common\\Tiny Glade\\assets\\meshes\\lilypad_flower.json",
+      "source_sha256": "f2c498f2e974e3a30d62f3591d41424c310ad18b27fc134a2568d60b99403346",
+      "bytes": 14351,
+      "vertices": 80,
+      "triangles": 60,
+      "nondegenerate_triangles": 40,
+      "double_sided": true,
+      "attributes": {
+        "Vertex_Position": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 80,
+          "float32_or_int32_sha256": "94c2676f116c0d4206362386c34b691eb364fe332e7b0b818aadf437d91b7978"
+        },
+        "Vertex_Normal": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 80,
+          "float32_or_int32_sha256": "b894ec37f23ae6c58520553d8c072e87281215e9be7a621c0ac2f9cfe99bf1ed"
+        },
+        "Vertex_Color": {
+          "type": [
+            "float",
+            3
+          ],
+          "elements": 80,
+          "float32_or_int32_sha256": "5f7cf454d215cd5f845398207b6e96186f7da3133542aad6285494c2b0f1af7c"
+        },
+        "indices": {
+          "type": [
+            "int",
+            1
+          ],
+          "elements": 180,
+          "float32_or_int32_sha256": "e5450ae664a2d247eca046fcbb0f79873d4505fe119897201c7b78fa1b1e361b"
+        }
+      },
+      "bounds": [
+        [
+          -0.28438881039619446,
+          -0.0017657076241448522,
+          -0.25333064794540405
+        ],
+        [
+          0.2681441903114319,
+          0.22638309001922607,
+          0.28664910793304443
+        ]
+      ],
+      "xz_radius": 0.2866491239844407,
+      "transform": "identity; original local coordinates and every source byte retained",
+      "output": "花.json",
+      "output_sha256": "f2c498f2e974e3a30d62f3591d41424c310ad18b27fc134a2568d60b99403346",
+      "byte_identical": true
+    }
+  ],
+  "textures": [
+    {
+      "name": "lilypad/alpha",
+      "source": "C:\\Steam\\steamapps\\common\\Tiny Glade\\compiled-assets\\texture-package\\00d946121f42f23daf9b5e80a714f5ea.bin",
+      "source_sha256": "3b91b7dcd55293bba7341e8a6748152e10589f1e9424768472511b9fd33d6bb8",
+      "source_payload_sha256": "de7efa4fb2ffe88ecfa09fa1b3ba042016dafe5689b3973d8573ef69f800b171",
+      "vk_format": "BC7_UNORM_BLOCK",
+      "source_mips": 9,
+      "output": "叶形.png",
+      "output_sha256": "9f33c5f25a5f167ea899baa3da98a80c6954447b36dbd6467b9dccf21d5ffcc7",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "decoded_rgba_sha256": "df253d381326ab590c30ae9628b2fd04cbe6d059badc021058fb25e2940fdb8a",
+      "decoded_rgb_sha256": "d7d291c46c610d8c1cb314ceffefe08efde2ae60cf935f8ec1068083d82d3773",
+      "decoded_r_sha256": "268117cf46a2998d1984c3b358bdacf905957eeb377dc874336489f8af32a0c1",
+      "png_pixels_equal_dds_base_level": true
+    },
+    {
+      "name": "lilypad_flower",
+      "source": "C:\\Steam\\steamapps\\common\\Tiny Glade\\compiled-assets\\texture-package\\55488b3ce1e2482773f919840766742e.bin",
+      "source_sha256": "2daaff76a513e46e803744e72e4f200329beb4a014dbf10c04f8009836d6d717",
+      "source_payload_sha256": "00f504aed773d43891a7542b389fdece78b882f020d2f655da558bd6b00ca838",
+      "vk_format": "BC7_SRGB_BLOCK",
+      "source_mips": 9,
+      "output": "花色.png",
+      "output_sha256": "bcd1e964c96d8ecf062607467130ec04fb38b272947cfb9bc050c5a15b24605b",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "decoded_rgba_sha256": "61fa7fad7da9bc06fbd6122c6a5b8b935b40995d41185af52bd6c6273a6fc7eb",
+      "decoded_rgb_sha256": "b64d96e4205eeb8a616869c00e106136c7fd34e62dcd84be01df33fda8e4116d",
+      "decoded_r_sha256": "09111316ccb621ba1029739a270063e4bd9321e3bffac84ba5e40b4cfb08c9c0",
+      "png_pixels_equal_dds_base_level": true
+    }
+  ],
+  "source_unchanged": true,
+  "godot_run": false
+}

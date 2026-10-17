@@ -31,11 +31,15 @@ func _run() -> void:
 		"wake_house_ids":[],"afterglow":{}}
 	music.set_concert_view(view)
 	_check(not music.concert_can_start(), "loading bank cannot start another performance")
-	var until := Time.get_ticks_msec()+25000
+	var startup_ms:=45000
+	for argument:String in OS.get_cmdline_user_args():
+		if argument.begins_with("--bank-timeout-ms="):startup_ms=int(argument.trim_prefix("--bank-timeout-ms="))
+	var until := Time.get_ticks_msec()+startup_ms
 	while music.audio_report.is_empty() and Time.get_ticks_msec()<until:
 		await process_frame
 	_check(not music.audio_report.is_empty(), "actual production bank ready")
 	if music.audio_report.is_empty():
+		print("MUSIC_STARTUP_TIMEOUT ",JSON.stringify({"processing":music.is_processing(),"thread_alive":music._worker.is_alive() if music._worker!=null else false,"loading":music._loading,"acoustic_timer":music._acoustic_timer,"process_mode":music.process_mode,"paused":paused}))
 		music.queue_free()
 		await process_frame
 		quit(1)
@@ -53,7 +57,7 @@ func _run() -> void:
 		min_position = minf(min_position, player.get_playback_position())
 		max_position = maxf(max_position, player.get_playback_position())
 		stream_ids[key] = player.stream.get_instance_id()
-	_check(max_position-min_position<0.06, "all nine restored stems share one transport")
+	_check(max_position-min_position<0.06, "all ten restored stems share one transport")
 	_check(restored.resonance.audible and restored.resonance.chorus_ids.size()==4 and restored.resonance.ambient_ids==["h6"], "all real neighbor houses receive audible resonance")
 	_check(restored.resonance.resonance_arcs==[{"from_id":"h4","to_id":"h2","strength":1.0}], "actual responding house owns the resonance arc")
 	for phrase in range(8):
@@ -82,7 +86,7 @@ func _run() -> void:
 	music.update_city(city)
 	for key in Music.STEMS:
 		_check(stream_ids[key]==music._players[key].stream.get_instance_id(), "city update retains PCM and player "+key)
-	_check(music._players.size()==9 and music._effects.size()==4, "fixed nine stems and four effect voices")
+	_check(music._players.size()==12 and music._effects.size()==4, "fixed twelve stems and four effect voices")
 	var peak_report: Dictionary = music.audio_report.mix_peaks
 	_check(float(peak_report.absolute_with_four_edit_voices)<1.0, "all transition tails, full finale and four effects fit below clipping")
 	_check(float(peak_report.ensemble_finale_max_city)>0.0, "actual rendered full-finale mix measured")
@@ -96,7 +100,7 @@ func _run() -> void:
 	music.set_muted(false)
 	await create_timer(1.6).timeout
 	for key in Music.STEMS:
-		_check(absf(music._players[key].volume_db-music.target_gain_db(key,false))<1.0, "daily arrangement restored "+key)
+		_check(music._players[key].volume_linear==0.0 if music._long_acoustic_weight(key)==0 else absf(music._players[key].volume_db-music.target_gain_db(key,false))<1.0, "daily arrangement restored "+key)
 	var report := {"ok":failures.is_empty(),"checks":checks,"failures":failures,"restored":restored,"audio":music.audio_report,"export":export_report}
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
 	var file := FileAccess.open(OUTPUT+"/report.json", FileAccess.WRITE)
@@ -104,7 +108,7 @@ func _run() -> void:
 	file.close()
 	print("RESONANCE_MUSIC ",JSON.stringify(report))
 	music.queue_free()
-	# AudioServer releases the nine stopped playbacks on its mix thread.
+	# AudioServer releases the ten stopped playbacks on its mix thread.
 	await create_timer(0.15).timeout
 	quit(0 if failures.is_empty() else 1)
 

@@ -112,7 +112,7 @@ func _live()->void:
 		await process_frame
 		var now:=Time.get_ticks_usec();wall.append(float(now-previous)/1000);previous=now;draws.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	wall.sort();draws.sort();facts.performance={"frames":120,"p95_ms":wall[113],"max_ms":wall[-1],"draw_median":draws[60]}
-	_check(_audio()==audio and demo.music.get_child_count()==13 and demo.ambience.players.size()==4 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"manual links preserve thirteen music Players four ambient voices transport and personal city bytes")
+	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.ambience.players.size()==2 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"manual links preserve fixed music Players two ambient voices transport and personal city bytes")
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false);demo.ambience.set_process(false)
 	for p:AudioStreamPlayer in demo.music._players.values():p.stop()
 	for p:AudioStreamPlayer in demo.music._effects:p.stop()

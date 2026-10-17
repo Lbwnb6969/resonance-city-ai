@@ -89,6 +89,7 @@ var road_points: Array[Vector2] = []
 var road_preview: Array[Vector2] = []
 var road_straight := false
 var road_style := "path"
+var road_roundabout := false
 var road_draft_straight := false
 var road_locked_segments := 0
 var road_last_pointer := Vector2.ZERO
@@ -117,6 +118,9 @@ var water_kind := "pond"
 var water_width := 3.2
 var district_panel: PanelContainer
 var district_name: LineEdit
+var signatures: RefCounted
+var district_era_picker: OptionButton
+var house_era_picker: OptionButton
 var district_style_picker: OptionButton
 var district_adaptive_button: CheckButton
 var district_reply_button: CheckButton
@@ -242,7 +246,9 @@ func _ready() -> void:
 	add_child(ambience)
 	ambience.setup(state)
 	ambience.set_visibility_source(func()->Dictionary:return town.vegetation_visibility)
-	ambience.set_view(Vector2(focus.x,focus.z),zoom,evening)
+	ambience.set_frustum_source(_acoustic_point_in_view)
+	ambience.set_view_samples_source(_ambient_visible_samples)
+	ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
 	_setup_life()
 	music.set_concert_view(life.concert_view())
 	_setup_ui()
@@ -252,6 +258,8 @@ func _ready() -> void:
 	gallery.setup(self,ui_layer.get_child(0),collection_directory)
 	journal=Journal.new()
 	journal.setup(self,ui_layer.get_child(0))
+	signatures=preload("res://scripts/ui/city_creation_signature_panel.gd").new()
+	signatures.setup(self,ui_layer.get_child(0))
 	ledger=Ledger.new()
 	ledger.setup(self,ui_layer.get_child(0))
 	_refresh_ui()
@@ -331,13 +339,18 @@ func _setup_life() -> void:
 	life.name = "StreetLife"
 	add_child(life)
 	life.setup(state)
+	life.view_camera=camera
 	life.arrival_callback = func(kind: String) -> void: music.play_edit("arrival" if kind=="concert" else "terrace")
 	life.concert_callback = _on_concert_event
 	life.production_callback = func(house_id:String,_quantity:int)->void: music.queue_bakery_cue("baked",house_id)
 	life.purchase_callback = func(shop_id:String,home_id:String)->void: music.queue_bakery_cue("purchased",shop_id,home_id)
 	life.craft_callback = _on_craft_event
+	life.quality_callback = _on_quality_changed
 	life.cafe_callback = _on_cafe_event
 	life.travel_callback = music.queue_travel
+	music.clear_tram_cues()
+	life.tram_callback=music.queue_tram_chime
+	music.tram_source_gate=life.tram.source_valid
 	music.travel_source_gate = life.travel_source_valid
 	life.concert_start_gate = music.concert_can_start
 
@@ -434,6 +447,7 @@ func _setup_ui() -> void:
 	place_panel.add_theme_stylebox_override("panel", UI.panel(16))
 	root.add_child(place_panel)
 	place_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	place_panel.grow_horizontal=Control.GROW_DIRECTION_BEGIN
 	place_panel.offset_left = -310
 	place_panel.offset_right = -24
 	place_panel.offset_top = 84
@@ -458,6 +472,8 @@ func _setup_ui() -> void:
 		place_name.release_focus())
 	place_column.add_child(place_name)
 	place_description = _label("", 14)
+	place_description.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	place_description.custom_minimum_size.x=250
 	place_column.add_child(place_description)
 	household_info = _label("",14)
 	household_info.name = "HouseholdHarmony"
@@ -473,11 +489,18 @@ func _setup_ui() -> void:
 	house_style_picker.item_selected.connect(func(index: int)->void:
 		_after_edit(state.set_house_style(selected_house,State.HOUSE_STYLES[index]),"room"))
 	place_column.add_child(house_style_picker)
+	house_era_picker=OptionButton.new(); house_era_picker.name="HouseEra"
+	house_era_picker.fit_to_longest_item=false;house_era_picker.clip_text=true
+	house_era_picker.add_item("时代风貌 · 跟随街坊")
+	for era_name: String in State.Eras.NAMES: house_era_picker.add_item(era_name)
+	house_era_picker.item_selected.connect(func(index: int)->void:
+		_after_edit(state.set_house_era(selected_house,"district" if index==0 else State.Eras.IDS[index-1]),"room"))
+	place_column.add_child(house_era_picker)
 	var roles := GridContainer.new()
 	roles.columns = 2
 	place_column.add_child(roles)
-	for role: String in ["residential", "bakery", "venue", "workshop", "garden_cafe"]:
-		var button := _button({"residential":"居所", "bakery":"面包坊", "venue":"演奏庭", "workshop":"制琴坊", "garden_cafe":"花圃茶座"}[role], func()->void: _after_edit(state.set_house_role(selected_house,role),"room"))
+	for role: String in State.HOUSE_ROLES:
+		var button := _button({"residential":"居所", "bakery":"面包坊", "venue":"演奏庭", "workshop":"制琴坊", "garden_cafe":"花圃茶座", "atelier":"人文书院", "clockmaker":"钟表工坊", "symphony_hall":"交响音乐厅"}[role], func()->void: _after_edit(state.set_house_role(selected_house,role),"room"))
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		roles.add_child(button)
 		role_buttons[role] = button
@@ -597,13 +620,18 @@ func _setup_ui() -> void:
 		_cancel_draft()
 		road_straight = index == 1)
 	road_column.add_child(road_mode)
-	var promenade := CheckButton.new()
-	promenade.name = "RoadPromenade"
-	promenade.text = "石板宽街"
-	promenade.toggled.connect(func(checked:bool)->void:
+	var styles := OptionButton.new()
+	styles.name="RoadStyle"
+	for label: String in ["乡间小径 · 重描铺成灯街","石板灯街 · 1.75m","林荫大道 · 2.0m","叮当轨街 · 2.0m"]: styles.add_item(label)
+	styles.item_selected.connect(func(index: int)->void:
 		_cancel_draft()
-		road_style = "promenade" if checked else "path")
-	road_column.add_child(promenade)
+		road_style=["path","promenade","avenue","tram"][index])
+	road_column.add_child(styles)
+	var plaza:=CheckButton.new()
+	plaza.name="RoadRoundabout";plaza.text="◎ 路口环岛广场"
+	plaza.toggled.connect(func(pressed: bool)->void:
+		_cancel_draft();road_roundabout=pressed)
+	road_column.add_child(plaza)
 	road_status = _label("拖动画路，松开铺好。R 切换直拉。\n沿已有小路再描一笔，铺成石板灯街。\n直拉时空格 / 右键锁段；Alt 临时直拉。\nShift+点击道路擦除。",14)
 	road_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	road_status.custom_minimum_size.x = 260
@@ -715,6 +743,7 @@ func _setup_district_panel(root: Control) -> void:
 	district_panel.add_theme_stylebox_override("panel", UI.panel(16))
 	root.add_child(district_panel)
 	district_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	district_panel.grow_horizontal=Control.GROW_DIRECTION_BEGIN
 	district_panel.offset_left = -330
 	district_panel.offset_right = -24
 	district_panel.offset_top = 84
@@ -746,6 +775,12 @@ func _setup_district_panel(root: Control) -> void:
 		if not selected_district.is_empty():
 			_after_edit(state.set_district_style(selected_district, district_style), "terrace"))
 	column.add_child(district_style_picker)
+	district_era_picker=OptionButton.new(); district_era_picker.name="DistrictEra"
+	district_era_picker.fit_to_longest_item=false;district_era_picker.clip_text=true
+	for era_name: String in State.Eras.NAMES: district_era_picker.add_item(era_name)
+	district_era_picker.item_selected.connect(func(index: int)->void:
+		_after_edit(state.set_district_era(selected_district,State.Eras.IDS[index]),"room"))
+	column.add_child(district_era_picker)
 	district_adaptive_button = CheckButton.new()
 	district_adaptive_button.name = "DistrictAdaptive"
 	district_adaptive_button.text = "随用途变化配器"
@@ -861,6 +896,7 @@ func _refresh_ui() -> void:
 	_refresh_cafes()
 	_refresh_concert()
 	if journal!=null: journal.refresh()
+	if signatures!=null:signatures.refresh()
 
 func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
@@ -896,8 +932,39 @@ func _update_camera() -> void:
 	else:
 		camera.position = focus + direction * maxf(42.0,zoom*1.1)
 		camera.look_at(focus)
-	if music != null: music.set_listener_frame(Vector2(focus.x,focus.z),Vector2(camera.global_basis.x.x,camera.global_basis.x.z))
-	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,evening)
+	if music != null: music.set_listener_frame(Vector2(focus.x,focus.z),Vector2(camera.global_basis.x.x,camera.global_basis.x.z),zoom,_acoustic_in_view,_acoustic_point_in_view)
+	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
+
+func _acoustic_in_view(house_id: String)->bool:
+	var row: Dictionary=music._house_music.get(house_id,{})
+	if row.is_empty(): return false
+	var at: Vector2=row.position
+	return camera.is_position_in_frustum(Vector3(at.x,float(row.get("base_y",0.0))+.85,at.y))
+
+func _acoustic_point_in_view(at: Vector2)->bool:
+	# Sound follows the published surface; a held edit must not synchronously
+	# prepare a second height field just to test a transient crossing cue.
+	var y: float=state._ground_terrain.height_at(at)
+	return camera.is_position_in_frustum(Vector3(at.x,y+.7,at.y))
+
+func _ambient_visible_samples()->Array[Vector2]:
+	# Equal screen-area strata projected onto the water plane cover the real
+	# aspect ratio, orbit angle and first-person camera as well as full-city zoom.
+	var result: Array[Vector2]=[]
+	var size_value := get_viewport().get_visible_rect().size
+	for y in range(9):
+		for x in range(9):
+			var jitter := Vector2(sin(x*17.3+y*31.7),sin(x*29.7+y*11.3))*.25
+			var screen := (Vector2(x,y)+Vector2.ONE*.5+jitter)/9.0*size_value
+			var origin := camera.project_ray_origin(screen)
+			var direction := camera.project_ray_normal(screen)
+			if absf(direction.y)<.00001: continue
+			var distance := (State.Terrain.WATER_LEVEL-origin.y)/direction.y
+			if distance<=0.0: continue
+			var point := origin+direction*distance
+			var at := Vector2(point.x,point.z)
+			if state.WORLD_RECT.has_point(at): result.append(at)
+	return result
 
 func home_camera() -> void:
 	if camera_rig.strolling: camera_rig.toggle(self)
@@ -1013,7 +1080,9 @@ func _unhandled_input(event: InputEvent) -> void:
 					_update_hover()
 					_begin_house_stroke()
 				elif tool == 2:
-					if event.shift_pressed or Input.is_key_pressed(KEY_SHIFT):
+					if road_roundabout:
+						_after_edit(state.remove_roundabout(_ground_at(pointer)) if event.shift_pressed else state.add_roundabout(_ground_at(pointer)),"road")
+					elif event.shift_pressed or Input.is_key_pressed(KEY_SHIFT):
 						var road_id: String = state.road_at(_ground_at(pointer))
 						_after_edit(state.remove_road(road_id), "erase")
 					else:
@@ -1087,8 +1156,10 @@ func _process(delta: float) -> void:
 	resonance_snapshot = music.resonance_state(concert_view)
 	resonance_snapshot["pluck"]=music.house_pluck_report()
 	ambience.set_muted(music.muted)
-	ambience.set_foreground(bool(resonance_snapshot.get("concert_active",false)) or bool(resonance_snapshot.pluck.get("audible",false)))
+	ambience.set_foreground(bool(resonance_snapshot.get("concert_active",false)) or bool(resonance_snapshot.pluck.get("audible",false)) or bool(music.tram_music_report().audible))
 	town.update_city_resonance_visuals(resonance_snapshot)
+	var grand:Dictionary=music.grand_festival_report()
+	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
 	town.update_travel_music(music.travel_music_report())
 	frame_samples.append(delta*1000.0)
 	if frame_samples.size() > 240: frame_samples.pop_front()
@@ -1102,6 +1173,7 @@ func _process(delta: float) -> void:
 		_refresh_workshops()
 		_refresh_cafes()
 		if journal!=null: journal.refresh()
+		if signatures!=null:signatures.refresh()
 		if ledger!=null: ledger.refresh()
 		_refresh_household()
 		town.refresh_ecology()
@@ -1188,6 +1260,8 @@ func _plane_at(screen: Vector2, height: float) -> Vector2:
 	return Vector2(p.x, p.z)
 
 func _update_hover() -> void:
+	if signatures!=null and not signatures.placing.is_empty():
+		signatures.hover(_ground_at(pointer).snapped(Vector2.ONE*.1));return
 	hovered = _ray_hit(pointer)
 	candidate.clear()
 	if tool == 2: return
@@ -1278,6 +1352,8 @@ func _find_cell(house_id: String, cell_id: String) -> Dictionary:
 
 func _commit_click() -> void:
 	if candidate.is_empty(): return
+	if candidate.has("signature"):
+		signatures.commit();return
 	if candidate.has("select"):
 		selected_house = str(candidate.select)
 		place_panel.visible = true
@@ -1372,8 +1448,8 @@ func _append_road_point() -> void:
 		var bridge_parts := int(town.preview.get_meta("bridge_previews",0))
 		var ready := "松开：桥面与两侧栏杆会跨过水面。" if bridge_parts>0 else ("松开：浅渠会落下%d块青石汀步。" % stepping if stepping>0 else ("松开：穿过房间，留下石拱通道。" if passages>0 else "松开：这面墙会长出门廊。" if porches>0 else "松开铺好这条路。"))
 		if bool(check.get("no_op",false)): ready=str(check.message)
-		elif bool(check.get("upgraded",false)): ready="松开：原位铺成石板宽街，夕光下亮起灯盏。"
-		elif str(check.get("style",road_style))=="promenade": ready="松开铺好石板宽街，夕光下亮起灯盏。"
+		elif bool(check.get("upgraded",false)): ready="松开："+str(check.message)
+		elif str(check.get("style",road_style)) in ["promenade","avenue","tram"]: ready="松开铺好%s。" % State.RoadUpgrade.NAMES[check.get("style",road_style)]
 		var length := 0.0
 		for index in range(1,road_preview.size()): length += road_preview[index-1].distance_to(road_preview[index])
 		var mode_hint := " · 已锁 %d 段\n空格 / 右键锁段，松开铺好。" % road_locked_segments if road_draft_straight else "\nR 切换直拉，Esc 取消。"
@@ -1548,6 +1624,9 @@ func _show_selected_district(district: Dictionary) -> void:
 func _refresh_district() -> void:
 	if district_panel == null or tool != 7: return
 	var district := _selected_district_row()
+	district_era_picker.disabled= district.is_empty()
+	for i in range(State.Eras.IDS.size()): district_era_picker.set_item_disabled(i,State.Eras.IDS[i] not in state.era_unlocks)
+	district_era_picker.select(State.Eras.IDS.find(str(district.get("era_theme","pastoral"))))
 	if district.is_empty(): selected_district = ""
 	district_name.editable = not district.is_empty()
 	if district.is_empty():
@@ -1561,7 +1640,7 @@ func _refresh_district() -> void:
 		district_adaptive = bool(district.get("adaptive", false))
 		district_adaptive_button.set_pressed_no_signal(district_adaptive)
 		var members: Array = state.district_members(selected_district)
-		var counts := {"residential":0, "bakery":0, "venue":0, "workshop":0, "garden_cafe":0}
+		var counts := {"residential":0, "bakery":0, "venue":0, "workshop":0, "garden_cafe":0, "atelier":0,"clockmaker":0,"symphony_hall":0}
 		var reachable := {"bakery":0, "venue":0, "garden_cafe":0}
 		for house: Dictionary in state.houses:
 			if str(house.id) not in members: continue
@@ -1572,6 +1651,7 @@ func _refresh_district() -> void:
 					if _district_home_has_service(str(house.id), service): reachable[service] = int(reachable[service]) + 1
 		district_description.text = "%d 房屋 · %d 居所 · %d 面包坊 · %d 演奏庭\n可达（含区外）· 面包 %d/%d · 演出 %d/%d" % [members.size(), int(counts.residential), int(counts.bakery), int(counts.venue), int(reachable.bakery), int(counts.residential), int(reachable.venue), int(counts.residential)]
 		district_description.tooltip_text = "可达服务包含街坊外的真实地点。"
+		if int(counts.symphony_hall)>0:district_description.text+="\n交响音乐厅 %d"%int(counts.symphony_hall)
 		if int(counts.workshop)>0 or int(counts.garden_cafe)>0:
 			district_description.text += "\n制琴坊 %d · 茶座 %d（可达 %d/%d）" % [int(counts.workshop),int(counts.garden_cafe),int(reachable.garden_cafe),int(counts.residential)]
 		if district_adaptive: district_description.text += "\n保留基调，随邻里用途添上伴奏。"
@@ -1600,7 +1680,7 @@ func _district_home_has_service(home_id: String, role: String) -> bool:
 	if not life.house_connected(home_id): return false
 	var start: String = str(life.connected_houses[home_id])
 	for house: Dictionary in state.houses:
-		if str(house.role) != role or not life.house_connected(str(house.id)): continue
+		if (str(house.role) != role and not (role=="venue" and house.role=="symphony_hall")) or not life.house_connected(str(house.id)): continue
 		if not life._route(start, str(life.connected_houses[house.id])).is_empty(): return true
 	return false
 
@@ -1728,6 +1808,7 @@ func _history(forward: bool) -> void:
 	_after_edit(state.redo() if forward else state.undo(), "history")
 
 func _cancel_draft() -> void:
+	if signatures!=null:signatures.cancel()
 	var cancelled_house := house_drawing
 	if terrain_brush!=null: terrain_brush.cancel()
 	house_drawing=false
@@ -1783,7 +1864,8 @@ func _toggle_light() -> void:
 	environment_rig.apply(light_phase)
 	town.set_light_phase(light_phase)
 	music.set_night(light_phase==2)
-	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,evening)
+	life.tram.set_night(light_phase==2)
+	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
 
 func _refresh_place() -> void:
 	if selected_house.is_empty() or place_name == null: return
@@ -1793,13 +1875,21 @@ func _refresh_place() -> void:
 		if not place_name.has_focus(): place_name.text = str(house.get("name", "无名小屋"))
 		if not house_style_picker.get_popup().visible: house_style_picker.select(State.HOUSE_STYLES.find(str(house.get("style","classic"))))
 		var role := str(house.get("role", "residential"))
-		place_description.text = {"residential":"一处居所，让街坊有居民。", "bakery":"面包出炉，居民循路来采购。", "venue":"一处演奏庭，招呼街坊来小聚。", "workshop":"匠人制作风铃，沿路送到邻屋。", "garden_cafe":"买过面包的街坊，在花下围坐品茶。"}[role]
+		for i in range(State.Eras.IDS.size()): house_era_picker.set_item_disabled(i+1,State.Eras.IDS[i] not in state.era_unlocks)
+		house_era_picker.select(State.Eras.IDS.find(str(house.era_theme))+1 if house.has("era_theme") else 0)
+		house_style_picker.disabled=house.has("signature")
+		house_era_picker.disabled=house.has("signature")
+		for role_key: String in role_buttons:
+			role_buttons[role_key].disabled=(house.has("signature") and role_key!=role) or (role_key=="atelier" and not state.era_unlocks.has("renaissance")) or (role_key=="clockmaker" and not state.era_unlocks.has("clockwork")) or (role_key=="symphony_hall" and not state.era_unlocks.has("modern_eco"))
+		place_description.text = {"residential":"一处居所，让街坊有居民。", "bakery":"面包出炉，居民循路来采购。", "venue":"一处演奏庭，招呼街坊来小聚。", "workshop":"匠人制作风铃，沿路送到邻屋。", "garden_cafe":"买过面包的街坊，在花下围坐品茶。", "atelier":"画师到岗创作，将挂毯与彩窗沿路送装到邻屋。", "clockmaker":"钟表匠制作八音盒和风向标，沿路送到邻屋。", "symphony_hall":"四个时代的街坊，沿路来听全城交响盛典。"}[role]
 		if str(house.get("style","classic"))=="round_tower": place_description.text+="\n独立房柱长出圆塔，向上加层就成望楼。"
+		var tier: int=state.level_tier(str(house.id))
+		place_description.text+="\n♫ 品质 %d / 5 · %s"%[tier,State.Quality.NAMES[tier-1]]
 		var improvement := int(state.improvement_level(str(house.id)))
 		if improvement>0: place_description.text += "\n♫ 匠作 %d / 3 · 邻屋送来的永久木饰" % improvement
 		place_description.text += "\n门前小路已接通。" if life.house_connected(selected_house) else "\n拉一条小路到门前，让居民能走来。"
 		_refresh_household()
-		concert_button.visible = role == "venue"
+		concert_button.visible = role in ["venue","symphony_hall"]
 		_refresh_bakeries()
 		_refresh_workshops()
 		_refresh_cafes()
@@ -1843,7 +1933,7 @@ func _refresh_workshops() -> void:
 	if _edit_pending: return
 	var statuses := {}
 	for house: Dictionary in state.houses:
-		if str(house.role)=="workshop": statuses[str(house.id)]=life.workshop_status(str(house.id))
+		if str(house.role) in ["workshop","atelier","clockmaker"]: statuses[str(house.id)]=life.workshop_status(str(house.id))
 	town.update_workshop_supply(statuses)
 	town.update_craft_progress()
 	var selected: Dictionary = statuses.get(selected_house,{})
@@ -1861,12 +1951,36 @@ func _refresh_workshops() -> void:
 			if str(target.id)==str(selected.target_id): workshop_info.text += ("\n节庆委托 · " if selected.delivery_kind=="festival" else "\n这件送给 · ")+str(target.name)
 	if float(selected.get("afterglow_remaining",0.0))>0.0: workshop_info.text += "\n♫ 共鸣余韵 · 劳作快25%"
 	workshop_info.text += "\n每处邻屋三阶木饰，点亮新的泛音。\n演出后会接到节庆委托，布置下一场更久的余韵。"
+	if str(town._house_record(selected_house).role)=="atelier":
+		workshop_info.text=workshop_info.text.replace("木饰","画作").replace("打磨画作、制作风铃","绘制挂毯、彩窗").replace("携着风铃","携着画作").replace("工坊","书院")
+		workshop_info.text=workshop_info.text.get_slice("\n每处邻屋",0)+"\n每处民居先挂艺术织毯，再装彩绘玻璃窗。"
+	if str(town._house_record(selected_house).role)=="clockmaker":
+		workshop_info.text=workshop_info.text.replace("木饰","钟表工艺").replace("打磨钟表工艺、制作风铃","制作八音盒与风向标").replace("携着风铃","携着八音盒")
+		workshop_info.text=workshop_info.text.get_slice("\n每处邻屋",0)+"\n先送发条八音盒，再装报时风向标。"
 	workshop_progress.max_value=float(selected.duration)
 	workshop_progress.value=float(selected.elapsed)
 	workshop_button.text="暂停制作" if bool(selected.open) else "继续制作"
 
+func _on_quality_changed(events: Array) -> void:
+	if town.quality_visual.layer==null:return
+	town.quality_visual.flash(town,events)
+	music.update_city(state)
+	for event: Dictionary in events: music.play_quality_upgrade(str(event.house_id),int(event.to))
+	if not events.is_empty():
+		var event: Dictionary=events[-1]
+		_message("♫ 共鸣品质 %d / 5 · %s"%[int(event.to),State.Quality.NAMES[int(event.to)-1]])
+	_refresh_place();save_delay=3.0
+
 func _on_craft_event(kind: String, shop_id: String, target_id: String, level: int) -> void:
-	music.play_edit("installed" if kind in ["installed","festival"] else "craft")
+	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")
+	if kind=="mechanism_installed":
+		music.update_city(state)
+		_message("♫ 邻屋收到钟表匠送来的"+("发条八音盒" if level==1 else "报时风向标"))
+		_refresh_place()
+	if kind=="art_installed":
+		music.update_city(state)
+		_message("♫ 邻屋收到书院送来的"+("艺术挂毯" if level==1 else "彩绘玻璃窗"))
+		_refresh_place()
 	if kind=="installed":
 		music.update_city(state)
 		for house: Dictionary in state.houses:
@@ -1899,7 +2013,7 @@ func _refresh_cafes() -> void:
 	cafe_info.text+="\n已聚 %d桌 · %d人次品茶" % [int(selected.groups),int(selected.visits)]
 	var remaining: float=state.afterglow_remaining(selected_house)
 	if remaining>0.0: cafe_info.text+="\n♫ 暖灯余韵 · 还剩%d秒" % ceili(remaining)
-	cafe_info.text+="\n相伴6秒完成小聚，已有余韵+%d秒，最多120秒。" % int(state.cafe_afterglow_extension(selected_house))
+	cafe_info.text+=("\n相伴6秒完成小聚，植物宫使共鸣余韵持续180秒。" if not str(state.signature_bonuses().palace_id).is_empty() else "\n相伴6秒完成小聚，已有余韵+%d秒，最多120秒。" % int(state.cafe_afterglow_extension(selected_house)))
 	cafe_progress.max_value=float(selected.duration)
 	cafe_progress.value=float(selected.elapsed)
 
@@ -1916,7 +2030,8 @@ func _capture_journeys() -> void:
 func _invite_concert() -> void:
 	var active: Dictionary = life.concert_status()
 	var relay: Dictionary = life.relay_status()
-	var result: Dictionary = life.cancel_concert() if bool(relay.active) or (str(active.phase) != "idle" and str(active.venue_id) == selected_house) else life.invite_concert(selected_house)
+	var hall:bool=town._house_record(selected_house).get("role","")=="symphony_hall"
+	var result: Dictionary = life.cancel_concert() if bool(relay.active) or (str(active.phase) != "idle" and str(active.venue_id) == selected_house) else life.invite_grand_festival(selected_house) if hall else life.invite_concert(selected_house)
 	_message(str(result.message))
 	if result.ok:
 		if str(life.concert_status().phase)=="gathering": music.play_edit("concert")
@@ -1936,7 +2051,7 @@ func _toggle_relay() -> void:
 
 func _refresh_relay() -> void:
 	if relay_info==null: return
-	var is_venue: bool = str(town._house_record(selected_house).get("role",""))=="venue"
+	var is_venue: bool = str(town._house_record(selected_house).get("role","")) in ["venue","symphony_hall"]
 	var relay: Dictionary = life.relay_status()
 	# The ordinary concert action already ends the whole active relay.
 	# Show a second action only when it offers the distinct start choice.
@@ -1975,7 +2090,7 @@ func _toggle_matinee() -> void:
 
 func _refresh_matinee() -> void:
 	if matinee_info==null: return
-	var venue := str(town._house_record(selected_house).get("role",""))=="venue"
+	var venue := str(town._house_record(selected_house).get("role","")) in ["venue","symphony_hall"]
 	matinee_info.visible=venue
 	matinee_button.visible=venue
 	if not venue: return
@@ -1992,6 +2107,7 @@ func _refresh_concert() -> void:
 	var relay: Dictionary = life.relay_status()
 	music.set_concert_view(status)
 	concert_button.text = "结束整场庆典接力" if bool(relay.active) else ("结束这场演出" if str(status.phase) != "idle" and str(status.venue_id) == selected_house else "♫ 邀请街坊演出")
+	if str(status.phase)=="idle" and town._house_record(selected_house).get("role","")=="symphony_hall":concert_button.text="♫ 发起全城跨时代盛典"
 	concert_button.disabled = not bool(relay.active) and ((str(status.phase) != "idle" and str(status.venue_id) != selected_house) or not life.house_connected(selected_house))
 	concert_info.visible = concert_button.visible or str(status.phase) != "idle"
 	concert_progress.visible = str(status.phase) != "idle"
@@ -2004,6 +2120,7 @@ func _refresh_concert() -> void:
 	elif str(status.phase) == "playing": concert_info.text = "♫ 街坊合奏 · %d 位听众\n还有 %d 秒落幕" % [int(status.invited),ceili(float(status.duration)-float(status.elapsed))]
 	if str(status.phase)!="idle" and str(status.get("source","manual"))=="auto": concert_info.text="♫ 街坊自发相约\n"+concert_info.text
 	if str(status.phase)=="playing": concert_info.text += "\n%d栋房屋一起应和" % status.chorus_house_ids.size()
+	if status.get("grand_festival",false):concert_info.text+="\n田园 → 人文 → 钟表 → 现代 → 全城终章"
 	elif not status.afterglow.is_empty():
 		var remaining := 0.0
 		for value: float in status.afterglow.values(): remaining=maxf(remaining,value)
@@ -2014,7 +2131,7 @@ func _refresh_concert() -> void:
 			for house: Dictionary in state.houses:
 				if house.id == source.source_id: concert_info.text += "\n全街合奏，共同收束最后一乐句" if str(source.role)=="finale" else "\n"+str(house.name)+(" 正在主奏" if str(source.role) == "lead" else " 正在应答")
 	var supply_venue := str(status.venue_id) if str(status.phase)!="idle" else selected_house
-	if str(town._house_record(supply_venue).get("role",""))=="venue":
+	if str(town._house_record(supply_venue).get("role","")) in ["venue","symphony_hall"]:
 		var festival: Dictionary=state.festival_status(supply_venue)
 		if festival.ready:
 			concert_info.text += "\n✿ 节庆木饰已备妥 · 成功落幕余韵90秒"

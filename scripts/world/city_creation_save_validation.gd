@@ -29,6 +29,20 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 	if not supply is Dictionary or not improvements is Dictionary or not commissions is Dictionary: return _fail("城市存档木饰供给结构无效")
 	var delivered := 0
 	var installed := 0
+	var art_reserved := {}
+	var mechanical_reserved := {}
+	var mechanical: Variant=data.get("house_clockwork",{})
+	if not mechanical is Dictionary:return _fail("钟表工艺台账无效")
+	for target_id in mechanical:
+		var ids := {}
+		if not _valid_id(target_id,"h",ids) or int(target_id.substr(1))>issued_house or not _is_integer(mechanical[target_id]) or mechanical[target_id]<0 or mechanical[target_id]>2:return _fail("钟表工艺安装计数无效")
+		installed+=int(mechanical[target_id])
+	var culture: Variant = data.get("house_culture", {})
+	if not culture is Dictionary: return _fail("文化送装台账无效")
+	for target_id in culture:
+		var ids := {}
+		if not _valid_id(target_id,"h",ids) or int(target_id.substr(1)) > issued_house or not _is_integer(culture[target_id]) or culture[target_id] < 0 or culture[target_id] > 2: return _fail("文化安装计数无效")
+		installed += int(culture[target_id])
 	var reserved := {}
 	var festival_reserved := {}
 	var festival_delivered := 0
@@ -58,13 +72,18 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 			if not _is_integer(row.get(key)) or row[key] < 0: return _fail("城市存档工坊计数无效")
 		var cargo: Dictionary = row.transit
 		if not cargo.is_empty():
-			if cargo.size() != (3 if cargo.has("kind") else 2) or cargo.get("kind", "upgrade") not in ["upgrade", "festival"]: return _fail("城市存档木饰运输字段无效")
+			if cargo.size() != (3 if cargo.has("kind") else 2) or cargo.get("kind", "upgrade") not in ["upgrade", "festival", "art", "musicbox"]: return _fail("城市存档木饰运输字段无效")
 			for key in ["home_id", "target_id"]:
 				var cargo_ids := {}
 				if not _valid_id(cargo.get(key), "h", cargo_ids) or int(cargo[key].substr(1)) > issued_house: return _fail("城市存档木饰运输身份无效")
 			if cargo.target_id == shop_id: return _fail("工坊不能给自己安装木饰")
 			if cargo.get("kind", "upgrade") == "festival":
 				festival_reserved[cargo.target_id] = int(festival_reserved.get(cargo.target_id, 0)) + 1
+			elif cargo.get("kind", "upgrade") == "art":
+				art_reserved[cargo.target_id] = int(art_reserved.get(cargo.target_id,0)) + 1
+			elif cargo.get("kind", "upgrade")=="musicbox":
+				if int(data.get("schema",1))<15:return _fail("钟表运输需要新存档版本")
+				mechanical_reserved[cargo.target_id]=int(mechanical_reserved.get(cargo.target_id,0))+1
 			else:
 				reserved[cargo.target_id] = int(reserved.get(cargo.target_id, 0)) + 1
 		if row.produced != row.stock + row.delivered + (0 if cargo.is_empty() else 1): return _fail("城市存档木饰收支不一致")
@@ -72,6 +91,10 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 	if delivered != installed + festival_delivered: return _fail("城市存档木饰安装及节庆交付与出库不一致")
 	for target_id in reserved:
 		if int(improvements.get(target_id, 0)) + int(reserved[target_id]) > 3: return _fail("城市存档木饰预留超过升级上限")
+	for target_id in art_reserved:
+		if int(culture.get(target_id,0)) + int(art_reserved[target_id]) > 2: return _fail("文化送装重复预订")
+	for target_id in mechanical_reserved:
+		if int(mechanical.get(target_id,0))+int(mechanical_reserved[target_id])>2:return _fail("钟表工艺重复预订")
 	for venue_id in festival_reserved:
 		var row: Dictionary = commissions.get(venue_id, {})
 		if int(festival_reserved[venue_id]) > int(row.get("requested", 0)) - int(row.get("delivered", 0)): return _fail("城市存档节庆委托重复预订")
@@ -146,7 +169,7 @@ static func _validate_matinee(data: Dictionary, issued: Dictionary) -> Dictionar
 		var role := ""
 		for house: Dictionary in data.houses:
 			if house.id == concert.venue_id: role = str(house.role)
-		if role != "venue": return _fail("庆典接力当前庭用途无效")
+		if role not in ["venue","symphony_hall"]: return _fail("庆典接力当前庭用途无效")
 	var automatic: bool = concert.get("source", "manual") == "auto" and concert.get("phase", "idle") != "idle"
 	if pending.is_empty():
 		if automatic: return _fail("自动演出缺少真实赞助授权")
@@ -155,7 +178,7 @@ static func _validate_matinee(data: Dictionary, issued: Dictionary) -> Dictionar
 	if not automatic or concert.get("venue_id", "") != pending.venue_id or concert.get("sponsors", []) != pending.sponsors or cooldown > 0.0: return _fail("巡演来源与真实授权不符")
 	var roles := {}
 	for house in data.houses: roles[house.id] = house.role
-	if roles.get(pending.venue_id, "") != "venue": return _fail("巡演授权场地用途无效")
+	if roles.get(pending.venue_id, "") not in ["venue","symphony_hall"]: return _fail("巡演授权场地用途无效")
 	var unique := {}
 	for home in pending.sponsors:
 		if not home is String or unique.has(home) or roles.get(home, "") != "residential" or not concert.get("participants", []).has(home): return _fail("巡演授权成员无效")

@@ -19,6 +19,7 @@ var _icons: Array[Texture2D]=[]
 var _chapter_titles: Array[Label]=[]
 var _chapter_rewards: Array[Label]=[]
 var _goal_labels: Array=[]
+var era_label: Label
 var next_label: Label
 var next_button: Button
 var _next_goal: Dictionary = {}
@@ -74,6 +75,9 @@ func setup(owner: Node3D,parent: Control) -> void:
 	close_button.name="CloseJournal"
 	title_row.add_child(close_button)
 	column.add_child(demo._label("从一座桥、一炉面包，到有自己声音的城。",15))
+	era_label=demo._label("",13)
+	era_label.name="EraChapters"
+	column.add_child(era_label)
 	var next_row:=HBoxContainer.new()
 	next_row.add_theme_constant_override("separation",12)
 	column.add_child(next_row)
@@ -111,6 +115,7 @@ func close_panel() -> void:
 func refresh(notify: bool=true) -> void:
 	var earned: Array=demo.state.refresh_growth()
 	rows=Growth.report(demo.state)
+	era_label.text=demo.state.Eras.journal(demo.state)
 	var stage:=0
 	for row: Dictionary in rows:
 		if bool(row.earned): stage+=1
@@ -133,7 +138,7 @@ func refresh(notify: bool=true) -> void:
 		refresh_palette()
 		if notify:
 			var id: String=earned[-1]
-			demo._message("手记添了一章 · "+str(Growth.FINISHES[id].name)+"已可选")
+			demo._message("手记添了一章 · "+str(Growth.FINISHES[id].name)+"已可选"+(" · 文艺复兴风貌与书院已开启" if id=="dawn" else ""))
 			demo.music.play_edit("terrace")
 	# Completed goals keep showing target/target while production continues;
 	# do not rebuild a browsing player's cards for each additional loaf.

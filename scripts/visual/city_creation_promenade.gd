@@ -29,7 +29,8 @@ func road_material() -> ShaderMaterial:
 	return materials.road
 
 func prepare(renderer,road: Dictionary) -> Array:
-	if str(road.get("style","path"))!="promenade": return []
+	var style:=str(road.get("style","path"))
+	if style not in ["promenade","avenue","tram"]: return []
 	if _revision!=renderer.state.revision: _cache.clear();_revision=renderer.state.revision
 	if _cache.has(str(road.id)): return _cache[str(road.id)]
 	var profile: Dictionary = renderer.state.road_profile(road)
@@ -41,6 +42,10 @@ func prepare(renderer,road: Dictionary) -> Array:
 	while arc<length-1.0:
 		var point := _point(samples,arc)
 		var at: Vector2 = point.at
+		var on_plaza:=false
+		for marker: Dictionary in renderer.state.Roundabouts.all(renderer.state.roads):
+			if at.distance_to(marker.center)<float(marker.radius)+.8: on_plaza=true
+		if on_plaza: arc+=SPACING;station+=1;continue
 		var tangent: Vector2 = point.tangent
 		var normal := Vector2(-tangent.y,tangent.x)
 		var steep := false
@@ -54,7 +59,20 @@ func prepare(renderer,road: Dictionary) -> Array:
 				var flower_at := lamp_at+tangent*(.85 if side>0 else -.85)
 				if station%2==0 and _clear(renderer.state,road,flower_at,.45):
 					records.append({"kind":"flower","at":flower_at,"y":renderer.state.ground_height(flower_at)+.025,"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
+				var tree_at:=at+normal*float(side)*(float(road.width)*.5+1.05)
+				if style=="avenue" and _clear(renderer.state,road,tree_at,.65):
+					records.append({"kind":"tree","at":tree_at,"y":renderer.state.ground_height(tree_at),"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
 		arc+=SPACING;station+=1
+	if style=="tram":
+		for index in range(samples.size()-1):
+			var a: Vector2=samples[index].xz;var b: Vector2=samples[index+1].xz
+			var normal:=Vector2(-(b-a).normalized().y,(b-a).normalized().x)
+			var on_plaza:=false
+			for marker: Dictionary in renderer.state.Roundabouts.all(renderer.state.roads):
+				if ((a+b)*.5).distance_to(marker.center)<float(marker.radius)+.1: on_plaza=true
+			if on_plaza: continue
+			for side: float in [-1.0,1.0]:
+				records.append({"kind":"rail","at":(a+b)*.5+normal*.32*side,"y":(float(samples[index].y)+float(samples[index+1].y))*.5+.012,"yaw":atan2(b.x-a.x,b.y-a.y),"pitch":-atan2(float(samples[index+1].y)-float(samples[index].y),a.distance_to(b)),"length":a.distance_to(b)+.004})
 	_cache[str(road.id)]=records
 	return records
 
@@ -85,6 +103,15 @@ func _point(samples: Array,arc: float) -> Dictionary:
 		return {"at":a.lerp(b,ratio),"tangent":(b-a).normalized()}
 	return {"at":samples[-1].xz,"tangent":Vector2.UP}
 
+func lamp_material() -> StandardMaterial3D:
+	if not materials.has("wick"):
+		var wick := StandardMaterial3D.new();wick.albedo_color=Color("ffe4a0");wick.emission=Color("ffb44f");wick.roughness=.55
+		var strength := 1.0 if evening else (0.65 if concert else 0.0)
+		wick.emission_enabled=strength>0.0
+		wick.emission_energy_multiplier=1.4*strength
+		materials.wick=wick
+	return materials.wick
+
 func install(renderer,parent: Node3D,records: Array) -> void:
 	if records.is_empty(): return
 	var root := Node3D.new();root.name="PromenadeDetails";parent.add_child(root)
@@ -93,12 +120,11 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 	var stone: Material=renderer._material(Color("b7b19a"))
 	var soil: Material=renderer._material(Color("6d5b42"))
 	var green: Material=renderer._material(Color("5e805b"))
-	if not materials.has("wick"):
-		var wick := StandardMaterial3D.new();wick.albedo_color=Color("ffe4a0");wick.emission=Color("ffb44f");wick.roughness=.55
-		materials.wick=wick
+	lamp_material()
 	var batches := {}
 	var lamps: Array[Vector3] = []
 	var pools: Array[Vector3] = []
+	var trees: Array[Vector3]=[]
 	for record: Dictionary in records:
 		var origin := Vector3(record.at.x,record.y,record.at.y)
 		if record.kind=="lamp":
@@ -114,6 +140,15 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 			_box(renderer,batches,origin,Vector3(.22,.09,.22),Vector3(0,2.12,0),metal)
 			_box(renderer,batches,origin,Vector3(.065,.15,.065),Vector3(0,2.23,0),metal)
 			lamps.append(origin+Vector3.UP*1.86);pools.append(origin+Vector3.UP*.018)
+		elif record.kind=="rail":
+			renderer._append_road_box(batches,Vector3(.055,.028,record.length),origin,metal,Vector3(record.pitch,record.yaw,0))
+		elif record.kind=="tree":
+			trees.append(origin)
+			_box(renderer,batches,origin,Vector3(1.05,.08,1.05),Vector3(0,.04,0),stone)
+			_box(renderer,batches,origin,Vector3(.86,.04,.86),Vector3(0,.09,0),soil)
+			var frame:=Basis(Vector3.UP,float(record.yaw))
+			_box(renderer,batches,origin,Vector3(.42,.10,.9),frame*Vector3(.78,.43,0),renderer._material(Color("987450")),record.yaw)
+			for z: float in [-.30,.30]: _box(renderer,batches,origin,Vector3(.36,.36,.07),frame*Vector3(.78,.23,z),metal,record.yaw)
 		else:
 			var frame := Basis(Vector3.UP,float(record.yaw))
 			for x: float in [-.20,.20]: _box(renderer,batches,origin,Vector3(.07,.29,.67),frame*Vector3(x,.155,0),stone,record.yaw)
@@ -126,9 +161,19 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 	for batch: Dictionary in batches.values():
 		var node := MeshInstance3D.new();node.mesh=batch.surface.commit();node.material_override=batch.material;root.add_child(node)
 	_glows(root,lamps,false);_glows(root,pools,true)
+	if not trees.is_empty():
+		var trunk:=CylinderMesh.new();trunk.bottom_radius=.10;trunk.top_radius=.065;trunk.height=1.65;trunk.radial_segments=8
+		_tree_batch(root,"AvenueTrunks",trunk,renderer._material(Color("75634b")),trees,Vector3(0,.9,0))
+		var crown:=SphereMesh.new();crown.radius=.65;crown.height=1.45;crown.radial_segments=10;crown.rings=4
+		_tree_batch(root,"AvenueCrowns",crown,green,trees,Vector3(0,2.0,0))
 	# New batches inherit the current shared light state immediately.
 	var saved_evening := evening;var saved_concert := concert;evening=not evening
 	set_light(saved_evening,saved_concert)
+
+func _tree_batch(root: Node3D,label: String,mesh: Mesh,material: Material,positions: Array[Vector3],offset: Vector3) -> void:
+	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.mesh=mesh;multi.instance_count=positions.size()
+	for i in range(positions.size()): multi.set_instance_transform(i,Transform3D(Basis.IDENTITY,positions[i]+offset))
+	var instance:=MultiMeshInstance3D.new();instance.name=label;instance.multimesh=multi;instance.material_override=material;root.add_child(instance)
 
 func _box(renderer,batches: Dictionary,origin: Vector3,size_value: Vector3,local: Vector3,material: Material,yaw: float=0.0) -> void:
 	renderer._append_road_box(batches,size_value,origin+local,material,Vector3(0,yaw,0))

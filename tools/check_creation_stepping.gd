@@ -42,6 +42,8 @@ func _cpu(city)->void:
 	_check(positions_ok and float(run.spacing)<=.48,"real street profile follows fixed water-level stone tops with bounded stride spacing")
 	var wide:Dictionary=record.duplicate(true);wide.width=1.75;wide.style="promenade"
 	_check(Plan.for_road(city,wide).is_empty(),"wide promenade remains a bridge rather than stepping stones")
+	var cobble:Dictionary=record.duplicate(true);cobble.style="cobble"
+	_check(Plan.for_road(city,cobble)==runs,"same-width cobble upgrade preserves shallow-channel stepping identities")
 	var pond_city:=State.new();var pond_data:Dictionary=city.snapshot();pond_data.waters[-1].kind="pond"
 	_check(pond_city.restore(_json(pond_data)).ok and Plan.for_road(pond_city,record).is_empty(),"same crossing over a pond is excluded from narrow-channel stepping")
 	var fresh:=State.new()
@@ -93,6 +95,8 @@ func _live(city)->void:
 		heard=bool(report.get("audible",false)) and report.get("kind","")=="stepping" and demo.state.water_clearance(report.get("position",Vector2.ZERO))<-.05
 	_check(invited.ok and events.any(func(event):return event.kind=="stepping") and heard,"real unaccelerated resident crossing emits an actually audible stepping short note through original pool")
 	facts.travel={"events":events,"report":report,"invitation":invited};demo.life.set_process(false);demo.life.cancel_concert()
+	await process_frame;await process_frame
+	_check(demo.town.travel_visual.report().kind=="stepping" and float(demo.town._water_surface_material().get_shader_parameter("travel_ripple_strength"))>0,"actual production stepping note drives a visible water shader ripple")
 	demo.zoom=16;demo.focus=Vector3(-8,.7,-11);demo._update_camera();await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/02_汀步水庭与居民.png")==OK,"actual connected stepping venue view saved")
 	var source_id:=str(report.get("source_id",""))
@@ -106,7 +110,7 @@ func _live(city)->void:
 		await process_frame
 		var now:=Time.get_ticks_usec();wall.append(float(now-previous_time)/1000);previous_time=now;draw.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	wall.sort();draw.sort();facts.performance={"frames":120,"p95_ms":wall[113],"max_ms":wall[-1],"draw_median":draw[60]}
-	_check(_audio()==audio and demo.music.get_child_count()==13 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"stepping visuals and notes preserve original nine long streams thirteen Players transport and personal save")
+	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"stepping visuals and notes preserve fixed long streams and short Players transport and personal save")
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false)
 	for player:AudioStreamPlayer in demo.music._players.values():player.stop()
 	for player:AudioStreamPlayer in demo.music._effects:player.stop()

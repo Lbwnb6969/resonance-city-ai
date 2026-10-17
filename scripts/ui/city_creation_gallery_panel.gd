@@ -96,7 +96,7 @@ func _ready() -> void:
 	tabs.add_theme_color_override("font_unselected_color",UI.INK)
 	tabs.add_theme_color_override("font_hovered_color",UI.INK)
 	tabs.add_tab("我的作品")
-	tabs.add_tab("示范河湾")
+	tabs.add_tab("官方示范河湾")
 	tabs.current_tab = 1 if _examples_selected else 0
 	tabs.tab_changed.connect(func(index: int) -> void:
 		_examples_selected = index==1

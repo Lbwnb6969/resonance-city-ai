@@ -11,7 +11,7 @@ const APPROACH := 1.6
 
 static func for_road(city: RefCounted,road: Dictionary) -> Array:
 	var result: Array = []
-	if str(road.get("style","path"))!="path" or float(road.width)>1.3: return result
+	if str(road.get("style","path")) not in ["path","cobble"] or float(road.width)>1.3: return result
 	var nearby := false
 	var road_bounds := Rect2(Vector2(float(road.points[0][0]),float(road.points[0][1])),Vector2.ZERO)
 	for row: Array in road.points: road_bounds=road_bounds.expand(Vector2(float(row[0]),float(row[1])))

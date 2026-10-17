@@ -72,6 +72,10 @@ static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Di
 	collision.shape=shape
 	collision.transform=body.global_transform.affine_inverse()*wall.global_transform
 	body.add_child(collision)
+	var lamp: Material = renderer._material(Color("e8c47b"))
+	lamp.emission_enabled=true; lamp.emission=Color("e8b565"); lamp.emission_energy_multiplier=.35
+	renderer._cylinder(wall,.012,.012,.20,Vector3(0,1.50,-.17),stone,6).name="ArcadeLampChain"
+	renderer._box(wall,Vector3(.12,.15,.12),Vector3(0,1.34,-.17),lamp).name="ArcadeHangingLamp"
 	var report := {"half_width":HALF_OPENING,"spring":SPRING,"rise":RISE,"clear_height":SPRING+RISE,"height":HEIGHT,"depth":DEPTH,"retreat":RETREAT,"segments":SEGMENTS,"column_diameter":0.15,"column_foot_width":0.22,"triangles":faces.size()/3,"mesh_names":names,"collision_name":str(collision.name),"outer_frame":wall.transform}
 	wall.set_meta("arcade",report.duplicate(true))
 	return report

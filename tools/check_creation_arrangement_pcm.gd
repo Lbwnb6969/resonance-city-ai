@@ -1,6 +1,9 @@
 extends SceneTree
 ## Offline production PCM evidence only; no audio device or player setup.
 const Music = preload("res://scripts/audio/city_creation_music.gd")
+# This frozen oracle proves the original nine stems remain byte-exact. Era
+# additions have separate production-bank, acoustic and peak verification.
+const ORIGINAL_STEMS = ["foundation","wood","air","terrace","concert","wood_deep","wood_weave","wood_market","wood_sylvan"]
 const State = preload("res://scripts/world/city_creation_state.gd")
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const BACKUP := "res://备份/街坊配器前_20261016/原源码与设计.zip"
@@ -44,18 +47,18 @@ func _metrics(data: PackedByteArray) -> Dictionary:
 
 func _gains(music: Node) -> Dictionary:
 	var gains := {}
-	for key: String in Music.STEMS: gains[key] = music.target_gain_db(key,false)
+	for key: String in ORIGINAL_STEMS: gains[key] = music.target_gain_db(key,false)
 	return gains
 
 func _bound(peaks: Dictionary,gains: Dictionary) -> float:
 	var bound := 0.0
-	for key: String in Music.STEMS: bound += float(peaks[key])*db_to_linear(float(gains[key]))
+	for key: String in ORIGINAL_STEMS: bound += float(peaks[key])*db_to_linear(float(gains[key]))
 	return bound
 
 func _mix(music: Node,pcm: Dictionary,gains: Dictionary,filename: String) -> Dictionary:
 	var samples := PackedFloat32Array()
 	samples.resize(Music.FRAMES)
-	for key: String in Music.STEMS:
+	for key: String in ORIGINAL_STEMS:
 		# Cache data once per stream outside all sample loops. The bank itself
 		# has already been read once and these packed arrays share COW storage.
 		var data: PackedByteArray = pcm[key]
@@ -140,7 +143,7 @@ func _run() -> void:
 			else:
 				effects[key] = row
 				maximum_effect_peak = maxf(maximum_effect_peak,float(metrics.peak))
-	_check(pcm.size()==9,"fixed nine-loop budget preserved")
+	_check(pcm.size()==9,"original nine-loop oracle remains complete")
 	var automatic_gains := _gains(current)
 	var automatic_bound := _bound(peaks,automatic_gains)
 	var manual_bounds := {}
@@ -161,7 +164,7 @@ func _run() -> void:
 	_check(automatic_bound+effect_bound<1.0,"conservative adaptive nine-loop plus four actual short-effect voices cannot clip")
 	old._daily_style = "warm"
 	var manual_gains := _gains(old)
-	for key: String in Music.STEMS:
+	for key: String in ORIGINAL_STEMS:
 		if not Music.STYLE_TRACKS.values().has(key): _check(automatic_gains[key]==manual_gains[key],"actual common-stem target gain unchanged: "+key)
 	evidence = {"backup":BACKUP,"source_entry":"scripts/audio/city_creation_music.gd","bank_render_calls":{"original":1,"current":1},
 		"synthesis_ms":{"original":original_ms,"current":current_ms},"streams":streams,"effects":effects,"members":ids,"arrangement":arrangement,

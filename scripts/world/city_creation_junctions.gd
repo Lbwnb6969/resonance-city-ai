@@ -12,6 +12,7 @@ const BIN := 2.0
 const STEP := 0.14
 const MIN_SINE := 0.24
 const EPS := 0.00001
+const Roundabouts=preload("res://scripts/world/city_creation_roundabouts.gd")
 class DraftCity:
 	extends RefCounted
 	const Frontage=preload("res://scripts/world/city_creation_frontage.gd")
@@ -107,6 +108,8 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 		roads[id] = road
 	_ids.sort()
 	for id: String in _ids: input.append([id,roads[id].points,roads[id].width])
+	var roundabouts:=Roundabouts.all(city.roads)
+	input.append(roundabouts)
 	var topology_input: Array=[]
 	for id: String in _ids:
 		if id!=only_id: topology_input.append([id,roads[id].points,roads[id].width])
@@ -274,8 +277,10 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 			polygons=_build(city,points,float(roads[id].width)*0.5,junctions,cores[id],local_houses,local_doors,foreign)
 			_cache[id]={"key":key,"polygons":polygons}
 			stats.regenerated+=1
+		for marker: Dictionary in roundabouts:
+			if marker.owner_id==id: polygons.append(Roundabouts.polygon(marker.center,marker.radius))
 		_extras[id]=polygons
-		_signatures[id]=hash(polygons)
+		_signatures[id]=hash([polygons,roundabouts])
 		for polygon: PackedVector2Array in polygons:
 			var bounds:=_bounds(polygon)
 			var entry: Dictionary={"id":id,"bounds":bounds,"polygon":polygon}

@@ -94,7 +94,9 @@ func _records(block: Vector2i, local: Dictionary) -> Array:
 			for pond: Dictionary in local.ponds:
 				var seed_value := ((x+8192)*73856093)^((z+8192)*19349663)^int(pond.seed)^0x7511a
 				var rng := RandomNumberGenerator.new();rng.seed=seed_value
-				var at := (Vector2(x,z)+Vector2.ONE*0.5)*SPACING+Vector2(rng.randf_range(-0.08,0.08),rng.randf_range(-0.08,0.08))
+				# Broad deterministic jitter prevents narrow shoreline bands from
+				# disappearing between parallel lattice columns.
+				var at := (Vector2(x,z)+Vector2.ONE*0.5)*SPACING+Vector2(rng.randf_range(-0.38,0.38),rng.randf_range(-0.38,0.38))
 				var chance := rng.randf()
 				var scale_value := rng.randf_range(0.8,1.3)
 				var yaw := rng.randf()*TAU
@@ -124,7 +126,8 @@ func _records(block: Vector2i, local: Dictionary) -> Array:
 func _clear(at: Vector2, radius: float, pond: Dictionary, local: Dictionary) -> bool:
 	# Distance to a stroke is Lipschitz: this conservative centre clearance
 	# proves the whole circle is inside this particular authored pond.
-	if state._water_stroke_distance(at,pond.points)-float(pond.width)*0.5>=-radius-0.08: return false
+	var shore: float=state._water_stroke_distance(at,pond.points)-float(pond.width)*0.5
+	if shore < -0.85 or shore > -0.25 or shore>=-radius-0.08: return false
 	for road: Array in local.roads:
 		if at.distance_to(Geometry2D.get_closest_point_to_segment(at,road[0],road[1]))<=float(road[2])+radius: return false
 	for footprint: Rect2 in local.footprints:
@@ -167,7 +170,13 @@ func _mesh(part: String) -> Mesh:
 		vertices.append(Vector3(point[0],point[1],point[2]));uvs.append(Vector2(point[0],point[2])*1.5+Vector2.ONE*0.5)
 	for normal: Array in source.Vertex_Normal.buffer: normals.append(Vector3(normal[0],normal[1],normal[2]))
 	for color: Array in source.Vertex_Color.buffer: colors.append(Color(color[0],color[1],color[2],1.0))
-	var indices := PackedInt32Array(source.indices.buffer)
+	# Recovered leaf buffers contain six trailing (0,0,0) padding triangles.
+	# Preserve all ten real faces rather than submitting padding to the GPU.
+	var indices := PackedInt32Array()
+	var raw: Array=source.indices.buffer
+	for index in range(0,raw.size(),3):
+		if raw[index]==raw[index+1] or raw[index+1]==raw[index+2] or raw[index]==raw[index+2]: continue
+		indices.append_array(PackedInt32Array([raw[index],raw[index+1],raw[index+2]]))
 	for index in range(0,indices.size(),3):
 		var swap := indices[index+1];indices[index+1]=indices[index+2];indices[index+2]=swap
 	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_TEX_UV]=uvs;arrays[Mesh.ARRAY_INDEX]=indices

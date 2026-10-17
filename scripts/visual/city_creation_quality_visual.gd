@@ -1,0 +1,112 @@
+extends RefCounted
+## Quality decor has independent ownership: no road, terrain or house rebuild.
+const NAMES := ["初筑小屋","安居暖舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
+var layer: Node3D
+var roots: Dictionary={}
+var fingerprints: Dictionary={}
+var particles: Array[CPUParticles3D]=[]
+var next_particle:=0
+var build_count:=0
+
+func setup(renderer: Node3D)->void:
+	layer=Node3D.new();layer.name="BuildingQuality";renderer.add_child(layer)
+	var material:=StandardMaterial3D.new();material.albedo_color=Color("f4cc6b");material.emission_enabled=true;material.emission=Color("edb857");material.emission_energy_multiplier=.45
+	var mesh:=SphereMesh.new();mesh.radius=.025;mesh.height=.05;mesh.radial_segments=6;mesh.rings=3
+	for i in range(4):
+		var effect:=CPUParticles3D.new();effect.name="QualityUpgrade_%d"%i;effect.mesh=mesh;effect.material_override=material
+		effect.amount=18;effect.lifetime=1.15;effect.one_shot=true;effect.explosiveness=.9;effect.emitting=false
+		effect.direction=Vector3.UP;effect.spread=42;effect.initial_velocity_min=.7;effect.initial_velocity_max=1.5;effect.gravity=Vector3(0,-.35,0)
+		effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
+
+func progress(renderer)->void:
+	var live: Dictionary={}
+	for house: Dictionary in renderer.state.houses:
+		var id:=str(house.id);var tier: int=renderer.state.level_tier(id)
+		if tier<2:continue
+		live[id]=true
+		var signature:=hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house),tier,renderer.state.improvement_level(id)])
+		if fingerprints.get(id,-1)==signature:continue
+		_remove(id)
+		var root:=Node3D.new();root.name="Quality_"+id;root.set_meta("level_tier",tier);layer.add_child(root)
+		var entry: Dictionary=renderer._primary_entrance(house)
+		var records: Dictionary=renderer.craft._placements(renderer,house,3)
+		var features: Array[String]=[]
+		if not entry.is_empty():
+			var frame:=Node3D.new();root.add_child(frame)
+			frame.position=renderer._entrance_point(entry,Vector3(0,0,.38));frame.rotation.y=atan2(float(entry.side.x),float(entry.side.y))
+			var at:=Vector2(frame.position.x,frame.position.z);frame.position.y=renderer.state.street_height(at)+.012
+			for i in range(5):
+				var x: float=-.34+i*.17
+				renderer._cylinder(frame,.10,.10,.035,Vector3(x,0,.035*sin(i*2.0)),renderer._material(Color("d6c5a1")),7)
+			features.append("welcome_stones")
+		if renderer.state.improvement_level(id)<2:
+			renderer.craft._static_batch(root,{"planter":records.planter,"plaque":records.plaque})
+			features.append("flowerbox_shutters")
+			var iron: Material=renderer._material(Color("45584f"))
+			for placement: Transform3D in records.planter:
+				var frame:=Node3D.new();root.add_child(frame);frame.transform=placement
+				for x: float in [-.35,.35]:renderer._box(frame,Vector3(.025,.23,.28),Vector3(x,0,.025),iron)
+				for y: float in [-.085,.105]:renderer._box(frame,Vector3(.72,.025,.025),Vector3(0,y,.16),iron)
+				for i in range(7):renderer._cylinder(frame,.009,.009,.18,Vector3(-.30+i*.10,.01,.16),iron,5)
+			root.set_meta("iron_flowerboxes",records.planter.size())
+		if tier>=3 and renderer.state.improvement_level(id)==0:
+			renderer.craft._batch(root,"chime",records.chime,posmod(hash(id),6283)/1000.0)
+			features.append("bronze_chime")
+		if tier>=4 and renderer.state.improvement_level(id)<3:
+			renderer.craft._static_batch(root,{"pergola":records.pergola})
+			if not records.pergola.is_empty():features.append("carved_gallery")
+			_canopy(renderer,root,house,features)
+		if tier>=5:
+			_vane(renderer,root,house)
+			_rose_window(renderer,root,house)
+			features.append_array(["golden_weather_vane","painted_rose_window","golden_halo"])
+		root.set_meta("features",features);renderer._merge_meshes(root)
+		roots[id]=root;fingerprints[id]=signature;build_count+=1
+	for id: String in roots.keys():
+		if not live.has(id):_remove(id)
+
+func _canopy(renderer,root: Node3D,house: Dictionary,features: Array[String])->void:
+	for cell: Dictionary in house.cells:
+		if cell.kind!="terrace":continue
+		var at: Vector3=renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7+.18,0)
+		var wood: Material=renderer._material(Color("a8845f"));var cream: Material=renderer._material(Color("eadbb4"))
+		for x: float in [-.68,.68]:
+			for z: float in [-.65,.65]:renderer._cylinder(root,.025,.025,1.35,at+Vector3(x,.675,z),wood,6)
+		renderer._box(root,Vector3(1.5,.055,1.45),at+Vector3(0,1.36,0),cream)
+		features.append("sunshine_terrace_canopy");break
+
+func _vane(renderer,root: Node3D,house: Dictionary)->void:
+	var anchor: Vector3=renderer.resonance.rigs.get(str(house.id),{}).get("anchor",Vector3(float(house.origin[0]),2.5,float(house.origin[1])))
+	var gold: Material=renderer._material(Color("d9b464"))
+	renderer._cylinder(root,.018,.022,.52,anchor+Vector3(0,.23,0),gold,7)
+	renderer._box(root,Vector3(.52,.025,.025),anchor+Vector3(0,.40,0),gold)
+	renderer._triangles(root,[anchor+Vector3(.31,.40,0),anchor+Vector3(.17,.49,0),anchor+Vector3(.17,.31,0)],Color("d9b464"))
+	var halo:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=.42;torus.outer_radius=.44;torus.rings=24;torus.ring_segments=5;halo.mesh=torus
+	var glow:=StandardMaterial3D.new();glow.albedo_color=Color(.9,.7,.25,.14);glow.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;glow.emission_enabled=true;glow.emission=Color("f1ca68");glow.emission_energy_multiplier=.25
+	halo.material_override=glow;halo.position=anchor+Vector3(0,-.12,0);halo.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;root.add_child(halo)
+
+func _rose_window(renderer,root: Node3D,house: Dictionary)->void:
+	var cells: Array=house.cells.duplicate();cells.sort_custom(func(a: Dictionary,b: Dictionary)->bool:return int(a.level)>int(b.level))
+	for cell: Dictionary in cells:
+		if cell.kind!="room":continue
+		var side:=Vector2i.DOWN
+		if not renderer._neighbor_cell(house,cell,side).is_empty():continue
+		var frame:=Node3D.new();root.add_child(frame);frame.position=renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7,1.02)
+		# High circular glazing leaves the existing door clear below it.
+		var ring: MeshInstance3D=renderer._cylinder(frame,.18,.18,.025,Vector3(0,1.43,0),renderer._material(Color("d9b464")),16);ring.rotation.x=PI*.5
+		for i in range(6):
+			var angle:=TAU*i/6
+			var petal: MeshInstance3D=renderer._cylinder(frame,.050,.050,.03,Vector3(cos(angle)*.10,1.43+sin(angle)*.10,.022),renderer._material([Color("9aaea0"),Color("bd8375"),Color("e5c477")][i%3]),8);petal.rotation.x=PI*.5
+		break
+
+func flash(renderer, events: Array)->void:
+	progress(renderer)
+	for event: Dictionary in events.slice(0,4):
+		var id:=str(event.house_id)
+		if not renderer.resonance.rigs.has(id):continue
+		var effect:=particles[next_particle%particles.size()];next_particle+=1
+		effect.position=renderer.resonance.rigs[id].anchor-Vector3.UP*.5;effect.restart();effect.emitting=true
+
+func _remove(id: String)->void:
+	if not roots.has(id):return
+	layer.remove_child(roots[id]);roots[id].queue_free();roots.erase(id);fingerprints.erase(id)

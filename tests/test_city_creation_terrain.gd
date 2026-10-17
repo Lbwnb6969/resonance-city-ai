@@ -19,13 +19,16 @@ func _initialize() -> void:
 	result = city.add_water([Vector2(-9,5),Vector2(-7,7)],2.6,"pond")
 	city.prepare_ground_height()
 	_check(result.ok and city.waters.size()==3 and _matches_fresh(city),"third water record keeps other cached areas exact")
-	# Direct data edits deliberately require explicit prepare_ground_height().
+	# Fixture-only direct edits publish a revision before explicit preparation,
+	# matching State transactions and the worker's revision cache contract.
 	city.waters[0].points=[[15.5,-12.0]]
 	city.waters[0].width=1.2
+	city.revision+=1
 	city.prepare_ground_height()
 	_check(_matches_fresh(city),"moving and shrinking a pond recomputes both old and new bounds")
 	city.waters[1].points=[[-14.0,-10.0],[2.0,3.0],[14.0,10.0]]
 	city.waters[1].width=2.8
+	city.revision+=1
 	city.prepare_ground_height()
 	_check(_matches_fresh(city),"changing long stroke shape and width preserves complete grid equality")
 	result = city.remove_water_at(Vector2(15.5,-12))
@@ -48,6 +51,7 @@ func _initialize() -> void:
 	var source_grid: PackedFloat32Array = city._ground_terrain.vertices.duplicate()
 	var source_waters: Array = city._ground_terrain._previous_waters.duplicate(true)
 	worker.waters[0].width=3.8
+	worker.revision+=1
 	worker.prepare_ground_height()
 	_check(city._ground_terrain.vertices==source_grid and city._ground_terrain._previous_waters==source_waters and _matches_fresh(worker),"independent worker water edit is exact and leaves source cache immutable")
 	var generation: int = city._ground_terrain.generation
@@ -55,6 +59,7 @@ func _initialize() -> void:
 	city.ground_height(Vector2(-8,0))
 	_check(city._ground_terrain.generation==generation and city._ground_terrain.vertices==source_grid and city._ground_terrain.stats.changed_vertices==0,"dry revision reuses complete height grid without a generation")
 	city.waters.clear()
+	city.revision+=1
 	city.prepare_ground_height()
 	_check(_matches_fresh(city),"removing all remaining records restores original complete terrain")
 	print("CREATION_TERRAIN_RESULT ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"stats":city._ground_terrain.stats}))

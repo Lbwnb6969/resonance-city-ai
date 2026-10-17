@@ -157,7 +157,7 @@ func _near_road()->void:
 	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(OUT+"/03_近路塑形同步发布.png")
 
 func _finish(personal:PackedByteArray,source:PackedByteArray,audio:Array,clock:float)->void:
-	_check(_audio()==audio and demo.music.get_child_count()==13 and demo.ambience.players.size()==4 and demo.music._playback_clock()>clock and FileAccess.get_file_as_bytes(SAMPLE)==source and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all measured edits preserve original music ambience transport sample and personal save")
+	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.ambience.players.size()==2 and demo.music._playback_clock()>clock and FileAccess.get_file_as_bytes(SAMPLE)==source and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all measured edits preserve original music ambience transport sample and personal save")
 	var report:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts,"measurement":"Each operation records actual frame maximum from request through publication; command for Window release includes its awaited frame, not just handler CPU."}
 	FileAccess.open(OUT+("/near.json" if "--near-only" in OS.get_cmdline_user_args() else "/live.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("EDIT_LATENCY_CHECK ",JSON.stringify(report))
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false);demo.ambience.set_process(false)

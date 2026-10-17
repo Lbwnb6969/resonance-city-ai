@@ -2,11 +2,13 @@ extends RefCounted
 ## One immutable height profile for road geometry, tread collisions and walkers.
 ## Reads only the unprotected grid. It never asks State for ground/street height.
 const SAMPLE_STEP := 0.35
-const MAX_GRADE := 0.24
-const STEP_HEIGHT := 0.14
+const MAX_GRADE := 0.22
+const STEP_HEIGHT := 0.12
 const BIN_SIZE := 2.0
+const Bridges := preload("res://scripts/world/city_creation_bridge_plan.gd")
 const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
 const SteppingPlan := preload("res://scripts/world/city_creation_stepping_plan.gd")
+const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 var profiles: Dictionary = {}
 var _bins: Dictionary = {}
 var _signature: Variant = null
@@ -20,7 +22,7 @@ func copy_cache_from(source: RefCounted) -> void:
 func prepare(city: RefCounted) -> void:
 	var houses: Array = []
 	for house: Dictionary in city.houses: houses.append([house.id,house.origin,house.cells,float(house.get("base_y",0.0))])
-	var signature := hash([city._ground_terrain.raw_generation,city.roads,houses])
+	var signature := hash([city._ground_terrain.raw_generation,city.roads,houses,Bridges.era_signature(city)])
 	if signature==_signature: return
 	_signature = signature
 	profiles.clear()
@@ -157,6 +159,7 @@ func _build(city: RefCounted,road: Dictionary,doors: Array,junctions: Array) -> 
 			elif gap<1.6: samples[i].y=maxf(float(samples[i].y),lerpf(deck,float(samples[i].y),smoothstep(0.0,1.6,gap)))
 		cursor+=1
 	var stepping_runs := SteppingPlan.for_road(city,road)
+	var bridge_runs := Bridges.apply(city,road,samples,stepping_runs,anchors,junctions)
 	for sample: Dictionary in samples:
 		for stepping: Dictionary in stepping_runs:
 			var arc: float = sample.distance
@@ -167,11 +170,17 @@ func _build(city: RefCounted,road: Dictionary,doors: Array,junctions: Array) -> 
 			var weight := 1.0-smoothstep(0.0,SteppingPlan.APPROACH,maxf(0.0,gap))
 			sample.y=lerpf(dry_height,SteppingPlan.crossing_height(stepping,arc),weight)
 			sample.stepping=true
+	for marker: Dictionary in Roundabouts.all(city.roads):
+		var center: Vector2=marker.center
+		var target: float=city._ground_terrain.raw_height_at(center)+0.075
+		for sample: Dictionary in samples:
+			var weight:=1.0-smoothstep(float(marker.radius),float(marker.radius)+1.2,Vector2(sample.xz).distance_to(center))
+			sample.y=lerpf(float(sample.y),target,weight)
 	var treads := _treads(city,samples,float(road.width))
 	var elevated := not treads.is_empty()
 	for sample: Dictionary in samples:
 		if absf(float(sample.y)-0.055)>0.001: elevated=true;break
-	return {"id":str(road.id),"width":float(road.width),"samples":samples,"treads":treads,"stepping_runs":stepping_runs,"elevated":elevated,"signature":hash([road.width,samples,treads,stepping_runs])}
+	return {"id":str(road.id),"width":float(road.width),"samples":samples,"treads":treads,"stepping_runs":stepping_runs,"bridge_runs":bridge_runs,"elevated":elevated,"signature":hash([road.width,samples,treads,stepping_runs,bridge_runs])}
 
 func _flat_anchor_intervals(anchors: Array) -> Array[Dictionary]:
 	# Membership is independent of the road sample. Keep the original nested
@@ -253,23 +262,23 @@ func _offset(samples: Array,index: int,width: float) -> Vector2:
 
 func height_at(at: Vector2,fallback: float) -> float:
 	var nearest := INF
-	var selected: Dictionary = {}
-	var arc := 0.0
-	var height := fallback
+	var best:Dictionary={}
+	var closest:=Vector2.ZERO
 	var key := Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
 	for row: Dictionary in _bins.get(key,[]):
 		var point := Geometry2D.get_closest_point_to_segment(at,row.a,row.b)
-		var gap := at.distance_to(point)
-		if gap>float(row.radius) or gap>=nearest: continue
-		nearest = gap
-		selected = profiles[row.road]
-		var a: Dictionary = selected.samples[int(row.index)]
-		var b: Dictionary = selected.samples[int(row.index)+1]
-		var ratio := Vector2(row.a).distance_to(point)/maxf(0.000001,Vector2(row.a).distance_to(row.b))
-		arc = lerpf(float(a.distance),float(b.distance),ratio)
-		height = lerpf(float(a.y),float(b.y),ratio)
+		var gap := at.distance_squared_to(point)
+		if gap>float(row.radius)*float(row.radius) or gap>=nearest: continue
+		nearest=gap;best=row;closest=point
+	if best.is_empty():return fallback
+	var selected:Dictionary=profiles[best.road]
+	var a:Dictionary=selected.samples[int(best.index)]
+	var b:Dictionary=selected.samples[int(best.index)+1]
+	var delta:Vector2=best.b-best.a
+	var ratio:=clampf((closest-Vector2(best.a)).dot(delta)/delta.length_squared(),0.,1.)
+	var arc:=lerpf(float(a.distance),float(b.distance),ratio)
 	for stepping: Dictionary in selected.get("stepping_runs",[]):
 		if arc>=float(stepping.start)-0.00001 and arc<=float(stepping.end)+0.00001: return SteppingPlan.crossing_height(stepping,arc)
 	for tread: Dictionary in selected.get("treads",[]):
 		if arc>=float(tread.s0)-0.000001 and arc<=float(tread.s1)+0.000001: return float(tread.y)
-	return height
+	return lerpf(float(a.y),float(b.y),ratio)

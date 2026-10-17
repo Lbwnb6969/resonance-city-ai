@@ -324,6 +324,10 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 	if entrances_by_house.is_empty(): entrances_by_house = _entrances_by_house()
 	for house: Dictionary in state.get("houses"):
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
+		if house.get("signature","")=="floating_amphitheater":
+			var plan:Dictionary=preload("res://scripts/world/city_creation_amphitheater_plan.gd").for_house(state,house)
+			for mask:Rect2 in preload("res://scripts/world/city_creation_amphitheater_plan.gd").ground_masks(plan):
+				if rect.intersects(mask):relevant.append(["courtyard",mask])
 		for cell: Dictionary in house.cells:
 			if int(cell.level) != 0:
 				continue
@@ -340,6 +344,8 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 				relevant.append(["door", door])
 	for road: Dictionary in state.get("roads"):
 		_collect_segments(relevant, rect, "road", road.points, float(road.width) * 0.5 + 0.56)
+		for marker: Dictionary in road.get("roundabouts",[]):
+			_collect_segments(relevant,rect,"road",[marker.center],float(marker.radius)+.26)
 	for water: Dictionary in state.get("waters"):
 		_collect_segments(relevant, rect, "water", water.points, float(water.width) * 0.5 + 1.1)
 	return relevant
@@ -558,7 +564,7 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 		multi.set_instance_color(index, records[index][1])
 		multi.set_instance_custom_data(index, records[index][2] if records[index].size() > 2 else Color(0.0, 0.0, 1.0, 0.0))
 	multi.custom_aabb = bounds.grow(0.12)
-	# Keep the full twelve-leaf bounds, including when installing a far-view
+	# Keep the full seven-leaf bounds, including when installing a far-view
 	# mesh. A later camera change only swaps shared meshes and draw counts.
 	if part == "lawn": _apply_lawn_detail(multi)
 	var instance := MultiMeshInstance3D.new()
@@ -587,10 +593,9 @@ func _mesh(part: String) -> Mesh:
 		var surface := SurfaceTool.new()
 		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 		if part in ["grass","lawn","lawn_lod"]:
-			# Eight low outer leaves surround four upright inner leaves. Each
-			# retains two curved quads and its tapered tip: 12 * 5 = 60 triangles.
-			# The shared far mesh keeps every second leaf: 6 * 5 = 30 triangles.
-			for blade in range(0,12,2 if part == "lawn_lod" else 1):
+			# Four low spreading leaves cup three upright leaves. Keep two of
+			# each ring in the far mesh: 35 near / 20 far opaque triangles.
+			for blade in ([0,2,4,6] if part == "lawn_lod" else [0,1,2,3,4,5,6]):
 				_ribbon(surface, blade)
 		else:
 			# Three blooms remain inside the existing .085m flower footprint.
@@ -614,15 +619,13 @@ func _mesh(part: String) -> Mesh:
 	return mesh
 
 func _ribbon(surface: SurfaceTool, blade: int) -> void:
-	# Narrow blades replace the old broad rosette silhouette. TG LOD0 uses
-	# alpha-cut leaf cards; these opaque ribbons express a thin silhouette in
-	# geometry, with no texture overdraw or extra triangles. The width/reach
-	# factors are authored here, not recovered TG exemplar dimensions.
-	# The taller, narrower inner ring fills the centre without another instance.
-	var angles := [0.02,0.79,1.55,2.39,3.10,3.96,4.69,5.52,0.39,1.98,3.54,5.10]
-	var heights := [0.145,0.170,0.155,0.180,0.150,0.165,0.140,0.175,0.255,0.285,0.235,0.270]
-	var reaches := [0.150,0.158,0.146,0.155,0.152,0.149,0.157,0.148,0.060,0.050,0.075,0.055]
-	var shoulders := [0.058,0.061,0.056,0.062,0.057,0.060,0.054,0.059,0.026,0.024,0.028,0.022]
+	# The low outer ring covers the root and the inner ring catches sunlight.
+	# Opaque curved ribbons avoid alpha overdraw; seed/transform identity stays
+	# in the existing mother/child distribution and never depends on the LOD.
+	var angles := [0.02,1.59,3.10,4.69,0.52,2.61,4.70]
+	var heights := [0.16,0.19,0.17,0.18,0.22,0.27,0.245]
+	var reaches := [0.16,0.17,0.165,0.175,0.07,0.06,0.075]
+	var shoulders := [0.046,0.050,0.044,0.048,0.042,0.044,0.042]
 	var angle: float = angles[blade]
 	var outward := Vector3(cos(angle), 0.0, sin(angle))
 	var side := Vector3(-sin(angle), 0.0, cos(angle))
@@ -630,13 +633,8 @@ func _ribbon(surface: SurfaceTool, blade: int) -> void:
 	var height: float = heights[blade]
 	var reach: float = reaches[blade]
 	var shoulder: float = shoulders[blade]
-	if blade < 8:
-		reach *= 0.78
-		shoulder *= 0.38
-	else:
-		shoulder *= 0.65
 	var c0 := base
-	var outer := blade < 8
+	var outer := blade < 4
 	var c1 := base + outward*(reach*0.22) + Vector3.UP*(height*(0.48 if outer else 0.38))
 	var c2 := base + outward*(reach*0.62) + Vector3.UP*(height*(0.90 if outer else 0.74))
 	var tip: Vector3 = base + outward*reach + Vector3.UP*height

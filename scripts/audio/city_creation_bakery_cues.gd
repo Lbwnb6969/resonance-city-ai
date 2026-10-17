@@ -38,7 +38,7 @@ func _valid(event: Dictionary) -> bool:
 	var index: int = _owner._pluck_city._house_index(str(event.source_id))
 	if index<0 or str(_owner._pluck_city.houses[index].role)!="bakery": return false
 	var shop: Dictionary = _owner._house_music.get(str(event.source_id),{})
-	if shop.is_empty() or str(shop.role)!="bakery" or _owner._listener_focus.distance_to(shop.position)>RADIUS: return false
+	if shop.is_empty() or str(shop.role)!="bakery" or _owner.acoustic.focus_weight(str(event.source_id))<=0.0 or _owner.acoustic.mode=="city": return false
 	if str(event.kind)=="purchased":
 		var home_index: int = _owner._pluck_city._house_index(str(event.home_id))
 		if home_index<0 or str(_owner._pluck_city.houses[home_index].role)!="residential": return false
@@ -78,7 +78,7 @@ func at_phrase(phrase: int) -> void:
 		if player.playing: continue
 		_player=player;_stream=_owner._edit_streams[key]
 		_active=event.duplicate();_active.phrase=phrase;_active.stream_key=key
-		_owner.play_effect_at(player,_stream,event.position)
+		_owner.play_effect_at(player,_stream,event.position,_owner.acoustic.focus_weight(str(event.source_id))*(1.0-smoothstep(18.0,32.0,_owner.acoustic.zoom)))
 		cues+=1
 		return
 	skipped+=1

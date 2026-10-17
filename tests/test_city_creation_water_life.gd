@@ -66,7 +66,7 @@ func _run() -> void:
 				life._sync()
 				resident = life.residents[0]
 				_check(resident.node.get_instance_id() == node_id and Vector2(resident.node.position.x,resident.node.position.z) == point and not resident.paused, "filling canal keeps same resident and planar progress")
-				_check(resident.node.position.y < old_height and absf(resident.node.position.y-loaded.street_height(point)-0.10) < 0.0001, "filling immediately lowers resident onto the actual ground road")
+				_check(loaded.road_profile(loaded.roads[-1]).get("bridge_runs",[]).is_empty() and loaded.road_profile(loaded.roads[-1]).get("stepping_runs",[]).is_empty() and absf(resident.node.position.y-loaded.street_height(point)-0.10) < 0.0001, "filling removes the derived water crossing while resident retains exact authoritative road height")
 				loaded.undo()
 				life._sync()
 				resident = life.residents[0]
@@ -84,7 +84,7 @@ func _run() -> void:
 	var signature: Array = life._network_signature.duplicate(true)
 	_check(loaded.add_water([Vector2(-15.0,8.0),Vector2(-13.0,8.0)],1.6,"pond").ok, "separate water edit commits while resident is dwelling")
 	life._sync()
-	_check(life._network_signature != signature, "water geometry invalidates cached street heights")
+	_check(life._network_signature == signature, "isolated pond outside walking support preserves the unchanged cached street network")
 	resident = life.residents[0]
 	_check(resident.node.get_instance_id() == node_id and str(resident.home_id) == str(home.house_id), "water edit retains resident node and home identity")
 	_check(resident.node.position == position and float(resident.wait) == wait and str(resident.dwell_id) == dwell and not resident.paused, "valid visit keeps position, remaining wait and pending service through water rebuild")

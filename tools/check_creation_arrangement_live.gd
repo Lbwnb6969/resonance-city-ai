@@ -85,7 +85,7 @@ func _run() -> void:
 	_check(not demo.music.audio_report.is_empty(),"production PCM bank loads")
 	if demo.music.audio_report.is_empty(): quit(1);return
 	identity=_identity()
-	_check(identity.size()==13 and demo.music.get_child_count()==13,"nine loops and four short voices remain fixed")
+	_check(identity.size()==demo.music.STEMS.size()+4 and demo.music.get_child_count()==demo.music.STEMS.size()+4,"shared loops and four short voices remain fixed")
 	await _next_daily()
 	_check(demo.music.daily_source().mix.weights=={"warm":1.0} and _gains_match(demo.music.daily_source().mix),"legacy manual district retains original single-theme gains")
 	await _inside_phrase()
@@ -195,10 +195,10 @@ func _run() -> void:
 		if phrase==7 and inside>1.0:
 			finale=true
 			for key: String in Music.STEMS: finale=finale and demo.music._players[key].volume_db>-32.0
-	_check(changed and observed and finale and chorus,"real concert retains house response and original nine-voice finale")
+	_check(changed and observed and finale and chorus,"real concert retains house response and original shared-voice finale")
 	_check(demo.state.life_progress.concerts==concerts+1 and Time.get_ticks_msec()-began>=23800,"actual 24-second performance completes exactly once")
 	facts.concert_sources=sources;facts.concert_wall_ms=Time.get_ticks_msec()-began
-	_check(_identity()==identity,"all nine PCM streams and thirteen player identities survive edits and complete performance")
+	_check(_identity()==identity,"all shared PCM streams and fixed player identities survive edits and complete performance")
 	await create_timer(1.6).timeout
 	var clock: float=demo.music._playback_clock()
 	await _click(demo.music_button)

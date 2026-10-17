@@ -32,7 +32,12 @@ static func _colors(p: Array) -> Array[Color]:
 static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 	var started := Time.get_ticks_usec()
 	var palettes: Array = []
-	for index in range(4+FINISHES.size()): palettes.append(_colors(_palette(renderer,index)))
+	for index in range(4+FINISHES.size()):
+		var base := _palette(renderer,index)
+		if renderer.state.house_era(house)=="renaissance": base=renderer.Renaissance.palette(base)
+		elif renderer.state.house_era(house)=="clockwork":base=renderer.Clockwork.palette(base)
+		elif renderer.state.house_era(house)=="modern_eco":base=renderer.Modern.palette(base)
+		palettes.append(_colors(base))
 	var current: int = _index(house)
 	var lookup := {}
 	for index in range(palettes[current].size()): lookup[palettes[current][index].to_html()] = index
@@ -51,13 +56,14 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 				var owned := material.duplicate() as StandardMaterial3D
 				node.material_override = owned
 				material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":false})
-		elif material is ShaderMaterial and material.shader == renderer.JoinedRoofShader:
-			var roof_color: Color = material.get_shader_parameter("roof_color")
+		elif material is ShaderMaterial and material.shader in [renderer.JoinedRoofShader,renderer.Clockwork.Brick]:
+			var parameter := "brick_color" if material.shader==renderer.Clockwork.Brick else "roof_color"
+			var roof_color: Color = material.get_shader_parameter(parameter)
 			var recipe: int = lookup.get(roof_color.to_html(),-1)
 			if recipe >= 0:
 				var owned := material.duplicate() as ShaderMaterial
 				node.material_override = owned
-				material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":true})
+				material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":true,"parameter":parameter})
 		if not node.mesh is ArrayMesh: continue
 		for surface in range(node.mesh.get_surface_count()):
 			var mesh := node.mesh as ArrayMesh
@@ -111,7 +117,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 	if not root.has_meta("house_color_cache") or not root.has_meta("color_geometry_fingerprint"): return false
 	var cache: Dictionary = root.get_meta("house_color_cache")
-	if cache.authoring != _authoring(house): return false
+	if cache.authoring != _authoring(house) or str(root.get_meta("era_theme","pastoral")) != renderer.state.house_era(house): return false
 	var index: int = _index(house)
 	if index == int(cache.index): return true
 	var colors: Array = cache.palettes[index]
@@ -119,7 +125,7 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 		var mesh: ArrayMesh = buffer.mesh
 		mesh.surface_update_attribute_region(int(buffer.surface),0,buffer.variants[index])
 	for row: Dictionary in cache.materials:
-		if row.shader: row.material.set_shader_parameter("roof_color",colors[int(row.recipe)])
+		if row.shader: row.material.set_shader_parameter(str(row.get("parameter","roof_color")),colors[int(row.recipe)])
 		else: row.material.albedo_color = colors[int(row.recipe)]
 	for row: Dictionary in cache.style_rows:
 		for part in range(row.parts.size()):
@@ -127,5 +133,9 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 			if recipe >= 0: row.parts[part].color = colors[recipe]
 		row.node.set_meta("style_details",row.parts)
 	cache.index = index
-	root.set_meta("palette_colors",_palette(renderer,index).duplicate())
+	var base := _palette(renderer,index)
+	if renderer.state.house_era(house)=="renaissance": base=renderer.Renaissance.palette(base)
+	elif renderer.state.house_era(house)=="clockwork":base=renderer.Clockwork.palette(base)
+	elif renderer.state.house_era(house)=="modern_eco":base=renderer.Modern.palette(base)
+	root.set_meta("palette_colors",base.duplicate())
 	return true

@@ -16,7 +16,7 @@ func _refresh() -> void:
 	_reachable.clear()
 	connectivity_rebuilds += 1
 	for house: Dictionary in life.state.houses:
-		if house.role != "venue" or not life.connected_houses.has(house.id): continue
+		if house.role not in ["venue","symphony_hall"] or not life.connected_houses.has(house.id): continue
 		var homes: Array[String] = []
 		for resident: Dictionary in life.residents:
 			var home := str(resident.home_id)
@@ -34,7 +34,7 @@ func status(venue_id: String) -> Dictionary:
 	var venue := false
 	for house: Dictionary in life.state.houses:
 		if str(house.id) == venue_id:
-			venue = house.role == "venue"
+			venue = house.role in ["venue","symphony_hall"]
 			enabled = venue and bool(house.get("auto_matinee", false))
 	var ready := 0
 	for resident: Dictionary in life.residents:
@@ -58,7 +58,7 @@ func tick(delta: float) -> void:
 	_refresh()
 	var venues: Array[String] = []
 	for house: Dictionary in life.state.houses:
-		if house.role == "venue" and house.get("auto_matinee", false): venues.append(str(house.id))
+		if house.role in ["venue","symphony_hall"] and house.get("auto_matinee", false): venues.append(str(house.id))
 	venues.sort_custom(func(a: String, b: String): return int(a.substr(1)) < int(b.substr(1)))
 	var last := str(life.state.matinee_last_venue)
 	var next := (venues.find(last) + 1) % maxi(1, venues.size())

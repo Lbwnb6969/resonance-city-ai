@@ -1,846 +1,519 @@
-# 《共鸣之城》(Resonance City) v3.0 全域深度优化、架构清洗与三库融合总蓝图
+# 《共鸣之城》(Resonance City) · 四库融合终极总设计与长期施工蓝图
+**——融合 Tiny Glade × Townscaper × Foundation × Cities: Skylines II 的可持续音乐城建工程总纲**
 
-> **2026-10-16 工程校准（施工以本段为准）**
->
-> 本文以 `f0a916e6b` 为历史快照；当前状态读根 `PROJECT.md`，不要把路线或示例写成已完成功能。
-> - 当前作品兼容Schema 1～11；11保存可选自然轮廓，10保存柔化笔刷，9保存手动连线。旧版代码行数、135脚本/378测试及导出配额是历史数据，归档数量以实际依赖计划为准。
-> - 清理只使用实际 `tools/cleanup_v3_workspace.py`：默认dry-run，复核JSON后 `--apply`；解析res路径、UID和全局类闭包，唯一归档、不删除、不覆盖。保留三套原件、三库、个人数据与现有验证记录。不能按前缀硬移共享依赖。
-> - <35ms准备、<12ms最大帧和15MB减负是目标，不是当前实测保证；基于同机同样例重新测量。2个MultiMesh节点也不等于各视角恰好2个Draw Call。
-> - 现有采购、茶叙、工坊送装、演出与余韵已经连通。幸福度必须读取每户真实采购/茶叙凭据，禁止把全城 `served` 或 `tea_parties` 当成每户完成。
-> - “产速提高35%”统一用速率×1.35：6秒约4.44秒、8秒约5.93秒；不能同时声称耗时减少30%。林木半径统一8米；跨街彩旗须检查邻屋/悬索障碍并随实际编辑发布更新。
-> - `P`保留点房试听，明信片用 `F12`；街头漫步、第四章、墙体/水面示例等以集成和验证记录登记进度。
-> - Shader与GDScript块是适配起点。墙体AO须匹配合批后的坐标/顶点色；水沫倒置smoothstep改为 `1.0-smoothstep(0.06,0.28,depth)`；草色用同镜头昼夕夜实图判断。
-> - 三套用户提供目录保留原文；本目录为当前修订施工版。原示例源码留在用户目录，实际实现以 `scripts/` 与根工具为准。
-> - 实窗复核收敛了模板过亮草色：当前low(.290,.365,.250)、mid(.350,.425,.295)、high(.435,.490,.335)。以下旧示例数值是设计起点，不能重新覆盖已验证参数。
+> **文档性质與最高授权**：
+> 本文档是《共鸣之城》项目的**最高设计与工程执行总纲**（建议直接保存覆盖为仓库内的 `文档/code_artifact.md`）。
+> 施工 AI 拥有项目内设计细化、代码重构、着色器编写、资产提取与验证的**完全自主权**。请以**“做出真正好玩、好看、好听、有强烈正反馈、可长期持续经营的完整作品”**为第一准绳，把算力与时间全部投入到可感知的画面质感、丝滑衔接、声学魅力与城市生命力上。
 
-*(基于 2026-10-16 最新仓库快照 `f0a916e6b3c89c951b1ec669d67a60745ea0f899` 全量代码审计与三大逆向工程库深度挖掘制定)*
+---
 
-> **文档定位与使用指南**：
-> 1. **主设计目标（实施以当前代码与工程校准为准）**：本文档直接替换仓库中的 `文档/code_artifact.md`。它针对当前 `v2.0` 首轮落地后的真实代码库（`f0a916e6b`）进行了逐文件、逐着色器、逐函数的深度体检，将 **系统设计、工程性能、游戏美术、音乐交互、游戏策划（经营与涌现生态）以及仓库文档/代码结构** 全面升级至 **v3.0 终极形态**。
-> 2. **三库深度赋能**：本蓝图中的每一项核心升级，均直接建立在仓库内置的三大逆向工程成果之上——**Tiny Glade (`参考资料/Tiny-Glade逆向成品-v2`)**、**Townscaper (`参考资料/Townscaper逆向成品`)** 与 **Foundation (`参考资料/Foundation逆向成品-2026-10-13`)**，给出了精确到源文件、函数地址、数学公式与完整可粘贴 GDScript / GDShader 的落地方案。
-> 3. **如何使用**：
->    - 将本文件保存覆盖为项目内的 `文档/code_artifact.md`；
->    - 直接复制下方 **【第一部分：直接发给执行 AI 的一键总指令】** 发送给你的本地执行 AI（Codex / Claude Code）即可全自动推进。
+## 目录
+- **第一章：四库融合顶层愿景与核心职责矩阵（Tiny Glade + Townscaper + Foundation + 城市天际线2）**
+- **第二章：核心设计哲学的三大终极裁定（视野声场机制、时代演进×多风貌街区并存、纯正反馈闭环）**
+- **第三章：美术质感与无缝衔接工程（草毯、Filmic 光影、CS2 挖填方地形护坡、道路就地升级与环岛、跨风貌过渡）**
+- **第四章：四温区视野声场架构 (`Acoustic Grouping`) 与跨时空音乐共鸣系统**
+- **第五章：四大时代演进篇章 × 多风貌街区并存（从古典木石河湾到现代生态交响城）**
+- **第六章：Foundation × CS2 深度可持续经营、建筑 1–5 级自然演进与地标名胜 (`Signature Buildings`)**
+- **第七章：大城性能保障架构（80m~160m 扩容、MultiMesh 分块 LOD、全异步分帧重建）**
+- **第八章：仓库现有文档大瘦身与工作流去形式主义指南（附一键清理清单与入口替换正文）**
+- **第九章：面向施工 AI 的十阶段长期施工路线图（Phase 1 ～ Phase 10 持续开发蓝图）**
 
-## 第一部分：施工入口与现状
+---
 
-本蓝图以 `f0a916e6b` 历史快照为起点，下面的分析、目标和完整代码块保留为设计依据。不要重复执行已完成的重构步骤，也不要直接覆盖现有模块。开工前阅读根目录 `PROJECT.md`、`AI_START_HERE.md` 和 [重构套件执行对照](重构套件执行对照_2026-10-17.md)，按实测差距选择下一项工作；数值目标只有在当前样例、当前机器复测后才能登记为达成。
+## 第一章：四库融合顶层愿景与核心职责矩阵
 
-施工顺序不再固定为“清理 → 性能 → 美术 → 玩法”。优先修复当前可玩体验里证据最强的问题，遵循最小充分验证，并保持每次只推进一个有界子项。三库来源和精确实现入口见 [参考索引](参考索引.md)。
+《共鸣之城》不再只是三个箱庭小品的拼贴，而是正式确立以 **四大标杆工程/逆向参考库** 为基石的黄金四角架构：
+- 用 **Tiny Glade** 决定它的**“触感与微观自然之美”**（手绘笔刷直觉、丰润草毯、门阶拱洞化学反应）；
+- 用 **Townscaper** 决定它的**“建筑涌现之趣”**（点击即长的模块拓扑、跨房共享墙与连排屋顶）；
+- 用 **Foundation** 决定它的**“街坊烟火与有机经营”**（无网格功能区、村民真实寻路履约、工坊生产与茶座生活）；
+- 用 **Cities: Skylines II (`《城市天际线2》`)** 决定它的**“宏观骨骼、道路升级、声场聚合 (`Audio Grouping`) 与跨时代城市演进深度”**（道路就地替换升级、挖填方挡土墙与高架栈桥、一键环岛与广场、建筑 1–5 级品质跃升、地标名胜建筑 `Signature Buildings` 以及基于镜头距离与密度的声源分组调度）。
 
-## 第二部分：仓库代码、测试、文档与 AI 快照配额“外科手术式大瘦身”
+### 1.1 四大参考库精准取用矩阵
 
-### 2.1 现有仓库结构病灶精确诊断（基于 `f0a916e6b` 实测数据）
+| 参考项目 | 仓库路径 / 技术来源 | 在《共鸣之城》中的核心统治域 | 直接取用的关键机制、公式与资产 |
+| :--- | :--- | :--- | :--- |
+| **1. Tiny Glade**<br>*(微观美术、草木水岸与穿墙门阶首选)* | `参考资料/Tiny-Glade逆向成品-v2/` | **自然地景、草毯 (`Grass2`)、建筑微观材质、穿墙拱门、触墙石阶、屋顶瓦片曲率** | 1. `grass2` 母子簇团分布、`world_albedo_tint` 512² 世界色场、`grass_light_sun_sky` 包裹漫反射与叶尖阳光透射 (SSS)、`object_push` 柔性压弯<br>2. `paths/path_mask_visual` & `path_pebbles` 柔路缘与路边卵石<br>3. `reconstruction_wall_pipeline` & `wall_stairs` 道路穿房自动凿石拱门、触墙生成门廊石阶、陡坡自动生成石阶路<br>4. `recovered_roof.py` 屋面微垂幂剖面与圆塔锥形顶 |
+| **2. Townscaper**<br>*(房屋点击生长与邻接拓扑首选)* | `参考资料/Townscaper逆向成品/` | **房屋模块点击/拖拽生长、跨房共享墙、连排/转角/内院闭合语法、撤销历史与多声源聚合** | 1. `townscaper_generation.md` 六面邻接分类、同轴共墙消隐、长屋山墙、L/U 转角屋顶、底层四格闭合石铺内院<br>2. `ManySoundsManager.PlaySound/OnUpdate` 同类声源屏幕加权聚合、冷却门控与固定声部池 (`AudioSourcePool`)<br>3. `SaveData.CopyFrom` 完整快照收藏与确定性 Undo/Redo |
+| **3. Foundation**<br>*(有机街坊、居民通勤与工坊经营首选)* | `参考资料/Foundation逆向成品-2026-10-13/` | **街坊划区、居民真实寻路履约、工坊生产/送装闭环、自然地貌贴图与模型资产** | 1. `05781_Behavior_Visit_Building` & `05734_Behavior_Work` 真实到岗→制作→携带送达→消费闭环（面包坊、制琴坊、花圃茶座、市集、节庆委托）<br>2. 直接复用已恢复的 `Cliff A`（2048² 岩壁）、`Sand01A`（2048² 湿砂）、`Stone Wall`、`Env_Mineable_Stone.glb`（坡地伴石）、`Church.glb`（铜钟）、庭院喷泉与 `386937418.wav` 溪流声 |
+| **4. Cities: Skylines II**<br>*(道路工具进阶、挖填方地形衔接、声源分组与区域演进首选)* | `参考资料/城市生成深化_2026-10-09/` + CS2 核心工程机制 | **道路就地替换升级 (`Replace Tool`)、环岛与路口广场、挖填方挡土墙 (`Cut & Fill`)、建筑 1–5 级成长、地标名胜 (`Signature Buildings`)、镜头视野声源分组 (`Audio Grouping`)** | 1. **Road Replace & Roadside Upgrades**：在已有道路上直接刷涂升级宽度、加装行道树、古典街灯、宽石板漫步道或有轨电车/音轨专线<br>2. **Cut-and-Fill Terrain Integration**：山坡修路/建房不把整座山压回 0 米，而是自动生成挖方挡土石墙 (`Cut`) 与填方高架石拱/路堤 (`Fill`)<br>3. **Roundabouts & Plazas**：点击任意路口一键生成圆润石板环岛与中心雕塑/喷泉/钟塔<br>4. **Audio Grouping & Proximity Soundscape**：按镜头视锥、缩放高度与声源密度动态切换近景个体声、中景街坊合奏与远景静默/地标微音<br>5. **Architectural Themes & Building Levels 1–5 & Signature Buildings**：支持多时代/多风貌街区并存、商住混合连拱楼 (`Mixed-Use`)、建筑 1–5 级外观与音色自动进化、以及免费可放置的里程碑地标建筑 |
 
-通过对当前仓库 `AI资料/参考资料发布清单.json` 与全量源码树的静态依赖分析，发现以下严重问题：
+---
 
-| 诊断维度 | 当前实测数据 (`f0a916e6b`) | 核心病灶说明 |
+## 第二章：核心设计哲学的三大终极裁定
+
+针对你提出的核心设计思考，经过对四大参考库与现有代码库的通盘权衡，在此做出清晰、自洽、能产生最强游戏正反馈的**三大顶层设计裁定**：
+
+### 2.1 裁定一：音乐如何既作为最强正反馈，又在大城中保持绝对和谐？
+**——确立“四温区视野声场架构 (`Camera-Centric 4-Zone Acoustic Grouping`)”**
+
+如果一座城市有 200 栋房子、8 个街区同时发声，再好听的音轨也会叠成浑浊的噪音；反过来，如果全城永远只有 1 栋房子干巴巴地亮窗单响，又会失去“城市交响”的宏大感动。
+因此，我们深度融合 **《城市天际线2》的 `Audio Grouping`（按镜头位置与声源密度动态分组）** 与 **《共鸣之城》的乐句同步法则**，将全城划分为 **四个声学温区**：
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                   《共鸣之城》四温区视野声场调度架构                         │
+├─────────────────┬───────────────────────────────────────┬───────────────────┤
+│ 声学温区        │ 空间判定条件                          │ 发声行为与混音权重 │
+├─────────────────┼───────────────────────────────────────┼───────────────────┤
+│ 1. 焦点主奏区   │ 位于玩家当前镜头视锥核心圈内           │ 【主旋律与细节声】 │
+│ (Focus Core)    │ (距镜头焦点 ≤ 16m，受缩放高度调制)     │ 权重 100%：建筑轮流│
+│                 │                                       │ 主奏、工坊劳作微音 │
+│                 │                                       │ 茶座长笛、点击拨弦 │
+├─────────────────┼───────────────────────────────────────┼───────────────────┤
+│ 2. 内联共鸣区   │ 虽不在镜头正中心，但与焦点区存在：     │ 【对答与和声伴奏】 │
+│ (Linked Zone)   │ ① 玩家显式拉出的“跨区共鸣连线”；或     │ 权重 45%~65%：在偶 │
+│                 │ ② 真实短路相连且处于“街坊问答/接力”中  │ 数乐句进行跨区一问 │
+│                 │                                       │ 一答、复调伴奏呼应 │
+├─────────────────┼───────────────────────────────────────┼───────────────────┤
+│ 3. 特殊地标事件 │ 位于视野外，但触发了高价值全局/远端事件│ 【方向性远端彩蛋】 │
+│ (Special Event) │ ① 三层钟楼/报时塔的稀疏整句钟声；      │ 权重 20%~35%（带低 │
+│                 │ ② 远端正在举办街坊庆典演出的柔和余音； │ 通滤波与立体声方位 │
+│                 │ ③ 跨区有轨电车/音乐游船到站和弦铃；    │ 感）：提示远方生机 │
+│                 │ ④ 邻区建筑刚完成升级/地标落成的庆典音  │ 吸引玩家移镜观赏   │
+├─────────────────┼───────────────────────────────────────┼───────────────────┤
+│ 4. 视野外静默区 │ 城市其余所有不在镜头视野内、且无内联   │ 【绝对静默 0%】    │
+│ (Silent City)   │ 与特殊事件的广大街区（占大城 70%~90%） │ 居民生活与生产照常 │
+│                 │                                       │ 运行，但完全静音！ │
+│                 │                                       │ 彻底保证音乐纯净度 │
+└─────────────────┴───────────────────────────────────────┴───────────────────┘
+```
+
+- **镜头高度 (Zoom) 的《城市天际线2》式平滑过渡**：
+  - **近景微距 (`zoom <= 18`)**：听见焦点内单栋房屋的清脆拨弦、面包出炉铃声、茶座碰杯声、溪水潺潺与居民脚步过桥华彩（微观箱庭感）。
+  - **中景街坊 (`18 < zoom <= 32`)**：微观零碎音效自动退居幕后，焦点街坊的器乐合奏与相邻内联街坊的复调对答成为主角（街坊交响感）。
+  - **远景全城 (`zoom > 32`)**：通过 `Audio Grouping` 将视野内多个街坊聚合成宏大、温润的管弦/环境全景声床（加上地标钟楼的空灵泛音），依然只占用固定声部池，绝不吵闹。
+
+---
+
+### 2.2 裁定二：时代演进 vs. 不同风格区域并存——到底怎么选？
+**——确立“纵向时代解锁 × 横向风貌街区并存 (`Progressive Era Unlock + Coexisting Chrono-Districts`)”**
+
+我仔细权衡了你提出的三种可能：
+- 如果做**“全城强制统一换代”**（到了现代全城老房子全变玻璃楼）：玩家辛辛苦苦搭好的中世纪暖石面包坊和木筋小巷被覆盖，会破坏 Tiny Glade 式的手作珍藏感；
+- 如果做**“开局毫无时代感、所有风格随便混摆”**：第 1 分钟就能把摩天玻璃房贴在茅草屋旁边，既容易在贴合处产生怪异的视觉割裂，又失去了“从小聚落一步步发展成伟大交响都会”的长线经营爽感；
+- 如果做**“不同时代彻底切成不同存档/关卡”**：那玩家永远无法在一座城市里体验“老城古韵与新城繁华隔河相望、古琴鲁特与现代钢琴跨时空合奏”的震撼。
+
+**因此，最完美、最好玩的设计是：【纵向通过城市繁荣演进解锁四大时代，横向以“风貌街坊 (Chrono-Cultural Districts)”在同一座城市中永久并存】！**
+
+1. **怎么演进（纵向成长感）**：
+   - 玩家从 **第一时代：古典田园河湾（暖石、木构、陶瓦、鲁特琴与木笛）** 起步。
+   - 随着人口、工坊、茶聚和街坊演出积累“城市共鸣度”，依次解锁 **第二时代：文艺复兴人文长街** → **第三时代：蒸汽钟表与浪漫管弦街区** → **第四时代：现代生态交响新城区**。每一次时代突破都有隆重的全城共鸣庆典与新工具解锁，带来极强的阶段正反馈！
+2. **怎么并存（横向丰富度与视觉和谐）**：
+   - **老城区绝不强制变身**：当你解锁文艺复兴或现代风貌后，你最初建设的河湾依然是受保护的**“古典老城区 (Historic Old Town)”**。
+   - **按“街坊 (District)”切换建筑与音乐风貌**：玩家在河对岸、高地台地或新扩展的土地上，用工具 8（街坊）划定新的社区，并将其风貌指定为 **【古典田园】、【文艺复兴】、【蒸汽浪漫】或【现代生态】**！
+   - **在该风貌区内建房/修路**：系统自动使用该时代的建筑母型、屋顶语法、道路铺装与专属器乐声部！
+   - **跨时代街区交界处的“自然缓冲带”**：两个不同时代风貌的街区通常以**河流、石拱桥、高地挡土墙、林荫大道或环岛广场**自然分隔——就像真实的佛罗伦萨、布拉格或京都一样，老城的红瓦石巷与新城的玻璃连廊隔水相望，不仅视觉上毫无违和感，更能在两者之间拉出一条**“跨时空共鸣音弧”**，听见古典鲁特琴与现代立式钢琴在同一个 D 大调和弦下深情对答！
+
+---
+
+### 2.3 裁定三：如何让游戏真正“非常好玩、正反馈极强、耐玩度高”？
+**——确立“建造即弹奏 → 衔接即惊喜 → 经营即生长 → 共鸣即高潮”的四层正反馈飞轮**
+
+| 反馈层级 | 玩家的操作动作 | 立即获得的视听与玩法正反馈 |
 | :--- | :--- | :--- |
-| **1. `scripts/` 旧 2.5D 死代码堆积** | 共 234 个 `.gd` 脚本（52,887 行），其中 **135 个脚本（30,150+ 行）** 为旧 2.5D 死代码 | 经全量 `preload`/`load`/`class_name` 交叉扫描确认：当前 3D 游戏 `scenes/city_creation.tscn` **仅使用了 `city_creation_*.gd`（98 个脚本，22,699 行）和 1 个共享主题脚本 `scripts/ui/valley_ui_theme.gd`**。其余如 `scripts/city/*`、`scripts/proposals/*`、`scripts/world/continuous_world.gd`、`scripts/visual/classical_*.gd`、`scripts/ui/continuous_valley_demo.gd` 等 135 个脚本完全是旧 2.5D 时代的废弃遗产！ |
-| **2. `tests/` 与 `scenes/` 严重污染** | `tests/` 下共 440 个 `.gd`（含 `.uid` 共 880 个文件，2.95 MB），其中 **378 个测试为旧 2.5D 测试** | 仅有 62 个 `test_city_creation_*.gd` 服务于当前 3D 河湾；其余 307 个 `round63_*`~`round218_*` 及 71 个旧 `*_contract.gd` 全部测的是已废弃的 2.5D 场景（`continuous_valley.tscn`、`p0_main.tscn` 等）。 |
-| **3. `验证记录/` 与旧参考资料挤占 55MB 配额** | `payload_bytes` 达到 `54,999,960 / 55,000,000`（99.9999% 满载），导致 **12,417 个三库研究文件被剔除** | `验证记录/` 占用了 1,118 个文件（7.11 MB），且 `参考资料/全项目补充研究_2026-10-10`、`城市生成深化_2026-10-09` 等旧 2.5D 网页摘录占用了 5.52 MB。加上死代码与死测试，足足浪费了 **18.5 MB** 的宝贵导出配额！ |
-| **4. `PROJECT.md` 仍偏向逐轮验证汇报** | `PROJECT.md` 充斥着“CPU12/实窗18项通过、p95 5.582ms、不代表满城性能”等防御性测试口吻 | 缺乏面向游戏设计、系统全局状态与玩家体验的清晰架构视图。 |
-
-### 2.2 一键自动化清理脚本 `tools/cleanup_v3_workspace.py`
-
-请将以下脚本保存为 `tools/cleanup_v3_workspace.py` 并在项目根目录执行一次。它会将所有与 3D `city_creation` 无关的旧 2.5D 脚本、场景、测试、数据与历史验证日志**安全归档至 `废弃/v2_legacy_archive_2026-10-16/`**（绝不物理删除，随时可查，但彻底移出工作目录与 Git 导出配额）：
-
-```powershell
-# Default: create a plan without moving anything.
-python tools/cleanup_v3_workspace.py --plan 验证记录/清理计划_新批次.json
-# After reviewing the dependency plan, apply that exact file.
-python tools/cleanup_v3_workspace.py --apply 验证记录/清理计划_新批次.json
-```
-
-实际修正版支持UID、全局类和资源依赖闭包，唯一归档与迁移manifest；提供包中的原始清理器仅作历史来源。
-
-### 2.3 核心入口文档全新替换正文（直接覆盖）
-
-#### （1）覆盖根目录 `AGENTS.md`
-```markdown
-# 《共鸣之城》AI 施工准则 (v3.0)
-
-1. **核心定位与完全创作自主权**：
-   - 《共鸣之城》是一款融合 **Tiny Glade**（微缩箱庭自然美学、立体筒瓦/毛石材质、丝滑道路与地形互动）、**Townscaper**（点击即长的邻接建筑拓扑、建筑按压弹性反馈、飞鸟彩蝶与跨街彩旗生态、柔和阴角 AO）与 **Foundation**（有机街坊、活水磨坊与面包/茶叙/木饰生产生活闭环、居民幸福度反哺音乐编配）的 **3D 治愈系城市音乐沙盒游戏**。
-   - 你拥有代码重构、着色器编写、模块拆分、玩法深化与美术调优的**完全自主权**。
-
-2. **阅读顺序**：
-   - 先读 `AI_START_HERE.md` 与 `PROJECT.md` 掌握当前 3D 架构与待办重点；
-   - 再读唯一最高设计蓝图 `文档/code_artifact.md` 与三库索引 `文档/参考索引.md`。
-
-3. **三大逆向工程库深度复用**：
-   - 直接参考、移植和适配 `参考资料/Tiny-Glade逆向成品-v2`、`参考资料/Townscaper逆向成品`、`参考资料/Foundation逆向成品-2026-10-13` 中的算法公式、GLSL/HLSL 着色器逻辑、行为状态机与恢复资产。
-
-4. **工程纪律（拒绝形式主义，专注作品品质）**：
-   - **严禁**日常迭代打包 100MB+ 的便携 ZIP，**严禁**在文档中堆砌文件哈希流水账或消极免责声明（如“不称完整移植”、“非满城证明”）。
-   - 保持单一纯净的 3D `city_creation` 代码树，单个脚本超过 1,200 行时主动按职责拆分为清晰的子模块。
-   - 每次修改跑通针对性测试与 1 次实窗画面/帧率核验即可，确保画面惊艳、帧率丝滑、音乐动听。
-```
-
-#### （2）覆盖根目录 `AI_START_HERE.md`
-```markdown
-# 《共鸣之城》AI 快速启动入口 (v3.0)
-
-## 1. 运行环境与唯一主入口
-- **Godot 引擎**：`D:/GODOT/Godot_v4.7.2-stable_win64_console.exe`（Compatibility 渲染器，1440×900）
-- **唯一主场景**：`res://scenes/city_creation.tscn`（主控制器：`scripts/ui/city_creation_demo.gd`）
-- **四大核心域**：
-  - **世界状态与经济 (`scripts/world/`)**：`city_creation_state.gd`（房屋/道路/水岸/地形/街坊/手动连线 Schema 1~11 真值与撤销栈；11为可选自然轮廓）、`city_creation_life.gd`（含 `bakery`, `workshop`, `cafe`, `matinee`, `concert_relay`, `travel`）、`city_creation_network.gd`（空间分桶路网与寻路）、`city_creation_terrain.gd`（0.5m 高度场与目标高程平台融合）。
-  - **视觉与着色器 (`scripts/visual/`)**：`city_creation_renderer.gd`、`city_creation_budget_rebuild.gd`（后台线程准备+主线程分帧安装）、`city_creation_meadow.gd`、`city_creation_foliage.gd`、`city_creation_shore.gd`、`city_creation_architecture.gd`、`city_creation_highland.gd`、`city_creation_road_stairs.gd`、`city_creation_promenade.gd`、`city_creation_round_tower.gd`、`city_creation_conservatory.gd`、`city_creation_arcade.gd`、`city_creation_stepping.gd` 及 `scripts/visual/shaders/creation_*.gdshader`。
-  - **音乐与声景 (`scripts/audio/`)**：`city_creation_music.gd`（9 条 24s 同步音轨 + 4 短音池 + 6 声像总线）、`city_creation_pitch_pluck.gd`（层高×主题即兴拨弦与刮奏）、`city_creation_ambience.gd`（溪流/林风/昼鸟/夕虫四层声床）。
-  - **界面与手记 (`scripts/ui/`)**：`city_creation_gallery.gd`（作品收藏与 17 座内置示范河湾）、`city_creation_journal.gd`（四章河湾手记）、`city_creation_ledger.gd`（生活账本）。
-
-## 2. 当前 v3.0 重点推进路线（详见 `文档/code_artifact.md` 第三至五部分）
-1. **【架构与零卡顿（第三部分）】**：执行 `tools/cleanup_v3_workspace.py` 清空旧 2.5D 死代码；升级 `city_creation_network.gd` 的空间桶附着点预计算与平面键缓存，彻底消灭近路塑形的 2.5s 后台准备与 47~94ms 主线程提交尖峰；拆分超长脚本。
-2. **【美术与着色器跃升（第四部分）】**：唤醒草毯色阶与根尖 SSS + 四色野花聚落；落地 `creation_wall.gdshader`（Townscaper 式墙根/檐下/阴角 Cavity AO 与冷暖半球光）；升级立体筒瓦屋顶 shader 与岸沫/菲涅尔水面 shader；新增第三光影模式“星夜夜曲 (Nocturne)”。
-3. **【玩法、生命生态与音乐进化（第五部分）】**：加入 Townscaper 式建筑按压弹性跳动 (`VoxelBob`) 与拖拽刮奏八音盒；加入屋顶飞鸟 (`BirdFlock`)、花间彩蝶/夏夜萤火虫 (`ButterflyFlock`) 与跨街彩旗灯串 (`PropWire`)；落地 Foundation 式“活水磨坊加持 + 居民三阶幸福度反哺建筑繁盛度与音乐复调声部”；新增 `V` 键街头第一视角漫步与移轴明信片拍照模式。
-```
-
-#### （3）覆盖根目录 `PROJECT.md`
-```markdown
-# 《共鸣之城》项目状态与路线图 (v3.0)
-
-唯一总设计蓝图：[文档/code_artifact.md](文档/code_artifact.md)。
-
-## 1. 已就绪基座能力（v1.0 ~ v2.0 已落地）
-- **画布与地形**：`80m×80m` 可编辑河湾（`96m×96m` 外围地景），`0.5m` 采样高度场支持抬高、压低、还原、露岩草丘与平顶台地；房屋记住起笔海拔 `base_y`（`0.05m` 量化），坡侧自动延伸毛石高地基 (`StonePlinth`)，陡坡道路 (`grade > 0.24`) 自动生成带矮石栏的 `0.14m` 石阶路。
-- **建筑与街景母型**：单击/连拖建屋、跨户共墙、长排/L/U 联合屋顶、山墙圆窗、三层尖顶钟楼（含 Foundation 铜钟）、闭合内院石铺与喷泉、上层露台木花架、连续 2~4 格上层露台自动派生**玻璃花房 (`Conservatory`)**、独立房柱派生 **16 边圆塔与曲面锥顶 (`RoundTower`)**、临宽街/内院有上层支撑的底层立面自动退缩 `0.38m` 派生**连拱柱廊 (`Arcade`)**。
-- **道路与水景**：自由曲线与直拉锁段道路、急弯圆角与路口扩口、穿房石拱通道、跨河石桥；沿原路重描一遍原位升级 `1.75m` **石板灯街 (`Promenade`)**（配古典铁艺暖灯与石砌花箱）；普通小径跨 `<2.6m` 低岸窄渠自动派生**青石汀步 (`SteppingStones`)**；玩家池塘自动点缀 **Tiny Glade 睡莲叶与莲花 (`Lilypads`)**。
-- **音乐、声床与生活**：9 条 24s 同步长轨 + 4 短音池 + 6 声像总线；五音乐主题（暖庭/深流/织机/市集/林间）、用途自动配器、邻里问答、工具 8 手动跨区共鸣连线 (`musical_links`)、建房/点房音高拨弦 (`PitchPluck`)、Foundation 溪流+林风/昼鸟/夕虫四层自然声床；面包坊、制琴坊、花圃茶座、演奏庭与多庭庆典接力完整连通；支持作品收藏与 17 座示范河湾一键切换。
-
-## 2. v3.0 正在推进的四大核心升级
-1. **【工程减负与零卡顿路网】**：归档 135 个旧 2.5D 废弃脚本与 378 个旧测试；重构 `city_creation_network.gd` 消除近路地形编辑的 2.5s 准备与 47~94ms 提交卡顿；拆分 `state` / `renderer` / `demo` 巨型文件。
-2. **【Tiny Glade + Townscaper 级画面精修】**：拉开草毯宏观冷暖色阶与根尖透射对比并加入野花簇；为所有建筑墙体接入 `creation_wall.gdshader`（墙根/檐下/阴角 Cavity AO 与冷暖半球光）；升级立体筒瓦屋顶法线与岸沫/菲涅尔反射水面；新增“星夜夜曲 (Nocturne)”第三光影模式。
-3. **【箱庭生命生态与触感反馈】**：落地建筑建造/点按弹簧跳动 (`VoxelBob`)、屋顶飞鸟群 (`BirdFlock` 停靠与惊飞)、花间蝴蝶与夜间萤火虫 (`ButterflyFlock`)、高匠作街屋跨街彩旗与暖灯串 (`PropWire`)。
-4. **【Foundation 式幸福共鸣循环与漫步相机】**：新增水畔/喷泉旁的“活水磨坊加持”，建立居民“麦香温饱 + 茶叙雅集 + 匠心风物”三阶幸福度并反哺建筑外观与音乐复调声部；新增按住拖拽“街巷八音盒刮奏”与 `V` 键“街头第一视角漫步 / 移轴明信片相机”。
-```
-
-## 第三部分：系统设计与工程架构大优化（零卡顿管线 + 巨型类解耦）
-
-### 3.1 彻底根除“近路地形/水岸编辑 2.5 秒准备与 47~94ms 主线程卡顿”
-
-#### 3.1.1 病根精准定位（为什么 `验证记录/编辑响应_2026-10-16` 没能解决近路卡顿？）
-在 `验证记录/编辑响应_2026-10-16/README.md` 中记录了一个悬而未决的性能瓶颈：**在 28 屋经营样例中，一旦地形笔刷触及现有道路，后台准备高达 `2,480 ~ 2,720 ms`，且发布帧出现 `46.7 ~ 94.1 ms` 的明显卡顿（其中 `_sync_people()` 耗时 `16.15 ms`）**。
-通过逐行审查 `scripts/world/city_creation_network.gd` 与 `scripts/world/city_creation_life.gd`，我们找到了导致该瓶颈的 **3 个确切算法缺陷**：
-
-1. **缺陷一：`_route_from_position(point, finish)` 在内层循环中重复执行全图 BFS 与全边扫描（耗时 2.4 秒的元凶！）**
-   - 在 `city_creation_network.gd` 第 52~60 行，`prepare()` 对 `origins` 中的每个点（约 70~85 个点）遍历所有可达目标 `finish`（约 8~12 个服务/住宅端口），调用 `_route_from_position(point, finish)` 达 **600~900 次**。
-   - 而在 `_route_from_position(point, finish)`（第 302~345 行）内部，**每一次调用**都在做：
-     - 从 `finish` 出发做一次全图 BFS 求连通分量 `reachable`（第 308~317 行）；
-     - 遍历整张路网图 `graph` 的**所有边**（`for start in graph: for end in graph[start]:`），计算 `planar` 到线段的距离，并调用 `_attachment_crosses_wall(planar, projected)` 遍历全城 28 栋房子的所有底层格（第 321~333 行）！
-   - **关键洞察**：一个坐标点 `point` 附着到哪条道路边 (`attachments`)，**只取决于 `point` 自身的平面坐标 `(x, z)`，与终点 `finish` 毫无关系**！把只依赖 `point` 的几何投影与穿墙检测放在 `finish` 循环内部重复算 10 遍，且不走空间网格桶，直接造成了 $O(|Origins| \times |Targets| \times |Edges| \times |Houses|)$ 的指数级算力浪费！
-
-2. **缺陷二：`prepared_positions` 使用带高度 `y` 的 `Vector3` 作为字典键，且在 `_sync_people()` 中顺序颠倒**
-   - 在 `city_creation_life.gd` 第 403 行（`_sync_people()`）：
-     ```gdscript
-     node.position.y = state.street_height(Vector2(node.position.x,node.position.z))+0.10
-     ```
-     然后再进入 `_resume(resident)` 调用 `_route_from_position(resident.node.position, ...)`。
-   - 然而，`_route_from_position(point, finish)` 的起点本质上是平面坐标 `Vector2(point.x, point.z)`！用浮点数 `Vector3` 做 Dictionary 键既容易因主线程与 worker 线程的 `street_height` 微小差异或双份采样浪费算力，又让 `prepare()` 不得不把 `[point, adjusted]` 塞进 `origins` 算两遍（第 43~46 行，直接让 worker 工作量翻倍）！
-
-3. **缺陷三：渲染树提交 (`town.poll_budget_rebuild`) 与生活路网提交 (`life.commit_budget_sync`) 挤在同一帧**
-   - 在 `city_creation_demo.gd` 第 1626~1631 行：当 `town.poll_budget_rebuild()` 完成最后一阶段并执行 `_commit()`（重挂节点、上传 `512×512` 水场与接触场纹理，已消耗 4~6ms）时，代码**立即在同一帧**调用 `life.commit_budget_sync()`！两项主线程提交叠加在一起，必然冲破 16.6ms 帧预算。
-
-#### 3.1.2 直接可执行的重构代码（性能目标须重新实测）
-
-##### Step 1：重构 `scripts/world/city_creation_network.gd`（空间边桶 + 连通分量预标定 + 单点单次附着计算）
-在 `scripts/world/city_creation_network.gd` 中增加 `_edge_bins: Dictionary` 与 `component_of: Dictionary`，并将附着点计算从 `_route_from_position` 中彻底解耦出来：
-
-```gdscript
-# 在 scripts/world/city_creation_network.gd 顶部成员变量区新增：
-var component_of: Dictionary = {}
-var _edge_bins: Dictionary = {}
-var _attachment_cache: Dictionary = {}
-
-# 1. 在 _build_graph() 完成 graph 构建与连通分量扫描后（约第 218 行），保存 component_of 并建立 _edge_bins：
-	component_of = components.duplicate()
-	_edge_bins.clear()
-	_attachment_cache.clear()
-	for start: String in graph:
-		var a: Vector3 = positions[start]
-		var pa := Vector2(a.x, a.z)
-		for end: String in graph[start]:
-			if start > end:
-				continue
-			var b: Vector3 = positions[end]
-			var pb := Vector2(b.x, b.z)
-			var edge_rect := Rect2(pa, Vector2.ZERO).expand(pb).grow(0.95)
-			var low_bin := Vector2i(floori(edge_rect.position.x / NETWORK_BIN_SIZE), floori(edge_rect.position.y / NETWORK_BIN_SIZE))
-			var high_bin := Vector2i(floori(edge_rect.end.x / NETWORK_BIN_SIZE), floori(edge_rect.end.y / NETWORK_BIN_SIZE))
-			var edge_record := {"start": start, "end": end, "a": pa, "b": pb, "comp": str(component_of.get(start, ""))}
-			for bx in range(low_bin.x, high_bin.x + 1):
-				for bz in range(low_bin.y, high_bin.y + 1):
-					var bkey := Vector2i(bx, bz)
-					if not _edge_bins.has(bkey):
-						_edge_bins[bkey] = []
-					_edge_bins[bkey].append(edge_record)
-
-# 2. 将 prepare() 中的 origins 改为按平面量化键 _key(Vector2(point.x, point.z)) 去重（消除 [point, adjusted] 双倍计算）：
-func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary]) -> RefCounted:
-	state = State.new()
-	state.houses.assign(snapshot.houses)
-	state.roads.assign(snapshot.roads)
-	state.waters.assign(snapshot.waters)
-	state.terrain_strokes.assign(snapshot.get("terrain_strokes", []))
-	connected_houses = prior
-	_build_graph()
-	var services: Dictionary = {}
-	var service_ports: Dictionary = {}
-	for house: Dictionary in state.houses:
-		if str(house.get("role", "residential")) == "residential":
-			continue
-		services[str(house.id)] = true
-		if connected_houses.has(house.id):
-			service_ports[str(connected_houses[house.id])] = true
-	var origins: Dictionary = {}
-	var origin_points: Dictionary = {}
-	for actor: Dictionary in actors:
-		var point: Vector3 = actor.point
-		var pkey := _key(Vector2(point.x, point.z))
-		var targets := services.duplicate()
-		for id: String in actor.targets:
-			targets[id] = true
-		if not origins.has(pkey):
-			origins[pkey] = {}
-			origin_points[pkey] = point
-		origins[pkey].merge(targets)
-	for id: String in connected_houses:
-		var at := Vector3(positions[connected_houses[id]]) + Vector3(0, 0.10, 0)
-		var pkey := _key(Vector2(at.x, at.z))
-		if not origins.has(pkey):
-			origins[pkey] = {}
-			origin_points[pkey] = at
-		origins[pkey].merge(services)
-		origins[pkey][id] = true
-	for pkey: String in origins:
-		var point: Vector3 = origin_points[pkey]
-		var routes: Dictionary = {}
-		var exterior: Dictionary = {}
-		for id: String in connected_houses:
-			if not origins[pkey].has(id):
-				continue
-			var finish := str(connected_houses[id])
-			var route := _route_from_position(point, finish)
-			routes[finish] = route
-			if route.is_empty():
-				exterior[finish] = _exterior_route_from_position(point, finish)
-		prepared_positions[pkey] = routes
-		if not exterior.is_empty():
-			prepared_exterior[pkey] = exterior
-	for start: String in connected_houses.values():
-		for finish: String in connected_houses.values():
-			if start != finish and not service_ports.has(start) and not service_ports.has(finish):
-				continue
-			_route(start, finish)
-	var travel_started := Time.get_ticks_usec()
-	prepared_travel = Travel.new()
-	prepared_travel.sync(state)
-	travel_prepare_ms = float(Time.get_ticks_usec() - travel_started) / 1000.0
-	return self
-
-# 3. 重写 _route_from_position(point, finish)：每个平面坐标只算一次局部边附着，且只查 2m 空间桶！
-func _attachments_for_planar(planar: Vector2) -> Dictionary:
-	var pkey := _key(planar)
-	if _attachment_cache.has(pkey):
-		return _attachment_cache[pkey]
-	var bkey := Vector2i(floori(planar.x / NETWORK_BIN_SIZE), floori(planar.y / NETWORK_BIN_SIZE))
-	var by_comp: Dictionary = {}
-	var best_dist_by_comp: Dictionary = {}
-	var seen_edges: Dictionary = {}
-	for edge: Dictionary in _edge_bins.get(bkey, []):
-		var eid := str(edge.start) + "|" + str(edge.end)
-		if seen_edges.has(eid):
-			continue
-		seen_edges[eid] = true
-		var comp := str(edge.comp)
-		var projected := Geometry2D.get_closest_point_to_segment(planar, edge.a, edge.b)
-		var dist := planar.distance_squared_to(projected)
-		var current_best: float = float(best_dist_by_comp.get(comp, INF))
-		if dist > 0.81 or dist > current_best + 0.000001:
-			continue
-		if _attachment_crosses_wall(planar, projected):
-			continue
-		var proj_3d := Vector3(projected.x, state.street_height(projected) + 0.10, projected.y)
-		if dist < current_best - 0.000001:
-			best_dist_by_comp[comp] = dist
-			by_comp[comp] = []
-		by_comp[comp].append({"start": edge.start, "end": edge.end, "point": projected, "proj_3d": proj_3d})
-	_attachment_cache[pkey] = by_comp
-	return by_comp
-
-func _route_from_position(point: Vector3, finish: String) -> Array[Vector3]:
-	var best: Array[Vector3] = []
-	if not graph.has(finish):
-		return best
-	var target_comp := str(component_of.get(finish, ""))
-	if target_comp.is_empty():
-		return best
-	var planar := Vector2(point.x, point.z)
-	var by_comp := _attachments_for_planar(planar)
-	var attachments: Array = by_comp.get(target_comp, [])
-	if attachments.is_empty():
-		return best
-	var best_length := INF
-	for attachment: Dictionary in attachments:
-		var projection: Vector3 = attachment.proj_3d
-		for endpoint: String in [str(attachment.start), str(attachment.end)]:
-			var candidate := _route(endpoint, finish)
-			if candidate.is_empty():
-				continue
-			var length := projection.distance_to(candidate[0])
-			for i in range(1, candidate.size()):
-				length += candidate[i - 1].distance_to(candidate[i])
-			if length < best_length:
-				best_length = length
-				best = candidate.duplicate()
-				best.push_front(projection)
-	return best
-```
-
-##### Step 2：同步更新 `scripts/world/city_creation_life.gd` 的 `_route_from_position` 缓存查表键与分帧提交
-在 `scripts/world/city_creation_life.gd` 第 589 行：
-```gdscript
-func _route_from_position(point: Vector3, finish: String) -> Array[Vector3]:
-	_network.graph = graph
-	_network.positions = positions
-	_network.component_of = _network.component_of
-	var pkey := _network._key(Vector2(point.x, point.z))
-	var rows: Dictionary = _network.prepared_positions.get(pkey, {})
-	var best: Array[Vector3] = []
-	if rows.has(finish):
-		best.assign(rows[finish])
-		_position_cache_stats.exact_hits = int(_position_cache_stats.get("exact_hits", 0)) + 1
-	else:
-		var started := Time.get_ticks_usec()
-		best = _network._route_from_position(point, finish)
-		_position_cache_stats.street_misses = int(_position_cache_stats.get("street_misses", 0)) + 1
-		_position_cache_stats.street_miss_ms = float(_position_cache_stats.get("street_miss_ms", 0.0)) + float(Time.get_ticks_usec() - started) / 1000.0
-	if best.is_empty() and cafe != null:
-		best = cafe.street_attachment(point, finish)
-	if best.is_empty():
-		var exterior: Dictionary = _network.prepared_exterior.get(pkey, {})
-		if exterior.has(finish):
-			best.assign(exterior[finish])
-			_position_cache_stats.exterior_hits = int(_position_cache_stats.get("exterior_hits", 0)) + 1
-		else:
-			var started := Time.get_ticks_usec()
-			best = _network._exterior_route_from_position(point, finish)
-			_position_cache_stats.exterior_misses = int(_position_cache_stats.get("exterior_misses", 0)) + 1
-			_position_cache_stats.exterior_miss_ms = float(_position_cache_stats.get("exterior_miss_ms", 0.0)) + float(Time.get_ticks_usec() - started) / 1000.0
-	return best
-```
-并在 `scripts/ui/city_creation_demo.gd` 的 `_poll_edit_budget()` 中，若当前帧 `town.poll_budget_rebuild(...)` 刚刚执行了最终 `_commit` 且本帧已耗时 `> 2.2 ms`，则将 `life.commit_budget_sync()` 留到下一帧开头执行（增设 `var _life_commit_pending := false`），彻底消除渲染提交与寻路恢复同帧叠加的尖峰！
-
-### 3.2 三大巨型脚本（God Objects）模块化职责拆分方案
-
-当前工程中有 3 个脚本超过了 2,000 行，修改一处极易牵一发而动全身。请按以下边界将它们拆分为高内聚的模块（保持对外 API 与测试 100% 兼容）：
-
-| 原巨型脚本 | 当前行数 | 抽离出的独立子模块脚本 | 职责划分与收益 |
-| :--- | :--- | :--- | :--- |
-| **`scripts/world/city_creation_state.gd`** | 2,737 行 | `scripts/world/city_creation_ledger_state.gd`<br>`scripts/world/city_creation_serializer.gd` | 1. 将 `bakery_supply`、`workshop_supply`、`cafe_progress`、`venue_commissions`、`afterglow` 等经营账本读写抽入 `city_creation_ledger_state.gd`；<br>2. 将 Schema 1~11 的 JSON `serialize()` / `restore()` 迁移与字段校验抽入 `city_creation_serializer.gd`；<br>3. `city_creation_state.gd` 瘦身至 ~1,300 行，专注空间几何真值与事务撤销栈。 |
-| **`scripts/visual/city_creation_renderer.gd`** | 2,364 行 | `scripts/visual/city_creation_roof_builder.gd`<br>`scripts/visual/city_creation_preview_layer.gd` | 1. 将长排/L/U 联合屋顶、山墙、挑檐与屋脊网格生成抽入 `city_creation_roof_builder.gd`；<br>2. 将 `preview_road`、`preview_water`、`show_vegetation_brush`、`set_preview`、`set_removal_preview` 等画笔预览层抽入 `city_creation_preview_layer.gd`；<br>3. `city_creation_renderer.gd` 瘦身至 ~1,200 行。 |
-| **`scripts/ui/city_creation_demo.gd`** | 2,000 行 | `scripts/ui/city_creation_environment.gd`<br>`scripts/ui/city_creation_camera_rig.gd` | 1. 将三段式天光/太阳/雾效/色调映射抽入 `city_creation_environment.gd`；<br>2. 将正交/透视镜头平滑插值、街头漫步模式 (`V`) 与明信片截图 (`F12`/按钮) 抽入 `city_creation_camera_rig.gd`。 |
-
-## 第四部分：游戏美术与渲染管线全方位重构（深度挖掘 Tiny Glade v2 与 Townscaper）
-
-### 4.1 草毯色阶觉醒、根尖透射修复与 Tiny Glade 野花生态簇 (`creation_lawn.gdshader` & `city_creation_meadow.gd`)
-
-#### 4.1.1 为什么上一轮 `草毯校色` 后草地反而显得平淡单调？
-在 `f0a916e6b` 的 `scripts/visual/shaders/creation_meadow_palette.gdshaderinc` 中：
-- `grass_low = (0.3518, 0.4781, 0.2710)`，`grass_high = (0.3869, 0.4918, 0.2786)` —— 高低色阶的 G 通道差距只有 **0.0137（1.3%）**！
-- 在 `creation_lawn.gdshader` 中，`root_tone = ground_linear * vec3(0.95, 0.96, 0.98)`，`sun_tip_tone = ground_linear * vec3(1.04, 1.04, 1.01)` —— 整片草叶从根部到叶尖只有 **9% 的明暗变化**，且 `BACKLIGHT` 被压到了 `0.055`！
-- 这导致虽然草簇有 12 片叶子，但由于草叶根部、叶尖和地面几乎是同一个颜色，肉眼根本分辨不出绒毛般的叶片体积感！
-
-#### 4.1.2 直接替换的草甸调色板与草叶 Shader 代码
-1. **更新 `scripts/visual/shaders/creation_meadow_palette.gdshaderinc` 中的三档色阶与 `meadow_world_tint_linear`**：
-```glsl
-// 恢复春日山谷草甸的温润色相跨度：阴凉处偏青翠橄榄，受光处偏暖阳嫩绿
-uniform vec4 grass_low : source_color = vec4(0.275, 0.435, 0.245, 1.0);
-uniform vec4 grass_mid : source_color = vec4(0.355, 0.495, 0.265, 1.0);
-uniform vec4 grass_high : source_color = vec4(0.445, 0.555, 0.285, 1.0);
-```
-并将 `meadow_world_tint_linear` 中的：
-```glsl
-	vec3 chroma = clamp(relative/level,vec3(0.9),vec3(1.1));
-	float lightness = 1.0+clamp(log2(level),-1.0,1.0)*0.10;
-	return local_linear*mix(vec3(1.0),chroma,0.40)*lightness;
-```
-升级为：
-```glsl
-	vec3 chroma = clamp(relative/level, vec3(0.86), vec3(1.14));
-	float lightness = 1.0 + clamp(log2(level), -1.0, 1.0) * 0.22;
-	return local_linear * mix(vec3(1.0), chroma, 0.58) * lightness;
-```
-
-2. **更新 `scripts/visual/shaders/creation_lawn.gdshader` 的 `fragment()` 与 `light()`**：
-```glsl
-void fragment() {
-	float leaf = smoothstep(0.10, 0.92, tip) * detail;
-	vec3 turf_normal = meadow_normal(world_at.xz);
-	vec3 soft_normal = normalize(mix(turf_normal, normalize(blade_world_normal), leaf * 0.28)
-		+ vec3(0.82, 0.0, 0.57) * gust * leaf * 0.065);
-	NORMAL = normalize((VIEW_MATRIX * vec4(soft_normal, 0.0)).xyz);
-
-	vec3 ground = meadow_contact_color(world_at.xz, shore_ground(world_at.xz, meadow_color(clump_world_at, grass_low.rgb, grass_high.rgb)));
-	vec3 ground_linear = OUTPUT_IS_SRGB ? meadow_srgb_to_linear(ground) : ground;
-
-	float seed = meadow_hash(clump_world_at * 0.71);
-	vec3 seed_tint = mix(vec3(1.0), mix(vec3(0.89, 0.96, 0.86), vec3(1.12, 1.06, 0.90), seed), 0.45);
-	// 根部深翠微暗 (0.78) 形成绒毯体积感，叶尖向暖金翠绿 (1.18, 1.21, 0.92) 舒展
-	vec3 root_tone = ground_linear * vec3(0.78, 0.83, 0.75);
-	vec3 sun_tip_tone = ground_linear * vec3(1.18, 1.21, 0.92) + vec3(0.018, 0.022, 0.004);
-	vec3 blade = mix(root_tone, sun_tip_tone, smoothstep(0.06, 0.90, tip)) * seed_tint;
-	blade *= mix(vec3(1.0), vec3(0.96, 1.03, 0.94), species);
-	blade *= 1.0 + max(0.0, gust) * tip * 0.055;
-
-	float reveal = smoothstep(0.03, 0.74, tip) * detail;
-	vec3 albedo = mix(ground_linear, blade, reveal);
-	ALBEDO = OUTPUT_IS_SRGB ? meadow_linear_to_srgb(albedo) : albedo;
-	AO = mix(0.76, 1.0, smoothstep(0.0, 0.58, tip) * detail);
-	AO_LIGHT_AFFECT = 0.48;
-	ROUGHNESS = mix(0.94, 0.70, tip * detail);
-	BACKLIGHT = vec3(0.12, 0.14, 0.04) * leaf;
-}
-
-void light() {
-	float ndotl = dot(NORMAL, LIGHT);
-	float wrapped = grass2_sun_wrap(ndotl);
-	float back_sun = clamp(dot(-VIEW, LIGHT) * 0.5 + 0.5, 0.0, 1.0);
-	float transmission = pow(tip, 1.30) * detail * (0.35 + 0.65 * back_sun);
-	DIFFUSE_LIGHT += (vec3(wrapped) + vec3(0.18, 0.21, 0.06) * transmission) * LIGHT_COLOR * ATTENUATION / PI;
-}
-```
-
-3. **升级 `scripts/visual/city_creation_meadow.gd` 中的野花簇 (`_mesh("flower")`)**：
-   - 将当前单朵扁平小花升级为 **三朵高低错落的小花簇（中心主花 + 两朵侧蕾）**，并在 `_build_base_candidates(block)` 中根据 `patch` 噪声赋予 **4 种自然野花群落色**（雏菊暖白 `Color("fff6dc")`、毛茛暖黄 `Color("f2c654")`、矢车菊淡紫蓝 `Color("8ea4d2")`、虞美人珊瑚橘 `Color("e58267")`），让草甸在向阳坡面与路边自然绽放细腻的野花带。
+| **第 1 层：0.1 秒指尖正反馈**<br>*(Tactile Musical Toy)* | 点击墙面扩房、向上拔高楼层、画路、种树、刷水岸 | **建造即弹奏**：每点一格房屋，按其高度 (`level 0~4`) 发出对应音阶的清脆器乐拨弦（底层浑厚大提琴拨弦 → 二层明亮木吉他 → 三层清越竖琴 → 塔楼空灵钟琴），窗光随之泛起一圈涟漪 |
+| **第 2 层：1 秒几何涌现惊喜**<br>*(Architectural Chemistry)* | 把路画到墙边、把路穿过房子、把路拉上陡坡、在路口点环岛、两栋房贴近 | **衔接即惊喜**：完全不用调复杂参数，路碰墙自动长出三级门阶与暖灯；路穿房自动凿出圆拱石门洞；路爬坡自动生成石阶与护坡挡土墙；路口一键变喷泉环岛；四房合围自动涌现石铺喷泉内院 |
+| **第 3 层：30 秒街坊烟火成长**<br>*(Living Economy & Levels 1–5)* | 设面包坊、制琴坊、花圃茶座、书院/画廊、升级林荫石板大道 | **经营即生长**：看着面包房冒起袅袅炊烟、匠人背着木琴沿路送货、居民在茶伞下围坐品茶；满足需求的房屋**自动从 1 级简朴小屋进化到 3～5 级精装雅宅**（长出雕花阳台、常春藤、阁楼天窗与更丰富的复调泛音） |
+| **第 4 层：3 分钟城市交响高潮**<br>*(Symphony & Signature Landmarks)* | 开启街坊巡演、拉出跨时代/跨河共鸣连线、解锁并放置“地标名胜建筑” | **共鸣即高潮**：全街坊房屋亮起呼吸暖窗、屋檐彩旗随节拍摆动、跨河音弧流光溢彩；达成里程碑免费解锁 **《城市天际线2》式地标名胜 (`Signature Buildings`)**，一键落地成为全城视觉与交响中心！ |
 
 ---
 
-### 4.2 Townscaper 级建筑墙体着色器：阴角/墙根/檐下 Cavity AO 与冷暖半球光 (`creation_wall.gdshader`)
+## 第三章：美术质感与无缝衔接工程（Tiny Glade + 城市天际线2 深度融合）
 
-#### 4.2.1 三库依据与现有问题诊断
-- **问题诊断**：当前 `city_creation_renderer.gd` 的 `_material()` 为所有建筑墙面创建的是普通 `StandardMaterial3D`。由于项目运行在 Godot 4.7.2 Compatibility (GLES3) 模式下，没有屏幕空间环境光遮蔽 (SSAO)，导致墙脚与地面交界处、屋檐下方、门廊内侧缺乏柔和的接触暗部，受光面与背光面也缺少 Townscaper 那种“暖白受光 + 灰蓝背光”的插画级色彩层次。
-- **三库依据**：
-  - `参考资料/Townscaper逆向成品/outputs/townscaper_shader_algorithms.md` 中恢复的 `Placemaker/House` 与 `AoSpreader`：利用建筑局部高度 `h`、墙根接触与太阳法线点积 `dot(worldNormal, -_SunDir)` 驱动冷暖阴影色与局部遮蔽；
-  - `参考资料/Tiny-Glade逆向成品-v2/reconstruction/shaders-source/glsl/` 中的灰泥微起伏法线与接触暗部。
+针对你指出的**“目前的美术还是不算特别好，美术还有衔接这一部分也是需要做好”**，我深入剖析了当前 `2026-10-16` 代码库的所有着色器与几何生成脚本，制定以下 **四大美术与衔接彻底升级方案**：
 
-#### 4.2.2 新增 `scripts/visual/shaders/creation_wall.gdshader`（完整可直接落地代码）
-新建 `scripts/visual/shaders/creation_wall.gdshader`，并在 `city_creation_renderer.gd` 的建筑墙体材质中启用：
+### 3.1 草地、地表与微缩箱庭光影的彻底焕新（解决“发灰、稀疏、塑料感”）
 
-```glsl
-shader_type spatial;
-render_mode diffuse_burley, specular_disabled;
+#### （1）当前代码 (`fa740f439`) 视觉不佳的四个确切根源
+1. **全局曝光与光影平淡 (`scripts/ui/city_creation_demo.gd`)**：当前 `_setup_world()` 使用了 `TONE_MAPPER_LINEAR`，主光能量仅 `0.58`，环境光是冷灰青色 `Color("d4e2df")`。这导致整个画面像阴天未调色的灰片，缺乏 Tiny Glade 那种**温暖金黄的斜射阳光、柔和的蓝紫天空漫反射阴影以及 Filmic 胶片级色彩饱和度**。
+2. **草叶与地面几乎同色，无透射光 (`scripts/visual/shaders/creation_lawn.gdshader`)**：当前第 40 行将草叶颜色写为 `ground * mix(0.90, 0.99)`，草尖与脚下泥土色差不足 9%，且 `light()` 里的透射项除以 `PI` 后仅有 `0.018`，草叶完全不透光。
+3. **草色被压得太暗太灰 (`creation_meadow_palette.gdshaderinc`)**：`grass_low = (0.285, 0.405, 0.30)` 偏暗灰绿，且噪声对比度被压到了 `0.4`，失去了草甸的翠绿与阳光暖黄层次。
+4. **单簇仅 3 片窄叶，地面大面积裸露 (`city_creation_meadow.gd`)**：每个草簇仅 3 片小叶，间距 `0.65m`，90% 地面是光秃秃的平面网格。
 
-uniform vec4 albedo_color : source_color = vec4(0.92, 0.85, 0.71, 1.0);
-uniform sampler2D wall_texture : source_color, filter_linear_mipmap, repeat_enable;
-uniform bool use_wall_texture = false;
-uniform float uv_scale = 0.55;
-uniform float floor_height = 1.7;
-uniform float evening : hint_range(0.0, 1.0) = 0.0;
-uniform float night : hint_range(0.0, 1.0) = 0.0;
-
-varying vec3 world_pos;
-varying vec3 local_pos;
-varying vec3 world_normal;
-varying vec4 vert_color;
-
-float wall_hash(vec2 p) {
-	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-}
-
-float wall_noise(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
-	f = f * f * (3.0 - 2.0 * f);
-	return mix(
-		mix(wall_hash(i), wall_hash(i + vec2(1.0, 0.0)), f.x),
-		mix(wall_hash(i + vec2(0.0, 1.0)), wall_hash(i + vec2(1.0, 1.0)), f.x),
-		f.y
-	);
-}
-
-void vertex() {
-	local_pos = VERTEX;
-	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	world_normal = normalize(mat3(MODEL_MATRIX) * NORMAL);
-	vert_color = COLOR;
-}
-
-void fragment() {
-	// 1. 基础色：兼容 MeshBatcher 顶点色合批与独立材质色
-	vec3 base = albedo_color.rgb * vert_color.rgb;
-	if (use_wall_texture) {
-		vec2 tri_uv = abs(world_normal.x) > 0.5 ? world_pos.zy : world_pos.xy;
-		vec3 tex = texture(wall_texture, tri_uv * uv_scale).rgb;
-		base *= mix(vec3(0.85), vec3(1.15), tex);
-	}
-
-	// 2. 手工灰泥/石材微肌理 (Plaster Micro-Grain & Subtle Trowel Relief)
-	vec2 planar_uv = abs(world_normal.x) > 0.5 ? world_pos.zy : (abs(world_normal.z) > 0.5 ? world_pos.xy : world_pos.xz);
-	float grain = wall_noise(planar_uv * 4.5) * 0.65 + wall_noise(planar_uv * 16.0) * 0.35;
-	base *= 0.965 + 0.07 * grain;
-
-	// 微法线扰动，让灰泥墙面在侧光下呈现温润的手工质感
-	float nx = wall_noise(planar_uv * 6.0 + vec2(0.08, 0.0)) - grain;
-	float ny = wall_noise(planar_uv * 6.0 + vec2(0.0, 0.08)) - grain;
-	vec3 perturbed_world = normalize(world_normal + vec3(nx, ny, nx) * 0.06);
-	NORMAL = normalize((VIEW_MATRIX * vec4(perturbed_world, 0.0)).xyz);
-
-	// 3. Townscaper 式解析环境光遮蔽 (Analytical Cavity & Ground/Eave AO)
-	// (a) 墙根接地柔和暗部：local_pos.y 从 0 到 0.65m 渐亮
-	float ground_ao = mix(0.76, 1.0, smoothstep(-0.05, 0.68, local_pos.y));
-	// (b) 每层檐口/腰线下方柔和内阴影
-	float story_y = mod(max(local_pos.y, 0.0), floor_height);
-	float eave_ao = mix(1.0, 0.84, smoothstep(floor_height - 0.24, floor_height, story_y));
-	// (c) 单元两侧边缘微妙的阴角收敛
-	float edge_x = abs(local_pos.x);
-	float corner_ao = mix(1.0, 0.91, smoothstep(0.68, 0.90, edge_x));
-	float combined_ao = ground_ao * eave_ao * corner_ao;
-
-	// 4. Townscaper 色调微调：暗部略带静谧青蓝，亮部保持温暖奶白
-	vec3 cool_shadow = base * vec3(0.86, 0.90, 0.96);
-	ALBEDO = mix(cool_shadow, base, combined_ao);
-	AO = combined_ao;
-	AO_LIGHT_AFFECT = 0.55;
-	ROUGHNESS = 0.93;
-}
-
-void light() {
-	float ndotl = dot(NORMAL, LIGHT);
-	// 柔和包裹漫反射（避免生硬的 90 度死黑背光面，还原箱庭微缩模型感）
-	float wrapped = clamp((ndotl + 0.22) / 1.22, 0.0, 1.0);
-	// 背光面补充一抹天光微蓝，受光面注入暖阳色
-	vec3 sky_fill = vec3(0.045, 0.055, 0.075) * (1.0 - wrapped) * (1.0 - night * 0.6);
-	DIFFUSE_LIGHT += (vec3(wrapped) * LIGHT_COLOR * ATTENUATION + sky_fill) / PI;
-}
-```
+#### （2）直接落地的代码级改造规格（施工 AI 请直接替换对应函数与 Shader）
+- **A. 全局光影升级 (`scripts/ui/city_creation_demo.gd` → `_setup_world()` & `_toggle_light()`)**：
+  - 切换为 `Environment.TONE_MAPPER_FILMIC`（`tonemap_exposure = 1.08`, `tonemap_white = 1.85`）。
+  - 使用 `ProceduralSkyMaterial` 提供真实的**天空冷暖半球环境光 (`AMBIENT_SOURCE_SKY`)**：天空顶 `Color("78a8c8")`、天际线 `Color("efe3cc")`、地面反射 `Color("70825e")`，`ambient_light_energy = 0.65`。
+  - 太阳主光 (`DirectionalLight3D`)：白昼 `light_color = Color("fff1d0")`、`light_energy = 1.15`、`shadow_opacity = 0.68`、`shadow_blur = 1.4`；黄昏/夜景切换扩展为 **三档时间氛围（晨曦白昼 Day → 暖金夕照 Sunset → 星夜灯火 Night）**！在星夜模式下，太阳光降为静谧月光 `Color("6b82a8")` (`energy = 0.28`)，全城所有房屋的暖金窗光、门廊小夜灯、石板街铁艺路灯、茶座灯笼与共鸣音弧将呈现出令人屏息的《Townscaper / Tiny Glade》唯美夜景！
+- **B. 草簇几何加密为“7 叶双圈碗状饱满绒簇” (`scripts/visual/city_creation_meadow.gd`)**：
+  - 将 `BASE_SPACING` 从 `0.65` 加密至 **`0.52`**；
+  - 将 `_mesh("lawn")` 从 3 片叶子升级为 **7 片高低错落、向外舒展呈碗状花萼形 (`Cupped Clump`) 的宽柔弧形叶片**（内圈 3 片高 `0.22~0.27m` 迎光挺立，外圈 4 片高 `0.16~0.19m` 向外舒展遮盖根部裸土，叶片肩宽增至 `0.042~0.050m`）。
+- **C. 草地调色板与 SSS 阳光透射着色器 (`creation_meadow_palette.gdshaderinc` & `creation_lawn.gdshader`)**：
+  - `grass_low = vec4(0.25, 0.43, 0.27, 1.0)`（温润深翠绿），`grass_high = vec4(0.44, 0.58, 0.31, 1.0)`（暖阳嫩草绿），斑块对比系数从 `0.4` 恢复至 `0.75`。
+  - 在 `creation_lawn.gdshader` 中：根部乘以 `vec3(0.80, 0.86, 0.78)` 形成深邃的草根 AO 阴影，叶尖跃升至 `ground * vec3(1.18, 1.25, 0.92) + vec3(0.05, 0.06, 0.01)` 的暖金嫩绿；在 `light()` 中将逆光/侧光半透明透射增强为 `vec3(0.24, 0.28, 0.09) * pow(tip, 1.35)`，让微风吹拂时整片草毯泛起温暖丝滑的波浪光泽。
 
 ---
 
-### 4.3 Tiny Glade 级立体筒瓦屋顶与 Townscaper 岸沫/菲涅尔水面着色器升级
+### 3.2 立体地形、建筑地基与道路的无缝衔接（融合 Tiny Glade + 城市天际线2 `Cut & Fill`）
 
-#### 4.3.1 升级 `scripts/visual/shaders/creation_joined_roof.gdshader`（立体筒瓦法线、叠瓦阴影、瓦片色相散射与檐口青苔）
-当前 `creation_joined_roof.gdshader` 只有 17 行平面色块。对照 `参考资料/Tiny-Glade逆向成品-v2/reports/reconstruction_roof.md` 中 64-byte 瓦片记录的 `seed` 扰动与瓦片法线倾角，直接将 `scripts/visual/shaders/creation_joined_roof.gdshader` 升级为：
+目前版本最大的衔接割裂点在于：**`city_creation_terrain_protection.gd` 会把所有建房和修路的地方强行压回 `y = -0.02m` 平地**，导致山丘和台地一建房就塌成深坑；同时建筑墙根、道路边缘与斜坡之间缺乏厚重的结构过渡。
+我们结合 **《城市天际线2》的挖填方系统 (`Cut-and-Fill`)** 与 **《Tiny Glade》的自适应石基/石阶系统**，建立完整的 **三维立体衔接管线**：
 
-```glsl
-shader_type spatial;
-render_mode diffuse_burley, specular_schlick_ggx;
+```
+          【山坡/台地建房：自适应毛石高地基 (Stone Plinth)】
+                 ┌───────────────┐
+                 │   房屋主体     │  ← 地板锚定在起笔处真实海拔 house.base_y (如 +2.0m)
+        ─────────┴───────────────┼───────── ← 上坡侧平顺接入台地草坪
+        ░░░░░░░░░│ 错缝毛石高地基 │
+        ░░░░░░░░░│ (Stone Plinth)│  ← 下坡侧自动向下延伸厚石墙地基与护坡角石，
+        ░░░░░░░░░┴───────────────┴─────────    直到严丝合缝插入下坡地面 (如 +0.6m)，绝不悬空或挖坑！
 
-uniform vec4 roof_color : source_color = vec4(0.73, 0.44, 0.33, 1.0);
-varying vec3 world_at;
-varying vec3 world_normal;
-varying vec3 local_at;
-
-float tile_hash(vec2 p) {
-	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-}
-
-void vertex() {
-	local_at = VERTEX;
-	world_at = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	world_normal = normalize(mat3(MODEL_MATRIX) * NORMAL);
-}
-
-void fragment() {
-	// 1. 顺着屋面坡向建立错缝筒瓦坐标系 (0.22m 宽 × 0.28m 长)
-	vec2 tile_uv = world_at.xz / vec2(0.22, 0.28);
-	float row = floor(tile_uv.y);
-	tile_uv.x += mod(row, 2.0) * 0.5;
-	vec2 cell = floor(tile_uv);
-	vec2 uv = fract(tile_uv);
-
-	// 2. 单片瓦的随机色相、明度与微倾角 (Tiny Glade per-shingle seed semantics)
-	float h1 = tile_hash(cell);
-	float h2 = tile_hash(cell + vec2(19.3, 47.1));
-	vec3 warm_shift = mix(vec3(0.92, 0.88, 0.84), vec3(1.08, 1.03, 0.95), h1);
-	vec3 moss_tint = vec3(0.46, 0.54, 0.36);
-	float moss_mask = smoothstep(0.78, 0.98, h2) * smoothstep(0.0, 0.35, 1.0 - uv.y);
-
-	// 3. 筒瓦横向拱起法线 (Barrel Arch) 与纵向叠瓦唇口阴影 (Overlap Lip AO)
-	float barrel_x = (uv.x - 0.5) * 2.0; // [-1, 1]
-	float course_y = uv.y;                // [0, 1]
-	float lip_shadow = smoothstep(0.0, 0.16, course_y) * (1.0 - smoothstep(0.88, 1.0, abs(barrel_x)));
-	float side_groove = smoothstep(0.0, 0.12, 1.0 - abs(barrel_x));
-
-	// 构造立体瓦片世界法线：横向圓弧拱起 + 纵向瓦片微倾 + 单瓦随机微摆
-	vec3 tile_n = normalize(
-		world_normal
-		+ vec3(barrel_x * 0.26 + (h1 - 0.5) * 0.06, 0.0, (0.12 - course_y * 0.18) + (h2 - 0.5) * 0.06)
-	);
-	NORMAL = normalize((VIEW_MATRIX * vec4(tile_n, 0.0)).xyz);
-
-	// 4. 合成瓦片色彩与立体遮蔽
-	vec3 base_tile = roof_color.rgb * warm_shift;
-	base_tile = mix(base_tile, moss_tint, moss_mask * 0.38);
-	float joint_ao = mix(0.68, 1.0, lip_shadow * side_groove);
-
-	ALBEDO = base_tile * joint_ao;
-	AO = joint_ao;
-	AO_LIGHT_AFFECT = 0.60;
-	ROUGHNESS = mix(0.88, 0.72, smoothstep(0.3, 0.8, 1.0 - abs(barrel_x)));
-	SPECULAR = 0.18;
-}
+          【山坡修路：CS2 挖填方护坡 + Tiny Glade 自动石阶】
+        坡度 grade ≤ 0.22: 顺坡平滑石板路 + 两侧微凹排水草沟/路肩石
+        坡度 grade > 0.22: 自动生成层叠石阶 (Stone Stairs) + 两侧矮石护栏 (Parapet)
+        横向切坡 (Cut)   : 上坡侧自动生成矮石挡土墙 (Retaining Wall)，防止泥土穿模盖住路面
+        横向跨谷 (Fill)  : 下坡侧自动生成毛石路堤或连拱高架石栈桥 (Viaduct Embankment)
 ```
 
-#### 4.3.2 升级 `scripts/visual/shaders/creation_water.gdshader`（Townscaper 导数抗锯齿岸沫波 + 菲涅尔天光/夕照反射 + 浅滩焦散）
-对照 `参考资料/Townscaper逆向成品/outputs/townscaper_shaders.md` 中 `Placemaker/Water` 的周期三角波岸沫公式 `alpha = sat((2*abs(frac(q)-0.5)+b-1.1)/fw(2*q+b))` 以及 Tiny Glade 水面法线高光，直接将 `scripts/visual/shaders/creation_water.gdshader` 升级为：
-
-```glsl
-shader_type spatial;
-render_mode cull_disabled, diffuse_burley, specular_schlick_ggx;
-
-uniform vec4 water_deep : source_color = vec4(0.28, 0.52, 0.50, 1.0);
-uniform vec4 water_shallow : source_color = vec4(0.44, 0.64, 0.53, 1.0);
-uniform vec4 sky_reflection_day : source_color = vec4(0.72, 0.86, 0.92, 1.0);
-uniform vec4 sky_reflection_evening : source_color = vec4(0.96, 0.72, 0.52, 1.0);
-uniform float evening : hint_range(0.0, 1.0) = 0.0;
-uniform float night : hint_range(0.0, 1.0) = 0.0;
-uniform vec2 travel_ripple_at = vec2(0.0);
-uniform float travel_ripple_time = 0.0;
-uniform float travel_ripple_strength = 0.0;
-
-varying vec3 world_at;
-
-#include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
-#include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
-#include "res://scripts/visual/shaders/creation_travel_ripple.gdshaderinc"
-
-void vertex() {
-	world_at = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-}
-
-void fragment() {
-	vec2 at = world_at.xz;
-	float depth = max(0.0, -shore_distance(at));
-	float grain = meadow_noise(at * 2.1) * 0.06 + meadow_noise(at * 0.45) * 0.03;
-
-	// 1. 双层水波微法线 (Dual-octave Water Normal Perturbation)
-	float w1 = sin(at.x * 2.4 + at.y * 1.6 + TIME * 0.85);
-	float w2 = cos(at.x * 1.7 - at.y * 2.9 - TIME * 0.65);
-	vec3 wave_normal = normalize(vec3((w1 + w2) * 0.035, 1.0, (w1 - w2) * 0.035));
-	NORMAL = normalize((VIEW_MATRIX * vec4(wave_normal, 0.0)).xyz);
-
-	// 2. 浅滩河床与深水吸收过渡
-	vec3 ground = shore_ground(at, meadow_color(at, grass_low.rgb, grass_high.rgb));
-	vec3 bed = mix(bank_soil.rgb * 0.68, water_shallow.rgb, smoothstep(0.02, 0.26 + grain, depth));
-	// 浅滩阳光焦散微光 (Shallow Caustics)
-	float caustic = smoothstep(0.62, 0.92, sin(at.x * 6.5 + TIME * 1.1) * cos(at.y * 6.5 - TIME * 0.9) * 0.5 + 0.5);
-	bed += vec3(0.06, 0.07, 0.04) * caustic * smoothstep(0.02, 0.18, depth) * (1.0 - smoothstep(0.22, 0.55, depth)) * (1.0 - night * 0.7);
-
-	vec3 water = mix(bed, water_deep.rgb, smoothstep(0.16, 0.65 + grain, depth));
-
-	// 3. Townscaper Placemaker/Water 式导数抗锯齿岸际轻沫 (Derivative-AA Shoreline Foam)
-	float shore_band = clamp(1.0 - depth / 0.28, 0.0, 1.0);
-	float q = depth * 7.5 - TIME * 0.38 + grain * 2.2;
-	float tri_wave = 2.0 * abs(fract(q) - 0.5);
-	float fw_q = max(fwidth(q * 2.0), 0.02);
-	float foam_line = clamp((tri_wave + shore_band * 1.35 - 1.18) / fw_q, 0.0, 1.0) * smoothstep(0.01, 0.05, depth) * (1.0 - smoothstep(0.06, 0.28, depth));
-	vec3 foam_color = mix(vec3(0.92, 0.94, 0.90), vec3(0.96, 0.84, 0.72), evening * 0.5) * (1.0 - night * 0.55);
-	water = mix(water, foam_color, foam_line * 0.52);
-
-	// 4. 菲涅尔天光/夕照/星夜反射 (Fresnel Sky Reflection)
-	float fresnel = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.5);
-	vec3 sky_col = mix(sky_reflection_day.rgb, sky_reflection_evening.rgb, evening);
-	sky_col = mix(sky_col, vec3(0.14, 0.22, 0.34), night);
-	water = mix(water, sky_col, fresnel * 0.36 * smoothstep(0.05, 0.25, depth));
-
-	// 5. 波峰闪烁与居民过桥/踩汀步涟漪
-	float crest = sin(at.y * 3.2 + sin(at.x * 1.1 + TIME * 0.20) * 1.2 - TIME * 0.32);
-	float sparkle = smoothstep(0.96, 1.0, crest) * smoothstep(0.66, 0.88, meadow_noise(at * 0.57 + vec2(TIME * 0.015, 0.0)));
-	water += mix(vec3(0.035, 0.042, 0.038), vec3(0.08, 0.05, 0.02), evening) * sparkle * smoothstep(0.20, 0.65, depth);
-
-	if (travel_ripple_strength > 0.0) {
-		float travel_wave = travel_water_wave(at, travel_ripple_at, travel_ripple_at, travel_ripple_time);
-		water += vec3(0.14, 0.17, 0.15) * travel_wave * travel_ripple_strength * smoothstep(0.08, 0.35, depth);
-	}
-
-	ALBEDO = mix(ground, water, smoothstep(0.01, 0.12 + grain, depth));
-	ROUGHNESS = mix(0.95, 0.32, smoothstep(0.15, 0.65, depth));
-	SPECULAR = mix(0.05, 0.45, smoothstep(0.15, 0.65, depth));
-}
-```
+1. **解除“建房修路强制归零”死锁 (`city_creation_terrain_protection.gd` & `city_creation_terrain.gd`)**：
+   - 为每栋房屋增加 `base_y: float`（新建时取起笔点的地形高度，旧存档默认 `0.0`）。
+   - `terrain_protection` 中的每个保护区不再把地形抹平到 `0.0`，而是携带目标高度 `target_y`（房屋取 `house.base_y`，内院取围合房屋的平均 `base_y`，道路每段取其平滑后的地面采样高度 `road_y`）。
+   - 保护区边缘采用 `1.2m` 宽的余弦平滑过渡带 (`smoothstep`)，让房屋院落、道路与周围自然山坡像长在一起一样顺滑。
+2. **房屋自适应毛石台基与挡土阶 (`city_creation_renderer.gd`)**：
+   - 构建底层房间 (`level == 0`) 时，采样其四角下方的真实地面高度 `min_ground_y`。
+   - 将原本固定 `0.16m` 的薄地基，动态向下延伸至 `min_ground_y - 0.15m`，外表面使用 `StoneWallTexture`（石砌纹理）并加宽 `0.06m` 形成稳重的**梯形/直立毛石勒脚台基 (`Plinth`)**；门前石阶 (`city_creation_frontage.gd`) 根据门口 `base_y` 与所接道路高度差，自动动态生成 `1～8` 级台阶！
+3. **道路顺坡爬升、陡坡石阶与横坡挡土墙 (`city_creation_renderer.gd`)**：
+   - 道路中心线每个采样点存储真实高度 `y_i`（跨水桥段取桥拱高度，干地段取平滑后的地形高度，接门端点对齐门口高度）。
+   - 当某段道路纵向坡度 `abs(y_{i+1} - y_i) / seg_len > 0.22` 时，路面网格自动切换为 **3D 石阶 (`Stone Steps`)**，每级高 `0.12m`，两侧自动生成 `0.35m` 高的石砌护栏。
+   - 当道路横向穿过斜坡（左右路缘外侧地形高度与路面高度差 `> 0.35m`）时，自动在高于路面的一侧生成 **CS2 式挖方挡土矮石墙 (`Cut Retaining Wall`)**，在低于路面的一侧生成 **填方毛石护坡 (`Fill Embankment`)**！
 
 ---
 
-### 4.4 三段式昼夜光影叙事：晴昼晨曲 (Daylight) → 暖金夕照 (Sunset) → 星夜夜曲 (Nocturne)
+### 3.3 道路网络的《城市天际线2》式进阶：就地替换升级、一键环岛与平行/网格辅助
 
-将 `city_creation_demo.gd` 中的布尔值 `evening` 升级为三态循环 `light_phase: int = 0`（`0: ☀ 晴昼` → `1: 🌇 夕照` → `2: 🌙 星夜`），保持 `evening = (light_phase >= 1)` 向后兼容所有现有测试：
+借鉴《城市天际线2》最受好评的 `Road Tools (Dev Diary #1)`，在不破坏 Tiny Glade 手绘丝滑感的前提下，赋予工具 3（道路）三大神级能力：
 
-| 光影阶段 (`light_phase`) | 太阳角度与能量 (`DirectionalLight3D`) | 半球天光与背景 (`ProceduralSkyMaterial` & `Environment`) | 场景与音乐联动表现 |
-| :--- | :--- | :--- | :--- |
-| **0 · 晴昼晨曲 (`Daylight`)** | `rot = (-46, -34, 0)`<br>`color = #fff0cf`<br>`energy = 0.92` | `sky_top = #7faecc`<br>`horizon = #e8dec8`<br>`ambient_energy = 0.50`<br>`exposure = 0.82` | 暖阳通透、草尖泛金翠光泽；白昼鸟鸣声床启用；屋顶飞鸟与花间彩蝶活跃。 |
-| **1 · 暖金夕照 (`Sunset`)** | `rot = (-22, -48, 0)`<br>`color = #ffb470`<br>`energy = 0.78` | `sky_top = #5d7ea6`<br>`horizon = #f0bfa0`<br>`ambient_energy = 0.44`<br>`exposure = 0.80` | 长斜影、玻璃花房暖绿透光、石板灯街铁艺街灯半亮 (`strength = 0.85`)、水面泛夕阳金波；夕虫声床渐入。 |
-| **2 · 星夜夜曲 (`Nocturne`)** | `rot = (-38, 25, 0)`<br>`color = #8aa8d6`（清冷月光）<br>`energy = 0.36` | `sky_top = #182738`<br>`horizon = #2c4257`<br>`bg = #1e2f40`<br>`ambient_energy = 0.30`<br>`exposure = 0.86` | **全城所有有人居住的房屋窗户自动亮起温暖的琥珀色底光 (`0.42`)**，随音乐节拍呼吸闪烁；石板灯街与跨街灯串全亮 (`strength = 1.25`)；池塘与花丛上空浮现**点点暖金萤火虫 (`Wildlife`)**！ |
-
-## 第五部分：游戏策划、箱庭生命生态与音乐交互大进化（三库精髓深度融合）
-
-### 5.1 Townscaper 启发式“指尖触感反馈 (`VoxelBob`)”与“街巷八音盒刮奏 (`Street Harp Glissando`)”
-
-#### 5.1.1 建筑建造与点按的弹簧形变反馈 (`VoxelBobEffect` — 源自 `Townscaper 3d5000.c`)
-- **三库依据**：在 `参考资料/Townscaper逆向成品/outputs/townscaper_interaction_presentation.md`（`3d4dc0.c` / `3d5000.c`）与 `townscaper_shader_algorithms.md`（`_PressPosAmount`）中，玩家每次点击新增、拔高、染色或触碰建筑时，建筑都会产生一次极具触感的**下压与弹性回弹（Squish & Spring Bounce）**。
-- **直接可落地实现（在 `scripts/visual/city_creation_renderer.gd` 中新增 `animate_house_bounce`）**：
-```gdscript
-var _active_bounces: Dictionary = {}
-
-func animate_house_bounce(house_id: String, strength: float = 0.085) -> void:
-	if not house_roots.has(house_id):
-		return
-	var root: Node3D = house_roots[house_id]
-	if root == null or not is_instance_valid(root):
-		return
-	if _active_bounces.has(house_id):
-		var old_tween: Tween = _active_bounces[house_id]
-		if old_tween != null and old_tween.is_valid():
-			old_tween.kill()
-	root.scale = Vector3(1.0 + strength * 0.55, 1.0 - strength, 1.0 + strength * 0.55)
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(root, "scale", Vector3.ONE, 0.42)
-	_active_bounces[house_id] = tween
-```
-- **触发时机**：
-  1. 在 `city_creation_demo.gd` 的 `_after_edit()` 中，凡是 `pluck_house` 非空（新建房、扩房、加层、留露台）或换色成功时，立即调用 `town.animate_house_bounce(pluck_house, 0.085)`；
-  2. 当玩家在工具 5 / `P`（点房试听）模式下点击或划过房屋时，调用 `town.animate_house_bounce(house_id, 0.055)`！
-
-#### 5.1.2 街巷八音盒连续刮奏 (`Street Harp Glissando`)
-- **当前痛点**：目前按 `P` 进入点房试听时，必须一下一下单独点击每栋房子才能发声。
-- **升级设计**：
-  - 在工具 5（用途/试听）模式下，当玩家**按住鼠标左键（或按住 `P` 键）在画面上滑动光标**经过一排房屋时：
-    - 记录 `_last_strummed_house_id: String`；一旦光标悬停的 `house_id` 发生变化（且距离上一次拨弦 `>= 0.085 秒`），立即触发 `music.play_house(house_id)` + `town.animate_house_bounce(house_id, 0.05)`！
-    - 玩家只需用鼠标顺着河岸长街或高低错落的山坡街屋轻轻一划，整条街就会像拨动竖琴/卡林巴琴一样奏出一串清脆悦耳的和弦琶音，窗光随之逐栋流淌点亮！
-
----
-
-### 5.2 Townscaper 启发式“飞鸟、彩蝶与夏夜萤火虫生态 (`city_creation_wildlife.gd`)”与“跨街彩旗灯串 (`city_creation_bunting.gd`)”
-
-#### 5.2.1 屋顶飞鸟 (`BirdFlock`) 与花间彩蝶/夏夜流萤 (`ButterflyFlock`)
-- **三库依据**：
-  - `参考资料/Townscaper逆向成品/outputs/townscaper_interaction_presentation.md` 中完整逆向了 `BirdFlock`（`879180.c` / `879c30.c`：根据屋顶落点数计算理想鸟群数量 `clamp(sqrt(landings)-6, 0, 64)`，包含盘旋 `Boiding`、降落 `Landing`、停驻 `Stopped` 与建造/拨弦时的惊飞 `UprootBird`）与 `ButterflyFlock`（`8811c0.c`：使用噪声轨迹在花木落点间飞舞，停驻后按概率重新起飞）。
-- **直接可落地实现（新建 `scripts/visual/city_creation_wildlife.gd`）**：
-  - 使用两个极轻量级的 `MultiMeshInstance3D`（全城仅增加 **2 个 Draw Call**，CPU 耗时 `< 0.12ms/帧`）：
-    1. **`BirdsMultiMesh`（白鸽/灰燕）**：
-       - 从当前城市的所有三层钟楼、圆塔檐口、山墙脊顶提取 `perch_points: Array[Vector3]`；
-       - 鸟数 `bird_count = clampi(int(sqrt(float(perch_points.size())) * 2.2), 0, 18)`；
-       - 每只鸟在 `PERCHED`（停在屋脊偶尔偏头）与 `GLIDING`（沿河湾上空椭圆盘旋扇翅，顶点着色器利用 `INSTANCE_CUSTOM.r` 相位自动扇动双翼）之间切换；
-       - **惊飞互动 (`uproot_near(world_pos, radius = 4.5)`)**：当玩家在某栋房屋建房、拆房或拨弦 (`play_house`) 时，半径 `4.5m` 内停驻的飞鸟立即齐齐振翅飞向空中，并向 `Perch` 池中的另一座远方屋顶迁徙！
-    2. **`FlutterMultiMesh`（白昼彩蝶 / 星夜流萤）**：
-       - 提取全城所有花圃茶座 (`garden_cafe`)、玻璃花房 (`conservatory`)、石板灯街花箱 (`promenade`) 与池塘睡莲 (`lilypads`) 的位置作为 `nectar_points`；
-       - 在白昼与夕照下表现为翩翩起舞的暖黄/粉白小蝴蝶；在 **星夜 (`Nocturne`)** 模式下，材质自动切换为温暖的发光金绿流萤 (`EMISSION = vec3(0.85, 0.95, 0.35) * pulse`)，在池塘睡莲与林间静谧闪烁！
-
-当前适配源码：`scripts/visual/city_creation_wildlife.gd`。原始模板完整保留于 `文档/03_可直接覆盖到仓库根目录/`；以实际源码及本轮验证为准。
-
-#### 5.2.2 跨街彩旗与暖灯悬索系统 (`PropWire` / `FlagMesh` — 源自 `Townscaper 758e50.c / 805ae0.c`)
-- **三库依据**：在 `参考资料/Townscaper逆向成品/outputs/townscaper_wire_ground_workflows.md` 中，当两栋建筑的二层锚点隔着窄街或内院相对（`dot(-d, rightA) >= 0.3`, `dot(d, rightB) >= 0.3`, `dot(-rightB, rightA) >= 0.5`）时，自动拉起彩色三角旗串 (`FlagMesh`) 或暖光灯串 (`ItalianMesh`)。
-- **直接可落地设计（新建 `scripts/visual/city_creation_bunting.gd`）**：
-  - 扫描所有具有二层及以上房间 (`level >= 1`) 的外露墙面锚点：
-  - 若两栋房屋的外墙法线相对（满足 Townscaper 方向点积阈值 `>= 0.35`）、水平间距在 `1.8m ~ 5.6m` 之间（如跨过一条鄉间小路或石板灯街），且**至少有一方已获得制琴坊送装的木饰 (`improvement_level >= 1`) 或属于演奏庭/茶座**：
-    - 自动在两墙檐口之间生成一条优美的**悬链线 (`y = lerp(yA, yB, t) - 4.0 * sag * t * (1.0 - t)`)**；
-    - 悬链线上每隔 `0.32m` 垂挂一枚采用两端房屋主题配色的彩色小三角旗与微型暖光灯珠（合批入单个静态网格 + 发光材质）；
-    - 当街坊演出或夕照/星夜开启时，跨街灯珠同步亮起温暖的节日辉光！
-
----
-
-### 5.3 Foundation 启发式“活水磨坊加持”与“居民三阶幸福共鸣环”
-
-#### 5.3.1 为什么需要升级经济与生活内循环？
-- 历史蓝图把现有经营简化成孤立计数器；当前三者已通过采购、茶叙与送装连通。v3继续深化选址与逐户幸福反馈：面包坊不需要水源或地形配合就能凭空产面包，居民吃了面包、喝了茶、装了木饰之后，除了填满 `河湾手记` 的一条打勾任务外，**对这户居民的日常生活、房屋外观和城市音乐没有任何持续性的化学反应**。
-- 对照 `参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-game-systems/SEMANTIC_GUIDE.md`：Foundation 之所以让人百玩不厌，是因为**地理位置影响生产效率（水畔/磨坊→烘焙），而居民需求满足度（`NeedFoodBasic` + `NeedEntertainment` + `HouseLevel` → `HappinessFactor`）会直接推动聚落从农舍升级为繁华市民街区**！
-
-#### 5.3.2 零压力、高正反馈的“河湾幸福共鸣环 (Cozy Prosperity & Harmonic Tier)”设计
-
-```mermaid
-flowchart LR
-  W[水岸/引水渠/内院喷泉] -->|水距 < 4.5m 活水加持| B[面包坊 Bakery: 产速+35% / 暖金麦穗饰物]
-  B -->|居民采购带回温热面包| H[居所 Residential: 满足 麦香温饱 NeedFood]
-  C[花圃茶座 Garden Cafe] -->|居民围坐品茶| H2[居所 Residential: 满足 茶叙雅集 NeedSocial]
-  K[制琴工坊 Workshop] -->|匠人送装风铃木饰| H3[居所 Residential: 满足 匠心风物 NeedCraft]
-  H & H2 & H3 --> T[居所共鸣阶位 Harmony Tier 0 → 3]
-  T -->|视觉涌现| V[门前花箱 / 跨街彩旗灯串 / 屋顶白鸽落点]
-  T -->|音乐涌现| M[解锁该街坊的复调伴奏 / 温暖低音衬底 / 演出泛音和弦]
-```
-
-1. **水岸/喷泉对工坊与面包坊的“地理邻接加持 (`Site Blessing`)”**：
-   - **面包坊 (`bakery`) 临水或临内院喷泉（`water_clearance < 4.5m` 或紧邻闭合庭院）**：自动激活 **「活水麦香加持」**——每炉烘焙耗时从 `6.0s` 缩短至约 `4.44s`，每炉产量 `+1`，且面包坊外墙自动派生一座微缩木制水车/麦袋装饰！
-   - **制琴工坊 (`workshop`) 临树林（周围 `8m` 内有 `>= 3` 棵橄榄树/柏树）**：自动激活 **「良木林间加持」**——制琴打磨耗时从 `8.0s` 缩短至约 `5.93s`！
-   - **花圃茶座 (`garden_cafe`) 临石板灯街 (`promenade`) 或睡莲池塘 (`pond`)**：自动激活 **「雅集风光加持」**——每次品茶赋予的暖灯余韵从 `+30s` 提升至 `+45s`！
-
-2. **居所三阶幸福共鸣度 (`house_harmony_tier(house_id) -> int [0..3]`)**：
-   - 每栋 `residential` 居所实时汇总三项纯正反馈状态（直接复用现有 `state` 账本，无需破坏旧存档 Schema！）：
-     - **温饱 (`food_ok`)**：该户居民完成过至少 1 次面包采购，或当前处于餐后满足期；
-     - **茶叙 (`tea_ok`)**：该户居民参与过至少 1 次花下茶聚，或所在街坊处于演出/茶座余韵中；
-     - **匠心 (`craft_ok`)**：该栋居所已收到制琴坊送装的木饰 (`improvement_level >= 1`)。
-   - 满足项数 `tier = int(food_ok) + int(tea_ok) + int(craft_ok)`（`0 ~ 3` 阶）：
-     - **对画面与生活的影响**：`tier >= 2` 的居所门前自动摆出盛开的陶罐花丛，二层外墙自动与对街房屋拉起 **Townscaper 跨街彩旗/暖灯串 (`PropWire`)**；`tier == 3` 的居所屋脊优先吸引白鸽停驻！
-     - **对音乐编配的影响 (`city_creation_music.gd`)**：当一片街坊内平均 `Harmony Tier >= 2.0` 时，该街坊的日常演奏自动解锁 **`terrace`（温暖竖琴/木管复调衬底轨）与 `foundation`（大提琴/低音温和拨弦）** 的丰满度权重（增益提升 `+3.5 dB`），让玩家亲耳听见“居民生活越富足，街坊音乐越丰满温暖”！
-
----
-
-### 5.4 第四章河湾手记与“街头第一视角漫步 / 移轴明信片相机 (`Stroll & Postcard Mode`)”
-
-#### 5.4.1 扩充 `scripts/world/city_creation_growth.gd` 至第四章「星夜百鸟与立体交响」
-当前 `city_creation_growth.gd` 只有三章（晨光初聚、街坊成歌、河湾交响城），完全没有涵盖 v2/v3 新增的高地城建、石板灯街、圆塔/花房/柱廊、浅水汀步和跨河共鸣连线！
-在 `CHAPTERS` 中新增第四章 `"nocturne"`（奖励第 8 套传世典藏配色 **`"nocturne": {"name": "星夜鎏金与月白", "chapter": "nocturne"}`**：月白灰泥墙 `#ece8df` + 深邃夜蓝瓦 `#324860` + 鎏金琥珀窗饰 `#d8a852`）：
-- **第四章目标**：
-  1. 在台地或山坡上留下一座高地房屋（`base_y >= 0.8m`）；
-  2. 铺设一条石板灯街 (`promenade`) 或浅水汀步 (`stepping`)；
-  3. 派生出一座圆塔望楼、玻璃花房或临街连拱柱廊；
-  4. 连起一条跨区共鸣音弧 (`musical_links.size() >= 1`)。
-
-#### 5.4.2 新增 `V` 键“街头漫步与微缩移轴明信片模式 (`Stroll & Postcard Camera`)”
-- 在右上角操作栏（`☀ 光线`、`全景` 旁）新增按钮 **`📷 漫步 · V`**：
-  - 按下 `V` 键或点击按钮后，相机 `camera.projection` 从正交投影 (`PROJECTION_ORTHOGONAL`) 平滑切换为 **透视微缩广角镜头 (`PROJECTION_PERSPECTIVE`, `fov = 48.0`)**，机位降低至街头人眼/低空俯瞰高度（`pitch = 0.22`，距离焦点 `6.5m`）；
-  - 支持 `WASD` / 方向键顺着街道高低起伏漫步（相机焦点高度 `focus.y` 自动平滑跟随 `state.street_height(Vector2(focus.x, focus.z)) + 1.2m`），让玩家可以**亲自走上高地石阶、穿过石拱门洞、漫步在连拱柱廊与玻璃花房下、走过跨河石桥**，同时听见身边房屋与溪流最真实的近景立体声场！
-  - 在漫步模式下按 **`F12` 或点击「拍下明信片」**，自动隐藏 UI 一帧，截取当前 1440×900 画面并加上温润的羊皮纸画框与当前城市名称/日期水印，保存至 `user://postcards/`，弹出温馨提示！
-
-## 第六部分：分阶段实施检验清单（供执行 AI 自检）
-
-请执行 AI 按照以下 4 个阶段逐步推进，每完成一个阶段进行一次本地 Git 提交：
-
-| 阶段 | 核心交付物 | 最小充分验证标准（一条命令跑通） |
+| CS2 融合能力 | 玩家交互方式 | 视觉衔接与城市生态效果 |
 | :--- | :--- | :--- |
-| **Phase 1：工作区大瘦身与零卡顿路网** | 1. 运行 `tools/cleanup_v3_workspace.py` 归档旧 2.5D 死代码/测试/日志<br>2. 重构 `city_creation_network.gd` 与 `city_creation_life.gd` 空间桶附着点与分帧提交<br>3. 更新 `AGENTS.md`, `AI_START_HERE.md`, `PROJECT.md`, `文档/README.md` | 1. `tests/test_city_creation_play.gd` 与 `tools/check_creation_edit_latency.gd` 全通过；<br>2. 28 屋样例近路地形塑形后台准备 `< 35ms`（原 2,480ms），整段最大帧 `< 12ms`（原 47~94ms）；<br>3. `export_ai_repository.py` 导出体积下降 15MB+，不再挤爆 55MB 上限。 |
-| **Phase 2：Tiny Glade + Townscaper 美术跃升** | 1. `creation_meadow_palette.gdshaderinc` + `creation_lawn.gdshader` 色阶与透射修复 + 四色野花簇<br>2. 新增 `creation_wall.gdshader`（墙根/檐下/转角 Cavity AO + 冷暖半球光）<br>3. 升级 `creation_joined_roof.gdshader`（立体筒瓦法线）与 `creation_water.gdshader`（岸沫波+菲涅尔反射）<br>4. 三段式光影（晴昼 / 夕照 / 星夜 Nocturne） | 1. 实窗渲染无任何 Shader 编译警告或 GL 错误；<br>2. 昼/夕/夜三档切换顺畅，星夜模式下全城有人房屋亮起温暖窗光，建筑墙根与檐下呈现柔和体积遮蔽，屋顶呈现立体筒瓦纹理，水岸呈现导数抗锯齿轻沫。 |
-| **Phase 3：箱庭生命生态与触感/音乐交互** | 1. `animate_house_bounce` 建造/点按弹性跳动 + 按住滑动“街巷八音盒刮奏”<br>2. `city_creation_wildlife.gd`（屋顶白鸽起落惊飞 + 花间彩蝶/星夜流萤 MultiMesh）<br>3. `city_creation_bunting.gd`（跨街彩旗与暖灯悬索） | 1. 建房/加层/点房试听时房屋产生柔和弹簧形变，按住划过街屋连续奏出和弦琶音；<br>2. 屋顶有飞鸟停驻并在建房/拨弦时惊飞，花房/茶座/池塘有彩蝶（夜间变为流萤），全城仅增 2 个 MultiMesh Draw Call。 |
-| **Phase 4：Foundation 幸福共鸣环与漫步相机** | 1. 面包坊/工坊/茶座地理邻接加持（活水/良木/雅集）<br>2. 居所三阶幸福共鸣度 (`Harmony Tier 0~3`) 驱动门前花丛、跨街彩旗与音乐复调声部增益<br>3. 第四章河湾手记 + `V` 键街头漫步与明信片拍照模式 | 1. 临水面包坊自动显示活水加持并加速产出，居所满足温饱/茶叙/匠心后升阶并解锁丰满伴奏轨；<br>2. 第四章手记可正常达成并解锁“星夜鎏金与月白”配色；<br>3. 按 `V` 键丝滑切入街头透视漫步视角并可保存明信片截图。 |
-
-
-## 第七部分：v3.0 核心新增模块完整可粘贴源码（零省略直接落地）
-
-为了让执行 AI 无需猜测任何实现细节，以下提供 v3.0 四大核心新增模块的**完整、可直接保存运行**的 GDScript 源码：
-
-### 7.1 `scripts/visual/city_creation_wildlife.gd`（Townscaper 飞鸟、彩蝶与星夜流萤系统完整源码）
-*三库依据：完整复现 `参考资料/Townscaper逆向成品/outputs/townscaper_interaction_presentation.md` 中的 `BirdFlock`（`879180.c` / `879c30.c`：落点数量开方缩放、五态切换、`UprootBird` 建造/拨弦惊飞）与 `ButterflyFlock`（`8811c0.c`：噪声飞行与花丛驻留），并在星夜模式下自动化为池畔流萤。全城仅占用 2 个 MultiMesh Draw Call。*
-
-当前适配源码：`scripts/visual/city_creation_wildlife.gd`。原始模板完整保留于 `文档/03_可直接覆盖到仓库根目录/`；以实际源码及本轮验证为准。
+| **1. 道路就地升级与行道装饰工具 (`Replace & Beautify`)** | 用工具 3 在**已有的道路上再刷一笔**（或在工具 3 面板选择道路样式：**乡间小径 `1.25m` / 古典石板灯街 `1.75m` / 林荫大道 `2.1m` / 叮当电车轨街 `2.1m`**） | **无需拆路重画，保留全部路口、穿房拱洞与门阶连接！**<br>• **石板灯街**：路面换为暖白错缝花岗石板，两侧每隔 `4.5m` 自动生成 **3D 暖光铁艺街灯**与鲜花石箱；<br>• **林荫大道**：两侧自动嵌入规则树池与修剪整齐的小型冠层行道树 + 路边木长椅；<br>• **有轨电车/音乐轨街**：路面嵌入精致的双轨槽与架空铜线，电车/马车沿轨巡游并按节拍发出清脆和弦铃！ |
+| **2. 一键环岛与路口中心广场 (`Roundabouts & Plazas`)** | 在工具 3 模式下，**直接点击任意两条或多条道路的交叉口**（或选择“环岛/广场”子按钮点击路口） | 自动将该十字/多岔路口重构为一个半径 `2.4m`（小）或 `3.6m`（大）的**圆形石板环岛广场 (Roundabout Plaza)**！<br>• 所有接入道路自动以平滑切线喇叭口 (`w_flare`) 汇入环岛外环；<br>• 环岛中心自动生成一座微型地标（**古典涌泉池、花坛日晷、音乐八音盒雕塑或报时小钟塔**），居民绕环岛漫步或驻足欣赏！ |
+| **3. 建筑墙根与路面的微观接地细节 (`Micro-Grounding`)** | 全自动派生，无需额外操作 | • **墙根青苔与落叶散落带**：在房屋墙根与石板路交界处，通过 `ground_contact_field` 叠加暖褐湿土、墙角微青苔与幾簇墙缝小野花/常春藤；<br>• **屋檐滴水石与门前铺石毯**：每个活跃门口与石阶下方自动铺设扇形鹅卵石迎宾垫 (`Door Cobble Apron`)，彻底消除台阶插在草地里的生硬感。 |
 
 ---
 
-### 7.2 `scripts/visual/city_creation_bunting.gd`（Townscaper 跨街彩旗与暖灯悬索完整源码）
-*三库依据：完整复现 `参考资料/Townscaper逆向成品/outputs/townscaper_wire_ground_workflows.md` 中 `PropPlacer.AddColliderToDict` 的锚点方向筛选公式（`dot(-d, rightA) >= 0.3`, `dot(d, rightB) >= 0.3`, `dot(-rightB, rightA) >= 0.5`）及 `FlagMesh` / `ItalianMesh` 悬索生成规则。*
+## 第四章：四温区视野声场架构 (`Acoustic Grouping`) 与跨时空音乐共鸣系统
 
-当前适配源码：`scripts/visual/city_creation_bunting.gd`。原始模板完整保留于 `文档/03_可直接覆盖到仓库根目录/`；以实际源码及本轮验证为准。
+本章将你提出的**“主要以增强玩家正反馈为主要作用，主要是玩家视野内的建筑（或内联区域）发声，加上一些特殊部分发声，城市大部分视野外地区静默以保证和谐”**转化为严谨、可直接编码的音频工程规范。
+
+### 4.1 为什么这套机制能让 500 栋建筑的大城依然像八音盒一样纯净动听？
+
+在 `scripts/audio/city_creation_music.gd` 与新建的 `scripts/audio/city_creation_acoustic_field.gd` 中，我们实行 **“逻辑全城运转，声学视野聚焦 (Simulate All, Audition by Focus & Link)”** 机制：
+
+#### 4.1.1 声学权重实时计算公式 (`AcousticFieldAggregator`)
+每帧（或在每 `0.25s` 的声场评估步与 `3.0s` 的乐句边界上），对城内所有房屋 $i$ 和街坊 $D$ 计算其声学激活态：
+
+1. **第一类：镜头视野内建筑 (`In-View Active Sources`) —— 主导当前音乐织体**
+   - 计算房屋世界坐标 $P_i$ 到当前镜头地面焦点 $F_{\text{cam}}$ 的归一化椭圆视锥距离：
+     $$d_{\text{view}}(i) = \frac{\|(P_i - F_{\text{cam}})_{xz}\|}{R_{\text{focus}}(\text{zoom})}, \quad R_{\text{focus}}(\text{zoom}) = \text{clamp}(0.75 \times \text{zoom}, 12.0, 28.0)$$
+   - **当 $d_{\text{view}}(i) \le 1.0$ 时（位于玩家视野内）**：
+     - 该房屋进入 **活跃发声池 (`active_view_houses`)**，其声学权重为 $w_i = \text{smoothstep}(1.0, 0.25, d_{\text{view}}(i))$。
+     - 视野内房屋所在的街坊风格（以及建筑用途、层高、等级）共同决定当前的主奏主题（如古典暖庭、深流舟歌、文艺复兴弦乐或现代生态钢琴）与自动配器比例。
+     - 同一时刻，视野内权重最高的 1～2 栋代表建筑承担 **主旋律领奏 (`lead_id`)**，视野内其余建筑承担 **和声织体伴奏 (`chorus_ids`)**，窗户随节拍散发柔和暖光。
+
+2. **第二类：内联共鸣区域 (`Inline / Linked Resonance Regions`) —— 跨区复调与一问一答**
+   - 玩家可以通过两种方式建立**“内联区域”**：
+     - **显式内联 (`Explicit Musical Link`)**：使用工具 8 的“♫ 共鸣连线”画笔，将街坊 $D_A$ 与远处的街坊 $D_B$ 连接起来（可保存于 `state.musical_links`）；
+     - **拓扑内联 (`Road/Tram Connected Neighbor`)**：与当前视野中心街坊通过真实道路、桥梁或有轨电车直接相连的相邻异风格街坊。
+   - **发声规则**：当视野中心街坊 $D_A$ 处于主奏时，其内联街坊 $D_B$ 虽在视野边缘或视野外，仍被授予 **$0.45 \sim 0.60$ 的内联应答权重**！
+   - 在每个偶数乐句（或问答窗口），内联区域用其专属的时代乐器（例如：视野内是古典木吉他提问，内联的文艺复兴街区用羽管键琴/长笛在同一调式和弦下回答！），并通过立体声声像 (`city_creation_spatial.gd`) 从内联街区所在的屏幕方向传入玩家耳中，同时在两区之间浮现一道流光溢彩的空中音弧！
+
+3. **第三类：特殊远端/全局事件声源 (`Special Horizon Events`) —— 赋予城市鲜活的空间纵深**
+   - 即使不在视野内、也没有内联，以下 **4 类特殊高光事件** 允许通过专用的“远端事件通道”（带距离衰减与 `1800Hz` 柔和低通滤波，模拟远方传来的温暖空间感，音量上限 `<= 25%`）发声：
+     1. **地标钟楼/报时塔 (`Bell Tower & Carillon`)**：每隔 24 秒大循环的关键和弦节点，远处钟楼传来悠扬深邃的铜钟泛音；
+     2. **正在举行的远端街坊庆典演出 (`Active Remote Concert`)**：当城市另一端的演奏庭正在举办自发巡演或庆典接力时，玩家能隐约听到远方传来的欢快合奏余音，屏幕边缘泛起柔和的金色方位微光，吸引玩家移镜过去观看；
+     3. **跨区有轨电车/音乐游船报站 (`Musical Tram / Ferry Chime`)**：当连接各街区的叮当电车或河湾游船抵达站点时，发出两声清脆悦耳的和弦铃音；
+     4. **建筑升级与里程碑落成华彩 (`Level-Up & Milestone Flourish`)**：当某栋住宅因为工坊与茶座服务完备而自动升级，或新时代/新地标解锁时，触发一串温暖的竖琴上行琶音。
+
+4. **第四类：城市其余绝大部分视野外地区 (`Out-of-View Silent Majority`) —— 100% 静默保谐**
+   - 所有既不在当前视野圈内（$d_{\text{view}} > 1.05$）、不属于当前激活的内联配对、也未发生上述特殊事件的街区与房屋，**其音频权重严格为 `0.0`（完全静默）**！
+   - 它们的面包师依然在烤面包、匠人依然在送货、居民依然在喝茶，经济账本照常累计，但**绝不向混音器发送任何音符**。这就从根本上保证了：**哪怕你的城市扩展到 500 栋建筑、横跨 4 个时代、包含 10 个不同风格的街区，玩家听到的永远是一首层次分明、晶莹剔透、绝不杂乱的室内交响乐！**
 
 ---
 
-### 7.3 `scripts/world/city_creation_prosperity.gd`（Foundation 地理邻接加持与三阶幸福共鸣环完整源码）
-*三库依据：直接吸收 `参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-game-systems/SEMANTIC_GUIDE.md` 中的 `NeedFoodBasic`、`NeedEntertainment`、`HappinessFactor` 与生产环境加成逻辑，转化为治愈系零压力正反馈系统。*
+### 4.2 建造与交互的即时音乐正反馈（让每一次点击都妙趣横生）
 
-当前适配源码：`scripts/world/city_creation_prosperity.gd`。原始模板完整保留于 `文档/03_可直接覆盖到仓库根目录/`；以实际源码及本轮验证为准。
+1. **建造音阶拨弦 (`Construction Pitch Pluck`)**：
+   - 放置或拔高房屋模块时，不再只是播放单一固定的木头敲击音效，而是根据**房屋当前高度 (`level 0~4`)** 映射到当前主和弦的五声音阶级数 `(Do, Re, Mi, Sol, La, 高音Do)`，并用该街区的主乐器音色拨响！连续拖动建一排房子或连点拔高塔楼时，会自然奏出一串悦耳的分解和弦旋律。
+2. **点击/掠过房屋即兴试听 (`Interactive House Pluck`)**：
+   - 在浏览或选择模式下点击任意房屋，该房屋立即闪烁暖金窗光并奏响一个属于它的特征和弦音（民居为温暖拨弦、面包坊为木琴伴铜铃、制琴坊为清越泛音、茶座为长笛双音、钟楼为钟琴和弦）。
+3. **全城同调式和谐锁 (`Universal Harmonic Lock`)**：
+   - 所有时代、所有区域的音乐共享同一个 **24 秒主时钟 (`clock_sec`)、80 BPM 脉冲与统一的和声进行底座（如 D 大调 / B 小调五声与七声自然兼容和弦环）**。任何跨区转换、内联问答、电车报站与建造拨弦全部量化到当前小节的和谐音级上，从数学上消灭任何刺耳的不协和音。
 
 ---
 
-### 7.4 三大逆向工程库与《共鸣之城》v3.0 全量映射速查矩阵
+## 第五章：四大时代演进篇章 × 多风貌街区并存（Chrono-Cultural Districts）
 
-为了方便后续迭代随时深挖本地三大逆向工程库，特整理以下精准映射表（可同步更新至 `文档/参考索引.md`）：
+为了同时实现**“时代演进的史诗成长感”**与**“不同区域不同建筑/音乐风格同城并存”**，我们将游戏内容组织为 **四大可渐进解锁的时代风貌体系**。
 
-| 逆向工程库 | 逆向库内具体文件路径 / 函数地址 | 核心算法与数据结构精髓 | 在《共鸣之城》v3.0 中的落点 |
-| :--- | :--- | :--- | :--- |
-| **Tiny Glade v2** | `reports/reconstruction_grass2.md`<br>`tools/grass2_runtime_reference.py`<br>`evidence/reconstruction_resources/grass2_unpack_shader_evidence.json` | 16-byte packed clump、世界镜像 `128m` `world_albedo_tint`、物体推压 `grass2_object_push`、太阳包裹漫反射 `grass2_sun_wrap` | `city_creation_meadow.gd`<br>`creation_lawn.gdshader`<br>`creation_meadow_palette.gdshaderinc` |
-| **Tiny Glade v2** | `reports/reconstruction_roof.md`<br>`tools/recovered_roof.py`<br>`tools/recovered_roof_tiles.py` (`0x140b772d0`, `0x142816ba0`, `0x142812c70`) | 20点幂曲线 `y = x^(0.5+profile)`、挑檐扩张 `1.5*eave*(0.5+0.5*sqrt(profile))+0.28`、64-byte 单瓦片 `seed` 色相/倾角扰动 | `city_creation_tower.gd`<br>`city_creation_round_tower.gd`<br>`creation_joined_roof.gdshader` |
-| **Tiny Glade v2** | `reports/reconstruction_wall_pipeline.md`<br>`reports/reconstruction_wall_stairs.md`<br>`tools/recovered_stair_terrain.py` (`0x140827820`, `0x14140ce00`) | 道路触墙自动生成三级门阶、穿墙凿出双面可拾取石拱门 (`subtract_wall_cutouts`)、顺坡支撑站与陡坡台阶 | `city_creation_architecture.gd`<br>`city_creation_road_stairs.gd`<br>`city_creation_highland.gd` |
-| **Tiny Glade v2** | `reconstruction/shaders-source/glsl/country-core/compiled/` (`rocky_terrain`, `water_plane`, `combine_path_exclusions`) | 坡度阈值 `smoothstep(0.75, 1.25, slope)` 露岩三平面投影、水面径向涟漪波、道路柔边与鹅卵石屏蔽 | `creation_ground.gdshader`<br>`creation_water.gdshader`<br>`city_creation_path_pebbles.gd` |
-| **Townscaper** | `outputs/townscaper_generation.md`<br>`outputs/townscaper_grid_topology.md` (`e6eee0.c`, `3f1e80.c`, `8770c0.c`) | 邻接驱动的局部拓扑派生（共墙、长屋山墙、闭合内院、上层花房、底层柱廊）、按材质增量合批 (`BigMeshMaster`) | `city_creation_building_context.gd`<br>`city_creation_mesh_batcher.gd`<br>`city_creation_arcade.gd` |
-| **Townscaper** | `outputs/townscaper_shader_algorithms.md`<br>`outputs/townscaper_shaders.md` (`Placemaker/House`, `Placemaker/Water`, `AoSpreader`) | 墙根/檐下/转角 Cavity AO、冷暖半球光照与色调映射链、屏幕导数 `fwidth` 抗锯齿岸际轻沫波纹 | `creation_wall.gdshader`<br>`creation_water.gdshader` |
-| **Townscaper** | `outputs/townscaper_interaction_presentation.md`<br>`outputs/townscaper_wire_ground_workflows.md` (`3d5000.c`, `758e50.c`, `805ae0.c`, `879180.c`, `8811c0.c`) | `VoxelBobEffect` 按压弹性形变、`PropWire` 跨街彩旗/暖灯悬索朝向判定、`BirdFlock` 屋顶飞鸟惊飞、`ButterflyFlock` 花间彩蝶 | `city_creation_renderer.gd`<br>`city_creation_bunting.gd`<br>`city_creation_wildlife.gd` |
-| **Foundation** | `outputs/foundation-game-systems/SEMANTIC_GUIDE.md`<br>`outputs/foundation-game-systems/production-recipes.json`<br>`outputs/foundation-game-systems/happiness.csv` | 真实村民寻路到岗 (`Visit Building` / `Work.bt`)、风车与面包房生产配方、村民多维需求 (`NeedFoodBasic`, `NeedEntertainment`) 与 `HappinessFactor` | `city_creation_life.gd`<br>`city_creation_bakery.gd`<br>`city_creation_workshop.gd`<br>`city_creation_prosperity.gd` |
-| **Foundation** | `outputs/foundation-models/README_MODEL_RECOVERY.md`<br>`outputs/foundation-audio-recovered/README_AUDIO_RECOVERY.md` | 提取恢复的庭院喷泉、教堂铜钟、坡地伴石 GLB 模型、石砌街屋与层理岩壁贴图、48kHz 真实溪流环境声 | `资源/建筑参考/`<br>`资源/自然参考/`<br>`city_creation_ambience.gd` |
+### 5.1 时代演进与区域风貌的核心规则
+1. **时代是全局解锁进度，风貌是街坊 (`District`) 的自由属性**：
+   - 玩家通过推进左上角“河湾手记 (`J`)”的繁荣里程碑，从 **时代 I（古典田园）** 逐步解锁 **时代 II（文艺复兴）**、**时代 III（蒸汽钟表）** 与 **时代 IV（现代生态）**。
+   - 解锁新时代后，**绝不强制覆盖已有老街区**！老街区自动获得“历史街区保护”，保留其原有的古典木石风貌与田园音乐。
+   - 当玩家使用 **工具 8（街坊）** 刷出新区域（或选中已有区域）时，可以在面板中选择该街坊所属的 **【时代风貌主题 (Era Theme)】**。
+   - **区域决定生万象**：一旦某个街坊被设为某个时代风貌，在该街坊内用工具 1/2 建房、用工具 3 升级道路、用工具 5 设工坊，都会**自动长出对应时代的建筑外观、屋顶轮廓、街道灯具，并奏响对应时代的专属音乐风格**！
+
+### 5.2 四大时代风貌与音乐/建筑全貌表
+
+| 时代篇章与解锁条件 | 街坊建筑风貌特征 (`Visual Style`) | 专属道路与公共设施 (`Streets & Props`) | 专属音乐曲风与器乐编制 (`Musical Style`) | 新增时代特色玩法 / 角色 |
+| :--- | :--- | :--- | :--- | :--- |
+| **第一时代 (Era I)**<br>**田园木石河湾**<br>*(开局默认解锁)* | • **暖庭灰泥 (`classic`)**：暖白墙 + 赭红陶瓦 + 百叶窗<br>• **木筋山墙 (`timber`)**：外露橡木梁架 + 双坡陡顶<br>• **深流毛石 (`stone`)**：青灰错缝石墙 + 蓝灰板岩瓦 + 尖顶钟楼 | • 乡间鹅卵石小径 (`1.25m`)<br>• 圆拱石桥与汀步踏脚石<br>• 水岸芦苇、橄榄树与丝柏 | • **暖庭田园**（原声木吉他 + 木笛）<br>• **深流舟歌**（大提琴长弓 + 竖琴）<br>• **织机劳作**（马林巴木琴 + 沙锤） | • **麦香面包坊 (`bakery`)**<br>• **制琴木工坊 (`workshop`)**<br>• **花圃茶座 (`garden_cafe`)**<br>• **街坊演奏庭 (`venue`)** |
+| **第二时代 (Era II)**<br>**文艺复兴人文长街**<br>*(建成 12 屋 + 完成首场多庭接力或茶聚后解锁)* | • **暖金砂岩与红砖拱券 (`renaissance`)**：对称古典立面、三角山花窗楣、二层铸铁雕花阳台<br>• **底层商住连拱柱廊 (`Ground Arcade`, 借鉴 CS2 Mixed-Use)**：二层以上临街建筑底层自动退缩形成连续石柱拱廊！<br>• **八角/圆形穹顶 (`Dome Crown`)** | • **古典石板灯街 (`1.75m`)**：错缝暖白花岗石板 + 古典铁艺暖光街灯 + 鲜花石箱<br>• **圆形石板环岛广场 (`Roundabout`)**：中心带双层大理石喷泉或日晷雕塑 | • **人文赋格曲 (`renaissance_fugue`)**：羽管键琴 (Harpsichord) + 独奏小提琴/中提琴 + 双簧管 + 室内弦乐四重奏，擅长优雅的卡农对位与华彩琶音 | • **人文书院 / 画廊 (`atelier`)**：学者与画师在此创作，为周边住宅加装**艺术浮雕、彩绘玻璃窗与穹顶天窗**，大幅提升街坊共鸣值 |
+| **第三时代 (Era III)**<br>**蒸汽钟表与浪漫花房**<br>*(建成 28 屋 + 拥有至少 2 个不同风貌街区后解锁)* | • **维多利亚红砖与青铜装饰 (`clockwork`)**：暖红砖墙、孟莎式双折屋顶 (Mansard Roof)、铸铁天窗<br>• **铸铁玻璃花房顶冠 (`Glass Conservatory`)**：多层退台与屋顶自动生成通透的弧形玻璃阳光花房 | • **叮当有轨电车宽街 (`2.1m Tram Avenue`, 借鉴 CS2)**：石板路嵌入双轨与铜线，复古木制有轨电车沿街巡游接送居民！<br>• **钢铁桁架拱桥 (`Truss Bridge`)** | • **浪漫圆舞与管乐 (`clockwork_waltz`)**：立式温暖钢琴 + 圆号 (French Horn) + 单簧管 + 手风琴 + 钢片琴 (Celesta)，电车经过时触发清脆铜铃和弦 | • **钟表与八音盒工坊 (`clockmaker`)**：制作精巧的发条八音盒与报时风向标，开启跨街区**有轨电车音乐巡游路线** |
+| **第四时代 (Era IV)**<br>**现代生态交响城**<br>*(建成 50+ 屋 + 贯通三时代共鸣后解锁)* | • **原木与流线白墙玻璃幕墙 (`modern_eco`)**：极简暖白悬挑露台、大面积暖光落地窗、垂直森林立体绿化墙 (`Vertical Garden`)<br>• **空中连廊 (`Skybridge`)**：相邻高层建筑在二/三层可自动架起空中玻璃花园步廊 | • **现代生态漫步街与林荫绿道 (`2.1m Eco Boulevard`)**：浅灰透水石板 + 发光地面音符灯带 + 景观水景带<br>• **流线白石跨河斜拉/单拱景观桥** | • **现代环境交响 (`modern_symphony`)**：温暖毡音钢琴 (Felt Piano) + 柔和模拟合成器铺底 (Warm Synth Pad) + 颤音琴 (Vibraphone) + 室内管弦大合奏 | • **交响音乐厅 / 露天环形剧场 (`symphony_hall`)**：可发起**“全城跨时空交响盛典”**，让全城古典、文艺复兴、蒸汽与现代四大街区接力合奏！ |
+
+### 5.3 跨时代街区相邻时的“美学无缝过渡法则”
+当玩家在同一座城市里既保留了“第一时代：古典田园老城”，又在旁边建设了“第二时代：文艺复兴长街”或“第四时代：现代生态街区”时，如何避免两种风格生硬撞在一起？
+1. **街区归属以房屋原点 (`house.origin`) 所落入的街坊 (`district_id`) 为准**，若未划入任何街坊则默认采用当前城市的默认起点风貌（古典田园），玩家也可在工具 5 中单独覆盖任意单栋房屋的时代样式。
+2. **道路跨过不同时代街区边界时**：在交界处 `2.0m` 范围内，路面纹理通过 Shader 渐变混合，并在交界点自动生成一座 **“风貌界碑石拱门 / 铁艺花架拱门或一对迎宾路灯 (`Transition Arch / Gateway`)”**，让跨区过渡从“贴图接缝”变成一道迷人的城市风景线！
+
+---
+
+## 第六章：Foundation × 城市天际线2 深度可持续经营与建筑 1–5 级演进
+
+为了让游戏具备**“可以长期持续经营、越玩越有奔头”**的深度，我们将 `Foundation` 的真实村民履约循环与 `《城市天际线2》` 的 **建筑等级演进 (`Building Levels 1–5`)** 及 **地标名胜 (`Signature Buildings`)** 融为一体，且始终坚持 **“零破产惩罚、纯正反馈驱动”**：
+
+### 6.1 建筑 1～5 级自然品质演进（借鉴 CS2 `Building Levels`）
+在《城市天际线2》中，所有区域建筑都有 1～5 级，随着居民幸福度与周边服务完善而自动升级外观与效率。在《共鸣之城》中：
+- 每栋民居与工坊拥有 **共鸣品质等级 `level_tier ∈ [1, 5]`**（兼容扩展现有 `house_improvements` 0~3 级体系）：
+  - **Lv.1 初筑小屋**：基础墙体与屋瓦，提供基础单音拨弦。
+  - **Lv.2 安居暖舍** *(条件：道路接通 + 居民累计买到 1 次面包)*：门前自动长出迎宾石垫、花盆与暖光门灯，窗户夜间散发明亮暖光。
+  - **Lv.3 雅致风铃屋** *(条件：获得制琴工坊送装的木饰，或参加过 1 场街坊演出)*：屋檐挂起随风摆动的铜风铃、窗台长出鲜花木箱，音乐参与时增加高八度泛音装饰。
+  - **Lv.4 连廊华宅** *(条件：居民体验过花圃茶座品茶 + 所在街坊拥有石板灯街或内院喷泉)*：底层自动长出雕花木廊/石柱连拱廊，上层露台长出奶油帆布花架或玻璃花房，工坊产出效率提升 `+25%`。
+  - **Lv.5 传世共鸣名宅** *(条件：参与过跨区连奏或全城庆典接力 + 获得第二/三时代文化服务)*：屋脊点缀金色风向标/艺术浮雕，常驻柔和的金色共鸣光晕，在视野声场中可奏出极其动听的复调华彩乐句！
+
+### 6.2 地标名胜建筑系统（借鉴 CS2 `Signature Buildings`）
+参考《城市天际线2》第 4 期开发日志中的 **Signature Buildings（独特可放置的功能地标）**：
+- 当玩家达成特定的城市建设与音乐共鸣里程碑时，将解锁 **6 座独特地标名胜建筑**（在工具 5 或河湾手记中**免费一键放置**，可随时移动或拆除重建，每座限放 1 处，既是真实运转的功能建筑，又为全城提供强力正反馈增益与独特声部）：
+  1. **【古钟瞭望塔 · Olden Bell Keep】** *(里程碑：建成 10 屋 + 1 座跨河石桥)*：自带 4 层高耸石塔与 Foundation 真实铜钟，视野外也可每 24 秒奏响全城报时和弦，使全城居民步行速度 `+15%`。
+  2. **【河湾大水车磨坊 · Waterwheel Mill Bakery】** *(里程碑：面包坊累计出炉 30 份)*：依水岸而建，巨大的木质水车随水流持续旋转（带真实水车击水木音），自动为全城所有面包坊提供面粉加成，使每炉产量 `+1`！
+  3. **【文艺复兴圆顶音乐院 · Santa Cecilia Rotunda】** *(里程碑：解锁第二时代 + 2 个街坊达成跨区问答)*：宏伟的八角红瓦穹顶与石柱回廊，作为超级演奏庭，演出覆盖半径扩大至 `36m`，并解锁弦乐四重奏声部。
+  4. **【皇家植物玻璃宫 · Crystal Botanical Conservatory】** *(里程碑：花圃茶座累计促成 10 桌茶聚 + 种植 150 棵植物)*：通透华丽的铸铁玻璃穹顶花房，内置喷泉与珍稀花木，使全城所有茶座与演出的“共鸣余韵”持续时间延长至 `180 秒`！
+  5. **【中央钟表电车总站 · Grand Clockwork Depot】** *(里程碑：解锁第三时代 + 铺设 `40m` 以上石板宽街/电车街)*：派出复古叮当音乐电车沿主干道循环巡游，居民可搭乘电车跨街区快速赴约演出与采购！
+  6. **【河湾水上交响剧场 · Floating Amphitheater】** *(里程碑：解锁第四时代 + 完成三章河湾手记)*：建在水岸边的流线型水上舞台与环岸石阶看台，点击即可一键发起**“全城跨时代交响盛典”**，水面泛起壮丽的金色声波涟漪，全城所有时代街区共同合奏终章交响曲！
+
+---
+
+## 第七章：大城性能保障架构（80m～160m 扩容与 120 FPS 稳态）
+
+当城市规模从最初的 6 栋小屋扩展到横跨四大时代、拥有 100～300+ 栋建筑、数十条道路与上千株植被的宏大河湾城市时，必须依靠以下 **五大工程铁律** 确保帧率稳如磐石（目标：标准街景 `120+ FPS`，大城全景 `60～120 FPS`，单次拖拽编辑零卡顿）：
+
+1. **可编辑世界画布平滑扩容 (`EDITABLE_WORLD_RECT` 扩至 `80m×80m` 乃至 `120m×120m`)**：
+   - 将 `city_creation_renderer.gd`、`city_creation_meadow.gd`、`city_creation_terrain.gd` 中的世界范围统一抽离为共享常量 `CityCreationConfig.WORLD_RECT = Rect2(-40.0, -40.0, 80.0, 80.0)`。
+   - 保持 `16m×16m` 地形块与 `8m×8m` 草地/水岸/植被 `MultiMeshInstance3D` 分块粒度不变——因为所有编辑均基于局部 `dirty_aabb` 脏块更新，地图面积扩大 4 倍对单笔建房/修路的 CPU 耗时影响为 **0**！
+2. **四温区声场的恒定声部池 (`Bounded 16-Voice Audio Engine`)**：
+   - 严格执行第四章的 **CS2 式 `Audio Grouping`**：因为视野外 80% 的建筑音频权重为 `0.0`，无论城里有 10 栋房还是 1,000 栋房，音频引擎永远只需要驱动 **固定 9～12 条共享长循环音轨 + 4～6 个短音效池播放器 + 2 条环境声床（溪流/林风）**，音频 CPU 开销恒定 `< 0.4ms`。
+3. **房屋与街道装饰的顶点色静态合批 + GPU 距离裁剪 (`visibility_range_end`)**：
+   - 延续并强化 `city_creation_mesh_batcher.gd`：每栋房屋的静态构件合并为极少数 Surface；
+   - 为路缘卵石 (`path_pebbles`)、草簇 (`meadow`)、屋檐小风铃、花箱等微小装饰设置 Godot 原生 GPU 距离消隐：`visibility_range_end = 42.0`、`visibility_range_fade_mode = VISIBILITY_RANGE_FADE_SELF`，当镜头拉远看全城全景时，GPU 自动剔除微小碎石与细草，Draw Calls 自动锐减 50% 以上！
+4. **地形笔刷与外观切换的快速局部通道**：
+   - 房屋单纯切换配色 (`palette`/`finish`)、样式 (`style`) 或升级等级 (`level_tier`) 时，走单屋快速重批通道（耗时 `< 2ms`），绝不触发全城路网、庭院或草地掩码重算。
+   - 地形笔刷 (`Tool 9`) 松手时，仅对笔画包围盒覆盖的 `1～4` 个 `16m` 地形块和 `8m` 草块走 `city_creation_budget_rebuild.gd` 分帧提交（每帧预算 `<= 3.5ms`），彻底消除松手瞬间的 `30ms` 同步顿挫。
+5. **视野外居民轻量化模拟 (`LOD Simulation for Off-Screen Citizens`)**：
+   - 借鉴《城市天际线2》与《Foundation》的距离分级模拟：位于当前镜头视锥内的居民/工匠/电车执行完整平滑的 3D 骨骼/节点位移与转身动画；位于镜头视锥外的居民仅在逻辑层按路径速度推进标量进度 `progress += speed * delta`，跳过不必要的每帧 3D Transform 矩阵更新与朝向插值。
+
+---
+
+## 第八章：仓库现有文档大瘦身与工作流去形式主义指南
+
+为了让施工 AI 不再把 80% 的上下文和算力浪费在读旧文档、写免责声明和打 118MB 压缩包上，请立即对仓库执行以下 **“文档与目录大扫除”**：
+
+### 8.1 精确到文件的移出归档清单（全部移入 `废弃/`，安全保留不删丢）
+
+| 归档类别 | 需移入 `废弃/` 的具体文件路径 | 目标归档目录 |
+| :--- | :--- | :--- |
+| **1. 旧 2.5D 时代规格与任务文档（共 28 份）** | • `文档/01_执行规格/` *(整个文件夹 11 份 `spec.*.md`)*<br>• `文档/02_验收/` *(整个文件夹 `DOD.md`)*<br>• `文档/03_任务/` *(整个文件夹 `P0.md`, `P1.md`, `P2.md`)*<br>• `文档/10_世界模型.md`、`11_核心循环.md`、`14_城市生长.md`、`18_城市规模.md`、`19_城市生成管线.md`、`20_开发接口与迁移.md`<br>• `文档/版本整合说明.md`、`需求与旧稿覆盖.md`、`待裁定与依赖.md`、`施工文档规则.md`、`共鸣之城_文档合并精简版.md` *(154KB)* | `废弃/文档_旧体系归档_2026-10-17/` |
+| **2. 单轮临时考据笔记（共 9 份）** | • `文档/下一对话目标.md`<br>• `文档/地貌下一项调查_2026-10-16.md`、`庆典接力三库依据_2026-10-16.md`、`水岸石簇三库依据_2026-10-16.md`、`烘焙炊烟三库依据_2026-10-16.md`、`街坊声像三库依据_2026-10-16.md`、`街坊连奏三库依据_2026-10-16.md`、`街坊连奏接入调查_2026-10-16.md`、`露台花架三库依据_2026-10-16.md` | 移入对应的 `验证记录/*_2026-10-16/` 或 `废弃/文档_旧体系归档_2026-10-17/` |
+| **3. 旧 2.5D 轮次验证记录（80+ 个目录）** | • `验证记录/round150_*` 至 `验证记录/round218_*` 全部目录<br>• `验证记录/P0/`、`验证记录/Demo/`、`验证记录/连续河谷/`、`验证记录/round190_parse.log`、`验证记录/交接目标核对-第54轮.json` | `废弃/验证记录_旧2.5D归档/` *(可为 `export_ai_repository.py` 释放大量宝贵的 55MB 空间额度)* |
+| **4. 根目录多余的 `.cmd` 启动器（13 个）** | • 根目录仅保留 **`启动Demo.cmd`**、**`继续我的河湾.cmd`**、**`打开创作样例.cmd`** 3 个核心入口；<br>• 其余 13 个 `.cmd`（`打开台地样例.cmd`、`打开地貌样例.cmd` 等）全部移入 `tools/样例启动器/`，并在游戏内左上角“作品收藏 (`Ctrl+O`)”面板新增 **【示范河湾】** 页签实现游戏内一键切换！ | `tools/样例启动器/` |
+
+#### 清理后，`文档/` 目录只保留以下精悍的 **5 份核心文档**：
+1. **`文档/code_artifact.md`** —— 即本《共鸣之城 · 四库融合终极总设计与长期施工蓝图》（唯一最高设计权威）
+2. **`文档/README.md`** —— 一页纸极简导航
+3. **`文档/21_新城创作切片.md`** —— 当前 3D 河湾代码架构与存档字段速查表（剥离冗余流水账）
+4. **`文档/参考索引.md`** —— 四大参考库（Tiny Glade、Townscaper、Foundation、城市天际线2/城市生成深化）速查索引
+5. **`文档/Demo快速开始.md`** —— 玩家操作指南与快捷键说明
+
+---
+
+### 8.2 直接覆盖 `AGENTS.md` 与 `AI_START_HERE.md` 的全新精简正文
+
+#### 新版 `AGENTS.md`（直接覆盖根目录 `AGENTS.md`）：
+```markdown
+# 《共鸣之城》AI 施工准则 (四库融合版)
+
+1. **核心目标与完全自主权**：
+   - 你正在持续开发融合 **Tiny Glade**（自然箱庭美术与建筑道路丝滑接合）、**Townscaper**（点击即长的模块化邻接建筑生成）、**Foundation**（有机街坊、居民寻路与工坊生活）与 **Cities: Skylines II (`城市天际线2`)**（道路替换升级、挖填方护坡、环岛广场、视野声源分组 `Audio Grouping`、建筑 1–5 级演进与地标名胜）的 3D 城市音乐游戏《共鸣之城》。
+   - 你拥有项目内设计细化、代码实现、重构、取舍与验证的**完全自主权**。一切以**“最快做出能玩、好玩、好看、好听、有强烈正反馈的成果”**为准。
+
+2. **阅读与导航顺序**：
+   - 先读 `AI_START_HERE.md` 与 `PROJECT.md` 了解当前代码入口与当前所处的施工阶段；
+   - 再读唯一主设计蓝图 `文档/code_artifact.md` 与 `文档/参考索引.md`。
+
+3. **四库复用与轻量化工程纪律（拒绝形式主义内耗）**：
+   - 允许并鼓励直接提取和适配本地参考库中的算法、GLSL 公式、恢复模型（`.glb`）与纹理/音频资源。
+   - **禁止频繁打包内耗**：日常迭代中**不要**每做一个特性就打包 110MB+ 的 `交付/*.zip` 便携包（仅在用户明确要求导出试玩包时才打包）。
+   - **禁止免责声明流水账**：`PROJECT.md` 与 `AI_START_HERE.md` 严禁堆砌逐轮文件 SHA 清单或“不称完整移植/非大城证明”等防御性话术，保持在 15KB 以内的高信噪比状态。
+   - **最小充分验证**：每次改动只需跑通相关单元测试与 1 次实窗截图/帧时验证；若旧测试的死板限制与新设计冲突，主动升级测试以服务新设计。
+```
+
+#### 新版 `AI_START_HERE.md`（直接覆盖根目录 `AI_START_HERE.md`，替代原有的 45KB 流水账）：
+```markdown
+# 《共鸣之城》AI 快速启动入口
+
+## 1. 核心代码架构速查
+- **主场景与入口**：`res://scenes/city_creation.tscn` → `scripts/ui/city_creation_demo.gd`
+- **世界状态与存档 (`State`)**：`scripts/world/city_creation_state.gd`（含 `stroke`, `house_stroke`, `road_intent`, `junctions`, `passage`, `frontage`, `terrain`, `terrain_protection`, `courtyards`, `towers`, `growth`, `collection`）
+- **市民生活与经营 (`Life`)**：`scripts/world/city_creation_life.gd`（含 `network`, `bakery`, `workshop`, `cafe`, `matinee`, `concert_relay`, `travel`, `district_links`）
+- **3D 渲染与美术 (`Renderer`)**：`scripts/visual/city_creation_renderer.gd`（含 `meadow`, `foliage`, `shore`, `water_field`, `contact_field`, `terrain_surface`, `outcrops`, `building_context`, `gables`, `tower`, `house_styles`, `terrace_canopy`, `bakery_smoke`, `craft`, `cafe`, `courtyards`, `path_edge`, `path_pebbles`, `resonance`, `mesh_batcher`, `budget_rebuild` 及 `scripts/visual/shaders/*.gdshader`）
+- **音乐与视野声场 (`Music`)**：`scripts/audio/city_creation_music.gd`（含 `theme_pcm`, `reply_pcm`, `arrangement`, `district_reply`, `spatial`）
+
+## 2. 当前施工总纲与推进顺序
+请直接打开 **[文档/code_artifact.md](文档/code_artifact.md)**，对照 **第九章：十阶段长期施工路线图 (Phase 1 ～ Phase 10)** 逐阶段持续推进：
+1. **Phase 1**：草毯加密（7叶碗状绒簇 + 0.52m 密植）、暖阳 Filmic 光影、日/夕/夜三档氛围与草尖 SSS 透射重构。
+2. **Phase 2**：立体高地城建与 CS2 挖填方衔接（解除房路 0 米压平锁死，实现台地/山坡建房 + 自适应毛石高地基 + 顺坡道路与陡坡自动石阶 + 横坡挡土石墙）。
+3. **Phase 3**：CS2 式道路就地升级（双刷升级 1.75m 石板灯街 / 2.1m 林荫大道 / 叮当有轨电车街）与路口一键圆形环岛广场 (`Roundabouts & Plazas`)。
+4. **Phase 4**：四温区视野声场架构 (`Acoustic Grouping`：视野核心发声 + 内联区域问答 + 远端特殊事件低通微音 + 视野外静默保谐) 与建房/点房音阶拨弦即时反馈。
+5. **Phase 5 ～ Phase 10**：四大时代演进解锁 × 多风貌街区同城并存（古典田园、文艺复兴连拱穹顶、蒸汽钟表花房与有轨电车、现代生态空中花园）、建筑 1–5 级自动进化、6 座免费地标名胜 (`Signature Buildings`) 与 `80m×80m` 大城画布扩容。
+```
+
+---
+
+## 第九章：面向施工 AI 的十阶段长期施工路线图（Phase 1 ～ Phase 10 持续开发蓝图）
+
+本路线图专为支持施工 AI **长期、多轮次、高质量持续迭代**而设计。每个阶段（Phase）都具有极其明确的视觉/听觉/玩法产出、涉及的具体代码文件与可落地的技术规格。施工 AI 每完成一个 Phase，只需在 `PROJECT.md` 中将对应阶段标记为 `[x]` 并直接进入下一个 Phase。
+
+---
+
+### Phase 1：Tiny Glade 级饱满草毯、Filmic 暖阳光影与昼/夕/夜三态氛围焕新
+- **阶段目标**：彻底扭转“草地稀疏发灰、光影平淡”的观感，让游戏第一眼就呈现出温暖通透的微缩箱庭质感与唯美夜景。
+- **核心施工项**：
+  1. **`scripts/ui/city_creation_demo.gd` (`_setup_world` & `_toggle_light`)**：
+     - 将色调映射升级为 `Environment.TONE_MAPPER_FILMIC`（`exposure = 1.08`, `white = 1.85`），启用 `ProceduralSkyMaterial` 天空半球环境光 (`AMBIENT_SOURCE_SKY`)；
+     - 将光照切换升级为 **白昼 (Day) → 夕照 (Sunset) → 星夜 (Night)** 三态循环：星夜下主光转为静谧蓝紫月光 (`Color("6b82a8")`, `energy = 0.28`)，自动点亮全城所有房屋的温暖窗光 (`city_creation_resonance.gd` 基础夜间常亮 `35%` 暖光)、门廊灯与街灯！
+  2. **`scripts/visual/city_creation_meadow.gd`**：
+     - 将 `BASE_SPACING` 从 `0.65` 加密至 **`0.52`**；
+     - 将 `_mesh("lawn")` 的 `_ribbon` 从 3 片窄叶升级为 **7 片双圈碗状饱满绒簇**（内圈 3 片挺立迎光、外圈 4 片舒展铺底遮盖裸土，详见第三章 3.1 节参数）。
+  3. **`scripts/visual/shaders/creation_meadow_palette.gdshaderinc` & `creation_lawn.gdshader`**：
+     - 调整 `grass_low = vec4(0.25, 0.43, 0.27, 1.0)`、`grass_high = vec4(0.44, 0.58, 0.31, 1.0)`，斑块对比系数设为 `0.72`；
+     - 在 `creation_lawn.gdshader` 中实装根部 `0.80` AO 暗部压深、叶尖 `1.22` 暖金嫩绿跃升与 `vec3(0.24, 0.28, 0.09)` 的阳光透射 (SSS)。
+  4. **游戏内示范河湾一键切换 (`scripts/ui/city_creation_gallery_panel.gd`)**：
+     - 在“作品收藏 (`Ctrl+O`)”面板顶部新增 **【官方示范河湾】** 栏，直接列出 `数据/*样例.json`（创作、庭院、地貌、台地、连奏、建筑街景、经营河湾、庆典接力、露台花架），点击即可在游戏内直接加载预览。
+
+---
+
+### Phase 2：立体高地城建与 CS2 挖填方衔接（台地/山坡建房 + 自适应高石基 + 陡坡自动石阶路）
+- **阶段目标**：打破“建房修路强制把山丘/台地压回 0 米”的限制，让城市真正长在高低起伏的立体河谷与台地上。
+- **核心施工项**：
+  1. **`scripts/world/city_creation_state.gd`**：
+     - 新建房屋时采样起笔处地形高度 `base_y = clampf(roundf(raw_ground_height(origin) * 20.0) / 20.0, 0.0, 6.0)` 存入 `house.base_y`（旧档缺省 `0.0`）；同屋扩建底层格沿用 `house.base_y`。
+  2. **`scripts/world/city_creation_terrain_protection.gd` & `city_creation_terrain.gd`**：
+     - 每个保护图元增加 `"target_y": float` 字段（房屋取 `house.base_y`，内院取围合房屋均值，道路取沿线平滑采样高程）；
+     - 地形高度求解器在保护区内向 `target_y` 平滑过渡，而不再一律乘以 `(1.0 - protect)` 压回 `0.0`！
+  3. **`scripts/visual/city_creation_renderer.gd` & `city_creation_frontage.gd`**：
+     - 房屋节点置于 `y = house.base_y`；底层房间根据四角真实地面最低点 `min_ground_y` 自动向下延伸 **错缝毛石高地基 (`stone_plinth`)**；
+     - 门前石阶根据 `house.base_y` 与门前地面/路面实际高差动态生成 `1～8` 级台阶；
+     - 干地道路顶点跟随平滑地形高程 `road_y(s)`；当路段纵向坡度 `grade > 0.22` 时自动生成 **3D 层叠石阶 (`road_stairs`) + 矮石护栏**；当横坡高差 `> 0.35m` 时生成 **CS2 式挖方挡土矮石墙 (`Retaining Wall`)**；
+     - 居民与工匠行走高度跟随 `road_height_at(pos)`。
+
+---
+
+### Phase 3：CS2 式道路就地替换升级 (`Replace Tool`) 与一键圆形环岛广场 (`Roundabouts`)
+- **阶段目标**：融合《城市天际线2》最爽快的道路升级与环岛工具，让街道从单一土石路进化为层次丰富的城市动脉。
+- **核心施工项**：
+  1. **道路层级与就地刷涂升级 (`scripts/world/city_creation_state.gd` & `city_creation_renderer.gd`)**：
+     - 为 `road` 对象增加可选属性 `style: String`（`"cobble"` 默认乡间石径 `1.25m`、`"promenade"` 古典石板灯街 `1.75m`、`"avenue"` 林荫大道 `2.0m`、`"tram"` 叮当电车轨街 `2.0m`）；
+     - 当玩家用工具 3 沿着已有道路重合绘制（或选中已有道路点击升级按钮）时，直接就地升级该道路的 `style` 与 `width`，自动保留所有路口连接与穿房拱门！
+     - 渲染层为 `"promenade"` 与 `"avenue"` 自动沿路两侧按 MultiMesh 布置 **3D 古典暖光铁艺街灯**（夜间/演出亮起暖金光晕）、鲜花石箱与修剪行道树。
+  2. **路口一键环岛广场 (`scripts/world/city_creation_junctions.gd` & `city_creation_renderer.gd`)**：
+     - 工具 3 面板增加 **“◎ 路口环岛广场”** 模式（或右键/点击已有道路交点）：将交点标记为 `roundabout_radius = 2.4`；
+     - 渲染层生成圆形错缝石板环岛，中心自动安放一座 **古典涌泉、日晷花坛或音乐报时小碑**，接入道路自动围绕环岛形成流畅的环形分流道。
+
+---
+
+### Phase 4：四温区视野声场架构 (`Acoustic Grouping`)、建房音阶拨弦与手动跨区共鸣连线
+- **阶段目标**：完美落地“视野内发声 + 内联区域呼应 + 特殊远端微音 + 视野外静默保和谐”的声学哲学，并让每一次建房点击都像弹奏乐器一样悦耳。
+- **核心施工项**：
+  1. **新建 `scripts/audio/city_creation_acoustic_field.gd` 并接入 `city_creation_music.gd`**：
+     - 实现第四章 4.1 节的 **四温区权重计算器**：
+       - **温区 1（视野核心圈 `d_view <= 1.0`）**：完全激活，驱动当前主旋律、自动配器与近景工坊/茶座细节音，且随镜头 `zoom` 自动在“微观个体声”与“中远景合奏声”之间平滑过渡；
+       - **温区 2（内联共鸣区 `musical_links` 或活躍短句对答区）**：赋予 `0.50` 应答权重，在偶数乐句进行跨区器乐问答；
+       - **温区 3（特殊远端事件：钟楼报时、远端正在进行的演出、电车到站、建筑升级）**：通过带低通滤波 (`AudioEffectLowPassFilter`, cutoff `1800Hz`) 与方向声像的远端通道轻柔播放（增益 `<= 0.25`）；
+       - **温区 4（其余所有视野外街区）**：音频增益严格归零 (`0.0`)，确保全城和声永远纯净清澈！
+  2. **建房与点房的“音阶拨弦即兴试听 (`Interactive Pitch Pluck`)”**：
+     - 在 `city_creation_music.gd` 中利用现有短音合成器预生成 5 大主题 × 5 个音高台阶（对应楼层 `level 0~4` 的五声音阶 `Do, Re, Mi, Sol, La`）的清脆拨弦短音；
+     - 玩家每次点击扩房、加层或单击选中房屋时，立即按该房最高层数与街坊主题播放对应音高的拨弦，并触发该房窗光闪烁一次。
+  3. **工具 8 新增“手动跨区共鸣连线 (`state.musical_links`)”**：
+     - 允许玩家在工具 8 中从一个街坊拖拽一条常驻微光音弧连接到任意另一个街坊（即使隔河无桥），使两区成为永久“内联共鸣伙伴”，定期跨空对奏并在演出时隔岸同亮暖窗。
+
+---
+
+### Phase 5：时代演进体系与“第二时代：文艺复兴人文长街”落地（商住连拱柱廊 + 穹顶 + 画廊书院）
+- **阶段目标**：开启“纵向时代解锁 × 横向风貌街区并存”体系，落地极具视觉冲击力的文艺复兴街区。
+- **核心施工项**：
+  1. **时代解锁与街坊风貌属性 (`city_creation_growth.gd` & `city_creation_state.gd`)**：
+     - 扩展河湾手记为 **四大时代篇章**；达成第一篇章后解锁 **“第二时代：文艺复兴人文风貌 (`renaissance`)”**；
+     - 工具 8（街坊）支持为任意街坊设定时代风貌标签 `era_theme ∈ ["pastoral", "renaissance", "clockwork", "modern_eco"]`（与音乐主题既可联动也可独立混搭）。
+  2. **文艺复兴建筑语法 (`scripts/visual/city_creation_architecture.gd` & `city_creation_renderer.gd`)**：
+     - **底层商住连拱柱廊 (`Ground Arcade`, 借鉴 CS2 Mixed-Use)**：在文艺复兴风貌区（或紧邻 `1.75m` 石板灯街的二层以上建筑），底层外墙自动内退 `0.38m`，外沿生成古典石柱与圆拱券廊，廊下悬挂暖光吊灯；
+     - **文艺复兴圆顶/八角穹顶 (`Renaissance Dome`)**：当 2×2 房间或三层塔楼在文艺复兴区生成时，自动冠以佛罗伦萨风格的红瓦八角肋架穹顶与采光亭 (`Lantern`)；
+     - **新增第六功能角色——人文画廊/书院 (`atelier`)**：画师/学者在此创作，定期将艺术挂毯与彩绘玻璃窗送往周边民居，并解锁 **羽管键琴 + 室内弦乐 (`renaissance_fugue`)** 音色。
+
+---
+
+### Phase 6：建筑 1～5 级自然品质进化 (`Building Levels 1–5`) 与地标名胜 (`Signature Buildings`)
+- **阶段目标**：引入《城市天际线2》最让人上瘾的“看着自己的小房子一步步自动进化成华丽名宅”与“免费放置史诗地标”的正反馈循环。
+- **核心施工项**：
+  1. **建筑 1～5 级进化系统 (`scripts/world/city_creation_state.gd` & `city_creation_craft.gd`)**：
+     - 根据房屋获得的道路等级、面包/茶座服务次数、工坊木饰与演出余韵，自动计算并提升房屋的 `level_tier (1..5)`；
+     - 每次房屋升级时，触发一串竖琴上行琶音与金色微光粒子，房屋外观自动逐级增加：**迎宾鹅卵石垫 → 铁艺花箱与百叶窗 → 屋檐铜风铃 → 雕花连廊/阳光花架 → 金色屋脊风向标与彩绘圆窗**！
+  2. **首批 3 座可放置地标名胜 (`Signature Buildings`)**：
+     - 实现第六章 6.2 节的前 3 座地标名胜：**【古钟瞭望塔】**、**【河湾大水车磨坊】**（带旋转水车网格与面粉产量加成）、**【文艺复兴圆顶音乐院】**；
+     - 达成里程碑后在工具 5 或手记面板一键免费选址放置，带专属外观、全城/街坊 Buff 与独立地标声部。
+
+---
+
+### Phase 7：水景生态深化与 Foundation 自然环境声床（汀步踏脚石 + 池塘睡莲 + 溪流/林风/鸟鸣声床）
+- **阶段目标**：让水体、桥梁与森林在视觉和听觉上都彻底活起来。
+- **核心施工项**：
+  1. **浅水汀步石与多样化桥梁 (`city_creation_renderer.gd`)**：
+     - 普通 `1.25m` 小径跨越宽度 `< 2.6m` 的浅水渠时，自动生成 **Tiny Glade 式汀步踏脚石 (`Stepping Stones`)** 与水面涟漪圈；
+     - `1.75m` 石板灯街与文艺复兴街区的跨河桥自动生成带桥头方尖碑/桥灯与厚重石拱券的 **古典双拱廊桥**。
+  2. **池塘睡莲与浮萍 (`city_creation_shore.gd`)**：
+     - 在静水池塘 (`pond`) 岸距 `-0.85m ~ -0.25m` 范围内，使用 `MultiMeshInstance3D` 生成翠绿睡莲浮叶（10 三角）与粉白莲花（60 三角）。
+  3. **自然环境声床 (`scripts/audio/city_creation_ambient.gd`)**：
+     - 接入仓库中已核实的 Foundation 溪流声 (`386937418.wav` 或程序化柔和流水声) 与林间微风/白昼鸟鸣/夜晚虫鸣，根据当前镜头视野内的水域面积与树木密度实时平滑调节音量（上限 `<= 0.035`）。
+
+---
+
+### Phase 8：“第三时代：蒸汽钟表与浪漫花房”及叮当有轨电车网络 (`Clockwork Era & Musical Trams`)
+- **阶段目标**：融合《城市天际线2》的道路附加轨道系统，打造会移动、会发声、能载客跨区赴约的叮当有轨电车与玻璃花房街区。
+- **核心施工项**：
+  1. **蒸汽钟表风貌 (`clockwork`) 与铸铁玻璃花房 (`Glass Conservatory`)**：
+     - 新增暖红砖墙、孟莎式双折屋顶 (`Mansard Roof`) 与多层露台自动生成的 **墨绿铸铁弧形玻璃阳光花房**（夜间透出温润植物暖光）。
+  2. **叮当有轨电车系统 (`scripts/world/city_creation_tram.gd` & `city_creation_renderer.gd`)**：
+     - 当玩家用工具 3 将道路升级为 **`"tram"`（有轨电车街）** 并形成连通路径时，自动生成 1～2 辆复古木制暖光有轨电车沿轨循环行驶；
+     - 电车经过路口或停靠站点时，奏响与当前音乐同和弦的 **清脆钢片琴/铜铃双音 (`Tram Chime`)**，且可将沿途居民快速接送到远处的演奏庭或茶座！
+
+---
+
+### Phase 9：“第四时代：现代生态交响城”与跨时空全城交响盛典 (`Modern Eco-Symphony & Grand Finale`)
+- **阶段目标**：完成从古典河湾到现代生态交响城的全套时代拼图，实现古今四时代同城共鸣的终极奇观。
+- **核心施工项**：
+  1. **现代生态建筑语法 (`modern_eco`)**：
+     - 暖白流线悬挑露台、大面积暖光落地玻璃幕墙、屋顶花园草坪、垂直森林绿植墙，以及相邻高层建筑自动架起的 **空中玻璃连廊 (`Skybridge`)**。
+  2. **现代环境交响声部 (`modern_symphony`)**：
+     - 新增毡音钢琴 (`Felt Piano`)、温暖模拟合成器铺底 (`Warm Pad`) 与颤音琴 (`Vibraphone`) 音轨。
+  3. **水上交响剧场与全城跨时代大合奏**：
+     - 放置终极地标 **【河湾水上交响剧场】**，点击发起“全城跨时空交响盛典”——声波涟漪沿河流与电车轨传遍全城，古典区的鲁特琴、文艺复兴区的弦乐、蒸汽区的圆号钢琴与现代区的合成器泛音在 24 秒大循环中依次接力并在终章辉煌合奏！
+
+---
+
+### Phase 10：`80m×80m` 大城画布扩容、LOD 视锥裁剪与全异步零卡顿收口
+- **阶段目标**：让玩家能在一张宽广的河湾山谷画布上自由建设 150～300+ 栋跨时代建筑，且始终保持丝滑帧率。
+- **核心施工项**：
+  1. **世界画布扩容至 `80m×80m`（`Rect2(-40, -40, 80, 80)`）**：
+     - 扩展河道蜿蜒长度与远景环山轮廓（可复用 Foundation `MountainFar.glb` 作为远景山脉天际线）；
+     - 地形与距离场支持按脏子区域 (`dirty sub-rect`) 局部更新上传。
+  2. **全层级 GPU `visibility_range` 裁剪与视野外居民轻量模拟**：
+     - 为细草、卵石、风铃、烟团、花箱绑定分级消隐距离；
+     - 视野外居民切换为标量路径推进，确保 200+ 居民同时活动时 CPU `Life._process` 耗时 `< 1.0ms`。

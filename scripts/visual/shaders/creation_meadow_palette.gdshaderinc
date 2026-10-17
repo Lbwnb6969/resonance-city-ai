@@ -1,9 +1,9 @@
 // One meadow base for ground, blades, road fringes and shallow shore blends.
 // v3 display anchors: deeper green roots and a warm meadow crown. These
 // authored colors are not original TG LUT quantiles or deferred exposure.
-uniform vec4 grass_low : source_color = vec4(0.295,0.365,0.265,1.0);
-uniform vec4 grass_mid : source_color = vec4(0.360,0.425,0.310,1.0);
-uniform vec4 grass_high : source_color = vec4(0.445,0.485,0.355,1.0);
+uniform vec4 grass_low : source_color = vec4(0.25,0.43,0.27,1.0);
+uniform vec4 grass_mid : source_color = vec4(0.345,0.505,0.29,1.0);
+uniform vec4 grass_high : source_color = vec4(0.44,0.58,0.31,1.0);
 float meadow_hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 // Extracted Grass2 world_albedo_tint, sampled in the original 128 m mirrored
 // domain. The mean exposure adapts our local meadow palette; this is not the
@@ -45,7 +45,7 @@ vec3 meadow_color(vec2 at,vec3 low,vec3 high) {
 	// Keep the Tiny Glade-inspired broad field visible across the open lawn;
 	// the previous range compressed it into a single carpet tone. This reuses
 	// the existing noise samples and adds no texture fetch or instance work.
-	field = clamp(0.5+(field-0.5)*1.22,0.0,1.0);
+	field = clamp(0.5+(field-0.5)*0.72,0.0,1.0);
 	float blend = smoothstep(0.20,0.80,field);
 	vec3 middle = grass_mid.rgb;
 	if (OUTPUT_IS_SRGB) {

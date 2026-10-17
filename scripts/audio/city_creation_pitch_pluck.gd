@@ -15,18 +15,22 @@ static func plan(city: RefCounted, hid: String, clock_sec: float) -> Dictionary:
 		var style := str(district.get("style","warm"))
 		var bar := posmod(int(floor(clock_sec/3.0)),8)
 		var variant := posmod(hash(hid),2)
-		var midi := pitch(bar,mini(maximum,2),variant)
+		var midi := pitch(bar,mini(maximum,4),variant)
 		var timbre := str(TIMBRES[style])
 		return {"house_id":hid,"style":style,"max_level":maximum,"midi":midi,"timbre":timbre,
-			"position":Vector2(float(house.origin[0]),float(house.origin[1])),"bar":bar,"band":mini(maximum,2),
+			"position":Vector2(float(house.origin[0]),float(house.origin[1])),"bar":bar,"band":mini(maximum,4),
 			"stream_key":stream_key(timbre,midi)}
 	return {}
 
 static func pitch(bar: int, band: int, variant: int) -> int:
 	var root := int(CHORDS[posmod(bar,8)][0])+12
-	# Root/third, fifth/sixth, then the upper octave's root/fifth harmonic.
-	var interval: int = int([[0,4],[7,9],[12,19]][clampi(band,0,2)][posmod(variant,2)])
-	return ScalePCM.quantize(root+interval)
+	# Five distinct pentatonic steps across actual floors 0..4. The common
+	# chord-root progression keeps every district locked to the same bar.
+	var notes: Array[int]=[]
+	for midi in range(root,root+25):
+		if ScalePCM.quantize(midi)==midi: notes.append(midi)
+		if notes.size()==5: break
+	return notes[clampi(band,0,4)]+12*posmod(variant,2)
 
 static func stream_key(timbre: String, midi: int) -> String:
 	return "house_pluck_%s_%d" % [timbre,midi]
@@ -39,7 +43,7 @@ static func render(add_note: Callable, make_stream: Callable) -> Dictionary:
 	for style: String in TIMBRES:
 		var timbre := str(TIMBRES[style])
 		for bar in range(8):
-			for band in range(3):
+			for band in range(5):
 				for variant in range(2):
 					var midi := pitch(bar,band,variant)
 					var key := stream_key(timbre,midi)

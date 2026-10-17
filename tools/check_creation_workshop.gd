@@ -24,6 +24,13 @@ func _capture(label: String) -> void:
 	if DisplayServer.get_name()!="headless": root.get_texture().get_image().save_png(OUTPUT+"/"+label+".png")
 
 func _click(button: Control) -> void:
+	var ancestor:Node=button.get_parent()
+	while ancestor!=null:
+		if ancestor is ScrollContainer:
+			ancestor.ensure_control_visible(button)
+			await process_frame
+			break
+		ancestor=ancestor.get_parent()
 	var at := button.get_global_rect().get_center()
 	_check(button.is_visible_in_tree() and Rect2(Vector2.ZERO,Vector2(root.size)).has_point(at),"requested control is visible inside viewport: "+button.name)
 	var motion := InputEventMouseMotion.new()
@@ -39,6 +46,13 @@ func _click(button: Control) -> void:
 		event.pressed=pressed
 		root.push_input(event)
 		await process_frame
+
+	await _await_edit()
+
+func _await_edit()->void:
+	var deadline:=Time.get_ticks_msec()+20000
+	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:await process_frame
+	await process_frame
 
 func _to_phase(worker: Dictionary, phase: String) -> bool:
 	for step in range(2500):
@@ -106,6 +120,7 @@ func _run() -> void:
 	var position: Vector3=worker.node.position
 	var target := str(worker.target_id)
 	demo._after_edit(demo.state.remove_road("r4"),"road")
+	await _await_edit()
 	_check(worker.phase=="paused" and worker.node.position==position and worker.carry.visible,"actual road break pauses real carrier without losing cargo or moving")
 	for step in range(25): demo.life._process(0.1)
 	_check(demo.state.improvement_level(target)==0 and int(demo.state.workshop_status("h3").delivered)==0,"disconnected cargo cannot install remotely")
@@ -121,6 +136,7 @@ func _run() -> void:
 	_check(restored.workshop.workers.size()==1 and restored.workshop.workers[0].node.position==position and restored.workshop.workers[0].carry.visible,"reload restores exact carrier position and cargo")
 	restored.free()
 	demo._after_edit(demo.state.undo(),"history")
+	await _await_edit()
 	_check(worker.node.get_instance_id()==worker_id and worker.node.position==position and worker.phase=="to_target","undo road break resumes same real carrier")
 	var stable := _identities()
 	await _capture("03_delivery_on_path")
@@ -165,7 +181,7 @@ func _run() -> void:
 	for frame in range(540): await process_frame
 	var report: Dictionary=demo.diagnostics()
 	_check(float(report.frame_p95_ms)<16.667,"audible six-house working town with earned ornaments meets frame budget")
-	_check(demo.music._players.size()==9 and demo.music._effects.size()==4,"growth preserves fixed nine music voices and four short effects")
+	_check(demo.music._players.size()==demo.music.STEMS.size() and demo.music._effects.size()==4,"growth preserves fixed shared music voices and four short effects")
 	await _capture("05_grown_neighborhood")
 	var result := {"ok":failures.is_empty(),"checks":checks,"failures":failures,"performance":report,"supply":demo.life.workshop_status("h3"),"improvements":demo.state.house_improvements,"craft":demo.town.craft.diagnostics(),"max_simulated_tick_us":max_tick_us,"save":saved}
 	var file := FileAccess.open(OUTPUT+"/report.json",FileAccess.WRITE)

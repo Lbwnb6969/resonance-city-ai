@@ -28,11 +28,53 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		if stroke.mode=="smooth": result.schema=city.TERRAIN_SMOOTH_SCHEMA;break
 	for stroke: Dictionary in city.terrain_strokes:
 		if stroke.has("natural"): result.schema=city.TERRAIN_CONTOUR_SCHEMA;break
+	for road: Dictionary in city.roads:
+		if road.get("style","") in ["cobble","avenue","tram"] or road.has("roundabouts"): result.schema=city.ROAD_NETWORK_SCHEMA;break
+	var era_data: bool = city.era_unlocks.size() > 1 or not city.house_culture.is_empty()
+	for house: Dictionary in city.houses:
+		if house.has("era_theme") or house.get("role","residential") == "atelier": era_data = true
+	for district: Dictionary in city.districts:
+		if district.has("era_theme"): era_data = true
+	if era_data:
+		result.schema = city.ERA_SCHEMA
+		result.era_unlocks = city.era_unlocks.duplicate()
+		result.house_culture = city.house_culture.duplicate()
+	if not city.signature_unlocks.is_empty() or not city.district_answers.is_empty():
+		result.signature_unlocks=city.signature_unlocks.duplicate()
+		result.district_answers=city.district_answers.duplicate(true)
+		result.schema=city.QUALITY_SCHEMA
+	if not city.building_quality.is_empty() or not city.house_concerts.is_empty():
+		result.schema=city.QUALITY_SCHEMA
+		result.building_quality=city.building_quality.duplicate(true)
+		result.house_concerts=city.house_concerts.duplicate(true)
+	var mechanical: bool=not city.house_clockwork.is_empty()
+	if "botanical_palace" in city.signature_unlocks or "clockwork_depot" in city.signature_unlocks:mechanical=true
+	for duration: float in city.resonance_afterglow.values():
+		if duration>120.0:mechanical=true
+	for house: Dictionary in city.houses:
+		if house.get("role","")=="clockmaker":mechanical=true
+	if mechanical:
+		result.schema=city.CLOCKWORK_SCHEMA
+		result.house_clockwork=city.house_clockwork.duplicate()
+	if not city.era_answers.is_empty() or city.era_unlocks.has("modern_eco"):
+		result.schema=city.MODERN_SCHEMA;result.era_answers=city.era_answers.duplicate(true)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
 	# Editing history restores geometry; completed daily visits remain history.
 	if not preserve_issued_ids:
+		city.signature_unlocks.assign(data.get("signature_unlocks",[]))
+		city.district_answers.assign(data.get("district_answers",[]))
+		city.era_answers.assign(data.get("era_answers",[]))
+		city.building_quality=data.get("building_quality",{}).duplicate(true)
+		for row in city.building_quality.values(): row.level_tier=int(row.level_tier)
+		city.house_concerts=data.get("house_concerts",{}).duplicate(true)
+		for row in city.house_concerts.values(): row.concerts=int(row.concerts);row.relays=int(row.relays)
+		city.era_unlocks.assign(data.get("era_unlocks", ["pastoral"]))
+		city.house_clockwork=data.get("house_clockwork",{}).duplicate()
+		for id in city.house_clockwork:city.house_clockwork[id]=int(city.house_clockwork[id])
+		city.house_culture = data.get("house_culture", {}).duplicate()
+		for id in city.house_culture: city.house_culture[id] = int(city.house_culture[id])
 		city.growth_memories.assign(data.get("growth_memories", []))
 		var progress: Dictionary = data.get("life_progress", {"purchases":0,"gatherings":0})
 		city.life_progress = {"purchases":int(progress.get("purchases",0)),"gatherings":int(progress.get("gatherings",0)),"concerts":int(progress.get("concerts",0)),"tea_parties":int(progress.get("tea_parties",0)),"tea_visits":int(progress.get("tea_visits",0)),"auto_concerts":int(progress.get("auto_concerts",0))}
@@ -165,9 +207,17 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档生活进展无效")
 	var journeys: Dictionary = city._validate_journey_checkpoint(data.get("journey_checkpoint",{}), data.get("houses"), progress)
 	if not journeys.ok: return journeys
-	if data.get("schema")!=city.SCHEMA and data.get("schema")!=city.TERRAIN_SCHEMA and data.get("schema")!=city.JOURNAL_SCHEMA and data.get("schema")!=city.PLATEAU_SCHEMA and data.get("schema")!=city.BUILDING_SCHEMA and data.get("schema")!=city.ELEVATION_SCHEMA and data.get("schema")!=city.ROAD_STYLE_SCHEMA and data.get("schema")!=city.ROUND_TOWER_SCHEMA and data.get("schema")!=city.MUSICAL_LINK_SCHEMA and data.get("schema")!=city.TERRAIN_SMOOTH_SCHEMA and data.get("schema")!=city.TERRAIN_CONTOUR_SCHEMA:
+	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.MODERN_SCHEMA:
 		return city._fail("不支持的城市存档版本")
+	var unlocks: Variant = data.get("era_unlocks", ["pastoral"])
+	if not unlocks is Array or unlocks.is_empty() or unlocks.size() > city.Eras.AVAILABLE_COUNT: return city._fail("时代解锁结构无效")
+	for i in range(unlocks.size()):
+		if unlocks[i] != city.Eras.IDS[i]: return city._fail("时代必须依次开启")
+	if (data.has("era_unlocks") or data.has("house_culture")) and data.schema < city.ERA_SCHEMA: return city._fail("时代作品需要新存档版本")
+	if (data.has("building_quality") or data.has("house_concerts") or data.has("signature_unlocks") or data.has("district_answers")) and data.schema < city.QUALITY_SCHEMA: return city._fail("品质作品需要新存档版本")
+	if data.has("house_clockwork") and data.schema<city.CLOCKWORK_SCHEMA:return city._fail("钟表工艺需要新存档版本")
 	var memories: Variant = data.get("growth_memories", [])
+	if unlocks.size()>1 and (not memories is Array or not memories.has("dawn")): return city._fail("文艺复兴尚未达成第一篇章")
 	if not memories is Array or memories.size()>Growth.CHAPTERS.size(): return city._fail("城市成长手记结构无效")
 	for index in range(memories.size()):
 		if not memories[index] is String or memories[index]!=Growth.CHAPTERS[index]: return city._fail("城市成长手记章节顺序无效")
@@ -221,6 +271,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for district in data.get("districts", []):
 		if not district is Dictionary or not city._valid_id(district.get("id"), "d", ids):
 			return city._fail("城市存档街坊身份无效")
+		if district.has("era_theme") and (data.schema < city.ERA_SCHEMA or district.era_theme not in unlocks): return city._fail("街坊时代尚未开启")
 		var district_valid: Dictionary = city._validate_district_fields(district)
 		if not district_valid.ok:
 			return district_valid
@@ -271,6 +322,12 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			if house.style=="round_tower" and data.schema<city.ROUND_TOWER_SCHEMA: return city._fail("圆塔作品需要新存档版本")
 		if not house.get("name", "默认名字") is String or house.get("name", "默认名字").strip_edges().is_empty() or house.get("role", "residential") not in city.HOUSE_ROLES:
 			return city._fail("城市存档名字或用途无效")
+		if (house.get("role", "") == "atelier" or house.has("era_theme")) and data.schema < city.ERA_SCHEMA: return city._fail("时代房屋需要新存档版本")
+		if house.get("role", "") == "atelier" and not unlocks.has("renaissance"): return city._fail("书院尚未开启")
+		if house.get("role","")=="clockmaker" and (data.schema<city.CLOCKWORK_SCHEMA or not unlocks.has("clockwork")):return city._fail("钟表工坊尚未开启")
+		if house.get("role","")=="symphony_hall" and (data.schema<city.MODERN_SCHEMA or not unlocks.has("modern_eco")):return city._fail("交响音乐厅尚未开启")
+		if house.has("era_theme") and house.era_theme not in unlocks: return city._fail("房屋时代尚未开启")
+		if house.has("signature") and data.schema<city.QUALITY_SCHEMA:return city._fail("地标需要新存档版本")
 		if not house.get("auto_matinee", false) is bool: return city._fail("自动巡演开关无效")
 		if not house.get("workshop_open", true) is bool:
 			return city._fail("城市存档工坊开关无效")
@@ -302,7 +359,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		var glow_ids := {}
 		if not city._valid_id(house_id, "h", glow_ids) or int(house_id.substr(1)) > int(issued.house) or not existing_houses.has(house_id):
 			return city._fail("城市存档共鸣余韵房屋无效")
-		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > 120.0:
+		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > (180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0):
 			return city._fail("城市存档共鸣余韵时间无效")
 	var cafe_check: Dictionary = city._validate_cafe_progress(data, issued)
 	if not cafe_check.ok: return cafe_check
@@ -325,13 +382,28 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档面包供给收支不一致")
 	var craft_check: Dictionary = city._validate_craft_supply(data, int(issued.house))
 	if not craft_check.ok: return craft_check
+	var quality_check: Dictionary=city.Quality.validate(city,data,issued)
+	if not quality_check.ok: return quality_check
+	var era_check:Dictionary=city.Eras.validate_answers(city,data,issued)
+	if not era_check.ok:return era_check
+	var signature_check: Dictionary=city.Signatures.validate(city,data,issued)
+	if not signature_check.ok:return signature_check
+	var grand_check:Dictionary=city.GrandFestival.validate(city,data)
+	if not grand_check.ok:return grand_check
 	for road in data.roads:
 		if not road is Dictionary or not city._valid_id(road.get("id"), "r", ids):
 			return city._fail("城市存档道路身份无效")
+		if road.has("roundabouts"):
+			if data.schema<city.ROAD_NETWORK_SCHEMA or not road.roundabouts is Array: return city._fail("环岛存档版本或结构无效")
+			for marker: Variant in road.roundabouts:
+				if not marker is Dictionary or marker.size()!=2 or not city._valid_point(marker.get("center")) or not city._is_number(marker.get("radius")) or not is_equal_approx(float(marker.radius),city.Roundabouts.RADIUS): return city._fail("环岛位置或半径无效")
+				var site: Dictionary=city.Roundabouts.site(city,Vector2(marker.center[0],marker.center[1]),float(marker.radius),data.houses,water_rows)
+				if not site.ok: return site
 		if road.has("style"):
 			if data.schema<city.ROAD_STYLE_SCHEMA: return city._fail("石板宽街需要新存档版本")
 			if not road.style is String or road.style not in city.ROAD_STYLES: return city._fail("城市存档道路样式无效")
-			var style_width := 1.75 if road.style=="promenade" else 1.25
+			if road.style in ["cobble","avenue","tram"] and data.schema<city.ROAD_NETWORK_SCHEMA: return city._fail("新道路样式需要新存档版本")
+			var style_width: float=city.RoadUpgrade.width_for(road.style)
 			if not city._is_number(road.get("width")) or absf(float(road.width)-style_width)>0.00001: return city._fail("城市存档道路样式与宽度不符")
 		max_road = maxi(max_road, int(road.id.substr(1)))
 		if not road.get("points") is Array or road.points.size() < 2 or not city._is_number(road.get("width")) or road.width <= 0:

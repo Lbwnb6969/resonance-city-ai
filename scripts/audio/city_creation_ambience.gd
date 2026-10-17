@@ -1,5 +1,6 @@
 extends Node
-## Four shared environmental voices. Queries never request ground preparation.
+## Two fixed environmental voices: recovered water and a continuous forest mixer.
+## Queries use published camera/vegetation state and never prepare ground.
 const PCM = preload("res://scripts/audio/city_creation_ambience_pcm.gd")
 const WATER_PATH := "res://资源/自然参考/环境声/溪流.wav"
 const CAPS := {"water":0.012,"wind":0.006,"birds":0.006,"insects":0.006}
@@ -13,7 +14,13 @@ var peaks: Dictionary = {}
 var _base_gains := {"water":0.0,"wind":0.0,"birds":0.0,"insects":0.0}
 var _focus := Vector2.ZERO
 var _zoom := 25.0
-var _evening := false
+var _light_phase := 0
+var _frustum_source: Callable
+var _view_samples_source: Callable
+var _forest_playback: AudioStreamGeneratorPlayback
+var _forest_frame := 0
+var _forest_frames_pushed := 0
+var _forest_skips := 0
 var _muted := false
 var _foreground := false
 var _duck := 1.0
@@ -36,7 +43,7 @@ func setup(city: RefCounted) -> void:
 	state=city
 	_revision=-1
 	if not players.is_empty(): return
-	for kind: String in CAPS:
+	for kind: String in ["water","forest"]:
 		var player := AudioStreamPlayer.new()
 		player.name="Ambience_"+kind
 		player.volume_linear=0.0
@@ -53,24 +60,37 @@ func setup(city: RefCounted) -> void:
 			water.loop_end=int(water.get_length()*water.mix_rate)
 			players.water.stream=water
 			peaks.water=_peak(water)
+	var forest := AudioStreamGenerator.new()
+	forest.mix_rate=PCM.RATE
+	forest.buffer_length=0.20
+	players.forest.stream=forest
 	_worker=Thread.new()
-	_worker.start(PCM.render)
+	_worker.start(PCM.render.bind(players.water.stream==null))
 
 func set_visibility_source(source: Callable) -> void:
 	_visibility_source=source
 	_revision=-1
 
-func set_view(focus: Vector2, zoom: float, evening: bool) -> void:
-	if evening!=_evening: _timer=QUERY_INTERVAL
+func set_frustum_source(source: Callable) -> void:
+	_frustum_source=source
+	_timer=QUERY_INTERVAL
+
+func set_view_samples_source(source: Callable) -> void:
+	_view_samples_source=source
+	_timer=QUERY_INTERVAL
+
+func set_view(focus: Vector2, zoom: float, light_phase: int) -> void:
+	if light_phase!=_light_phase: _timer=QUERY_INTERVAL
 	_focus=focus
 	_zoom=zoom
-	_evening=evening
+	_light_phase=light_phase
 
 func set_muted(value: bool) -> void:
 	_muted=value
 	if value:
 		for kind: String in players:
 			players[kind].volume_linear=0.0
+		for kind: String in CAPS:
 			gains[kind]=0.0
 			_base_gains[kind]=0.0
 
@@ -92,27 +112,31 @@ func _refresh_trees(visible: Dictionary) -> void:
 	_cache_rebuilds+=1
 
 func _query() -> void:
-	var radius := clampf(_zoom*0.5,4.0,22.0)
+	var radius := clampf(_zoom,4.0,100.0)
 	var wet := 0.0
 	_water_samples=0
-	for x in range(-2,3):
-		for z in range(-2,3):
-			var at := _focus+Vector2(x,z)*radius*0.5
-			wet+=1.0-smoothstep(-0.2,1.0,float(state.water_clearance(at)))
-			_water_samples+=1
+	var points: Array[Vector2]=[]
+	if _view_samples_source.is_valid(): points.assign(_view_samples_source.call())
+	else:
+		for x in range(-2,3):
+			for z in range(-2,3): points.append(_focus+Vector2(x,z)*radius*.25)
+	for at: Vector2 in points:
+		if _frustum_source.is_valid() and not _frustum_source.call(at): continue
+		wet+=1.0-smoothstep(-0.2,1.0,float(state.water_clearance(at)))
+		_water_samples+=1
 	var near := 1.0-smoothstep(0.0,7.0,float(state.water_clearance(_focus)))
-	weights.water=clampf(maxf(near*0.8,sqrt(wet/25.0)),0.0,1.0)
+	weights.water=clampf(maxf(near*0.8*minf(1.0,18.0/_zoom),sqrt(wet/maxf(1.0,float(_water_samples)))),0.0,1.0) if wet>0.0 else 0.0
 	var forest := 0.0
 	_visible_trees=0
 	for tree: Dictionary in _trees:
 		var distance := Vector2(tree.at).distance_to(_focus)
-		if distance>radius: continue
+		if distance>radius or (_frustum_source.is_valid() and not _frustum_source.call(tree.at)): continue
 		_visible_trees+=1
 		forest+=(1.0-smoothstep(radius*0.25,radius,distance))*minf(1.4,float(tree.scale))
-	forest=clampf(forest/8.0,0.0,1.0)
+	forest=clampf(forest/(8.0*maxf(1.0,pow(_zoom/18.0,2.0))),0.0,1.0)
 	weights.wind=clampf(0.20+forest*0.55+clampf((_zoom-9.0)/35.0,0.0,1.0)*0.20,0.0,1.0)
-	weights.birds=forest if not _evening else 0.0
-	weights.insects=forest if _evening else 0.0
+	weights.birds=forest*([1.0,0.35,0.0][_light_phase])
+	weights.insects=forest*([0.0,0.35,1.0][_light_phase])
 	for kind: String in CAPS: targets[kind]=float(CAPS[kind])*float(weights[kind])
 	_queries+=1
 
@@ -123,9 +147,10 @@ func _process(delta: float) -> void:
 		_pcm=_worker.wait_to_finish()
 		_worker=null
 		peaks.merge(_pcm.peaks)
-		for kind: String in _pcm.streams: players[kind].stream=_pcm.streams[kind]
+		if players.water.stream==null: players.water.stream=_pcm.streams.water
 		for player: AudioStreamPlayer in players.values():
 			if player.stream!=null: player.play()
+		_forest_playback=players.forest.get_stream_playback()
 		_ready_pcm=true
 	if state==null or players.is_empty(): return
 	_timer+=delta
@@ -139,13 +164,33 @@ func _process(delta: float) -> void:
 	_duck=lerpf(_duck,0.5 if _foreground else 1.0,blend)
 	for kind: String in CAPS: _base_gains[kind]=0.0 if _muted else lerpf(float(_base_gains[kind]),float(targets[kind]),blend)
 	_apply_gains()
+	_fill_forest()
 	_frame_max_usec=maxi(_frame_max_usec,Time.get_ticks_usec()-began)
 
 func _apply_gains() -> void:
-	for kind: String in players:
-		var gain := 0.0 if _muted else float(_base_gains[kind])*_duck
-		gains[kind]=gain
-		players[kind].volume_linear=gain
+	for kind: String in CAPS: gains[kind]=0.0 if _muted else float(_base_gains[kind])*_duck
+	players.water.volume_linear=gains.water
+	players.forest.volume_linear=float(gains.wind)+float(gains.birds)+float(gains.insects)
+
+func _fill_forest() -> void:
+	if _forest_playback==null: return
+	var count := _forest_playback.get_frames_available()
+	if count<=0: return
+	var total := float(gains.wind)+float(gains.birds)+float(gains.insects)
+	var mix := Vector3(float(gains.wind),float(gains.birds),float(gains.insects))/maxf(total,0.000001)
+	var wind: PackedFloat32Array=_pcm.samples.wind
+	var birds: PackedFloat32Array=_pcm.samples.birds
+	var insects: PackedFloat32Array=_pcm.samples.insects
+	var buffer := PackedVector2Array()
+	buffer.resize(count)
+	for index in range(count):
+		var frame := (_forest_frame+index)%wind.size()
+		var sample := wind[frame]*mix.x+birds[frame]*mix.y+insects[frame]*mix.z
+		buffer[index]=Vector2(sample,sample)
+	_forest_playback.push_buffer(buffer)
+	_forest_frame=(_forest_frame+count)%wind.size()
+	_forest_frames_pushed+=count
+	_forest_skips=_forest_playback.get_skips()
 
 func report() -> Dictionary:
 	var rows: Dictionary = {}
@@ -153,11 +198,11 @@ func report() -> Dictionary:
 	for kind: String in players:
 		var player: AudioStreamPlayer = players[kind]
 		rows[kind]={"id":player.get_instance_id(),"playing":player.playing,"elapsed":player.get_playback_position(),"stream":player.stream.get_instance_id() if player.stream!=null else 0}
-		bound+=float(gains[kind])*float(peaks.get(kind,0.0))
+	for kind: String in CAPS: bound+=float(gains[kind])*float(peaks.get(kind,0.0))
 	return {"players":rows,"player_count":players.size(),"weights":weights.duplicate(),"gains":gains.duplicate(),"peaks":peaks.duplicate(),"targets":targets.duplicate(),"caps":CAPS.duplicate(),
-		"ready":_ready_pcm,"muted":_muted,"foreground":_foreground,"duck":_duck,"focus":_focus,"zoom":_zoom,"evening":_evening,
+		"ready":_ready_pcm,"muted":_muted,"foreground":_foreground,"duck":_duck,"focus":_focus,"zoom":_zoom,"evening":_light_phase>=1,"night":_light_phase==2,"light_phase":_light_phase,
 		"theoretical_peak":bound,"maximum_gain_sum":0.030,"bird_insect_weight":float(weights.birds)+float(weights.insects),"queries":_queries,"cache_rebuilds":_cache_rebuilds,"water_samples":_water_samples,"visible_trees":_visible_trees,
-		"pcm":{"procedural":_pcm.get("source",""),"bytes":_pcm.get("bytes",0),"seconds":PCM.SECONDS,"water":WATER_PATH,"water_loaded":peaks.has("water")},"frame":{"count":_frame,"maximum_usec":_frame_max_usec},"authored_writes":0}
+		"pcm":{"procedural":_pcm.get("source",""),"bytes":_pcm.get("bytes",0),"seconds":PCM.SECONDS,"water":WATER_PATH,"water_loaded":peaks.has("water")},"frame":{"count":_frame,"maximum_usec":_frame_max_usec},"forest_frames_pushed":_forest_frames_pushed,"forest_skips":_forest_skips,"authored_writes":0}
 
 func _peak(stream: AudioStreamWAV) -> float:
 	var bytes := stream.data

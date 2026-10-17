@@ -20,6 +20,8 @@ static func build(renderer,house: Dictionary) -> Node3D:
 	root.name = str(house.id)
 	var palette: Array = renderer.PALETTES[posmod(int(house.get("palette",0)),renderer.PALETTES.size())]
 	if house.has("finish"): palette=renderer.FINISH_PALETTES[str(house.finish)]
+	if renderer.state.house_era(house)=="renaissance": palette=renderer.Renaissance.palette(palette)
+	root.set_meta("era_theme",renderer.state.house_era(house))
 	root.set_meta("palette_colors",palette.duplicate())
 	root.set_meta("house_style","round_tower")
 	root.set_meta("joined_roof",false)
@@ -95,6 +97,12 @@ static func build(renderer,house: Dictionary) -> Node3D:
 	root.set_meta("round_windows",windows)
 	root.set_meta("round_door_frames",door_frames)
 	var eave: float = plan.roof_base_y
+	var domes: Array = renderer.RenaissancePlan.for_house(renderer.state,house)
+	if not domes.is_empty():
+		renderer.Renaissance.build(renderer,root,house,domes)
+		var top: float = eave + float(domes[0].height) + 1.01
+		root.set_meta("round_tower",{"house_id":str(house.id),"center":center,"radius":RADIUS,"sides":SIDES,"levels":plan.cells.size(),"base_y":base,"footing_bottom":bottom,"eave_y":eave,"roof_top_y":top,"top":top,"roof_cell_id":str(plan.top_cell_id),"dome":true})
+		return root
 	var roof_center := Vector3(center.x,eave,center.y)
 	var vertices := roof_vertices(roof_center)
 	var color: Color = palette[1]

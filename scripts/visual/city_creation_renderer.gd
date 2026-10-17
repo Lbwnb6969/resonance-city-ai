@@ -37,6 +37,12 @@ const RoundTower = preload("res://scripts/visual/city_creation_round_tower.gd")
 const RoundTowerPlan = preload("res://scripts/world/city_creation_round_tower_plan.gd")
 const Highland = preload("res://scripts/visual/city_creation_highland.gd")
 const RoadStairs = preload("res://scripts/visual/city_creation_road_stairs.gd")
+const Bridges = preload("res://scripts/visual/city_creation_bridge.gd")
+const TramTracks = preload("res://scripts/visual/city_creation_tram_tracks.gd")
+var tram_tracks := TramTracks.new()
+const RoadEarthworks = preload("res://scripts/visual/city_creation_road_earthworks.gd")
+const RoundaboutVisual = preload("res://scripts/visual/city_creation_roundabout_visual.gd")
+const Roundabouts = preload("res://scripts/world/city_creation_roundabouts.gd")
 const Promenade = preload("res://scripts/visual/city_creation_promenade.gd")
 const Passage = preload("res://scripts/world/city_creation_passage.gd")
 const PathEdge = preload("res://scripts/visual/city_creation_path_edge.gd")
@@ -111,8 +117,11 @@ var road_box_mesh: BoxMesh
 var path_edge := PathEdge.new()
 var path_pebbles := PathPebbles.new()
 var promenade := Promenade.new()
+var era_road_field=preload("res://scripts/visual/city_creation_era_road_field.gd").new()
+var era_streets=preload("res://scripts/visual/city_creation_era_streets.gd").new()
 var conservatory := Conservatory.new()
 var resonance := Resonance.new()
+var grand_festival_visual=preload("res://scripts/visual/city_creation_grand_festival_visual.gd").new()
 var travel_visual := TravelVisual.new()
 var craft := Craft.new()
 var cafes := Cafe.new()
@@ -167,6 +176,7 @@ var rebuild_stats := {"houses_changed":0,"roads_changed":0,"houses_removed":0,"r
 
 func setup(city_state: RefCounted) -> void:
 	state = city_state
+	era_road_field.prepare(state);era_road_field.upload()
 	water_field.setup(state)
 	ground_contact_field.prepare(state)
 	ground_contact_field.upload()
@@ -210,8 +220,10 @@ func setup(city_state: RefCounted) -> void:
 	house_music_layer.name = "HouseMusicalResponse"
 	add_child(house_music_layer)
 	resonance.setup(house_music_layer)
+	grand_festival_visual.setup(self)
 	travel_visual.setup(self)
 	craft.setup(self)
+	quality_visual.setup(self)
 	cafes.setup(self)
 	courtyards.setup(self)
 	districts_layer = Node3D.new()
@@ -248,6 +260,7 @@ func rebuild() -> void:
 	if state == null or buildings == null: return
 	var started := Time.get_ticks_usec()
 	rebuild_stats = {"houses_changed":0,"roads_changed":0,"houses_removed":0,"roads_removed":0,"vegetation_blocks_changed":0,"vegetation_instances":0,"elapsed_ms":0.0}
+	era_road_field.prepare(state);era_road_field.upload()
 	clear_preview()
 	terrain_surface.rebuild()
 	_rebuild_background_trees()
@@ -319,6 +332,11 @@ func rebuild() -> void:
 	rebuild_stats["contact_field"] = ground_contact_field.stats.duplicate()
 	if districts_visible: _rebuild_districts()
 	rebuild_stats["elapsed_ms"] = float(Time.get_ticks_usec()-started)/1000.0
+	_bind_era_road_field()
+
+func _bind_era_road_field()->void:
+	for material:ShaderMaterial in [_shared_road_material(),promenade.road_material(),path_edge.material]:
+		if material!=null:era_road_field.bind_material(material)
 
 func _bind_ground_contact_field() -> void:
 	if grass_world_tint == null:
@@ -464,8 +482,11 @@ func update_bakery_supply(statuses: Dictionary) -> void:
 	for id: String in bread_roots.keys():
 		if not live.has(id): _remove_cached(id,bread_roots,bread_fingerprints)
 
+var quality_visual: RefCounted=preload("res://scripts/visual/city_creation_quality_visual.gd").new()
+
 func update_craft_progress() -> void:
 	craft.progress(self)
+	if quality_visual.layer!=null: quality_visual.progress(self)
 
 func update_workshop_supply(statuses: Dictionary) -> void:
 	craft.supply(self,statuses)
@@ -668,7 +689,7 @@ func _shared_tree_material(part: String) -> Material:
 func _frontage_signature(house: Dictionary) -> Array:
 	var result: Array = []
 	for entrance: Dictionary in state.house_entrances(str(house.id)):
-		result.append([entrance.cell_id,entrance.side,entrance.active,entrance.get("passage",false),entrance.get("wall_at",Vector2.ZERO)])
+		result.append([entrance.cell_id,entrance.side,entrance.active,entrance.get("passage",false),entrance.get("wall_at",Vector2.ZERO),Frontage.porch_plan(state,house,entrance) if entrance.active else {}])
 	result.append(state.house_passages(str(house.id)))
 	var role := str(house.get("role","residential"))
 	if role == "residential": return result
@@ -805,6 +826,7 @@ func animate_house_bounce(id: String, strength: float = 0.06) -> void:
 
 func _process(delta: float) -> void:
 	touch.update(delta)
+	if state!=null:SignatureVisual.animate(self,delta)
 
 func update_travel_music(report: Dictionary) -> void:
 	travel_visual.update(report,_water_surface_material(),state)
@@ -1276,10 +1298,16 @@ func _foundation_contact(parent: Node3D) -> void:
 	contact.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	parent.add_child(contact)
 
+const SignatureVisual = preload("res://scripts/visual/city_creation_signature_visual.gd")
+const RenaissancePlan = preload("res://scripts/world/city_creation_renaissance_plan.gd")
+const Renaissance = preload("res://scripts/visual/city_creation_renaissance.gd")
+const Clockwork = preload("res://scripts/visual/city_creation_clockwork.gd")
+const Modern = preload("res://scripts/visual/city_creation_modern.gd")
+
 func _house(house: Dictionary) -> Node3D:
 	# Focused geometry fixtures also call this entry without setup/rebuild.
 	if building_context.signature(str(house.id)).is_empty(): building_context.prepare(state.houses,state.roads)
-	if not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():
+	if state.house_era(house) not in ["clockwork","modern_eco"] and not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():
 		var round_root: Node3D=RoundTower.build(self,house)
 		buildings.add_child(round_root)
 		RoundTower.finish(self,round_root,house)
@@ -1290,17 +1318,31 @@ func _house(house: Dictionary) -> Node3D:
 	var palette: Array = PALETTES[posmod(int(house.get("palette",0)),PALETTES.size())]
 	if house.has("finish"): palette=FINISH_PALETTES[str(house.finish)]
 	root.set_meta("palette_colors",palette.duplicate())
+	var era: String = state.house_era(house)
+	var domes: Array = RenaissancePlan.for_house(state,house)
+	var dome_cells := {}
+	for plan: Dictionary in domes:
+		for id: String in plan.cell_ids: dome_cells[id]=true
+	root.set_meta("dome_cells",dome_cells)
+	root.set_meta("era_theme",era)
+	if era == "renaissance": palette=Renaissance.palette(palette)
+	elif era=="clockwork":palette=Clockwork.palette(palette)
+	elif era=="modern_eco":palette=Modern.palette(palette)
+	root.set_meta("palette_colors",palette.duplicate())
 	var style := str(house.get("style","classic"))
 	root.set_meta("house_style",style)
 	var canopy: Dictionary=TerraceCanopy.choose(state.houses,house)
-	var flower_plan: Dictionary=ConservatoryPlan.choose(state.houses,house)
+	var flower_plan: Dictionary=ConservatoryPlan.for_house(state,house)
 	var arcade_faces: Array=ArcadePlan.for_house(state,house)
+	if era=="modern_eco":canopy={};flower_plan={};arcade_faces=[]
 	root.set_meta("arcade_faces",arcade_faces)
 	var arcades: Array=[]
 	root.set_meta("arcades",arcades)
 	if not flower_plan.is_empty(): canopy={}
 	root.set_meta("terrace_canopy",canopy)
-	var walls := _style_wall_material(style,palette[0])
+	var walls: Material = _style_wall_material(style,palette[0])
+	if era=="clockwork":walls=Clockwork.wall_material(self,palette[0])
+	elif era=="modern_eco":walls=_material(palette[0])
 	var trim := _material(Color("f1e5cc"))
 	var cells: Array = house["cells"]
 	var entrances: Array = state.house_entrances(str(house.id))
@@ -1310,6 +1352,7 @@ func _house(house: Dictionary) -> Node3D:
 	var tower_ids: Dictionary = {}
 	var tower_info: Array = []
 	for tower: Dictionary in building_context.tower_cells(str(house.id)): tower_ids[str(tower.id)] = true
+	if house.get("signature","")=="bell_keep":tower_ids[str(house.cells[-1].id)]=true
 	root.set_meta("tower_cells",tower_info)
 	var doors := {}
 	for entrance: Dictionary in entrances:
@@ -1376,7 +1419,9 @@ func _house(house: Dictionary) -> Node3D:
 		if level==0 and float(house.get("base_y",0.0))>0.05:
 			Highland.build_plinth(self,node,house,cell,footing_bottom,footing_pieces)
 		if terrace:
-			_terrace(node,cell,cells,y,palette,house)
+			if house.get("signature","")=="floating_amphitheater":continue
+			elif era=="modern_eco":Modern.terrace(self,node,cell,cells,y,palette)
+			else:_terrace(node,cell,cells,y,palette,house)
 			if str(canopy.get("cell_id",""))==str(cell.id): TerraceCanopy.build(self,node,body,y+.19,palette)
 			continue
 		for direction: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
@@ -1416,7 +1461,7 @@ func _house(house: Dictionary) -> Node3D:
 				else: wall.get_node("ArchWallSurface").material_override=walls
 				_box(wall,Vector3(UNIT+0.07,0.11,0.20),Vector3(0,FLOOR-0.06,0.02),trim)
 				continue
-			_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
+			if era!="modern_eco":_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
 			if not cuts.is_empty() or not retreats.is_empty():
 				_cell_box_shape(body,Vector3(wall_width,FLOOR,0.13),wall.transform*(wall_center+Vector3(0,FLOOR*0.5,0)),wall.rotation.y)
 			_box(wall,Vector3(wall_width+0.04,0.12,0.20),wall_center+Vector3(0,0.12,0.02),_material(Color("c7b797")))
@@ -1428,15 +1473,22 @@ func _house(house: Dictionary) -> Node3D:
 			if door:
 				wall.name = "Entrance_%d_%d" % [direction.x,direction.y]
 				wall.set_meta("entrance",entrance.duplicate(true))
-			_facade(wall,palette,door,int(house.get("seed",0))+x*17+z*31+level*7,active,wall_width)
-			if wall_width>=UNIT-.01: HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
-			if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"))
+			if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette)
+			else:_facade(wall,palette,door,int(house.get("seed",0))+x*17+z*31+level*7,active,wall_width)
+			if era == "renaissance": Renaissance.facade(self,wall,door,level>0)
+			elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
+			if wall_width>=UNIT-.01 and era!="modern_eco": HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
+			if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
 			if principal and not role_prop_added:
 				_role_frontage(wall,str(house.get("role","residential")))
 				role_prop_added = true
 		if not _neighbor_cell(house,cell,Vector2i.ZERO,1).is_empty():
 			_box(node,Vector3(UNIT+0.06,0.1,UNIT+0.06),Vector3(0,y+FLOOR,0),trim)
 			continue
+		if dome_cells.has(str(cell.id)):
+			_box(node,Vector3(UNIT,.12,UNIT),Vector3(0,y+FLOOR-.04,0),trim)
+			continue
+		if era in ["clockwork","modern_eco"]:continue
 		if tower_ids.has(str(cell.id)):
 			tower_info.append(Tower.build(self,root,body,house,cell,palette))
 			continue
@@ -1463,9 +1515,13 @@ func _house(house: Dictionary) -> Node3D:
 		_roof(roof,y+FLOOR,palette[1],int(house.get("seed",0))+x*13+z*19,span,front_open,back_open,bakery)
 		if bakery:
 			root.set_meta("chimneys",[p+roof.position+Vector3(0.4,y+FLOOR+0.99,-0.45)])
-	if joined: _joined_roofs(root,house,palette)
+	if era=="clockwork":Clockwork.build(self,root,house)
+	elif era=="modern_eco":Modern.build(self,root,house,palette)
+	elif joined: _joined_roofs(root,house,palette)
+	Renaissance.build(self,root,house,domes)
 	if not flower_plan.is_empty(): conservatory.build(self,root,house,flower_plan)
 	root.set_meta("tower_cells",tower_info)
+	SignatureVisual.decorate(self,root,house)
 	var chimney_points: Array=root.get_meta("chimneys",[])
 	if str(house.get("role","residential"))=="bakery" and not chimney_points.is_empty(): bakery_smoke.build(root,chimney_points[0])
 	return root
@@ -1478,7 +1534,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var footings: Array = []
 	for cell: Dictionary in house.cells:
 		if int(cell.level)==0: footings.append(Highland.footing(self,house,cell))
-	return hash([house.origin,house.cells,house.get("base_y",0.0),footings,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.choose(state.houses,house),ArcadePlan.for_house(state,house),house.get("style","classic"),house.get("seed",0),house.get("role","residential"),_frontage_signature(house),building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),ArcadePlan.for_house(state,house),house.get("style","classic"),house.get("seed",0),house.get("role","residential"),_frontage_signature(house),building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 
 
 func _style_wall_material(style: String,base: Color) -> StandardMaterial3D:
@@ -1523,8 +1579,9 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	var tower_ids: Dictionary = {}
 	for tower: Dictionary in parent.get_meta("tower_cells",[]): tower_ids[str(tower.cell_id)] = true
 	var roof_info: Array = []
+	var dome_cells: Dictionary = parent.get_meta("dome_cells",{})
 	for patch: Dictionary in patches:
-		if tower_ids.has(str(patch.cell_id)): continue
+		if tower_ids.has(str(patch.cell_id)) or dome_cells.has(str(patch.cell_id)): continue
 		if patch.surface=="roof":
 			roofs.append_array(patch.vertices)
 			roof_info.append({"cell_id":patch.cell_id,"group_id":patch.group_id,"bounds":patch.bounds})
@@ -1556,7 +1613,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	parent.set_meta("roof_patches",roof_info)
 	var chimneys: Array[Vector3] = []
 	for cell: Dictionary in house.cells:
-		if tower_ids.has(str(cell.id)): continue
+		if tower_ids.has(str(cell.id)) or dome_cells.has(str(cell.id)): continue
 		if str(cell.kind)!="room" or not _neighbor_cell(house,cell,Vector2i.ZERO,1).is_empty(): continue
 		if str(house.get("role","residential"))!="bakery" and posmod(int(house.get("seed",0))+int(cell.x)*13+int(cell.z)*19,4)!=0: continue
 		var at := _cell_position(house,cell)+Vector3(0.4,0,-0.45)
@@ -1634,6 +1691,16 @@ func _role_frontage(wall: Node3D, role: String) -> void:
 		# Bread emblem makes the service readable even when its counter is omitted.
 		_box(wall,Vector3(0.45,0.38,0.055),Vector3(0.59,0.93,0.10),wood)
 		_crown(wall,Vector3(0.59,0.94,0.15),Vector3(0.17,0.065,0.07),Color("d9af72"))
+	elif role == "atelier":
+		wall.set_meta("atelier_frontage",true)
+		_box(wall,Vector3(.42,.32,.04),Vector3(.59,.93,.13),_material(Color("a06d8c")))
+		_box(wall,Vector3(.32,.025,.025),Vector3(.59,.93,.17),_material(Color("e3c784")))
+		_box(wall,Vector3(.025,.22,.025),Vector3(.59,.93,.17),_material(Color("e3c784")))
+	elif role=="clockmaker":
+		wall.set_meta("clockmaker_frontage",true)
+		var face:=_cylinder(wall,.19,.19,.045,Vector3(.61,.96,.14),_material(Color("d6bd7d")),20);face.rotation.x=PI*.5
+		_box(wall,Vector3(.018,.14,.025),Vector3(.61,1.01,.18),_material(Color("45594f")))
+		_box(wall,Vector3(.12,.018,.025),Vector3(.66,.96,.18),_material(Color("45594f")))
 	elif role == "workshop":
 		# Joinery, unfinished instruments and timber identify an actual artisan
 		# service. Everything beside the entrance obeys the same local clearance
@@ -1704,14 +1771,18 @@ func _role_frontage(wall: Node3D, role: String) -> void:
 			_cylinder(wall,0.035,0.025,0.43,pot+Vector3(0,0.43,0),wood)
 			_crown(wall,pot+Vector3(0,0.69,0),Vector3(0.25,0.29,0.24),Color("779375"))
 
-func _door_porch(wall: Node3D, covered_by_shop: bool) -> void:
-	# Three treads meet the real flat foundation; all detail is merged into
-	# the house's material batches and does not allocate local light nodes.
+func _door_porch(wall: Node3D, covered_by_shop: bool, plan: Dictionary={}) -> void:
+	# Shared height-derived plan; the flat legacy porch retains three treads.
 	var stone := _material(Color("d7c8a5"))
-	for step in range(3):
-		var height := 0.15-float(step)*0.05
-		_box(wall,Vector3(0.94+float(step)*0.09,height,0.29),Vector3(0,height*0.5,0.18+float(step)*0.23),stone)
-	wall.set_meta("porch_steps",3)
+	var count := int(plan.get("count",3))
+	var bottom := float(plan.get("bottom",0.0))
+	var rise := 0.15-bottom
+	for step in range(count):
+		var top := 0.15-float(step)*rise/float(count)
+		var height := top-bottom
+		_box(wall,Vector3(0.94+float(step)*0.09,height,0.29),Vector3(0,bottom+height*0.5,0.18+float(step)*0.23),stone)
+	wall.set_meta("porch_steps",count)
+	wall.set_meta("porch_plan",plan)
 	if not covered_by_shop:
 		var timber := _material(Color("8e7052"))
 		_quad(wall,Vector3(-0.60,1.59,0.05),Vector3(0.60,1.59,0.05),Vector3(0.60,1.43,0.76),Vector3(-0.60,1.43,0.76),Color("ad8660"))
@@ -2246,11 +2317,14 @@ func _road_layout_key() -> int:
 	var junctions: RefCounted = state.road_junctions()
 	var rows: Array = []
 	for road: Dictionary in state.roads:
-		rows.append([road.id,road.points,road.width,junctions.signature(str(road.id))])
+		rows.append([road.id,road.points,road.width,road.get("roundabouts",[]),junctions.signature(str(road.id))])
 	return hash(rows)
 
 func _road_fingerprint(road: Dictionary) -> int:
-	return hash([road.points,road.get("width",1.1),road.get("style","path"),promenade.prepare(self,road),state.road_profile(road).signature,_road_water_signature(road),_road_join_signature(road),state._junctions.signature(str(road.id))])
+	var bounds := Rect2(Vector2(road.points[0][0],road.points[0][1]),Vector2.ZERO)
+	for point: Array in road.points: bounds=bounds.expand(Vector2(point[0],point[1]))
+	var shoulder_signature: int=state._ground_terrain.region_signature(bounds.grow(float(road.width)*0.5+1.6),true)
+	return hash([road.points,road.get("width",1.1),road.get("style","path"),promenade.prepare(self,road),era_streets.prepare(self,road),TramTracks.signature(state,road),state.road_profile(road).signature,shoulder_signature,_road_water_signature(road),_road_join_signature(road),state._junctions.signature(str(road.id))])
 
 func _road_contours(samples: Array[Vector2], width: float, extras: Array) -> Array:
 	var core := _stroke_contours(samples,width*0.5)
@@ -2334,6 +2408,7 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 	var offsets := _road_offsets(samples,width)
 	var curbs: Array = []
 	var cuts: Array = []
+	for marker: Dictionary in Roundabouts.all(state.roads): cuts.append([Roundabouts.polygon(marker.center,marker.radius-.025)])
 	for other: Dictionary in state.roads:
 		if int(str(other.id).substr(1)) < int(str(road.id).substr(1)) and _roads_touch(road,other): cuts.append(road_outlines[other.id])
 	var profile: Dictionary = state.road_profile(road)
@@ -2394,7 +2469,15 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 		var on_stones:=false
 		for run: Dictionary in stepping_runs:
 			if Rect2(run.bounds).grow(.20).has_point((p+q)*.5): on_stones=true;break
-		if on_stones: continue
+		var on_arch := false
+		for run: Dictionary in profile.get("bridge_runs",[]):
+			var nearest := INF
+			var arc := 0.0
+			for sample: Dictionary in run.samples:
+				var gap: float=Vector2(sample.xz).distance_squared_to((p+q)*.5)
+				if gap<nearest: nearest=gap;arc=float(sample.distance)
+			if arc>=float(run.start)-.2 and arc<=float(run.end)+.2: on_arch=true;break
+		if on_stones or on_arch: continue
 		for side in [-1,1]:
 			var a: Vector2 = p+offsets[index]*side
 			var b: Vector2 = q+offsets[index+1]*side
@@ -2407,11 +2490,11 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 			_append_road_descriptor(curbs,Vector3(width+0.06,0.08,p.distance_to(q)*0.96),Vector3((p.x+q.x)*0.5,y-0.025,(p.y+q.y)*0.5),Color("b5a17e"),Vector3(0,atan2(q.x-p.x,q.y-p.y),0))
 	rebuild_stats["road_curbs_ms"] = float(rebuild_stats.get("road_curbs_ms",0.0))+float(Time.get_ticks_usec()-curb_started)/1000.0
 	var edge_started := Time.get_ticks_usec()
-	var is_promenade := str(road.get("style","path"))=="promenade"
+	var is_promenade := str(road.get("style","path")) in ["promenade","avenue","tram"]
 	var edge := {"arrays":[],"stats":{"triangles":0,"vertices":0}} if is_promenade else path_edge.prepare(self,road,stepping_cuts)
 	rebuild_stats["road_edges_ms"] = float(rebuild_stats.get("road_edges_ms",0.0))+float(Time.get_ticks_usec()-edge_started)/1000.0
 	rebuild_stats["road_mesh_ms"] = float(rebuild_stats.get("road_mesh_ms",0.0))+float(Time.get_ticks_usec()-started)/1000.0
-	return {"arrays":arrays,"curbs":curbs,"edge":edge,"stairs":stairs,"promenade":promenade.prepare(self,road),"stepping_runs":stepping_runs}
+	return {"arrays":arrays,"curbs":curbs,"edge":edge,"stairs":stairs,"earthworks":RoadEarthworks.prepare(self,road,profile),"roundabouts":RoundaboutVisual.prepare(self,road),"promenade":promenade.prepare(self,road),"era_streets":era_streets.prepare(self,road),"stepping_runs":stepping_runs,"bridges":Bridges.prepare(profile),"tram":tram_tracks.prepare(self,road)}
 
 
 func _append_road_descriptor(records: Array, size: Vector3, at: Vector3, color: Color, rotation := Vector3.ZERO) -> void:
@@ -2426,8 +2509,8 @@ func _install_road_data(road: Dictionary, data: Dictionary, parent: Node3D) -> N
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
 		var surface := MeshInstance3D.new()
 		surface.mesh = mesh
-		surface.material_override = promenade.road_material() if str(road.get("style","path"))=="promenade" else _shared_road_material()
-		surface.name="PromenadeSurface" if str(road.get("style","path"))=="promenade" else "PathSurface"
+		surface.material_override = promenade.road_material() if str(road.get("style","path")) in ["promenade","avenue","tram"] else _shared_road_material()
+		surface.name="PromenadeSurface" if str(road.get("style","path")) in ["promenade","avenue","tram"] else "PathSurface"
 		root.add_child(surface)
 	var batches := {}
 	for record: Array in data.curbs:
@@ -2439,8 +2522,13 @@ func _install_road_data(road: Dictionary, data: Dictionary, parent: Node3D) -> N
 		root.add_child(instance)
 	root.set_meta("soft_edge",path_edge.install(self,data.edge,root))
 	RoadStairs.install(self,root,data.stairs,road)
+	RoadEarthworks.install(self,root,data.earthworks,road)
+	RoundaboutVisual.install(self,root,data.roundabouts)
 	Stepping.install(self,root,data.get("stepping_runs",[]),road)
 	promenade.install(self,root,data.promenade)
+	era_streets.install(self,root,data.get("era_streets",{"notes":[],"water":[],"gateways":[]}))
+	Bridges.install(self,root,data.get("bridges",{"faces":[]}),road)
+	TramTracks.install(self,root,data.tram)
 	_update_road_pebbles(road,root)
 	return root
 

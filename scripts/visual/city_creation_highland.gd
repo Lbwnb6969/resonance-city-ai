@@ -29,7 +29,7 @@ static func footing(renderer,house: Dictionary,cell: Dictionary) -> float:
 	var bottom := center.y-0.04
 	for x: float in [-0.92,0.0,0.92]:
 		for z: float in [-0.92,0.0,0.92]:
-			bottom=minf(bottom,renderer.state.raw_terrain_height(Vector2(center.x+x,center.z+z))-0.06)
+			bottom=minf(bottom,renderer.state.raw_terrain_height(Vector2(center.x+x,center.z+z))-0.15)
 	# Existing riverbank foundations continue below the old shallow bank.
 	if center.y<0.05: bottom=minf(bottom,renderer.Terrain.BASE_HEIGHT-renderer.Terrain.BANK_DEPTH-0.02)
 	return bottom-center.y

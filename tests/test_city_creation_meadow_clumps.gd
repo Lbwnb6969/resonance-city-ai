@@ -74,7 +74,7 @@ func _run() -> void:
 	_expect(split_mothers > 5, "ownership includes mothers whose children straddle block boundaries")
 	_expect(repeatable, "world seeds reproduce all candidate fields exactly")
 	_expect(clustered, "siblings share smooth main direction and colour")
-	_expect(candidate_count > 3000 and candidate_count < 8000, "two-stage distribution has sparse breathing space")
+	_expect(candidate_count > 8000 and candidate_count < 18000, "dense mother/child meadow stays bounded over twenty-four blocks")
 	var smooth_direction := true
 	var patch_min := 1.0
 	var patch_max := 0.0
@@ -87,11 +87,14 @@ func _run() -> void:
 			patch_max = maxf(patch_max, patch)
 	_expect(smooth_direction and patch_max - patch_min > 0.5, "continuous broad direction/density field varies across town")
 	var mesh: Mesh = meadow._mesh("lawn")
-	_expect(mesh.get_faces().size() / 3 == 15, "shared ribbon clump fits fifteen triangle budget")
+	_expect(mesh.get_faces().size() / 3 == 35, "seven curved opaque leaves share thirty-five triangles")
+	_expect(meadow._mesh("lawn_lod").get_faces().size()/3 == 20, "far mesh retains two leaves from each ring")
 	_expect(mesh == meadow._mesh("lawn") and mesh == meadow._mesh("grass"), "lawn and fringe share one cached ribbon mesh")
 	var arrays: Array = mesh.surface_get_arrays(0)
 	var tips := 0
-	var tip_forward := true
+	var low_tips := 0
+	var high_tips := 0
+	var tip_directions := {}
 	var continuous_normals := true
 	var normals_by_vertex := {}
 	for index in range(arrays[Mesh.ARRAY_VERTEX].size()):
@@ -103,8 +106,10 @@ func _run() -> void:
 		normals_by_vertex[at] = normal
 		if is_equal_approx(uv.y, 1.0):
 			tips += 1
-			tip_forward = tip_forward and at.x > 0.065
-	_expect(tips == 3 and tip_forward, "each asymmetric leaf has exact tip UV and shares lean direction")
+			if at.y < 0.20: low_tips += 1
+			else: high_tips += 1
+			tip_directions[Vector2i(signf(at.x),signf(at.z))] = true
+	_expect(tips == 7 and low_tips == 4 and high_tips == 3 and tip_directions.size() >= 3, "exact tip UVs describe four cupped outer leaves and three upright inner leaves")
 	_expect(continuous_normals, "curved leaf normals have no lighting seam at duplicated triangle vertices")
 	var legal := true
 	var custom_matches := true

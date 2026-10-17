@@ -6,6 +6,15 @@ const CONTACT := 0.55
 const HALF_DOOR := 0.35
 const Passage := preload("res://scripts/world/city_creation_passage.gd")
 
+static func porch_plan(city: RefCounted,house: Dictionary,entry: Dictionary) -> Dictionary:
+	var at: Vector2=entry.wall_at+Vector2(entry.side)*0.78
+	var base := float(house.get("base_y",0.0))
+	var ground: float=city.street_height(at)
+	# Existing level-ground doors keep their original three shallow treads.
+	var bottom := minf(0.10,ground-base-0.025)
+	var rise := 0.15-bottom
+	return {"count":3 if rise<0.20 else clampi(ceili(rise/0.12),1,8),"bottom":bottom,"ground_y":ground,"base_y":base,"at":at}
+
 static func center(house: Dictionary, cell: Dictionary) -> Vector2:
 	return Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
 

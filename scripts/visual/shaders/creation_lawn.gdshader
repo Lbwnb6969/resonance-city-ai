@@ -34,9 +34,8 @@ void vertex() {
 	VERTEX.z *= mix(1.0,0.46,species);
 	// Mask's .18 parameter reserves 7.56 cm, not 18 cm. Contract the whole
 	// footprint at the edge, including its wind, rather than clipping grass roots.
-	// Twelve-leaf mother radius .12924m. Existing CPU width and edge reservation
-	// keep this inside the previous mother footprint.
-	// The .30 edge factor includes push/wind inside the existing .0756m mask.
+	// Contract the cupped clump beside obstacles, including wind and push,
+	// inside the existing .0756m reserved root clearance.
 	VERTEX.xz *= sqrt(detail)*mix(0.20,1.0,edge_height);
 	VERTEX.xz += local_push.xz*grass2_object_push(edge_height,tip)*0.045*detail;
 	// Convert the shared world breeze into each rotated clump's local frame.
@@ -56,17 +55,22 @@ void fragment() {
 	// keeps it stable; wind moves geometry/normals instead of adding green.
 	float seed=meadow_hash(clump_world_at*0.71);
 	vec3 seed_tint=mix(vec3(1.0),mix(vec3(0.92,0.96,0.90),vec3(1.08,1.03,0.94),seed),0.25);
-	vec3 root_tone=ground_linear*vec3(0.88,0.90,0.86);
-	vec3 sun_tip_tone=ground_linear*vec3(1.05,1.06,0.97);
+	vec3 root_tone=ground_linear*vec3(0.80,0.86,0.78);
+	vec3 tip_lift=vec3(0.05,0.06,0.01);
+	// The authored lift is an sRGB color, not .05 units of linear radiance.
+	if (OUTPUT_IS_SRGB) { tip_lift=meadow_srgb_to_linear(tip_lift); }
+	vec3 sun_tip_tone=ground_linear*vec3(1.18,1.25,0.92)+tip_lift;
 	vec3 blade=mix(root_tone,sun_tip_tone,smoothstep(0.08,0.92,tip))*seed_tint;
 	blade*=mix(vec3(1.0),vec3(0.985,1.0,0.985),species);
-	float reveal = smoothstep(0.04,0.78,tip)*detail;
+	// Keep a shared ground base through the broad outer leaves; only the
+	// upper blade owns the full warm highlight instead of a bright rosette.
+	float reveal = smoothstep(0.04,0.94,tip)*detail*0.78;
 	vec3 albedo=mix(ground_linear,blade,reveal);
 	ALBEDO=OUTPUT_IS_SRGB ? meadow_linear_to_srgb(albedo) : albedo;
 	AO = mix(0.93,1.0,smoothstep(0.0,0.55,tip)*detail);
 	AO_LIGHT_AFFECT = 0.30;
 	ROUGHNESS = mix(0.94,0.74,tip*detail);
-	BACKLIGHT = vec3(0.085,0.09,0.035)*leaf;
+	BACKLIGHT = vec3(0.24,0.28,0.09)*leaf;
 }
 void light() {
 	float ndotl = dot(NORMAL,LIGHT);
@@ -74,5 +78,5 @@ void light() {
 	float back_sun = clamp(dot(-VIEW,LIGHT)*0.5+0.5,0.0,1.0);
 	float transmission = pow(tip,1.35)*detail*(0.35+0.65*back_sun);
 	// Godot multiplies final diffuse by ALBEDO; LIGHT_COLOR already includes PI.
-	DIFFUSE_LIGHT += (vec3(wrapped)+vec3(0.08,0.07,0.025)*transmission)*LIGHT_COLOR*ATTENUATION/PI;
+	DIFFUSE_LIGHT += (vec3(wrapped)+vec3(0.24,0.28,0.09)*transmission)*LIGHT_COLOR*ATTENUATION/PI;
 }

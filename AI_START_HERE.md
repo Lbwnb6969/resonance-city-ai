@@ -1,33 +1,39 @@
-# 《共鸣之城》AI 快速启动入口（v3.0）
+# 《共鸣之城》AI 快速启动入口
 
-## 运行与代码入口
+## 1. 核心代码架构速查
+- **主场景与入口**：`res://scenes/city_creation.tscn` → `scripts/ui/city_creation_demo.gd`
+- **世界状态与存档 (`State`)**：`scripts/world/city_creation_state.gd`（含 `stroke`, `house_stroke`, `road_intent`, `junctions`, `passage`, `frontage`, `terrain`, `terrain_protection`, `courtyards`, `towers`, `growth`, `collection`）
+- **市民生活与经营 (`Life`)**：`scripts/world/city_creation_life.gd`（含 `network`, `bakery`, `workshop`, `cafe`, `matinee`, `concert_relay`, `travel`, `district_links`）
+- **3D 渲染与美术 (`Renderer`)**：`scripts/visual/city_creation_renderer.gd`（含 `meadow`, `foliage`, `shore`, `water_field`, `contact_field`, `terrain_surface`, `outcrops`, `building_context`, `gables`, `tower`, `house_styles`, `terrace_canopy`, `bakery_smoke`, `craft`, `cafe`, `courtyards`, `path_edge`, `path_pebbles`, `resonance`, `mesh_batcher`, `budget_rebuild` 及 `scripts/visual/shaders/*.gdshader`）
+- **音乐与视野声场 (`Music`)**：`scripts/audio/city_creation_music.gd`（含 `theme_pcm`, `reply_pcm`, `arrangement`, `district_reply`, `spatial`）
 
-- Godot：`D:/GODOT/Godot_v4.7.2-stable_win64_console.exe`，Compatibility，1440×900。
-- 主场景：`scenes/city_creation.tscn`；控制器：`scripts/ui/city_creation_demo.gd`。
-- 世界状态：`scripts/world/city_creation_state.gd`；真实生活：`city_creation_life.gd`；路网：`city_creation_network.gd`；共享0.5m高度场（新笔触可选自然轮廓）：`city_creation_terrain.gd`。
-- 作品格式与原子文件存取：`scripts/world/city_creation_serializer.gd`；纯台账/数值校验：`city_creation_save_validation.gd`。State保原API、缓存失效、历史与经营副作用；存取模块不保留City引用。
-- 渲染：`scripts/visual/city_creation_renderer.gd`，后台准备/分帧安装：`city_creation_budget_rebuild.gd`；建筑、道路、植被、水岸使用对应 `city_creation_*` 模块与 `creation_*` 着色器。
-- 音乐：`scripts/audio/city_creation_music.gd`，固定9条24秒同步长轨、4短音池与6声像总线；拨弦：`city_creation_pitch_pluck.gd`；四层自然声床：`city_creation_ambience.gd`。
-- 作品、手记、账本：`scripts/ui/city_creation_gallery.gd`、`city_creation_journal.gd`、`city_creation_ledger.gd`。当前存档Schema 1～11；11保存自然轮廓，10保存柔化笔刷。
-- 住宅共鸣反馈：`scripts/ui/city_creation_household_feedback.gd`，从逐户真实需求和路网连通分量生成下一步；用途工具选中住宅后半秒更新，不重置名字输入焦点。
-- 高地建筑融入：`scripts/visual/city_creation_highland.gd` 的 StonePlinth 使用恢复石墙纹理和世界三平面 UV；只改视觉材质，不改高程真值或路线。
-- 复杂屋顶生态：`scripts/visual/city_creation_wildlife.gd` 将玻璃花房拱顶作为真实鸟栖点，端门外保持花蜜点。
-- 地形整笔预览：`scripts/visual/city_creation_terrain_preview.gd`，用现有圆端折线偏移显示整笔最大范围/平顶内界和活动笔圈，采样当前地形；与提交数据共用原始笔画点，不计算第二份预测高度场。
+## 2. 当前施工总纲与推进顺序
+请直接打开 **[文档/code_artifact.md](文档/code_artifact.md)**，对照 **第九章：十阶段长期施工路线图 (Phase 1 ～ Phase 10)** 逐阶段持续推进：
+1. **Phase 1**：草毯加密（7叶碗状绒簇 + 0.52m 密植）、暖阳 Filmic 光影、日/夕/夜三档氛围与草尖 SSS 透射重构。
+2. **Phase 2**：立体高地城建与 CS2 挖填方衔接（解除房路 0 米压平锁死，实现台地/山坡建房 + 自适应毛石高地基 + 顺坡道路与陡坡自动石阶 + 横坡挡土石墙）。
+3. **Phase 3**：CS2 式道路就地升级（双刷升级 1.75m 石板灯街 / 2.1m 林荫大道 / 叮当有轨电车街）与路口一键圆形环岛广场 (`Roundabouts & Plazas`)。
+4. **Phase 4**：四温区视野声场架构 (`Acoustic Grouping`：视野核心发声 + 内联区域问答 + 远端特殊事件低通微音 + 视野外静默保谐) 与建房/点房音阶拨弦即时反馈。
+5. **Phase 5 ～ Phase 10**：四大时代演进解锁 × 多风貌街区同城并存（古典田园、文艺复兴连拱穹顶、蒸汽钟表花房与有轨电车、现代生态空中花园）、建筑 1–5 级自动进化、6 座免费地标名胜 (`Signature Buildings`) 与 `80m×80m` 大城画布扩容。
 
-## 阅读与当前路线
+## 3. 运行与当前阶段
+Godot：`D:/GODOT/Godot_v4.7.2-stable_win64_console.exe`，Compatibility，1440×900。根目录三个启动器分别打开隔离新城、个人继续档、隔离创作样例；Ctrl+O 的示范河湾支持游戏内切换。
 
-先读 [PROJECT](PROJECT.md) 和 [重构套件执行对照](文档/重构套件执行对照_2026-10-17.md)，再读 [总设计与工程校准](文档/code_artifact.md)、[四份施工指南](文档/README.md)、[三库索引](文档/参考索引.md) 和 [快速开始](文档/Demo快速开始.md)。原方案中的旧快照诊断、代码块和性能数字需要先核当前源码，不能直接覆盖已修正版本。
+第八章已完成；Phase 1～9已完成，当前为 **Phase 10**。阶段状态与验证结论只记 [PROJECT](PROJECT.md)。房屋海拔、坡路石阶、三时段、拨弦/手动连线、汀步/睡莲和80m画布已有实现，各阶段仍须按新规格验收。
 
-v3已接入并验证：三时段光影、草阶/花簇/墙体AO/筒瓦/水面、建筑回弹与按住P刮奏、飞鸟彩蝶/夜间流萤和彩旗灯串、选址加持/逐户幸福/第四章、V漫步/F12明信片。实窗空闲p95约5.6ms，9+4音源与个人档不变。旧件已按依赖归档1,032份，3D打包审计独立。
+存档：Schema 1～16，独立模块 `city_creation_serializer.gd` / `city_creation_save_validation.gd`；`user://city_creation_v1.json` 与 `user://city_creation_works/` 是个人数据，测试使用隔离路径。
 
-近路编辑已复用结构地形保护区；居民网络 worker 只准备 raw 地形与道路剖面，局部编辑实测81点/37,249点、约68ms/150ms，主线程仍负责完整保护高度发布。生活准备118～124ms、渲染后台191～202ms、预算发布243～260ms、最大帧17.8～24.7ms，尚未达35ms/12ms目标。后续继续验证门前 fallback、道路/自然层准备与居民恢复，拆经营账本与roof/preview。serializer已抽出并通过174项新旧对照、17样例和Schema1～11覆盖，真实烘焙/送装/接力恢复及主场景实窗通过。详细状态看PROJECT；运行截图和日志只在本地 `验证记录/`，不会上传。
+旧蓝图、四指南、三套用户材料与旧入口原文完整保存在本地 `废弃/文档_旧体系归档_2026-10-17_四库路线/`；旧2.5D文档和验证已在此前归档。开发入口只读现行五份文档；具体架构见 [3D速查](文档/21_新城创作切片.md)，来源见 [四库索引](文档/参考索引.md)。
 
-三套用户原件保存在 `文档/01_全套重构文档_MD版`、`02_全套重构文档_TXT纯文本版`、`03_可直接覆盖到仓库根目录`；03是源码模板，不参与Godot导入。实际施工使用根目录修正版与 `scripts/` 中的适配版本。
+Phase1～9已完成，Eras.AVAILABLE_COUNT=4。下一步按第七章/Phase10验证150～300屋、200+居民、分级LOD、脏子区域上传与分帧编辑。当前50屋近景数据不能替代大城验收；12轨PCM冷合成28.709秒、编辑准备/发布与盛典尾帧仍待性能收口。
 
-日常不自动打包ZIP。清理默认只生成JSON计划，命令见 `tools/cleanup_v3_workspace.py --help`；归档不覆盖、不删除，保留三库和个人数据。针对当前变更作最小充分测试与一次实窗画面/帧时核验。
+时代入口：`city_creation_eras.gd`；Schema16的`era_answers`记录实际问答播放双方时代，50屋与三时代已听问答解锁modern_eco；旧问答不能靠重涂追认。建筑入口为`city_creation_renaissance.gd`、`city_creation_clockwork.gd`、`city_creation_modern.gd`及`city_creation_skybridge_plan.gd`。音乐固定12长+4短/6总线，自然声2固定节点。
 
-下一项结构工作：Renderer、State、Demo仍分别约2493、2263、2063行。优先抽离Renderer的预览职责，保持当前外部调用API，并用道路/房屋预览实窗和场景启动验证；不为行数指标强拆没有独立职责的代码。边界和剩余风险见执行对照。
+交通入口：`city_creation_tram_plan.gd`/`city_creation_tram.gd`与`city_creation_tram_tracks.gd`；真实居民乘车后继续原采购/茶座/演出路线，实际到达才结算。`city_creation_bridge_plan.gd`按河宽/时代派生汀步、古典双拱、工业桁架或现代单拱，共用State.street_height。
 
-## 本仓库的精简边界
+街道入口：`city_creation_era_road_field.gd`准备带重叠边框的8m纹理数组块，`creation_era_road.gdshaderinc`供三类路面统一采样2m时代渐变；`city_creation_era_streets.gd`派生边界迎宾灯/拱门、现代音符灯与水景带。预算重建只在发布时上传变化层，旧作品不增字段。
 
-当前仓库是独立的源码/设计资料快照，未包含美术素材、声音/截图、大型分析转储和旧Git历史。参考报告和现行文档保留原路径；精确内容及校验见 [发布清单](AI资料/参考资料发布清单.json)，运行依赖见根README。
+盛典入口：`city_creation_amphitheater_plan.gd`（干地入口/实际湿舞台/植被派生遮罩）、`city_creation_amphitheater.gd`（帆顶/钢琴/沿岸看台）、`city_creation_grand_festival.gd`（真实四时代编制/8小节/存档校验）、`city_creation_grand_festival_visual.gd`（实际街图距离驱动轨道金波）。Life.invite_grand_festival等居民到齐，24秒接力并终章合奏；中途改源时代取消且不结算，中途恢复延续真实进度。
+
+阶段命令、截图与剩余性能工作见本地`验证记录/四库路线_2026-10-17/README.md`；PROJECT只记录当前状态。
+
+Phase10入口：`city_creation_citizen_motion.gd`为运行时标量路段，Life.citizen_position读取真实逻辑位置，flush_citizen在实际到达/进入视野/编辑/存档时发布节点姿态；不保存LOD状态。每帧16人判视锥、16屋扫描品质；tools/fixtures/city_creation_large_town_fixture.gd与tools/check_creation_large_town_live.gd提供300屋实景。当前Life实窗1.035ms仍未达标，最新路高优化须继续实窗复核。

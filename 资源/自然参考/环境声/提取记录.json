@@ -1,0 +1,100 @@
+{
+  "event_name": "play_sfx_ambience_riverLoop",
+  "event_id": 89158959,
+  "shipped_name_evidence": {
+    "name": "play_sfx_ambience_riverLoop",
+    "computed_wwise_id": 89158959,
+    "objects": [
+      {
+        "key": "audio/core.bnk:89158959",
+        "bank": "audio/core.bnk",
+        "id": 89158959,
+        "class": "CAkEvent",
+        "offset": "69883284",
+        "name": null,
+        "hirc_type": 4,
+        "declared_payload_bytes": 13
+      }
+    ],
+    "source_occurrences": [
+      {
+        "name": "play_sfx_ambience_riverLoop",
+        "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+        "resource": "asset/Map Generation/MapGenerator.scene",
+        "source_offset": 3270988775
+      }
+    ]
+  },
+  "event_to_media_path": {
+    "event_key": "audio/core.bnk:89158959",
+    "event_id": 89158959,
+    "event_bank": "audio/core.bnk",
+    "object_path": [
+      "audio/core.bnk:89158959",
+      "audio/core.bnk:356780460",
+      "audio/core.bnk:43288962"
+    ],
+    "sound_id": 43288962,
+    "media_id": 386937418,
+    "media_path": "original/audio/core/386937418.wem"
+  },
+  "non_play_actions": [
+    {
+      "key": "audio/core.bnk:309464735",
+      "class": "CAkActionSeek",
+      "action_type": 7683,
+      "target_ids": [
+        43288962
+      ]
+    }
+  ],
+  "original_media": {
+    "source": "D:\\steamtest\\steamapps\\common\\Foundation\\audio\\core.pck",
+    "source_relative": "audio/core.pck",
+    "source_sha256": "9e5b8344d002c6fffc48a75250b660c3129d8bf7062a0d399f50877595b72eb5",
+    "id": 386937418,
+    "offset": 216480439,
+    "bytes": 988009,
+    "sha256": "e0ed4f93a8c30ff210039aafa4ecef087dafc906ad54db535e80457ab36fbbc5",
+    "path": "original/audio/core/386937418.wem",
+    "magic": "RIFF",
+    "format_tag": "0xffff",
+    "codec": "Wwise Vorbis",
+    "sample_rate": 48000,
+    "channels": 2,
+    "exact_file_verified": true
+  },
+  "decoded_source": "D:\\GODOT\\GODOTPRO\\共鸣之城\\参考资料\\Foundation逆向成品-2026-10-13\\outputs\\foundation-audio-recovered\\decoded\\audio\\core\\386937418.wav",
+  "decoded_sha256": "40ad8d6f3da439566a2e1aa1b1a8b3c7a6a20da7ee9c4fa1c89b6d463e31ba1d",
+  "original_duration_seconds": 36.140166666666666,
+  "original_channels": 2,
+  "original_sample_rate": 48000,
+  "processing": {
+    "slice_offset_seconds": 4.0,
+    "slice_duration_seconds": 12.5,
+    "downmix": "arithmetic stereo mean",
+    "source_dc_removed": 9.260502583113894e-08,
+    "resample": "61-tap Kaiser beta8 FIR lowpass 9000Hz at48k then linear interpolation to22050",
+    "crossfade_seconds": 0.5,
+    "crossfade": "tail/head raised-cosine weights summing to1; retain middle then blended join",
+    "output_dc_removed_before_gain": -3.6305873879924266e-07,
+    "pre_normalization_peak": 0.029403659399811443,
+    "target_peak": 0.85
+  },
+  "output": "res://资源/自然参考/环境声/溪流.wav",
+  "output_sha256": "3e48605778c0f88c4fb3c955a9224c27ff15981b25dd201b82936e946ce061a8",
+  "bytes": 529244,
+  "pcm_sha256": "d507cedf322950b6ca43f2a993c354a1e274c4b74bebed66f05577b582cac7cb",
+  "format": "PCM16 mono",
+  "sample_rate": 22050,
+  "frames": 264600,
+  "duration_seconds": 12.0,
+  "peak": 0.8499755859375,
+  "rms": 0.056554720824142174,
+  "dc": -2.1913604851662887e-09,
+  "seam_sample_jump": 0.008758544921875,
+  "source_unchanged": true,
+  "wav_readback_equal": true,
+  "godot_run": false,
+  "listened": false
+}

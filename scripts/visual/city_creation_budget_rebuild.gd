@@ -32,7 +32,7 @@ func _context(owner: Node3D) -> Node3D:
 	# the worker context, and State's mutable frontage cache starts empty.
 	var context: Node3D = owner.get_script().new()
 	var city := State.new()
-	_copy_fields(owner.state,city,["houses","roads","plants","waters","terrain_strokes","districts","musical_links","house_improvements","revision"])
+	_copy_fields(owner.state,city,["houses","roads","plants","waters","terrain_strokes","districts","musical_links","house_improvements","house_culture","house_clockwork","era_unlocks","revision"])
 	context.state = city
 	city._ground_terrain.copy_cache_from(owner.state._ground_terrain)
 	city._ground_revision = owner.state._ground_revision
@@ -49,6 +49,7 @@ func _context(owner: Node3D) -> Node3D:
 	context.building_context.copy_cache_from(owner.building_context)
 	context.ground_contact_field.copy_cpu_from(owner.ground_contact_field)
 	context.water_field.copy_cpu_from(owner.water_field,city)
+	context.era_road_field.copy_cpu_from(owner.era_road_field)
 	context.set_meta("water_component_keys",owner.water_components.keys())
 	context.water_edit_stats=owner.water_edit_stats.duplicate()
 	_copy_fields(owner,context,["background_trees","background_height_signature","building_input_signature"])
@@ -104,6 +105,7 @@ func _work(context: Node3D) -> Dictionary:
 	var stages: Dictionary = {}
 	var stage_start := Time.get_ticks_usec()
 	context.water_field.prepare_update()
+	context.era_road_field.prepare(context.state)
 	var water := _prepare_water(context) if labels.has("waters") else {"changed":false,"fingerprint":context.water_fingerprint,"live":{},"changes":{},"contours":0,"prepare_ms":0.0}
 	stages.water = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
@@ -237,6 +239,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	staging.promenade.evening = owner.promenade.evening
 	staging.promenade.concert = owner.promenade.concert
 	staging.conservatory.glass_material = owner.conservatory.ensure_material()
+	staging.conservatory.clockwork_glass_material = owner.conservatory.ensure_material(true)
 	staging.conservatory.evening = owner.conservatory.evening
 	staging.conservatory.response = owner.conservatory.response
 	staging.contact_material = owner.contact_material
@@ -469,6 +472,10 @@ func _commit(owner: Node3D) -> void:
 	owner.state._courtyards=staging.state._courtyards
 	owner.state._courtyard_plans_cache=staging.state._courtyard_plans_cache
 	owner.state._courtyard_revision=owner.state.revision
+	staging.era_road_field.texture=owner.era_road_field.texture
+	staging.era_road_field.upload()
+	owner.era_road_field=staging.era_road_field
+	owner._bind_era_road_field()
 	var live_terrain := {}
 	for block: Vector2i in owner.terrain_surface.blocks: live_terrain[block] = true
 	for block: Vector2i in staging.terrain_surface.blocks: live_terrain[block] = true

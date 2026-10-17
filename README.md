@@ -1,18 +1,21 @@
-# 共鸣之城 · AI源码与设计资料
+# 共鸣之城 · Resonance City
 
-当前Godot城市音乐项目的精简协作快照。独立私有仓库 `resonance-city-ai`；源码/资料与独立Git数据总大小控制在100 MB内。
+融合Tiny Glade自然美术、Townscaper模块化建筑、Foundation街坊生活与Cities: Skylines II城市工程机制的Godot城市音乐游戏。玩家画房屋、小路、林地与池塘，居民真实往来，房屋与街坊共同演奏。
 
-从 [AI_START_HERE](AI_START_HERE.md) 开始，先读 [PROJECT](PROJECT.md)，再按 [参考索引](文档/参考索引.md) 阅读四个逆向研究库。
+## 开始试玩
 
-- [现行设计文档](文档/README.md)：目标、玩法、声音、美术、地形、城市和验收规格。
-- [Tiny Glade研究](参考资料/Tiny-Glade逆向成品-v2/README.md)：首选美术、道路、水岸和植被机制。
-- [Foundation研究](参考资料/Foundation逆向成品-2026-10-13/DELIVERY_INDEX.md)：用途、职业、需求、生产与真实居民行为。
-- [Townscaper研究](参考资料/Townscaper逆向成品/README.md)：局部拓扑、生成、交互和编辑历史。
-- [Cities: Skylines II研究](参考资料/Cities%20Skylines%20II逆向分析-六项底层机制-2026-10-17/README.md)：预览提交、增量失效、时间边界、身份序列化、随机稳定性和资产编译链。
-- [精确资料范围](AI资料/README.md)：发布清单、校验与未包含项。
+使用Godot 4.7.2打开 `project.godot`，按F5；当前Compatibility，1440×900。也可双击：
 
-`scripts/`、`scenes/`、`native/`、`addons/`、`tests/`和`tools/`保留代码；程序几何、着色器和原创程序音乐代码仍在。
-剔除了美术素材、声音/视频、截图、二进制插件、导入缓存、大型分析数据、独立备份及完整旧Git历史。
-这是源码与研究资料仓库。由于素材和编译二进制已移除，它不提供完整项目的直接运行保证；Godot 4.7.2及完整运行依赖见原项目。
+- `启动Demo.cmd`：隔离新城，不写个人继续档。
+- `继续我的河湾.cmd`：继续个人作品。
+- `打开创作样例.cmd`：隔离创作样例。
 
-完整项目仓库：[resonance-city](https://github.com/Lbwnb6969/resonance-city)。未包含资料留在完整项目/本地原件中，源项目未被删除或修改。
+其他特色样例与旧对照入口在 [tools/样例启动器](tools/样例启动器/)。个人作品保存在Godot `user://`，作品收藏Ctrl+O、手记J、账本L；完整操作见 [快速开始](文档/Demo快速开始.md)。
+
+## 开发入口
+
+[当前状态与下一步](PROJECT.md) · [AI启动入口](AI_START_HERE.md) · [四库融合十阶段总设计](文档/code_artifact.md) · [文档导航](文档/README.md) · [四库参考](文档/参考索引.md)
+
+已有完整3D河湾编辑、真实经营/街坊演出、地形岸带、高地建房、坡路石阶、复杂建筑母型和自然声场。继续推进地貌观感、音乐融合、经营反馈与编辑响应；当前能力和下一项工作以PROJECT；开发按新蓝图Phase 1至Phase 10依次推进为准。
+
+原版文档与根入口保留在 [v1归档](废弃/文档_v1归档_2026-10-16/)，旧2.5D验证移到 [历史验证归档](废弃/验证记录_旧2.5D归档/)。三库来源、已复用资产与原件遵守各自来源说明，精简协作库范围见 [AI资料](AI资料/README.md)。

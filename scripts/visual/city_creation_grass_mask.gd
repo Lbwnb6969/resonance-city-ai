@@ -66,6 +66,9 @@ func setup(state: RefCounted, block: Vector2i) -> void:
 			for index: int in _indices(doorway.grow(EDGE_DISTANCE - MAX_CLEARANCE)):
 				_bins[index].edge_doors.append(door)
 	for road: Dictionary in state.get("roads"):
+		for marker: Dictionary in road.get("roundabouts",[]):
+			var center:=Vector2(marker.center[0],marker.center[1])
+			_add_segment(center,center,float(marker.radius)+.15,false)
 		for index in range(1, road.points.size()):
 			var a := Vector2(float(road.points[index - 1][0]), float(road.points[index - 1][1]))
 			var b := Vector2(float(road.points[index][0]), float(road.points[index][1]))

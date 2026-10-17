@@ -1,0 +1,1482 @@
+{
+  "schema_version": 1,
+  "styles": {
+    "clay": {
+      "label": "陶土街巷",
+      "role_map": {
+        "terrace": "art_clay_terrace",
+        "gabled": "art_clay_gabled",
+        "hipped": "art_clay_hipped",
+        "commercial": "art_clay_commercial",
+        "civic": "art_clay_civic"
+      }
+    },
+    "garden": {
+      "label": "清透园林",
+      "role_map": {
+        "terrace": "art_garden_terrace",
+        "gabled": "art_garden_gabled",
+        "hipped": "art_garden_hipped",
+        "commercial": "art_garden_commercial",
+        "civic": "art_garden_civic"
+      }
+    },
+    "paper": {
+      "label": "纸上城镇",
+      "role_map": {
+        "terrace": "art_paper_terrace",
+        "gabled": "art_paper_gabled",
+        "hipped": "art_paper_hipped",
+        "commercial": "art_paper_commercial",
+        "civic": "art_paper_civic"
+      }
+    }
+  },
+  "entries": [
+    {
+      "id": "art_clay_terrace",
+      "display_name": "陶土街巷 · 平顶住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_clay_terrace.svg",
+      "origin": [
+        1024.0,
+        1190.1526314063012
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1717,
+        "crop": [
+          0,
+          0,
+          2048,
+          1717
+        ]
+      },
+      "pixels_per_world": 1201.433835270689,
+      "model_bounds": {
+        "position": [
+          -0.61,
+          0.0,
+          -0.56
+        ],
+        "size": [
+          1.22,
+          0.75,
+          1.12
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "8b955113bd37467a7337b9f696aa993f3cbf564de517f1948b0cc947614c2ff9",
+      "era": 1,
+      "variant": "terrace",
+      "role": "terrace",
+      "art_direction": "clay",
+      "plot_span": 0.8,
+      "roof_style": "terrace",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_clay_terrace_shadow.png",
+      "shadow_origin": [
+        304.0,
+        149.0
+      ],
+      "shadow_pixels_per_world": 364.4138695098533,
+      "shadow_sha256": "c2929d5480cb9a9c2fd8652c5cf5db25c53daa64852179c8e6ee80e7d2ddf65d",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_clay_terrace_contact.png",
+      "contact_origin": [
+        512.0,
+        217.0
+      ],
+      "contact_pixels_per_world": 364.4138695098533,
+      "contact_sha256": "3a8313ad3d08c56d227d3e1d8ea9793c1dfa7625e2f701f50474f29487fa002f",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 25.96588835832568,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.47,
+      "roof_half_extents": [
+        0.565,
+        0.515
+      ],
+      "author_palette_colors": [
+        "#8E6253",
+        "#BA7A56",
+        "#CF8B69"
+      ]
+    },
+    {
+      "id": "art_clay_gabled",
+      "display_name": "陶土街巷 · 山墙住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_clay_gabled.svg",
+      "origin": [
+        1024.0,
+        1026.4445896499644
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1553,
+        "crop": [
+          0,
+          0,
+          2048,
+          1553
+        ]
+      },
+      "pixels_per_world": 1201.433835270689,
+      "model_bounds": {
+        "position": [
+          -0.61,
+          0.0,
+          -0.565
+        ],
+        "size": [
+          1.22,
+          0.735,
+          1.13
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "197b8742ab41445415d3f5ff13365b1b3ac91d7d74f2e5bca8285dbc4fc64846",
+      "era": 1,
+      "variant": "gabled",
+      "role": "gabled",
+      "art_direction": "clay",
+      "plot_span": 0.8,
+      "roof_style": "gabled",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_clay_gabled_shadow.png",
+      "shadow_origin": [
+        304.0,
+        149.0
+      ],
+      "shadow_pixels_per_world": 364.4138695098533,
+      "shadow_sha256": "1f1876a71e3aad0fde583646881c514b1b52ed8b31a715b14eb050d07d5f6fe8",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_clay_gabled_contact.png",
+      "contact_origin": [
+        512.0,
+        217.0
+      ],
+      "contact_pixels_per_world": 364.4138695098533,
+      "contact_sha256": "3a8313ad3d08c56d227d3e1d8ea9793c1dfa7625e2f701f50474f29487fa002f",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 25.96588835832568,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.48,
+      "roof_half_extents": [
+        0.605,
+        0.565
+      ],
+      "author_palette_colors": [
+        "#8E6253",
+        "#BA7A56",
+        "#CC8968",
+        "#CE8A68",
+        "#CF8B69"
+      ]
+    },
+    {
+      "id": "art_clay_hipped",
+      "display_name": "陶土街巷 · 四坡住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_clay_hipped.svg",
+      "origin": [
+        1024.0,
+        1024.3194096592283
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1549,
+        "crop": [
+          0,
+          0,
+          2048,
+          1549
+        ]
+      },
+      "pixels_per_world": 1196.470690165697,
+      "model_bounds": {
+        "position": [
+          -0.61,
+          0.0,
+          -0.565
+        ],
+        "size": [
+          1.22,
+          0.875,
+          1.13
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "9cc78376e4875cb0ab69f78035d30282e3d7167fd4350ebc2fb147e6263551e9",
+      "era": 1,
+      "variant": "hipped",
+      "role": "hipped",
+      "art_direction": "clay",
+      "plot_span": 0.8,
+      "roof_style": "hipped",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_clay_hipped_shadow.png",
+      "shadow_origin": [
+        304.0,
+        149.0
+      ],
+      "shadow_pixels_per_world": 364.4138695098533,
+      "shadow_sha256": "2125aabafda5eca433c582019ca44802058561ae6216b28a96afb34da928e020",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_clay_hipped_contact.png",
+      "contact_origin": [
+        512.0,
+        217.0
+      ],
+      "contact_pixels_per_world": 364.4138695098533,
+      "contact_sha256": "3a8313ad3d08c56d227d3e1d8ea9793c1dfa7625e2f701f50474f29487fa002f",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 25.96588835832568,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.48,
+      "roof_half_extents": [
+        0.61,
+        0.565
+      ],
+      "author_palette_colors": [
+        "#C88665",
+        "#CA8765",
+        "#CC8967",
+        "#CD8A68"
+      ]
+    },
+    {
+      "id": "art_clay_commercial",
+      "display_name": "陶土街巷 · 商店",
+      "category": "commercial",
+      "texture": "资源/美术候选/建筑/SVG/art_clay_commercial.svg",
+      "origin": [
+        1060.273315491492,
+        1080.5053409017796
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1589,
+        "crop": [
+          0,
+          0,
+          2048,
+          1589
+        ]
+      },
+      "pixels_per_world": 1139.9603271179064,
+      "model_bounds": {
+        "position": [
+          -0.64,
+          0.0,
+          -0.55
+        ],
+        "size": [
+          1.28,
+          0.66,
+          1.21
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "6a453cc5c92d50debb3be694227fde3a5dbcbee9d6e9b9b2a2106858076fdf0f",
+      "era": 1,
+      "variant": "commercial",
+      "role": "commercial",
+      "art_direction": "clay",
+      "plot_span": 0.8,
+      "roof_style": "commercial",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_clay_commercial_shadow.png",
+      "shadow_origin": [
+        300.0,
+        148.0
+      ],
+      "shadow_pixels_per_world": 353.70142411341055,
+      "shadow_sha256": "73d1ef6ece764f766f2afaa60f5cd5f4d7cb87c5b0d60d23fd5e3ee60267e956",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_clay_commercial_contact.png",
+      "contact_origin": [
+        512.0,
+        226.0
+      ],
+      "contact_pixels_per_world": 353.70142411341055,
+      "contact_sha256": "fbf8092d64e576630a95bb04104971ca8b94ba310e267c515d9c4340deeacbe0",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8414570696119914,
+            -0.03181980515339462
+          ],
+          [
+            0.8414570696119914,
+            0.03181980515339462
+          ],
+          [
+            0.06363961030678925,
+            0.4207285348059957
+          ]
+        ],
+        "contact_reference_world_pixels": 24.748737341529164,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#8E6253",
+        "#BA7A56",
+        "#CB8866",
+        "#CF8B69"
+      ]
+    },
+    {
+      "id": "art_clay_civic",
+      "display_name": "陶土街巷 · 文化馆",
+      "category": "civic",
+      "texture": "资源/美术候选/建筑/SVG/art_clay_civic.svg",
+      "origin": [
+        1024.0,
+        1059.726506960239
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1581,
+        "crop": [
+          0,
+          0,
+          2048,
+          1581
+        ]
+      },
+      "pixels_per_world": 748.2629461594996,
+      "model_bounds": {
+        "position": [
+          -1.02,
+          0.0,
+          -0.88
+        ],
+        "size": [
+          2.04,
+          1.13,
+          1.76
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "e36fbed93f80963c0295cb9c62162456b313a49827a1748390e6241327b70d24",
+      "era": 1,
+      "variant": "civic",
+      "role": "civic",
+      "art_direction": "clay",
+      "plot_span": 1.0,
+      "roof_style": "civic",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_clay_civic_shadow.png",
+      "shadow_origin": [
+        328.0,
+        162.0
+      ],
+      "shadow_pixels_per_world": 241.9351507181467,
+      "shadow_sha256": "8f71333f5ca0aea5eaff92799b4d7b6404943ab53d2ed0de697442e2bc7eb64b",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_clay_civic_contact.png",
+      "contact_origin": [
+        512.0,
+        199.0
+      ],
+      "contact_pixels_per_world": 241.9351507181467,
+      "contact_sha256": "09b3e87014d16094809ce95ea65c69d5d894df63935ff514e74afef17ed9b82f",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -1.34350288425444,
+            -0.049497474683058325
+          ],
+          [
+            1.34350288425444,
+            0.049497474683058325
+          ],
+          [
+            0.09899494936611665,
+            0.67175144212722
+          ]
+        ],
+        "contact_reference_world_pixels": 19.41077438551307,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#C98664",
+        "#CA8766",
+        "#CB8866",
+        "#CE8A68"
+      ]
+    },
+    {
+      "id": "art_garden_terrace",
+      "display_name": "清透园林 · 平顶住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_garden_terrace.svg",
+      "origin": [
+        1024.0000000000002,
+        1051.4070964413042
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1561,
+        "crop": [
+          0,
+          0,
+          2048,
+          1561
+        ]
+      },
+      "pixels_per_world": 1162.8445652819908,
+      "model_bounds": {
+        "position": [
+          -0.63,
+          0.0,
+          -0.58
+        ],
+        "size": [
+          1.26,
+          0.745,
+          1.16
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "8ea1472288b15c1b163ab9a00f5c9ad81ad5b12a2132a06f05e7abbf2d317a5c",
+      "era": 1,
+      "variant": "terrace",
+      "role": "terrace",
+      "art_direction": "garden",
+      "plot_span": 0.8,
+      "roof_style": "terrace",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_garden_terrace_shadow.png",
+      "shadow_origin": [
+        300.0,
+        147.0
+      ],
+      "shadow_pixels_per_world": 359.5666512402358,
+      "shadow_sha256": "237c82e1cec0b3a686930b31bebae0fcb4545ad8f528df18ba77f1076f079557",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_garden_terrace_contact.png",
+      "contact_origin": [
+        512.0,
+        221.0
+      ],
+      "contact_pixels_per_world": 359.5666512402358,
+      "contact_sha256": "3e82dcdd393cf2d1e86cd2c490a74f5da15999e9aec582b69cf29cd36315249d",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 25.141574442188357,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.445,
+      "roof_half_extents": [
+        0.63,
+        0.58
+      ],
+      "author_palette_colors": [
+        "#7E9298",
+        "#A1B2A8",
+        "#AEC6C1"
+      ]
+    },
+    {
+      "id": "art_garden_gabled",
+      "display_name": "清透园林 · 山墙住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_garden_gabled.svg",
+      "origin": [
+        1011.8129607389423,
+        1007.8521624022748
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1512,
+        "crop": [
+          0,
+          0,
+          2048,
+          1512
+        ]
+      },
+      "pixels_per_world": 1149.0050805441006,
+      "model_bounds": {
+        "position": [
+          -0.63,
+          0.0,
+          -0.58
+        ],
+        "size": [
+          1.29,
+          0.71,
+          1.162
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "f353c5ea8f4a6245417a7ffa83466031cc3aabad2a40c00e1bbef016186c67c9",
+      "era": 1,
+      "variant": "gabled",
+      "role": "gabled",
+      "art_direction": "garden",
+      "plot_span": 0.8,
+      "roof_style": "gabled",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_garden_gabled_shadow.png",
+      "shadow_origin": [
+        297.0,
+        146.0
+      ],
+      "shadow_pixels_per_world": 356.0150248945203,
+      "shadow_sha256": "2ec91834becd81675e5aa7cde6e749701b8055d5f0699e178ab9b0995a40ab57",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_garden_gabled_contact.png",
+      "contact_origin": [
+        512.0,
+        224.0
+      ],
+      "contact_pixels_per_world": 356.0150248945203,
+      "contact_sha256": "a4cefe1eca7cb3eada4682243abe0955cb76b538f15b0a51797fb8d3d3f9a07b",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 24.556886664463047,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.49,
+      "roof_half_extents": [
+        0.63,
+        0.58
+      ],
+      "author_palette_colors": [
+        "#ACC4BF",
+        "#ADC5C0"
+      ]
+    },
+    {
+      "id": "art_garden_hipped",
+      "display_name": "清透园林 · 四坡住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_garden_hipped.svg",
+      "origin": [
+        1024.0000000000002,
+        1019.9914948175943
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1530,
+        "crop": [
+          0,
+          0,
+          2048,
+          1530
+        ]
+      },
+      "pixels_per_world": 1162.8445652819908,
+      "model_bounds": {
+        "position": [
+          -0.63,
+          0.0,
+          -0.58
+        ],
+        "size": [
+          1.26,
+          0.6699999999999999,
+          1.16
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "31322b504f42867d3230416d7324e67731d01cff61620724e22238d0e6ba3d9f",
+      "era": 1,
+      "variant": "hipped",
+      "role": "hipped",
+      "art_direction": "garden",
+      "plot_span": 0.8,
+      "roof_style": "hipped",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_garden_hipped_shadow.png",
+      "shadow_origin": [
+        300.0,
+        147.0
+      ],
+      "shadow_pixels_per_world": 359.5666512402358,
+      "shadow_sha256": "5757526df0bcd2384a5ad0d66764bd9ae60128837f0df4fb45b9fe6a8a495037",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_garden_hipped_contact.png",
+      "contact_origin": [
+        512.0,
+        221.0
+      ],
+      "contact_pixels_per_world": 359.5666512402358,
+      "contact_sha256": "3e82dcdd393cf2d1e86cd2c490a74f5da15999e9aec582b69cf29cd36315249d",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8273149339882605,
+            -0.017677669529663664
+          ],
+          [
+            0.8273149339882605,
+            0.017677669529663664
+          ],
+          [
+            0.03535533905932733,
+            0.41365746699413025
+          ]
+        ],
+        "contact_reference_world_pixels": 25.141574442188357,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.49,
+      "roof_half_extents": [
+        0.63,
+        0.58
+      ],
+      "author_palette_colors": [
+        "#A9C0BB",
+        "#ABC2BC",
+        "#ADC5C0"
+      ]
+    },
+    {
+      "id": "art_garden_commercial",
+      "display_name": "清透园林 · 商店",
+      "category": "commercial",
+      "texture": "资源/美术候选/建筑/SVG/art_garden_commercial.svg",
+      "origin": [
+        1043.9166714620214,
+        1033.2531117584554
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1537,
+        "crop": [
+          0,
+          0,
+          2048,
+          1537
+        ]
+      },
+      "pixels_per_world": 1126.6570759568049,
+      "model_bounds": {
+        "position": [
+          -0.64,
+          0.0,
+          -0.585
+        ],
+        "size": [
+          1.28,
+          0.6699999999999999,
+          1.275
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "cd9dfd66a1c4312b7f0c771b91b6ca57ea016da92846e051f85a317903889cc7",
+      "era": 1,
+      "variant": "commercial",
+      "role": "commercial",
+      "art_direction": "garden",
+      "plot_span": 0.8,
+      "roof_style": "commercial",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_garden_commercial_shadow.png",
+      "shadow_origin": [
+        303.0,
+        148.0
+      ],
+      "shadow_pixels_per_world": 352.83963853429674,
+      "shadow_sha256": "99125f89d2563ad355eac0665eb9282fdab7a17ef8dabea4159a5d24a3709c39",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_garden_commercial_contact.png",
+      "contact_origin": [
+        512.0,
+        222.0
+      ],
+      "contact_pixels_per_world": 352.83963853429674,
+      "contact_sha256": "dea24635c580c536f0138e97b98fc0244c43faa00b8aaaa0d3abe8c225cd0958",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8449926035179242,
+            -0.022980970388562814
+          ],
+          [
+            0.8449926035179242,
+            0.022980970388562814
+          ],
+          [
+            0.04596194077712563,
+            0.4224963017589621
+          ]
+        ],
+        "contact_reference_world_pixels": 24.748737341529164,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#7E9298",
+        "#A1B2A8",
+        "#AEC6C1"
+      ]
+    },
+    {
+      "id": "art_garden_civic",
+      "display_name": "清透园林 · 文化馆",
+      "category": "civic",
+      "texture": "资源/美术候选/建筑/SVG/art_garden_civic.svg",
+      "origin": [
+        1024.0,
+        1102.8827567373446
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1622,
+        "crop": [
+          0,
+          0,
+          2048,
+          1622
+        ]
+      },
+      "pixels_per_world": 744.4165386105254,
+      "model_bounds": {
+        "position": [
+          -1.025,
+          0.0,
+          -0.885
+        ],
+        "size": [
+          2.05,
+          1.045,
+          1.77
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "52e7443b5025e9358bc98a7f1d51176fa7b1ba12080d73bf57e0437cbad5df32",
+      "era": 1,
+      "variant": "civic",
+      "role": "civic",
+      "art_direction": "garden",
+      "plot_span": 1.0,
+      "roof_style": "civic",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_garden_civic_shadow.png",
+      "shadow_origin": [
+        327.0,
+        162.0
+      ],
+      "shadow_pixels_per_world": 241.50286635116967,
+      "shadow_sha256": "d5f2dc4895a93dfd623e7ae373c38da0a988b461ed385507cefa50cfc8555161",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_garden_civic_contact.png",
+      "contact_origin": [
+        512.0,
+        200.0
+      ],
+      "contact_pixels_per_world": 241.50286635116967,
+      "contact_sha256": "529f062bd54f09a604b565c66e8023255b7e86ea6ad3410983611043439ad5f1",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -1.34350288425444,
+            -0.049497474683058325
+          ],
+          [
+            1.34350288425444,
+            0.049497474683058325
+          ],
+          [
+            0.09899494936611665,
+            0.67175144212722
+          ]
+        ],
+        "contact_reference_world_pixels": 19.316087681193494,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#7E9298",
+        "#A1B2A8",
+        "#AEC6C1"
+      ]
+    },
+    {
+      "id": "art_paper_terrace",
+      "display_name": "纸上城镇 · 平顶住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_paper_terrace.svg",
+      "origin": [
+        1024.0000000000002,
+        1420.8878644695703
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1945,
+        "crop": [
+          0,
+          0,
+          2048,
+          1945
+        ]
+      },
+      "pixels_per_world": 1298.379661759991,
+      "model_bounds": {
+        "position": [
+          -0.56,
+          0.0,
+          -0.52
+        ],
+        "size": [
+          1.12,
+          0.93,
+          1.04
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "4e17211308f65c1f685e6be0b5a6c2c0997ddaad007cf88088eb1ff9e007c403",
+      "era": 1,
+      "variant": "terrace",
+      "role": "terrace",
+      "art_direction": "paper",
+      "plot_span": 0.8,
+      "roof_style": "terrace",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_paper_terrace_shadow.png",
+      "shadow_origin": [
+        304.0,
+        149.0
+      ],
+      "shadow_pixels_per_world": 397.8446944697937,
+      "shadow_sha256": "a9693b3ff36a00ab889401814e7fad02bf38deaba594fef0419cf7ed677a7927",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_paper_terrace_contact.png",
+      "contact_origin": [
+        512.0,
+        216.0
+      ],
+      "contact_pixels_per_world": 397.8446944697937,
+      "contact_sha256": "be68474123c037bdd64468642c3e9bd51365849fb54e7701ec299cb16a6ea68b",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.7566042558696059,
+            -0.010606601717798222
+          ],
+          [
+            0.7566042558696059,
+            0.010606601717798222
+          ],
+          [
+            0.021213203435596444,
+            0.37830212793480295
+          ]
+        ],
+        "contact_reference_world_pixels": 28.2842712474619,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.58,
+      "roof_half_extents": [
+        0.56,
+        0.52
+      ],
+      "author_palette_colors": [
+        "#8E8683",
+        "#B5A38E",
+        "#C6B6A5"
+      ]
+    },
+    {
+      "id": "art_paper_gabled",
+      "display_name": "纸上城镇 · 山墙住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_paper_gabled.svg",
+      "origin": [
+        1041.5611117507574,
+        1531.5857053270256
+      ],
+      "image_bounds": {
+        "width": 2042,
+        "height": 2048,
+        "crop": [
+          0,
+          0,
+          2042,
+          2048
+        ]
+      },
+      "pixels_per_world": 1280.4650878421778,
+      "model_bounds": {
+        "position": [
+          -0.565,
+          0.0,
+          -0.52
+        ],
+        "size": [
+          1.13,
+          1.1400000000000001,
+          1.07
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "572ad6f77c742a6a1988e06b6c8a38f505a03b0da518f1940c7410a15d67ff10",
+      "era": 1,
+      "variant": "gabled",
+      "role": "gabled",
+      "art_direction": "paper",
+      "plot_span": 0.8,
+      "roof_style": "gabled",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_paper_gabled_shadow.png",
+      "shadow_origin": [
+        302.0,
+        148.0
+      ],
+      "shadow_pixels_per_world": 396.38624820725727,
+      "shadow_sha256": "8d4e714cb7ab076248a1accb8574e9686e705c93e23df1802002210cffc67940",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_paper_gabled_contact.png",
+      "contact_origin": [
+        512.0,
+        217.0
+      ],
+      "contact_pixels_per_world": 396.38624820725727,
+      "contact_sha256": "2aa6a63598a0e1392a75240de69be878c48969e5c832e61a41054f4e7b774f16",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.7566042558696059,
+            -0.010606601717798222
+          ],
+          [
+            0.7566042558696059,
+            0.010606601717798222
+          ],
+          [
+            0.021213203435596444,
+            0.37830212793480295
+          ]
+        ],
+        "contact_reference_world_pixels": 28.033967962086138,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.58,
+      "roof_half_extents": [
+        0.55,
+        0.52
+      ],
+      "author_palette_colors": [
+        "#968C85",
+        "#B7A99B"
+      ]
+    },
+    {
+      "id": "art_paper_hipped",
+      "display_name": "纸上城镇 · 四坡住宅",
+      "category": "residential",
+      "texture": "资源/美术候选/建筑/SVG/art_paper_hipped.svg",
+      "origin": [
+        1024.0,
+        1399.3758708516223
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1928,
+        "crop": [
+          0,
+          0,
+          2048,
+          1928
+        ]
+      },
+      "pixels_per_world": 1310.1259266567156,
+      "model_bounds": {
+        "position": [
+          -0.55,
+          0.0,
+          -0.52
+        ],
+        "size": [
+          1.1,
+          1.1800000000000002,
+          1.04
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "b3f5235ca3c9a118dd96563430f70b76be72fec65d1ced5bfb28ac875832e5e3",
+      "era": 1,
+      "variant": "hipped",
+      "role": "hipped",
+      "art_direction": "paper",
+      "plot_span": 0.8,
+      "roof_style": "hipped",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_paper_hipped_shadow.png",
+      "shadow_origin": [
+        306.0,
+        150.0
+      ],
+      "shadow_pixels_per_world": 400.79402253989707,
+      "shadow_sha256": "de240c8e99e859f1f3bcd34d1c048602e6c47f56f074701a5ff91d43cd6ea739",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_paper_hipped_contact.png",
+      "contact_origin": [
+        512.0,
+        214.0
+      ],
+      "contact_pixels_per_world": 400.79402253989707,
+      "contact_sha256": "fe8bed6055b5090d64754c044476c3f659aed5833dfb683299c58976f975ef87",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.7566042558696059,
+            -0.010606601717798222
+          ],
+          [
+            0.7566042558696059,
+            0.010606601717798222
+          ],
+          [
+            0.021213203435596444,
+            0.37830212793480295
+          ]
+        ],
+        "contact_reference_world_pixels": 28.79853072468848,
+        "stage": "UI-006"
+      },
+      "roof_eave_y": 0.58,
+      "roof_half_extents": [
+        0.55,
+        0.52
+      ],
+      "author_palette_colors": [
+        "#968C85",
+        "#B3A18D",
+        "#B7A99B",
+        "#BFAE9C"
+      ]
+    },
+    {
+      "id": "art_paper_commercial",
+      "display_name": "纸上城镇 · 商店",
+      "category": "commercial",
+      "texture": "资源/美术候选/建筑/SVG/art_paper_commercial.svg",
+      "origin": [
+        1048.3208275248599,
+        1470.1472804005155
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1986,
+        "crop": [
+          0,
+          0,
+          2048,
+          1986
+        ]
+      },
+      "pixels_per_world": 1250.7216048652235,
+      "model_bounds": {
+        "position": [
+          -0.565,
+          0.0,
+          -0.535
+        ],
+        "size": [
+          1.13,
+          1.1099999999999999,
+          1.185
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "a52c70e2b93346673b0469ca8ae5a7e06e468410ab9117eeda3f5e62615ef864",
+      "era": 1,
+      "variant": "commercial",
+      "role": "commercial",
+      "art_direction": "paper",
+      "plot_span": 0.8,
+      "roof_style": "commercial",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_paper_commercial_shadow.png",
+      "shadow_origin": [
+        299.0,
+        147.0
+      ],
+      "shadow_pixels_per_world": 383.4085645023888,
+      "shadow_sha256": "1a9593e43249f0449436c3cf031b4d294e1f2f5033445480e9f0d579d4e82cac",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_paper_commercial_contact.png",
+      "contact_origin": [
+        512.0,
+        220.0
+      ],
+      "contact_pixels_per_world": 383.4085645023888,
+      "contact_sha256": "a6c4f814a6ca3355cc442be615182209ee46ae0364d8825276a46090f2329b8d",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.7742819253992694,
+            -0.012374368670764552
+          ],
+          [
+            0.7742819253992694,
+            0.012374368670764552
+          ],
+          [
+            0.024748737341529103,
+            0.3871409626996347
+          ]
+        ],
+        "contact_reference_world_pixels": 26.732813330934455,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#988D86",
+        "#BBAC9D",
+        "#C3B3A2"
+      ]
+    },
+    {
+      "id": "art_paper_civic",
+      "display_name": "纸上城镇 · 文化馆",
+      "category": "civic",
+      "texture": "资源/美术候选/建筑/SVG/art_paper_civic.svg",
+      "origin": [
+        1026.6184499040787,
+        1039.153593734727
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1555,
+        "crop": [
+          0,
+          0,
+          2048,
+          1555
+        ]
+      },
+      "pixels_per_world": 740.6094733485734,
+      "model_bounds": {
+        "position": [
+          -1.045,
+          0.0,
+          -0.885
+        ],
+        "size": [
+          2.09,
+          1.23,
+          1.774
+        ]
+      },
+      "source": "tools/build_art_direction_buildings.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "art_direction_review_only; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "d7be9907ce44c5472243a211959673102cdc7f267b7bbbf11ef4f01dc241c5a3",
+      "era": 1,
+      "variant": "civic",
+      "role": "civic",
+      "art_direction": "paper",
+      "plot_span": 1.0,
+      "roof_style": "civic",
+      "shadow_texture": "资源/美术候选/建筑/阴影/art_paper_civic_shadow.png",
+      "shadow_origin": [
+        325.0,
+        161.0
+      ],
+      "shadow_pixels_per_world": 239.789067181321,
+      "shadow_sha256": "e3c202ba6790bf61e98fe40f6a5c48fd1c1469fff706809f3f0c62d9ee485940",
+      "contact_texture": "资源/美术候选/建筑/阴影/art_paper_civic_contact.png",
+      "contact_origin": [
+        512.0,
+        202.0
+      ],
+      "contact_pixels_per_world": 239.789067181321,
+      "contact_sha256": "f5ae1a0d249e4a8cb73b077d56e417f69b8bdd41770b1df32cbd6e1ff756f6a3",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -1.34350288425444,
+            -0.049497474683058325
+          ],
+          [
+            1.34350288425444,
+            0.049497474683058325
+          ],
+          [
+            0.09899494936611665,
+            0.67175144212722
+          ]
+        ],
+        "contact_reference_world_pixels": 18.946401792558213,
+        "stage": "UI-006"
+      },
+      "author_palette_colors": [
+        "#C2B2A2",
+        "#C4B4A3"
+      ]
+    }
+  ],
+  "human_art": "PENDING",
+  "purpose": "Same-city opt-in art direction study; presentation only"
+}

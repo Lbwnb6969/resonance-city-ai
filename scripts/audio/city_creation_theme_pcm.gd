@@ -16,6 +16,30 @@ static func render(samples: PackedFloat32Array, key: String, chords: Array,
 	for bar in range(chords.size()):
 		var start := float(bar) * BAR_SECONDS
 		match key:
+			"modern_symphony":
+				for degree in range(3):_emit(samples,events,add_note,start,3.55,int(chords[bar][degree])+12,.013,"warm_pad")
+				_emit(samples,events,add_note,start+.12,1.65,int(melody[bar*2]),.053,"felt_piano")
+				_emit(samples,events,add_note,start+1.62,1.16,int(melody[bar*2+1]),.042,"felt_piano")
+				_emit(samples,events,add_note,start+2.25,.95,int(chords[bar][2])+24,.032,"vibraphone")
+				_emit(samples,events,add_note,start+.38,2.40,int(chords[bar][0]),.015,"strings")
+			"clockwork_waltz":
+				_emit(samples,events,add_note,start+.04,1.15,int(chords[bar][0]),.044,"piano")
+				for beat in range(1,3):
+					_emit(samples,events,add_note,start+float(beat),.72,int(chords[bar][beat])+12,.031,"piano")
+					_emit(samples,events,add_note,start+float(beat)+.04,.64,int(chords[bar][0])+12,.016,"accordion")
+				_emit(samples,events,add_note,start+.12,1.55,int(melody[bar*2])-12,.040,"horn")
+				_emit(samples,events,add_note,start+1.78,.88,int(melody[bar*2+1]),.036,"clarinet")
+				_emit(samples,events,add_note,start+2.52,.39,int(chords[bar][2])+24,.024,"celesta")
+			"renaissance_fugue":
+				# The keyboard introduces the subject; strings imitate it a bar
+				# later, with the current chord beneath the answer.
+				for beat in range(4):
+					var note := int(chords[bar][[0,1,2,1][beat]])+24
+					_emit(samples,events,add_note,start+.08+beat*BEAT_SECONDS,.52,note,.065,"harpsichord")
+				if bar>0:
+					_emit(samples,events,add_note,start+.30,1.25,int(melody[(bar-1)*2]),.043,"strings")
+					_emit(samples,events,add_note,start+1.80,1.05,int(melody[(bar-1)*2+1]),.035,"strings")
+				_emit(samples,events,add_note,start+.06,2.65,int(chords[bar][0]),.022,"strings")
 			"wood_market":
 				# A short ascending reed answer, then two separated chord jumps.
 				# The latter half-bar acts as a pickup into the next reed phrase.

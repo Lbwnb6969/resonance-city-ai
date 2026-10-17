@@ -200,11 +200,13 @@ func _sample(buffer: PackedFloat32Array,at: Vector2) -> float:
 	var d: float = buffer[(z+1)*COLUMNS+x]
 	return a+(b-a)*fx+(c-b)*fz if fz<=fx else a+(c-d)*fx+(d-a)*fz
 
-func region_signature(bounds: Rect2) -> int:
+func region_signature(bounds: Rect2, include_raw: bool=false) -> int:
 	var low := ((bounds.position-LAND_RECT.position)/STEP).floor().max(Vector2.ZERO)
 	var high := ((bounds.end-LAND_RECT.position)/STEP).ceil().min(Vector2(COLUMNS-1,ROWS-1))
 	var rows: Array = []
-	for z in range(int(low.y),int(high.y)+1): rows.append(vertices.slice(z*COLUMNS+int(low.x),z*COLUMNS+int(high.x)+1))
+	for z in range(int(low.y),int(high.y)+1):
+		rows.append(vertices.slice(z*COLUMNS+int(low.x),z*COLUMNS+int(high.x)+1))
+		if include_raw: rows.append(raw_vertices.slice(z*COLUMNS+int(low.x),z*COLUMNS+int(high.x)+1))
 	return hash(rows)
 
 func _stroke_bounds(row: Dictionary) -> Rect2:

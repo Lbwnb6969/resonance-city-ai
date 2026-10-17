@@ -1,5 +1,5 @@
 extends RefCounted
-## This game's .14m treads/.24 grade are v2 design values, not recovered TG
+## This game's .12m treads/.22 grade follow Phase 2 design, not recovered TG
 ## constants. TG's sampled support/tangent approach informs the layout only.
 
 static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Array) -> Dictionary:
@@ -43,10 +43,10 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 			var q := b+n1*float(side)
 			if renderer._inside_other_road((p+q)*0.5,str(road.id)): continue
 			# Cap and body are a low continuous stone parapet, not picket posts.
-			var center := Vector3((p.x+q.x)*0.5,y+0.13,(p.y+q.y)*0.5)
+			var center := Vector3((p.x+q.x)*0.5,y+0.16,(p.y+q.y)*0.5)
 			var yaw := atan2(q.x-p.x,q.y-p.y)
-			rails.append([Vector3(0.12,0.26,p.distance_to(q)+0.012),center,Color("b6b199"),Vector3(0,yaw,0)])
-			rails.append([Vector3(0.16,0.055,p.distance_to(q)+0.012),center+Vector3.UP*0.13,Color("d5cbb1"),Vector3(0,yaw,0)])
+			rails.append([Vector3(0.12,0.32,p.distance_to(q)+0.012),center,Color("b6b199"),Vector3(0,yaw,0)])
+			rails.append([Vector3(0.16,0.055,p.distance_to(q)+0.012),center+Vector3.UP*0.16,Color("d5cbb1"),Vector3(0,yaw,0)])
 	return {"cuts":cuts,"faces":faces,"rails":rails,"count":count}
 
 static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -> void:

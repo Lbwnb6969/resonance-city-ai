@@ -120,7 +120,7 @@ func _run()->void:
 	demo.home_camera();await _view(prefix,"03_完整画布全景",demo.focus,demo.zoom,demo.pitch,not baseline or profile_baseline)
 	demo._toggle_light();await _view(prefix,"04_夕光初城中景",Vector3(-3,.7,0),25,.72,false)
 	_check(demo.state.snapshot()==snapshot,"fixed-view lighting changes leave complete authored city unchanged")
-	_check(_identity()==identity and demo.music.get_child_count()==13 and demo.ambience.players.size()==4 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"fixed wind captures preserve thirteen music Players four ambient voices advancing transport and personal city")
+	_check(_identity()==identity and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.ambience.players.size()==2 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"fixed wind captures preserve fixed music Players two ambient voices advancing transport and personal city")
 	facts.wind_time=7.5;facts.baseline=baseline
 	var result:Dictionary={"ok":failures.is_empty(),"checks":checks,"count":checks.size(),"failures":failures,"facts":facts}
 	FileAccess.open(OUT+"/"+prefix+".json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("MEADOW_CARPET ",JSON.stringify(result))

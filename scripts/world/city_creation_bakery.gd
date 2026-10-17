@@ -181,11 +181,11 @@ func _walk(worker: Dictionary, delta: float) -> void:
 	var before := Vector2(node.position.x,node.position.z)
 	var target: Vector3 = route[index]
 	var direction := target - node.position
-	if direction.length() <= delta * 0.83:
+	if direction.length() <= delta * 0.83 * life.state.signature_bonuses().walking:
 		node.position = target
 		worker.index = index + 1
 	else:
-		node.position += direction.normalized() * delta * 0.83
+		node.position += direction.normalized() * delta * 0.83 * life.state.signature_bonuses().walking
 		node.rotation.y = atan2(direction.x,direction.z)
 	node.position.y = life.state.street_height(Vector2(node.position.x,node.position.z)) + 0.10
 	life.record_travel("baker/"+str(worker.home_id),before,Vector2(node.position.x,node.position.z))

@@ -22,8 +22,8 @@ func _run() -> void:
 	var started := Time.get_ticks_usec()
 	var bank: Dictionary = music._render_bank()
 	var synthesis_ms := float(Time.get_ticks_usec()-started)/1000.0
-	_check(bank.streams.size()==9 and Music.STYLE_TRACKS.size()==5,"five real themes use nine fixed PCM streams")
-	_check(int(bank.report.pcm_bytes)==9525600,"fixed nine-loop PCM budget is 9,525,600 bytes")
+	_check(bank.streams.size()==Music.STEMS.size() and Music.STYLE_TRACKS.size()==5,"five real themes and era music use current fixed PCM stream pool")
+	_check(int(bank.report.pcm_bytes)==Music.FRAMES*2*Music.STEMS.size(),"fixed PCM budget matches actual twenty-four-second loop pool")
 	var actual := {}
 	var pcm := {}
 	for key: String in Music.STEMS:

@@ -259,7 +259,7 @@ func update(snapshot: Dictionary) -> void:
 		var glow := clampf(float(afterglow.get(id,0.0))/4.0,0.0,1.0)
 		var ready := festival_ready.has(id)
 		var material: ShaderMaterial = row.material
-		var night_glow := 0.42 if night and bool(row.inhabited) else 0.0
+		var night_glow := 0.35 if night else 0.0
 		material.set_shader_parameter("night_glow",night_glow)
 		material.set_shader_parameter("clock_sec",clock)
 		material.set_shader_parameter("beat_pulse",pulse)

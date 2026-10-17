@@ -128,11 +128,19 @@ func _add_bridge_run(road: Dictionary, run: Array[Vector2], ordinal: int, steppi
 			return
 		remaining-=distance
 
+func has_sites_between(from:Vector2,to:Vector2)->bool:
+	var low:=Vector2i((from.min(to)/BIN).floor());var high:=Vector2i((from.max(to)/BIN).floor())
+	for x in range(low.x,high.x+1):
+		for z in range(low.y,high.y+1):
+			if _bins.has(Vector2i(x,z)):return true
+	return false
+
 func observe(actor: String, from: Vector2, to: Vector2, clock_sec: float) -> Array[Dictionary]:
 	var events: Array[Dictionary] = []
 	if from.distance_squared_to(to)<0.0000000001: return events
 	var low := Vector2i(floori(minf(from.x,to.x)/BIN),floori(minf(from.y,to.y)/BIN))
 	var high := Vector2i(floori(maxf(from.x,to.x)/BIN),floori(maxf(from.y,to.y)/BIN))
+	if low==high and not _bins.has(low):return events
 	var candidates := {}
 	for x in range(low.x,high.x+1):
 		for z in range(low.y,high.y+1):

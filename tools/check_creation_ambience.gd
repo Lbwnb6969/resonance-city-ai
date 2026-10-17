@@ -56,7 +56,7 @@ func _record()->void:
 	for key:String in originals:demo.ambience.players[key].bus=originals[key]
 	AudioServer.remove_bus(bus)
 	wall.sort();draws.sort();facts.performance={"frames":120,"p95_ms":wall[113],"max_ms":wall[-1],"draw_median":draws[60]}
-	facts.recording={"seconds":seconds,"peak":peak,"saved":saved,"method":"Actual four production ambience Players routed through temporary recording bus; Music excluded, daylight then real evening toggle."}
+	facts.recording={"seconds":seconds,"peak":peak,"saved":saved,"method":"Actual two production ambience Players routed through temporary recording bus; Music excluded, daylight then real evening toggle."}
 	_check(saved and seconds>=9.5 and peak>0 and peak<.035 and AudioServer.bus_count==original_bus_count,"actual daylight-to-evening production ambience WAV records non-silence below mix bound and restores buses")
 func _run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
@@ -66,7 +66,7 @@ func _run()->void:
 	var deadline:=Time.get_ticks_msec()+25000
 	while (demo.music.audio_report.is_empty() or not demo.ambience.report().ready) and Time.get_ticks_msec()<deadline:await process_frame
 	var report:Dictionary=demo.ambience.report();var audio:Array=_music_ids();var ambience:Array=_ambience_ids();var clock:float=demo.music._playback_clock()
-	_check(DisplayServer.get_name()!="headless" and report.ready and report.player_count==4 and report.pcm.water_loaded,"actual GL readies four fixed ambience voices including recovered stream water")
+	_check(DisplayServer.get_name()!="headless" and report.ready and report.player_count==2 and report.pcm.water_loaded,"actual GL readies two fixed ambience voices including recovered stream water")
 	await _view(Vector2(3,0));var near:Dictionary=demo.ambience.report()
 	await _view(Vector2(-15,0));var far:Dictionary=demo.ambience.report()
 	_check(float(near.weights.water)>float(far.weights.water)+.2,"actual camera near river raises water influence over remote dry ground")
@@ -84,8 +84,8 @@ func _run()->void:
 	_check(removed_tree.visible_trees==before_tree.visible_trees,"real vegetation undo resolves visible tree ambience back to original count")
 	# Record beside an actual existing grove and water, not a special audio bank.
 	await _view(Vector2(11,7),18);var day:Dictionary=demo.ambience.report()
-	demo._toggle_light();await create_timer(.3).timeout;var evening:Dictionary=demo.ambience.report()
-	_check(evening.evening and float(day.weights.birds)>0 and float(evening.weights.birds)==0 and float(evening.weights.insects)>0,"actual light button handler swaps daytime birds for evening insects")
+	demo._toggle_light();demo._toggle_light();await create_timer(.3).timeout;var evening:Dictionary=demo.ambience.report()
+	_check(evening.evening and float(day.weights.birds)>0 and float(evening.weights.birds)==0 and float(evening.weights.insects)>0,"actual night light button handler swaps daytime birds for night insects")
 	demo._toggle_light();await create_timer(.3).timeout
 	var before_mute:Dictionary=demo.ambience.report();await _button(demo.music_button);var muted:Dictionary=demo.ambience.report()
 	_check(muted.muted and muted.gains.values().all(func(value):return float(value)==0),"actual unified mute button silences all ambience in the input frame")
@@ -97,12 +97,12 @@ func _run()->void:
 	var duck:Dictionary=demo.ambience.report()
 	_check(played and bool(duck.foreground) and float(duck.gains.water)<float(gains.water) and float(duck.gains.wind)<float(gains.wind),"real production house pluck drives Demo foreground duck of environmental gains")
 	await create_timer(.7).timeout
-	_check(float(report.maximum_gain_sum)<=.030001 and float(demo.ambience.report().theoretical_peak)<.035,"four ambience caps and measured source peaks keep conservative mix below environmental budget")
+	_check(float(report.maximum_gain_sum)<=.030001 and float(demo.ambience.report().theoretical_peak)<.035,"four component caps and measured source peaks keep conservative mix below environmental budget")
 	facts.views={"near":near,"far":far,"new_pond":wet,"before_tree":before_tree,"forest":forest,"day":day,"evening":evening}
 	await _record()
 	demo.ui_layer.visible=false;await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/昼夕自然声景.png")==OK,"actual environmental scene screenshot saved")
-	_check(_music_ids()==audio and _ambience_ids()==ambience and demo.music.get_child_count()==13 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"ambience preserves its four voices original nine music PCM thirteen Players transport and personal save")
+	_check(_music_ids()==audio and _ambience_ids()==ambience and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"ambience preserves its two voices existing music PCM fixed Players transport and personal save")
 	var result:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts};FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("AMBIENCE_CHECK ",JSON.stringify(result))
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false);demo.ambience.set_process(false)
 	for player:AudioStreamPlayer in demo.music._players.values():player.stop()

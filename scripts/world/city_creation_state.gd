@@ -8,6 +8,7 @@ const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
 const Passage := preload("res://scripts/world/city_creation_passage.gd")
 const RoadIntent := preload("res://scripts/world/city_creation_road_intent.gd")
 const RoadUpgrade := preload("res://scripts/world/city_creation_road_upgrade.gd")
+const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
 const TerrainProtection := preload("res://scripts/world/city_creation_terrain_protection.gd")
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
@@ -15,6 +16,15 @@ const RoadHeights := preload("res://scripts/world/city_creation_road_heights.gd"
 const Growth := preload("res://scripts/world/city_creation_growth.gd")
 const Courtyards := preload("res://scripts/world/city_creation_courtyards.gd")
 const Prosperity := preload("res://scripts/world/city_creation_prosperity.gd")
+const Eras := preload("res://scripts/world/city_creation_eras.gd")
+const ERA_SCHEMA := 13
+const QUALITY_SCHEMA := 14
+const CLOCKWORK_SCHEMA := 15
+const MODERN_SCHEMA := 16
+const Signatures := preload("res://scripts/world/city_creation_signatures.gd")
+const AmphitheaterPlan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
+const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
+const Quality := preload("res://scripts/world/city_creation_quality.gd")
 const SCHEMA := 1
 const TERRAIN_SCHEMA := 2
 const JOURNAL_SCHEMA := 3
@@ -26,7 +36,8 @@ const ROUND_TOWER_SCHEMA := 8
 const MUSICAL_LINK_SCHEMA := 9
 const TERRAIN_SMOOTH_SCHEMA := 10
 const TERRAIN_CONTOUR_SCHEMA := 11
-const ROAD_STYLES := ["path","promenade"]
+const ROAD_NETWORK_SCHEMA := 12
+const ROAD_STYLES := ["path","cobble","promenade","avenue","tram"]
 const HOUSE_STYLES := ["classic","timber","stone","round_tower"]
 const CELL_UNIT := 1.8
 const FLOOR_HEIGHT := 1.7
@@ -35,7 +46,7 @@ const Bounds := preload("res://scripts/world/city_creation_bounds.gd")
 const WORLD_RECT := Bounds.WORLD_RECT
 const RIVER_HALF_WIDTH := 2.3
 const MAX_PLANTS_PER_STROKE := 160
-const HOUSE_ROLES := ["residential", "bakery", "venue", "workshop", "garden_cafe"]
+const HOUSE_ROLES := ["residential", "bakery", "venue", "workshop", "garden_cafe", "atelier", "clockmaker", "symphony_hall"]
 const DISTRICT_STYLES := ["warm", "deep", "weave", "market", "sylvan"]
 const DISTRICT_STYLE_NAMES := {"warm": "暖声街坊", "deep": "低吟街坊", "weave": "织音街坊", "market": "市集长街", "sylvan": "林间静谧"}
 const DIRECTIONS := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
@@ -45,6 +56,8 @@ var _frontage_cache: Dictionary = {}
 var roads: Array[Dictionary] = []
 var _junctions := Junctions.new()
 var _ground_terrain := Terrain.new()
+var _street_marker_revision:=-1
+var _street_markers:Array[Dictionary]=[]
 var _ground_revision := -1
 var _raw_ground_revision := -1
 var _road_heights := RoadHeights.new()
@@ -64,6 +77,18 @@ var musical_links: Array[Dictionary] = []
 var revision := 0
 var dirty := false
 var life_progress := {"purchases":0,"gatherings":0,"concerts":0,"tea_parties":0,"tea_visits":0,"auto_concerts":0}
+var era_unlocks: Array[String] = ["pastoral"]
+var house_culture: Dictionary = {}
+var house_clockwork: Dictionary = {}
+var signature_unlocks: Array[String]=[]
+var district_answers: Array[Dictionary]=[]
+var era_answers: Array[Dictionary]=[]
+var _signature_bonuses_revision := -1
+var _signature_bonuses: Dictionary={}
+var building_quality: Dictionary = {}
+var house_concerts: Dictionary = {}
+var _quality_amenities: Dictionary = {}
+var _quality_geometry_revision := -1
 var growth_memories: Array[String] = []
 var cafe_credits: Dictionary = {}
 var cafe_progress: Dictionary = {}
@@ -93,11 +118,20 @@ var _redo: Array[Dictionary] = []
 func initialize() -> void:
 	_prosperity_revision = -1
 	_growth_geometry_revision = -1
+	_street_marker_revision=-1
 	_ground_revision = -1
 	_raw_ground_revision = -1
 	_road_heights = RoadHeights.new()
 	_courtyard_revision = -1
 	life_progress = {"purchases":0,"gatherings":0,"concerts":0,"tea_parties":0,"tea_visits":0,"auto_concerts":0}
+	era_unlocks.assign(["pastoral"])
+	house_culture.clear()
+	house_clockwork.clear()
+	signature_unlocks.clear();district_answers.clear();era_answers.clear();_signature_bonuses_revision=-1
+	building_quality.clear()
+	house_concerts.clear()
+	_quality_amenities.clear()
+	_quality_geometry_revision=-1
 	growth_memories.clear()
 	cafe_credits.clear()
 	cafe_progress.clear()
@@ -177,6 +211,7 @@ func validate_add_cell(house_id: String, x: int, z: int, level: int, kind: Strin
 	var index := _house_index(house_id)
 	if index < 0:
 		return _fail("房屋不存在")
+	if houses[index].has("signature"):return _fail("地标保留完整结构，可在用途中移动或整体回收")
 	if level < 0 or kind not in ["room", "terrace"]:
 		return _fail("无效的房屋模块")
 	var candidate: Dictionary = houses[index].duplicate(true)
@@ -301,6 +336,8 @@ func _issue_stroke_cells(cells: Array) -> void:
 
 
 func preview_remove_cell(house_id: String, cell_id: String) -> Dictionary:
+	var signature_index:=_house_index(house_id)
+	if signature_index>=0 and houses[signature_index].has("signature"):return preview_remove_house(house_id)
 	var index := _house_index(house_id)
 	if index < 0:
 		return _removal_failure("房屋不存在")
@@ -345,6 +382,8 @@ func preview_remove_house(house_id: String) -> Dictionary:
 
 
 func remove_cell(house_id: String, cell_id: String) -> Dictionary:
+	var index:=_house_index(house_id)
+	if index>=0 and houses[index].has("signature"):return remove_house(house_id)
 	return _apply_removal(house_id, preview_remove_cell(house_id, cell_id), "移除模块")
 
 
@@ -412,11 +451,16 @@ func set_house_role(house_id: String, role: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index < 0:
 		return _fail("房屋不存在")
+	if houses[index].has("signature") and role!=Signatures.ROLES[str(houses[index].signature)]:return _fail("地标保持专属用途")
 	if role not in HOUSE_ROLES:
 		return _fail("未知的建筑用途")
+	if role == "atelier" and not era_unlocks.has("renaissance"): return _fail("完成晨光初聚，开启文艺复兴书院")
+	if role=="clockmaker" and not era_unlocks.has("clockwork"):return _fail("28屋与两时代街坊开启钟表工坊")
+	if role=="symphony_hall" and not era_unlocks.has("modern_eco"):return _fail("50屋与三时代共鸣开启交响音乐厅")
 	if houses[index].role == role:
 		return {"ok": true, "message": "建筑用途未变"}
 	var before := snapshot()
+	return_craft(house_id)
 	houses[index].role = role
 	_prune_missing_journeys()
 	_commit(before, "更改建筑用途")
@@ -431,7 +475,8 @@ func refresh_growth() -> Array[String]:
 		if not row.ready: break
 		growth_memories.append(str(row.id))
 		earned.append(str(row.id))
-	if not earned.is_empty():
+	var new_era := Eras.refresh(self)
+	if not earned.is_empty() or new_era:
 		dirty = true
 		life_progress_dirty = true
 	return earned
@@ -460,6 +505,7 @@ func set_house_palette(house_id: String, palette: int) -> Dictionary:
 func set_house_style(house_id: String, style: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")
+	if houses[index].has("signature"):return _fail("地标保留专属建筑样式")
 	if style not in HOUSE_STYLES: return _fail("未知的建筑样式")
 	if houses[index].get("style","classic")==style: return {"ok":true,"message":"建筑样式未变"}
 	var before := snapshot()
@@ -574,6 +620,86 @@ func set_district_style(district_id: String, style: String) -> Dictionary:
 	return {"ok": true, "message": "街坊音乐风格已更改"}
 
 
+func house_era(house: Dictionary) -> String:
+	return Eras.for_house(self, house)
+
+func preview_signature(kind: String, position: Vector2, moving: String="") -> Dictionary:
+	return Signatures.preview(self,kind,position,moving)
+
+func place_signature(kind: String, position: Vector2, moving: String="") -> Dictionary:
+	return Signatures.place(self,kind,position,moving)
+
+func record_district_answer(from_id: String,to_id: String,from_era: String="",to_era: String="") -> bool:
+	if from_id==to_id or _district_index(from_id)<0 or _district_index(to_id)<0:return false
+	var pair:=_canonical_musical_link(from_id,to_id)
+	var changed:=false
+	if pair not in district_answers:district_answers.append(pair);changed=true
+	if from_era in era_unlocks and to_era in era_unlocks and from_era!=to_era:
+		var evidence:Dictionary=pair.duplicate()
+		evidence.from_era=from_era if pair.from==from_id else to_era
+		evidence.to_era=to_era if pair.to==to_id else from_era
+		if evidence not in era_answers:era_answers.append(evidence);changed=true
+	if not changed:return false
+	Eras.refresh(self);Signatures.refresh(self);_craft_changed();return true
+
+func signature_bonuses() -> Dictionary:
+	if _signature_bonuses_revision!=revision:
+		_signature_bonuses_revision=revision;_signature_bonuses={"walking":1.0,"bread_batch":0,"watermill_id":"","palace_id":"","depot_id":"","afterglow_seconds":0.0,"tram_speed":1.0}
+		for house: Dictionary in houses:
+			if house.get("signature","")=="bell_keep":_signature_bonuses.walking=1.15
+			if house.get("signature","")=="watermill":_signature_bonuses.bread_batch=1;_signature_bonuses.watermill_id=str(house.id)
+			if house.get("signature","")=="botanical_palace":_signature_bonuses.palace_id=str(house.id);_signature_bonuses.afterglow_seconds=180.0
+			if house.get("signature","")=="clockwork_depot":_signature_bonuses.depot_id=str(house.id);_signature_bonuses.tram_speed=1.2
+	return _signature_bonuses
+
+func concert_radius(venue_id: String) -> float:
+	var index:=_house_index(venue_id)
+	if index>=0 and houses[index].get("role","")=="symphony_hall":return 120.0
+	return 36.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0
+
+func level_tier(house_id: String) -> int:
+	return int(building_quality.get(house_id,{}).get("level_tier",1))
+
+func refresh_quality(connected: Dictionary, workplaces: Dictionary={}, first:int=0, count:int=-1) -> Array[Dictionary]:
+	if _quality_geometry_revision!=revision:
+		_quality_amenities.clear();_quality_geometry_revision=revision
+	if first==0:Signatures.refresh(self)
+	return Quality.refresh(self,connected,workplaces,first,count)
+
+func record_concert_participants(venue: String, participants: Array, relay: bool) -> void:
+	var seen := {venue:true}
+	for id: String in participants: seen[id]=true
+	for id: String in seen:
+		var row: Dictionary=house_concerts.get(id,{"concerts":0,"relays":0})
+		house_concerts[id]={"concerts":int(row.concerts)+1,"relays":int(row.relays)+(1 if relay else 0)}
+	_craft_changed()
+
+func culture_level(house_id: String) -> int:
+	return int(house_culture.get(house_id, 0))
+
+func set_district_era(district_id: String, era: String) -> Dictionary:
+	var index := _district_index(district_id)
+	if index < 0: return _fail("街坊不存在")
+	if era not in era_unlocks: return _fail("这个时代尚未开启")
+	if str(districts[index].get("era_theme", "pastoral")) == era: return {"ok":true,"message":"街坊风貌未变"}
+	var before := snapshot()
+	if era == "pastoral": districts[index].erase("era_theme")
+	else: districts[index].era_theme = era
+	_commit(before, "更改街坊时代风貌")
+	return {"ok":true,"message":"街坊时代风貌已更改"}
+
+func set_house_era(house_id: String, era: String) -> Dictionary:
+	var index := _house_index(house_id)
+	if index < 0: return _fail("房屋不存在")
+	if houses[index].has("signature"):return _fail("地标保留专属时代风貌")
+	if era != "district" and era not in era_unlocks: return _fail("这个时代尚未开启")
+	var before := snapshot()
+	if era == "district": houses[index].erase("era_theme")
+	else: houses[index].era_theme = era
+	if before == snapshot(): return {"ok":true,"message":"房屋风貌未变"}
+	_commit(before,"更改房屋时代风貌")
+	return {"ok":true,"message":"房屋风貌已更改"}
+
 func set_district_adaptive(district_id: String, adaptive: bool) -> Dictionary:
 	var index := _district_index(district_id)
 	if index < 0: return _fail("街坊不存在")
@@ -659,8 +785,9 @@ func _valid_district_name(value: Variant) -> bool:
 
 func _validate_district_fields(district: Dictionary) -> Dictionary:
 	for field in district:
-		if field not in ["id", "name", "style", "points", "width", "adaptive"]:
+		if field not in ["id", "name", "style", "points", "width", "adaptive", "era_theme"]:
 			return _fail("街坊存在未知字段")
+	if district.has("era_theme") and district.era_theme not in Eras.IDS: return _fail("街坊时代风貌无效")
 	if district.has("adaptive") and typeof(district.adaptive) != TYPE_BOOL:
 		return _fail("街坊配器方式无效")
 	if not _valid_district_name(district.get("name")) or district.get("style") not in DISTRICT_STYLES:
@@ -691,8 +818,13 @@ func water_clearance(position: Vector2) -> float:
 
 func street_height(position: Vector2) -> float:
 	if _ground_revision!=revision: prepare_ground_height()
+	if _street_marker_revision!=revision:_street_markers=Roundabouts.all(roads);_street_marker_revision=revision
+	for marker: Dictionary in _street_markers:
+		if position.distance_to(marker.center)<=marker.radius: return _ground_terrain.raw_height_at(marker.center)+.075
+	var road_y:float=_road_heights.height_at(position,NAN)
+	if not is_nan(road_y):return road_y
 	var legacy := 0.055+0.185*(1.0-smoothstep(-0.05,0.65,water_clearance(position)))
-	return _road_heights.height_at(position,maxf(_ground_terrain.height_at(position)+0.075,legacy))
+	return maxf(_ground_terrain.height_at(position)+0.075,legacy)
 
 func _prepare_raw_height() -> void:
 	if _raw_ground_revision==revision: return
@@ -842,6 +974,12 @@ func _water_conflicts(points: Array, width: float, house_rows: Array, road_rows:
 	for road in road_rows:
 		var found := false
 		var conflict_at := Vector2.ZERO
+		for marker: Dictionary in road.get("roundabouts",[]):
+			var center:=Vector2(marker.center[0],marker.center[1])
+			for index in range(maxi(1,points.size()-1)):
+				var a:=Vector2(points[index][0],points[index][1]);var b:=Vector2(points[mini(index+1,points.size()-1)][0],points[mini(index+1,points.size()-1)][1])
+				if Geometry2D.get_closest_point_to_segment(center,a,b).distance_to(center)<float(marker.radius)+width*.5:
+					found=true;conflict_at=center
 		for index in range(maxi(1, points.size() - 1)):
 			var a := Vector2(points[index][0], points[index][1])
 			var b := Vector2(points[mini(index + 1, points.size() - 1)][0], points[mini(index + 1, points.size() - 1)][1])
@@ -885,12 +1023,14 @@ func preview_road(points: Array[Vector2],style: String = "path") -> Dictionary:
 			if str(road.id)!=upgrade_id: continue
 			var original: Array[Vector2] = []
 			for row: Array in road.points: original.append(Vector2(float(row[0]),float(row[1])))
-			var check := _validate_road_site(road.points,1.75)
-			var no_op := str(road.get("style","path"))=="promenade"
-			check.merge({"points":original,"upgrade_road_id":upgrade_id,"style":"promenade","width":1.75,"upgraded":not no_op,"no_op":no_op,"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false})
-			if check.ok: check.message="这条石板宽街已经铺好" if no_op else "原位铺成石板宽街，沿街添上灯盏与花箱"
+			var wanted := style if style!="path" else ("promenade" if str(road.get("style","path")) in ["path","cobble"] else str(road.style))
+			var width := RoadUpgrade.width_for(wanted)
+			var check := _validate_road_site(road.points,width)
+			var no_op := str(road.get("style","path"))==wanted
+			check.merge({"points":original,"upgrade_road_id":upgrade_id,"style":wanted,"width":width,"upgraded":not no_op,"no_op":no_op,"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false})
+			if check.ok: check.message="这条%s已经铺好" % RoadUpgrade.NAMES[wanted] if no_op else "原位铺成%s，保留路口与门阶" % RoadUpgrade.NAMES[wanted]
 			return check
-	var width := 1.75 if style=="promenade" else 1.25
+	var width := RoadUpgrade.width_for(style)
 	var intent := RoadIntent.resolve(self,points,width)
 	var resolved: Array[Vector2] = intent.points
 	var encoded: Array = []
@@ -913,6 +1053,8 @@ func road_junctions() -> RefCounted:
 	return _junctions
 
 func road_at(at: Vector2) -> String:
+	for marker: Dictionary in Roundabouts.all(roads):
+		if at.distance_to(marker.center)<=marker.radius: return marker.owner_id
 	for index in range(roads.size()-1,-1,-1):
 		var road: Dictionary=roads[index]
 		for segment in range(1,road.points.size()):
@@ -921,6 +1063,29 @@ func road_at(at: Vector2) -> String:
 			if Geometry2D.get_closest_point_to_segment(at,a,b).distance_to(at)<=float(road.width)*0.5:
 				return str(road.id)
 	return road_junctions().at(at)
+
+func add_roundabout(point: Vector2) -> Dictionary:
+	var valid:=Roundabouts.preview(self,point)
+	if not valid.ok: return valid
+	var before:=snapshot()
+	for road: Dictionary in roads:
+		if str(road.id)!=str(valid.owner_id): continue
+		if not road.has("roundabouts"): road.roundabouts=[]
+		road.roundabouts.append({"center":[valid.center.x,valid.center.y],"radius":valid.radius})
+	_commit(before,"营建环岛广场")
+	return valid
+
+func remove_roundabout(point: Vector2) -> Dictionary:
+	for road: Dictionary in roads:
+		for i in range(road.get("roundabouts",[]).size()):
+			var row: Dictionary=road.roundabouts[i]
+			if point.distance_to(Vector2(row.center[0],row.center[1]))>float(row.radius): continue
+			var before:=snapshot()
+			road.roundabouts.remove_at(i)
+			if road.roundabouts.is_empty(): road.erase("roundabouts")
+			_commit(before,"还原普通路口")
+			return {"ok":true,"message":"环岛已还原为普通路口"}
+	return _fail("这里没有环岛")
 
 func remove_road(road_id: String) -> Dictionary:
 	for index in range(roads.size()):
@@ -943,12 +1108,12 @@ func add_road(points: Array[Vector2],style: String = "path") -> Dictionary:
 			if str(roads[index].id)!=str(valid.upgrade_road_id): continue
 			var before := snapshot()
 			var road: Dictionary = roads[index].duplicate(true)
-			road.style = "promenade"
-			road.width = 1.75
+			road.style = valid.style
+			road.width = valid.width
 			road.bridge = bool(valid.bridge)
 			roads[index] = road
-			_commit(before,"升级石板宽街")
-			return {"ok":true,"message":valid.message,"road_id":road.id,"upgrade_road_id":road.id,"width":1.75,"style":"promenade","upgraded":true,"no_op":false}
+			_commit(before,"升级"+str(RoadUpgrade.NAMES[valid.style]))
+			return {"ok":true,"message":valid.message,"road_id":road.id,"upgrade_road_id":road.id,"width":valid.width,"style":valid.style,"upgraded":true,"no_op":false}
 	var resolved: Array[Vector2] = valid.points
 	var encoded: Array = []
 	var length := 0.0
@@ -963,12 +1128,12 @@ func add_road(points: Array[Vector2],style: String = "path") -> Dictionary:
 	var before := snapshot()
 	var road_number := maxi(_next_road_id, int(_high_watermark.road) + 1)
 	var road := {"id": "r%d" % road_number, "points": encoded, "width":float(valid.width), "bridge": valid.bridge, "source": "player"}
-	if style=="promenade": road.style = style
+	if style!="path": road.style = style
 	roads.append(road)
 	_next_road_id = road_number + 1
 	_high_watermark.road = road_number
 	_commit(before, "铺设道路")
-	return {"ok": true, "message": "石板宽街已铺好" if style=="promenade" else "道路已铺好", "road_id": road.id,"upgrade_road_id":"","width":float(road.width),"style":style,"upgraded":false,"no_op":false}
+	return {"ok": true, "message": str(RoadUpgrade.NAMES[style])+"已铺好", "road_id": road.id,"upgrade_road_id":"","width":float(road.width),"style":style,"upgraded":false,"no_op":false}
 
 
 ## Plants are authored in continuous world coordinates. A complete brush
@@ -1128,7 +1293,7 @@ func record_life_event(kind: String) -> void:
 
 func bakery_capacity(house_id: String) -> int:
 	# Water improves the oven; existing shelves retain six base batches.
-	return (bakery_batch_size(house_id) - int(site_blessing(house_id).get("bonus_batch", 0))) * 6
+	return (bakery_batch_size(house_id) - int(site_blessing(house_id).get("bonus_batch", 0)) - int(signature_bonuses().bread_batch)) * 6
 
 
 func afterglow_remaining(house_id: String) -> float:
@@ -1158,7 +1323,7 @@ func site_blessing(house_id: String) -> Dictionary:
 
 
 func site_production_multiplier(house_id: String) -> float:
-	return float(site_blessing(house_id).get("speed_multiplier", 1.0))
+	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)
 
 
 func house_harmony(house_id: String) -> Dictionary:
@@ -1181,7 +1346,7 @@ func grant_resonance_afterglow(house_ids: Array, duration: float = 60.0) -> void
 	if duration <= 0.0: return
 	for house_id in house_ids:
 		if _house_index(str(house_id)) >= 0:
-			resonance_afterglow[str(house_id)] = maxf(afterglow_remaining(str(house_id)), clampf(duration, 0.0, 120.0))
+			resonance_afterglow[str(house_id)] = maxf(afterglow_remaining(str(house_id)), clampf(duration, 0.0, 180.0 if not signature_bonuses().palace_id.is_empty() else 120.0))
 	if not house_ids.is_empty():
 		life_progress_dirty = true
 		dirty = true
@@ -1212,7 +1377,7 @@ func bakery_batch_size(house_id: String) -> int:
 	for cell in houses[index].cells:
 		if cell.kind == "room":
 			rooms += 1
-	return maxi(1, rooms) + int(site_blessing(house_id).get("bonus_batch", 0))
+	return maxi(1, rooms) + int(site_blessing(house_id).get("bonus_batch", 0)) + int(signature_bonuses().bread_batch)
 
 
 func bakery_status(house_id: String) -> Dictionary:
@@ -1264,7 +1429,7 @@ func has_cafe_credit(home_id: String) -> bool:
 
 func set_auto_matinee(house_id: String, enabled: bool) -> Dictionary:
 	var index := _house_index(house_id)
-	if index < 0 or houses[index].role != "venue": return _fail("先选择演奏庭。")
+	if index < 0 or houses[index].role not in ["venue","symphony_hall"]: return _fail("先选择演奏庭。")
 	if houses[index].get("auto_matinee", false) == enabled: return {"ok":true,"message":""}
 	var before := snapshot()
 	houses[index].auto_matinee = enabled
@@ -1277,7 +1442,7 @@ func has_matinee_credit(home_id: String) -> bool:
 
 func reserve_matinee(venue_id: String, sponsors: Array) -> bool:
 	var index := _house_index(venue_id)
-	if not matinee_pending.is_empty() or matinee_cooldown > 0.0 or index < 0 or houses[index].role != "venue" or not houses[index].get("auto_matinee", false) or sponsors.size() < 2: return false
+	if not matinee_pending.is_empty() or matinee_cooldown > 0.0 or index < 0 or houses[index].role not in ["venue","symphony_hall"] or not houses[index].get("auto_matinee", false) or sponsors.size() < 2: return false
 	var seen := {}
 	for home in sponsors:
 		var home_index := _house_index(str(home))
@@ -1335,9 +1500,10 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 	var glow_ids := homes.duplicate()
 	glow_ids.append(cafe_id)
 	var extension := cafe_afterglow_extension(cafe_id)
+	if not signature_bonuses().palace_id.is_empty():grant_resonance_afterglow(glow_ids,180.0)
 	for id in glow_ids:
 		var remaining := afterglow_remaining(str(id))
-		if remaining > 0.0: resonance_afterglow[str(id)] = minf(120.0, remaining + extension)
+		if remaining > 0.0: resonance_afterglow[str(id)] = maxf(remaining,minf(180.0 if not signature_bonuses().palace_id.is_empty() else 120.0, remaining + extension))
 	life_progress_dirty = true
 	dirty = true
 	return true
@@ -1345,7 +1511,7 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 
 func workshop_batch_size(house_id: String) -> int:
 	var index := _house_index(house_id)
-	if index < 0 or houses[index].role != "workshop": return 0
+	if index < 0 or houses[index].role not in ["workshop", "atelier", "clockmaker"]: return 0
 	var rooms := 0
 	for cell in houses[index].cells:
 		if cell.kind == "room": rooms += 1
@@ -1359,7 +1525,7 @@ func workshop_capacity(house_id: String) -> int:
 func workshop_status(house_id: String) -> Dictionary:
 	var row: Dictionary = workshop_supply.get(house_id, {})
 	var index := _house_index(house_id)
-	return {"stock":int(row.get("stock", 0)), "produced":int(row.get("produced", 0)), "delivered":int(row.get("delivered", 0)), "transit":row.get("transit", {}).duplicate(), "batch_size":workshop_batch_size(house_id), "capacity":workshop_capacity(house_id), "open":index >= 0 and houses[index].role == "workshop" and houses[index].get("workshop_open", true)}
+	return {"stock":int(row.get("stock", 0)), "produced":int(row.get("produced", 0)), "delivered":int(row.get("delivered", 0)), "transit":row.get("transit", {}).duplicate(), "batch_size":workshop_batch_size(house_id), "capacity":workshop_capacity(house_id), "open":index >= 0 and houses[index].role in ["workshop", "atelier", "clockmaker"] and houses[index].get("workshop_open", true)}
 
 
 func improvement_level(house_id: String) -> int:
@@ -1372,7 +1538,7 @@ func festival_status(venue_id: String) -> Dictionary:
 	var delivered := int(row.get("delivered", 0))
 	var used := int(row.get("used", 0))
 	var index := _house_index(venue_id)
-	var active: bool = index >= 0 and houses[index].role == "venue"
+	var active: bool = index >= 0 and houses[index].role in ["venue","symphony_hall"]
 	return {"requested":requested,"delivered":delivered,"used":used,"pending":active and requested > delivered,"ready":active and delivered > used}
 
 
@@ -1387,9 +1553,9 @@ func festival_ready_venues() -> Array[String]:
 ## Only a completed performance consumes its prepared gift and issues demand.
 func record_concert_completion(venue_id: String) -> float:
 	var index := _house_index(venue_id)
-	if index < 0 or houses[index].role != "venue": return 60.0
+	if index < 0 or houses[index].role not in ["venue","symphony_hall"]: return 60.0
 	var status := festival_status(venue_id)
-	var duration := 90.0 if status.ready else 60.0
+	var duration := 180.0 if not signature_bonuses().palace_id.is_empty() else 90.0 if status.ready else 60.0
 	var used: int = status.used + (1 if status.ready else 0)
 	var requested: int = status.requested
 	if requested == used: requested += 1
@@ -1401,7 +1567,7 @@ func record_concert_completion(venue_id: String) -> float:
 
 func set_workshop_open(house_id: String, opened: bool) -> Dictionary:
 	var index := _house_index(house_id)
-	if index < 0 or houses[index].role != "workshop": return _fail("只有制琴工坊可以开关制作")
+	if index < 0 or houses[index].role not in ["workshop", "atelier", "clockmaker"]: return _fail("只有制琴工坊可以开关制作")
 	if houses[index].get("workshop_open", true) == opened: return {"ok":true,"message":""}
 	var before := snapshot()
 	houses[index].workshop_open = opened
@@ -1417,16 +1583,27 @@ func produce_craft(house_id: String, quantity: int) -> bool:
 	return true
 
 
+func mechanism_level(house_id: String)->int:
+	return int(house_clockwork.get(house_id,0))
+
+func _craft_kind_compatible(shop_id: String,kind: String)->bool:
+	var index:=_house_index(shop_id)
+	if index<0:return false
+	var role:=str(houses[index].role)
+	return kind=={"atelier":"art","clockmaker":"musicbox"}.get(role,"upgrade") or (role=="workshop" and kind=="festival")
+
 func _valid_craft_assignment(shop_id: String, home_id: String, target_id: String) -> bool:
 	var shop := _house_index(shop_id)
 	var home := _house_index(home_id)
 	var target := _house_index(target_id)
-	return shop >= 0 and home >= 0 and target >= 0 and shop_id != target_id and houses[shop].role == "workshop" and houses[home].role == "residential" and houses[target].role in ["residential", "venue"]
+	return shop >= 0 and home >= 0 and target >= 0 and shop_id != target_id and houses[shop].role in ["workshop", "atelier", "clockmaker"] and houses[home].role == "residential" and houses[target].role in ["residential", "venue", "symphony_hall"]
 
 
 func reserve_craft(shop_id: String, home_id: String, target_id: String, kind: String = "upgrade") -> bool:
 	if not _valid_craft_assignment(shop_id, home_id, target_id): return false
-	if kind not in ["upgrade", "festival"]: return false
+	if kind not in ["upgrade", "festival", "art", "musicbox"]: return false
+	if not _craft_kind_compatible(shop_id,kind): return false
+	if kind in ["art","musicbox"] and houses[_house_index(target_id)].role != "residential": return false
 	var status := workshop_status(shop_id)
 	if status.stock <= 0 or not status.transit.is_empty(): return false
 	var reserved := 0
@@ -1434,9 +1611,13 @@ func reserve_craft(shop_id: String, home_id: String, target_id: String, kind: St
 		if row.transit.get("target_id", "") == target_id and row.transit.get("kind", "upgrade") == kind: reserved += 1
 	if kind == "festival":
 		if not festival_status(target_id).pending or reserved > 0: return false
+	elif kind == "art":
+		if culture_level(target_id) + reserved >= 2: return false
+	elif kind=="musicbox":
+		if mechanism_level(target_id)+reserved>=2:return false
 	elif improvement_level(target_id) + reserved >= 3: return false
 	var transit := {"home_id":home_id,"target_id":target_id}
-	if kind == "festival": transit.kind = kind
+	if kind != "upgrade": transit.kind = kind
 	workshop_supply[shop_id] = {"stock":status.stock - 1,"produced":status.produced,"delivered":status.delivered,"transit":transit}
 	_craft_changed()
 	return true
@@ -1447,12 +1628,22 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 	var status := workshop_status(shop_id)
 	if status.transit.get("home_id", "") != home_id or status.transit.get("target_id", "") != target_id: return false
 	var kind: String = status.transit.get("kind", "upgrade")
+	if not _craft_kind_compatible(shop_id,kind): return false
+	if kind in ["art","musicbox"] and houses[_house_index(target_id)].role != "residential": return false
 	if kind == "festival":
 		if not festival_status(target_id).pending: return false
+	elif kind == "art":
+		if culture_level(target_id) >= 2: return false
+	elif kind=="musicbox":
+		if mechanism_level(target_id)>=2:return false
 	elif kind != "upgrade" or improvement_level(target_id) >= 3: return false
 	workshop_supply[shop_id] = {"stock":status.stock,"produced":status.produced,"delivered":status.delivered + 1,"transit":{}}
 	if kind == "festival":
 		venue_commissions[target_id].delivered = int(venue_commissions[target_id].delivered) + 1
+	elif kind == "art":
+		house_culture[target_id] = culture_level(target_id) + 1
+	elif kind=="musicbox":
+		house_clockwork[target_id]=mechanism_level(target_id)+1
 	else:
 		house_improvements[target_id] = improvement_level(target_id) + 1
 	_craft_changed()
@@ -1471,7 +1662,8 @@ func _normalize_craft_transit() -> void:
 	for shop_id in workshop_supply:
 		var transit: Dictionary = workshop_supply[shop_id].transit
 		if transit.is_empty(): continue
-		if not _valid_craft_assignment(shop_id, transit.home_id, transit.target_id) or (transit.get("kind", "upgrade") == "festival" and not festival_status(transit.target_id).pending):
+		var art := str(transit.get("kind","upgrade")) in ["art","musicbox"]
+		if not _valid_craft_assignment(shop_id, transit.home_id, transit.target_id) or (art and houses[_house_index(transit.target_id)].role!="residential") or not _craft_kind_compatible(shop_id,str(transit.get("kind","upgrade"))) or (transit.get("kind", "upgrade") == "festival" and not festival_status(transit.target_id).pending):
 			return_craft(shop_id)
 
 
@@ -1493,6 +1685,8 @@ func load_city(path: String = DEFAULT_PATH) -> Dictionary:
 func set_journey_checkpoint(data: Dictionary) -> Dictionary:
 	var check := _validate_journey_checkpoint(data)
 	if not check.ok: return check
+	var grand:Dictionary=GrandFestival.validate(self,{"schema":MODERN_SCHEMA,"houses":houses,"districts":districts,"era_unlocks":era_unlocks,"journey_checkpoint":data})
+	if not grand.ok:return grand
 	if journey_checkpoint != data:
 		journey_checkpoint = data.duplicate(true)
 		dirty = true
@@ -1520,7 +1714,8 @@ func _prune_missing_journeys() -> void:
 	var concert: Dictionary = journey_checkpoint.concert
 	var cancel_concert := false
 	if concert.get("phase", "idle") != "idle":
-		cancel_concert = existing.get(concert.get("venue_id", ""), "") != "venue"
+		cancel_concert = existing.get(concert.get("venue_id", ""), "") not in ["venue","symphony_hall"]
+		if concert.get("grand_festival",false) and not GrandFestival.validate(self,{"schema":MODERN_SCHEMA,"houses":houses,"districts":districts,"era_unlocks":era_unlocks,"journey_checkpoint":journey_checkpoint}).ok:cancel_concert=true
 		for home in concert.get("participants", []):
 			if not existing.has(home):
 				cancel_concert = true
@@ -1866,6 +2061,7 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 	if water_clearance(position) <= clearance:
 		return false
 	for house in houses:
+		if AmphitheaterPlan.occupies(AmphitheaterPlan.for_house(self,house),position,clearance):return false
 		for cell in house.cells:
 			if cell.level != 0:
 				continue
@@ -1931,6 +2127,7 @@ func _make_cell(x: int, z: int, level: int, kind: String) -> Dictionary:
 
 
 func _commit(before: Dictionary, label: String) -> void:
+	if journey_checkpoint.get("concert",{}).get("grand_festival",false):_prune_missing_journeys()
 	_prune_afterglow()
 	_normalize_craft_transit()
 	revision += 1
@@ -1995,6 +2192,7 @@ func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
 			continue
 		if _pair_overlaps(candidate, house):
 			return true
+		if AmphitheaterPlan.hits_house(AmphitheaterPlan.for_house(self,house),candidate) or AmphitheaterPlan.hits_house(AmphitheaterPlan.for_house(self,candidate),house):return true
 	return false
 
 
@@ -2011,8 +2209,11 @@ func _pair_overlaps(first: Dictionary, second: Dictionary) -> bool:
 
 
 func _apply_snapshot(data: Dictionary, preserve_issued_ids: bool = false) -> void:
+	_quality_geometry_revision=-1
+	_signature_bonuses_revision=-1
 	_prosperity_revision = -1
 	_growth_geometry_revision = -1
+	_street_marker_revision=-1
 	_ground_revision = -1
 	_raw_ground_revision = -1
 	_road_heights = RoadHeights.new()
@@ -2067,6 +2268,12 @@ func house_passages(house_id: String) -> Array[Dictionary]:
 
 func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
 	var scene_roads: Array = roads if road_rows == null else road_rows
+	for marker: Dictionary in Roundabouts.all(scene_roads):
+		for cell: Dictionary in house.cells:
+			if int(cell.level)!=0: continue
+			var at:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*CELL_UNIT
+			var offset: Vector2=(at-Vector2(marker.center)).abs()-Vector2.ONE*.9
+			if offset.max(Vector2.ZERO).length()<float(marker.radius)+.1: return _fail("请给环岛广场留出空间")
 	var scene_waters: Array = waters if water_rows == null else water_rows
 	for cell in house.cells:
 		var center := Vector2(float(house.origin[0]) + cell.x * CELL_UNIT, float(house.origin[1]) + cell.z * CELL_UNIT)
@@ -2085,6 +2292,7 @@ func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_ro
 			for road in scene_roads:
 				if Frontage.road_cell_conflict(house,cell,road.points,float(road.width)):
 					return _fail("这里需要给道路留出空间")
+	if house.get("signature","")=="floating_amphitheater" and AmphitheaterPlan.for_house(self,house,scene_waters).is_empty():return _fail("将剧场沿岸放置，让水上舞台伸入水面")
 	return {"ok": true, "message": ""}
 
 

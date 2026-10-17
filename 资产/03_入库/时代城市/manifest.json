@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "era1_residential_01",
+      "display_name": "庭院住宅",
+      "category": "residential",
+      "texture": "资源/时代城市/SVG/era1_residential_01.svg",
+      "origin": [
+        1024.0,
+        1089.9916095742979
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1616,
+        "crop": [
+          0,
+          0,
+          2048,
+          1616
+        ]
+      },
+      "pixels_per_world": 1158.1945088981918,
+      "model_bounds": {
+        "position": [
+          -0.625,
+          0.0,
+          -0.59
+        ],
+        "size": [
+          1.25,
+          0.67,
+          1.18
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "9adc3ec6cf478b5bad1e04b8bb3af28ecbafb0ff18e2047a9e71c710847a54f7",
+      "shadow_texture": "资源/时代城市/阴影/era1_residential_01_shadow.png",
+      "shadow_origin": [
+        282.0,
+        139.0
+      ],
+      "shadow_pixels_per_world": 324.7550995048748,
+      "shadow_sha256": "016639665ebab15567b21d9a42963779baa4de9f8a9391ff6e3f0199288bce4f",
+      "contact_texture": "资源/时代城市/阴影/era1_residential_01_contact.png",
+      "contact_origin": [
+        512.0,
+        238.0
+      ],
+      "contact_pixels_per_world": 324.7550995048748,
+      "contact_sha256": "687b41dad65220548a9840b6c5bb3331248da3ed9b1a8bdc0b565aad17df2fa1",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8591347391416551,
+            -0.012374368670764592
+          ],
+          [
+            0.8591347391416551,
+            0.012374368670764592
+          ],
+          [
+            0.024748737341529183,
+            0.42956736957082753
+          ]
+        ],
+        "contact_reference_world_pixels": 20.907733306123838,
+        "stage": "UI-006"
+      },
+      "era": 1,
+      "plot_span": 0.9
+    },
+    {
+      "id": "era1_commercial_01",
+      "display_name": "石柱市场",
+      "category": "commercial",
+      "texture": "资源/时代城市/SVG/era1_commercial_01.svg",
+      "origin": [
+        1024.0,
+        1116.6283884137438
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1642,
+        "crop": [
+          0,
+          0,
+          2048,
+          1642
+        ]
+      },
+      "pixels_per_world": 1109.3950011447664,
+      "model_bounds": {
+        "position": [
+          -0.7,
+          0.0,
+          -0.57
+        ],
+        "size": [
+          1.4,
+          0.8400000000000001,
+          1.14
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "b226ff061ccbd37e5b88ce488a869be0b0064d7b8ce771b21fd2851605ea521e",
+      "shadow_texture": "资源/时代城市/阴影/era1_commercial_01_shadow.png",
+      "shadow_origin": [
+        273.0,
+        133.0
+      ],
+      "shadow_pixels_per_world": 300.90104961410174,
+      "shadow_sha256": "3479318eff6ac2a9aae6cfec2d397e1fb938584450c22f524c344b9e5824b527",
+      "contact_texture": "资源/时代城市/阴影/era1_commercial_01_contact.png",
+      "contact_origin": [
+        512.0,
+        256.0
+      ],
+      "contact_pixels_per_world": 300.90104961410174,
+      "contact_sha256": "9f69096e79109dc073189868adfe1d24f4654ae0f2ef94ba5e1e1fb899b0e242",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8980256121069153,
+            -0.045961940777125586
+          ],
+          [
+            0.8980256121069153,
+            0.045961940777125586
+          ],
+          [
+            0.09192388155425117,
+            0.44901280605345767
+          ]
+        ],
+        "contact_reference_world_pixels": 18.667619023324857,
+        "stage": "UI-006"
+      },
+      "era": 1,
+      "plot_span": 0.9
+    },
+    {
+      "id": "era1_industrial_01",
+      "display_name": "陶窑工坊",
+      "category": "industrial",
+      "texture": "资源/时代城市/SVG/era1_industrial_01.svg",
+      "origin": [
+        1024.0000000000002,
+        1140.0454456214181
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1667,
+        "crop": [
+          0,
+          0,
+          2048,
+          1667
+        ]
+      },
+      "pixels_per_world": 1172.257602393786,
+      "model_bounds": {
+        "position": [
+          -0.61,
+          0.0,
+          -0.59
+        ],
+        "size": [
+          1.22,
+          0.99,
+          1.18
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "c7f1e388910c03f4460ff6ceffe29d2c05ba5f380bb703c83c89c88c69725898",
+      "shadow_texture": "资源/时代城市/阴影/era1_industrial_01_shadow.png",
+      "shadow_origin": [
+        283.0,
+        138.0
+      ],
+      "shadow_pixels_per_world": 330.58971528607714,
+      "shadow_sha256": "5f5a3d2fd3bc1fbeba9a39700236ac831042d942c14eca25641931bcc61c421e",
+      "contact_texture": "资源/时代城市/阴影/era1_industrial_01_contact.png",
+      "contact_origin": [
+        512.0,
+        234.0
+      ],
+      "contact_pixels_per_world": 330.58971528607714,
+      "contact_sha256": "c52ac33bbefd6d948332a3350a266ed6bfd718257c1be7af04599e27bfe2e17b",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8485281374238569,
+            -0.007071067811865481
+          ],
+          [
+            0.8485281374238569,
+            0.007071067811865481
+          ],
+          [
+            0.014142135623730963,
+            0.42426406871192845
+          ]
+        ],
+        "contact_reference_world_pixels": 21.42185789561869,
+        "stage": "UI-006"
+      },
+      "era": 1,
+      "plot_span": 0.9
+    },
+    {
+      "id": "era2_residential_01",
+      "display_name": "木骨住宅",
+      "category": "residential",
+      "texture": "资源/时代城市/SVG/era2_residential_01.svg",
+      "origin": [
+        1003.17370162848,
+        1532.2301624584995
+      ],
+      "image_bounds": {
+        "width": 2006,
+        "height": 2048,
+        "crop": [
+          0,
+          0,
+          2006,
+          2048
+        ]
+      },
+      "pixels_per_world": 1134.6389381808383,
+      "model_bounds": {
+        "position": [
+          -0.625,
+          0.0,
+          -0.59
+        ],
+        "size": [
+          1.25,
+          1.31,
+          1.18
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "74a9701985c0236617649673ac39f50f2e3b9035a14666cb058e78f73491131a",
+      "shadow_texture": "资源/时代城市/阴影/era2_residential_01_shadow.png",
+      "shadow_origin": [
+        282.0,
+        139.0
+      ],
+      "shadow_pixels_per_world": 324.7550995048748,
+      "shadow_sha256": "632e39d170f482f198a764114426a2e20e4ec1d7aea1952cdb72b11aa9ea259d",
+      "contact_texture": "资源/时代城市/阴影/era2_residential_01_contact.png",
+      "contact_origin": [
+        512.0,
+        238.0
+      ],
+      "contact_pixels_per_world": 324.7550995048748,
+      "contact_sha256": "687b41dad65220548a9840b6c5bb3331248da3ed9b1a8bdc0b565aad17df2fa1",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8591347391416551,
+            -0.012374368670764592
+          ],
+          [
+            0.8591347391416551,
+            0.012374368670764592
+          ],
+          [
+            0.024748737341529183,
+            0.42956736957082753
+          ]
+        ],
+        "contact_reference_world_pixels": 20.907733306123838,
+        "stage": "UI-006"
+      },
+      "era": 2,
+      "plot_span": 0.9
+    },
+    {
+      "id": "era2_commercial_01",
+      "display_name": "行会市场",
+      "category": "commercial",
+      "texture": "资源/时代城市/SVG/era2_commercial_01.svg",
+      "origin": [
+        1024.0,
+        1100.3047964750092
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1626,
+        "crop": [
+          0,
+          0,
+          2048,
+          1626
+        ]
+      },
+      "pixels_per_world": 1109.3950011447664,
+      "model_bounds": {
+        "position": [
+          -0.7,
+          0.0,
+          -0.57
+        ],
+        "size": [
+          1.4,
+          0.8999999999999999,
+          1.19
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "d2e014c2ea4ee22abb6e0d4a18d15cd45c57804b4aca4cccfe782425f05f9f44",
+      "shadow_texture": "资源/时代城市/阴影/era2_commercial_01_shadow.png",
+      "shadow_origin": [
+        273.0,
+        133.0
+      ],
+      "shadow_pixels_per_world": 300.90104961410174,
+      "shadow_sha256": "fa722af1f9199ae5ddd20ca9fb459d6e5d4fb3bbbbcbd226bfc5413f2c975839",
+      "contact_texture": "资源/时代城市/阴影/era2_commercial_01_contact.png",
+      "contact_origin": [
+        512.0,
+        256.0
+      ],
+      "contact_pixels_per_world": 300.90104961410174,
+      "contact_sha256": "9f69096e79109dc073189868adfe1d24f4654ae0f2ef94ba5e1e1fb899b0e242",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8980256121069153,
+            -0.045961940777125586
+          ],
+          [
+            0.8980256121069153,
+            0.045961940777125586
+          ],
+          [
+            0.09192388155425117,
+            0.44901280605345767
+          ]
+        ],
+        "contact_reference_world_pixels": 18.667619023324857,
+        "stage": "UI-006"
+      },
+      "era": 2,
+      "plot_span": 0.9
+    },
+    {
+      "id": "era2_industrial_01",
+      "display_name": "水车磨坊",
+      "category": "industrial",
+      "texture": "资源/时代城市/SVG/era2_industrial_01.svg",
+      "origin": [
+        1024.0000000000002,
+        1235.3913930143283
+      ],
+      "image_bounds": {
+        "width": 2048,
+        "height": 1762,
+        "crop": [
+          0,
+          0,
+          2048,
+          1762
+        ]
+      },
+      "pixels_per_world": 1172.257602393786,
+      "model_bounds": {
+        "position": [
+          -0.61,
+          0.0,
+          -0.59
+        ],
+        "size": [
+          1.22,
+          0.99,
+          1.18
+        ]
+      },
+      "source": "tools/build_era_demo_art.py; original project geometry",
+      "license": "Project-authored geometry",
+      "source_url": "",
+      "availability": "era_demo_runtime; human_art_review_pending",
+      "camera": {
+        "azimuth": 45,
+        "elevation": 30,
+        "projection": "orthogonal"
+      },
+      "texture_sha256": "257d48dc379b82e71fd7f5c99c556bfeaeb4979e8ef5344d3990c293e8ff8759",
+      "shadow_texture": "资源/时代城市/阴影/era2_industrial_01_shadow.png",
+      "shadow_origin": [
+        283.0,
+        138.0
+      ],
+      "shadow_pixels_per_world": 330.58971528607714,
+      "shadow_sha256": "04df71ae0ff69571433d6a732438ab5178e5497580ec708ead792fa2e69413a3",
+      "contact_texture": "资源/时代城市/阴影/era2_industrial_01_contact.png",
+      "contact_origin": [
+        512.0,
+        234.0
+      ],
+      "contact_pixels_per_world": 330.58971528607714,
+      "contact_sha256": "c52ac33bbefd6d948332a3350a266ed6bfd718257c1be7af04599e27bfe2e17b",
+      "lighting": {
+        "sun_screen_shadow_degrees": 13.12426812279171,
+        "ground_anchor_world": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "projection": "actual_geometry_to_ground",
+        "contact_footprint": [
+          [
+            -0.8485281374238569,
+            -0.007071067811865481
+          ],
+          [
+            0.8485281374238569,
+            0.007071067811865481
+          ],
+          [
+            0.014142135623730963,
+            0.42426406871192845
+          ]
+        ],
+        "contact_reference_world_pixels": 21.42185789561869,
+        "stage": "UI-006"
+      },
+      "era": 2,
+      "plot_span": 0.9
+    }
+  ],
+  "human_art": "PENDING",
+  "purpose": "Era I/II ordinary buildings, no landmark impersonation"
+}

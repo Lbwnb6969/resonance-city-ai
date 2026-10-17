@@ -28,6 +28,7 @@ var travel_prepare_ms := 0.0
 var route_counting := false
 var route_cache_stats := {"hits":0,"misses":0,"invalid":0}
 var prepare_stats: Dictionary = {}
+var _roundabout_markers: Array[Dictionary]=[]
 
 func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary]) -> RefCounted:
 	var started := Time.get_ticks_usec()
@@ -36,6 +37,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.houses.assign(snapshot.houses)
 	state.roads.assign(snapshot.roads)
 	state.waters.assign(snapshot.waters)
+	state.districts.assign(snapshot.get("districts",[]))
 	state.terrain_strokes.assign(snapshot.get("terrain_strokes",[]))
 	if snapshot.has("ground_cache"):
 		# The request owns this cache; it was copied before starting the thread.
@@ -108,6 +110,7 @@ func _key(p: Vector2) -> String:
 	return "%d,%d" % [roundi(p.x*1000.0),roundi(p.y*1000.0)]
 
 func _build_graph() -> void:
+	_roundabout_markers=State.Roundabouts.all(state.roads)
 	var ground_started := Time.get_ticks_usec()
 	# Navigation only needs the raw sculpt field and road profiles. The full
 	# protected field is prepared and published by the owning State/render
@@ -133,7 +136,7 @@ func _build_graph() -> void:
 	var ports: Dictionary = {}
 	var door_links: Array[Dictionary] = []
 	var segments: Array[Dictionary] = []
-	for road: Dictionary in state.roads:
+	for road: Dictionary in State.Roundabouts.routing_roads(state.roads):
 		for i in range(1, road.points.size()):
 			var a := Vector2(road.points[i-1][0],road.points[i-1][1])
 			var b := Vector2(road.points[i][0],road.points[i][1])
@@ -169,6 +172,7 @@ func _build_graph() -> void:
 				for endpoint: Vector2 in [first.a,first.b]:
 					var nearest := Geometry2D.get_closest_point_to_segment(endpoint,second.a,second.b)
 					if endpoint.distance_to(nearest) > minf(float(first.width),float(second.width))*0.5: continue
+					if _crosses_island(endpoint,nearest): continue
 					second.splits.append(nearest)
 					connectors.append({"a":endpoint,"b":nearest,"splits":[endpoint,nearest]})
 	var raw_segment_count := segments.size()
@@ -462,11 +466,14 @@ func _exterior_route_from_position(point: Vector3, finish: String) -> Array[Vect
 	return best
 
 func _navigation_height(at: Vector2) -> float:
+	for marker: Dictionary in _roundabout_markers:
+		if at.distance_to(marker.center)<=marker.radius: return state._ground_terrain.raw_height_at(marker.center)+.075
 	var clearance: float = state.water_clearance(at)
 	var legacy: float = 0.055+0.185*(1.0-smoothstep(-0.05,0.65,clearance))
 	return state._road_heights.height_at(at,maxf(state._ground_terrain.raw_height_at(at)+0.075,legacy))
 
 func _attachment_crosses_wall(a: Vector2,b: Vector2) -> bool:
+	if _crosses_island(a,b): return true
 	var bounds := Rect2(a,Vector2.ZERO).expand(b)
 	var seen: Dictionary = {}
 	for x in range(floori(bounds.position.x/NETWORK_BIN_SIZE),floori(bounds.end.x/NETWORK_BIN_SIZE)+1):
@@ -477,4 +484,9 @@ func _attachment_crosses_wall(a: Vector2,b: Vector2) -> bool:
 				seen[id] = true
 				attachment_stats.wall_tests += 1
 				if Passage.segment_blocked(wall.house,wall.cell,a,b,wall.passages): return true
+	return false
+
+func _crosses_island(a: Vector2,b: Vector2) -> bool:
+	for marker: Dictionary in _roundabout_markers:
+		if Geometry2D.get_closest_point_to_segment(marker.center,a,b).distance_to(marker.center)<State.Roundabouts.INNER_RADIUS+.04: return true
 	return false

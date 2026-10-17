@@ -9,3 +9,5 @@
 `花色.png` 精确定名为 `lilypad_flower`，原summer/flowery/olden `assets/glade/*/textures.json:8` 均绑定此名，秋季另有lilypad_flower_autumn不在本轮。256² BC7_SRGB原基级RGBA解码，未在线性化时改像素，运行时作为source_color采样。原 `lilypad_flower/000.vert:265` 的UV是最终世界XZ*.1；`001.frag:90–101` 还按世界高度混采样色/顶点色，不能把此纹理叫花瓣UV图集。两JSON原Vertex_Color数值保持，不额外做sRGB转换。原渲染器受光/Gbuffer/季节混色/动态水波不包含在资源提取内。
 
 本作使用稀疏静态共享实例、池塘真水位/净空与身份稳定派生；密度、花概率、缩放、平面偏移及性能预算由产品选择，不照搬TG园林遮罩阈值。脚本仅Python资源字节/属性/PNG回读核验，没有Godot、GPU、碰撞、画面或性能通过结论。
+
+Phase7运行导入只滤掉叶索引末尾6个(0,0,0)填充，提交10个有效叶面；花沿用源60个索引三角。原JSON仍保留恢复数据。池塘中心岸距限-.85～-.25m，完整叶圆避开道路/房屋与干岸。实际MultiMesh和三角数见 `验证记录/四库路线_2026-10-17/Phase7/live.json`。

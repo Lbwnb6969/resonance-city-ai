@@ -113,7 +113,7 @@ func _run()->void:
 		await process_frame
 		var now:=Time.get_ticks_usec();wall.append(float(now-previous)/1000);previous=now;draws.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	wall.sort();draws.sort();facts.performance={"frames":120,"p95_ms":wall[113],"max_ms":wall[-1],"draw_median":draws[60]}
-	_check(_audio()==audio and demo.music.get_child_count()==13 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"UI plucks preserve nine long PCM thirteen Players actual transport and personal city bytes")
+	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.music._playback_clock()>clock and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"UI plucks preserve shared long PCM fixed Players actual transport and personal city bytes")
 	var result:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts,"command":"Godot --path . --audio-driver Dummy --max-fps180 --script tools/check_creation_pluck.gd"}
 	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("PLUCK_CHECK ",JSON.stringify(result))
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false)

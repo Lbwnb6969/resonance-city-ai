@@ -26,9 +26,9 @@ static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 			var tangent := Vector2(normal.y,-normal.x)
 			var wall := center+normal*0.9
 			if not _exposed(city.houses,house,cell,wall,normal,tangent,base): continue
-			var source := ""
+			var source := "renaissance" if city.house_era(house)=="renaissance" else ""
 			for road: Dictionary in city.roads:
-				if str(road.get("style","path"))!="promenade" or absf(float(road.width)-1.75)>0.001: continue
+				if str(road.get("style","path")) not in ["promenade","avenue","tram"] or float(road.width)<1.75: continue
 				if _street(city,road,wall,normal,tangent,base): source="promenade";break
 			if source.is_empty() and _court(courts,wall,normal,tangent,base): source="courtyard"
 			if not source.is_empty(): result.append({"cell_id":str(cell.id),"side":SIDES[side_index],"retreat":RETREAT,"source":source})

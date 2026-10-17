@@ -7,7 +7,7 @@ static func candidates(life: Node3D, first: String) -> Array[String]:
 	var others: Array[String] = []
 	for house: Dictionary in life.state.houses:
 		var id := str(house.id)
-		if id==first or str(house.role)!="venue" or not life.connected_houses.has(id): continue
+		if id==first or str(house.role) not in ["venue","symphony_hall"] or not life.connected_houses.has(id): continue
 		if not life._route(str(life.connected_houses[first]),str(life.connected_houses[id])).is_empty(): others.append(id)
 	others.sort_custom(func(a: String,b: String)->bool: return int(a.substr(1))<int(b.substr(1)))
 	result.append(first);result.append_array(others)

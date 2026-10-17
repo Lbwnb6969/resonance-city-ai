@@ -61,14 +61,13 @@ func _pair_valid(pair: Dictionary) -> bool:
 		if str(house.district_id)!=str(pair[side+"_district"]) or str(house.style)!=str(pair[side+"_style"]): return false
 		var at: Vector2 = pair[side+"_position"]
 		if Vector2(house.position).distance_to(at)>0.001: return false
-		if not manual and _owner._listener_focus.distance_to(at)>FOCUS_RADIUS: return false
-	if manual:
-		var nearest := Geometry2D.get_closest_point_to_segment(_owner._listener_focus,pair.from_position,pair.to_position)
-		if _owner._listener_focus.distance_to(nearest)>FOCUS_RADIUS: return false
+	if _owner.acoustic.focus_weight(str(pair.from_id))<=0.0 and _owner.acoustic.focus_weight(str(pair.to_id))<=0.0: return false
 	return true
 
 func _valid(event: Dictionary) -> bool:
 	var pair: Dictionary = _pairs.get(str(event.pair_id),{})
+	for side:String in ["from","to"]:
+		if event.has(side+"_era") and str(_owner._house_music.get(str(event[side+"_id"]),{}).get("era_theme","pastoral"))!=str(event[side+"_era"]):return false
 	return not pair.is_empty() and int(event.pair_hash)==pair.hash() and _pair_valid(pair)
 
 func _foreground_busy() -> bool:
@@ -88,13 +87,14 @@ func reserves_tower_gap(phrase: int) -> bool:
 	return false
 
 func _direction(pair: Dictionary, phrase: int) -> Dictionary:
-	var reverse := posmod(int(phrase/4),2)==1
+	var reverse: bool = _owner.acoustic.focus_weight(str(pair.to_id))>_owner.acoustic.focus_weight(str(pair.from_id))
 	var a := "to" if reverse else "from"
 	var b := "from" if reverse else "to"
 	return {"pair_id":str(pair.id),"pair_hash":pair.hash(),"from_id":str(pair[a+"_id"]),"to_id":str(pair[b+"_id"]),
 		"manual":bool(pair.get("manual",false)),
 		"from_district":str(pair[a+"_district"]),"to_district":str(pair[b+"_district"]),
 		"from_style":str(pair[a+"_style"]),"to_style":str(pair[b+"_style"]),
+		"from_era":str(_owner._house_music[str(pair[a+"_id"])].get("era_theme","pastoral")),"to_era":str(_owner._house_music[str(pair[b+"_id"])].get("era_theme","pastoral")),
 		"from_position":Vector2(pair[a+"_position"]),"to_position":Vector2(pair[b+"_position"]),"call_phrase":phrase}
 
 func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
@@ -110,13 +110,24 @@ func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
 		_active=event.duplicate(true)
 		_active.merge({"phase":"answer" if answer else "call","generation":1 if answer else 0,
 			"source_id":str(event.to_id if answer else event.from_id),"style":style,"phrase":phrase,"stream_key":key},true)
-		_owner.play_effect_at(effect,_stream,event.to_position if answer else event.from_position)
+		var source_id:=str(event.to_id if answer else event.from_id)
+		_owner.play_effect_at(effect,_stream,event.to_position if answer else event.from_position,_owner.acoustic.weight(source_id))
 		if answer: answers+=1
 		else: calls+=1
 		return true
 	return false
 
+func _observe_finished() -> void:
+	if _active.is_empty() or _player==null or _player.stream!=_stream or _player.playing:return
+	if not _valid(_active):clear();return
+	if str(_active.phase)=="call" and not _pending.is_empty() and _pending.pair_id==_active.pair_id:
+		_pending["call_complete"]=true
+	elif str(_active.phase)=="answer" and bool(_active.get("call_complete",false)):
+		_owner.record_completed_district_answer(str(_active.from_district),str(_active.to_district),str(_active.from_era),str(_active.to_era))
+	_clear_active()
+
 func at_phrase(absolute_phrase: int) -> void:
+	_observe_finished()
 	# Mark every observed phrase, including startup halfway through a bar.
 	# A later call in that same phrase must never manufacture a downbeat.
 	if absolute_phrase==_last_phrase: return
@@ -144,6 +155,7 @@ func at_phrase(absolute_phrase: int) -> void:
 	else: skipped+=1
 
 func report() -> Dictionary:
+	_observe_finished()
 	if not _pending.is_empty() and not _valid(_pending): clear()
 	if not _active.is_empty():
 		if not _valid(_active): clear()
