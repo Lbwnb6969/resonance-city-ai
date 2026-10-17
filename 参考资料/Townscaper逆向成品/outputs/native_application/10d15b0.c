@@ -1,0 +1,14 @@
+// RVA 0x10d15b0 | FuryStudios.FurySDK.Platform$$Init
+// PDB: Platform_Init_mA09F7BA98F5F44C57C562AA3955578F4A9A06076
+// Body: [[110d15b0, 110d15c3]]
+// Direct callees:
+// 110d1060 Platform_Init_m85ECB857208F2B5F4F28821555A3D0170C3A4C3E
+
+void __cdecl
+Platform_Init_mA09F7BA98F5F44C57C562AA3955578F4A9A06076
+          (PlatformSettings_t3FEC8BA69291E07F62699229910DA7E6828AA8AA *param_1,MethodInfo *param_2)
+
+{
+  Platform_Init_m85ECB857208F2B5F4F28821555A3D0170C3A4C3E(param_1,false,(MethodInfo *)0x0);
+  return;
+}

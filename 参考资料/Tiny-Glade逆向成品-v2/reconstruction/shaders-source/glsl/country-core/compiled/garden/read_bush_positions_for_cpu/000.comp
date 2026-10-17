@@ -1,0 +1,65 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint vertexOffset;
+    uint firstInstance;
+};
+
+struct _Array_natural_float12
+{
+    float data[12];
+};
+
+struct Affine3Packed_natural
+{
+    _Array_natural_float12 data;
+};
+
+struct BushXform_natural
+{
+    Affine3Packed_natural transform;
+};
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    int draw_indirect_buffer_offset;
+} globalParams;
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_commands;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    vec2 _member0[];
+} bush_cpu;
+
+layout(set = 0, binding = 2, std430) readonly buffer bush_buffer
+{
+    BushXform_natural _member0[];
+} bush_buffer_1;
+
+void main()
+{
+    uint _38 = draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount;
+    int bush_count = int(_38);
+    if (gl_GlobalInvocationID.x == 0u)
+    {
+        bush_cpu._member0[gl_GlobalInvocationID.x] = vec2(intBitsToFloat(bush_count));
+    }
+    else
+    {
+        if (gl_GlobalInvocationID.x < uint(bush_count + 1))
+        {
+            uint _94 = gl_GlobalInvocationID.x - 1u;
+            bush_cpu._member0[gl_GlobalInvocationID.x] = (vec4(vec3(0.0), 1.0) * transpose(mat4x3(vec3(bush_buffer_1._member0[_94].transform.data.data[0], bush_buffer_1._member0[_94].transform.data.data[1], bush_buffer_1._member0[_94].transform.data.data[2]), vec3(bush_buffer_1._member0[_94].transform.data.data[3], bush_buffer_1._member0[_94].transform.data.data[4], bush_buffer_1._member0[_94].transform.data.data[5]), vec3(bush_buffer_1._member0[_94].transform.data.data[6], bush_buffer_1._member0[_94].transform.data.data[7], bush_buffer_1._member0[_94].transform.data.data[8]), vec3(bush_buffer_1._member0[_94].transform.data.data[9], bush_buffer_1._member0[_94].transform.data.data[10], bush_buffer_1._member0[_94].transform.data.data[11])))).xz;
+        }
+    }
+}
+

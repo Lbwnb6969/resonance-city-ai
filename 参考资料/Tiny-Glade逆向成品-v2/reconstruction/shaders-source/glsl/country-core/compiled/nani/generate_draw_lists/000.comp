@@ -1,0 +1,183 @@
+#version 460
+layout(local_size_x = 32, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_vector_uint_4_34
+{
+    uvec4 data[34];
+};
+
+struct MeshAtlasPartInfo_natural
+{
+    uint first_index;
+    uint index_count;
+    float bounding_sphere_radius;
+    uint pad0;
+};
+
+struct _Array_natural_MeshAtlasPartInfo1024
+{
+    MeshAtlasPartInfo_natural data[1024];
+};
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint index_count;
+    uint instance_count;
+    uint first_index;
+    uint vertex_offset;
+    uint first_instance;
+};
+
+layout(set = 0, binding = 4, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} thread_count_buffer;
+
+layout(set = 0, binding = 1, std140) uniform DrawListMergeWindows_natural
+{
+    _Array_natural_vector_uint_4_34 array;
+} draw_list_merge_windows;
+
+layout(set = 0, binding = 5, std430) readonly buffer merge_window_draw_cmd_counts
+{
+    uint _member0[];
+} merge_window_draw_cmd_counts_1;
+
+layout(set = 0, binding = 6, std430) readonly buffer merge_window_draw_cmd_subtotals
+{
+    uint _member0[];
+} merge_window_draw_cmd_subtotals_1;
+
+layout(set = 0, binding = 0, std140) uniform InstanceListOffset_natural
+{
+    _Array_natural_vector_uint_4_34 array;
+} instance_list_offset;
+
+layout(set = 0, binding = 3, std430) readonly buffer sorted_instances_buffer
+{
+    uint _member0[];
+} sorted_instances_buffer_1;
+
+layout(set = 0, binding = 9, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} instance_indirection_allocator_buffer;
+
+layout(set = 0, binding = 2, std430) readonly buffer atlas_part_info
+{
+    _Array_natural_MeshAtlasPartInfo1024 _member0[];
+} atlas_part_info_1;
+
+layout(set = 0, binding = 7, std430) buffer draw_list_buffer
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_list_buffer_1;
+
+layout(set = 0, binding = 8, std430) buffer instance_indirection_buffer
+{
+    uint _member0[];
+} instance_indirection_buffer_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint draw_list_index;
+    uint list_draw_cmd_offset;
+    uint list_merge_window_offset;
+    uint list_merge_window_subtotal_offset;
+} push_constants;
+
+shared uint mesh_histogram[1024];
+shared uint group_draw_offset;
+
+void main()
+{
+    uint _86 = thread_count_buffer._member0[push_constants.draw_list_index];
+    uint _408 = push_constants.draw_list_index / 4u;
+    uint _411 = push_constants.draw_list_index % 4u;
+    uint _116 = gl_WorkGroupID.x * draw_list_merge_windows.array.data[_408][_411];
+    uint mesh_idx_within_atlas;
+    uint _500 = gl_LocalInvocationIndex;
+    for (;;)
+    {
+        if (!(_500 < 1024u))
+        {
+            break;
+        }
+        mesh_histogram[_500] = 0u;
+        mesh_idx_within_atlas = _500 + 32u;
+        _500 = mesh_idx_within_atlas;
+        continue;
+    }
+    if (0u == gl_LocalInvocationIndex)
+    {
+        group_draw_offset = merge_window_draw_cmd_counts_1._member0[push_constants.list_merge_window_offset + gl_WorkGroupID.x] + merge_window_draw_cmd_subtotals_1._member0[push_constants.list_merge_window_subtotal_offset + (gl_WorkGroupID.x / 1024u)];
+    }
+    barrier();
+    uint idx_within_merge_window;
+    uint _501 = gl_LocalInvocationIndex;
+    for (;;)
+    {
+        if (!(_501 < draw_list_merge_windows.array.data[_408][_411]))
+        {
+            break;
+        }
+        uint instance_idx_in_list = _116 + _501;
+        if (instance_idx_in_list < _86)
+        {
+            uint _222 = atomicAdd(mesh_histogram[sorted_instances_buffer_1._member0[instance_idx_in_list + instance_list_offset.array.data[_408][_411]] % 1024u], 1u);
+        }
+        idx_within_merge_window = _501 + 32u;
+        _501 = idx_within_merge_window;
+        continue;
+    }
+    barrier();
+    uint mesh_idx_within_atlas_1;
+    uint _502 = gl_LocalInvocationIndex;
+    for (;;)
+    {
+        if (!(_502 < 1024u))
+        {
+            break;
+        }
+        uint instance_count = mesh_histogram[_502];
+        if (instance_count > 0u)
+        {
+            uint draw_list_entry = atomicAdd(group_draw_offset, 1u);
+            uint draw_list_entry_1 = draw_list_entry + push_constants.list_draw_cmd_offset;
+            uint indirection_offset = atomicAdd(instance_indirection_allocator_buffer._member0[push_constants.draw_list_index], instance_count);
+            uint _300 = atlas_part_info_1._member0[push_constants.world_subset].data[_502].first_index;
+            draw_list_buffer_1._member0[draw_list_entry_1].index_count = atlas_part_info_1._member0[push_constants.world_subset].data[_502].index_count;
+            draw_list_buffer_1._member0[draw_list_entry_1].instance_count = instance_count;
+            draw_list_buffer_1._member0[draw_list_entry_1].first_index = _300;
+            draw_list_buffer_1._member0[draw_list_entry_1].vertex_offset = 0u;
+            draw_list_buffer_1._member0[draw_list_entry_1].first_instance = indirection_offset;
+            mesh_histogram[_502] = indirection_offset;
+        }
+        mesh_idx_within_atlas_1 = _502 + 32u;
+        _502 = mesh_idx_within_atlas_1;
+        continue;
+    }
+    barrier();
+    uint idx_within_merge_window_1;
+    uint _503 = gl_LocalInvocationIndex;
+    for (;;)
+    {
+        if (!(_503 < draw_list_merge_windows.array.data[_408][_411]))
+        {
+            break;
+        }
+        uint instance_idx_in_list_1 = _116 + _503;
+        if (instance_idx_in_list_1 < _86)
+        {
+            uint _369 = instance_idx_in_list_1 + instance_list_offset.array.data[_408][_411];
+            uint _371 = sorted_instances_buffer_1._member0[_369];
+            uint indirection_entry = atomicAdd(mesh_histogram[_371 % 1024u], 1u);
+            instance_indirection_buffer_1._member0[indirection_entry] = _371 / 1024u;
+        }
+        idx_within_merge_window_1 = _503 + 32u;
+        _503 = idx_within_merge_window_1;
+        continue;
+    }
+}
+

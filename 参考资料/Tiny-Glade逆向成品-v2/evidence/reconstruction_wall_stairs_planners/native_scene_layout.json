@@ -1,0 +1,98 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "authority": "matched-machine-instructions-plus-controlled-native-construction-and-query",
+  "schemas": {
+    "Rapier": {
+      "layer_count": 17,
+      "layer_stride": 912,
+      "metadata_vec": 0,
+      "collider_set_0": 32,
+      "query_pipeline_0": 80,
+      "qbvh_0": 224,
+      "rigid_body_set": 15744
+    },
+    "MetadataEntry": {
+      "stride": 40,
+      "copied_payload": [
+        0,
+        24
+      ],
+      "category_byte": 0,
+      "flag_byte": 1,
+      "tested_identity_field": 8,
+      "generation": 32
+    },
+    "ColliderArenaEntry": {
+      "stride": 192,
+      "occupied_discriminant": 0,
+      "generation": 4,
+      "collider_body": 16,
+      "collider_body_bytes": 176
+    },
+    "ColliderBody": {
+      "user_data": 0,
+      "shape_arc_data": 16,
+      "shape_vtable": 24,
+      "isometry_quaternion": 52,
+      "isometry_translation": 68
+    },
+    "Qbvh": {
+      "nodes_vec": 24,
+      "proxies_vec": 96
+    },
+    "QbvhNode": {
+      "stride": 128,
+      "aabb_min_xyz_simd4": [
+        0,
+        16,
+        32
+      ],
+      "aabb_max_xyz_simd4": [
+        48,
+        64,
+        80
+      ],
+      "children_u32x4": 96,
+      "is_leaf_byte": 120
+    },
+    "QbvhProxy": {
+      "stride": 16,
+      "collider_index": 8,
+      "collider_generation": 12
+    },
+    "RaycastHit": {
+      "bytes": 40,
+      "no_hit_tag": 17,
+      "copied_metadata_bytes": 24,
+      "position_xyz": 24,
+      "time_of_impact": 36
+    },
+    "HoleRecord": {
+      "stride": 20,
+      "aabb2": 0,
+      "included_when_byte16_nonzero": 16,
+      "origin_byte_not_inspected": 17
+    },
+    "ArchOpening": {
+      "stride": 104,
+      "height_offset_vec": 0,
+      "position_xyz_vec": 24
+    },
+    "TerrainHeightsData": {
+      "grid_pointer": 8,
+      "sample_count": 16,
+      "height_low": 80,
+      "height_high": 84,
+      "side": 512,
+      "format": "u16-normalized",
+      "world_extent": 130,
+      "sampling_mode_pointer_global": "0x143ca4b38"
+    }
+  },
+  "limitations": [
+    "Offsets are binding to the matched optimized build, not a universal Rust ABI.",
+    "Metadata +8 holds caller-chosen identity in the synthetic scene; original game semantic field meaning remains unknown.",
+    "Synthetic outer QBVH uses a legal four-wide topology, not a reconstruction of the original update/build scheduling.",
+    "TriMesh internal geometry/BVH are created by the original SharedShape::trimesh routine."
+  ]
+}

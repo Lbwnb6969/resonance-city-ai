@@ -1,0 +1,35 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Placemaker/Bird" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+_Color ("Color", Color) = (1,1,1,1)
+
+_OutlineMul ("Outline Multiplier", Float) = 0.699999988079071
+
+}
+SubShader {
+ LOD 100
+ Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" }
+ Pass {
+  LOD 100
+  Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" }
+  GpuProgramID 4723
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

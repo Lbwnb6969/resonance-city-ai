@@ -1,0 +1,348 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_uint5
+{
+    uint data[5];
+};
+
+struct _Array_natural_uint3
+{
+    uint data[3];
+};
+
+struct _Array_natural_uint2
+{
+    uint data[2];
+};
+
+struct InstancedWallData_natural
+{
+    _Array_natural_uint5 transform_matrix_packed;
+    _Array_natural_uint3 transform_translation;
+    _Array_natural_uint2 sin_deform_y_packed;
+    _Array_natural_uint3 arch_and_wallspace_packed;
+    uint seed;
+    uint source_id;
+    uint flags;
+};
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint vertexOffset;
+    uint firstInstance;
+};
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    InstancedWallData_natural _member0[];
+} brick_instance_data;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    int draw_indirect_buffer_offset;
+    uvec2 hzb_tex_inner_dims;
+} globalParams;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} next_visibility_bitmask;
+
+layout(set = 0, binding = 2, std430) readonly buffer prev_visibility_bitmask
+{
+    uint _member0[];
+} prev_visibility_bitmask_1;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 4, std430) buffer draw_commands
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_commands_1;
+
+layout(set = 0, binding = 5, std430) buffer brick_draw_list
+{
+    uint _member0[];
+} brick_draw_list_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint first_instance;
+    uint instance_count_and_flags;
+} push_constants;
+
+layout(set = 0, binding = 6) uniform texture2D entryPointParams_hzb_tex;
+
+void main()
+{
+    if (gl_GlobalInvocationID.x < (push_constants.instance_count_and_flags & 16777215u))
+    {
+        uint instance_index = push_constants.first_instance + gl_GlobalInvocationID.x;
+        uint _933 = brick_instance_data._member0[instance_index].transform_matrix_packed.data[0];
+        uint _936 = brick_instance_data._member0[instance_index].transform_matrix_packed.data[1];
+        vec2 _937 = unpackHalf2x16(_936);
+        uint _939 = brick_instance_data._member0[instance_index].transform_matrix_packed.data[2];
+        uint _942 = brick_instance_data._member0[instance_index].transform_matrix_packed.data[3];
+        uint _945 = brick_instance_data._member0[instance_index].transform_matrix_packed.data[4];
+        uint _961 = brick_instance_data._member0[instance_index].transform_translation.data[0];
+        uint _964 = brick_instance_data._member0[instance_index].transform_translation.data[1];
+        uint _967 = brick_instance_data._member0[instance_index].transform_translation.data[2];
+        mat3x4 _1013 = transpose(mat4x3(vec3(unpackHalf2x16(_933), _937.x), vec3(_937.y, unpackHalf2x16(_939)), vec3(unpackHalf2x16(_942), unpackHalf2x16(_945).x), vec3(uintBitsToFloat(_961), uintBitsToFloat(_964), uintBitsToFloat(_967))));
+        mat3x4 _1014 = _1013;
+        int _1036;
+        mat3x4 _1015;
+        int _1723 = 0;
+        for (;;)
+        {
+            if (!(_1723 < 3))
+            {
+                break;
+            }
+            _1015[_1723] = abs(_1014[_1723]);
+            _1036 = _1723 + 1;
+            _1723 = _1036;
+            continue;
+        }
+        float _264 = length((vec4(1.0, 1.0, 1.0, 0.0) * _1015).xxx);
+        float bounding_sphere_radius = 0.5 * _264;
+        vec4 _1059 = vec4(-current_view.view_to_clip[0].x, current_view.view_to_clip[0].y, 0.0, current_view.view_to_clip[0].w);
+        vec4 _1067 = vec4(current_view.view_to_clip[1].xy, 0.0, current_view.view_to_clip[1].w);
+        vec4 _1072 = vec4(current_view.view_to_clip[3].xy, -1.0, current_view.view_to_clip[3].w);
+        vec4 _1568[4];
+        _1568[0] = _1072 + _1059;
+        _1568[1] = _1072 - _1059;
+        _1568[2] = _1072 + _1067;
+        _1568[3] = _1072 - _1067;
+        int _1105;
+        int _1724 = 0;
+        for (;;)
+        {
+            if (!(_1724 < 4))
+            {
+                break;
+            }
+            _1568[_1724] /= vec4(length(_1568[_1724].xyz));
+            _1105 = _1724 + 1;
+            _1724 = _1105;
+            continue;
+        }
+        vec4 _1115 = vec4(vec4(0.0, 0.0, 0.0, 1.0) * _1013, 1.0) * current_view.world_to_view;
+        vec3 _1116 = _1115.xyz;
+        vec4 _1579[4] = _1568;
+        float _1122 = -_1115.z;
+        bool _1726;
+        _1726 = (_1122 + bounding_sphere_radius) > current_view.view_to_clip[2].w;
+        int _1150;
+        bool _1737;
+        int _1725 = 0;
+        for (;;)
+        {
+            if (!(_1725 < 4))
+            {
+                break;
+            }
+            if (_1726)
+            {
+                _1737 = dot(vec4(_1116, 1.0), _1579[_1725]) > (_264 * (-0.5));
+            }
+            else
+            {
+                _1737 = false;
+            }
+            _1150 = _1725 + 1;
+            _1726 = _1737;
+            _1725 = _1150;
+            continue;
+        }
+        vec4 _1728;
+        bool _1730;
+        float _1731;
+        if (_1726)
+        {
+            bool _1727;
+            vec4 _1729;
+            float _1732;
+            do
+            {
+                vec4 _1243 = vec4(vec4(vec3(0.0, 1.0, 0.0), 0.0) * _1013, 0.0) * current_view.world_to_sample;
+                vec4 _1244 = vec4(vec4(vec3(0.0, 0.0, 1.0), 0.0) * _1013, 0.0) * current_view.world_to_sample;
+                vec4 _1247 = vec4(vec4(vec3(-0.5), 1.0) * _1013, 1.0) * current_view.world_to_sample;
+                vec4 _1248 = _1247 + _1244;
+                vec4 _1249 = _1247 + _1243;
+                vec4 _1250 = _1249 + _1244;
+                vec4 _1251 = _1247 + (vec4(vec4(vec3(1.0, 0.0, 0.0), 0.0) * _1013, 0.0) * current_view.world_to_sample);
+                vec4 _1252 = _1251 + _1244;
+                vec4 _1253 = _1251 + _1243;
+                vec4 _1254 = _1253 + _1244;
+                float _1255 = _1247.w;
+                float _1256 = _1248.w;
+                float _1257 = _1249.w;
+                float _1258 = _1250.w;
+                float _1259 = _1251.w;
+                float _1260 = _1252.w;
+                float _1261 = _1253.w;
+                if (max(max(max(_1255, _1256), max(_1257, _1258)), max(max(_1259, _1260), max(_1261, _1254.w))) < current_view.view_to_clip[2].w)
+                {
+                    _1732 = 0.0;
+                    _1729 = vec4(0.0);
+                    _1727 = false;
+                    break;
+                }
+                vec2 _1283 = _1247.xy / vec2(_1255);
+                vec2 _1286 = _1248.xy / vec2(_1256);
+                vec2 _1289 = _1249.xy / vec2(_1257);
+                vec2 _1292 = _1250.xy / vec2(_1258);
+                vec2 _1295 = _1251.xy / vec2(_1259);
+                vec2 _1298 = _1252.xy / vec2(_1260);
+                vec2 _1301 = _1253.xy / vec2(_1261);
+                vec2 _1304 = _1254.xy / vec2(_1254.w);
+                _1732 = -min(min(min(_1255, _1256), min(_1257, _1258)), min(min(_1259, _1260), min(_1261, _1254.w)));
+                _1729 = (vec4(min(min(min(_1283, _1286), min(_1289, _1292)), min(min(_1295, _1298), min(_1301, _1304))), max(max(max(_1283, _1286), max(_1289, _1292)), max(max(_1295, _1298), max(_1301, _1304)))).xwzy * vec4(0.5, -0.5, 0.5, -0.5)) + vec4(0.5);
+                _1727 = true;
+                break;
+            } while(false);
+            _1731 = _1732;
+            _1730 = _1727;
+            _1728 = _1729;
+        }
+        else
+        {
+            _1731 = 0.0;
+            _1730 = false;
+            _1728 = vec4(0.0);
+        }
+        vec4 _667 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+        vec4 _676 = clamp(_1728 * _667, vec4(0.0), _667 - vec4(1.0));
+        uint mip = uint(max(0.0, ceil(log2(max(_676.z - _676.x, _676.w - _676.y)))));
+        bool _1733;
+        if (_1730)
+        {
+            uvec2 _696 = uvec2(mip);
+            uvec2 px0 = uvec2(_676.xy) >> _696;
+            uvec2 px1 = uvec2(_676.zw) >> _696;
+            int _703 = int(mip);
+            _1733 = _1731 > (1.0 / (min(min(texelFetch(entryPointParams_hzb_tex, ivec3(ivec2(px0), _703).xy, _703).x, texelFetch(entryPointParams_hzb_tex, ivec3(ivec2(uvec2(px0.x, px1.y)), _703).xy, _703).x), min(texelFetch(entryPointParams_hzb_tex, ivec3(ivec2(uvec2(px1.x, px0.y)), _703).xy, _703).x, texelFetch(entryPointParams_hzb_tex, ivec3(ivec2(px1), _703).xy, _703).x)) * (-current_view.clip_to_view[3].z)));
+        }
+        else
+        {
+            _1733 = _1730;
+        }
+        if (_1733)
+        {
+            uint _781 = instance_index / 32u;
+            uint _789 = 1u << (instance_index % 32u);
+            uint _792 = atomicOr(next_visibility_bitmask._member0[_781], _789);
+            if (!((prev_visibility_bitmask_1._member0[_781] & _789) != 0u))
+            {
+                uint _1735;
+                if (!((int(brick_instance_data._member0[instance_index].flags) & 128) != 0))
+                {
+                    int _1734;
+                    do
+                    {
+                        if (((bounding_sphere_radius / _1122) * ((0.5 * current_view.view_to_clip[1].y) * float(clamp(frame_constants.world_render_resolution.y, 1080u, 2160u)))) > 30.0)
+                        {
+                            _1734 = 0;
+                            break;
+                        }
+                        else
+                        {
+                            _1734 = 1;
+                            break;
+                        }
+                        break; // unreachable workaround
+                    } while(false);
+                    _1735 = uint(_1734);
+                }
+                else
+                {
+                    _1735 = 0u;
+                }
+                uint _1549 = clamp(_1735, 0u, 1u) + (2u * uint((push_constants.instance_count_and_flags & 2147483648u) != 0u));
+                uint list_instance_index = atomicAdd(draw_commands_1._member0[uint(globalParams.draw_indirect_buffer_offset) + _1549].instanceCount, 1u);
+                brick_draw_list_1._member0[(_1549 * 2097152u) + list_instance_index] = instance_index;
+            }
+        }
+    }
+}
+

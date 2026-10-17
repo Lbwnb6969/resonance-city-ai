@@ -1,0 +1,32 @@
+flowchart TD
+  n0["Sequencer"]
+  n1["Selector"]
+  n2["Reaching Need"]
+  n3["Filling a need : waiting a bit"]
+  n4["PlaCAgentNodeUnfillNeed"]
+  n5["FillNeed"]
+  n6["PlaCAgentNodeFindInteractiveLocationInBuilding"]
+  n7["Selector"]
+  n8["Repeater"]
+  n9["Sequencer"]
+  n10["PlaCAgentNodeFindRandomPositionInBuilding"]
+  n11["Sequencer"]
+  n12["GoTo"]
+  n13["Waiting"]
+  n14["PlaCAgentNodeCheckIfTrue"]
+  n15["PlaCAgentNodeSetupVisitBuilding"]
+  n0 -->|0| n10
+  n0 -->|1| n12
+  n0 -->|2| n13
+  n1 -->|3| n9
+  n1 -->|4| n4
+  n7 -->|5| n11
+  n7 -->|6| n0
+  n8 -->|7| n7
+  n9 -->|8| n15
+  n9 -->|9| n8
+  n9 -->|10| n5
+  n11 -->|11| n6
+  n11 -->|12| n14
+  n11 -->|13| n2
+  n11 -->|14| n3

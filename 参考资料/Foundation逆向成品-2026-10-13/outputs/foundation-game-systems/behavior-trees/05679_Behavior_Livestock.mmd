@@ -1,0 +1,20 @@
+flowchart TD
+  n0["Waiting"]
+  n1["Repeater"]
+  n2["GoTo"]
+  n3["Sequencer"]
+  n4["PlaCNodeSheepSetupRandomDestination"]
+  n5["PlaCAgentNodeSetupLivestock"]
+  n6["Selector"]
+  n7["Waiting"]
+  n8["Selector"]
+  n9["PlaCNodeLivestockSetNeedNewDestination"]
+  n1 -->|0| n6
+  n3 -->|1| n5
+  n3 -->|2| n4
+  n3 -->|3| n8
+  n3 -->|4| n0
+  n6 -->|5| n3
+  n6 -->|6| n7
+  n8 -->|7| n2
+  n8 -->|8| n9

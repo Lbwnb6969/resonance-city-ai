@@ -1,0 +1,36 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "PlacemakerUi/TownPreviewUi" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+_MaskTex ("Texture", 2D) = "white" { }
+
+}
+SubShader {
+ LOD 100
+ Tags { "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ Pass {
+  LOD 100
+  Tags { "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ ZTest Always
+ ZWrite Off
+ Cull Off
+  GpuProgramID 58107
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

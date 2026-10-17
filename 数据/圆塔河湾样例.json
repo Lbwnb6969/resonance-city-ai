@@ -1,0 +1,586 @@
+{
+	"bakery_supply": {},
+	"cafe_credits": {},
+	"cafe_progress": {},
+	"districts": [],
+	"high_watermark": {
+		"cell": 14,
+		"district": 0,
+		"house": 7,
+		"plant": 16,
+		"road": 7,
+		"water": 0
+	},
+	"house_improvements": {},
+	"houses": [
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c1",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c2",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 1,
+					"z": 0
+				}
+			],
+			"id": "h1",
+			"name": "石榴巷1号",
+			"origin": [
+				-8.0,
+				-6.0
+			],
+			"palette": 0,
+			"role": "residential",
+			"seed": 81000,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c3",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c4",
+					"kind": "room",
+					"level": 1,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h2",
+			"name": "石榴巷2号",
+			"origin": [
+				-2.4000000953674316,
+				-5.0
+			],
+			"palette": 1,
+			"role": "bakery",
+			"seed": 81977,
+			"style": "round_tower",
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c5",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c6",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 1,
+					"z": 0
+				}
+			],
+			"id": "h3",
+			"name": "石榴巷3号",
+			"origin": [
+				-8.0,
+				0.0
+			],
+			"palette": 2,
+			"role": "residential",
+			"seed": 82954,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c7",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c8",
+					"kind": "room",
+					"level": 1,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h4",
+			"name": "石榴巷4号",
+			"origin": [
+				-2.4000000953674316,
+				1.0
+			],
+			"palette": 3,
+			"role": "venue",
+			"seed": 83931,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c9",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c10",
+					"kind": "terrace",
+					"level": 0,
+					"source": "seed",
+					"x": 1,
+					"z": 0
+				}
+			],
+			"id": "h5",
+			"name": "石榴巷5号",
+			"origin": [
+				-7.0,
+				6.0
+			],
+			"palette": 4,
+			"role": "residential",
+			"seed": 84908,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c11",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h6",
+			"name": "石榴巷6号",
+			"origin": [
+				9.0,
+				3.0
+			],
+			"palette": 5,
+			"role": "residential",
+			"seed": 85885,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"base_y": 2.0,
+			"cells": [
+				{
+					"id": "c12",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c13",
+					"kind": "room",
+					"level": 1,
+					"source": "player",
+					"x": 0,
+					"z": 0
+				},
+				{
+					"id": "c14",
+					"kind": "room",
+					"level": 2,
+					"source": "player",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h7",
+			"name": "石阶望楼",
+			"origin": [
+				-15.0,
+				0.0
+			],
+			"palette": 0,
+			"role": "venue",
+			"seed": 87839,
+			"style": "round_tower",
+			"workshop_open": true
+		}
+	],
+	"journey_checkpoint": {},
+	"life_progress": {
+		"auto_concerts": 0,
+		"concerts": 0,
+		"gatherings": 0,
+		"purchases": 0,
+		"tea_parties": 0,
+		"tea_visits": 0
+	},
+	"matinee_cooldown": 0.0,
+	"matinee_credits": {},
+	"matinee_last_venue": "",
+	"matinee_pending": {},
+	"matinee_progress": {},
+	"next_cell_id": 15,
+	"next_district_id": 1,
+	"next_house_id": 8,
+	"next_plant_id": 17,
+	"next_road_id": 8,
+	"next_water_id": 1,
+	"plants": [
+		{
+			"id": "p1",
+			"kind": "cypress",
+			"position": [
+				-15.604883193969727,
+				-10.683189392089844
+			],
+			"scale": 1.2163910865783691,
+			"seed": 261991,
+			"source": "seed"
+		},
+		{
+			"id": "p2",
+			"kind": "olive",
+			"position": [
+				-15.788230895996094,
+				-8.187409400939941
+			],
+			"scale": 0.759555459022522,
+			"seed": 262968,
+			"source": "seed"
+		},
+		{
+			"id": "p3",
+			"kind": "olive",
+			"position": [
+				-12.155020713806152,
+				-11.07377815246582
+			],
+			"scale": 0.9940552711486816,
+			"seed": 263945,
+			"source": "seed"
+		},
+		{
+			"id": "p4",
+			"kind": "olive",
+			"position": [
+				-14.399040222167969,
+				6.568901062011719
+			],
+			"scale": 1.2015564441680908,
+			"seed": 264922,
+			"source": "seed"
+		},
+		{
+			"id": "p5",
+			"kind": "cypress",
+			"position": [
+				-17.499481201171875,
+				4.69705867767334
+			],
+			"scale": 1.2026680707931519,
+			"seed": 265899,
+			"source": "seed"
+		},
+		{
+			"id": "p6",
+			"kind": "cypress",
+			"position": [
+				14.840228080749512,
+				-7.683424949645996
+			],
+			"scale": 1.0465253591537476,
+			"seed": 266876,
+			"source": "seed"
+		},
+		{
+			"id": "p7",
+			"kind": "olive",
+			"position": [
+				13.496452331542969,
+				-6.948415756225586
+			],
+			"scale": 0.765044093132019,
+			"seed": 267853,
+			"source": "seed"
+		},
+		{
+			"id": "p8",
+			"kind": "olive",
+			"position": [
+				10.23713493347168,
+				-11.37964916229248
+			],
+			"scale": 1.1343286037445068,
+			"seed": 268830,
+			"source": "seed"
+		},
+		{
+			"id": "p9",
+			"kind": "cypress",
+			"position": [
+				10.61290168762207,
+				-6.341756820678711
+			],
+			"scale": 1.1402229070663452,
+			"seed": 269807,
+			"source": "seed"
+		},
+		{
+			"id": "p10",
+			"kind": "olive",
+			"position": [
+				15.113365173339844,
+				-9.882493019104004
+			],
+			"scale": 0.751419723033905,
+			"seed": 270784,
+			"source": "seed"
+		},
+		{
+			"id": "p11",
+			"kind": "cypress",
+			"position": [
+				14.033891677856445,
+				6.86275577545166
+			],
+			"scale": 1.0375653505325317,
+			"seed": 271761,
+			"source": "seed"
+		},
+		{
+			"id": "p12",
+			"kind": "cypress",
+			"position": [
+				12.445785522460938,
+				6.400025367736816
+			],
+			"scale": 0.7686666250228882,
+			"seed": 272738,
+			"source": "seed"
+		},
+		{
+			"id": "p13",
+			"kind": "olive",
+			"position": [
+				13.820211410522461,
+				9.954377174377441
+			],
+			"scale": 1.1195498704910278,
+			"seed": 273715,
+			"source": "seed"
+		},
+		{
+			"id": "p14",
+			"kind": "cypress",
+			"position": [
+				16.966167449951172,
+				7.747064590454102
+			],
+			"scale": 0.8725642561912537,
+			"seed": 274692,
+			"source": "seed"
+		},
+		{
+			"id": "p15",
+			"kind": "olive",
+			"position": [
+				-7.13862419128418,
+				12.603355407714844
+			],
+			"scale": 0.8234521746635437,
+			"seed": 275669,
+			"source": "seed"
+		},
+		{
+			"id": "p16",
+			"kind": "cypress",
+			"position": [
+				-8.433623313903809,
+				14.953434944152832
+			],
+			"scale": 1.1282556056976318,
+			"seed": 276646,
+			"source": "seed"
+		}
+	],
+	"resonance_afterglow": {},
+	"revision": 11,
+	"roads": [
+		{
+			"bridge": false,
+			"id": "r1",
+			"points": [
+				[
+					-11.0,
+					-9.0
+				],
+				[
+					-11.0,
+					9.0
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r2",
+			"points": [
+				[
+					-11.0,
+					-4.449999809265137
+				],
+				[
+					-8.0,
+					-4.449999809265137
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r3",
+			"points": [
+				[
+					-11.0,
+					-3.450000047683716
+				],
+				[
+					-2.4000000953674316,
+					-3.450000047683716
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r4",
+			"points": [
+				[
+					-11.0,
+					1.5499999523162842
+				],
+				[
+					-8.0,
+					1.5499999523162842
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r5",
+			"points": [
+				[
+					-11.0,
+					2.549999952316284
+				],
+				[
+					-2.4000000953674316,
+					2.549999952316284
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r6",
+			"points": [
+				[
+					-11.0,
+					7.550000190734863
+				],
+				[
+					-7.0,
+					7.550000190734863
+				]
+			],
+			"source": "seed",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r7",
+			"points": [
+				[
+					-15.0,
+					1.5499999523162842
+				],
+				[
+					-11.0,
+					1.5499999523162842
+				]
+			],
+			"source": "player",
+			"width": 1.25
+		}
+	],
+	"schema": 8,
+	"terrain_strokes": [
+		{
+			"mode": "plateau",
+			"points": [
+				[
+					-15.0,
+					-1.100000023841858
+				]
+			],
+			"radius": 3.5,
+			"strength": 1.0
+		},
+		{
+			"mode": "plateau",
+			"points": [
+				[
+					-15.0,
+					-1.100000023841858
+				]
+			],
+			"radius": 3.5,
+			"strength": 1.0
+		}
+	],
+	"venue_commissions": {},
+	"waters": [],
+	"workshop_supply": {}
+}

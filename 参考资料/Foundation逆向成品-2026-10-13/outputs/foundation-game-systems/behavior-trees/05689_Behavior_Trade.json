@@ -1,0 +1,539 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Behavior Trade.bt",
+  "absolute_offset": 2128140,
+  "length": 8226,
+  "sha256": "0fe4960a5327991ff29ac1a932e16d1230b5616ffeded19a393ee2a09b0e0d44",
+  "rid": 5689,
+  "root_id": "158743ae-e3bd-4102-9081-75959d0a59bb",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NextWarehousePosition",
+        "IsPublic": false,
+        "Id": "9d808851-0fc3-4e71-b694-a3b537839f0b",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "PositionMarchantEndPoint",
+        "IsPublic": false,
+        "Id": "18f60b9f-e413-4ab0-9dc8-ad733687ff2d",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Wait",
+        "IsPublic": false,
+        "Id": "a01d5500-252e-46f5-a5bc-08920dd184f1",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 5.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TradingData",
+        "IsPublic": false,
+        "Id": "e78c3c20-a89b-4279-8816-41f4b7d97bab",
+        "TypeDefinition": "PlaSContextDataTrading",
+        "DefaultValue": {
+          "type": "PlaSContextDataTrading"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "0ece8025-4747-4959-a01d-fa0cb02924db",
+      "name": "Enable",
+      "type": "PlaCAgentNodeEnable",
+      "position": [
+        -166,
+        368
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "b1d1a1e4-e6f9-465d-b696-7fe424f40387",
+      "name": "Going to trading post",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -110,
+        733
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "9d808851-0fc3-4e71-b694-a3b537839f0b",
+          "binding_status": "variable",
+          "variable_name": "NextWarehousePosition"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "f63e85fb-a428-47de-bcef-b53451bb574f",
+      "name": "Trading",
+      "type": "PlaCAgentNodeTrade",
+      "position": [
+        525,
+        666
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Trading Data",
+          "value": "e78c3c20-a89b-4279-8816-41f4b7d97bab",
+          "binding_status": "variable",
+          "variable_name": "TradingData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "09f6127d-8cb2-4207-87f5-4bd6acb633fd",
+      "name": "Available for trade",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        769,
+        666
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "a01d5500-252e-46f5-a5bc-08920dd184f1",
+          "binding_status": "variable",
+          "variable_name": "Wait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "09f6127d-8cb2-4207-87f5-4bd6acb633fd",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "e39c1b87-414b-4891-87f0-ac038bd54228",
+      "name": "",
+      "type": "PlaCAgentNodeTradeLeave",
+      "position": [
+        394,
+        411
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "db8248ac-1c9f-4973-a78f-18b8d206a161",
+      "name": "Leaving",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        615,
+        430
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "18f60b9f-e413-4ab0-9dc8-ad733687ff2d",
+          "binding_status": "variable",
+          "variable_name": "PositionMarchantEndPoint"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "8b54912b-0bc6-4f3f-a97b-5fc639ae47d9",
+      "name": "Disable",
+      "type": "PlaCAgentNodeDisable",
+      "position": [
+        931,
+        419
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Disable Vehicle",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        405,
+        198
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "836bbaf5-c824-40f2-bd54-e020ddfe9a24",
+      "name": "",
+      "type": "PlaCNodeTraderSetup",
+      "position": [
+        -353,
+        656
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Trading Data",
+          "value": "e78c3c20-a89b-4279-8816-41f4b7d97bab",
+          "binding_status": "variable",
+          "variable_name": "TradingData"
+        },
+        {
+          "name": "Next Location",
+          "value": "9d808851-0fc3-4e71-b694-a3b537839f0b",
+          "binding_status": "variable",
+          "variable_name": "NextWarehousePosition"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "89962146-839d-4fbb-8d03-dc739fdd18dd",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        79,
+        386
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "89962146-839d-4fbb-8d03-dc739fdd18dd",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        75,
+        489
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "baeae56f-c1c5-4494-876c-485c776649e5",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        627,
+        352
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "bce6acb4-5b83-443a-9c09-ec00fb502b29",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        104,
+        572
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "a0cfe8b9-e0aa-40d0-afd5-e1de407eb72e",
+      "name": "Create Trader Blocked Notification",
+      "type": "PlaCAgentCreateTraderBlockedNotification",
+      "position": [
+        269,
+        713
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Destination",
+          "value": "9d808851-0fc3-4e71-b694-a3b537839f0b",
+          "binding_status": "variable",
+          "variable_name": "NextWarehousePosition"
+        },
+        {
+          "name": "Agent",
+          "value": "3ae8e2af-b31b-4bfb-ae2c-bf13eb91e2b0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "to": "0ece8025-4747-4959-a01d-fa0cb02924db",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "to": "89962146-839d-4fbb-8d03-dc739fdd18dd",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "to": "e39c1b87-414b-4891-87f0-ac038bd54228",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "to": "baeae56f-c1c5-4494-876c-485c776649e5",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "158743ae-e3bd-4102-9081-75959d0a59bb",
+      "to": "8b54912b-0bc6-4f3f-a97b-5fc639ae47d9",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "89962146-839d-4fbb-8d03-dc739fdd18dd",
+      "to": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "to": "836bbaf5-c824-40f2-bd54-e020ddfe9a24",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "to": "bce6acb4-5b83-443a-9c09-ec00fb502b29",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "to": "f63e85fb-a428-47de-bcef-b53451bb574f",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cf3a8144-af0e-463e-9de2-1b38427e5e6c",
+      "to": "09f6127d-8cb2-4207-87f5-4bd6acb633fd",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "baeae56f-c1c5-4494-876c-485c776649e5",
+      "to": "db8248ac-1c9f-4973-a78f-18b8d206a161",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bce6acb4-5b83-443a-9c09-ec00fb502b29",
+      "to": "b1d1a1e4-e6f9-465d-b696-7fe424f40387",
+      "ordinal": 11,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bce6acb4-5b83-443a-9c09-ec00fb502b29",
+      "to": "a0cfe8b9-e0aa-40d0-afd5-e1de407eb72e",
+      "ordinal": 12,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

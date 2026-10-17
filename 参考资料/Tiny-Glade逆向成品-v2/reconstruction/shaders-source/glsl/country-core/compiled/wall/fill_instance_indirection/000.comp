@@ -1,0 +1,46 @@
+#version 460
+layout(local_size_x = 32, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} all_lists_visible_brick_mask_in_chunk;
+
+layout(set = 0, binding = 2, std430) readonly buffer all_lists_visible_brick_chunk_prefix
+{
+    uint _member0[];
+} all_lists_visible_brick_chunk_prefix_1;
+
+layout(set = 0, binding = 3, std430) readonly buffer all_lists_visible_brick_chunk_prefix_subtotals
+{
+    uint _member0[];
+} all_lists_visible_brick_chunk_prefix_subtotals_1;
+
+layout(set = 0, binding = 0, std430) readonly buffer chunk_first_instance
+{
+    uint _member0[];
+} chunk_first_instance_1;
+
+layout(set = 0, binding = 4, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} brick_draw_list;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint list_index;
+} push_constants;
+
+void main()
+{
+    uint chunk = gl_GlobalInvocationID.x / 32u;
+    uint _113 = push_constants.list_index * 2097152u;
+    uint global_list_chunk_offset = _113 / 32u;
+    uint _51 = global_list_chunk_offset + chunk;
+    uint _62 = 1u << gl_LocalInvocationIndex;
+    if ((all_lists_visible_brick_mask_in_chunk._member0[_51] & _62) != 0u)
+    {
+        brick_draw_list._member0[((_113 + all_lists_visible_brick_chunk_prefix_1._member0[_51]) + all_lists_visible_brick_chunk_prefix_subtotals_1._member0[(global_list_chunk_offset / 1024u) + (chunk / 1024u)]) + uint(bitCount(all_lists_visible_brick_mask_in_chunk._member0[_51] & (_62 - 1u)))] = chunk_first_instance_1._member0[chunk] + gl_LocalInvocationIndex;
+    }
+}
+

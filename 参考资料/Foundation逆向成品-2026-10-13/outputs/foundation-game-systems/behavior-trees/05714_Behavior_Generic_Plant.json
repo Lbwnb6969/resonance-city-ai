@@ -1,0 +1,1220 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Generic Plant.bt",
+  "absolute_offset": 2272847,
+  "length": 18605,
+  "sha256": "d4448dd819aa0aa1723f16aae928c07759245ba0573974ee7feee61f49dc3237",
+  "rid": 5714,
+  "root_id": "e3d1a7f6-74ea-4e65-8c39-65de19f66b5d",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Nothing to do",
+        "IsPublic": false,
+        "Id": "b95a42f5-e67a-42e3-8d62-cb3c209d87e4",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 1.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Agent Data",
+        "IsPublic": true,
+        "Id": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Workplace Position",
+        "IsPublic": false,
+        "Id": "dfc1f616-40ce-44cb-955b-f815a96dcb2c",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Plant Position",
+        "IsPublic": false,
+        "Id": "5fa28cc6-4c20-42e9-bdbd-165f18e7216a",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Plant Data",
+        "IsPublic": true,
+        "Id": "e41eead6-4d3b-4583-a87a-ac7ec8fe59c2",
+        "TypeDefinition": "PlaSPlantableData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSPlantableData"
+          },
+          "BatchCount": 1,
+          "MaxRadius": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Wait Planting",
+        "IsPublic": true,
+        "Id": "77da5fc8-957b-4a52-8dba-7f42f7da26ae",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Sow In One Step",
+        "IsPublic": false,
+        "Id": "c0023d6e-402a-41fa-a306-9f5edade62ea",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Planting Step Count",
+        "IsPublic": false,
+        "Id": "8ca3e194-9c83-4fcd-8a96-0ed186d64b96",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Plant Request Constant Delay",
+        "IsPublic": false,
+        "Id": "937f66d5-e27c-4937-9b80-71d575344ec2",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.5,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "IsNeedANewWaitLocation",
+        "IsPublic": false,
+        "Id": "53f683c8-7970-4421-93f7-53597afa05ab",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ActivityMessagePlanting",
+        "IsPublic": false,
+        "Id": "a46abe0d-f712-4bb1-a842-ded81966918d",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "SOWING_FIELD",
+          "ActivityType": "PRODUCTION"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Has a next plant to plant",
+        "IsPublic": false,
+        "Id": "406cd2d4-9502-4a30-ad93-2bef63e8ab59",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Plantable Component",
+        "IsPublic": false,
+        "Id": "131031a9-9027-473b-80ca-0414446720a9",
+        "TypeDefinition": "PlaSContextDataVoidObject",
+        "DefaultValue": {
+          "type": "PlaSContextDataVoidObject"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Next Plantable",
+        "IsPublic": false,
+        "Id": "f918db5e-66b0-48a7-b5b6-f95310154914",
+        "TypeDefinition": "PlaSContextDataVoidObject",
+        "DefaultValue": {
+          "type": "PlaSContextDataVoidObject"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Plantable Target List",
+        "IsPublic": false,
+        "Id": "10295e8c-eaf9-451e-936b-36dda68d6893",
+        "TypeDefinition": "PlaSPlantableTargetListData",
+        "DefaultValue": {
+          "type": "PlaSPlantableTargetListData"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Next Plantable Target List",
+        "IsPublic": false,
+        "Id": "30610008-8a92-46c5-bcf9-11ba4c56831c",
+        "TypeDefinition": "PlaSPlantableTargetListData",
+        "DefaultValue": {
+          "type": "PlaSPlantableTargetListData"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e3d1a7f6-74ea-4e65-8c39-65de19f66b5d",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        453,
+        64
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        333,
+        252
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "d7694367-8bee-4f1c-ac3a-63af1cd805c4",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        555,
+        251
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "b95a42f5-e67a-42e3-8d62-cb3c209d87e4",
+          "binding_status": "variable",
+          "variable_name": "Nothing to do"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "d7694367-8bee-4f1c-ac3a-63af1cd805c4",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "2ca25d65-2d34-49d2-878f-ca0e0f3e8eb2",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -102,
+        459
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Destination",
+          "value": "dfc1f616-40ce-44cb-955b-f815a96dcb2c",
+          "binding_status": "variable",
+          "variable_name": "Workplace Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "e7d51992-7fd4-483b-986d-0375fbee1c2f",
+      "name": "",
+      "type": "PlaCAgentNodeDisablePathTracing",
+      "position": [
+        227,
+        460
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4541a3ad-c00b-4459-9008-6d38283815e3",
+      "name": "",
+      "type": "PlaCAgentNodeEnablePathTracing",
+      "position": [
+        1103,
+        456
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "cac7af82-36e0-4fbe-bb49-3638523bfb47",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        790,
+        456
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Destination",
+          "value": "dfc1f616-40ce-44cb-955b-f815a96dcb2c",
+          "binding_status": "variable",
+          "variable_name": "Workplace Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "77837d75-a0d1-4815-812f-c6707274c915",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        836,
+        937
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "2668feec-24c2-4610-9e3e-5f5965228153",
+      "name": "",
+      "type": "PlaCAgentNodePlantRequest",
+      "position": [
+        -628,
+        800
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Plantable",
+          "value": "e41eead6-4d3b-4583-a87a-ac7ec8fe59c2",
+          "binding_status": "variable",
+          "variable_name": "Plant Data"
+        },
+        {
+          "name": "Constant Delay",
+          "value": "937f66d5-e27c-4937-9b80-71d575344ec2",
+          "binding_status": "variable",
+          "variable_name": "Plant Request Constant Delay"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4c8a6b3a-1037-4f88-b6cd-f15dd29c6ef8",
+      "name": "Planting",
+      "type": "PlaCAgentNodePlant",
+      "position": [
+        1192,
+        1178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "77da5fc8-957b-4a52-8dba-7f42f7da26ae",
+          "binding_status": "variable",
+          "variable_name": "Wait Planting"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Target Plantable List",
+          "value": "10295e8c-eaf9-451e-936b-36dda68d6893",
+          "binding_status": "variable",
+          "variable_name": "Plantable Target List"
+        }
+      ],
+      "data": {
+        "Guid": "4c8a6b3a-1037-4f88-b6cd-f15dd29c6ef8",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "cf84d1ab-2f7a-408d-8d8d-be5a0fe51c77",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        753,
+        807
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "cf84d1ab-2f7a-408d-8d8d-be5a0fe51c77",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "8ba3b365-e56f-46fa-83e8-3b8576eb8fe2",
+      "name": "",
+      "type": "PlaCAgentNodeFetchNextPlantable",
+      "position": [
+        -401,
+        795
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Plantable Data",
+          "value": "e41eead6-4d3b-4583-a87a-ac7ec8fe59c2",
+          "binding_status": "variable",
+          "variable_name": "Plant Data"
+        },
+        {
+          "name": "Plant In One Step Loop Data",
+          "value": "c0023d6e-402a-41fa-a306-9f5edade62ea",
+          "binding_status": "variable",
+          "variable_name": "Sow In One Step"
+        },
+        {
+          "name": "Out Plantable Target List",
+          "value": "10295e8c-eaf9-451e-936b-36dda68d6893",
+          "binding_status": "variable",
+          "variable_name": "Plantable Target List"
+        },
+        {
+          "name": "Out Plant Position",
+          "value": "5fa28cc6-4c20-42e9-bdbd-165f18e7216a",
+          "binding_status": "variable",
+          "variable_name": "Plant Position"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "c388ce03-920e-4959-a0ef-f71b690ee09d",
+      "name": "Repeater",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeat",
+      "position": [
+        457,
+        458
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "8ca3e194-9c83-4fcd-8a96-0ed186d64b96",
+          "binding_status": "variable",
+          "variable_name": "Planting Step Count"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        188,
+        668
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "5948a589-9648-43a2-ab2d-298e22aac365",
+      "name": "",
+      "type": "PlaCAgentNodeSetWorkplaceAsDestination",
+      "position": [
+        -727,
+        464
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Workplace Position",
+          "value": "dfc1f616-40ce-44cb-955b-f815a96dcb2c",
+          "binding_status": "variable",
+          "variable_name": "Workplace Position"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "1cae2f9d-12c0-4927-8fbc-f50a0ecb3556",
+      "name": "",
+      "type": "PlaCAgentNodeIsWorkplaceAvailable",
+      "position": [
+        -956,
+        464
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4af8de4b-7db1-4782-8a40-878a79474569",
+      "name": "",
+      "type": "PlaCAgentNodeSetupPlantingWork",
+      "position": [
+        -445,
+        462
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Plant In One Step Loop Data",
+          "value": "c0023d6e-402a-41fa-a306-9f5edade62ea",
+          "binding_status": "variable",
+          "variable_name": "Sow In One Step"
+        },
+        {
+          "name": "Steps Count Loop Data",
+          "value": "8ca3e194-9c83-4fcd-8a96-0ed186d64b96",
+          "binding_status": "variable",
+          "variable_name": "Planting Step Count"
+        },
+        {
+          "name": "Plant Wait Data",
+          "value": "77da5fc8-957b-4a52-8dba-7f42f7da26ae",
+          "binding_status": "variable",
+          "variable_name": "Wait Planting"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "f94f776f-21f2-4beb-8dd2-cdddbb2347d0",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        1200,
+        1029
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "c0023d6e-402a-41fa-a306-9f5edade62ea",
+          "binding_status": "variable",
+          "variable_name": "Sow In One Step"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "f94f776f-21f2-4beb-8dd2-cdddbb2347d0",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "ca237243-061b-411a-a4c8-2d7297919345",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        468,
+        580
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "6840f2a9-7997-424b-a98d-2b99167311c2",
+      "name": "",
+      "type": "8d5bd77e-9ac8-4b8a-a608-5dc76e21b41a",
+      "position": [
+        659,
+        667
+      ],
+      "behavior_asset_targets": [
+        [
+          5954,
+          "asset/Agent/IL_Freetime/Behavior Waiting For Work.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "IsNeedANewWaitLocation",
+          "value": "53f683c8-7970-4421-93f7-53597afa05ab",
+          "binding_status": "variable",
+          "variable_name": "IsNeedANewWaitLocation"
+        }
+      ],
+      "data": {
+        "Guid": "6840f2a9-7997-424b-a98d-2b99167311c2",
+        "BehaviorTree": "8d5bd77e-9ac8-4b8a-a608-5dc76e21b41a"
+      }
+    },
+    {
+      "id": "eb84dbc1-db8f-463b-a940-d54e2f233613",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeSetBoolValue",
+      "position": [
+        486,
+        815
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Bool Value",
+          "value": "53f683c8-7970-4421-93f7-53597afa05ab",
+          "binding_status": "variable",
+          "variable_name": "IsNeedANewWaitLocation"
+        }
+      ],
+      "data": {
+        "Guid": "eb84dbc1-db8f-463b-a940-d54e2f233613",
+        "IsTrue": true
+      }
+    },
+    {
+      "id": "1e5ec954-4f97-45c8-81e0-3f54bc43097e",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        206,
+        815
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "a46abe0d-f712-4bb1-a842-ded81966918d",
+          "binding_status": "variable",
+          "variable_name": "ActivityMessagePlanting"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "474612bf-01a9-40d2-88eb-d099bd1698c4",
+      "name": "",
+      "type": "PlaCAgentNodePlanPath",
+      "position": [
+        -74,
+        805
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Destination",
+          "value": "5fa28cc6-4c20-42e9-bdbd-165f18e7216a",
+          "binding_status": "variable",
+          "variable_name": "Plant Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "ed89ca0f-63d1-4054-bb34-1762d677091b",
+      "name": "",
+      "type": "PlaCAgentNodeExecutePlannedPath",
+      "position": [
+        400,
+        1029
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "f8a02aa0-80e8-4947-93d2-a139c6a7c1d6",
+      "name": "",
+      "type": "PlaCAgentNodeFetchNextPlantable",
+      "position": [
+        594,
+        1177
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Plantable Data",
+          "value": "e41eead6-4d3b-4583-a87a-ac7ec8fe59c2",
+          "binding_status": "variable",
+          "variable_name": "Plant Data"
+        },
+        {
+          "name": "Plant In One Step Loop Data",
+          "value": "c0023d6e-402a-41fa-a306-9f5edade62ea",
+          "binding_status": "variable",
+          "variable_name": "Sow In One Step"
+        },
+        {
+          "name": "Out Plantable Target List",
+          "value": "30610008-8a92-46c5-bcf9-11ba4c56831c",
+          "binding_status": "variable",
+          "variable_name": "Next Plantable Target List"
+        },
+        {
+          "name": "Out Plant Position",
+          "value": "5fa28cc6-4c20-42e9-bdbd-165f18e7216a",
+          "binding_status": "variable",
+          "variable_name": "Plant Position"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "cbe12495-20f7-4084-92c4-877cabc824aa",
+      "name": "",
+      "type": "PlaCAgentNodePlanPath",
+      "position": [
+        915,
+        1178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "ad89a98d-5948-47ed-8f7a-7ba797fd32a4",
+          "binding_status": "variable",
+          "variable_name": "Agent Data"
+        },
+        {
+          "name": "Destination",
+          "value": "5fa28cc6-4c20-42e9-bdbd-165f18e7216a",
+          "binding_status": "variable",
+          "variable_name": "Plant Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "13923f4a-46c4-4937-9539-8e039f003133",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        834,
+        1030
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "9cb01084-f28b-4c89-9c7a-e3165a360b5c",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        837,
+        1103
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "d93ca89a-6b19-4852-8826-49a6cf1bc668",
+      "name": "",
+      "type": "PlaCAgentNodeTransferPlantableData",
+      "position": [
+        1539,
+        1028
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "In Target Plantable List",
+          "value": "30610008-8a92-46c5-bcf9-11ba4c56831c",
+          "binding_status": "variable",
+          "variable_name": "Next Plantable Target List"
+        },
+        {
+          "name": "Out Target Plantable List",
+          "value": "10295e8c-eaf9-451e-936b-36dda68d6893",
+          "binding_status": "variable",
+          "variable_name": "Plantable Target List"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "e3d1a7f6-74ea-4e65-8c39-65de19f66b5d",
+      "to": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e3d1a7f6-74ea-4e65-8c39-65de19f66b5d",
+      "to": "d7694367-8bee-4f1c-ac3a-63af1cd805c4",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "1cae2f9d-12c0-4927-8fbc-f50a0ecb3556",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "5948a589-9648-43a2-ab2d-298e22aac365",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "4af8de4b-7db1-4782-8a40-878a79474569",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "2ca25d65-2d34-49d2-878f-ca0e0f3e8eb2",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "e7d51992-7fd4-483b-986d-0375fbee1c2f",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "c388ce03-920e-4959-a0ef-f71b690ee09d",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "cac7af82-36e0-4fbe-bb49-3638523bfb47",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "44a4e2ed-88ee-4ab4-ada0-2f24b931bc03",
+      "to": "4541a3ad-c00b-4459-9008-6d38283815e3",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "77837d75-a0d1-4815-812f-c6707274c915",
+      "to": "ed89ca0f-63d1-4054-bb34-1762d677091b",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "77837d75-a0d1-4815-812f-c6707274c915",
+      "to": "13923f4a-46c4-4937-9539-8e039f003133",
+      "ordinal": 11,
+      "valid_endpoints": true
+    },
+    {
+      "from": "77837d75-a0d1-4815-812f-c6707274c915",
+      "to": "f94f776f-21f2-4beb-8dd2-cdddbb2347d0",
+      "ordinal": 12,
+      "valid_endpoints": true
+    },
+    {
+      "from": "77837d75-a0d1-4815-812f-c6707274c915",
+      "to": "d93ca89a-6b19-4852-8826-49a6cf1bc668",
+      "ordinal": 13,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cf84d1ab-2f7a-408d-8d8d-be5a0fe51c77",
+      "to": "77837d75-a0d1-4815-812f-c6707274c915",
+      "ordinal": 14,
+      "valid_endpoints": true
+    },
+    {
+      "from": "c388ce03-920e-4959-a0ef-f71b690ee09d",
+      "to": "ca237243-061b-411a-a4c8-2d7297919345",
+      "ordinal": 15,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "2668feec-24c2-4610-9e3e-5f5965228153",
+      "ordinal": 16,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "8ba3b365-e56f-46fa-83e8-3b8576eb8fe2",
+      "ordinal": 17,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "474612bf-01a9-40d2-88eb-d099bd1698c4",
+      "ordinal": 18,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "1e5ec954-4f97-45c8-81e0-3f54bc43097e",
+      "ordinal": 19,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "eb84dbc1-db8f-463b-a940-d54e2f233613",
+      "ordinal": 20,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "to": "cf84d1ab-2f7a-408d-8d8d-be5a0fe51c77",
+      "ordinal": 21,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f94f776f-21f2-4beb-8dd2-cdddbb2347d0",
+      "to": "4c8a6b3a-1037-4f88-b6cd-f15dd29c6ef8",
+      "ordinal": 22,
+      "valid_endpoints": true
+    },
+    {
+      "from": "ca237243-061b-411a-a4c8-2d7297919345",
+      "to": "e8437a96-7d0c-483f-a17b-87618bbcf1b2",
+      "ordinal": 23,
+      "valid_endpoints": true
+    },
+    {
+      "from": "ca237243-061b-411a-a4c8-2d7297919345",
+      "to": "6840f2a9-7997-424b-a98d-2b99167311c2",
+      "ordinal": 24,
+      "valid_endpoints": true
+    },
+    {
+      "from": "13923f4a-46c4-4937-9539-8e039f003133",
+      "to": "9cb01084-f28b-4c89-9c7a-e3165a360b5c",
+      "ordinal": 25,
+      "valid_endpoints": true
+    },
+    {
+      "from": "9cb01084-f28b-4c89-9c7a-e3165a360b5c",
+      "to": "f8a02aa0-80e8-4947-93d2-a139c6a7c1d6",
+      "ordinal": 26,
+      "valid_endpoints": true
+    },
+    {
+      "from": "9cb01084-f28b-4c89-9c7a-e3165a360b5c",
+      "to": "cbe12495-20f7-4084-92c4-877cabc824aa",
+      "ordinal": 27,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

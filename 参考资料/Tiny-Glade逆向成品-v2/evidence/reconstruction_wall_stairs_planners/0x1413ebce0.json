@@ -1,0 +1,103 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1457,
+    "record_offset": 111324,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.0x6cxvd0phhg4sehdgrjbnaqr.1ryv1cn.rcgu.o",
+    "name": "alloc::vec::spec_from_iter::impl$0::from_iter<utils::geometry::aabb::Aabb2,core::iter::adapters::filter_map::FilterMap<core::iter::adapters::map::Map<core::slice::iter::Iter<tuple$<utils::geometry::aabb::Aabb2,country_core::resources::walls::wall_holes::HoleType,country_core::resources::walls::wall_holes::HoleOrigin> >,country_core::resources::walls::wall_holes::impl$1::holes::closure_env$0>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::remapped_wall_cutouts::closure$0::closure_env$0> >",
+    "segment": 1,
+    "offset": 20884704,
+    "rva": 20888800,
+    "va": "0x1413ebce0",
+    "size": 399,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "59056681ee0c8a3b59ab51c91bcc2b4deb9a62782b6091035e61ab675a7ba7bb",
+  "code_bytes": 399,
+  "decoded_bytes": 399,
+  "instructions": 115,
+  "calls_and_jumps": [
+    {
+      "address": "0x1413ebd36",
+      "kind": "jmp",
+      "target": "0x1413ebe09",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebd42",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebd51",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebd9f",
+      "kind": "jmp",
+      "target": "0x1413ebdf2",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebdc9",
+      "kind": "call",
+      "target": "0x142d7f1b0",
+      "target_names": [
+        "alloc::raw_vec::impl$4::reserve::do_reserve_and_handle<alloc::alloc::Global>",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h0559268ff9d2f5acE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h08aab91c2625ec70E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h1faba4037fd73c02E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h3d101bfcb576e41dE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h3f559247af00609aE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h4dd79c47cb035037E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h4eddda47aeb62982E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebe23",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ebe5c",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

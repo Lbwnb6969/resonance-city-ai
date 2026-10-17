@@ -1,0 +1,36 @@
+flowchart TD
+  n0["PlaCAgentNodeGoTo"]
+  n1["PlaCAgentNodeDisable"]
+  n2["GoTo"]
+  n3["Sequencer"]
+  n4["Succeeder"]
+  n5["Sequencer"]
+  n6["PlaCAgentNodeEntertainerSetup"]
+  n7["Waiting"]
+  n8["PlaCAgentNodeSetupLeaveVillage"]
+  n9["Sequencer"]
+  n10["Succeeder"]
+  n11["Waiting"]
+  n12["GoTo"]
+  n13["Sequencer"]
+  n14["Succeeder"]
+  n15["PlaCAgentNodeRegisterInteractiveLocationFromDestination"]
+  n16["Waiting"]
+  n17["PlaCAgentNodeCheckIfTrue"]
+  n3 -->|0| n8
+  n3 -->|1| n4
+  n3 -->|2| n1
+  n4 -->|3| n2
+  n5 -->|4| n6
+  n5 -->|5| n14
+  n5 -->|6| n15
+  n5 -->|7| n0
+  n5 -->|8| n11
+  n5 -->|9| n7
+  n9 -->|10| n10
+  n9 -->|11| n3
+  n10 -->|12| n5
+  n13 -->|13| n17
+  n13 -->|14| n12
+  n13 -->|15| n16
+  n14 -->|16| n13

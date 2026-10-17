@@ -1,0 +1,325 @@
+{
+  "saved_roof_id": 4,
+  "auxiliary_render_id": 4,
+  "roof": {
+    "wall": {
+      "kind": "rectangle",
+      "width": 13.778027534484863,
+      "length": 10.587912559509277,
+      "radius": 2.0,
+      "pivot_x": 0.583616316318512,
+      "pivot_z": -4.97027063369751,
+      "axis_x": 0.9350754618644714,
+      "axis_z": -0.35444873571395874,
+      "yaw": 0.0
+    },
+    "profile_01": 1.0,
+    "height_01": 0.13637667894363403,
+    "ridge_length_01": 0.0,
+    "eave_length_01": 0.20000000298023224,
+    "ridge_direction": 1,
+    "tip_offset_x": 0.0,
+    "tip_offset_z": 0.0,
+    "pivot_y": 8.245980262756348
+  },
+  "mode": "settle",
+  "frames": 0,
+  "dt": 0.016666666666666666,
+  "records": 912,
+  "initial_sha256": "0865b22bf416a5b287a3b6eefc024a52d81c8e3477223e18ff2e8abcac9efc67",
+  "output_sha256": "9007a7159463d08a91a7278a7d6d890648055d991e6dc119c2f70abecda38f14",
+  "animation": {
+    "primary_t": 1.0,
+    "secondary_t": 1.0
+  },
+  "simulation": {
+    "wall_height_delta": 0.0,
+    "previous_pivot_y": 8.245980262756348,
+    "simulated_height": 8.245980262756348,
+    "velocity": 0.0,
+    "falling_duration": 0.0,
+    "was_falling": false
+  },
+  "sound_requests": [],
+  "world_origin_bounds": {
+    "min": [
+      -8.022476196289062,
+      8.20511245727539,
+      -12.648538589477539
+    ],
+    "max": [
+      9.189708709716797,
+      10.080202102661133,
+      2.7079973220825195
+    ]
+  },
+  "dispatches": [
+    {
+      "page": 0,
+      "push_constants_hex": "00000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "20000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "40000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "60000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "80000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "a0000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "c0000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "e0000000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "00010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "20010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "40010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "60010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "80010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "a0010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "c0010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "e0010000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "00020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "20020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "40020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "60020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "80020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "a0020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "c0020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "e0020000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "00030000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "20030000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "40030000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "60030000200000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "page": 0,
+      "push_constants_hex": "80030000100000000000000089ef03410000803f",
+      "workgroups": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "limits": [
+    "Uses independent recovered source, no EXE or GPU runtime.",
+    "Roof ID marks auxiliary identity; original wall_slot_id/resource binding are not inferred.",
+    "Frame sequence is an explicit portable model, not recovered full ECS scheduling.",
+    "World origin positions add base_position.y and current_height; final vertex deformation/rendering not represented."
+  ]
+}

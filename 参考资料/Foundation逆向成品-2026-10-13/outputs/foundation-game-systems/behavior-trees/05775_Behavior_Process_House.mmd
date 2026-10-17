@@ -1,0 +1,30 @@
+flowchart TD
+  n0["GamCBehaviorTreeNodeCompositeSequencer"]
+  n1["Ordering house"]
+  n2["Check if has house"]
+  n3["PlaCAgentNodeFillResourceNeed"]
+  n4["PlaCAgentNodeUnfillNeed"]
+  n5["GoTo"]
+  n6["Waiting"]
+  n7["Is my need filled"]
+  n8["Selector"]
+  n9["Sequencer"]
+  n10["f9c81b9a-ef81-42d2-bbb5-6e5fed5ebf27"]
+  n11["Selector"]
+  n12["Failer"]
+  n13["PlaCAgentNodeUpdateHouseSatisfaction"]
+  n14["Does house currently fill needs"]
+  n0 -->|0| n13
+  n0 -->|1| n8
+  n1 -->|2| n0
+  n1 -->|3| n4
+  n8 -->|4| n7
+  n8 -->|5| n9
+  n9 -->|6| n11
+  n9 -->|7| n2
+  n9 -->|8| n5
+  n9 -->|9| n6
+  n9 -->|10| n3
+  n11 -->|11| n14
+  n11 -->|12| n12
+  n12 -->|13| n10

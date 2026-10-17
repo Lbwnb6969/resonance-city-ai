@@ -1,0 +1,58 @@
+flowchart TD
+  n0["GamCBehaviorTreeNodeCompositeSelector"]
+  n1["GamCBehaviorTreeNodeCompositeSequencer"]
+  n2["Waiting"]
+  n3["GoTo"]
+  n4["PlaCAgentNodeDisablePathTracing"]
+  n5["PlaCAgentNodeEnablePathTracing"]
+  n6["GoTo"]
+  n7["Sequencer"]
+  n8["PlaCAgentNodePlantRequest"]
+  n9["Planting"]
+  n10["Repeat until fail"]
+  n11["PlaCAgentNodeFetchNextPlantable"]
+  n12["Repeater"]
+  n13["Sequencer"]
+  n14["PlaCAgentNodeSetWorkplaceAsDestination"]
+  n15["PlaCAgentNodeIsWorkplaceAvailable"]
+  n16["PlaCAgentNodeSetupPlantingWork"]
+  n17["Repeat until fail"]
+  n18["Selector"]
+  n19["8d5bd77e-9ac8-4b8a-a608-5dc76e21b41a"]
+  n20["GamCBehaviorTreeNodeSetBoolValue"]
+  n21["SetActivityMessage"]
+  n22["PlaCAgentNodePlanPath"]
+  n23["PlaCAgentNodeExecutePlannedPath"]
+  n24["PlaCAgentNodeFetchNextPlantable"]
+  n25["PlaCAgentNodePlanPath"]
+  n26["Succeeder"]
+  n27["Sequencer"]
+  n28["PlaCAgentNodeTransferPlantableData"]
+  n0 -->|0| n1
+  n0 -->|1| n2
+  n1 -->|2| n15
+  n1 -->|3| n14
+  n1 -->|4| n16
+  n1 -->|5| n3
+  n1 -->|6| n4
+  n1 -->|7| n12
+  n1 -->|8| n6
+  n1 -->|9| n5
+  n7 -->|10| n23
+  n7 -->|11| n26
+  n7 -->|12| n17
+  n7 -->|13| n28
+  n10 -->|14| n7
+  n12 -->|15| n18
+  n13 -->|16| n8
+  n13 -->|17| n11
+  n13 -->|18| n22
+  n13 -->|19| n21
+  n13 -->|20| n20
+  n13 -->|21| n10
+  n17 -->|22| n9
+  n18 -->|23| n13
+  n18 -->|24| n19
+  n26 -->|25| n27
+  n27 -->|26| n24
+  n27 -->|27| n25

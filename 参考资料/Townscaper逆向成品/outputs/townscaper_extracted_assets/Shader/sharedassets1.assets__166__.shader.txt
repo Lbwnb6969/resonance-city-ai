@@ -1,0 +1,32 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Placemaker/HoverHightlight" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+}
+SubShader {
+ LOD 100
+ Tags { "DisableBatching" = "true" "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ Pass {
+  LOD 100
+  Tags { "DisableBatching" = "true" "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ ZWrite Off
+  GpuProgramID 49336
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

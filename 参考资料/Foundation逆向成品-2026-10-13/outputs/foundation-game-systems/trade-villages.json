@@ -1,0 +1,1184 @@
+[
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/CastleHarbor.data",
+    "absolute_offset": 3528969488,
+    "length": 3519,
+    "sha256": "17cf06341d4628d26072fe3c7fc1384f149b8935deec5adef9b5bff92e12b682",
+    "rid": 26239,
+    "uuid": "1333e07f-932b-4395-8878-b1272fa246b5",
+    "name_key": "CASTLEHARBOR",
+    "buying_resource_list": {
+      "Item": [
+        "229bd905-22ca-436d-aa74-3db2cbbff3be",
+        "25fa23c5-46b2-43db-ba76-b911b4ac4a47",
+        "51f30b86-68d5-435e-b0b9-cf5089ca64d9",
+        "0638109e-b833-4528-82e1-fa177084833d",
+        "5ec260a6-b982-43e0-832b-e03d6cd7ba1e",
+        "3b2c62ec-f6c1-4cd8-b45d-acefd58d231b",
+        "ca3581f2-2a37-4254-9740-bc3f2579954d",
+        "47736935-4c6c-42c7-9497-beb91e519e05"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "6f6a8e5c-fa17-4bda-8d8f-50ab599698f1",
+        "faa615db-6e40-4905-b8d5-b4dc95f0ef8d",
+        "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+        "7e4a9153-d053-49cc-92eb-10453fc2366c",
+        "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+        "a433b48f-7042-4cc4-828a-2d104204a15b",
+        "7389f79a-b8dc-488a-9e83-60466cab3572",
+        "314c2282-da7f-40d1-8002-6aca8ae44248"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "CASTLEHARBOR",
+      "Description": "CASTLEHARBOR_DESCRIPTION",
+      "Heraldry": "012c0070-29ff-40ac-9d8b-ab3a67c678c7",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {
+              "Item": [
+                {
+                  "@": {
+                    "type": "PlaCDataEstateQuantityPair"
+                  },
+                  "Estate": "79d7d685-b652-4653-accf-13ff2c2cded7",
+                  "Quantity": 15.0
+                }
+              ]
+            },
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {}
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "046a27e8-1776-4e44-9eac-b987186bd35e",
+      "BuyingResourceList": {
+        "Item": [
+          "229bd905-22ca-436d-aa74-3db2cbbff3be",
+          "25fa23c5-46b2-43db-ba76-b911b4ac4a47",
+          "51f30b86-68d5-435e-b0b9-cf5089ca64d9",
+          "0638109e-b833-4528-82e1-fa177084833d",
+          "5ec260a6-b982-43e0-832b-e03d6cd7ba1e",
+          "3b2c62ec-f6c1-4cd8-b45d-acefd58d231b",
+          "ca3581f2-2a37-4254-9740-bc3f2579954d",
+          "47736935-4c6c-42c7-9497-beb91e519e05"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "6f6a8e5c-fa17-4bda-8d8f-50ab599698f1",
+          "faa615db-6e40-4905-b8d5-b4dc95f0ef8d",
+          "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+          "7e4a9153-d053-49cc-92eb-10453fc2366c",
+          "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+          "a433b48f-7042-4cc4-828a-2d104204a15b",
+          "7389f79a-b8dc-488a-9e83-60466cab3572",
+          "314c2282-da7f-40d1-8002-6aca8ae44248"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "65ddcd6e-5f9b-415c-a6b9-331dca094e4b",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "79d7d685-b652-4653-accf-13ff2c2cded7",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "39b84898-012f-4040-ae1b-697352f13446"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "1738571f-af7e-4364-bacc-9f44b5464b1c"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "d7c0149a-0018-44e7-8030-5edc09d313c1"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "626cb830-1277-4672-97f2-f09a2da07d35"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/Davenport.data",
+    "absolute_offset": 3528973166,
+    "length": 3517,
+    "sha256": "e5762629c6b4295bad4bf6cf0deefcc69deff08de59dbdce7c0672a8af89819c",
+    "rid": 26241,
+    "uuid": "0d004a5a-6541-4ab7-a166-4cb81f2ab31a",
+    "name_key": "DAVENPORT",
+    "buying_resource_list": {
+      "Item": [
+        "59e6b469-c71b-4745-ae38-9975f5b7df65",
+        "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+        "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+        "88af3a80-4795-48c5-a172-1172ae116dd5",
+        "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+        "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d",
+        "01acd535-9d88-42a6-a043-e2041ce62299",
+        "8027ba47-ab9f-4da2-9be2-b19cbedd25c8"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "314c2282-da7f-40d1-8002-6aca8ae44248",
+        "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+        "66e9bcf4-dcb6-4e90-a185-91267f82454c",
+        "ca3581f2-2a37-4254-9740-bc3f2579954d",
+        "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+        "3b2c62ec-f6c1-4cd8-b45d-acefd58d231b",
+        "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+        "5ec260a6-b982-43e0-832b-e03d6cd7ba1e"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "DAVENPORT",
+      "Description": "DAVENPORT_DESCRIPTION",
+      "Heraldry": "1dd9924c-41cd-4f14-bada-37e6c6924f6f",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {},
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {
+                "Item": [
+                  {
+                    "@": {
+                      "type": "PlaCDataResourceQuantityPair"
+                    },
+                    "Resource": "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+                    "Quantity": 20
+                  }
+                ]
+              }
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "47736935-4c6c-42c7-9497-beb91e519e05",
+      "BuyingResourceList": {
+        "Item": [
+          "59e6b469-c71b-4745-ae38-9975f5b7df65",
+          "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+          "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+          "88af3a80-4795-48c5-a172-1172ae116dd5",
+          "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+          "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d",
+          "01acd535-9d88-42a6-a043-e2041ce62299",
+          "8027ba47-ab9f-4da2-9be2-b19cbedd25c8"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "314c2282-da7f-40d1-8002-6aca8ae44248",
+          "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+          "66e9bcf4-dcb6-4e90-a185-91267f82454c",
+          "ca3581f2-2a37-4254-9740-bc3f2579954d",
+          "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+          "3b2c62ec-f6c1-4cd8-b45d-acefd58d231b",
+          "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+          "5ec260a6-b982-43e0-832b-e03d6cd7ba1e"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "662f8b56-37b1-4188-b45e-92c4a645e01d",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "79d7d685-b652-4653-accf-13ff2c2cded7",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "c7509827-e0ee-422d-9cbb-0e7ddafa8552"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "4ee2693a-b8a5-4e2a-bae4-c4a7e7b331cd"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "f06b6364-5bfd-4366-aead-16bd05af783a"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "714c04a7-f433-4af9-b894-0539d9ef4e27"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/Kinstone.data",
+    "absolute_offset": 3528976841,
+    "length": 3511,
+    "sha256": "31b6c91f6c0d5869607c97481bf0369ff50490a2c27b46f20a74b22f6401410e",
+    "rid": 26243,
+    "uuid": "c2d0803e-e446-45a1-91b7-e093aeb00ccc",
+    "name_key": "KINSTONE",
+    "buying_resource_list": {
+      "Item": [
+        "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+        "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+        "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+        "114ff377-cab8-4de0-87b7-e0eb6e983ded",
+        "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+        "1cbdcbbd-14ef-4109-bd02-a46a94951555",
+        "4ea921b6-6107-4771-8870-65a46dad5892",
+        "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "37e777ba-033a-4981-a18b-214d85b6d680",
+        "49c15db3-2a6d-4591-85ea-72d939f0367d",
+        "08472695-9582-47f8-bc7e-326907b7af2a",
+        "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+        "a674825e-9157-44bc-af71-ceac9b3907a8",
+        "8027ba47-ab9f-4da2-9be2-b19cbedd25c8",
+        "7389f79a-b8dc-488a-9e83-60466cab3572",
+        "685ad6c2-a230-45f7-8ad5-aa894d56ff34"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "KINSTONE",
+      "Description": "KINSTONE_DESCRIPTION",
+      "Heraldry": "5bfd9831-34f0-415f-a285-1ebcc89ab0ae",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {
+              "Item": [
+                {
+                  "@": {
+                    "type": "PlaCDataEstateQuantityPair"
+                  },
+                  "Estate": "dda5abfa-d637-411f-8e03-88dcc65369c2",
+                  "Quantity": 15.0
+                }
+              ]
+            },
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {}
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "229bd905-22ca-436d-aa74-3db2cbbff3be",
+      "BuyingResourceList": {
+        "Item": [
+          "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+          "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+          "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+          "114ff377-cab8-4de0-87b7-e0eb6e983ded",
+          "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+          "1cbdcbbd-14ef-4109-bd02-a46a94951555",
+          "4ea921b6-6107-4771-8870-65a46dad5892",
+          "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "37e777ba-033a-4981-a18b-214d85b6d680",
+          "49c15db3-2a6d-4591-85ea-72d939f0367d",
+          "08472695-9582-47f8-bc7e-326907b7af2a",
+          "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+          "a674825e-9157-44bc-af71-ceac9b3907a8",
+          "8027ba47-ab9f-4da2-9be2-b19cbedd25c8",
+          "7389f79a-b8dc-488a-9e83-60466cab3572",
+          "685ad6c2-a230-45f7-8ad5-aa894d56ff34"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "803bc910-2fba-46e4-b316-0508537e55d8",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "dda5abfa-d637-411f-8e03-88dcc65369c2",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "660e9f50-3f39-4be9-9dae-f93ae88227a6"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "40d253f6-381e-4fa7-8446-8487323f3cdf"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "147a3e3f-4825-4b41-b7a4-bac7eb9e7e74"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "1dbddb17-e898-4677-8243-d19973c27ee0"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/Myddle.data",
+    "absolute_offset": 3528980508,
+    "length": 3511,
+    "sha256": "4fa0e3464665b8650137c29af17ef8b4bf254debbf566faedee6f06d787af308",
+    "rid": 26245,
+    "uuid": "e5a231df-ceee-49d6-b152-d3e82270d444",
+    "name_key": "MYDDLE",
+    "buying_resource_list": {
+      "Item": [
+        "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+        "37e777ba-033a-4981-a18b-214d85b6d680",
+        "49c15db3-2a6d-4591-85ea-72d939f0367d",
+        "7e4a9153-d053-49cc-92eb-10453fc2366c",
+        "314c2282-da7f-40d1-8002-6aca8ae44248",
+        "5ec260a6-b982-43e0-832b-e03d6cd7ba1e",
+        "faa615db-6e40-4905-b8d5-b4dc95f0ef8d",
+        "5c9e44db-a3f2-4c57-a13e-e064dd32c131"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "229bd905-22ca-436d-aa74-3db2cbbff3be",
+        "7389f79a-b8dc-488a-9e83-60466cab3572",
+        "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+        "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+        "114ff377-cab8-4de0-87b7-e0eb6e983ded",
+        "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+        "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d",
+        "01acd535-9d88-42a6-a043-e2041ce62299"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "MYDDLE",
+      "Description": "MYDDLE_DESCRIPTION",
+      "Heraldry": "1d0f2811-859f-4b39-969a-559d23b876b3",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {},
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {
+                "Item": [
+                  {
+                    "@": {
+                      "type": "PlaCDataResourceQuantityPair"
+                    },
+                    "Resource": "49c15db3-2a6d-4591-85ea-72d939f0367d",
+                    "Quantity": 20
+                  }
+                ]
+              }
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+      "BuyingResourceList": {
+        "Item": [
+          "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+          "37e777ba-033a-4981-a18b-214d85b6d680",
+          "49c15db3-2a6d-4591-85ea-72d939f0367d",
+          "7e4a9153-d053-49cc-92eb-10453fc2366c",
+          "314c2282-da7f-40d1-8002-6aca8ae44248",
+          "5ec260a6-b982-43e0-832b-e03d6cd7ba1e",
+          "faa615db-6e40-4905-b8d5-b4dc95f0ef8d",
+          "5c9e44db-a3f2-4c57-a13e-e064dd32c131"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "229bd905-22ca-436d-aa74-3db2cbbff3be",
+          "7389f79a-b8dc-488a-9e83-60466cab3572",
+          "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+          "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+          "114ff377-cab8-4de0-87b7-e0eb6e983ded",
+          "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+          "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d",
+          "01acd535-9d88-42a6-a043-e2041ce62299"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "af0b3c5c-f2c2-4a4d-8732-c3e14431a83c",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "dda5abfa-d637-411f-8e03-88dcc65369c2",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "104e6302-1d38-4045-b99f-c95acc79be11"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "0db1b321-4c48-455c-89a1-b288e3f38bfe"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "c9f74b02-9571-47d7-a709-f8420ff075f4"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "68d0f487-1d58-4f5d-8613-aab9a97adc41"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/Northbury.data",
+    "absolute_offset": 3528984178,
+    "length": 3517,
+    "sha256": "aa9c230cff627a9032ed15d1ce806106188497f3666dd01e56dec9e51db511a2",
+    "rid": 26247,
+    "uuid": "288113ac-25ec-4252-8943-86ff4a0f6d59",
+    "name_key": "NORTHBURY",
+    "buying_resource_list": {
+      "Item": [
+        "685ad6c2-a230-45f7-8ad5-aa894d56ff34",
+        "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+        "47736935-4c6c-42c7-9497-beb91e519e05",
+        "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+        "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+        "ca3581f2-2a37-4254-9740-bc3f2579954d",
+        "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+        "a674825e-9157-44bc-af71-ceac9b3907a8"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "7e4a9153-d053-49cc-92eb-10453fc2366c",
+        "a433b48f-7042-4cc4-828a-2d104204a15b",
+        "1cbdcbbd-14ef-4109-bd02-a46a94951555",
+        "5c9e44db-a3f2-4c57-a13e-e064dd32c131",
+        "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+        "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+        "88af3a80-4795-48c5-a172-1172ae116dd5",
+        "37e777ba-033a-4981-a18b-214d85b6d680"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "NORTHBURY",
+      "Description": "NORTHBURY_DESCRIPTION",
+      "Heraldry": "2a41274b-f54e-4867-b098-245aa3fb5895",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {},
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {
+                "Item": [
+                  {
+                    "@": {
+                      "type": "PlaCDataResourceQuantityPair"
+                    },
+                    "Resource": "47736935-4c6c-42c7-9497-beb91e519e05",
+                    "Quantity": 20
+                  }
+                ]
+              }
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+      "BuyingResourceList": {
+        "Item": [
+          "685ad6c2-a230-45f7-8ad5-aa894d56ff34",
+          "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+          "47736935-4c6c-42c7-9497-beb91e519e05",
+          "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+          "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+          "ca3581f2-2a37-4254-9740-bc3f2579954d",
+          "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+          "a674825e-9157-44bc-af71-ceac9b3907a8"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "7e4a9153-d053-49cc-92eb-10453fc2366c",
+          "a433b48f-7042-4cc4-828a-2d104204a15b",
+          "1cbdcbbd-14ef-4109-bd02-a46a94951555",
+          "5c9e44db-a3f2-4c57-a13e-e064dd32c131",
+          "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+          "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+          "88af3a80-4795-48c5-a172-1172ae116dd5",
+          "37e777ba-033a-4981-a18b-214d85b6d680"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "c0088245-db85-4c1a-b2d9-df2d405b2c6a",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "4eaa8f28-76f7-4f46-94e8-8ca4ba84d48f",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "811a2b6c-1cdb-42e7-8742-32cedee6f98a"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "06c75f60-1d86-4e8b-889d-5066ca80d62e"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "8e3b65af-c57f-477b-8892-21423612daa3"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "6ac0f3b9-ba70-4821-87a3-b42b760e6e28"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": true
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Trade/Trotbury.data",
+    "absolute_offset": 3528988400,
+    "length": 3511,
+    "sha256": "d4a6a7e5d38798555eaa3e657e1c3682b467d32569b7b8ce0f1778b1ccf73666",
+    "rid": 26251,
+    "uuid": "3975fa61-6ea6-405b-8fd6-1653bf8ded4b",
+    "name_key": "TROTBURY",
+    "buying_resource_list": {
+      "Item": [
+        "49c15db3-2a6d-4591-85ea-72d939f0367d",
+        "66e9bcf4-dcb6-4e90-a185-91267f82454c",
+        "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+        "37e777ba-033a-4981-a18b-214d85b6d680",
+        "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+        "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+        "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+        "314c2282-da7f-40d1-8002-6aca8ae44248"
+      ]
+    },
+    "selling_resource_list": {
+      "Item": [
+        "f8a4a5a2-de73-499c-90e7-40774f26853d",
+        "08472695-9582-47f8-bc7e-326907b7af2a",
+        "59e6b469-c71b-4745-ae38-9975f5b7df65",
+        "a674825e-9157-44bc-af71-ceac9b3907a8",
+        "40984b11-9e54-4679-9ef8-707a59f361d1",
+        "229bd905-22ca-436d-aa74-3db2cbbff3be",
+        "8027ba47-ab9f-4da2-9be2-b19cbedd25c8",
+        "faa615db-6e40-4905-b8d5-b4dc95f0ef8d"
+      ]
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "VillageName": "TROTBURY",
+      "Description": "TROTBURY_DESCRIPTION",
+      "Heraldry": "45252144-ca46-4b52-8e5a-8f3a2e7a82d9",
+      "UnlockableCostList": {
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataUnlockableCost"
+            },
+            "DataInfluenceCostList": {
+              "Item": [
+                {
+                  "@": {
+                    "type": "PlaCDataEstateQuantityPair"
+                  },
+                  "Estate": "4eaa8f28-76f7-4f46-94e8-8ca4ba84d48f",
+                  "Quantity": 15.0
+                }
+              ]
+            },
+            "ResourceCollection": {
+              "@": {
+                "type": "PlaCResourceCollection"
+              },
+              "Collection": {}
+            },
+            "InfluenceCap": 0
+          }
+        ]
+      },
+      "ResourceTradingReplenishDelay": 10.0,
+      "ResourceNeededToUpgrade": "7e4a9153-d053-49cc-92eb-10453fc2366c",
+      "BuyingResourceList": {
+        "Item": [
+          "49c15db3-2a6d-4591-85ea-72d939f0367d",
+          "66e9bcf4-dcb6-4e90-a185-91267f82454c",
+          "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+          "37e777ba-033a-4981-a18b-214d85b6d680",
+          "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+          "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+          "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+          "314c2282-da7f-40d1-8002-6aca8ae44248"
+        ]
+      },
+      "SellingResourceList": {
+        "Item": [
+          "f8a4a5a2-de73-499c-90e7-40774f26853d",
+          "08472695-9582-47f8-bc7e-326907b7af2a",
+          "59e6b469-c71b-4745-ae38-9975f5b7df65",
+          "a674825e-9157-44bc-af71-ceac9b3907a8",
+          "40984b11-9e54-4679-9ef8-707a59f361d1",
+          "229bd905-22ca-436d-aa74-3db2cbbff3be",
+          "8027ba47-ab9f-4da2-9be2-b19cbedd25c8",
+          "faa615db-6e40-4905-b8d5-b4dc95f0ef8d"
+        ]
+      },
+      "TradeRouteUpgradeNarrativePanelTemplate": "2569cd75-918e-4472-b246-ba6b20f21a0b",
+      "WorldGuiIcon": "4a487e99-9027-4ea9-9cf4-53bf4cfc772b",
+      "UpgradeEventEnvoyProfile": "2413e3a2-2f8e-4023-94e8-f4e59688b693",
+      "Allegiance": "4eaa8f28-76f7-4f46-94e8-8ca4ba84d48f",
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "e8a05d1c-4f65-468c-85ce-986a3d0f135f"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "0e9aba6a-9ee4-470c-9aae-3045ba41437b"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "7946833b-416e-4b6a-9434-c14d00bf01d3"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "b35ae462-a0b9-422a-bdfe-b1f049d2abed"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {},
+                "BackList": {
+                  "Item": [
+                    "4196a680-3631-4107-b507-9c447eac01a7"
+                  ]
+                },
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "054912b0-61a7-45b2-a608-d9eab6263ebf"
+                  ]
+                },
+                "BeltList": {},
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "13182dec-f145-45d9-8b1d-f66388b8edbc"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "IsAvailableInDemo": false
+    }
+  }
+]

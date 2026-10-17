@@ -1,0 +1,360 @@
+{
+  "target": "D:/SteamLibrary/steamapps/common/Cities Skylines II",
+  "target_executed": false,
+  "installation_modified": false,
+  "scope": "six requested static chains, sequential investigation; not exhaustive analysis of whole game",
+  "sources": [
+    {
+      "file": "01-preview-code/Game.Tools.ApplyNetSystem.decompiled.cs",
+      "bytes": 42108,
+      "sha256": "29f506120932963b2bbd839593eb4e20ced802f1b754f301028aff5e84698d90"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.OriginalDeletedSystem.decompiled.cs",
+      "bytes": 4142,
+      "sha256": "aa2ec35cf793dba65c5964366d6825d4481657efdc586ff1fe8ab1d24c12e96f"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.Temp.decompiled.cs",
+      "bytes": 319,
+      "sha256": "65deb26ba54233cd3d5d1ae7a7afa419c0b004b56f744803710c16aa0b9737f4"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.TempFlags.decompiled.cs",
+      "bytes": 440,
+      "sha256": "ccb0fb947d7d22a61e04f3a1f1f676483e87246632098c82daa2eab2b3dc46b0"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolApplySystem.decompiled.cs",
+      "bytes": 5332,
+      "sha256": "cd4307d789970b35279fa13141faf47a5fd5b7bbb573c80f099c83c0ee2300ba"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolClearSystem.decompiled.cs",
+      "bytes": 9893,
+      "sha256": "c9866ee313d70335be3d1a089bd263c2ab2acf5f54aac9057603d450f86e2d87"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolOutputBarrier.decompiled.cs",
+      "bytes": 336,
+      "sha256": "afc981188021643d48fbf3f359f21ead08e187dc37d03518f4c8dadd7c8e1e87"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolOutputSystem.decompiled.cs",
+      "bytes": 739,
+      "sha256": "20c4a9b6bb9a4417054705178550c71867e7fabdd196d056fded24bd17aba4bb"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolReadyBarrier.decompiled.cs",
+      "bytes": 334,
+      "sha256": "21809fb22cd40096f6bbfb1066b218cd72dc934e5cedac5e9595a2949d33909a"
+    },
+    {
+      "file": "01-preview-code/Game.Tools.ToolSystem.decompiled.cs",
+      "bytes": 17670,
+      "sha256": "d9751ebe2911754440ccd812fcfb17a6618ce63ab678e38f4bc781044b68d1b9"
+    },
+    {
+      "file": "02-invalidation-code/Game.Common.CleanUpSystem.decompiled.cs",
+      "bytes": 1511,
+      "sha256": "2264cd2ac833ee3f27d2d0ec5d7b4db4b2ea1840381c10199e40e6b5a63548f5"
+    },
+    {
+      "file": "02-invalidation-code/Game.Common.PrepareCleanUpSystem.decompiled.cs",
+      "bytes": 1631,
+      "sha256": "31012cb89743a13920612e87c4f037e587a525c04e138f183fefe5aee710138c"
+    },
+    {
+      "file": "02-invalidation-code/Game.Net.UpdateCollectSystem.decompiled.cs",
+      "bytes": 18446,
+      "sha256": "11a6fcd18cb778d0e7a1485d3d9f2dab6dcdb38f973b195943f07add378af293"
+    },
+    {
+      "file": "02-invalidation-code/Game.Objects.UpdateCollectSystem.decompiled.cs",
+      "bytes": 9721,
+      "sha256": "ad32d5158604f34885e7dc4a39e1147e22dda99c77bfd9ec0a6d5bc10ef1ca9a"
+    },
+    {
+      "file": "02-invalidation-code/Game.Zones.CellCheckHelpers.decompiled.cs",
+      "bytes": 12520,
+      "sha256": "0b2434f37ae507ff2b5308b95a6aff28f90922dace9e98b343bbb530e39ab0db"
+    },
+    {
+      "file": "02-invalidation-code/Game.Zones.UpdateCollectSystem.decompiled.cs",
+      "bytes": 7770,
+      "sha256": "32fe054303620a66b2f40124255fecf0f1f73dc627c65312639787a95e66bf48"
+    },
+    {
+      "file": "03-time-code/Game.Objects.TransformFrame.decompiled.cs",
+      "bytes": 1846,
+      "sha256": "841f2dfa22092364b60bd966b4fd7e03a191c719c65631c01ed922e2011a351c"
+    },
+    {
+      "file": "03-time-code/Game.Rendering.EventInterpolateSystem.decompiled.cs",
+      "bytes": 4378,
+      "sha256": "4de27f64387609dfa65f3733430d643bc953258d090db8ac2c8804e50b1f1cc5"
+    },
+    {
+      "file": "03-time-code/Game.Rendering.InterpolatedTransform.decompiled.cs",
+      "bytes": 823,
+      "sha256": "57d95534917ede2f452904c5dcc7174f15d55c11e1c4b89bd7b1c1673ad6cdaa"
+    },
+    {
+      "file": "03-time-code/Game.Rendering.ObjectInterpolateSystem.decompiled.cs",
+      "bytes": 218058,
+      "sha256": "54d0b42596e81c5d5ea42c32a209f64c2de6ea01b2bad28624439d0ea57fee13"
+    },
+    {
+      "file": "03-time-code/Game.Rendering.RenderingSystem.decompiled.cs",
+      "bytes": 8792,
+      "sha256": "6c5ae9e076b20c796717a8f4b9791a9576873e9eb0430d7b5bfca5cc84fb0b61"
+    },
+    {
+      "file": "03-time-code/Game.Serialization.TransformFrameSystem.decompiled.cs",
+      "bytes": 9249,
+      "sha256": "d979e627033140e87e018ba5e3e6712027bf914a42195626ee77d7abba2c2c4a"
+    },
+    {
+      "file": "03-time-code/Game.Simulation.SimulationSystem.decompiled.cs",
+      "bytes": 7511,
+      "sha256": "48d76dfa2cf4149b935398eb28f54e8f019939815d7260e3eaaee9d21bddd959"
+    },
+    {
+      "file": "04-identity-code/Colossal.Serialization.Entities.BinaryReader.decompiled.cs",
+      "bytes": 9114,
+      "sha256": "caea449e4e683facec70ac3911d9df57d33473ea4b1f395a9316deba46712a66"
+    },
+    {
+      "file": "04-identity-code/Colossal.Serialization.Entities.BinaryWriter.decompiled.cs",
+      "bytes": 7842,
+      "sha256": "f3014eb1f28c6bdb8abb06594f6f1f9b8c249aa49186f38209d567414ab4fb4c"
+    },
+    {
+      "file": "04-identity-code/Colossal.Serialization.Entities.EntityDeserializer`1.decompiled.cs",
+      "bytes": 19599,
+      "sha256": "b3bf418fe80e078c8517d1ef41dea44755130134f4c4a51ca26bb4e0d9f61a93"
+    },
+    {
+      "file": "04-identity-code/Colossal.Serialization.Entities.EntitySerializer`1.decompiled.cs",
+      "bytes": 21720,
+      "sha256": "203f218111ab2132a336ee6d8686d61027b3f951d7d6a85caa8517903a3bd9ce"
+    },
+    {
+      "file": "04-identity-code/Game.Prefabs.PrefabID.decompiled.cs",
+      "bytes": 2191,
+      "sha256": "a2218c2c7756943c8891870bfed2dd12c0cc40fe44ebc7678f73b1766df8d514"
+    },
+    {
+      "file": "04-identity-code/Game.Prefabs.PrefabRef.decompiled.cs",
+      "bytes": 637,
+      "sha256": "c1e0ca65fd6f8622e62a462e2401eb5e87175040852cda9658589bb013621ede"
+    },
+    {
+      "file": "04-identity-code/Game.Prefabs.PrefabSystem.decompiled.cs",
+      "bytes": 29635,
+      "sha256": "7fc8ec20a4c0e673c91630a7599a98045acfb983c1394a8db85f981e7be6408e"
+    },
+    {
+      "file": "04-identity-code/Game.Serialization.PrefabReferences.decompiled.cs",
+      "bytes": 3057,
+      "sha256": "6484f77998ea91a523bce823997be44c711ed1dad8df3738509e3b0df9145a92"
+    },
+    {
+      "file": "04-identity-code/Game.Serialization.PrimaryPrefabReferencesSystem.decompiled.cs",
+      "bytes": 19993,
+      "sha256": "dd69ca5f5b8b9d11fb1106672524c859a682e753ed3b3de0ba4c2f0d1673d2a4"
+    },
+    {
+      "file": "04-identity-code/Game.Serialization.ResolvePrefabsSystem.decompiled.cs",
+      "bytes": 24703,
+      "sha256": "af5538000e0ecbb4b77abb7a2c314119eb03180cccf1b20e2a8516ccd9103698"
+    },
+    {
+      "file": "04-identity-code/Unity.Entities.Entity.decompiled.cs",
+      "bytes": 1660,
+      "sha256": "cb777c0d8e889d4107216257dc2bd74a7584931564e963056311bc352687f241"
+    },
+    {
+      "file": "04-identity-code/Unity.Entities.EntityComponentStore.decompiled.cs",
+      "bytes": 196768,
+      "sha256": "3b4f4d157febc7efc2759e2fb20ab1d4b70c2a678669c5902d47b8884b6d5b60"
+    },
+    {
+      "file": "04-identity-code/Unity.Entities.EntityRemapUtility.decompiled.cs",
+      "bytes": 12700,
+      "sha256": "0ed1d3bf7c076a2d21d26b2226287b1a24adbacad8adb211c3e8e9b2c4e350cf"
+    },
+    {
+      "file": "04-identity-code/Unity.Entities.EntityStorageInfoLookup.decompiled.cs",
+      "bytes": 1043,
+      "sha256": "009c15fa9425d814c2f6a3f1f37a90025b9b2001b42e84f241ce29c107671177"
+    },
+    {
+      "file": "05-random-code/Game.Citizens.Citizen.decompiled.cs",
+      "bytes": 4936,
+      "sha256": "04b4f1091343ecc83eb19ce0548c91d58c542f44155742ae19b8a9eaf4aa9e70"
+    },
+    {
+      "file": "05-random-code/Game.Common.PseudoRandomSeed.decompiled.cs",
+      "bytes": 1981,
+      "sha256": "1fb7d30e2156240e91331101e71ac19c6b5c92a76c7fb4f8ff98dcd3af20d31d"
+    },
+    {
+      "file": "05-random-code/Game.Common.RandomSeed.decompiled.cs",
+      "bytes": 544,
+      "sha256": "e8992d0d507d814da6c671fb227b3729c35463519c1a335900d6dddce25a8b47"
+    },
+    {
+      "file": "05-random-code/Unity.Mathematics.Random.decompiled.cs",
+      "bytes": 14043,
+      "sha256": "c7d7f57f3e37539b4f9fa749eb75cc657989041b24b8a87a60cb1b206101312f"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.ArchetypePrefab.decompiled.cs",
+      "bytes": 1288,
+      "sha256": "114665467b515b706788d52f31bb782d423f165bdb62b9d4da5cf306b280dd95"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.AssetCollection.decompiled.cs",
+      "bytes": 940,
+      "sha256": "08ea0cd250fd281d5bd71863bdf759739a94663bf881b2427839eceb140f95ca"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.CarBasePrefab.decompiled.cs",
+      "bytes": 421,
+      "sha256": "5f2074e7fae5ec1a79e34ddf52fd163538cb0a0de874df05838d4366217a34ea"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.CarData.decompiled.cs",
+      "bytes": 1575,
+      "sha256": "34245605953c2bdc553039380e9f250d8af93fbaecb1415f56b7381b494e46b3"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.CarPrefab.decompiled.cs",
+      "bytes": 1469,
+      "sha256": "4580a3ed64feb5d6a4223bdf44d2c29647377d6d1535a44b682e1c61994f82f7"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.ComponentBase.decompiled.cs",
+      "bytes": 2876,
+      "sha256": "a7699cc63da299ac331a05f19946df1098ab75b9552fdbd53516d31d6693f1e4"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.PrefabBase.decompiled.cs",
+      "bytes": 10526,
+      "sha256": "d5dce9ab59a0f1fd37bfe8921aa0098e6a706b20335380f914cb7a5b35ade4ba"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.PrefabData.decompiled.cs",
+      "bytes": 654,
+      "sha256": "15c1774262aba45eb4c2cf46cdfc966afaa725ddb4bc4c091458e737ce175970"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.PrefabInitializeSystem.decompiled.cs",
+      "bytes": 7608,
+      "sha256": "201ff3e2703a1745a235083fd87ca9c7849b38633c02c5a9157f119aa7f010cf"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.ReplacePrefabSystem.decompiled.cs",
+      "bytes": 67138,
+      "sha256": "f5ca3cda64cd6c4b2dda5fc1dd4bdc9b16eb40c479fc95e1d5bd72c7e86724a6"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.VehicleInitializeSystem.decompiled.cs",
+      "bytes": 18854,
+      "sha256": "c56b3d2427ef5ca6363a0f972367fb7dd3ba0ac55c40a002b86068c16189826a"
+    },
+    {
+      "file": "06-prefab-code/Game.Prefabs.VehiclePrefab.decompiled.cs",
+      "bytes": 678,
+      "sha256": "188c13df6035d152947eab7a3f4bbbbb7e9db1db3f4223b96b846423c82f5b2b"
+    },
+    {
+      "file": "06-prefab-code/Game.SceneFlow.AssetLibrary.decompiled.cs",
+      "bytes": 1396,
+      "sha256": "c2cc2054b65417d3496dc86be3d215439e8c6596263e7d1a68849d1b538a3828"
+    }
+  ],
+  "methods_verified": 64,
+  "game_methods_with_retained_il": 50,
+  "aspects": [
+    {
+      "order": 1,
+      "chain": "临时实体→提交/取消",
+      "report": "01-建造预览与提交.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "取消恢复与回收",
+        "提交身份分支",
+        "字段保留与资金/ECB边界"
+      ],
+      "remaining": "未穷举所有对象/区域工具；无异常原子回滚实证",
+      "directed_exports": 10
+    },
+    {
+      "order": 2,
+      "chain": "标签→空间传播→清理",
+      "report": "02-增量更新与缓存失效.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "旧/新范围",
+        "队列与消费者去重",
+        "fence与清理阶段"
+      ],
+      "remaining": "全部写者打标正确性、真实重算次数未验证",
+      "directed_exports": 6
+    },
+    {
+      "order": 3,
+      "chain": "模拟→历史环→显示",
+      "report": "03-模拟与渲染时间解耦.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "模拟背压",
+        "四槽与曲线",
+        "暂停/偏移及加载重建"
+      ],
+      "remaining": "未测真实延迟；全体瞬移断点策略未穷举",
+      "directed_exports": 7
+    },
+    {
+      "order": 4,
+      "chain": "运行身份→文件编号→资产身份",
+      "report": "04-实体身份与引用修复.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "Index/Version/World检查",
+        "保存/加载引用表",
+        "PrefabID二次绑定"
+      ],
+      "remaining": "缺失Mod恢复、全体引用覆盖未运行验证",
+      "directed_exports": 14
+    },
+    {
+      "order": 5,
+      "chain": "任务随机→用途随机",
+      "report": "05-并行随机与可重复性.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "时间起种",
+        "Chunk/工作项派生",
+        "持久实体种子与复现边界"
+      ],
+      "remaining": "不提供全城逐位重放保证",
+      "directed_exports": 4
+    },
+    {
+      "order": 6,
+      "chain": "编辑资产→运行数据→替换",
+      "report": "06-资产到运行数据编译链.md",
+      "status": "static chain answered; runtime untested",
+      "answered": [
+        "依赖闭包与晚初始化",
+        "实例archetype与单位转换",
+        "选择性迁移和缓存失效"
+      ],
+      "remaining": "完整包加载、任意热重载和所有Schema迁移未覆盖",
+      "directed_exports": 13
+    }
+  ]
+}

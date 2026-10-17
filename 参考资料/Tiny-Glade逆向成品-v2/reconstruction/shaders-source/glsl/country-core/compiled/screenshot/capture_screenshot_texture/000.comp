@@ -1,0 +1,149 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+vec4 _585;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 dst_tex_dims;
+    uvec2 dst_dims;
+    uvec2 src_tex_dims;
+    uvec2 src_ms_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 2) uniform texture2D src_tex;
+layout(set = 0, binding = 1, rgba8) uniform writeonly image2D dst_tex;
+
+void main()
+{
+    do
+    {
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, globalParams.dst_dims)))
+        {
+            break;
+        }
+        if (all(equal(globalParams.src_tex_dims, globalParams.dst_dims)))
+        {
+            vec3 _520 = clamp(texelFetch(src_tex, ivec2(gl_GlobalInvocationID.xy), 0).xyz, vec3(0.0), vec3(1.0));
+            float _523 = _520.x;
+            float _577;
+            if (0.003130800090730190277099609375 >= _523)
+            {
+                _577 = 12.9200000762939453125 * _523;
+            }
+            else
+            {
+                _577 = (1.05499994754791259765625 * pow(_523, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _525 = _520.y;
+            float _578;
+            if (0.003130800090730190277099609375 >= _525)
+            {
+                _578 = 12.9200000762939453125 * _525;
+            }
+            else
+            {
+                _578 = (1.05499994754791259765625 * pow(_525, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _527 = _520.z;
+            float _579;
+            if (0.003130800090730190277099609375 >= _527)
+            {
+                _579 = 12.9200000762939453125 * _527;
+            }
+            else
+            {
+                _579 = (1.05499994754791259765625 * pow(_527, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            imageStore(dst_tex, ivec2(gl_GlobalInvocationID.xy), vec4(vec3(_577, _578, _579), 1.0));
+        }
+        else
+        {
+            vec2 _322 = vec2(globalParams.dst_dims);
+            vec2 _324 = vec2(globalParams.src_tex_dims);
+            vec2 _330 = _324 / vec2(float(min(globalParams.src_tex_dims.x, globalParams.src_tex_dims.y)));
+            vec2 _340 = _322 / vec2(float(min(globalParams.dst_dims.x, globalParams.dst_dims.y)));
+            vec2 _341 = _330 / _340;
+            vec2 _345 = vec2(min(_341.x, _341.y));
+            vec2 _360 = ((((vec2(3.0) / _322) * _340) * _345) / _330) * _324;
+            float _364 = clamp(max(_360.x, _360.y), 1.0, 3.0);
+            vec2 _366 = (((((((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / _322) - vec2(0.5)) * _340) * _345) / _330) + vec2(0.5)) * _324;
+            vec2 _369 = vec2(_364);
+            ivec2 _371 = ivec2((_366 - vec2(0.5)) - _369);
+            ivec2 _376 = ivec2((_366 + vec2(0.5)) + _369);
+            int _377 = _371.y;
+            vec4 _570;
+            _570 = vec4(0.0);
+            int _428;
+            vec4 _576;
+            int _569 = _377;
+            for (;;)
+            {
+                if (!(_569 < _376.y))
+                {
+                    break;
+                }
+                int _387 = _371.x;
+                _576 = _570;
+                vec4 _418;
+                int _422;
+                int _574 = _387;
+                for (;;)
+                {
+                    if (!(_574 < _376.x))
+                    {
+                        break;
+                    }
+                    ivec2 _399 = ivec2(_574, _569);
+                    vec2 _403 = (vec2(_399) + vec2(0.5)) - _366;
+                    uvec2 _409 = uvec2(_399);
+                    ivec3 _452 = ivec3(uvec3(_409, 0u));
+                    _418 = _576 + ((vec4(texelFetch(src_tex, _452.xy, _452.z).xyz, 1.0) * exp(((-3.0) * dot(_403, _403)) / (_364 * _364))) * float(all(lessThan(_409, globalParams.src_tex_dims))));
+                    _422 = _574 + 1;
+                    _576 = _418;
+                    _574 = _422;
+                    continue;
+                }
+                _428 = _569 + 1;
+                _570 = _576;
+                _569 = _428;
+                continue;
+            }
+            vec3 _461 = clamp(_570.xyz / vec3(max(9.9999997473787516355514526367188e-06, _570.w)), vec3(0.0), vec3(1.0));
+            float _464 = _461.x;
+            float _571;
+            if (0.003130800090730190277099609375 >= _464)
+            {
+                _571 = 12.9200000762939453125 * _464;
+            }
+            else
+            {
+                _571 = (1.05499994754791259765625 * pow(_464, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _466 = _461.y;
+            float _572;
+            if (0.003130800090730190277099609375 >= _466)
+            {
+                _572 = 12.9200000762939453125 * _466;
+            }
+            else
+            {
+                _572 = (1.05499994754791259765625 * pow(_466, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _468 = _461.z;
+            float _573;
+            if (0.003130800090730190277099609375 >= _468)
+            {
+                _573 = 12.9200000762939453125 * _468;
+            }
+            else
+            {
+                _573 = (1.05499994754791259765625 * pow(_468, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            imageStore(dst_tex, ivec2(gl_GlobalInvocationID.xy), vec4(vec3(_571, _572, _573), 1.0));
+        }
+        break;
+    } while(false);
+}
+

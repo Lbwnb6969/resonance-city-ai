@@ -1,0 +1,246 @@
+#version 460
+#extension GL_EXT_buffer_reference2 : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(buffer_reference) buffer uintPointer;
+
+struct MeshAtlasPartInfo_natural
+{
+    uint first_index;
+    uint index_count;
+    float bounding_sphere_radius;
+    uint pad0;
+};
+
+struct _Array_natural_MeshAtlasPartInfo1024
+{
+    MeshAtlasPartInfo_natural data[1024];
+};
+
+struct CurvedHalftimberInstanceData_natural
+{
+    vec3 position;
+    uint color_id;
+    float radius0;
+    float radius1;
+    float angle0;
+    float angle1;
+    int is_straight;
+    int is_xz;
+    float plank_depth;
+    int caps;
+    int mesh_atlas_part_idx;
+    uint seed;
+    uint flags;
+    uint wall_slot_id;
+    uvec2 window_cut_buffer_address;
+    uint window_cut_list;
+    uint pad3;
+};
+
+struct NaniDrawListInfo_natural
+{
+    uint global_instance_offset;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+layout(buffer_reference) buffer uintPointer
+{
+    uint value;
+};
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    _Array_natural_MeshAtlasPartInfo1024 _member0[];
+} atlas_part_info;
+
+layout(set = 0, binding = 10, std430) readonly buffer instance_buffer
+{
+    CurvedHalftimberInstanceData_natural _member0[];
+} instance_buffer_1;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 8, std430) readonly buffer draw_list_info
+{
+    NaniDrawListInfo_natural _member0[];
+} draw_list_info_1;
+
+layout(set = 0, binding = 6, std430) readonly buffer prev_visibility_bitmask
+{
+    uint _member0[];
+} prev_visibility_bitmask_1;
+
+layout(set = 0, binding = 7, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} next_visibility_bitmask;
+
+layout(set = 0, binding = 3, std430) buffer filtered_instance_allocator_buffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer_1;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uintPointer instance_buffer_addr;
+    uint world_subset;
+    uint input_instance_count;
+    uint draw_list_index_base;
+} push_constants;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= push_constants.input_instance_count)
+        {
+            break;
+        }
+        vec3 _873 = instance_buffer_1._member0[gl_GlobalInvocationID.x].position;
+        int _903 = instance_buffer_1._member0[gl_GlobalInvocationID.x].mesh_atlas_part_idx;
+        float _1296;
+        if (instance_buffer_1._member0[gl_GlobalInvocationID.x].is_straight > 0)
+        {
+            float _942 = abs(instance_buffer_1._member0[gl_GlobalInvocationID.x].angle0);
+            float _1295;
+            if (instance_buffer_1._member0[gl_GlobalInvocationID.x].is_straight > 1)
+            {
+                _1295 = _942 * 1.10000002384185791015625;
+            }
+            else
+            {
+                _1295 = 0.0;
+            }
+            _1296 = max(instance_buffer_1._member0[gl_GlobalInvocationID.x].angle1, length(vec3((abs(instance_buffer_1._member0[gl_GlobalInvocationID.x].angle1) + _1295) * 0.5, _942 * 0.550000011920928955078125, (abs(instance_buffer_1._member0[gl_GlobalInvocationID.x].plank_depth) * 1.0499999523162841796875) + 0.10999999940395355224609375)));
+        }
+        else
+        {
+            float _1297;
+            if (instance_buffer_1._member0[gl_GlobalInvocationID.x].is_xz != 0)
+            {
+                _1297 = length(vec2(abs(instance_buffer_1._member0[gl_GlobalInvocationID.x].radius1) * 1.0499999523162841796875, (abs(instance_buffer_1._member0[gl_GlobalInvocationID.x].plank_depth) * 1.0499999523162841796875) + 0.10999999940395355224609375));
+            }
+            else
+            {
+                _1297 = instance_buffer_1._member0[gl_GlobalInvocationID.x].radius1;
+            }
+            _1296 = _1297;
+        }
+        vec4 _1029 = vec4(_873, 1.0) * current_view.world_to_view;
+        vec3 _1030 = _1029.xyz;
+        float _981 = _1029.z;
+        uint _986 = clamp(uint(clamp((32.0 - _981) * 0.00347222224809229373931884765625, 0.0, 1.0) * 1024.0), 0u, 1023u);
+        vec4 _1071 = vec4(-current_view.view_to_clip[0].x, current_view.view_to_clip[0].y, 0.0, current_view.view_to_clip[0].w);
+        vec4 _1079 = vec4(current_view.view_to_clip[1].xy, 0.0, current_view.view_to_clip[1].w);
+        vec4 _1084 = vec4(current_view.view_to_clip[3].xy, -1.0, current_view.view_to_clip[3].w);
+        vec4 _1178[4];
+        _1178[0] = _1084 + _1071;
+        _1178[1] = _1084 - _1071;
+        _1178[2] = _1084 + _1079;
+        _1178[3] = _1084 - _1079;
+        int _1117;
+        int _1298 = 0;
+        for (;;)
+        {
+            if (!(_1298 < 4))
+            {
+                break;
+            }
+            _1178[_1298] /= vec4(length(_1178[_1298].xyz));
+            _1117 = _1298 + 1;
+            _1298 = _1117;
+            continue;
+        }
+        vec4 _1189[4] = _1178;
+        bool _1300;
+        _1300 = ((-_981) + _1296) > current_view.view_to_clip[2].w;
+        int _1154;
+        bool _1303;
+        int _1299 = 0;
+        for (;;)
+        {
+            if (!(_1299 < 4))
+            {
+                break;
+            }
+            if (_1300)
+            {
+                _1303 = dot(vec4(_1030, 1.0), _1189[_1299]) > (-_1296);
+            }
+            else
+            {
+                _1303 = false;
+            }
+            _1154 = _1299 + 1;
+            _1300 = _1303;
+            _1299 = _1154;
+            continue;
+        }
+        uint _1000 = gl_GlobalInvocationID.x + draw_list_info_1._member0[push_constants.draw_list_index_base].global_instance_offset;
+        bool _1301;
+        if (_1300)
+        {
+            _1301 = (prev_visibility_bitmask_1._member0[_1000 / 32u] & (1u << (_1000 % 32u))) != 0u;
+        }
+        else
+        {
+            _1301 = false;
+        }
+        if (_1301)
+        {
+            uint _1012 = atomicOr(next_visibility_bitmask._member0[_1000 / 32u], 1u << (_1000 % 32u));
+            uint _1014 = atomicAdd(filtered_instance_allocator_buffer_1._member0[push_constants.draw_list_index_base], 1u);
+            filtered_instance_buffer_1._member0[_1014] = (gl_GlobalInvocationID.x * 1024u) + _986;
+            filtered_instance_meta_buffer_1._member0[_1014].raw = uint(_903);
+            uint _1021 = atomicAdd(output_histogram_1._member0[(push_constants.draw_list_index_base * 1024u) + _986], 1u);
+        }
+        break;
+    } while(false);
+}
+

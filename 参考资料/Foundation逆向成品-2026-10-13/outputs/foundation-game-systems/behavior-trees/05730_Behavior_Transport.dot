@@ -1,0 +1,38 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Transport behavior",shape=doubleoctagon];
+  n1 [label="GoTo",shape=box];
+  n2 [label="PlaCAgentNodePickupResource",shape=box];
+  n3 [label="GoTo",shape=box];
+  n4 [label="Waiting",shape=box];
+  n5 [label="PlaCAgentNodeDropStuffToDepot",shape=box];
+  n6 [label="PlaCAgentNodeSetupTransport",shape=box];
+  n7 [label="Selector",shape=box];
+  n8 [label="PlaCAgentNodeAbortTransport",shape=box];
+  n9 [label="Selector",shape=box];
+  n10 [label="Failer",shape=box];
+  n11 [label="PlaCAgentNodeAbortTransport",shape=box];
+  n12 [label="Failer",shape=box];
+  n13 [label="Sequencer",shape=box];
+  n14 [label="Set Transport Activity Message",shape=box];
+  n15 [label="Set Transport Activity Message",shape=box];
+  n16 [label="Succeeder",shape=box];
+  n17 [label="Drop Off Waiting",shape=box];
+  n0 -> n6 [label="0"];
+  n0 -> n14 [label="1"];
+  n0 -> n9 [label="2"];
+  n0 -> n4 [label="3"];
+  n0 -> n7 [label="4"];
+  n0 -> n5 [label="5"];
+  n0 -> n17 [label="6"];
+  n7 -> n13 [label="7"];
+  n7 -> n12 [label="8"];
+  n9 -> n1 [label="9"];
+  n9 -> n10 [label="10"];
+  n10 -> n11 [label="11"];
+  n12 -> n8 [label="12"];
+  n13 -> n2 [label="13"];
+  n13 -> n16 [label="14"];
+  n13 -> n3 [label="15"];
+  n16 -> n15 [label="16"];
+}

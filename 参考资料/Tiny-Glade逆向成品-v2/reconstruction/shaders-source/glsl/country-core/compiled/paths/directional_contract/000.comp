@@ -1,0 +1,91 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+vec4 _409;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 path_mask_dims;
+    uvec2 img_out_dims;
+    uvec2 terrain_sdg_dims;
+} globalParams;
+
+layout(set = 5, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 0, binding = 3) uniform texture2D terrain_sdg;
+layout(set = 0, binding = 1) uniform texture2D path_mask;
+layout(set = 0, binding = 2, r16f) uniform writeonly image2D img_out;
+layout(set = 5, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 2, binding = 0) uniform sampler samplers_lnc;
+
+void main()
+{
+    do
+    {
+        ivec2 _38 = ivec2(gl_GlobalInvocationID.xy);
+        uvec2 _39 = uvec2(_38);
+        vec2 _45 = texelFetch(terrain_sdg, ivec2(_39), 0).xy;
+        if (length(_45) == 0.0)
+        {
+            imageStore(img_out, ivec2(_39), vec4(smoothstep(0.89999997615814208984375, 0.949999988079071044921875, texelFetch(path_mask, ivec2(_39), 0).x)));
+            break;
+        }
+        ivec2 _84 = ivec2(globalParams.path_mask_dims);
+        vec2 _318 = vec2(_38) + vec2(0.5);
+        vec2 _326 = (((_318 / vec2(_84)) * 2.0) - vec2(1.0)) * vec2(65.0);
+        vec2 _115 = vec3(_326.x, 0.0, _326.y).xz;
+        vec2 _335 = vec2(terrain_heightmap.terrain_heightmap_dims);
+        vec4 _355 = textureGather(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), _318 / _335);
+        float _359 = _355.z;
+        float _360 = _355.y;
+        float _362 = _355.w;
+        float _363 = _355.x;
+        float _222 = mix(0.20000000298023223876953125, 1.0, clamp(length(((vec2((_359 + _360) - (_362 + _363), (_363 + _360) - (_362 + _359)) * vec2(0.5)) * 26.5) / (vec2(130.0) / _335)) * 0.5, 0.0, 1.0));
+        int _228 = clamp(int(ceil((_222 / (130.0 / float(_84.x))) * 0.5)), 1, 10);
+        float _232 = _222 / float(_228 * 2);
+        int _233 = -_228;
+        float _399;
+        float _400;
+        _400 = 0.0;
+        _399 = 0.0;
+        float result;
+        float weight_sum;
+        int _287;
+        int _398 = _233;
+        for (;;)
+        {
+            if (!(_398 <= _228))
+            {
+                break;
+            }
+            float _242 = float(_398);
+            float _245 = _232 * _242;
+            float _382 = exp(((-_245) * _245) * 2.0);
+            result = _399 + (textureLod(sampler2D(path_mask, samplers_lnc), ((_115 + ((_45 * _232) * _242)) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x * _382);
+            weight_sum = _400 + _382;
+            _287 = _398 + 1;
+            _400 = weight_sum;
+            _399 = result;
+            _398 = _287;
+            continue;
+        }
+        imageStore(img_out, ivec2(_39), vec4(smoothstep(0.89999997615814208984375, 0.949999988079071044921875, _399 / _400)));
+        break;
+    } while(false);
+}
+

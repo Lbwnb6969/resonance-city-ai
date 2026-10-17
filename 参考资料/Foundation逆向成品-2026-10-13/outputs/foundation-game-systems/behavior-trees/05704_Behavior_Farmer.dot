@@ -1,0 +1,30 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="11a07f6b-0c32-4db9-8263-d40d983a6de0",shape=box];
+  n1 [label="GamCBehaviorTreeNodeCompositeSelector",shape=box];
+  n2 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=box];
+  n3 [label="PlaCAgentNodeCheckFarmState",shape=box];
+  n4 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=box];
+  n5 [label="PlaCAgentNodeCheckFarmState",shape=box];
+  n6 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=doubleoctagon];
+  n7 [label="c221726b-b848-4f7c-b64d-8627ec734f06",shape=box];
+  n8 [label="PlaCAgentNodeSetWorkplaceAsDestination",shape=box];
+  n9 [label="PlaCAgentNodeCheckFarmState",shape=box];
+  n10 [label="Sequencer",shape=box];
+  n11 [label="1a3a0bff-035d-450e-a375-51982c466bae",shape=box];
+  n12 [label="Selector",shape=box];
+  n13 [label="PlaCAgentNodeCheckFarmState",shape=box];
+  n1 -> n2 [label="0"];
+  n1 -> n10 [label="1"];
+  n1 -> n4 [label="2"];
+  n2 -> n12 [label="3"];
+  n2 -> n0 [label="4"];
+  n4 -> n5 [label="5"];
+  n4 -> n7 [label="6"];
+  n6 -> n8 [label="7"];
+  n6 -> n1 [label="8"];
+  n10 -> n9 [label="9"];
+  n10 -> n11 [label="10"];
+  n12 -> n3 [label="11"];
+  n12 -> n13 [label="12"];
+}

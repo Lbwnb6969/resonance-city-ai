@@ -1,0 +1,107 @@
+#version 460
+layout(local_size_x = 512, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} inout_buf;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint range_start;
+    uint range_end;
+} push_constants;
+
+shared uint shared_data2x[1024];
+
+void main()
+{
+    uint _458;
+    bool _462;
+    uint _329 = gl_LocalInvocationID.x * 2u;
+    uvec2 _524;
+    do
+    {
+        _458 = _329 + push_constants.range_start;
+        _462 = (_458 + 1u) < push_constants.range_end;
+        if (_462)
+        {
+            uint _464 = 4u * _458;
+            _524 = uvec2(inout_buf._member0[_464 / 4u], inout_buf._member0[(_464 + 4u) / 4u]);
+            break;
+        }
+        else
+        {
+            if (_458 < push_constants.range_end)
+            {
+                _524 = uvec2(inout_buf._member0[uint(int(4u * _458)) / 4u], 0u);
+                break;
+            }
+            else
+            {
+                _524 = uvec2(0u);
+                break;
+            }
+            break; // unreachable workaround
+        }
+        break; // unreachable workaround
+    } while(false);
+    shared_data2x[_329] = _524.x;
+    uint _333 = _329 + 1u;
+    shared_data2x[_333] = _524.y;
+    barrier();
+    uint _337 = gl_LocalInvocationID.x << 1u;
+    uint _338 = _337 + 1u;
+    shared_data2x[_338] += shared_data2x[_337];
+    barrier();
+    uint _347 = (gl_LocalInvocationID.x >> 1u) << 2u;
+    uint _351 = (_347 + 2u) + (gl_LocalInvocationID.x & 1u);
+    shared_data2x[_351] += shared_data2x[_347 + 1u];
+    barrier();
+    uint _358 = (gl_LocalInvocationID.x >> 2u) << 3u;
+    uint _362 = (_358 + 4u) + (gl_LocalInvocationID.x & 3u);
+    shared_data2x[_362] += shared_data2x[_358 + 3u];
+    barrier();
+    uint _369 = (gl_LocalInvocationID.x >> 3u) << 4u;
+    uint _373 = (_369 + 8u) + (gl_LocalInvocationID.x & 7u);
+    shared_data2x[_373] += shared_data2x[_369 + 7u];
+    barrier();
+    uint _380 = (gl_LocalInvocationID.x >> 4u) << 5u;
+    uint _384 = (_380 + 16u) + (gl_LocalInvocationID.x & 15u);
+    shared_data2x[_384] += shared_data2x[_380 + 15u];
+    barrier();
+    uint _391 = (gl_LocalInvocationID.x >> 5u) << 6u;
+    uint _395 = (_391 + 32u) + (gl_LocalInvocationID.x & 31u);
+    shared_data2x[_395] += shared_data2x[_391 + 31u];
+    barrier();
+    uint _402 = (gl_LocalInvocationID.x >> 6u) << 7u;
+    uint _406 = (_402 + 64u) + (gl_LocalInvocationID.x & 63u);
+    shared_data2x[_406] += shared_data2x[_402 + 63u];
+    barrier();
+    uint _413 = (gl_LocalInvocationID.x >> 7u) << 8u;
+    uint _417 = (_413 + 128u) + (gl_LocalInvocationID.x & 127u);
+    shared_data2x[_417] += shared_data2x[_413 + 127u];
+    barrier();
+    uint _424 = (gl_LocalInvocationID.x >> 8u) << 9u;
+    uint _428 = (_424 + 256u) + (gl_LocalInvocationID.x & 255u);
+    shared_data2x[_428] += shared_data2x[_424 + 255u];
+    barrier();
+    uint _435 = (gl_LocalInvocationID.x >> 9u) << 10u;
+    uint _439 = (_435 + 512u) + (gl_LocalInvocationID.x & 511u);
+    shared_data2x[_439] += shared_data2x[_435 + 511u];
+    barrier();
+    if (_462)
+    {
+        uint _498 = 4u * _458;
+        inout_buf._member0[_498 / 4u] = shared_data2x[_329];
+        inout_buf._member0[(_498 + 4u) / 4u] = shared_data2x[_333];
+    }
+    else
+    {
+        if (_458 < push_constants.range_end)
+        {
+            inout_buf._member0[(4u * _458) / 4u] = shared_data2x[_329];
+        }
+    }
+}
+

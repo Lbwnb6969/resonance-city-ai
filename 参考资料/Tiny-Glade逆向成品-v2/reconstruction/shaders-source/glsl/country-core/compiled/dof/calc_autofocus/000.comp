@@ -1,0 +1,471 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct DofAutofocus_natural
+{
+    float focus0;
+    float focus1;
+    float lock_bias0;
+    float lock_bias1;
+    vec3 lock_pos_ws;
+    uint is_locked;
+    vec3 interp_lock_pos_ws;
+    uint use_tilt_shift;
+    float interp_lock_bias0;
+    float interp_lock_bias1;
+    float focus_scale;
+    uint pad2;
+};
+
+struct DofFocusReadback_natural
+{
+    vec3 lock_pos_ws;
+    uint lock_reponse;
+};
+
+layout(set = 2, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 3, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    DofAutofocus_natural _member0[];
+} autofocus_buf;
+
+layout(set = 4, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 depth_tex_dims;
+    vec2 point_uv;
+    uint use_dual_focus;
+    uint focus_lock_request;
+    uint focus_is_locked;
+    float focus_box_height;
+    uint use_tilt_shift;
+    float aperture_size;
+} globalParams;
+
+layout(set = 0, binding = 3, std430) buffer focus_readback_buf
+{
+    DofFocusReadback_natural _member0[];
+} focus_readback_buf_1;
+
+layout(set = 0, binding = 1) uniform texture2D depth_tex;
+
+shared uint group_focus0_dists[64];
+shared uint group_focus1_dists[64];
+
+void main()
+{
+    barrier();
+    bool USE_TWEENING = !(0u == frame_counter.index);
+    float _136 = autofocus_buf._member0[frame_constants.camera_idx].focus0;
+    float _141 = autofocus_buf._member0[frame_constants.camera_idx].focus1;
+    float _146 = autofocus_buf._member0[frame_constants.camera_idx].lock_bias0;
+    float _151 = autofocus_buf._member0[frame_constants.camera_idx].lock_bias1;
+    vec3 _157 = autofocus_buf._member0[frame_constants.camera_idx].lock_pos_ws;
+    vec3 _168 = autofocus_buf._member0[frame_constants.camera_idx].interp_lock_pos_ws;
+    float _178 = autofocus_buf._member0[frame_constants.camera_idx].interp_lock_bias0;
+    float _183 = autofocus_buf._member0[frame_constants.camera_idx].interp_lock_bias1;
+    uint _193 = autofocus_buf._member0[frame_constants.camera_idx].pad2;
+    float _199 = clamp(_136, 0.0, 100000.0);
+    float _206 = clamp(_141, 0.0, 100000.0);
+    bool _248 = globalParams.use_dual_focus != 0u;
+    vec2 _249 = ((vec2(gl_GlobalInvocationID.xy) * vec2(0.14285714924335479736328125)) - vec2(0.5)) * (vec2(1.0 / (current_view.view_to_clip[1].y / current_view.view_to_clip[0].x), 1.0) * globalParams.focus_box_height);
+    vec2 _255 = globalParams.point_uv + (_249 * 0.20000000298023223876953125);
+    vec2 _904 = vec2(globalParams.depth_tex_dims);
+    vec4 _939 = (vec4((_255 - vec2(0.5)) * vec2(2.0, -2.0), max(9.9999996826552253889678874634872e-21, texelFetch(depth_tex, ivec2(uvec2(ivec2(_255 * _904))), 0).x), 1.0) * current_view.sample_to_view) * current_view.view_to_world;
+    vec2 _347 = globalParams.point_uv + _249;
+    vec4 _993 = (vec4((_347 - vec2(0.5)) * vec2(2.0, -2.0), max(9.9999996826552253889678874634872e-21, texelFetch(depth_tex, ivec2(uvec2(ivec2(_347 * _904))), 0).x), 1.0) * current_view.sample_to_view) * current_view.view_to_world;
+    vec3 _1683;
+    do
+    {
+        if (_248)
+        {
+            _1683 = _939.xyz / vec3(_939.w);
+            break;
+        }
+        else
+        {
+            _1683 = _993.xyz / vec3(_993.w);
+            break;
+        }
+        break; // unreachable workaround
+    } while(false);
+    vec4 _1047 = (vec4(_249 * vec2(2.0, -2.0), max(9.9999996826552253889678874634872e-21, texelFetch(depth_tex, ivec2(uvec2(ivec2((vec2(0.5) + _249) * _904))), 0).x), 1.0) * current_view.sample_to_view) * current_view.view_to_world;
+    vec3 _1688;
+    do
+    {
+        if (_248)
+        {
+            _1688 = _1047.xyz / vec3(_1047.w);
+            break;
+        }
+        else
+        {
+            _1688 = _1683;
+            break;
+        }
+        break; // unreachable workaround
+    } while(false);
+    bool _366 = globalParams.use_tilt_shift != 0u;
+    float _1070 = float(_366 ? 0 : 1);
+    vec3 _1673 = _1683;
+    _1673.y = _1683.y * _1070;
+    vec4 _1082 = vec4(0.0, 0.0, 0.0, 1.0) * current_view.view_to_world;
+    vec3 _1086 = _1082.xyz / vec3(_1082.w);
+    vec3 _1093 = normalize((vec4(0.0, 0.0, -1.0, 0.0) * current_view.view_to_world).xyz);
+    vec3 _1676 = _1688;
+    _1676.y = _1688.y * _1070;
+    group_focus0_dists[gl_LocalInvocationIndex] = floatBitsToUint(dot(_1673 - _1086, _1093));
+    group_focus1_dists[gl_LocalInvocationIndex] = floatBitsToUint(dot(_1676 - _1086, _1093));
+    barrier();
+    uint _1132 = uint(findMSB(63u));
+    uint _1133 = 2u << _1132;
+    uint _1202;
+    uint _1691 = 2u;
+    for (;;)
+    {
+        if (!(_1691 <= _1133))
+        {
+            break;
+        }
+        uint _1143 = _1691 >> uint(1);
+        uint _1196;
+        uint _1781 = _1143;
+        for (;;)
+        {
+            if (!(_1781 > 0u))
+            {
+                break;
+            }
+            uint _1154 = gl_LocalInvocationIndex & (_1781 - 1u);
+            uint _1156 = 2u * (gl_LocalInvocationIndex - _1154);
+            uint _1157 = _1156 + _1154;
+            uint _1783;
+            do
+            {
+                if (_1781 == _1143)
+                {
+                    _1783 = (_1156 + ((2u * _1781) - 1u)) - _1154;
+                    break;
+                }
+                else
+                {
+                    _1783 = (_1156 + _1781) + _1154;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            bool _1784;
+            if (_1783 < 64u)
+            {
+                _1784 = _1157 < 64u;
+            }
+            else
+            {
+                _1784 = false;
+            }
+            if (_1784)
+            {
+                if (group_focus0_dists[_1157] > group_focus0_dists[_1783])
+                {
+                    uint _1189 = group_focus0_dists[_1157];
+                    group_focus0_dists[_1157] = group_focus0_dists[_1783];
+                    group_focus0_dists[_1783] = _1189;
+                }
+            }
+            barrier();
+            _1196 = _1781 >> uint(1);
+            _1781 = _1196;
+            continue;
+        }
+        _1202 = _1691 * 2u;
+        _1691 = _1202;
+        continue;
+    }
+    uint _1281;
+    uint _1692 = 2u;
+    for (;;)
+    {
+        if (!(_1692 <= _1133))
+        {
+            break;
+        }
+        uint _1222 = _1692 >> uint(1);
+        uint _1275;
+        uint _1772 = _1222;
+        for (;;)
+        {
+            if (!(_1772 > 0u))
+            {
+                break;
+            }
+            uint _1233 = gl_LocalInvocationIndex & (_1772 - 1u);
+            uint _1235 = 2u * (gl_LocalInvocationIndex - _1233);
+            uint _1236 = _1235 + _1233;
+            uint _1774;
+            do
+            {
+                if (_1772 == _1222)
+                {
+                    _1774 = (_1235 + ((2u * _1772) - 1u)) - _1233;
+                    break;
+                }
+                else
+                {
+                    _1774 = (_1235 + _1772) + _1233;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            bool _1775;
+            if (_1774 < 64u)
+            {
+                _1775 = _1236 < 64u;
+            }
+            else
+            {
+                _1775 = false;
+            }
+            if (_1775)
+            {
+                if (group_focus1_dists[_1236] > group_focus1_dists[_1774])
+                {
+                    uint _1268 = group_focus1_dists[_1236];
+                    group_focus1_dists[_1236] = group_focus1_dists[_1774];
+                    group_focus1_dists[_1774] = _1268;
+                }
+            }
+            barrier();
+            _1275 = _1772 >> uint(1);
+            _1772 = _1275;
+            continue;
+        }
+        _1281 = _1692 * 2u;
+        _1692 = _1281;
+        continue;
+    }
+    if (0u == gl_LocalInvocationIndex)
+    {
+        float _567 = uintBitsToFloat(group_focus0_dists[0]);
+        float _570 = uintBitsToFloat(group_focus0_dists[63u]);
+        float _580 = uintBitsToFloat(group_focus0_dists[32u]);
+        float _583 = uintBitsToFloat(group_focus1_dists[32u]);
+        float _1712;
+        float _1715;
+        if (_366)
+        {
+            bool _591 = uint(!_248) != 0u;
+            _1715 = _591 ? _570 : _583;
+            _1712 = _591 ? _567 : _580;
+        }
+        else
+        {
+            _1715 = _583;
+            _1712 = _580;
+        }
+        vec3 _1725;
+        float _1728;
+        float _1730;
+        float _1734;
+        float _1737;
+        if (globalParams.focus_lock_request == frame_constants.camera_idx)
+        {
+            vec4 _1325 = (vec4((globalParams.point_uv - vec2(0.5)) * vec2(2.0, -2.0), max(9.9999996826552253889678874634872e-21, texelFetch(depth_tex, ivec2(uvec2(ivec2(globalParams.point_uv * _904))), 0).x), 1.0) * current_view.sample_to_view) * current_view.view_to_world;
+            vec3 _1338 = _1325.xyz / vec3(_1325.w);
+            vec3 _1679 = _1338;
+            _1679.y = _1338.y * _1070;
+            float _1355 = dot(_1679 - _1086, _1093);
+            _1737 = max(_1712, _1715) - _1355;
+            _1734 = max(_199, _206) - _1355;
+            _1730 = min(_1712, _1715) - _1355;
+            _1728 = min(_199, _206) - _1355;
+            _1725 = _1338;
+        }
+        else
+        {
+            _1737 = _151;
+            _1734 = _183;
+            _1730 = _146;
+            _1728 = _178;
+            _1725 = _157;
+        }
+        float _1746;
+        float _1749;
+        vec3 _1751;
+        float _1768;
+        float _1770;
+        if (globalParams.focus_is_locked != 0u)
+        {
+            float _1415 = 1.0 - exp(frame_constants.delta_time_seconds * (-8.0));
+            vec3 _1726;
+            do
+            {
+                if (USE_TWEENING)
+                {
+                    _1726 = mix(_168, _1725, vec3(_1415));
+                    break;
+                }
+                else
+                {
+                    _1726 = _1725;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1731;
+            do
+            {
+                if (USE_TWEENING)
+                {
+                    _1731 = mix(_1728, _1730, _1415);
+                    break;
+                }
+                else
+                {
+                    _1731 = _1730;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1738;
+            do
+            {
+                if (USE_TWEENING)
+                {
+                    _1738 = mix(_1734, _1737, _1415);
+                    break;
+                }
+                else
+                {
+                    _1738 = _1737;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            vec3 _1682 = _1725;
+            _1682.y = _1725.y * _1070;
+            float _1456 = dot(_1682 - _1086, _1093);
+            _1770 = _1456 + _1731;
+            _1768 = _1456 + _1738;
+            _1751 = _1726;
+            _1749 = _1731;
+            _1746 = _1738;
+        }
+        else
+        {
+            float _1769;
+            float _1771;
+            if (USE_TWEENING)
+            {
+                float clamp_interp_t = 1.0 - exp(frame_constants.delta_time_seconds * (-8.0));
+                float interp_t = 1.0 - exp(frame_constants.delta_time_seconds * (-4.0));
+                _1771 = 1.0 / max(9.9999997473787516355514526367188e-06, mix(1.0 / max(9.9999997473787516355514526367188e-06, 1.0 / max(9.9999997473787516355514526367188e-06, mix(1.0 / max(9.9999997473787516355514526367188e-06, _199), 1.0 / max(9.9999997473787516355514526367188e-06, clamp(_199, _567, _570)), clamp_interp_t))), 1.0 / max(9.9999997473787516355514526367188e-06, _1712), interp_t));
+                _1769 = 1.0 / max(9.9999997473787516355514526367188e-06, mix(1.0 / max(9.9999997473787516355514526367188e-06, 1.0 / max(9.9999997473787516355514526367188e-06, mix(1.0 / max(9.9999997473787516355514526367188e-06, _206), 1.0 / max(9.9999997473787516355514526367188e-06, clamp(_206, uintBitsToFloat(group_focus1_dists[0]), uintBitsToFloat(group_focus1_dists[63u]))), clamp_interp_t))), 1.0 / max(9.9999997473787516355514526367188e-06, _1715), interp_t));
+            }
+            else
+            {
+                _1771 = _1712;
+                _1769 = _1715;
+            }
+            _1770 = _1771;
+            _1768 = _1769;
+            _1751 = _168;
+            _1749 = _1728;
+            _1746 = _1734;
+        }
+        autofocus_buf._member0[frame_constants.camera_idx].focus0 = _1770;
+        autofocus_buf._member0[frame_constants.camera_idx].focus1 = _1768;
+        autofocus_buf._member0[frame_constants.camera_idx].lock_bias0 = _1730;
+        autofocus_buf._member0[frame_constants.camera_idx].lock_bias1 = _1737;
+        autofocus_buf._member0[frame_constants.camera_idx].lock_pos_ws = _1725;
+        autofocus_buf._member0[frame_constants.camera_idx].is_locked = globalParams.focus_is_locked;
+        autofocus_buf._member0[frame_constants.camera_idx].interp_lock_pos_ws = _1751;
+        autofocus_buf._member0[frame_constants.camera_idx].use_tilt_shift = globalParams.use_tilt_shift;
+        autofocus_buf._member0[frame_constants.camera_idx].interp_lock_bias0 = _1749;
+        autofocus_buf._member0[frame_constants.camera_idx].interp_lock_bias1 = _1746;
+        autofocus_buf._member0[frame_constants.camera_idx].focus_scale = globalParams.aperture_size;
+        autofocus_buf._member0[frame_constants.camera_idx].pad2 = _193;
+        focus_readback_buf_1._member0[0].lock_pos_ws = _1725;
+        focus_readback_buf_1._member0[0].lock_reponse = globalParams.focus_lock_request;
+    }
+}
+

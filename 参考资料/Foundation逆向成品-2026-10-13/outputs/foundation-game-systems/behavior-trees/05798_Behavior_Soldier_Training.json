@@ -1,0 +1,466 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Soldier/Behavior Soldier Training.bt",
+  "absolute_offset": 2632811,
+  "length": 7737,
+  "sha256": "6e7baffa9a9cf3de427b73dd22a860db1b9b41edf5ff5b616c2641ff5c91d66c",
+  "rid": 5798,
+  "root_id": "f489c510-78a2-499e-a6d0-683bbe380964",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TimeToWait",
+        "IsPublic": false,
+        "Id": "67147e54-79b3-4616-a0fe-3ee52d496e8c",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 10.0,
+          "Animation": "NONE",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NextPosition",
+        "IsPublic": false,
+        "Id": "55a0a25b-2615-4d15-b9ba-46eb538236de",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "LoopData",
+        "IsPublic": false,
+        "Id": "cd8eed8e-26db-40c0-804e-23a18a51da5e",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 5,
+          "Duration": 5.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TimeToWait2",
+        "IsPublic": false,
+        "Id": "f7c8cd18-3033-4f92-88a0-dfbf93019fb4",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "NONE",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "EncampmentData",
+        "IsPublic": false,
+        "Id": "0258bd44-d49c-4fb3-b29f-a9368f996d37",
+        "TypeDefinition": "PlaSContextSoldierEncampment",
+        "DefaultValue": {
+          "type": "PlaSContextSoldierEncampment"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ActivityMessageTraining",
+        "IsPublic": false,
+        "Id": "b8874ce0-fb78-4a7c-9208-d84ea510acee",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "SOLDIER_TRAINING",
+          "ActivityType": "PRODUCTION"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -29,
+        291
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "f24a9c5c-1e18-439b-a345-86578ea93d09",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        330,
+        486
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "67147e54-79b3-4616-a0fe-3ee52d496e8c",
+          "binding_status": "variable",
+          "variable_name": "TimeToWait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "f24a9c5c-1e18-439b-a345-86578ea93d09",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "37a802ce-ad6e-46df-9625-2e7dcd686fec",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -204,
+        437
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "55a0a25b-2615-4d15-b9ba-46eb538236de",
+          "binding_status": "variable",
+          "variable_name": "NextPosition"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "0d014099-612a-40e1-a3f4-2c6ee552ea56",
+      "name": "Ste Up Soldier Training",
+      "type": "PlaCAgentNodeSetupWorkSoldierTraining",
+      "position": [
+        -701,
+        461
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Workplace Position",
+          "value": "55a0a25b-2615-4d15-b9ba-46eb538236de",
+          "binding_status": "variable",
+          "variable_name": "NextPosition"
+        },
+        {
+          "name": "Wait Data",
+          "value": "67147e54-79b3-4616-a0fe-3ee52d496e8c",
+          "binding_status": "variable",
+          "variable_name": "TimeToWait"
+        },
+        {
+          "name": "Encampment Data",
+          "value": "0258bd44-d49c-4fb3-b29f-a9368f996d37",
+          "binding_status": "variable",
+          "variable_name": "EncampmentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "36e5e0b6-f47f-4f99-8498-0d32e755634f",
+      "name": "",
+      "type": "PlaCAgentNodeSoldierUnregisterTrainingNode",
+      "position": [
+        980,
+        463
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Encampment Data",
+          "value": "0258bd44-d49c-4fb3-b29f-a9368f996d37",
+          "binding_status": "variable",
+          "variable_name": "EncampmentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "087740a0-b03d-41bd-8c5f-51983b8f3907",
+      "name": "SetOrientation",
+      "type": "PlaCAgentNodeSetOrientation",
+      "position": [
+        116,
+        436
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "55a0a25b-2615-4d15-b9ba-46eb538236de",
+          "binding_status": "variable",
+          "variable_name": "NextPosition"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "9b46ee2c-2039-4eaf-94b0-21133f7b903f",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        -405,
+        431
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "b8874ce0-fb78-4a7c-9208-d84ea510acee",
+          "binding_status": "variable",
+          "variable_name": "ActivityMessageTraining"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "3fb123cf-11db-4925-a9d9-731b3ae910d4",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        -76,
+        136
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "cd8eed8e-26db-40c0-804e-23a18a51da5e",
+          "binding_status": "variable",
+          "variable_name": "LoopData"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "3fb123cf-11db-4925-a9d9-731b3ae910d4",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "f489c510-78a2-499e-a6d0-683bbe380964",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -6,
+        21
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "1fdd2d5b-5935-4f9b-a26d-8a58449c9567",
+      "name": "",
+      "type": "PlaCAgentNodeSoldierTrain",
+      "position": [
+        686,
+        480
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "06d0d81c-28b7-48ad-9857-8379f19e7d77",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Encampment Data",
+          "value": "0258bd44-d49c-4fb3-b29f-a9368f996d37",
+          "binding_status": "variable",
+          "variable_name": "EncampmentData"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "0d014099-612a-40e1-a3f4-2c6ee552ea56",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "9b46ee2c-2039-4eaf-94b0-21133f7b903f",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "37a802ce-ad6e-46df-9625-2e7dcd686fec",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "087740a0-b03d-41bd-8c5f-51983b8f3907",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "f24a9c5c-1e18-439b-a345-86578ea93d09",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "to": "1fdd2d5b-5935-4f9b-a26d-8a58449c9567",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "3fb123cf-11db-4925-a9d9-731b3ae910d4",
+      "to": "50f39c62-26d9-4290-b91c-9baec666de3b",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f489c510-78a2-499e-a6d0-683bbe380964",
+      "to": "3fb123cf-11db-4925-a9d9-731b3ae910d4",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f489c510-78a2-499e-a6d0-683bbe380964",
+      "to": "36e5e0b6-f47f-4f99-8498-0d32e755634f",
+      "ordinal": 8,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

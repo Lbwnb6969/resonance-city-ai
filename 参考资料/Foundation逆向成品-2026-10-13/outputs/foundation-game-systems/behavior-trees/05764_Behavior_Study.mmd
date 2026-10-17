@@ -1,0 +1,25 @@
+flowchart TD
+  n0["Working"]
+  n1["Go to resource"]
+  n2["GamCBehaviorTreeNodeCompositeSelector"]
+  n3["GamCBehaviorTreeNodeDecoratorInverter"]
+  n4["Is my need filled"]
+  n5["Transport behavior"]
+  n6["Find Resource For Workplace"]
+  n7["1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"]
+  n8["GamCBehaviorTreeNodeDecoratorRepeat"]
+  n9["GamCBehaviorTreeNodeCompositeSequencer"]
+  n10["PlaCAgentNodeSetupStudy"]
+  n11["Produce Resource"]
+  n12["Setup Transporter Work"]
+  n0 -->|0| n2
+  n0 -->|1| n8
+  n2 -->|2| n3
+  n2 -->|3| n5
+  n3 -->|4| n4
+  n5 -->|5| n6
+  n5 -->|6| n7
+  n8 -->|7| n9
+  n9 -->|8| n10
+  n9 -->|9| n1
+  n9 -->|10| n11

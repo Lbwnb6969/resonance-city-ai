@@ -1,0 +1,33 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+struct CsOut_natural
+{
+    vec4 mouse_raycast_position;
+    int terrain_stroke_index;
+};
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 stroke_indices_dims;
+} globalParams;
+
+layout(set = 0, binding = 2, scalar) buffer RWStructuredBuffer
+{
+    CsOut_natural _member0[];
+} out_buffer;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    vec2 query_position_xz;
+} entryPointParams;
+
+layout(set = 0, binding = 1) uniform itexture2D stroke_indices;
+
+void main()
+{
+    out_buffer._member0[0].terrain_stroke_index = texelFetch(stroke_indices, ivec2(uvec2(ivec2(((vec3(entryPointParams.query_position_xz.x, 0.0, entryPointParams.query_position_xz.y) * vec3(0.0076923076994717121124267578125)) + vec3(0.5)).xz * vec2(ivec2(globalParams.stroke_indices_dims))))), 0).x;
+}
+

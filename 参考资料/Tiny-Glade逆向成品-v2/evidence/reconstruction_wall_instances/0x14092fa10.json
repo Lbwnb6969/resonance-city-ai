@@ -1,0 +1,28 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 519,
+    "record_offset": 76040,
+    "module": "country_core-75de4a05f1ed4a16.bxcb0vhu62ystrv28li0fef7b.1euy9uv.rcgu.o",
+    "name": "country_core::resources::walls::public_wall_state::PublicWallState::try_get_wall_shape",
+    "segment": 1,
+    "offset": 9628176,
+    "rva": 9632272,
+    "va": "0x14092fa10",
+    "size": 21,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "04dcf9a45b9eebb449e7660a7b79113e79e02255fcfb60676c2b641e1061006d",
+  "code_bytes": 21,
+  "decoded_bytes": 21,
+  "instructions": 5,
+  "calls_and_jumps": [],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

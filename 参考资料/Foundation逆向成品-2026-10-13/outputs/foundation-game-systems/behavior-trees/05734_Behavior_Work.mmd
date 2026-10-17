@@ -1,0 +1,45 @@
+flowchart TD
+  n0["Go to resource"]
+  n1["Getting XP"]
+  n2["Produce Resource"]
+  n3["PlaCAgentNodeSetupWork"]
+  n4["Is my need filled"]
+  n5["Transport behavior"]
+  n6["Find Resource For Workplace"]
+  n7["1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"]
+  n8["GamCBehaviorTreeNodeCompositeSequencer"]
+  n9["LookAt"]
+  n10["Sequencer"]
+  n11["PlaCAgentNodeSetupWorkplaceTransport"]
+  n12["GoTo"]
+  n13["PlaCAgentNodeDropStuffToDepot"]
+  n14["Succeeder"]
+  n15["Repeat until fail"]
+  n16["Repeat until fail"]
+  n17["Repeat until fail"]
+  n18["Sequencer"]
+  n19["PlaCAgentNodeSetupPreWorkSubBehavior"]
+  n20["Sequencer"]
+  n21["Execute Subtree"]
+  n22["Succeeder"]
+  n5 -->|0| n4
+  n5 -->|1| n6
+  n5 -->|2| n7
+  n8 -->|3| n22
+  n8 -->|4| n3
+  n8 -->|5| n0
+  n8 -->|6| n2
+  n8 -->|7| n15
+  n8 -->|8| n1
+  n10 -->|9| n11
+  n10 -->|10| n14
+  n10 -->|11| n13
+  n14 -->|12| n12
+  n15 -->|13| n10
+  n16 -->|14| n8
+  n17 -->|15| n5
+  n18 -->|16| n17
+  n18 -->|17| n16
+  n20 -->|18| n19
+  n20 -->|19| n21
+  n22 -->|20| n20

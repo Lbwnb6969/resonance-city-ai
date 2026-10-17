@@ -1,0 +1,227 @@
+// RVA 0x3efaa0 | Placemaker.Quads.Vert$$GetQuad
+// PDB: Vert_GetQuad_mB89B530B14247DDDC03EAFB5F4A164CE65DD9D03
+// Body: [[103efaa0, 103efc05]]
+// Direct callees:
+
+Quad_t1E4E0FD4F68559FA20870CFBD24EB4162BEDBDAB * __cdecl
+Vert_GetQuad_mB89B530B14247DDDC03EAFB5F4A164CE65DD9D03
+          (Quad_t1E4E0FD4F68559FA20870CFBD24EB4162BEDBDAB *__return_storage_ptr__,
+          Vert_t18972B9474E2BFE0EB14C63B94473AA726934A9C *param_1,int param_2,MethodInfo *param_3)
+
+{
+  float fVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  float fVar5;
+  float fVar6;
+  float fVar7;
+  undefined3 uVar8;
+
+  switch(param_2) {
+  case 0:
+    uVar8 = *(undefined3 *)&(param_1->___q0_2).field_0x1;
+    iVar2 = (param_1->___q0_2).___v0_1.___x_0;
+    iVar3 = (param_1->___q0_2).___v0_1.___y_1;
+    iVar4 = (param_1->___q0_2).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q0_2).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q0_2).___v2_3.___x_0;
+    iVar3 = (param_1->___q0_2).___v2_3.___y_1;
+    iVar4 = (param_1->___q0_2).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q0_2).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q0_2).___p0_5.___x_0;
+    fVar5 = (param_1->___q0_2).___p0_5.___y_1;
+    fVar6 = (param_1->___q0_2).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q0_2).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q0_2).___p2_7.___x_0;
+    fVar6 = (param_1->___q0_2).___p2_7.___y_1;
+    fVar7 = (param_1->___q0_2).___p3_8.___x_0;
+    fVar1 = (param_1->___q0_2).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q0_2).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  case 1:
+    uVar8 = *(undefined3 *)&(param_1->___q1_3).field_0x1;
+    iVar2 = (param_1->___q1_3).___v0_1.___x_0;
+    iVar3 = (param_1->___q1_3).___v0_1.___y_1;
+    iVar4 = (param_1->___q1_3).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q1_3).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q1_3).___v2_3.___x_0;
+    iVar3 = (param_1->___q1_3).___v2_3.___y_1;
+    iVar4 = (param_1->___q1_3).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q1_3).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q1_3).___p0_5.___x_0;
+    fVar5 = (param_1->___q1_3).___p0_5.___y_1;
+    fVar6 = (param_1->___q1_3).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q1_3).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q1_3).___p2_7.___x_0;
+    fVar6 = (param_1->___q1_3).___p2_7.___y_1;
+    fVar7 = (param_1->___q1_3).___p3_8.___x_0;
+    fVar1 = (param_1->___q1_3).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q1_3).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  case 2:
+    uVar8 = *(undefined3 *)&(param_1->___q2_4).field_0x1;
+    iVar2 = (param_1->___q2_4).___v0_1.___x_0;
+    iVar3 = (param_1->___q2_4).___v0_1.___y_1;
+    iVar4 = (param_1->___q2_4).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q2_4).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q2_4).___v2_3.___x_0;
+    iVar3 = (param_1->___q2_4).___v2_3.___y_1;
+    iVar4 = (param_1->___q2_4).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q2_4).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q2_4).___p0_5.___x_0;
+    fVar5 = (param_1->___q2_4).___p0_5.___y_1;
+    fVar6 = (param_1->___q2_4).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q2_4).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q2_4).___p2_7.___x_0;
+    fVar6 = (param_1->___q2_4).___p2_7.___y_1;
+    fVar7 = (param_1->___q2_4).___p3_8.___x_0;
+    fVar1 = (param_1->___q2_4).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q2_4).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  case 3:
+    uVar8 = *(undefined3 *)&(param_1->___q3_5).field_0x1;
+    iVar2 = (param_1->___q3_5).___v0_1.___x_0;
+    iVar3 = (param_1->___q3_5).___v0_1.___y_1;
+    iVar4 = (param_1->___q3_5).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q3_5).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q3_5).___v2_3.___x_0;
+    iVar3 = (param_1->___q3_5).___v2_3.___y_1;
+    iVar4 = (param_1->___q3_5).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q3_5).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q3_5).___p0_5.___x_0;
+    fVar5 = (param_1->___q3_5).___p0_5.___y_1;
+    fVar6 = (param_1->___q3_5).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q3_5).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q3_5).___p2_7.___x_0;
+    fVar6 = (param_1->___q3_5).___p2_7.___y_1;
+    fVar7 = (param_1->___q3_5).___p3_8.___x_0;
+    fVar1 = (param_1->___q3_5).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q3_5).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  case 4:
+    uVar8 = *(undefined3 *)&(param_1->___q4_6).field_0x1;
+    iVar2 = (param_1->___q4_6).___v0_1.___x_0;
+    iVar3 = (param_1->___q4_6).___v0_1.___y_1;
+    iVar4 = (param_1->___q4_6).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q4_6).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q4_6).___v2_3.___x_0;
+    iVar3 = (param_1->___q4_6).___v2_3.___y_1;
+    iVar4 = (param_1->___q4_6).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q4_6).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q4_6).___p0_5.___x_0;
+    fVar5 = (param_1->___q4_6).___p0_5.___y_1;
+    fVar6 = (param_1->___q4_6).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q4_6).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q4_6).___p2_7.___x_0;
+    fVar6 = (param_1->___q4_6).___p2_7.___y_1;
+    fVar7 = (param_1->___q4_6).___p3_8.___x_0;
+    fVar1 = (param_1->___q4_6).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q4_6).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  default:
+    uVar8 = *(undefined3 *)&(param_1->___q5_7).field_0x1;
+    iVar2 = (param_1->___q5_7).___v0_1.___x_0;
+    iVar3 = (param_1->___q5_7).___v0_1.___y_1;
+    iVar4 = (param_1->___q5_7).___v1_2.___x_0;
+    __return_storage_ptr__->___quadIndex_0 = (param_1->___q5_7).___quadIndex_0;
+    *(undefined3 *)&__return_storage_ptr__->field_0x1 = uVar8;
+    (__return_storage_ptr__->___v0_1).___x_0 = iVar2;
+    (__return_storage_ptr__->___v0_1).___y_1 = iVar3;
+    (__return_storage_ptr__->___v1_2).___x_0 = iVar4;
+    iVar2 = (param_1->___q5_7).___v2_3.___x_0;
+    iVar3 = (param_1->___q5_7).___v2_3.___y_1;
+    iVar4 = (param_1->___q5_7).___v3_4.___x_0;
+    (__return_storage_ptr__->___v1_2).___y_1 = (param_1->___q5_7).___v1_2.___y_1;
+    (__return_storage_ptr__->___v2_3).___x_0 = iVar2;
+    (__return_storage_ptr__->___v2_3).___y_1 = iVar3;
+    (__return_storage_ptr__->___v3_4).___x_0 = iVar4;
+    fVar1 = (param_1->___q5_7).___p0_5.___x_0;
+    fVar5 = (param_1->___q5_7).___p0_5.___y_1;
+    fVar6 = (param_1->___q5_7).___p1_6.___x_0;
+    (__return_storage_ptr__->___v3_4).___y_1 = (param_1->___q5_7).___v3_4.___y_1;
+    (__return_storage_ptr__->___p0_5).___x_0 = fVar1;
+    (__return_storage_ptr__->___p0_5).___y_1 = fVar5;
+    (__return_storage_ptr__->___p1_6).___x_0 = fVar6;
+    fVar5 = (param_1->___q5_7).___p2_7.___x_0;
+    fVar6 = (param_1->___q5_7).___p2_7.___y_1;
+    fVar7 = (param_1->___q5_7).___p3_8.___x_0;
+    fVar1 = (param_1->___q5_7).___p3_8.___y_1;
+    (__return_storage_ptr__->___p1_6).___y_1 = (param_1->___q5_7).___p1_6.___y_1;
+    (__return_storage_ptr__->___p2_7).___x_0 = fVar5;
+    (__return_storage_ptr__->___p2_7).___y_1 = fVar6;
+    (__return_storage_ptr__->___p3_8).___x_0 = fVar7;
+    (__return_storage_ptr__->___p3_8).___y_1 = fVar1;
+    return __return_storage_ptr__;
+  }
+}

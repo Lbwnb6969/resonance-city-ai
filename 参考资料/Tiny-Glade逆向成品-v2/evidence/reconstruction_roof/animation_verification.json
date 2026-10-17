@@ -1,0 +1,664 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "checks": 69,
+  "passed": true,
+  "results": [
+    {
+      "routine": "RoofTileSimulation::new",
+      "pivot": -4.0,
+      "passed": true,
+      "written_21_bytes": "00000000000080c000000000000000000000000000",
+      "padding_not_verified": true
+    },
+    {
+      "routine": "RoofTileSimulation::new",
+      "pivot": 0.0,
+      "passed": true,
+      "written_21_bytes": "000000000000000000000000000000000000000000",
+      "padding_not_verified": true
+    },
+    {
+      "routine": "RoofTileSimulation::new",
+      "pivot": 1.25,
+      "passed": true,
+      "written_21_bytes": "000000000000a03f00000000000000000000000000",
+      "padding_not_verified": true
+    },
+    {
+      "routine": "RoofTileSimulation::new",
+      "pivot": 8.0,
+      "passed": true,
+      "written_21_bytes": "000000000000004100000000000000000000000000",
+      "padding_not_verified": true
+    },
+    {
+      "routine": "RoofAnimation::new",
+      "passed": true
+    },
+    {
+      "routine": "RoofAnimation::is_being_animated",
+      "t": 0.0,
+      "passed": true
+    },
+    {
+      "routine": "RoofAnimation::is_being_animated",
+      "t": 0.5,
+      "passed": true
+    },
+    {
+      "routine": "RoofAnimation::is_being_animated",
+      "t": 0.99,
+      "passed": true
+    },
+    {
+      "routine": "RoofAnimation::is_being_animated",
+      "t": 1.0,
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": false,
+      "original": "00000000cdcccc3e",
+      "recovered": "00000000cdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": true,
+      "original": "00000000cdcccc3e",
+      "recovered": "00000000cdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": false,
+      "original": "00000000cdcccc3e",
+      "recovered": "00000000cdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": true,
+      "original": "00000000cdcccc3e",
+      "recovered": "00000000cdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": false,
+      "original": "0000003fcdcccc3e",
+      "recovered": "0000003fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": true,
+      "original": "0000003fcdcccc3e",
+      "recovered": "0000003fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": false,
+      "original": "0000003fcdcccc3e",
+      "recovered": "0000003fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": true,
+      "original": "0000003fcdcccc3e",
+      "recovered": "0000003fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": false,
+      "original": "a4707d3fcdcccc3e",
+      "recovered": "a4707d3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": true,
+      "original": "a4707d3fcdcccc3e",
+      "recovered": "a4707d3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": false,
+      "original": "a4707d3fcdcccc3e",
+      "recovered": "a4707d3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": true,
+      "original": "a4707d3fcdcccc3e",
+      "recovered": "a4707d3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": false,
+      "original": "77be7f3fcdcccc3e",
+      "recovered": "77be7f3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": true,
+      "original": "77be7f3fcdcccc3e",
+      "recovered": "77be7f3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": false,
+      "original": "77be7f3fcdcccc3e",
+      "recovered": "77be7f3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": true,
+      "original": "77be7f3fcdcccc3e",
+      "recovered": "77be7f3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": true,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.0,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": true,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": false,
+      "original": "320c433dcdcccc3e",
+      "recovered": "320c433dcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": true,
+      "original": "00000000efee6e3e",
+      "recovered": "00000000efee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": false,
+      "original": "320cc33dcdcccc3e",
+      "recovered": "320cc33dcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": true,
+      "original": "00000000efee6e3e",
+      "recovered": "00000000efee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": false,
+      "original": "c3300c3fcdcccc3e",
+      "recovered": "c3300c3fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": true,
+      "original": "dedddd3eefee6e3e",
+      "recovered": "dedddd3eefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": false,
+      "original": "8661183fcdcccc3e",
+      "recovered": "8661183fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": true,
+      "original": "dedddd3eefee6e3e",
+      "recovered": "dedddd3eefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": true,
+      "original": "935f6c3fefee6e3e",
+      "recovered": "935f6c3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": true,
+      "original": "935f6c3fefee6e3e",
+      "recovered": "935f6c3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803f943ee93e",
+      "recovered": "0000803f943ee93e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": true,
+      "original": "66ad6e3fefee6e3e",
+      "recovered": "66ad6e3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803f2ed8023f",
+      "recovered": "0000803f2ed8023f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": true,
+      "original": "66ad6e3fefee6e3e",
+      "recovered": "66ad6e3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803f943ee93e",
+      "recovered": "0000803f943ee93e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": true,
+      "original": "efee6e3fefee6e3e",
+      "recovered": "efee6e3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803f2ed8023f",
+      "recovered": "0000803f2ed8023f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.016666666666666666,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": true,
+      "original": "efee6e3fefee6e3e",
+      "recovered": "efee6e3fefee6e3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": false,
+      "original": "6edb363fcdcccc3e",
+      "recovered": "6edb363fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.0,
+      "flat": false,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.0,
+      "flat": true,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.5,
+      "flat": false,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.5,
+      "flat": true,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.99,
+      "flat": false,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803fcdcccc3e",
+      "recovered": "0000803fcdcccc3e",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.99,
+      "flat": true,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803f0000803f",
+      "recovered": "0000803f0000803f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.999,
+      "flat": false,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803f0000803f",
+      "recovered": "0000803f0000803f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 0.999,
+      "flat": true,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": false,
+      "original": "0000803f0000803f",
+      "recovered": "0000803f0000803f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 1.0,
+      "flat": false,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": false,
+      "original": "0000803f0000803f",
+      "recovered": "0000803f0000803f",
+      "passed": true
+    },
+    {
+      "routine": "roof_animation per-entity arithmetic",
+      "dt": 0.25,
+      "primary": 1.0,
+      "flat": true,
+      "deleted": true,
+      "original": "0000000000000000",
+      "recovered": "0000000000000000",
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Animation numerical tail executed with explicit reconstructed register inputs, stopping before ECS loop.",
+    "State constructors and is_being_animated executed as complete original functions.",
+    "Simulation constructor padding bytes 21..23 are not written by original function."
+  ]
+}

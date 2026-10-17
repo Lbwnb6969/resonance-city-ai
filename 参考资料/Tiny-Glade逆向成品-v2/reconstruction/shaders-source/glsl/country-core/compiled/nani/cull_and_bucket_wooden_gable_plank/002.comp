@@ -1,0 +1,408 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_float12
+{
+    float data[12];
+};
+
+struct Affine3Packed_natural
+{
+    _Array_natural_float12 data;
+};
+
+struct WoodenGablePlank_natural
+{
+    Affine3Packed_natural transform;
+    int seed;
+    uint color_source;
+    uint flags;
+    uint pad0;
+    float skew_min_y_left_01;
+    float skew_min_y_right_01;
+    float skew_max_y_left_01;
+    float skew_max_y_right_01;
+    uvec2 window_cut_buffer_address;
+    uint window_cut_list;
+    uint pad1;
+};
+
+struct ViewConstants_natural
+{
+    mat4 view_to_clip;
+    mat4 clip_to_view;
+    mat4 view_to_sample;
+    mat4 sample_to_view;
+    mat4 world_to_view;
+    mat4 view_to_world;
+    mat4 world_to_sample;
+    mat4 clip_to_prev_clip;
+    mat4 prev_clip_to_clip;
+    mat4 prev_view_to_prev_clip;
+    mat4 prev_clip_to_prev_view;
+    mat4 prev_world_to_prev_view;
+    mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    mat4 pad0;
+    mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+layout(set = 0, binding = 10, std430) readonly buffer StructuredBuffer
+{
+    WoodenGablePlank_natural _member0[];
+} instance_buffer;
+
+layout(set = 5, binding = 0, std140) uniform current_view
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view_1;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 7, binding = 1, std430) readonly buffer csm_setup_cascade_splits_buf
+{
+    vec4 _member0[];
+} csm_setup_cascade_splits_buf_1;
+
+layout(set = 6, binding = 0, std430) readonly buffer sun_views_views
+{
+    layout(row_major) ViewConstants_natural _member0[];
+} sun_views_views_1;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 hzb_tex_inner_dims;
+} globalParams;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint first_instance;
+    uint instance_count;
+    uint draw_list_index_base;
+} push_constants;
+
+layout(set = 0, binding = 9) uniform texture2DArray hzb_tex;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= push_constants.instance_count)
+        {
+            break;
+        }
+        uint instance_id = push_constants.first_instance + gl_GlobalInvocationID.x;
+        float _1153 = instance_buffer._member0[instance_id].transform.data.data[0];
+        float _1155 = instance_buffer._member0[instance_id].transform.data.data[1];
+        float _1157 = instance_buffer._member0[instance_id].transform.data.data[2];
+        float _1159 = instance_buffer._member0[instance_id].transform.data.data[3];
+        float _1161 = instance_buffer._member0[instance_id].transform.data.data[4];
+        float _1163 = instance_buffer._member0[instance_id].transform.data.data[5];
+        float _1165 = instance_buffer._member0[instance_id].transform.data.data[6];
+        float _1167 = instance_buffer._member0[instance_id].transform.data.data[7];
+        float _1169 = instance_buffer._member0[instance_id].transform.data.data[8];
+        float _1171 = instance_buffer._member0[instance_id].transform.data.data[9];
+        float _1173 = instance_buffer._member0[instance_id].transform.data.data[10];
+        float _1175 = instance_buffer._member0[instance_id].transform.data.data[11];
+        mat3x4 _1181 = transpose(mat4x3(vec3(_1153, _1155, _1157), vec3(_1159, _1161, _1163), vec3(_1165, _1167, _1169), vec3(_1171, _1173, _1175)));
+        vec3 _1134 = _1181[0].xyz;
+        vec3 _1137 = _1181[1].xyz;
+        vec3 _1140 = _1181[2].xyz;
+        float _1144 = sqrt(max(max(dot(_1134, _1134), dot(_1137, _1137)), dot(_1140, _1140)));
+        float _184 = _1144 * 0.5;
+        mat3 _1277 = transpose(mat3(_1134, _1137, _1140));
+        vec3 _1278 = _1277[0];
+        float _1279 = dot(_1278, _1278);
+        vec3 _1280 = _1277[1];
+        float _1281 = dot(_1280, _1280);
+        vec3 _1282 = _1277[2];
+        float _1283 = dot(_1282, _1282);
+        vec4 _1330 = vec4((vec4(vec3(0.0), 1.0) * _1181) + (vec4(vec3(0.0, 0.5, 0.0), 0.0) * _1181), 1.0);
+        vec4 _1331 = _1330 * current_view_1.world_to_view;
+        vec3 _1332 = _1331.xyz;
+        float _231 = -_1331.z;
+        float _1345 = (0.5 * current_view_1.view_to_clip[1].y) * float(clamp(frame_constants.world_render_resolution.y, 1080u, 2160u));
+        uint lod = uint((((sqrt(max(min(_1279, _1281), max(min(_1281, _1283), min(_1279, _1283)))) / max(9.9999997473787516355514526367188e-06, _231 - _184)) * _1345) > 7.0) ? 0 : 1);
+        bool _2152;
+        if ((instance_buffer._member0[instance_id].flags & 1u) != 0u)
+        {
+            _2152 = lod == 0u;
+        }
+        else
+        {
+            _2152 = false;
+        }
+        vec4 _1372 = vec4(-current_view_1.view_to_clip[0].x, current_view_1.view_to_clip[0].y, 0.0, current_view_1.view_to_clip[0].w);
+        vec4 _1380 = vec4(current_view_1.view_to_clip[1].xy, 0.0, current_view_1.view_to_clip[1].w);
+        vec4 _1385 = vec4(current_view_1.view_to_clip[3].xy, -1.0, current_view_1.view_to_clip[3].w);
+        vec4 _2107[4];
+        _2107[0] = _1385 + _1372;
+        _2107[1] = _1385 - _1372;
+        _2107[2] = _1385 + _1380;
+        _2107[3] = _1385 - _1380;
+        int _1418;
+        int _2153 = 0;
+        for (;;)
+        {
+            if (!(_2153 < 4))
+            {
+                break;
+            }
+            _2107[_2153] /= vec4(length(_2107[_2153].xyz));
+            _1418 = _2153 + 1;
+            _2153 = _1418;
+            continue;
+        }
+        vec4 _2126[4] = _2107;
+        bool _2155;
+        _2155 = (_231 + _184) > current_view_1.view_to_clip[2].w;
+        int _1462;
+        bool _2170;
+        int _2154 = 0;
+        for (;;)
+        {
+            if (!(_2154 < 4))
+            {
+                break;
+            }
+            if (_2155)
+            {
+                _2170 = dot(vec4(_1332, 1.0), _2126[_2154]) > (_1144 * (-0.5));
+            }
+            else
+            {
+                _2170 = false;
+            }
+            _1462 = _2154 + 1;
+            _2155 = _2170;
+            _2154 = _1462;
+            continue;
+        }
+        uint _2179 = (!_2155) ? 1u : (_2152 ? 2u : lod);
+        if ((((_184 / max(9.9999997473787516355514526367188e-06, _231)) * _1345) < 10.0) ? false : true)
+        {
+            mat4 _1948 = sun_views_views_1._member0[0u].world_to_view;
+            mat4 _1952 = sun_views_views_1._member0[0u].view_to_clip;
+            vec4 _1953 = (_1330 * _1948) * _1952;
+            vec3 _1957 = _1953.xyz / vec3(_1953.w);
+            vec3 _1514 = vec3(_184);
+            vec3 _1526 = (_1514 * vec3(_1952[0].x, _1952[1].y, _1952[2].z)) * vec3(1.0, 1.0, -1.0);
+            uint _1530 = clamp(uint(_1957.z * 1024.0), 0u, 1023u);
+            uint _1962 = instance_id * 1024u;
+            vec3 _1532 = _1957.xyz;
+            bool _1537 = all(lessThan(abs(_1532) - _1526, vec3(1.0)));
+            bool _2164;
+            if (_1537)
+            {
+                vec3 _1540 = _1532 - _1526;
+                vec4 _1547 = vec4((_1540.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_1532 + _1526).xy * vec2(0.5, -0.5)) + vec2(0.5));
+                vec2 _1548 = _1547.xy;
+                vec2 _1549 = _1547.zw;
+                vec4 _1556 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+                vec4 _1563 = clamp(vec4(min(_1548, _1549), max(_1548, _1549)) * _1556, vec4(0.0), _1556 - vec4(1.0));
+                uint _1575 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_1563.z - _1563.x, _1563.w - _1563.y))))));
+                uvec2 _1578 = uvec2(_1575);
+                uvec2 _1579 = uvec2(_1563.xy) >> _1578;
+                uvec2 _1583 = uvec2(_1563.zw) >> _1578;
+                int _1584 = int(_1575);
+                uint _1586 = _1579.x;
+                uint _1604 = _1583.x;
+                _2164 = _1540.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1586, _1579.y, 0u)), _1584).xyz, _1584).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1586, _1583.y, 0u)), _1584).xyz, _1584).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1604, _1579.y, 0u)), _1584).xyz, _1584).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1604, _1583.y, 0u)), _1584).xyz, _1584).x));
+            }
+            else
+            {
+                _2164 = _1537;
+            }
+            if (_2164)
+            {
+                uint _1628 = push_constants.draw_list_index_base + 1u;
+                uint _1630 = atomicAdd(filtered_instance_allocator_buffer._member0[_1628], 1u);
+                filtered_instance_buffer_1._member0[_1630] = _1962 + _1530;
+                filtered_instance_meta_buffer_1._member0[_1630].raw = _2179;
+                uint _1637 = atomicAdd(output_histogram_1._member0[(_1628 * 1024u) + _1530], 1u);
+            }
+            mat4 _1994 = sun_views_views_1._member0[1u].world_to_view;
+            mat4 _1998 = sun_views_views_1._member0[1u].view_to_clip;
+            vec4 _1999 = (_1330 * _1994) * _1998;
+            vec3 _2003 = _1999.xyz / vec3(_1999.w);
+            vec3 _1663 = (_1514 * vec3(_1998[0].x, _1998[1].y, _1998[2].z)) * vec3(1.0, 1.0, -1.0);
+            uint _1667 = clamp(uint(_2003.z * 1024.0), 0u, 1023u);
+            vec3 _1669 = _2003.xyz;
+            bool _1674 = all(lessThan(abs(_1669) - _1663, vec3(1.0)));
+            bool _2166;
+            if (_1674)
+            {
+                vec3 _1677 = _1669 - _1663;
+                vec4 _1684 = vec4((_1677.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_1669 + _1663).xy * vec2(0.5, -0.5)) + vec2(0.5));
+                vec2 _1685 = _1684.xy;
+                vec2 _1686 = _1684.zw;
+                vec4 _1693 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+                vec4 _1700 = clamp(vec4(min(_1685, _1686), max(_1685, _1686)) * _1693, vec4(0.0), _1693 - vec4(1.0));
+                uint _1712 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_1700.z - _1700.x, _1700.w - _1700.y))))));
+                uvec2 _1715 = uvec2(_1712);
+                uvec2 _1716 = uvec2(_1700.xy) >> _1715;
+                uvec2 _1720 = uvec2(_1700.zw) >> _1715;
+                int _1721 = int(_1712);
+                uint _1723 = _1716.x;
+                uint _1741 = _1720.x;
+                _2166 = _1677.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1723, _1716.y, 1u)), _1721).xyz, _1721).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1723, _1720.y, 1u)), _1721).xyz, _1721).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1741, _1716.y, 1u)), _1721).xyz, _1721).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1741, _1720.y, 1u)), _1721).xyz, _1721).x));
+            }
+            else
+            {
+                _2166 = _1674;
+            }
+            if (_2166)
+            {
+                uint _1766 = push_constants.draw_list_index_base + 2u;
+                uint _1768 = atomicAdd(filtered_instance_allocator_buffer._member0[_1766], 1u);
+                filtered_instance_buffer_1._member0[_1768] = _1962 + _1667;
+                filtered_instance_meta_buffer_1._member0[_1768].raw = _2179;
+                uint _1775 = atomicAdd(output_histogram_1._member0[(_1766 * 1024u) + _1667], 1u);
+            }
+            mat4 _2039 = sun_views_views_1._member0[2u].world_to_view;
+            mat4 _2043 = sun_views_views_1._member0[2u].view_to_clip;
+            vec4 _2044 = (_1330 * _2039) * _2043;
+            vec3 _2048 = _2044.xyz / vec3(_2044.w);
+            vec3 _1801 = (_1514 * vec3(_2043[0].x, _2043[1].y, _2043[2].z)) * vec3(1.0, 1.0, -1.0);
+            uint _1805 = clamp(uint(_2048.z * 1024.0), 0u, 1023u);
+            vec3 _1807 = _2048.xyz;
+            bool _1812 = all(lessThan(abs(_1807) - _1801, vec3(1.0)));
+            bool _2168;
+            if (_1812)
+            {
+                vec3 _1815 = _1807 - _1801;
+                vec4 _1822 = vec4((_1815.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_1807 + _1801).xy * vec2(0.5, -0.5)) + vec2(0.5));
+                vec2 _1823 = _1822.xy;
+                vec2 _1824 = _1822.zw;
+                vec4 _1831 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+                vec4 _1838 = clamp(vec4(min(_1823, _1824), max(_1823, _1824)) * _1831, vec4(0.0), _1831 - vec4(1.0));
+                uint _1850 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_1838.z - _1838.x, _1838.w - _1838.y))))));
+                uvec2 _1853 = uvec2(_1850);
+                uvec2 _1854 = uvec2(_1838.xy) >> _1853;
+                uvec2 _1858 = uvec2(_1838.zw) >> _1853;
+                int _1859 = int(_1850);
+                uint _1861 = _1854.x;
+                uint _1879 = _1858.x;
+                _2168 = _1815.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1861, _1854.y, 2u)), _1859).xyz, _1859).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1861, _1858.y, 2u)), _1859).xyz, _1859).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1879, _1854.y, 2u)), _1859).xyz, _1859).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_1879, _1858.y, 2u)), _1859).xyz, _1859).x));
+            }
+            else
+            {
+                _2168 = _1812;
+            }
+            if (_2168)
+            {
+                uint _1904 = push_constants.draw_list_index_base + 3u;
+                uint _1906 = atomicAdd(filtered_instance_allocator_buffer._member0[_1904], 1u);
+                filtered_instance_buffer_1._member0[_1906] = _1962 + _1805;
+                filtered_instance_meta_buffer_1._member0[_1906].raw = _2179;
+                uint _1913 = atomicAdd(output_histogram_1._member0[(_1904 * 1024u) + _1805], 1u);
+            }
+        }
+        break;
+    } while(false);
+}
+

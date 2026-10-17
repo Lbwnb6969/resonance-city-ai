@@ -1,0 +1,468 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Builder/Behavior Build.bt",
+  "absolute_offset": 2399418,
+  "length": 7404,
+  "sha256": "d9b0b1fe2ed22b2fb4d117ae72dc270f6c29d61ed2147048f15078f3ce35d408",
+  "rid": 5737,
+  "root_id": "6d9a1af7-0119-4d94-bb0b-f459b021c780",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "BUILDING_ORDER",
+        "IsPublic": false,
+        "Id": "42c5cd0d-5062-4940-b18b-471341c4039c",
+        "TypeDefinition": "PlaSContextDataConstructionSite",
+        "DefaultValue": {
+          "type": "PlaSContextDataConstructionSite"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "BUILDING_POSITION",
+        "IsPublic": false,
+        "Id": "b264b5c0-962b-42a5-8040-5a6a7971f345",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WorkTime",
+        "IsPublic": true,
+        "Id": "369f9f4a-285c-448d-9a6e-6a3798b955ff",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "GoToBuildingSiteLog",
+        "IsPublic": false,
+        "Id": "27340dff-f632-407d-863a-7613b9226ac9",
+        "TypeDefinition": "GamSBehaviorTreeLogData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLogData"
+          },
+          "EntryLog": "Go To Building Site",
+          "ExitLog": "Arriving at building site"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Building Activity Message",
+        "IsPublic": false,
+        "Id": "e17e81a8-9ce3-4e21-96d3-3cd475144098",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "I_AM_WORKING",
+          "ActivityType": "PRODUCTION"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "6d9a1af7-0119-4d94-bb0b-f459b021c780",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -41,
+        102
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "933d451b-14e8-41ef-ac7a-592489f09459",
+      "name": "",
+      "type": "PlaCAgentNodeFindSomethingToBuild",
+      "position": [
+        -442,
+        208
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Construction Site",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        },
+        {
+          "name": "Destination",
+          "value": "b264b5c0-962b-42a5-8040-5a6a7971f345",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_POSITION"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "185b2f71-1049-4b9e-a0da-26bd2897acad",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        178,
+        232
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "c9e2a7f6-ae06-4dc8-afe4-f8c164e33a41",
+      "name": "",
+      "type": "cfc4c63f-e876-4f24-9fdf-fa8c196f36d2",
+      "position": [
+        -380,
+        550
+      ],
+      "behavior_asset_targets": [
+        [
+          5741,
+          "asset/Agent/Behaviors/Job/Builder/Behavior Builder Cleanup Construction Site.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Construction Site",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        },
+        {
+          "name": "WorkTime",
+          "value": "369f9f4a-285c-448d-9a6e-6a3798b955ff",
+          "binding_status": "variable",
+          "variable_name": "WorkTime"
+        }
+      ],
+      "data": {
+        "Guid": "c9e2a7f6-ae06-4dc8-afe4-f8c164e33a41",
+        "BehaviorTree": "cfc4c63f-e876-4f24-9fdf-fa8c196f36d2"
+      }
+    },
+    {
+      "id": "ecd15cac-0a21-44f1-bc2f-c1cac4b740fb",
+      "name": "",
+      "type": "31294083-c48d-462c-94a8-71d2d231cd4d",
+      "position": [
+        -56,
+        589
+      ],
+      "behavior_asset_targets": [
+        [
+          5745,
+          "asset/Agent/Behaviors/Job/Builder/Behavior Builder Transport Resource.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "OptionalConstructionSite",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        }
+      ],
+      "data": {
+        "Guid": "ecd15cac-0a21-44f1-bc2f-c1cac4b740fb",
+        "BehaviorTree": "31294083-c48d-462c-94a8-71d2d231cd4d"
+      }
+    },
+    {
+      "id": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        292,
+        379
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "8b893265-2da0-4376-b1fa-a4b82a5bccd4",
+      "name": "",
+      "type": "PlaCAgentNodeRegisterToConstructionSite",
+      "position": [
+        269,
+        600
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Construction Site",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "6f7bf312-e96c-4a1a-a992-3a7c1f0ba442",
+      "name": "",
+      "type": "6b55a498-177e-4d9c-bb96-361d684df0c4",
+      "position": [
+        549,
+        592
+      ],
+      "behavior_asset_targets": [
+        [
+          5739,
+          "asset/Agent/Behaviors/Job/Builder/Behavior Builder Build Step.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "ConstructionSite",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        },
+        {
+          "name": "AgentData",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "BuildLog",
+          "value": "27340dff-f632-407d-863a-7613b9226ac9",
+          "binding_status": "variable",
+          "variable_name": "GoToBuildingSiteLog"
+        },
+        {
+          "name": "Location",
+          "value": "b264b5c0-962b-42a5-8040-5a6a7971f345",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_POSITION"
+        },
+        {
+          "name": "isUseWorkstationAnim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "WorkTime",
+          "value": "369f9f4a-285c-448d-9a6e-6a3798b955ff",
+          "binding_status": "variable",
+          "variable_name": "WorkTime"
+        }
+      ],
+      "data": {
+        "Guid": "6f7bf312-e96c-4a1a-a992-3a7c1f0ba442",
+        "BehaviorTree": "6b55a498-177e-4d9c-bb96-361d684df0c4"
+      }
+    },
+    {
+      "id": "806683e1-080e-4c6f-af10-05118bc7b446",
+      "name": "",
+      "type": "PlaCAgentNodeUnregisterFromConstructionSite",
+      "position": [
+        848,
+        597
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Construction Site",
+          "value": "42c5cd0d-5062-4940-b18b-471341c4039c",
+          "binding_status": "variable",
+          "variable_name": "BUILDING_ORDER"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "a44d8752-c2aa-4eda-81a3-deefbf7b208f",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        102,
+        475
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "5a674c14-8c15-4ffc-9f03-3b16064f2a07",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        -168,
+        219
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e38b6a3-7087-49f1-96e5-b3049ce97794",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "e17e81a8-9ce3-4e21-96d3-3cd475144098",
+          "binding_status": "variable",
+          "variable_name": "Building Activity Message"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "6d9a1af7-0119-4d94-bb0b-f459b021c780",
+      "to": "933d451b-14e8-41ef-ac7a-592489f09459",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6d9a1af7-0119-4d94-bb0b-f459b021c780",
+      "to": "5a674c14-8c15-4ffc-9f03-3b16064f2a07",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6d9a1af7-0119-4d94-bb0b-f459b021c780",
+      "to": "185b2f71-1049-4b9e-a0da-26bd2897acad",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "185b2f71-1049-4b9e-a0da-26bd2897acad",
+      "to": "c9e2a7f6-ae06-4dc8-afe4-f8c164e33a41",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "185b2f71-1049-4b9e-a0da-26bd2897acad",
+      "to": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "to": "a44d8752-c2aa-4eda-81a3-deefbf7b208f",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "to": "8b893265-2da0-4376-b1fa-a4b82a5bccd4",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "to": "6f7bf312-e96c-4a1a-a992-3a7c1f0ba442",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "6a0c1591-2e73-40ba-977b-e3b1b58f8d1d",
+      "to": "806683e1-080e-4c6f-af10-05118bc7b446",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "a44d8752-c2aa-4eda-81a3-deefbf7b208f",
+      "to": "ecd15cac-0a21-44f1-bc2f-c1cac4b740fb",
+      "ordinal": 9,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

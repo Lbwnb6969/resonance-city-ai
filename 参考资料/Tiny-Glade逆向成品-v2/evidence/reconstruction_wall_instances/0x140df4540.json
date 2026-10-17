@@ -1,0 +1,28 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 777,
+    "record_offset": 404,
+    "module": "utils-5adc43687a596874.9mbf3ar6i34kf37fwaqpb9cjc.0cvm44z.rcgu.o",
+    "name": "utils::swizzlers::impl$1::xvy",
+    "segment": 1,
+    "offset": 14628160,
+    "rva": 14632256,
+    "va": "0x140df4540",
+    "size": 27,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "fff6006c20e8fec571aa99929db22536b23053705bf8daa708adf5097583fca2",
+  "code_bytes": 27,
+  "decoded_bytes": 27,
+  "instructions": 7,
+  "calls_and_jumps": [],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

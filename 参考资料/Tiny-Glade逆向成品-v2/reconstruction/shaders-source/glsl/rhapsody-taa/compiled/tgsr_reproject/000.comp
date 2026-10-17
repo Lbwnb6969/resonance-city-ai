@@ -1,0 +1,127 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+float _868;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    uvec2 history_tex_dims;
+    uvec2 reprojection_tex_dims;
+    uvec2 depth_tex_dims;
+    int history_valid;
+    uvec2 output_lum_tex_dims;
+    uvec2 output_chrom_tex_dims;
+    uvec2 vel_spread_output_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 2) uniform texture2D reprojection_tex;
+layout(set = 0, binding = 6, r8) uniform writeonly image2D vel_spread_output_tex;
+layout(set = 0, binding = 3) uniform texture2D depth_tex;
+layout(set = 1, binding = 3) uniform sampler samplers_llc;
+layout(set = 0, binding = 1) uniform texture2D history_tex;
+layout(set = 1, binding = 0) uniform sampler samplers_lnc;
+layout(set = 0, binding = 4, r16f) uniform writeonly image2D output_lum_tex;
+layout(set = 0, binding = 5, rg16f) uniform writeonly image2D output_chrom_tex;
+
+void main()
+{
+    vec2 _51 = vec2(globalParams.depth_tex_dims);
+    vec2 _55 = vec2(globalParams.output_lum_tex_dims);
+    uvec2 _67 = uvec2((vec2(gl_GlobalInvocationID.xy) + vec2(0.5)) * (_51 / _55));
+    vec2 v = texelFetch(reprojection_tex, ivec2(_67 + uvec2(4294967295u)), 0).xy;
+    vec2 v_1 = texelFetch(reprojection_tex, ivec2(_67 + uvec2(1u, 4294967295u)), 0).xy;
+    vec2 v_2 = texelFetch(reprojection_tex, ivec2(_67 + uvec2(4294967295u, 1u)), 0).xy;
+    vec2 v_3 = texelFetch(reprojection_tex, ivec2(_67 + uvec2(1u)), 0).xy;
+    vec2 _124 = min(min(min(v, v_1), v_2), v_3);
+    vec2 _125 = max(max(max(v, v_1), v_2), v_3);
+    vec2 _126 = _125 - _124;
+    vec2 vel_spread_pixels = _126 * _55;
+    imageStore(vel_spread_output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(clamp(max(abs(vel_spread_pixels.x), abs(vel_spread_pixels.y)) * 0.25, 0.0, 1.0)));
+    bool _160 = any(greaterThan(_126, max(vec2(1.0) / _51, abs(_125 + _124)) * 0.100000001490116119384765625));
+    bool should_dilate = _160 || subgroupShuffle(_160, uint(int(gl_SubgroupInvocationID ^ 2u)));
+    uvec2 _838;
+    if (should_dilate || subgroupShuffle(should_dilate, uint(int(gl_SubgroupInvocationID ^ 16u))))
+    {
+        vec4 sampled = texelFetch(depth_tex, ivec2(_67), 0);
+        float _188 = sampled.x;
+        uvec2 _837;
+        _837 = _67;
+        int y;
+        float _847;
+        uvec2 _848;
+        int _836 = -1;
+        float _844 = _188;
+        for (;;)
+        {
+            if (!(_836 <= 1))
+            {
+                break;
+            }
+            _848 = _837;
+            _847 = _844;
+            int x;
+            uvec2 _870;
+            float _871;
+            int _845 = -1;
+            for (;;)
+            {
+                if (!(_845 <= 1))
+                {
+                    break;
+                }
+                uvec2 _207 = _67 + uvec2(ivec2(_845, _836));
+                vec4 sampled_1 = texelFetch(depth_tex, ivec2(_207), 0);
+                float _210 = sampled_1.x;
+                bool _212 = _210 > _847;
+                _870 = mix(_848, _207, bvec2(_212));
+                _871 = _212 ? _210 : _847;
+                x = _845 + 1;
+                _848 = _870;
+                _847 = _871;
+                _845 = x;
+                continue;
+            }
+            y = _836 + 1;
+            _844 = _847;
+            _837 = _848;
+            _836 = y;
+            continue;
+        }
+        _838 = _837;
+    }
+    else
+    {
+        _838 = _67;
+    }
+    vec2 _591 = (((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / _55) + texelFetch(reprojection_tex, ivec2(_838), 0).xy) * _55;
+    vec2 _594 = floor(_591 - vec2(0.5));
+    vec2 _596 = _594 + vec2(0.5);
+    vec2 _597 = _591 - _596;
+    vec2 _598 = _597 * 0.5;
+    vec2 _604 = _597 * (vec2(-0.5) + (_597 * (vec2(1.0) - _598)));
+    vec2 _605 = _597 * _597;
+    vec2 _606 = _597 * 1.5;
+    vec2 _617 = _597 * (vec2(0.5) + (_597 * (vec2(2.0) - _606)));
+    vec2 _620 = _605 * (vec2(-0.5) + _598);
+    vec2 _621 = (vec2(1.0) + (_605 * (vec2(-2.5) + _606))) + _617;
+    vec2 _628 = (_594 + vec2(-0.5)) / _55;
+    vec2 _629 = (_594 + vec2(2.5)) / _55;
+    vec2 _630 = (_596 + (_617 / _621)) / _55;
+    float _648 = _630.x;
+    float _657 = _621.x;
+    float _659 = _657 * _604.y;
+    float _681 = _630.y;
+    float _690 = _621.y;
+    float _691 = _604.x * _690;
+    float _703 = _657 * _690;
+    float _716 = _620.x * _690;
+    float _745 = _657 * _620.y;
+    vec3 _835 = (((((((vec4(textureLod(sampler2D(history_tex, samplers_llc), vec2(_648, _628.y), 0.0).xyz, _868) * vec4(_659)) + (vec4(textureLod(sampler2D(history_tex, samplers_llc), vec2(_628.x, _681), 0.0).xyz, _868) * vec4(_691))) + (vec4(textureLod(sampler2D(history_tex, samplers_llc), _630, 0.0).xyz, _868) * vec4(_703))) + (vec4(textureLod(sampler2D(history_tex, samplers_llc), vec2(_629.x, _681), 0.0).xyz, _868) * vec4(_716))) + (vec4(textureLod(sampler2D(history_tex, samplers_llc), vec2(_648, _629.y), 0.0).xyz, _868) * vec4(_745))) / vec4((((_659 + _691) + _703) + _716) + _745)).xyz * float(globalParams.history_valid != 0)) * mat3(vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875), vec3(-0.114600002765655517578125, -0.385399997234344482421875, 0.5), vec3(0.5, -0.4541999995708465576171875, -0.0458000004291534423828125));
+    imageStore(output_lum_tex, ivec2(gl_GlobalInvocationID.xy), vec4(_835.x));
+    imageStore(output_chrom_tex, ivec2(gl_GlobalInvocationID.xy), vec4(_835.yz, 0.0, 0.0));
+}
+

@@ -1,0 +1,619 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Agent/Behaviors/Behavior Farmer Common Croft.bt",
+  "absolute_offset": 307798,
+  "length": 10037,
+  "sha256": "b1ab89450b7c9f6cc8f5afe301ca3cf0a71f2b79c16d368407e358467f944dcf",
+  "rid": 45,
+  "root_id": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportData",
+        "IsPublic": false,
+        "Id": "568f6021-b249-4a6f-b79e-e0483c316b8f",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportActivityMessage",
+        "IsPublic": false,
+        "Id": "164b85ed-8bea-46f5-9591-f25693bd5029",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "FETCHING_RESOURCE_X_AT_Y"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WorkTime",
+        "IsPublic": false,
+        "Id": "6af43939-507a-4076-a813-6052fa119df4",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WORK IL",
+        "IsPublic": false,
+        "Id": "6eda39a1-3053-47b1-afff-83368d3e4a39",
+        "TypeDefinition": "PlaSContextDataInteractiveLocationPurpose",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataInteractiveLocationPurpose"
+          },
+          "InteractiveLocationPurpose": "WORK"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "IL Destination",
+        "IsPublic": false,
+        "Id": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Work On Croft",
+        "IsPublic": false,
+        "Id": "c5d305cd-316f-44a5-99a6-e15596804941",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 15.0,
+          "Animation": "NONE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Activity Tending The Croft",
+        "IsPublic": false,
+        "Id": "c7dfa9fd-55be-4f66-ad24-50951c8f566d",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "CROFT_ACTIVITY_TENDING",
+          "ActivityType": "PRODUCTION"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        192,
+        -168
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "6bf65533-0196-4fa9-9e0d-28ab733bd239",
+      "name": "",
+      "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+      "position": [
+        302,
+        -7
+      ],
+      "behavior_asset_targets": [
+        [
+          5730,
+          "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "TransportData",
+          "value": "568f6021-b249-4a6f-b79e-e0483c316b8f",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "TransportingFromActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "TransportingToActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "6bf65533-0196-4fa9-9e0d-28ab733bd239",
+        "BehaviorTree": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+      }
+    },
+    {
+      "id": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        -469,
+        2
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "6af43939-507a-4076-a813-6052fa119df4",
+          "binding_status": "variable",
+          "variable_name": "WorkTime"
+        }
+      ],
+      "data": {
+        "Guid": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80",
+      "name": "",
+      "type": "PlaCAgentNodeCommonCroftFindResourceForDepot",
+      "position": [
+        -113,
+        -4
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "568f6021-b249-4a6f-b79e-e0483c316b8f",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "Transporting Agent Activity Message",
+          "value": "164b85ed-8bea-46f5-9591-f25693bd5029",
+          "binding_status": "variable",
+          "variable_name": "TransportActivityMessage"
+        }
+      ],
+      "data": {
+        "Guid": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80",
+        "IsFindingResourceInternal": false
+      }
+    },
+    {
+      "id": "1cd82181-21cd-4d33-98e5-1ea16e198d42",
+      "name": "",
+      "type": "PlaCAgentNodeCommonCroftFindResourceForDepot",
+      "position": [
+        -708,
+        305
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "568f6021-b249-4a6f-b79e-e0483c316b8f",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "Transporting Agent Activity Message",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "1cd82181-21cd-4d33-98e5-1ea16e198d42",
+        "IsFindingResourceInternal": true
+      }
+    },
+    {
+      "id": "cae6efdf-4eac-44ca-9519-4b2d9c61c693",
+      "name": "",
+      "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+      "position": [
+        -284,
+        306
+      ],
+      "behavior_asset_targets": [
+        [
+          5730,
+          "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "TransportData",
+          "value": "568f6021-b249-4a6f-b79e-e0483c316b8f",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "TransportingFromActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "TransportingToActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "cae6efdf-4eac-44ca-9519-4b2d9c61c693",
+        "BehaviorTree": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+      }
+    },
+    {
+      "id": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -404,
+        137
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "3274645f-923c-4770-9b88-a0ba43ba8153",
+      "name": "",
+      "type": "PlaCAgentNodeFindInteractiveLocationInBuilding",
+      "position": [
+        405,
+        182
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Interactive Location Purpose",
+          "value": "6eda39a1-3053-47b1-afff-83368d3e4a39",
+          "binding_status": "variable",
+          "variable_name": "WORK IL"
+        },
+        {
+          "name": "Interactive Location Destination",
+          "value": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e",
+          "binding_status": "variable",
+          "variable_name": "IL Destination"
+        },
+        {
+          "name": "Optional Building Destination",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Optional Out Has Found Location",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "3274645f-923c-4770-9b88-a0ba43ba8153",
+        "IsFallbackOnBuildingPosition": false
+      }
+    },
+    {
+      "id": "dc8e6d7a-7d7a-46be-8d95-ce6b78f83709",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        1043,
+        181
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e",
+          "binding_status": "variable",
+          "variable_name": "IL Destination"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        861,
+        27
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        420,
+        -352
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "c88e3e2c-e498-4d97-8010-b88e0611f56b",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        1404,
+        181
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "c5d305cd-316f-44a5-99a6-e15596804941",
+          "binding_status": "variable",
+          "variable_name": "Work On Croft"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "c88e3e2c-e498-4d97-8010-b88e0611f56b",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "460daa76-4eba-4ddd-9a75-19651c175bea",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        768,
+        178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "c7dfa9fd-55be-4f66-ad24-50951c8f566d",
+          "binding_status": "variable",
+          "variable_name": "Activity Tending The Croft"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+      "to": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+      "to": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+      "to": "6bf65533-0196-4fa9-9e0d-28ab733bd239",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+      "to": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+      "to": "1cd82181-21cd-4d33-98e5-1ea16e198d42",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+      "to": "cae6efdf-4eac-44ca-9519-4b2d9c61c693",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "to": "3274645f-923c-4770-9b88-a0ba43ba8153",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "to": "460daa76-4eba-4ddd-9a75-19651c175bea",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "to": "dc8e6d7a-7d7a-46be-8d95-ce6b78f83709",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "to": "c88e3e2c-e498-4d97-8010-b88e0611f56b",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+      "to": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+      "to": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+      "ordinal": 11,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

@@ -1,0 +1,36 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} mask_out;
+
+layout(set = 9, binding = 0) uniform texture2D rocky_terrain_tex;
+
+void main()
+{
+    uint _24 = gl_GlobalInvocationID.x * 32u;
+    uvec2 _33 = uvec2(_24 % 512u, _24 / 512u);
+    uint _128;
+    _128 = 0u;
+    uint mask;
+    uint i;
+    uint _127 = 0u;
+    for (;;)
+    {
+        if (!(_127 < 32u))
+        {
+            break;
+        }
+        vec4 _112 = texelFetch(rocky_terrain_tex, ivec2(_33 + uvec2(_127, 0u)), 0);
+        mask = _128 | (uint(((_112.x + max(0.0, _112.y - 0.100000001490116119384765625)) + max(0.0, _112.z - 0.20000000298023223876953125)) > 0.100000001490116119384765625) << _127);
+        i = _127 + 1u;
+        _128 = mask;
+        _127 = i;
+        continue;
+    }
+    mask_out._member0[gl_GlobalInvocationID.x] = _128;
+}
+

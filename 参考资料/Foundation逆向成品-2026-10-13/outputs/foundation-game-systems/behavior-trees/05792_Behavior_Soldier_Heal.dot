@@ -1,0 +1,18 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=doubleoctagon];
+  n1 [label="Setup Heal Soldier",shape=box];
+  n2 [label="GoTo",shape=box];
+  n3 [label="Waiting",shape=box];
+  n4 [label="Heal Soldier",shape=box];
+  n5 [label="Sequencer",shape=box];
+  n6 [label="Succeeder",shape=box];
+  n7 [label="PlaCAgentNodeUnassignSoldierHealingHouse",shape=box];
+  n0 -> n1 [label="0"];
+  n0 -> n6 [label="1"];
+  n0 -> n7 [label="2"];
+  n5 -> n2 [label="3"];
+  n5 -> n3 [label="4"];
+  n5 -> n4 [label="5"];
+  n6 -> n5 [label="6"];
+}

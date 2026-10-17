@@ -1,0 +1,10 @@
+flowchart TD
+  n0["Ordering workplace"]
+  n1["Going to building site"]
+  n2["Show workplace"]
+  n3["GamCBehaviorTreeNodeCompositeSelector"]
+  n4["Waiting"]
+  n0 -->|0| n1
+  n0 -->|1| n2
+  n3 -->|2| n0
+  n3 -->|3| n4

@@ -1,0 +1,80 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 3) uniform texture2DMS input_ms_tex;
+layout(set = 0, binding = 1, rgba8) uniform writeonly image2D output_tex;
+
+shared vec4 vblur_out[138];
+
+void main()
+{
+    int _267 = int(gl_LocalInvocationID.x);
+    int _282;
+    int _421 = _267;
+    for (;;)
+    {
+        uint _273 = uint(_421);
+        if (!(_273 < 138u))
+        {
+            break;
+        }
+        ivec2 _277 = ivec2(gl_GlobalInvocationID.xy);
+        ivec2 _340 = ivec2((gl_WorkGroupID.xy * uvec2(128u, 2u)) + uvec2(ivec2(int(_273 - 5u), -5)));
+        vec4 _426;
+        float _427;
+        _427 = 0.0;
+        _426 = vec4(0.0);
+        vec4 _374;
+        float _376;
+        uint _380;
+        uint _425 = 0u;
+        for (;;)
+        {
+            if (!(_425 <= 10u))
+            {
+                break;
+            }
+            float _392 = ((float(_277.y) + 0.5) * 2.0) - (float(uint(_340.y) + _425) + 0.5);
+            float _396 = exp(((-_392) * _392) * 0.1599999964237213134765625);
+            _374 = _426 + (texelFetch(input_ms_tex, ivec2(uvec2(_340 + ivec2(0, int(_425)))), 0).xyzw * _396);
+            _376 = _427 + _396;
+            _380 = _425 + 1u;
+            _427 = _376;
+            _426 = _374;
+            _425 = _380;
+            continue;
+        }
+        vblur_out[_273] = _426 / vec4(_427);
+        _282 = _421 + 64;
+        _421 = _282;
+        continue;
+    }
+    barrier();
+    vec4 _423;
+    float _424;
+    _424 = 0.0;
+    _423 = vec4(0.0);
+    vec4 _310;
+    float _320;
+    uint _324;
+    uint _422 = 0u;
+    for (;;)
+    {
+        if (!(_422 <= 10u))
+        {
+            break;
+        }
+        float _408 = ((float(gl_GlobalInvocationID.x) + 0.5) * 2.0) - (float(((gl_GlobalInvocationID.x * 2u) + _422) - 5u) + 0.5);
+        float _412 = exp(((-_408) * _408) * 0.1599999964237213134765625);
+        _310 = _423.xyzw + (vblur_out[(gl_LocalInvocationID.x * 2u) + _422] * _412);
+        _320 = _424 + _412;
+        _324 = _422 + 1u;
+        _424 = _320;
+        _423 = _310;
+        _422 = _324;
+        continue;
+    }
+    imageStore(output_tex, ivec2(gl_GlobalInvocationID.xy), _423 / vec4(_424));
+}
+

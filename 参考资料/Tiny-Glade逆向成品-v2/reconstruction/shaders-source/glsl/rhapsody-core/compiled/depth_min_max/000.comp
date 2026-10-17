@@ -1,0 +1,114 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 input_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D input_tex;
+layout(set = 0, binding = 2, rg32f) uniform writeonly image2D output_tex;
+
+shared uvec2 gs_minmax;
+
+void main()
+{
+    uvec2 src_px = gl_GlobalInvocationID.xy * uvec2(2u);
+    vec2 _234;
+    if (all(lessThan(src_px, globalParams.input_tex_dims)))
+    {
+        vec4 sampled = texelFetch(input_tex, ivec2(src_px), 0);
+        float v = sampled.x;
+        vec2 _227;
+        if (v != 0.0)
+        {
+            _227 = vec2(v);
+        }
+        else
+        {
+            _227 = vec2(1.0, 0.0);
+        }
+        bool _80 = (src_px.x + 1u) < globalParams.input_tex_dims.x;
+        vec2 _228;
+        if (_80)
+        {
+            vec4 sampled_1 = texelFetch(input_tex, ivec2(src_px + uvec2(1u, 0u)), 0);
+            float v_1 = sampled_1.x;
+            vec2 _229;
+            if (v_1 != 0.0)
+            {
+                _229 = vec2(min(_227.x, v_1), max(_227.y, v_1));
+            }
+            else
+            {
+                _229 = _227;
+            }
+            _228 = _229;
+        }
+        else
+        {
+            _228 = _227;
+        }
+        bool _111 = (src_px.y + 1u) < globalParams.input_tex_dims.y;
+        vec2 _232;
+        if (_111)
+        {
+            vec4 sampled_2 = texelFetch(input_tex, ivec2(src_px + uvec2(0u, 1u)), 0);
+            float v_2 = sampled_2.x;
+            vec2 _233;
+            if (v_2 != 0.0)
+            {
+                _233 = vec2(min(_228.x, v_2), max(_228.y, v_2));
+            }
+            else
+            {
+                _233 = _228;
+            }
+            _232 = _233;
+        }
+        else
+        {
+            _232 = _228;
+        }
+        vec2 _235;
+        if (_80 ? _111 : false)
+        {
+            vec4 sampled_3 = texelFetch(input_tex, ivec2(src_px + uvec2(1u)), 0);
+            float v_3 = sampled_3.x;
+            vec2 _236;
+            if (v_3 != 0.0)
+            {
+                _236 = vec2(min(_232.x, v_3), max(_232.y, v_3));
+            }
+            else
+            {
+                _236 = _232;
+            }
+            _235 = _236;
+        }
+        else
+        {
+            _235 = _232;
+        }
+        _234 = _235;
+    }
+    else
+    {
+        _234 = vec2(1.0, 0.0);
+    }
+    bool _173 = 0u == gl_LocalInvocationIndex;
+    if (_173)
+    {
+        gs_minmax = floatBitsToUint(_234);
+    }
+    barrier();
+    uint _188 = atomicMin(gs_minmax.x, floatBitsToUint(_234.x));
+    uint _193 = atomicMax(gs_minmax.y, floatBitsToUint(_234.y));
+    barrier();
+    if (_173)
+    {
+        imageStore(output_tex, ivec2(gl_GlobalInvocationID.xy / uvec2(8u)), vec4(uintBitsToFloat(gs_minmax), 0.0, 0.0));
+    }
+}
+

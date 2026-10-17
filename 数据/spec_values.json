@@ -1,0 +1,593 @@
+{
+  "timing": {
+    "bpm": 120.0,
+    "beats_per_bar": 4,
+    "bars_per_phrase": 8,
+    "preview_seconds": 3.0,
+    "beat_assist_window_ms": 80.0,
+    "sample_rate": 22050,
+    "buffer_seconds": 0.12
+  },
+  "voices": {
+    "residential": {
+      "base_midi": 48,
+      "frequency_hz": 130.81,
+      "layers": [
+        "drone",
+        "rhythm",
+        "ornament"
+      ],
+      "drone_timbre": "木琴/拨弦 pad 化，暖",
+      "rhythm_signature": "稳定 4/4 中速",
+      "partials": [
+        1.0,
+        0.08,
+        0.03
+      ],
+      "rhythm_steps": [
+        0,
+        4,
+        8,
+        12
+      ]
+    },
+    "commercial": {
+      "base_midi": 52,
+      "frequency_hz": 164.82,
+      "layers": [
+        "drone",
+        "rhythm",
+        "ornament"
+      ],
+      "drone_timbre": "明亮键盘/铃铛",
+      "rhythm_signature": "十六分律动",
+      "partials": [
+        1.0,
+        0.12,
+        0.06
+      ],
+      "rhythm_steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    "industrial": {
+      "base_midi": 54,
+      "frequency_hz": 185.0,
+      "layers": [
+        "drone",
+        "rhythm",
+        "ornament"
+      ],
+      "drone_timbre": "锯齿脉冲，保留185Hz基音",
+      "rhythm_signature": "不规则切分；300Hz高通仅律动层",
+      "partials": [
+        1.0,
+        0.2,
+        0.1
+      ],
+      "rhythm_steps": [
+        0,
+        3,
+        6,
+        10,
+        13
+      ]
+    }
+  },
+  "frequencies": {
+    "48": 130.81,
+    "52": 164.82,
+    "54": 185.0,
+    "55": 196.0,
+    "50": 146.83,
+    "38": 73.42,
+    "49": 138.59,
+    "37": 69.3
+  },
+  "city": {
+    "width": 16,
+    "height": 16,
+    "empty_resonance": 100.0,
+    "comparison_tolerance": 1e-06,
+    "minimum_initial_resonance": 65.0,
+    "resample_limit": 8,
+    "initial_count": 9,
+    "safe_cells": {
+      "residential": [
+        [
+          2,
+          6
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          12,
+          8
+        ]
+      ],
+      "commercial": [
+        [
+          3,
+          6
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          13,
+          8
+        ]
+      ],
+      "industrial": [
+        [
+          2,
+          10
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          12,
+          12
+        ]
+      ]
+    }
+  },
+  "harmony": {
+    "initial_vitality": 50.0,
+    "weight_base": 1.0,
+    "weight_increment": 0.15,
+    "weight_cap": 2.0,
+    "industrial_weight": 1.3,
+    "base_growth": 1.0,
+    "decay": 0.5,
+    "decay_threshold": 60.0,
+    "net_change_cap": 12.0,
+    "minimum_vitality": 0.0,
+    "maximum_vitality": 100.0,
+    "resonance_scale": 100.0,
+    "gray_entry": 40.0,
+    "gray_exit": 48.0,
+    "collapse_phrases": 3,
+    "intervals": {
+      "0": {
+        "score": 1.0,
+        "vitality_delta": 8.0,
+        "name": "同度 / 纯八度",
+        "relation": "共鸣"
+      },
+      "5": {
+        "score": 0.9,
+        "vitality_delta": 5.0,
+        "name": "纯五 / 纯四",
+        "relation": "协和"
+      },
+      "7": {
+        "score": 0.9,
+        "vitality_delta": 5.0,
+        "name": "纯五 / 纯四",
+        "relation": "协和"
+      },
+      "4": {
+        "score": 0.85,
+        "vitality_delta": 5.0,
+        "name": "大三 / 大六",
+        "relation": "协和"
+      },
+      "9": {
+        "score": 0.85,
+        "vitality_delta": 5.0,
+        "name": "大三 / 大六",
+        "relation": "协和"
+      },
+      "3": {
+        "score": 0.6,
+        "vitality_delta": 0.0,
+        "name": "小三 / 小六",
+        "relation": "中性"
+      },
+      "8": {
+        "score": 0.6,
+        "vitality_delta": 0.0,
+        "name": "小三 / 小六",
+        "relation": "中性"
+      },
+      "2": {
+        "score": 0.3,
+        "vitality_delta": -3.0,
+        "name": "大二 / 小七",
+        "relation": "轻不协"
+      },
+      "10": {
+        "score": 0.3,
+        "vitality_delta": -3.0,
+        "name": "大二 / 小七",
+        "relation": "轻不协"
+      },
+      "1": {
+        "score": 0.05,
+        "vitality_delta": -8.0,
+        "name": "小二 / 大七",
+        "relation": "失谐"
+      },
+      "11": {
+        "score": 0.05,
+        "vitality_delta": -8.0,
+        "name": "小二 / 大七",
+        "relation": "失谐"
+      },
+      "6": {
+        "score": 0.0,
+        "vitality_delta": -8.0,
+        "name": "三全音",
+        "relation": "失谐"
+      }
+    }
+  },
+  "synthesis": {
+    "wavetable_size": 4096,
+    "drone_gain": 0.07,
+    "rhythm_gain": 0.025,
+    "rhythm_octave": 12,
+    "industrial_highpass_hz": 300.0,
+    "rhythm_attack_seconds": 0.005,
+    "rhythm_tail_seconds": 0.25,
+    "rhythm_decay_seconds": 0.075,
+    "pan_regions": [
+      [
+        0,
+        4,
+        -0.6
+      ],
+      [
+        5,
+        10,
+        0.0
+      ],
+      [
+        11,
+        15,
+        0.6
+      ]
+    ]
+  },
+  "proposals": {
+    "allowed_pitches": [
+      48,
+      50,
+      52,
+      55,
+      57
+    ],
+    "refresh_seconds": 64.0,
+    "per_phrase": 1,
+    "retune_cost": -10.0,
+    "relocate_silent_phrases": 1,
+    "landing_bonus": 5.0
+  },
+  "mixing": {
+    "duck_db": -6.0,
+    "duck_release_seconds": 0.3,
+    "emphasis_db": 3.0,
+    "target_lufs": -16.0,
+    "peak_headroom_db": 3.0,
+    "drone_ratio": 0.25
+  },
+  "acoustic_measurement": {
+    "duration_seconds": 8.0,
+    "trim_seconds": 1.0,
+    "envelope_rate": 50.0,
+    "rms_window_seconds": 0.02,
+    "lowpass_hz": 20.0,
+    "kaiser_beta": 8.6,
+    "neighbor_inner_hz": 0.5,
+    "neighbor_outer_hz": 2.0,
+    "amplitude_floor_ratio": 1e-06,
+    "target_hz": 7.78,
+    "target_tolerance_hz": 0.5,
+    "minor_peak_db": 6.0,
+    "slow_low_hz": 3.0,
+    "slow_high_hz": 16.0,
+    "no_peak_db": 3.0,
+    "consonant_variation_db": 1.5,
+    "energy_low_hz": 200.0,
+    "energy_high_hz": 2000.0
+  },
+  "listening": {
+    "version": "human-p0-v1",
+    "seed": "2026100800000005",
+    "practice_count": 6,
+    "formal_count": 10,
+    "duration_seconds": 8.0,
+    "case_counts": {
+      "minor": [
+        2,
+        2,
+        1
+      ],
+      "tritone": [
+        2,
+        1,
+        2
+      ]
+    },
+    "base_midi": 48,
+    "minor_midi": 49,
+    "tritone_midi": 54,
+    "fade_beats": 2.0,
+    "tester_count": 3,
+    "required_correct": 7
+  },
+  "gray_audio": {
+    "lowpass_hz": 900.0,
+    "hold_rate": 4410.0,
+    "wet": 0.7,
+    "transition_bars": 1
+  },
+  "rms_guard": {
+    "window_seconds": 0.4,
+    "minimum_ratio": 0.25,
+    "target_ratio": 0.3
+  },
+  "loudness": {
+    "duration_seconds": 8.0,
+    "shelf": [
+      1.4798253509773172,
+      -2.1707286128559597,
+      0.8608424847261111,
+      -1.3383053360661337,
+      0.508244558913602
+    ],
+    "highpass": [
+      1,
+      -2,
+      1,
+      -1.9783976025901189,
+      0.9785144195032511
+    ],
+    "block_seconds": 0.4,
+    "overlap": 0.75,
+    "absolute_gate_lufs": -70.0,
+    "relative_gate_lu": -10.0,
+    "offset": -0.691,
+    "tolerance_lu": 0.1
+  },
+  "assist": {
+    "default_enabled": true,
+    "default_mode": "standard",
+    "level_db": -6.0,
+    "depth": 0.5,
+    "minimum_difference_hz": 3.0,
+    "maximum_difference_hz": 16.0,
+    "octave_multiplier": 2.0
+  },
+  "growth": {
+    "stage_phrases": [
+      1,
+      2,
+      3,
+      2
+    ],
+    "embryo_score": 0.6,
+    "group_neighbors": 2,
+    "group_score": 0.85,
+    "group_local_r": 60.0,
+    "group_radius": 4,
+    "group_count": 3,
+    "center_neighbors": 3,
+    "center_score": 0.85,
+    "center_radius": 5,
+    "center_count": 6,
+    "chamber_neighbors": 3,
+    "chamber_score": 0.85,
+    "freeze_score": 0.05,
+    "max_entities": 27,
+    "new_voice_level": 0.2,
+    "tile_half_width": 28.0,
+    "tile_half_height": 14.0,
+    "plot_coverage": 0.66,
+    "stall_phrases": 2
+  },
+  "draft": {
+    "maximum_bands": 1,
+    "redraw_pause_phrases": 1,
+    "allowed_biases": [
+      "residential",
+      "commercial"
+    ]
+  },
+  "tread": {
+    "threshold": 3
+  },
+  "camera": {
+    "default_zoom": 1.0,
+    "minimum_zoom": 0.65,
+    "maximum_zoom": 2.8,
+    "wheel_multiplier": 1.15,
+    "header_height": 156.0,
+    "origin_y": 174.0,
+    "smooth_seconds": 0.7,
+    "focus_zoom": 2.0,
+    "focus_margin": 0.85
+  },
+  "terrain": {
+    "background_top": "#E9EDF2",
+    "background_bottom": "#DCE8E7",
+    "depth_px": 14.0,
+    "side_light": "#CCD8D5",
+    "side_dark": "#C0CFCE",
+    "shadow_offset": [
+      12.0,
+      18.0
+    ],
+    "shadow_color": "#708C90",
+    "shadow_alpha": 0.08,
+    "rim_width_px": 1.2,
+    "rim_color": "#F3EEE4"
+  },
+  "rebellion_fixture": {
+    "pitch_offset": 1,
+    "minimum_deviation": 0.05,
+    "maximum_deviation": 0.12
+  },
+  "landscape": {
+    "per_family": 2,
+    "maximum": 6,
+    "minimum_spacing": 2,
+    "tree_heights_px": [
+      22.0,
+      28.0
+    ],
+    "ground_ratio": 0.42,
+    "ground_color": "#D4DFC9",
+    "ground_alpha": 0.7
+  },
+  "lighting": {
+    "sun_west_south_degrees": 20.0,
+    "sun_height_degrees": 45.0,
+    "light_face_reduction": 0.06,
+    "dark_face_reduction": 0.16,
+    "cold_tint": "#5B6788",
+    "warm_tint": "#F3C98B",
+    "cold_mix": 0.25,
+    "warm_mix": 0.1,
+    "shadow_color": "#4A5A78",
+    "shadow_alpha": 0.22,
+    "contact_alpha": 0.18,
+    "contact_expand_px": 3.0,
+    "contact_feather_px": 4.0,
+    "mask_long_edge": 1024,
+    "union_resolution": 2.0,
+    "progress_steps": 255,
+    "default_half_width": 28.0,
+    "default_plot_coverage": 0.66,
+    "compound_base": "#BCC1B3",
+    "historic_stone": "#C6C0B5"
+  },
+  "stage_audio": {
+    "fade_beats": 2.0,
+    "ornament_bars": 2,
+    "ornament_intervals": [
+      0,
+      7,
+      12
+    ],
+    "ornament_gain": 0.018,
+    "ornament_attack": 0.005,
+    "ornament_tail": 0.25,
+    "ornament_decay": 0.075,
+    "bell_interval": 24,
+    "bell_gain": 0.035,
+    "bell_attack": 0.005,
+    "bell_tail": 0.6,
+    "bell_decay": 0.18,
+    "event_partials": [
+      1.0,
+      0.25
+    ]
+  },
+  "formation_notice": {
+    "read_seconds": 6.0,
+    "gap_seconds": 2.0,
+    "width": 360.0,
+    "left": 24.0,
+    "top_gap": 12.0,
+    "entry_seconds": 0.18,
+    "entry_px": 12.0,
+    "delay_beats": 2
+  },
+  "ring": {
+    "offsets": [
+      [
+        -1,
+        -1
+      ],
+      [
+        0,
+        -1
+      ],
+      [
+        1,
+        -1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        -1,
+        1
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "required_boundaries": 2,
+    "minimum_score": 0.85,
+    "beats": 8,
+    "octave": 12,
+    "gain": 2.0,
+    "crossfade_bars": 1.0,
+    "attack": 0.005,
+    "tail": 0.25,
+    "decay": 0.075,
+    "color": "#B99356",
+    "line_width": 1.5,
+    "active_alpha": 0.8,
+    "embryo_alpha": 0.4,
+    "dot_radius": 4.0,
+    "glow_radius": 8.0
+  },
+  "visual_diagnosis": {
+    "slow_min_hz": 3.0,
+    "slow_max_hz": 16.0,
+    "frequency_divisor": 8.0,
+    "display_min_hz": 0.5,
+    "display_max_hz": 2.0,
+    "width_px": 2.0,
+    "amplitude_px": 2.0,
+    "max_alpha": 0.55,
+    "inactive_alpha": 0.25,
+    "span_ratio": 0.7,
+    "samples": 32.0,
+    "wave_cycles": 2.0,
+    "reduced_offset_px": 1.0,
+    "slow_color": "#77969A",
+    "rough_color": "#B38F87"
+  },
+  "sources": {
+    "spec.audio.md": "b5851d8dc7e32e01c687761beeb4d316f538a18b085a0b3700c69d53e0e7b38d",
+    "spec.city.md": "60d918d1393758d6442b3f3f8690396a117771f15683f0c21ef78ace39132fe8",
+    "spec.harmony.md": "f5f6959c25ddcdca89de081ade88d4337281896d7a867efe85deb1a22bebb89f",
+    "spec.proposal.md": "e3a3d0ecd7a4e99ee66e49ab0cf098f4d952c906d896255ee3c42c9c1acbdcbc",
+    "spec.ui.md": "915b93665055fe69849489c532d2b3587dcfd0bd955ea4435a15750673a0a663"
+  }
+}

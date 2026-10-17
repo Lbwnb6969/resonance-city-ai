@@ -1,0 +1,12 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=doubleoctagon];
+  n1 [label="Getting XP",shape=box];
+  n2 [label="Start Production",shape=box];
+  n3 [label="Finish Production",shape=box];
+  n4 [label="48193fcd-40bf-4206-b529-031f3cafadb7",shape=box];
+  n0 -> n2 [label="0"];
+  n0 -> n4 [label="1"];
+  n0 -> n1 [label="2"];
+  n0 -> n3 [label="3"];
+}

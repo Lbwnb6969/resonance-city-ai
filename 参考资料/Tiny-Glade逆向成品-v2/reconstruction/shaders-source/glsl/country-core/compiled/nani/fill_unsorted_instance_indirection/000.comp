@@ -1,0 +1,49 @@
+#version 460
+layout(local_size_x = 32, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_vector_uint_4_34
+{
+    uvec4 data[34];
+};
+
+layout(set = 0, binding = 0, std140) uniform InstanceListOffset_natural
+{
+    _Array_natural_vector_uint_4_34 array;
+} instance_list_offset;
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} sorted_instances_buffer;
+
+layout(set = 0, binding = 2, std430) readonly buffer thread_count_buffer
+{
+    uint _member0[];
+} thread_count_buffer_1;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} unsorted_instance_atlas_entry_prefix_buffer;
+
+layout(set = 0, binding = 4, std430) buffer instance_indirection_buffer
+{
+    uint _member0[];
+} instance_indirection_buffer_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint draw_list_index;
+} push_constants;
+
+void main()
+{
+    uint _50 = gl_GlobalInvocationID.x + instance_list_offset.array.data[push_constants.draw_list_index / 4u][push_constants.draw_list_index % 4u];
+    uint _56 = sorted_instances_buffer._member0[_50];
+    if (gl_GlobalInvocationID.x < thread_count_buffer_1._member0[push_constants.draw_list_index])
+    {
+        uint unsorted_instance_index = atomicAdd(unsorted_instance_atlas_entry_prefix_buffer._member0[(_56 % 1024u) + (push_constants.draw_list_index * 1024u)], 1u);
+        instance_indirection_buffer_1._member0[unsorted_instance_index] = _56 / 1024u;
+    }
+}
+

@@ -1,0 +1,17 @@
+// RVA 0x8370c0 | Os.Utils.ExtraMath$$SetY
+// PDB: ExtraMath_SetY_mDCBEC23ABC2D2368A2E3D55C5BC192ED954BF81D
+// Body: [[108370c0, 108370de]]
+// Direct callees:
+
+Vector2_tBB32F2736AEC229A7BFBCE18197EC0F6AC7EC2D9 __cdecl
+ExtraMath_SetY_mDCBEC23ABC2D2368A2E3D55C5BC192ED954BF81D
+          (Vector2_tBB32F2736AEC229A7BFBCE18197EC0F6AC7EC2D9 param_1,float param_2,
+          MethodInfo *param_3)
+
+{
+  Vector2_tBB32F2736AEC229A7BFBCE18197EC0F6AC7EC2D9 VVar1;
+
+  VVar1.___y_1 = param_2;
+  VVar1.___x_0 = param_1.___x_0;
+  return VVar1;
+}

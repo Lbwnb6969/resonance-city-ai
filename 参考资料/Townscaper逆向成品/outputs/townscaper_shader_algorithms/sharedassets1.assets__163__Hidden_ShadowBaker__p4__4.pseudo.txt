@@ -1,0 +1,17 @@
+// FLOAT/INT reinterpret bits; BITS stores float bits; BITS4 raw vector.
+
+    uint4 r0;
+    uint4 out_o0;
+    uint4 v0;
+    uint4 v1;
+    v0.xyzw = asuint(input.v0_0);
+    v1.xyzw = asuint(input.v1_0);
+    r0.xyz = (((FLOAT(BITS4(0x40000000u, 0x3f000000u, 0x3ecccccdu, 0x0u)) >= FLOAT(v1.yyyy)) ? BITS4(0xffffffffu,0xffffffffu,0xffffffffu,0xffffffffu) : BITS4(0u,0u,0u,0u))).xyz; // ge r0.xyz, l(2.000000, 0.500000, 0.400000, 0.000000), v1.yyyy
+    r0.xyz = ((r0.xyzx & BITS4(0x3f800000u, 0x3f800000u, 0x3f800000u, 0x0u))).xyz; // and r0.xyz, r0.xyzx, l(0x3f800000, 0x3f800000, 0x3f800000, 0)
+    r0.xyz = (BITS(FLOAT(r0.xyzx) * FLOAT(v1.xxxx))).xyz; // mul r0.xyz, r0.xyzx, v1.xxxx
+    r0.w = (BITS4(0x0u, 0x0u, 0x0u, 0x0u)).w; // mov r0.w, l(0)
+    out_o0.xyzw = (BITS(FLOAT(BITS(-FLOAT(r0.xyzw))) + FLOAT(BITS4(0x3f800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u)))).xyzw; // add o0.xyzw, -r0.xyzw, l(1.000000, 1.000000, 1.000000, 1.000000)
+    // ret: return all declared output registers below.
+    Output result;
+    result.o0_0 = asfloat(out_o0.xyzw);
+    return result;

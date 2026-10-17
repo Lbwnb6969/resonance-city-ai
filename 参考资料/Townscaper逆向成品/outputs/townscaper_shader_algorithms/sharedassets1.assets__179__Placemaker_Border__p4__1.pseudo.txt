@@ -1,0 +1,25 @@
+// FLOAT/INT reinterpret bits; BITS stores float bits; BITS4 raw vector.
+
+    uint4 r0;
+    uint4 out_o0;
+    uint4 v0;
+    uint4 v1;
+    uint4 v2;
+    v0.xyzw = asuint(input.v0_0);
+    v1.xy = asuint(input.v1_0);
+    v2.xyzw = asuint(input.v2_0);
+    r0.xyzw = (BITS(t0.Sample(s0, FLOAT(v1.xyxx).xy)).xyzw).xyzw; // sample r0.xyzw, v1.xyxx, t0.xyzw, s0
+    r0.x = (BITS(ddx(FLOAT(r0.yyyy)))).x; // deriv_rtx r0.x, r0.y
+    r0.z = (BITS(ddy(FLOAT(r0.yyyy)))).z; // deriv_rty r0.z, r0.y
+    r0.y = (BITS(FLOAT(r0.yyyy) + FLOAT(BITS4(0xbf333333u, 0xbf333333u, 0xbf333333u, 0xbf333333u)))).y; // add r0.y, r0.y, l(-0.700000)
+    r0.x = (BITS(FLOAT(BITS(abs(FLOAT(r0.zzzz)))) + FLOAT(BITS(abs(FLOAT(r0.xxxx)))))).x; // add r0.x, |r0.z|, |r0.x|
+    r0.x = (BITS(FLOAT(BITS(abs(FLOAT(r0.yyyy)))) / FLOAT(r0.xxxx))).x; // div r0.x, |r0.y|, r0.x
+    r0.x = (BITS(min(FLOAT(r0.xxxx), FLOAT(BITS4(0x3f800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u))))).x; // min r0.x, r0.x, l(1.000000)
+    r0.x = (BITS(FLOAT(BITS(-FLOAT(r0.xxxx))) + FLOAT(BITS4(0x3f800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u)))).x; // add r0.x, -r0.x, l(1.000000)
+    r0.x = (BITS(FLOAT(r0.xxxx) * FLOAT(cb0[40].wwww))).x; // mul r0.x, r0.x, cb0[40].w
+    out_o0.w = (BITS(FLOAT(r0.xxxx) * FLOAT(v2.wwww))).w; // mul o0.w, r0.x, v2.w
+    out_o0.xyz = (cb0[40].xyzx).xyz; // mov o0.xyz, cb0[40].xyzx
+    // ret: return all declared output registers below.
+    Output result;
+    result.o0_0 = asfloat(out_o0.xyzw);
+    return result;

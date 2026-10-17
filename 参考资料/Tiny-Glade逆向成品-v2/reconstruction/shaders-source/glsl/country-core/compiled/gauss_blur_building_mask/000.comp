@@ -1,0 +1,66 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 building_mask_dims;
+    uvec2 out_building_mask_dims;
+    int is_horizontal;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D building_mask;
+layout(set = 0, binding = 2, rg16f) uniform image2D out_building_mask;
+
+void main()
+{
+    float _38 = ceil(20.0);
+    int KERNEL_RADIUS = int(_38);
+    int _42 = -KERNEL_RADIUS;
+    float _260;
+    float _261;
+    _261 = 0.0;
+    _260 = 0.0;
+    int i;
+    float _270;
+    float _271;
+    int _259 = _42;
+    for (;;)
+    {
+        if (!(_259 <= KERNEL_RADIUS))
+        {
+            break;
+        }
+        ivec2 _61 = ivec2(gl_GlobalInvocationID.xy);
+        ivec2 _262;
+        if (!(globalParams.is_horizontal != 0))
+        {
+            _262 = _61 + ivec2(0, _259);
+        }
+        else
+        {
+            _262 = _61 + ivec2(_259, 0);
+        }
+        uvec2 _84 = uvec2(_262);
+        if (all(lessThan(_84, globalParams.building_mask_dims)))
+        {
+            float _117 = float(_259);
+            float _221 = exp(((-_117) * _117) * 0.004999999888241291046142578125);
+            _271 = _261 + _221;
+            _270 = _260 + (texelFetch(building_mask, ivec2(_84), 0).x * _221);
+        }
+        else
+        {
+            _271 = _261;
+            _270 = _260;
+        }
+        i = _259 + 1;
+        _261 = _271;
+        _260 = _270;
+        _259 = i;
+        continue;
+    }
+    uvec2 _169 = uvec2(ivec2(gl_GlobalInvocationID.xy));
+    imageStore(out_building_mask, ivec2(_169), vec4(_260 / _261, imageLoad(out_building_mask, ivec2(_169)).y, 0.0, 0.0));
+}
+

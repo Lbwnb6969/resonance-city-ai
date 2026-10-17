@@ -1,0 +1,16 @@
+// RVA 0x40e0d0 | Os.Hex.HexMath$$RotateCW2
+// PDB: HexMath_RotateCW2_mD1082E727BC8D5F3EA036E2B6B8F0397D09AF1DB
+// Body: [[1040e0d0, 1040e0de]]
+// Direct callees:
+
+int2_t40DB794B47A2943AB7E9BC67442B6B8173FBB568 __cdecl
+HexMath_RotateCW2_mD1082E727BC8D5F3EA036E2B6B8F0397D09AF1DB
+          (int2_t40DB794B47A2943AB7E9BC67442B6B8173FBB568 param_1,MethodInfo *param_2)
+
+{
+  int2_t40DB794B47A2943AB7E9BC67442B6B8173FBB568 iVar1;
+
+  iVar1.___y_1 = -(param_1.___y_1 + param_1.___x_0);
+  iVar1.___x_0 = param_1.___y_1;
+  return iVar1;
+}

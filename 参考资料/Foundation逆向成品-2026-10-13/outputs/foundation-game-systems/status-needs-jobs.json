@@ -1,0 +1,6779 @@
+[
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Clergy_Monastics.data",
+    "absolute_offset": 61843153,
+    "length": 1984,
+    "sha256": "f665d2cf72abf8e28f7f100fac7ecfb5d00d7ed992a32044bf1de49c4b9c0b7c",
+    "rid": 1497,
+    "uuid": "e85232c0-f4e0-4bf0-a682-e9430d55e437",
+    "scripting_id": "AGRI_STATUS_INVITATION_CLERGY_MONASTIC",
+    "importance": 2,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "MONK_DESC"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "NUN_DESC"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Clergy_Priors.data",
+    "absolute_offset": 61845314,
+    "length": 1977,
+    "sha256": "114448fa7165c5428d24b7d1eee3ec39ec5cc69b726fc3c938a0a11ee1fa0232",
+    "rid": 1499,
+    "uuid": "8dc6c604-0ec8-4b73-9235-7646a2bfb21c",
+    "scripting_id": "AGRI_STATUS_INVITATION_CLERGY_PRIOR",
+    "importance": 2,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIOR_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "0382551d-a37a-4515-8fb9-c02d1e2b0594",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Kingdom_Noble.data",
+    "absolute_offset": 61847469,
+    "length": 1659,
+    "sha256": "cb4a146b55fb4dd4c9ca765c7724c61f5e78c7c319b173630d0928f3b1140900",
+    "rid": 1501,
+    "uuid": "9d72a1da-454e-44c4-bc45-832cbabfcc87",
+    "scripting_id": "AGRI_STATUS_INVITATION_KINGDOM_NOBLE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "LORD"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "LADY"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "NOBLE_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "LORD"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "LADY"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Kingdom_Retinue.data",
+    "absolute_offset": 61849308,
+    "length": 1652,
+    "sha256": "cfe8288349fbf0d0c90e3c2599bb25027b7e462ddb67ddaf5182824a3387da8b",
+    "rid": 1503,
+    "uuid": "d33ca681-a4b4-4ee3-bd03-095984503938",
+    "scripting_id": "AGRI_STATUS_INVITATION_KINGDOM_RETINUE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "RETINUE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "RETINUE_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Labour_Elder.data",
+    "absolute_offset": 61851137,
+    "length": 1648,
+    "sha256": "c86495e2bdb4cba924b54f94a29c48be91ac1f7adfc5bbd9db122d2b03440463",
+    "rid": 1505,
+    "uuid": "83e2aeda-6db6-4412-824a-72d77b6a9296",
+    "scripting_id": "AGRI_STATUS_INVITATION_LABOUR_ELDER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ELDER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ELDER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Royal_Guard.data",
+    "absolute_offset": 61852961,
+    "length": 1686,
+    "sha256": "26f42fb5010bc07f414f97b1cca40e1090770995f205d7bdaf7e8c55441c17d8",
+    "rid": 1507,
+    "uuid": "a5949f96-6b63-49d4-b820-686f084237f5",
+    "scripting_id": "AGRI_STATUS_INVITATION_ROYAL_GUARD",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KNIGHT"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Royal_King.data",
+    "absolute_offset": 61854822,
+    "length": 1660,
+    "sha256": "851d71a3817c0fd1c6ed0777babbf24b8ee1c958f0194a5af121e58aa5e859c6",
+    "rid": 1509,
+    "uuid": "281a6f87-0ff7-49a7-aa57-e2845cb0ba32",
+    "scripting_id": "AGRI_STATUS_INVITATION_ROYAL_KING",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "YOUR_KING"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "YOUR_KING_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KING"
+          }
+        ]
+      },
+      "StatusIcon": "252a64b6-58ef-47ec-a71a-8245ba3b7ba7",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Estate Invitation/Statuses/Status_Invitation_Royal_Retinue.data",
+    "absolute_offset": 61856660,
+    "length": 1686,
+    "sha256": "1c8d35cd1fe9dbd6b9d3e70a9637c59a7a6d33d3468871c88f67588ab070dc87",
+    "rid": 1511,
+    "uuid": "a46dd7db-e853-4ea2-9239-07d4e5a4fda3",
+    "scripting_id": "AGRI_STATUS_INVITATION_ROYAL_RETINUE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_KINGRETINUE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_KINGRETINUE_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "LORD"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "LADY"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Entertainers/Profiles/Statuses/Status_Entertainer_Juggler.data",
+    "absolute_offset": 360284970,
+    "length": 1675,
+    "sha256": "f35fbd11c1497628bc1373d0e58a1763d6951438ac0c567985f9b47a2f98b1eb",
+    "rid": 3277,
+    "uuid": "9842bfd4-6dbf-44d6-bd89-8974738a0f81",
+    "scripting_id": null,
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "FESTIVAL_JUGGLER_SING"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "FESTIVAL_JUGGLER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Entertainers/Profiles/Statuses/Status_Entertainer_Minstrel.data",
+    "absolute_offset": 360286762,
+    "length": 1677,
+    "sha256": "611522d52c415204d29e773f6e46733aa2957440ac1c37e935622931ce6185bc",
+    "rid": 3279,
+    "uuid": "e9294a3f-597a-4a9c-a969-12feecb39677",
+    "scripting_id": null,
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "FESTIVAL_MINSTREL_SING"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "FESTIVAL_MINSTREL_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Citizen.data",
+    "absolute_offset": 1565252,
+    "length": 2840,
+    "sha256": "ec79bac266450c6a172eeeb453a993ff0e5f6421fdd1ebb8dfe816df1c7560a6",
+    "rid": 4309,
+    "uuid": "3f6e6e48-8c79-44fa-ab5f-07a3cee15ea0",
+    "scripting_id": "STATUS_VILLAGER_CITIZEN",
+    "importance": 2,
+    "needs": [
+      {
+        "uuid": "60fb7699-ef42-4414-b014-cf9172af40dc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4267,
+            "resource": "asset/Agent/AgentNeeds/NeedGoodsExtra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_GOODS | NEED_GOODS"
+          }
+        ]
+      },
+      {
+        "uuid": "f3a3e69a-6d63-4995-9efc-d9bf0b740038",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4279,
+            "resource": "asset/Agent/AgentNeeds/NeedLuxury.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_LUXURY | NEED_LUXURY"
+          }
+        ]
+      },
+      {
+        "uuid": "b7996dca-d258-4a1e-8275-49fd037377b4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4257,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "c5137807-d0e9-465b-b493-c47cc51d72d1",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4275,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseLevel3.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_LEVEL_3"
+          }
+        ]
+      },
+      {
+        "uuid": "dc91f273-42b7-41f6-af5b-0d783d91a390",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4253,
+            "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_ENTERTAINMENT"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      },
+      {
+        "uuid": "464e1482-0e1f-423d-ba79-08733d5c2402",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4255,
+            "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_ENTERTAINMENT | NEED_ENTERTAINMENT"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [
+      {
+        "uuid": "5fe39ebb-3bad-4eb6-b47a-dd57e5715530",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6058,
+            "resource": "asset/Agent/Job/Cooper.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COOPER | COOPER"
+          }
+        ]
+      },
+      {
+        "uuid": "fcda848b-4c2b-4a5f-b25d-2032aeeb4df7",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6070,
+            "resource": "asset/Agent/Job/GlassBlower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_GLASS_BLOWER | GLASS_BLOWER"
+          }
+        ]
+      },
+      {
+        "uuid": "2ca46931-308f-4dba-aa0d-72000b52afc2",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6021,
+            "resource": "asset/Agent/Job/CandleMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CANDLEMAKER | CANDLE_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "6c37ae1f-ccff-4e2e-aa66-6929712d8448",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6056,
+            "resource": "asset/Agent/Job/CommonWaresMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COMMON_WARES_MAKER | COMMON_WARES_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "14c6c7a7-9faf-4608-8f75-f5d97705161c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6015,
+            "resource": "asset/Agent/Job/Brewer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BREWER | BREWER"
+          }
+        ]
+      },
+      {
+        "uuid": "ded6f9d3-0f12-4063-86f6-d508202c965f",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6133,
+            "resource": "asset/Agent/Job/Tailor.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAILOR | TAILOR"
+          }
+        ]
+      },
+      {
+        "uuid": "4e54dd1f-f13e-4991-9354-5a06450b24e2",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6078,
+            "resource": "asset/Agent/Job/Jeweller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_JEWELLER | JEWELLER"
+          }
+        ]
+      },
+      {
+        "uuid": "3addf622-1ede-4fca-a375-2e9dcebb4925",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6072,
+            "resource": "asset/Agent/Job/GoldSmelter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_GOLD_SMELTER | GOLD_SMELTER"
+          }
+        ]
+      },
+      {
+        "uuid": "e369a07d-72f4-4196-930d-99e3689f5b70",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6117,
+            "resource": "asset/Agent/Job/MasterBuilder.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MASTER_BUILDER | MASTER_BUILDER"
+          }
+        ]
+      },
+      {
+        "uuid": "3322d239-5d37-4650-bc97-a010086af379",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6094,
+            "resource": "asset/Agent/Job/Kingdom/Surgeon.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CASTLE_SURGEON"
+          }
+        ]
+      },
+      {
+        "uuid": "8428deba-18b3-4fe3-8ea5-f68cd4922399",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6113,
+            "resource": "asset/Agent/Job/Labor/TaxCollector.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAX_COLLECTOR | TAX_COLLECTOR"
+          }
+        ]
+      },
+      {
+        "uuid": "a1830438-b172-48f8-ad0a-01a8113e2504",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6101,
+            "resource": "asset/Agent/Job/Labor/Bailiff.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BAILIFF | BAILIFF"
+          }
+        ]
+      },
+      {
+        "uuid": "5173cf69-b8e5-45c2-a6bb-4e5a0206e96d",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6088,
+            "resource": "asset/Agent/Job/Kingdom/Bailiff_Kingdom.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COURTIER"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "CITIZEN"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "CITIZEN_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "60fb7699-ef42-4414-b014-cf9172af40dc",
+          "f3a3e69a-6d63-4995-9efc-d9bf0b740038",
+          "b7996dca-d258-4a1e-8275-49fd037377b4",
+          "c5137807-d0e9-465b-b493-c47cc51d72d1",
+          "dc91f273-42b7-41f6-af5b-0d783d91a390"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+          "464e1482-0e1f-423d-ba79-08733d5c2402"
+        ]
+      },
+      "CompatibleJobList": {
+        "Item": [
+          "5fe39ebb-3bad-4eb6-b47a-dd57e5715530",
+          "fcda848b-4c2b-4a5f-b25d-2032aeeb4df7",
+          "2ca46931-308f-4dba-aa0d-72000b52afc2",
+          "6c37ae1f-ccff-4e2e-aa66-6929712d8448",
+          "14c6c7a7-9faf-4608-8f75-f5d97705161c",
+          "ded6f9d3-0f12-4063-86f6-d508202c965f",
+          "4e54dd1f-f13e-4991-9354-5a06450b24e2",
+          "3addf622-1ede-4fca-a375-2e9dcebb4925",
+          "e369a07d-72f4-4196-930d-99e3689f5b70",
+          "3322d239-5d37-4650-bc97-a010086af379",
+          "8428deba-18b3-4fe3-8ea5-f68cd4922399",
+          "a1830438-b172-48f8-ad0a-01a8113e2504",
+          "5173cf69-b8e5-45c2-a6bb-4e5a0206e96d"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Commoner.data",
+    "absolute_offset": 1568258,
+    "length": 3018,
+    "sha256": "27a4d5698b9ab7fa85b0c5275b11ee099e58cff56b7f0809eae540589fd91057",
+    "rid": 4311,
+    "uuid": "75af039a-2b87-4101-aa51-1cad193b0242",
+    "scripting_id": "STATUS_VILLAGER_COMMONER",
+    "importance": 1,
+    "needs": [
+      {
+        "uuid": "464e1482-0e1f-423d-ba79-08733d5c2402",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4255,
+            "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_ENTERTAINMENT | NEED_ENTERTAINMENT"
+          }
+        ]
+      },
+      {
+        "uuid": "60fb7699-ef42-4414-b014-cf9172af40dc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4267,
+            "resource": "asset/Agent/AgentNeeds/NeedGoodsExtra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_GOODS | NEED_GOODS"
+          }
+        ]
+      },
+      {
+        "uuid": "b7996dca-d258-4a1e-8275-49fd037377b4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4257,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "b7996dca-d258-4a1e-8275-49fd037377b4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4257,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "8894561b-d3d7-46fc-9e1f-45dbf1d1eff7",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4273,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseLevel2.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_LEVEL_2"
+          }
+        ]
+      },
+      {
+        "uuid": "9ab2d526-f1d4-457c-a1e7-091518427c70",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4285,
+            "resource": "asset/Agent/AgentNeeds/NeedServices_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_SERVICE"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4259,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "0c8846e0-719d-4d1c-a632-5c14289fbe63",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4287,
+            "resource": "asset/Agent/AgentNeeds/NeedServices_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_SERVICE | NEED_SERVICE"
+          }
+        ]
+      },
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [
+      {
+        "uuid": "2dea9119-e0c4-4863-973d-a75e3196790c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6131,
+            "resource": "asset/Agent/Job/Stonemason.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_STONE_MASON | STONEMASON"
+          }
+        ]
+      },
+      {
+        "uuid": "1d66fb50-7bc4-4b00-94a3-74ef8be2a16e",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6123,
+            "resource": "asset/Agent/Job/Pavior.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_PAVIOR"
+          }
+        ]
+      },
+      {
+        "uuid": "d4768c81-5be2-44de-b668-79db54b74430",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6025,
+            "resource": "asset/Agent/Job/CheeseMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CHEESEMAKER | CHEESE_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "6af917ee-a6ee-4866-a723-f991ba13f345",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6129,
+            "resource": "asset/Agent/Job/Smelter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_IRON_SMELTER | IRON_SMELTER"
+          }
+        ]
+      },
+      {
+        "uuid": "76f9f3f1-dee0-4fa4-aa54-252c34954954",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6013,
+            "resource": "asset/Agent/Job/Blacksmith.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BLACKSMITH | BLACKSMITH"
+          }
+        ]
+      },
+      {
+        "uuid": "4f47e04c-44ff-46c0-907f-39fe9ac880c5",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6137,
+            "resource": "asset/Agent/Job/Weaver.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WEAVER | WEAVER"
+          }
+        ]
+      },
+      {
+        "uuid": "e8afa3b9-6a93-465d-a227-b2bcda83dacd",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6103,
+            "resource": "asset/Agent/Job/Labor/Bartender.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAVERNER | BARTENDER"
+          }
+        ]
+      },
+      {
+        "uuid": "84e7040c-6e96-4a1d-955e-efed5ed1604a",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6109,
+            "resource": "asset/Agent/Job/Labor/Innkeeper.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_INNKEEPER | INN_KEEPER"
+          }
+        ]
+      },
+      {
+        "uuid": "5e324a37-add9-4bae-8a7c-c09012b018b1",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6011,
+            "resource": "asset/Agent/Job/Baker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BAKER | BAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c194023-4e08-48f8-a381-d487811cd091",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6105,
+            "resource": "asset/Agent/Job/Labor/Cook.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_LABOUR_COOK | COOK"
+          }
+        ]
+      },
+      {
+        "uuid": "5c4ec6ec-a2ff-481c-a743-ee2ff4e2b524",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6111,
+            "resource": "asset/Agent/Job/Labor/Patroller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_PATROLLER"
+          }
+        ]
+      },
+      {
+        "uuid": "0bbcb237-dce7-439e-9621-509d9f4d254f",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6019,
+            "resource": "asset/Agent/Job/Butcher.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BUTCHER | BUTCHER"
+          }
+        ]
+      },
+      {
+        "uuid": "4fa65a8a-6d49-4912-a847-c0e0c05a223d",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6125,
+            "resource": "asset/Agent/Job/Priest.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_VILLAGE_PRIEST"
+          }
+        ]
+      },
+      {
+        "uuid": "645a8320-630c-4c0e-9378-b00b24919f21",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6098,
+            "resource": "asset/Agent/Job/Kingdom/Weaponsmith.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WEAPONSMITH | WEAPONSMITH"
+          }
+        ]
+      },
+      {
+        "uuid": "61c7834f-adec-454a-98d9-5b32c9b571ca",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6107,
+            "resource": "asset/Agent/Job/Labor/Guardsman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WATCHMAN"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "COMMONER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "COMMONER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "a23dda5b-c941-405e-b4e8-d2a5e5dfab9d",
+      "StatusImportance": 1,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "464e1482-0e1f-423d-ba79-08733d5c2402",
+          "60fb7699-ef42-4414-b014-cf9172af40dc",
+          "b7996dca-d258-4a1e-8275-49fd037377b4",
+          "b7996dca-d258-4a1e-8275-49fd037377b4",
+          "8894561b-d3d7-46fc-9e1f-45dbf1d1eff7",
+          "9ab2d526-f1d4-457c-a1e7-091518427c70"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+          "0c8846e0-719d-4d1c-a632-5c14289fbe63",
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66"
+        ]
+      },
+      "CompatibleJobList": {
+        "Item": [
+          "2dea9119-e0c4-4863-973d-a75e3196790c",
+          "1d66fb50-7bc4-4b00-94a3-74ef8be2a16e",
+          "d4768c81-5be2-44de-b668-79db54b74430",
+          "6af917ee-a6ee-4866-a723-f991ba13f345",
+          "76f9f3f1-dee0-4fa4-aa54-252c34954954",
+          "4f47e04c-44ff-46c0-907f-39fe9ac880c5",
+          "e8afa3b9-6a93-465d-a227-b2bcda83dacd",
+          "84e7040c-6e96-4a1d-955e-efed5ed1604a",
+          "5e324a37-add9-4bae-8a7c-c09012b018b1",
+          "2c194023-4e08-48f8-a381-d487811cd091",
+          "5c4ec6ec-a2ff-481c-a743-ee2ff4e2b524",
+          "0bbcb237-dce7-439e-9621-509d9f4d254f",
+          "4fa65a8a-6d49-4912-a847-c0e0c05a223d",
+          "645a8320-630c-4c0e-9378-b00b24919f21",
+          "61c7834f-adec-454a-98d9-5b32c9b571ca"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryMonk.data",
+    "absolute_offset": 1571540,
+    "length": 2644,
+    "sha256": "748093fa269310fa8d08f0a4afdd45bb7c0494e0efc5c2350170f7e2523f303e",
+    "rid": 4314,
+    "uuid": "2f5e3055-aca8-427f-bac7-0c2133f81182",
+    "scripting_id": "STATUS_MONASTIC_BROTHER",
+    "importance": 1,
+    "needs": [
+      {
+        "uuid": "e44fc0f3-28a8-4b49-987c-ad62a6b3f4f4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4289,
+            "resource": "asset/Agent/AgentNeeds/NeedTypeCloister.data",
+            "type": "PlaCAssetAgentNeedTypeVisitBuilding",
+            "scripting_id": "NEED_ADDITIONAL_CLOISTER | NEED_CLOISTER"
+          }
+        ]
+      },
+      {
+        "uuid": "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4263,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_MONK | NEED_FOOD_MONK"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [
+      {
+        "uuid": "b16e83c8-2a7c-4ce3-bd34-d09cf74053e7",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6050,
+            "resource": "asset/Agent/Job/Clergy/Vinegrower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_VINEGROWER | VINEGROWER"
+          }
+        ]
+      },
+      {
+        "uuid": "03e7655b-4a42-4b16-8c3b-5548398081fc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6052,
+            "resource": "asset/Agent/Job/Clergy/Vintner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_VINTNER | VINTNER"
+          }
+        ]
+      },
+      {
+        "uuid": "55423199-faea-4790-90b3-461dad4e72ea",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6030,
+            "resource": "asset/Agent/Job/Clergy/Beekeeper.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BEE_KEEPER | BEE_KEEPER"
+          }
+        ]
+      },
+      {
+        "uuid": "578154a5-d8ff-4ebc-9f62-c3ea6e5dd35a",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6046,
+            "resource": "asset/Agent/Job/Clergy/MonasteryWorker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_REFECTORIAN"
+          }
+        ]
+      },
+      {
+        "uuid": "1a72a2e0-1849-4587-b51a-1c8d8dd2cb54",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6038,
+            "resource": "asset/Agent/Job/Clergy/MonasteryCook.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_COOK"
+          }
+        ]
+      },
+      {
+        "uuid": "42c871a4-d149-4d85-8dbf-c859559418a1",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6036,
+            "resource": "asset/Agent/Job/Clergy/Hosteller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HOSTELLER"
+          }
+        ]
+      },
+      {
+        "uuid": "80b2453a-3d72-4680-9ddc-5d9ef98de926",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6034,
+            "resource": "asset/Agent/Job/Clergy/Herbalist.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HERBALIST | HERBALIST"
+          }
+        ]
+      },
+      {
+        "uuid": "619a0b81-eafd-4731-9858-698ba577a1cb",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6042,
+            "resource": "asset/Agent/Job/Clergy/MonasteryGatherer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_GARDENER"
+          }
+        ]
+      },
+      {
+        "uuid": "04b601f7-549e-464e-8171-b384d964a3cf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6032,
+            "resource": "asset/Agent/Job/Clergy/Copyist.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COPYIST"
+          }
+        ]
+      },
+      {
+        "uuid": "4d99600e-d9f4-4914-8c5f-e99897666e3a",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6044,
+            "resource": "asset/Agent/Job/Clergy/MonasteryTransporter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_TRANSPORTER"
+          }
+        ]
+      },
+      {
+        "uuid": "cfde44ff-e83b-42f4-b5d7-31ce9b6f9a4c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6040,
+            "resource": "asset/Agent/Job/Clergy/MonasteryFarmer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "9436a53a-7d8a-4eb5-85b9-3ad69147e982",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6048,
+            "resource": "asset/Agent/Job/Clergy/MonasticPriest.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_PRIEST"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "MONK_DESC"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "NUN_DESC"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 1,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "e44fc0f3-28a8-4b49-987c-ad62a6b3f4f4",
+          "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66"
+        ]
+      },
+      "CompatibleJobList": {
+        "Item": [
+          "b16e83c8-2a7c-4ce3-bd34-d09cf74053e7",
+          "03e7655b-4a42-4b16-8c3b-5548398081fc",
+          "55423199-faea-4790-90b3-461dad4e72ea",
+          "578154a5-d8ff-4ebc-9f62-c3ea6e5dd35a",
+          "1a72a2e0-1849-4587-b51a-1c8d8dd2cb54",
+          "42c871a4-d149-4d85-8dbf-c859559418a1",
+          "80b2453a-3d72-4680-9ddc-5d9ef98de926",
+          "619a0b81-eafd-4731-9858-698ba577a1cb",
+          "04b601f7-549e-464e-8171-b384d964a3cf",
+          "4d99600e-d9f4-4914-8c5f-e99897666e3a",
+          "cfde44ff-e83b-42f4-b5d7-31ce9b6f9a4c",
+          "9436a53a-7d8a-4eb5-85b9-3ad69147e982"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryNovice.data",
+    "absolute_offset": 1574348,
+    "length": 2210,
+    "sha256": "26201ec7c9b9d42498f3075ea7ab2b5d2fbfe58176ea9a4de1b0abe54c415715",
+    "rid": 4316,
+    "uuid": "b69e6b49-888b-4a4b-b1b0-b374ad94fa1c",
+    "scripting_id": "STATUS_MONASTIC_NOVICE",
+    "importance": 0,
+    "needs": [
+      {
+        "uuid": "b2448947-4d1b-45db-9145-46471503a306",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4291,
+            "resource": "asset/Agent/AgentNeeds/NeedWater.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_WATER | NEED_WATER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      },
+      {
+        "uuid": "0db949a3-5fb6-4431-90e6-8d2a2899f74c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4265,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_MONK"
+          }
+        ]
+      },
+      {
+        "uuid": "2078dc50-4fd7-41cf-9bd6-2cb41d3c5562",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4281,
+            "resource": "asset/Agent/AgentNeeds/NeedMonasteryDorm.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_MONASTERY_DORM | NEED_HOUSE_MONASTERY"
+          }
+        ]
+      },
+      {
+        "uuid": "a8a7f083-6346-469b-b9ca-969cd394cfbf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4283,
+            "resource": "asset/Agent/AgentNeeds/NeedServicesMonk.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_SERVICE_MONK | NEED_SERVICE_MONK"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MONASTERY_NOVICE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "MONK_DESC"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "NUN_DESC"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MONASTERY_NOVICE"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": true,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "b2448947-4d1b-45db-9145-46471503a306",
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+          "0db949a3-5fb6-4431-90e6-8d2a2899f74c",
+          "2078dc50-4fd7-41cf-9bd6-2cb41d3c5562",
+          "a8a7f083-6346-469b-b9ca-969cd394cfbf"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryNovice_f_DEPRECATED.data",
+    "absolute_offset": 1576675,
+    "length": 2333,
+    "sha256": "143d0caa212d48779475988dc787024d62228da3aca5ee373f602b4a6911b29a",
+    "rid": 4318,
+    "uuid": "24adc17d-56e3-42f3-a384-684c078e3531",
+    "scripting_id": null,
+    "importance": 0,
+    "needs": [
+      {
+        "uuid": "b2448947-4d1b-45db-9145-46471503a306",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4291,
+            "resource": "asset/Agent/AgentNeeds/NeedWater.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_WATER | NEED_WATER"
+          }
+        ]
+      },
+      {
+        "uuid": "2078dc50-4fd7-41cf-9bd6-2cb41d3c5562",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4281,
+            "resource": "asset/Agent/AgentNeeds/NeedMonasteryDorm.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_MONASTERY_DORM | NEED_HOUSE_MONASTERY"
+          }
+        ]
+      },
+      {
+        "uuid": "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4263,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_MONK | NEED_FOOD_MONK"
+          }
+        ]
+      },
+      {
+        "uuid": "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4263,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_MONK | NEED_FOOD_MONK"
+          }
+        ]
+      },
+      {
+        "uuid": "a8a7f083-6346-469b-b9ca-969cd394cfbf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4283,
+            "resource": "asset/Agent/AgentNeeds/NeedServicesMonk.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_SERVICE_MONK | NEED_SERVICE_MONK"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [],
+    "compatible_jobs": [
+      {
+        "uuid": "80b2453a-3d72-4680-9ddc-5d9ef98de926",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6034,
+            "resource": "asset/Agent/Job/Clergy/Herbalist.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HERBALIST | HERBALIST"
+          }
+        ]
+      },
+      {
+        "uuid": "619a0b81-eafd-4731-9858-698ba577a1cb",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6042,
+            "resource": "asset/Agent/Job/Clergy/MonasteryGatherer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_GARDENER"
+          }
+        ]
+      },
+      {
+        "uuid": "04b601f7-549e-464e-8171-b384d964a3cf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6032,
+            "resource": "asset/Agent/Job/Clergy/Copyist.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COPYIST"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MONASTERY_NOVICE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "NUN_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MONASTERY_NOVICE"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": true,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "b2448947-4d1b-45db-9145-46471503a306",
+          "2078dc50-4fd7-41cf-9bd6-2cb41d3c5562",
+          "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+          "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+          "a8a7f083-6346-469b-b9ca-969cd394cfbf"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {
+        "Item": [
+          "80b2453a-3d72-4680-9ddc-5d9ef98de926",
+          "619a0b81-eafd-4731-9858-698ba577a1cb",
+          "04b601f7-549e-464e-8171-b384d964a3cf"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryNun_DEPRECATED.data",
+    "absolute_offset": 1579125,
+    "length": 2225,
+    "sha256": "fadc2ef9a1dfaa32c4ca3d73cb2d1ba773bbb345a1aee2568f64af63f4597ebc",
+    "rid": 4320,
+    "uuid": "9d637d65-c407-45d0-84e6-3f019718f954",
+    "scripting_id": null,
+    "importance": 1,
+    "needs": [
+      {
+        "uuid": "e44fc0f3-28a8-4b49-987c-ad62a6b3f4f4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4289,
+            "resource": "asset/Agent/AgentNeeds/NeedTypeCloister.data",
+            "type": "PlaCAssetAgentNeedTypeVisitBuilding",
+            "scripting_id": "NEED_ADDITIONAL_CLOISTER | NEED_CLOISTER"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [],
+    "compatible_jobs": [
+      {
+        "uuid": "b16e83c8-2a7c-4ce3-bd34-d09cf74053e7",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6050,
+            "resource": "asset/Agent/Job/Clergy/Vinegrower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_VINEGROWER | VINEGROWER"
+          }
+        ]
+      },
+      {
+        "uuid": "03e7655b-4a42-4b16-8c3b-5548398081fc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6052,
+            "resource": "asset/Agent/Job/Clergy/Vintner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_VINTNER | VINTNER"
+          }
+        ]
+      },
+      {
+        "uuid": "55423199-faea-4790-90b3-461dad4e72ea",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6030,
+            "resource": "asset/Agent/Job/Clergy/Beekeeper.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BEE_KEEPER | BEE_KEEPER"
+          }
+        ]
+      },
+      {
+        "uuid": "578154a5-d8ff-4ebc-9f62-c3ea6e5dd35a",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6046,
+            "resource": "asset/Agent/Job/Clergy/MonasteryWorker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_REFECTORIAN"
+          }
+        ]
+      },
+      {
+        "uuid": "1a72a2e0-1849-4587-b51a-1c8d8dd2cb54",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6038,
+            "resource": "asset/Agent/Job/Clergy/MonasteryCook.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MONASTERY_COOK"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SISTER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "NUN_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SISTER"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 1,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "e44fc0f3-28a8-4b49-987c-ad62a6b3f4f4"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {
+        "Item": [
+          "b16e83c8-2a7c-4ce3-bd34-d09cf74053e7",
+          "03e7655b-4a42-4b16-8c3b-5548398081fc",
+          "55423199-faea-4790-90b3-461dad4e72ea",
+          "578154a5-d8ff-4ebc-9f62-c3ea6e5dd35a",
+          "1a72a2e0-1849-4587-b51a-1c8d8dd2cb54"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryPrior.data",
+    "absolute_offset": 1581513,
+    "length": 2109,
+    "sha256": "7f4f928c6a9c7221f3f18e7d0ac59281d8ea142088030c8bf8039ad1acd69c3e",
+    "rid": 4322,
+    "uuid": "4c8cefde-4986-4e97-9128-f0809669402b",
+    "scripting_id": "STATUS_MONASTIC_PRIOR",
+    "importance": 2,
+    "needs": [
+      {
+        "uuid": "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4263,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_MONK | NEED_FOOD_MONK"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "0db949a3-5fb6-4431-90e6-8d2a2899f74c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4265,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_MONK"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [
+      {
+        "uuid": "1fac8dca-17de-425c-a82f-f6f5cb33d268",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6028,
+            "resource": "asset/Agent/Job/Clergy/Bailiff_Monastic.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_EMISSARY"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIOR_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "0382551d-a37a-4515-8fb9-c02d1e2b0594",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "f72f6a44-fb27-4ce5-bce0-5410b4d1dbaf"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "0db949a3-5fb6-4431-90e6-8d2a2899f74c"
+        ]
+      },
+      "CompatibleJobList": {
+        "Item": [
+          "1fac8dca-17de-425c-a82f-f6f5cb33d268"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Monastery/StatusMonasteryPrior_f_DEPRECATED.data",
+    "absolute_offset": 1583739,
+    "length": 1967,
+    "sha256": "f823467fca138d34ca96c5b95137a4ef0fbfa8081b9a3c7651f0c7e57ad44eb9",
+    "rid": 4324,
+    "uuid": "6093ddf6-ada7-4876-ad9c-a1b1b721a633",
+    "scripting_id": null,
+    "importance": 2,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIORESS"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIOR_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIORESS"
+          }
+        ]
+      },
+      "StatusIcon": "0382551d-a37a-4515-8fb9-c02d1e2b0594",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Newcomer.data",
+    "absolute_offset": 1585872,
+    "length": 3414,
+    "sha256": "cbf4dd5096cd0e51e0f0520d11fc1aeb0113dadc4c5391b969362c8717aed7b2",
+    "rid": 4326,
+    "uuid": "28705c47-1e1b-42d7-9ebd-23daa56ae5d7",
+    "scripting_id": "STATUS_VILLAGER_NEWCOMER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [
+      {
+        "uuid": "5c5d4c73-2861-4776-a422-ab837ceedbae",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6017,
+            "resource": "asset/Agent/Job/Builder.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BUILDER | BUILDER"
+          }
+        ]
+      },
+      {
+        "uuid": "7f9d127d-0b51-44c2-8065-fdbb186bb9a8",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6139,
+            "resource": "asset/Agent/Job/Wood Cutter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WOODCUTTER | WOOD_CUTTER"
+          }
+        ]
+      },
+      {
+        "uuid": "6b8f3ee4-be13-4bf2-883b-e8fbbd7fb024",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6023,
+            "resource": "asset/Agent/Job/Carpenter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CARPENTER | CARPENTER"
+          }
+        ]
+      },
+      {
+        "uuid": "c0153f67-b309-4380-a1f5-7daab6262aca",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6054,
+            "resource": "asset/Agent/Job/CoalBurner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CHARCOAL_BURNER | COAL_BURNER"
+          }
+        ]
+      },
+      {
+        "uuid": "d5e50232-1de5-448b-a259-572f78c9fc53",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6068,
+            "resource": "asset/Agent/Job/Gatherer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FORAGER | GATHERER"
+          }
+        ]
+      },
+      {
+        "uuid": "57b2bf12-68ed-47de-a843-02da3a5b7482",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6135,
+            "resource": "asset/Agent/Job/Transport.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TRANSPORTER | TRANSPORTER"
+          }
+        ]
+      },
+      {
+        "uuid": "27c01603-ac98-43af-a773-d135f1a5b3fc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6127,
+            "resource": "asset/Agent/Job/Shepherd.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_SHEPHERD | SHEPHERD"
+          }
+        ]
+      },
+      {
+        "uuid": "f34dd1d6-e692-4273-a2cc-7499d6f6b077",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6115,
+            "resource": "asset/Agent/Job/MarketTender.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MARKET_TENDER | MARKET_TENDER"
+          }
+        ]
+      },
+      {
+        "uuid": "42934d76-b33a-4cc2-a3d8-c33ee7500fbe",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6060,
+            "resource": "asset/Agent/Job/DairyFarmer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_DAIRY_FARMER | DAIRY_FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "732bdd7c-6813-42a5-869e-e7bd7079ecb2",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6062,
+            "resource": "asset/Agent/Job/Farmer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FARMER | FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c09f851-7e0d-4755-a444-7fe064fc3de4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6064,
+            "resource": "asset/Agent/Job/Fisherman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FISHERMAN | FISHERMAN"
+          }
+        ]
+      },
+      {
+        "uuid": "27a88284-8904-4b21-beba-46719e71b332",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6121,
+            "resource": "asset/Agent/Job/Miner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MINER | MINER"
+          }
+        ]
+      },
+      {
+        "uuid": "12000d4d-ba5a-457a-87ff-34dec86c005e",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6074,
+            "resource": "asset/Agent/Job/Hopgrower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HOP_FARMER | HOP_FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "5fe39ebb-3bad-4eb6-b47a-dd57e5715530",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6058,
+            "resource": "asset/Agent/Job/Cooper.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COOPER | COOPER"
+          }
+        ]
+      },
+      {
+        "uuid": "0fab01cc-9487-40ff-a0de-1360cf35f8ee",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6066,
+            "resource": "asset/Agent/Job/Forester.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FORESTER | FORESTER"
+          }
+        ]
+      },
+      {
+        "uuid": "2dea9119-e0c4-4863-973d-a75e3196790c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6131,
+            "resource": "asset/Agent/Job/Stonemason.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_STONE_MASON | STONEMASON"
+          }
+        ]
+      },
+      {
+        "uuid": "4f47e04c-44ff-46c0-907f-39fe9ac880c5",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6137,
+            "resource": "asset/Agent/Job/Weaver.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WEAVER | WEAVER"
+          }
+        ]
+      },
+      {
+        "uuid": "ded6f9d3-0f12-4063-86f6-d508202c965f",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6133,
+            "resource": "asset/Agent/Job/Tailor.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAILOR | TAILOR"
+          }
+        ]
+      },
+      {
+        "uuid": "e8afa3b9-6a93-465d-a227-b2bcda83dacd",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6103,
+            "resource": "asset/Agent/Job/Labor/Bartender.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAVERNER | BARTENDER"
+          }
+        ]
+      },
+      {
+        "uuid": "d4768c81-5be2-44de-b668-79db54b74430",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6025,
+            "resource": "asset/Agent/Job/CheeseMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CHEESEMAKER | CHEESE_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "29282993-0e41-45b6-a9a5-5fb44ef7bee0",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6119,
+            "resource": "asset/Agent/Job/Miller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MILLER | MILLER"
+          }
+        ]
+      },
+      {
+        "uuid": "5e324a37-add9-4bae-8a7c-c09012b018b1",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6011,
+            "resource": "asset/Agent/Job/Baker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BAKER | BAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "f65578f0-76af-49d6-bd87-b36f49950cab",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6076,
+            "resource": "asset/Agent/Job/Hunter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HUNTER | HUNTER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c194023-4e08-48f8-a381-d487811cd091",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6105,
+            "resource": "asset/Agent/Job/Labor/Cook.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_LABOUR_COOK | COOK"
+          }
+        ]
+      },
+      {
+        "uuid": "6af917ee-a6ee-4866-a723-f991ba13f345",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6129,
+            "resource": "asset/Agent/Job/Smelter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_IRON_SMELTER | IRON_SMELTER"
+          }
+        ]
+      },
+      {
+        "uuid": "76f9f3f1-dee0-4fa4-aa54-252c34954954",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6013,
+            "resource": "asset/Agent/Job/Blacksmith.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BLACKSMITH | BLACKSMITH"
+          }
+        ]
+      },
+      {
+        "uuid": "a1830438-b172-48f8-ad0a-01a8113e2504",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6101,
+            "resource": "asset/Agent/Job/Labor/Bailiff.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BAILIFF | BAILIFF"
+          }
+        ]
+      },
+      {
+        "uuid": "8428deba-18b3-4fe3-8ea5-f68cd4922399",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6113,
+            "resource": "asset/Agent/Job/Labor/TaxCollector.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TAX_COLLECTOR | TAX_COLLECTOR"
+          }
+        ]
+      },
+      {
+        "uuid": "14c6c7a7-9faf-4608-8f75-f5d97705161c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6015,
+            "resource": "asset/Agent/Job/Brewer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BREWER | BREWER"
+          }
+        ]
+      },
+      {
+        "uuid": "fcda848b-4c2b-4a5f-b25d-2032aeeb4df7",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6070,
+            "resource": "asset/Agent/Job/GlassBlower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_GLASS_BLOWER | GLASS_BLOWER"
+          }
+        ]
+      },
+      {
+        "uuid": "2ca46931-308f-4dba-aa0d-72000b52afc2",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6021,
+            "resource": "asset/Agent/Job/CandleMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CANDLEMAKER | CANDLE_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "6c37ae1f-ccff-4e2e-aa66-6929712d8448",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6056,
+            "resource": "asset/Agent/Job/CommonWaresMaker.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_COMMON_WARES_MAKER | COMMON_WARES_MAKER"
+          }
+        ]
+      },
+      {
+        "uuid": "b4ec286e-1635-4686-85e8-86d8cb8bb899",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6009,
+            "resource": "asset/Agent/Job/Archives/Soldier.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": ""
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "NEWCOMER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "NEWCOMER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "20a36964-06e5-4cae-9340-f3d66f590878",
+      "StatusImportance": 0,
+      "IsReachedByDefault": true,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": true,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {
+        "Item": [
+          "5c5d4c73-2861-4776-a422-ab837ceedbae",
+          "7f9d127d-0b51-44c2-8065-fdbb186bb9a8",
+          "6b8f3ee4-be13-4bf2-883b-e8fbbd7fb024",
+          "c0153f67-b309-4380-a1f5-7daab6262aca",
+          "d5e50232-1de5-448b-a259-572f78c9fc53",
+          "57b2bf12-68ed-47de-a843-02da3a5b7482",
+          "27c01603-ac98-43af-a773-d135f1a5b3fc",
+          "f34dd1d6-e692-4273-a2cc-7499d6f6b077",
+          "42934d76-b33a-4cc2-a3d8-c33ee7500fbe",
+          "732bdd7c-6813-42a5-869e-e7bd7079ecb2",
+          "2c09f851-7e0d-4755-a444-7fe064fc3de4",
+          "27a88284-8904-4b21-beba-46719e71b332",
+          "12000d4d-ba5a-457a-87ff-34dec86c005e",
+          "5fe39ebb-3bad-4eb6-b47a-dd57e5715530",
+          "0fab01cc-9487-40ff-a0de-1360cf35f8ee",
+          "2dea9119-e0c4-4863-973d-a75e3196790c",
+          "4f47e04c-44ff-46c0-907f-39fe9ac880c5",
+          "ded6f9d3-0f12-4063-86f6-d508202c965f",
+          "e8afa3b9-6a93-465d-a227-b2bcda83dacd",
+          "d4768c81-5be2-44de-b668-79db54b74430",
+          "29282993-0e41-45b6-a9a5-5fb44ef7bee0",
+          "5e324a37-add9-4bae-8a7c-c09012b018b1",
+          "f65578f0-76af-49d6-bd87-b36f49950cab",
+          "2c194023-4e08-48f8-a381-d487811cd091",
+          "6af917ee-a6ee-4866-a723-f991ba13f345",
+          "76f9f3f1-dee0-4fa4-aa54-252c34954954",
+          "a1830438-b172-48f8-ad0a-01a8113e2504",
+          "8428deba-18b3-4fe3-8ea5-f68cd4922399",
+          "14c6c7a7-9faf-4608-8f75-f5d97705161c",
+          "fcda848b-4c2b-4a5f-b25d-2032aeeb4df7",
+          "2ca46931-308f-4dba-aa0d-72000b52afc2",
+          "6c37ae1f-ccff-4e2e-aa66-6929712d8448",
+          "b4ec286e-1635-4686-85e8-86d8cb8bb899"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/Serf.data",
+    "absolute_offset": 1589448,
+    "length": 2878,
+    "sha256": "65bdaa422fd7bde84afc5822c209b3296802c33cddb9abbe0af8624a170070c1",
+    "rid": 4328,
+    "uuid": "3f104224-17cd-4b05-8ff4-ca89378d6f6e",
+    "scripting_id": "STATUS_VILLAGER_SERF",
+    "importance": 0,
+    "needs": [
+      {
+        "uuid": "b2448947-4d1b-45db-9145-46471503a306",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4291,
+            "resource": "asset/Agent/AgentNeeds/NeedWater.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_WATER | NEED_WATER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      },
+      {
+        "uuid": "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4259,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "127a1ad9-8b5a-40fc-bc93-569031975057",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4271,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseLevel1.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_LEVEL_1"
+          }
+        ]
+      },
+      {
+        "uuid": "0c8846e0-719d-4d1c-a632-5c14289fbe63",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4287,
+            "resource": "asset/Agent/AgentNeeds/NeedServices_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_SERVICE | NEED_SERVICE"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [],
+    "compatible_jobs": [
+      {
+        "uuid": "5c5d4c73-2861-4776-a422-ab837ceedbae",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6017,
+            "resource": "asset/Agent/Job/Builder.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_BUILDER | BUILDER"
+          }
+        ]
+      },
+      {
+        "uuid": "7f9d127d-0b51-44c2-8065-fdbb186bb9a8",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6139,
+            "resource": "asset/Agent/Job/Wood Cutter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_WOODCUTTER | WOOD_CUTTER"
+          }
+        ]
+      },
+      {
+        "uuid": "6b8f3ee4-be13-4bf2-883b-e8fbbd7fb024",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6023,
+            "resource": "asset/Agent/Job/Carpenter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CARPENTER | CARPENTER"
+          }
+        ]
+      },
+      {
+        "uuid": "0fab01cc-9487-40ff-a0de-1360cf35f8ee",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6066,
+            "resource": "asset/Agent/Job/Forester.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FORESTER | FORESTER"
+          }
+        ]
+      },
+      {
+        "uuid": "c0153f67-b309-4380-a1f5-7daab6262aca",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6054,
+            "resource": "asset/Agent/Job/CoalBurner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CHARCOAL_BURNER | COAL_BURNER"
+          }
+        ]
+      },
+      {
+        "uuid": "d5e50232-1de5-448b-a259-572f78c9fc53",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6068,
+            "resource": "asset/Agent/Job/Gatherer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FORAGER | GATHERER"
+          }
+        ]
+      },
+      {
+        "uuid": "57b2bf12-68ed-47de-a843-02da3a5b7482",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6135,
+            "resource": "asset/Agent/Job/Transport.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_TRANSPORTER | TRANSPORTER"
+          }
+        ]
+      },
+      {
+        "uuid": "27c01603-ac98-43af-a773-d135f1a5b3fc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6127,
+            "resource": "asset/Agent/Job/Shepherd.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_SHEPHERD | SHEPHERD"
+          }
+        ]
+      },
+      {
+        "uuid": "f34dd1d6-e692-4273-a2cc-7499d6f6b077",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6115,
+            "resource": "asset/Agent/Job/MarketTender.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MARKET_TENDER | MARKET_TENDER"
+          }
+        ]
+      },
+      {
+        "uuid": "42934d76-b33a-4cc2-a3d8-c33ee7500fbe",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6060,
+            "resource": "asset/Agent/Job/DairyFarmer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_DAIRY_FARMER | DAIRY_FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "732bdd7c-6813-42a5-869e-e7bd7079ecb2",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6062,
+            "resource": "asset/Agent/Job/Farmer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FARMER | FARMER"
+          }
+        ]
+      },
+      {
+        "uuid": "29282993-0e41-45b6-a9a5-5fb44ef7bee0",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6119,
+            "resource": "asset/Agent/Job/Miller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MILLER | MILLER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c09f851-7e0d-4755-a444-7fe064fc3de4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6064,
+            "resource": "asset/Agent/Job/Fisherman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_FISHERMAN | FISHERMAN"
+          }
+        ]
+      },
+      {
+        "uuid": "f65578f0-76af-49d6-bd87-b36f49950cab",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6076,
+            "resource": "asset/Agent/Job/Hunter.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HUNTER | HUNTER"
+          }
+        ]
+      },
+      {
+        "uuid": "27a88284-8904-4b21-beba-46719e71b332",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6121,
+            "resource": "asset/Agent/Job/Miner.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_MINER | MINER"
+          }
+        ]
+      },
+      {
+        "uuid": "12000d4d-ba5a-457a-87ff-34dec86c005e",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6074,
+            "resource": "asset/Agent/Job/Hopgrower.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_HOP_FARMER | HOP_FARMER"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SERF"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SERF_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "48976579-925a-4ee2-9f63-7d199d970bab",
+      "StatusImportance": 0,
+      "IsReachedByDefault": true,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": true,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "b2448947-4d1b-45db-9145-46471503a306",
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+          "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+          "127a1ad9-8b5a-40fc-bc93-569031975057",
+          "0c8846e0-719d-4d1c-a632-5c14289fbe63"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {
+        "Item": [
+          "5c5d4c73-2861-4776-a422-ab837ceedbae",
+          "7f9d127d-0b51-44c2-8065-fdbb186bb9a8",
+          "6b8f3ee4-be13-4bf2-883b-e8fbbd7fb024",
+          "0fab01cc-9487-40ff-a0de-1360cf35f8ee",
+          "c0153f67-b309-4380-a1f5-7daab6262aca",
+          "d5e50232-1de5-448b-a259-572f78c9fc53",
+          "57b2bf12-68ed-47de-a843-02da3a5b7482",
+          "27c01603-ac98-43af-a773-d135f1a5b3fc",
+          "f34dd1d6-e692-4273-a2cc-7499d6f6b077",
+          "42934d76-b33a-4cc2-a3d8-c33ee7500fbe",
+          "732bdd7c-6813-42a5-869e-e7bd7079ecb2",
+          "29282993-0e41-45b6-a9a5-5fb44ef7bee0",
+          "2c09f851-7e0d-4755-a444-7fe064fc3de4",
+          "f65578f0-76af-49d6-bd87-b36f49950cab",
+          "27a88284-8904-4b21-beba-46719e71b332",
+          "12000d4d-ba5a-457a-87ff-34dec86c005e"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "type": "null"
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": true
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/StatusSoldierKnight.data",
+    "absolute_offset": 1592491,
+    "length": 3490,
+    "sha256": "00a721c6fef31d77700f83160a8a0654316ab21dde478143e5c56c502ce112e5",
+    "rid": 4330,
+    "uuid": "805d4c0a-cab0-4011-a66f-67ac94c936ec",
+    "scripting_id": "STATUS_COMBATANT_KNIGHT",
+    "importance": 2,
+    "needs": [
+      {
+        "uuid": "f3a3e69a-6d63-4995-9efc-d9bf0b740038",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4279,
+            "resource": "asset/Agent/AgentNeeds/NeedLuxury.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_LUXURY | NEED_LUXURY"
+          }
+        ]
+      },
+      {
+        "uuid": "108a7d1a-8916-48fe-a740-2e9a58ffa36c",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4269,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseKnight.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_CASTLE_QUARTERS"
+          }
+        ]
+      },
+      {
+        "uuid": "b7996dca-d258-4a1e-8275-49fd037377b4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4257,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_REFINED"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "f7a80fc2-828e-4742-98a9-2e592229df22",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4277,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseSoldier.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_CASTLE_BARRACKS | NEED_HOUSE_SOLDIER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KNIGHT"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KNIGHT_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KNIGHT"
+          }
+        ]
+      },
+      "StatusIcon": "252a64b6-58ef-47ec-a71a-8245ba3b7ba7",
+      "StatusImportance": 2,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "f3a3e69a-6d63-4995-9efc-d9bf0b740038",
+          "108a7d1a-8916-48fe-a740-2e9a58ffa36c",
+          "b7996dca-d258-4a1e-8275-49fd037377b4"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "f7a80fc2-828e-4742-98a9-2e592229df22",
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66"
+        ]
+      },
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "50ead119-26f3-4a09-b010-ae00dc7a657a"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "37bc0611-5383-4f12-981a-7103587510a3"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "e83b2648-08de-4a53-84f6-d07573ca63ff"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "b325ce0c-02a6-40a5-9688-0316cdbb0a68"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "161b8f57-3597-4fe9-b168-38f19a85cb8f"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "7c381461-d42b-4904-a820-cb03a4b78be2"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": true,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/StatusSoldierRookie.data",
+    "absolute_offset": 1596150,
+    "length": 3754,
+    "sha256": "e31a2e1e57bb882378570c415fccd47076f56bfd4a3732d144147ac9a50992d7",
+    "rid": 4332,
+    "uuid": "27eb663b-23b4-4640-86c1-ee14e564d201",
+    "scripting_id": "STATUS_COMBATANT_MILITIAMAN",
+    "importance": 0,
+    "needs": [
+      {
+        "uuid": "b2448947-4d1b-45db-9145-46471503a306",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4291,
+            "resource": "asset/Agent/AgentNeeds/NeedWater.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_WATER | NEED_WATER"
+          }
+        ]
+      },
+      {
+        "uuid": "f7a80fc2-828e-4742-98a9-2e592229df22",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4277,
+            "resource": "asset/Agent/AgentNeeds/NeedHouseSoldier.data",
+            "type": "PlaCAssetAgentNeedTypeHousing",
+            "scripting_id": "NEED_HOUSE_CASTLE_BARRACKS | NEED_HOUSE_SOLDIER"
+          }
+        ]
+      },
+      {
+        "uuid": "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4261,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_RUSTIC | NEED_FOOD"
+          }
+        ]
+      },
+      {
+        "uuid": "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4259,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_REFINED"
+          }
+        ]
+      },
+      {
+        "uuid": "0c8846e0-719d-4d1c-a632-5c14289fbe63",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4287,
+            "resource": "asset/Agent/AgentNeeds/NeedServices_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_SERVICE | NEED_SERVICE"
+          }
+        ]
+      },
+      {
+        "uuid": "60fb7699-ef42-4414-b014-cf9172af40dc",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4267,
+            "resource": "asset/Agent/AgentNeeds/NeedGoodsExtra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_GOODS | NEED_GOODS"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [],
+    "compatible_jobs": [
+      {
+        "uuid": "3a1480c0-dc0d-4490-bb0d-c336416d9c79",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6086,
+            "resource": "asset/Agent/Job/Kingdom/Archer.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_ARCHER"
+          }
+        ]
+      },
+      {
+        "uuid": "561ddcea-7784-4837-acbc-8d94e165c681",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6092,
+            "resource": "asset/Agent/Job/Kingdom/Spearman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CASTLE_SPEARMAN"
+          }
+        ]
+      },
+      {
+        "uuid": "daae93f1-eac5-472e-a89c-f54ecb37f8f1",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6096,
+            "resource": "asset/Agent/Job/Kingdom/Swordman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CASTLE_SWORDMAN"
+          }
+        ]
+      },
+      {
+        "uuid": "5c4ec6ec-a2ff-481c-a743-ee2ff4e2b524",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6111,
+            "resource": "asset/Agent/Job/Labor/Patroller.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_PATROLLER"
+          }
+        ]
+      },
+      {
+        "uuid": "fb1bc7b5-dfcd-4b9e-ba97-9a1b0c7d629b",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 6090,
+            "resource": "asset/Agent/Job/Kingdom/Guardsman.data",
+            "type": "PlaCAssetJob",
+            "scripting_id": "JOB_CASTLE_GUARSMAN"
+          }
+        ]
+      }
+    ],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ROOKIE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ROOKIE_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ROOKIE"
+          }
+        ]
+      },
+      "StatusIcon": "ab0d2180-1b98-4ba5-9e19-580b43d51e9b",
+      "StatusImportance": 0,
+      "IsReachedByDefault": true,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "b2448947-4d1b-45db-9145-46471503a306",
+          "f7a80fc2-828e-4742-98a9-2e592229df22",
+          "2c4d98b3-6e60-443e-ac2e-66cbae1f1e66",
+          "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+          "0c8846e0-719d-4d1c-a632-5c14289fbe63",
+          "60fb7699-ef42-4414-b014-cf9172af40dc"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {
+        "Item": [
+          "3a1480c0-dc0d-4490-bb0d-c336416d9c79",
+          "561ddcea-7784-4837-acbc-8d94e165c681",
+          "daae93f1-eac5-472e-a89c-f54ecb37f8f1",
+          "5c4ec6ec-a2ff-481c-a743-ee2ff4e2b524",
+          "fb1bc7b5-dfcd-4b9e-ba97-9a1b0c7d629b"
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "f6c5dd29-8822-4331-9e5d-53907c16050b"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "659d3677-4aa1-4465-a00c-0d584f99cb42"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "fc0e3709-ffd1-4c7a-a615-4e4c5a088d00"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "7aaddc83-bbd9-453c-987b-f26404620448"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "f6c5dd29-8822-4331-9e5d-53907c16050b"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "1e7fd0f2-9bfe-4ee0-92fa-432d9bc42c5d"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "1b07cc34-6698-4385-992e-bf65b64dc296"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": true,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentStatus/StatusSoldierSoldier.data",
+    "absolute_offset": 1600070,
+    "length": 3406,
+    "sha256": "00d4e6a2834cb6fda3d135e05bcac8d0d6fceadb0eabe0d3ae41e3f1487f79f7",
+    "rid": 4334,
+    "uuid": "a1de9c9e-52c9-4deb-a640-1240e3a58272",
+    "scripting_id": "STATUS_COMBATANT_SOLDIER",
+    "importance": 1,
+    "needs": [
+      {
+        "uuid": "464e1482-0e1f-423d-ba79-08733d5c2402",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4255,
+            "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_ENTERTAINMENT | NEED_ENTERTAINMENT"
+          }
+        ]
+      },
+      {
+        "uuid": "b7996dca-d258-4a1e-8275-49fd037377b4",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4257,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Basic.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ESSENTIAL_FOOD_REFINED"
+          }
+        ]
+      }
+    ],
+    "remove_needs": [
+      {
+        "uuid": "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12",
+        "status": "resolved",
+        "assets": [
+          {
+            "rid": 4259,
+            "resource": "asset/Agent/AgentNeeds/NeedFoodAdvanced_Extra.data",
+            "type": "PlaCAssetAgentNeedTypeResource",
+            "scripting_id": "NEED_ADDITIONAL_FOOD_REFINED"
+          }
+        ]
+      }
+    ],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER2_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 1,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": true,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {
+        "Item": [
+          "464e1482-0e1f-423d-ba79-08733d5c2402",
+          "b7996dca-d258-4a1e-8275-49fd037377b4"
+        ]
+      },
+      "AssetAgentNeedToRemoveList": {
+        "Item": [
+          "5ede6f0f-8905-4d28-b1b9-c28bb2d4cd12"
+        ]
+      },
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "@": {
+          "type": "PlaCDataCharacterSetup"
+        },
+        "CharacterSetupDataGendered": {
+          "Item": [
+            {
+              "Key": "MALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "49092297-29de-453a-9557-9d50e4623dca"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "c16cb7bc-1ba0-4770-a849-6701c49b452a"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "6d5a0c1d-7e39-4a60-99db-2eb37d315a61"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "FEMALE",
+              "Value": {
+                "@": {
+                  "type": "PlaCDataCharacterSetupData"
+                },
+                "LeftHandObject": {
+                  "type": "null"
+                },
+                "RightHandObject": {
+                  "type": "null"
+                },
+                "HatList": {
+                  "Item": [
+                    "342935a1-a1d7-4e9c-92a8-13a9147a3cd2"
+                  ]
+                },
+                "BackList": {},
+                "RootObjectList": {},
+                "FrontList": {},
+                "ClothingModel": {
+                  "Item": [
+                    "bc488d9b-9c65-478f-a2d5-03cbd20485e8"
+                  ]
+                },
+                "BeltList": {
+                  "Item": [
+                    "fc0e3709-ffd1-4c7a-a615-4e4c5a088d00"
+                  ]
+                },
+                "HairList": "00000000-0000-0000-0000-000000000000",
+                "BeardList": "00000000-0000-0000-0000-000000000000",
+                "MustacheList": "00000000-0000-0000-0000-000000000000",
+                "HairMaterialList": {},
+                "PortraitList": {
+                  "Item": [
+                    "469c0a29-6e80-4bb2-a25d-a5e5d3b493a0"
+                  ]
+                },
+                "IdleAnimationList": {},
+                "WalkAnimationList": {}
+              }
+            },
+            {
+              "Key": "ALL",
+              "Value": {
+                "type": "null"
+              }
+            }
+          ]
+        }
+      },
+      "JobProgressionAffectedByStatusImportance": true,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestAbbess.data",
+    "absolute_offset": 3271729521,
+    "length": 1656,
+    "sha256": "e153baaa08542a0b010b79ed1ccd8bb9dbbda5b0514473c3d3e69d44a8fb6ff7",
+    "rid": 22221,
+    "uuid": "badf87dd-71bb-416a-9609-0727aded55ee",
+    "scripting_id": "STATUS_GUEST_ABBESS",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ABBESS"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ABBESS_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MOTHER"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestAbbessEnvoy.data",
+    "absolute_offset": 3271731344,
+    "length": 1668,
+    "sha256": "26b9cba6836b5344cbb4a85a928c493e12a520306dbeadecf6289a9ab5d9d7e2",
+    "rid": 22223,
+    "uuid": "055094c7-65aa-4842-b693-1f63bb82adee",
+    "scripting_id": "STATUS_GUEST_ABBESS_ENVOY",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ABBESS_ENVOY"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ABBESS_ENVOY_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SISTER"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestElder.data",
+    "absolute_offset": 3271733172,
+    "length": 1648,
+    "sha256": "c86495e2bdb4cba924b54f94a29c48be91ac1f7adfc5bbd9db122d2b03440463",
+    "rid": 22225,
+    "uuid": "0cfd23e6-81e5-403b-82cc-c7f18d4a58fa",
+    "scripting_id": "STATUS_GUEST_ELDER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ELDER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ELDER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestHigh.data",
+    "absolute_offset": 3271734988,
+    "length": 1661,
+    "sha256": "a4913b1bca5f38f31cf91109fdbbfb0d478bc8033c9cbcc8f2d89ca02824e270",
+    "rid": 22227,
+    "uuid": "e864c3df-88f3-4d2a-8dba-201945a60da2",
+    "scripting_id": "STATUS_GUEST_VILLAGER_HIGH",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_CITIZEN"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "CITIZEN_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestKing.data",
+    "absolute_offset": 3271736808,
+    "length": 1660,
+    "sha256": "851d71a3817c0fd1c6ed0777babbf24b8ee1c958f0194a5af121e58aa5e859c6",
+    "rid": 22229,
+    "uuid": "5dd9899a-8c31-4bfb-9264-45fc19beea75",
+    "scripting_id": "STATUS_GUEST_KING",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "YOUR_KING"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "YOUR_KING_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KING"
+          }
+        ]
+      },
+      "StatusIcon": "252a64b6-58ef-47ec-a71a-8245ba3b7ba7",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestKingRetinue.data",
+    "absolute_offset": 3271738635,
+    "length": 1686,
+    "sha256": "1c8d35cd1fe9dbd6b9d3e70a9637c59a7a6d33d3468871c88f67588ab070dc87",
+    "rid": 22231,
+    "uuid": "2a093220-23bb-400d-a46b-0b5b4e819fbc",
+    "scripting_id": "STATUS_GUEST_KING_RETINUE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_KINGRETINUE"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_KINGRETINUE_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "LORD"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "LADY"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestKnight_RoyalCompany.data",
+    "absolute_offset": 3271740496,
+    "length": 1686,
+    "sha256": "26f42fb5010bc07f414f97b1cca40e1090770995f205d7bdaf7e8c55441c17d8",
+    "rid": 22233,
+    "uuid": "08efdfff-e1b6-44b1-b25b-b6b51469fd3f",
+    "scripting_id": "STATUS_GUEST_KNIGHT_ROYAL_COMPANY",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "KNIGHT"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestLow.data",
+    "absolute_offset": 3271742349,
+    "length": 1655,
+    "sha256": "37da733cd85d5abf6a3e69742bc3ac5b266a7c44f8f0e4c4f03596e3a8e74188",
+    "rid": 22235,
+    "uuid": "b2d69924-d251-4187-b2ca-55fc351f46d9",
+    "scripting_id": "STATUS_GUEST_VILLAGER_LOW",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_SERF"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SERF_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "48976579-925a-4ee2-9f63-7d199d970bab",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestMiddle.data",
+    "absolute_offset": 3271744174,
+    "length": 1663,
+    "sha256": "b2dd13bf96b77aee4b7c4b6cbae66935d85bb64f5ede1d8bd5574c8d54076fda",
+    "rid": 22237,
+    "uuid": "69cfddc4-6980-48aa-b7ce-4080d2ceb20b",
+    "scripting_id": "STATUS_GUEST_VILLAGER_MIDDLE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_COMMONER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "COMMONER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "a23dda5b-c941-405e-b4e8-d2a5e5dfab9d",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestMonk.data",
+    "absolute_offset": 3271745996,
+    "length": 1688,
+    "sha256": "678daa4829e705452485a8c9beacb8ceda23e620d51f7e9f555617bf1d8d891f",
+    "rid": 22239,
+    "uuid": "04e2726b-4dce-4b64-ba1a-d84bb182e1b7",
+    "scripting_id": "STATUS_GUEST_MONK",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "VISITING_MONK"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "VISITING_NUN"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "MONK_DESC"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "NUN_DESC"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestMyddlePeople_Unique.data",
+    "absolute_offset": 3271747852,
+    "length": 1652,
+    "sha256": "0ab2677a12f91d92d0586812ced1432c51ffa4b16b41fcf44243437f856c4ce6",
+    "rid": 22241,
+    "uuid": "506217f9-bbfa-45a8-9cfe-71d5ede20354",
+    "scripting_id": "STATUS_GUEST_MYDDLE_PEOPLE",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "CITIZEN"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "CITIZEN_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestNorthburyMerchant_Unique.data",
+    "absolute_offset": 3271749677,
+    "length": 1654,
+    "sha256": "6d0a36475c4d11ff147b98b7844a513bd397c9153adee4d7f212e86d4c904c06",
+    "rid": 22243,
+    "uuid": "bf5f861e-4c20-4783-9837-164e31ea5ce9",
+    "scripting_id": "STATUS_GUEST_NORTHBURY_MERCHANT",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MERCHANT"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "MERCHANT_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestNun.data",
+    "absolute_offset": 3271751489,
+    "length": 1688,
+    "sha256": "678daa4829e705452485a8c9beacb8ceda23e620d51f7e9f555617bf1d8d891f",
+    "rid": 22245,
+    "uuid": "5f6b6cd8-6dc4-45b9-830a-9909f509813c",
+    "scripting_id": "STATUS_GUEST_NUN",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "VISITING_MONK"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "VISITING_NUN"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "MONK_DESC"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "NUN_DESC"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "BROTHER"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "SISTER"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestPilgrim_High.data",
+    "absolute_offset": 3271753344,
+    "length": 1652,
+    "sha256": "11c150ef26d4cc83e7f534f317ae9f08bcb7ce128ef96a648a1500e1368eab88",
+    "rid": 22247,
+    "uuid": "c31de406-0d9a-4aeb-a099-690ab2d655bd",
+    "scripting_id": "STATUS_GUEST_PILGRIM_HIGH",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestPilgrim_Low.data",
+    "absolute_offset": 3271755162,
+    "length": 1652,
+    "sha256": "f52fe7c30b26827afb8489272f30d1d311248d317d945322c182281b29a100a1",
+    "rid": 22249,
+    "uuid": "6fc11b3e-ad2c-4ff8-b864-f59f54620284",
+    "scripting_id": "STATUS_GUEST_PILGRIM_LOW",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "48976579-925a-4ee2-9f63-7d199d970bab",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestPilgrim_Soldier.data",
+    "absolute_offset": 3271756984,
+    "length": 1652,
+    "sha256": "01e272c32dcb79bd8093d45c82c3a5aab4c9d8de6d9ae50dcf7791e4e2a698b9",
+    "rid": 22251,
+    "uuid": "0ee37c56-0cd7-4184-a76a-bbc750889d3c",
+    "scripting_id": "STATUS_GUEST_PILGRIM_SOLDIER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PILGRIM_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestPrior.data",
+    "absolute_offset": 3271758796,
+    "length": 1687,
+    "sha256": "cff43073e0c2967f938b485fc42ede4b6d50fc841f6945c0e00c104508521514",
+    "rid": 22253,
+    "uuid": "8f690a58-c52f-49d4-8617-84df2cf19d31",
+    "scripting_id": "STATUS_GUEST_PRIOR",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "VISITING_PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "VISITING_PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "PRIOR_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": "PRIOR"
+          },
+          {
+            "Key": "FEMININE",
+            "Value": "PRIORESS"
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestRecruit_RoyalCompany.data",
+    "absolute_offset": 3271760662,
+    "length": 1686,
+    "sha256": "c8cf640970678e70cfcac61be72763a9cf64178774eac041e8d46c07a153e602",
+    "rid": 22255,
+    "uuid": "ee6d79cc-4680-4aa5-9737-5fd79a8067c6",
+    "scripting_id": "STATUS_GUEST_MILITIAMAN_ROYAL_COMPANY",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "ROOKIE"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestSeneschal.data",
+    "absolute_offset": 3271762512,
+    "length": 1656,
+    "sha256": "12a89ff1a04e0343364068ff165373e3360e51d9be6e4576356801fac9737de8",
+    "rid": 22257,
+    "uuid": "3ce0fc58-7757-4c13-bd8a-5058d26d59a9",
+    "scripting_id": "STATUS_GUEST_SENESCHAL",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SENESCHAL"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SENESCHAL_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "e4448d54-657b-46fb-a012-336bda211e2a",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestSoldier.data",
+    "absolute_offset": 3271764330,
+    "length": 1669,
+    "sha256": "ba93aea8496c025dd6cb295a97abab6f0acdc08f288edcfd1c4c2f82dea9a480",
+    "rid": 22259,
+    "uuid": "a465d5ad-ad70-45a6-8b9c-fd60df0f4a02",
+    "scripting_id": "STATUS_GUEST_SOLDIER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_SOLDIER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER2_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestSoldier_RoyalCompany.data",
+    "absolute_offset": 3271766175,
+    "length": 1687,
+    "sha256": "c3d84b27cbc0975756219df75ee1f178e1989fd20707d5a5c2d02b8a076430f5",
+    "rid": 22261,
+    "uuid": "c28b9f4f-c60e-4496-a2e7-f7515d62bd40",
+    "scripting_id": "STATUS_GUEST_SOLDIER_ROYAL_COMPANY",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "VISITING_ROYALCOMPANY_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "SOLDIER"
+          }
+        ]
+      },
+      "StatusIcon": "23de3ac9-d1eb-4052-8227-d7da58f19486",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestSteward.data",
+    "absolute_offset": 3271768024,
+    "length": 1659,
+    "sha256": "5c8e23cc70b52cd3c6f7cc678336ec244458bfb75f0f87676637e1f1507e24ae",
+    "rid": 22263,
+    "uuid": "08fd4949-55c6-459b-8668-03cad787727b",
+    "scripting_id": "STATUS_GUEST_STEWARD",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "STEWARD"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "STEWARD_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "BROTHER"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestTraveler.data",
+    "absolute_offset": 3271769846,
+    "length": 1654,
+    "sha256": "59f28fae724c44ff689733eea0cd4f638b4eccb39765cc29594b7b667d2910d5",
+    "rid": 22265,
+    "uuid": "644239fd-3bff-48a3-b28c-c6927bb56a70",
+    "scripting_id": "STATUS_GUEST_TRAVELER",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "TRAVELER"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "TRAVELER_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": ""
+          }
+        ]
+      },
+      "StatusIcon": "a23dda5b-c941-405e-b4e8-d2a5e5dfab9d",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Narrative/AgentProfile/AgentStatus/StatusGuestWanderingMonk_Unique.data",
+    "absolute_offset": 3271771669,
+    "length": 1673,
+    "sha256": "665c6164c08dca137f8f13acbe2e53a64eb3e49ef865e30494585077f7458725",
+    "rid": 22267,
+    "uuid": "f69e5a8b-69a6-43a9-b3d6-cce7e9805e02",
+    "scripting_id": "STATUS_GUEST_WANDERING_MONK",
+    "importance": 0,
+    "needs": [],
+    "remove_needs": [],
+    "compatible_jobs": [],
+    "additional_behavior": {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "unresolved",
+      "assets": []
+    },
+    "all_fields": {
+      "@": {
+        "version": 1
+      },
+      "StatusNameGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "WANDERING_MONK"
+          }
+        ]
+      },
+      "StatusDescriptionGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "WANDERING_MONK_DESC"
+          }
+        ]
+      },
+      "TitleGendered": {
+        "Item": [
+          {
+            "Key": "MASCULINE",
+            "Value": ""
+          },
+          {
+            "Key": "FEMININE",
+            "Value": ""
+          },
+          {
+            "Key": "GENERIC",
+            "Value": "BROTHER"
+          }
+        ]
+      },
+      "StatusIcon": "63bc8b00-6748-4268-9289-2d082a0694cd",
+      "StatusImportance": 0,
+      "IsReachedByDefault": false,
+      "IsManuallyReached": false,
+      "IsSetNextStatusAutomaticallyWhenNeedsFilled": false,
+      "CanLowerStatusAssignJob": false,
+      "OptionalAdditionalBehavior": "00000000-0000-0000-0000-000000000000",
+      "AssetAgentNeedList": {},
+      "AssetAgentNeedToRemoveList": {},
+      "CompatibleJobList": {},
+      "CharacterSetup": {
+        "type": "null"
+      },
+      "JobProgressionAffectedByStatusImportance": false,
+      "IsAvailableInDemo": false
+    }
+  }
+]

@@ -1,0 +1,100 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 32, local_size_y = 1, local_size_z = 1) in;
+
+struct Firefly_natural
+{
+    vec3 position;
+    uint pad;
+};
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+const ivec2 _182[5] = ivec2[](ivec2(0), ivec2(1), ivec2(1, -1), ivec2(-1, 1), ivec2(-1));
+
+layout(set = 0, binding = 2, std430) readonly buffer StructuredBuffer
+{
+    Firefly_natural _member0[];
+} firefly_buffer;
+
+layout(set = 18, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    float _member0[];
+} firefly_visibility_buffer;
+
+layout(set = 17, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 depth_tex_dims;
+} globalParams;
+
+layout(set = 18, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 0, binding = 1) uniform texture2D depth_tex;
+
+void main()
+{
+    vec4 _257 = vec4(firefly_buffer._member0[gl_GlobalInvocationID.x].position + vec3(0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (firefly_buffer._member0[gl_GlobalInvocationID.x].position.xz * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x), 0.0), 1.0) * current_view.world_to_sample;
+    vec4 _260 = _257 / vec4(_257.w);
+    vec2 _303 = (_260.xy * vec2(0.5, -0.5)) + vec2(0.5);
+    float _307;
+    _307 = 0.0;
+    float _290;
+    uint _294;
+    uint _306 = 0u;
+    for (;;)
+    {
+        if (!(_306 < 5u))
+        {
+            break;
+        }
+        _290 = _307 + float(texelFetch(depth_tex, ivec2(uvec2(vec2(globalParams.depth_tex_dims) * _303) + uvec2(ivec2(2) * _182[_306])), 0).x < _260.z);
+        _294 = _306 + 1u;
+        _307 = _290;
+        _306 = _294;
+        continue;
+    }
+    float _298 = _307 * 0.20000000298023223876953125;
+    firefly_visibility_buffer._member0[gl_GlobalInvocationID.x] = mix(clamp(clamp(firefly_visibility_buffer._member0[gl_GlobalInvocationID.x], 0.0, 1.0), _298 - 0.20000000298023223876953125, _298 + 0.20000000298023223876953125), _298, 0.0500000007450580596923828125);
+}
+

@@ -1,0 +1,230 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct RoofShingle_natural
+{
+    vec3 base_position;
+    float current_height;
+    uvec2 clipping_plane_;
+    uvec2 scale_t;
+    uvec2 rotation_quat_;
+    uint wall_slot_id;
+    uint velocity_rotation;
+    float animation_t;
+    int seed;
+    int is_circle;
+    int is_main_roof_body;
+};
+
+struct NaniDrawListInfo_natural
+{
+    uint global_instance_offset;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+layout(set = 0, binding = 10, std430) readonly buffer StructuredBuffer
+{
+    RoofShingle_natural _member0[];
+} instance_buffer;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 8, std430) readonly buffer draw_list_info
+{
+    NaniDrawListInfo_natural _member0[];
+} draw_list_info_1;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 hzb_tex_inner_dims;
+} globalParams;
+
+layout(set = 0, binding = 7, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} next_visibility_bitmask;
+
+layout(set = 0, binding = 6, std430) readonly buffer prev_visibility_bitmask
+{
+    uint _member0[];
+} prev_visibility_bitmask_1;
+
+layout(set = 0, binding = 3, std430) buffer filtered_instance_allocator_buffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer_1;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint first_instance;
+    uint instance_count;
+    uint draw_list_index_base;
+} push_constants;
+
+layout(set = 0, binding = 9) uniform texture2DArray hzb_tex;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= push_constants.instance_count)
+        {
+            break;
+        }
+        uint instance_id = push_constants.first_instance + gl_GlobalInvocationID.x;
+        vec3 _72 = instance_buffer._member0[instance_id].base_position;
+        float _78 = instance_buffer._member0[instance_id].current_height;
+        int _126 = instance_buffer._member0[instance_id].is_main_roof_body;
+        float _166 = length(vec4(unpackHalf2x16(instance_buffer._member0[instance_id].scale_t.x), unpackHalf2x16(instance_buffer._member0[instance_id].scale_t.y)).xyz);
+        float _167 = 0.59403002262115478515625 * _166;
+        vec4 _793 = vec4(_72 + vec3(0.0, _78, 0.0), 1.0) * current_view.world_to_view;
+        float _187 = _793.z;
+        float view_depth = -_187;
+        vec3 _1041 = _793.xyz;
+        uint _921 = clamp(uint(clamp((32.0 - _187) * 0.00347222224809229373931884765625, 0.0, 1.0) * 1024.0), 0u, 1023u);
+        vec4 _1082 = vec4(-current_view.view_to_clip[0].x, current_view.view_to_clip[0].y, 0.0, current_view.view_to_clip[0].w);
+        vec4 _1090 = vec4(current_view.view_to_clip[1].xy, 0.0, current_view.view_to_clip[1].w);
+        vec4 _1095 = vec4(current_view.view_to_clip[3].xy, -1.0, current_view.view_to_clip[3].w);
+        vec4 _1295[4];
+        _1295[0] = _1095 + _1082;
+        _1295[1] = _1095 - _1082;
+        _1295[2] = _1095 + _1090;
+        _1295[3] = _1095 - _1090;
+        int _1128;
+        int _1344 = 0;
+        for (;;)
+        {
+            if (!(_1344 < 4))
+            {
+                break;
+            }
+            _1295[_1344] /= vec4(length(_1295[_1344].xyz));
+            _1128 = _1344 + 1;
+            _1344 = _1128;
+            continue;
+        }
+        vec4 _1306[4] = _1295;
+        bool _1346;
+        _1346 = (view_depth + _167) > current_view.view_to_clip[2].w;
+        int _1165;
+        bool _1349;
+        int _1345 = 0;
+        for (;;)
+        {
+            if (!(_1345 < 4))
+            {
+                break;
+            }
+            if (_1346)
+            {
+                _1349 = dot(vec4(_1041, 1.0), _1306[_1345]) > (_166 * (-0.59403002262115478515625));
+            }
+            else
+            {
+                _1349 = false;
+            }
+            _1165 = _1345 + 1;
+            _1346 = _1349;
+            _1345 = _1165;
+            continue;
+        }
+        uint _934 = draw_list_info_1._member0[push_constants.draw_list_index_base].global_instance_offset;
+        uint _935 = instance_id + _934;
+        _1041.z = view_depth;
+        float _1179 = current_view.view_to_clip[0].x * 0.5;
+        float _1182 = current_view.view_to_clip[1].y * 0.5;
+        vec3 _1184 = _1041 * _167;
+        float _1191 = (view_depth * view_depth) - (_167 * _167);
+        float _1193 = _793.x;
+        float _1198 = sqrt((_1193 * _1193) + _1191);
+        float _1201 = _1198 * _1193;
+        float _1202 = _1184.z;
+        float _1206 = _1198 * view_depth;
+        float _1207 = _1184.x;
+        float _1220 = _793.y;
+        float _1225 = sqrt((_1220 * _1220) + _1191);
+        float _1228 = _1225 * _1220;
+        float _1232 = _1225 * view_depth;
+        float _1233 = _1184.y;
+        vec4 _941 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+        vec4 _948 = clamp((vec4(((_1201 - _1202) / (_1206 + _1207)) * _1179, (-((_1228 + _1202) / (_1232 - _1233))) * _1182, ((_1201 + _1202) / (_1206 - _1207)) * _1179, (-((_1228 - _1202) / (_1232 + _1233))) * _1182) + vec4(0.5)) * _941, vec4(0.0), _941 - vec4(1.0));
+        uint _960 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_948.z - _948.x, _948.w - _948.y))))));
+        bool _1347;
+        if (_1346)
+        {
+            uvec2 _965 = uvec2(_960);
+            uvec2 _966 = uvec2(_948.xy) >> _965;
+            uvec2 _970 = uvec2(_948.zw) >> _965;
+            int _971 = int(_960);
+            uint _973 = _966.x;
+            uint _991 = _970.x;
+            _1347 = (_187 + _167) > (1.0 / (min(min(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_973, _966.y, 0u)), _971).xyz, _971).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_973, _970.y, 0u)), _971).xyz, _971).x), min(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_991, _966.y, 0u)), _971).xyz, _971).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_991, _970.y, 0u)), _971).xyz, _971).x)) * (-current_view.clip_to_view[3].z)));
+        }
+        else
+        {
+            _1347 = _1346;
+        }
+        if (_1347)
+        {
+            uint _1015 = _935 / 32u;
+            uint _1018 = 1u << (_935 % 32u);
+            uint _1019 = atomicOr(next_visibility_bitmask._member0[_1015], _1018);
+            if (!((prev_visibility_bitmask_1._member0[_1015] & _1018) != 0u))
+            {
+                uint _1024 = atomicAdd(filtered_instance_allocator_buffer_1._member0[push_constants.draw_list_index_base], 1u);
+                filtered_instance_buffer_1._member0[_1024] = (instance_id * 1024u) + _921;
+                filtered_instance_meta_buffer_1._member0[_1024].raw = (_126 == 0) ? 2u : ((_126 == 2) ? 2u : uint(view_depth > 70.0));
+                uint _1031 = atomicAdd(output_histogram_1._member0[(push_constants.draw_list_index_base * 1024u) + _921], 1u);
+            }
+        }
+        break;
+    } while(false);
+}
+

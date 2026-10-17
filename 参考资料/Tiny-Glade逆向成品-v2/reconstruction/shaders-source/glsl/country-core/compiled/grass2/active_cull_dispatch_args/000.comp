@@ -1,0 +1,25 @@
+#version 460
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 2, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} active_count;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} dispatch_args;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uint group_size;
+} globalParams;
+
+void main()
+{
+    dispatch_args._member0[0] = ((active_count._member0[0] + globalParams.group_size) - 1u) / globalParams.group_size;
+    dispatch_args._member0[1] = 1u;
+    dispatch_args._member0[2] = 1u;
+}
+

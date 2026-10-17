@@ -1,0 +1,30 @@
+// RVA 0x10d0220 | FuryStudios.FurySDK.Utils.DebugMenu.MenuNavigationEntry$$Select
+// PDB: MenuNavigationEntry_Select_mAD3E669DD30238037026459DCA6533B3586E6BE9
+// Body: [[110d0220, 110d0269]]
+// Direct callees:
+// 110cfdc0 MenuNavigationEntry_CloseAllChildsExcept_m6133F108AACA33A00D6D056D09191CBAF1EB32A0
+
+void __cdecl
+MenuNavigationEntry_Select_mAD3E669DD30238037026459DCA6533B3586E6BE9
+          (MenuNavigationEntry_t55A28B8978894C993D29C5B1123FA8C1B571C7FA *param_1,
+          MethodInfo *param_2)
+
+{
+  char cVar1;
+
+  cVar1 = (**(code **)(param_1->_padding_ + 0xdc))
+                    (param_1,*(undefined4 *)(param_1->_padding_ + 0xe0));
+  if (cVar1 != '\0') {
+    *(undefined1 *)&param_1->_padding_ = 1;
+  }
+  param_1->___U3CIsExpandedU3Ek__BackingField_4 = true;
+  if (param_1->___U3CParentU3Ek__BackingField_2 !=
+      (MenuNavigationEntry_t55A28B8978894C993D29C5B1123FA8C1B571C7FA *)0x0) {
+    MenuNavigationEntry_CloseAllChildsExcept_m6133F108AACA33A00D6D056D09191CBAF1EB32A0
+              (param_1->___U3CParentU3Ek__BackingField_2,
+               (MenuEntry_t15C75C6FC55F35DE7B493D1070C99E46049A1922 *)param_1,(MethodInfo *)0x0);
+  }
+  MenuNavigationEntry_CloseAllChildsExcept_m6133F108AACA33A00D6D056D09191CBAF1EB32A0
+            (param_1,(MenuEntry_t15C75C6FC55F35DE7B493D1070C99E46049A1922 *)0x0,(MethodInfo *)0x0);
+  return;
+}

@@ -1,0 +1,16 @@
+// RVA 0x836dc0 | Os.Utils.ExtraMath$$Rotate2D270
+// PDB: ExtraMath_Rotate2D270_m00D4CDB2568A3FC8E82C02FDC757C2F4E43BE847
+// Body: [[10836dc0, 10836dea]]
+// Direct callees:
+
+float2_tCB7B81181978EDE17722C533A55E345D9A413274 __cdecl
+ExtraMath_Rotate2D270_m00D4CDB2568A3FC8E82C02FDC757C2F4E43BE847
+          (float2_tCB7B81181978EDE17722C533A55E345D9A413274 param_1,MethodInfo *param_2)
+
+{
+  float2_tCB7B81181978EDE17722C533A55E345D9A413274 fVar1;
+
+  fVar1.___y_1 = param_1.___x_0;
+  fVar1.___x_0 = (float)((uint)param_1.___y_1 ^ __xmm_80000000800000008000000080000000);
+  return fVar1;
+}

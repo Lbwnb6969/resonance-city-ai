@@ -1,0 +1,95 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Grass2SplatVisibleInstance_natural
+{
+    uint clump_mip;
+    uint range_count;
+    uint bounds_x;
+    uint bounds_y;
+    uint bounds_z;
+};
+
+bool _218;
+uint _222;
+
+layout(set = 0, binding = 0, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} bin_counts;
+
+layout(set = 0, binding = 1, std430) readonly buffer bin_records
+{
+    Grass2SplatVisibleInstance_natural _member0[];
+} bin_records_1;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} scan_counts;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= 352256u)
+        {
+            break;
+        }
+        bool _215;
+        uint _219;
+        do
+        {
+            uint _181;
+            uint _193;
+            bool _213;
+            bool _216;
+            uint _220;
+            uint _211 = 0u;
+            uint _212 = 0u;
+            for (;;)
+            {
+                if (!(_211 < 6u))
+                {
+                    _220 = _222;
+                    _216 = _218;
+                    _213 = false;
+                    break;
+                }
+                _181 = _212 + min(bin_counts._member0[_211], 352256u);
+                if (gl_GlobalInvocationID.x < _181)
+                {
+                    _220 = (_211 * 352256u) + (gl_GlobalInvocationID.x - _212);
+                    _216 = true;
+                    _213 = true;
+                    break;
+                }
+                _193 = _211 + 1u;
+                _212 = _181;
+                _211 = _193;
+                continue;
+            }
+            if (_213)
+            {
+                _219 = _220;
+                _215 = _216;
+                break;
+            }
+            _219 = 0u;
+            _215 = false;
+            break;
+        } while(false);
+        uint _223;
+        if (_215)
+        {
+            _223 = (bin_records_1._member0[_219].range_count >> uint(20)) & 4095u;
+        }
+        else
+        {
+            _223 = 0u;
+        }
+        scan_counts._member0[gl_GlobalInvocationID.x] = _223;
+        break;
+    } while(false);
+}
+

@@ -1,0 +1,415 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_uint6
+{
+    uint data[6];
+};
+
+struct SpdGlobalAtomicBuffer_natural
+{
+    _Array_natural_uint6 counter;
+};
+
+layout(set = 0, binding = 3, std430) coherent buffer RWStructuredBuffer
+{
+    SpdGlobalAtomicBuffer_natural _member0[];
+} spdGlobalAtomic;
+
+layout(push_constant, std430) uniform SpdConstants_natural
+{
+    uint mips;
+    uint numWorkGroups;
+    uvec2 workGroupOffset;
+} spdConstants;
+
+layout(set = 0, binding = 0) uniform texture2D imgSrc;
+layout(set = 0, binding = 2, r11f_g11f_b10f) uniform coherent image2D imgDst6;
+layout(set = 0, binding = 1, r11f_g11f_b10f) uniform writeonly image2D imgDst[12];
+
+shared float spdIntermediateR[16][16];
+shared float spdIntermediateG[16][16];
+shared float spdIntermediateB[16][16];
+shared float spdIntermediateA[16][16];
+shared uint spdCounter;
+
+void main()
+{
+    do
+    {
+        uvec2 _895;
+        uint _899;
+        int _900;
+        uint _901;
+        int _902;
+        ivec2 _903;
+        ivec2 _910;
+        uint _822 = gl_LocalInvocationIndex % 64u;
+        uint _828 = ((_822 & 1u) | (((_822 >> 2u) & 7u) & 4294967294u)) + (8u * ((gl_LocalInvocationIndex >> uint(6)) % 2u));
+        uint _832 = ((((_822 >> 1u) & 3u) & 3u) | (((_822 >> 3u) & 7u) & 4294967292u)) + (8u * (gl_LocalInvocationIndex >> uint(7)));
+        do
+        {
+            _895 = (gl_WorkGroupID.xy + spdConstants.workGroupOffset).xy;
+            ivec2 _898 = ivec2(_895 * uvec2(64u));
+            _899 = _828 * 2u;
+            _900 = int(_899);
+            _901 = _832 * 2u;
+            _902 = int(_901);
+            _903 = ivec2(_900, _902);
+            ivec2 _907 = ivec2(_895 * uvec2(32u));
+            int _908 = int(_828);
+            int _909 = int(_832);
+            _910 = ivec2(_908, _909);
+            uvec2 _913 = uvec2(_898 + _903);
+            vec4 _1069 = (((texelFetch(imgSrc, ivec2(uvec2(ivec2(_913))), 0) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_913 + uvec2(0u, 1u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_913 + uvec2(1u, 0u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_913 + uvec2(1u)))), 0)) * 0.25;
+            imageStore(imgDst[0u], ivec2(uvec2(_907 + _910)), _1069);
+            int _917 = int(_899 + 32u);
+            int _921 = int(_828 + 16u);
+            uvec2 _925 = uvec2(_898 + ivec2(_917, _902));
+            vec4 _1135 = (((texelFetch(imgSrc, ivec2(uvec2(ivec2(_925))), 0) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_925 + uvec2(0u, 1u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_925 + uvec2(1u, 0u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_925 + uvec2(1u)))), 0)) * 0.25;
+            imageStore(imgDst[0u], ivec2(uvec2(_907 + ivec2(_921, _909))), _1135);
+            int _929 = int(_901 + 32u);
+            int _933 = int(_832 + 16u);
+            uvec2 _937 = uvec2(_898 + ivec2(_900, _929));
+            vec4 _1200 = (((texelFetch(imgSrc, ivec2(uvec2(ivec2(_937))), 0) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_937 + uvec2(0u, 1u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_937 + uvec2(1u, 0u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_937 + uvec2(1u)))), 0)) * 0.25;
+            imageStore(imgDst[0u], ivec2(uvec2(_907 + ivec2(_908, _933))), _1200);
+            uvec2 _945 = uvec2(_898 + ivec2(_917, _929));
+            vec4 _1265 = (((texelFetch(imgSrc, ivec2(uvec2(ivec2(_945))), 0) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_945 + uvec2(0u, 1u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_945 + uvec2(1u, 0u)))), 0)) + texelFetch(imgSrc, ivec2(uvec2(ivec2(_945 + uvec2(1u)))), 0)) * 0.25;
+            imageStore(imgDst[0u], ivec2(uvec2(_907 + ivec2(_921, _933))), _1265);
+            if (spdConstants.mips <= 1u)
+            {
+                break;
+            }
+            uint _1287 = gl_SubgroupInvocationID & 4294967292u;
+            uint _1300 = uint(int(_1287 | 1u));
+            vec4 _1301 = subgroupShuffle(_1069, _1300);
+            uint _1304 = uint(int(_1287 | 2u));
+            vec4 _1305 = subgroupShuffle(_1069, _1304);
+            uint _1308 = uint(int(_1287 | 3u));
+            vec4 _1309 = subgroupShuffle(_1069, _1308);
+            vec4 _1315 = (((_1069 + _1301) + _1305) + _1309) * 0.25;
+            vec4 _1333 = subgroupShuffle(_1135, _1300);
+            vec4 _1337 = subgroupShuffle(_1135, _1304);
+            vec4 _1341 = subgroupShuffle(_1135, _1308);
+            vec4 _1347 = (((_1135 + _1333) + _1337) + _1341) * 0.25;
+            vec4 _1365 = subgroupShuffle(_1200, _1300);
+            vec4 _1369 = subgroupShuffle(_1200, _1304);
+            vec4 _1373 = subgroupShuffle(_1200, _1308);
+            vec4 _1379 = (((_1200 + _1365) + _1369) + _1373) * 0.25;
+            vec4 _1397 = subgroupShuffle(_1265, _1300);
+            vec4 _1401 = subgroupShuffle(_1265, _1304);
+            vec4 _1405 = subgroupShuffle(_1265, _1308);
+            vec4 _1411 = (((_1265 + _1397) + _1401) + _1405) * 0.25;
+            if ((gl_LocalInvocationIndex % 4u) == 0u)
+            {
+                ivec2 _964 = ivec2(_895 * uvec2(16u));
+                uint _965 = _828 / 2u;
+                int _966 = int(_965);
+                uint _967 = _832 / 2u;
+                int _968 = int(_967);
+                imageStore(imgDst[1u], ivec2(uvec2(_964 + ivec2(_966, _968))), _1315);
+                spdIntermediateR[_965][_967] = _1315.x;
+                spdIntermediateG[_965][_967] = _1315.y;
+                spdIntermediateB[_965][_967] = _1315.z;
+                spdIntermediateA[_965][_967] = _1315.w;
+                uint _978 = _965 + 8u;
+                int _979 = int(_978);
+                imageStore(imgDst[1u], ivec2(uvec2(_964 + ivec2(_979, _968))), _1347);
+                spdIntermediateR[_978][_967] = _1347.x;
+                spdIntermediateG[_978][_967] = _1347.y;
+                spdIntermediateB[_978][_967] = _1347.z;
+                spdIntermediateA[_978][_967] = _1347.w;
+                uint _994 = _967 + 8u;
+                int _995 = int(_994);
+                imageStore(imgDst[1u], ivec2(uvec2(_964 + ivec2(_966, _995))), _1379);
+                spdIntermediateR[_965][_994] = _1379.x;
+                spdIntermediateG[_965][_994] = _1379.y;
+                spdIntermediateB[_965][_994] = _1379.z;
+                spdIntermediateA[_965][_994] = _1379.w;
+                imageStore(imgDst[1u], ivec2(uvec2(_964 + ivec2(_979, _995))), _1411);
+                spdIntermediateR[_978][_994] = _1411.x;
+                spdIntermediateG[_978][_994] = _1411.y;
+                spdIntermediateB[_978][_994] = _1411.z;
+                spdIntermediateA[_978][_994] = _1411.w;
+            }
+            break;
+        } while(false);
+        do
+        {
+            if (spdConstants.mips <= 2u)
+            {
+                break;
+            }
+            barrier();
+            float _1585 = spdIntermediateR[_828][_832];
+            float _1588 = spdIntermediateG[_828][_832];
+            float _1591 = spdIntermediateB[_828][_832];
+            vec4 _1595 = vec4(_1585, _1588, _1591, spdIntermediateA[_828][_832]);
+            uint _1599 = gl_SubgroupInvocationID & 4294967292u;
+            uint _1612 = uint(int(_1599 | 1u));
+            vec4 _1613 = subgroupShuffle(_1595, _1612);
+            uint _1616 = uint(int(_1599 | 2u));
+            vec4 _1617 = subgroupShuffle(_1595, _1616);
+            uint _1620 = uint(int(_1599 | 3u));
+            vec4 _1621 = subgroupShuffle(_1595, _1620);
+            vec4 _1627 = (((_1595 + _1613) + _1617) + _1621) * 0.25;
+            bool _1563 = (gl_LocalInvocationIndex % 4u) == 0u;
+            if (_1563)
+            {
+                uint _1571 = _832 / 2u;
+                imageStore(imgDst[2u], ivec2(uvec2(ivec2(_895 * uvec2(8u)) + ivec2(int(_828 / 2u), int(_1571)))), _1627);
+                uint _1578 = _828 + (_1571 % 2u);
+                spdIntermediateR[_1578][_832] = _1627.x;
+                spdIntermediateG[_1578][_832] = _1627.y;
+                spdIntermediateB[_1578][_832] = _1627.z;
+                spdIntermediateA[_1578][_832] = _1627.w;
+            }
+            if (spdConstants.mips <= 3u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 64u)
+            {
+                uint _1664 = _899 + (_832 % 2u);
+                float _1691 = spdIntermediateR[_1664][_901];
+                float _1694 = spdIntermediateG[_1664][_901];
+                float _1697 = spdIntermediateB[_1664][_901];
+                vec4 _1701 = vec4(_1691, _1694, _1697, spdIntermediateA[_1664][_901]);
+                vec4 _1719 = subgroupShuffle(_1701, _1612);
+                vec4 _1723 = subgroupShuffle(_1701, _1616);
+                vec4 _1727 = subgroupShuffle(_1701, _1620);
+                vec4 _1733 = (((_1701 + _1719) + _1723) + _1727) * 0.25;
+                if (_1563)
+                {
+                    uint _1677 = _832 / 2u;
+                    imageStore(imgDst[3u], ivec2(uvec2(ivec2(_895 * uvec2(4u)) + ivec2(int(_828 / 2u), int(_1677)))), _1733);
+                    uint _1683 = _899 + _1677;
+                    spdIntermediateR[_1683][_901] = _1733.x;
+                    spdIntermediateG[_1683][_901] = _1733.y;
+                    spdIntermediateB[_1683][_901] = _1733.z;
+                    spdIntermediateA[_1683][_901] = _1733.w;
+                }
+            }
+            if (spdConstants.mips <= 4u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 16u)
+            {
+                uint _1769 = (_828 * 4u) + _832;
+                uint _1770 = _832 * 4u;
+                float _1796 = spdIntermediateR[_1769][_1770];
+                float _1799 = spdIntermediateG[_1769][_1770];
+                float _1802 = spdIntermediateB[_1769][_1770];
+                vec4 _1806 = vec4(_1796, _1799, _1802, spdIntermediateA[_1769][_1770]);
+                vec4 _1824 = subgroupShuffle(_1806, _1612);
+                vec4 _1828 = subgroupShuffle(_1806, _1616);
+                vec4 _1832 = subgroupShuffle(_1806, _1620);
+                vec4 _1838 = (((_1806 + _1824) + _1828) + _1832) * 0.25;
+                if (_1563)
+                {
+                    uint _1780 = _828 / 2u;
+                    imageStore(imgDst[4u], ivec2(uvec2(ivec2(_895 * uvec2(2u)) + ivec2(int(_1780), int(_832 / 2u)))), _1838);
+                    uint _1788 = _1780 + _832;
+                    spdIntermediateR[_1788][0u] = _1838.x;
+                    spdIntermediateG[_1788][0u] = _1838.y;
+                    spdIntermediateB[_1788][0u] = _1838.z;
+                    spdIntermediateA[_1788][0u] = _1838.w;
+                }
+            }
+            if (spdConstants.mips <= 5u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 4u)
+            {
+                vec4 _1897 = vec4(spdIntermediateR[gl_LocalInvocationIndex][0u], spdIntermediateG[gl_LocalInvocationIndex][0u], spdIntermediateB[gl_LocalInvocationIndex][0u], spdIntermediateA[gl_LocalInvocationIndex][0u]);
+                vec4 _1915 = subgroupShuffle(_1897, _1612);
+                vec4 _1919 = subgroupShuffle(_1897, _1616);
+                vec4 _1923 = subgroupShuffle(_1897, _1620);
+                if (_1563)
+                {
+                    imageStore(imgDst6, ivec2(uvec2(ivec2(_895))), (((_1897 + _1915) + _1919) + _1923) * 0.25);
+                }
+            }
+            break;
+        } while(false);
+        if (spdConstants.mips <= 6u)
+        {
+            break;
+        }
+        if (gl_LocalInvocationIndex == 0u)
+        {
+            uint _1962 = atomicAdd(spdGlobalAtomic._member0[0].counter.data[gl_WorkGroupID.z], 1u);
+            spdCounter = _1962;
+        }
+        barrier();
+        if (spdCounter != (spdConstants.numWorkGroups - 1u))
+        {
+            break;
+        }
+        uint _1974;
+        uint _1976;
+        spdGlobalAtomic._member0[0].counter.data[gl_WorkGroupID.z] = 0u;
+        do
+        {
+            _1974 = _828 * 4u;
+            int _1975 = int(_1974);
+            _1976 = _832 * 4u;
+            int _1977 = int(_1976);
+            uvec2 _1984 = uvec2(ivec2(_1975, _1977));
+            vec4 _2043 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1984))));
+            vec4 _2053 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1984 + uvec2(0u, 1u)))));
+            vec4 _2063 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1984 + uvec2(1u, 0u)))));
+            vec4 _2073 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1984 + uvec2(1u)))));
+            vec4 _2082 = (((_2043 + _2053) + _2063) + _2073) * 0.25;
+            imageStore(imgDst[6u], ivec2(uvec2(_903)), _2082);
+            int _1988 = int(_1974 + 2u);
+            int _1991 = int(_899 + 1u);
+            uvec2 _1993 = uvec2(ivec2(_1988, _1977));
+            vec4 _2124 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1993))));
+            vec4 _2134 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1993 + uvec2(0u, 1u)))));
+            vec4 _2144 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1993 + uvec2(1u, 0u)))));
+            vec4 _2154 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_1993 + uvec2(1u)))));
+            vec4 _2163 = (((_2124 + _2134) + _2144) + _2154) * 0.25;
+            imageStore(imgDst[6u], ivec2(uvec2(ivec2(_1991, _902))), _2163);
+            int _1997 = int(_1976 + 2u);
+            int _2000 = int(_901 + 1u);
+            uvec2 _2002 = uvec2(ivec2(_1975, _1997));
+            vec4 _2205 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2002))));
+            vec4 _2215 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2002 + uvec2(0u, 1u)))));
+            vec4 _2225 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2002 + uvec2(1u, 0u)))));
+            vec4 _2235 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2002 + uvec2(1u)))));
+            vec4 _2244 = (((_2205 + _2215) + _2225) + _2235) * 0.25;
+            imageStore(imgDst[6u], ivec2(uvec2(ivec2(_900, _2000))), _2244);
+            uvec2 _2007 = uvec2(ivec2(_1988, _1997));
+            vec4 _2286 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2007))));
+            vec4 _2296 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2007 + uvec2(0u, 1u)))));
+            vec4 _2306 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2007 + uvec2(1u, 0u)))));
+            vec4 _2316 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_2007 + uvec2(1u)))));
+            vec4 _2325 = (((_2286 + _2296) + _2306) + _2316) * 0.25;
+            imageStore(imgDst[6u], ivec2(uvec2(ivec2(_1991, _2000))), _2325);
+            if (spdConstants.mips <= 7u)
+            {
+                break;
+            }
+            vec4 _2349 = (((_2082 + _2163) + _2244) + _2325) * 0.25;
+            imageStore(imgDst[7u], ivec2(uvec2(_910)), _2349);
+            spdIntermediateR[_828][_832] = _2349.x;
+            spdIntermediateG[_828][_832] = _2349.y;
+            spdIntermediateB[_828][_832] = _2349.z;
+            spdIntermediateA[_828][_832] = _2349.w;
+            break;
+        } while(false);
+        do
+        {
+            if (spdConstants.mips <= 8u)
+            {
+                break;
+            }
+            barrier();
+            float _2430 = spdIntermediateR[_828][_832];
+            float _2433 = spdIntermediateG[_828][_832];
+            float _2436 = spdIntermediateB[_828][_832];
+            vec4 _2440 = vec4(_2430, _2433, _2436, spdIntermediateA[_828][_832]);
+            uint _2444 = gl_SubgroupInvocationID & 4294967292u;
+            uint _2457 = uint(int(_2444 | 1u));
+            vec4 _2458 = subgroupShuffle(_2440, _2457);
+            uint _2461 = uint(int(_2444 | 2u));
+            vec4 _2462 = subgroupShuffle(_2440, _2461);
+            uint _2465 = uint(int(_2444 | 3u));
+            vec4 _2466 = subgroupShuffle(_2440, _2465);
+            vec4 _2472 = (((_2440 + _2458) + _2462) + _2466) * 0.25;
+            bool _2408 = (gl_LocalInvocationIndex % 4u) == 0u;
+            if (_2408)
+            {
+                uint _2416 = _832 / 2u;
+                imageStore(imgDst[8u], ivec2(uvec2(ivec2(int(_828 / 2u), int(_2416)))), _2472);
+                uint _2423 = _828 + (_2416 % 2u);
+                spdIntermediateR[_2423][_832] = _2472.x;
+                spdIntermediateG[_2423][_832] = _2472.y;
+                spdIntermediateB[_2423][_832] = _2472.z;
+                spdIntermediateA[_2423][_832] = _2472.w;
+            }
+            if (spdConstants.mips <= 9u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 64u)
+            {
+                uint _2509 = _899 + (_832 % 2u);
+                float _2536 = spdIntermediateR[_2509][_901];
+                float _2539 = spdIntermediateG[_2509][_901];
+                float _2542 = spdIntermediateB[_2509][_901];
+                vec4 _2546 = vec4(_2536, _2539, _2542, spdIntermediateA[_2509][_901]);
+                vec4 _2564 = subgroupShuffle(_2546, _2457);
+                vec4 _2568 = subgroupShuffle(_2546, _2461);
+                vec4 _2572 = subgroupShuffle(_2546, _2465);
+                vec4 _2578 = (((_2546 + _2564) + _2568) + _2572) * 0.25;
+                if (_2408)
+                {
+                    uint _2522 = _832 / 2u;
+                    imageStore(imgDst[9u], ivec2(uvec2(ivec2(int(_828 / 2u), int(_2522)))), _2578);
+                    uint _2528 = _899 + _2522;
+                    spdIntermediateR[_2528][_901] = _2578.x;
+                    spdIntermediateG[_2528][_901] = _2578.y;
+                    spdIntermediateB[_2528][_901] = _2578.z;
+                    spdIntermediateA[_2528][_901] = _2578.w;
+                }
+            }
+            if (spdConstants.mips <= 10u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 16u)
+            {
+                uint _2614 = _1974 + _832;
+                float _2641 = spdIntermediateR[_2614][_1976];
+                float _2644 = spdIntermediateG[_2614][_1976];
+                float _2647 = spdIntermediateB[_2614][_1976];
+                vec4 _2651 = vec4(_2641, _2644, _2647, spdIntermediateA[_2614][_1976]);
+                vec4 _2669 = subgroupShuffle(_2651, _2457);
+                vec4 _2673 = subgroupShuffle(_2651, _2461);
+                vec4 _2677 = subgroupShuffle(_2651, _2465);
+                vec4 _2683 = (((_2651 + _2669) + _2673) + _2677) * 0.25;
+                if (_2408)
+                {
+                    uint _2625 = _828 / 2u;
+                    imageStore(imgDst[10u], ivec2(uvec2(ivec2(int(_2625), int(_832 / 2u)))), _2683);
+                    uint _2633 = _2625 + _832;
+                    spdIntermediateR[_2633][0u] = _2683.x;
+                    spdIntermediateG[_2633][0u] = _2683.y;
+                    spdIntermediateB[_2633][0u] = _2683.z;
+                    spdIntermediateA[_2633][0u] = _2683.w;
+                }
+            }
+            if (spdConstants.mips <= 11u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 4u)
+            {
+                vec4 _2742 = vec4(spdIntermediateR[gl_LocalInvocationIndex][0u], spdIntermediateG[gl_LocalInvocationIndex][0u], spdIntermediateB[gl_LocalInvocationIndex][0u], spdIntermediateA[gl_LocalInvocationIndex][0u]);
+                vec4 _2760 = subgroupShuffle(_2742, _2457);
+                vec4 _2764 = subgroupShuffle(_2742, _2461);
+                vec4 _2768 = subgroupShuffle(_2742, _2465);
+                if (_2408)
+                {
+                    imageStore(imgDst[11u], ivec2(uvec2(0u)), (((_2742 + _2760) + _2764) + _2768) * 0.25);
+                }
+            }
+            break;
+        } while(false);
+        break;
+    } while(false);
+}
+

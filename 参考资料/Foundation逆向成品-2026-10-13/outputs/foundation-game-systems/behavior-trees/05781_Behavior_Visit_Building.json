@@ -1,0 +1,728 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Need/Behavior Visit Building.bt",
+  "absolute_offset": 2573603,
+  "length": 11718,
+  "sha256": "515fc97fdf2d9e802f3619535c0c1efef556a6aeb7de369cc1030adb331f9bdb",
+  "rid": 5781,
+  "root_id": "bb600cd5-8620-48e6-b29c-56008fa34a4a",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Building Location",
+        "IsPublic": true,
+        "Id": "f76858aa-8f1e-480f-8004-f10a1ca33b5b",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": true,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NeedToFill",
+        "IsPublic": true,
+        "Id": "53139c77-b4e4-4705-8b93-40d63010b79e",
+        "TypeDefinition": "PlaSContextDataAgentNeed",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgentNeed"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Interactive Location Wait",
+        "IsPublic": true,
+        "Id": "d7bcf3a8-e611-4133-9519-e3faf167e956",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 30.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Free Time Location",
+        "IsPublic": false,
+        "Id": "1af04bc9-0b3f-4958-a317-2db2a12d3360",
+        "TypeDefinition": "PlaSContextDataInteractiveLocationPurpose",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataInteractiveLocationPurpose"
+          },
+          "InteractiveLocationPurpose": "FREE_TIME"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Has Found Location",
+        "IsPublic": false,
+        "Id": "26f177cf-4582-46f8-9cee-768a26d30a3d",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Visit Timer",
+        "IsPublic": false,
+        "Id": "84575f41-f4cb-4186-a2c3-c9f33018cdcc",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 60.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Random Position Wait",
+        "IsPublic": false,
+        "Id": "59a4ad3f-d572-4953-9b1e-2640d7d79e8d",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 10.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Random position in building",
+        "IsPublic": false,
+        "Id": "1896c4d1-c2e2-4150-af48-b0fe8379e31e",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Interactive Location Destination",
+        "IsPublic": false,
+        "Id": "a9389069-6566-4ddb-be20-0c329423425f",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "4a488340-bc66-42ee-8ec6-5f1928000ee6",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        1144,
+        208
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "bb600cd5-8620-48e6-b29c-56008fa34a4a",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        1077,
+        -287
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "855a824c-c5ac-4bf6-8dcb-d8bda655ba19",
+      "name": "Reaching Need",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        232,
+        328
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "a9389069-6566-4ddb-be20-0c329423425f",
+          "binding_status": "variable",
+          "variable_name": "Interactive Location Destination"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "173d3ed3-7169-409d-bb76-b77508dc885c",
+      "name": "Filling a need : waiting a bit",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        546,
+        331
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "d7bcf3a8-e611-4133-9519-e3faf167e956",
+          "binding_status": "variable",
+          "variable_name": "Interactive Location Wait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "26f177cf-4582-46f8-9cee-768a26d30a3d",
+          "binding_status": "variable",
+          "variable_name": "Has Found Location"
+        }
+      ],
+      "data": {
+        "Guid": "173d3ed3-7169-409d-bb76-b77508dc885c",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "4d56b7f3-77f1-4c34-95df-71167cb43714",
+      "name": "",
+      "type": "PlaCAgentNodeUnfillNeed",
+      "position": [
+        1294,
+        -163
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Need To Unfill",
+          "value": "53139c77-b4e4-4705-8b93-40d63010b79e",
+          "binding_status": "variable",
+          "variable_name": "NeedToFill"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "aaec2758-fac3-4e26-bc21-8691f8bbd3e9",
+      "name": "FillNeed",
+      "type": "PlaCAgentNodeFillNeed",
+      "position": [
+        1231,
+        -55
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Need To Fill",
+          "value": "53139c77-b4e4-4705-8b93-40d63010b79e",
+          "binding_status": "variable",
+          "variable_name": "NeedToFill"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "6e9b0897-dc7f-436a-b0fb-d1719709dc09",
+      "name": "",
+      "type": "PlaCAgentNodeFindInteractiveLocationInBuilding",
+      "position": [
+        -311,
+        325
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Interactive Location Purpose",
+          "value": "1af04bc9-0b3f-4958-a317-2db2a12d3360",
+          "binding_status": "variable",
+          "variable_name": "Free Time Location"
+        },
+        {
+          "name": "Interactive Location Destination",
+          "value": "a9389069-6566-4ddb-be20-0c329423425f",
+          "binding_status": "variable",
+          "variable_name": "Interactive Location Destination"
+        },
+        {
+          "name": "Optional Building Destination",
+          "value": "f76858aa-8f1e-480f-8004-f10a1ca33b5b",
+          "binding_status": "variable",
+          "variable_name": "Building Location"
+        },
+        {
+          "name": "Optional Out Has Found Location",
+          "value": "26f177cf-4582-46f8-9cee-768a26d30a3d",
+          "binding_status": "variable",
+          "variable_name": "Has Found Location"
+        }
+      ],
+      "data": {
+        "Guid": "6e9b0897-dc7f-436a-b0fb-d1719709dc09",
+        "IsFallbackOnBuildingPosition": false
+      }
+    },
+    {
+      "id": "f40574a3-8753-48ec-a9a2-76817453fd7b",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        713,
+        102
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "1cadc78d-fa1b-471c-aa9a-8c4682ef6d37",
+      "name": "Repeater",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeat",
+      "position": [
+        642,
+        -41
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "84575f41-f4cb-4186-a2c3-c9f33018cdcc",
+          "binding_status": "variable",
+          "variable_name": "Visit Timer"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "0af13844-355d-439b-bfb1-b6d3cb5baafc",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        919,
+        -191
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "46db802b-3fb9-4a92-97bf-b9402f228c2e",
+      "name": "",
+      "type": "PlaCAgentNodeFindRandomPositionInBuilding",
+      "position": [
+        893,
+        332
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Building Location",
+          "value": "f76858aa-8f1e-480f-8004-f10a1ca33b5b",
+          "binding_status": "variable",
+          "variable_name": "Building Location"
+        },
+        {
+          "name": "Random Position Destination",
+          "value": "1896c4d1-c2e2-4150-af48-b0fe8379e31e",
+          "binding_status": "variable",
+          "variable_name": "Random position in building"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        325,
+        201
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "09409067-f956-49cc-b7fc-d747b6eae8b6",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        1219,
+        331
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "1896c4d1-c2e2-4150-af48-b0fe8379e31e",
+          "binding_status": "variable",
+          "variable_name": "Random position in building"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "432d4d0b-115a-44f6-8406-3385eeb97092",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        1527,
+        332
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "59a4ad3f-d572-4953-9b1e-2640d7d79e8d",
+          "binding_status": "variable",
+          "variable_name": "Random Position Wait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "432d4d0b-115a-44f6-8406-3385eeb97092",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "a12042d8-7fb4-40d3-a5a0-36622080dba5",
+      "name": "",
+      "type": "PlaCAgentNodeCheckIfTrue",
+      "position": [
+        27,
+        330
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Bool Value",
+          "value": "26f177cf-4582-46f8-9cee-768a26d30a3d",
+          "binding_status": "variable",
+          "variable_name": "Has Found Location"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "5b5338e6-1fcc-4899-915f-daeaaf5f9864",
+      "name": "",
+      "type": "PlaCAgentNodeSetupVisitBuilding",
+      "position": [
+        274,
+        -51
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "26c27bde-5a8d-4b66-a23c-2c0ee51c9927",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Visit Need Data",
+          "value": "53139c77-b4e4-4705-8b93-40d63010b79e",
+          "binding_status": "variable",
+          "variable_name": "NeedToFill"
+        },
+        {
+          "name": "Out Building Location",
+          "value": "f76858aa-8f1e-480f-8004-f10a1ca33b5b",
+          "binding_status": "variable",
+          "variable_name": "Building Location"
+        },
+        {
+          "name": "Out Visit Timer",
+          "value": "84575f41-f4cb-4186-a2c3-c9f33018cdcc",
+          "binding_status": "variable",
+          "variable_name": "Visit Timer"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "4a488340-bc66-42ee-8ec6-5f1928000ee6",
+      "to": "46db802b-3fb9-4a92-97bf-b9402f228c2e",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4a488340-bc66-42ee-8ec6-5f1928000ee6",
+      "to": "09409067-f956-49cc-b7fc-d747b6eae8b6",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4a488340-bc66-42ee-8ec6-5f1928000ee6",
+      "to": "432d4d0b-115a-44f6-8406-3385eeb97092",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bb600cd5-8620-48e6-b29c-56008fa34a4a",
+      "to": "0af13844-355d-439b-bfb1-b6d3cb5baafc",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bb600cd5-8620-48e6-b29c-56008fa34a4a",
+      "to": "4d56b7f3-77f1-4c34-95df-71167cb43714",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f40574a3-8753-48ec-a9a2-76817453fd7b",
+      "to": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f40574a3-8753-48ec-a9a2-76817453fd7b",
+      "to": "4a488340-bc66-42ee-8ec6-5f1928000ee6",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "1cadc78d-fa1b-471c-aa9a-8c4682ef6d37",
+      "to": "f40574a3-8753-48ec-a9a2-76817453fd7b",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "0af13844-355d-439b-bfb1-b6d3cb5baafc",
+      "to": "5b5338e6-1fcc-4899-915f-daeaaf5f9864",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "0af13844-355d-439b-bfb1-b6d3cb5baafc",
+      "to": "1cadc78d-fa1b-471c-aa9a-8c4682ef6d37",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "0af13844-355d-439b-bfb1-b6d3cb5baafc",
+      "to": "aaec2758-fac3-4e26-bc21-8691f8bbd3e9",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "to": "6e9b0897-dc7f-436a-b0fb-d1719709dc09",
+      "ordinal": 11,
+      "valid_endpoints": true
+    },
+    {
+      "from": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "to": "a12042d8-7fb4-40d3-a5a0-36622080dba5",
+      "ordinal": 12,
+      "valid_endpoints": true
+    },
+    {
+      "from": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "to": "855a824c-c5ac-4bf6-8dcb-d8bda655ba19",
+      "ordinal": 13,
+      "valid_endpoints": true
+    },
+    {
+      "from": "c5084ef9-7d80-45e6-a0b2-123406aa30a1",
+      "to": "173d3ed3-7169-409d-bb76-b77508dc885c",
+      "ordinal": 14,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

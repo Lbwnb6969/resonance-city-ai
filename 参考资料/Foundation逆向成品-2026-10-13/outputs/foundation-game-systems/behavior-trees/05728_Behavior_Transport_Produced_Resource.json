@@ -1,0 +1,339 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Transport Produced Resource.bt",
+  "absolute_offset": 2354038,
+  "length": 6757,
+  "sha256": "691fef0b0a7390e90f74ad70d3485f37224acfce0f66db876633c1bc31471a0d",
+  "rid": 5728,
+  "root_id": "155ceae5-2ead-4a25-ad55-4f727bf36e1f",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Depot Position",
+        "IsPublic": false,
+        "Id": "85e8d045-36ae-41d9-8fdd-4039161b78ba",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Produced",
+        "IsPublic": true,
+        "Id": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+        "TypeDefinition": "PlaSContextDataResourceProduction",
+        "DefaultValue": {
+          "type": "PlaSContextDataResourceProduction"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport To Depot",
+        "IsPublic": false,
+        "Id": "43bf0de4-f2f4-4142-b102-9b2460ce1a66",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Is Gathering For Production",
+        "IsPublic": true,
+        "Id": "98568192-f7c5-4bb1-bab1-861fd5310827",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport Interactive Location",
+        "IsPublic": false,
+        "Id": "2fa54088-e1f0-4395-814f-3af891f2c974",
+        "TypeDefinition": "PlaSContextDataInteractiveLocationSetup",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataInteractiveLocationSetup"
+          },
+          "CharacterSetupPriority": "WORKSTATION",
+          "WorkstationSetup": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Building Path Type",
+        "IsPublic": true,
+        "Id": "da1c5d67-6259-4a2d-b822-59ea5b1415a7",
+        "TypeDefinition": "PlaSContextDataBuildingPathType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataBuildingPathType"
+          },
+          "FromPathType": "DEFAULT",
+          "ToPathType": "WORK"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "02243b1d-90a9-4923-a759-3eed3759b1e7",
+      "name": "",
+      "type": "PlaCAgentNodeSetupWorkplaceTransport",
+      "position": [
+        685,
+        427
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Resource Produced Data",
+          "value": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+          "binding_status": "variable",
+          "variable_name": "Resource Produced"
+        },
+        {
+          "name": "Transport Data",
+          "value": "43bf0de4-f2f4-4142-b102-9b2460ce1a66",
+          "binding_status": "variable",
+          "variable_name": "Transport To Depot"
+        },
+        {
+          "name": "Depot Location Data",
+          "value": "85e8d045-36ae-41d9-8fdd-4039161b78ba",
+          "binding_status": "variable",
+          "variable_name": "Depot Position"
+        },
+        {
+          "name": "Out Transport Interactive Location Setup",
+          "value": "2fa54088-e1f0-4395-814f-3af891f2c974",
+          "binding_status": "variable",
+          "variable_name": "Transport Interactive Location"
+        },
+        {
+          "name": "Optional Is Gathering For Production",
+          "value": "98568192-f7c5-4bb1-bab1-861fd5310827",
+          "binding_status": "variable",
+          "variable_name": "Is Gathering For Production"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "f2df2ef1-22cc-4baa-9bfa-b04968260f12",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        1125,
+        347
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "a93197f9-f1b1-4319-8138-319cbd29f249",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        1062,
+        433
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "85e8d045-36ae-41d9-8fdd-4039161b78ba",
+          "binding_status": "variable",
+          "variable_name": "Depot Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "da1c5d67-6259-4a2d-b822-59ea5b1415a7",
+          "binding_status": "variable",
+          "variable_name": "Building Path Type"
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "2fa54088-e1f0-4395-814f-3af891f2c974",
+          "binding_status": "variable",
+          "variable_name": "Transport Interactive Location"
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "e35fb69b-b84e-4e98-af4f-90f4c152ab78",
+      "name": "",
+      "type": "PlaCAgentNodeDropStuffToDepot",
+      "position": [
+        1377,
+        427
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "43bf0de4-f2f4-4142-b102-9b2460ce1a66",
+          "binding_status": "variable",
+          "variable_name": "Transport To Depot"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "2601d5a6-7ea8-420d-904a-2ebdbdc8dc73",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        1119,
+        246
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "155ceae5-2ead-4a25-ad55-4f727bf36e1f",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        1050,
+        105
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "155ceae5-2ead-4a25-ad55-4f727bf36e1f",
+        "FailsIfChildFails": false
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "f2df2ef1-22cc-4baa-9bfa-b04968260f12",
+      "to": "a93197f9-f1b1-4319-8138-319cbd29f249",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2601d5a6-7ea8-420d-904a-2ebdbdc8dc73",
+      "to": "02243b1d-90a9-4923-a759-3eed3759b1e7",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2601d5a6-7ea8-420d-904a-2ebdbdc8dc73",
+      "to": "f2df2ef1-22cc-4baa-9bfa-b04968260f12",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2601d5a6-7ea8-420d-904a-2ebdbdc8dc73",
+      "to": "e35fb69b-b84e-4e98-af4f-90f4c152ab78",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "155ceae5-2ead-4a25-ad55-4f727bf36e1f",
+      "to": "2601d5a6-7ea8-420d-904a-2ebdbdc8dc73",
+      "ordinal": 4,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

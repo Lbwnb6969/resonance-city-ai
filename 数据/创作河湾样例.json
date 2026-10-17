@@ -1,0 +1,417 @@
+{
+  "high_watermark": {
+    "cell": 14,
+    "house": 6,
+    "road": 7,
+    "district": 1
+  },
+  "houses": [
+    {
+      "cells": [
+        {
+          "id": "c1",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "id": "c2",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 1,
+          "z": 0
+        }
+      ],
+      "id": "h1",
+      "name": "石榴巷1号",
+      "origin": [
+        -8,
+        -6
+      ],
+      "palette": 0,
+      "role": "residential",
+      "seed": 81000
+    },
+    {
+      "cells": [
+        {
+          "id": "c3",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "id": "c4",
+          "kind": "room",
+          "level": 1,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        }
+      ],
+      "id": "h2",
+      "name": "石榴巷2号",
+      "origin": [
+        -2.40000009536743,
+        -5
+      ],
+      "palette": 1,
+      "role": "bakery",
+      "seed": 81977
+    },
+    {
+      "cells": [
+        {
+          "id": "c5",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "id": "c6",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 1,
+          "z": 0
+        },
+        {
+          "id": "c12",
+          "kind": "room",
+          "level": 0,
+          "source": "player",
+          "x": 2,
+          "z": 0
+        },
+        {
+          "id": "c13",
+          "kind": "room",
+          "level": 1,
+          "source": "player",
+          "x": 2,
+          "z": 0
+        },
+        {
+          "id": "c14",
+          "kind": "terrace",
+          "level": 1,
+          "source": "player",
+          "x": 1,
+          "z": 0
+        }
+      ],
+      "id": "h3",
+      "name": "石榴巷3号",
+      "origin": [
+        -8,
+        0
+      ],
+      "palette": 2,
+      "role": "residential",
+      "seed": 82954
+    },
+    {
+      "cells": [
+        {
+          "id": "c7",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "id": "c8",
+          "kind": "room",
+          "level": 1,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        }
+      ],
+      "id": "h4",
+      "name": "石榴巷4号",
+      "origin": [
+        -2.40000009536743,
+        1
+      ],
+      "palette": 3,
+      "role": "venue",
+      "seed": 83931
+    },
+    {
+      "cells": [
+        {
+          "id": "c9",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        },
+        {
+          "id": "c10",
+          "kind": "terrace",
+          "level": 0,
+          "source": "seed",
+          "x": 1,
+          "z": 0
+        }
+      ],
+      "id": "h5",
+      "name": "石榴巷5号",
+      "origin": [
+        -7,
+        6
+      ],
+      "palette": 4,
+      "role": "residential",
+      "seed": 84908
+    },
+    {
+      "cells": [
+        {
+          "id": "c11",
+          "kind": "room",
+          "level": 0,
+          "source": "seed",
+          "x": 0,
+          "z": 0
+        }
+      ],
+      "id": "h6",
+      "name": "石榴巷6号",
+      "origin": [
+        9,
+        3
+      ],
+      "palette": 5,
+      "role": "residential",
+      "seed": 85885
+    }
+  ],
+  "next_cell_id": 15,
+  "next_house_id": 7,
+  "next_road_id": 8,
+  "revision": 4,
+  "roads": [
+    {
+      "bridge": false,
+      "id": "r1",
+      "points": [
+        [
+          -11,
+          -9
+        ],
+        [
+          -11,
+          9
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": false,
+      "id": "r2",
+      "points": [
+        [
+          -11,
+          -4.44999980926514
+        ],
+        [
+          -8,
+          -4.44999980926514
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": false,
+      "id": "r3",
+      "points": [
+        [
+          -11,
+          -3.45000004768372
+        ],
+        [
+          -2.40000009536743,
+          -3.45000004768372
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": false,
+      "id": "r4",
+      "points": [
+        [
+          -11,
+          1.54999995231628
+        ],
+        [
+          -8,
+          1.54999995231628
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": false,
+      "id": "r5",
+      "points": [
+        [
+          -11,
+          2.54999995231628
+        ],
+        [
+          -2.40000009536743,
+          2.54999995231628
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": false,
+      "id": "r6",
+      "points": [
+        [
+          -11,
+          7.55000019073486
+        ],
+        [
+          -7,
+          7.55000019073486
+        ]
+      ],
+      "source": "seed",
+      "width": 1.25
+    },
+    {
+      "bridge": true,
+      "id": "r7",
+      "points": [
+        [
+          -11,
+          8.99300003051758
+        ],
+        [
+          -11,
+          11.0078239440918
+        ],
+        [
+          9,
+          11.0078239440918
+        ],
+        [
+          9,
+          4.55355644226074
+        ]
+      ],
+      "source": "player",
+      "width": 1.25
+    }
+  ],
+  "schema": 2,
+  "terrain_strokes": [
+    {
+      "points": [
+        [
+          10.0,
+          -9.0
+        ],
+        [
+          13.0,
+          -8.0
+        ],
+        [
+          12.0,
+          -5.0
+        ]
+      ],
+      "mode": "raise",
+      "radius": 5.0,
+      "strength": 0.65
+    },
+    {
+      "points": [
+        [
+          10.0,
+          -9.0
+        ],
+        [
+          13.0,
+          -8.0
+        ],
+        [
+          12.0,
+          -5.0
+        ]
+      ],
+      "mode": "raise",
+      "radius": 5.0,
+      "strength": 0.65
+    },
+    {
+      "points": [
+        [
+          10.0,
+          -9.0
+        ],
+        [
+          13.0,
+          -8.0
+        ],
+        [
+          12.0,
+          -5.0
+        ]
+      ],
+      "mode": "raise",
+      "radius": 5.0,
+      "strength": 0.65
+    },
+    {
+      "points": [
+        [
+          12.0,
+          10.0
+        ]
+      ],
+      "mode": "lower",
+      "radius": 5.0,
+      "strength": 0.65
+    }
+  ],
+  "districts": [
+    {
+      "id": "d1",
+      "name": "河湾合奏",
+      "style": "warm",
+      "points": [
+        [
+          -6,
+          -8
+        ],
+        [
+          -6,
+          8
+        ]
+      ],
+      "width": 10.0,
+      "adaptive": true
+    }
+  ],
+  "next_district_id": 2
+}

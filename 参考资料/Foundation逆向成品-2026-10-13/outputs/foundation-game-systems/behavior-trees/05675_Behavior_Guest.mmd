@@ -1,0 +1,44 @@
+flowchart TD
+  n0["GoToVillageCenter"]
+  n1["PlaCAgentNodeVisitorLeaving"]
+  n2["PlaCAgentNodeVisitorSetup"]
+  n3["Sequencer"]
+  n4["PlaCAgentNodeDisable"]
+  n5["GoTo"]
+  n6["PlaCAgentNodeVisitorArrived"]
+  n7["Selector"]
+  n8["Failer"]
+  n9["Sequencer"]
+  n10["Succeeder"]
+  n11["c7ec964a-ded3-430a-b036-daddd4705d00"]
+  n12["Sequencer"]
+  n13["Succeeder"]
+  n14["PlaCAgentNodeEvaluateGuestLeave"]
+  n15["Repeat until fail"]
+  n16["PlaCAgentNodeFindLodging"]
+  n17["63a025ec-b5ec-429a-aac2-b4076d8cc547"]
+  n18["Selector"]
+  n19["Sequencer"]
+  n20["5707a81a-2064-402f-b794-60ee532263fa"]
+  n21["Succeeder"]
+  n3 -->|0| n18
+  n3 -->|1| n6
+  n3 -->|2| n15
+  n7 -->|3| n8
+  n7 -->|4| n9
+  n8 -->|5| n3
+  n9 -->|6| n1
+  n9 -->|7| n10
+  n9 -->|8| n4
+  n10 -->|9| n5
+  n12 -->|10| n16
+  n12 -->|11| n13
+  n12 -->|12| n14
+  n12 -->|13| n21
+  n13 -->|14| n11
+  n15 -->|15| n12
+  n18 -->|16| n19
+  n18 -->|17| n20
+  n19 -->|18| n2
+  n19 -->|19| n0
+  n21 -->|20| n17

@@ -1,0 +1,103 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1713,
+    "record_offset": 264,
+    "module": "rapier3d-685814ed8dc8104a.rapier3d.dbd7508517480627-cgu.14.rcgu.o",
+    "name": "rapier3d::pipeline::query_pipeline::impl$5::map_typed_part_at<parry3d::query::ray::ray_composite_shape::impl$4::visit::closure_env$0<rapier3d::pipeline::query_pipeline::QueryPipelineAsCompositeShape> >",
+    "segment": 1,
+    "offset": 27289680,
+    "rva": 27293776,
+    "va": "0x141a07850",
+    "size": 312,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "ff502b8423c8cdd0bfb05678caa4fe56afac730b570ffae23d45ee50485a32d7",
+  "code_bytes": 312,
+  "decoded_bytes": 312,
+  "instructions": 81,
+  "calls_and_jumps": [
+    {
+      "address": "0x141a078ad",
+      "kind": "call",
+      "target": "0x141a08360",
+      "target_names": [
+        "rapier3d::pipeline::query_pipeline::QueryFilter::test",
+        "_ZN8rapier3d8pipeline14query_pipeline11QueryFilter4test17h09f5b8b69af84fa4E.llvm.6907936326697837321"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141a078ee",
+      "kind": "call",
+      "operand": "qword ptr [r10 + 0x30]",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141a07960",
+      "kind": "call",
+      "target": "0x142dc81f2",
+      "target_names": [
+        "core::panicking::panic_bounds_check",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking18panic_bounds_check"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141a07971",
+      "kind": "call",
+      "target": "0x142dc81f2",
+      "target_names": [
+        "core::panicking::panic_bounds_check",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking18panic_bounds_check"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141a07982",
+      "kind": "call",
+      "target": "0x142dc81f2",
+      "target_names": [
+        "core::panicking::panic_bounds_check",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking18panic_bounds_check"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x141a07954",
+      "target": "0x143361e40",
+      "operand_bytes": 8,
+      "names": [
+        "anon.e63f95ef6fe415423512673decfb1cac.17.llvm.6907936326697837321"
+      ],
+      "bytes_hex": "c81d3643010000007100000000000000b400000021000000c81d364301000000"
+    },
+    {
+      "address": "0x141a07965",
+      "target": "0x143361e58",
+      "operand_bytes": 8,
+      "names": [
+        "anon.e63f95ef6fe415423512673decfb1cac.18.llvm.6907936326697837321"
+      ],
+      "bytes_hex": "c81d3643010000007100000000000000b500000021000000c81d364301000000"
+    },
+    {
+      "address": "0x141a07976",
+      "target": "0x143361e70",
+      "operand_bytes": 8,
+      "names": [
+        "anon.e63f95ef6fe415423512673decfb1cac.19.llvm.6907936326697837321"
+      ],
+      "bytes_hex": "c81d3643010000007100000000000000b600000021000000c81d364301000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

@@ -1,0 +1,25 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",shape=box];
+  n1 [label="PlaCAgentNodeSetupMarketTenderJob",shape=box];
+  n2 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=doubleoctagon];
+  n3 [label="PlaCAgentNodeFindOrAssignWorkplace",shape=box];
+  n4 [label="PlaCAgentNodeSetWorkplaceAsDestination",shape=box];
+  n5 [label="Succeeder",shape=box];
+  n6 [label="Sequencer",shape=box];
+  n7 [label="GoTo",shape=box];
+  n8 [label="SetOrientation",shape=box];
+  n9 [label="Waiting",shape=box];
+  n10 [label="SetActivityMessage",shape=box];
+  n11 [label="SetActivityMessage",shape=box];
+  n2 -> n5 [label="0"];
+  n2 -> n4 [label="1"];
+  n2 -> n10 [label="2"];
+  n2 -> n7 [label="3"];
+  n2 -> n8 [label="4"];
+  n2 -> n11 [label="5"];
+  n2 -> n9 [label="6"];
+  n5 -> n6 [label="7"];
+  n6 -> n1 [label="8"];
+  n6 -> n0 [label="9"];
+}

@@ -1,0 +1,47 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} mask_out;
+
+layout(set = 0, binding = 1, std430) buffer mask_out_clutter
+{
+    uint _member0[];
+} mask_out_clutter_1;
+
+layout(set = 10, binding = 0) uniform texture2D water_mask_tex;
+
+void main()
+{
+    uint _25 = gl_GlobalInvocationID.x * 32u;
+    uvec2 _34 = uvec2(_25 % 512u, _25 / 512u);
+    uint _134;
+    uint _135;
+    _135 = 0u;
+    _134 = 0u;
+    uint mask;
+    uint mask_clutter;
+    uint i;
+    uint _133 = 0u;
+    for (;;)
+    {
+        if (!(_133 < 32u))
+        {
+            break;
+        }
+        uvec2 _45 = _34 + uvec2(_133, 0u);
+        mask = _134 | (uint(texelFetch(water_mask_tex, ivec2(_45), 0).y > 0.5) << _133);
+        mask_clutter = _135 | (uint(texelFetch(water_mask_tex, ivec2(_45), 0).y > 0.20000000298023223876953125) << _133);
+        i = _133 + 1u;
+        _135 = mask_clutter;
+        _134 = mask;
+        _133 = i;
+        continue;
+    }
+    mask_out._member0[gl_GlobalInvocationID.x] = _134;
+    mask_out_clutter_1._member0[gl_GlobalInvocationID.x] = _135;
+}
+

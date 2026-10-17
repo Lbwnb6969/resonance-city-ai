@@ -1,0 +1,189 @@
+#version 460
+layout(local_size_x = 32, local_size_y = 1, local_size_z = 1) in;
+
+struct PainterlyStrokePacked_natural
+{
+    uint pos;
+    uint color;
+    uint size_rotation;
+    float appear_t;
+};
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 target_tex_dims;
+    uvec2 depth_target_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    PainterlyStrokePacked_natural _member0[];
+} strokes_buf;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    uint strokes_captured;
+    uint strokes_this_frame;
+    float current_t;
+} entryPointParams;
+
+layout(set = 1, binding = 0) uniform sampler samplers_lnc;
+layout(set = 0, binding = 2) uniform texture2D depth_target_tex;
+layout(set = 0, binding = 1) uniform texture2D target_tex;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= entryPointParams.strokes_this_frame)
+        {
+            break;
+        }
+        uint stroke_idx = entryPointParams.strokes_captured + gl_GlobalInvocationID.x;
+        float _570 = float(stroke_idx);
+        vec2 _574 = fract((vec2(0.75487768650054931640625, 0.56984031200408935546875) * _570) + vec2(0.5));
+        float _125 = float(globalParams.target_tex_dims.x) / float(globalParams.target_tex_dims.y);
+        vec2 norm_to_aspect = vec2(_125, 1.0);
+        float size = (0.0500000007450580596923828125 * sqrt(_125)) * mix(1.2999999523162841796875, 0.60000002384185791015625, pow(clamp(_570 * 0.0009765625, 0.0, 1.0), 1.0));
+        vec2 _772;
+        if (_574.x > 0.300000011920928955078125)
+        {
+            vec2 _174 = fract(_574 + ((vec2(2.0 * size) / norm_to_aspect) * (fract((vec2(0.75487768650054931640625, 0.56984031200408935546875) * float(1024u + ((stroke_idx * 839u) % 1024u))) + vec2(0.5)) - vec2(0.5))));
+            _772 = mix(_174, _574, bvec2((textureLod(sampler2D(depth_target_tex, samplers_lnc), _174, 0.0).x > textureLod(sampler2D(depth_target_tex, samplers_lnc), _574, 0.0).x) == (stroke_idx < 341u)));
+        }
+        else
+        {
+            _772 = _574;
+        }
+        vec4 sampled = textureLod(sampler2D(target_tex, samplers_lnc), _772, 0.0);
+        vec3 color = sampled.xyz;
+        vec2 _211 = _772 - vec2(0.5);
+        vec2 center_offset = _211 * vec2(2.0);
+        float _233 = size * exp2(min(1.5, (mix(0.0, 3.0, clamp(dot(center_offset, center_offset), 0.0, 1.0)) + mix(0.800000011920928955078125, 0.0, smoothstep(0.0, 0.5, _772.x))) + mix(0.0, 1.0, clamp(abs((sampled.w * 2.0) - 1.0), 0.0, 1.0))));
+        float _592 = sampled.x;
+        float _774;
+        if (0.003130800090730190277099609375 >= _592)
+        {
+            _774 = 12.9200000762939453125 * _592;
+        }
+        else
+        {
+            _774 = (1.05499994754791259765625 * pow(_592, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        float _594 = sampled.y;
+        float _775;
+        if (0.003130800090730190277099609375 >= _594)
+        {
+            _775 = 12.9200000762939453125 * _594;
+        }
+        else
+        {
+            _775 = (1.05499994754791259765625 * pow(_594, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        float _596 = sampled.z;
+        float _776;
+        if (0.003130800090730190277099609375 >= _596)
+        {
+            _776 = 12.9200000762939453125 * _596;
+        }
+        else
+        {
+            _776 = (1.05499994754791259765625 * pow(_596, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        uint _307 = stroke_idx + 1u;
+        uint _638 = _307 + (_307 << 10u);
+        uint _640 = _638 ^ (_638 >> 6u);
+        uint _642 = _640 + (_640 << 3u);
+        uint _644 = _642 ^ (_642 >> 11u);
+        float base_rotation = float((_644 + (_644 << 15u)) % 360u) * 0.0174532942473888397216796875;
+        float _778;
+        float _784;
+        _784 = base_rotation;
+        _778 = 10000000000.0;
+        uint i;
+        float _836;
+        float _837;
+        uint _777 = 0u;
+        for (;;)
+        {
+            if (!(_777 < 8u))
+            {
+                break;
+            }
+            float a = base_rotation + (float(_777) * 0.3926990926265716552734375);
+            float _355 = cos(a);
+            float _356 = sin(a);
+            mat2 rotmat = mat2(vec2(_355, _356), vec2(-_356, _355));
+            float _363 = _233 * 0.5;
+            vec2 _366 = (vec2(_363, 0.0) * rotmat) / norm_to_aspect;
+            vec2 _371 = (vec2(0.0, _363) * rotmat) / norm_to_aspect;
+            float _792;
+            _792 = 0.0;
+            uint l;
+            float _806;
+            uint _791 = 0u;
+            for (;;)
+            {
+                if (!(_791 < 2u))
+                {
+                    break;
+                }
+                float _381 = (float(_791) * 2.0) - 1.0;
+                _806 = _792;
+                float diff;
+                uint w;
+                uint _797 = 0u;
+                for (;;)
+                {
+                    if (!(_797 < 2u))
+                    {
+                        break;
+                    }
+                    vec3 _404 = color - textureLod(sampler2D(target_tex, samplers_lnc), (_772 + (_366 * _381)) + (_371 * (((float(_797) * 2.0) - 1.0) * 0.20000000298023223876953125)), 0.0).xyz;
+                    diff = _806 + dot(_404, _404);
+                    w = _797 + 1u;
+                    _806 = diff;
+                    _797 = w;
+                    continue;
+                }
+                l = _791 + 1u;
+                _792 = _806;
+                _791 = l;
+                continue;
+            }
+            float diff_1 = _792 * 0.25;
+            bool _427 = diff_1 < _778;
+            _836 = _427 ? a : _784;
+            _837 = _427 ? diff_1 : _778;
+            i = _777 + 1u;
+            _784 = _836;
+            _778 = _837;
+            _777 = i;
+            continue;
+        }
+        float _786;
+        if (_772.x > 0.300000011920928955078125)
+        {
+            float _787;
+            if (_778 > 0.20000000298023223876953125)
+            {
+                _787 = 0.0;
+            }
+            else
+            {
+                _787 = _233 * mix(1.0, 0.25, smoothstep(0.0, 0.20000000298023223876953125, _778));
+            }
+            _786 = _787;
+        }
+        else
+        {
+            _786 = _233;
+        }
+        strokes_buf._member0[stroke_idx].pos = packHalf2x16((((_211 * vec2(2.0, -2.0)) * norm_to_aspect) * vec2(0.5, -0.5)) + vec2(0.5));
+        strokes_buf._member0[stroke_idx].color = ((uint((clamp(_774, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_775, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_776, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + 4278190080u;
+        strokes_buf._member0[stroke_idx].size_rotation = packHalf2x16(vec2(_786, _784));
+        strokes_buf._member0[stroke_idx].appear_t = entryPointParams.current_t;
+        break;
+    } while(false);
+}
+

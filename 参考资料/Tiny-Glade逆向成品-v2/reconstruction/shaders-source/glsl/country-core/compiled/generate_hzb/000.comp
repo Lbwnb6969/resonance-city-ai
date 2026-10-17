@@ -1,0 +1,1432 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_uint6
+{
+    uint data[6];
+};
+
+struct SpdGlobalAtomicBuffer_natural
+{
+    _Array_natural_uint6 counter;
+};
+
+layout(set = 0, binding = 3, std430) coherent buffer RWStructuredBuffer
+{
+    SpdGlobalAtomicBuffer_natural _member0[];
+} spdGlobalAtomic;
+
+layout(push_constant, std430) uniform SpdConstants_natural
+{
+    uint mips;
+    uint numWorkGroups;
+    uvec2 workGroupOffset;
+    uvec2 input_dims;
+} spdConstants;
+
+layout(set = 0, binding = 0) uniform texture2D imgSrc;
+layout(set = 0, binding = 1, r16f) uniform writeonly image2D imgDst[13];
+layout(set = 0, binding = 2, r16f) uniform coherent image2D imgDst6;
+
+shared float spdIntermediateR[16][16];
+shared uint spdCounter;
+
+void main()
+{
+    do
+    {
+        uvec2 _933;
+        uint _937;
+        int _938;
+        uint _939;
+        int _940;
+        ivec2 _941;
+        ivec2 _948;
+        uint _860 = gl_LocalInvocationIndex % 64u;
+        uint _866 = ((_860 & 1u) | (((_860 >> 2u) & 7u) & 4294967294u)) + (8u * ((gl_LocalInvocationIndex >> uint(6)) % 2u));
+        uint _870 = ((((_860 >> 1u) & 3u) & 3u) | (((_860 >> 3u) & 7u) & 4294967292u)) + (8u * (gl_LocalInvocationIndex >> uint(7)));
+        do
+        {
+            _933 = (gl_WorkGroupID.xy + spdConstants.workGroupOffset).xy;
+            ivec2 _936 = ivec2(_933 * uvec2(64u));
+            _937 = _866 * 2u;
+            _938 = int(_937);
+            _939 = _870 * 2u;
+            _940 = int(_939);
+            _941 = ivec2(_938, _940);
+            ivec2 _945 = ivec2(_933 * uvec2(32u));
+            int _946 = int(_866);
+            int _947 = int(_870);
+            _948 = ivec2(_946, _947);
+            uvec2 _951 = uvec2(_936 + _941);
+            ivec2 _1069 = ivec2(_951);
+            uvec2 _1082 = uvec2(_1069 * ivec2(2));
+            float _4438;
+            do
+            {
+                if (all(lessThan(_1082, spdConstants.input_dims)))
+                {
+                    _4438 = texelFetch(imgSrc, ivec2(_1082), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4438 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1084 = _1082 + uvec2(0u, 1u);
+            float _4439;
+            do
+            {
+                if (all(lessThan(_1084, spdConstants.input_dims)))
+                {
+                    _4439 = texelFetch(imgSrc, ivec2(_1084), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4439 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1086 = _1082 + uvec2(1u, 0u);
+            float _4440;
+            do
+            {
+                if (all(lessThan(_1086, spdConstants.input_dims)))
+                {
+                    _4440 = texelFetch(imgSrc, ivec2(_1086), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4440 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1088 = _1082 + uvec2(1u);
+            float _4441;
+            do
+            {
+                if (all(lessThan(_1088, spdConstants.input_dims)))
+                {
+                    _4441 = texelFetch(imgSrc, ivec2(_1088), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4441 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1092 = min(min(_4438, _4439), min(_4440, _4441));
+            imageStore(imgDst[0], ivec2(uvec2(_1069)), vec4(_1092));
+            ivec2 _1071 = ivec2(_951 + uvec2(0u, 1u));
+            uvec2 _1194 = uvec2(_1071 * ivec2(2));
+            float _4442;
+            do
+            {
+                if (all(lessThan(_1194, spdConstants.input_dims)))
+                {
+                    _4442 = texelFetch(imgSrc, ivec2(_1194), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4442 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1196 = _1194 + uvec2(0u, 1u);
+            float _4443;
+            do
+            {
+                if (all(lessThan(_1196, spdConstants.input_dims)))
+                {
+                    _4443 = texelFetch(imgSrc, ivec2(_1196), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4443 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1198 = _1194 + uvec2(1u, 0u);
+            float _4444;
+            do
+            {
+                if (all(lessThan(_1198, spdConstants.input_dims)))
+                {
+                    _4444 = texelFetch(imgSrc, ivec2(_1198), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4444 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1200 = _1194 + uvec2(1u);
+            float _4445;
+            do
+            {
+                if (all(lessThan(_1200, spdConstants.input_dims)))
+                {
+                    _4445 = texelFetch(imgSrc, ivec2(_1200), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4445 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1204 = min(min(_4442, _4443), min(_4444, _4445));
+            imageStore(imgDst[0], ivec2(uvec2(_1071)), vec4(_1204));
+            ivec2 _1073 = ivec2(_951 + uvec2(1u, 0u));
+            uvec2 _1305 = uvec2(_1073 * ivec2(2));
+            float _4446;
+            do
+            {
+                if (all(lessThan(_1305, spdConstants.input_dims)))
+                {
+                    _4446 = texelFetch(imgSrc, ivec2(_1305), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4446 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1307 = _1305 + uvec2(0u, 1u);
+            float _4447;
+            do
+            {
+                if (all(lessThan(_1307, spdConstants.input_dims)))
+                {
+                    _4447 = texelFetch(imgSrc, ivec2(_1307), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4447 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1309 = _1305 + uvec2(1u, 0u);
+            float _4448;
+            do
+            {
+                if (all(lessThan(_1309, spdConstants.input_dims)))
+                {
+                    _4448 = texelFetch(imgSrc, ivec2(_1309), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4448 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1311 = _1305 + uvec2(1u);
+            float _4449;
+            do
+            {
+                if (all(lessThan(_1311, spdConstants.input_dims)))
+                {
+                    _4449 = texelFetch(imgSrc, ivec2(_1311), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4449 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1315 = min(min(_4446, _4447), min(_4448, _4449));
+            imageStore(imgDst[0], ivec2(uvec2(_1073)), vec4(_1315));
+            ivec2 _1075 = ivec2(_951 + uvec2(1u));
+            uvec2 _1416 = uvec2(_1075 * ivec2(2));
+            float _4450;
+            do
+            {
+                if (all(lessThan(_1416, spdConstants.input_dims)))
+                {
+                    _4450 = texelFetch(imgSrc, ivec2(_1416), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4450 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1418 = _1416 + uvec2(0u, 1u);
+            float _4451;
+            do
+            {
+                if (all(lessThan(_1418, spdConstants.input_dims)))
+                {
+                    _4451 = texelFetch(imgSrc, ivec2(_1418), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4451 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1420 = _1416 + uvec2(1u, 0u);
+            float _4452;
+            do
+            {
+                if (all(lessThan(_1420, spdConstants.input_dims)))
+                {
+                    _4452 = texelFetch(imgSrc, ivec2(_1420), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4452 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1422 = _1416 + uvec2(1u);
+            float _4453;
+            do
+            {
+                if (all(lessThan(_1422, spdConstants.input_dims)))
+                {
+                    _4453 = texelFetch(imgSrc, ivec2(_1422), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4453 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1426 = min(min(_4450, _4451), min(_4452, _4453));
+            imageStore(imgDst[0], ivec2(uvec2(_1075)), vec4(_1426));
+            float _1531 = min(min(_1092, _1204), min(_1315, _1426));
+            vec4 _1532 = vec4(_1531);
+            imageStore(imgDst[1u], ivec2(uvec2(_945 + _948)), _1532);
+            int _955 = int(_937 + 32u);
+            int _959 = int(_866 + 16u);
+            uvec2 _963 = uvec2(_936 + ivec2(_955, _940));
+            ivec2 _1561 = ivec2(_963);
+            uvec2 _1574 = uvec2(_1561 * ivec2(2));
+            float _4454;
+            do
+            {
+                if (all(lessThan(_1574, spdConstants.input_dims)))
+                {
+                    _4454 = texelFetch(imgSrc, ivec2(_1574), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4454 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1576 = _1574 + uvec2(0u, 1u);
+            float _4455;
+            do
+            {
+                if (all(lessThan(_1576, spdConstants.input_dims)))
+                {
+                    _4455 = texelFetch(imgSrc, ivec2(_1576), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4455 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1578 = _1574 + uvec2(1u, 0u);
+            float _4456;
+            do
+            {
+                if (all(lessThan(_1578, spdConstants.input_dims)))
+                {
+                    _4456 = texelFetch(imgSrc, ivec2(_1578), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4456 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1580 = _1574 + uvec2(1u);
+            float _4457;
+            do
+            {
+                if (all(lessThan(_1580, spdConstants.input_dims)))
+                {
+                    _4457 = texelFetch(imgSrc, ivec2(_1580), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4457 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1584 = min(min(_4454, _4455), min(_4456, _4457));
+            imageStore(imgDst[0], ivec2(uvec2(_1561)), vec4(_1584));
+            ivec2 _1563 = ivec2(_963 + uvec2(0u, 1u));
+            uvec2 _1685 = uvec2(_1563 * ivec2(2));
+            float _4458;
+            do
+            {
+                if (all(lessThan(_1685, spdConstants.input_dims)))
+                {
+                    _4458 = texelFetch(imgSrc, ivec2(_1685), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4458 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1687 = _1685 + uvec2(0u, 1u);
+            float _4459;
+            do
+            {
+                if (all(lessThan(_1687, spdConstants.input_dims)))
+                {
+                    _4459 = texelFetch(imgSrc, ivec2(_1687), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4459 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1689 = _1685 + uvec2(1u, 0u);
+            float _4460;
+            do
+            {
+                if (all(lessThan(_1689, spdConstants.input_dims)))
+                {
+                    _4460 = texelFetch(imgSrc, ivec2(_1689), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4460 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1691 = _1685 + uvec2(1u);
+            float _4461;
+            do
+            {
+                if (all(lessThan(_1691, spdConstants.input_dims)))
+                {
+                    _4461 = texelFetch(imgSrc, ivec2(_1691), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4461 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1695 = min(min(_4458, _4459), min(_4460, _4461));
+            imageStore(imgDst[0], ivec2(uvec2(_1563)), vec4(_1695));
+            ivec2 _1565 = ivec2(_963 + uvec2(1u, 0u));
+            uvec2 _1796 = uvec2(_1565 * ivec2(2));
+            float _4462;
+            do
+            {
+                if (all(lessThan(_1796, spdConstants.input_dims)))
+                {
+                    _4462 = texelFetch(imgSrc, ivec2(_1796), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4462 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1798 = _1796 + uvec2(0u, 1u);
+            float _4463;
+            do
+            {
+                if (all(lessThan(_1798, spdConstants.input_dims)))
+                {
+                    _4463 = texelFetch(imgSrc, ivec2(_1798), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4463 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1800 = _1796 + uvec2(1u, 0u);
+            float _4464;
+            do
+            {
+                if (all(lessThan(_1800, spdConstants.input_dims)))
+                {
+                    _4464 = texelFetch(imgSrc, ivec2(_1800), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4464 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1802 = _1796 + uvec2(1u);
+            float _4465;
+            do
+            {
+                if (all(lessThan(_1802, spdConstants.input_dims)))
+                {
+                    _4465 = texelFetch(imgSrc, ivec2(_1802), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4465 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1806 = min(min(_4462, _4463), min(_4464, _4465));
+            imageStore(imgDst[0], ivec2(uvec2(_1565)), vec4(_1806));
+            ivec2 _1567 = ivec2(_963 + uvec2(1u));
+            uvec2 _1907 = uvec2(_1567 * ivec2(2));
+            float _4466;
+            do
+            {
+                if (all(lessThan(_1907, spdConstants.input_dims)))
+                {
+                    _4466 = texelFetch(imgSrc, ivec2(_1907), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4466 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1909 = _1907 + uvec2(0u, 1u);
+            float _4467;
+            do
+            {
+                if (all(lessThan(_1909, spdConstants.input_dims)))
+                {
+                    _4467 = texelFetch(imgSrc, ivec2(_1909), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4467 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1911 = _1907 + uvec2(1u, 0u);
+            float _4468;
+            do
+            {
+                if (all(lessThan(_1911, spdConstants.input_dims)))
+                {
+                    _4468 = texelFetch(imgSrc, ivec2(_1911), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4468 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _1913 = _1907 + uvec2(1u);
+            float _4469;
+            do
+            {
+                if (all(lessThan(_1913, spdConstants.input_dims)))
+                {
+                    _4469 = texelFetch(imgSrc, ivec2(_1913), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4469 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _1917 = min(min(_4466, _4467), min(_4468, _4469));
+            imageStore(imgDst[0], ivec2(uvec2(_1567)), vec4(_1917));
+            float _2022 = min(min(_1584, _1695), min(_1806, _1917));
+            vec4 _2023 = vec4(_2022);
+            imageStore(imgDst[1u], ivec2(uvec2(_945 + ivec2(_959, _947))), _2023);
+            int _967 = int(_939 + 32u);
+            int _971 = int(_870 + 16u);
+            uvec2 _975 = uvec2(_936 + ivec2(_938, _967));
+            ivec2 _2052 = ivec2(_975);
+            uvec2 _2065 = uvec2(_2052 * ivec2(2));
+            float _4470;
+            do
+            {
+                if (all(lessThan(_2065, spdConstants.input_dims)))
+                {
+                    _4470 = texelFetch(imgSrc, ivec2(_2065), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4470 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2067 = _2065 + uvec2(0u, 1u);
+            float _4471;
+            do
+            {
+                if (all(lessThan(_2067, spdConstants.input_dims)))
+                {
+                    _4471 = texelFetch(imgSrc, ivec2(_2067), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4471 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2069 = _2065 + uvec2(1u, 0u);
+            float _4472;
+            do
+            {
+                if (all(lessThan(_2069, spdConstants.input_dims)))
+                {
+                    _4472 = texelFetch(imgSrc, ivec2(_2069), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4472 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2071 = _2065 + uvec2(1u);
+            float _4473;
+            do
+            {
+                if (all(lessThan(_2071, spdConstants.input_dims)))
+                {
+                    _4473 = texelFetch(imgSrc, ivec2(_2071), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4473 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2075 = min(min(_4470, _4471), min(_4472, _4473));
+            imageStore(imgDst[0], ivec2(uvec2(_2052)), vec4(_2075));
+            ivec2 _2054 = ivec2(_975 + uvec2(0u, 1u));
+            uvec2 _2176 = uvec2(_2054 * ivec2(2));
+            float _4474;
+            do
+            {
+                if (all(lessThan(_2176, spdConstants.input_dims)))
+                {
+                    _4474 = texelFetch(imgSrc, ivec2(_2176), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4474 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2178 = _2176 + uvec2(0u, 1u);
+            float _4475;
+            do
+            {
+                if (all(lessThan(_2178, spdConstants.input_dims)))
+                {
+                    _4475 = texelFetch(imgSrc, ivec2(_2178), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4475 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2180 = _2176 + uvec2(1u, 0u);
+            float _4476;
+            do
+            {
+                if (all(lessThan(_2180, spdConstants.input_dims)))
+                {
+                    _4476 = texelFetch(imgSrc, ivec2(_2180), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4476 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2182 = _2176 + uvec2(1u);
+            float _4477;
+            do
+            {
+                if (all(lessThan(_2182, spdConstants.input_dims)))
+                {
+                    _4477 = texelFetch(imgSrc, ivec2(_2182), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4477 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2186 = min(min(_4474, _4475), min(_4476, _4477));
+            imageStore(imgDst[0], ivec2(uvec2(_2054)), vec4(_2186));
+            ivec2 _2056 = ivec2(_975 + uvec2(1u, 0u));
+            uvec2 _2287 = uvec2(_2056 * ivec2(2));
+            float _4478;
+            do
+            {
+                if (all(lessThan(_2287, spdConstants.input_dims)))
+                {
+                    _4478 = texelFetch(imgSrc, ivec2(_2287), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4478 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2289 = _2287 + uvec2(0u, 1u);
+            float _4479;
+            do
+            {
+                if (all(lessThan(_2289, spdConstants.input_dims)))
+                {
+                    _4479 = texelFetch(imgSrc, ivec2(_2289), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4479 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2291 = _2287 + uvec2(1u, 0u);
+            float _4480;
+            do
+            {
+                if (all(lessThan(_2291, spdConstants.input_dims)))
+                {
+                    _4480 = texelFetch(imgSrc, ivec2(_2291), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4480 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2293 = _2287 + uvec2(1u);
+            float _4481;
+            do
+            {
+                if (all(lessThan(_2293, spdConstants.input_dims)))
+                {
+                    _4481 = texelFetch(imgSrc, ivec2(_2293), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4481 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2297 = min(min(_4478, _4479), min(_4480, _4481));
+            imageStore(imgDst[0], ivec2(uvec2(_2056)), vec4(_2297));
+            ivec2 _2058 = ivec2(_975 + uvec2(1u));
+            uvec2 _2398 = uvec2(_2058 * ivec2(2));
+            float _4482;
+            do
+            {
+                if (all(lessThan(_2398, spdConstants.input_dims)))
+                {
+                    _4482 = texelFetch(imgSrc, ivec2(_2398), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4482 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2400 = _2398 + uvec2(0u, 1u);
+            float _4483;
+            do
+            {
+                if (all(lessThan(_2400, spdConstants.input_dims)))
+                {
+                    _4483 = texelFetch(imgSrc, ivec2(_2400), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4483 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2402 = _2398 + uvec2(1u, 0u);
+            float _4484;
+            do
+            {
+                if (all(lessThan(_2402, spdConstants.input_dims)))
+                {
+                    _4484 = texelFetch(imgSrc, ivec2(_2402), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4484 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2404 = _2398 + uvec2(1u);
+            float _4485;
+            do
+            {
+                if (all(lessThan(_2404, spdConstants.input_dims)))
+                {
+                    _4485 = texelFetch(imgSrc, ivec2(_2404), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4485 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2408 = min(min(_4482, _4483), min(_4484, _4485));
+            imageStore(imgDst[0], ivec2(uvec2(_2058)), vec4(_2408));
+            float _2513 = min(min(_2075, _2186), min(_2297, _2408));
+            vec4 _2514 = vec4(_2513);
+            imageStore(imgDst[1u], ivec2(uvec2(_945 + ivec2(_946, _971))), _2514);
+            uvec2 _983 = uvec2(_936 + ivec2(_955, _967));
+            ivec2 _2543 = ivec2(_983);
+            uvec2 _2556 = uvec2(_2543 * ivec2(2));
+            float _4486;
+            do
+            {
+                if (all(lessThan(_2556, spdConstants.input_dims)))
+                {
+                    _4486 = texelFetch(imgSrc, ivec2(_2556), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4486 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2558 = _2556 + uvec2(0u, 1u);
+            float _4487;
+            do
+            {
+                if (all(lessThan(_2558, spdConstants.input_dims)))
+                {
+                    _4487 = texelFetch(imgSrc, ivec2(_2558), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4487 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2560 = _2556 + uvec2(1u, 0u);
+            float _4488;
+            do
+            {
+                if (all(lessThan(_2560, spdConstants.input_dims)))
+                {
+                    _4488 = texelFetch(imgSrc, ivec2(_2560), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4488 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2562 = _2556 + uvec2(1u);
+            float _4489;
+            do
+            {
+                if (all(lessThan(_2562, spdConstants.input_dims)))
+                {
+                    _4489 = texelFetch(imgSrc, ivec2(_2562), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4489 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2566 = min(min(_4486, _4487), min(_4488, _4489));
+            imageStore(imgDst[0], ivec2(uvec2(_2543)), vec4(_2566));
+            ivec2 _2545 = ivec2(_983 + uvec2(0u, 1u));
+            uvec2 _2667 = uvec2(_2545 * ivec2(2));
+            float _4490;
+            do
+            {
+                if (all(lessThan(_2667, spdConstants.input_dims)))
+                {
+                    _4490 = texelFetch(imgSrc, ivec2(_2667), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4490 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2669 = _2667 + uvec2(0u, 1u);
+            float _4491;
+            do
+            {
+                if (all(lessThan(_2669, spdConstants.input_dims)))
+                {
+                    _4491 = texelFetch(imgSrc, ivec2(_2669), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4491 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2671 = _2667 + uvec2(1u, 0u);
+            float _4492;
+            do
+            {
+                if (all(lessThan(_2671, spdConstants.input_dims)))
+                {
+                    _4492 = texelFetch(imgSrc, ivec2(_2671), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4492 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2673 = _2667 + uvec2(1u);
+            float _4493;
+            do
+            {
+                if (all(lessThan(_2673, spdConstants.input_dims)))
+                {
+                    _4493 = texelFetch(imgSrc, ivec2(_2673), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4493 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2677 = min(min(_4490, _4491), min(_4492, _4493));
+            imageStore(imgDst[0], ivec2(uvec2(_2545)), vec4(_2677));
+            ivec2 _2547 = ivec2(_983 + uvec2(1u, 0u));
+            uvec2 _2778 = uvec2(_2547 * ivec2(2));
+            float _4494;
+            do
+            {
+                if (all(lessThan(_2778, spdConstants.input_dims)))
+                {
+                    _4494 = texelFetch(imgSrc, ivec2(_2778), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4494 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2780 = _2778 + uvec2(0u, 1u);
+            float _4495;
+            do
+            {
+                if (all(lessThan(_2780, spdConstants.input_dims)))
+                {
+                    _4495 = texelFetch(imgSrc, ivec2(_2780), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4495 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2782 = _2778 + uvec2(1u, 0u);
+            float _4496;
+            do
+            {
+                if (all(lessThan(_2782, spdConstants.input_dims)))
+                {
+                    _4496 = texelFetch(imgSrc, ivec2(_2782), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4496 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2784 = _2778 + uvec2(1u);
+            float _4497;
+            do
+            {
+                if (all(lessThan(_2784, spdConstants.input_dims)))
+                {
+                    _4497 = texelFetch(imgSrc, ivec2(_2784), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4497 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2788 = min(min(_4494, _4495), min(_4496, _4497));
+            imageStore(imgDst[0], ivec2(uvec2(_2547)), vec4(_2788));
+            ivec2 _2549 = ivec2(_983 + uvec2(1u));
+            uvec2 _2889 = uvec2(_2549 * ivec2(2));
+            float _4498;
+            do
+            {
+                if (all(lessThan(_2889, spdConstants.input_dims)))
+                {
+                    _4498 = texelFetch(imgSrc, ivec2(_2889), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4498 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2891 = _2889 + uvec2(0u, 1u);
+            float _4499;
+            do
+            {
+                if (all(lessThan(_2891, spdConstants.input_dims)))
+                {
+                    _4499 = texelFetch(imgSrc, ivec2(_2891), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4499 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2893 = _2889 + uvec2(1u, 0u);
+            float _4500;
+            do
+            {
+                if (all(lessThan(_2893, spdConstants.input_dims)))
+                {
+                    _4500 = texelFetch(imgSrc, ivec2(_2893), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4500 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            uvec2 _2895 = _2889 + uvec2(1u);
+            float _4501;
+            do
+            {
+                if (all(lessThan(_2895, spdConstants.input_dims)))
+                {
+                    _4501 = texelFetch(imgSrc, ivec2(_2895), 0).x;
+                    break;
+                }
+                else
+                {
+                    _4501 = 1.0;
+                    break;
+                }
+                break; // unreachable workaround
+            } while(false);
+            float _2899 = min(min(_4498, _4499), min(_4500, _4501));
+            imageStore(imgDst[0], ivec2(uvec2(_2549)), vec4(_2899));
+            float _3004 = min(min(_2566, _2677), min(_2788, _2899));
+            vec4 _3005 = vec4(_3004);
+            imageStore(imgDst[1u], ivec2(uvec2(_945 + ivec2(_959, _971))), _3005);
+            if (spdConstants.mips <= 1u)
+            {
+                break;
+            }
+            uint _3029 = gl_SubgroupInvocationID & 4294967292u;
+            uint _3042 = uint(int(_3029 | 1u));
+            vec4 _3043 = subgroupShuffle(_1532, _3042);
+            uint _3046 = uint(int(_3029 | 2u));
+            vec4 _3047 = subgroupShuffle(_1532, _3046);
+            uint _3050 = uint(int(_3029 | 3u));
+            vec4 _3051 = subgroupShuffle(_1532, _3050);
+            float _3060 = min(min(_1531, _3043.x), min(_3047.x, _3051.x));
+            vec4 _3079 = subgroupShuffle(_2023, _3042);
+            vec4 _3083 = subgroupShuffle(_2023, _3046);
+            vec4 _3087 = subgroupShuffle(_2023, _3050);
+            float _3096 = min(min(_2022, _3079.x), min(_3083.x, _3087.x));
+            vec4 _3115 = subgroupShuffle(_2514, _3042);
+            vec4 _3119 = subgroupShuffle(_2514, _3046);
+            vec4 _3123 = subgroupShuffle(_2514, _3050);
+            float _3132 = min(min(_2513, _3115.x), min(_3119.x, _3123.x));
+            vec4 _3151 = subgroupShuffle(_3005, _3042);
+            vec4 _3155 = subgroupShuffle(_3005, _3046);
+            vec4 _3159 = subgroupShuffle(_3005, _3050);
+            float _3168 = min(min(_3004, _3151.x), min(_3155.x, _3159.x));
+            if ((gl_LocalInvocationIndex % 4u) == 0u)
+            {
+                ivec2 _1002 = ivec2(_933 * uvec2(16u));
+                uint _1003 = _866 / 2u;
+                int _1004 = int(_1003);
+                uint _1005 = _870 / 2u;
+                int _1006 = int(_1005);
+                imageStore(imgDst[2u], ivec2(uvec2(_1002 + ivec2(_1004, _1006))), vec4(_3060));
+                spdIntermediateR[_1003][_1005] = _3060;
+                uint _1016 = _1003 + 8u;
+                int _1017 = int(_1016);
+                imageStore(imgDst[2u], ivec2(uvec2(_1002 + ivec2(_1017, _1006))), vec4(_3096));
+                spdIntermediateR[_1016][_1005] = _3096;
+                uint _1032 = _1005 + 8u;
+                int _1033 = int(_1032);
+                imageStore(imgDst[2u], ivec2(uvec2(_1002 + ivec2(_1004, _1033))), vec4(_3132));
+                spdIntermediateR[_1003][_1032] = _3132;
+                imageStore(imgDst[2u], ivec2(uvec2(_1002 + ivec2(_1017, _1033))), vec4(_3168));
+                spdIntermediateR[_1016][_1032] = _3168;
+            }
+            break;
+        } while(false);
+        do
+        {
+            if (spdConstants.mips <= 2u)
+            {
+                break;
+            }
+            barrier();
+            vec4 _3316 = vec4(spdIntermediateR[_866][_870], 0.0, 0.0, 0.0);
+            uint _3320 = gl_SubgroupInvocationID & 4294967292u;
+            uint _3333 = uint(int(_3320 | 1u));
+            vec4 _3334 = subgroupShuffle(_3316, _3333);
+            uint _3337 = uint(int(_3320 | 2u));
+            vec4 _3338 = subgroupShuffle(_3316, _3337);
+            uint _3341 = uint(int(_3320 | 3u));
+            vec4 _3342 = subgroupShuffle(_3316, _3341);
+            float _3351 = min(min(spdIntermediateR[_866][_870], _3334.x), min(_3338.x, _3342.x));
+            bool _3293 = (gl_LocalInvocationIndex % 4u) == 0u;
+            if (_3293)
+            {
+                uint _3301 = _870 / 2u;
+                imageStore(imgDst[3u], ivec2(uvec2(ivec2(_933 * uvec2(8u)) + ivec2(int(_866 / 2u), int(_3301)))), vec4(_3351));
+                spdIntermediateR[_866 + (_3301 % 2u)][_870] = _3351;
+            }
+            if (spdConstants.mips <= 3u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 64u)
+            {
+                uint _3382 = _937 + (_870 % 2u);
+                vec4 _3410 = vec4(spdIntermediateR[_3382][_939], 0.0, 0.0, 0.0);
+                vec4 _3428 = subgroupShuffle(_3410, _3333);
+                vec4 _3432 = subgroupShuffle(_3410, _3337);
+                vec4 _3436 = subgroupShuffle(_3410, _3341);
+                float _3445 = min(min(spdIntermediateR[_3382][_939], _3428.x), min(_3432.x, _3436.x));
+                if (_3293)
+                {
+                    uint _3395 = _870 / 2u;
+                    imageStore(imgDst[4u], ivec2(uvec2(ivec2(_933 * uvec2(4u)) + ivec2(int(_866 / 2u), int(_3395)))), vec4(_3445));
+                    spdIntermediateR[_937 + _3395][_939] = _3445;
+                }
+            }
+            if (spdConstants.mips <= 4u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 16u)
+            {
+                uint _3475 = (_866 * 4u) + _870;
+                uint _3476 = _870 * 4u;
+                vec4 _3503 = vec4(spdIntermediateR[_3475][_3476], 0.0, 0.0, 0.0);
+                vec4 _3521 = subgroupShuffle(_3503, _3333);
+                vec4 _3525 = subgroupShuffle(_3503, _3337);
+                vec4 _3529 = subgroupShuffle(_3503, _3341);
+                float _3538 = min(min(spdIntermediateR[_3475][_3476], _3521.x), min(_3525.x, _3529.x));
+                if (_3293)
+                {
+                    uint _3486 = _866 / 2u;
+                    imageStore(imgDst[5u], ivec2(uvec2(ivec2(_933 * uvec2(2u)) + ivec2(int(_3486), int(_870 / 2u)))), vec4(_3538));
+                    spdIntermediateR[_3486 + _870][0u] = _3538;
+                }
+            }
+            if (spdConstants.mips <= 5u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 4u)
+            {
+                vec4 _3582 = vec4(spdIntermediateR[gl_LocalInvocationIndex][0u], 0.0, 0.0, 0.0);
+                vec4 _3600 = subgroupShuffle(_3582, _3333);
+                vec4 _3604 = subgroupShuffle(_3582, _3337);
+                vec4 _3608 = subgroupShuffle(_3582, _3341);
+                if (_3293)
+                {
+                    imageStore(imgDst6, ivec2(uvec2(ivec2(_933))), vec4(min(min(spdIntermediateR[gl_LocalInvocationIndex][0u], _3600.x), min(_3604.x, _3608.x))));
+                }
+            }
+            break;
+        } while(false);
+        if (spdConstants.mips <= 6u)
+        {
+            break;
+        }
+        if (gl_LocalInvocationIndex == 0u)
+        {
+            uint _3653 = atomicAdd(spdGlobalAtomic._member0[0].counter.data[gl_WorkGroupID.z], 1u);
+            spdCounter = _3653;
+        }
+        barrier();
+        if (spdCounter != (spdConstants.numWorkGroups - 1u))
+        {
+            break;
+        }
+        uint _3665;
+        uint _3667;
+        spdGlobalAtomic._member0[0].counter.data[gl_WorkGroupID.z] = 0u;
+        do
+        {
+            _3665 = _866 * 4u;
+            int _3666 = int(_3665);
+            _3667 = _870 * 4u;
+            int _3668 = int(_3667);
+            uvec2 _3675 = uvec2(ivec2(_3666, _3668));
+            vec4 _3733 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3675))));
+            vec4 _3741 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3675 + uvec2(0u, 1u)))));
+            vec4 _3749 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3675 + uvec2(1u, 0u)))));
+            vec4 _3757 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3675 + uvec2(1u)))));
+            float _3768 = min(min(_3733.x, _3741.x), min(_3749.x, _3757.x));
+            imageStore(imgDst[7u], ivec2(uvec2(_941)), vec4(_3768));
+            int _3679 = int(_3665 + 2u);
+            int _3682 = int(_937 + 1u);
+            uvec2 _3684 = uvec2(ivec2(_3679, _3668));
+            vec4 _3812 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3684))));
+            vec4 _3820 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3684 + uvec2(0u, 1u)))));
+            vec4 _3828 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3684 + uvec2(1u, 0u)))));
+            vec4 _3836 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3684 + uvec2(1u)))));
+            float _3847 = min(min(_3812.x, _3820.x), min(_3828.x, _3836.x));
+            imageStore(imgDst[7u], ivec2(uvec2(ivec2(_3682, _940))), vec4(_3847));
+            int _3688 = int(_3667 + 2u);
+            int _3691 = int(_939 + 1u);
+            uvec2 _3693 = uvec2(ivec2(_3666, _3688));
+            vec4 _3891 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3693))));
+            vec4 _3899 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3693 + uvec2(0u, 1u)))));
+            vec4 _3907 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3693 + uvec2(1u, 0u)))));
+            vec4 _3915 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3693 + uvec2(1u)))));
+            float _3926 = min(min(_3891.x, _3899.x), min(_3907.x, _3915.x));
+            imageStore(imgDst[7u], ivec2(uvec2(ivec2(_938, _3691))), vec4(_3926));
+            uvec2 _3698 = uvec2(ivec2(_3679, _3688));
+            vec4 _3970 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3698))));
+            vec4 _3978 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3698 + uvec2(0u, 1u)))));
+            vec4 _3986 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3698 + uvec2(1u, 0u)))));
+            vec4 _3994 = imageLoad(imgDst6, ivec2(uvec2(ivec2(_3698 + uvec2(1u)))));
+            float _4005 = min(min(_3970.x, _3978.x), min(_3986.x, _3994.x));
+            imageStore(imgDst[7u], ivec2(uvec2(ivec2(_3682, _3691))), vec4(_4005));
+            if (spdConstants.mips <= 7u)
+            {
+                break;
+            }
+            float _4035 = min(min(_3768, _3847), min(_3926, _4005));
+            imageStore(imgDst[8u], ivec2(uvec2(_948)), vec4(_4035));
+            spdIntermediateR[_866][_870] = _4035;
+            break;
+        } while(false);
+        do
+        {
+            if (spdConstants.mips <= 8u)
+            {
+                break;
+            }
+            barrier();
+            vec4 _4111 = vec4(spdIntermediateR[_866][_870], 0.0, 0.0, 0.0);
+            uint _4115 = gl_SubgroupInvocationID & 4294967292u;
+            uint _4128 = uint(int(_4115 | 1u));
+            vec4 _4129 = subgroupShuffle(_4111, _4128);
+            uint _4132 = uint(int(_4115 | 2u));
+            vec4 _4133 = subgroupShuffle(_4111, _4132);
+            uint _4136 = uint(int(_4115 | 3u));
+            vec4 _4137 = subgroupShuffle(_4111, _4136);
+            float _4146 = min(min(spdIntermediateR[_866][_870], _4129.x), min(_4133.x, _4137.x));
+            bool _4088 = (gl_LocalInvocationIndex % 4u) == 0u;
+            if (_4088)
+            {
+                uint _4096 = _870 / 2u;
+                imageStore(imgDst[9u], ivec2(uvec2(ivec2(int(_866 / 2u), int(_4096)))), vec4(_4146));
+                spdIntermediateR[_866 + (_4096 % 2u)][_870] = _4146;
+            }
+            if (spdConstants.mips <= 9u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 64u)
+            {
+                uint _4177 = _937 + (_870 % 2u);
+                vec4 _4205 = vec4(spdIntermediateR[_4177][_939], 0.0, 0.0, 0.0);
+                vec4 _4223 = subgroupShuffle(_4205, _4128);
+                vec4 _4227 = subgroupShuffle(_4205, _4132);
+                vec4 _4231 = subgroupShuffle(_4205, _4136);
+                float _4240 = min(min(spdIntermediateR[_4177][_939], _4223.x), min(_4227.x, _4231.x));
+                if (_4088)
+                {
+                    uint _4190 = _870 / 2u;
+                    imageStore(imgDst[10u], ivec2(uvec2(ivec2(int(_866 / 2u), int(_4190)))), vec4(_4240));
+                    spdIntermediateR[_937 + _4190][_939] = _4240;
+                }
+            }
+            if (spdConstants.mips <= 10u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 16u)
+            {
+                uint _4270 = _3665 + _870;
+                vec4 _4298 = vec4(spdIntermediateR[_4270][_3667], 0.0, 0.0, 0.0);
+                vec4 _4316 = subgroupShuffle(_4298, _4128);
+                vec4 _4320 = subgroupShuffle(_4298, _4132);
+                vec4 _4324 = subgroupShuffle(_4298, _4136);
+                float _4333 = min(min(spdIntermediateR[_4270][_3667], _4316.x), min(_4320.x, _4324.x));
+                if (_4088)
+                {
+                    uint _4281 = _866 / 2u;
+                    imageStore(imgDst[11u], ivec2(uvec2(ivec2(int(_4281), int(_870 / 2u)))), vec4(_4333));
+                    spdIntermediateR[_4281 + _870][0u] = _4333;
+                }
+            }
+            if (spdConstants.mips <= 11u)
+            {
+                break;
+            }
+            barrier();
+            if (gl_LocalInvocationIndex < 4u)
+            {
+                vec4 _4377 = vec4(spdIntermediateR[gl_LocalInvocationIndex][0u], 0.0, 0.0, 0.0);
+                vec4 _4395 = subgroupShuffle(_4377, _4128);
+                vec4 _4399 = subgroupShuffle(_4377, _4132);
+                vec4 _4403 = subgroupShuffle(_4377, _4136);
+                if (_4088)
+                {
+                    imageStore(imgDst[12u], ivec2(uvec2(0u)), vec4(min(min(spdIntermediateR[gl_LocalInvocationIndex][0u], _4395.x), min(_4399.x, _4403.x))));
+                }
+            }
+            break;
+        } while(false);
+        break;
+    } while(false);
+}
+

@@ -1,0 +1,299 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1537,
+    "record_offset": 30644,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.ekr4wi6s5agwnach7cvlaf14r.1ryv1cn.rcgu.o",
+    "name": "system_wall_constructor::construct_wooden_walls::construct_wall_boards::classify_region_orientation",
+    "segment": 1,
+    "offset": 21520816,
+    "rva": 21524912,
+    "va": "0x1414871b0",
+    "size": 827,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "4c8290a1a22b9e0317103934e773d54b48346b03121e925b8b4d78b4251de5f2",
+  "code_bytes": 827,
+  "decoded_bytes": 827,
+  "instructions": 166,
+  "calls_and_jumps": [
+    {
+      "address": "0x141487211",
+      "kind": "call",
+      "target": "0x141483090",
+      "target_names": [
+        "system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallSampler::sample_pair_at",
+        "_ZN23system_wall_constructor22construct_wooden_walls21construct_wall_boards11WallSampler14sample_pair_at17h3845de2e9feb8b12E.llvm.1951817906911489466"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141487265",
+      "kind": "jmp",
+      "target": "0x14148748e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414872ce",
+      "kind": "call",
+      "target": "0x141483090",
+      "target_names": [
+        "system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallSampler::sample_pair_at",
+        "_ZN23system_wall_constructor22construct_wooden_walls21construct_wall_boards11WallSampler14sample_pair_at17h3845de2e9feb8b12E.llvm.1951817906911489466"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141487322",
+      "kind": "jmp",
+      "target": "0x14148748e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141487378",
+      "kind": "call",
+      "target": "0x141483090",
+      "target_names": [
+        "system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallSampler::sample_pair_at",
+        "_ZN23system_wall_constructor22construct_wooden_walls21construct_wall_boards11WallSampler14sample_pair_at17h3845de2e9feb8b12E.llvm.1951817906911489466"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414873d0",
+      "kind": "jmp",
+      "target": "0x1414873ec",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14148745e",
+      "kind": "call",
+      "target": "0x141483320",
+      "target_names": [
+        "system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallSampler::tangent_between",
+        "_ZN23system_wall_constructor22construct_wooden_walls21construct_wall_boards11WallSampler15tangent_between17h94037a3038e25e59E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141487485",
+      "kind": "call",
+      "target": "0x141421a50",
+      "target_names": [
+        "_ZN102_$LT$core..iter..adapters..map..Map$LT$I$C$F$GT$$u20$as$u20$core..iter..traits..iterator..Iterator$GT$8try_fold17ha1aa4ba32826026bE",
+        "core::iter::adapters::map::impl$2::try_fold<glam::f32::vec2::Vec2,core::array::iter::IntoIter<f32,3>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::region_is_straightish::closure_env$0,tuple$<>,core::iter::traits::iterator::Iterator::all::check::closure_env$0<glam::f32::vec2::Vec2,system_wall_constructor::construct_wooden_walls::construct_wall_boards::region_is_straightish::closure_env$1>,enum2$<core::ops::control_flow::ControlFlow<tuple$<>,tuple$<> > > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414874cb",
+      "kind": "call",
+      "target": "0x140deec10",
+      "target_names": [
+        "utils::geometry::aabb::Aabb2::width",
+        "_ZN5utils8geometry4aabb5Aabb25width17he30e90b5e741e6fbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414874d6",
+      "kind": "call",
+      "target": "0x140deec50",
+      "target_names": [
+        "utils::geometry::aabb::Aabb2::height",
+        "_ZN5utils8geometry4aabb5Aabb26height17h160a2c40e4ab2359E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414874e9",
+      "kind": "jmp",
+      "target": "0x141487490",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x141487223",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x141487257",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x14148726a",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x141487272",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x14148729e",
+      "target": "0x142f684a8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bd4ccccd"
+      ],
+      "bytes_hex": "cdcc4cbd0000000000007f430000803f00007f4300007f434d84ed3f00000000"
+    },
+    {
+      "address": "0x1414872b9",
+      "target": "0x142e36f50",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f000000"
+      ],
+      "bytes_hex": "0000003f0000000000000000000000000000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x1414872e0",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x141487314",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x141487327",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x14148732f",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x14148735b",
+      "target": "0x142f684a8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bd4ccccd"
+      ],
+      "bytes_hex": "cdcc4cbd0000000000007f430000803f00007f4300007f434d84ed3f00000000"
+    },
+    {
+      "address": "0x14148738a",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x1414873be",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x1414873d2",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    },
+    {
+      "address": "0x1414873da",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x141487407",
+      "target": "0x142f684a8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bd4ccccd"
+      ],
+      "bytes_hex": "cdcc4cbd0000000000007f430000803f00007f4300007f434d84ed3f00000000"
+    },
+    {
+      "address": "0x14148743f",
+      "target": "0x14300d240",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bc23d70a"
+      ],
+      "bytes_hex": "0ad723bc000000000000000000000000000000000000803f0000000000000080"
+    },
+    {
+      "address": "0x14148744b",
+      "target": "0x142e37848",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3c23d70a"
+      ],
+      "bytes_hex": "0ad7233c6f1283ba6f12833a6f12833a00000000000000000000a0400000a040"
+    },
+    {
+      "address": "0x1414874df",
+      "target": "0x142e36f50",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f000000"
+      ],
+      "bytes_hex": "0000003f0000000000000000000000000000003f0000003f0000000000000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

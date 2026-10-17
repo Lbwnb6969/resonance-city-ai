@@ -1,0 +1,197 @@
+[
+  {
+    "decompiled": "decompiled/0x142704460.c",
+    "fields": [
+      {
+        "string_va": "0x1435895d0",
+        "field": "start",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x1435895c5",
+        "field": "count",
+        "cpu_input": "param_2+ 4"
+      },
+      {
+        "string_va": "0x1435895ca",
+        "field": "bounds",
+        "cpu_input": "param_2+ 8"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled/0x142704590.c",
+    "fields": [
+      {
+        "string_va": "0x1435895dd",
+        "field": "world_albedo_tint",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x1435895ee",
+        "field": "wind_wave_scale",
+        "cpu_input": "param_2+ 0x30"
+      },
+      {
+        "string_va": "0x1435895fd",
+        "field": "height_scale_min",
+        "cpu_input": "param_2+ 0x34"
+      },
+      {
+        "string_va": "0x14358960d",
+        "field": "height_scale_max",
+        "cpu_input": "param_2+ 0x38"
+      },
+      {
+        "string_va": "0x14358961d",
+        "field": "xz_scale_min",
+        "cpu_input": "param_2+ 0x3c"
+      },
+      {
+        "string_va": "0x143589629",
+        "field": "xz_scale_max",
+        "cpu_input": "param_2+ 0x40"
+      },
+      {
+        "string_va": "0x143589635",
+        "field": "exemplars",
+        "cpu_input": "param_2+ 0x18"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled/0x142704760.c",
+    "fields": [
+      {
+        "string_va": "0x14358963e",
+        "field": "color_texture",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x14358964b",
+        "field": "normal_texture",
+        "cpu_input": "param_2+ 0x10"
+      },
+      {
+        "string_va": "0x143589659",
+        "field": "albedo_style_scale",
+        "cpu_input": "param_2+ 0x20"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled/0x142704890.c",
+    "fields": [
+      {
+        "string_va": "0x1435894c8",
+        "field": "card_direction_lut",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x1435894a8",
+        "field": "card_point_attrib_palette_albedo",
+        "cpu_input": "param_2+ 0x10"
+      },
+      {
+        "string_va": "0x143589488",
+        "field": "card_point_attrib_palette_normal",
+        "cpu_input": "param_2+ 0x20"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled/0x1427049c0.c",
+    "fields": [
+      {
+        "string_va": "0x1435894da",
+        "field": "radius_xz",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x1435894e3",
+        "field": "center_y",
+        "cpu_input": "param_2+ 4"
+      },
+      {
+        "string_va": "0x1435894eb",
+        "field": "half_y",
+        "cpu_input": "param_2+ 8"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled/0x142704af0.c",
+    "fields": [
+      {
+        "string_va": "0x143589519",
+        "field": "lod0_mesh_name",
+        "cpu_input": "param_2+ 0x10"
+      },
+      {
+        "string_va": "0x143589575",
+        "field": "lod0_mesh",
+        "cpu_input": "param_2"
+      },
+      {
+        "string_va": "0x1435895c0",
+        "field": "max_y",
+        "cpu_input": "param_2+ 0xb8"
+      },
+      {
+        "string_va": "0x143589561",
+        "field": "card_point_positions",
+        "cpu_input": "param_2+ 0x28"
+      },
+      {
+        "string_va": "0x143589597",
+        "field": "card_point_plant_offsets",
+        "cpu_input": "param_2+ 0x40"
+      },
+      {
+        "string_va": "0x1435895af",
+        "field": "card_point_pieces",
+        "cpu_input": "param_2+ 0x58"
+      },
+      {
+        "string_va": "0x14358953c",
+        "field": "card_point_piece_groups",
+        "cpu_input": "param_2+ 0x70"
+      },
+      {
+        "string_va": "0x143589527",
+        "field": "cull_bounds",
+        "cpu_input": "param_2+ 0xbc"
+      },
+      {
+        "string_va": "0x143589532",
+        "field": "lod0_parts",
+        "cpu_input": "param_2+ 0x88"
+      },
+      {
+        "string_va": "0x143589553",
+        "field": "shadow_opacity",
+        "cpu_input": "param_2+ 200"
+      },
+      {
+        "string_va": "0x14358957e",
+        "field": "card_point_attrib_indices",
+        "cpu_input": "param_2+ 0xa0"
+      }
+    ]
+  },
+  {
+    "decompiled": "decompiled2/0x142710500.c",
+    "fields": [
+      {
+        "string_va": "0x14358950e",
+        "field": "first_piece",
+        "cpu_input": "lVar6"
+      },
+      {
+        "string_va": "0x143589503",
+        "field": "piece_count",
+        "cpu_input": "lVar6+ 4"
+      }
+    ]
+  }
+]

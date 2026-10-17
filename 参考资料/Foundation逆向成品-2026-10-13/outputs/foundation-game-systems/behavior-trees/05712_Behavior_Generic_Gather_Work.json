@@ -1,0 +1,479 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Generic Gather Work.bt",
+  "absolute_offset": 2262410,
+  "length": 10322,
+  "sha256": "444d0c1db6c55b0b1a1ef4578a937aec485ec516077df54d7f73281f2b88652f",
+  "rid": 5712,
+  "root_id": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Build Workplace",
+        "IsPublic": false,
+        "Id": "2e64d02f-639c-458a-86e5-6543066d0a39",
+        "TypeDefinition": "PlaSContextDataSubtree",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataSubtree"
+          },
+          "Subtree": "0bbd942b-b387-4780-a4bb-eab8701072a6"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "GatheringData",
+        "IsPublic": false,
+        "Id": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+        "TypeDefinition": "PlaSGatheringData",
+        "DefaultValue": {
+          "type": "PlaSGatheringData"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gathering Wait",
+        "IsPublic": false,
+        "Id": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "resource position",
+        "IsPublic": false,
+        "Id": "34039163-54cf-4fc4-8568-ead25eae7ef8",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Depot Position",
+        "IsPublic": false,
+        "Id": "85e8d045-36ae-41d9-8fdd-4039161b78ba",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": true,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Nothing to do",
+        "IsPublic": false,
+        "Id": "0c5290d0-7ca3-4b14-92b8-16e6858f8c6c",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 1.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "LeavingToWorkPath",
+        "IsPublic": false,
+        "Id": "4a65bf15-2917-42d0-b951-5c5d7926ac8b",
+        "TypeDefinition": "PlaSContextDataBuildingPathType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataBuildingPathType"
+          },
+          "FromPathType": "WORK",
+          "ToPathType": "DEFAULT"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "BackToWorkplacePath",
+        "IsPublic": false,
+        "Id": "47e63985-acf5-44eb-9a90-ac7c77437876",
+        "TypeDefinition": "PlaSContextDataBuildingPathType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataBuildingPathType"
+          },
+          "FromPathType": "DEFAULT",
+          "ToPathType": "WORK"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "around resource position",
+        "IsPublic": false,
+        "Id": "6e56e8c9-14f8-4273-ba22-39b0e4427d55",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gather steps count\t",
+        "IsPublic": false,
+        "Id": "884b0980-ed45-445a-b0ec-bf1ad2ce89eb",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gather in one step",
+        "IsPublic": false,
+        "Id": "1ff77e54-4ce2-4cff-a98b-58c8842e11b2",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Should look at ressource",
+        "IsPublic": false,
+        "Id": "75ed91ca-3941-43ad-b524-349733d381eb",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ShouldGiveXP",
+        "IsPublic": false,
+        "Id": "30e32c78-e964-4db1-87c8-f8b712614ace",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Gathered",
+        "IsPublic": false,
+        "Id": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+        "TypeDefinition": "PlaSContextDataResourceProduction",
+        "DefaultValue": {
+          "type": "PlaSContextDataResourceProduction"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport To Depot",
+        "IsPublic": false,
+        "Id": "43bf0de4-f2f4-4142-b102-9b2460ce1a66",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "RestrictGatherToOwnedTerritory",
+        "IsPublic": true,
+        "Id": "9dd5d538-f1bd-454e-875c-fee1be1da02a",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "false",
+        "IsPublic": false,
+        "Id": "d0cb0548-5589-45dc-836d-44c47375867b",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        642,
+        231
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "4345cd56-fee2-4c67-a1a2-b5d944de8e26",
+      "name": "Getting XP",
+      "type": "PlaCAgentNodeGiveJobXP",
+      "position": [
+        945,
+        374
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Should Receive Xp",
+          "value": "30e32c78-e964-4db1-87c8-f8b712614ace",
+          "binding_status": "variable",
+          "variable_name": "ShouldGiveXP"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "6e289eb8-ad78-4caa-9ae3-4136958af1fc",
+      "name": "Start Production",
+      "type": "PlaCAgentNodeStartWorkShift",
+      "position": [
+        342,
+        367
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "b3e8b5f6-e876-41a2-a322-6fa7b42c1333",
+      "name": "Finish Production",
+      "type": "PlaCAgentNodeFinishWorkShift",
+      "position": [
+        1218,
+        374
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "d1e211c9-b62b-48ef-add9-1f2d6cc3c546",
+      "name": "",
+      "type": "48193fcd-40bf-4206-b529-031f3cafadb7",
+      "position": [
+        579,
+        373
+      ],
+      "behavior_asset_targets": [
+        [
+          5710,
+          "asset/Agent/Behaviors/Job/Behavior Gather.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "RestrictGatherToOwnedTerritory",
+          "value": "9dd5d538-f1bd-454e-875c-fee1be1da02a",
+          "binding_status": "variable",
+          "variable_name": "RestrictGatherToOwnedTerritory"
+        },
+        {
+          "name": "Should Receive XP",
+          "value": "30e32c78-e964-4db1-87c8-f8b712614ace",
+          "binding_status": "variable",
+          "variable_name": "ShouldGiveXP"
+        },
+        {
+          "name": "Is Gathering For Production",
+          "value": "d0cb0548-5589-45dc-836d-44c47375867b",
+          "binding_status": "variable",
+          "variable_name": "false"
+        }
+      ],
+      "data": {
+        "Guid": "d1e211c9-b62b-48ef-add9-1f2d6cc3c546",
+        "BehaviorTree": "48193fcd-40bf-4206-b529-031f3cafadb7"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "6e289eb8-ad78-4caa-9ae3-4136958af1fc",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "d1e211c9-b62b-48ef-add9-1f2d6cc3c546",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "4345cd56-fee2-4c67-a1a2-b5d944de8e26",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "b3e8b5f6-e876-41a2-a322-6fa7b42c1333",
+      "ordinal": 3,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

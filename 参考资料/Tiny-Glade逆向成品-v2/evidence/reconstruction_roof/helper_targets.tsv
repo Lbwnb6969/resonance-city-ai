@@ -1,0 +1,11 @@
+0x140b73b80	299	country_core::resources::roofs::roof_visual_shape::get_roof_expanded_top_and_bottom
+0x140b73b40	49	country_core::resources::roofs::roof_visual_shape::RoofBoundsDims::as_circle
+0x142802660	454	utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >
+0x140deff30	14	utils::geometry::circle::Circle2d::perimeter
+0x140e02880	56	fastrand::Rng::f32
+0x140de8290	296	utils::random_splits
+0x140def2c0	181	utils::geometry::circle::Circle2d::get_pos_at_u
+0x140def5e0	135	utils::geometry::circle::Circle2d::get_normal_at_u
+0x1424e5b90	57	utils::halver::impl$7::to_f16
+0x140df4560	86	utils::halver::impl$5::to_f16
+0x140080c90	682	utils::curve::Curve::try_new_from_points<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>

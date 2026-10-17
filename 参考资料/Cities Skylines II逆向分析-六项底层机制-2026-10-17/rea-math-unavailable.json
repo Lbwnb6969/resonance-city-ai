@@ -1,0 +1,67 @@
+{
+  "evidence_id": "ev_3b6a166c1c85fa8b83e4d6dbece9e93e936ebc34b06c5e7d60a1700240d60fba",
+  "subject": {
+    "name": "D:\\SteamLibrary\\steamapps\\common\\Cities Skylines II\\Cities2_Data\\Managed\\Unity.Mathematics.dll",
+    "digest": {
+      "sha256": "f8c037b71d2bb4496ddab30b79d8840f5a32f0738a1547ba5534e5b43254c9b8"
+    },
+    "format": "pe",
+    "architecture": "x86",
+    "local_path": "D:\\SteamLibrary\\steamapps\\common\\Cities Skylines II\\Cities2_Data\\Managed\\Unity.Mathematics.dll"
+  },
+  "provider": {
+    "id": "rea-dotnet-static",
+    "name": "REA managed static analysis provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_managed_members",
+  "parameters": {
+    "path": "D:\\SteamLibrary\\steamapps\\common\\Cities Skylines II\\Cities2_Data\\Managed\\Unity.Mathematics.dll"
+  },
+  "raw_result": {
+    "retained_subset": true,
+    "note": "Selected methods only; complete provider result not reproduced."
+  },
+  "normalized_result": {
+    "artifact": {
+      "path": "D:\\SteamLibrary\\steamapps\\common\\Cities Skylines II\\Cities2_Data\\Managed\\Unity.Mathematics.dll",
+      "sha256": "f8c037b71d2bb4496ddab30b79d8840f5a32f0738a1547ba5534e5b43254c9b8",
+      "byte_length": 752128,
+      "format": "pe"
+    },
+    "coverage": {
+      "state": "unavailable",
+      "issues": [
+        {
+          "code": "resource-limit",
+          "scope": "metadata.representation",
+          "offset": 222298,
+          "detail": "Managed metadata exceeds the 67108864 byte representation budget"
+        }
+      ]
+    },
+    "metadata": {
+      "status": "partial",
+      "version": null,
+      "table_row_counts": {}
+    },
+    "module": null,
+    "methods": [],
+    "types": []
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The CLI metadata could not be admitted; managed member inspection is unavailable."
+  ],
+  "locations": [
+    {
+      "kind": "file-offset",
+      "offset": 0
+    }
+  ],
+  "evidence_links": []
+}

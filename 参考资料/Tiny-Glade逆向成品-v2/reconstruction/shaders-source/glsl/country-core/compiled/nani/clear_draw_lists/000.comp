@@ -1,0 +1,54 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_vector_uint_4_34
+{
+    uvec4 data[34];
+};
+
+layout(set = 0, binding = 0, std140) uniform InstanceListOffset_natural
+{
+    _Array_natural_vector_uint_4_34 array;
+} instance_list_offset;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} instance_indirection_allocator_buffer;
+
+layout(set = 0, binding = 3, std430) buffer filtered_instance_allocator_buffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer_1;
+
+layout(set = 0, binding = 1, std430) buffer draw_list_length_buffer
+{
+    uint _member0[];
+} draw_list_length_buffer_1;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    uint sublist_bits;
+} entryPointParams;
+
+void main()
+{
+    bool _127;
+    if (gl_GlobalInvocationID.x < 136u)
+    {
+        _127 = ((1u << (gl_GlobalInvocationID.x % 4u)) & entryPointParams.sublist_bits) != 0u;
+    }
+    else
+    {
+        _127 = false;
+    }
+    if (_127)
+    {
+        uint _115 = gl_GlobalInvocationID.x / 4u;
+        uint _118 = gl_GlobalInvocationID.x % 4u;
+        instance_indirection_allocator_buffer._member0[gl_GlobalInvocationID.x] = instance_list_offset.array.data[_115][_118];
+        filtered_instance_allocator_buffer_1._member0[gl_GlobalInvocationID.x] = instance_list_offset.array.data[_115][_118];
+        draw_list_length_buffer_1._member0[gl_GlobalInvocationID.x] = 0u;
+    }
+}
+

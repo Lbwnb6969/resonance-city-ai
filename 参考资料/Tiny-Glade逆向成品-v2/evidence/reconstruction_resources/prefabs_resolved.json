@@ -1,0 +1,1485 @@
+{
+  "prefabs": [
+    {
+      "name": "clearing/naked_tree/large",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/large.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "olden_tree_large"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/naked_tree/naked1",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/naked1.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "naked_tree_1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/naked_tree/naked1_no_mushrooms",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/naked1_no_mushrooms.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "naked_tree_1_no_mushrooms"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/naked_tree/naked2",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/naked2.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "naked_tree_2"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/naked_tree/naked2_lowpoly",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/naked2_lowpoly.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "naked_tree_2_lowpoly"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/naked_tree/naked2_no_mushrooms",
+      "sources": [
+        "assets/prefabs/clearing/naked_tree/default.ron",
+        "assets/prefabs/clearing/naked_tree/naked2_no_mushrooms.ron"
+      ],
+      "config": {
+        "parts": {
+          "trunk": {
+            "render": {
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "naked_tree_2_no_mushrooms"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/branchy1",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/branchy1.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "branchy_tree_v1"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "branchy_tree_v1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/branchy2",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/branchy2.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "branchy_tree_v2"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "branchy_tree_v2"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/bush",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/bush.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "bush"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "bush"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/far",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/far.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "far_distance_tree"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "far_distance_tree"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/mid1",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/mid1.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_distance_tree_v1"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_distance_tree_v1_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/mid2",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/mid2.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_distance_tree_v2"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_distance_tree_v2_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/mid3",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/mid3.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v3"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v3_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/mid4",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/mid4.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v4"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v4_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/autumn/mid5",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/autumn/default.ron",
+        "assets/prefabs/clearing/tree/autumn/mid5.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v5"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v5_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/branchy1",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/branchy1.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "branchy_tree_v1"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "branchy_tree_v1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/branchy2",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/branchy2.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "branchy_tree_v2"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "branchy_tree_v2"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/bush",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/bush.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "bush"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "bush"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/far",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/far.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "far_distance_tree"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "far_distance_tree"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/mid1",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/mid1.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_distance_tree_v1"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_distance_tree_v1_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/mid2",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/mid2.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_distance_tree_v2"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_distance_tree_v2_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/mid3",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/mid3.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v3"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v3_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/mid4",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/mid4.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v4"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v4_trunk"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "clearing/tree/mid5",
+      "sources": [
+        "assets/prefabs/clearing/tree/default.ron",
+        "assets/prefabs/clearing/tree/mid5.ron"
+      ],
+      "config": {
+        "parts": {
+          "canopy": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_canopy"
+                }
+              },
+              "shader": "country_core/clearing/tree_canopy",
+              "mesh": "mid_tree_v5"
+            },
+            "rt": {
+              "mesh": {
+                "$variant": "Aabb"
+              },
+              "mesh_scale": [
+                0.8,
+                0.8,
+                0.8
+              ],
+              "summer_albedo": [
+                0.09,
+                0.18,
+                0.06
+              ],
+              "autumn_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "winter_albedo": [
+                0.18,
+                0.12,
+                0.06
+              ],
+              "semantic": {
+                "$variant": "Canopy"
+              }
+            },
+            "audio": {
+              "trigger": {
+                "shape": {
+                  "$variant": "Aabb"
+                },
+                "shape_scale": [
+                  0.8,
+                  1.0,
+                  0.8
+                ],
+                "kind": "Tree"
+              }
+            }
+          },
+          "trunk": {
+            "render": {
+              "mesh_processor": {
+                "$variant": "Code",
+                "$value": {
+                  "name": "extract_trunk"
+                }
+              },
+              "shader": "country_core/clearing/tree_trunk",
+              "mesh": "mid_tree_v5_trunk"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "count": 24,
+  "scope": "All shipped assets/prefabs RON implicit values; extended Inheritable reset syntax is not supported."
+}

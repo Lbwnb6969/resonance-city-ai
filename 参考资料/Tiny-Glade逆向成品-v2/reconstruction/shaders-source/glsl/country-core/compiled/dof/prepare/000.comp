@@ -1,0 +1,179 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct DofAutofocus_natural
+{
+    float focus0;
+    float focus1;
+    float lock_bias0;
+    float lock_bias1;
+    vec3 lock_pos_ws;
+    uint is_locked;
+    vec3 interp_lock_pos_ws;
+    uint use_tilt_shift;
+    float interp_lock_bias0;
+    float interp_lock_bias1;
+    float focus_scale;
+    uint pad2;
+};
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 depth_tex_dims;
+    uvec2 coc_out_tex_dims;
+    uvec2 tile_output_tex_dims;
+} globalParams;
+
+layout(set = 4, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 3, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 2, std430) readonly buffer StructuredBuffer
+{
+    DofAutofocus_natural _member0[];
+} autofocus_buf;
+
+layout(set = 0, binding = 1) uniform texture2D depth_tex;
+layout(set = 0, binding = 4, rg16f) uniform writeonly image2D tile_output_tex;
+layout(set = 0, binding = 3, r16f) uniform writeonly image2D coc_out_tex;
+
+shared uint min_abs_coc_asuint;
+shared uint max_abs_coc_asuint;
+
+void main()
+{
+    bool _22 = 0u == gl_LocalInvocationIndex;
+    if (_22)
+    {
+        min_abs_coc_asuint = 1343554297u;
+        max_abs_coc_asuint = 0u;
+    }
+    barrier();
+    float _48 = float(globalParams.depth_tex_dims.y);
+    vec4 _507 = (vec4((((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / vec2(globalParams.coc_out_tex_dims)) - vec2(0.5)) * vec2(2.0, -2.0), max(9.9999996826552253889678874634872e-21, texelFetch(depth_tex, ivec2(gl_GlobalInvocationID.xy), 0).x), 1.0) * current_view.sample_to_view) * current_view.view_to_world;
+    vec3 _520 = _507.xyz / vec3(_507.w);
+    float _236 = autofocus_buf._member0[frame_constants.camera_idx].focus_scale;
+    float _551 = 1.0 / autofocus_buf._member0[frame_constants.camera_idx].focus0;
+    float _554 = 1.0 / autofocus_buf._member0[frame_constants.camera_idx].focus1;
+    float _557 = max(0.001000000047497451305389404296875, max(_551, _554)) + 9.9999997473787516355514526367188e-06;
+    float _560 = max(0.001000000047497451305389404296875, min(_551, _554)) - 9.9999997473787516355514526367188e-06;
+    bool _563 = autofocus_buf._member0[frame_constants.camera_idx].use_tilt_shift != 0u;
+    _520.y = _520.y * float(_563 ? 0 : 1);
+    vec4 _627 = vec4(0.0, 0.0, 0.0, 1.0) * current_view.view_to_world;
+    vec3 _638 = normalize((vec4(0.0, 0.0, -1.0, 0.0) * current_view.view_to_world).xyz);
+    float _566 = 1.0 / max(1.0000000133514319600180897396058e-10, dot(_520 - (_627.xyz / vec3(_627.w)), _638));
+    float _567 = _557 - _560;
+    float _569 = min(0.00999999977648258209228515625, 0.0500000007450580596923828125 * _567);
+    float _715;
+    if (_566 > _557)
+    {
+        _715 = (_566 - _557) + _569;
+    }
+    else
+    {
+        float _716;
+        if (_566 < _560)
+        {
+            _716 = (_566 - _560) - _569;
+        }
+        else
+        {
+            _716 = (-_569) + (((2.0 * _569) * (_566 - _560)) / _567);
+        }
+        _715 = _716;
+    }
+    float _717;
+    if (_563)
+    {
+        _717 = _715 / max(0.00999999977648258209228515625, length(_638.xz));
+    }
+    else
+    {
+        _717 = _715;
+    }
+    float _597 = -_717;
+    float coc = (_48 * 0.001388888922519981861114501953125) * ((_597 * _236) * current_view.view_to_clip[1].y);
+    uint _426 = floatBitsToUint(min(_48 * 0.0416666679084300994873046875, abs(coc)));
+    uint _428 = atomicMin(min_abs_coc_asuint, _426);
+    uint _431 = atomicMax(max_abs_coc_asuint, _426);
+    barrier();
+    if (_22)
+    {
+        imageStore(tile_output_tex, ivec2(gl_GlobalInvocationID.xy / uvec2(8u)), vec4(uintBitsToFloat(min_abs_coc_asuint), uintBitsToFloat(max_abs_coc_asuint), 0.0, 0.0));
+    }
+    imageStore(coc_out_tex, ivec2(gl_GlobalInvocationID.xy), vec4(coc));
+}
+

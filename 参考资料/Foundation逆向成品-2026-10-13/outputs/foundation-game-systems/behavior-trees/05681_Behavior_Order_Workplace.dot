@@ -1,0 +1,12 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Ordering workplace",shape=box];
+  n1 [label="Going to building site",shape=box];
+  n2 [label="Show workplace",shape=box];
+  n3 [label="GamCBehaviorTreeNodeCompositeSelector",shape=doubleoctagon];
+  n4 [label="Waiting",shape=box];
+  n0 -> n1 [label="0"];
+  n0 -> n2 [label="1"];
+  n3 -> n0 [label="2"];
+  n3 -> n4 [label="3"];
+}

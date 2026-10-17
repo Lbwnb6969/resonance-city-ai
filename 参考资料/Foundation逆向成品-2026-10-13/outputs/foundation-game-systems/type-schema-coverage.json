@@ -1,0 +1,9 @@
+{
+  "declared_asset_types": 391,
+  "schema_entries": 391,
+  "v2_attribute_schema_types": 390,
+  "types_without_v2_attributes": [
+    "EdiCAssetShaderAssembly"
+  ],
+  "notes": "EdiCAssetShaderAssembly is a shader assembly payload outside v2 object serializer; its empty attribute schema is explicit, not a missing scan."
+}

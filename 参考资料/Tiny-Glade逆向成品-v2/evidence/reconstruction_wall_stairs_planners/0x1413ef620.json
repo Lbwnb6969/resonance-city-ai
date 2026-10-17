@@ -1,0 +1,235 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1457,
+    "record_offset": 164860,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.0x6cxvd0phhg4sehdgrjbnaqr.1ryv1cn.rcgu.o",
+    "name": "alloc::vec::spec_from_iter::impl$0::from_iter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,core::iter::adapters::flatten::FlatMap<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0> >",
+    "segment": 1,
+    "offset": 20899360,
+    "rva": 20903456,
+    "va": "0x1413ef620",
+    "size": 1159,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "8725e11195af095cd5347bee26655e155305c5a0e5a09ae4cbcd9b6a51a63294",
+  "code_bytes": 1159,
+  "decoded_bytes": 1159,
+  "instructions": 305,
+  "calls_and_jumps": [
+    {
+      "address": "0x1413ef65b",
+      "kind": "call",
+      "target": "0x1413e5580",
+      "target_names": [
+        "core::iter::adapters::flatten::impl$3::next<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef6a5",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef6d8",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef6dd",
+      "kind": "jmp",
+      "target": "0x1413ef9a2",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef733",
+      "kind": "jmp",
+      "target": "0x1413ef756",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef760",
+      "kind": "jmp",
+      "target": "0x1413ef768",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef796",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef7b6",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef7c8",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef7d8",
+      "kind": "jmp",
+      "target": "0x1413ef7e2",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef82a",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef847",
+      "kind": "jmp",
+      "target": "0x1413ef883",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef889",
+      "kind": "call",
+      "target": "0x1413e5580",
+      "target_names": [
+        "core::iter::adapters::flatten::impl$3::next<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef8dd",
+      "kind": "jmp",
+      "target": "0x1413ef8ff",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef906",
+      "kind": "jmp",
+      "target": "0x1413ef90e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef929",
+      "kind": "call",
+      "target": "0x142d7f1b0",
+      "target_names": [
+        "alloc::raw_vec::impl$4::reserve::do_reserve_and_handle<alloc::alloc::Global>",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h0559268ff9d2f5acE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h08aab91c2625ec70E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h1faba4037fd73c02E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h3d101bfcb576e41dE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h3f559247af00609aE",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h4dd79c47cb035037E",
+        "_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h4eddda47aeb62982E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef936",
+      "kind": "jmp",
+      "target": "0x1413ef850",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef95b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef987",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413ef9fd",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413efa5d",
+      "kind": "call",
+      "target": "0x1413fff50",
+      "target_names": [
+        "core::ptr::drop_in_place<core::iter::adapters::flatten::FlatMap<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0> >",
+        "_ZN4core3ptr498drop_in_place$LT$core..iter..adapters..flatten..FlatMap$LT$core..iter..adapters..enumerate..Enumerate$LT$core..array..iter..IntoIter$LT$system_wall_constructor..construct_wooden_walls..construct_wall_boards..WallspaceXRange$C$4_usize$GT$$GT$$C$alloc..vec..Vec$LT$system_wall_constructor..construct_wooden_walls..construct_wall_boards..WallspaceRegion$GT$$C$system_wall_constructor..construct_wooden_walls..construct_wall_boards..plan_rectangle_wallspace_regions..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17h37a7ef41a792d377E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413efa62",
+      "kind": "jmp",
+      "target": "0x1413efa45",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1413efa90",
+      "kind": "call",
+      "target": "0x1413fff50",
+      "target_names": [
+        "core::ptr::drop_in_place<core::iter::adapters::flatten::FlatMap<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0> >",
+        "_ZN4core3ptr498drop_in_place$LT$core..iter..adapters..flatten..FlatMap$LT$core..iter..adapters..enumerate..Enumerate$LT$core..array..iter..IntoIter$LT$system_wall_constructor..construct_wooden_walls..construct_wall_boards..WallspaceXRange$C$4_usize$GT$$GT$$C$alloc..vec..Vec$LT$system_wall_constructor..construct_wooden_walls..construct_wall_boards..WallspaceRegion$GT$$C$system_wall_constructor..construct_wooden_walls..construct_wall_boards..plan_rectangle_wallspace_regions..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17h37a7ef41a792d377E"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

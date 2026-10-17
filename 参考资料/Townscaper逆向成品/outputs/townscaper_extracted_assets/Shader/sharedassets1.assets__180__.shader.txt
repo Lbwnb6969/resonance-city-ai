@@ -1,0 +1,44 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Placemaker/Shade" {
+Properties {
+
+_Color ("Color", Color) = (1,1,1,1)
+
+_ReadMask ("Read Mask", Float) = 1.0
+
+_WriteMask ("Write Mask", Float) = 1.0
+
+_Ref ("Ref", Float) = 0.0
+
+_Comp ("Comp", Float) = 0.0
+
+_Pass ("Pass", Float) = 0.0
+
+_Fail ("Fail", Float) = 0.0
+
+}
+SubShader {
+ LOD 100
+ Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" }
+ Pass {
+  LOD 100
+  Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" }
+ ZWrite Off
+  GpuProgramID 65251
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

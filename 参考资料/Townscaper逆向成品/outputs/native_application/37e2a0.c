@@ -1,0 +1,13 @@
+// RVA 0x37e2a0 | Placemaker.Ui.BaseButton$$get_disabled
+// PDB: ZMBRQYVHDJhCWDpXmCzHMCZAOAFY_get_valueChanged_m9F7A2838C80790BF8AABC96487829052BC3A65BB
+// Body: [[1037e2a0, 1037e2aa]]
+// Direct callees:
+
+bool __cdecl
+ZMBRQYVHDJhCWDpXmCzHMCZAOAFY_get_valueChanged_m9F7A2838C80790BF8AABC96487829052BC3A65BB
+          (ZMBRQYVHDJhCWDpXmCzHMCZAOAFY_tF3BB229E96F97B19749BC27D58F9C70F41D9E2B2 *param_1,
+          MethodInfo *param_2)
+
+{
+  return param_1->___wgfVPMrHexwnHYGVPTOdZKNJblZ_4;
+}

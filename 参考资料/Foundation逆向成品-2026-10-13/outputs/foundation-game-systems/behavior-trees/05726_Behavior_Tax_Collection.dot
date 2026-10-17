@@ -1,0 +1,34 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=box];
+  n1 [label="Repeater",shape=box];
+  n2 [label="GoTo",shape=box];
+  n3 [label="Waiting",shape=box];
+  n4 [label="GoTo",shape=box];
+  n5 [label="Waiting",shape=box];
+  n6 [label="Sequencer",shape=doubleoctagon];
+  n7 [label="Sequencer",shape=box];
+  n8 [label="PlaCAgentNodeSetWorkplaceAsDestination",shape=box];
+  n9 [label="PlaCAgentNodeDeliverTaxes",shape=box];
+  n10 [label="GoTo",shape=box];
+  n11 [label="PlaCAgentNodeFindNextCollectableBuilding",shape=box];
+  n12 [label="PlaCAgentNodeCollectBuilding",shape=box];
+  n13 [label="Selector",shape=box];
+  n14 [label="Sequencer",shape=box];
+  n15 [label="PlaCAgentNodeCancelCollectorVisit",shape=box];
+  n0 -> n11 [label="0"];
+  n0 -> n13 [label="1"];
+  n1 -> n0 [label="2"];
+  n6 -> n7 [label="3"];
+  n6 -> n1 [label="4"];
+  n6 -> n10 [label="5"];
+  n6 -> n9 [label="6"];
+  n7 -> n8 [label="7"];
+  n7 -> n4 [label="8"];
+  n7 -> n5 [label="9"];
+  n13 -> n14 [label="10"];
+  n13 -> n15 [label="11"];
+  n14 -> n2 [label="12"];
+  n14 -> n3 [label="13"];
+  n14 -> n12 [label="14"];
+}

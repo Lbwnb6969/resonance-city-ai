@@ -1,0 +1,10 @@
+flowchart TD
+  n0["Go to resource"]
+  n1["GamCBehaviorTreeNodeDecoratorRepeat"]
+  n2["GamCBehaviorTreeNodeCompositeSequencer"]
+  n3["Change Privilege"]
+  n4["PlaCAgentNodeSetupChangePrivilege"]
+  n1 -->|0| n2
+  n2 -->|1| n4
+  n2 -->|2| n0
+  n2 -->|3| n3

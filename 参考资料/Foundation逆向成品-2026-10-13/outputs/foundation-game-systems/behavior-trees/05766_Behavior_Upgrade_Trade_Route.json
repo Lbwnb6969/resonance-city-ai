@@ -1,0 +1,465 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Mandates/Behavior Upgrade Trade Route.bt",
+  "absolute_offset": 2520349,
+  "length": 7448,
+  "sha256": "dbff06693eef855e565bb3aa3d80f8cd7b8b55fa1229341321eab771d5daaf70",
+  "rid": 5766,
+  "root_id": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "VillageExit",
+        "IsPublic": false,
+        "Id": "d20ecde0-e7ec-4118-8d1c-80b67f7d0153",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Origin",
+        "IsPublic": false,
+        "Id": "fe559622-570d-4d83-94fb-5ac663cc3d43",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NegotiateTimer",
+        "IsPublic": false,
+        "Id": "6e422a52-e55f-4544-8afd-24f601975922",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "isUnavailable",
+        "IsPublic": false,
+        "Id": "080b02b1-8252-4f00-8483-073633080ff7",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "isAvailable",
+        "IsPublic": false,
+        "Id": "b931f90c-e35d-45ff-a5e2-1e367189bbd3",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "True",
+        "IsPublic": false,
+        "Id": "593e1b83-24db-4bc2-bcc4-7c42778af9fd",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -31,
+        -41
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "ff783c0b-208e-46cd-ae5a-1b55b37e9120",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -351,
+        176
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "d20ecde0-e7ec-4118-8d1c-80b67f7d0153",
+          "binding_status": "variable",
+          "variable_name": "VillageExit"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "a1b8d7d5-0a38-4362-acd1-e28b19e315cf",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        263,
+        174
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "fe559622-570d-4d83-94fb-5ac663cc3d43",
+          "binding_status": "variable",
+          "variable_name": "Origin"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "96a8316a-1238-4eff-b9f8-272ee27fd489",
+      "name": "",
+      "type": "PlaCAgentNodeSetUnavailable",
+      "position": [
+        -352,
+        419
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Is Unavailable Data",
+          "value": "080b02b1-8252-4f00-8483-073633080ff7",
+          "binding_status": "variable",
+          "variable_name": "isUnavailable"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "3fc4c40b-df66-4375-a063-319751832eed",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeNegotiatingTrades",
+      "position": [
+        -71,
+        420
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "6e422a52-e55f-4544-8afd-24f601975922",
+          "binding_status": "variable",
+          "variable_name": "NegotiateTimer"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "3fc4c40b-df66-4375-a063-319751832eed",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "c8815c4b-0252-40cb-b9be-a204744ec841",
+      "name": "",
+      "type": "PlaCAgentNodeSetUnavailable",
+      "position": [
+        290,
+        415
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Is Unavailable Data",
+          "value": "b931f90c-e35d-45ff-a5e2-1e367189bbd3",
+          "binding_status": "variable",
+          "variable_name": "isAvailable"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "3a2e941a-ad2b-4978-9b35-23048551229a",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        10,
+        227
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "32deac3b-edb5-498d-8c51-e752cc5a30b6",
+      "name": "",
+      "type": "PlaCAgentNodeCompleteMandate",
+      "position": [
+        634,
+        180
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "56a72074-4825-4a71-be93-d1c45268d052",
+      "name": "",
+      "type": "PlaCAgentNodeSetupTravelingForMandate",
+      "position": [
+        -670,
+        178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "3bc0a09d-c387-4d2f-b7f4-3eb0c360827e",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "d20ecde0-e7ec-4118-8d1c-80b67f7d0153",
+          "binding_status": "variable",
+          "variable_name": "VillageExit"
+        },
+        {
+          "name": "Origin",
+          "value": "fe559622-570d-4d83-94fb-5ac663cc3d43",
+          "binding_status": "variable",
+          "variable_name": "Origin"
+        },
+        {
+          "name": "Waiting Time Needed",
+          "value": "6e422a52-e55f-4544-8afd-24f601975922",
+          "binding_status": "variable",
+          "variable_name": "NegotiateTimer"
+        },
+        {
+          "name": "Is Exit",
+          "value": "593e1b83-24db-4bc2-bcc4-7c42778af9fd",
+          "binding_status": "variable",
+          "variable_name": "True"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "to": "56a72074-4825-4a71-be93-d1c45268d052",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "to": "ff783c0b-208e-46cd-ae5a-1b55b37e9120",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "to": "3a2e941a-ad2b-4978-9b35-23048551229a",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "to": "a1b8d7d5-0a38-4362-acd1-e28b19e315cf",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "d6f7cbcf-57d1-4eb9-9493-bd78f33768ee",
+      "to": "32deac3b-edb5-498d-8c51-e752cc5a30b6",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "3a2e941a-ad2b-4978-9b35-23048551229a",
+      "to": "96a8316a-1238-4eff-b9f8-272ee27fd489",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "3a2e941a-ad2b-4978-9b35-23048551229a",
+      "to": "3fc4c40b-df66-4375-a063-319751832eed",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "3a2e941a-ad2b-4978-9b35-23048551229a",
+      "to": "c8815c4b-0252-40cb-b9be-a204744ec841",
+      "ordinal": 7,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

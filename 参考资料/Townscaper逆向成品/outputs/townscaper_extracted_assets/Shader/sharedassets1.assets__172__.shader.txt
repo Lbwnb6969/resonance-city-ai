@@ -1,0 +1,36 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Placemaker/Fence" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+_TypeTex ("Type Texture", 2D) = "white" { }
+
+_Color ("Color", Color) = (1,1,1,1)
+
+}
+SubShader {
+ LOD 100
+ Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" "Shadow" = "Fence" }
+ Pass {
+  LOD 100
+  Tags { "QUEUE" = "Geometry+1" "RenderType" = "Opaque" "Shadow" = "Fence" }
+ AlphaToMask On
+  GpuProgramID 63002
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

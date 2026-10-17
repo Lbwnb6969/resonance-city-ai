@@ -1,0 +1,39 @@
+{
+  "numerical": {
+    "vectors": 4,
+    "status": "pass"
+  },
+  "native_functions": [
+    {
+      "address": "0x140b20150",
+      "symbol": "grass2_card_splat",
+      "size": 3594,
+      "sha256": "cdd66f69484a1d4b62ce952d6b81ae863f8064f56cc369ce3b46fdb2d381bd64",
+      "contains_shader_orchestration": true
+    },
+    {
+      "address": "0x140b20f60",
+      "symbol": "grass2_compute_main",
+      "size": 1674,
+      "sha256": "f2e4a7395639e148e452a66c9703a4258dc1d71aac0d826099981bd0dfbf608c",
+      "contains_shader_orchestration": true
+    },
+    {
+      "address": "0x140b215f0",
+      "symbol": "grass2_compute_shadow",
+      "size": 1626,
+      "sha256": "2350e926068a17524d7fa60306866437b13019829630dfc988d48ffe88cac829",
+      "contains_shader_orchestration": true
+    }
+  ],
+  "shader": {
+    "path": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-13\\new-chat\\outputs\\tiny-glade-analysis\\reconstruction\\shaders-source\\glsl\\country-core\\compiled\\grass2\\card_splats\\000.comp",
+    "sha256": "63efdfdf6a1d40b565779caa5969735f7d2187aedf9fb732f0a084ed8637445d",
+    "source_checks": {
+      "world_scale": true,
+      "terrain_range": true,
+      "wind_coeff": true,
+      "removal_hash": true
+    }
+  }
+}

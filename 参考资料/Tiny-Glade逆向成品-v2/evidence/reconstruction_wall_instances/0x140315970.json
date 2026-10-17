@@ -1,0 +1,28 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x110f",
+    "stream": 4357,
+    "record_offset": 9660,
+    "module": "ring-df120e3a90451a17.ring.4cb61f01414b50fd-cgu.05.rcgu.o",
+    "name": "ring::rsa::padding::impl$1::digest_alg",
+    "segment": 1,
+    "offset": 3230064,
+    "rva": 3234160,
+    "va": "0x140315970",
+    "size": 4,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "92ca7142687bd5513bea360e328ca1c00c3c3a9b71ffdda7bfc2407de7693978",
+  "code_bytes": 4,
+  "decoded_bytes": 4,
+  "instructions": 2,
+  "calls_and_jumps": [],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

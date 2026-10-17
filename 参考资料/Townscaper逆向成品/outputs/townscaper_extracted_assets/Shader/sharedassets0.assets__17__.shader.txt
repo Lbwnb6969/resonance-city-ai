@@ -1,0 +1,47 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Placemaker/Skybox" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+}
+SubShader {
+ Tags { "PreviewType" = "Skybox" "QUEUE" = "Background" "RenderType" = "Background" }
+ Pass {
+  Tags { "PreviewType" = "Skybox" "QUEUE" = "Background" "RenderType" = "Background" }
+ ZWrite Off
+ Cull Off
+  GpuProgramID 9699
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+ Pass {
+  Tags { "PreviewType" = "Skybox" "QUEUE" = "Background" "RenderType" = "Background" }
+ ZWrite Off
+ Cull Off
+  GpuProgramID 98260
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

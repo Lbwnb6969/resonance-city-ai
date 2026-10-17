@@ -1,0 +1,72 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 img_in_dims;
+    int is_horizontal;
+    float sigma;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D img_in;
+layout(set = 0, binding = 2, r32f) uniform writeonly image2D img_out;
+
+void main()
+{
+    int KERNEL_RADIUS = int(ceil(globalParams.sigma * 2.0));
+    int _54 = -KERNEL_RADIUS;
+    float _180;
+    float _181;
+    _181 = 0.0;
+    _180 = 0.0;
+    float weight_sum;
+    int i;
+    float _188;
+    int _179 = _54;
+    for (;;)
+    {
+        if (!(_179 <= KERNEL_RADIUS))
+        {
+            break;
+        }
+        ivec2 _71 = ivec2(gl_GlobalInvocationID.xy);
+        ivec2 _182;
+        if (!(globalParams.is_horizontal != 0))
+        {
+            _182 = _71 + ivec2(0, _179);
+        }
+        else
+        {
+            _182 = _71 + ivec2(_179, 0);
+        }
+        vec4 sampled = texelFetch(img_in, ivec2(uvec2(clamp(_182, ivec2(0), ivec2(globalParams.img_in_dims) - ivec2(1)))), 0);
+        float _106 = sampled.x;
+        float _108 = float(_179);
+        float _178 = exp(((-_108) * _108) / ((2.0 * globalParams.sigma) * globalParams.sigma));
+        _188 = _181;
+        float _134;
+        uint c;
+        uint _184 = 0u;
+        for (;;)
+        {
+            if (!(_184 < 1u))
+            {
+                break;
+            }
+            _134 = _188 + (_106 * _178);
+            c = _184 + 1u;
+            _188 = _134;
+            _184 = c;
+            continue;
+        }
+        weight_sum = _180 + _178;
+        i = _179 + 1;
+        _181 = _188;
+        _180 = weight_sum;
+        _179 = i;
+        continue;
+    }
+    imageStore(img_out, ivec2(uvec2(ivec2(gl_GlobalInvocationID.xy))), vec4(_181 / _180));
+}
+

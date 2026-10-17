@@ -1,0 +1,361 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Need/Behavior Process Needs.bt",
+  "absolute_offset": 2562353,
+  "length": 6943,
+  "sha256": "d11b63ba22691cf2364bcf0e3cca77e8585b92dedcb46295f669f76d1f66773f",
+  "rid": 5777,
+  "root_id": "0e5013c7-0337-4633-9d12-2ea26447a785",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "1e3f8da7-c403-488f-9501-1579a4bca1bc",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "CurrentNeedIndex",
+        "IsPublic": true,
+        "Id": "a4ed0346-4424-4fba-a711-b0f8e69b925e",
+        "TypeDefinition": "PlaSContextDataIndex",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataIndex"
+          },
+          "Index": 0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "SubTreeInstance",
+        "IsPublic": false,
+        "Id": "77396676-84f8-4b21-9cc5-916e04633652",
+        "TypeDefinition": "PlaSContextDataSubTreeInstance",
+        "DefaultValue": {
+          "type": "PlaSContextDataSubTreeInstance"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WaitTime",
+        "IsPublic": false,
+        "Id": "75434280-1291-46ea-b67c-fef22a75d313",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.5,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NeedInstance",
+        "IsPublic": false,
+        "Id": "dc33f044-10a1-4459-b2af-e6e8c51a39f6",
+        "TypeDefinition": "PlaSContextDataAgentNeed",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgentNeed"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ResourceToConsume",
+        "IsPublic": false,
+        "Id": "8b892b65-26e2-4e89-a51d-f6d31f7895a8",
+        "TypeDefinition": "PlaSContextDataResource",
+        "DefaultValue": {
+          "type": "PlaSContextDataResource"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Log",
+        "IsPublic": false,
+        "Id": "2edfe0a2-95cb-4792-ae7f-3a04e10a1c4e",
+        "TypeDefinition": "GamSBehaviorTreeLogData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLogData"
+          },
+          "EntryLog": "Enter need tree",
+          "ExitLog": "Exit need tree"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ConsumptionData",
+        "IsPublic": false,
+        "Id": "031b9764-655d-4ce2-9b78-5b170b08719b",
+        "TypeDefinition": "PlaSContextDataResourceConsumption",
+        "DefaultValue": {
+          "type": "PlaSContextDataResourceConsumption"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "DebugVariable",
+        "IsPublic": false,
+        "Id": "929cd55f-f713-4003-a3da-fc4d60b1d7c0",
+        "TypeDefinition": "PlaSContextDataDebugValue",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataDebugValue"
+          },
+          "Variable": "UTILITY",
+          "IsTrue": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "DebugVariableFalse",
+        "IsPublic": false,
+        "Id": "71c058a5-07a5-4b60-b198-79521822bf38",
+        "TypeDefinition": "PlaSContextDataDebugValue",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataDebugValue"
+          },
+          "Variable": "UTILITY",
+          "IsTrue": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentProcessNeed",
+        "IsPublic": false,
+        "Id": "41cb4d0f-19ce-431f-9d81-84c2b98fda94",
+        "TypeDefinition": "PlaSContextDataAgentProcessNeed",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgentProcessNeed"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "NeedOrderRandom",
+        "IsPublic": true,
+        "Id": "2e156894-f115-4ad6-a9f5-d728d0f47708",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "ff6c7861-1224-4635-b6d4-bf4027e50960",
+      "name": "Execute Subtree",
+      "type": "PlaCAgentNodeExecuteSubtree",
+      "position": [
+        330,
+        512
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Sub Tree Instance",
+          "value": "77396676-84f8-4b21-9cc5-916e04633652",
+          "binding_status": "variable",
+          "variable_name": "SubTreeInstance"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "2cebf6bb-3639-43ad-8a4a-dc2abc629c13",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        333,
+        415
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "23208e4d-880f-4aa6-ae28-14f0fc5c466a",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        54,
+        178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "23208e4d-880f-4aa6-ae28-14f0fc5c466a",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "b8e0e4e6-bd20-4df7-9a33-8e53d2ab1eab",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        111,
+        294
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "0e5013c7-0337-4633-9d12-2ea26447a785",
+      "name": "Log",
+      "type": "GamCBehaviorTreeNodeDecoratorLog",
+      "position": [
+        90,
+        -133
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Log Data",
+          "value": "2edfe0a2-95cb-4792-ae7f-3a04e10a1c4e",
+          "binding_status": "variable",
+          "variable_name": "Log"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "5c434464-9f89-4547-85e7-562fd34ce516",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        90,
+        -19
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "35e035ca-ba3c-4ad5-aff7-05cc5a013447",
+      "name": "Setup Agent Need",
+      "type": "PlaCAgentNodeSetupNeedSubtree",
+      "position": [
+        -44,
+        437
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "1e3f8da7-c403-488f-9501-1579a4bca1bc",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Sub Tree Instance",
+          "value": "77396676-84f8-4b21-9cc5-916e04633652",
+          "binding_status": "variable",
+          "variable_name": "SubTreeInstance"
+        },
+        {
+          "name": "Agent Process Need Data",
+          "value": "41cb4d0f-19ce-431f-9d81-84c2b98fda94",
+          "binding_status": "variable",
+          "variable_name": "AgentProcessNeed"
+        },
+        {
+          "name": "Is Need Order Random",
+          "value": "2e156894-f115-4ad6-a9f5-d728d0f47708",
+          "binding_status": "variable",
+          "variable_name": "NeedOrderRandom"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "2cebf6bb-3639-43ad-8a4a-dc2abc629c13",
+      "to": "ff6c7861-1224-4635-b6d4-bf4027e50960",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "23208e4d-880f-4aa6-ae28-14f0fc5c466a",
+      "to": "b8e0e4e6-bd20-4df7-9a33-8e53d2ab1eab",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "b8e0e4e6-bd20-4df7-9a33-8e53d2ab1eab",
+      "to": "35e035ca-ba3c-4ad5-aff7-05cc5a013447",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "b8e0e4e6-bd20-4df7-9a33-8e53d2ab1eab",
+      "to": "2cebf6bb-3639-43ad-8a4a-dc2abc629c13",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "0e5013c7-0337-4633-9d12-2ea26447a785",
+      "to": "5c434464-9f89-4547-85e7-562fd34ce516",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "5c434464-9f89-4547-85e7-562fd34ce516",
+      "to": "23208e4d-880f-4aa6-ae28-14f0fc5c466a",
+      "ordinal": 5,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

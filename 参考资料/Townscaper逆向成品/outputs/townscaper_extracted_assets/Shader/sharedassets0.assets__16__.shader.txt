@@ -1,0 +1,62 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "PlacemakerUi/DistanceFieldUi" {
+Properties {
+
+_MainTex ("Texture", 2D) = "white" { }
+
+[KeywordEnum(Alpha, Monochrome, Multi, Palette)] _MODE ("Mode", Float) = 0.0
+
+}
+SubShader {
+ LOD 100
+ Tags { "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ Pass {
+  LOD 100
+  Tags { "QUEUE" = "Transparent" "RenderType" = "Transparent" }
+ ZTest Always
+ ZWrite Off
+ Cull Off
+  GpuProgramID 61860
+Program "vp" {
+SubProgram "d3d11 " {
+Keywords { "_MODE_ALPHA" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_MONOCHROME" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_MULTI" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_PALETTE" }
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+Keywords { "_MODE_ALPHA" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_MONOCHROME" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_MULTI" }
+"// shader disassembly not supported on DXBC"
+}
+SubProgram "d3d11 " {
+Keywords { "_MODE_PALETTE" }
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

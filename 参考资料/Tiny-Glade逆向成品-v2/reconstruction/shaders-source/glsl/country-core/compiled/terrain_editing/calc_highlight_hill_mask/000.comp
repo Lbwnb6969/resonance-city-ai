@@ -1,0 +1,35 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    uvec2 stroke_indices_dims;
+    int highlight_stroke_index;
+    uvec2 img_out_dims;
+} globalParams;
+
+layout(set = 0, binding = 2, r16f) uniform writeonly image2D img_out;
+layout(set = 0, binding = 1) uniform itexture2D stroke_indices;
+
+void main()
+{
+    if (globalParams.highlight_stroke_index == (-1))
+    {
+        imageStore(img_out, ivec2(uvec2(ivec2(gl_GlobalInvocationID.xy))), vec4(0.0));
+    }
+    else
+    {
+        ivec2 _50 = ivec2(gl_GlobalInvocationID.xy);
+        if (texelFetch(stroke_indices, ivec2(uvec2(ivec2((((vec2(130.0) * (((vec2(_50) + vec2(0.5)) / vec2(ivec2(globalParams.img_out_dims))) - vec2(0.5))).xyy * vec3(0.0076923076994717121124267578125)) + vec3(0.5)).xz * vec2(ivec2(globalParams.stroke_indices_dims))))), 0).x == globalParams.highlight_stroke_index)
+        {
+            imageStore(img_out, ivec2(uvec2(_50)), vec4(1.0));
+        }
+        else
+        {
+            imageStore(img_out, ivec2(uvec2(_50)), vec4(0.0));
+        }
+    }
+}
+

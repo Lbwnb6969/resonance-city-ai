@@ -1,0 +1,116 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+#if defined(GL_EXT_control_flow_attributes)
+#extension GL_EXT_control_flow_attributes : require
+#define SPIRV_CROSS_FLATTEN [[flatten]]
+#define SPIRV_CROSS_BRANCH [[dont_flatten]]
+#define SPIRV_CROSS_UNROLL [[unroll]]
+#define SPIRV_CROSS_LOOP [[dont_unroll]]
+#else
+#define SPIRV_CROSS_FLATTEN
+#define SPIRV_CROSS_BRANCH
+#define SPIRV_CROSS_UNROLL
+#define SPIRV_CROSS_LOOP
+#endif
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 input_tex_dims;
+    uvec2 history_tex_dims;
+    uvec2 reprojection_tex_dims;
+    uvec2 final_output_tex_dims;
+    uvec2 history_output_tex_dims;
+    int history_valid;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D input_tex;
+layout(set = 0, binding = 3) uniform texture2D reprojection_tex;
+layout(set = 1, binding = 0) uniform sampler samplers_lnc;
+layout(set = 0, binding = 2) uniform texture2D history_tex;
+layout(set = 0, binding = 5, r8) uniform writeonly image2D history_output_tex;
+layout(set = 0, binding = 4, r8) uniform writeonly image2D final_output_tex;
+
+void main()
+{
+    bool _53 = globalParams.history_valid != 0;
+    vec4 _245;
+    if (_53)
+    {
+        vec4 sampled = texelFetch(input_tex, ivec2(gl_GlobalInvocationID.xy), 0);
+        vec4 _244;
+        if (_53)
+        {
+            _244 = textureLod(sampler2D(history_tex, samplers_lnc), ((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / vec2(globalParams.input_tex_dims)) + texelFetch(reprojection_tex, ivec2(gl_GlobalInvocationID.xy), 0).xy, 0.0);
+        }
+        else
+        {
+            _244 = sampled;
+        }
+        vec4 _240;
+        float _241;
+        vec4 _242;
+        _242 = vec4(0.0);
+        _241 = 0.0;
+        _240 = vec4(0.0);
+        int y;
+        vec4 _248;
+        vec4 _249;
+        float _250;
+        int _239 = -1;
+        SPIRV_CROSS_UNROLL
+        for (;;)
+        {
+            if (!(_239 <= 1))
+            {
+                break;
+            }
+            _250 = _241;
+            _249 = _242;
+            _248 = _240;
+            vec4 vsum;
+            vec4 vsum2;
+            float wsum;
+            int x;
+            int _246 = -1;
+            SPIRV_CROSS_UNROLL
+            for (;;)
+            {
+                if (!(_246 <= 1))
+                {
+                    break;
+                }
+                vec4 sampled_1 = texelFetch(input_tex, ivec2(gl_GlobalInvocationID.xy + uvec2(ivec2(_246, _239) * ivec2(2))), 0);
+                float _154 = exp(float((_246 * _246) + (_239 * _239)) * (-0.75));
+                vsum = _248 + (sampled_1 * _154);
+                vsum2 = _249 + ((sampled_1 * sampled_1) * _154);
+                wsum = _250 + _154;
+                x = _246 + 1;
+                _250 = wsum;
+                _249 = vsum2;
+                _248 = vsum;
+                _246 = x;
+                continue;
+            }
+            y = _239 + 1;
+            _242 = _249;
+            _241 = _250;
+            _240 = _248;
+            _239 = y;
+            continue;
+        }
+        vec4 _184 = vec4(_241);
+        vec4 ex = _240 / _184;
+        vec4 _194 = mix(sampled, ex, vec4(0.25));
+        vec4 _198 = (sqrt(max(vec4(0.0), (_242 / _184) - (ex * ex))) * 0.5) * 5.0;
+        _245 = mix(clamp(_244, _194 - _198, _194 + _198), sampled, vec4(0.125));
+    }
+    else
+    {
+        _245 = texelFetch(input_tex, ivec2(gl_GlobalInvocationID.xy), 0);
+    }
+    vec4 res = vec4(_245.x);
+    imageStore(history_output_tex, ivec2(gl_GlobalInvocationID.xy), res);
+    imageStore(final_output_tex, ivec2(gl_GlobalInvocationID.xy), res);
+}
+

@@ -1,0 +1,93 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 water_mask_dims;
+    uvec2 out_water_mask_dims;
+    int is_horizontal;
+    float sigma;
+    int output_channel;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D water_mask;
+layout(set = 0, binding = 2, rgba16f) uniform image2D out_water_mask;
+
+void main()
+{
+    int KERNEL_RADIUS = int(ceil(globalParams.sigma * 2.0));
+    int _53 = -KERNEL_RADIUS;
+    float _203;
+    float _204;
+    _204 = 0.0;
+    _203 = 0.0;
+    int i;
+    float _213;
+    float _214;
+    int _202 = _53;
+    for (;;)
+    {
+        if (!(_202 <= KERNEL_RADIUS))
+        {
+            break;
+        }
+        ivec2 _70 = ivec2(gl_GlobalInvocationID.xy);
+        bool _76 = globalParams.is_horizontal != 0;
+        ivec2 _205;
+        if (!_76)
+        {
+            _205 = _70 + ivec2(0, _202);
+        }
+        else
+        {
+            _205 = _70 + ivec2(_202, 0);
+        }
+        uvec2 _90 = uvec2(_205);
+        if (all(lessThan(_90, globalParams.water_mask_dims)))
+        {
+            float _99 = float(_202);
+            float _201 = exp(((-_99) * _99) / ((2.0 * globalParams.sigma) * globalParams.sigma));
+            float _210;
+            if (_76)
+            {
+                _210 = _203 + (texelFetch(water_mask, ivec2(_90), 0).x * _201);
+            }
+            else
+            {
+                _210 = _203 + (texelFetch(water_mask, ivec2(_90), 0).y * _201);
+            }
+            _214 = _204 + _201;
+            _213 = _210;
+        }
+        else
+        {
+            _214 = _204;
+            _213 = _203;
+        }
+        i = _202 + 1;
+        _204 = _214;
+        _203 = _213;
+        _202 = i;
+        continue;
+    }
+    float result = _203 / _204;
+    if (globalParams.output_channel == 1)
+    {
+        ivec2 _167 = ivec2(uvec2(ivec2(gl_GlobalInvocationID.xy)));
+        vec4 _172 = imageLoad(out_water_mask, _167);
+        _172.y = result;
+        imageStore(out_water_mask, _167, _172);
+    }
+    else
+    {
+        if (globalParams.output_channel == 2)
+        {
+            ivec2 _184 = ivec2(uvec2(ivec2(gl_GlobalInvocationID.xy)));
+            vec4 _186 = imageLoad(out_water_mask, _184);
+            _186.z = result;
+            imageStore(out_water_mask, _184, _186);
+        }
+    }
+}
+

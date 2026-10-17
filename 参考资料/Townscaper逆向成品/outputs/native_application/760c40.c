@@ -1,0 +1,16 @@
+// RVA 0x760c40 | Placemaker.Prop$$.ctor
+// PDB: Prop__ctor_mEB8948E1229835C0A6188A7091C4057477578A24
+// Body: [[10760c40, 10760c59]]
+// Direct callees:
+// 10a36df0 Behaviour__ctor_mCACD3614226521EA607B0F3640C0FAC7EACCBCE0
+
+void __cdecl
+Prop__ctor_mEB8948E1229835C0A6188A7091C4057477578A24
+          (Prop_tFB36A7E740F843093CDC437435E4BA4054D50B46 *param_1,MethodInfo *param_2)
+
+{
+  param_1->___voxelTypeMask_5 = 0xff;
+  Behaviour__ctor_mCACD3614226521EA607B0F3640C0FAC7EACCBCE0
+            ((Behaviour_t1A3DDDCF73B4627928FBFE02ED52B7251777DBD9 *)param_1,(MethodInfo *)0x0);
+  return;
+}

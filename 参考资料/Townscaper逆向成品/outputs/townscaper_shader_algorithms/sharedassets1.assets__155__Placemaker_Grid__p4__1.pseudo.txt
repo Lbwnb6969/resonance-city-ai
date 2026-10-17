@@ -1,0 +1,72 @@
+// FLOAT/INT reinterpret bits; BITS stores float bits; BITS4 raw vector.
+
+    uint4 r0;
+    uint4 r1;
+    uint4 r2;
+    uint4 r3;
+    uint4 out_o0;
+    uint4 v0;
+    uint4 v1;
+    uint4 v2;
+    uint4 v3;
+    v0.xyzw = asuint(input.v0_0);
+    v1.xy = asuint(input.v1_0);
+    v1.zw = asuint(input.v1_1);
+    v2.xy = asuint(input.v2_0);
+    v2.zw = asuint(input.v2_1);
+    v3.xyzw = asuint(input.v3_0);
+    r0.x = (BITS(FLOAT(v1.yyyy) + FLOAT(BITS4(0xbf000000u, 0xbf000000u, 0xbf000000u, 0xbf000000u)))).x; // add r0.x, v1.y, l(-0.500000)
+    r0.x = (BITS(FLOAT(BITS(abs(FLOAT(r0.xxxx)))) + FLOAT(BITS4(0xbca3d70au, 0xbca3d70au, 0xbca3d70au, 0xbca3d70au)))).x; // add r0.x, |r0.x|, l(-0.020000)
+    r0.y = (BITS(ddx(FLOAT(r0.xxxx)))).y; // deriv_rtx r0.y, r0.x
+    r0.z = (BITS(ddy(FLOAT(r0.xxxx)))).z; // deriv_rty r0.z, r0.x
+    r0.y = (BITS(FLOAT(BITS(abs(FLOAT(r0.zzzz)))) + FLOAT(BITS(abs(FLOAT(r0.yyyy)))))).y; // add r0.y, |r0.z|, |r0.y|
+    r0.x = (BITS(FLOAT(r0.xxxx) / FLOAT(r0.yyyy))).x; // div r0.x, r0.x, r0.y
+    r0.y = (BITS(saturate(FLOAT(BITS(FLOAT(v2.zzzz) / FLOAT(v2.wwww)))))).y; // div_sat r0.y, v2.z, v2.w
+    r0.z = (BITS(ddx(FLOAT(r0.yyyy)))).z; // deriv_rtx r0.z, r0.y
+    r0.w = (BITS(ddy(FLOAT(r0.yyyy)))).w; // deriv_rty r0.w, r0.y
+    r0.z = (BITS(FLOAT(BITS(abs(FLOAT(r0.wwww)))) + FLOAT(BITS(abs(FLOAT(r0.zzzz)))))).z; // add r0.z, |r0.w|, |r0.z|
+    r0.w = (BITS(FLOAT(r0.yyyy) + FLOAT(BITS4(0xbf000000u, 0xbf000000u, 0xbf000000u, 0xbf000000u)))).w; // add r0.w, r0.y, l(-0.500000)
+    r0.z = (BITS(FLOAT(r0.wwww) / FLOAT(r0.zzzz))).z; // div r0.z, r0.w, r0.z
+    r0.xw = (BITS(saturate(FLOAT(BITS(FLOAT(r0.xxxz) + FLOAT(BITS4(0xbf000000u, 0x0u, 0x0u, 0x3f800000u))))))).xw; // add_sat r0.xw, r0.xxxz, l(-0.500000, 0.000000, 0.000000, 1.000000)
+    r0.w = (BITS(FLOAT(r0.wwww) * FLOAT(cb0[42].zzzz))).w; // mul r0.w, r0.w, cb0[42].z
+    r0.x = (BITS(FLOAT(r0.xxxx) * FLOAT(r0.wwww))).x; // mul r0.x, r0.x, r0.w
+    r0.w = (BITS(saturate(FLOAT(BITS(FLOAT(cb0[19].zzzz) + FLOAT(BITS4(0xbf800000u, 0xbf800000u, 0xbf800000u, 0xbf800000u))))))).w; // add_sat r0.w, cb0[19].z, l(-1.000000)
+    r0.w = (BITS(FLOAT(r0.wwww) * FLOAT(BITS4(0x3f000000u, 0x3f000000u, 0x3f000000u, 0x3f000000u)))).w; // mul r0.w, r0.w, l(0.500000)
+    r1.xy = (BITS(ddx(FLOAT(v1.zwzz)))).xy; // deriv_rtx r1.xy, v1.zwzz
+    r1.zw = (BITS(ddy(FLOAT(v1.zzzw)))).zw; // deriv_rty r1.zw, v1.zzzw
+    r1.xy = (BITS(FLOAT(BITS(abs(FLOAT(r1.zwzz)))) + FLOAT(BITS(abs(FLOAT(r1.xyxx)))))).xy; // add r1.xy, |r1.zwzz|, |r1.xyxx|
+    r1.zw = (BITS(FLOAT(BITS4(0x3f800000u, 0x3f800000u, 0x3f800000u, 0x3f800000u)) / FLOAT(r1.xxxy))).zw; // div r1.zw, l(1.000000, 1.000000, 1.000000, 1.000000), r1.xxxy
+    r1.xy = (BITS(saturate(FLOAT(BITS(FLOAT(r1.xyxx) + FLOAT(BITS4(0xbdcccccdu, 0xbdcccccdu, 0x0u, 0x0u))))))).xy; // add_sat r1.xy, r1.xyxx, l(-0.100000, -0.100000, 0.000000, 0.000000)
+    r2.xy = (BITS(saturate(FLOAT(BITS(mad(FLOAT(BITS(abs(FLOAT(v1.zwzz)))), FLOAT(r1.zwzz), FLOAT(BITS(-FLOAT(r0.wwww))))))))).xy; // mad_sat r2.xy, |v1.zwzz|, r1.zwzz, -r0.wwww
+    r2.xy = (BITS(FLOAT(BITS(-FLOAT(r2.xyxx))) + FLOAT(BITS4(0x3f800000u, 0x3f800000u, 0x0u, 0x0u)))).xy; // add r2.xy, -r2.xyxx, l(1.000000, 1.000000, 0.000000, 0.000000)
+    r3.xyzw = (BITS(FLOAT(BITS(-FLOAT(BITS(abs(FLOAT(v1.zwzw)))))) + FLOAT(BITS4(0x3f7d70a4u, 0x3f7d70a4u, 0x3e99999au, 0x3e99999au)))).xyzw; // add r3.xyzw, -|v1.zwzw|, l(0.990000, 0.990000, 0.300000, 0.300000)
+    r2.zw = (BITS(saturate(FLOAT(BITS(mad(FLOAT(r3.wwwz), FLOAT(r1.wwwz), FLOAT(BITS4(0x0u, 0x0u, 0x3f000000u, 0x3f000000u)))))))).zw; // mad_sat r2.zw, r3.wwwz, r1.wwwz, l(0.000000, 0.000000, 0.500000, 0.500000)
+    r1.zw = (BITS(saturate(FLOAT(BITS(mad(FLOAT(r3.xxxy), FLOAT(r1.zzzw), FLOAT(BITS(-FLOAT(r0.wwww))))))))).zw; // mad_sat r1.zw, r3.xxxy, r1.zzzw, -r0.wwww
+    r1.zw = (BITS(FLOAT(BITS(-FLOAT(r1.zzzw))) + FLOAT(BITS4(0x0u, 0x0u, 0x3f800000u, 0x3f800000u)))).zw; // add r1.zw, -r1.zzzw, l(0.000000, 0.000000, 1.000000, 1.000000)
+    r2.xy = (BITS(FLOAT(r2.zwzz) * FLOAT(r2.xyxx))).xy; // mul r2.xy, r2.zwzz, r2.xyxx
+    r1.zw = (BITS(max(FLOAT(r1.zzzw), FLOAT(r2.xxxy)))).zw; // max r1.zw, r1.zzzw, r2.xxxy
+    r2.xy = (BITS(FLOAT(BITS(-FLOAT(r1.zwzz))) + FLOAT(BITS4(0x3e99999au, 0x3e99999au, 0x0u, 0x0u)))).xy; // add r2.xy, -r1.zwzz, l(0.300000, 0.300000, 0.000000, 0.000000)
+    r1.xy = (BITS(mad(FLOAT(r1.xyxx), FLOAT(r2.xyxx), FLOAT(r1.zwzz)))).xy; // mad r1.xy, r1.xyxx, r2.xyxx, r1.zwzz
+    r0.w = (BITS(max(FLOAT(r1.yyyy), FLOAT(r1.xxxx)))).w; // max r0.w, r1.y, r1.x
+    r0.w = (BITS(FLOAT(r0.wwww) * FLOAT(cb0[42].xxxx))).w; // mul r0.w, r0.w, cb0[42].x
+    r1.xyzw = (BITS(FLOAT(r0.wwww) * FLOAT(BITS4(0x0u, 0x0u, 0x0u, 0x3ecccccdu)))).xyzw; // mul r1.xyzw, r0.wwww, l(0.000000, 0.000000, 0.000000, 0.400000)
+    r1.xyzw = (BITS(mad(FLOAT(r0.yyyy), FLOAT(BITS(-FLOAT(r1.zzzw))), FLOAT(r1.xyzw)))).xyzw; // mad r1.xyzw, r0.yyyy, -r1.zzzw, r1.xyzw
+    r2.xyzw = (BITS(FLOAT(BITS(-FLOAT(r1.zzzw))) + FLOAT(BITS4(0x0u, 0x0u, 0x0u, 0x3f800000u)))).xyzw; // add r2.xyzw, -r1.zzzw, l(0.000000, 0.000000, 0.000000, 1.000000)
+    r1.xyzw = (BITS(mad(FLOAT(r0.xxxx), FLOAT(r2.xyzw), FLOAT(r1.xyzw)))).xyzw; // mad r1.xyzw, r0.xxxx, r2.xyzw, r1.xyzw
+    r2.xyzw = (BITS(FLOAT(BITS(-FLOAT(r1.zzzw))) + FLOAT(BITS4(0x0u, 0x0u, 0x0u, 0x3f800000u)))).xyzw; // add r2.xyzw, -r1.zzzw, l(0.000000, 0.000000, 0.000000, 1.000000)
+    r0.x = (BITS(saturate(FLOAT(BITS(FLOAT(v1.xxxx) / FLOAT(v1.yyyy)))))).x; // div_sat r0.x, v1.x, v1.y
+    r0.y = (BITS(ddx(FLOAT(r0.xxxx)))).y; // deriv_rtx r0.y, r0.x
+    r0.w = (BITS(ddy(FLOAT(r0.xxxx)))).w; // deriv_rty r0.w, r0.x
+    r0.x = (BITS(FLOAT(r0.xxxx) + FLOAT(BITS4(0xbf000000u, 0xbf000000u, 0xbf000000u, 0xbf000000u)))).x; // add r0.x, r0.x, l(-0.500000)
+    r0.y = (BITS(FLOAT(BITS(abs(FLOAT(r0.wwww)))) + FLOAT(BITS(abs(FLOAT(r0.yyyy)))))).y; // add r0.y, |r0.w|, |r0.y|
+    r0.x = (BITS(FLOAT(r0.xxxx) / FLOAT(r0.yyyy))).x; // div r0.x, r0.x, r0.y
+    r0.y = (BITS(saturate(FLOAT(BITS(FLOAT(r0.xxxx) + FLOAT(BITS4(0x3fa66666u, 0x3fa66666u, 0x3fa66666u, 0x3fa66666u))))))).y; // add_sat r0.y, r0.x, l(1.300000)
+    r0.xz = (BITS(saturate(FLOAT(r0.xxzx)))).xz; // mov_sat r0.xz, r0.xxzx
+    r0.y = (BITS(FLOAT(r0.yyyy) * FLOAT(cb0[42].zzzz))).y; // mul r0.y, r0.y, cb0[42].z
+    r1.xyzw = (BITS(mad(FLOAT(r0.yyyy), FLOAT(r2.xyzw), FLOAT(r1.xyzw)))).xyzw; // mad r1.xyzw, r0.yyyy, r2.xyzw, r1.xyzw
+    r1.xyzw = (BITS(mad(FLOAT(r0.zzzz), FLOAT(BITS(-FLOAT(r1.zzzw))), FLOAT(r1.xyzw)))).xyzw; // mad r1.xyzw, r0.zzzz, -r1.zzzw, r1.xyzw
+    out_o0.xyzw = (BITS(mad(FLOAT(r0.xxxx), FLOAT(BITS(-FLOAT(r1.zzzw))), FLOAT(r1.xyzw)))).xyzw; // mad o0.xyzw, r0.xxxx, -r1.zzzw, r1.xyzw
+    // ret: return all declared output registers below.
+    Output result;
+    result.o0_0 = asfloat(out_o0.xyzw);
+    return result;

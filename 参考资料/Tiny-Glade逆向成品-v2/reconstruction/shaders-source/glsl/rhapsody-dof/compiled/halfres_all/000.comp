@@ -1,0 +1,383 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+#if defined(GL_EXT_control_flow_attributes)
+#extension GL_EXT_control_flow_attributes : require
+#define SPIRV_CROSS_FLATTEN [[flatten]]
+#define SPIRV_CROSS_BRANCH [[dont_flatten]]
+#define SPIRV_CROSS_UNROLL [[unroll]]
+#define SPIRV_CROSS_LOOP [[dont_unroll]]
+#else
+#define SPIRV_CROSS_FLATTEN
+#define SPIRV_CROSS_BRANCH
+#define SPIRV_CROSS_UNROLL
+#define SPIRV_CROSS_LOOP
+#endif
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct _Array_natural_uint8
+{
+    uint data[8];
+};
+
+struct DofTileOffsets_natural
+{
+    _Array_natural_uint8 offsets;
+};
+
+layout(set = 0, binding = 6, std430) readonly buffer StructuredBuffer
+{
+    DofTileOffsets_natural _member0[];
+} tile_offsets_buffer;
+
+layout(set = 0, binding = 7, std430) readonly buffer tile_coords_buffer
+{
+    uvec2 _member0[];
+} tile_coords_buffer_1;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 color_tex_dims;
+    uvec2 coc_tiles_dilated_tex_dims;
+    uvec2 depth_tex_dims;
+    uvec2 coc_tex_dims;
+    uvec2 img_output_dims;
+} globalParams;
+
+layout(set = 3, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 2, binding = 2) uniform sampler samplers_nnc;
+layout(set = 0, binding = 2) uniform texture2D coc_tiles_dilated_tex;
+layout(set = 4, binding = 0) uniform texture2D blue_noise_textures_uniform01;
+layout(set = 0, binding = 4) uniform texture2D coc_tex;
+layout(set = 0, binding = 1) uniform texture2D color_tex;
+layout(set = 2, binding = 3) uniform sampler samplers_llc;
+layout(set = 0, binding = 5, rgba16f) uniform writeonly image2D img_output;
+
+shared uint gs_ring_samples[64][9];
+
+void main()
+{
+    uvec2 _54 = (gl_GlobalInvocationID.xy & uvec2(7u)) + (uvec2(8u) * tile_coords_buffer_1._member0[tile_offsets_buffer._member0[0].offsets.data[5] + gl_WorkGroupID.x]);
+    vec2 _1251 = (vec2(ivec2(_54)) + vec2(0.5)) / vec2(globalParams.img_output_dims);
+    float _1296 = min(float(globalParams.color_tex_dims.y) * 0.0416666679084300994873046875, textureLod(sampler2D(coc_tiles_dilated_tex, samplers_nnc), _1251, 0.0).x);
+    vec4 _1317 = ((texelFetch(blue_noise_textures_uniform01, ivec2(((_54 + uvec2(13u)) + uvec2(ivec2(int(frame_counter.index * 59u), int(frame_counter.index * 37u)))) & uvec2(255u)), 0) * 255.0) * vec4(0.00390625)) + vec4(0.001953125);
+    uvec2 _1319 = uvec2(7u) + _54;
+    float _1322 = (fract(52.98291778564453125 * fract((0.067110560834407806396484375 * float(_1319.x)) + (0.005837149918079376220703125 * float(_1319.y)))) - 0.5) * 0.5;
+    float _1323 = 0.5 + _1322;
+    float _1324 = _1317.y;
+    float _1326 = _1296 * 0.125;
+    float _2079 = 5.588237762451171875 * float(frame_counter.index % 64u);
+    float _2089 = fract(52.98291778564453125 * fract((0.067110560834407806396484375 * (float(_54.x) + _2079)) + (0.005837149918079376220703125 * (float(_54.y) + _2079))));
+    bool _1329 = _1323 < 0.5;
+    float _2241;
+    if (_1329)
+    {
+        _2241 = 0.5 - _1322;
+    }
+    else
+    {
+        _2241 = _1323;
+    }
+    float _2376 = _1329 ? (-1.0) : 1.0;
+    vec4 _2202;
+    float _2203;
+    float _2208;
+    float _2212;
+    _2212 = 0.0;
+    _2208 = 0.0;
+    _2203 = 0.0;
+    _2202 = vec4(0.0);
+    float _1657;
+    float _1658;
+    float _1659;
+    vec4 _1975;
+    uint _1979;
+    uint _1266[8];
+    float _2235;
+    float _2242;
+    uint _2201 = 0u;
+    float _2218 = 10000000000.0;
+    float _2219 = -10000000000.0;
+    SPIRV_CROSS_LOOP
+    for (;;)
+    {
+        if (!(_2201 < 2u))
+        {
+            break;
+        }
+        float _1346 = (float(_2201) + _2089) * 1.57079637050628662109375;
+        vec2 _1355 = vec2(cos(_1346), sin(_1346)) * (vec2(_2376) / vec2(globalParams.color_tex_dims));
+        float _1367 = -_1296;
+        float _1368 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-8.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1369 = abs(_1368);
+        float _1373 = _1317.x * 0.20000000298023223876953125;
+        float _1375 = mix(_2212, max(_2212, _1369), _1373);
+        float _1391 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-7.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1394 = mix(_1375, max(_1375, abs(_1391)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][0u] = (packHalf2x16(vec2(_1368)) & 65535u) | ((packHalf2x16(vec2(_1391)) & 65535u) << 16u);
+        float _1410 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-6.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1411 = abs(_1410);
+        float _1413 = mix(_1394, max(_1394, _1411), _1373);
+        float _1427 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-5.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1430 = mix(_1413, max(_1413, abs(_1427)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][1u] = (packHalf2x16(vec2(_1410)) & 65535u) | ((packHalf2x16(vec2(_1427)) & 65535u) << 16u);
+        float _1445 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-4.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1446 = abs(_1445);
+        float _1448 = mix(_1430, max(_1430, _1446), _1373);
+        float _1462 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-3.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1465 = mix(_1448, max(_1448, abs(_1462)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][2u] = (packHalf2x16(vec2(_1445)) & 65535u) | ((packHalf2x16(vec2(_1462)) & 65535u) << 16u);
+        float _1480 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-2.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1481 = abs(_1480);
+        float _1483 = mix(_1465, max(_1465, _1481), _1373);
+        float _1497 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (((-1.0) + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1500 = mix(_1483, max(_1483, abs(_1497)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][3u] = (packHalf2x16(vec2(_1480)) & 65535u) | ((packHalf2x16(vec2(_1497)) & 65535u) << 16u);
+        float _1514 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * (_1324 * _1326)), 0.0).x, _1367, _1296);
+        float _1515 = abs(_1514);
+        float _1517 = mix(_1500, max(_1500, _1515), _1373);
+        float _1531 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((1.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1534 = mix(_1517, max(_1517, abs(_1531)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][4u] = (packHalf2x16(vec2(_1514)) & 65535u) | ((packHalf2x16(vec2(_1531)) & 65535u) << 16u);
+        float _1549 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((2.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1550 = abs(_1549);
+        float _1552 = mix(_1534, max(_1534, _1550), _1373);
+        float _1566 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((3.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1569 = mix(_1552, max(_1552, abs(_1566)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][5u] = (packHalf2x16(vec2(_1549)) & 65535u) | ((packHalf2x16(vec2(_1566)) & 65535u) << 16u);
+        float _1584 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((4.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1585 = abs(_1584);
+        float _1587 = mix(_1569, max(_1569, _1585), _1373);
+        float _1601 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((5.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1604 = mix(_1587, max(_1587, abs(_1601)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][6u] = (packHalf2x16(vec2(_1584)) & 65535u) | ((packHalf2x16(vec2(_1601)) & 65535u) << 16u);
+        float _1619 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((6.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1620 = abs(_1619);
+        float _1622 = mix(_1604, max(_1604, _1620), _1373);
+        float _1636 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((7.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1639 = mix(_1622, max(_1622, abs(_1636)), _1373);
+        gs_ring_samples[gl_LocalInvocationIndex][7u] = (packHalf2x16(vec2(_1619)) & 65535u) | ((packHalf2x16(vec2(_1636)) & 65535u) << 16u);
+        float _1654 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * ((8.0 + _1324) * _1326)), 0.0).x, _1367, _1296);
+        float _1655 = abs(_1654);
+        _1657 = mix(_1639, max(_1639, _1655), _1373);
+        _1658 = min(min(min(min(min(min(min(min(min(_2218, _1369), _1411), _1446), _1481), _1515), _1550), _1585), _1620), _1655);
+        _1659 = max(max(max(max(max(max(max(max(max(_2219, _1369), _1411), _1446), _1481), _1515), _1550), _1585), _1620), _1655);
+        gs_ring_samples[gl_LocalInvocationIndex][8u] = packHalf2x16(vec2(_1654)) & 65535u;
+        uint _1676;
+        uint _2220 = 0u;
+        for (;;)
+        {
+            if (!(_2220 < 8u))
+            {
+                break;
+            }
+            _1266[_2220] = 0u;
+            _1676 = _2220 + 1u;
+            _2220 = _1676;
+            continue;
+        }
+        uint _1738;
+        uint _2221 = 0u;
+        for (;;)
+        {
+            if (!(_2221 < 17u))
+            {
+                break;
+            }
+            vec2 _1269 = unpackHalf2x16(gs_ring_samples[gl_LocalInvocationIndex][_2221 >> 1u]);
+            uint _1696 = _2221 & 1u;
+            float _1701 = (float(int(_2221 - 8u)) + _1324) * _1326;
+            int _1732;
+            int _2297 = 0;
+            for (;;)
+            {
+                if (!(_2297 < 8))
+                {
+                    break;
+                }
+                if ((_1701 / (((float(_2297) + _2241) * 0.25) - 1.0)) >= _1269[_1696])
+                {
+                    _1266[_2297] |= (1u << _2221);
+                }
+                _1732 = _2297 + 1;
+                _2297 = _1732;
+                continue;
+            }
+            _1738 = _2221 + 1u;
+            _2221 = _1738;
+            continue;
+        }
+        vec4 _2231;
+        _2242 = _2208;
+        _2235 = _2203;
+        _2231 = vec4(0.0);
+        float _1762;
+        int _1969;
+        float _2294;
+        vec4 _2334;
+        int _2227 = 0;
+        for (;;)
+        {
+            bool _1745_ladder_break = false;
+            do
+            {
+                if (!(_2227 < 8))
+                {
+                    _1745_ladder_break = true;
+                    break;
+                }
+                float _1759 = ((float(_2227) + _2241) * 0.25) - 1.0;
+                float _1760 = abs(_1759);
+                _1762 = _2242 + _1760;
+                if (_1266[_2227] == 0u)
+                {
+                    _2334 = _2231;
+                    _2294 = _2235;
+                    break;
+                }
+                bool _1770 = _1759 >= 0.0;
+                uint _2245;
+                float _2247;
+                float _2248;
+                if (_1770)
+                {
+                    uint _1790 = uint(findLSB(_1266[_2227]));
+                    uint _1794 = uint(max(0, (int(_1790) - 1)));
+                    vec2 _1275 = unpackHalf2x16(gs_ring_samples[gl_LocalInvocationIndex][_1790 >> 1u]);
+                    vec2 _1276 = unpackHalf2x16(gs_ring_samples[gl_LocalInvocationIndex][_1794 >> 1u]);
+                    _2248 = _1275[_1790 & 1u];
+                    _2247 = _1276[_1794 & 1u];
+                    _2245 = _1790;
+                }
+                else
+                {
+                    uint _1772 = uint(findMSB(_1266[_2227]));
+                    uint _1774 = min(16u, (_1772 + 1u));
+                    vec2 _1277 = unpackHalf2x16(gs_ring_samples[gl_LocalInvocationIndex][_1772 >> 1u]);
+                    vec2 _1278 = unpackHalf2x16(gs_ring_samples[gl_LocalInvocationIndex][_1774 >> 1u]);
+                    _2248 = _1277[_1772 & 1u];
+                    _2247 = _1278[_1774 & 1u];
+                    _2245 = _1772;
+                }
+                float _1815 = (float(int(_2245 - 8u)) + _1324) * _1326;
+                float _1816 = _1815 / _1759;
+                float _1818 = _1326 * (_1770 ? 1.0 : (-1.0));
+                float _1821 = _1815 - _1818;
+                float _1823 = _2247 - (_1816 - (_1818 / _1759));
+                float _1828 = _1760 * float(_1266[_2227] != 0u);
+                float _1833 = mix(_1821, _1815, clamp(_1823 / (_1823 + (-(_2248 - _1816))), 0.0, 1.0));
+                float _1842 = clamp(textureLod(sampler2D(coc_tex, samplers_nnc), _1251 + (_1355 * _1833), 0.0).x, _1367, _1296);
+                float _1851 = log2(max(0.0, abs(_2248) * 0.125)) * smoothstep(4.0, 0.0, _1659 - _1658);
+                float _2178 = subgroupShuffle(_1851, uint(int(gl_SubgroupInvocationID ^ 1u)));
+                float _1856 = min(_1851, _2178);
+                float _2182 = subgroupShuffle(_1856, uint(int(gl_SubgroupInvocationID ^ 8u)));
+                if (_2248 > _1296)
+                {
+                    _2334 = _2231;
+                    _2294 = _2235;
+                    break;
+                }
+                float _1870 = _1823 * 0.100000001490116119384765625;
+                bool _2249;
+                if (((_1833 / _1759) - _1842) < _1870)
+                {
+                    _2249 = (_1842 - _2248) < _1870;
+                }
+                else
+                {
+                    _2249 = false;
+                }
+                float _2275;
+                float _2295;
+                if (_2249)
+                {
+                    _2295 = _2235;
+                    _2275 = _1828;
+                }
+                else
+                {
+                    float _1915 = smoothstep(0.0, 30.0, _2247) * smoothstep(0.20000000298023223876953125 * _1296, 0.0, _2248);
+                    _2295 = _2235 + (_1828 * _1915);
+                    _2275 = _1828 * (1.0 - _1915);
+                }
+                _2334 = _2231 + (textureLod(sampler2D(color_tex, samplers_nnc), _1251 + (_1355 * (_2249 ? _1833 : _1821)), min(_1856, _2182)) * _2275);
+                _2294 = _2295;
+                break;
+            } while(false);
+            if (_1745_ladder_break)
+            {
+                break;
+            }
+            _1969 = _2227 + 1;
+            _2242 = _1762;
+            _2235 = _2294;
+            _2231 = _2334;
+            _2227 = _1969;
+            continue;
+        }
+        _1975 = _2202 + _2231;
+        _1979 = _2201 + 1u;
+        _2219 = _1659;
+        _2218 = _1658;
+        _2212 = _1657;
+        _2208 = _2242;
+        _2203 = _2235;
+        _2202 = _1975;
+        _2201 = _1979;
+        continue;
+    }
+    float _1992 = _2203 * smoothstep(0.00999999977648258209228515625 * _2202.w, max(9.9999997473787516355514526367188e-06, 0.20000000298023223876953125 * _2202.w), _2203);
+    vec4 _2210;
+    SPIRV_CROSS_BRANCH
+    if (_1992 > 0.0)
+    {
+        float _1995 = -_1296;
+        vec4 _2205;
+        _2205 = vec4(0.0);
+        uint _2043;
+        float _2215;
+        vec4 _2301;
+        uint _2204 = 0u;
+        float _2213 = _1995;
+        for (;;)
+        {
+            if (!(_2204 < 16u))
+            {
+                break;
+            }
+            vec2 _2009 = fract(fract((vec2(0.75487768650054931640625, 0.56984031200408935546875) * float(_2204)) + vec2(0.5)) + _1317.xy);
+            float _2193 = sqrt(_2009.x);
+            float _2195 = _2009.y * 6.283185482025146484375;
+            vec2 _2016 = _1251 + ((vec2(cos(_2195) * _2193, sin(_2195) * _2193) / vec2(globalParams.color_tex_dims)) * _2212);
+            vec4 _2021 = textureLod(sampler2D(coc_tex, samplers_nnc), _2016, 0.0);
+            float _2022 = _2021.x;
+            if (_2022 > (_2213 - 10.0))
+            {
+                _2301 = _2205 + textureLod(sampler2D(color_tex, samplers_llc), _2016, 0.0);
+                _2215 = max(_2213, _2022);
+            }
+            else
+            {
+                _2301 = _2205;
+                _2215 = _2213;
+            }
+            _2043 = _2204 + 1u;
+            _2213 = _2215;
+            _2205 = _2301;
+            _2204 = _2043;
+            continue;
+        }
+        _2210 = _2202 + ((_2205 / vec4(max(1.0, _2205.w))) * _1992);
+    }
+    else
+    {
+        _2210 = _2202;
+    }
+    imageStore(img_output, ivec2(_54), max(vec4(0.0), _2210 / vec4(_2208)));
+}
+

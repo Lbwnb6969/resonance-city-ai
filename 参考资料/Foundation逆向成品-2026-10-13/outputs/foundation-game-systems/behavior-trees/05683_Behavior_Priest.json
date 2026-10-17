@@ -1,0 +1,81 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Behavior Priest.bt",
+  "absolute_offset": 2114642,
+  "length": 1671,
+  "sha256": "31abd5132ea25f0e5594720487f61f78cbf651210c5c9261267721629fa7b735",
+  "rid": 5683,
+  "root_id": "3d9ca3c1-1461-4861-a3ac-8849697bc058",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "4942282e-5915-46b5-93f8-9387709a4458",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Nothing",
+        "IsPublic": false,
+        "Id": "e44e37d7-33fe-4190-abc8-a14280bdb716",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 5.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "3d9ca3c1-1461-4861-a3ac-8849697bc058",
+      "name": "TODO",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        498,
+        184
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "4942282e-5915-46b5-93f8-9387709a4458",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "e44e37d7-33fe-4190-abc8-a14280bdb716",
+          "binding_status": "variable",
+          "variable_name": "Nothing"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "3d9ca3c1-1461-4861-a3ac-8849697bc058",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    }
+  ],
+  "edges": [],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

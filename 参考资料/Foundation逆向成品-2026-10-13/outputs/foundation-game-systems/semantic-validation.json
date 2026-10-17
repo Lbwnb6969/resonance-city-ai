@@ -1,0 +1,35 @@
+{
+  "evidence_kind": "local-semantic-index-verification",
+  "physical_resources": 34884,
+  "decoded_resources": 26290,
+  "systems": {
+    "quests_conditions": 450,
+    "behavior_trees": 70,
+    "villager_status": 132,
+    "production": 126,
+    "jobs": 67,
+    "building_functions": 194,
+    "trade": 121,
+    "happiness": 44,
+    "needs": 52,
+    "map_generation": 98,
+    "military": 93
+  },
+  "references": {
+    "declaration": 312393,
+    "null": 91961,
+    "resolved_asset": 78265,
+    "resolved_cross_resource_object": 73,
+    "resolved_local": 10830,
+    "resolved_subasset": 68142,
+    "unresolved": 1466
+  },
+  "behavior_graphs": 70,
+  "behavior_nodes": 817,
+  "behavior_edges": 735,
+  "unreachable_nodes_preserved": 19,
+  "production_recipes": 106,
+  "concrete_game_condition_nodes": 3281,
+  "typed_condition_and_asset_nodes_total": 3376,
+  "failures": []
+}

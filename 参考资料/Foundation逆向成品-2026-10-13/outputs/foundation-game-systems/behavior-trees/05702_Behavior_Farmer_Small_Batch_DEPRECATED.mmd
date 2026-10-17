@@ -1,0 +1,29 @@
+flowchart TD
+  n0["11a07f6b-0c32-4db9-8263-d40d983a6de0"]
+  n1["GamCBehaviorTreeNodeCompositeSelector"]
+  n2["GamCBehaviorTreeNodeCompositeSequencer"]
+  n3["PlaCAgentNodeCheckFarmState"]
+  n4["GamCBehaviorTreeNodeCompositeSequencer"]
+  n5["PlaCAgentNodeCheckFarmState"]
+  n6["PlaCAgentNodeFindOrAssignWorkplace"]
+  n7["GamCBehaviorTreeNodeCompositeSequencer"]
+  n8["c221726b-b848-4f7c-b64d-8627ec734f06"]
+  n9["PlaCAgentNodeSetWorkplaceAsDestination"]
+  n10["PlaCAgentNodeCheckFarmState"]
+  n11["Sequencer"]
+  n12["1a3a0bff-035d-450e-a375-51982c466bae"]
+  n13["Selector"]
+  n14["PlaCAgentNodeCheckFarmState"]
+  n1 -->|0| n2
+  n1 -->|1| n11
+  n1 -->|2| n4
+  n2 -->|3| n13
+  n2 -->|4| n0
+  n4 -->|5| n5
+  n4 -->|6| n8
+  n7 -->|7| n9
+  n7 -->|8| n1
+  n11 -->|9| n10
+  n11 -->|10| n12
+  n13 -->|11| n3
+  n13 -->|12| n14

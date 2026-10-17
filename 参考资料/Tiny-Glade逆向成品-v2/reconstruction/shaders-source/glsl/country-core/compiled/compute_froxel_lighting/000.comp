@@ -1,0 +1,840 @@
+#version 460
+#extension GL_EXT_nonuniform_qualifier : require
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct VolumetricShadows_natural
+{
+    uvec2 volumetric_shadow_map_tex_dims;
+};
+
+struct Lanterns_natural
+{
+    uint lantern_count;
+};
+
+struct ViewConstants_natural
+{
+    mat4 view_to_clip;
+    mat4 clip_to_view;
+    mat4 view_to_sample;
+    mat4 sample_to_view;
+    mat4 world_to_view;
+    mat4 view_to_world;
+    mat4 world_to_sample;
+    mat4 clip_to_prev_clip;
+    mat4 prev_clip_to_clip;
+    mat4 prev_view_to_prev_clip;
+    mat4 prev_clip_to_prev_view;
+    mat4 prev_world_to_prev_view;
+    mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    mat4 pad0;
+    mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+};
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+struct _Array_natural_matrix_float_4_4_4
+{
+    mat4 data[4];
+};
+
+struct _Array_natural_float4
+{
+    float data[4];
+};
+
+struct VolumetricShadowViews_natural
+{
+    _Array_natural_matrix_float_4_4_4 world_to_clip;
+    _Array_natural_matrix_float_4_4_4 clip_to_world;
+    _Array_natural_float4 cascade_splits;
+};
+
+struct LanternPacked_natural
+{
+    vec3 position;
+    uint intensity_color_id;
+};
+
+struct RootFinderInput
+{
+    float _distance;
+    bool _valid;
+};
+
+struct DistanceWithPenetration
+{
+    RootFinderInput base;
+    float penetration;
+    float thickness;
+};
+
+vec4 _7483;
+DistanceWithPenetration _4926;
+
+layout(set = 3, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    uvec2 half_depth_tex_dims;
+    uvec2 froxel_scattering_tex_dims;
+    uvec2 reprojection_tex_dims;
+    float ambient_fog_density_scale;
+    float ambient_fog_size_scale;
+    VolumetricShadows_natural volumetric_shadows;
+    VolumetricShadows_natural secondary_fake_light_shadows;
+    uint sun_fake_light_is_primary;
+    Lanterns_natural lanterns;
+} globalParams;
+
+layout(set = 5, binding = 0, std140) uniform current_view
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view_1;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 10, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 7, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    vec4 _member0[];
+} csm_setup_cascade_splits_buf;
+
+layout(set = 7, binding = 0, std430) readonly buffer csm_setup_sun_view
+{
+    layout(row_major) ViewConstants_natural _member0[];
+} csm_setup_sun_view_1;
+
+layout(set = 0, binding = 9, std430) readonly buffer globalParams_volumetric_shadows_volumetric_shadow_rendering_views
+{
+    layout(row_major) VolumetricShadowViews_natural _member0[];
+} globalParams_volumetric_shadows_volumetric_shadow_rendering_views_1;
+
+layout(set = 11, binding = 0, std140) uniform VisualTerrainHeightmap_natural
+{
+    uvec2 visual_terrain_heightmap_dims;
+} visual_terrain_heightmap;
+
+layout(set = 0, binding = 11, std430) readonly buffer globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views
+{
+    layout(row_major) VolumetricShadowViews_natural _member0[];
+} globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views_1;
+
+layout(set = 0, binding = 12, std430) readonly buffer globalParams_lanterns_light_indirection_grid
+{
+    uint _member0[];
+} globalParams_lanterns_light_indirection_grid_1;
+
+layout(set = 0, binding = 13, std430) readonly buffer globalParams_lanterns_grid_light_indices
+{
+    uint _member0[];
+} globalParams_lanterns_grid_light_indices_1;
+
+layout(set = 0, binding = 14, std430) readonly buffer globalParams_lanterns_lantern_buf
+{
+    LanternPacked_natural _member0[];
+} globalParams_lanterns_lantern_buf_1;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    int history_valid;
+} entryPointParams;
+
+layout(set = 12, binding = 0) uniform texture2D blue_noise_textures_uniform01;
+layout(set = 2, binding = 2) uniform sampler samplers_nnc;
+layout(set = 0, binding = 1) uniform texture2D half_depth_tex;
+layout(set = 1, binding = 0) uniform texture2D resource_handles[];
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 2, binding = 1) uniform sampler samplers_llr;
+layout(set = 13, binding = 0) uniform texture3D fog_noise_texture_tex;
+layout(set = 8, binding = 1) uniform texture2DArray csm_sun_shadow_map;
+layout(set = 0, binding = 8) uniform texture2DArray globalParams_volumetric_shadows_volumetric_shadow_map_tex;
+layout(set = 2, binding = 0) uniform sampler samplers_lnc;
+layout(set = 11, binding = 1) uniform texture2D visual_terrain_heightmap_visual_terrain_heightmap;
+layout(set = 0, binding = 6) uniform texture3D sky_visibility_volume_tex;
+layout(set = 9, binding = 0) uniform texture2D terrain_lighting_texture_tex;
+layout(set = 0, binding = 10) uniform texture2DArray globalParams_secondary_fake_light_shadows_volumetric_shadow_map_tex;
+layout(set = 2, binding = 3) uniform sampler samplers_llc;
+layout(set = 0, binding = 16) uniform texture2D prev_froxel_tile_z_cutoff_tex;
+layout(set = 0, binding = 3) uniform texture3D prev_froxel_scattering_tex;
+layout(set = 0, binding = 5) uniform texture3D prev_froxel_extinction_tex;
+layout(set = 0, binding = 2, r11f_g11f_b10f) uniform writeonly image3D froxel_scattering_tex;
+layout(set = 0, binding = 4, r16f) uniform writeonly image3D froxel_extinction_tex;
+layout(set = 0, binding = 15, r8) uniform writeonly image2D froxel_tile_z_cutoff_tex;
+
+void main()
+{
+    vec4 _3163 = ((texelFetch(blue_noise_textures_uniform01, ivec2(((gl_GlobalInvocationID.xy + uvec2(13u)) + uvec2(fract((vec2(0.75487768650054931640625, 0.56984031200408935546875) * float(frame_counter.index)) + vec2(0.5)) * vec2(256.0))) % uvec2(256u)), 0) * 255.0) * vec4(0.00390625)) + vec4(0.001953125);
+    vec2 _153 = vec2(globalParams.froxel_scattering_tex_dims);
+    vec2 uv = (vec2(gl_GlobalInvocationID.xy) + _3163.yz) / _153;
+    vec2 _3195 = (uv - vec2(0.5)) * vec2(2.0, -2.0);
+    vec3 wo = -normalize(((vec4(_3195, 0.0, 1.0) * current_view_1.sample_to_view) * current_view_1.view_to_world).xyz);
+    float _3209 = -current_view_1.clip_to_view[3].z;
+    float _6612;
+    _6612 = 1.0 / (textureLod(sampler2D(half_depth_tex, samplers_nnc), uv, 0.0).x * _3209);
+    int y;
+    float _7121;
+    int _6611 = -2;
+    for (;;)
+    {
+        if (!(_6611 <= 2))
+        {
+            break;
+        }
+        _7121 = _6612;
+        float _282;
+        int x;
+        int _7119 = -2;
+        for (;;)
+        {
+            if (!(_7119 <= 2))
+            {
+                break;
+            }
+            _282 = min(_7121, 1.0 / (textureLod(sampler2D(half_depth_tex, samplers_nnc), uv + (((vec2(float(_7119), float(_6611)) * vec2(0.5)) * 4.0) / _153), 0.0).x * _3209));
+            x = _7119 + 1;
+            _7121 = _282;
+            _7119 = x;
+            continue;
+        }
+        y = _6611 + 1;
+        _6612 = _7121;
+        _6611 = y;
+        continue;
+    }
+    float _3243 = mix(0.045955993235111236572265625 / pow(1.4224998950958251953125 - (dot(wo, frame_constants.dir_to_primary_directional_light) * (-1.2999999523162841796875)), 1.5), 0.079577468335628509521484375, 0.5);
+    float _3272 = mix(0.045955993235111236572265625 / pow(1.4224998950958251953125 - (dot(wo, frame_constants.fake_light_dir.xyz) * (-1.2999999523162841796875)), 1.5), 0.079577468335628509521484375, 0.5);
+    float _3301 = mix(0.045955993235111236572265625 / pow(1.4224998950958251953125 - (dot(wo, frame_constants.fake_light2_dir.xyz) * (-1.2999999523162841796875)), 1.5), 0.079577468335628509521484375, 0.5);
+    vec3 _3332 = (frame_constants.sky_high_color.xyz * 1.10000002384185791015625) * frame_constants.fog_relative_extinction;
+    float _374 = 0.00999999977648258209228515625 * frame_constants.fog_relative_extinction;
+    float _3337 = clamp(pow(_6612 * (-0.0009765625), 0.5), 0.0, 1.0);
+    uint max_z_layer = uint(min(64.0, ceil((_3337 * 64.0) + 1.0)));
+    vec3 _6708;
+    _6708 = vec3(0.0);
+    uint _409;
+    float max_vs_z;
+    vec3 scattering;
+    float transmittance;
+    uint _6613 = 0u;
+    float _6622 = 0.0;
+    float _6627 = 1.0;
+    for (;;)
+    {
+        if (!(_6613 < max_z_layer))
+        {
+            break;
+        }
+        uvec3 froxel_coord = uvec3(gl_GlobalInvocationID.xy, _6613);
+        float _407 = float(_6613);
+        _409 = _6613 + 1u;
+        vec2 _414 = vec2(_407, float(_409)) * vec2(0.015625);
+        float _418 = _414.x;
+        float _422 = min(_414.y, max(_418, _3337 + 0.015625));
+        max_vs_z = pow(_422, 2.0) * (-1024.0);
+        float _3362 = 1.0 / ((pow(mix(_418, _422, _3163.x), 2.0) * (-1024.0)) * _3209);
+        vec3 air_cs = vec3(_3195, _3362);
+        vec4 _460 = vec4(air_cs, 1.0);
+        vec4 _461 = _460 * current_view_1.clip_to_view;
+        vec4 _3374 = vec4(_461.xyz / vec3(_461.w), 1.0) * current_view_1.view_to_world;
+        vec3 _3375 = _3374.xyz;
+        float _3386 = 300.0 * globalParams.ambient_fog_size_scale;
+        vec3 _3388 = _3375 / vec3(_3386, 30.0 * globalParams.ambient_fog_size_scale, _3386);
+        float _3391 = exp2(-dot(_3388, _3388));
+        float _6614;
+        if (frame_constants.glade_theme_id == 2u)
+        {
+            _6614 = min(_3391 * mix(1.0, 3.0, smoothstep(60.0, 200.0, length(_3374.xz / vec2(globalParams.ambient_fog_size_scale)))), 0.800000011920928955078125);
+        }
+        else
+        {
+            float _6615;
+            if (frame_constants.glade_theme_id == 3u)
+            {
+                _6615 = _3391 * mix(1.0, 8.0, smoothstep(30.0, 200.0, length(_3374.xz / vec2(globalParams.ambient_fog_size_scale))));
+            }
+            else
+            {
+                float _6616;
+                if (frame_constants.glade_theme_id == 4u)
+                {
+                    _6616 = _3391 * mix(1.0, 4.0, smoothstep(100.0, 300.0, length(_3374.xz)));
+                }
+                else
+                {
+                    _6616 = _3391 * mix(1.0, 2.0, smoothstep(100.0, 300.0, length(_3374.xz)));
+                }
+                _6615 = _6616;
+            }
+            _6614 = _6615;
+        }
+        float _3477;
+        uint _3509;
+        float _3518;
+        vec2 _3536;
+        vec2 _3558;
+        float _3562;
+        float _3567;
+        float _3429 = _3374.y;
+        float _6617;
+        do
+        {
+            vec2 _3472 = _3374.xz;
+            _3509 = terrain_heightmap.bg_terrain_fog_height.bindless_handle;
+            vec2 _3532 = (_3472 * vec2(0.001000000047497451305389404296875)) + vec2(0.5);
+            _3536 = vec2(_3532.y, 1.0 - _3532.x);
+            _3518 = 40.0 * frame_constants.ground_fog.x;
+            _3477 = max(0.00999999977648258209228515625, frame_constants.ground_fog.y);
+            float _3479 = 1.0 + (max(0.0, _3429 - (textureLod(nonuniformEXT(sampler2D(resource_handles[_3509], samplers_lnc_iso)), _3536, 0.0).x + _3518)) * _3477);
+            _3558 = _3472 * vec2(0.0076923076994717121124267578125);
+            vec2 _3559 = _3558 * 0.5;
+            _3562 = exp2(-dot(_3559, _3559));
+            _3567 = frame_constants.ground_fog.z;
+            float _3485 = (_3562 * (1.0 / ((_3479 * _3479) * _3479))) * _3567;
+            if (_3485 < 9.9999997473787516355514526367188e-05)
+            {
+                _6617 = 0.0;
+                break;
+            }
+            vec3 _3570 = (_3375 + vec3(frame_constants.time_since_startup_secs * 0.5)) * 0.18960000574588775634765625;
+            _6617 = _3485 * (37.759998321533203125 * max(0.0, ((((abs((textureLod(sampler3D(fog_noise_texture_tex, samplers_llr), (_3570 * mat3(vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0))) * vec3(0.0625), 0.0).x * 2.0) - 1.0) + (0.5 * abs((textureLod(sampler3D(fog_noise_texture_tex, samplers_llr), (((_3570 * 2.0) * mat3(vec3(0.8610973358154296875, -0.0193132795393466949462890625, 0.50807321071624755859375), vec3(0.3545955717563629150390625, 0.738958775997161865234375, -0.5728890895843505859375), vec3(-0.364380776882171630859375, 0.673473775386810302734375, 0.64316380023956298828125))) + vec3(17.1299991607666015625)) * vec3(0.0625), 0.0).x * 2.0) - 1.0))) + (0.25 * abs((textureLod(sampler3D(fog_noise_texture_tex, samplers_llr), (((_3570 * 4.0) * mat3(vec3(-0.4618504941463470458984375, -0.2227490246295928955078125, 0.858531892299652099609375), vec3(0.65270507335662841796875, 0.570043981075286865234375, 0.4990250170230865478515625), vec3(-0.60055828094482421875, 0.790843069553375244140625, -0.1178856790065765380859375))) + vec3(34.259998321533203125)) * vec3(0.0625), 0.0).x * 2.0) - 1.0))) + (0.125 * abs((textureLod(sampler3D(fog_noise_texture_tex, samplers_llr), (((_3570 * 8.0) * mat3(vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0))) + vec3(51.3899993896484375)) * vec3(0.0625), 0.0).x * 2.0) - 1.0))) * 0.533333361148834228515625) - 0.0199999995529651641845703125));
+            break;
+        } while(false);
+        float _3381 = (((_6614 * (1.0 / (1.0 + (0.4000000059604644775390625 * intBitsToFloat(532487669 + (floatBitsToInt(max(0.0, _3429 / globalParams.ambient_fog_size_scale)) >> 1)))))) * frame_constants.fog_tint_thickness.w) * globalParams.ambient_fog_density_scale) + _6617;
+        float integration_segment_length = _6622 - max_vs_z;
+        uint _3659 = min(((_3362 > csm_setup_cascade_splits_buf._member0[0].x) ? 0u : ((_3362 > csm_setup_cascade_splits_buf._member0[0].y) ? 1u : ((_3362 > csm_setup_cascade_splits_buf._member0[0].z) ? 2u : 3u))), 2u);
+        vec4 _3663 = vec4(_3375, 1.0);
+        vec4 _3664 = _3663 * csm_setup_sun_view_1._member0[_3659].world_to_sample;
+        bool _3669 = all(lessThan(abs(_3664.xy), vec2(0.9900000095367431640625)));
+        float _6654;
+        if (_3669)
+        {
+            vec4 _3679 = textureLod(sampler2DArray(csm_sun_shadow_map, samplers_nnc), vec3((_3664.xy * vec2(0.5, -0.5)) + vec2(0.5), float(_3659)), 0.0);
+            float _3680 = _3679.x;
+            float _6655;
+            if (_3680 != 1.0)
+            {
+                _6655 = float(_3680 > _3664.z);
+            }
+            else
+            {
+                _6655 = 1.0;
+            }
+            _6654 = _6655;
+        }
+        else
+        {
+            _6654 = 1.0;
+        }
+        float _6656;
+        if (!(_3669 ? false : _3669))
+        {
+            float _6649;
+            do
+            {
+                uint _7490 = (_3362 > globalParams_volumetric_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[0]) ? 0u : ((_3362 > globalParams_volumetric_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[1]) ? 1u : ((_3362 > globalParams_volumetric_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[2]) ? 2u : 3u));
+                vec4 _3770 = _3663 * globalParams_volumetric_shadows_volumetric_shadow_rendering_views_1._member0[0].world_to_clip.data[_7490];
+                if (any(greaterThanEqual(abs(_3770.xy), vec2(1.0))))
+                {
+                    _6649 = 1.0;
+                    break;
+                }
+                vec2 _3804 = (_3770.xy * vec2(0.5, -0.5)) + vec2(0.5);
+                vec2 _3814 = fract((_3804 * vec2(globalParams.volumetric_shadows.volumetric_shadow_map_tex_dims)) - vec2(0.5));
+                float _3822 = _3814.x;
+                float _3823 = 1.0 - _3822;
+                float _3824 = _3814.y;
+                float _3825 = 1.0 - _3824;
+                _6649 = dot(vec4(greaterThan(textureGather(sampler2DArray(globalParams_volumetric_shadows_volumetric_shadow_map_tex, samplers_lnc_iso), vec3(_3804, float(_7490))).wzxy, vec4(min(_3770.z, 0.99989998340606689453125)))), vec4(_3823 * _3825, _3822 * _3825, _3823 * _3824, _3822 * _3824));
+                break;
+            } while(false);
+            _6656 = min(_6654, _6649);
+        }
+        else
+        {
+            _6656 = _6654;
+        }
+        float _3846 = _3429 - (textureLod(nonuniformEXT(sampler2D(resource_handles[_3509], samplers_lnc_iso)), _3536, 0.0).x + _3518);
+        float _3849 = 2.0 * _3477;
+        float _3852 = 1.0 + (_3477 * max(0.0, _3846));
+        float _3861 = _374 * ((3.2200000286102294921875 * _3562) * _3567);
+        vec2 _3961 = _3558 + vec2(0.5);
+        float _3968 = mix(-2.5, 24.0, textureLod(sampler2D(visual_terrain_heightmap_visual_terrain_heightmap, samplers_lnc), _3961, 0.0).x);
+        vec3 _3994 = (_3375 * vec3(0.00390625, 0.0078125, 0.00390625)) + vec3(0.5, 0.0, 0.5);
+        vec2 _3997 = clamp((abs(_3994.xz - vec2(0.5)) - vec2(0.4000000059604644775390625)) * 10.0, vec2(0.0), vec2(1.0));
+        float _6679;
+        do
+        {
+            uint _7493 = (_3362 > globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[0]) ? 0u : ((_3362 > globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[1]) ? 1u : ((_3362 > globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views_1._member0[0].cascade_splits.data[2]) ? 2u : 3u));
+            vec4 _4055 = _3663 * globalParams_secondary_fake_light_shadows_volumetric_shadow_rendering_views_1._member0[0].world_to_clip.data[_7493];
+            if (any(greaterThanEqual(abs(_4055.xy), vec2(1.0))))
+            {
+                _6679 = 1.0;
+                break;
+            }
+            vec2 _4089 = (_4055.xy * vec2(0.5, -0.5)) + vec2(0.5);
+            vec2 _4099 = fract((_4089 * vec2(globalParams.secondary_fake_light_shadows.volumetric_shadow_map_tex_dims)) - vec2(0.5));
+            float _4107 = _4099.x;
+            float _4108 = 1.0 - _4107;
+            float _4109 = _4099.y;
+            float _4110 = 1.0 - _4109;
+            _6679 = dot(vec4(greaterThan(textureGather(sampler2DArray(globalParams_secondary_fake_light_shadows_volumetric_shadow_map_tex, samplers_lnc_iso), vec3(_4089, float(_7493))).wzxy, vec4(min(_4055.z, 0.99989998340606689453125)))), vec4(_4108 * _4110, _4107 * _4110, _4108 * _4109, _4107 * _4109));
+            break;
+        } while(false);
+        bool _1489 = globalParams.sun_fake_light_is_primary != 0u;
+        float _4131 = _3429 - (textureLod(nonuniformEXT(sampler2D(resource_handles[_3509], samplers_lnc_iso)), _3536, 0.0).x + _3518);
+        float _4137 = 1.0 + (_3477 * max(0.0, _4131));
+        float _4230 = _3429 - (textureLod(nonuniformEXT(sampler2D(resource_handles[_3509], samplers_lnc_iso)), _3536, 0.0).x + _3518);
+        float _4236 = 1.0 + (_3477 * max(0.0, _4230));
+        vec3 _1526 = ((frame_constants.sun_color.xyz * (((_6656 * exp(-((_3861 * ((1.0 / (_3849 * (_3852 * _3852))) + max(0.0, -_3846))) / max(0.0500000007450580596923828125, frame_constants.dir_to_primary_directional_light.y)))) * _3243) * 4.0)) + ((_3332 * mix(textureLod(sampler3D(sky_visibility_volume_tex, samplers_lnc_iso), _3994, 0.0).x, 1.0, max(_3997.x, _3997.y))) + ((textureLod(sampler2D(terrain_lighting_texture_tex, samplers_lnc_iso), _3961, 3.0).xyz * 0.662000000476837158203125) * smoothstep(_3968 + 4.0, _3968, _3429)))) + ((frame_constants.fake_light_color.xyz * ((((_1489 ? _6656 : _6679) * exp(-((_3861 * ((1.0 / (_3849 * (_4137 * _4137))) + max(0.0, -_4131))) / max(0.0500000007450580596923828125, frame_constants.fake_light_dir.y)))) * _3272) * 4.0)) + (frame_constants.fake_light2_color.xyz * ((((_1489 ? _6679 : _6656) * exp(-((_3861 * ((1.0 / (_3849 * (_4236 * _4236))) + max(0.0, -_4230))) / max(0.0500000007450580596923828125, frame_constants.fake_light2_dir.y)))) * _3301) * 4.0)));
+        vec3 _6690;
+        if (globalParams.lanterns.lantern_count > 0u)
+        {
+            uvec3 _4466 = uvec3(clamp(floor((_3375 * vec3(0.24615384638309478759765625, 0.123076923191547393798828125, 0.24615384638309478759765625)) + vec3(16.0, 2.0, 16.0)), vec3(0.0), vec3(31.0, 15.0, 31.0)));
+            uint _4495 = (32u * ((32u * _4466.y) + _4466.z)) + _4466.x;
+            uint _4349 = globalParams_lanterns_light_indirection_grid_1._member0[_4495] & 1048575u;
+            uint _4351 = min(64u, (globalParams_lanterns_light_indirection_grid_1._member0[_4495] >> 20u));
+            vec3 _6691;
+            _6691 = _1526;
+            uint _4450;
+            vec3 _7223;
+            uint _6689 = 0u;
+            for (;;)
+            {
+                bool _4354_ladder_break = false;
+                do
+                {
+                    if (!(_6689 < _4351))
+                    {
+                        _4354_ladder_break = true;
+                        break;
+                    }
+                    uint _4361 = _4349 + _6689;
+                    vec2 _4511 = unpackHalf2x16(globalParams_lanterns_lantern_buf_1._member0[globalParams_lanterns_grid_light_indices_1._member0[_4361]].intensity_color_id);
+                    float _4512 = _4511.x;
+                    uint _4517 = globalParams_lanterns_lantern_buf_1._member0[globalParams_lanterns_grid_light_indices_1._member0[_4361]].intensity_color_id >> uint(16);
+                    vec3 _4531 = globalParams_lanterns_lantern_buf_1._member0[globalParams_lanterns_grid_light_indices_1._member0[_4361]].position.xyz - _3375;
+                    float _4532 = length(_4531);
+                    float _4533 = dot(_4531, _4531);
+                    vec3 _4540 = _4531 + vec3(0.0, 0.1500000059604644775390625, 0.0);
+                    vec3 _4546 = vec3(_4532);
+                    vec3 _6733;
+                    do
+                    {
+                        if (_4517 == 0u)
+                        {
+                            _6733 = vec3(1.0, 0.800000011920928955078125, 0.100000001490116119384765625);
+                            break;
+                        }
+                        else
+                        {
+                            if (_4517 == 1u)
+                            {
+                                _6733 = vec3(0.0, 0.735904157161712646484375, 3.67952060699462890625);
+                                break;
+                            }
+                            else
+                            {
+                                if (_4517 == 2u)
+                                {
+                                    _6733 = vec3(0.20513366162776947021484375, 1.02566826343536376953125, 0.20513366162776947021484375);
+                                    break;
+                                }
+                                else
+                                {
+                                    if (_4517 == 3u)
+                                    {
+                                        _6733 = vec3(0.85153043270111083984375, 0.56768691539764404296875, 2.8384344577789306640625);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        _6733 = vec3(1.82324230670928955078125, 0.546972692012786865234375, 0.182324230670928955078125);
+                                        break;
+                                    }
+                                    break; // unreachable workaround
+                                }
+                                break; // unreachable workaround
+                            }
+                            break; // unreachable workaround
+                        }
+                        break; // unreachable workaround
+                    } while(false);
+                    vec3 _4557 = ((_6733 * 4.0) * _4512) * ((max(0.0, dot(normalize(globalParams_lanterns_lantern_buf_1._member0[globalParams_lanterns_grid_light_indices_1._member0[_4361]].position - _3375), _4531 / _4546)) * ((1.0 / (0.3359999954700469970703125 + _4533)) * smoothstep(36.0 * _4512, 16.0 * _4512, _4533))) * smoothstep(-0.5, 0.20000000298023223876953125, (_4540 / vec3(length(_4540))).y));
+                    if (0.0 == dot(_4557, vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875)))
+                    {
+                        _7223 = _6691;
+                        break;
+                    }
+                    vec3 _4395 = _3375 + ((_4531 * (_4532 - 0.5)) / _4546);
+                    vec3 _6734;
+                    if (_4532 > 0.5)
+                    {
+                        _6734 = _4395 + (((-_4531) / _4546) * (0.0199999995529651641845703125 * _3163.z));
+                    }
+                    else
+                    {
+                        _6734 = _4395;
+                    }
+                    vec4 _4679 = (vec4(_6734, 1.0) * current_view_1.world_to_view) * current_view_1.view_to_sample;
+                    vec3 _4683 = _4679.xyz / vec3(_4679.w);
+                    vec4 _4705 = _460 + (vec4(_4683 - air_cs, 0.0) * float(int(sign(_4683.z))));
+                    float _4706 = _4705.w;
+                    vec3 _4719 = (_4705 / vec4(float((_4706 >= 0.0) ? 1 : (-1)) * max(1.0000000133514319600180897396058e-10, abs(_4706)))).xyz;
+                    vec3 _4721 = _4719 - air_cs;
+                    vec3 _4727 = (mix(vec3(-1.0, -1.0, 0.0), vec3(1.0), lessThan(_4721, vec3(0.0))) - air_cs) / _4721;
+                    vec3 _4734 = air_cs + (_4721 * max(0.0, max(_4727.x, _4727.y)));
+                    vec3 _4735 = _4719 - _4734;
+                    vec3 _4740 = (mix(vec3(-1.0, -1.0, 0.0), vec3(1.0), greaterThanEqual(_4735, vec3(0.0))) - _4734) / _4735;
+                    vec3 _4755 = _4734 + (_4735 * min(1.0, min(min(_4740.x, _4740.y), _4740.z)));
+                    float _4413 = _3163.w;
+                    float _7014;
+                    float _7015;
+                    bool _7016;
+                    do
+                    {
+                        float _4825 = 0.800000011920928955078125 * current_view_1.clip_to_view[3].z;
+                        uint _4841 = uint(int(max(2u, min(4u, uint(int(floor(length((((_4755.xy * vec2(0.5, -0.5)) + vec2(0.5)) - ((_4734.xy * vec2(0.5, -0.5)) + vec2(0.5))) * vec2(globalParams.half_depth_tex_dims)))))))));
+                        float _6762;
+                        bool _6870;
+                        float _6871;
+                        float _6873;
+                        float _6890;
+                        float _6907;
+                        do
+                        {
+                            vec3 _4993 = _4755 - _4734;
+                            float _5002 = float(_4841);
+                            float _6739;
+                            do
+                            {
+                                if (_4755.z > 9.5367431640625e-07)
+                                {
+                                    _6739 = _5002;
+                                    break;
+                                }
+                                else
+                                {
+                                    _6739 = max(1.0, _5002 - 1.0);
+                                    break;
+                                }
+                                break; // unreachable workaround
+                            } while(false);
+                            float _5012 = 1.0 / _6739;
+                            bool _6771;
+                            float _6777;
+                            float _6781;
+                            float _6785;
+                            float _6793;
+                            if (_4841 > 0u)
+                            {
+                                float _5022 = mix(0.0, 1.0, pow(_4413 * _5012, 1.0));
+                                vec3 _5025 = _4734 + (_4993 * vec3(_5022));
+                                vec2 _5238 = (_5025.xy * vec2(0.5, -0.5)) + vec2(0.5);
+                                float _5172 = 1.0 / _5025.z;
+                                float _5179 = 1.0 / textureLod(sampler2D(half_depth_tex, samplers_llc), _5238, 0.0).x;
+                                float _5186 = 1.0 / textureLod(sampler2D(half_depth_tex, samplers_nnc), _5238, 0.0).x;
+                                float _5198 = (max(_5179, _5186) * 1.00000202655792236328125) - _5172;
+                                float _5202 = _5172 - min(_5179, _5186);
+                                bool _7497 = (_5198 < 0.0) ? (_5202 < _4825) : false;
+                                float _6763;
+                                bool _6772;
+                                float _6778;
+                                float _6782;
+                                float _6786;
+                                float _6794;
+                                if (_7497)
+                                {
+                                    _6794 = _5198;
+                                    _6786 = _5202;
+                                    _6782 = _4825;
+                                    _6778 = _5022;
+                                    _6772 = _7497;
+                                    _6763 = 0.0;
+                                }
+                                else
+                                {
+                                    float _6765;
+                                    _6765 = _5022;
+                                    float _5051;
+                                    uint _5069;
+                                    bool _7498;
+                                    bool _6773;
+                                    float _6779;
+                                    float _6783;
+                                    float _6787;
+                                    float _6795;
+                                    uint _6748 = 1u;
+                                    bool _6774 = _7497;
+                                    for (;;)
+                                    {
+                                        if (!(_6748 < _4841))
+                                        {
+                                            _6795 = 0.0;
+                                            _6787 = 0.0;
+                                            _6783 = 0.0;
+                                            _6779 = 1.0;
+                                            _6773 = _6774;
+                                            break;
+                                        }
+                                        _5051 = mix(0.0, 1.0, min(0.9999847412109375, pow((float(_6748) + _4413) * _5012, 1.0)));
+                                        vec3 _5054 = _4734 + (_4993 * vec3(_5051));
+                                        vec2 _5342 = (_5054.xy * vec2(0.5, -0.5)) + vec2(0.5);
+                                        float _5276 = 1.0 / _5054.z;
+                                        float _5283 = 1.0 / textureLod(sampler2D(half_depth_tex, samplers_llc), _5342, 0.0).x;
+                                        float _5290 = 1.0 / textureLod(sampler2D(half_depth_tex, samplers_nnc), _5342, 0.0).x;
+                                        float _5302 = (max(_5283, _5290) * 1.00000202655792236328125) - _5276;
+                                        float _5306 = _5276 - min(_5283, _5290);
+                                        _7498 = (_5302 < 0.0) ? (_5306 < _4825) : false;
+                                        if (_7498)
+                                        {
+                                            _6795 = _5302;
+                                            _6787 = _5306;
+                                            _6783 = _4825;
+                                            _6779 = _5051;
+                                            _6773 = _7498;
+                                            break;
+                                        }
+                                        _5069 = _6748 + 1u;
+                                        _6748 = _5069;
+                                        _6774 = _7498;
+                                        _6765 = _5051;
+                                        continue;
+                                    }
+                                    _6794 = _6795;
+                                    _6786 = _6787;
+                                    _6782 = _6783;
+                                    _6778 = _6779;
+                                    _6772 = _6773;
+                                    _6763 = _6765;
+                                }
+                                _6793 = _6794;
+                                _6785 = _6786;
+                                _6781 = _6782;
+                                _6777 = _6778;
+                                _6771 = _6772;
+                                _6762 = _6763;
+                            }
+                            else
+                            {
+                                _6793 = 0.0;
+                                _6785 = 0.0;
+                                _6781 = 0.0;
+                                _6777 = 1.0;
+                                _6771 = false;
+                                _6762 = 0.0;
+                            }
+                            if (_6771)
+                            {
+                                _6907 = _6793;
+                                _6890 = _6781;
+                                _6873 = _6785;
+                                _6871 = _6777;
+                                _6870 = true;
+                                break;
+                            }
+                            else
+                            {
+                                _6907 = _4926.base._distance;
+                                _6890 = _4926.thickness;
+                                _6873 = _4926.penetration;
+                                _6871 = _6762;
+                                _6870 = false;
+                                break;
+                            }
+                            break; // unreachable workaround
+                        } while(false);
+                        bool _6924;
+                        if (_6870)
+                        {
+                            bool _6926;
+                            if (_6873 < _6890)
+                            {
+                                _6926 = _6907 < _6890;
+                            }
+                            else
+                            {
+                                _6926 = false;
+                            }
+                            _6924 = _6926;
+                        }
+                        else
+                        {
+                            _6924 = false;
+                        }
+                        if (_6924)
+                        {
+                            _7016 = true;
+                            _7015 = _6871;
+                            _7014 = _6873 / current_view_1.clip_to_view[3].z;
+                            break;
+                        }
+                        _7016 = false;
+                        _7015 = _6762;
+                        _7014 = 0.0;
+                        break;
+                    } while(false);
+                    if (_7016)
+                    {
+                        vec4 _5605 = (vec4(mix(_4734, _4755, vec3(_7015)), 1.0) * current_view_1.sample_to_view) * current_view_1.view_to_world;
+                        vec3 _4429 = ((_5605.xyz / vec3(_5605.w)) + (wo * _7014)) - globalParams_lanterns_lantern_buf_1._member0[globalParams_lanterns_grid_light_indices_1._member0[_4361]].position.xyz;
+                        bool _7017;
+                        if (abs(_4429.y) > 0.5)
+                        {
+                            _7017 = true;
+                        }
+                        else
+                        {
+                            vec2 _4434 = _4429.xz;
+                            _7017 = dot(_4434, _4434) > 0.136900007724761962890625;
+                        }
+                        if (_7017)
+                        {
+                            _7223 = _6691;
+                            break;
+                        }
+                    }
+                    _7223 = _6691 + (_4557 * frame_constants.ev_mult);
+                    break;
+                } while(false);
+                if (_4354_ladder_break)
+                {
+                    break;
+                }
+                _4450 = _6689 + 1u;
+                _6691 = _7223;
+                _6689 = _4450;
+                continue;
+            }
+            _6690 = _6691;
+        }
+        else
+        {
+            _6690 = _1526;
+        }
+        scattering = _6708 + ((_6690 * (((((1.0 - exp(-max(1.0000000116860974230803549289703e-07, (integration_segment_length * _374) * _3381))) / max(9.9999996826552253889678874634872e-21, _374 * _3381)) * _6627) * 0.00999999977648258209228515625) * ((_422 - _418) * 64.0))) * _3381);
+        transmittance = _6627 * exp(((-integration_segment_length) * _374) * _3381);
+        float _2957 = (_407 + 0.5) * 0.015625;
+        vec3 unclamped_air_cs = vec3(_3195, 1.0 / ((pow(_2957, 2.0) * (-1024.0)) * _3209));
+        if (entryPointParams.history_valid != 0)
+        {
+            vec4 _2974 = vec4(unclamped_air_cs, 1.0) * current_view_1.clip_to_prev_clip;
+            vec4 prev_air_cs = _2974 / vec4(_2974.w);
+            float _5648 = clamp(pow((-0.0009765625) / (prev_air_cs.z * _3209), 0.5), 0.0, 1.0);
+            vec3 prev_uvw = vec3((prev_air_cs.xy * vec2(0.5, -0.5)) + vec2(0.5), _5648);
+            vec3 _2994 = (prev_uvw - vec3((unclamped_air_cs.xy * vec2(0.5, -0.5)) + vec2(0.5), _2957)) * vec3(_153 * 0.0500000007450580596923828125, 64.0);
+            vec4 _3032 = mix(vec4(textureLod(sampler3D(prev_froxel_scattering_tex, samplers_lnc_iso), prev_uvw, 0.0).xyz, max(0.0, textureLod(sampler3D(prev_froxel_extinction_tex, samplers_lnc_iso), prev_uvw, 0.0).x)), vec4(scattering, transmittance), vec4(mix(mix(0.100000001490116119384765625, 1.0, clamp(dot(_2994, _2994), 0.0, 1.0)), 1.0, clamp((clamp(_5648 + 0.02187499962747097015380859375, 0.0, 1.0) - textureLod(sampler2D(prev_froxel_tile_z_cutoff_tex, samplers_lnc), prev_uvw.xy, 0.0).x) * 64.0, 0.0, 1.0))));
+            vec4 blended_value = mix(_3032, vec4(0.0, 0.0, 0.0, 1.0), isnan(_3032));
+            vec3 _3036 = blended_value.xyz;
+            ivec3 _5656 = ivec3(0);
+            vec3 _5659 = frexp(_3036, _5656);
+            imageStore(froxel_scattering_tex, ivec3(froxel_coord), vec4(_3036 + (vec3(notEqual(_3036, vec3(0.0))) * exp2(vec3(_5656) - vec3(8.0, 8.0, 7.0))), 0.0));
+            imageStore(froxel_extinction_tex, ivec3(froxel_coord), vec4(blended_value.w));
+        }
+        else
+        {
+            imageStore(froxel_scattering_tex, ivec3(froxel_coord), vec4(scattering, 0.0));
+            imageStore(froxel_extinction_tex, ivec3(froxel_coord), vec4(transmittance));
+        }
+        _6708 = scattering;
+        _6627 = transmittance;
+        _6622 = max_vs_z;
+        _6613 = _409;
+        continue;
+    }
+    imageStore(froxel_tile_z_cutoff_tex, ivec2(gl_GlobalInvocationID.xy), vec4(float(max_z_layer) * 0.015625));
+}
+

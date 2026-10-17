@@ -1,0 +1,195 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1537,
+    "record_offset": 17168,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.ekr4wi6s5agwnach7cvlaf14r.1ryv1cn.rcgu.o",
+    "name": "system_wall_constructor::construct_wooden_walls::construct_wall_boards::top_rim_merlon_ranges",
+    "segment": 1,
+    "offset": 21512640,
+    "rva": 21516736,
+    "va": "0x1414851c0",
+    "size": 545,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "25a6d68efcf8b51555e635f6f0e6f0a3115405d955173f02e7aea98e3fb40260",
+  "code_bytes": 545,
+  "decoded_bytes": 545,
+  "instructions": 117,
+  "calls_and_jumps": [
+    {
+      "address": "0x141485213",
+      "kind": "call",
+      "target": "0x142e32b00",
+      "target_names": [
+        "roundf"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14148527e",
+      "kind": "jmp",
+      "target": "0x141485316",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14148529a",
+      "kind": "jmp",
+      "target": "0x1414853d0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414852a7",
+      "kind": "call",
+      "target": "0x142e32b00",
+      "target_names": [
+        "roundf"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141485301",
+      "kind": "jmp",
+      "target": "0x14148537f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14148535e",
+      "kind": "call",
+      "target": "0x1413eea80",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17hd1f0830f25b9bee0E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,core::iter::adapters::filter_map::FilterMap<core::ops::range::Range<usize>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::top_rim_merlon_ranges::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141485363",
+      "kind": "jmp",
+      "target": "0x1414853d0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414853cb",
+      "kind": "call",
+      "target": "0x1413ed750",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17hb9350b850abea67aE",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,core::iter::adapters::filter_map::FilterMap<core::ops::range::Range<usize>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::top_rim_merlon_ranges::closure_env$0> >"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x1414851fb",
+      "target": "0x14330a248",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f7fffff"
+      ],
+      "bytes_hex": "ffff7f3f00000000000000009a99193f0000000000000000ffffff3f00000000"
+    },
+    {
+      "address": "0x141485203",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x14148520b",
+      "target": "0x142e36f50",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f000000"
+      ],
+      "bytes_hex": "0000003f0000000000000000000000000000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x141485218",
+      "target": "0x142e37830",
+      "operand_bytes": 4,
+      "names": [
+        "__real@40000000"
+      ],
+      "bytes_hex": "000000400000a0400000c03f3333333f8fc2f53c0000f0410ad7233c6f1283ba"
+    },
+    {
+      "address": "0x14148522f",
+      "target": "0x142e36f2c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@5f000000"
+      ],
+      "bytes_hex": "0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x14148524e",
+      "target": "0x142e36f30",
+      "operand_bytes": 4,
+      "names": [
+        "__real@5f7fffff"
+      ],
+      "bytes_hex": "ffff7f5f000080bf000000bfffff7f7f0000003f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x14148529f",
+      "target": "0x14330a260",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3fffffff"
+      ],
+      "bytes_hex": "ffffff3f000000000000c03f9a99193f246d696e203e206d61782c206f722065"
+    },
+    {
+      "address": "0x1414852ac",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x1414852c3",
+      "target": "0x142e36f2c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@5f000000"
+      ],
+      "bytes_hex": "0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x1414852e2",
+      "target": "0x142e36f30",
+      "operand_bytes": 4,
+      "names": [
+        "__real@5f7fffff"
+      ],
+      "bytes_hex": "ffff7f5f000080bf000000bfffff7f7f0000003f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x141485389",
+      "target": "0x142e36f50",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f000000"
+      ],
+      "bytes_hex": "0000003f0000000000000000000000000000003f0000003f0000000000000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

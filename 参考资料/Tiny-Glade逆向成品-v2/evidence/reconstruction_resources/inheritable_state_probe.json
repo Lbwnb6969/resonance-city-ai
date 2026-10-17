@@ -1,0 +1,919 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "routine": "0x14270d410",
+  "routine_pdb": "asset::inheritable::impl$1::inherit_from<Option<asset::prefab::config::PrefabRtConfig>>",
+  "field_layout": {
+    "stride": 16,
+    "fields": [
+      "mesh_scale",
+      "summer_albedo",
+      "autumn_albedo",
+      "winter_albedo"
+    ]
+  },
+  "tags_are_raw": true,
+  "rows": [
+    {
+      "field": 0,
+      "child_tag": 0,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 0,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 0,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        11.0,
+        12.0,
+        13.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 0,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 1,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 1,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 1,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 1,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 2,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 2,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 2,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 2,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 3,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 3,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 3,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 0,
+      "child_tag": 3,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 0,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 0,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        11.0,
+        12.0,
+        13.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 0,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        12.0,
+        13.0,
+        14.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 0,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        12.0,
+        13.0,
+        14.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 1,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 1,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 1,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 1,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 2,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 2,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 2,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 2,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 3,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 3,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 3,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 1,
+      "child_tag": 3,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 0,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 0,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        12.0,
+        13.0,
+        14.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 0,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        13.0,
+        14.0,
+        15.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 0,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        13.0,
+        14.0,
+        15.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 1,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 1,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 1,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 1,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 2,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 2,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 2,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 2,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 3,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 3,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 3,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 2,
+      "child_tag": 3,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        3.0,
+        4.0,
+        5.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 0,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 0,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        13.0,
+        14.0,
+        15.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 0,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        14.0,
+        15.0,
+        16.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 0,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        14.0,
+        15.0,
+        16.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 1,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 1,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 1,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 1,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 1,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 2,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 2,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 2,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 2,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 2,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 3,
+      "parent_tag": 0,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 3,
+      "parent_tag": 1,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 3,
+      "parent_tag": 2,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    },
+    {
+      "field": 3,
+      "child_tag": 3,
+      "parent_tag": 3,
+      "status": "returned",
+      "result_tag": 3,
+      "result_vec3": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "result_semantic_byte": 1,
+      "result_flag_byte": 0
+    }
+  ],
+  "notes": [
+    "The binary/PDB does not preserve enum variant names; result tags are raw discriminants.",
+    "For every field, child tag 3 survives unchanged (an explicit disabling state in this POD path).",
+    "Child tag 2 keeps its payload; child tag 0 selects a concrete parent tag 2 payload or the native [1,1,1] default when no concrete parent exists.",
+    "Child tag 1 remains tag 1 and its payload; this is an unresolved/specification state in the merge output and is not renamed here."
+  ]
+}

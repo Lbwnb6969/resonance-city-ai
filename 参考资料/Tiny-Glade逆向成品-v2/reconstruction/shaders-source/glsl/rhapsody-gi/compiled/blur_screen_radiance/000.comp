@@ -1,0 +1,127 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+const uvec2 _135[4] = uvec2[](uvec2(0u), uvec2(0u, 1u), uvec2(1u), uvec2(1u, 0u));
+
+layout(set = 1, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 half_depth_tex_dims;
+    uvec2 half_view_normal_tex_dims;
+    uvec2 ssgi_tex_dims;
+    uvec2 input_tex_dims;
+    uvec2 output_tex_dims;
+    uvec2 temporal_stats_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2D half_depth_tex;
+layout(set = 0, binding = 2) uniform texture2D half_view_normal_tex;
+layout(set = 0, binding = 3) uniform texture2D ssgi_tex;
+layout(set = 0, binding = 6) uniform texture2D temporal_stats_tex;
+layout(set = 0, binding = 4) uniform texture2D input_tex;
+layout(set = 0, binding = 5, rgba16f) uniform writeonly image2D output_tex;
+
+void main()
+{
+    vec4 sampled = texelFetch(half_depth_tex, ivec2(gl_GlobalInvocationID.xy), 0);
+    float _91 = sampled.x;
+    float _101 = max(0.300000011920928955078125, texelFetch(half_view_normal_tex, ivec2(gl_GlobalInvocationID.xy), 0).z);
+    vec4 contrib[3] = vec4[](vec4(0.0), vec4(0.0), vec4(0.0));
+    uint _391 = frame_counter.index & 3u;
+    vec4 sampled_1 = texelFetch(ssgi_tex, ivec2((gl_GlobalInvocationID.xy * uvec2(2u)) + _135[_391]), 0);
+    float _151 = sampled_1.x;
+    vec3 _158 = texelFetch(half_view_normal_tex, ivec2(gl_GlobalInvocationID.xy), 0).xyz;
+    bool _169 = texelFetch(temporal_stats_tex, ivec2(gl_GlobalInvocationID.xy), 0).x > 33.0;
+    float _433 = _169 ? 1.0 : 3.0;
+    float _405;
+    _405 = 0.0;
+    int y;
+    float _408;
+    int _401 = -1;
+    for (;;)
+    {
+        if (!(_401 <= 1))
+        {
+            break;
+        }
+        _408 = _405;
+        float wt_sum;
+        int x;
+        int _406 = -1;
+        for (;;)
+        {
+            if (!(_406 <= 1))
+            {
+                break;
+            }
+            uvec2 _203 = gl_GlobalInvocationID.xy + uvec2(ivec2(vec2(float(_406), float(_401)) * _433));
+            float wt = exp2(-min(30.0, 80.0 * (_101 * abs(1.0 - (texelFetch(half_depth_tex, ivec2(_203), 0).x / _91))))) * exp2((-20.0) * abs(texelFetch(ssgi_tex, ivec2((_203 * uvec2(2u)) + _135[_391]), 0).x - _151));
+            float _412;
+            if (_169)
+            {
+                _412 = wt * exp2(-float((_406 * _406) + (_401 * _401)));
+            }
+            else
+            {
+                _412 = wt;
+            }
+            float _259 = dot(_158, texelFetch(half_view_normal_tex, ivec2(_203), 0).xyz);
+            float _397 = ((_259 * _259) * (-0.89999997615814208984375)) + 1.0;
+            float wt_1 = _412 * (0.010000000707805156707763671875 / (_397 * _397));
+            uint i;
+            uint _413 = 0u;
+            for (;;)
+            {
+                if (!(_413 < 3u))
+                {
+                    break;
+                }
+                contrib[_413] += (texelFetch(input_tex, ivec2(_203 + uvec2(_413 * globalParams.half_depth_tex_dims.x, 0u)), 0) * wt_1);
+                i = _413 + 1u;
+                _413 = i;
+                continue;
+            }
+            wt_sum = _408 + wt_1;
+            x = _406 + 1;
+            _408 = wt_sum;
+            _406 = x;
+            continue;
+        }
+        y = _401 + 1;
+        _405 = _408;
+        _401 = y;
+        continue;
+    }
+    uint i_1;
+    uint _402 = 0u;
+    for (;;)
+    {
+        if (!(_402 < 3u))
+        {
+            break;
+        }
+        contrib[_402] /= vec4(max(1.0000000133514319600180897396058e-10, _405));
+        i_1 = _402 + 1u;
+        _402 = i_1;
+        continue;
+    }
+    uint i_2;
+    uint _403 = 0u;
+    for (;;)
+    {
+        if (!(_403 < 3u))
+        {
+            break;
+        }
+        imageStore(output_tex, ivec2(gl_GlobalInvocationID.xy + uvec2(_403 * globalParams.half_depth_tex_dims.x, 0u)), contrib[_403]);
+        i_2 = _403 + 1u;
+        _403 = i_2;
+        continue;
+    }
+}
+

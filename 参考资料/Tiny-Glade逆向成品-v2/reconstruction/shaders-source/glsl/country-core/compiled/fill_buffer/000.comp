@@ -1,0 +1,22 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} _output;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint value;
+    uint range;
+} push_constants;
+
+void main()
+{
+    if (gl_GlobalInvocationID.x < push_constants.range)
+    {
+        _output._member0[gl_GlobalInvocationID.x] = push_constants.value;
+    }
+}
+

@@ -1,0 +1,66 @@
+{
+  "source": "original PE bytes, pefile/Capstone; not REA Evidence",
+  "target_sha256": "4aa99a8deaa9a322026094186ed283020a8b6d897f2777dbb330ebf0ca89532c",
+  "observations": [
+    {
+      "rva": "0x18e950",
+      "file_offset": 1629520,
+      "bytes": "e94b13fdff",
+      "instructions": [
+        {
+          "address": "0x1018e950",
+          "mnemonic": "jmp",
+          "operands": "0x1015fca0"
+        }
+      ]
+    },
+    {
+      "rva": "0x15fca0",
+      "file_offset": 1437856,
+      "bytes": "558bec6a01ff7508e893feffff83c4085dc3",
+      "instructions": [
+        {
+          "address": "0x1015fca0",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "0x1015fca1",
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "address": "0x1015fca3",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "0x1015fca5",
+          "mnemonic": "push",
+          "operands": "dword ptr [ebp + 8]"
+        },
+        {
+          "address": "0x1015fca8",
+          "mnemonic": "call",
+          "operands": "0x1015fb40"
+        },
+        {
+          "address": "0x1015fcad",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0x1015fcb0",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "0x1015fcb1",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "conclusion": "Initializer thunk targets a wrapper with an explicit RET tail; this is insufficient to verify that its nested call returns, but prevents treating the Ghidra no-return flag as independent runtime proof."
+}

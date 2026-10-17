@@ -1,0 +1,12 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Go to resource",shape=box];
+  n1 [label="GamCBehaviorTreeNodeDecoratorRepeat",shape=doubleoctagon];
+  n2 [label="GamCBehaviorTreeNodeCompositeSequencer",shape=box];
+  n3 [label="PlaCAgentNodeSetupChangeEdict",shape=box];
+  n4 [label="Change Edict",shape=box];
+  n1 -> n2 [label="0"];
+  n2 -> n3 [label="1"];
+  n2 -> n0 [label="2"];
+  n2 -> n4 [label="3"];
+}

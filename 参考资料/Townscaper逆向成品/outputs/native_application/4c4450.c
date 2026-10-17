@@ -1,0 +1,15 @@
+// RVA 0x4c4450 | Placemaker.DecorModule$$.ctor
+// PDB: DecorModule__ctor_m01BD791B223B4A7D82F171AEB82BFF8121502C6E
+// Body: [[104c4450, 104c445f]]
+// Direct callees:
+// 108746c0 BaseModule__ctor_m7A0EB99101A86000E2B8E4B44BE3E78A2321442C
+
+void __cdecl
+DecorModule__ctor_m01BD791B223B4A7D82F171AEB82BFF8121502C6E
+          (DecorModule_t1135B468315DC0F413BCB30F09779FA70C149DFB *param_1,MethodInfo *param_2)
+
+{
+  BaseModule__ctor_m7A0EB99101A86000E2B8E4B44BE3E78A2321442C
+            ((BaseModule_tF6D857CD20641F35DA541A5C3D3CD1446D6EEEC8 *)param_1,(MethodInfo *)0x0);
+  return;
+}

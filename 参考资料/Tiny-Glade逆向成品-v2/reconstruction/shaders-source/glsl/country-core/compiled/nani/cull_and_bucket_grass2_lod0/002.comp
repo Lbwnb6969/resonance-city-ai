@@ -1,0 +1,482 @@
+#version 460
+#extension GL_EXT_nonuniform_qualifier : require
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+struct Bindless_natural
+{
+    uint bindless_handle;
+};
+
+struct Grass2ExemplarParams_natural
+{
+    float radius_xz;
+    float center_y;
+    float half_y;
+    float max_y;
+    float wind_wave_scale;
+    uint shadow_opacity;
+    float height_scale_min;
+    float height_scale_max;
+    float xz_scale_min;
+    float xz_scale_max;
+    Bindless_natural world_albedo_tint;
+};
+
+struct ViewConstants_natural
+{
+    mat4 view_to_clip;
+    mat4 clip_to_view;
+    mat4 view_to_sample;
+    mat4 sample_to_view;
+    mat4 world_to_view;
+    mat4 view_to_world;
+    mat4 world_to_sample;
+    mat4 clip_to_prev_clip;
+    mat4 prev_clip_to_clip;
+    mat4 prev_view_to_prev_clip;
+    mat4 prev_clip_to_prev_view;
+    mat4 prev_world_to_prev_view;
+    mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    mat4 pad0;
+    mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+vec4 _2794;
+
+layout(set = 12, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} grass2_active_instances_count;
+
+layout(set = 12, binding = 0, std430) readonly buffer grass2_active_instances_instances
+{
+    uint _member0[];
+} grass2_active_instances_instances_1;
+
+layout(set = 0, binding = 10, std430) readonly buffer instance_buffer
+{
+    uint _member0[];
+} instance_buffer_1;
+
+layout(set = 9, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 11, binding = 0, std430) readonly buffer grass2_exemplar_params_params
+{
+    Grass2ExemplarParams_natural _member0[];
+} grass2_exemplar_params_params_1;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 5, binding = 0, std140) uniform current_view
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view_1;
+
+layout(set = 7, binding = 1, std430) readonly buffer csm_setup_cascade_splits_buf
+{
+    vec4 _member0[];
+} csm_setup_cascade_splits_buf_1;
+
+layout(set = 6, binding = 0, std430) readonly buffer sun_views_views
+{
+    layout(row_major) ViewConstants_natural _member0[];
+} sun_views_views_1;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 hzb_tex_inner_dims;
+} globalParams;
+
+layout(set = 0, binding = 3, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint first_instance;
+    uint instance_count;
+    uint draw_list_index_base;
+} push_constants;
+
+layout(set = 9, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 1, binding = 0) uniform texture2D resource_handles[];
+layout(set = 16, binding = 0) uniform texture2D grass_removal_mask_tex;
+layout(set = 0, binding = 9) uniform texture2DArray hzb_tex;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= grass2_active_instances_count._member0[0])
+        {
+            break;
+        }
+        bool _1454;
+        uint _46 = grass2_active_instances_instances_1._member0[gl_GlobalInvocationID.x];
+        uint _49 = instance_buffer_1._member0[_46];
+        uint _1404 = _49 & 255u;
+        uint _1413 = _46 + (_46 << 10u);
+        uint _1415 = _1413 ^ (_1413 >> 6u);
+        uint _1417 = _1415 + (_1415 << 3u);
+        uint _1419 = _1417 ^ (_1417 >> 11u);
+        uint _1421 = _1419 + (_1419 << 15u);
+        vec2 _2754;
+        do
+        {
+            _1454 = _46 < 57344u;
+            if (_1454)
+            {
+                uint _1472 = (_46 % 14336u) + 1u;
+                uint _1482 = (_1472 << 16u) | (_1472 >> 16u);
+                uint _1487 = ((_1482 & 1431655765u) << 1u) | ((_1482 & 2863311530u) >> 1u);
+                uint _1492 = ((_1487 & 858993459u) << 2u) | ((_1487 & 3435973836u) >> 2u);
+                uint _1497 = ((_1492 & 252645135u) << 4u) | ((_1492 & 4042322160u) >> 4u);
+                _2754 = (vec2(float(_1472) * 6.9754467403981834650039672851562e-05, float(((_1497 & 16711935u) << 8u) | ((_1497 & 4278255360u) >> 8u)) * 2.3283064365386962890625e-10) - vec2(0.5)) * 130.0;
+                break;
+            }
+            uint _1507 = ((_46 - 57344u) % 30720u) + 1u;
+            uint _1517 = (_1507 << 16u) | (_1507 >> 16u);
+            uint _1522 = ((_1517 & 1431655765u) << 1u) | ((_1517 & 2863311530u) >> 1u);
+            uint _1527 = ((_1522 & 858993459u) << 2u) | ((_1522 & 3435973836u) >> 2u);
+            uint _1532 = ((_1527 & 252645135u) << 4u) | ((_1527 & 4042322160u) >> 4u);
+            _2754 = (vec2(float(_1507) * 3.2552085031056776642799377441406e-05, float(((_1532 & 16711935u) << 8u) | ((_1532 & 4278255360u) >> 8u)) * 2.3283064365386962890625e-10) - vec2(0.5)) * 190.0;
+            break;
+        } while(false);
+        vec3 _1544 = vec3(_2754.x, 0.0, _2754.y);
+        vec2 _1444 = _1544.xz;
+        float _2755;
+        do
+        {
+            if ((abs(_2754.x) < 65.0) && (abs(_2754.y) < 65.0))
+            {
+                _2755 = mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_1444 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x);
+                break;
+            }
+            else
+            {
+                vec2 _1592 = (_1444 * vec2(0.001000000047497451305389404296875)) + vec2(0.5);
+                _2755 = textureLod(nonuniformEXT(sampler2D(resource_handles[terrain_heightmap.bg_terrain_heightmap.bindless_handle], samplers_lnc_iso)), vec2(_1592.y, 1.0 - _1592.x), 0.0).x;
+                break;
+            }
+            break; // unreachable workaround
+        } while(false);
+        _1544.y = _2755;
+        uint _1605 = min(_1404, 55u);
+        float _1612 = grass2_exemplar_params_params_1._member0[_1605].center_y;
+        float _1627 = grass2_exemplar_params_params_1._member0[_1605].height_scale_min;
+        float _1630 = grass2_exemplar_params_params_1._member0[_1605].height_scale_max;
+        float _1675 = exp2(mix(log2(grass2_exemplar_params_params_1._member0[_1605].xz_scale_min), log2(grass2_exemplar_params_params_1._member0[_1605].xz_scale_max), uintBitsToFloat((_1421 & 8388607u) | 1065353216u) - 1.0));
+        float _1662 = _1675 * 2.378414154052734375;
+        uint _1725 = _1421 * 13u;
+        uint _1736 = _1725 + (_1725 << 10u);
+        uint _1738 = _1736 ^ (_1736 >> 6u);
+        uint _1740 = _1738 + (_1738 << 3u);
+        uint _1742 = _1740 ^ (_1740 >> 11u);
+        float _1750 = uintBitsToFloat(((_1742 + (_1742 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+        float _1664 = mix(_1627, _1630, _1750 * _1750) * (float(_49 >> 16u) * 1.525902189314365386962890625e-05);
+        if (!(clamp(((7.0 + (current_view_1.mip_bias * 0.5)) - log2(max(9.9999996826552253889678874634872e-21, (max(_1662, _1664) * frame_constants.main_view_lod_scale) / max(0.001000000047497451305389404296875, distance(_1544, frame_constants.main_view_eye_position.xyz))))) * 4.0, 0.0, 1.0) < 1.0))
+        {
+            break;
+        }
+        bool _1862;
+        float _584 = 2.0 * _1675;
+        vec2 _2757;
+        do
+        {
+            _1862 = !_1454;
+            if (_1862)
+            {
+                _2757 = vec2(0.0, 1.0);
+                break;
+            }
+            _2757 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp((_1544.xz * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _1832 = vec2(_584, 0.0);
+        vec2 _2760;
+        do
+        {
+            if (_1862)
+            {
+                _2760 = vec2(0.0, 1.0);
+                break;
+            }
+            _2760 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1544.xz + _1832) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _2763;
+        do
+        {
+            if (_1862)
+            {
+                _2763 = vec2(0.0, 1.0);
+                break;
+            }
+            _2763 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1544.xz - _1832) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _1837 = vec2(0.0, _584);
+        vec2 _2766;
+        do
+        {
+            if (_1862)
+            {
+                _2766 = vec2(0.0, 1.0);
+                break;
+            }
+            _2766 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1544.xz + _1837) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _2769;
+        do
+        {
+            if (_1862)
+            {
+                _2769 = vec2(0.0, 1.0);
+                break;
+            }
+            _2769 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1544.xz - _1837) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        if (min(min(min(min(min(1.0, _2757.x), _2760.x), _2763.x), _2766.x), _2769.x) >= 1.0)
+        {
+            break;
+        }
+        float _2045 = grass2_exemplar_params_params_1._member0[_1605].radius_xz * _1662;
+        float _2048 = grass2_exemplar_params_params_1._member0[_1605].half_y * _1664;
+        mat4 _2547 = sun_views_views_1._member0[0u].world_to_view;
+        vec4 _2548 = vec4(_1544 + vec3(0.0, _1612 * _1664, 0.0), 1.0);
+        mat4 _2551 = sun_views_views_1._member0[0u].view_to_clip;
+        vec4 _2552 = (_2548 * _2547) * _2551;
+        vec3 _2556 = _2552.xyz / vec3(_2552.w);
+        vec3 _2133 = vec3(sqrt((_2045 * _2045) + (_2048 * _2048)));
+        vec3 _2145 = (_2133 * vec3(_2551[0].x, _2551[1].y, _2551[2].z)) * vec3(1.0, 1.0, -1.0);
+        uint _2149 = clamp(uint(_2556.z * 1024.0), 0u, 1023u);
+        uint _2561 = _46 * 1024u;
+        vec3 _2151 = _2556.xyz;
+        bool _2156 = all(lessThan(abs(_2151) - _2145, vec3(1.0)));
+        bool _2773;
+        if (_2156)
+        {
+            vec3 _2158 = _2151 - _2145;
+            vec4 _2165 = vec4((_2158.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_2151 + _2145).xy * vec2(0.5, -0.5)) + vec2(0.5));
+            vec2 _2166 = _2165.xy;
+            vec2 _2167 = _2165.zw;
+            vec4 _2174 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+            vec4 _2181 = clamp(vec4(min(_2166, _2167), max(_2166, _2167)) * _2174, vec4(0.0), _2174 - vec4(1.0));
+            uint _2193 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_2181.z - _2181.x, _2181.w - _2181.y))))));
+            uvec2 _2196 = uvec2(_2193);
+            uvec2 _2197 = uvec2(_2181.xy) >> _2196;
+            uvec2 _2201 = uvec2(_2181.zw) >> _2196;
+            int _2202 = int(_2193);
+            uint _2204 = _2197.x;
+            uint _2222 = _2201.x;
+            _2773 = _2158.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2204, _2197.y, 0u)), _2202).xyz, _2202).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2204, _2201.y, 0u)), _2202).xyz, _2202).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2222, _2197.y, 0u)), _2202).xyz, _2202).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2222, _2201.y, 0u)), _2202).xyz, _2202).x));
+        }
+        else
+        {
+            _2773 = _2156;
+        }
+        if (_2773)
+        {
+            uint _2247 = push_constants.draw_list_index_base + 1u;
+            uint _2249 = atomicAdd(filtered_instance_allocator_buffer._member0[_2247], 1u);
+            filtered_instance_buffer_1._member0[_2249] = _2561 + _2149;
+            filtered_instance_meta_buffer_1._member0[_2249].raw = _1404;
+            uint _2256 = atomicAdd(output_histogram_1._member0[(_2247 * 1024u) + _2149], 1u);
+        }
+        mat4 _2592 = sun_views_views_1._member0[1u].world_to_view;
+        mat4 _2596 = sun_views_views_1._member0[1u].view_to_clip;
+        vec4 _2597 = (_2548 * _2592) * _2596;
+        vec3 _2601 = _2597.xyz / vec3(_2597.w);
+        vec3 _2282 = (_2133 * vec3(_2596[0].x, _2596[1].y, _2596[2].z)) * vec3(1.0, 1.0, -1.0);
+        uint _2286 = clamp(uint(_2601.z * 1024.0), 0u, 1023u);
+        vec3 _2288 = _2601.xyz;
+        bool _2293 = all(lessThan(abs(_2288) - _2282, vec3(1.0)));
+        bool _2775;
+        if (_2293)
+        {
+            vec3 _2295 = _2288 - _2282;
+            vec4 _2302 = vec4((_2295.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_2288 + _2282).xy * vec2(0.5, -0.5)) + vec2(0.5));
+            vec2 _2303 = _2302.xy;
+            vec2 _2304 = _2302.zw;
+            vec4 _2311 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+            vec4 _2318 = clamp(vec4(min(_2303, _2304), max(_2303, _2304)) * _2311, vec4(0.0), _2311 - vec4(1.0));
+            uint _2330 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_2318.z - _2318.x, _2318.w - _2318.y))))));
+            uvec2 _2333 = uvec2(_2330);
+            uvec2 _2334 = uvec2(_2318.xy) >> _2333;
+            uvec2 _2338 = uvec2(_2318.zw) >> _2333;
+            int _2339 = int(_2330);
+            uint _2341 = _2334.x;
+            uint _2359 = _2338.x;
+            _2775 = _2295.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2341, _2334.y, 1u)), _2339).xyz, _2339).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2341, _2338.y, 1u)), _2339).xyz, _2339).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2359, _2334.y, 1u)), _2339).xyz, _2339).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2359, _2338.y, 1u)), _2339).xyz, _2339).x));
+        }
+        else
+        {
+            _2775 = _2293;
+        }
+        if (_2775)
+        {
+            uint _2385 = push_constants.draw_list_index_base + 2u;
+            uint _2387 = atomicAdd(filtered_instance_allocator_buffer._member0[_2385], 1u);
+            filtered_instance_buffer_1._member0[_2387] = _2561 + _2286;
+            filtered_instance_meta_buffer_1._member0[_2387].raw = _1404;
+            uint _2394 = atomicAdd(output_histogram_1._member0[(_2385 * 1024u) + _2286], 1u);
+        }
+        mat4 _2637 = sun_views_views_1._member0[2u].world_to_view;
+        mat4 _2641 = sun_views_views_1._member0[2u].view_to_clip;
+        vec4 _2642 = (_2548 * _2637) * _2641;
+        vec3 _2646 = _2642.xyz / vec3(_2642.w);
+        vec3 _2420 = (_2133 * vec3(_2641[0].x, _2641[1].y, _2641[2].z)) * vec3(1.0, 1.0, -1.0);
+        uint _2424 = clamp(uint(_2646.z * 1024.0), 0u, 1023u);
+        vec3 _2426 = _2646.xyz;
+        bool _2431 = all(lessThan(abs(_2426) - _2420, vec3(1.0)));
+        bool _2777;
+        if (_2431)
+        {
+            vec3 _2433 = _2426 - _2420;
+            vec4 _2440 = vec4((_2433.xy * vec2(0.5, -0.5)) + vec2(0.5), ((_2426 + _2420).xy * vec2(0.5, -0.5)) + vec2(0.5));
+            vec2 _2441 = _2440.xy;
+            vec2 _2442 = _2440.zw;
+            vec4 _2449 = vec4(globalParams.hzb_tex_inner_dims.xyxy);
+            vec4 _2456 = clamp(vec4(min(_2441, _2442), max(_2441, _2442)) * _2449, vec4(0.0), _2449 - vec4(1.0));
+            uint _2468 = uint(max(0.0, ceil(log2(max(9.9999996826552253889678874634872e-21, max(_2456.z - _2456.x, _2456.w - _2456.y))))));
+            uvec2 _2471 = uvec2(_2468);
+            uvec2 _2472 = uvec2(_2456.xy) >> _2471;
+            uvec2 _2476 = uvec2(_2456.zw) >> _2471;
+            int _2477 = int(_2468);
+            uint _2479 = _2472.x;
+            uint _2497 = _2476.x;
+            _2777 = _2433.z < max(max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2479, _2472.y, 2u)), _2477).xyz, _2477).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2479, _2476.y, 2u)), _2477).xyz, _2477).x), max(texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2497, _2472.y, 2u)), _2477).xyz, _2477).x, texelFetch(hzb_tex, ivec4(ivec3(uvec3(_2497, _2476.y, 2u)), _2477).xyz, _2477).x));
+        }
+        else
+        {
+            _2777 = _2431;
+        }
+        if (_2777)
+        {
+            uint _2523 = push_constants.draw_list_index_base + 3u;
+            uint _2525 = atomicAdd(filtered_instance_allocator_buffer._member0[_2523], 1u);
+            filtered_instance_buffer_1._member0[_2525] = _2561 + _2424;
+            filtered_instance_meta_buffer_1._member0[_2525].raw = _1404;
+            uint _2532 = atomicAdd(output_histogram_1._member0[(_2523 * 1024u) + _2424], 1u);
+        }
+        break;
+    } while(false);
+}
+

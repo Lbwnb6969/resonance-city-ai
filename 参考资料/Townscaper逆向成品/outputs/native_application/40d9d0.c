@@ -1,0 +1,16 @@
+// RVA 0x40d9d0 | Os.Hex.HexMath$$GetHex2
+// PDB: HexMath_GetHex2_mFE370B9F18E277F09222DA7AA412F5D3F575589C
+// Body: [[1040d9d0, 1040d9da]]
+// Direct callees:
+
+int2_t40DB794B47A2943AB7E9BC67442B6B8173FBB568 __cdecl
+HexMath_GetHex2_mFE370B9F18E277F09222DA7AA412F5D3F575589C
+          (int3_t24C3AF0DAAFE1D27B75D7C9DF9ADCE4253D3D921 param_1,MethodInfo *param_2)
+
+{
+  int2_t40DB794B47A2943AB7E9BC67442B6B8173FBB568 iVar1;
+
+  iVar1.___x_0 = param_1.___x_0;
+  iVar1.___y_1 = param_1.___y_1;
+  return iVar1;
+}

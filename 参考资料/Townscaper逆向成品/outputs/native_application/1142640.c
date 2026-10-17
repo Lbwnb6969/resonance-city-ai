@@ -1,0 +1,17 @@
+// RVA 0x1142640 | FuryStudios.FurySDK.StandalonePC.StandalonePCPlatformSDK$$Init
+// PDB: StandalonePCPlatformSDK_Init_mB735EA16C67A16323A114C6CCE55F3938538E0F4
+// Body: [[11142640, 1114264f]]
+// Direct callees:
+// 1110b8c0 BasePlatformSDK_Init_mB9BAAA832A8646D9A0D8EFFE9C3144B92409EFCA
+
+void __cdecl
+StandalonePCPlatformSDK_Init_mB735EA16C67A16323A114C6CCE55F3938538E0F4
+          (StandalonePCPlatformSDK_t24871025FAC7FBBC11D1170D0FC553FC113E3754 *param_1,
+          PlatformSettings_t3FEC8BA69291E07F62699229910DA7E6828AA8AA *param_2,MethodInfo *param_3)
+
+{
+  BasePlatformSDK_Init_mB9BAAA832A8646D9A0D8EFFE9C3144B92409EFCA
+            ((BasePlatformSDK_t289E609F49DAF94E98CCB795ECEAA157F2437731 *)param_1,param_2,
+             (MethodInfo *)0x0);
+  return;
+}

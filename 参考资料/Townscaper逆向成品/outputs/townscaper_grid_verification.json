@@ -1,0 +1,17 @@
+{
+  "report": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\outputs\\townscaper_grid_topology.md",
+  "file_links_validated": 73,
+  "raw_ranges_verified": 12,
+  "original_pe_sha256_matched": true,
+  "topology_validation": {
+    "patches_validated": 40,
+    "disk_euler_all_1": true,
+    "no_nonmanifold_edges": true,
+    "all_selectors_in_range_or_255": true
+  },
+  "collider_y_constants": {
+    "0xbf333333": -0.699999988079071,
+    "0x3e99999a": 0.30000001192092896
+  },
+  "limitations": "Static link/topology/PE evidence verification only; no runtime behavior test"
+}

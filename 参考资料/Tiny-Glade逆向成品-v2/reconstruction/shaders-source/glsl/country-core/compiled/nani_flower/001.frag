@@ -1,0 +1,71 @@
+#version 460
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(location = 0) in vec3 vs_out_color;
+layout(location = 1) in vec3 vs_out_frag_normal_ws;
+layout(location = 0) out uvec2 entryPointParam_ps_main_gbuffer;
+
+void main()
+{
+    vec3 _49 = normalize(vs_out_frag_normal_ws);
+    vec3 _374;
+    if (frame_constants.glade_theme_id == 4u)
+    {
+        _374 = mix(vs_out_color, vec3(0.699999988079071044921875), vec3(smoothstep(0.5, 1.0, clamp(_49.y, 0.0, 1.0) * 0.800000011920928955078125)));
+    }
+    else
+    {
+        _374 = vs_out_color;
+    }
+    vec3 _218 = (_49 * 0.5) + vec3(0.5);
+    vec3 _286 = sqrt(clamp(_374, vec3(0.0), vec3(1.0)));
+    entryPointParam_ps_main_gbuffer = uvec2(((uint((clamp(_218.x, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_218.y, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_218.z, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + 1711276032u, ((uint((clamp(_286.x, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_286.y, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_286.z, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + 855638016u);
+}
+

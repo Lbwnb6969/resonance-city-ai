@@ -1,0 +1,16 @@
+// RVA 0x40e150 | Os.Hex.HexMath$$WorldToPlane
+// PDB: HexMath_WorldToPlane_m197D62925CE6F4F50EA2CEDD13B5F99106D024A3
+// Body: [[1040e150, 1040e173]]
+// Direct callees:
+
+float2_tCB7B81181978EDE17722C533A55E345D9A413274 __cdecl
+HexMath_WorldToPlane_m197D62925CE6F4F50EA2CEDD13B5F99106D024A3
+          (float3_t9500D105F273B3D86BD354142E891C48FFF9F71D param_1,MethodInfo *param_2)
+
+{
+  float2_tCB7B81181978EDE17722C533A55E345D9A413274 fVar1;
+
+  fVar1.___y_1 = param_1.___z_2;
+  fVar1.___x_0 = param_1.___x_0;
+  return fVar1;
+}

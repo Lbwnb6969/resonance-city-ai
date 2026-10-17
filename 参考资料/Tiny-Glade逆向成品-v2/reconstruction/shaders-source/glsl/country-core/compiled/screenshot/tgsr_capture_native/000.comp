@@ -1,0 +1,46 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} dst_buf;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    uvec2 box_origin;
+    uint tile_hires;
+    uint off_native_depth;
+    uint off_native_motion;
+} entryPointParams;
+
+layout(set = 0, binding = 0) uniform texture2D depth_tex;
+layout(set = 0, binding = 1) uniform texture2D velocity_tex;
+
+void main()
+{
+    do
+    {
+        uint _17 = entryPointParams.tile_hires / 2u;
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, uvec2(_17, entryPointParams.tile_hires))))
+        {
+            break;
+        }
+        ivec3 src0 = ivec3(ivec2(entryPointParams.box_origin + uvec2(gl_GlobalInvocationID.x * 2u, gl_GlobalInvocationID.y)), 0);
+        ivec3 src1 = src0 + ivec3(1, 0, 0);
+        ivec2 _51 = src0.xy;
+        ivec2 _60 = src1.xy;
+        int _61 = src1.z;
+        vec4 sampled = texelFetch(velocity_tex, _51, 0);
+        vec4 sampled_1 = texelFetch(velocity_tex, _60, _61);
+        uint pair_i = gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * _17);
+        dst_buf._member0[(entryPointParams.off_native_depth + (pair_i * 4u)) / 4u] = (packHalf2x16(vec2(texelFetch(depth_tex, _51, 0).x)) & 65535u) | ((packHalf2x16(vec2(texelFetch(depth_tex, _60, _61).x)) & 65535u) << uint(16));
+        uint _120 = entryPointParams.off_native_motion + (pair_i * 12u);
+        dst_buf._member0[_120 / 4u] = (packHalf2x16(vec2(sampled.x)) & 65535u) | ((packHalf2x16(vec2(sampled.y)) & 65535u) << uint(16));
+        dst_buf._member0[(_120 + 4u) / 4u] = (packHalf2x16(vec2(sampled.z)) & 65535u) | ((packHalf2x16(vec2(sampled_1.x)) & 65535u) << uint(16));
+        dst_buf._member0[(_120 + 8u) / 4u] = (packHalf2x16(vec2(sampled_1.y)) & 65535u) | ((packHalf2x16(vec2(sampled_1.z)) & 65535u) << uint(16));
+        break;
+    } while(false);
+}
+

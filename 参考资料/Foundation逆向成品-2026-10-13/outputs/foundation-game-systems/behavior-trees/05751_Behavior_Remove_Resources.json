@@ -1,0 +1,457 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Builder/Behavior Remove Resources.bt",
+  "absolute_offset": 2471076,
+  "length": 7529,
+  "sha256": "63c1b74c3acc61666150d31b0ac2cc62ae264f76a4d26d414907fb5637b73254",
+  "rid": 5751,
+  "root_id": "667ba4cb-6b9e-4b78-9bf2-2b64dfcf662e",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Destination",
+        "IsPublic": false,
+        "Id": "8dab5157-1c43-4a95-885a-6c7f9aeda3b7",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Time to wait",
+        "IsPublic": false,
+        "Id": "f7aebbae-1f11-4908-a7fb-6edcf7e57ff9",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 10.0,
+          "Animation": "NONE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Object",
+        "IsPublic": false,
+        "Id": "2efb2456-96a0-4bb6-a55c-f94efb4b977a",
+        "TypeDefinition": "PlaSContextDataVoidObject",
+        "DefaultValue": {
+          "type": "PlaSContextDataVoidObject"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Workplace Location",
+        "IsPublic": true,
+        "Id": "b9831aa0-b323-41c6-9850-52b8521afb2c",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "RemovingResourceActivityMessage",
+        "IsPublic": false,
+        "Id": "3048413d-19ef-49a6-963d-38322997fd34",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "REMOVING_RESOURCES"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WorkTime",
+        "IsPublic": true,
+        "Id": "3c029a31-d9ab-474b-ace2-26aa9aa2bc6e",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e898fd67-1f14-4505-95e2-384d8af2ef37",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        68,
+        257
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "37b4a59f-a595-49ca-bca7-37a6e4c83288",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -167,
+        364
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "8dab5157-1c43-4a95-885a-6c7f9aeda3b7",
+          "binding_status": "variable",
+          "variable_name": "Resource Destination"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "b147e5f1-5d75-4dac-9a5a-40f1557aa8b9",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        142,
+        363
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "f7aebbae-1f11-4908-a7fb-6edcf7e57ff9",
+          "binding_status": "variable",
+          "variable_name": "Time to wait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "b147e5f1-5d75-4dac-9a5a-40f1557aa8b9",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "ae1d8edb-dcda-4da7-99a2-0b490655fed3",
+      "name": "",
+      "type": "PlaCAgentNodeSetupResourceRemoval",
+      "position": [
+        -620,
+        196
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "8dab5157-1c43-4a95-885a-6c7f9aeda3b7",
+          "binding_status": "variable",
+          "variable_name": "Resource Destination"
+        },
+        {
+          "name": "Resource Object Data",
+          "value": "2efb2456-96a0-4bb6-a55c-f94efb4b977a",
+          "binding_status": "variable",
+          "variable_name": "Resource Object"
+        },
+        {
+          "name": "Resource Removal Wait Data",
+          "value": "f7aebbae-1f11-4908-a7fb-6edcf7e57ff9",
+          "binding_status": "variable",
+          "variable_name": "Time to wait"
+        },
+        {
+          "name": "Removing Resource Activity Message",
+          "value": "3048413d-19ef-49a6-963d-38322997fd34",
+          "binding_status": "variable",
+          "variable_name": "RemovingResourceActivityMessage"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "b456f078-a508-4a9a-9aa5-45a0a7fa5525",
+      "name": "",
+      "type": "PlaCAgentNodeRemoveResource",
+      "position": [
+        264,
+        178
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Resource Object Data",
+          "value": "2efb2456-96a0-4bb6-a55c-f94efb4b977a",
+          "binding_status": "variable",
+          "variable_name": "Resource Object"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "0a2d3d06-726f-43e3-8a12-2699bcc617c1",
+      "name": "",
+      "type": "PlaCAgentNodeDisablePathTracing",
+      "position": [
+        -190,
+        196
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "2c064327-ff01-480b-a81e-b789000bffa2",
+      "name": "",
+      "type": "PlaCAgentNodeEnablePathTracing",
+      "position": [
+        558,
+        176
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "6bebb2b5-59ec-4786-b881-76cb4a9eccb5",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "76c0d364-eb91-46e7-9c1a-e8f2c9e8382e",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        68,
+        176
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        65,
+        42
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "667ba4cb-6b9e-4b78-9bf2-2b64dfcf662e",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        4,
+        -97
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "3c029a31-d9ab-474b-ace2-26aa9aa2bc6e",
+          "binding_status": "variable",
+          "variable_name": "WorkTime"
+        }
+      ],
+      "data": {
+        "Guid": "667ba4cb-6b9e-4b78-9bf2-2b64dfcf662e",
+        "FailsIfChildFails": true
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "e898fd67-1f14-4505-95e2-384d8af2ef37",
+      "to": "37b4a59f-a595-49ca-bca7-37a6e4c83288",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e898fd67-1f14-4505-95e2-384d8af2ef37",
+      "to": "b147e5f1-5d75-4dac-9a5a-40f1557aa8b9",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "76c0d364-eb91-46e7-9c1a-e8f2c9e8382e",
+      "to": "e898fd67-1f14-4505-95e2-384d8af2ef37",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "to": "ae1d8edb-dcda-4da7-99a2-0b490655fed3",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "to": "0a2d3d06-726f-43e3-8a12-2699bcc617c1",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "to": "76c0d364-eb91-46e7-9c1a-e8f2c9e8382e",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "to": "b456f078-a508-4a9a-9aa5-45a0a7fa5525",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "to": "2c064327-ff01-480b-a81e-b789000bffa2",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "667ba4cb-6b9e-4b78-9bf2-2b64dfcf662e",
+      "to": "fca25dec-dd23-456e-838f-32d89853cec9",
+      "ordinal": 8,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

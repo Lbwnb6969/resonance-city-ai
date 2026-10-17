@@ -1,0 +1,24 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=doubleoctagon];
+  n1 [label="PlaCAgentNodeFindSomethingToBuild",shape=box];
+  n2 [label="Selector",shape=box];
+  n3 [label="cfc4c63f-e876-4f24-9fdf-fa8c196f36d2",shape=box];
+  n4 [label="31294083-c48d-462c-94a8-71d2d231cd4d",shape=box];
+  n5 [label="Sequencer",shape=box];
+  n6 [label="PlaCAgentNodeRegisterToConstructionSite",shape=box];
+  n7 [label="6b55a498-177e-4d9c-bb96-361d684df0c4",shape=box];
+  n8 [label="PlaCAgentNodeUnregisterFromConstructionSite",shape=box];
+  n9 [label="Succeeder",shape=box];
+  n10 [label="SetActivityMessage",shape=box];
+  n0 -> n1 [label="0"];
+  n0 -> n10 [label="1"];
+  n0 -> n2 [label="2"];
+  n2 -> n3 [label="3"];
+  n2 -> n5 [label="4"];
+  n5 -> n9 [label="5"];
+  n5 -> n6 [label="6"];
+  n5 -> n7 [label="7"];
+  n5 -> n8 [label="8"];
+  n9 -> n4 [label="9"];
+}

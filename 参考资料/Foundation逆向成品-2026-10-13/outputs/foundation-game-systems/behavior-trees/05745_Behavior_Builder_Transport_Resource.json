@@ -1,0 +1,239 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Builder/Behavior Builder Transport Resource.bt",
+  "absolute_offset": 2441530,
+  "length": 4019,
+  "sha256": "6dfaba00f2be50684a7324f157d3a683a16445e77943c7ffcc9343d71badb5c6",
+  "rid": 5745,
+  "root_id": "95397c34-de0d-4af9-8d60-e71498d4e767",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "1870d769-93e2-467f-8785-65a84dd1a07c",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "OptionalConstructionSite",
+        "IsPublic": true,
+        "Id": "0cef1fcf-a158-4ac6-bdda-cf9e77a541ed",
+        "TypeDefinition": "PlaSContextDataConstructionSite",
+        "DefaultValue": {
+          "type": "PlaSContextDataConstructionSite"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportData",
+        "IsPublic": false,
+        "Id": "5fdfc369-74db-49d9-b33f-4bc179ba6a20",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportingToConstructionActivityMessage",
+        "IsPublic": false,
+        "Id": "f74dc23a-3606-4df1-b39c-920b51b8b6af",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "TRANSPORTING_X_FOR_CONSTRUCTION_OF_Y"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "53bf799c-e1e1-41f0-86e6-9c73e3d5705d",
+      "name": "Find Resource For Construction Site",
+      "type": "PlaCAgentNodeFindResourceForConstructionSite",
+      "position": [
+        -171,
+        530
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "1870d769-93e2-467f-8785-65a84dd1a07c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "5fdfc369-74db-49d9-b33f-4bc179ba6a20",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "Construction Site Data",
+          "value": "0cef1fcf-a158-4ac6-bdda-cf9e77a541ed",
+          "binding_status": "variable",
+          "variable_name": "OptionalConstructionSite"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "95397c34-de0d-4af9-8d60-e71498d4e767",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -34,
+        351
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "83446fc9-86dd-4dc1-8f23-c13245710704",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        -474,
+        55
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "f18c51cf-1963-4686-b374-abe46402c555",
+      "name": "Inverter",
+      "type": "GamCBehaviorTreeNodeDecoratorInverter",
+      "position": [
+        -536,
+        278
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "bab059fe-9e98-443d-a9c7-27cbcc35d3aa",
+      "name": "Does Construction Site Need Resource",
+      "type": "PlaCNodeIsConstructionSiteNeedingResource",
+      "position": [
+        -594,
+        533
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "1870d769-93e2-467f-8785-65a84dd1a07c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Optional Construction Site Data",
+          "value": "0cef1fcf-a158-4ac6-bdda-cf9e77a541ed",
+          "binding_status": "variable",
+          "variable_name": "OptionalConstructionSite"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "d1b29ffa-ffc4-47e7-8aa8-0fc3d8bd9507",
+      "name": "",
+      "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+      "position": [
+        190,
+        550
+      ],
+      "behavior_asset_targets": [
+        [
+          5730,
+          "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "1870d769-93e2-467f-8785-65a84dd1a07c",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "TransportData",
+          "value": "5fdfc369-74db-49d9-b33f-4bc179ba6a20",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "TransportingFromActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "TransportingToActivityMessage",
+          "value": "f74dc23a-3606-4df1-b39c-920b51b8b6af",
+          "binding_status": "variable",
+          "variable_name": "TransportingToConstructionActivityMessage"
+        }
+      ],
+      "data": {
+        "Guid": "d1b29ffa-ffc4-47e7-8aa8-0fc3d8bd9507",
+        "BehaviorTree": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "95397c34-de0d-4af9-8d60-e71498d4e767",
+      "to": "bab059fe-9e98-443d-a9c7-27cbcc35d3aa",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "95397c34-de0d-4af9-8d60-e71498d4e767",
+      "to": "53bf799c-e1e1-41f0-86e6-9c73e3d5705d",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "95397c34-de0d-4af9-8d60-e71498d4e767",
+      "to": "d1b29ffa-ffc4-47e7-8aa8-0fc3d8bd9507",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "83446fc9-86dd-4dc1-8f23-c13245710704",
+      "to": "f18c51cf-1963-4686-b374-abe46402c555",
+      "ordinal": 3,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [
+    "83446fc9-86dd-4dc1-8f23-c13245710704",
+    "f18c51cf-1963-4686-b374-abe46402c555"
+  ],
+  "validation_issues": []
+}

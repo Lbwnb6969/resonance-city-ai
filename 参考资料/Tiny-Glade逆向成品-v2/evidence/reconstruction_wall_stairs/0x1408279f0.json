@@ -1,0 +1,358 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 428,
+    "record_offset": 12276,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.c05955ir6av0gtsvhaa8dgc7t.1ryv1cn.rcgu.o",
+    "name": "system_wall_constructor::construct_playermade_stairs::wooden_supports::support_station_from_sample",
+    "segment": 1,
+    "offset": 8546800,
+    "rva": 8550896,
+    "va": "0x1408279f0",
+    "size": 1010,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "7886e9d19a3e90b5661bfcfdc28c7818b4d9147c881ce7a0cfd991867b7d53df",
+  "code_bytes": 1010,
+  "decoded_bytes": 1010,
+  "instructions": 187,
+  "calls_and_jumps": [
+    {
+      "address": "0x140827aa4",
+      "kind": "call",
+      "target": "0x140df4540",
+      "target_names": [
+        "utils::swizzlers::impl$1::xvy",
+        "_ZN71_$LT$glam..f32..vec2..Vec2$u20$as$u20$utils..swizzlers..SwizzlerXVY$GT$3xvy17hcb9aa753d52e64e7E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827aec",
+      "kind": "call",
+      "target": "0x140df4520",
+      "target_names": [
+        "utils::swizzlers::impl$0::x0y",
+        "_ZN71_$LT$glam..f32..vec2..Vec2$u20$as$u20$utils..swizzlers..SwizzlerX0Y$GT$3x0y17hce4d29c2d291b17dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827b4a",
+      "kind": "jmp",
+      "target": "0x140827d0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827bb1",
+      "kind": "call",
+      "target": "0x1409edd20",
+      "target_names": [
+        "country_core::systems::collision::world::RaycastWorld::raycast_simple",
+        "_ZN12country_core7systems9collision5world12RaycastWorld14raycast_simple17h0e5fb3e3ac060f8bE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827be5",
+      "kind": "jmp",
+      "target": "0x140827bfb",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827bf2",
+      "kind": "call",
+      "target": "0x14140ce00",
+      "target_names": [
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2445e50d219a5ab4E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2eea1dee9cdbfe25E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h6e57b28c272115afE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h93aede612ec3c2aeE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hbb9a505416792231E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf685e57d60389a58E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf96d06d1be512acbE",
+        "country_core::resources::terrain_height::TerrainHeightsData::sample_at_world_xz<country_core::resources::terrain_height::TerrainHeightSsbo>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827c3a",
+      "kind": "call",
+      "target": "0x1409edd20",
+      "target_names": [
+        "country_core::systems::collision::world::RaycastWorld::raycast_simple",
+        "_ZN12country_core7systems9collision5world12RaycastWorld14raycast_simple17h0e5fb3e3ac060f8bE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827c6e",
+      "kind": "jmp",
+      "target": "0x140827c83",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827c7a",
+      "kind": "call",
+      "target": "0x14140ce00",
+      "target_names": [
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2445e50d219a5ab4E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2eea1dee9cdbfe25E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h6e57b28c272115afE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h93aede612ec3c2aeE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hbb9a505416792231E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf685e57d60389a58E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf96d06d1be512acbE",
+        "country_core::resources::terrain_height::TerrainHeightsData::sample_at_world_xz<country_core::resources::terrain_height::TerrainHeightSsbo>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827cc7",
+      "kind": "call",
+      "target": "0x1409edd20",
+      "target_names": [
+        "country_core::systems::collision::world::RaycastWorld::raycast_simple",
+        "_ZN12country_core7systems9collision5world12RaycastWorld14raycast_simple17h0e5fb3e3ac060f8bE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827cf9",
+      "kind": "jmp",
+      "target": "0x140827d0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827d06",
+      "kind": "call",
+      "target": "0x14140ce00",
+      "target_names": [
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2445e50d219a5ab4E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h2eea1dee9cdbfe25E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h6e57b28c272115afE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17h93aede612ec3c2aeE",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hbb9a505416792231E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf685e57d60389a58E",
+        "_ZN12country_core9resources14terrain_height28TerrainHeightsData$LT$Ty$GT$18sample_at_world_xz17hf96d06d1be512acbE",
+        "country_core::resources::terrain_height::TerrainHeightsData::sample_at_world_xz<country_core::resources::terrain_height::TerrainHeightSsbo>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827d28",
+      "kind": "call",
+      "target": "0x140df4520",
+      "target_names": [
+        "utils::swizzlers::impl$0::x0y",
+        "_ZN71_$LT$glam..f32..vec2..Vec2$u20$as$u20$utils..swizzlers..SwizzlerX0Y$GT$3x0y17hce4d29c2d291b17dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827dc2",
+      "kind": "jmp",
+      "target": "0x140827bfb",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827dd0",
+      "kind": "jmp",
+      "target": "0x140827c83",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140827ddd",
+      "kind": "jmp",
+      "target": "0x140827d0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140827a92",
+      "target": "0x143009d30",
+      "operand_bytes": 4,
+      "names": [
+        "__real@beae147b"
+      ],
+      "bytes_hex": "7b14aebe000000000000000000000000000000008fc2753d0000000000000000"
+    },
+    {
+      "address": "0x140827aa9",
+      "target": "0x142e37820",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@80000000800000008000000080000000"
+      ],
+      "bytes_hex": "00000080000000800000008000000080000000400000a0400000c03f3333333f"
+    },
+    {
+      "address": "0x140827ac4",
+      "target": "0x142e36f50",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f000000"
+      ],
+      "bytes_hex": "0000003f0000000000000000000000000000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x140827ad0",
+      "target": "0x143009d10",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bde147ae"
+      ],
+      "bytes_hex": "ae47e1bd00000000000000000000000000000000cdcccc3d0000000000000080"
+    },
+    {
+      "address": "0x140827b57",
+      "target": "0x142e377f0",
+      "operand_bytes": 4,
+      "names": [
+        "__real@80000000"
+      ],
+      "bytes_hex": "00000080000000000000000000000000cdcc8c3fcdcc8c3f0000000000000000"
+    },
+    {
+      "address": "0x140827b70",
+      "target": "0x143009d20",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@80000000000000003dcccccd00000000"
+      ],
+      "bytes_hex": "00000000cdcccc3d00000000000000807b14aebe000000000000000000000000"
+    },
+    {
+      "address": "0x140827b84",
+      "target": "0x142fa5c30",
+      "operand_bytes": 8,
+      "names": [
+        "__xmm@000000000000000080000000bf800000"
+      ],
+      "bytes_hex": "000080bf0000008000000000000000009a99993f9a99993f0000000000000000"
+    },
+    {
+      "address": "0x140827ba6",
+      "target": "0x142e36f3c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@7f7fffff"
+      ],
+      "bytes_hex": "ffff7f7f0000003f0000003f0000003f0000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x140827bdc",
+      "target": "0x142e36f34",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bf800000"
+      ],
+      "bytes_hex": "000080bf000000bfffff7f7f0000003f0000003f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x140827c0a",
+      "target": "0x143009d20",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@80000000000000003dcccccd00000000"
+      ],
+      "bytes_hex": "00000000cdcccc3d00000000000000807b14aebe000000000000000000000000"
+    },
+    {
+      "address": "0x140827c2f",
+      "target": "0x142e36f3c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@7f7fffff"
+      ],
+      "bytes_hex": "ffff7f7f0000003f0000003f0000003f0000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x140827c65",
+      "target": "0x142e36f34",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bf800000"
+      ],
+      "bytes_hex": "000080bf000000bfffff7f7f0000003f0000003f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x140827c90",
+      "target": "0x143009d20",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@80000000000000003dcccccd00000000"
+      ],
+      "bytes_hex": "00000000cdcccc3d00000000000000807b14aebe000000000000000000000000"
+    },
+    {
+      "address": "0x140827c9c",
+      "target": "0x142fa5c30",
+      "operand_bytes": 8,
+      "names": [
+        "__xmm@000000000000000080000000bf800000"
+      ],
+      "bytes_hex": "000080bf0000008000000000000000009a99993f9a99993f0000000000000000"
+    },
+    {
+      "address": "0x140827cbc",
+      "target": "0x142e36f3c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@7f7fffff"
+      ],
+      "bytes_hex": "ffff7f7f0000003f0000003f0000003f0000003f0000003f0000000000000000"
+    },
+    {
+      "address": "0x140827cf1",
+      "target": "0x142e36f34",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bf800000"
+      ],
+      "bytes_hex": "000080bf000000bfffff7f7f0000003f0000003f0000003f0000003f0000003f"
+    },
+    {
+      "address": "0x140827db9",
+      "target": "0x142e37988",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3e99999a"
+      ],
+      "bytes_hex": "9a99993ecdcccc3e9a99993f0000004200000000000000000000004200000042"
+    },
+    {
+      "address": "0x140827dc7",
+      "target": "0x142e37988",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3e99999a"
+      ],
+      "bytes_hex": "9a99993ecdcccc3e9a99993f0000004200000000000000000000004200000042"
+    },
+    {
+      "address": "0x140827dd5",
+      "target": "0x142e37988",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3e99999a"
+      ],
+      "bytes_hex": "9a99993ecdcccc3e9a99993f0000004200000000000000000000004200000042"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

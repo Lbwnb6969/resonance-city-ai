@@ -1,0 +1,16 @@
+flowchart TD
+  n0["GoTo"]
+  n1["Sequencer"]
+  n2["Waiting"]
+  n3["PlaCAgentNodeSetUnavailable"]
+  n4["PlaCAgentNodeSoldierIsMissionStillValid"]
+  n5["Selector"]
+  n6["PlaCAgentNodeRestoreDefaultBehavior"]
+  n7["SetActivityMessage"]
+  n1 -->|0| n5
+  n1 -->|1| n2
+  n1 -->|2| n7
+  n1 -->|3| n0
+  n1 -->|4| n3
+  n5 -->|5| n4
+  n5 -->|6| n6

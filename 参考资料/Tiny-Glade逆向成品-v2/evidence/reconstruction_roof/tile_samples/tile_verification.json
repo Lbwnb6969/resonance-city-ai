@@ -1,0 +1,122 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "cases": [
+    {
+      "case": "circle-default",
+      "tiles": 321,
+      "instructions": 179210,
+      "record_bytes_sha256": "a63f58346c5e3f8213f2b357c1e92db1feaffe9be4a8bd637153b07ff8a128b9",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-default",
+      "tiles": 531,
+      "instructions": 347847,
+      "record_bytes_sha256": "e07b4f7d91428c9f5e93048f6e0122152e96ad0c03fd79078ec6c941db3eefa6",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "circle-flat",
+      "tiles": 0,
+      "instructions": 0,
+      "record_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "circle-shallow",
+      "tiles": 32,
+      "instructions": 18210,
+      "record_bytes_sha256": "5a684865fa50e614aa9705de77b97c81e04d6eb1625fe6ba4dd6d5db1b7537e7",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "circle-steep",
+      "tiles": 930,
+      "instructions": 524637,
+      "record_bytes_sha256": "553aa45e64304726126ed37142a436c54e44ea87bb7dafc81d2aae71661b601c",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-flat",
+      "tiles": 0,
+      "instructions": 0,
+      "record_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-shallow",
+      "tiles": 47,
+      "instructions": 44669,
+      "record_bytes_sha256": "2208820f7d5df3e1e6bd9c5c0ee9d0d0a3a406cfe22ff61056a38032e420cbc5",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-gable-x",
+      "tiles": 334,
+      "instructions": 218095,
+      "record_bytes_sha256": "a461ead5e7fc265c0584d08501c893e4d2b9832b48247cae03b098eaa4e6e8e2",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-gable-z",
+      "tiles": 269,
+      "instructions": 180213,
+      "record_bytes_sha256": "e772fb54ac6320c8eec10fbea1e67eb49c519f11c062d2d7581d419ea330a177",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-pyramid",
+      "tiles": 728,
+      "instructions": 492492,
+      "record_bytes_sha256": "45e923f48e6f123cbb0c15e72f3a16cb871eea02dfcf292cbde04624a7a9a1ba",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    },
+    {
+      "case": "rectangle-offset",
+      "tiles": 530,
+      "instructions": 345375,
+      "record_bytes_sha256": "e3d744d3a46d1b53f15fc2c094491a0598f00df5d7957b9cb0832d94f74c8ff5",
+      "finite_fields": true,
+      "render_id_preserved": true,
+      "positive_scale": true,
+      "passed": true
+    }
+  ],
+  "deterministic_repeat_same_records": true,
+  "passed": true,
+  "evidence_type": "original-instruction-execution-in-Unicorn",
+  "limits": [
+    "Assertions check callback output shape/domain and determinism; they do not compare rendered gameplay.",
+    "Pure CRT math/f16 substitutions and scratch allocator remain explicit oracle assumptions."
+  ]
+}

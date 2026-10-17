@@ -1,0 +1,39 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 519,
+    "record_offset": 84908,
+    "module": "country_core-75de4a05f1ed4a16.bxcb0vhu62ystrv28li0fef7b.1euy9uv.rcgu.o",
+    "name": "country_core::resources::walls::public_wall_state::PublicWallState::max_y",
+    "segment": 1,
+    "offset": 9630608,
+    "rva": 9634704,
+    "va": "0x140930390",
+    "size": 32,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "56d63f44f892709135b5d97d3c8bc4aebaaeea59a4bd2368c0f400e4575d4022",
+  "code_bytes": 32,
+  "decoded_bytes": 32,
+  "instructions": 8,
+  "calls_and_jumps": [
+    {
+      "address": "0x1409303aa",
+      "kind": "call",
+      "target": "0x142d8e040",
+      "target_names": [
+        "country_core::resources::walls::public_wall_state::impl$0::max_y::closure$0",
+        "_ZN12country_core9resources5walls17public_wall_state15PublicWallState5max_y28_$u7b$$u7b$closure$u7d$$u7d$17h631be69922351c74E.llvm.9594058148382606787"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

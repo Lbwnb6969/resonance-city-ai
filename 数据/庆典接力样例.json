@@ -1,0 +1,272 @@
+{
+	"bakery_supply": {},
+	"cafe_credits": {},
+	"cafe_progress": {},
+	"districts": [
+		{
+			"id": "d1",
+			"name": "暖声街坊1",
+			"points": [
+				[
+					-10.0,
+					-3.0
+				],
+				[
+					-10.0,
+					1.0
+				]
+			],
+			"style": "warm",
+			"width": 4.0
+		},
+		{
+			"id": "d2",
+			"name": "低吟街坊2",
+			"points": [
+				[
+					-5.0,
+					-3.0
+				],
+				[
+					-5.0,
+					1.0
+				]
+			],
+			"style": "deep",
+			"width": 4.0
+		}
+	],
+	"high_watermark": {
+		"cell": 6,
+		"district": 2,
+		"house": 6,
+		"plant": 0,
+		"road": 3,
+		"water": 0
+	},
+	"house_improvements": {},
+	"houses": [
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c1",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h1",
+			"name": "石榴巷1号",
+			"origin": [
+				-15.0,
+				-3.0
+			],
+			"palette": 0,
+			"role": "residential",
+			"seed": 81977,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c2",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h2",
+			"name": "石榴巷2号",
+			"origin": [
+				-10.0,
+				-3.0
+			],
+			"palette": 1,
+			"role": "residential",
+			"seed": 82954,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c3",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h3",
+			"name": "石榴巷3号",
+			"origin": [
+				-5.0,
+				-3.0
+			],
+			"palette": 2,
+			"role": "residential",
+			"seed": 83931,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c4",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h4",
+			"name": "晨炉面包坊",
+			"origin": [
+				-15.0,
+				1.0
+			],
+			"palette": 3,
+			"role": "bakery",
+			"seed": 84908,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c5",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h5",
+			"name": "暖庭小舞台",
+			"origin": [
+				-10.0,
+				1.0
+			],
+			"palette": 4,
+			"role": "venue",
+			"seed": 85885,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c6",
+					"kind": "room",
+					"level": 0,
+					"source": "new_house",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h6",
+			"name": "深流小舞台",
+			"origin": [
+				-5.0,
+				1.0
+			],
+			"palette": 5,
+			"role": "venue",
+			"seed": 86862,
+			"workshop_open": true
+		}
+	],
+	"journey_checkpoint": {},
+	"life_progress": {
+		"auto_concerts": 0,
+		"concerts": 0,
+		"gatherings": 0,
+		"purchases": 0,
+		"tea_parties": 0,
+		"tea_visits": 0
+	},
+	"matinee_cooldown": 0.0,
+	"matinee_credits": {},
+	"matinee_last_venue": "",
+	"matinee_pending": {},
+	"matinee_progress": {},
+	"next_cell_id": 7,
+	"next_district_id": 3,
+	"next_house_id": 7,
+	"next_plant_id": 1,
+	"next_road_id": 4,
+	"next_water_id": 1,
+	"plants": [],
+	"resonance_afterglow": {},
+	"revision": 17,
+	"roads": [
+		{
+			"bridge": false,
+			"id": "r1",
+			"points": [
+				[
+					-16.200000762939453,
+					-1.4500000476837158
+				],
+				[
+					-3.799999952316284,
+					-1.4500000476837158
+				]
+			],
+			"source": "player",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r2",
+			"points": [
+				[
+					-16.200000762939453,
+					2.549999952316284
+				],
+				[
+					-3.799999952316284,
+					2.549999952316284
+				]
+			],
+			"source": "player",
+			"width": 1.25
+		},
+		{
+			"bridge": false,
+			"id": "r3",
+			"points": [
+				[
+					-12.5,
+					-1.4500000476837158
+				],
+				[
+					-12.5,
+					2.549999952316284
+				]
+			],
+			"source": "player",
+			"width": 1.25
+		}
+	],
+	"schema": 1,
+	"terrain_strokes": [],
+	"venue_commissions": {},
+	"waters": [],
+	"workshop_supply": {}
+}

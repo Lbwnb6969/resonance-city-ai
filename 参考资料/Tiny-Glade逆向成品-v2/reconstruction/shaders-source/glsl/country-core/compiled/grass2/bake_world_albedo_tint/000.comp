@@ -1,0 +1,65 @@
+#version 460
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 output_dims;
+    float texels_per_meter;
+} globalParams;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} output_buf;
+
+layout(set = 2, binding = 6) uniform sampler samplers_llr_iso;
+layout(set = 0, binding = 1) uniform texture2D tint_texture;
+
+void main()
+{
+    do
+    {
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, globalParams.output_dims)))
+        {
+            break;
+        }
+        vec2 uv = ((((vec2(gl_GlobalInvocationID.xy) + vec2(0.5)) - (vec2(globalParams.output_dims) * 0.5)) / vec2(globalParams.texels_per_meter)) * vec2(0.0078125)) + vec2(0.5);
+        vec2 _209 = fract(uv);
+        vec2 _210 = abs(floor(uv));
+        vec3 color = vec3(1.42242848873138427734375) * textureLod(sampler2D(tint_texture, samplers_llr_iso), mix(_209, vec2(1.0) - _209, _210 - vec2(2.0) * trunc(_210 / vec2(2.0))), 0.0).xyz;
+        float _218 = color.x;
+        float _318;
+        if (0.003130800090730190277099609375 >= _218)
+        {
+            _318 = 12.9200000762939453125 * _218;
+        }
+        else
+        {
+            _318 = (1.05499994754791259765625 * pow(_218, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        float _220 = color.y;
+        float _319;
+        if (0.003130800090730190277099609375 >= _220)
+        {
+            _319 = 12.9200000762939453125 * _220;
+        }
+        else
+        {
+            _319 = (1.05499994754791259765625 * pow(_220, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        float _222 = color.z;
+        float _320;
+        if (0.003130800090730190277099609375 >= _222)
+        {
+            _320 = 12.9200000762939453125 * _222;
+        }
+        else
+        {
+            _320 = (1.05499994754791259765625 * pow(_222, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+        }
+        vec4 _264 = clamp(vec4(vec3(_318, _319, _320), 1.0), vec4(0.0), vec4(1.0));
+        output_buf._member0[((gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * globalParams.output_dims.x)) * 4u) / 4u] = ((uint((clamp(_264.x, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_264.y, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_264.z, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + (uint((clamp(_264.w, 0.0, 1.0) * 255.0) + 0.5) << uint(24));
+        break;
+    } while(false);
+}
+

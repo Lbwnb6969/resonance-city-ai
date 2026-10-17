@@ -1,0 +1,522 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Market Tending.bt",
+  "absolute_offset": 2291602,
+  "length": 8316,
+  "sha256": "1e1899417043ca67fa78df15676d1c13ec2c97cd766a8c86b9c31b0a89796550",
+  "rid": 5716,
+  "root_id": "4d61da11-9490-4193-a245-759ca80084bc",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportData",
+        "IsPublic": false,
+        "Id": "3e1de696-6f6e-4d92-8530-b9b5ba5dfe15",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WorkplacePosition",
+        "IsPublic": true,
+        "Id": "9789fecf-b307-42ce-82c6-71c5533cce6d",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "SellingWait",
+        "IsPublic": false,
+        "Id": "85293638-4c11-4883-90ec-28e1cce31d17",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 5.0,
+          "Animation": "MARKET_TENDER",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "MarketTransportingActivityMessage",
+        "IsPublic": false,
+        "Id": "ff127e9d-e9a1-44dd-a71e-911a62830026",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "FETCHING_RESOURCES_FOR_X"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ActivityMessageGoingToWorkplace",
+        "IsPublic": false,
+        "Id": "cd78a2c6-f439-436c-bbf1-5c45780fe8d1",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "GOING_TO_WORKPLACE",
+          "ActivityType": "PRODUCTION"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ActivityMessageTendingMarket",
+        "IsPublic": false,
+        "Id": "a1182a85-5944-4489-958e-063049c18983",
+        "TypeDefinition": "PlaSContextActivityType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextActivityType"
+          },
+          "ActivityMessage": "TENDING_MARKET",
+          "ActivityType": "PRODUCTION"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "0cd2bf7a-e60c-4a4e-9f7a-ac6eb89bd371",
+      "name": "",
+      "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+      "position": [
+        350,
+        471
+      ],
+      "behavior_asset_targets": [
+        [
+          5730,
+          "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "TransportData",
+          "value": "3e1de696-6f6e-4d92-8530-b9b5ba5dfe15",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "TransportingFromActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "TransportingToActivityMessage",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "0cd2bf7a-e60c-4a4e-9f7a-ac6eb89bd371",
+        "BehaviorTree": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+      }
+    },
+    {
+      "id": "4648967f-ebfe-4606-89f5-bf1a6e78670f",
+      "name": "",
+      "type": "PlaCAgentNodeSetupMarketTenderJob",
+      "position": [
+        -64,
+        466
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "3e1de696-6f6e-4d92-8530-b9b5ba5dfe15",
+          "binding_status": "variable",
+          "variable_name": "TransportData"
+        },
+        {
+          "name": "Selling Wait Data",
+          "value": "85293638-4c11-4883-90ec-28e1cce31d17",
+          "binding_status": "variable",
+          "variable_name": "SellingWait"
+        },
+        {
+          "name": "Transporting Agent Activity Message",
+          "value": "ff127e9d-e9a1-44dd-a71e-911a62830026",
+          "binding_status": "variable",
+          "variable_name": "MarketTransportingActivityMessage"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4d61da11-9490-4193-a245-759ca80084bc",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        749,
+        110
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "716d5dcb-669e-4dc4-8327-32fdef10aa1d",
+      "name": "",
+      "type": "PlaCAgentNodeFindOrAssignWorkplace",
+      "position": [
+        -373,
+        518
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4888f5dc-b2cc-4d14-bb31-4983fcc21a34",
+      "name": "",
+      "type": "PlaCAgentNodeSetWorkplaceAsDestination",
+      "position": [
+        338,
+        260
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Workplace Position",
+          "value": "9789fecf-b307-42ce-82c6-71c5533cce6d",
+          "binding_status": "variable",
+          "variable_name": "WorkplacePosition"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "20e09bf3-3030-44c3-8f91-248f0f4add00",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        150,
+        264
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "cddf92a3-3d00-4a76-8089-3f613eb21c4d",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        154,
+        353
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "2de5295b-97c0-4bb2-963d-697a8b6fc426",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        815,
+        266
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "9789fecf-b307-42ce-82c6-71c5533cce6d",
+          "binding_status": "variable",
+          "variable_name": "WorkplacePosition"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "3d3bb90e-a921-46ce-bdc8-4523bf8366c9",
+      "name": "SetOrientation",
+      "type": "PlaCAgentNodeSetOrientation",
+      "position": [
+        1115,
+        268
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "9789fecf-b307-42ce-82c6-71c5533cce6d",
+          "binding_status": "variable",
+          "variable_name": "WorkplacePosition"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "c261e0ed-bfcf-4f86-aa34-8005ad034fc7",
+      "name": "Waiting",
+      "type": "PlaCAgentNodeWait",
+      "position": [
+        1559,
+        272
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "85293638-4c11-4883-90ec-28e1cce31d17",
+          "binding_status": "variable",
+          "variable_name": "SellingWait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "c261e0ed-bfcf-4f86-aa34-8005ad034fc7",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "975844c9-1c8c-4b04-b052-dd9972ef174d",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        603,
+        258
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "cd78a2c6-f439-436c-bbf1-5c45780fe8d1",
+          "binding_status": "variable",
+          "variable_name": "ActivityMessageGoingToWorkplace"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "11ccdb0e-9a05-4544-a515-926b3037436c",
+      "name": "SetActivityMessage",
+      "type": "PlaCAgentNodeSetActivityMessage",
+      "position": [
+        1345,
+        284
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "a9741b3d-ebe6-4cea-a1b6-6557cca02edf",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Activity Type Data",
+          "value": "a1182a85-5944-4489-958e-063049c18983",
+          "binding_status": "variable",
+          "variable_name": "ActivityMessageTendingMarket"
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "20e09bf3-3030-44c3-8f91-248f0f4add00",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "4888f5dc-b2cc-4d14-bb31-4983fcc21a34",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "975844c9-1c8c-4b04-b052-dd9972ef174d",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "2de5295b-97c0-4bb2-963d-697a8b6fc426",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "3d3bb90e-a921-46ce-bdc8-4523bf8366c9",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "11ccdb0e-9a05-4544-a515-926b3037436c",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "4d61da11-9490-4193-a245-759ca80084bc",
+      "to": "c261e0ed-bfcf-4f86-aa34-8005ad034fc7",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "20e09bf3-3030-44c3-8f91-248f0f4add00",
+      "to": "cddf92a3-3d00-4a76-8089-3f613eb21c4d",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cddf92a3-3d00-4a76-8089-3f613eb21c4d",
+      "to": "4648967f-ebfe-4606-89f5-bf1a6e78670f",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "cddf92a3-3d00-4a76-8089-3f613eb21c4d",
+      "to": "0cd2bf7a-e60c-4a4e-9f7a-ac6eb89bd371",
+      "ordinal": 9,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [
+    "716d5dcb-669e-4dc4-8327-32fdef10aa1d"
+  ],
+  "validation_issues": []
+}

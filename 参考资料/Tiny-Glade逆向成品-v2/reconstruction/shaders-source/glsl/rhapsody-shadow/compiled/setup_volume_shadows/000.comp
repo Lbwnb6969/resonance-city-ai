@@ -1,0 +1,212 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#if defined(GL_EXT_control_flow_attributes)
+#extension GL_EXT_control_flow_attributes : require
+#define SPIRV_CROSS_FLATTEN [[flatten]]
+#define SPIRV_CROSS_BRANCH [[dont_flatten]]
+#define SPIRV_CROSS_UNROLL [[unroll]]
+#define SPIRV_CROSS_LOOP [[dont_unroll]]
+#else
+#define SPIRV_CROSS_FLATTEN
+#define SPIRV_CROSS_BRANCH
+#define SPIRV_CROSS_UNROLL
+#define SPIRV_CROSS_LOOP
+#endif
+layout(local_size_x = 4, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_matrix_float_4_4_4
+{
+    mat4 data[4];
+};
+
+struct _Array_natural_float4
+{
+    float data[4];
+};
+
+struct VolumetricShadowData_natural
+{
+    _Array_natural_matrix_float_4_4_4 world_to_clip;
+    _Array_natural_matrix_float_4_4_4 clip_to_world;
+    _Array_natural_float4 cascade_splits;
+};
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    uint cascade_count;
+    uint shadow_map_dims;
+    vec3 light_direction;
+} globalParams;
+
+layout(set = 2, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    layout(row_major) VolumetricShadowData_natural _member0[];
+} shadow_rendering_views;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= globalParams.cascade_count)
+        {
+            break;
+        }
+        float _572 = -current_view.clip_to_view[3].z;
+        float _577 = 0.25 / current_view.clip_to_view[3].z;
+        float cascade_splits[4] = float[](0.0, 0.0, 0.0, 0.0);
+        float min_z = (-1.0) / (_577 * _572);
+        float _141 = ((-1.0) / ((0.0009765625 / current_view.clip_to_view[3].z) * _572)) / min_z;
+        uint _149;
+        uint _768 = 0u;
+        for (;;)
+        {
+            if (!(_768 < globalParams.cascade_count))
+            {
+                break;
+            }
+            _149 = _768 + 1u;
+            cascade_splits[_768] = 1.0 / ((-(min_z * pow(abs(_141), float(_149) / float(globalParams.cascade_count)))) * _572);
+            _768 = _149;
+            continue;
+        }
+        float _769;
+        if (gl_GlobalInvocationID.x == 0u)
+        {
+            _769 = _577;
+        }
+        else
+        {
+            _769 = cascade_splits[gl_GlobalInvocationID.x - 1u];
+        }
+        vec3 frustum_corners_ws[8] = vec3[](vec3(-1.0, 1.0, _769), vec3(1.0, 1.0, _769), vec3(1.0, -1.0, _769), vec3(-1.0, -1.0, _769), vec3(-1.0, 1.0, cascade_splits[gl_GlobalInvocationID.x]), vec3(1.0, 1.0, cascade_splits[gl_GlobalInvocationID.x]), vec3(1.0, -1.0, cascade_splits[gl_GlobalInvocationID.x]), vec3(-1.0, -1.0, cascade_splits[gl_GlobalInvocationID.x]));
+        uint i;
+        uint _770 = 0u;
+        SPIRV_CROSS_UNROLL
+        for (;;)
+        {
+            if (!(_770 < 8u))
+            {
+                break;
+            }
+            vec4 _637 = (vec4(frustum_corners_ws[_770], 1.0) * current_view.clip_to_view) * current_view.view_to_world;
+            frustum_corners_ws[_770] = _637.xyz / vec3(_637.w);
+            i = _770 + 1u;
+            _770 = i;
+            continue;
+        }
+        vec3 _772;
+        _772 = vec3(0.0);
+        vec3 frustum_center;
+        uint i_1;
+        uint _771 = 0u;
+        SPIRV_CROSS_UNROLL
+        for (;;)
+        {
+            if (!(_771 < 8u))
+            {
+                break;
+            }
+            frustum_center = _772 + frustum_corners_ws[_771];
+            i_1 = _771 + 1u;
+            _772 = frustum_center;
+            _771 = i_1;
+            continue;
+        }
+        vec3 frustum_center_1 = _772 * vec3(0.125);
+        vec3 _262 = -globalParams.light_direction;
+        vec3 _278 = normalize(cross(vec3(0.0, 1.0, 0.0), _262));
+        vec3 _293 = cross(_262, _278);
+        vec3 _843 = vec3(_278.x, _293.x, _262.x);
+        vec3 _844 = vec3(_278.y, _293.y, _262.y);
+        vec3 _845 = vec3(_278.z, _293.z, _262.z);
+        mat3 _846 = mat3(_843, _844, _845);
+        mat4 _663 = mat4(vec4(_278, 0.0), vec4(_293, 0.0), vec4(_262, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+        vec3 _665 = -(_846 * frustum_center_1);
+        mat4 _806 = _663;
+        _806[0].w = _665.x;
+        _806[1].w = _665.y;
+        _806[2].w = _665.z;
+        vec3 _774;
+        vec3 _775;
+        _775 = vec3(-3.4028234663852885981170418348452e+38);
+        _774 = vec3(3.4028234663852885981170418348452e+38);
+        vec3 _369;
+        vec3 _371;
+        uint i_2;
+        uint _773 = 0u;
+        for (;;)
+        {
+            if (!(_773 < 8u))
+            {
+                break;
+            }
+            vec3 corner = (vec4(frustum_corners_ws[_773], 1.0) * _806).xyz;
+            _369 = min(_774, corner);
+            _371 = max(_775, corner);
+            i_2 = _773 + 1u;
+            _775 = _371;
+            _774 = _369;
+            _773 = i_2;
+            continue;
+        }
+        vec3 shadow_camera_pos = frustum_center_1 + (globalParams.light_direction * (-_775.z));
+        vec3 _699 = -(_846 * shadow_camera_pos);
+        mat4 _812 = _663;
+        _812[0].w = _699.x;
+        _812[1].w = _699.y;
+        _812[2].w = _699.z;
+        float _713 = 1.0 / (_775.x - _774.x);
+        float _715 = 1.0 / (_775.y - _774.y);
+        mat4 _735 = transpose(mat4(vec4(_713 + _713, 0.0, 0.0, 0.0), vec4(0.0, _715 + _715, 0.0, 0.0), vec4(0.0, 0.0, (-1.0) / (_775 - _774).z, 0.0), vec4((-(_774.x + _775.x)) * _713, (-(_775.y + _774.y)) * _715, 0.0, 1.0)));
+        vec4 _741 = _735[0];
+        float _743 = 1.0 / _741.x;
+        mat4 _827 = mat4(vec4(1.0, 0.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+        _827[0].x = _743;
+        vec4 _746 = _735[1];
+        float _748 = 1.0 / _746.y;
+        _827[1].y = _748;
+        vec4 _751 = _735[2];
+        float _753 = 1.0 / _751.z;
+        _827[2].z = _753;
+        vec3 _760 = (-vec3(_741.w, _746.w, _751.w)) * vec3(_743, _748, _753);
+        _827[0].w = _760.x;
+        _827[1].w = _760.y;
+        _827[2].w = _760.z;
+        shadow_rendering_views._member0[0].clip_to_world.data[gl_GlobalInvocationID.x] = _827 * mat4(vec4(_843, shadow_camera_pos.x), vec4(_844, shadow_camera_pos.y), vec4(_845, shadow_camera_pos.z), vec4(0.0, 0.0, 0.0, 1.0));
+        shadow_rendering_views._member0[0].world_to_clip.data[gl_GlobalInvocationID.x] = _812 * _735;
+        shadow_rendering_views._member0[0].cascade_splits.data[0] = cascade_splits[0];
+        shadow_rendering_views._member0[0].cascade_splits.data[1] = cascade_splits[1];
+        shadow_rendering_views._member0[0].cascade_splits.data[2] = cascade_splits[2];
+        shadow_rendering_views._member0[0].cascade_splits.data[3] = cascade_splits[3];
+        break;
+    } while(false);
+}
+

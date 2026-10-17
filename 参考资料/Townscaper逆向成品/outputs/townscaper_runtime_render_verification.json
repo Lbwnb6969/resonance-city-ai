@@ -1,0 +1,61 @@
+{
+  "kind": "instrumented-original-runtime",
+  "observation_record": "townscaper_runtime_grid.json",
+  "capture_api": "UnityEngine.ScreenCapture.CaptureScreenshot on original main thread",
+  "graphics_backend": "Direct3D 11",
+  "backend_log": [
+    "Forcing GfxDevice: Direct3D 11",
+    "Version:  Direct3D 11.0 [level 11.1]",
+    "Renderer: NVIDIA GeForce RTX 5070 Ti Laptop GPU (ID=0x2f18)",
+    "Driver:   32.0.16.1714"
+  ],
+  "frames": [
+    {
+      "label": "before",
+      "file": "townscaper_runtime_render_before.png",
+      "sha256": "53a14d3031d1f600728131a14ad35b0149285a1454fbd8f4728c728d14954d30",
+      "size": [
+        2560,
+        1440
+      ],
+      "distinct_rgb_colors": 114728
+    },
+    {
+      "label": "after",
+      "file": "townscaper_runtime_render_after.png",
+      "sha256": "effd3136d279cc47366967fd5c32815abcb7dbb38e7062fca12566d723cd9430",
+      "size": [
+        2560,
+        1440
+      ],
+      "distinct_rgb_colors": 109614
+    },
+    {
+      "label": "undone",
+      "file": "townscaper_runtime_render_undone.png",
+      "sha256": "5052252747da13df5e382eacb7bb88cebc1378a4487dd9108384ef73942f2f53",
+      "size": [
+        2560,
+        1440
+      ],
+      "distinct_rgb_colors": 113490
+    },
+    {
+      "label": "redone",
+      "file": "townscaper_runtime_render_redone.png",
+      "sha256": "ab15078f04d061fa24f93178f2bad89a3a15458554e97eb1d5ac2e9a362644f7",
+      "size": [
+        2560,
+        1440
+      ],
+      "distinct_rgb_colors": 119250
+    }
+  ],
+  "checks": {
+    "all_png_decoded": true,
+    "all_non_flat": true,
+    "d3d11_logged": true
+  },
+  "visual_review": "Original full game scene: buildings, roof/windows, decorations, birds, sea/reflection, sandbank, shadow and palette/settings UI visible in after frame. First run captured startup logo and is preserved in discarded/runtime-first-render-splash.",
+  "limits": "These four frames come from the latest grid_graphics_probe, whose operation/capture record is townscaper_runtime_grid.json. The earlier graphics_ready_probe reused the same output paths; townscaper_runtime_graphics.json retains its separate native operation observations but its four image files were superseded by this run. This confirms original D3D11 rendering and captured output. Recompiled HLSL has not replaced original shader programs. Water, birds and other time-dependent visuals prevent asserting pixel-identical Undo/Redo; generated module snapshots and save strings have independent equality checks. Requested command-line size960x640 was overridden by game settings; actual captured size2560x1440 is recorded."
+}

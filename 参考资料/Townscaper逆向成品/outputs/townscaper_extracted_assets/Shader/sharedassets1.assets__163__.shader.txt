@@ -1,0 +1,92 @@
+//////////////////////////////////////////
+//
+// NOTE: This is *not* a valid shader file
+//
+///////////////////////////////////////////
+Shader "Hidden/ShadowBaker" {
+Properties {
+
+}
+SubShader {
+ LOD 100
+ Tags { "Shadow" = "House" }
+ Pass {
+  LOD 100
+  Tags { "Shadow" = "House" }
+ ZTest Off
+ Cull Off
+  GpuProgramID 61586
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+SubShader {
+ LOD 100
+ Tags { "Shadow" = "Voxel" }
+ Pass {
+  LOD 100
+  Tags { "Shadow" = "Voxel" }
+ ZTest Off
+ Cull Off
+  GpuProgramID 107093
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+SubShader {
+ LOD 100
+ Tags { "Shadow" = "Plants" }
+ Pass {
+  LOD 100
+  Tags { "Shadow" = "Plants" }
+ ZTest Off
+  GpuProgramID 192080
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+SubShader {
+ LOD 100
+ Tags { "Shadow" = "Fence" }
+ Pass {
+  LOD 100
+  Tags { "Shadow" = "Fence" }
+ ZTest Off
+  GpuProgramID 221896
+Program "vp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+Program "fp" {
+SubProgram "d3d11 " {
+"// shader disassembly not supported on DXBC"
+}
+}
+}
+}
+}

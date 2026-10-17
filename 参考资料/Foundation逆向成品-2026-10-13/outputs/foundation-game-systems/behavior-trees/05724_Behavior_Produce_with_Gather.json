@@ -1,0 +1,882 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Produce with Gather.bt",
+  "absolute_offset": 2328070,
+  "length": 15396,
+  "sha256": "3160efca5fa1cecb226ca5a29380425374eb5c319184e9b912131ef60dc6bcd4",
+  "rid": 5724,
+  "root_id": "8ba0ce60-d8b5-4e43-a657-a2de364b09af",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "GatheriingData",
+        "IsPublic": false,
+        "Id": "a9373ad9-76ac-4400-86fc-925ac6d7fc14",
+        "TypeDefinition": "PlaSGatheringData",
+        "DefaultValue": {
+          "type": "PlaSGatheringData"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Do Job Timer",
+        "IsPublic": false,
+        "Id": "daf33c23-c205-48f0-a217-316c719a31ad",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "GATHER",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Order Workplace",
+        "IsPublic": false,
+        "Id": "19baca2b-69c3-4107-9355-68737d1850d1",
+        "TypeDefinition": "PlaSContextDataSubtree",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataSubtree"
+          },
+          "Subtree": "0bbd942b-b387-4780-a4bb-eab8701072a6"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Workplace Position",
+        "IsPublic": false,
+        "Id": "0eec905e-4544-4afd-8279-fa7daa992d62",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportData",
+        "IsPublic": false,
+        "Id": "8b0a616c-9674-4f62-84f4-62527d97eb39",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "TransportResource",
+        "IsPublic": false,
+        "Id": "4fd979dd-6521-48ad-afee-e657512f0b0c",
+        "TypeDefinition": "PlaSContextDataSubtree",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataSubtree"
+          },
+          "Subtree": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Work Loop",
+        "IsPublic": true,
+        "Id": "4b0c404b-0431-49fc-86da-bebee874fd02",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 10,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Produced List",
+        "IsPublic": false,
+        "Id": "b0fc96ac-8ce8-4fbd-a50d-bd5738dd7a50",
+        "TypeDefinition": "PlaSContextDataResourceProduction",
+        "DefaultValue": {
+          "type": "PlaSContextDataResourceProduction"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Produced Transport Data",
+        "IsPublic": false,
+        "Id": "4efc1dc1-2479-46a0-8b10-685a98e6899b",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Depot Location",
+        "IsPublic": false,
+        "Id": "f6202b65-5175-4d2b-b790-b1f5dedae8f5",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Feedback Instance",
+        "IsPublic": false,
+        "Id": "f5f657a0-efb6-4143-a924-8bc18e2e0015",
+        "TypeDefinition": "PlaSContextDataVoidObject",
+        "DefaultValue": {
+          "type": "PlaSContextDataVoidObject"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "false",
+        "IsPublic": false,
+        "Id": "b9f90fcf-8518-46a4-90c0-2b5df6c072e8",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "WorkTime",
+        "IsPublic": false,
+        "Id": "14aed037-b241-40f1-b0b2-fa59e7e87340",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 89.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Restrict Gather to Owned Territory",
+        "IsPublic": false,
+        "Id": "0014a32c-c8ba-4318-a465-fc6392129dc6",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Is Gathering For Production",
+        "IsPublic": false,
+        "Id": "0c2aeae2-4ee4-4189-a2ff-e6415a81bc03",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Should receive XP",
+        "IsPublic": false,
+        "Id": "7efe7aff-57ed-4fd5-99a4-a8dcf33b4d71",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport Interactive Location Setup",
+        "IsPublic": false,
+        "Id": "a8b30035-b4b4-474c-a66d-45180aeea5a6",
+        "TypeDefinition": "PlaSContextDataInteractiveLocationSetup",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataInteractiveLocationSetup"
+          },
+          "CharacterSetupPriority": "WORKSTATION",
+          "WorkstationSetup": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "ProduceActivityMessage",
+        "IsPublic": false,
+        "Id": "605d2221-96d8-45cc-97fc-01db64521624",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "I_AM_PRODUCING_RESOURCE"
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "674bd0ac-1401-4dcf-bb7a-d795cb324f57",
+      "name": "Go to workplace",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        249,
+        568
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "0eec905e-4544-4afd-8279-fa7daa992d62",
+          "binding_status": "variable",
+          "variable_name": "Workplace Position"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "1ed3fcef-a0a8-4980-9e0b-23bd6d91793e",
+      "name": "Getting XP",
+      "type": "PlaCAgentNodeGiveJobXP",
+      "position": [
+        1275,
+        564
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Should Receive Xp",
+          "value": "7efe7aff-57ed-4fd5-99a4-a8dcf33b4d71",
+          "binding_status": "variable",
+          "variable_name": "Should receive XP"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "664a2b8f-312f-4e43-b8f9-cb6fa7324e60",
+      "name": "Produce Resource",
+      "type": "PlaCAgentNodeProduceResource",
+      "position": [
+        576,
+        566
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "daf33c23-c205-48f0-a217-316c719a31ad",
+          "binding_status": "variable",
+          "variable_name": "Do Job Timer"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Resource Produced List",
+          "value": "b0fc96ac-8ce8-4fbd-a50d-bd5738dd7a50",
+          "binding_status": "variable",
+          "variable_name": "Resource Produced List"
+        },
+        {
+          "name": "Add Produced Resource To Depot",
+          "value": "b9f90fcf-8518-46a4-90c0-2b5df6c072e8",
+          "binding_status": "variable",
+          "variable_name": "false"
+        },
+        {
+          "name": "Producing Agent Activity Message",
+          "value": "605d2221-96d8-45cc-97fc-01db64521624",
+          "binding_status": "variable",
+          "variable_name": "ProduceActivityMessage"
+        }
+      ],
+      "data": {
+        "Guid": "664a2b8f-312f-4e43-b8f9-cb6fa7324e60",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "e4a5b62b-cf81-4f8a-88b1-e48b9321dc5b",
+      "name": "",
+      "type": "PlaCAgentNodeSetupWork",
+      "position": [
+        0,
+        571
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "daf33c23-c205-48f0-a217-316c719a31ad",
+          "binding_status": "variable",
+          "variable_name": "Do Job Timer"
+        },
+        {
+          "name": "Work Position",
+          "value": "0eec905e-4544-4afd-8279-fa7daa992d62",
+          "binding_status": "variable",
+          "variable_name": "Workplace Position"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "af4c4105-caaa-4289-8002-3c7f846eda5f",
+      "name": "",
+      "type": "PlaCNodeIsWorkplaceNeedResource",
+      "position": [
+        -593,
+        703
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "def85aa4-d345-43c1-b7ff-65963b8bb482",
+      "name": "Transport behavior",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        -375,
+        558
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "94edf255-863e-480c-af04-e54648f0906a",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        566,
+        402
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "2699edc0-83ef-47c3-8575-19f2311fb284",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        1025,
+        696
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "7d3c9a92-0169-4675-8537-55b2f6de35f6",
+      "name": "",
+      "type": "PlaCAgentNodeSetupWorkplaceTransport",
+      "position": [
+        604,
+        793
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Resource Produced Data",
+          "value": "b0fc96ac-8ce8-4fbd-a50d-bd5738dd7a50",
+          "binding_status": "variable",
+          "variable_name": "Resource Produced List"
+        },
+        {
+          "name": "Transport Data",
+          "value": "4efc1dc1-2479-46a0-8b10-685a98e6899b",
+          "binding_status": "variable",
+          "variable_name": "Resource Produced Transport Data"
+        },
+        {
+          "name": "Depot Location Data",
+          "value": "f6202b65-5175-4d2b-b790-b1f5dedae8f5",
+          "binding_status": "variable",
+          "variable_name": "Depot Location"
+        },
+        {
+          "name": "Out Transport Interactive Location Setup",
+          "value": "a8b30035-b4b4-474c-a66d-45180aeea5a6",
+          "binding_status": "variable",
+          "variable_name": "Transport Interactive Location Setup"
+        },
+        {
+          "name": "Optional Is Gathering For Production",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "b911fcbd-b13e-420e-b091-0c05552c87ae",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        962,
+        905
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "f6202b65-5175-4d2b-b790-b1f5dedae8f5",
+          "binding_status": "variable",
+          "variable_name": "Depot Location"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "a8b30035-b4b4-474c-a66d-45180aeea5a6",
+          "binding_status": "variable",
+          "variable_name": "Transport Interactive Location Setup"
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "4b3703d9-38d3-41e3-b589-48cf0a1d9659",
+      "name": "",
+      "type": "PlaCAgentNodeDropStuffToDepot",
+      "position": [
+        1247,
+        786
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Transport Data",
+          "value": "4efc1dc1-2479-46a0-8b10-685a98e6899b",
+          "binding_status": "variable",
+          "variable_name": "Resource Produced Transport Data"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "8cc41da2-b932-4dda-8232-bb63135dfac0",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        1026,
+        796
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "486018f3-f0b8-4160-b488-8a92a3c406c0",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        942,
+        569
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "486018f3-f0b8-4160-b488-8a92a3c406c0",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "da7dc16c-6bd8-4141-91cc-2baf8d3db651",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        -271,
+        379
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "14aed037-b241-40f1-b0b2-fa59e7e87340",
+          "binding_status": "variable",
+          "variable_name": "WorkTime"
+        }
+      ],
+      "data": {
+        "Guid": "da7dc16c-6bd8-4141-91cc-2baf8d3db651",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "8ba0ce60-d8b5-4e43-a657-a2de364b09af",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        103,
+        228
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "7d57b064-1ebf-40dc-90fe-fef960edfd58",
+      "name": "",
+      "type": "48193fcd-40bf-4206-b529-031f3cafadb7",
+      "position": [
+        -361,
+        705
+      ],
+      "behavior_asset_targets": [
+        [
+          5710,
+          "asset/Agent/Behaviors/Job/Behavior Gather.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "7347e5ad-ac73-4822-8c42-b228dd807bc0",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "RestrictGatherToOwnedTerritory",
+          "value": "0014a32c-c8ba-4318-a465-fc6392129dc6",
+          "binding_status": "variable",
+          "variable_name": "Restrict Gather to Owned Territory"
+        },
+        {
+          "name": "Should Receive XP",
+          "value": "b9f90fcf-8518-46a4-90c0-2b5df6c072e8",
+          "binding_status": "variable",
+          "variable_name": "false"
+        },
+        {
+          "name": "Is Gathering For Production",
+          "value": "0c2aeae2-4ee4-4189-a2ff-e6415a81bc03",
+          "binding_status": "variable",
+          "variable_name": "Is Gathering For Production"
+        }
+      ],
+      "data": {
+        "Guid": "7d57b064-1ebf-40dc-90fe-fef960edfd58",
+        "BehaviorTree": "48193fcd-40bf-4206-b529-031f3cafadb7"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "def85aa4-d345-43c1-b7ff-65963b8bb482",
+      "to": "af4c4105-caaa-4289-8002-3c7f846eda5f",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "def85aa4-d345-43c1-b7ff-65963b8bb482",
+      "to": "7d57b064-1ebf-40dc-90fe-fef960edfd58",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "94edf255-863e-480c-af04-e54648f0906a",
+      "to": "e4a5b62b-cf81-4f8a-88b1-e48b9321dc5b",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "94edf255-863e-480c-af04-e54648f0906a",
+      "to": "674bd0ac-1401-4dcf-bb7a-d795cb324f57",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "94edf255-863e-480c-af04-e54648f0906a",
+      "to": "664a2b8f-312f-4e43-b8f9-cb6fa7324e60",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "94edf255-863e-480c-af04-e54648f0906a",
+      "to": "486018f3-f0b8-4160-b488-8a92a3c406c0",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "94edf255-863e-480c-af04-e54648f0906a",
+      "to": "1ed3fcef-a0a8-4980-9e0b-23bd6d91793e",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2699edc0-83ef-47c3-8575-19f2311fb284",
+      "to": "7d3c9a92-0169-4675-8537-55b2f6de35f6",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2699edc0-83ef-47c3-8575-19f2311fb284",
+      "to": "8cc41da2-b932-4dda-8232-bb63135dfac0",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "2699edc0-83ef-47c3-8575-19f2311fb284",
+      "to": "4b3703d9-38d3-41e3-b589-48cf0a1d9659",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8cc41da2-b932-4dda-8232-bb63135dfac0",
+      "to": "b911fcbd-b13e-420e-b091-0c05552c87ae",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "486018f3-f0b8-4160-b488-8a92a3c406c0",
+      "to": "2699edc0-83ef-47c3-8575-19f2311fb284",
+      "ordinal": 11,
+      "valid_endpoints": true
+    },
+    {
+      "from": "da7dc16c-6bd8-4141-91cc-2baf8d3db651",
+      "to": "def85aa4-d345-43c1-b7ff-65963b8bb482",
+      "ordinal": 12,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8ba0ce60-d8b5-4e43-a657-a2de364b09af",
+      "to": "da7dc16c-6bd8-4141-91cc-2baf8d3db651",
+      "ordinal": 13,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8ba0ce60-d8b5-4e43-a657-a2de364b09af",
+      "to": "94edf255-863e-480c-af04-e54648f0906a",
+      "ordinal": 14,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

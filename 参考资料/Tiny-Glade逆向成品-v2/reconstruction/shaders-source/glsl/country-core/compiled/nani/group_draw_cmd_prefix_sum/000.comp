@@ -1,0 +1,138 @@
+#version 460
+layout(local_size_x = 512, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} inout_buf;
+
+layout(set = 0, binding = 2, std430) buffer draw_list_length_buffer
+{
+    uint _member0[];
+} draw_list_length_buffer_1;
+
+layout(set = 0, binding = 1, std430) buffer subtotals_buf
+{
+    uint _member0[];
+} subtotals_buf_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint range_start;
+    uint range_end;
+    uint subtotals_start;
+    uint subtotals_end;
+    uint draw_list_index;
+} push_constants;
+
+shared uint shared_data2x[1024];
+
+void main()
+{
+    uint _524;
+    bool _528;
+    uint _388 = gl_LocalInvocationID.x * 2u;
+    uvec2 _592;
+    do
+    {
+        _524 = _388 + (push_constants.range_start + (gl_WorkGroupID.x * 1024u));
+        _528 = (_524 + 1u) < push_constants.range_end;
+        if (_528)
+        {
+            uint _530 = 4u * _524;
+            _592 = uvec2(inout_buf._member0[_530 / 4u], inout_buf._member0[(_530 + 4u) / 4u]);
+            break;
+        }
+        else
+        {
+            if (_524 < push_constants.range_end)
+            {
+                _592 = uvec2(inout_buf._member0[uint(int(4u * _524)) / 4u], 0u);
+                break;
+            }
+            else
+            {
+                _592 = uvec2(0u);
+                break;
+            }
+            break; // unreachable workaround
+        }
+        break; // unreachable workaround
+    } while(false);
+    shared_data2x[_388] = _592.x;
+    shared_data2x[_388 + 1u] = _592.y;
+    barrier();
+    uint _396 = gl_LocalInvocationID.x << 1u;
+    uint _397 = _396 + 1u;
+    shared_data2x[_397] += shared_data2x[_396];
+    barrier();
+    uint _406 = (gl_LocalInvocationID.x >> 1u) << 2u;
+    uint _410 = (_406 + 2u) + (gl_LocalInvocationID.x & 1u);
+    shared_data2x[_410] += shared_data2x[_406 + 1u];
+    barrier();
+    uint _417 = (gl_LocalInvocationID.x >> 2u) << 3u;
+    uint _421 = (_417 + 4u) + (gl_LocalInvocationID.x & 3u);
+    shared_data2x[_421] += shared_data2x[_417 + 3u];
+    barrier();
+    uint _428 = (gl_LocalInvocationID.x >> 3u) << 4u;
+    uint _432 = (_428 + 8u) + (gl_LocalInvocationID.x & 7u);
+    shared_data2x[_432] += shared_data2x[_428 + 7u];
+    barrier();
+    uint _439 = (gl_LocalInvocationID.x >> 4u) << 5u;
+    uint _443 = (_439 + 16u) + (gl_LocalInvocationID.x & 15u);
+    shared_data2x[_443] += shared_data2x[_439 + 15u];
+    barrier();
+    uint _450 = (gl_LocalInvocationID.x >> 5u) << 6u;
+    uint _454 = (_450 + 32u) + (gl_LocalInvocationID.x & 31u);
+    shared_data2x[_454] += shared_data2x[_450 + 31u];
+    barrier();
+    uint _461 = (gl_LocalInvocationID.x >> 6u) << 7u;
+    uint _465 = (_461 + 64u) + (gl_LocalInvocationID.x & 63u);
+    shared_data2x[_465] += shared_data2x[_461 + 63u];
+    barrier();
+    uint _472 = (gl_LocalInvocationID.x >> 7u) << 8u;
+    uint _476 = (_472 + 128u) + (gl_LocalInvocationID.x & 127u);
+    shared_data2x[_476] += shared_data2x[_472 + 127u];
+    barrier();
+    uint _483 = (gl_LocalInvocationID.x >> 8u) << 9u;
+    uint _487 = (_483 + 256u) + (gl_LocalInvocationID.x & 255u);
+    shared_data2x[_487] += shared_data2x[_483 + 255u];
+    barrier();
+    uint _494 = (gl_LocalInvocationID.x >> 9u) << 10u;
+    uint _498 = (_494 + 512u) + (gl_LocalInvocationID.x & 511u);
+    shared_data2x[_498] += shared_data2x[_494 + 511u];
+    barrier();
+    uint _593;
+    if (gl_LocalInvocationID.x > 0u)
+    {
+        _593 = shared_data2x[_388 - 1u];
+    }
+    else
+    {
+        _593 = 0u;
+    }
+    if (_528)
+    {
+        uint _564 = 4u * _524;
+        inout_buf._member0[_564 / 4u] = _593;
+        inout_buf._member0[(_564 + 4u) / 4u] = shared_data2x[_388];
+    }
+    else
+    {
+        if (_524 < push_constants.range_end)
+        {
+            inout_buf._member0[(4u * _524) / 4u] = _593;
+        }
+    }
+    uint _516 = shared_data2x[1023u];
+    if (0u == gl_LocalInvocationID.x)
+    {
+        uint _344 = atomicAdd(draw_list_length_buffer_1._member0[push_constants.draw_list_index], _516);
+        uint subtotals_dst_idx = (1u + gl_WorkGroupID.x) + push_constants.subtotals_start;
+        if (subtotals_dst_idx < push_constants.subtotals_end)
+        {
+            subtotals_buf_1._member0[subtotals_dst_idx] = _516;
+        }
+    }
+}
+

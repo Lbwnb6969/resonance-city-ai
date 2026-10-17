@@ -1,0 +1,1461 @@
+
+ReturnProp including decompiler-removed wire block
+10760410 55                       push     ebp
+10760411 8bec                     mov      ebp, esp
+10760413 83ec18                   sub      esp, 0x18
+10760416 803d48ec511100           cmp      byte ptr [0x1151ec48], 0
+1076041d 0f85f3000000             jne      0x10760516
+10760423 68842a4a11               push     0x114a2a84
+10760428 e823e5a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076042d 68502a4a11               push     0x114a2a50
+10760432 e819e5a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760437 68e4354a11               push     0x114a35e4
+1076043c e80fe5a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760441 68303d4a11               push     0x114a3d30
+10760446 e805e5a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076044b 68983d4a11               push     0x114a3d98
+10760450 e8fbe4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760455 68b86b4b11               push     0x114b6bb8
+1076045a e8f1e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076045f 686c8c4b11               push     0x114b8c6c
+10760464 e8e7e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760469 6848b64911               push     0x1149b648
+1076046e e8dde4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760473 6814934911               push     0x11499314
+10760478 e8d3e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076047d 68d0944911               push     0x114994d0
+10760482 e8c9e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760487 683c904911               push     0x1149903c
+1076048c e8bfe4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760491 68488e4911               push     0x11498e48
+10760496 e8b5e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076049b 68643f4a11               push     0x114a3f64
+107604a0 e8abe4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604a5 68c43d4a11               push     0x114a3dc4
+107604aa e8a1e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604af 68bc604a11               push     0x114a60bc
+107604b4 e897e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604b9 68d42d4a11               push     0x114a2dd4
+107604be e88de4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604c3 83c440                   add      esp, 0x40
+107604c6 6800f74911               push     0x1149f700
+107604cb e880e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604d0 68082e4a11               push     0x114a2e08
+107604d5 e876e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604da 6824614a11               push     0x114a6124
+107604df e86ce4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604e4 6858614a11               push     0x114a6158
+107604e9 e862e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604ee 6834f74911               push     0x1149f734
+107604f3 e858e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+107604f8 683c2e4a11               push     0x114a2e3c
+107604fd e84ee4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10760502 6818194a11               push     0x114a1918
+10760507 e844e4a2ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+1076050c 83c41c                   add      esp, 0x1c
+1076050f c60548ec511101           mov      byte ptr [0x1151ec48], 1
+10760516 a1643f4a11               mov      eax, dword ptr [0x114a3f64]
+1076051b c745f800000000           mov      dword ptr [ebp - 8], 0
+10760522 c745f400000000           mov      dword ptr [ebp - 0xc], 0
+10760529 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10760530 740f                     je       0x10760541
+10760532 83787400                 cmp      dword ptr [eax + 0x74], 0
+10760536 7509                     jne      0x10760541
+10760538 50                       push     eax
+10760539 e8b27b9cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1076053e 83c404                   add      esp, 4
+10760541 53                       push     ebx
+10760542 56                       push     esi
+10760543 57                       push     edi
+10760544 ff353c904911             push     dword ptr [0x1149903c]
+1076054a e8b100e7ff               call     0x105d0600 ; ListPool_1_Get_m1FD033F0BFD60C36317CB492F1788390335C2CBE_gshared
+1076054f 8b5d0c                   mov      ebx, dword ptr [ebp + 0xc]
+10760552 83c404                   add      esp, 4
+10760555 8bf0                     mov      esi, eax
+10760557 8975fc                   mov      dword ptr [ebp - 4], esi
+1076055a 85db                     test     ebx, ebx
+1076055c 0f84ff040000             je       0x10760a61
+10760562 8b4b0c                   mov      ecx, dword ptr [ebx + 0xc]
+10760565 85c9                     test     ecx, ecx
+10760567 0f84f4040000             je       0x10760a61
+1076056d 6a00                     push     0
+1076056f 51                       push     ecx
+10760570 e80ba52d00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10760575 83c408                   add      esp, 8
+10760578 85f6                     test     esi, esi
+1076057a 0f84e1040000             je       0x10760a61
+10760580 ff35bc604a11             push     dword ptr [0x114a60bc]
+10760586 50                       push     eax
+10760587 56                       push     esi
+10760588 e843fa8c00               call     0x1102ffd0 ; List_1_Add_m26E436E942C0D78604AF993391CF75E380733F23_gshared
+1076058d 6a00                     push     0
+1076058f 53                       push     ebx
+10760590 e8eba42d00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10760595 ff35bc604a11             push     dword ptr [0x114a60bc]
+1076059b 50                       push     eax
+1076059c 56                       push     esi
+1076059d e82efa8c00               call     0x1102ffd0 ; List_1_Add_m26E436E942C0D78604AF993391CF75E380733F23_gshared
+107605a2 83c420                   add      esp, 0x20
+107605a5 33d2                     xor      edx, edx
+107605a7 33c9                     xor      ecx, ecx
+107605a9 0f1f8000000000           nop      dword ptr [eax]
+107605b0 8b460c                   mov      eax, dword ptr [esi + 0xc]
+107605b3 3bc8                     cmp      ecx, eax
+107605b5 0f8d4f030000             jge      0x1076090a
+107605bb 8bda                     mov      ebx, edx
+107605bd 42                       inc      edx
+107605be 8955f0                   mov      dword ptr [ebp - 0x10], edx
+107605c1 3bd8                     cmp      ebx, eax
+107605c3 7210                     jb       0x107605d5
+107605c5 6a00                     push     0
+107605c7 e894283400               call     0x10aa2e60 ; ThrowHelper_ThrowArgumentOutOfRangeException_m4841366ABC2B2AFA37C10900551D7E07522C0929
+107605cc 8b460c                   mov      eax, dword ptr [esi + 0xc]
+107605cf 83c404                   add      esp, 4
+107605d2 8b55f0                   mov      edx, dword ptr [ebp - 0x10]
+107605d5 8b7e08                   mov      edi, dword ptr [esi + 8]
+107605d8 8bf2                     mov      esi, edx
+107605da 42                       inc      edx
+107605db 8955f0                   mov      dword ptr [ebp - 0x10], edx
+107605de 8b5c9f10                 mov      ebx, dword ptr [edi + ebx*4 + 0x10]
+107605e2 3bf0                     cmp      esi, eax
+107605e4 7210                     jb       0x107605f6
+107605e6 6a00                     push     0
+107605e8 e873283400               call     0x10aa2e60 ; ThrowHelper_ThrowArgumentOutOfRangeException_m4841366ABC2B2AFA37C10900551D7E07522C0929
+107605ed 8b7dfc                   mov      edi, dword ptr [ebp - 4]
+107605f0 83c404                   add      esp, 4
+107605f3 8b7f08                   mov      edi, dword ptr [edi + 8]
+107605f6 8b7cb710                 mov      edi, dword ptr [edi + esi*4 + 0x10]
+107605fa 33f6                     xor      esi, esi
+107605fc 85db                     test     ebx, ebx
+107605fe 0f845d040000             je       0x10760a61
+10760604 56                       push     esi
+10760605 53                       push     ebx
+10760606 e845eef0ff               call     0x1066f450 ; Transform_get_childCount_mCBED4F6D3F6A7386C4D97C2C3FD25C383A0BCD05
+1076060b 83c408                   add      esp, 8
+1076060e 8945e8                   mov      dword ptr [ebp - 0x18], eax
+10760611 85c0                     test     eax, eax
+10760613 7e44                     jle      0x10760659
+10760615 6a00                     push     0
+10760617 56                       push     esi
+10760618 53                       push     ebx
+10760619 e8a2ddf0ff               call     0x1066e3c0 ; Transform_GetChild_mA7D94BEFF0144F76561D9B8FED61C5C939EC1F1C
+1076061e ff35bc604a11             push     dword ptr [0x114a60bc]
+10760624 50                       push     eax
+10760625 ff75fc                   push     dword ptr [ebp - 4]
+10760628 e8a3f98c00               call     0x1102ffd0 ; List_1_Add_m26E436E942C0D78604AF993391CF75E380733F23_gshared
+1076062d 83c418                   add      esp, 0x18
+10760630 85ff                     test     edi, edi
+10760632 0f8429040000             je       0x10760a61
+10760638 6a00                     push     0
+1076063a 56                       push     esi
+1076063b 57                       push     edi
+1076063c e87fddf0ff               call     0x1066e3c0 ; Transform_GetChild_mA7D94BEFF0144F76561D9B8FED61C5C939EC1F1C
+10760641 ff35bc604a11             push     dword ptr [0x114a60bc]
+10760647 50                       push     eax
+10760648 ff75fc                   push     dword ptr [ebp - 4]
+1076064b e880f98c00               call     0x1102ffd0 ; List_1_Add_m26E436E942C0D78604AF993391CF75E380733F23_gshared
+10760650 46                       inc      esi
+10760651 83c418                   add      esp, 0x18
+10760654 3b75e8                   cmp      esi, dword ptr [ebp - 0x18]
+10760657 7cbc                     jl       0x10760615
+10760659 85ff                     test     edi, edi
+1076065b 0f8400040000             je       0x10760a61
+10760661 ff35303d4a11             push     dword ptr [0x114a3d30]
+10760667 8d45f8                   lea      eax, [ebp - 8]
+1076066a 50                       push     eax
+1076066b 57                       push     edi
+1076066c e85febcdff               call     0x1043f1d0 ; Component_GetComponentsInChildren_TisRuntimeObject_m1D678E828943F6A8613DC24926420EDA6EBFBF7E_gshared
+10760671 83c40c                   add      esp, 0xc
+10760674 84c0                     test     al, al
+10760676 0f8481020000             je       0x107608fd
+1076067c 8b7508                   mov      esi, dword ptr [ebp + 8]
+1076067f 6a00                     push     0
+10760681 6a01                     push     1
+10760683 ff75f8                   push     dword ptr [ebp - 8]
+10760686 56                       push     esi
+10760687 e824a5ffff               call     0x1075abb0 ; PropPlacer_ChangeHideCount_mAF4419B7978D1C276CD4D9262B44E5D376C51283
+1076068c 6a00                     push     0
+1076068e 6a00                     push     0
+10760690 ff75f8                   push     dword ptr [ebp - 8]
+10760693 56                       push     esi
+10760694 e897e7ffff               call     0x1075ee30 ; PropPlacer_RecursiveCheck_m369FB8E68D305EEAEF2C75302C73008196CDB3DA
+10760699 6a00                     push     0
+1076069b ff75f8                   push     dword ptr [ebp - 8]
+1076069e 56                       push     esi
+1076069f e86cf3ffff               call     0x1075fa10 ; PropPlacer_RemoveColliderFromDict_mD96376F4804CECD7D3BF5121CE52796901CA247A
+107606a4 ff35842a4a11             push     dword ptr [0x114a2a84]
+107606aa 53                       push     ebx
+107606ab e890eacdff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107606b0 8bf0                     mov      esi, eax
+107606b2 83c434                   add      esp, 0x34
+107606b5 a118194a11               mov      eax, dword ptr [0x114a1918]
+107606ba f680bb00000002           test     byte ptr [eax + 0xbb], 2
+107606c1 740f                     je       0x107606d2
+107606c3 83787400                 cmp      dword ptr [eax + 0x74], 0
+107606c7 7509                     jne      0x107606d2
+107606c9 50                       push     eax
+107606ca e8217a9cff               call     0x101280f0 ; il2cpp_runtime_class_init
+107606cf 83c404                   add      esp, 4
+107606d2 6a00                     push     0
+107606d4 56                       push     esi
+107606d5 e886a32e00               call     0x10a4aa60 ; Object_op_Implicit_mC8214E4F028CC2F036CC82BDB81D102A02893499
+107606da 83c408                   add      esp, 8
+107606dd 84c0                     test     al, al
+107606df 752b                     jne      0x1076070c
+107606e1 a1b86b4b11               mov      eax, dword ptr [0x114b6bb8]
+107606e6 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+107606ed 740f                     je       0x107606fe
+107606ef 83787400                 cmp      dword ptr [eax + 0x74], 0
+107606f3 7509                     jne      0x107606fe
+107606f5 50                       push     eax
+107606f6 e8f5799cff               call     0x101280f0 ; il2cpp_runtime_class_init
+107606fb 83c404                   add      esp, 4
+107606fe 6a00                     push     0
+10760700 53                       push     ebx
+10760701 ff750c                   push     dword ptr [ebp + 0xc]
+10760704 e867c02d00               call     0x10a3c770 ; Debug_LogError_mEFF048E5541EE45362C0AAD829E3FA4C2CAB9199
+10760709 83c40c                   add      esp, 0xc
+1076070c 85f6                     test     esi, esi
+1076070e 0f844d030000             je       0x10760a61
+10760714 8b4df8                   mov      ecx, dword ptr [ebp - 8]
+10760717 85c9                     test     ecx, ecx
+10760719 0f8442030000             je       0x10760a61
+1076071f 8b460c                   mov      eax, dword ptr [esi + 0xc]
+10760722 89410c                   mov      dword ptr [ecx + 0xc], eax
+10760725 8b4df8                   mov      ecx, dword ptr [ebp - 8]
+10760728 85c9                     test     ecx, ecx
+1076072a 0f8431030000             je       0x10760a61
+10760730 8a4618                   mov      al, byte ptr [esi + 0x18]
+10760733 884118                   mov      byte ptr [ecx + 0x18], al
+10760736 8b45f8                   mov      eax, dword ptr [ebp - 8]
+10760739 85c0                     test     eax, eax
+1076073b 0f8420030000             je       0x10760a61
+10760741 c6401600                 mov      byte ptr [eax + 0x16], 0
+10760745 8d45f4                   lea      eax, [ebp - 0xc]
+10760748 ff35983d4a11             push     dword ptr [0x114a3d98]
+1076074e 50                       push     eax
+1076074f 57                       push     edi
+10760750 e87beacdff               call     0x1043f1d0 ; Component_GetComponentsInChildren_TisRuntimeObject_m1D678E828943F6A8613DC24926420EDA6EBFBF7E_gshared
+10760755 83c40c                   add      esp, 0xc
+10760758 84c0                     test     al, al
+1076075a 0f849d010000             je       0x107608fd
+10760760 8b45f4                   mov      eax, dword ptr [ebp - 0xc]
+10760763 85c0                     test     eax, eax
+10760765 0f84f6020000             je       0x10760a61
+1076076b 8b4810                   mov      ecx, dword ptr [eax + 0x10]
+1076076e 85c9                     test     ecx, ecx
+10760770 0f84eb020000             je       0x10760a61
+10760776 8b490c                   mov      ecx, dword ptr [ecx + 0xc]
+10760779 83e901                   sub      ecx, 1
+1076077c 894de8                   mov      dword ptr [ebp - 0x18], ecx
+1076077f 0f8878010000             js       0x107608fd
+10760785 85c0                     test     eax, eax
+10760787 0f84d4020000             je       0x10760a61
+1076078d 8b4010                   mov      eax, dword ptr [eax + 0x10]
+10760790 85c0                     test     eax, eax
+10760792 0f84c9020000             je       0x10760a61
+10760798 ff353c2e4a11             push     dword ptr [0x114a2e3c]
+1076079e 51                       push     ecx
+1076079f 50                       push     eax
+107607a0 e89bdf8dff               call     0x1003e740 ; List_1_get_Item_m1E85E7CDA3459102B9FD665388559843378C2B4C_inline
+107607a5 8bf0                     mov      esi, eax
+107607a7 83c40c                   add      esp, 0xc
+107607aa 85f6                     test     esi, esi
+107607ac 0f84af020000             je       0x10760a61
+107607b2 ff35842a4a11             push     dword ptr [0x114a2a84]
+107607b8 56                       push     esi
+107607b9 e882e9cdff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107607be 8bf8                     mov      edi, eax
+107607c0 83c408                   add      esp, 8
+107607c3 8b460c                   mov      eax, dword ptr [esi + 0xc]
+107607c6 85c0                     test     eax, eax
+107607c8 0f8493020000             je       0x10760a61
+107607ce ff35842a4a11             push     dword ptr [0x114a2a84]
+107607d4 50                       push     eax
+107607d5 e866e9cdff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107607da 8945ec                   mov      dword ptr [ebp - 0x14], eax
+107607dd 83c408                   add      esp, 8
+107607e0 8b4610                   mov      eax, dword ptr [esi + 0x10]
+107607e3 85c0                     test     eax, eax
+107607e5 0f8476020000             je       0x10760a61
+107607eb ff35842a4a11             push     dword ptr [0x114a2a84]
+107607f1 50                       push     eax
+107607f2 e849e9cdff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107607f7 8bd8                     mov      ebx, eax
+107607f9 83c408                   add      esp, 8
+107607fc 8b45ec                   mov      eax, dword ptr [ebp - 0x14]
+107607ff 85c0                     test     eax, eax
+10760801 0f845a020000             je       0x10760a61
+10760807 6a00                     push     0
+10760809 57                       push     edi
+1076080a 50                       push     eax
+1076080b e81081ffff               call     0x10758920 ; PropNode_RemoveChild_m60D99C37A94A7AAD4BB3B358D2EE6EF823F5C279
+10760810 83c40c                   add      esp, 0xc
+10760813 85db                     test     ebx, ebx
+10760815 0f8446020000             je       0x10760a61
+1076081b 6a00                     push     0
+1076081d 57                       push     edi
+1076081e 53                       push     ebx
+1076081f e8fc80ffff               call     0x10758920 ; PropNode_RemoveChild_m60D99C37A94A7AAD4BB3B358D2EE6EF823F5C279
+10760824 83c40c                   add      esp, 0xc
+10760827 85ff                     test     edi, edi
+10760829 0f8432020000             je       0x10760a61
+1076082f 8b45ec                   mov      eax, dword ptr [ebp - 0x14]
+10760832 6a00                     push     0
+10760834 50                       push     eax
+10760835 57                       push     edi
+10760836 e8d581ffff               call     0x10758a10 ; PropNode_RemoveParent_mD0DE9D31665650CB3AB679386D157FA3AB7869AE
+1076083b 6a00                     push     0
+1076083d 53                       push     ebx
+1076083e 57                       push     edi
+1076083f e8cc81ffff               call     0x10758a10 ; PropNode_RemoveParent_mD0DE9D31665650CB3AB679386D157FA3AB7869AE
+10760844 8b460c                   mov      eax, dword ptr [esi + 0xc]
+10760847 83c418                   add      esp, 0x18
+1076084a 85c0                     test     eax, eax
+1076084c 0f840f020000             je       0x10760a61
+10760852 8b4010                   mov      eax, dword ptr [eax + 0x10]
+10760855 85c0                     test     eax, eax
+10760857 0f8404020000             je       0x10760a61
+1076085d ff35d42d4a11             push     dword ptr [0x114a2dd4]
+10760863 56                       push     esi
+10760864 50                       push     eax
+10760865 e886678d00               call     0x11036ff0 ; List_1_Remove_m753F7B4281CC4D02C07AE90726F51EF34B588DF7_gshared
+1076086a 8b4610                   mov      eax, dword ptr [esi + 0x10]
+1076086d 83c40c                   add      esp, 0xc
+10760870 85c0                     test     eax, eax
+10760872 0f84e9010000             je       0x10760a61
+10760878 8b4010                   mov      eax, dword ptr [eax + 0x10]
+1076087b 85c0                     test     eax, eax
+1076087d 0f84de010000             je       0x10760a61
+10760883 ff35d42d4a11             push     dword ptr [0x114a2dd4]
+10760889 56                       push     esi
+1076088a 50                       push     eax
+1076088b e860678d00               call     0x11036ff0 ; List_1_Remove_m753F7B4281CC4D02C07AE90726F51EF34B588DF7_gshared
+10760890 ff35502a4a11             push     dword ptr [0x114a2a50]
+10760896 56                       push     esi
+10760897 e8a4e8cdff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+1076089c 6a00                     push     0
+1076089e 50                       push     eax
+1076089f ff7508                   push     dword ptr [ebp + 8]
+107608a2 e869fbffff               call     0x10760410 ; PropPlacer_ReturnProp_m61935D08F4E38386FC9F2A80F94E0EA78D8EBE9E
+107608a7 8b460c                   mov      eax, dword ptr [esi + 0xc]
+107608aa 83c420                   add      esp, 0x20
+107608ad 85c0                     test     eax, eax
+107608af 0f84ac010000             je       0x10760a61
+107608b5 6a00                     push     0
+107608b7 ff7018                   push     dword ptr [eax + 0x18]
+107608ba 57                       push     edi
+107608bb e8b080ffff               call     0x10758970 ; PropNode_RemoveMotevee_m8D507C99C86AD6A5CE4C764F0F68A2E304C88979
+107608c0 8b4610                   mov      eax, dword ptr [esi + 0x10]
+107608c3 83c40c                   add      esp, 0xc
+107608c6 85c0                     test     eax, eax
+107608c8 0f8493010000             je       0x10760a61
+107608ce 6a00                     push     0
+107608d0 ff7018                   push     dword ptr [eax + 0x18]
+107608d3 57                       push     edi
+107608d4 e89780ffff               call     0x10758970 ; PropNode_RemoveMotevee_m8D507C99C86AD6A5CE4C764F0F68A2E304C88979
+107608d9 8b4de8                   mov      ecx, dword ptr [ebp - 0x18]
+107608dc 83c40c                   add      esp, 0xc
+107608df 83e901                   sub      ecx, 1
+107608e2 c7460c00000000           mov      dword ptr [esi + 0xc], 0
+107608e9 c7461000000000           mov      dword ptr [esi + 0x10], 0
+107608f0 894de8                   mov      dword ptr [ebp - 0x18], ecx
+107608f3 7808                     js       0x107608fd
+107608f5 8b45f4                   mov      eax, dword ptr [ebp - 0xc]
+107608f8 e988feffff               jmp      0x10760785
+107608fd 8b55f0                   mov      edx, dword ptr [ebp - 0x10]
+10760900 8bca                     mov      ecx, edx
+10760902 8b75fc                   mov      esi, dword ptr [ebp - 4]
+10760905 e9a6fcffff               jmp      0x107605b0
+1076090a a1c43d4a11               mov      eax, dword ptr [0x114a3dc4]
+1076090f f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10760916 740f                     je       0x10760927
+10760918 83787400                 cmp      dword ptr [eax + 0x74], 0
+1076091c 7509                     jne      0x10760927
+1076091e 50                       push     eax
+1076091f e8cc779cff               call     0x101280f0 ; il2cpp_runtime_class_init
+10760924 83c404                   add      esp, 4
+10760927 ff35488e4911             push     dword ptr [0x11498e48]
+1076092d e8cefce6ff               call     0x105d0600 ; ListPool_1_Get_m1FD033F0BFD60C36317CB492F1788390335C2CBE_gshared
+10760932 8bf8                     mov      edi, eax
+10760934 83c404                   add      esp, 4
+10760937 8b460c                   mov      eax, dword ptr [esi + 0xc]
+1076093a 33db                     xor      ebx, ebx
+1076093c 8945f0                   mov      dword ptr [ebp - 0x10], eax
+1076093f 85c0                     test     eax, eax
+10760941 0f8ebb000000             jle      0x10760a02
+10760947 be10000000               mov      esi, 0x10
+1076094c 8975e8                   mov      dword ptr [ebp - 0x18], esi
+1076094f 90                       nop
+10760950 8b45fc                   mov      eax, dword ptr [ebp - 4]
+10760953 8b480c                   mov      ecx, dword ptr [eax + 0xc]
+10760956 3bd9                     cmp      ebx, ecx
+10760958 7210                     jb       0x1076096a
+1076095a 6a00                     push     0
+1076095c e8ff243400               call     0x10aa2e60 ; ThrowHelper_ThrowArgumentOutOfRangeException_m4841366ABC2B2AFA37C10900551D7E07522C0929
+10760961 8b45fc                   mov      eax, dword ptr [ebp - 4]
+10760964 83c404                   add      esp, 4
+10760967 8b480c                   mov      ecx, dword ptr [eax + 0xc]
+1076096a 8b5008                   mov      edx, dword ptr [eax + 8]
+1076096d 8b0416                   mov      eax, dword ptr [esi + edx]
+10760970 8945ec                   mov      dword ptr [ebp - 0x14], eax
+10760973 8d4301                   lea      eax, [ebx + 1]
+10760976 3bc1                     cmp      eax, ecx
+10760978 7210                     jb       0x1076098a
+1076097a 6a00                     push     0
+1076097c e8df243400               call     0x10aa2e60 ; ThrowHelper_ThrowArgumentOutOfRangeException_m4841366ABC2B2AFA37C10900551D7E07522C0929
+10760981 8b45fc                   mov      eax, dword ptr [ebp - 4]
+10760984 83c404                   add      esp, 4
+10760987 8b5008                   mov      edx, dword ptr [eax + 8]
+1076098a 8b441604                 mov      eax, dword ptr [esi + edx + 4]
+1076098e 85c0                     test     eax, eax
+10760990 0f84cb000000             je       0x10760a61
+10760996 ff35e4354a11             push     dword ptr [0x114a35e4]
+1076099c 57                       push     edi
+1076099d 50                       push     eax
+1076099e e80de9cdff               call     0x1043f2b0 ; Component_GetComponents_TisRuntimeObject_mB0812CB4355C4F5E2EA27C7049C668609E72F31D_gshared
+107609a3 83c40c                   add      esp, 0xc
+107609a6 85ff                     test     edi, edi
+107609a8 0f84b3000000             je       0x10760a61
+107609ae 8b770c                   mov      esi, dword ptr [edi + 0xc]
+107609b1 83ee01                   sub      esi, 1
+107609b4 7837                     js       0x107609ed
+107609b6 ff3534f74911             push     dword ptr [0x1149f734]
+107609bc 56                       push     esi
+107609bd 57                       push     edi
+107609be e87ddd8dff               call     0x1003e740 ; List_1_get_Item_m1E85E7CDA3459102B9FD665388559843378C2B4C_inline
+107609c3 83c40c                   add      esp, 0xc
+107609c6 85c0                     test     eax, eax
+107609c8 0f8493000000             je       0x10760a61
+107609ce ff75ec                   push     dword ptr [ebp - 0x14]
+107609d1 8b4d08                   mov      ecx, dword ptr [ebp + 8]
+107609d4 ff710c                   push     dword ptr [ecx + 0xc]
+107609d7 50                       push     eax
+107609d8 ff3548b64911             push     dword ptr [0x1149b648]
+107609de 6a01                     push     1
+107609e0 e8cbd98dff               call     0x1003e3b0 ; Invoke
+107609e5 83c414                   add      esp, 0x14
+107609e8 83ee01                   sub      esi, 1
+107609eb 79c9                     jns      0x107609b6
+107609ed 8b75e8                   mov      esi, dword ptr [ebp - 0x18]
+107609f0 83c302                   add      ebx, 2
+107609f3 83c608                   add      esi, 8
+107609f6 8975e8                   mov      dword ptr [ebp - 0x18], esi
+107609f9 3b5df0                   cmp      ebx, dword ptr [ebp - 0x10]
+107609fc 0f8c4effffff             jl       0x10760950
+10760a02 8b5d0c                   mov      ebx, dword ptr [ebp + 0xc]
+10760a05 6a00                     push     0
+10760a07 53                       push     ebx
+10760a08 e873a02d00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10760a0d 8bf0                     mov      esi, eax
+10760a0f 83c408                   add      esp, 8
+10760a12 8b4508                   mov      eax, dword ptr [ebp + 8]
+10760a15 8b4014                   mov      eax, dword ptr [eax + 0x14]
+10760a18 85c0                     test     eax, eax
+10760a1a 7445                     je       0x10760a61
+10760a1c ff356c8c4b11             push     dword ptr [0x114b8c6c]
+10760a22 ff730c                   push     dword ptr [ebx + 0xc]
+10760a25 50                       push     eax
+10760a26 e8259a8a00               call     0x1100a450 ; Dictionary_2_get_Item_mB1398A10D048A0246178C59F95003BD338CE7394_gshared
+10760a2b 83c40c                   add      esp, 0xc
+10760a2e 85f6                     test     esi, esi
+10760a30 742f                     je       0x10760a61
+10760a32 6a00                     push     0
+10760a34 6a01                     push     1
+10760a36 50                       push     eax
+10760a37 56                       push     esi
+10760a38 e8d3e5f0ff               call     0x1066f010 ; Transform_SetParent_mA6A651EDE81F139E1D6C7BA894834AD71D07227A
+10760a3d ff3514934911             push     dword ptr [0x11499314]
+10760a43 57                       push     edi
+10760a44 e8e70bceff               call     0x10441630 ; DictPoolExtension_ReturnToPool_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_mDD2C9A7A949F369D3468B6761D50E4616F295D94_gshared
+10760a49 ff35d0944911             push     dword ptr [0x114994d0]
+10760a4f ff75fc                   push     dword ptr [ebp - 4]
+10760a52 e8d90bceff               call     0x10441630 ; DictPoolExtension_ReturnToPool_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_mDD2C9A7A949F369D3468B6761D50E4616F295D94_gshared
+10760a57 83c420                   add      esp, 0x20
+10760a5a 5f                       pop      edi
+10760a5b 5e                       pop      esi
+10760a5c 5b                       pop      ebx
+10760a5d 8be5                     mov      esp, ebp
+10760a5f 5d                       pop      ebp
+10760a60 c3                       ret
+10760a61 e87ae0a2ff               call     0x1018eae0 ; il2cpp_codegen_raise_null_reference_exception
+
+AddColliderToDict including anchor direction and prefab compatibility branch
+10758e50 55                       push     ebp
+10758e51 8bec                     mov      ebp, esp
+10758e53 6aff                     push     -1
+10758e55 6870d91411               push     0x1114d970
+10758e5a 64a100000000             mov      eax, dword ptr fs:[0]
+10758e60 50                       push     eax
+10758e61 64892500000000           mov      dword ptr fs:[0], esp
+10758e68 81ec84020000             sub      esp, 0x284
+10758e6e 803d42ec511100           cmp      byte ptr [0x1151ec42], 0
+10758e75 53                       push     ebx
+10758e76 56                       push     esi
+10758e77 57                       push     edi
+10758e78 8965f0                   mov      dword ptr [ebp - 0x10], esp
+10758e7b 0f85b7000000             jne      0x10758f38
+10758e81 68842a4a11               push     0x114a2a84
+10758e86 e8c55aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758e8b 68ec2a4a11               push     0x114a2aec
+10758e90 e8bb5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758e95 68502a4a11               push     0x114a2a50
+10758e9a e8b15aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758e9f 684c364a11               push     0x114a364c
+10758ea4 e8a75aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ea9 6830b84911               push     0x1149b830
+10758eae e89d5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758eb3 68d8b84911               push     0x1149b8d8
+10758eb8 e8935aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ebd 6838d24911               push     0x1149d238
+10758ec2 e8895aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ec7 68f4934911               push     0x114993f4
+10758ecc e87f5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ed1 68608f4911               push     0x11498f60
+10758ed6 e8755aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758edb 68943e4a11               push     0x114a3e94
+10758ee0 e86b5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ee5 6890294a11               push     0x114a2990
+10758eea e8615aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758eef 68302b4a11               push     0x114a2b30
+10758ef4 e8575aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758ef9 68c4294a11               push     0x114a29c4
+10758efe e84d5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758f03 682c2a4a11               push     0x114a2a2c
+10758f08 e8435aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758f0d 68602a4a11               push     0x114a2a60
+10758f12 e8395aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758f17 6818194a11               push     0x114a1918
+10758f1c e82f5aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758f21 83c440                   add      esp, 0x40
+10758f24 6890734a11               push     0x114a7390
+10758f29 e8225aa3ff               call     0x1018e950 ; il2cpp_codegen_initialize_runtime_metadata
+10758f2e 83c404                   add      esp, 4
+10758f31 c60542ec511101           mov      byte ptr [0x1151ec42], 1
+10758f38 8b7d0c                   mov      edi, dword ptr [ebp + 0xc]
+10758f3b 0f57c0                   xorps    xmm0, xmm0
+10758f3e c645ef00                 mov      byte ptr [ebp - 0x11], 0
+10758f42 c7458c00000000           mov      dword ptr [ebp - 0x74], 0
+10758f49 c7459000000000           mov      dword ptr [ebp - 0x70], 0
+10758f50 c7459400000000           mov      dword ptr [ebp - 0x6c], 0
+10758f57 c745e000000000           mov      dword ptr [ebp - 0x20], 0
+10758f5e 660fd64598               movq     qword ptr [ebp - 0x68], xmm0
+10758f63 c745a000000000           mov      dword ptr [ebp - 0x60], 0
+10758f6a 85ff                     test     edi, edi
+10758f6c 0f84720d0000             je       0x10759ce4
+10758f72 6a00                     push     0
+10758f74 c6471501                 mov      byte ptr [edi + 0x15], 1
+10758f78 8d45ef                   lea      eax, [ebp - 0x11]
+10758f7b ff3590734a11             push     dword ptr [0x114a7390]
+10758f81 50                       push     eax
+10758f82 e8c90da8ff               call     0x101d9d50 ; U3CBlockingU3Ed__3_System_IDisposable_Dispose_mEF0C01D581B3CCBB1A69A8FDDD3CAE41E08DFC43
+10758f87 83c40c                   add      esp, 0xc
+10758f8a a1943e4a11               mov      eax, dword ptr [0x114a3e94]
+10758f8f c745fc00000000           mov      dword ptr [ebp - 4], 0
+10758f96 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10758f9d 740f                     je       0x10758fae
+10758f9f 83787400                 cmp      dword ptr [eax + 0x74], 0
+10758fa3 7509                     jne      0x10758fae
+10758fa5 50                       push     eax
+10758fa6 e845f19cff               call     0x101280f0 ; il2cpp_runtime_class_init
+10758fab 83c404                   add      esp, 4
+10758fae ff35608f4911             push     dword ptr [0x11498f60]
+10758fb4 e84776e7ff               call     0x105d0600 ; ListPool_1_Get_m1FD033F0BFD60C36317CB492F1788390335C2CBE_gshared
+10758fb9 83c404                   add      esp, 4
+10758fbc 8945b4                   mov      dword ptr [ebp - 0x4c], eax
+10758fbf ff354c364a11             push     dword ptr [0x114a364c]
+10758fc5 50                       push     eax
+10758fc6 57                       push     edi
+10758fc7 e8e462ceff               call     0x1043f2b0 ; Component_GetComponents_TisRuntimeObject_mB0812CB4355C4F5E2EA27C7049C668609E72F31D_gshared
+10758fcc 8b4db4                   mov      ecx, dword ptr [ebp - 0x4c]
+10758fcf 83c40c                   add      esp, 0xc
+10758fd2 c745d800000000           mov      dword ptr [ebp - 0x28], 0
+10758fd9 c745bc00000000           mov      dword ptr [ebp - 0x44], 0
+10758fe0 85c9                     test     ecx, ecx
+10758fe2 0f84fc0c0000             je       0x10759ce4
+10758fe8 8b710c                   mov      esi, dword ptr [ecx + 0xc]
+10758feb 4e                       dec      esi
+10758fec 8975a4                   mov      dword ptr [ebp - 0x5c], esi
+10758fef 90                       nop
+10758ff0 85f6                     test     esi, esi
+10758ff2 0f889b0c0000             js       0x10759c93
+10758ff8 3b710c                   cmp      esi, dword ptr [ecx + 0xc]
+10758ffb 720d                     jb       0x1075900a
+10758ffd 6a00                     push     0
+10758fff e85c9e3400               call     0x10aa2e60 ; ThrowHelper_ThrowArgumentOutOfRangeException_m4841366ABC2B2AFA37C10900551D7E07522C0929
+10759004 8b4db4                   mov      ecx, dword ptr [ebp - 0x4c]
+10759007 83c404                   add      esp, 4
+1075900a 8b4108                   mov      eax, dword ptr [ecx + 8]
+1075900d 8b74b010                 mov      esi, dword ptr [eax + esi*4 + 0x10]
+10759011 8975e4                   mov      dword ptr [ebp - 0x1c], esi
+10759014 85f6                     test     esi, esi
+10759016 0f84c80c0000             je       0x10759ce4
+1075901c 807e0c07                 cmp      byte ptr [esi + 0xc], 7
+10759020 7578                     jne      0x1075909a
+10759022 6a00                     push     0
+10759024 57                       push     edi
+10759025 e8561a2e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+1075902a 8bf0                     mov      esi, eax
+1075902c 83c408                   add      esp, 8
+1075902f 85f6                     test     esi, esi
+10759031 0f84ad0c0000             je       0x10759ce4
+10759037 ff35502a4a11             push     dword ptr [0x114a2a50]
+1075903d 56                       push     esi
+1075903e e8fd60ceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+10759043 8945d8                   mov      dword ptr [ebp - 0x28], eax
+10759046 83c408                   add      esp, 8
+10759049 0f1f8000000000           nop      dword ptr [eax]
+10759050 8b0d18194a11             mov      ecx, dword ptr [0x114a1918]
+10759056 f681bb00000002           test     byte ptr [ecx + 0xbb], 2
+1075905d 7412                     je       0x10759071
+1075905f 83797400                 cmp      dword ptr [ecx + 0x74], 0
+10759063 750c                     jne      0x10759071
+10759065 51                       push     ecx
+10759066 e885f09cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1075906b 8b45d8                   mov      eax, dword ptr [ebp - 0x28]
+1075906e 83c404                   add      esp, 4
+10759071 6a00                     push     0
+10759073 50                       push     eax
+10759074 e8e7192f00               call     0x10a4aa60 ; Object_op_Implicit_mC8214E4F028CC2F036CC82BDB81D102A02893499
+10759079 83c408                   add      esp, 8
+1075907c 84c0                     test     al, al
+1075907e 7517                     jne      0x10759097
+10759080 6a00                     push     0
+10759082 56                       push     esi
+10759083 e8b853f1ff               call     0x1066e440 ; Transform_GetParent_mA53F6AE810935DDED00A9FEEE1830F4EF797F73B
+10759088 8bf0                     mov      esi, eax
+1075908a 83c408                   add      esp, 8
+1075908d 85f6                     test     esi, esi
+1075908f 0f844f0c0000             je       0x10759ce4
+10759095 eba0                     jmp      0x10759037
+10759097 8b75e4                   mov      esi, dword ptr [ebp - 0x1c]
+1075909a 6a00                     push     0
+1075909c 56                       push     esi
+1075909d e84ed2ffff               call     0x107562f0 ; PropCollider_CalculateWorldBounds_m69877EDA05A8B49604A5D59C7D0284302FDE5AE2
+107590a2 83c408                   add      esp, 8
+107590a5 8d85c8fdffff             lea      eax, [ebp - 0x238]
+107590ab 83c628                   add      esi, 0x28
+107590ae 6a00                     push     0
+107590b0 56                       push     esi
+107590b1 50                       push     eax
+107590b2 e889e72d00               call     0x10a37840 ; Bounds_get_min_mEDCEC21FB04A8E7196EDE841F7BE9042E1908519
+107590b7 f30f100d34381d11         movss    xmm1, dword ptr [0x111d3834]
+107590bf 83c40c                   add      esp, 0xc
+107590c2 f30f7e00                 movq     xmm0, qword ptr [eax]
+107590c6 8b4808                   mov      ecx, dword ptr [eax + 8]
+107590c9 660fd68550ffffff         movq     qword ptr [ebp - 0xb0], xmm0
+107590d1 f30f7ec0                 movq     xmm0, xmm0
+107590d5 660fd68544ffffff         movq     qword ptr [ebp - 0xbc], xmm0
+107590dd f30f7e00                 movq     xmm0, qword ptr [eax]
+107590e1 8bc1                     mov      eax, ecx
+107590e3 660fd68538ffffff         movq     qword ptr [ebp - 0xc8], xmm0
+107590eb f30f108550ffffff         movss    xmm0, dword ptr [ebp - 0xb0]
+107590f3 f30f59c1                 mulss    xmm0, xmm1
+107590f7 898540ffffff             mov      dword ptr [ebp - 0xc0], eax
+107590fd f30f1145c0               movss    dword ptr [ebp - 0x40], xmm0
+10759102 f30f108548ffffff         movss    xmm0, dword ptr [ebp - 0xb8]
+1075910a f30f59c1                 mulss    xmm0, xmm1
+1075910e f30f1145c4               movss    dword ptr [ebp - 0x3c], xmm0
+10759113 f30f108540ffffff         movss    xmm0, dword ptr [ebp - 0xc0]
+1075911b f30f59c1                 mulss    xmm0, xmm1
+1075911f f30f1145c8               movss    dword ptr [ebp - 0x38], xmm0
+10759124 6a00                     push     0
+10759126 8d85bcfdffff             lea      eax, [ebp - 0x244]
+1075912c 56                       push     esi
+1075912d 50                       push     eax
+1075912e e87de62d00               call     0x10a377b0 ; Bounds_get_max_m7562010AAD919B8449B8B90382BFBA4D83C669BD
+10759133 f30f100d34381d11         movss    xmm1, dword ptr [0x111d3834]
+1075913b 83c40c                   add      esp, 0xc
+1075913e f30f7e00                 movq     xmm0, qword ptr [eax]
+10759142 8b4808                   mov      ecx, dword ptr [eax + 8]
+10759145 660fd6852cffffff         movq     qword ptr [ebp - 0xd4], xmm0
+1075914d f30f7ec0                 movq     xmm0, xmm0
+10759151 660fd68520ffffff         movq     qword ptr [ebp - 0xe0], xmm0
+10759159 f30f7e00                 movq     xmm0, qword ptr [eax]
+1075915d 8bc1                     mov      eax, ecx
+1075915f 660fd68514ffffff         movq     qword ptr [ebp - 0xec], xmm0
+10759167 f30f10852cffffff         movss    xmm0, dword ptr [ebp - 0xd4]
+1075916f f30f59c1                 mulss    xmm0, xmm1
+10759173 89851cffffff             mov      dword ptr [ebp - 0xe4], eax
+10759179 f30f1145d0               movss    dword ptr [ebp - 0x30], xmm0
+1075917e f30f108524ffffff         movss    xmm0, dword ptr [ebp - 0xdc]
+10759186 f30f59c1                 mulss    xmm0, xmm1
+1075918a f30f1145cc               movss    dword ptr [ebp - 0x34], xmm0
+1075918f f30f10851cffffff         movss    xmm0, dword ptr [ebp - 0xe4]
+10759197 f30f59c1                 mulss    xmm0, xmm1
+1075919b f30f1145e8               movss    dword ptr [ebp - 0x18], xmm0
+107591a0 f30f1045c0               movss    xmm0, dword ptr [ebp - 0x40]
+107591a5 6a00                     push     0
+107591a7 51                       push     ecx
+107591a8 f30f110424               movss    dword ptr [esp], xmm0
+107591ad e84eaa2e00               call     0x10a43c00 ; Mathf_FloorToInt_m9164D538D17B8C3C8A6C4E4FA95032F757D9091E
+107591b2 f30f1045c4               movss    xmm0, dword ptr [ebp - 0x3c]
+107591b7 83c408                   add      esp, 8
+107591ba 894580                   mov      dword ptr [ebp - 0x80], eax
+107591bd 6a00                     push     0
+107591bf 51                       push     ecx
+107591c0 f30f110424               movss    dword ptr [esp], xmm0
+107591c5 e836aa2e00               call     0x10a43c00 ; Mathf_FloorToInt_m9164D538D17B8C3C8A6C4E4FA95032F757D9091E
+107591ca f30f1045c8               movss    xmm0, dword ptr [ebp - 0x38]
+107591cf 83c408                   add      esp, 8
+107591d2 894584                   mov      dword ptr [ebp - 0x7c], eax
+107591d5 6a00                     push     0
+107591d7 51                       push     ecx
+107591d8 f30f110424               movss    dword ptr [esp], xmm0
+107591dd e81eaa2e00               call     0x10a43c00 ; Mathf_FloorToInt_m9164D538D17B8C3C8A6C4E4FA95032F757D9091E
+107591e2 f30f1045d0               movss    xmm0, dword ptr [ebp - 0x30]
+107591e7 83c408                   add      esp, 8
+107591ea 8945dc                   mov      dword ptr [ebp - 0x24], eax
+107591ed 6a00                     push     0
+107591ef 51                       push     ecx
+107591f0 f30f110424               movss    dword ptr [esp], xmm0
+107591f5 e8d6a72e00               call     0x10a439d0 ; Mathf_CeilToInt_m3A3E7C0F6A3CF731411BB90F264F989D8311CC6F
+107591fa f30f1045cc               movss    xmm0, dword ptr [ebp - 0x34]
+107591ff 83c408                   add      esp, 8
+10759202 89857cffffff             mov      dword ptr [ebp - 0x84], eax
+10759208 6a00                     push     0
+1075920a 51                       push     ecx
+1075920b f30f110424               movss    dword ptr [esp], xmm0
+10759210 e8bba72e00               call     0x10a439d0 ; Mathf_CeilToInt_m3A3E7C0F6A3CF731411BB90F264F989D8311CC6F
+10759215 f30f1045e8               movss    xmm0, dword ptr [ebp - 0x18]
+1075921a 83c408                   add      esp, 8
+1075921d 8945c0                   mov      dword ptr [ebp - 0x40], eax
+10759220 6a00                     push     0
+10759222 51                       push     ecx
+10759223 f30f110424               movss    dword ptr [esp], xmm0
+10759228 e8a3a72e00               call     0x10a439d0 ; Mathf_CeilToInt_m3A3E7C0F6A3CF731411BB90F264F989D8311CC6F
+1075922d 8b75e4                   mov      esi, dword ptr [ebp - 0x1c]
+10759230 83c408                   add      esp, 8
+10759233 894588                   mov      dword ptr [ebp - 0x78], eax
+10759236 8d8570fdffff             lea      eax, [ebp - 0x290]
+1075923c 6a00                     push     0
+1075923e 56                       push     esi
+1075923f 50                       push     eax
+10759240 e8bbd2ffff               call     0x10756500 ; PropCollider_GetMatrix_mA1BC0388906B93CD2EC0B04D8EE248564AFFB18B
+10759245 8b4ddc                   mov      ecx, dword ptr [ebp - 0x24]
+10759248 83c40c                   add      esp, 0xc
+1075924b 0f1000                   movups   xmm0, xmmword ptr [eax]
+1075924e 0f118534feffff           movups   xmmword ptr [ebp - 0x1cc], xmm0
+10759255 0f104010                 movups   xmm0, xmmword ptr [eax + 0x10]
+10759259 0f118504feffff           movups   xmmword ptr [ebp - 0x1fc], xmm0
+10759260 0f104020                 movups   xmm0, xmmword ptr [eax + 0x20]
+10759264 0f118524feffff           movups   xmmword ptr [ebp - 0x1dc], xmm0
+1075926b 0f104030                 movups   xmm0, xmmword ptr [eax + 0x30]
+1075926f 8b45c0                   mov      eax, dword ptr [ebp - 0x40]
+10759272 0f118514feffff           movups   xmmword ptr [ebp - 0x1ec], xmm0
+10759279 0f1f8000000000           nop      dword ptr [eax]
+10759280 3b4d88                   cmp      ecx, dword ptr [ebp - 0x78]
+10759283 0f8dff090000             jge      0x10759c88
+10759289 8b5584                   mov      edx, dword ptr [ebp - 0x7c]
+1075928c 8955c4                   mov      dword ptr [ebp - 0x3c], edx
+1075928f 90                       nop
+10759290 3bd0                     cmp      edx, eax
+10759292 0f8de7090000             jge      0x10759c7f
+10759298 8b4580                   mov      eax, dword ptr [ebp - 0x80]
+1075929b 8945c8                   mov      dword ptr [ebp - 0x38], eax
+1075929e 6690                     nop
+107592a0 3b857cffffff             cmp      eax, dword ptr [ebp - 0x84]
+107592a6 0f8dca090000             jge      0x10759c76
+107592ac 6a00                     push     0
+107592ae 89458c                   mov      dword ptr [ebp - 0x74], eax
+107592b1 83ec0c                   sub      esp, 0xc
+107592b4 8bc4                     mov      eax, esp
+107592b6 895590                   mov      dword ptr [ebp - 0x70], edx
+107592b9 f30f7e458c               movq     xmm0, qword ptr [ebp - 0x74]
+107592be ff7508                   push     dword ptr [ebp + 8]
+107592c1 660fd600                 movq     qword ptr [eax], xmm0
+107592c5 894808                   mov      dword ptr [eax + 8], ecx
+107592c8 8d8570fdffff             lea      eax, [ebp - 0x290]
+107592ce 50                       push     eax
+107592cf e89c190000               call     0x1075ac70 ; PropPlacer_GetChunkMatrix_m9812F8BC3681D6DF69C5CA631F56713EEFAA3975
+107592d4 83c418                   add      esp, 0x18
+107592d7 0f1000                   movups   xmm0, xmmword ptr [eax]
+107592da 0f104810                 movups   xmm1, xmmword ptr [eax + 0x10]
+107592de 0f105020                 movups   xmm2, xmmword ptr [eax + 0x20]
+107592e2 0f105830                 movups   xmm3, xmmword ptr [eax + 0x30]
+107592e6 a138d24911               mov      eax, dword ptr [0x1149d238]
+107592eb 0f118574feffff           movups   xmmword ptr [ebp - 0x18c], xmm0
+107592f2 0f118d64feffff           movups   xmmword ptr [ebp - 0x19c], xmm1
+107592f9 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10759300 0f119554feffff           movups   xmmword ptr [ebp - 0x1ac], xmm2
+10759307 0f119d44feffff           movups   xmmword ptr [ebp - 0x1bc], xmm3
+1075930e 742b                     je       0x1075933b
+10759310 83787400                 cmp      dword ptr [eax + 0x74], 0
+10759314 7525                     jne      0x1075933b
+10759316 50                       push     eax
+10759317 e8d4ed9cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1075931c 0f108574feffff           movups   xmm0, xmmword ptr [ebp - 0x18c]
+10759323 83c404                   add      esp, 4
+10759326 0f108d64feffff           movups   xmm1, xmmword ptr [ebp - 0x19c]
+1075932d 0f109554feffff           movups   xmm2, xmmword ptr [ebp - 0x1ac]
+10759334 0f109d44feffff           movups   xmm3, xmmword ptr [ebp - 0x1bc]
+1075933b 6a00                     push     0
+1075933d 83ec40                   sub      esp, 0x40
+10759340 8bc4                     mov      eax, esp
+10759342 83ec40                   sub      esp, 0x40
+10759345 0f1100                   movups   xmmword ptr [eax], xmm0
+10759348 0f108534feffff           movups   xmm0, xmmword ptr [ebp - 0x1cc]
+1075934f 0f114810                 movups   xmmword ptr [eax + 0x10], xmm1
+10759353 0f115020                 movups   xmmword ptr [eax + 0x20], xmm2
+10759357 0f115830                 movups   xmmword ptr [eax + 0x30], xmm3
+1075935b 8bc4                     mov      eax, esp
+1075935d 0f1100                   movups   xmmword ptr [eax], xmm0
+10759360 0f108504feffff           movups   xmm0, xmmword ptr [ebp - 0x1fc]
+10759367 0f114010                 movups   xmmword ptr [eax + 0x10], xmm0
+1075936b 0f108524feffff           movups   xmm0, xmmword ptr [ebp - 0x1dc]
+10759372 0f114020                 movups   xmmword ptr [eax + 0x20], xmm0
+10759376 0f108514feffff           movups   xmm0, xmmword ptr [ebp - 0x1ec]
+1075937d 0f114030                 movups   xmmword ptr [eax + 0x30], xmm0
+10759381 e80a05ccff               call     0x10419890 ; Intersections_OrientedBoxOrientedBox_m894BFB99DB493B356A4359E30861B8FDE7751B72
+10759386 81c484000000             add      esp, 0x84
+1075938c 84c0                     test     al, al
+1075938e 0f84d3080000             je       0x10759c67
+10759394 8b4508                   mov      eax, dword ptr [ebp + 8]
+10759397 8b4824                   mov      ecx, dword ptr [eax + 0x24]
+1075939a 85c9                     test     ecx, ecx
+1075939c 0f8442090000             je       0x10759ce4
+107593a2 ff35d8b84911             push     dword ptr [0x1149b8d8]
+107593a8 f30f7e458c               movq     xmm0, qword ptr [ebp - 0x74]
+107593ad 8d45e0                   lea      eax, [ebp - 0x20]
+107593b0 8b55dc                   mov      edx, dword ptr [ebp - 0x24]
+107593b3 50                       push     eax
+107593b4 83ec0c                   sub      esp, 0xc
+107593b7 8bc4                     mov      eax, esp
+107593b9 51                       push     ecx
+107593ba 660fd600                 movq     qword ptr [eax], xmm0
+107593be 895008                   mov      dword ptr [eax + 8], edx
+107593c1 e85af990ff               call     0x10068d20 ; Dictionary_2_TryGetValue_m51EC0B2C281B630CFFE71169FCB6AF1F3E35826F
+107593c6 83c418                   add      esp, 0x18
+107593c9 84c0                     test     al, al
+107593cb 0f841b080000             je       0x10759bec
+107593d1 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+107593d4 33d2                     xor      edx, edx
+107593d6 8955b8                   mov      dword ptr [ebp - 0x48], edx
+107593d9 85c0                     test     eax, eax
+107593db 0f8403090000             je       0x10759ce4
+107593e1 8b700c                   mov      esi, dword ptr [eax + 0xc]
+107593e4 8975b0                   mov      dword ptr [ebp - 0x50], esi
+107593e7 3bd6                     cmp      edx, esi
+107593e9 0f8d8f000000             jge      0x1075947e
+107593ef 85c0                     test     eax, eax
+107593f1 0f84ed080000             je       0x10759ce4
+107593f7 ff35602a4a11             push     dword ptr [0x114a2a60]
+107593fd 52                       push     edx
+107593fe 50                       push     eax
+107593ff e83c538eff               call     0x1003e740 ; List_1_get_Item_m1E85E7CDA3459102B9FD665388559843378C2B4C_inline
+10759404 83c40c                   add      esp, 0xc
+10759407 85c0                     test     eax, eax
+10759409 0f84d5080000             je       0x10759ce4
+1075940f ff35842a4a11             push     dword ptr [0x114a2a84]
+10759415 50                       push     eax
+10759416 e8255dceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+1075941b 8b0d18194a11             mov      ecx, dword ptr [0x114a1918]
+10759421 83c408                   add      esp, 8
+10759424 8bf0                     mov      esi, eax
+10759426 f681bb00000002           test     byte ptr [ecx + 0xbb], 2
+1075942d 740f                     je       0x1075943e
+1075942f 83797400                 cmp      dword ptr [ecx + 0x74], 0
+10759433 7509                     jne      0x1075943e
+10759435 51                       push     ecx
+10759436 e8b5ec9cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1075943b 83c404                   add      esp, 4
+1075943e 6a00                     push     0
+10759440 56                       push     esi
+10759441 57                       push     edi
+10759442 e8d9142f00               call     0x10a4a920 ; Object_op_Equality_mEE9EC7EB5C7DC3E95B94AB904E1986FC4D566D54
+10759447 83c40c                   add      esp, 0xc
+1075944a 84c0                     test     al, al
+1075944c 752a                     jne      0x10759478
+1075944e 85f6                     test     esi, esi
+10759450 0f848e080000             je       0x10759ce4
+10759456 f30f10460c               movss    xmm0, dword ptr [esi + 0xc]
+1075945b 8b750c                   mov      esi, dword ptr [ebp + 0xc]
+1075945e 0f2f460c                 comiss   xmm0, dword ptr [esi + 0xc]
+10759462 7714                     ja       0x10759478
+10759464 8b55b8                   mov      edx, dword ptr [ebp - 0x48]
+10759467 8bfe                     mov      edi, esi
+10759469 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+1075946c 42                       inc      edx
+1075946d 8b75b0                   mov      esi, dword ptr [ebp - 0x50]
+10759470 8955b8                   mov      dword ptr [ebp - 0x48], edx
+10759473 e96fffffff               jmp      0x107593e7
+10759478 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+1075947b 8b75b0                   mov      esi, dword ptr [ebp - 0x50]
+1075947e 33c9                     xor      ecx, ecx
+10759480 894dd0                   mov      dword ptr [ebp - 0x30], ecx
+10759483 3bce                     cmp      ecx, esi
+10759485 0f8d31070000             jge      0x10759bbc
+1075948b 85c0                     test     eax, eax
+1075948d 0f8451080000             je       0x10759ce4
+10759493 ff35602a4a11             push     dword ptr [0x114a2a60]
+10759499 51                       push     ecx
+1075949a 50                       push     eax
+1075949b e8a0528eff               call     0x1003e740 ; List_1_get_Item_m1E85E7CDA3459102B9FD665388559843378C2B4C_inline
+107594a0 8bf0                     mov      esi, eax
+107594a2 83c40c                   add      esp, 0xc
+107594a5 8975d4                   mov      dword ptr [ebp - 0x2c], esi
+107594a8 85f6                     test     esi, esi
+107594aa 0f8434080000             je       0x10759ce4
+107594b0 ff35842a4a11             push     dword ptr [0x114a2a84]
+107594b6 56                       push     esi
+107594b7 e8845cceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107594bc 8b0d18194a11             mov      ecx, dword ptr [0x114a1918]
+107594c2 83c408                   add      esp, 8
+107594c5 8bf8                     mov      edi, eax
+107594c7 897dcc                   mov      dword ptr [ebp - 0x34], edi
+107594ca f681bb00000002           test     byte ptr [ecx + 0xbb], 2
+107594d1 740f                     je       0x107594e2
+107594d3 83797400                 cmp      dword ptr [ecx + 0x74], 0
+107594d7 7509                     jne      0x107594e2
+107594d9 51                       push     ecx
+107594da e811ec9cff               call     0x101280f0 ; il2cpp_runtime_class_init
+107594df 83c404                   add      esp, 4
+107594e2 6a00                     push     0
+107594e4 57                       push     edi
+107594e5 ff750c                   push     dword ptr [ebp + 0xc]
+107594e8 e833142f00               call     0x10a4a920 ; Object_op_Equality_mEE9EC7EB5C7DC3E95B94AB904E1986FC4D566D54
+107594ed 83c40c                   add      esp, 0xc
+107594f0 84c0                     test     al, al
+107594f2 0f85b5060000             jne      0x10759bad
+107594f8 0f104628                 movups   xmm0, xmmword ptr [esi + 0x28]
+107594fc 8b4de4                   mov      ecx, dword ptr [ebp - 0x1c]
+107594ff 6a00                     push     0
+10759501 83ec18                   sub      esp, 0x18
+10759504 83c128                   add      ecx, 0x28
+10759507 8bc4                     mov      eax, esp
+10759509 51                       push     ecx
+1075950a 0f1100                   movups   xmmword ptr [eax], xmm0
+1075950d f30f7e4638               movq     xmm0, qword ptr [esi + 0x38]
+10759512 660fd64010               movq     qword ptr [eax + 0x10], xmm0
+10759517 e874de2d00               call     0x10a37390 ; Bounds_Intersects_m1796197732F04774117A3EC0D6BC1994B77B2336
+1075951c 83c420                   add      esp, 0x20
+1075951f 84c0                     test     al, al
+10759521 0f8486060000             je       0x10759bad
+10759527 8b450c                   mov      eax, dword ptr [ebp + 0xc]
+1075952a 8b401c                   mov      eax, dword ptr [eax + 0x1c]
+1075952d 85c0                     test     eax, eax
+1075952f 0f84af070000             je       0x10759ce4
+10759535 ff35302b4a11             push     dword ptr [0x114a2b30]
+1075953b 57                       push     edi
+1075953c 50                       push     eax
+1075953d e83e798d00               call     0x11030e80 ; List_1_Contains_m99C700668AC6D272188471D2D6B784A2B5636C8E_gshared
+10759542 83c40c                   add      esp, 0xc
+10759545 84c0                     test     al, al
+10759547 0f8560060000             jne      0x10759bad
+1075954d 8b45e4                   mov      eax, dword ptr [ebp - 0x1c]
+10759550 6a00                     push     0
+10759552 8a480c                   mov      cl, byte ptr [eax + 0xc]
+10759555 8a460c                   mov      al, byte ptr [esi + 0xc]
+10759558 888578ffffff             mov      byte ptr [ebp - 0x88], al
+1075955e ffb578ffffff             push     dword ptr [ebp - 0x88]
+10759564 894de8                   mov      dword ptr [ebp - 0x18], ecx
+10759567 51                       push     ecx
+10759568 e823cfffff               call     0x10756490 ; PropCollider_Collides_m736D18A1FAA8067236338BD0A73DC6AF47B1BA80
+1075956d 83c40c                   add      esp, 0xc
+10759570 84c0                     test     al, al
+10759572 0f8435060000             je       0x10759bad
+10759578 8b45e8                   mov      eax, dword ptr [ebp - 0x18]
+1075957b 3c07                     cmp      al, 7
+1075957d 0f84a9030000             je       0x1075992c
+10759583 3c03                     cmp      al, 3
+10759585 0f856e040000             jne      0x107599f9
+1075958b 6a00                     push     0
+1075958d 56                       push     esi
+1075958e e8ed142e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10759593 83c408                   add      esp, 8
+10759596 85c0                     test     eax, eax
+10759598 0f8446070000             je       0x10759ce4
+1075959e 6a00                     push     0
+107595a0 50                       push     eax
+107595a1 8d85b0fdffff             lea      eax, [ebp - 0x250]
+107595a7 50                       push     eax
+107595a8 e8b363f1ff               call     0x1066f960 ; Transform_get_position_m40A8A9895568D56FFC687B57F30E8D53CB5EA341
+107595ad 8b7de4                   mov      edi, dword ptr [ebp - 0x1c]
+107595b0 83c40c                   add      esp, 0xc
+107595b3 f30f7e00                 movq     xmm0, qword ptr [eax]
+107595b7 8b4008                   mov      eax, dword ptr [eax + 8]
+107595ba 6a00                     push     0
+107595bc 57                       push     edi
+107595bd 660fd68560ffffff         movq     qword ptr [ebp - 0xa0], xmm0
+107595c5 898568ffffff             mov      dword ptr [ebp - 0x98], eax
+107595cb e8b0142e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+107595d0 83c408                   add      esp, 8
+107595d3 85c0                     test     eax, eax
+107595d5 0f8409070000             je       0x10759ce4
+107595db 6a00                     push     0
+107595dd 50                       push     eax
+107595de 8d85ecfdffff             lea      eax, [ebp - 0x214]
+107595e4 50                       push     eax
+107595e5 e87663f1ff               call     0x1066f960 ; Transform_get_position_m40A8A9895568D56FFC687B57F30E8D53CB5EA341
+107595ea f30f109560ffffff         movss    xmm2, dword ptr [ebp - 0xa0]
+107595f2 83c40c                   add      esp, 0xc
+107595f5 f30f108d64ffffff         movss    xmm1, dword ptr [ebp - 0x9c]
+107595fd f30f7e00                 movq     xmm0, qword ptr [eax]
+10759601 8b4808                   mov      ecx, dword ptr [eax + 8]
+10759604 660fd68508ffffff         movq     qword ptr [ebp - 0xf8], xmm0
+1075960c f30f7ec0                 movq     xmm0, xmm0
+10759610 f30f5c9508ffffff         subss    xmm2, dword ptr [ebp - 0xf8]
+10759618 660fd685fcfeffff         movq     qword ptr [ebp - 0x104], xmm0
+10759620 f30f7e00                 movq     xmm0, qword ptr [eax]
+10759624 8bc1                     mov      eax, ecx
+10759626 f30f5c8d00ffffff         subss    xmm1, dword ptr [ebp - 0x100]
+1075962e 660fd685f0feffff         movq     qword ptr [ebp - 0x110], xmm0
+10759636 f30f108568ffffff         movss    xmm0, dword ptr [ebp - 0x98]
+1075963e 8985f8feffff             mov      dword ptr [ebp - 0x108], eax
+10759644 f30f5c85f8feffff         subss    xmm0, dword ptr [ebp - 0x108]
+1075964c f30f118500feffff         movss    dword ptr [ebp - 0x200], xmm0
+10759654 8b8500feffff             mov      eax, dword ptr [ebp - 0x200]
+1075965a 8945a0                   mov      dword ptr [ebp - 0x60], eax
+1075965d 8d4598                   lea      eax, [ebp - 0x68]
+10759660 0f14d1                   unpcklps xmm2, xmm1
+10759663 6a00                     push     0
+10759665 50                       push     eax
+10759666 660fd65598               movq     qword ptr [ebp - 0x68], xmm2
+1075966b e810adf1ff               call     0x10674380 ; Vector3_get_magnitude_mDDD40612220D8104E77E993E18A101A69A944991
+10759670 f30f104d98               movss    xmm1, dword ptr [ebp - 0x68]
+10759675 83c408                   add      esp, 8
+10759678 d95de8                   fstp     dword ptr [ebp - 0x18]
+1075967b f30f1045e8               movss    xmm0, dword ptr [ebp - 0x18]
+10759680 f30f5ec8                 divss    xmm1, xmm0
+10759684 f30f114da8               movss    dword ptr [ebp - 0x58], xmm1
+10759689 f30f104d9c               movss    xmm1, dword ptr [ebp - 0x64]
+1075968e f30f5ec8                 divss    xmm1, xmm0
+10759692 f30f114dac               movss    dword ptr [ebp - 0x54], xmm1
+10759697 f30f104da0               movss    xmm1, dword ptr [ebp - 0x60]
+1075969c f30f5ec8                 divss    xmm1, xmm0
+107596a0 f30f114de8               movss    dword ptr [ebp - 0x18], xmm1
+107596a5 6a00                     push     0
+107596a7 57                       push     edi
+107596a8 e8d3132e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+107596ad 83c408                   add      esp, 8
+107596b0 85c0                     test     eax, eax
+107596b2 0f842c060000             je       0x10759ce4
+107596b8 6a00                     push     0
+107596ba 50                       push     eax
+107596bb 8d85e0fdffff             lea      eax, [ebp - 0x220]
+107596c1 50                       push     eax
+107596c2 e8d962f1ff               call     0x1066f9a0 ; Transform_get_right_mA8EB1882CCE8759766544448308C88D9200F06CE
+107596c7 f30f102530271d11         movss    xmm4, dword ptr [0x111d2730]
+107596cf 8bd0                     mov      edx, eax
+107596d1 f30f1055ac               movss    xmm2, dword ptr [ebp - 0x54]
+107596d6 83c40c                   add      esp, 0xc
+107596d9 f30f105de8               movss    xmm3, dword ptr [ebp - 0x18]
+107596de 0f57d4                   xorps    xmm2, xmm4
+107596e1 0f57dc                   xorps    xmm3, xmm4
+107596e4 f30f7e02                 movq     xmm0, qword ptr [edx]
+107596e8 8b4a08                   mov      ecx, dword ptr [edx + 8]
+107596eb 660fd6856cffffff         movq     qword ptr [ebp - 0x94], xmm0
+107596f3 f30f7ec0                 movq     xmm0, xmm0
+107596f7 898d74ffffff             mov      dword ptr [ebp - 0x8c], ecx
+107596fd 660fd685e4feffff         movq     qword ptr [ebp - 0x11c], xmm0
+10759705 f30f7e02                 movq     xmm0, qword ptr [edx]
+10759709 8bc1                     mov      eax, ecx
+1075970b f30f104da8               movss    xmm1, dword ptr [ebp - 0x58]
+10759710 660fd685d8feffff         movq     qword ptr [ebp - 0x128], xmm0
+10759718 0f57cc                   xorps    xmm1, xmm4
+1075971b f30f598de4feffff         mulss    xmm1, dword ptr [ebp - 0x11c]
+10759723 f30f7ec0                 movq     xmm0, xmm0
+10759727 8985d4feffff             mov      dword ptr [ebp - 0x12c], eax
+1075972d 660fd685ccfeffff         movq     qword ptr [ebp - 0x134], xmm0
+10759735 f30f1085dcfeffff         movss    xmm0, dword ptr [ebp - 0x124]
+1075973d f30f59c2                 mulss    xmm0, xmm2
+10759741 f30f58c8                 addss    xmm1, xmm0
+10759745 f30f1085d4feffff         movss    xmm0, dword ptr [ebp - 0x12c]
+1075974d f30f59c3                 mulss    xmm0, xmm3
+10759751 f30f58c8                 addss    xmm1, xmm0
+10759755 f30f1005481e1e11         movss    xmm0, dword ptr [0x111e1e48]
+1075975d 0f2fc1                   comiss   xmm0, xmm1
+10759760 0f8747040000             ja       0x10759bad
+10759766 6a00                     push     0
+10759768 56                       push     esi
+10759769 e812132e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+1075976e 83c408                   add      esp, 8
+10759771 85c0                     test     eax, eax
+10759773 0f846b050000             je       0x10759ce4
+10759779 6a00                     push     0
+1075977b 50                       push     eax
+1075977c 8d85d4fdffff             lea      eax, [ebp - 0x22c]
+10759782 50                       push     eax
+10759783 e81862f1ff               call     0x1066f9a0 ; Transform_get_right_mA8EB1882CCE8759766544448308C88D9200F06CE
+10759788 8bd0                     mov      edx, eax
+1075978a 83c40c                   add      esp, 0xc
+1075978d f30f7e02                 movq     xmm0, qword ptr [edx]
+10759791 8b4a08                   mov      ecx, dword ptr [edx + 8]
+10759794 8bc1                     mov      eax, ecx
+10759796 660fd685b4feffff         movq     qword ptr [ebp - 0x14c], xmm0
+1075979e f30f7ec0                 movq     xmm0, xmm0
+107597a2 660fd685c0feffff         movq     qword ptr [ebp - 0x140], xmm0
+107597aa f30f7e02                 movq     xmm0, qword ptr [edx]
+107597ae f30f108dc4feffff         movss    xmm1, dword ptr [ebp - 0x13c]
+107597b6 f30f594dac               mulss    xmm1, dword ptr [ebp - 0x54]
+107597bb 8985b0feffff             mov      dword ptr [ebp - 0x150], eax
+107597c1 660fd685a8feffff         movq     qword ptr [ebp - 0x158], xmm0
+107597c9 f30f1085b4feffff         movss    xmm0, dword ptr [ebp - 0x14c]
+107597d1 f30f5945a8               mulss    xmm0, dword ptr [ebp - 0x58]
+107597d6 f30f58c8                 addss    xmm1, xmm0
+107597da f30f1085b0feffff         movss    xmm0, dword ptr [ebp - 0x150]
+107597e2 f30f5945e8               mulss    xmm0, dword ptr [ebp - 0x18]
+107597e7 f30f58c8                 addss    xmm1, xmm0
+107597eb f30f1005481e1e11         movss    xmm0, dword ptr [0x111e1e48]
+107597f3 0f2fc1                   comiss   xmm0, xmm1
+107597f6 0f87b1030000             ja       0x10759bad
+107597fc f30f7e02                 movq     xmm0, qword ptr [edx]
+10759800 f30f101d30271d11         movss    xmm3, dword ptr [0x111d2730]
+10759808 660fd68584feffff         movq     qword ptr [ebp - 0x17c], xmm0
+10759810 f30f7ec0                 movq     xmm0, xmm0
+10759814 660fd6859cfeffff         movq     qword ptr [ebp - 0x164], xmm0
+1075981c f30f7e02                 movq     xmm0, qword ptr [edx]
+10759820 660fd68590feffff         movq     qword ptr [ebp - 0x170], xmm0
+10759828 f30f1085a0feffff         movss    xmm0, dword ptr [ebp - 0x160]
+10759830 898598feffff             mov      dword ptr [ebp - 0x168], eax
+10759836 0f57c3                   xorps    xmm0, xmm3
+10759839 f30f108d98feffff         movss    xmm1, dword ptr [ebp - 0x168]
+10759841 0f57cb                   xorps    xmm1, xmm3
+10759844 f30f109584feffff         movss    xmm2, dword ptr [ebp - 0x17c]
+1075984c f30f598570ffffff         mulss    xmm0, dword ptr [ebp - 0x90]
+10759854 0f57d3                   xorps    xmm2, xmm3
+10759857 f30f59956cffffff         mulss    xmm2, dword ptr [ebp - 0x94]
+1075985f f30f598d74ffffff         mulss    xmm1, dword ptr [ebp - 0x8c]
+10759867 f30f58d0                 addss    xmm2, xmm0
+1075986b f30f58d1                 addss    xmm2, xmm1
+1075986f f30f100534381d11         movss    xmm0, dword ptr [0x111d3834]
+10759877 0f2fc2                   comiss   xmm0, xmm2
+1075987a 0f872d030000             ja       0x10759bad
+10759880 a118194a11               mov      eax, dword ptr [0x114a1918]
+10759885 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+1075988c 740f                     je       0x1075989d
+1075988e 83787400                 cmp      dword ptr [eax + 0x74], 0
+10759892 7509                     jne      0x1075989d
+10759894 50                       push     eax
+10759895 e856e89cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1075989a 83c404                   add      esp, 4
+1075989d 6a00                     push     0
+1075989f ff75bc                   push     dword ptr [ebp - 0x44]
+107598a2 e8b9112f00               call     0x10a4aa60 ; Object_op_Implicit_mC8214E4F028CC2F036CC82BDB81D102A02893499
+107598a7 83c408                   add      esp, 8
+107598aa 84c0                     test     al, al
+107598ac 7516                     jne      0x107598c4
+107598ae ff35ec2a4a11             push     dword ptr [0x114a2aec]
+107598b4 57                       push     edi
+107598b5 e88658ceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107598ba 8bf8                     mov      edi, eax
+107598bc 83c408                   add      esp, 8
+107598bf 897dbc                   mov      dword ptr [ebp - 0x44], edi
+107598c2 eb03                     jmp      0x107598c7
+107598c4 8b7dbc                   mov      edi, dword ptr [ebp - 0x44]
+107598c7 ff35ec2a4a11             push     dword ptr [0x114a2aec]
+107598cd 56                       push     esi
+107598ce e86d58ceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+107598d3 83c408                   add      esp, 8
+107598d6 85ff                     test     edi, edi
+107598d8 0f8406040000             je       0x10759ce4
+107598de 8b7f0c                   mov      edi, dword ptr [edi + 0xc]
+107598e1 85c0                     test     eax, eax
+107598e3 0f84fb030000             je       0x10759ce4
+107598e9 8b700c                   mov      esi, dword ptr [eax + 0xc]
+107598ec a118194a11               mov      eax, dword ptr [0x114a1918]
+107598f1 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+107598f8 740f                     je       0x10759909
+107598fa 83787400                 cmp      dword ptr [eax + 0x74], 0
+107598fe 7509                     jne      0x10759909
+10759900 50                       push     eax
+10759901 e8eae79cff               call     0x101280f0 ; il2cpp_runtime_class_init
+10759906 83c404                   add      esp, 4
+10759909 6a00                     push     0
+1075990b 56                       push     esi
+1075990c 57                       push     edi
+1075990d e80e122f00               call     0x10a4ab20 ; Object_op_Inequality_mE1F187520BD83FB7D86A6D850710C4D42B864E90
+10759912 83c40c                   add      esp, 0xc
+10759915 84c0                     test     al, al
+10759917 0f84d6000000             je       0x107599f3
+1075991d 8b4dd0                   mov      ecx, dword ptr [ebp - 0x30]
+10759920 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+10759923 41                       inc      ecx
+10759924 8b75b0                   mov      esi, dword ptr [ebp - 0x50]
+10759927 e954fbffff               jmp      0x10759480
+1075992c 85ff                     test     edi, edi
+1075992e 0f84b0030000             je       0x10759ce4
+10759934 6a00                     push     0
+10759936 57                       push     edi
+10759937 e844112e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+1075993c 8bf0                     mov      esi, eax
+1075993e 83c408                   add      esp, 8
+10759941 85f6                     test     esi, esi
+10759943 0f849b030000             je       0x10759ce4
+10759949 ff35502a4a11             push     dword ptr [0x114a2a50]
+1075994f 56                       push     esi
+10759950 e8eb57ceff               call     0x1043f140 ; Component_GetComponent_TisRuntimeObject_m69D9C576D6DD024C709E29EEADBC8041299A3AA7_gshared
+10759955 8bf8                     mov      edi, eax
+10759957 83c408                   add      esp, 8
+1075995a 660f1f440000             nop      word ptr [eax + eax]
+10759960 8b0d18194a11             mov      ecx, dword ptr [0x114a1918]
+10759966 f681bb00000002           test     byte ptr [ecx + 0xbb], 2
+1075996d 740f                     je       0x1075997e
+1075996f 83797400                 cmp      dword ptr [ecx + 0x74], 0
+10759973 7509                     jne      0x1075997e
+10759975 51                       push     ecx
+10759976 e875e79cff               call     0x101280f0 ; il2cpp_runtime_class_init
+1075997b 83c404                   add      esp, 4
+1075997e 6a00                     push     0
+10759980 57                       push     edi
+10759981 e8da102f00               call     0x10a4aa60 ; Object_op_Implicit_mC8214E4F028CC2F036CC82BDB81D102A02893499
+10759986 83c408                   add      esp, 8
+10759989 84c0                     test     al, al
+1075998b 7517                     jne      0x107599a4
+1075998d 6a00                     push     0
+1075998f 56                       push     esi
+10759990 e8ab4af1ff               call     0x1066e440 ; Transform_GetParent_mA53F6AE810935DDED00A9FEEE1830F4EF797F73B
+10759995 8bf0                     mov      esi, eax
+10759997 83c408                   add      esp, 8
+1075999a 85f6                     test     esi, esi
+1075999c 0f8447030000             je       0x10759ce9
+107599a2 eba5                     jmp      0x10759949
+107599a4 8b45d8                   mov      eax, dword ptr [ebp - 0x28]
+107599a7 85c0                     test     eax, eax
+107599a9 0f8435030000             je       0x10759ce4
+107599af 8b400c                   mov      eax, dword ptr [eax + 0xc]
+107599b2 8945e8                   mov      dword ptr [ebp - 0x18], eax
+107599b5 85ff                     test     edi, edi
+107599b7 0f8427030000             je       0x10759ce4
+107599bd a118194a11               mov      eax, dword ptr [0x114a1918]
+107599c2 8b770c                   mov      esi, dword ptr [edi + 0xc]
+107599c5 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+107599cc 740f                     je       0x107599dd
+107599ce 83787400                 cmp      dword ptr [eax + 0x74], 0
+107599d2 7509                     jne      0x107599dd
+107599d4 50                       push     eax
+107599d5 e816e79cff               call     0x101280f0 ; il2cpp_runtime_class_init
+107599da 83c404                   add      esp, 4
+107599dd 6a00                     push     0
+107599df 56                       push     esi
+107599e0 ff75e8                   push     dword ptr [ebp - 0x18]
+107599e3 e838112f00               call     0x10a4ab20 ; Object_op_Inequality_mE1F187520BD83FB7D86A6D850710C4D42B864E90
+107599e8 83c40c                   add      esp, 0xc
+107599eb 84c0                     test     al, al
+107599ed 0f85ba010000             jne      0x10759bad
+107599f3 8b75d4                   mov      esi, dword ptr [ebp - 0x2c]
+107599f6 8b7dcc                   mov      edi, dword ptr [ebp - 0x34]
+107599f9 6a00                     push     0
+107599fb 8d8570fdffff             lea      eax, [ebp - 0x290]
+10759a01 56                       push     esi
+10759a02 50                       push     eax
+10759a03 e8f8caffff               call     0x10756500 ; PropCollider_GetMatrix_mA1BC0388906B93CD2EC0B04D8EE248564AFFB18B
+10759a08 83c40c                   add      esp, 0xc
+10759a0b 0f1000                   movups   xmm0, xmmword ptr [eax]
+10759a0e 0f104810                 movups   xmm1, xmmword ptr [eax + 0x10]
+10759a12 0f105020                 movups   xmm2, xmmword ptr [eax + 0x20]
+10759a16 0f105830                 movups   xmm3, xmmword ptr [eax + 0x30]
+10759a1a a138d24911               mov      eax, dword ptr [0x1149d238]
+10759a1f 0f118544feffff           movups   xmmword ptr [ebp - 0x1bc], xmm0
+10759a26 0f118d54feffff           movups   xmmword ptr [ebp - 0x1ac], xmm1
+10759a2d f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10759a34 0f119564feffff           movups   xmmword ptr [ebp - 0x19c], xmm2
+10759a3b 0f119d74feffff           movups   xmmword ptr [ebp - 0x18c], xmm3
+10759a42 742b                     je       0x10759a6f
+10759a44 83787400                 cmp      dword ptr [eax + 0x74], 0
+10759a48 7525                     jne      0x10759a6f
+10759a4a 50                       push     eax
+10759a4b e8a0e69cff               call     0x101280f0 ; il2cpp_runtime_class_init
+10759a50 0f108544feffff           movups   xmm0, xmmword ptr [ebp - 0x1bc]
+10759a57 83c404                   add      esp, 4
+10759a5a 0f108d54feffff           movups   xmm1, xmmword ptr [ebp - 0x1ac]
+10759a61 0f109564feffff           movups   xmm2, xmmword ptr [ebp - 0x19c]
+10759a68 0f109d74feffff           movups   xmm3, xmmword ptr [ebp - 0x18c]
+10759a6f 6a00                     push     0
+10759a71 83ec40                   sub      esp, 0x40
+10759a74 8bc4                     mov      eax, esp
+10759a76 83ec40                   sub      esp, 0x40
+10759a79 0f1100                   movups   xmmword ptr [eax], xmm0
+10759a7c 0f108534feffff           movups   xmm0, xmmword ptr [ebp - 0x1cc]
+10759a83 0f114810                 movups   xmmword ptr [eax + 0x10], xmm1
+10759a87 0f115020                 movups   xmmword ptr [eax + 0x20], xmm2
+10759a8b 0f115830                 movups   xmmword ptr [eax + 0x30], xmm3
+10759a8f 8bc4                     mov      eax, esp
+10759a91 0f1100                   movups   xmmword ptr [eax], xmm0
+10759a94 0f108504feffff           movups   xmm0, xmmword ptr [ebp - 0x1fc]
+10759a9b 0f114010                 movups   xmmword ptr [eax + 0x10], xmm0
+10759a9f 0f108524feffff           movups   xmm0, xmmword ptr [ebp - 0x1dc]
+10759aa6 0f114020                 movups   xmmword ptr [eax + 0x20], xmm0
+10759aaa 0f108514feffff           movups   xmm0, xmmword ptr [ebp - 0x1ec]
+10759ab1 0f114030                 movups   xmmword ptr [eax + 0x30], xmm0
+10759ab5 e8d6fdcbff               call     0x10419890 ; Intersections_OrientedBoxOrientedBox_m894BFB99DB493B356A4359E30861B8FDE7751B72
+10759aba 81c484000000             add      esp, 0x84
+10759ac0 84c0                     test     al, al
+10759ac2 0f84e5000000             je       0x10759bad
+10759ac8 6a00                     push     0
+10759aca ff75e4                   push     dword ptr [ebp - 0x1c]
+10759acd e8ae0f2e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10759ad2 83c408                   add      esp, 8
+10759ad5 8bf0                     mov      esi, eax
+10759ad7 6a00                     push     0
+10759ad9 ff75d4                   push     dword ptr [ebp - 0x2c]
+10759adc e89f0f2e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10759ae1 83c408                   add      esp, 8
+10759ae4 85f6                     test     esi, esi
+10759ae6 0f84f8010000             je       0x10759ce4
+10759aec 6a00                     push     0
+10759aee 50                       push     eax
+10759aef 56                       push     esi
+10759af0 e8bb4bf1ff               call     0x1066e6b0 ; Transform_IsChildOf_m1783A88A490931E98F4D5E361595A518E09FD4BC
+10759af5 83c40c                   add      esp, 0xc
+10759af8 84c0                     test     al, al
+10759afa 0f85ad000000             jne      0x10759bad
+10759b00 6a00                     push     0
+10759b02 ff75d4                   push     dword ptr [ebp - 0x2c]
+10759b05 e8760f2e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10759b0a 83c408                   add      esp, 8
+10759b0d 8bf0                     mov      esi, eax
+10759b0f 6a00                     push     0
+10759b11 ff75e4                   push     dword ptr [ebp - 0x1c]
+10759b14 e8670f2e00               call     0x10a3aa80 ; Component_get_transform_mE8496EBC45BEB1BADB5F314960F1DF1C952FA11F
+10759b19 83c408                   add      esp, 8
+10759b1c 85f6                     test     esi, esi
+10759b1e 0f84c0010000             je       0x10759ce4
+10759b24 6a00                     push     0
+10759b26 50                       push     eax
+10759b27 56                       push     esi
+10759b28 e8834bf1ff               call     0x1066e6b0 ; Transform_IsChildOf_m1783A88A490931E98F4D5E361595A518E09FD4BC
+10759b2d 83c40c                   add      esp, 0xc
+10759b30 84c0                     test     al, al
+10759b32 7579                     jne      0x10759bad
+10759b34 8b45e4                   mov      eax, dword ptr [ebp - 0x1c]
+10759b37 8a400c                   mov      al, byte ptr [eax + 0xc]
+10759b3a 8b750c                   mov      esi, dword ptr [ebp + 0xc]
+10759b3d 6a00                     push     0
+10759b3f 57                       push     edi
+10759b40 56                       push     esi
+10759b41 3c03                     cmp      al, 3
+10759b43 744c                     je       0x10759b91
+10759b45 e8f6ecffff               call     0x10758840 ; PropNode_InserOverlap_m4F1F22F450BB7ECDCA4C81A7B92FDDE1B698E413
+10759b4a 83c40c                   add      esp, 0xc
+10759b4d 85ff                     test     edi, edi
+10759b4f 0f848f010000             je       0x10759ce4
+10759b55 6a00                     push     0
+10759b57 56                       push     esi
+10759b58 57                       push     edi
+10759b59 e8e2ecffff               call     0x10758840 ; PropNode_InserOverlap_m4F1F22F450BB7ECDCA4C81A7B92FDDE1B698E413
+10759b5e f30f10470c               movss    xmm0, dword ptr [edi + 0xc]
+10759b63 83c40c                   add      esp, 0xc
+10759b66 0f2f460c                 comiss   xmm0, dword ptr [esi + 0xc]
+10759b6a 7241                     jb       0x10759bad
+10759b6c 807f1400                 cmp      byte ptr [edi + 0x14], 0
+10759b70 743b                     je       0x10759bad
+10759b72 6a00                     push     0
+10759b74 6a01                     push     1
+10759b76 56                       push     esi
+10759b77 ff7508                   push     dword ptr [ebp + 8]
+10759b7a e831100000               call     0x1075abb0 ; PropPlacer_ChangeHideCount_mAF4419B7978D1C276CD4D9262B44E5D376C51283
+10759b7f 8b4dd0                   mov      ecx, dword ptr [ebp - 0x30]
+10759b82 83c410                   add      esp, 0x10
+10759b85 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+10759b88 41                       inc      ecx
+10759b89 8b75b0                   mov      esi, dword ptr [ebp - 0x50]
+10759b8c e9eff8ffff               jmp      0x10759480
+10759b91 e8caeaffff               call     0x10758660 ; PropNode_AddAnchor_mE6096002F92BB21665BEA5713768EB72B93C3478
+10759b96 83c40c                   add      esp, 0xc
+10759b99 85ff                     test     edi, edi
+10759b9b 0f8443010000             je       0x10759ce4
+10759ba1 6a00                     push     0
+10759ba3 56                       push     esi
+10759ba4 57                       push     edi
+10759ba5 e8b6eaffff               call     0x10758660 ; PropNode_AddAnchor_mE6096002F92BB21665BEA5713768EB72B93C3478
+10759baa 83c40c                   add      esp, 0xc
+10759bad 8b4dd0                   mov      ecx, dword ptr [ebp - 0x30]
+10759bb0 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+10759bb3 41                       inc      ecx
+10759bb4 8b75b0                   mov      esi, dword ptr [ebp - 0x50]
+10759bb7 e9c4f8ffff               jmp      0x10759480
+10759bbc 85c0                     test     eax, eax
+10759bbe 0f8420010000             je       0x10759ce4
+10759bc4 ff35c4294a11             push     dword ptr [0x114a29c4]
+10759bca 8b75e4                   mov      esi, dword ptr [ebp - 0x1c]
+10759bcd 56                       push     esi
+10759bce ff75b8                   push     dword ptr [ebp - 0x48]
+10759bd1 50                       push     eax
+10759bd2 e809b78d00               call     0x110352e0 ; List_1_Insert_m754F79C99EC14024CB7D424CB588B3923719F992_gshared
+10759bd7 8b45c8                   mov      eax, dword ptr [ebp - 0x38]
+10759bda 83c410                   add      esp, 0x10
+10759bdd 8b7d0c                   mov      edi, dword ptr [ebp + 0xc]
+10759be0 40                       inc      eax
+10759be1 8b4ddc                   mov      ecx, dword ptr [ebp - 0x24]
+10759be4 8b55c4                   mov      edx, dword ptr [ebp - 0x3c]
+10759be7 e9aff6ffff               jmp      0x1075929b
+10759bec a1943e4a11               mov      eax, dword ptr [0x114a3e94]
+10759bf1 f680bb00000002           test     byte ptr [eax + 0xbb], 2
+10759bf8 740f                     je       0x10759c09
+10759bfa 83787400                 cmp      dword ptr [eax + 0x74], 0
+10759bfe 7509                     jne      0x10759c09
+10759c00 50                       push     eax
+10759c01 e8eae49cff               call     0x101280f0 ; il2cpp_runtime_class_init
+10759c06 83c404                   add      esp, 4
+10759c09 ff35608f4911             push     dword ptr [0x11498f60]
+10759c0f e8ec69e7ff               call     0x105d0600 ; ListPool_1_Get_m1FD033F0BFD60C36317CB492F1788390335C2CBE_gshared
+10759c14 8b4d08                   mov      ecx, dword ptr [ebp + 8]
+10759c17 83c404                   add      esp, 4
+10759c1a 8945e0                   mov      dword ptr [ebp - 0x20], eax
+10759c1d 8b4924                   mov      ecx, dword ptr [ecx + 0x24]
+10759c20 85c9                     test     ecx, ecx
+10759c22 0f84bc000000             je       0x10759ce4
+10759c28 ff3530b84911             push     dword ptr [0x1149b830]
+10759c2e f30f7e458c               movq     xmm0, qword ptr [ebp - 0x74]
+10759c33 8b55dc                   mov      edx, dword ptr [ebp - 0x24]
+10759c36 50                       push     eax
+10759c37 83ec0c                   sub      esp, 0xc
+10759c3a 8bc4                     mov      eax, esp
+10759c3c 51                       push     ecx
+10759c3d 660fd600                 movq     qword ptr [eax], xmm0
+10759c41 895008                   mov      dword ptr [eax + 8], edx
+10759c44 e8f72aacff               call     0x1021c740 ; Dictionary_2_Add_mC7CA898B55B5DD408021AC5F79BB3CFE242FAF0C_gshared
+10759c49 8b45e0                   mov      eax, dword ptr [ebp - 0x20]
+10759c4c 83c418                   add      esp, 0x18
+10759c4f 85c0                     test     eax, eax
+10759c51 0f848d000000             je       0x10759ce4
+10759c57 ff3590294a11             push     dword ptr [0x114a2990]
+10759c5d 56                       push     esi
+10759c5e 50                       push     eax
+10759c5f e86c638d00               call     0x1102ffd0 ; List_1_Add_m26E436E942C0D78604AF993391CF75E380733F23_gshared
+10759c64 83c40c                   add      esp, 0xc
+10759c67 8b45c8                   mov      eax, dword ptr [ebp - 0x38]
+10759c6a 8b4ddc                   mov      ecx, dword ptr [ebp - 0x24]
+10759c6d 40                       inc      eax
+10759c6e 8b55c4                   mov      edx, dword ptr [ebp - 0x3c]
+10759c71 e925f6ffff               jmp      0x1075929b
+10759c76 8b45c0                   mov      eax, dword ptr [ebp - 0x40]
+10759c79 42                       inc      edx
+10759c7a e90df6ffff               jmp      0x1075928c
+10759c7f 41                       inc      ecx
+10759c80 894ddc                   mov      dword ptr [ebp - 0x24], ecx
+10759c83 e9f8f5ffff               jmp      0x10759280
+10759c88 8b75a4                   mov      esi, dword ptr [ebp - 0x5c]
+10759c8b 8b4db4                   mov      ecx, dword ptr [ebp - 0x4c]
+10759c8e e958f3ffff               jmp      0x10758feb
+10759c93 ff35f4934911             push     dword ptr [0x114993f4]
+10759c99 51                       push     ecx
+10759c9a e89179ceff               call     0x10441630 ; DictPoolExtension_ReturnToPool_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_TisInt32_tFDE5F8CD43D10453F6A2E0C77FE48C6CC7009046_mDD2C9A7A949F369D3468B6761D50E4616F295D94_gshared
+10759c9f 83c408                   add      esp, 8
+10759ca2 33f6                     xor      esi, esi
+10759ca4 eb14                     jmp      0x10759cba
+10759ca6 8b855cffffff             mov      eax, dword ptr [ebp - 0xa4]
+10759cac 8b00                     mov      eax, dword ptr [eax]
+10759cae 89450c                   mov      dword ptr [ebp + 0xc], eax
+10759cb1 b8b79c7510               mov      eax, 0x10759cb7
+10759cb6 c3                       ret
+10759cb7 8b750c                   mov      esi, dword ptr [ebp + 0xc]
+10759cba c745fcffffffff           mov      dword ptr [ebp - 4], 0xffffffff
+10759cc1 8d45ef                   lea      eax, [ebp - 0x11]
+10759cc4 6a00                     push     0
+10759cc6 50                       push     eax
+10759cc7 e88400a8ff               call     0x101d9d50 ; U3CBlockingU3Ed__3_System_IDisposable_Dispose_mEF0C01D581B3CCBB1A69A8FDDD3CAE41E08DFC43
+10759ccc 83c408                   add      esp, 8
+10759ccf 85f6                     test     esi, esi
+10759cd1 751b                     jne      0x10759cee
+10759cd3 8b4df4                   mov      ecx, dword ptr [ebp - 0xc]
+10759cd6 5f                       pop      edi
+10759cd7 5e                       pop      esi
+10759cd8 64890d00000000           mov      dword ptr fs:[0], ecx
+10759cdf 5b                       pop      ebx
+10759ce0 8be5                     mov      esp, ebp
+10759ce2 5d                       pop      ebp
+10759ce3 c3                       ret
+10759ce4 e8f74da3ff               call     0x1018eae0 ; il2cpp_codegen_raise_null_reference_exception
+10759ce9 e8f24da3ff               call     0x1018eae0 ; il2cpp_codegen_raise_null_reference_exception

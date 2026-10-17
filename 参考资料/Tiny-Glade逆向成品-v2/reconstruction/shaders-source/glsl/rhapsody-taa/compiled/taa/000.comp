@@ -1,0 +1,259 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+#if defined(GL_EXT_control_flow_attributes)
+#extension GL_EXT_control_flow_attributes : require
+#define SPIRV_CROSS_FLATTEN [[flatten]]
+#define SPIRV_CROSS_BRANCH [[dont_flatten]]
+#define SPIRV_CROSS_UNROLL [[unroll]]
+#define SPIRV_CROSS_LOOP [[dont_unroll]]
+#else
+#define SPIRV_CROSS_FLATTEN
+#define SPIRV_CROSS_BRANCH
+#define SPIRV_CROSS_UNROLL
+#define SPIRV_CROSS_LOOP
+#endif
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+const ivec2 _884[2] = ivec2[](ivec2(1, 0), ivec2(0, 1));
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 color_tex_dims;
+    uvec2 history_tex_dims;
+    uvec2 reprojection_tex_dims;
+    uvec2 history_output_tex_dims;
+    uvec2 output_tex_dims;
+    uint bypass_neighborhood_clamping;
+    float sharpen_amount;
+    int history_valid;
+} globalParams;
+
+layout(set = 3, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 3) uniform texture2D reprojection_tex;
+layout(set = 2, binding = 0) uniform sampler samplers_lnc;
+layout(set = 0, binding = 2) uniform texture2D history_tex;
+layout(set = 0, binding = 1) uniform texture2D color_tex;
+layout(set = 0, binding = 4, r11f_g11f_b10f) uniform writeonly image2D history_output_tex;
+layout(set = 0, binding = 5, r11f_g11f_b10f) uniform writeonly image2D output_tex;
+
+shared float gs_tile_luminance[8][8];
+
+void main()
+{
+    vec2 _990 = vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5);
+    vec2 _104 = vec2(globalParams.output_tex_dims.xy);
+    vec2 _998 = ((_990 / vec2(globalParams.output_tex_dims)) + texelFetch(reprojection_tex, ivec2(uvec2((vec2(gl_GlobalInvocationID.xy) + vec2(0.5)) * vec2(globalParams.color_tex_dims.xy / globalParams.output_tex_dims.xy))), 0).xy) * _104;
+    vec2 _1001 = floor(_998 - vec2(0.5));
+    vec2 _1003 = _1001 + vec2(0.5);
+    vec2 _1004 = _998 - _1003;
+    vec2 _1005 = _1004 * 0.5;
+    vec2 _1011 = _1004 * (vec2(-0.5) + (_1004 * (vec2(1.0) - _1005)));
+    vec2 _1012 = _1004 * _1004;
+    vec2 _1013 = _1004 * 1.5;
+    vec2 _1024 = _1004 * (vec2(0.5) + (_1004 * (vec2(2.0) - _1013)));
+    vec2 _1027 = _1012 * (vec2(-0.5) + _1005);
+    vec2 _1028 = (vec2(1.0) + (_1012 * (vec2(-2.5) + _1013))) + _1024;
+    vec2 _1035 = (_1001 + vec2(-0.5)) / _104;
+    vec2 _1036 = (_1001 + vec2(2.5)) / _104;
+    vec2 _1037 = (_1003 + (_1024 / _1028)) / _104;
+    float _1055 = _1037.x;
+    float _1064 = _1028.x;
+    float _1066 = _1064 * _1011.y;
+    float _1088 = _1037.y;
+    float _1097 = _1028.y;
+    float _1098 = _1011.x * _1097;
+    float _1110 = _1064 * _1097;
+    float _1123 = _1027.x * _1097;
+    float _1152 = _1064 * _1027.y;
+    vec3 _1247 = ((((((vec4(textureLod(sampler2D(history_tex, samplers_lnc), vec2(_1055, _1035.y), 0.0).xyz, 1.0) * vec4(_1066)) + (vec4(textureLod(sampler2D(history_tex, samplers_lnc), vec2(_1035.x, _1088), 0.0).xyz, 1.0) * vec4(_1098))) + (vec4(textureLod(sampler2D(history_tex, samplers_lnc), _1037, 0.0).xyz, 1.0) * vec4(_1110))) + (vec4(textureLod(sampler2D(history_tex, samplers_lnc), vec2(_1036.x, _1088), 0.0).xyz, 1.0) * vec4(_1123))) + (vec4(textureLod(sampler2D(history_tex, samplers_lnc), vec2(_1055, _1036.y), 0.0).xyz, 1.0) * vec4(_1152))) / vec4((((_1066 + _1098) + _1110) + _1123) + _1152)).xyz * mat3(vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875), vec3(-0.114600002765655517578125, -0.385399997234344482421875, 0.5), vec3(0.5, -0.4541999995708465576171875, -0.0458000004291534423828125));
+    vec2 _1275 = vec2(ivec2(globalParams.color_tex_dims.xy)) / _104;
+    ivec2 _1280 = ivec2(_990 * _1275);
+    vec2 _1286 = ((vec2(_1280) + vec2(0.5)) + (current_view.sample_offset_pixels * vec2(1.0, -1.0))) / _1275;
+    float _1289 = _1275.x;
+    float _1296 = ((-10.0) * _1289) * min(4.0 * _1289, 1.0);
+    float _1298 = (-1.0) * (_1289 * _1289);
+    vec4 _1594;
+    float _1595;
+    vec3 _1596;
+    float _1597;
+    vec3 _1598;
+    _1598 = vec3(0.0);
+    _1597 = 0.0;
+    _1596 = vec3(0.0);
+    _1595 = 0.0;
+    _1594 = vec4(0.0);
+    int _1381;
+    vec4 _1628;
+    float _1631;
+    vec3 _1635;
+    vec3 _1638;
+    float _1641;
+    int _1593 = -1;
+    for (;;)
+    {
+        if (!(_1593 <= 1))
+        {
+            break;
+        }
+        _1641 = _1597;
+        _1638 = _1598;
+        _1635 = _1596;
+        _1631 = _1595;
+        _1628 = _1594;
+        vec4 _1357;
+        float _1359;
+        vec3 _1363;
+        vec3 _1368;
+        float _1371;
+        int _1375;
+        int _1616 = -1;
+        for (;;)
+        {
+            if (!(_1616 <= 1))
+            {
+                break;
+            }
+            vec4 _1443 = vec4(texelFetch(color_tex, ivec2(uvec2(_1280 + ivec2(_1616, _1593))), 0).xyz * mat3(vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875), vec3(-0.114600002765655517578125, -0.385399997234344482421875, 0.5), vec3(0.5, -0.4541999995708465576171875, -0.0458000004291534423828125)), 1.0);
+            vec2 _1337 = (_1286 + (vec2(float(_1616), float(_1593)) / _1275)) - _990;
+            float _1338 = dot(_1337, _1337);
+            float _1343 = exp2(_1338 * _1298);
+            float _1347 = exp2(_1338 * _1296);
+            vec3 _1350 = _1443.xyz;
+            _1357 = _1628 + (_1443 * _1347);
+            _1359 = _1631 + _1347;
+            _1363 = _1635 + (_1350 * _1343);
+            _1368 = _1638 + ((_1350 * _1350) * _1343);
+            _1371 = _1641 + _1343;
+            _1375 = _1616 + 1;
+            _1641 = _1371;
+            _1638 = _1368;
+            _1635 = _1363;
+            _1631 = _1359;
+            _1628 = _1357;
+            _1616 = _1375;
+            continue;
+        }
+        _1381 = _1593 + 1;
+        _1598 = _1638;
+        _1597 = _1641;
+        _1596 = _1635;
+        _1595 = _1631;
+        _1594 = _1628;
+        _1593 = _1381;
+        continue;
+    }
+    vec3 _1391 = vec3(_1597);
+    vec3 _1392 = _1596 / _1391;
+    vec3 center = _1594.xyz / vec3(max(9.9999997473787516355514526367188e-06, _1595));
+    vec3 _705 = sqrt(max(vec3(0.0), (_1598 / _1391) - (_1392 * _1392)));
+    float _707 = _1392.x;
+    vec3 _714 = _705 * mix(0.5, 1.0, smoothstep(-0.100000001490116119384765625, 0.300000011920928955078125, _705.x / (_707 + 9.9999997473787516355514526367188e-06)));
+    vec3 nmin = _1392 - _714;
+    vec3 nmax = _1392 + _714;
+    float _1607;
+    vec3 _1608;
+    if (uint(!(globalParams.bypass_neighborhood_clamping != 0u)) != 0u)
+    {
+        float _728 = _1247.x;
+        _1608 = clamp(_1247, nmin, nmax);
+        _1607 = 0.125 * mix(0.20000000298023223876953125, 1.0, smoothstep(0.0, 2.0, min(abs(_728 - nmin.x), abs(_728 - nmax.x)) / max(max(_728, _707), 9.9999997473787516355514526367188e-06)));
+    }
+    else
+    {
+        _1608 = _1247;
+        _1607 = 0.125;
+    }
+    vec3 _1609;
+    if (!(globalParams.history_valid != 0))
+    {
+        _1609 = max(vec3(0.0), center * mat3(vec3(1.0, 0.0, 1.574800014495849609375), vec3(1.0, -0.1872999966144561767578125, -0.468100011348724365234375), vec3(1.0, 1.85559999942779541015625, 0.0)));
+    }
+    else
+    {
+        _1609 = max(vec3(0.0), mix(_1608, center, vec3(_1607)) * mat3(vec3(1.0, 0.0, 1.574800014495849609375), vec3(1.0, -0.1872999966144561767578125, -0.468100011348724365234375), vec3(1.0, 1.85559999942779541015625, 0.0)));
+    }
+    ivec3 _1517 = ivec3(0);
+    vec3 _1520 = frexp(_1609, _1517);
+    imageStore(history_output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(_1609 + (vec3(notEqual(_1609, vec3(0.0))) * exp2(vec3(_1517) - vec3(8.0, 8.0, 7.0))), 0.0));
+    vec3 _1614;
+    if (globalParams.sharpen_amount > 0.0)
+    {
+        float _1533 = dot(_1609, vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875));
+        gs_tile_luminance[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = _1533;
+        barrier();
+        float _1611;
+        float _1612;
+        _1612 = 0.0;
+        _1611 = 0.0;
+        int dim;
+        float _1644;
+        float _1645;
+        int _1610 = 0;
+        SPIRV_CROSS_UNROLL
+        for (;;)
+        {
+            if (!(_1610 < 2))
+            {
+                break;
+            }
+            uvec2 _890 = uvec2(_884[_1610]);
+            uvec2 n0coord = gl_LocalInvocationID.xy + _890;
+            uvec2 n1coord = gl_LocalInvocationID.xy - _890;
+            if (all(lessThan(uvec4(n0coord, n1coord), uvec4(8u))))
+            {
+                uint _905 = n0coord.x;
+                uint _907 = n0coord.y;
+                uint _910 = n1coord.x;
+                uint _912 = n1coord.y;
+                float _922 = max(0.0, 1.0 - (6.0 * (abs(_1533 - gs_tile_luminance[_905][_907]) + abs(_1533 - gs_tile_luminance[_910][_912]))));
+                float _927 = min(_922, (globalParams.sharpen_amount * _922) * 1.25);
+                _1645 = (_1612 + (gs_tile_luminance[_905][_907] * _927)) + (gs_tile_luminance[_910][_912] * _927);
+                _1644 = _1611 + (_927 * 2.0);
+            }
+            else
+            {
+                _1645 = _1612;
+                _1644 = _1611;
+            }
+            dim = _1610 + 1;
+            _1612 = _1645;
+            _1611 = _1644;
+            _1610 = dim;
+            continue;
+        }
+        _1614 = _1609.xyz * max(0.0, max(0.0, (_1533 * (_1611 + 1.0)) - _1612) / max(9.9999997473787516355514526367188e-06, dot(_1609.xyz, vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875))));
+    }
+    else
+    {
+        _1614 = _1609;
+    }
+    imageStore(output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(_1614, 0.0));
+}
+

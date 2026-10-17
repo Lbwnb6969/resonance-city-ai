@@ -1,0 +1,14 @@
+// RVA 0x3d1d80 | Placemaker.Maker$$ClearCommand
+// PDB: Maker_ClearCommand_mE4DFBBFBBD5BA88B5193D443F4D31F8990A798FC
+// Body: [[103d1d80, 103d1d8f]]
+// Direct callees:
+// 103d1e30 Maker_Clear_mDB53101E066C84708F4D9DF200E3BCAF32DD3BAA
+
+void __cdecl
+Maker_ClearCommand_mE4DFBBFBBD5BA88B5193D443F4D31F8990A798FC
+          (Maker_t537981F2ED20294ACF4C94693B3268049739203D *param_1,MethodInfo *param_2)
+
+{
+  Maker_Clear_mDB53101E066C84708F4D9DF200E3BCAF32DD3BAA(param_1,(MethodInfo *)0x0);
+  return;
+}

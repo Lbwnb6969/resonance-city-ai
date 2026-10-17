@@ -1,0 +1,209 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+vec4 _1194;
+float _1195;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 reprojected_history_tex_lum_dims;
+    uvec2 reprojected_history_tex_chroma_dims;
+    uvec2 color_tex_dims;
+    uvec2 reprojection_tex_dims;
+    uvec2 decision_tex_dims;
+    uvec2 history_output_tex_dims;
+    uvec2 output_tex_dims;
+    uvec2 aux_output_tex_dims;
+    int history_valid;
+    float sharpen_amount;
+} globalParams;
+
+layout(set = 2, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 1, binding = 2) uniform sampler samplers_nnc;
+layout(set = 0, binding = 4) uniform texture2D reprojection_tex;
+layout(set = 0, binding = 1) uniform texture2D reprojected_history_tex_lum;
+layout(set = 0, binding = 2) uniform texture2D reprojected_history_tex_chroma;
+layout(set = 0, binding = 3) uniform texture2D color_tex;
+layout(set = 1, binding = 0) uniform sampler samplers_lnc;
+layout(set = 0, binding = 5) uniform texture2D decision_tex;
+layout(set = 0, binding = 6, r11f_g11f_b10f) uniform writeonly image2D history_output_tex;
+layout(set = 0, binding = 7, r11f_g11f_b10f) uniform writeonly image2D output_tex;
+layout(set = 0, binding = 8, rg8) uniform writeonly image2D aux_output_tex;
+
+shared float gs_tile_luminance[8][8];
+
+void main()
+{
+    vec2 _756 = vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5);
+    vec2 _757 = _756 / vec2(globalParams.output_tex_dims);
+    vec2 _797 = vec2(ivec2(globalParams.color_tex_dims.xy)) / vec2(globalParams.output_tex_dims.xy);
+    ivec2 _802 = ivec2(_756 * _797);
+    vec2 _808 = ((vec2(_802) + vec2(0.5)) + (current_view.sample_offset_pixels * vec2(1.0, -1.0))) / _797;
+    float _811 = _797.x;
+    float _818 = ((-10.0) * _811) * min(4.0 * _811, 1.0);
+    float _820 = (-1.0) * (_811 * _811);
+    vec4 _1131;
+    float _1132;
+    vec3 _1133;
+    float _1134;
+    vec3 _1135;
+    _1135 = vec3(0.0);
+    _1134 = 0.0;
+    _1133 = vec3(0.0);
+    _1132 = 0.0;
+    _1131 = vec4(0.0);
+    int _903;
+    vec4 _1163;
+    float _1166;
+    vec3 _1170;
+    vec3 _1173;
+    float _1176;
+    int _1130 = -1;
+    for (;;)
+    {
+        if (!(_1130 <= 1))
+        {
+            break;
+        }
+        _1176 = _1134;
+        _1173 = _1135;
+        _1170 = _1133;
+        _1166 = _1132;
+        _1163 = _1131;
+        vec4 _879;
+        float _881;
+        vec3 _885;
+        vec3 _890;
+        float _893;
+        int _897;
+        int _1151 = -1;
+        for (;;)
+        {
+            if (!(_1151 <= 1))
+            {
+                break;
+            }
+            vec4 _965 = vec4(texelFetch(color_tex, ivec2(uvec2(_802 + ivec2(_1151, _1130))), 0).xyz * mat3(vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875), vec3(-0.114600002765655517578125, -0.385399997234344482421875, 0.5), vec3(0.5, -0.4541999995708465576171875, -0.0458000004291534423828125)), _1195);
+            vec2 _859 = (_808 + (vec2(float(_1151), float(_1130)) / _797)) - _756;
+            float _860 = dot(_859, _859);
+            float _865 = exp2(_860 * _820);
+            float _869 = exp2(_860 * _818);
+            vec3 _872 = _965.xyz;
+            _879 = _1163 + (_965 * _869);
+            _881 = _1166 + _869;
+            _885 = _1170 + (_872 * _865);
+            _890 = _1173 + ((_872 * _872) * _865);
+            _893 = _1176 + _865;
+            _897 = _1151 + 1;
+            _1176 = _893;
+            _1173 = _890;
+            _1170 = _885;
+            _1166 = _881;
+            _1163 = _879;
+            _1151 = _897;
+            continue;
+        }
+        _903 = _1130 + 1;
+        _1135 = _1173;
+        _1134 = _1176;
+        _1133 = _1170;
+        _1132 = _1166;
+        _1131 = _1163;
+        _1130 = _903;
+        continue;
+    }
+    vec3 _913 = vec3(_1134);
+    vec3 _914 = _1133 / _913;
+    vec4 sampled = textureLod(sampler2D(decision_tex, samplers_lnc), _757, 0.0);
+    vec3 _489 = sqrt(max(vec3(0.0), (_1135 / _913) - (_914 * _914))) * exp2(5.0 * sampled.x);
+    float _498 = exp((-9.0) + (10.38629436492919921875 * sampled.y));
+    vec3 _1144;
+    if (globalParams.history_valid != 0)
+    {
+        _1144 = max(vec3(0.0), mix(_1131.xyz / vec3(_1132), clamp(vec3(texelFetch(reprojected_history_tex_lum, ivec2(gl_GlobalInvocationID.xy), 0).x, texelFetch(reprojected_history_tex_chroma, ivec2(gl_GlobalInvocationID.xy), 0).xy), _914 - _489, _914 + _489), vec3(_498 / (_498 + _1132))) * mat3(vec3(1.0, 0.0, 1.574800014495849609375), vec3(1.0, -0.1872999966144561767578125, -0.468100011348724365234375), vec3(1.0, 1.85559999942779541015625, 0.0)));
+    }
+    else
+    {
+        _1144 = max(vec3(0.0), (_1131.xyz / vec3(max(9.9999997473787516355514526367188e-06, _1132))) * mat3(vec3(1.0, 0.0, 1.574800014495849609375), vec3(1.0, -0.1872999966144561767578125, -0.468100011348724365234375), vec3(1.0, 1.85559999942779541015625, 0.0)));
+    }
+    ivec3 _1025 = ivec3(0);
+    vec3 _1028 = frexp(_1144, _1025);
+    imageStore(history_output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(_1144 + (vec3(notEqual(_1144, vec3(0.0))) * exp2(vec3(_1025) - vec3(8.0, 8.0, 7.0))), 0.0));
+    float _1041 = dot(_1144, vec3(0.2125999927520751953125, 0.715200006961822509765625, 0.072200000286102294921875));
+    gs_tile_luminance[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = _1041;
+    barrier();
+    uvec2 neighbor0_coord = gl_LocalInvocationID.xy + uvec2(1u, 0u);
+    uvec2 neighbor1_coord = gl_LocalInvocationID.xy - uvec2(1u, 0u);
+    float _1145;
+    float _1146;
+    if (all(lessThan(uvec4(neighbor0_coord, neighbor1_coord), uvec4(8u))))
+    {
+        uint _633 = neighbor0_coord.x;
+        uint _635 = neighbor0_coord.y;
+        uint _638 = neighbor1_coord.x;
+        uint _640 = neighbor1_coord.y;
+        float _650 = max(0.0, 1.0 - (6.0 * (abs(_1041 - gs_tile_luminance[_633][_635]) + abs(_1041 - gs_tile_luminance[_638][_640]))));
+        float _658 = min(_650, (globalParams.sharpen_amount * _650) * 1.25);
+        _1146 = 2.0 * _658;
+        _1145 = (gs_tile_luminance[_633][_635] + gs_tile_luminance[_638][_640]) * _658;
+    }
+    else
+    {
+        _1146 = 0.0;
+        _1145 = 0.0;
+    }
+    uvec2 neighbor0_coord_1 = gl_LocalInvocationID.xy + uvec2(0u, 1u);
+    uvec2 neighbor1_coord_1 = gl_LocalInvocationID.xy - uvec2(0u, 1u);
+    float _1147;
+    float _1148;
+    if (all(lessThan(uvec4(neighbor0_coord_1, neighbor1_coord_1), uvec4(8u))))
+    {
+        uint _681 = neighbor0_coord_1.x;
+        uint _683 = neighbor0_coord_1.y;
+        uint _686 = neighbor1_coord_1.x;
+        uint _688 = neighbor1_coord_1.y;
+        float _698 = max(0.0, 1.0 - (6.0 * (abs(_1041 - gs_tile_luminance[_681][_683]) + abs(_1041 - gs_tile_luminance[_686][_688]))));
+        float _703 = min(_698, (globalParams.sharpen_amount * _698) * 1.25);
+        _1148 = _1145 + ((gs_tile_luminance[_681][_683] + gs_tile_luminance[_686][_688]) * _703);
+        _1147 = _1146 + (2.0 * _703);
+    }
+    else
+    {
+        _1148 = _1145;
+        _1147 = _1146;
+    }
+    vec3 result = _1144 * max(0.0, max(0.0, (_1041 * (_1147 + 1.0)) - _1148) / max(9.9999997473787516355514526367188e-06, _1041));
+    ivec3 _1049 = ivec3(0);
+    vec3 _1052 = frexp(result, _1049);
+    imageStore(output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(result + (vec3(notEqual(result, vec3(0.0))) * exp2(vec3(_1049) - vec3(8.0, 8.0, 7.0))), 0.0));
+    imageStore(aux_output_tex, ivec2(gl_GlobalInvocationID.xy), vec4(sampled.z, clamp(textureLod(sampler2D(reprojection_tex, samplers_nnc), _757, 0.0).w * 1000.0, 0.0, 1.0), 0.0, 0.0));
+}
+

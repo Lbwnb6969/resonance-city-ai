@@ -1,0 +1,10 @@
+// FLOAT/INT reinterpret bits; BITS stores float bits; BITS4 raw vector.
+
+    uint4 out_o0;
+    uint4 v0;
+    v0.xyzw = asuint(input.v0_0);
+    out_o0.xyzw = (cb0[42].xyzw).xyzw; // mov o0.xyzw, cb0[42].xyzw
+    // ret: return all declared output registers below.
+    Output result;
+    result.o0_0 = asfloat(out_o0.xyzw);
+    return result;

@@ -1,0 +1,152 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+vec4 _765;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 dst_dims;
+    uvec2 src_tex_dims;
+    uvec2 src_ms_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} dst_buf;
+
+layout(set = 0, binding = 2) uniform texture2D src_tex;
+
+void main()
+{
+    do
+    {
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, globalParams.dst_dims)))
+        {
+            break;
+        }
+        if (all(equal(globalParams.src_tex_dims, globalParams.dst_dims)))
+        {
+            vec3 _632 = clamp(texelFetch(src_tex, ivec2(gl_GlobalInvocationID.xy), 0).xyz, vec3(0.0), vec3(1.0));
+            float _635 = _632.x;
+            float _751;
+            if (0.003130800090730190277099609375 >= _635)
+            {
+                _751 = 12.9200000762939453125 * _635;
+            }
+            else
+            {
+                _751 = (1.05499994754791259765625 * pow(_635, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _637 = _632.y;
+            float _752;
+            if (0.003130800090730190277099609375 >= _637)
+            {
+                _752 = 12.9200000762939453125 * _637;
+            }
+            else
+            {
+                _752 = (1.05499994754791259765625 * pow(_637, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _639 = _632.z;
+            float _753;
+            if (0.003130800090730190277099609375 >= _639)
+            {
+                _753 = 12.9200000762939453125 * _639;
+            }
+            else
+            {
+                _753 = (1.05499994754791259765625 * pow(_639, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            dst_buf._member0[((gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * globalParams.dst_dims.x)) * 4u) / 4u] = ((uint((clamp(_751, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_752, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_753, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + 4278190080u;
+        }
+        else
+        {
+            vec2 _371 = vec2(globalParams.dst_dims);
+            vec2 _373 = vec2(globalParams.src_tex_dims);
+            vec2 _379 = _373 / vec2(float(min(globalParams.src_tex_dims.x, globalParams.src_tex_dims.y)));
+            vec2 _389 = _371 / vec2(float(min(globalParams.dst_dims.x, globalParams.dst_dims.y)));
+            vec2 _390 = _379 / _389;
+            vec2 _394 = vec2(min(_390.x, _390.y));
+            vec2 _409 = ((((vec2(3.0) / _371) * _389) * _394) / _379) * _373;
+            float _413 = clamp(max(_409.x, _409.y), 1.0, 3.0);
+            vec2 _415 = (((((((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / _371) - vec2(0.5)) * _389) * _394) / _379) + vec2(0.5)) * _373;
+            vec2 _418 = vec2(_413);
+            ivec2 _420 = ivec2((_415 - vec2(0.5)) - _418);
+            ivec2 _425 = ivec2((_415 + vec2(0.5)) + _418);
+            int _426 = _420.y;
+            vec4 _744;
+            _744 = vec4(0.0);
+            int _477;
+            vec4 _750;
+            int _743 = _426;
+            for (;;)
+            {
+                if (!(_743 < _425.y))
+                {
+                    break;
+                }
+                int _436 = _420.x;
+                _750 = _744;
+                vec4 _467;
+                int _471;
+                int _748 = _436;
+                for (;;)
+                {
+                    if (!(_748 < _425.x))
+                    {
+                        break;
+                    }
+                    ivec2 _448 = ivec2(_748, _743);
+                    vec2 _452 = (vec2(_448) + vec2(0.5)) - _415;
+                    uvec2 _458 = uvec2(_448);
+                    ivec3 _501 = ivec3(uvec3(_458, 0u));
+                    _467 = _750 + ((vec4(texelFetch(src_tex, _501.xy, _501.z).xyz, 1.0) * exp(((-3.0) * dot(_452, _452)) / (_413 * _413))) * float(all(lessThan(_458, globalParams.src_tex_dims))));
+                    _471 = _748 + 1;
+                    _750 = _467;
+                    _748 = _471;
+                    continue;
+                }
+                _477 = _743 + 1;
+                _744 = _750;
+                _743 = _477;
+                continue;
+            }
+            vec3 _510 = clamp(_744.xyz / vec3(max(9.9999997473787516355514526367188e-06, _744.w)), vec3(0.0), vec3(1.0));
+            float _513 = _510.x;
+            float _745;
+            if (0.003130800090730190277099609375 >= _513)
+            {
+                _745 = 12.9200000762939453125 * _513;
+            }
+            else
+            {
+                _745 = (1.05499994754791259765625 * pow(_513, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _515 = _510.y;
+            float _746;
+            if (0.003130800090730190277099609375 >= _515)
+            {
+                _746 = 12.9200000762939453125 * _515;
+            }
+            else
+            {
+                _746 = (1.05499994754791259765625 * pow(_515, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            float _517 = _510.z;
+            float _747;
+            if (0.003130800090730190277099609375 >= _517)
+            {
+                _747 = 12.9200000762939453125 * _517;
+            }
+            else
+            {
+                _747 = (1.05499994754791259765625 * pow(_517, 0.4166666567325592041015625)) - 0.054999999701976776123046875;
+            }
+            dst_buf._member0[((gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * globalParams.dst_dims.x)) * 4u) / 4u] = ((uint((clamp(_745, 0.0, 1.0) * 255.0) + 0.5) + (uint((clamp(_746, 0.0, 1.0) * 255.0) + 0.5) << uint(8))) + (uint((clamp(_747, 0.0, 1.0) * 255.0) + 0.5) << uint(16))) + 4278190080u;
+        }
+        break;
+    } while(false);
+}
+

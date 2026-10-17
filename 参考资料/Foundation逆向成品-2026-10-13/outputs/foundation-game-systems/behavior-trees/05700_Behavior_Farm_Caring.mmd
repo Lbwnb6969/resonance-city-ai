@@ -1,0 +1,36 @@
+flowchart TD
+  n0["GoTo"]
+  n1["Sequencer"]
+  n2["PlaCAgentNodeFindRandomPlantElement"]
+  n3["Waiting"]
+  n4["PlaCAgentNodeDisablePathTracing"]
+  n5["PlaCAgentNodeCheckFarmState"]
+  n6["PlaCAgentNodeSetWorkplaceAsDestination"]
+  n7["Repeater"]
+  n8["Sequencer"]
+  n9["PlaCAgentNodeEnablePathTracing"]
+  n10["GoTo"]
+  n11["LookAt"]
+  n12["PlaCAgentNodeSetupFarmGrowingWork"]
+  n13["Selector"]
+  n14["8d5bd77e-9ac8-4b8a-a608-5dc76e21b41a"]
+  n15["Selector"]
+  n16["GamCBehaviorTreeNodeSetBoolValue"]
+  n17["SetActivityMessage"]
+  n1 -->|0| n6
+  n1 -->|1| n10
+  n1 -->|2| n12
+  n1 -->|3| n13
+  n7 -->|4| n15
+  n8 -->|5| n5
+  n8 -->|6| n4
+  n8 -->|7| n2
+  n8 -->|8| n17
+  n8 -->|9| n16
+  n8 -->|10| n0
+  n8 -->|11| n11
+  n8 -->|12| n3
+  n13 -->|13| n7
+  n13 -->|14| n9
+  n15 -->|15| n8
+  n15 -->|16| n14

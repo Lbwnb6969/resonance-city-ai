@@ -1,0 +1,848 @@
+{
+  "compiler": "Existing Windows d3dcompiler_47.dll D3DCompile strictness flag",
+  "limitations": [
+    "Compilation proves valid stage-compatible HLSL, not identical GPU pixels or DXBC bytes."
+  ],
+  "programs": [
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__0.hlsl(29,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 25704
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 1,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__1.hlsl(29,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 25704
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 2,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__2.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__2.hlsl(29,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 25704
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 3,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__3.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__3.hlsl(35,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 30288
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 4,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__4.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 60708
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 5,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__5.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 60720
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 6,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__6.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 60708
+    },
+    {
+      "shader": "PlacemakerUi/DistanceFieldUi",
+      "program": 7,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__16__PlacemakerUi_DistanceFieldUi__p4__7.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 60708
+    },
+    {
+      "shader": "Placemaker/Skybox",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__17__Placemaker_Skybox__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23600
+    },
+    {
+      "shader": "Placemaker/Skybox",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__17__Placemaker_Skybox__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 30064
+    },
+    {
+      "shader": "Placemaker/Skybox",
+      "program": 2,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__17__Placemaker_Skybox__p4__2.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets0.assets__17__Placemaker_Skybox__p4__2.hlsl(26,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 23552
+    },
+    {
+      "shader": "Placemaker/Skybox",
+      "program": 3,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__17__Placemaker_Skybox__p4__3.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14344
+    },
+    {
+      "shader": "PlacemakerUi/MultiFieldUi",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__18__PlacemakerUi_MultiFieldUi__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23452
+    },
+    {
+      "shader": "PlacemakerUi/MultiFieldUi",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets0.assets__18__PlacemakerUi_MultiFieldUi__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 36644
+    },
+    {
+      "shader": "Placemaker/Debris",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__153__Placemaker_Debris__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 120928
+    },
+    {
+      "shader": "Placemaker/Debris",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__153__Placemaker_Debris__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14288
+    },
+    {
+      "shader": "Placemaker/Hole0",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__154__Placemaker_Hole0__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23432
+    },
+    {
+      "shader": "Placemaker/Hole0",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__154__Placemaker_Hole0__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14256
+    },
+    {
+      "shader": "Placemaker/Grid",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__155__Placemaker_Grid__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets1.assets__155__Placemaker_Grid__p4__0.hlsl(31,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 34636
+    },
+    {
+      "shader": "Placemaker/Grid",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__155__Placemaker_Grid__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 38716
+    },
+    {
+      "shader": "Placemaker/AoStack",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__156__Placemaker_AoStack__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 19056
+    },
+    {
+      "shader": "Placemaker/AoStack",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__156__Placemaker_AoStack__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23244
+    },
+    {
+      "shader": "Placemaker/Voxel",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__157__Placemaker_Voxel__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 45476
+    },
+    {
+      "shader": "Placemaker/Voxel",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__157__Placemaker_Voxel__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14288
+    },
+    {
+      "shader": "Placemaker/Door",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__158__Placemaker_Door__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets1.assets__158__Placemaker_Door__p4__0.hlsl(57,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 107584
+    },
+    {
+      "shader": "Placemaker/Door",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__158__Placemaker_Door__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 49940
+    },
+    {
+      "shader": "Placemaker/Bird",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__159__Placemaker_Bird__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 167216
+    },
+    {
+      "shader": "Placemaker/Bird",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__159__Placemaker_Bird__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 47480
+    },
+    {
+      "shader": "Placemaker/Mirror",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__160__Placemaker_Mirror__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 116384
+    },
+    {
+      "shader": "Placemaker/Mirror",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__160__Placemaker_Mirror__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 60952
+    },
+    {
+      "shader": "PlacemakerUi/VignetteOverlay",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__161__PlacemakerUi_VignetteOverlay__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 25900
+    },
+    {
+      "shader": "PlacemakerUi/VignetteOverlay",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__161__PlacemakerUi_VignetteOverlay__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23276
+    },
+    {
+      "shader": "Placemaker/NoAlphaBlit",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__162__Placemaker_NoAlphaBlit__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 19000
+    },
+    {
+      "shader": "Placemaker/NoAlphaBlit",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__162__Placemaker_NoAlphaBlit__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16504
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 25720
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14288
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 2,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__2.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 47808
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 3,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__3.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23568
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 4,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__4.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16496
+    },
+    {
+      "shader": "Hidden/ShadowBaker",
+      "program": 5,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__163__Hidden_ShadowBaker__p4__5.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 21316
+    },
+    {
+      "shader": "Placemaker/FlipVertically",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__164__Placemaker_FlipVertically__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 21196
+    },
+    {
+      "shader": "Placemaker/FlipVertically",
+      "program": 1,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__164__Placemaker_FlipVertically__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 21196
+    },
+    {
+      "shader": "Placemaker/FlipVertically",
+      "program": 2,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__164__Placemaker_FlipVertically__p4__2.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16504
+    },
+    {
+      "shader": "Placemaker/FlipVertically",
+      "program": 3,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__164__Placemaker_FlipVertically__p4__3.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16564
+    },
+    {
+      "shader": "Placemaker/Splash",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__165__Placemaker_Splash__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets1.assets__165__Placemaker_Splash__p4__0.hlsl(49,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 111852
+    },
+    {
+      "shader": "Placemaker/Splash",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__165__Placemaker_Splash__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23168
+    },
+    {
+      "shader": "Placemaker/HoverHightlight",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__166__Placemaker_HoverHightlight__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 25820
+    },
+    {
+      "shader": "Placemaker/HoverHightlight",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__166__Placemaker_HoverHightlight__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 22988
+    },
+    {
+      "shader": "Hidden/AoBaker",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__167__Hidden_AoBaker__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23340
+    },
+    {
+      "shader": "Hidden/AoBaker",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__167__Hidden_AoBaker__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16680
+    },
+    {
+      "shader": "Placemaker/Dust",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__168__Placemaker_Dust__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets1.assets__168__Placemaker_Dust__p4__0.hlsl(40,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 67632
+    },
+    {
+      "shader": "Placemaker/Dust",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__168__Placemaker_Dust__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 16688
+    },
+    {
+      "shader": "Placemaker/House",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__169__Placemaker_House__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 134200
+    },
+    {
+      "shader": "Placemaker/House",
+      "program": 1,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__169__Placemaker_House__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 114308
+    },
+    {
+      "shader": "Placemaker/House",
+      "program": 2,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__169__Placemaker_House__p4__2.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 58748
+    },
+    {
+      "shader": "Placemaker/House",
+      "program": 3,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__169__Placemaker_House__p4__3.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 80700
+    },
+    {
+      "shader": "Placemaker/Water",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__170__Placemaker_Water__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 100856
+    },
+    {
+      "shader": "Placemaker/Water",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__170__Placemaker_Water__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 25428
+    },
+    {
+      "shader": "Placemaker/Window",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__171__Placemaker_Window__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 153708
+    },
+    {
+      "shader": "Placemaker/Window",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__171__Placemaker_Window__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 49868
+    },
+    {
+      "shader": "Placemaker/Fence",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__172__Placemaker_Fence__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 118560
+    },
+    {
+      "shader": "Placemaker/Fence",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__172__Placemaker_Fence__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 38708
+    },
+    {
+      "shader": "Hidden/MarchingSquaresColorBlit",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__173__Hidden_MarchingSquaresColorBlit__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 19000
+    },
+    {
+      "shader": "Hidden/MarchingSquaresColorBlit",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__173__Hidden_MarchingSquaresColorBlit__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 21104
+    },
+    {
+      "shader": "Placemaker/Sandbank",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__174__Placemaker_Sandbank__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets1.assets__174__Placemaker_Sandbank__p4__0.hlsl(50,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 98676
+    },
+    {
+      "shader": "Placemaker/Sandbank",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__174__Placemaker_Sandbank__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 69564
+    },
+    {
+      "shader": "Placemaker/Carnival",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__175__Placemaker_Carnival__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 127444
+    },
+    {
+      "shader": "Placemaker/Carnival",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__175__Placemaker_Carnival__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 43164
+    },
+    {
+      "shader": "Placemaker/WaterShadow",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__176__Placemaker_WaterShadow__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 28060
+    },
+    {
+      "shader": "Placemaker/WaterShadow",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__176__Placemaker_WaterShadow__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 29872
+    },
+    {
+      "shader": "Hidden/AoSpreader",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__177__Hidden_AoSpreader__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 19000
+    },
+    {
+      "shader": "Hidden/AoSpreader",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__177__Hidden_AoSpreader__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 42976
+    },
+    {
+      "shader": "Placemaker/Plants",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__178__Placemaker_Plants__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 134044
+    },
+    {
+      "shader": "Placemaker/Plants",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__178__Placemaker_Plants__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 56292
+    },
+    {
+      "shader": "Placemaker/Border",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__179__Placemaker_Border__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 21160
+    },
+    {
+      "shader": "Placemaker/Border",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__179__Placemaker_Border__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 18956
+    },
+    {
+      "shader": "Placemaker/Shade",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__180__Placemaker_Shade__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 27908
+    },
+    {
+      "shader": "Placemaker/Shade",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__180__Placemaker_Shade__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 14372
+    },
+    {
+      "shader": "Placemaker/Ground",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__181__Placemaker_Ground__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 61104
+    },
+    {
+      "shader": "Placemaker/Ground",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__181__Placemaker_Ground__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 38824
+    },
+    {
+      "shader": "Placemaker/ColorPick",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__182__Placemaker_ColorPick__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 120796
+    },
+    {
+      "shader": "Placemaker/ColorPick",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets1.assets__182__Placemaker_ColorPick__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 34396
+    },
+    {
+      "shader": "PlacemakerUi/TownPreviewUi",
+      "program": 0,
+      "stage": "vs_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets2.assets__14__PlacemakerUi_TownPreviewUi__p4__0.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\sharedassets2.assets__14__PlacemakerUi_TownPreviewUi__p4__0.hlsl(27,11-24): warning X3578: Output value 'main' is not completely initialized\n",
+      "compiled_bytes": 23572
+    },
+    {
+      "shader": "PlacemakerUi/TownPreviewUi",
+      "program": 1,
+      "stage": "ps_4_0",
+      "hlsl": "outputs\\townscaper_shader_algorithms\\sharedassets2.assets__14__PlacemakerUi_TownPreviewUi__p4__1.hlsl",
+      "success": true,
+      "hresult": "0x0",
+      "diagnostics": "",
+      "compiled_bytes": 23296
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=doubleoctagon];
+  n1 [label="PlaCAgentNodeUpgradeHouse",shape=box];
+  n2 [label="GoTo",shape=box];
+  n3 [label="Is House Authorized To Upgrade",shape=box];
+  n4 [label="Selector",shape=box];
+  n5 [label="Failer",shape=box];
+  n6 [label="Villager leave it's house.",shape=box];
+  n0 -> n3 [label="0"];
+  n0 -> n2 [label="1"];
+  n0 -> n1 [label="2"];
+  n5 -> n6 [label="3"];
+}

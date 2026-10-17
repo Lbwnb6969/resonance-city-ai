@@ -1,0 +1,46 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(set = 0, binding = 1, rgba32f) uniform image2D garden_mask;
+layout(set = 0, binding = 2) uniform texture2D path_mask;
+layout(set = 0, binding = 3) uniform texture2D rocky_terrain;
+layout(set = 0, binding = 4) uniform texture2D water_mask;
+
+void main()
+{
+    uvec2 _27 = uvec2(ivec2(gl_GlobalInvocationID.xy));
+    ivec2 _28 = ivec2(_27);
+    vec4 sampled = imageLoad(garden_mask, _28);
+    bool _109;
+    if (texelFetch(path_mask, ivec2(_27), 0).x > 0.100000001490116119384765625)
+    {
+        _109 = true;
+    }
+    else
+    {
+        _109 = texelFetch(rocky_terrain, ivec2(_27), 0).x > 0.0;
+    }
+    bool _110;
+    if (_109)
+    {
+        _110 = true;
+    }
+    else
+    {
+        _110 = texelFetch(water_mask, ivec2(_27), 0).y > 0.300000011920928955078125;
+    }
+    if (_110)
+    {
+        vec4 _92 = imageLoad(garden_mask, _28);
+        _92.x = 0.0;
+        imageStore(garden_mask, _28, _92);
+    }
+    else
+    {
+        vec4 _103 = imageLoad(garden_mask, _28);
+        _103.x = sampled.z;
+        imageStore(garden_mask, _28, _103);
+    }
+}
+

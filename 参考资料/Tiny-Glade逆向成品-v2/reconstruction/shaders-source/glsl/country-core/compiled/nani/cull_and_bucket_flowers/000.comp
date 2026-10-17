@@ -1,0 +1,225 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct _Array_natural_float12
+{
+    float data[12];
+};
+
+struct Affine3Packed_natural
+{
+    _Array_natural_float12 data;
+};
+
+struct FlowerXform_natural
+{
+    Affine3Packed_natural transform;
+    vec3 color;
+    uint flower_type;
+};
+
+struct MeshAtlasPartInfo_natural
+{
+    uint first_index;
+    uint index_count;
+    float bounding_sphere_radius;
+    uint pad0;
+};
+
+struct _Array_natural_MeshAtlasPartInfo1024
+{
+    MeshAtlasPartInfo_natural data[1024];
+};
+
+struct NaniDrawListInfo_natural
+{
+    uint global_instance_offset;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+layout(set = 0, binding = 11, std430) readonly buffer StructuredBuffer
+{
+    uvec4 _member0[];
+} dispatch_args_buffer;
+
+layout(set = 0, binding = 10, std430) readonly buffer instance_buffer
+{
+    FlowerXform_natural _member0[];
+} instance_buffer_1;
+
+layout(set = 0, binding = 1, std430) readonly buffer atlas_part_info
+{
+    _Array_natural_MeshAtlasPartInfo1024 _member0[];
+} atlas_part_info_1;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 8, std430) readonly buffer draw_list_info
+{
+    NaniDrawListInfo_natural _member0[];
+} draw_list_info_1;
+
+layout(set = 0, binding = 6, std430) readonly buffer prev_visibility_bitmask
+{
+    uint _member0[];
+} prev_visibility_bitmask_1;
+
+layout(set = 0, binding = 7, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} next_visibility_bitmask;
+
+layout(set = 0, binding = 3, std430) buffer filtered_instance_allocator_buffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer_1;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint draw_list_index_base;
+} push_constants;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= dispatch_args_buffer._member0[0].w)
+        {
+            break;
+        }
+        float _578 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[0];
+        float _580 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[1];
+        float _582 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[2];
+        float _584 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[3];
+        float _586 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[4];
+        float _588 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[5];
+        float _590 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[6];
+        float _592 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[7];
+        float _594 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[8];
+        float _596 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[9];
+        float _598 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[10];
+        float _600 = instance_buffer_1._member0[gl_GlobalInvocationID.x].transform.data.data[11];
+        mat3x4 _606 = transpose(mat4x3(vec3(_578, _580, _582), vec3(_584, _586, _588), vec3(_590, _592, _594), vec3(_596, _598, _600)));
+        uint _138 = instance_buffer_1._member0[gl_GlobalInvocationID.x].flower_type;
+        vec3 _611 = _606[0].xyz;
+        vec3 _614 = _606[1].xyz;
+        vec3 _617 = _606[2].xyz;
+        float _198 = sqrt(max(max(dot(_611, _611), dot(_614, _614)), dot(_617, _617))) * atlas_part_info_1._member0[push_constants.world_subset].data[_138].bounding_sphere_radius;
+        vec4 _714 = vec4(vec4(vec3(0.0), 1.0) * _606, 1.0) * current_view.world_to_view;
+        vec3 _715 = _714.xyz;
+        float _666 = _714.z;
+        uint _671 = clamp(uint(clamp((32.0 - _666) * 0.00347222224809229373931884765625, 0.0, 1.0) * 1024.0), 0u, 1023u);
+        vec4 _756 = vec4(-current_view.view_to_clip[0].x, current_view.view_to_clip[0].y, 0.0, current_view.view_to_clip[0].w);
+        vec4 _764 = vec4(current_view.view_to_clip[1].xy, 0.0, current_view.view_to_clip[1].w);
+        vec4 _769 = vec4(current_view.view_to_clip[3].xy, -1.0, current_view.view_to_clip[3].w);
+        vec4 _863[4];
+        _863[0] = _769 + _756;
+        _863[1] = _769 - _756;
+        _863[2] = _769 + _764;
+        _863[3] = _769 - _764;
+        int _802;
+        int _896 = 0;
+        for (;;)
+        {
+            if (!(_896 < 4))
+            {
+                break;
+            }
+            _863[_896] /= vec4(length(_863[_896].xyz));
+            _802 = _896 + 1;
+            _896 = _802;
+            continue;
+        }
+        vec4 _874[4] = _863;
+        bool _898;
+        _898 = ((-_666) + _198) > current_view.view_to_clip[2].w;
+        int _839;
+        bool _901;
+        int _897 = 0;
+        for (;;)
+        {
+            if (!(_897 < 4))
+            {
+                break;
+            }
+            if (_898)
+            {
+                _901 = dot(vec4(_715, 1.0), _874[_897]) > (-_198);
+            }
+            else
+            {
+                _901 = false;
+            }
+            _839 = _897 + 1;
+            _898 = _901;
+            _897 = _839;
+            continue;
+        }
+        uint _685 = gl_GlobalInvocationID.x + draw_list_info_1._member0[push_constants.draw_list_index_base].global_instance_offset;
+        bool _899;
+        if (_898)
+        {
+            _899 = (prev_visibility_bitmask_1._member0[_685 / 32u] & (1u << (_685 % 32u))) != 0u;
+        }
+        else
+        {
+            _899 = false;
+        }
+        if (_899)
+        {
+            uint _697 = atomicOr(next_visibility_bitmask._member0[_685 / 32u], 1u << (_685 % 32u));
+            uint _699 = atomicAdd(filtered_instance_allocator_buffer_1._member0[push_constants.draw_list_index_base], 1u);
+            filtered_instance_buffer_1._member0[_699] = (gl_GlobalInvocationID.x * 1024u) + _671;
+            filtered_instance_meta_buffer_1._member0[_699].raw = _138;
+            uint _706 = atomicAdd(output_histogram_1._member0[(push_constants.draw_list_index_base * 1024u) + _671], 1u);
+        }
+        break;
+    } while(false);
+}
+

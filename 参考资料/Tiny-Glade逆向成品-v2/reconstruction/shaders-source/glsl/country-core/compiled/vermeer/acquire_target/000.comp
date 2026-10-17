@@ -1,0 +1,20 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+vec4 _70;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 color_tex_dims;
+    uvec2 target_tex_dims;
+} globalParams;
+
+layout(set = 0, binding = 1) uniform texture2DMS color_tex;
+layout(set = 0, binding = 2, rgba8) uniform writeonly image2D target_tex;
+
+void main()
+{
+    imageStore(target_tex, ivec2(gl_GlobalInvocationID.xy), vec4(texelFetch(color_tex, ivec2(((vec2(ivec2(gl_GlobalInvocationID.xy)) + vec2(0.5)) / vec2(globalParams.target_tex_dims)) * vec2(globalParams.color_tex_dims)), 0).xyz, 1.0));
+}
+

@@ -1,0 +1,397 @@
+0000000140b215f0  55                       push     rbp
+0000000140b215f1  4157                     push     r15
+0000000140b215f3  4156                     push     r14
+0000000140b215f5  4155                     push     r13
+0000000140b215f7  4154                     push     r12
+0000000140b215f9  56                       push     rsi
+0000000140b215fa  57                       push     rdi
+0000000140b215fb  53                       push     rbx
+0000000140b215fc  4881ec08020000           sub      rsp, 0x208
+0000000140b21603  488dac2480000000         lea      rbp, [rsp + 0x80]
+0000000140b2160b  48c78580010000feffffff   mov      qword ptr [rbp + 0x180], 0xfffffffffffffffe
+0000000140b21616  4889d3                   mov      rbx, rdx
+0000000140b21619  4889ce                   mov      rsi, rcx
+0000000140b2161c  488db920010000           lea      rdi, [rcx + 0x120]
+0000000140b21623  4c8bb130010000           mov      r14, qword ptr [rcx + 0x130]
+0000000140b2162a  4c3bb120010000           cmp      r14, qword ptr [rcx + 0x120]
+0000000140b21631  7508                     jne      0x140b2163b
+0000000140b21633  4889f9                   mov      rcx, rdi
+0000000140b21636  e895992602               call     0x142d8afd0 ; alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global> | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h031667e22e764d71E
+0000000140b2163b  488b8628010000           mov      rax, qword ptr [rsi + 0x128]
+0000000140b21642  4c89f1                   mov      rcx, r14
+0000000140b21645  48c1e104                 shl      rcx, 4
+0000000140b21649  488d15a8475302           lea      rdx, [rip + 0x25347a8] ; 'Build grass2 clump attribs for shadows'
+0000000140b21650  48891408                 mov      qword ptr [rax + rcx], rdx
+0000000140b21654  48c744080826000000       mov      qword ptr [rax + rcx + 8], 0x26
+0000000140b2165d  49ffc6                   inc      r14
+0000000140b21660  4c89b630010000           mov      qword ptr [rsi + 0x130], r14
+0000000140b21667  4883bb8800000000         cmp      qword ptr [rbx + 0x88], 0
+0000000140b2166f  0f84c3040000             je       0x140b21b38
+0000000140b21675  488b4370                 mov      rax, qword ptr [rbx + 0x70]
+0000000140b21679  488b4b78                 mov      rcx, qword ptr [rbx + 0x78]
+0000000140b2167d  48baa2b8df68b4826a1d     movabs   rdx, 0x1d6a82b468dfb8a2
+0000000140b21687  4531c0                   xor      r8d, r8d
+0000000140b2168a  660f6f052e383102         movdqa   xmm0, xmmword ptr [rip + 0x231382e]
+0000000140b21692  660f76c9                 pcmpeqd  xmm1, xmm1
+0000000140b21696  660f6f15c2f73302         movdqa   xmm2, xmmword ptr [rip + 0x233f7c2]
+0000000140b2169e  4821ca                   and      rdx, rcx
+0000000140b216a1  f30f6f1c10               movdqu   xmm3, xmmword ptr [rax + rdx]
+0000000140b216a6  660f6fe3                 movdqa   xmm4, xmm3
+0000000140b216aa  660f74e0                 pcmpeqb  xmm4, xmm0
+0000000140b216ae  66440fd7cc               pmovmskb r9d, xmm4
+0000000140b216b3  4585c9                   test     r9d, r9d
+0000000140b216b6  7438                     je       0x140b216f0
+0000000140b216b8  f3450fbcd1               tzcnt    r10d, r9d
+0000000140b216bd  4901d2                   add      r10, rdx
+0000000140b216c0  4921ca                   and      r10, rcx
+0000000140b216c3  49f7da                   neg      r10
+0000000140b216c6  4f8d1452                 lea      r10, [r10 + r10*2]
+0000000140b216ca  f3420f6f64d0e8           movdqu   xmm4, xmmword ptr [rax + r10*8 - 0x18]
+0000000140b216d1  660f74e2                 pcmpeqb  xmm4, xmm2
+0000000140b216d5  66440fd7dc               pmovmskb r11d, xmm4
+0000000140b216da  4181fbffff0000           cmp      r11d, 0xffff
+0000000140b216e1  742c                     je       0x140b2170f
+0000000140b216e3  458d51ff                 lea      r10d, [r9 - 1]
+0000000140b216e7  664521ca                 and      r10w, r9w
+0000000140b216eb  4589d1                   mov      r9d, r10d
+0000000140b216ee  75c8                     jne      0x140b216b8
+0000000140b216f0  660f74d9                 pcmpeqb  xmm3, xmm1
+0000000140b216f4  66440fd7cb               pmovmskb r9d, xmm3
+0000000140b216f9  4585c9                   test     r9d, r9d
+0000000140b216fc  0f8536040000             jne      0x140b21b38
+0000000140b21702  4c01c2                   add      rdx, r8
+0000000140b21705  4883c210                 add      rdx, 0x10
+0000000140b21709  4983c010                 add      r8, 0x10
+0000000140b2170d  eb8f                     jmp      0x140b2169e
+0000000140b2170f  4a8d14d0                 lea      rdx, [rax + r10*8]
+0000000140b21713  488b52f8                 mov      rdx, qword ptr [rdx - 8]
+0000000140b21717  4c8b8310020000           mov      r8, qword ptr [rbx + 0x210]
+0000000140b2171e  4c39c2                   cmp      rdx, r8
+0000000140b21721  0f8311040000             jae      0x140b21b38
+0000000140b21727  4c8b8b08020000           mov      r9, qword ptr [rbx + 0x208]
+0000000140b2172e  4d8b14d1                 mov      r10, qword ptr [r9 + rdx*8]
+0000000140b21732  4d85d2                   test     r10, r10
+0000000140b21735  0f84fd030000             je       0x140b21b38
+0000000140b2173b  488b93d8010000           mov      rdx, qword ptr [rbx + 0x1d8]
+0000000140b21742  49f7d2                   not      r10
+0000000140b21745  49c1e206                 shl      r10, 6
+0000000140b21749  4a837c122000             cmp      qword ptr [rdx + r10 + 0x20], 0
+0000000140b2174f  0f84e3030000             je       0x140b21b38
+0000000140b21755  4901d2                   add      r10, rdx
+0000000140b21758  498b5a10                 mov      rbx, qword ptr [r10 + 0x10]
+0000000140b2175c  49badb5f928e35b45770     movabs   r10, 0x7057b4358e925fdb
+0000000140b21766  4531db                   xor      r11d, r11d
+0000000140b21769  660f6f051f263102         movdqa   xmm0, xmmword ptr [rip + 0x231261f]
+0000000140b21771  660f76c9                 pcmpeqd  xmm1, xmm1
+0000000140b21775  660f6f15d32b3102         movdqa   xmm2, xmmword ptr [rip + 0x2312bd3]
+0000000140b2177d  4921ca                   and      r10, rcx
+0000000140b21780  f3420f6f1c10             movdqu   xmm3, xmmword ptr [rax + r10]
+0000000140b21786  660f6fe3                 movdqa   xmm4, xmm3
+0000000140b2178a  660f74e0                 pcmpeqb  xmm4, xmm0
+0000000140b2178e  66440fd7f4               pmovmskb r14d, xmm4
+0000000140b21793  4585f6                   test     r14d, r14d
+0000000140b21796  7438                     je       0x140b217d0
+0000000140b21798  f3450fbcfe               tzcnt    r15d, r14d
+0000000140b2179d  4d01d7                   add      r15, r10
+0000000140b217a0  4921cf                   and      r15, rcx
+0000000140b217a3  49f7df                   neg      r15
+0000000140b217a6  4f8d3c7f                 lea      r15, [r15 + r15*2]
+0000000140b217aa  f3420f6f64f8e8           movdqu   xmm4, xmmword ptr [rax + r15*8 - 0x18]
+0000000140b217b1  660f74e2                 pcmpeqb  xmm4, xmm2
+0000000140b217b5  66440fd7e4               pmovmskb r12d, xmm4
+0000000140b217ba  4181fcffff0000           cmp      r12d, 0xffff
+0000000140b217c1  742c                     je       0x140b217ef
+0000000140b217c3  458d7eff                 lea      r15d, [r14 - 1]
+0000000140b217c7  664521f7                 and      r15w, r14w
+0000000140b217cb  4589fe                   mov      r14d, r15d
+0000000140b217ce  75c8                     jne      0x140b21798
+0000000140b217d0  660f74d9                 pcmpeqb  xmm3, xmm1
+0000000140b217d4  66440fd7f3               pmovmskb r14d, xmm3
+0000000140b217d9  4585f6                   test     r14d, r14d
+0000000140b217dc  0f8562030000             jne      0x140b21b44
+0000000140b217e2  4d01da                   add      r10, r11
+0000000140b217e5  4983c210                 add      r10, 0x10
+0000000140b217e9  4983c310                 add      r11, 0x10
+0000000140b217ed  eb8e                     jmp      0x140b2177d
+0000000140b217ef  4a8d04f8                 lea      rax, [rax + r15*8]
+0000000140b217f3  488b40f8                 mov      rax, qword ptr [rax - 8]
+0000000140b217f7  4c39c0                   cmp      rax, r8
+0000000140b217fa  0f8344030000             jae      0x140b21b44
+0000000140b21800  498b04c1                 mov      rax, qword ptr [r9 + rax*8]
+0000000140b21804  4885c0                   test     rax, rax
+0000000140b21807  0f8437030000             je       0x140b21b44
+0000000140b2180d  48f7d0                   not      rax
+0000000140b21810  48c1e006                 shl      rax, 6
+0000000140b21814  48837c022000             cmp      qword ptr [rdx + rax + 0x20], 0
+0000000140b2181a  0f8424030000             je       0x140b21b44
+0000000140b21820  4801c2                   add      rdx, rax
+0000000140b21823  4c8b6210                 mov      r12, qword ptr [rdx + 0x10]
+0000000140b21827  4c89e1                   mov      rcx, r12
+0000000140b2182a  b215                     mov      dl, 0x15
+0000000140b2182c  e8ffc2f0ff               call     0x140a2db30 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_rg_preset | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary13get_rg_preset17hc513c9394e548632E
+0000000140b21831  48898568010000           mov      qword ptr [rbp + 0x168], rax
+0000000140b21838  4989d6                   mov      r14, rdx
+0000000140b2183b  4c89e1                   mov      rcx, r12
+0000000140b2183e  b212                     mov      dl, 0x12
+0000000140b21840  e8ebc2f0ff               call     0x140a2db30 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_rg_preset | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary13get_rg_preset17hc513c9394e548632E
+0000000140b21845  90                       nop      
+0000000140b21846  4989d7                   mov      r15, rdx
+0000000140b21849  48898570010000           mov      qword ptr [rbp + 0x170], rax
+0000000140b21850  4c89e1                   mov      rcx, r12
+0000000140b21853  b205                     mov      dl, 5
+0000000140b21855  e8d6c2f0ff               call     0x140a2db30 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_rg_preset | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary13get_rg_preset17hc513c9394e548632E
+0000000140b2185a  90                       nop      
+0000000140b2185b  4989d4                   mov      r12, rdx
+0000000140b2185e  48898578010000           mov      qword ptr [rbp + 0x178], rax
+0000000140b21865  4c8dadc8000000           lea      r13, [rbp + 0xc8]
+0000000140b2186c  4c89e9                   mov      rcx, r13
+0000000140b2186f  4889da                   mov      rdx, rbx
+0000000140b21872  4989f0                   mov      r8, rsi
+0000000140b21875  e8d6cea000               call     0x14152e750 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary15write_rg_buffer17hd84978c3f9f66269E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ClumpAttribSsbo,rhapsody::rg::api::GraphApi>
+0000000140b2187a  90                       nop      
+0000000140b2187b  488d8d30010000           lea      rcx, [rbp + 0x130]
+0000000140b21882  4889da                   mov      rdx, rbx
+0000000140b21885  4989f0                   mov      r8, rsi
+0000000140b21888  e8b3b0a000               call     0x14152c940 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary15write_rg_buffer17h91fab9ba6cf41a1eE | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveInstanceSsbo,rhapsody::rg::api::GraphApi>
+0000000140b2188d  90                       nop      
+0000000140b2188e  488d4db8                 lea      rcx, [rbp - 0x48]
+0000000140b21892  4889da                   mov      rdx, rbx
+0000000140b21895  4989f0                   mov      r8, rsi
+0000000140b21898  e82379a000               call     0x1415291c0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary15write_rg_buffer17h167b50424ac1a5bfE | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveCountSsbo,rhapsody::rg::api::GraphApi>
+0000000140b2189d  90                       nop      
+0000000140b2189e  488d4d40                 lea      rcx, [rbp + 0x40]
+0000000140b218a2  4889da                   mov      rdx, rbx
+0000000140b218a5  4989f0                   mov      r8, rsi
+0000000140b218a8  e8a35fa000               call     0x141527850 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary14read_rg_buffer17hafb7e8bf17518af2E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParams,rhapsody::rg::api::GraphApi>
+0000000140b218ad  90                       nop      
+0000000140b218ae  8b8540010000             mov      eax, dword ptr [rbp + 0x140]
+0000000140b218b4  8985ec000000             mov      dword ptr [rbp + 0xec], eax
+0000000140b218ba  0f108530010000           movups   xmm0, xmmword ptr [rbp + 0x130]
+0000000140b218c1  0f1185dc000000           movups   xmmword ptr [rbp + 0xdc], xmm0
+0000000140b218c8  0f1045b8                 movups   xmm0, xmmword ptr [rbp - 0x48]
+0000000140b218cc  0f1185f0000000           movups   xmmword ptr [rbp + 0xf0], xmm0
+0000000140b218d3  8b45c8                   mov      eax, dword ptr [rbp - 0x38]
+0000000140b218d6  898500010000             mov      dword ptr [rbp + 0x100], eax
+0000000140b218dc  488d8504010000           lea      rax, [rbp + 0x104]
+0000000140b218e3  f30f6f4540               movdqu   xmm0, xmmword ptr [rbp + 0x40]
+0000000140b218e8  f30f7f8504010000         movdqu   xmmword ptr [rbp + 0x104], xmm0
+0000000140b218f0  8b4d50                   mov      ecx, dword ptr [rbp + 0x50]
+0000000140b218f3  898d14010000             mov      dword ptr [rbp + 0x114], ecx
+0000000140b218f9  4889442428               mov      qword ptr [rsp + 0x28], rax
+0000000140b218fe  48c744242040000000       mov      qword ptr [rsp + 0x20], 0x40
+0000000140b21907  488d152e445302           lea      rdx, [rip + 0x253442e] ; 'grass2_exemplar_paramscountry_core/grass2/inc/card_splat_common/grass2_exemplar_paramsGrass2 car'
+0000000140b2190e  4c8d0d3d445302           lea      r9, [rip + 0x253443d] ; 'country_core/grass2/inc/card_splat_common/grass2_exemplar_paramsGrass2 card splat resolveBuild g'
+0000000140b21915  41b816000000             mov      r8d, 0x16
+0000000140b2191b  4889f1                   mov      rcx, rsi
+0000000140b2191e  e81d3bc400               call     0x141765440 ; _ZN8rhapsody2rg3api8GraphApi24push_instant_binding_set17h20e7f96268cf5ea1E | rhapsody::rg::api::GraphApi::push_instant_binding_set<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParamsBlock<shabriri_rt::api::EmptyProtocol>,country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParamsBlock<rhapsody::rg::binding::RgProtocol> >
+0000000140b21923  90                       nop      
+0000000140b21924  48c7851801000000000000   mov      qword ptr [rbp + 0x118], 0
+0000000140b2192f  48c7852001000008000000   mov      qword ptr [rbp + 0x120], 8
+0000000140b2193a  48c7852801000000000000   mov      qword ptr [rbp + 0x128], 0
+0000000140b21945  488b8e08020000           mov      rcx, qword ptr [rsi + 0x208]
+0000000140b2194c  488d15fffb8002           lea      rdx, [rip + 0x280fbff] ; 'country_core/grass2/build_draws:shadowcountry_core/wall/generate_draw_lists:cs_pass1country_core'
+0000000140b21953  4c8d8d18010000           lea      r9, [rbp + 0x118]
+0000000140b2195a  41b826000000             mov      r8d, 0x26
+0000000140b21960  e8fba4c500               call     0x14177be60 ; _ZN8rhapsody10shader_lib13ShaderLibrary11get_compute17hf5eea14aca8cdd56E | rhapsody::shader_lib::ShaderLibrary::get_compute<shaderface::permutation::ShaderPermutationKey>
+0000000140b21965  90                       nop      
+0000000140b21966  4889742420               mov      qword ptr [rsp + 0x20], rsi
+0000000140b2196b  488d15e0fb8002           lea      rdx, [rip + 0x280fbe0] ; 'country_core/grass2/build_draws:shadowcountry_core/wall/generate_draw_lists:cs_pass1country_core'
+0000000140b21972  488d4d40                 lea      rcx, [rbp + 0x40]
+0000000140b21976  41b826000000             mov      r8d, 0x26
+0000000140b2197c  4989c1                   mov      r9, rax
+0000000140b2197f  e83c783000               call     0x140e291c0 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::new | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode3new17hc5404be2703437e5E
+0000000140b21984  90                       nop      
+0000000140b21985  488d85dc000000           lea      rax, [rbp + 0xdc]
+0000000140b2198c  488d8df0000000           lea      rcx, [rbp + 0xf0]
+0000000140b21993  4c89ad30010000           mov      qword ptr [rbp + 0x130], r13
+0000000140b2199a  48898538010000           mov      qword ptr [rbp + 0x138], rax
+0000000140b219a1  48898d40010000           mov      qword ptr [rbp + 0x140], rcx
+0000000140b219a8  4c89b548010000           mov      qword ptr [rbp + 0x148], r14
+0000000140b219af  4c89bd50010000           mov      qword ptr [rbp + 0x150], r15
+0000000140b219b6  4c89a558010000           mov      qword ptr [rbp + 0x158], r12
+0000000140b219bd  48b8ffffffff0d000000     movabs   rax, 0xdffffffff
+0000000140b219c7  48898560010000           mov      qword ptr [rbp + 0x160], rax
+0000000140b219ce  488d4db8                 lea      rcx, [rbp - 0x48]
+0000000140b219d2  488d5540                 lea      rdx, [rbp + 0x40]
+0000000140b219d6  4c8d8530010000           lea      r8, [rbp + 0x130]
+0000000140b219dd  e8aeb7c600               call     0x14178d190 ; _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17h48db98f02f09dd77E | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17h7b0d5951f7d61ca8E
+0000000140b219e2  90                       nop      
+0000000140b219e3  4c8d7540                 lea      r14, [rbp + 0x40]
+0000000140b219e7  488d55b8                 lea      rdx, [rbp - 0x48]
+0000000140b219eb  41b888000000             mov      r8d, 0x88
+0000000140b219f1  4c89f1                   mov      rcx, r14
+0000000140b219f4  e8670d3102               call     0x142e32760 ; memcpy
+0000000140b219f9  660f6f059f3c5302         movdqa   xmm0, xmmword ptr [rip + 0x2533c9f]
+0000000140b21a01  660f7f8530010000         movdqa   xmmword ptr [rbp + 0x130], xmm0
+0000000140b21a09  488d9530010000           lea      rdx, [rbp + 0x130]
+0000000140b21a10  4c89f1                   mov      rcx, r14
+0000000140b21a13  e8f86d3000               call     0x140e28810 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::dispatch_impl | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode13dispatch_impl17h490810e96736106bE
+0000000140b21a18  90                       nop      
+0000000140b21a19  4889d9                   mov      rcx, rbx
+0000000140b21a1c  4889f2                   mov      rdx, rsi
+0000000140b21a1f  e89c88a100               call     0x14153a2c0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary22finish_write_rg_buffer17he583b6177b75b19eE | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ClumpAttribSsbo,rhapsody::rg::api::GraphApi>
+0000000140b21a24  90                       nop      
+0000000140b21a25  4889d9                   mov      rcx, rbx
+0000000140b21a28  4889f2                   mov      rdx, rsi
+0000000140b21a2b  e8d075a100               call     0x141539000 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary22finish_write_rg_buffer17h70977a8467b0d8e9E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveInstanceSsbo,rhapsody::rg::api::GraphApi>
+0000000140b21a30  90                       nop      
+0000000140b21a31  4889d9                   mov      rcx, rbx
+0000000140b21a34  4889f2                   mov      rdx, rsi
+0000000140b21a37  e88479a100               call     0x1415393c0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary22finish_write_rg_buffer17h8eb1ea7540a7f5f1E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_write_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveCountSsbo,rhapsody::rg::api::GraphApi>
+0000000140b21a3c  90                       nop      
+0000000140b21a3d  4889d9                   mov      rcx, rbx
+0000000140b21a40  4889f2                   mov      rdx, rsi
+0000000140b21a43  e8584da100               call     0x1415367a0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17hd9b574784ed9b912E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParams,rhapsody::rg::api::GraphApi>
+0000000140b21a48  90                       nop      
+0000000140b21a49  488b9d78010000           mov      rbx, qword ptr [rbp + 0x178]
+0000000140b21a50  4889d9                   mov      rcx, rbx
+0000000140b21a53  e8f8883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21a58  90                       nop      
+0000000140b21a59  4889d9                   mov      rcx, rbx
+0000000140b21a5c  4883c901                 or       rcx, 1
+0000000140b21a60  e8eb883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21a65  90                       nop      
+0000000140b21a66  48c7c0f0ffffff           mov      rax, 0xfffffffffffffff0
+0000000140b21a6d  f0480fc103               lock xadd qword ptr [rbx], rax
+0000000140b21a72  4883e0f2                 and      rax, 0xfffffffffffffff2
+0000000140b21a76  4883f812                 cmp      rax, 0x12
+0000000140b21a7a  0f84d1000000             je       0x140b21b51
+0000000140b21a80  4c8bb570010000           mov      r14, qword ptr [rbp + 0x170]
+0000000140b21a87  4c89f1                   mov      rcx, r14
+0000000140b21a8a  e8c1883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21a8f  90                       nop      
+0000000140b21a90  4c89f1                   mov      rcx, r14
+0000000140b21a93  4883c901                 or       rcx, 1
+0000000140b21a97  e8b4883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21a9c  90                       nop      
+0000000140b21a9d  48c7c0f0ffffff           mov      rax, 0xfffffffffffffff0
+0000000140b21aa4  f0490fc106               lock xadd qword ptr [r14], rax
+0000000140b21aa9  48c7c3f0ffffff           mov      rbx, 0xfffffffffffffff0
+0000000140b21ab0  4883e0f2                 and      rax, 0xfffffffffffffff2
+0000000140b21ab4  4883f812                 cmp      rax, 0x12
+0000000140b21ab8  0f84a1000000             je       0x140b21b5f
+0000000140b21abe  4c8bb568010000           mov      r14, qword ptr [rbp + 0x168]
+0000000140b21ac5  4c89f1                   mov      rcx, r14
+0000000140b21ac8  e883883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21acd  4c89f1                   mov      rcx, r14
+0000000140b21ad0  4883c901                 or       rcx, 1
+0000000140b21ad4  e877883700               call     0x140e9a350 ; parking_lot_core::parking_lot::deadlock_impl::release_resource | _ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE
+0000000140b21ad9  f0490fc11e               lock xadd qword ptr [r14], rbx
+0000000140b21ade  4883e3f2                 and      rbx, 0xfffffffffffffff2
+0000000140b21ae2  4883fb12                 cmp      rbx, 0x12
+0000000140b21ae6  0f8481000000             je       0x140b21b6d
+0000000140b21aec  488b9e30010000           mov      rbx, qword ptr [rsi + 0x130]
+0000000140b21af3  483b9e20010000           cmp      rbx, qword ptr [rsi + 0x120]
+0000000140b21afa  7508                     jne      0x140b21b04
+0000000140b21afc  4889f9                   mov      rcx, rdi
+0000000140b21aff  e8cc942602               call     0x142d8afd0 ; alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global> | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h031667e22e764d71E
+0000000140b21b04  488b8628010000           mov      rax, qword ptr [rsi + 0x128]
+0000000140b21b0b  4889d9                   mov      rcx, rbx
+0000000140b21b0e  48c1e104                 shl      rcx, 4
+0000000140b21b12  48c7040800000000         mov      qword ptr [rax + rcx], 0
+0000000140b21b1a  48ffc3                   inc      rbx
+0000000140b21b1d  48899e30010000           mov      qword ptr [rsi + 0x130], rbx
+0000000140b21b24  4881c408020000           add      rsp, 0x208
+0000000140b21b2b  5b                       pop      rbx
+0000000140b21b2c  5f                       pop      rdi
+0000000140b21b2d  5e                       pop      rsi
+0000000140b21b2e  415c                     pop      r12
+0000000140b21b30  415d                     pop      r13
+0000000140b21b32  415e                     pop      r14
+0000000140b21b34  415f                     pop      r15
+0000000140b21b36  5d                       pop      rbp
+0000000140b21b37  c3                       ret      
+0000000140b21b38  488d0de1425302           lea      rcx, [rip + 0x25342e1]
+0000000140b21b3f  e80c662a02               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+0000000140b21b44  488d0ded425302           lea      rcx, [rip + 0x25342ed]
+0000000140b21b4b  e800662a02               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+0000000140b21b50  90                       nop      
+0000000140b21b51  4889d9                   mov      rcx, rbx
+0000000140b21b54  e8f7a32902               call     0x142dbbf50 ; parking_lot::raw_rwlock::RawRwLock::unlock_shared_slow | _ZN11parking_lot10raw_rwlock9RawRwLock18unlock_shared_slow17hdc6a5f8aa7b0a048E
+0000000140b21b59  90                       nop      
+0000000140b21b5a  e921ffffff               jmp      0x140b21a80
+0000000140b21b5f  4c89f1                   mov      rcx, r14
+0000000140b21b62  e8e9a32902               call     0x142dbbf50 ; parking_lot::raw_rwlock::RawRwLock::unlock_shared_slow | _ZN11parking_lot10raw_rwlock9RawRwLock18unlock_shared_slow17hdc6a5f8aa7b0a048E
+0000000140b21b67  90                       nop      
+0000000140b21b68  e951ffffff               jmp      0x140b21abe
+0000000140b21b6d  4c89f1                   mov      rcx, r14
+0000000140b21b70  e8dba32902               call     0x142dbbf50 ; parking_lot::raw_rwlock::RawRwLock::unlock_shared_slow | _ZN11parking_lot10raw_rwlock9RawRwLock18unlock_shared_slow17hdc6a5f8aa7b0a048E
+0000000140b21b75  488b9e30010000           mov      rbx, qword ptr [rsi + 0x130]
+0000000140b21b7c  483b9e20010000           cmp      rbx, qword ptr [rsi + 0x120]
+0000000140b21b83  0f8473ffffff             je       0x140b21afc
+0000000140b21b89  e976ffffff               jmp      0x140b21b04
+0000000140b21b8e  6690                     nop      
+0000000140b21b90  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140b21b95  55                       push     rbp
+0000000140b21b96  4157                     push     r15
+0000000140b21b98  4156                     push     r14
+0000000140b21b9a  4155                     push     r13
+0000000140b21b9c  4154                     push     r12
+0000000140b21b9e  56                       push     rsi
+0000000140b21b9f  57                       push     rdi
+0000000140b21ba0  53                       push     rbx
+0000000140b21ba1  4883ec38                 sub      rsp, 0x38
+0000000140b21ba5  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000140b21bac  488b8d70010000           mov      rcx, qword ptr [rbp + 0x170]
+0000000140b21bb3  e8082e57ff               call     0x1400949c0 ; core::ptr::drop_in_place<lock_api::rwlock::RwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,tg_mods::overlay::Catalog> > | core::ptr::drop_in_place<lock_api::rwlock::MappedRwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,egui::context::ContextImpl> >
+0000000140b21bb8  90                       nop      
+0000000140b21bb9  4883c438                 add      rsp, 0x38
+0000000140b21bbd  5b                       pop      rbx
+0000000140b21bbe  5f                       pop      rdi
+0000000140b21bbf  5e                       pop      rsi
+0000000140b21bc0  415c                     pop      r12
+0000000140b21bc2  415d                     pop      r13
+0000000140b21bc4  415e                     pop      r14
+0000000140b21bc6  415f                     pop      r15
+0000000140b21bc8  5d                       pop      rbp
+0000000140b21bc9  c3                       ret      
+0000000140b21bca  660f1f440000             nop      word ptr [rax + rax]
+0000000140b21bd0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140b21bd5  55                       push     rbp
+0000000140b21bd6  4157                     push     r15
+0000000140b21bd8  4156                     push     r14
+0000000140b21bda  4155                     push     r13
+0000000140b21bdc  4154                     push     r12
+0000000140b21bde  56                       push     rsi
+0000000140b21bdf  57                       push     rdi
+0000000140b21be0  53                       push     rbx
+0000000140b21be1  4883ec38                 sub      rsp, 0x38
+0000000140b21be5  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000140b21bec  488b8d78010000           mov      rcx, qword ptr [rbp + 0x178]
+0000000140b21bf3  e8c82d57ff               call     0x1400949c0 ; core::ptr::drop_in_place<lock_api::rwlock::RwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,tg_mods::overlay::Catalog> > | core::ptr::drop_in_place<lock_api::rwlock::MappedRwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,egui::context::ContextImpl> >
+0000000140b21bf8  90                       nop      
+0000000140b21bf9  4883c438                 add      rsp, 0x38
+0000000140b21bfd  5b                       pop      rbx
+0000000140b21bfe  5f                       pop      rdi
+0000000140b21bff  5e                       pop      rsi
+0000000140b21c00  415c                     pop      r12
+0000000140b21c02  415d                     pop      r13
+0000000140b21c04  415e                     pop      r14
+0000000140b21c06  415f                     pop      r15
+0000000140b21c08  5d                       pop      rbp
+0000000140b21c09  c3                       ret      
+0000000140b21c0a  660f1f440000             nop      word ptr [rax + rax]
+0000000140b21c10  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140b21c15  55                       push     rbp
+0000000140b21c16  4157                     push     r15
+0000000140b21c18  4156                     push     r14
+0000000140b21c1a  4155                     push     r13
+0000000140b21c1c  4154                     push     r12
+0000000140b21c1e  56                       push     rsi
+0000000140b21c1f  57                       push     rdi
+0000000140b21c20  53                       push     rbx
+0000000140b21c21  4883ec38                 sub      rsp, 0x38
+0000000140b21c25  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000140b21c2c  488b8d68010000           mov      rcx, qword ptr [rbp + 0x168]
+0000000140b21c33  e8882d57ff               call     0x1400949c0 ; core::ptr::drop_in_place<lock_api::rwlock::RwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,tg_mods::overlay::Catalog> > | core::ptr::drop_in_place<lock_api::rwlock::MappedRwLockReadGuard<parking_lot::raw_rwlock::RawRwLock,egui::context::ContextImpl> >
+0000000140b21c38  90                       nop      
+0000000140b21c39  4883c438                 add      rsp, 0x38
+0000000140b21c3d  5b                       pop      rbx
+0000000140b21c3e  5f                       pop      rdi
+0000000140b21c3f  5e                       pop      rsi
+0000000140b21c40  415c                     pop      r12
+0000000140b21c42  415d                     pop      r13
+0000000140b21c44  415e                     pop      r14
+0000000140b21c46  415f                     pop      r15
+0000000140b21c48  5d                       pop      rbp
+0000000140b21c49  c3                       ret      

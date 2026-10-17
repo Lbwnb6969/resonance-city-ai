@@ -1,0 +1,21 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "case": "maximum-page-capacity-exhaustion",
+  "passed": true,
+  "checks": {
+    "returned_failure": true,
+    "page_count_unchanged": true,
+    "usage_unchanged": true,
+    "dirty_unchanged": true,
+    "page_data_unchanged": true,
+    "no_allocation": true,
+    "returned": true
+  },
+  "hooks": {
+    "0x140e9a150": 2,
+    "0x140e9a350": 2
+  },
+  "limits": [
+    "Single-thread exhausted capacity; deadlock detector bookkeeping skipped."
+  ]
+}

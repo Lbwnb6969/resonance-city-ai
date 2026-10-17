@@ -1,0 +1,16 @@
+// RVA 0x750e10 | PlatformManager$$Start
+// PDB: PlatformManager_Start_m0A23D5A374FBBA8084B30CFFC0F485A78566CF60
+// Body: [[10750e10, 10750e2e]]
+// Direct callees:
+// 10750d50 PlatformManager_SignIn_mE26F154797E23EBF70F47F9884E959DDFAC166AC
+// 110d15b0 Platform_Init_mA09F7BA98F5F44C57C562AA3955578F4A9A06076
+
+void __cdecl
+PlatformManager_Start_m0A23D5A374FBBA8084B30CFFC0F485A78566CF60
+          (PlatformManager_t72D067A839374E201E59AD37D3E764FEABE052E3 *param_1,MethodInfo *param_2)
+
+{
+  Platform_Init_mA09F7BA98F5F44C57C562AA3955578F4A9A06076(param_1->___settings_4,(MethodInfo *)0x0);
+  PlatformManager_SignIn_mE26F154797E23EBF70F47F9884E959DDFAC166AC(param_1,(MethodInfo *)0x0);
+  return;
+}

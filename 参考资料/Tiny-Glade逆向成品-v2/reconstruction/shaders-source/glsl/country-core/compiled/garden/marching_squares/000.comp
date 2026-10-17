@@ -1,0 +1,2007 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint vertexOffset;
+    uint firstInstance;
+};
+
+struct _Array_natural_float12
+{
+    float data[12];
+};
+
+struct Affine3Packed_natural
+{
+    _Array_natural_float12 data;
+};
+
+struct GardenStone_natural
+{
+    Affine3Packed_natural transform;
+    vec4 color;
+};
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    int draw_indirect_buffer_offset;
+    uvec2 contouring_grid_dims;
+} globalParams;
+
+layout(set = 13, binding = 0, std140) uniform GardenMask_natural
+{
+    uvec2 tex_dims;
+} garden_mask;
+
+layout(set = 17, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_commands;
+
+layout(set = 0, binding = 2, std430) buffer instance_buffer
+{
+    GardenStone_natural _member0[];
+} instance_buffer_1;
+
+layout(set = 13, binding = 1) uniform texture2D garden_mask_tex;
+layout(set = 12, binding = 0) uniform texture2D foliage_exclusion_mask_tex;
+layout(set = 2, binding = 4) uniform sampler samplers_llb;
+layout(set = 6, binding = 1) uniform texture2D path_mask_tex;
+layout(set = 9, binding = 0) uniform texture2D rocky_terrain_tex;
+layout(set = 10, binding = 0) uniform texture2D water_mask_tex;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 17, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+
+shared uint valid_garden_samples;
+shared vec2 group_ws_pos[9][9];
+shared float group_garden_mask[9][9];
+shared float group_path_mask[9][9];
+shared bool group_discard_mask[9][9];
+
+void main()
+{
+    do
+    {
+        vec2 _109 = vec2(globalParams.contouring_grid_dims);
+        if (0u == gl_LocalInvocationIndex)
+        {
+            valid_garden_samples = 0u;
+        }
+        barrier();
+        uint y;
+        uint _8778 = gl_LocalInvocationID.y;
+        for (;;)
+        {
+            if (!(_8778 <= 8u))
+            {
+                break;
+            }
+            uint x;
+            uint _8938 = gl_LocalInvocationID.x;
+            for (;;)
+            {
+                if (!(_8938 <= 8u))
+                {
+                    break;
+                }
+                vec2 _1298 = ((vec2((gl_WorkGroupID.xy * uvec2(8u)) + uvec2(_8938, _8778)) / vec2(uvec2(_109))) - vec2(0.5)) * vec2(130.0);
+                group_ws_pos[_8938][_8778] = _1298;
+                vec4 sampled = texelFetch(garden_mask_tex, ivec2(uvec2(ivec2(((_1298.xxy * vec3(0.0076923076994717121124267578125)) + vec3(0.5)).xz * vec2(ivec2(garden_mask.tex_dims))))), 0);
+                float gm = sampled.y;
+                group_garden_mask[_8938][_8778] = gm;
+                if (gm >= 0.4000000059604644775390625)
+                {
+                    uint _263 = atomicAdd(valid_garden_samples, 1u);
+                }
+                x = _8938 + 8u;
+                _8938 = x;
+                continue;
+            }
+            y = _8778 + 8u;
+            _8778 = y;
+            continue;
+        }
+        barrier();
+        if (0u == valid_garden_samples)
+        {
+            break;
+        }
+        uint y_1;
+        uint _8779 = gl_LocalInvocationID.y;
+        for (;;)
+        {
+            if (!(_8779 <= 8u))
+            {
+                break;
+            }
+            uint x_1;
+            uint _8932 = gl_LocalInvocationID.x;
+            for (;;)
+            {
+                if (!(_8932 <= 8u))
+                {
+                    break;
+                }
+                uvec2 _333 = uvec2(ivec2(((group_ws_pos[_8932][_8779].xxy * vec3(0.0076923076994717121124267578125)) + vec3(0.5)).xz * vec2(ivec2(garden_mask.tex_dims))));
+                group_path_mask[_8932][_8779] = texelFetch(path_mask_tex, ivec2(_333), 0).x;
+                bool _8934;
+                if (texelFetch(rocky_terrain_tex, ivec2(_333), 0).x > 0.0)
+                {
+                    _8934 = true;
+                }
+                else
+                {
+                    _8934 = texelFetch(water_mask_tex, ivec2(_333), 0).y > 0.300000011920928955078125;
+                }
+                bool _8935;
+                if (_8934)
+                {
+                    _8935 = true;
+                }
+                else
+                {
+                    _8935 = textureLod(sampler2D(foliage_exclusion_mask_tex, samplers_llb), (group_ws_pos[_8932][_8779] * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x > 0.0;
+                }
+                group_discard_mask[_8932][_8779] = _8935;
+                x_1 = _8932 + 8u;
+                _8932 = x_1;
+                continue;
+            }
+            y_1 = _8779 + 8u;
+            _8779 = y_1;
+            continue;
+        }
+        barrier();
+        bool _8780;
+        if (float(gl_GlobalInvocationID.x) > _109.x)
+        {
+            _8780 = true;
+        }
+        else
+        {
+            _8780 = float(gl_GlobalInvocationID.y) > _109.y;
+        }
+        if (_8780)
+        {
+            break;
+        }
+        if (group_discard_mask[gl_LocalInvocationID.x][gl_LocalInvocationID.y])
+        {
+            break;
+        }
+        uint _9055 = ((group_garden_mask[gl_LocalInvocationID.x][gl_LocalInvocationID.y] >= 0.4000000059604644775390625) && (group_path_mask[gl_LocalInvocationID.x][gl_LocalInvocationID.y] < 0.100000001490116119384765625)) ? 8u : 0u;
+        vec2 _442 = group_ws_pos[gl_LocalInvocationID.x][gl_LocalInvocationID.y];
+        uvec2 xy = gl_LocalInvocationID.xy + uvec2(1u, 0u);
+        uint _449 = xy.x;
+        uint _451 = xy.y;
+        if (group_discard_mask[_449][_451])
+        {
+            break;
+        }
+        uint _8782;
+        if ((group_garden_mask[_449][_451] >= 0.4000000059604644775390625) && (group_path_mask[_449][_451] < 0.100000001490116119384765625))
+        {
+            _8782 = _9055 | 4u;
+        }
+        else
+        {
+            _8782 = _9055;
+        }
+        vec2 _474 = group_ws_pos[_449][_451];
+        uvec2 xy_1 = gl_LocalInvocationID.xy + uvec2(1u);
+        uint _481 = xy_1.x;
+        uint _483 = xy_1.y;
+        if (group_discard_mask[_481][_483])
+        {
+            break;
+        }
+        uint _8783;
+        if ((group_garden_mask[_481][_483] >= 0.4000000059604644775390625) && (group_path_mask[_481][_483] < 0.100000001490116119384765625))
+        {
+            _8783 = _8782 | 2u;
+        }
+        else
+        {
+            _8783 = _8782;
+        }
+        vec2 _505 = group_ws_pos[_481][_483];
+        uvec2 xy_2 = gl_LocalInvocationID.xy + uvec2(0u, 1u);
+        uint _512 = xy_2.x;
+        uint _514 = xy_2.y;
+        if (group_discard_mask[_512][_514])
+        {
+            break;
+        }
+        uint _8784;
+        if ((group_garden_mask[_512][_514] >= 0.4000000059604644775390625) && (group_path_mask[_512][_514] < 0.100000001490116119384765625))
+        {
+            _8784 = _8783 | 1u;
+        }
+        else
+        {
+            _8784 = _8783;
+        }
+        vec2 _536 = group_ws_pos[_512][_514];
+        int placement_seed = int((gl_GlobalInvocationID.x * gl_GlobalInvocationID.y) + gl_GlobalInvocationID.x);
+        int _552 = int(_8784);
+        bool _8785;
+        if (_552 == 0)
+        {
+            _8785 = true;
+        }
+        else
+        {
+            _8785 = _552 == 15;
+        }
+        if (!_8785)
+        {
+            bool _8786;
+            if (_552 == 1)
+            {
+                _8786 = true;
+            }
+            else
+            {
+                _8786 = _552 == 14;
+            }
+            if (_8786)
+            {
+                do
+                {
+                    vec2 _7315 = (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                    vec2 _8919;
+                    vec2 _8920;
+                    float _8921;
+                    float _8922;
+                    _8922 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _7315, 0.0).y;
+                    _8921 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                    _8920 = _536;
+                    _8919 = _442;
+                    uint _7274;
+                    float _9184;
+                    float _9185;
+                    vec2 _9187;
+                    vec2 _9189;
+                    uint _8918 = 0u;
+                    for (;;)
+                    {
+                        if (!(_8918 < 2u))
+                        {
+                            break;
+                        }
+                        vec2 _7262 = _8919 + _8920;
+                        vec2 _7263 = _7262 * vec2(0.5);
+                        float _7343 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_7262 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                        bool _7267 = (_7343 * _8921) < 0.0;
+                        _9184 = _7267 ? _7343 : _8922;
+                        _9185 = _7267 ? _8921 : _7343;
+                        bvec2 _9186 = bvec2(_7267);
+                        _9187 = mix(_8920, _7263, _9186);
+                        _9189 = mix(_7263, _8919, _9186);
+                        _7274 = _8918 + 1u;
+                        _8922 = _9184;
+                        _8921 = _9185;
+                        _8920 = _9187;
+                        _8919 = _9189;
+                        _8918 = _7274;
+                        continue;
+                    }
+                    vec2 _7289 = _8920 + ((_8919 - _8920) * vec2(clamp(_8922 / (_8922 - _8921), 0.0, 1.0)));
+                    vec2 _7099 = vec3(_7289.x, 0.4000000059604644775390625, _7289.y).xz;
+                    vec2 _8924;
+                    vec2 _8925;
+                    float _8926;
+                    float _8927;
+                    _8927 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                    _8926 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _7315, 0.0).y;
+                    _8925 = _505;
+                    _8924 = _536;
+                    uint _7393;
+                    float _9190;
+                    float _9191;
+                    vec2 _9193;
+                    vec2 _9195;
+                    uint _8923 = 0u;
+                    for (;;)
+                    {
+                        if (!(_8923 < 2u))
+                        {
+                            break;
+                        }
+                        vec2 _7381 = _8924 + _8925;
+                        vec2 _7382 = _7381 * vec2(0.5);
+                        float _7462 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_7381 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                        bool _7386 = (_7462 * _8926) < 0.0;
+                        _9190 = _7386 ? _7462 : _8927;
+                        _9191 = _7386 ? _8926 : _7462;
+                        bvec2 _9192 = bvec2(_7386);
+                        _9193 = mix(_8925, _7382, _9192);
+                        _9195 = mix(_7382, _8924, _9192);
+                        _7393 = _8923 + 1u;
+                        _8927 = _9190;
+                        _8926 = _9191;
+                        _8925 = _9193;
+                        _8924 = _9195;
+                        _8923 = _7393;
+                        continue;
+                    }
+                    vec2 _7408 = _8925 + ((_8924 - _8925) * vec2(clamp(_8927 / (_8927 - _8926), 0.0, 1.0)));
+                    vec2 _7103 = vec3(_7408.x, 0.4000000059604644775390625, _7408.y).xz;
+                    float _7104 = distance(_7099, _7103);
+                    if (_7104 < 0.4000000059604644775390625)
+                    {
+                        break;
+                    }
+                    int _7110 = int(max(_7104 * 2.5, 1.0));
+                    int _7125;
+                    int _8928 = 0;
+                    for (;;)
+                    {
+                        if (!(_8928 < (_7110 + 1)))
+                        {
+                            break;
+                        }
+                        float _7122 = float(_7110);
+                        _7125 = _8928 + 1;
+                        vec2 _7131 = mix(_7099, _7103, vec2(((float(_8928) / _7122) + (float(_7125) / _7122)) * 0.5));
+                        float _7132 = _7131.x;
+                        float _7149 = _7131.y;
+                        int _7153 = placement_seed + (_8928 * 100);
+                        uint _7155 = uint(_7153 ^ 2346);
+                        uint _7482 = _7155 + (_7155 << 10u);
+                        uint _7484 = _7482 ^ (_7482 >> 6u);
+                        uint _7486 = _7484 + (_7484 << 3u);
+                        uint _7488 = _7486 ^ (_7486 >> 11u);
+                        float _7496 = uintBitsToFloat(((_7488 + (_7488 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                        uint _7160 = uint(_7153 ^ 3459);
+                        uint _7504 = _7160 + (_7160 << 10u);
+                        uint _7506 = _7504 ^ (_7504 >> 6u);
+                        uint _7508 = _7506 + (_7506 << 3u);
+                        uint _7510 = _7508 ^ (_7508 >> 11u);
+                        float _7163 = ((uintBitsToFloat(((_7510 + (_7510 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                        uint _7165 = uint(_7153 ^ 234);
+                        uint _7526 = _7165 + (_7165 << 10u);
+                        uint _7528 = _7526 ^ (_7526 >> 6u);
+                        uint _7530 = _7528 + (_7528 << 3u);
+                        uint _7532 = _7530 ^ (_7530 >> 11u);
+                        vec3 _7169 = vec3((_7496 * 2.0) - 1.0, _7163, ((uintBitsToFloat(((_7532 + (_7532 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                        _7169.y = _7163 * 0.20000000298023223876953125;
+                        vec3 _7174 = normalize(_7169);
+                        vec3 _9197 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_7174.y < 0.0));
+                        uint _7184 = uint(_7153 ^ 346);
+                        uint _7548 = _7184 + (_7184 << 10u);
+                        uint _7550 = _7548 ^ (_7548 >> 6u);
+                        uint _7552 = _7550 + (_7550 << 3u);
+                        uint _7554 = _7552 ^ (_7552 >> 11u);
+                        vec3 _7187 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_7554 + (_7554 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                        float _7188 = mix(0.800000011920928955078125, 1.5, _7496);
+                        _7187.x = _7188;
+                        _7187.z = _7188;
+                        vec3 _7195 = _7187 * 0.75;
+                        mat4 _7597 = (mat4(vec4(_7195.x, 0.0, 0.0, 0.0), vec4(0.0, _7195.y, 0.0, 0.0), vec4(0.0, 0.0, _7195.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_7174, 0.0), vec4(_9197, 0.0), vec4(cross(_7174, _9197), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _7132), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_7131 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _7149), vec4(0.0, 0.0, 0.0, 1.0));
+                        uint _7204 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                        int _7205 = int(_7204);
+                        float _7208 = 10.0 * (_7132 + _7149);
+                        uint _7210 = uint(_7208 + 640.0);
+                        uint _7643 = _7210 + (_7210 << 10u);
+                        uint _7645 = _7643 ^ (_7643 >> 6u);
+                        uint _7647 = _7645 + (_7645 << 3u);
+                        uint _7649 = _7647 ^ (_7647 >> 11u);
+                        uint _7213 = uint(_7208 + 987.0);
+                        uint _7665 = _7213 + (_7213 << 10u);
+                        uint _7667 = _7665 ^ (_7665 >> 6u);
+                        uint _7669 = _7667 + (_7667 << 3u);
+                        uint _7671 = _7669 ^ (_7669 >> 11u);
+                        instance_buffer_1._member0[_7205].transform.data.data[0] = _7597[0].x;
+                        instance_buffer_1._member0[_7205].transform.data.data[1] = _7597[1].x;
+                        instance_buffer_1._member0[_7205].transform.data.data[2] = _7597[2].x;
+                        instance_buffer_1._member0[_7205].transform.data.data[3] = _7597[0].y;
+                        instance_buffer_1._member0[_7205].transform.data.data[4] = _7597[1].y;
+                        instance_buffer_1._member0[_7205].transform.data.data[5] = _7597[2].y;
+                        instance_buffer_1._member0[_7205].transform.data.data[6] = _7597[0].z;
+                        instance_buffer_1._member0[_7205].transform.data.data[7] = _7597[1].z;
+                        instance_buffer_1._member0[_7205].transform.data.data[8] = _7597[2].z;
+                        instance_buffer_1._member0[_7205].transform.data.data[9] = _7597[0].w;
+                        instance_buffer_1._member0[_7205].transform.data.data[10] = _7597[1].w;
+                        instance_buffer_1._member0[_7205].transform.data.data[11] = _7597[2].w;
+                        instance_buffer_1._member0[_7205].color = vec4(uintBitsToFloat(((_7649 + (_7649 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_7671 + (_7671 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                        _8928 = _7125;
+                        continue;
+                    }
+                    break;
+                } while(false);
+            }
+            else
+            {
+                bool _8787;
+                if (_552 == 2)
+                {
+                    _8787 = true;
+                }
+                else
+                {
+                    _8787 = _552 == 13;
+                }
+                if (_8787)
+                {
+                    do
+                    {
+                        vec2 _6686 = (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                        vec2 _8905;
+                        vec2 _8906;
+                        float _8907;
+                        float _8908;
+                        _8908 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _6686, 0.0).y;
+                        _8907 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                        _8906 = _505;
+                        _8905 = _474;
+                        uint _6645;
+                        float _9170;
+                        float _9171;
+                        vec2 _9173;
+                        vec2 _9175;
+                        uint _8904 = 0u;
+                        for (;;)
+                        {
+                            if (!(_8904 < 2u))
+                            {
+                                break;
+                            }
+                            vec2 _6633 = _8905 + _8906;
+                            vec2 _6634 = _6633 * vec2(0.5);
+                            float _6714 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_6633 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                            bool _6638 = (_6714 * _8907) < 0.0;
+                            _9170 = _6638 ? _6714 : _8908;
+                            _9171 = _6638 ? _8907 : _6714;
+                            bvec2 _9172 = bvec2(_6638);
+                            _9173 = mix(_8906, _6634, _9172);
+                            _9175 = mix(_6634, _8905, _9172);
+                            _6645 = _8904 + 1u;
+                            _8908 = _9170;
+                            _8907 = _9171;
+                            _8906 = _9173;
+                            _8905 = _9175;
+                            _8904 = _6645;
+                            continue;
+                        }
+                        vec2 _6660 = _8906 + ((_8905 - _8906) * vec2(clamp(_8908 / (_8908 - _8907), 0.0, 1.0)));
+                        vec2 _6470 = vec3(_6660.x, 0.4000000059604644775390625, _6660.y).xz;
+                        vec2 _8910;
+                        vec2 _8911;
+                        float _8912;
+                        float _8913;
+                        _8913 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _6686, 0.0).y;
+                        _8912 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                        _8911 = _505;
+                        _8910 = _536;
+                        uint _6764;
+                        float _9176;
+                        float _9177;
+                        vec2 _9179;
+                        vec2 _9181;
+                        uint _8909 = 0u;
+                        for (;;)
+                        {
+                            if (!(_8909 < 2u))
+                            {
+                                break;
+                            }
+                            vec2 _6752 = _8910 + _8911;
+                            vec2 _6753 = _6752 * vec2(0.5);
+                            float _6833 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_6752 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                            bool _6757 = (_6833 * _8912) < 0.0;
+                            _9176 = _6757 ? _6833 : _8913;
+                            _9177 = _6757 ? _8912 : _6833;
+                            bvec2 _9178 = bvec2(_6757);
+                            _9179 = mix(_8911, _6753, _9178);
+                            _9181 = mix(_6753, _8910, _9178);
+                            _6764 = _8909 + 1u;
+                            _8913 = _9176;
+                            _8912 = _9177;
+                            _8911 = _9179;
+                            _8910 = _9181;
+                            _8909 = _6764;
+                            continue;
+                        }
+                        vec2 _6779 = _8911 + ((_8910 - _8911) * vec2(clamp(_8913 / (_8913 - _8912), 0.0, 1.0)));
+                        vec2 _6474 = vec3(_6779.x, 0.4000000059604644775390625, _6779.y).xz;
+                        float _6475 = distance(_6470, _6474);
+                        if (_6475 < 0.4000000059604644775390625)
+                        {
+                            break;
+                        }
+                        int _6481 = int(max(_6475 * 2.5, 1.0));
+                        int _6496;
+                        int _8914 = 0;
+                        for (;;)
+                        {
+                            if (!(_8914 < (_6481 + 1)))
+                            {
+                                break;
+                            }
+                            float _6493 = float(_6481);
+                            _6496 = _8914 + 1;
+                            vec2 _6502 = mix(_6470, _6474, vec2(((float(_8914) / _6493) + (float(_6496) / _6493)) * 0.5));
+                            float _6503 = _6502.x;
+                            float _6520 = _6502.y;
+                            int _6524 = placement_seed + (_8914 * 100);
+                            uint _6526 = uint(_6524 ^ 2346);
+                            uint _6853 = _6526 + (_6526 << 10u);
+                            uint _6855 = _6853 ^ (_6853 >> 6u);
+                            uint _6857 = _6855 + (_6855 << 3u);
+                            uint _6859 = _6857 ^ (_6857 >> 11u);
+                            float _6867 = uintBitsToFloat(((_6859 + (_6859 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                            uint _6531 = uint(_6524 ^ 3459);
+                            uint _6875 = _6531 + (_6531 << 10u);
+                            uint _6877 = _6875 ^ (_6875 >> 6u);
+                            uint _6879 = _6877 + (_6877 << 3u);
+                            uint _6881 = _6879 ^ (_6879 >> 11u);
+                            float _6534 = ((uintBitsToFloat(((_6881 + (_6881 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                            uint _6536 = uint(_6524 ^ 234);
+                            uint _6897 = _6536 + (_6536 << 10u);
+                            uint _6899 = _6897 ^ (_6897 >> 6u);
+                            uint _6901 = _6899 + (_6899 << 3u);
+                            uint _6903 = _6901 ^ (_6901 >> 11u);
+                            vec3 _6540 = vec3((_6867 * 2.0) - 1.0, _6534, ((uintBitsToFloat(((_6903 + (_6903 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                            _6540.y = _6534 * 0.20000000298023223876953125;
+                            vec3 _6545 = normalize(_6540);
+                            vec3 _9183 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_6545.y < 0.0));
+                            uint _6555 = uint(_6524 ^ 346);
+                            uint _6919 = _6555 + (_6555 << 10u);
+                            uint _6921 = _6919 ^ (_6919 >> 6u);
+                            uint _6923 = _6921 + (_6921 << 3u);
+                            uint _6925 = _6923 ^ (_6923 >> 11u);
+                            vec3 _6558 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_6925 + (_6925 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                            float _6559 = mix(0.800000011920928955078125, 1.5, _6867);
+                            _6558.x = _6559;
+                            _6558.z = _6559;
+                            vec3 _6566 = _6558 * 0.75;
+                            mat4 _6968 = (mat4(vec4(_6566.x, 0.0, 0.0, 0.0), vec4(0.0, _6566.y, 0.0, 0.0), vec4(0.0, 0.0, _6566.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_6545, 0.0), vec4(_9183, 0.0), vec4(cross(_6545, _9183), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _6503), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_6502 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _6520), vec4(0.0, 0.0, 0.0, 1.0));
+                            uint _6575 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                            int _6576 = int(_6575);
+                            float _6579 = 10.0 * (_6503 + _6520);
+                            uint _6581 = uint(_6579 + 640.0);
+                            uint _7014 = _6581 + (_6581 << 10u);
+                            uint _7016 = _7014 ^ (_7014 >> 6u);
+                            uint _7018 = _7016 + (_7016 << 3u);
+                            uint _7020 = _7018 ^ (_7018 >> 11u);
+                            uint _6584 = uint(_6579 + 987.0);
+                            uint _7036 = _6584 + (_6584 << 10u);
+                            uint _7038 = _7036 ^ (_7036 >> 6u);
+                            uint _7040 = _7038 + (_7038 << 3u);
+                            uint _7042 = _7040 ^ (_7040 >> 11u);
+                            instance_buffer_1._member0[_6576].transform.data.data[0] = _6968[0].x;
+                            instance_buffer_1._member0[_6576].transform.data.data[1] = _6968[1].x;
+                            instance_buffer_1._member0[_6576].transform.data.data[2] = _6968[2].x;
+                            instance_buffer_1._member0[_6576].transform.data.data[3] = _6968[0].y;
+                            instance_buffer_1._member0[_6576].transform.data.data[4] = _6968[1].y;
+                            instance_buffer_1._member0[_6576].transform.data.data[5] = _6968[2].y;
+                            instance_buffer_1._member0[_6576].transform.data.data[6] = _6968[0].z;
+                            instance_buffer_1._member0[_6576].transform.data.data[7] = _6968[1].z;
+                            instance_buffer_1._member0[_6576].transform.data.data[8] = _6968[2].z;
+                            instance_buffer_1._member0[_6576].transform.data.data[9] = _6968[0].w;
+                            instance_buffer_1._member0[_6576].transform.data.data[10] = _6968[1].w;
+                            instance_buffer_1._member0[_6576].transform.data.data[11] = _6968[2].w;
+                            instance_buffer_1._member0[_6576].color = vec4(uintBitsToFloat(((_7020 + (_7020 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_7042 + (_7042 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                            _8914 = _6496;
+                            continue;
+                        }
+                        break;
+                    } while(false);
+                }
+                else
+                {
+                    bool _8788;
+                    if (_552 == 3)
+                    {
+                        _8788 = true;
+                    }
+                    else
+                    {
+                        _8788 = _552 == 12;
+                    }
+                    if (_8788)
+                    {
+                        do
+                        {
+                            vec2 _8891;
+                            vec2 _8892;
+                            float _8893;
+                            float _8894;
+                            _8894 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                            _8893 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                            _8892 = _536;
+                            _8891 = _442;
+                            uint _6016;
+                            float _9156;
+                            float _9157;
+                            vec2 _9159;
+                            vec2 _9161;
+                            uint _8890 = 0u;
+                            for (;;)
+                            {
+                                if (!(_8890 < 2u))
+                                {
+                                    break;
+                                }
+                                vec2 _6004 = _8891 + _8892;
+                                vec2 _6005 = _6004 * vec2(0.5);
+                                float _6085 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_6004 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                bool _6009 = (_6085 * _8893) < 0.0;
+                                _9156 = _6009 ? _6085 : _8894;
+                                _9157 = _6009 ? _8893 : _6085;
+                                bvec2 _9158 = bvec2(_6009);
+                                _9159 = mix(_8892, _6005, _9158);
+                                _9161 = mix(_6005, _8891, _9158);
+                                _6016 = _8890 + 1u;
+                                _8894 = _9156;
+                                _8893 = _9157;
+                                _8892 = _9159;
+                                _8891 = _9161;
+                                _8890 = _6016;
+                                continue;
+                            }
+                            vec2 _6031 = _8892 + ((_8891 - _8892) * vec2(clamp(_8894 / (_8894 - _8893), 0.0, 1.0)));
+                            vec2 _5841 = vec3(_6031.x, 0.4000000059604644775390625, _6031.y).xz;
+                            vec2 _8896;
+                            vec2 _8897;
+                            float _8898;
+                            float _8899;
+                            _8899 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                            _8898 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                            _8897 = _505;
+                            _8896 = _474;
+                            uint _6135;
+                            float _9162;
+                            float _9163;
+                            vec2 _9165;
+                            vec2 _9167;
+                            uint _8895 = 0u;
+                            for (;;)
+                            {
+                                if (!(_8895 < 2u))
+                                {
+                                    break;
+                                }
+                                vec2 _6123 = _8896 + _8897;
+                                vec2 _6124 = _6123 * vec2(0.5);
+                                float _6204 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_6123 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                bool _6128 = (_6204 * _8898) < 0.0;
+                                _9162 = _6128 ? _6204 : _8899;
+                                _9163 = _6128 ? _8898 : _6204;
+                                bvec2 _9164 = bvec2(_6128);
+                                _9165 = mix(_8897, _6124, _9164);
+                                _9167 = mix(_6124, _8896, _9164);
+                                _6135 = _8895 + 1u;
+                                _8899 = _9162;
+                                _8898 = _9163;
+                                _8897 = _9165;
+                                _8896 = _9167;
+                                _8895 = _6135;
+                                continue;
+                            }
+                            vec2 _6150 = _8897 + ((_8896 - _8897) * vec2(clamp(_8899 / (_8899 - _8898), 0.0, 1.0)));
+                            vec2 _5845 = vec3(_6150.x, 0.4000000059604644775390625, _6150.y).xz;
+                            float _5846 = distance(_5841, _5845);
+                            if (_5846 < 0.4000000059604644775390625)
+                            {
+                                break;
+                            }
+                            int _5852 = int(max(_5846 * 2.5, 1.0));
+                            int _5867;
+                            int _8900 = 0;
+                            for (;;)
+                            {
+                                if (!(_8900 < (_5852 + 1)))
+                                {
+                                    break;
+                                }
+                                float _5864 = float(_5852);
+                                _5867 = _8900 + 1;
+                                vec2 _5873 = mix(_5841, _5845, vec2(((float(_8900) / _5864) + (float(_5867) / _5864)) * 0.5));
+                                float _5874 = _5873.x;
+                                float _5891 = _5873.y;
+                                int _5895 = placement_seed + (_8900 * 100);
+                                uint _5897 = uint(_5895 ^ 2346);
+                                uint _6224 = _5897 + (_5897 << 10u);
+                                uint _6226 = _6224 ^ (_6224 >> 6u);
+                                uint _6228 = _6226 + (_6226 << 3u);
+                                uint _6230 = _6228 ^ (_6228 >> 11u);
+                                float _6238 = uintBitsToFloat(((_6230 + (_6230 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                uint _5902 = uint(_5895 ^ 3459);
+                                uint _6246 = _5902 + (_5902 << 10u);
+                                uint _6248 = _6246 ^ (_6246 >> 6u);
+                                uint _6250 = _6248 + (_6248 << 3u);
+                                uint _6252 = _6250 ^ (_6250 >> 11u);
+                                float _5905 = ((uintBitsToFloat(((_6252 + (_6252 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                uint _5907 = uint(_5895 ^ 234);
+                                uint _6268 = _5907 + (_5907 << 10u);
+                                uint _6270 = _6268 ^ (_6268 >> 6u);
+                                uint _6272 = _6270 + (_6270 << 3u);
+                                uint _6274 = _6272 ^ (_6272 >> 11u);
+                                vec3 _5911 = vec3((_6238 * 2.0) - 1.0, _5905, ((uintBitsToFloat(((_6274 + (_6274 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                _5911.y = _5905 * 0.20000000298023223876953125;
+                                vec3 _5916 = normalize(_5911);
+                                vec3 _9169 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_5916.y < 0.0));
+                                uint _5926 = uint(_5895 ^ 346);
+                                uint _6290 = _5926 + (_5926 << 10u);
+                                uint _6292 = _6290 ^ (_6290 >> 6u);
+                                uint _6294 = _6292 + (_6292 << 3u);
+                                uint _6296 = _6294 ^ (_6294 >> 11u);
+                                vec3 _5929 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_6296 + (_6296 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                float _5930 = mix(0.800000011920928955078125, 1.5, _6238);
+                                _5929.x = _5930;
+                                _5929.z = _5930;
+                                vec3 _5937 = _5929 * 0.75;
+                                mat4 _6339 = (mat4(vec4(_5937.x, 0.0, 0.0, 0.0), vec4(0.0, _5937.y, 0.0, 0.0), vec4(0.0, 0.0, _5937.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_5916, 0.0), vec4(_9169, 0.0), vec4(cross(_5916, _9169), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _5874), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_5873 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _5891), vec4(0.0, 0.0, 0.0, 1.0));
+                                uint _5946 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                int _5947 = int(_5946);
+                                float _5950 = 10.0 * (_5874 + _5891);
+                                uint _5952 = uint(_5950 + 640.0);
+                                uint _6385 = _5952 + (_5952 << 10u);
+                                uint _6387 = _6385 ^ (_6385 >> 6u);
+                                uint _6389 = _6387 + (_6387 << 3u);
+                                uint _6391 = _6389 ^ (_6389 >> 11u);
+                                uint _5955 = uint(_5950 + 987.0);
+                                uint _6407 = _5955 + (_5955 << 10u);
+                                uint _6409 = _6407 ^ (_6407 >> 6u);
+                                uint _6411 = _6409 + (_6409 << 3u);
+                                uint _6413 = _6411 ^ (_6411 >> 11u);
+                                instance_buffer_1._member0[_5947].transform.data.data[0] = _6339[0].x;
+                                instance_buffer_1._member0[_5947].transform.data.data[1] = _6339[1].x;
+                                instance_buffer_1._member0[_5947].transform.data.data[2] = _6339[2].x;
+                                instance_buffer_1._member0[_5947].transform.data.data[3] = _6339[0].y;
+                                instance_buffer_1._member0[_5947].transform.data.data[4] = _6339[1].y;
+                                instance_buffer_1._member0[_5947].transform.data.data[5] = _6339[2].y;
+                                instance_buffer_1._member0[_5947].transform.data.data[6] = _6339[0].z;
+                                instance_buffer_1._member0[_5947].transform.data.data[7] = _6339[1].z;
+                                instance_buffer_1._member0[_5947].transform.data.data[8] = _6339[2].z;
+                                instance_buffer_1._member0[_5947].transform.data.data[9] = _6339[0].w;
+                                instance_buffer_1._member0[_5947].transform.data.data[10] = _6339[1].w;
+                                instance_buffer_1._member0[_5947].transform.data.data[11] = _6339[2].w;
+                                instance_buffer_1._member0[_5947].color = vec4(uintBitsToFloat(((_6391 + (_6391 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_6413 + (_6413 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                _8900 = _5867;
+                                continue;
+                            }
+                            break;
+                        } while(false);
+                    }
+                    else
+                    {
+                        bool _8789;
+                        if (_552 == 4)
+                        {
+                            _8789 = true;
+                        }
+                        else
+                        {
+                            _8789 = _552 == 11;
+                        }
+                        if (_8789)
+                        {
+                            do
+                            {
+                                vec2 _5428 = (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                vec2 _8877;
+                                vec2 _8878;
+                                float _8879;
+                                float _8880;
+                                _8880 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _5428, 0.0).y;
+                                _8879 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                _8878 = _474;
+                                _8877 = _442;
+                                uint _5387;
+                                float _9142;
+                                float _9143;
+                                vec2 _9145;
+                                vec2 _9147;
+                                uint _8876 = 0u;
+                                for (;;)
+                                {
+                                    if (!(_8876 < 2u))
+                                    {
+                                        break;
+                                    }
+                                    vec2 _5375 = _8877 + _8878;
+                                    vec2 _5376 = _5375 * vec2(0.5);
+                                    float _5456 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_5375 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                    bool _5380 = (_5456 * _8879) < 0.0;
+                                    _9142 = _5380 ? _5456 : _8880;
+                                    _9143 = _5380 ? _8879 : _5456;
+                                    bvec2 _9144 = bvec2(_5380);
+                                    _9145 = mix(_8878, _5376, _9144);
+                                    _9147 = mix(_5376, _8877, _9144);
+                                    _5387 = _8876 + 1u;
+                                    _8880 = _9142;
+                                    _8879 = _9143;
+                                    _8878 = _9145;
+                                    _8877 = _9147;
+                                    _8876 = _5387;
+                                    continue;
+                                }
+                                vec2 _5402 = _8878 + ((_8877 - _8878) * vec2(clamp(_8880 / (_8880 - _8879), 0.0, 1.0)));
+                                vec2 _5212 = vec3(_5402.x, 0.4000000059604644775390625, _5402.y).xz;
+                                vec2 _8882;
+                                vec2 _8883;
+                                float _8884;
+                                float _8885;
+                                _8885 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                _8884 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _5428, 0.0).y;
+                                _8883 = _505;
+                                _8882 = _474;
+                                uint _5506;
+                                float _9148;
+                                float _9149;
+                                vec2 _9151;
+                                vec2 _9153;
+                                uint _8881 = 0u;
+                                for (;;)
+                                {
+                                    if (!(_8881 < 2u))
+                                    {
+                                        break;
+                                    }
+                                    vec2 _5494 = _8882 + _8883;
+                                    vec2 _5495 = _5494 * vec2(0.5);
+                                    float _5575 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_5494 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                    bool _5499 = (_5575 * _8884) < 0.0;
+                                    _9148 = _5499 ? _5575 : _8885;
+                                    _9149 = _5499 ? _8884 : _5575;
+                                    bvec2 _9150 = bvec2(_5499);
+                                    _9151 = mix(_8883, _5495, _9150);
+                                    _9153 = mix(_5495, _8882, _9150);
+                                    _5506 = _8881 + 1u;
+                                    _8885 = _9148;
+                                    _8884 = _9149;
+                                    _8883 = _9151;
+                                    _8882 = _9153;
+                                    _8881 = _5506;
+                                    continue;
+                                }
+                                vec2 _5521 = _8883 + ((_8882 - _8883) * vec2(clamp(_8885 / (_8885 - _8884), 0.0, 1.0)));
+                                vec2 _5216 = vec3(_5521.x, 0.4000000059604644775390625, _5521.y).xz;
+                                float _5217 = distance(_5212, _5216);
+                                if (_5217 < 0.4000000059604644775390625)
+                                {
+                                    break;
+                                }
+                                int _5223 = int(max(_5217 * 2.5, 1.0));
+                                int _5238;
+                                int _8886 = 0;
+                                for (;;)
+                                {
+                                    if (!(_8886 < (_5223 + 1)))
+                                    {
+                                        break;
+                                    }
+                                    float _5235 = float(_5223);
+                                    _5238 = _8886 + 1;
+                                    vec2 _5244 = mix(_5212, _5216, vec2(((float(_8886) / _5235) + (float(_5238) / _5235)) * 0.5));
+                                    float _5245 = _5244.x;
+                                    float _5262 = _5244.y;
+                                    int _5266 = placement_seed + (_8886 * 100);
+                                    uint _5268 = uint(_5266 ^ 2346);
+                                    uint _5595 = _5268 + (_5268 << 10u);
+                                    uint _5597 = _5595 ^ (_5595 >> 6u);
+                                    uint _5599 = _5597 + (_5597 << 3u);
+                                    uint _5601 = _5599 ^ (_5599 >> 11u);
+                                    float _5609 = uintBitsToFloat(((_5601 + (_5601 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                    uint _5273 = uint(_5266 ^ 3459);
+                                    uint _5617 = _5273 + (_5273 << 10u);
+                                    uint _5619 = _5617 ^ (_5617 >> 6u);
+                                    uint _5621 = _5619 + (_5619 << 3u);
+                                    uint _5623 = _5621 ^ (_5621 >> 11u);
+                                    float _5276 = ((uintBitsToFloat(((_5623 + (_5623 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                    uint _5278 = uint(_5266 ^ 234);
+                                    uint _5639 = _5278 + (_5278 << 10u);
+                                    uint _5641 = _5639 ^ (_5639 >> 6u);
+                                    uint _5643 = _5641 + (_5641 << 3u);
+                                    uint _5645 = _5643 ^ (_5643 >> 11u);
+                                    vec3 _5282 = vec3((_5609 * 2.0) - 1.0, _5276, ((uintBitsToFloat(((_5645 + (_5645 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                    _5282.y = _5276 * 0.20000000298023223876953125;
+                                    vec3 _5287 = normalize(_5282);
+                                    vec3 _9155 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_5287.y < 0.0));
+                                    uint _5297 = uint(_5266 ^ 346);
+                                    uint _5661 = _5297 + (_5297 << 10u);
+                                    uint _5663 = _5661 ^ (_5661 >> 6u);
+                                    uint _5665 = _5663 + (_5663 << 3u);
+                                    uint _5667 = _5665 ^ (_5665 >> 11u);
+                                    vec3 _5300 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_5667 + (_5667 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                    float _5301 = mix(0.800000011920928955078125, 1.5, _5609);
+                                    _5300.x = _5301;
+                                    _5300.z = _5301;
+                                    vec3 _5308 = _5300 * 0.75;
+                                    mat4 _5710 = (mat4(vec4(_5308.x, 0.0, 0.0, 0.0), vec4(0.0, _5308.y, 0.0, 0.0), vec4(0.0, 0.0, _5308.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_5287, 0.0), vec4(_9155, 0.0), vec4(cross(_5287, _9155), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _5245), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_5244 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _5262), vec4(0.0, 0.0, 0.0, 1.0));
+                                    uint _5317 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                    int _5318 = int(_5317);
+                                    float _5321 = 10.0 * (_5245 + _5262);
+                                    uint _5323 = uint(_5321 + 640.0);
+                                    uint _5756 = _5323 + (_5323 << 10u);
+                                    uint _5758 = _5756 ^ (_5756 >> 6u);
+                                    uint _5760 = _5758 + (_5758 << 3u);
+                                    uint _5762 = _5760 ^ (_5760 >> 11u);
+                                    uint _5326 = uint(_5321 + 987.0);
+                                    uint _5778 = _5326 + (_5326 << 10u);
+                                    uint _5780 = _5778 ^ (_5778 >> 6u);
+                                    uint _5782 = _5780 + (_5780 << 3u);
+                                    uint _5784 = _5782 ^ (_5782 >> 11u);
+                                    instance_buffer_1._member0[_5318].transform.data.data[0] = _5710[0].x;
+                                    instance_buffer_1._member0[_5318].transform.data.data[1] = _5710[1].x;
+                                    instance_buffer_1._member0[_5318].transform.data.data[2] = _5710[2].x;
+                                    instance_buffer_1._member0[_5318].transform.data.data[3] = _5710[0].y;
+                                    instance_buffer_1._member0[_5318].transform.data.data[4] = _5710[1].y;
+                                    instance_buffer_1._member0[_5318].transform.data.data[5] = _5710[2].y;
+                                    instance_buffer_1._member0[_5318].transform.data.data[6] = _5710[0].z;
+                                    instance_buffer_1._member0[_5318].transform.data.data[7] = _5710[1].z;
+                                    instance_buffer_1._member0[_5318].transform.data.data[8] = _5710[2].z;
+                                    instance_buffer_1._member0[_5318].transform.data.data[9] = _5710[0].w;
+                                    instance_buffer_1._member0[_5318].transform.data.data[10] = _5710[1].w;
+                                    instance_buffer_1._member0[_5318].transform.data.data[11] = _5710[2].w;
+                                    instance_buffer_1._member0[_5318].color = vec4(uintBitsToFloat(((_5762 + (_5762 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_5784 + (_5784 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                    _8886 = _5238;
+                                    continue;
+                                }
+                                break;
+                            } while(false);
+                        }
+                        else
+                        {
+                            if (_552 == 5)
+                            {
+                                vec2 _4170;
+                                vec2 _4289;
+                                do
+                                {
+                                    vec2 _4152 = (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                    _4170 = (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                    vec2 _8849;
+                                    vec2 _8850;
+                                    float _8851;
+                                    float _8852;
+                                    _8852 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4170, 0.0).y;
+                                    _8851 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4152, 0.0).y;
+                                    _8850 = _474;
+                                    _8849 = _442;
+                                    uint _4129;
+                                    float _9114;
+                                    float _9115;
+                                    vec2 _9117;
+                                    vec2 _9119;
+                                    uint _8848 = 0u;
+                                    for (;;)
+                                    {
+                                        if (!(_8848 < 2u))
+                                        {
+                                            break;
+                                        }
+                                        vec2 _4117 = _8849 + _8850;
+                                        vec2 _4118 = _4117 * vec2(0.5);
+                                        float _4198 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_4117 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                        bool _4122 = (_4198 * _8851) < 0.0;
+                                        _9114 = _4122 ? _4198 : _8852;
+                                        _9115 = _4122 ? _8851 : _4198;
+                                        bvec2 _9116 = bvec2(_4122);
+                                        _9117 = mix(_8850, _4118, _9116);
+                                        _9119 = mix(_4118, _8849, _9116);
+                                        _4129 = _8848 + 1u;
+                                        _8852 = _9114;
+                                        _8851 = _9115;
+                                        _8850 = _9117;
+                                        _8849 = _9119;
+                                        _8848 = _4129;
+                                        continue;
+                                    }
+                                    vec2 _4144 = _8850 + ((_8849 - _8850) * vec2(clamp(_8852 / (_8852 - _8851), 0.0, 1.0)));
+                                    vec2 _3954 = vec3(_4144.x, 0.4000000059604644775390625, _4144.y).xz;
+                                    _4289 = (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                    vec2 _8854;
+                                    vec2 _8855;
+                                    float _8856;
+                                    float _8857;
+                                    _8857 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4289, 0.0).y;
+                                    _8856 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4152, 0.0).y;
+                                    _8855 = _536;
+                                    _8854 = _442;
+                                    uint _4248;
+                                    float _9120;
+                                    float _9121;
+                                    vec2 _9123;
+                                    vec2 _9125;
+                                    uint _8853 = 0u;
+                                    for (;;)
+                                    {
+                                        if (!(_8853 < 2u))
+                                        {
+                                            break;
+                                        }
+                                        vec2 _4236 = _8854 + _8855;
+                                        vec2 _4237 = _4236 * vec2(0.5);
+                                        float _4317 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_4236 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                        bool _4241 = (_4317 * _8856) < 0.0;
+                                        _9120 = _4241 ? _4317 : _8857;
+                                        _9121 = _4241 ? _8856 : _4317;
+                                        bvec2 _9122 = bvec2(_4241);
+                                        _9123 = mix(_8855, _4237, _9122);
+                                        _9125 = mix(_4237, _8854, _9122);
+                                        _4248 = _8853 + 1u;
+                                        _8857 = _9120;
+                                        _8856 = _9121;
+                                        _8855 = _9123;
+                                        _8854 = _9125;
+                                        _8853 = _4248;
+                                        continue;
+                                    }
+                                    vec2 _4263 = _8855 + ((_8854 - _8855) * vec2(clamp(_8857 / (_8857 - _8856), 0.0, 1.0)));
+                                    vec2 _3958 = vec3(_4263.x, 0.4000000059604644775390625, _4263.y).xz;
+                                    float _3959 = distance(_3954, _3958);
+                                    if (_3959 < 0.4000000059604644775390625)
+                                    {
+                                        break;
+                                    }
+                                    int _3965 = int(max(_3959 * 2.5, 1.0));
+                                    int _3980;
+                                    int _8858 = 0;
+                                    for (;;)
+                                    {
+                                        if (!(_8858 < (_3965 + 1)))
+                                        {
+                                            break;
+                                        }
+                                        float _3977 = float(_3965);
+                                        _3980 = _8858 + 1;
+                                        vec2 _3986 = mix(_3954, _3958, vec2(((float(_8858) / _3977) + (float(_3980) / _3977)) * 0.5));
+                                        float _3987 = _3986.x;
+                                        float _4004 = _3986.y;
+                                        int _4008 = placement_seed + (_8858 * 100);
+                                        uint _4010 = uint(_4008 ^ 2346);
+                                        uint _4337 = _4010 + (_4010 << 10u);
+                                        uint _4339 = _4337 ^ (_4337 >> 6u);
+                                        uint _4341 = _4339 + (_4339 << 3u);
+                                        uint _4343 = _4341 ^ (_4341 >> 11u);
+                                        float _4351 = uintBitsToFloat(((_4343 + (_4343 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                        uint _4015 = uint(_4008 ^ 3459);
+                                        uint _4359 = _4015 + (_4015 << 10u);
+                                        uint _4361 = _4359 ^ (_4359 >> 6u);
+                                        uint _4363 = _4361 + (_4361 << 3u);
+                                        uint _4365 = _4363 ^ (_4363 >> 11u);
+                                        float _4018 = ((uintBitsToFloat(((_4365 + (_4365 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                        uint _4020 = uint(_4008 ^ 234);
+                                        uint _4381 = _4020 + (_4020 << 10u);
+                                        uint _4383 = _4381 ^ (_4381 >> 6u);
+                                        uint _4385 = _4383 + (_4383 << 3u);
+                                        uint _4387 = _4385 ^ (_4385 >> 11u);
+                                        vec3 _4024 = vec3((_4351 * 2.0) - 1.0, _4018, ((uintBitsToFloat(((_4387 + (_4387 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                        _4024.y = _4018 * 0.20000000298023223876953125;
+                                        vec3 _4029 = normalize(_4024);
+                                        vec3 _9127 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_4029.y < 0.0));
+                                        uint _4039 = uint(_4008 ^ 346);
+                                        uint _4403 = _4039 + (_4039 << 10u);
+                                        uint _4405 = _4403 ^ (_4403 >> 6u);
+                                        uint _4407 = _4405 + (_4405 << 3u);
+                                        uint _4409 = _4407 ^ (_4407 >> 11u);
+                                        vec3 _4042 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_4409 + (_4409 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                        float _4043 = mix(0.800000011920928955078125, 1.5, _4351);
+                                        _4042.x = _4043;
+                                        _4042.z = _4043;
+                                        vec3 _4050 = _4042 * 0.75;
+                                        mat4 _4452 = (mat4(vec4(_4050.x, 0.0, 0.0, 0.0), vec4(0.0, _4050.y, 0.0, 0.0), vec4(0.0, 0.0, _4050.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_4029, 0.0), vec4(_9127, 0.0), vec4(cross(_4029, _9127), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _3987), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_3986 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _4004), vec4(0.0, 0.0, 0.0, 1.0));
+                                        uint _4059 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                        int _4060 = int(_4059);
+                                        float _4063 = 10.0 * (_3987 + _4004);
+                                        uint _4065 = uint(_4063 + 640.0);
+                                        uint _4498 = _4065 + (_4065 << 10u);
+                                        uint _4500 = _4498 ^ (_4498 >> 6u);
+                                        uint _4502 = _4500 + (_4500 << 3u);
+                                        uint _4504 = _4502 ^ (_4502 >> 11u);
+                                        uint _4068 = uint(_4063 + 987.0);
+                                        uint _4520 = _4068 + (_4068 << 10u);
+                                        uint _4522 = _4520 ^ (_4520 >> 6u);
+                                        uint _4524 = _4522 + (_4522 << 3u);
+                                        uint _4526 = _4524 ^ (_4524 >> 11u);
+                                        instance_buffer_1._member0[_4060].transform.data.data[0] = _4452[0].x;
+                                        instance_buffer_1._member0[_4060].transform.data.data[1] = _4452[1].x;
+                                        instance_buffer_1._member0[_4060].transform.data.data[2] = _4452[2].x;
+                                        instance_buffer_1._member0[_4060].transform.data.data[3] = _4452[0].y;
+                                        instance_buffer_1._member0[_4060].transform.data.data[4] = _4452[1].y;
+                                        instance_buffer_1._member0[_4060].transform.data.data[5] = _4452[2].y;
+                                        instance_buffer_1._member0[_4060].transform.data.data[6] = _4452[0].z;
+                                        instance_buffer_1._member0[_4060].transform.data.data[7] = _4452[1].z;
+                                        instance_buffer_1._member0[_4060].transform.data.data[8] = _4452[2].z;
+                                        instance_buffer_1._member0[_4060].transform.data.data[9] = _4452[0].w;
+                                        instance_buffer_1._member0[_4060].transform.data.data[10] = _4452[1].w;
+                                        instance_buffer_1._member0[_4060].transform.data.data[11] = _4452[2].w;
+                                        instance_buffer_1._member0[_4060].color = vec4(uintBitsToFloat(((_4504 + (_4504 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_4526 + (_4526 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                        _8858 = _3980;
+                                        continue;
+                                    }
+                                    break;
+                                } while(false);
+                                do
+                                {
+                                    vec2 _4799 = (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                    vec2 _8861;
+                                    vec2 _8862;
+                                    float _8863;
+                                    float _8864;
+                                    _8864 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4799, 0.0).y;
+                                    _8863 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4170, 0.0).y;
+                                    _8862 = _505;
+                                    _8861 = _474;
+                                    uint _4758;
+                                    float _9128;
+                                    float _9129;
+                                    vec2 _9131;
+                                    vec2 _9133;
+                                    uint _8860 = 0u;
+                                    for (;;)
+                                    {
+                                        if (!(_8860 < 2u))
+                                        {
+                                            break;
+                                        }
+                                        vec2 _4746 = _8861 + _8862;
+                                        vec2 _4747 = _4746 * vec2(0.5);
+                                        float _4827 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_4746 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                        bool _4751 = (_4827 * _8863) < 0.0;
+                                        _9128 = _4751 ? _4827 : _8864;
+                                        _9129 = _4751 ? _8863 : _4827;
+                                        bvec2 _9130 = bvec2(_4751);
+                                        _9131 = mix(_8862, _4747, _9130);
+                                        _9133 = mix(_4747, _8861, _9130);
+                                        _4758 = _8860 + 1u;
+                                        _8864 = _9128;
+                                        _8863 = _9129;
+                                        _8862 = _9131;
+                                        _8861 = _9133;
+                                        _8860 = _4758;
+                                        continue;
+                                    }
+                                    vec2 _4773 = _8862 + ((_8861 - _8862) * vec2(clamp(_8864 / (_8864 - _8863), 0.0, 1.0)));
+                                    vec2 _4583 = vec3(_4773.x, 0.4000000059604644775390625, _4773.y).xz;
+                                    vec2 _8866;
+                                    vec2 _8867;
+                                    float _8868;
+                                    float _8869;
+                                    _8869 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4799, 0.0).y;
+                                    _8868 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _4289, 0.0).y;
+                                    _8867 = _505;
+                                    _8866 = _536;
+                                    uint _4877;
+                                    float _9134;
+                                    float _9135;
+                                    vec2 _9137;
+                                    vec2 _9139;
+                                    uint _8865 = 0u;
+                                    for (;;)
+                                    {
+                                        if (!(_8865 < 2u))
+                                        {
+                                            break;
+                                        }
+                                        vec2 _4865 = _8866 + _8867;
+                                        vec2 _4866 = _4865 * vec2(0.5);
+                                        float _4946 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_4865 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                        bool _4870 = (_4946 * _8868) < 0.0;
+                                        _9134 = _4870 ? _4946 : _8869;
+                                        _9135 = _4870 ? _8868 : _4946;
+                                        bvec2 _9136 = bvec2(_4870);
+                                        _9137 = mix(_8867, _4866, _9136);
+                                        _9139 = mix(_4866, _8866, _9136);
+                                        _4877 = _8865 + 1u;
+                                        _8869 = _9134;
+                                        _8868 = _9135;
+                                        _8867 = _9137;
+                                        _8866 = _9139;
+                                        _8865 = _4877;
+                                        continue;
+                                    }
+                                    vec2 _4892 = _8867 + ((_8866 - _8867) * vec2(clamp(_8869 / (_8869 - _8868), 0.0, 1.0)));
+                                    vec2 _4587 = vec3(_4892.x, 0.4000000059604644775390625, _4892.y).xz;
+                                    float _4588 = distance(_4583, _4587);
+                                    if (_4588 < 0.4000000059604644775390625)
+                                    {
+                                        break;
+                                    }
+                                    int _4594 = int(max(_4588 * 2.5, 1.0));
+                                    int _4609;
+                                    int _8870 = 0;
+                                    for (;;)
+                                    {
+                                        if (!(_8870 < (_4594 + 1)))
+                                        {
+                                            break;
+                                        }
+                                        float _4606 = float(_4594);
+                                        _4609 = _8870 + 1;
+                                        vec2 _4615 = mix(_4583, _4587, vec2(((float(_8870) / _4606) + (float(_4609) / _4606)) * 0.5));
+                                        float _4616 = _4615.x;
+                                        float _4633 = _4615.y;
+                                        int _4637 = placement_seed + (_8870 * 100);
+                                        uint _4639 = uint(_4637 ^ 2346);
+                                        uint _4966 = _4639 + (_4639 << 10u);
+                                        uint _4968 = _4966 ^ (_4966 >> 6u);
+                                        uint _4970 = _4968 + (_4968 << 3u);
+                                        uint _4972 = _4970 ^ (_4970 >> 11u);
+                                        float _4980 = uintBitsToFloat(((_4972 + (_4972 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                        uint _4644 = uint(_4637 ^ 3459);
+                                        uint _4988 = _4644 + (_4644 << 10u);
+                                        uint _4990 = _4988 ^ (_4988 >> 6u);
+                                        uint _4992 = _4990 + (_4990 << 3u);
+                                        uint _4994 = _4992 ^ (_4992 >> 11u);
+                                        float _4647 = ((uintBitsToFloat(((_4994 + (_4994 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                        uint _4649 = uint(_4637 ^ 234);
+                                        uint _5010 = _4649 + (_4649 << 10u);
+                                        uint _5012 = _5010 ^ (_5010 >> 6u);
+                                        uint _5014 = _5012 + (_5012 << 3u);
+                                        uint _5016 = _5014 ^ (_5014 >> 11u);
+                                        vec3 _4653 = vec3((_4980 * 2.0) - 1.0, _4647, ((uintBitsToFloat(((_5016 + (_5016 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                        _4653.y = _4647 * 0.20000000298023223876953125;
+                                        vec3 _4658 = normalize(_4653);
+                                        vec3 _9141 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_4658.y < 0.0));
+                                        uint _4668 = uint(_4637 ^ 346);
+                                        uint _5032 = _4668 + (_4668 << 10u);
+                                        uint _5034 = _5032 ^ (_5032 >> 6u);
+                                        uint _5036 = _5034 + (_5034 << 3u);
+                                        uint _5038 = _5036 ^ (_5036 >> 11u);
+                                        vec3 _4671 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_5038 + (_5038 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                        float _4672 = mix(0.800000011920928955078125, 1.5, _4980);
+                                        _4671.x = _4672;
+                                        _4671.z = _4672;
+                                        vec3 _4679 = _4671 * 0.75;
+                                        mat4 _5081 = (mat4(vec4(_4679.x, 0.0, 0.0, 0.0), vec4(0.0, _4679.y, 0.0, 0.0), vec4(0.0, 0.0, _4679.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_4658, 0.0), vec4(_9141, 0.0), vec4(cross(_4658, _9141), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _4616), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_4615 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _4633), vec4(0.0, 0.0, 0.0, 1.0));
+                                        uint _4688 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                        int _4689 = int(_4688);
+                                        float _4692 = 10.0 * (_4616 + _4633);
+                                        uint _4694 = uint(_4692 + 640.0);
+                                        uint _5127 = _4694 + (_4694 << 10u);
+                                        uint _5129 = _5127 ^ (_5127 >> 6u);
+                                        uint _5131 = _5129 + (_5129 << 3u);
+                                        uint _5133 = _5131 ^ (_5131 >> 11u);
+                                        uint _4697 = uint(_4692 + 987.0);
+                                        uint _5149 = _4697 + (_4697 << 10u);
+                                        uint _5151 = _5149 ^ (_5149 >> 6u);
+                                        uint _5153 = _5151 + (_5151 << 3u);
+                                        uint _5155 = _5153 ^ (_5153 >> 11u);
+                                        instance_buffer_1._member0[_4689].transform.data.data[0] = _5081[0].x;
+                                        instance_buffer_1._member0[_4689].transform.data.data[1] = _5081[1].x;
+                                        instance_buffer_1._member0[_4689].transform.data.data[2] = _5081[2].x;
+                                        instance_buffer_1._member0[_4689].transform.data.data[3] = _5081[0].y;
+                                        instance_buffer_1._member0[_4689].transform.data.data[4] = _5081[1].y;
+                                        instance_buffer_1._member0[_4689].transform.data.data[5] = _5081[2].y;
+                                        instance_buffer_1._member0[_4689].transform.data.data[6] = _5081[0].z;
+                                        instance_buffer_1._member0[_4689].transform.data.data[7] = _5081[1].z;
+                                        instance_buffer_1._member0[_4689].transform.data.data[8] = _5081[2].z;
+                                        instance_buffer_1._member0[_4689].transform.data.data[9] = _5081[0].w;
+                                        instance_buffer_1._member0[_4689].transform.data.data[10] = _5081[1].w;
+                                        instance_buffer_1._member0[_4689].transform.data.data[11] = _5081[2].w;
+                                        instance_buffer_1._member0[_4689].color = vec4(uintBitsToFloat(((_5133 + (_5133 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_5155 + (_5155 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                        _8870 = _4609;
+                                        continue;
+                                    }
+                                    break;
+                                } while(false);
+                            }
+                            else
+                            {
+                                bool _8790;
+                                if (_552 == 6)
+                                {
+                                    _8790 = true;
+                                }
+                                else
+                                {
+                                    _8790 = _552 == 9;
+                                }
+                                if (_8790)
+                                {
+                                    do
+                                    {
+                                        vec2 _8835;
+                                        vec2 _8836;
+                                        float _8837;
+                                        float _8838;
+                                        _8838 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                        _8837 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                        _8836 = _474;
+                                        _8835 = _442;
+                                        uint _3500;
+                                        float _9100;
+                                        float _9101;
+                                        vec2 _9103;
+                                        vec2 _9105;
+                                        uint _8834 = 0u;
+                                        for (;;)
+                                        {
+                                            if (!(_8834 < 2u))
+                                            {
+                                                break;
+                                            }
+                                            vec2 _3488 = _8835 + _8836;
+                                            vec2 _3489 = _3488 * vec2(0.5);
+                                            float _3569 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_3488 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                            bool _3493 = (_3569 * _8837) < 0.0;
+                                            _9100 = _3493 ? _3569 : _8838;
+                                            _9101 = _3493 ? _8837 : _3569;
+                                            bvec2 _9102 = bvec2(_3493);
+                                            _9103 = mix(_8836, _3489, _9102);
+                                            _9105 = mix(_3489, _8835, _9102);
+                                            _3500 = _8834 + 1u;
+                                            _8838 = _9100;
+                                            _8837 = _9101;
+                                            _8836 = _9103;
+                                            _8835 = _9105;
+                                            _8834 = _3500;
+                                            continue;
+                                        }
+                                        vec2 _3515 = _8836 + ((_8835 - _8836) * vec2(clamp(_8838 / (_8838 - _8837), 0.0, 1.0)));
+                                        vec2 _3325 = vec3(_3515.x, 0.4000000059604644775390625, _3515.y).xz;
+                                        vec2 _8840;
+                                        vec2 _8841;
+                                        float _8842;
+                                        float _8843;
+                                        _8843 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                        _8842 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                        _8841 = _505;
+                                        _8840 = _536;
+                                        uint _3619;
+                                        float _9106;
+                                        float _9107;
+                                        vec2 _9109;
+                                        vec2 _9111;
+                                        uint _8839 = 0u;
+                                        for (;;)
+                                        {
+                                            if (!(_8839 < 2u))
+                                            {
+                                                break;
+                                            }
+                                            vec2 _3607 = _8840 + _8841;
+                                            vec2 _3608 = _3607 * vec2(0.5);
+                                            float _3688 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_3607 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                            bool _3612 = (_3688 * _8842) < 0.0;
+                                            _9106 = _3612 ? _3688 : _8843;
+                                            _9107 = _3612 ? _8842 : _3688;
+                                            bvec2 _9108 = bvec2(_3612);
+                                            _9109 = mix(_8841, _3608, _9108);
+                                            _9111 = mix(_3608, _8840, _9108);
+                                            _3619 = _8839 + 1u;
+                                            _8843 = _9106;
+                                            _8842 = _9107;
+                                            _8841 = _9109;
+                                            _8840 = _9111;
+                                            _8839 = _3619;
+                                            continue;
+                                        }
+                                        vec2 _3634 = _8841 + ((_8840 - _8841) * vec2(clamp(_8843 / (_8843 - _8842), 0.0, 1.0)));
+                                        vec2 _3329 = vec3(_3634.x, 0.4000000059604644775390625, _3634.y).xz;
+                                        float _3330 = distance(_3325, _3329);
+                                        if (_3330 < 0.4000000059604644775390625)
+                                        {
+                                            break;
+                                        }
+                                        int _3336 = int(max(_3330 * 2.5, 1.0));
+                                        int _3351;
+                                        int _8844 = 0;
+                                        for (;;)
+                                        {
+                                            if (!(_8844 < (_3336 + 1)))
+                                            {
+                                                break;
+                                            }
+                                            float _3348 = float(_3336);
+                                            _3351 = _8844 + 1;
+                                            vec2 _3357 = mix(_3325, _3329, vec2(((float(_8844) / _3348) + (float(_3351) / _3348)) * 0.5));
+                                            float _3358 = _3357.x;
+                                            float _3375 = _3357.y;
+                                            int _3379 = placement_seed + (_8844 * 100);
+                                            uint _3381 = uint(_3379 ^ 2346);
+                                            uint _3708 = _3381 + (_3381 << 10u);
+                                            uint _3710 = _3708 ^ (_3708 >> 6u);
+                                            uint _3712 = _3710 + (_3710 << 3u);
+                                            uint _3714 = _3712 ^ (_3712 >> 11u);
+                                            float _3722 = uintBitsToFloat(((_3714 + (_3714 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                            uint _3386 = uint(_3379 ^ 3459);
+                                            uint _3730 = _3386 + (_3386 << 10u);
+                                            uint _3732 = _3730 ^ (_3730 >> 6u);
+                                            uint _3734 = _3732 + (_3732 << 3u);
+                                            uint _3736 = _3734 ^ (_3734 >> 11u);
+                                            float _3389 = ((uintBitsToFloat(((_3736 + (_3736 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                            uint _3391 = uint(_3379 ^ 234);
+                                            uint _3752 = _3391 + (_3391 << 10u);
+                                            uint _3754 = _3752 ^ (_3752 >> 6u);
+                                            uint _3756 = _3754 + (_3754 << 3u);
+                                            uint _3758 = _3756 ^ (_3756 >> 11u);
+                                            vec3 _3395 = vec3((_3722 * 2.0) - 1.0, _3389, ((uintBitsToFloat(((_3758 + (_3758 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                            _3395.y = _3389 * 0.20000000298023223876953125;
+                                            vec3 _3400 = normalize(_3395);
+                                            vec3 _9113 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_3400.y < 0.0));
+                                            uint _3410 = uint(_3379 ^ 346);
+                                            uint _3774 = _3410 + (_3410 << 10u);
+                                            uint _3776 = _3774 ^ (_3774 >> 6u);
+                                            uint _3778 = _3776 + (_3776 << 3u);
+                                            uint _3780 = _3778 ^ (_3778 >> 11u);
+                                            vec3 _3413 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_3780 + (_3780 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                            float _3414 = mix(0.800000011920928955078125, 1.5, _3722);
+                                            _3413.x = _3414;
+                                            _3413.z = _3414;
+                                            vec3 _3421 = _3413 * 0.75;
+                                            mat4 _3823 = (mat4(vec4(_3421.x, 0.0, 0.0, 0.0), vec4(0.0, _3421.y, 0.0, 0.0), vec4(0.0, 0.0, _3421.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_3400, 0.0), vec4(_9113, 0.0), vec4(cross(_3400, _9113), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _3358), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_3357 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _3375), vec4(0.0, 0.0, 0.0, 1.0));
+                                            uint _3430 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                            int _3431 = int(_3430);
+                                            float _3434 = 10.0 * (_3358 + _3375);
+                                            uint _3436 = uint(_3434 + 640.0);
+                                            uint _3869 = _3436 + (_3436 << 10u);
+                                            uint _3871 = _3869 ^ (_3869 >> 6u);
+                                            uint _3873 = _3871 + (_3871 << 3u);
+                                            uint _3875 = _3873 ^ (_3873 >> 11u);
+                                            uint _3439 = uint(_3434 + 987.0);
+                                            uint _3891 = _3439 + (_3439 << 10u);
+                                            uint _3893 = _3891 ^ (_3891 >> 6u);
+                                            uint _3895 = _3893 + (_3893 << 3u);
+                                            uint _3897 = _3895 ^ (_3895 >> 11u);
+                                            instance_buffer_1._member0[_3431].transform.data.data[0] = _3823[0].x;
+                                            instance_buffer_1._member0[_3431].transform.data.data[1] = _3823[1].x;
+                                            instance_buffer_1._member0[_3431].transform.data.data[2] = _3823[2].x;
+                                            instance_buffer_1._member0[_3431].transform.data.data[3] = _3823[0].y;
+                                            instance_buffer_1._member0[_3431].transform.data.data[4] = _3823[1].y;
+                                            instance_buffer_1._member0[_3431].transform.data.data[5] = _3823[2].y;
+                                            instance_buffer_1._member0[_3431].transform.data.data[6] = _3823[0].z;
+                                            instance_buffer_1._member0[_3431].transform.data.data[7] = _3823[1].z;
+                                            instance_buffer_1._member0[_3431].transform.data.data[8] = _3823[2].z;
+                                            instance_buffer_1._member0[_3431].transform.data.data[9] = _3823[0].w;
+                                            instance_buffer_1._member0[_3431].transform.data.data[10] = _3823[1].w;
+                                            instance_buffer_1._member0[_3431].transform.data.data[11] = _3823[2].w;
+                                            instance_buffer_1._member0[_3431].color = vec4(uintBitsToFloat(((_3875 + (_3875 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_3897 + (_3897 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                            _8844 = _3351;
+                                            continue;
+                                        }
+                                        break;
+                                    } while(false);
+                                }
+                                else
+                                {
+                                    bool _8791;
+                                    if (_552 == 7)
+                                    {
+                                        _8791 = true;
+                                    }
+                                    else
+                                    {
+                                        _8791 = _552 == 8;
+                                    }
+                                    if (_8791)
+                                    {
+                                        do
+                                        {
+                                            vec2 _2894 = (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                            vec2 _8821;
+                                            vec2 _8822;
+                                            float _8823;
+                                            float _8824;
+                                            _8824 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                            _8823 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _2894, 0.0).y;
+                                            _8822 = _474;
+                                            _8821 = _442;
+                                            uint _2871;
+                                            float _9086;
+                                            float _9087;
+                                            vec2 _9089;
+                                            vec2 _9091;
+                                            uint _8820 = 0u;
+                                            for (;;)
+                                            {
+                                                if (!(_8820 < 2u))
+                                                {
+                                                    break;
+                                                }
+                                                vec2 _2859 = _8821 + _8822;
+                                                vec2 _2860 = _2859 * vec2(0.5);
+                                                float _2940 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_2859 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                bool _2864 = (_2940 * _8823) < 0.0;
+                                                _9086 = _2864 ? _2940 : _8824;
+                                                _9087 = _2864 ? _8823 : _2940;
+                                                bvec2 _9088 = bvec2(_2864);
+                                                _9089 = mix(_8822, _2860, _9088);
+                                                _9091 = mix(_2860, _8821, _9088);
+                                                _2871 = _8820 + 1u;
+                                                _8824 = _9086;
+                                                _8823 = _9087;
+                                                _8822 = _9089;
+                                                _8821 = _9091;
+                                                _8820 = _2871;
+                                                continue;
+                                            }
+                                            vec2 _2886 = _8822 + ((_8821 - _8822) * vec2(clamp(_8824 / (_8824 - _8823), 0.0, 1.0)));
+                                            vec2 _2696 = vec3(_2886.x, 0.4000000059604644775390625, _2886.y).xz;
+                                            vec2 _8826;
+                                            vec2 _8827;
+                                            float _8828;
+                                            float _8829;
+                                            _8829 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).y;
+                                            _8828 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _2894, 0.0).y;
+                                            _8827 = _536;
+                                            _8826 = _442;
+                                            uint _2990;
+                                            float _9092;
+                                            float _9093;
+                                            vec2 _9095;
+                                            vec2 _9097;
+                                            uint _8825 = 0u;
+                                            for (;;)
+                                            {
+                                                if (!(_8825 < 2u))
+                                                {
+                                                    break;
+                                                }
+                                                vec2 _2978 = _8826 + _8827;
+                                                vec2 _2979 = _2978 * vec2(0.5);
+                                                float _3059 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_2978 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                bool _2983 = (_3059 * _8828) < 0.0;
+                                                _9092 = _2983 ? _3059 : _8829;
+                                                _9093 = _2983 ? _8828 : _3059;
+                                                bvec2 _9094 = bvec2(_2983);
+                                                _9095 = mix(_8827, _2979, _9094);
+                                                _9097 = mix(_2979, _8826, _9094);
+                                                _2990 = _8825 + 1u;
+                                                _8829 = _9092;
+                                                _8828 = _9093;
+                                                _8827 = _9095;
+                                                _8826 = _9097;
+                                                _8825 = _2990;
+                                                continue;
+                                            }
+                                            vec2 _3005 = _8827 + ((_8826 - _8827) * vec2(clamp(_8829 / (_8829 - _8828), 0.0, 1.0)));
+                                            vec2 _2700 = vec3(_3005.x, 0.4000000059604644775390625, _3005.y).xz;
+                                            float _2701 = distance(_2696, _2700);
+                                            if (_2701 < 0.4000000059604644775390625)
+                                            {
+                                                break;
+                                            }
+                                            int _2707 = int(max(_2701 * 2.5, 1.0));
+                                            int _2722;
+                                            int _8830 = 0;
+                                            for (;;)
+                                            {
+                                                if (!(_8830 < (_2707 + 1)))
+                                                {
+                                                    break;
+                                                }
+                                                float _2719 = float(_2707);
+                                                _2722 = _8830 + 1;
+                                                vec2 _2728 = mix(_2696, _2700, vec2(((float(_8830) / _2719) + (float(_2722) / _2719)) * 0.5));
+                                                float _2729 = _2728.x;
+                                                float _2746 = _2728.y;
+                                                int _2750 = placement_seed + (_8830 * 100);
+                                                uint _2752 = uint(_2750 ^ 2346);
+                                                uint _3079 = _2752 + (_2752 << 10u);
+                                                uint _3081 = _3079 ^ (_3079 >> 6u);
+                                                uint _3083 = _3081 + (_3081 << 3u);
+                                                uint _3085 = _3083 ^ (_3083 >> 11u);
+                                                float _3093 = uintBitsToFloat(((_3085 + (_3085 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                                uint _2757 = uint(_2750 ^ 3459);
+                                                uint _3101 = _2757 + (_2757 << 10u);
+                                                uint _3103 = _3101 ^ (_3101 >> 6u);
+                                                uint _3105 = _3103 + (_3103 << 3u);
+                                                uint _3107 = _3105 ^ (_3105 >> 11u);
+                                                float _2760 = ((uintBitsToFloat(((_3107 + (_3107 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                                uint _2762 = uint(_2750 ^ 234);
+                                                uint _3123 = _2762 + (_2762 << 10u);
+                                                uint _3125 = _3123 ^ (_3123 >> 6u);
+                                                uint _3127 = _3125 + (_3125 << 3u);
+                                                uint _3129 = _3127 ^ (_3127 >> 11u);
+                                                vec3 _2766 = vec3((_3093 * 2.0) - 1.0, _2760, ((uintBitsToFloat(((_3129 + (_3129 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                                _2766.y = _2760 * 0.20000000298023223876953125;
+                                                vec3 _2771 = normalize(_2766);
+                                                vec3 _9099 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_2771.y < 0.0));
+                                                uint _2781 = uint(_2750 ^ 346);
+                                                uint _3145 = _2781 + (_2781 << 10u);
+                                                uint _3147 = _3145 ^ (_3145 >> 6u);
+                                                uint _3149 = _3147 + (_3147 << 3u);
+                                                uint _3151 = _3149 ^ (_3149 >> 11u);
+                                                vec3 _2784 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_3151 + (_3151 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                                float _2785 = mix(0.800000011920928955078125, 1.5, _3093);
+                                                _2784.x = _2785;
+                                                _2784.z = _2785;
+                                                vec3 _2792 = _2784 * 0.75;
+                                                mat4 _3194 = (mat4(vec4(_2792.x, 0.0, 0.0, 0.0), vec4(0.0, _2792.y, 0.0, 0.0), vec4(0.0, 0.0, _2792.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_2771, 0.0), vec4(_9099, 0.0), vec4(cross(_2771, _9099), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _2729), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_2728 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _2746), vec4(0.0, 0.0, 0.0, 1.0));
+                                                uint _2801 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                                int _2802 = int(_2801);
+                                                float _2805 = 10.0 * (_2729 + _2746);
+                                                uint _2807 = uint(_2805 + 640.0);
+                                                uint _3240 = _2807 + (_2807 << 10u);
+                                                uint _3242 = _3240 ^ (_3240 >> 6u);
+                                                uint _3244 = _3242 + (_3242 << 3u);
+                                                uint _3246 = _3244 ^ (_3244 >> 11u);
+                                                uint _2810 = uint(_2805 + 987.0);
+                                                uint _3262 = _2810 + (_2810 << 10u);
+                                                uint _3264 = _3262 ^ (_3262 >> 6u);
+                                                uint _3266 = _3264 + (_3264 << 3u);
+                                                uint _3268 = _3266 ^ (_3266 >> 11u);
+                                                instance_buffer_1._member0[_2802].transform.data.data[0] = _3194[0].x;
+                                                instance_buffer_1._member0[_2802].transform.data.data[1] = _3194[1].x;
+                                                instance_buffer_1._member0[_2802].transform.data.data[2] = _3194[2].x;
+                                                instance_buffer_1._member0[_2802].transform.data.data[3] = _3194[0].y;
+                                                instance_buffer_1._member0[_2802].transform.data.data[4] = _3194[1].y;
+                                                instance_buffer_1._member0[_2802].transform.data.data[5] = _3194[2].y;
+                                                instance_buffer_1._member0[_2802].transform.data.data[6] = _3194[0].z;
+                                                instance_buffer_1._member0[_2802].transform.data.data[7] = _3194[1].z;
+                                                instance_buffer_1._member0[_2802].transform.data.data[8] = _3194[2].z;
+                                                instance_buffer_1._member0[_2802].transform.data.data[9] = _3194[0].w;
+                                                instance_buffer_1._member0[_2802].transform.data.data[10] = _3194[1].w;
+                                                instance_buffer_1._member0[_2802].transform.data.data[11] = _3194[2].w;
+                                                instance_buffer_1._member0[_2802].color = vec4(uintBitsToFloat(((_3246 + (_3246 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_3268 + (_3268 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                                _8830 = _2722;
+                                                continue;
+                                            }
+                                            break;
+                                        } while(false);
+                                    }
+                                    else
+                                    {
+                                        if (_552 == 10)
+                                        {
+                                            vec2 _1635;
+                                            vec2 _1772;
+                                            do
+                                            {
+                                                _1635 = (_442 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                                vec2 _1653 = (_474 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                                vec2 _8793;
+                                                vec2 _8794;
+                                                float _8795;
+                                                float _8796;
+                                                _8796 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1653, 0.0).y;
+                                                _8795 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1635, 0.0).y;
+                                                _8794 = _474;
+                                                _8793 = _442;
+                                                uint _1612;
+                                                float _9056;
+                                                float _9057;
+                                                vec2 _9060;
+                                                vec2 _9062;
+                                                uint _8792 = 0u;
+                                                for (;;)
+                                                {
+                                                    if (!(_8792 < 2u))
+                                                    {
+                                                        break;
+                                                    }
+                                                    vec2 _1600 = _8793 + _8794;
+                                                    vec2 _1601 = _1600 * vec2(0.5);
+                                                    float _1681 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_1600 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                    bool _1605 = (_1681 * _8795) < 0.0;
+                                                    _9056 = _1605 ? _1681 : _8796;
+                                                    _9057 = _1605 ? _8795 : _1681;
+                                                    bvec2 _9059 = bvec2(_1605);
+                                                    _9060 = mix(_8794, _1601, _9059);
+                                                    _9062 = mix(_1601, _8793, _9059);
+                                                    _1612 = _8792 + 1u;
+                                                    _8796 = _9056;
+                                                    _8795 = _9057;
+                                                    _8794 = _9060;
+                                                    _8793 = _9062;
+                                                    _8792 = _1612;
+                                                    continue;
+                                                }
+                                                vec2 _1627 = _8794 + ((_8793 - _8794) * vec2(clamp(_8796 / (_8796 - _8795), 0.0, 1.0)));
+                                                vec2 _1437 = vec3(_1627.x, 0.4000000059604644775390625, _1627.y).xz;
+                                                _1772 = (_505 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                                vec2 _8798;
+                                                vec2 _8799;
+                                                float _8800;
+                                                float _8801;
+                                                _8801 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1772, 0.0).y;
+                                                _8800 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1653, 0.0).y;
+                                                _8799 = _505;
+                                                _8798 = _474;
+                                                uint _1731;
+                                                float _9063;
+                                                float _9064;
+                                                vec2 _9066;
+                                                vec2 _9068;
+                                                uint _8797 = 0u;
+                                                for (;;)
+                                                {
+                                                    if (!(_8797 < 2u))
+                                                    {
+                                                        break;
+                                                    }
+                                                    vec2 _1719 = _8798 + _8799;
+                                                    vec2 _1720 = _1719 * vec2(0.5);
+                                                    float _1800 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_1719 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                    bool _1724 = (_1800 * _8800) < 0.0;
+                                                    _9063 = _1724 ? _1800 : _8801;
+                                                    _9064 = _1724 ? _8800 : _1800;
+                                                    bvec2 _9065 = bvec2(_1724);
+                                                    _9066 = mix(_8799, _1720, _9065);
+                                                    _9068 = mix(_1720, _8798, _9065);
+                                                    _1731 = _8797 + 1u;
+                                                    _8801 = _9063;
+                                                    _8800 = _9064;
+                                                    _8799 = _9066;
+                                                    _8798 = _9068;
+                                                    _8797 = _1731;
+                                                    continue;
+                                                }
+                                                vec2 _1746 = _8799 + ((_8798 - _8799) * vec2(clamp(_8801 / (_8801 - _8800), 0.0, 1.0)));
+                                                vec2 _1441 = vec3(_1746.x, 0.4000000059604644775390625, _1746.y).xz;
+                                                float _1442 = distance(_1437, _1441);
+                                                if (_1442 < 0.4000000059604644775390625)
+                                                {
+                                                    break;
+                                                }
+                                                int _1448 = int(max(_1442 * 2.5, 1.0));
+                                                int _1463;
+                                                int _8802 = 0;
+                                                for (;;)
+                                                {
+                                                    if (!(_8802 < (_1448 + 1)))
+                                                    {
+                                                        break;
+                                                    }
+                                                    float _1460 = float(_1448);
+                                                    _1463 = _8802 + 1;
+                                                    vec2 _1469 = mix(_1437, _1441, vec2(((float(_8802) / _1460) + (float(_1463) / _1460)) * 0.5));
+                                                    float _1470 = _1469.x;
+                                                    float _1487 = _1469.y;
+                                                    int _1491 = placement_seed + (_8802 * 100);
+                                                    uint _1493 = uint(_1491 ^ 2346);
+                                                    uint _1820 = _1493 + (_1493 << 10u);
+                                                    uint _1822 = _1820 ^ (_1820 >> 6u);
+                                                    uint _1824 = _1822 + (_1822 << 3u);
+                                                    uint _1826 = _1824 ^ (_1824 >> 11u);
+                                                    float _1834 = uintBitsToFloat(((_1826 + (_1826 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                                    uint _1498 = uint(_1491 ^ 3459);
+                                                    uint _1842 = _1498 + (_1498 << 10u);
+                                                    uint _1844 = _1842 ^ (_1842 >> 6u);
+                                                    uint _1846 = _1844 + (_1844 << 3u);
+                                                    uint _1848 = _1846 ^ (_1846 >> 11u);
+                                                    float _1501 = ((uintBitsToFloat(((_1848 + (_1848 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                                    uint _1503 = uint(_1491 ^ 234);
+                                                    uint _1864 = _1503 + (_1503 << 10u);
+                                                    uint _1866 = _1864 ^ (_1864 >> 6u);
+                                                    uint _1868 = _1866 + (_1866 << 3u);
+                                                    uint _1870 = _1868 ^ (_1868 >> 11u);
+                                                    vec3 _1507 = vec3((_1834 * 2.0) - 1.0, _1501, ((uintBitsToFloat(((_1870 + (_1870 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                                    _1507.y = _1501 * 0.20000000298023223876953125;
+                                                    vec3 _1512 = normalize(_1507);
+                                                    vec3 _9071 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_1512.y < 0.0));
+                                                    uint _1522 = uint(_1491 ^ 346);
+                                                    uint _1886 = _1522 + (_1522 << 10u);
+                                                    uint _1888 = _1886 ^ (_1886 >> 6u);
+                                                    uint _1890 = _1888 + (_1888 << 3u);
+                                                    uint _1892 = _1890 ^ (_1890 >> 11u);
+                                                    vec3 _1525 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_1892 + (_1892 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                                    float _1526 = mix(0.800000011920928955078125, 1.5, _1834);
+                                                    _1525.x = _1526;
+                                                    _1525.z = _1526;
+                                                    vec3 _1533 = _1525 * 0.75;
+                                                    mat4 _1936 = (mat4(vec4(_1533.x, 0.0, 0.0, 0.0), vec4(0.0, _1533.y, 0.0, 0.0), vec4(0.0, 0.0, _1533.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_1512, 0.0), vec4(_9071, 0.0), vec4(cross(_1512, _9071), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _1470), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_1469 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _1487), vec4(0.0, 0.0, 0.0, 1.0));
+                                                    uint _1542 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                                    int _1543 = int(_1542);
+                                                    float _1546 = 10.0 * (_1470 + _1487);
+                                                    uint _1548 = uint(_1546 + 640.0);
+                                                    uint _1982 = _1548 + (_1548 << 10u);
+                                                    uint _1984 = _1982 ^ (_1982 >> 6u);
+                                                    uint _1986 = _1984 + (_1984 << 3u);
+                                                    uint _1988 = _1986 ^ (_1986 >> 11u);
+                                                    uint _1551 = uint(_1546 + 987.0);
+                                                    uint _2004 = _1551 + (_1551 << 10u);
+                                                    uint _2006 = _2004 ^ (_2004 >> 6u);
+                                                    uint _2008 = _2006 + (_2006 << 3u);
+                                                    uint _2010 = _2008 ^ (_2008 >> 11u);
+                                                    instance_buffer_1._member0[_1543].transform.data.data[0] = _1936[0].x;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[1] = _1936[1].x;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[2] = _1936[2].x;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[3] = _1936[0].y;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[4] = _1936[1].y;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[5] = _1936[2].y;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[6] = _1936[0].z;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[7] = _1936[1].z;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[8] = _1936[2].z;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[9] = _1936[0].w;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[10] = _1936[1].w;
+                                                    instance_buffer_1._member0[_1543].transform.data.data[11] = _1936[2].w;
+                                                    instance_buffer_1._member0[_1543].color = vec4(uintBitsToFloat(((_1988 + (_1988 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_2010 + (_2010 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                                    _8802 = _1463;
+                                                    continue;
+                                                }
+                                                break;
+                                            } while(false);
+                                            do
+                                            {
+                                                vec2 _2283 = (_536 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                                                vec2 _8805;
+                                                vec2 _8806;
+                                                float _8807;
+                                                float _8808;
+                                                _8808 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _2283, 0.0).y;
+                                                _8807 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1635, 0.0).y;
+                                                _8806 = _536;
+                                                _8805 = _442;
+                                                uint _2242;
+                                                float _9072;
+                                                float _9073;
+                                                vec2 _9075;
+                                                vec2 _9077;
+                                                uint _8804 = 0u;
+                                                for (;;)
+                                                {
+                                                    if (!(_8804 < 2u))
+                                                    {
+                                                        break;
+                                                    }
+                                                    vec2 _2230 = _8805 + _8806;
+                                                    vec2 _2231 = _2230 * vec2(0.5);
+                                                    float _2311 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_2230 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                    bool _2235 = (_2311 * _8807) < 0.0;
+                                                    _9072 = _2235 ? _2311 : _8808;
+                                                    _9073 = _2235 ? _8807 : _2311;
+                                                    bvec2 _9074 = bvec2(_2235);
+                                                    _9075 = mix(_8806, _2231, _9074);
+                                                    _9077 = mix(_2231, _8805, _9074);
+                                                    _2242 = _8804 + 1u;
+                                                    _8808 = _9072;
+                                                    _8807 = _9073;
+                                                    _8806 = _9075;
+                                                    _8805 = _9077;
+                                                    _8804 = _2242;
+                                                    continue;
+                                                }
+                                                vec2 _2257 = _8806 + ((_8805 - _8806) * vec2(clamp(_8808 / (_8808 - _8807), 0.0, 1.0)));
+                                                vec2 _2067 = vec3(_2257.x, 0.4000000059604644775390625, _2257.y).xz;
+                                                vec2 _8810;
+                                                vec2 _8811;
+                                                float _8812;
+                                                float _8813;
+                                                _8813 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1772, 0.0).y;
+                                                _8812 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _2283, 0.0).y;
+                                                _8811 = _505;
+                                                _8810 = _536;
+                                                uint _2361;
+                                                float _9078;
+                                                float _9079;
+                                                vec2 _9081;
+                                                vec2 _9083;
+                                                uint _8809 = 0u;
+                                                for (;;)
+                                                {
+                                                    if (!(_8809 < 2u))
+                                                    {
+                                                        break;
+                                                    }
+                                                    vec2 _2349 = _8810 + _8811;
+                                                    vec2 _2350 = _2349 * vec2(0.5);
+                                                    float _2430 = (-0.4000000059604644775390625) + textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), (_2349 * vec2(0.00384615384973585605621337890625)) + vec2(0.5), 0.0).y;
+                                                    bool _2354 = (_2430 * _8812) < 0.0;
+                                                    _9078 = _2354 ? _2430 : _8813;
+                                                    _9079 = _2354 ? _8812 : _2430;
+                                                    bvec2 _9080 = bvec2(_2354);
+                                                    _9081 = mix(_8811, _2350, _9080);
+                                                    _9083 = mix(_2350, _8810, _9080);
+                                                    _2361 = _8809 + 1u;
+                                                    _8813 = _9078;
+                                                    _8812 = _9079;
+                                                    _8811 = _9081;
+                                                    _8810 = _9083;
+                                                    _8809 = _2361;
+                                                    continue;
+                                                }
+                                                vec2 _2376 = _8811 + ((_8810 - _8811) * vec2(clamp(_8813 / (_8813 - _8812), 0.0, 1.0)));
+                                                vec2 _2071 = vec3(_2376.x, 0.4000000059604644775390625, _2376.y).xz;
+                                                float _2072 = distance(_2067, _2071);
+                                                if (_2072 < 0.4000000059604644775390625)
+                                                {
+                                                    break;
+                                                }
+                                                int _2078 = int(max(_2072 * 2.5, 1.0));
+                                                int _2093;
+                                                int _8814 = 0;
+                                                for (;;)
+                                                {
+                                                    if (!(_8814 < (_2078 + 1)))
+                                                    {
+                                                        break;
+                                                    }
+                                                    float _2090 = float(_2078);
+                                                    _2093 = _8814 + 1;
+                                                    vec2 _2099 = mix(_2067, _2071, vec2(((float(_8814) / _2090) + (float(_2093) / _2090)) * 0.5));
+                                                    float _2100 = _2099.x;
+                                                    float _2117 = _2099.y;
+                                                    int _2121 = placement_seed + (_8814 * 100);
+                                                    uint _2123 = uint(_2121 ^ 2346);
+                                                    uint _2450 = _2123 + (_2123 << 10u);
+                                                    uint _2452 = _2450 ^ (_2450 >> 6u);
+                                                    uint _2454 = _2452 + (_2452 << 3u);
+                                                    uint _2456 = _2454 ^ (_2454 >> 11u);
+                                                    float _2464 = uintBitsToFloat(((_2456 + (_2456 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+                                                    uint _2128 = uint(_2121 ^ 3459);
+                                                    uint _2472 = _2128 + (_2128 << 10u);
+                                                    uint _2474 = _2472 ^ (_2472 >> 6u);
+                                                    uint _2476 = _2474 + (_2474 << 3u);
+                                                    uint _2478 = _2476 ^ (_2476 >> 11u);
+                                                    float _2131 = ((uintBitsToFloat(((_2478 + (_2478 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0;
+                                                    uint _2133 = uint(_2121 ^ 234);
+                                                    uint _2494 = _2133 + (_2133 << 10u);
+                                                    uint _2496 = _2494 ^ (_2494 >> 6u);
+                                                    uint _2498 = _2496 + (_2496 << 3u);
+                                                    uint _2500 = _2498 ^ (_2498 >> 11u);
+                                                    vec3 _2137 = vec3((_2464 * 2.0) - 1.0, _2131, ((uintBitsToFloat(((_2500 + (_2500 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 2.0) - 1.0);
+                                                    _2137.y = _2131 * 0.20000000298023223876953125;
+                                                    vec3 _2142 = normalize(_2137);
+                                                    vec3 _9085 = mix(vec3(0.0, 1.0, 0.0), vec3(0.0, -1.0, 0.0), bvec3(_2142.y < 0.0));
+                                                    uint _2152 = uint(_2121 ^ 346);
+                                                    uint _2516 = _2152 + (_2152 << 10u);
+                                                    uint _2518 = _2516 ^ (_2516 >> 6u);
+                                                    uint _2520 = _2518 + (_2518 << 3u);
+                                                    uint _2522 = _2520 ^ (_2520 >> 11u);
+                                                    vec3 _2155 = vec3(mix(0.800000011920928955078125, 1.2999999523162841796875, uintBitsToFloat(((_2522 + (_2522 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+                                                    float _2156 = mix(0.800000011920928955078125, 1.5, _2464);
+                                                    _2155.x = _2156;
+                                                    _2155.z = _2156;
+                                                    vec3 _2163 = _2155 * 0.75;
+                                                    mat4 _2565 = (mat4(vec4(_2163.x, 0.0, 0.0, 0.0), vec4(0.0, _2163.y, 0.0, 0.0), vec4(0.0, 0.0, _2163.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * transpose(mat4(vec4(_2142, 0.0), vec4(_9085, 0.0), vec4(cross(_2142, _9085), 0.0), vec4(0.0, 0.0, 0.0, 1.0)))) * mat4(vec4(1.0, 0.0, 0.0, _2100), vec4(0.0, 1.0, 0.0, mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_2099 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x)), vec4(0.0, 0.0, 1.0, _2117), vec4(0.0, 0.0, 0.0, 1.0));
+                                                    uint _2172 = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+                                                    int _2173 = int(_2172);
+                                                    float _2176 = 10.0 * (_2100 + _2117);
+                                                    uint _2178 = uint(_2176 + 640.0);
+                                                    uint _2611 = _2178 + (_2178 << 10u);
+                                                    uint _2613 = _2611 ^ (_2611 >> 6u);
+                                                    uint _2615 = _2613 + (_2613 << 3u);
+                                                    uint _2617 = _2615 ^ (_2615 >> 11u);
+                                                    uint _2181 = uint(_2176 + 987.0);
+                                                    uint _2633 = _2181 + (_2181 << 10u);
+                                                    uint _2635 = _2633 ^ (_2633 >> 6u);
+                                                    uint _2637 = _2635 + (_2635 << 3u);
+                                                    uint _2639 = _2637 ^ (_2637 >> 11u);
+                                                    instance_buffer_1._member0[_2173].transform.data.data[0] = _2565[0].x;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[1] = _2565[1].x;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[2] = _2565[2].x;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[3] = _2565[0].y;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[4] = _2565[1].y;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[5] = _2565[2].y;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[6] = _2565[0].z;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[7] = _2565[1].z;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[8] = _2565[2].z;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[9] = _2565[0].w;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[10] = _2565[1].w;
+                                                    instance_buffer_1._member0[_2173].transform.data.data[11] = _2565[2].w;
+                                                    instance_buffer_1._member0[_2173].color = vec4(uintBitsToFloat(((_2617 + (_2617 << 15u)) & 8388607u) | 1065353216u) - 1.0, uintBitsToFloat(((_2639 + (_2639 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, 0.0);
+                                                    _8814 = _2093;
+                                                    continue;
+                                                }
+                                                break;
+                                            } while(false);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    } while(false);
+}
+

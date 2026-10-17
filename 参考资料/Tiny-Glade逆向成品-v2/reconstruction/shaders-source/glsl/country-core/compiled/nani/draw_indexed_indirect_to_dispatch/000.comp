@@ -1,0 +1,33 @@
+#version 460
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint vertexOffset;
+    uint firstInstance;
+};
+
+layout(set = 0, binding = 0, std430) readonly buffer StructuredBuffer
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_buffer;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uvec4 _member0[];
+} args_buffer;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint bucket;
+    uint group_size;
+} push_constants;
+
+void main()
+{
+    args_buffer._member0[0] = uvec4(((draw_buffer._member0[push_constants.bucket].instanceCount + push_constants.group_size) - 1u) / push_constants.group_size, 1u, 1u, draw_buffer._member0[push_constants.bucket].instanceCount);
+}
+

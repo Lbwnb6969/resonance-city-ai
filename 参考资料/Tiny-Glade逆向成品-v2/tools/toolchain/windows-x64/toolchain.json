@@ -1,0 +1,29 @@
+{
+  "architecture": "Windows x86_64",
+  "files": [
+    {
+      "file": "spirv-cross.exe",
+      "sha256": "00437c469054c00742397b7f7b229897e30426cd5763dcee359ad8a27db5fe3b",
+      "bytes": 2293248
+    },
+    {
+      "file": "glslang.exe",
+      "sha256": "5ceb16acacded753a19a330c1f827adfc39e4e82d9f77f9c8148c7aed449dcc9",
+      "bytes": 2429440
+    },
+    {
+      "file": "spirv-val.exe",
+      "sha256": "0114212b5282567129386361574b5dca439b02684e2dd75bc87b67891b68bc53",
+      "bytes": 1724928,
+      "analysis_version_binary_sha256": "3189d5a4e3190414cf5eae57af8346367500403d6d3732a84acaa09c8701906c"
+    },
+    {
+      "file": "spirv-dis.exe",
+      "sha256": "67c258c8d7c4186af4d24f1eaca20e058f7dfd2e114c1c44db279442e5126032",
+      "bytes": 447488,
+      "analysis_version_binary_sha256": "d897b5059bfe96cae41af81364e17d66dad0e0ac01825b6950493c6065bb57e2"
+    }
+  ],
+  "source_provenance": "../../../evidence/reconstruction_core/*_build_source.json",
+  "note": "SPIRV-Cross and SPIRV-Tools generated revision strings corrected to official source ZIP commit; analysis binaries preserved with their hashes. No algorithm source changed."
+}

@@ -1,0 +1,200 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Behavior Immigrant.bt",
+  "absolute_offset": 2098998,
+  "length": 3319,
+  "sha256": "44e95c4f334990b7f561a3656824bee2445ed96c3e80054e722f78086fad8087",
+  "rid": 5677,
+  "root_id": "51ed04a4-f45c-4de2-8fe4-25acb7b2acef",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": false,
+        "Id": "e2a4f906-5eeb-4bae-bc19-dfd4b6635b93",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "PositionVillageCenter",
+        "IsPublic": false,
+        "Id": "f7c27e30-37bf-4fa0-b521-16c2ea8cd6a4",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "bafa9dbe-e11d-40dc-ad39-44610dc6be88",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        407,
+        422
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "98b267e3-d698-4a69-ba63-bebfa665da88",
+      "name": "Going to village center",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        160,
+        587
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "e2a4f906-5eeb-4bae-bc19-dfd4b6635b93",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "f7c27e30-37bf-4fa0-b521-16c2ea8cd6a4",
+          "binding_status": "variable",
+          "variable_name": "PositionVillageCenter"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "0aea2ef8-c26d-4f58-8a78-517d3de59908",
+      "name": "Join village",
+      "type": "PlaCAgentNodeImmigrantJoinVillage",
+      "position": [
+        515,
+        589
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "e2a4f906-5eeb-4bae-bc19-dfd4b6635b93",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "51ed04a4-f45c-4de2-8fe4-25acb7b2acef",
+      "name": "Selector",
+      "type": "GamCBehaviorTreeNodeCompositeSelector",
+      "position": [
+        552,
+        251
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "78c81c08-d9af-4c39-affd-0e83e42cf1c3",
+      "name": "",
+      "type": "PlaCAgentNodeDisable",
+      "position": [
+        688,
+        416
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "e2a4f906-5eeb-4bae-bc19-dfd4b6635b93",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Disable Vehicle",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "bafa9dbe-e11d-40dc-ad39-44610dc6be88",
+      "to": "98b267e3-d698-4a69-ba63-bebfa665da88",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "bafa9dbe-e11d-40dc-ad39-44610dc6be88",
+      "to": "0aea2ef8-c26d-4f58-8a78-517d3de59908",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "51ed04a4-f45c-4de2-8fe4-25acb7b2acef",
+      "to": "bafa9dbe-e11d-40dc-ad39-44610dc6be88",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "51ed04a4-f45c-4de2-8fe4-25acb7b2acef",
+      "to": "78c81c08-d9af-4c39-affd-0e83e42cf1c3",
+      "ordinal": 3,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

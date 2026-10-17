@@ -1,0 +1,70 @@
+#version 460
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+vec4 _191;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} dst_buf;
+
+layout(push_constant, std430) uniform EntryPointParams_natural
+{
+    uvec2 box_origin;
+    uint ssaa;
+    uint tile_output;
+    uint off_ref_color;
+} entryPointParams;
+
+layout(set = 0, binding = 0) uniform texture2D color_tex;
+
+void main()
+{
+    do
+    {
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, uvec2(entryPointParams.tile_output))))
+        {
+            break;
+        }
+        uvec2 _67 = entryPointParams.box_origin + (gl_GlobalInvocationID.xy * uvec2(entryPointParams.ssaa));
+        vec3 _185;
+        _185 = vec3(0.0);
+        uint y;
+        vec3 _188;
+        uint _184 = 0u;
+        for (;;)
+        {
+            if (!(_184 < entryPointParams.ssaa))
+            {
+                break;
+            }
+            _188 = _185;
+            vec3 sum;
+            uint x;
+            uint _186 = 0u;
+            for (;;)
+            {
+                if (!(_186 < entryPointParams.ssaa))
+                {
+                    break;
+                }
+                sum = _188 + texelFetch(color_tex, ivec3(ivec2(_67 + uvec2(_186, _184)), 0).xy, 0).xyz;
+                x = _186 + 1u;
+                _188 = sum;
+                _186 = x;
+                continue;
+            }
+            y = _184 + 1u;
+            _185 = _188;
+            _184 = y;
+            continue;
+        }
+        uint _131 = entryPointParams.off_ref_color + ((gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * entryPointParams.tile_output)) * 8u);
+        vec4 _139 = vec4(_185 / vec3(float(entryPointParams.ssaa * entryPointParams.ssaa)), 0.0);
+        dst_buf._member0[_131 / 4u] = packHalf2x16(_139.xy);
+        dst_buf._member0[(_131 + 4u) / 4u] = packHalf2x16(_139.zw);
+        break;
+    } while(false);
+}
+

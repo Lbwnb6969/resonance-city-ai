@@ -1,0 +1,198 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1537,
+    "record_offset": 47400,
+    "module": "system_wall_constructor-4ce01d172ed2ca23.ekr4wi6s5agwnach7cvlaf14r.1ryv1cn.rcgu.o",
+    "name": "system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions",
+    "segment": 1,
+    "offset": 21529728,
+    "rva": 21533824,
+    "va": "0x141489480",
+    "size": 775,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "4352b6615667800bb1e66aca1e41fb620ed29bafe7da13722f3ced42f5c49dd8",
+  "code_bytes": 775,
+  "decoded_bytes": 775,
+  "instructions": 160,
+  "calls_and_jumps": [
+    {
+      "address": "0x141489552",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489568",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489578",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489589",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14148959a",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414895ab",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414895bc",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414895cd",
+      "kind": "call",
+      "target": "0x140df0700",
+      "target_names": [
+        "utils::geometry::rectangle::Rectangle2d::get_point_u",
+        "_ZN5utils8geometry9rectangle11Rectangle2d11get_point_u17h1b3b998b370a5667E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414895db",
+      "kind": "call",
+      "target": "0x140930190",
+      "target_names": [
+        "country_core::resources::walls::public_wall_state::PublicWallState::wooden_stone_foundation_surface_top_y",
+        "_ZN12country_core9resources5walls17public_wall_state15PublicWallState37wooden_stone_foundation_surface_top_y17h6256acfd832f12b4E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489682",
+      "kind": "call",
+      "target": "0x1413ef620",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17he6adc64b5a383e96E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,core::iter::adapters::flatten::FlatMap<core::iter::adapters::enumerate::Enumerate<core::array::iter::IntoIter<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceXRange,4> >,alloc::vec::Vec<system_wall_constructor::construct_wooden_walls::construct_wall_boards::WallspaceRegion,alloc::alloc::Global>,system_wall_constructor::construct_wooden_walls::construct_wall_boards::plan_rectangle_wallspace_regions::closure_env$0> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489687",
+      "kind": "jmp",
+      "target": "0x141489716",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489694",
+      "kind": "call",
+      "target": "0x140930190",
+      "target_names": [
+        "country_core::resources::walls::public_wall_state::PublicWallState::wooden_stone_foundation_surface_top_y",
+        "_ZN12country_core9resources5walls17public_wall_state15PublicWallState37wooden_stone_foundation_surface_top_y17h6256acfd832f12b4E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414896b9",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1414896c8",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489702",
+      "kind": "jmp",
+      "target": "0x14148970b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141489781",
+      "kind": "call",
+      "target": "0x142dc7e11",
+      "target_names": [
+        "alloc::alloc::handle_alloc_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc5alloc18handle_alloc_error"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x1414896a8",
+      "target": "0x142e37ad4",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3d4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3d00004041000080409a9999be0000803e000000000000000000000080"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

@@ -1,0 +1,118 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+#extension GL_EXT_samplerless_texture_functions : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct VolumetricShadows_natural
+{
+    uvec2 volumetric_shadow_map_tex_dims;
+};
+
+vec4 _337;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    uvec2 depth_tex_dims;
+    float ambient_fog_density_scale;
+    float ambient_fog_size_scale;
+    uvec2 color_tex_dims;
+    VolumetricShadows_natural volumetric_shadows;
+    uint lantern_count;
+} globalParams;
+
+layout(set = 3, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 2, r11f_g11f_b10f) uniform image2D color_tex;
+layout(set = 9, binding = 0) uniform texture2D blue_noise_textures_uniform01;
+layout(set = 0, binding = 1) uniform texture2D depth_tex;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 0, binding = 5) uniform texture3D froxel_scattering_tex;
+layout(set = 0, binding = 6) uniform texture3D froxel_extinction_tex;
+
+void main()
+{
+    ivec2 _14 = ivec2(gl_GlobalInvocationID.xy);
+    vec2 _25 = vec2(globalParams.depth_tex_dims);
+    vec3 _293 = vec3(((vec2(_14) + vec2(0.5)) / _25) + ((((((texelFetch(blue_noise_textures_uniform01, ivec2(((gl_GlobalInvocationID.xy + uvec2(13u)) + uvec2(fract((vec2(0.75487768650054931640625, 0.56984031200408935546875) * float(frame_counter.index)) + vec2(0.5)) * vec2(256.0))) % uvec2(256u)), 0) * 255.0) * vec4(0.00390625)) + vec4(0.001953125)).xy - vec2(0.5)) / _25) * 30.0), clamp(pow((-0.0009765625) / (texelFetch(depth_tex, ivec2(gl_GlobalInvocationID.xy), 0).x * (-current_view.clip_to_view[3].z)), 0.5), 0.0, 1.0) - 0.0078125);
+    imageStore(color_tex, ivec2(gl_GlobalInvocationID.xy), vec4((imageLoad(color_tex, _14).xyz * textureLod(sampler3D(froxel_extinction_tex, samplers_lnc_iso), _293, 0.0).x) + (textureLod(sampler3D(froxel_scattering_tex, samplers_lnc_iso), _293, 0.0).xyz * frame_constants.fog_tint_thickness.xyz), 0.0));
+}
+

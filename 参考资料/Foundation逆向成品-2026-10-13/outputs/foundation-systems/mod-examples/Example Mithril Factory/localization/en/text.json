@@ -1,0 +1,75 @@
+﻿{
+	"RESOURCES": {
+		"MITHRIL_ORE" : "Mithril Ore",
+		"MITHRIL_CHAINMAIL" : "Mithril Chainmail",
+		"MITHRIL_NECKLACE" : "Mithril Necklace"
+	},
+
+	"BUILDINGS": {
+		"MITHRIL_FACTORY_NAME" : "Mithril Factory",
+		"MITHRIL_FACTORY_MINE_NAME" : "Mithril Factory Mine",
+		"MITHRIL_FACTORY_CHAINMAIL_NAME" : "Mithril Factory Chainmail Forge",
+		"MITHRIL_FACTORY_NECKLACE_NAME" : "Mithril Factory Necklace Artisan Workshop",
+		"SCI_FI_BRIDGE_NAME": "Futuristic Bridge",
+		"PRODUCTION_CORE": "Production Core",
+		"PRODUCTION_EXTENSION": "Production Extension",
+		"DECORATION": "Decoration",
+		"ENTRANCE": "Entrance"
+	},
+	
+	"MATERIAL_SETS":
+	{
+		"ALT_1": "Alternative #1",
+		"ALT_2": "Alternative #2"
+	},
+
+	"BUILDING_PARTS": {
+		"MITHRIL_FACTORY_CORE_NAME": "Mithril Mine Core",
+		"MITHRIL_FACTORY_EXTENSION_A_NAME": "Mithril Chainmail Factory",
+		"MITHRIL_FACTORY_EXTENSION_B_NAME": "Mithril Necklace Factory",
+		"MITHRIL_FACTORY_DOOR_A_NAME": "Door A",
+		"MITHRIL_FACTORY_DOOR_B_NAME": "Door B",
+		"MITHRIL_FACTORY_DECORATION_A_NAME": "Air Vent",
+		"MITHRIL_FACTORY_DECORATION_B_NAME": "Antenna",
+		"SCI_FI_BRIDGE_CORE_NAME": "Futuristic Bridge"
+	},
+
+	"BUILDING_DESCRIPTIONS": {
+		"MITHRIL_FACTORY_DESC": "A factory where a resource is mined, and used to create goods and luxury items",
+		"MITHRIL_FACTORY_MINE_DESC" : "A mine where mithril is extracted from the depths",
+		"MITHRIL_FACTORY_CHAINMAIL_DESC" : "A factory chain where chainmails are manufactured with mithril",
+		"MITHRIL_FACTORY_NECKLACE_DESC" : "A factory chain where necklaces are manufactured with mithril",
+		"MITHRIL_FACTORY_CORE_DESC": "The core of the factory, where {IMG1}{IMG2} is extracted from the depths",
+		"MITHRIL_FACTORY_EXTENSION_DESC": "A small factory chain where {IMG1} is manufactured with {IMG2}",
+		"MITHRIL_FACTORY_DOOR_A_DESC": "A simple small door",
+		"MITHRIL_FACTORY_DOOR_B_DESC": "An simple door with stairs",
+		"MITHRIL_FACTORY_DECORATION_A_DESC": "A roof air vent",
+		"MITHRIL_FACTORY_DECORATION_B_DESC": "An antenna to transmit data to other factories",
+		"SCI_FI_BRIDGE_DESC": "A demonstration bridge"
+	},
+
+	"MONUMENTS": {
+		"CATEGORY_EXTENSION": "Extension",
+		"CATEGORY_DECORATION": "Decoration"
+	},
+
+	"WALL_CONFIG": {
+		"SCI_FI_WALL": "Futuristic Wall"
+	},
+
+	"JOBS": {
+		"MITHRIL_MINER_NAME": "Mithril Miner",
+		"MITHRIL_MINER_DESC": "Extracts mithril from the ground",
+		"MITHRIL_ARTISAN_NAME": "Mithril Artisan",
+		"MITHRIL_ARTISAN_DESC": "Crafts goods and luxury items with mithril"
+	},
+
+	"UNLOCKABLES": {
+		"UNLOCKABLE_MITHRIL_FACTORY_NAME": "Unlock Mithril Factory",
+		"UNLOCKABLE_MITHRIL_FACTORY_DESC": "Unlock Mithril Factory",
+		"UNLOCKABLE_SCI_FI_BRIDGE_NAME": "Unlock Sci-Fi Bridge",
+		"UNLOCKABLE_SCI_FI_BRIDGE_DESC": "Unlock Sci-Fi Bridge",
+		"UNLOCKABLE_SCI_FI_WALL_NAME": "Unlock Sci-Fi Wall",
+		"UNLOCKABLE_SCI_FI_WALL_DESC": "Unlock Sci-Fi Wall"
+	}
+}

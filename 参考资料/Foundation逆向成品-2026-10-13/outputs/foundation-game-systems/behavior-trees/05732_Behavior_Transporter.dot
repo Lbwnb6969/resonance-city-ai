@@ -1,0 +1,12 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Find stuff to carry",shape=box];
+  n1 [label="Transport behavior",shape=doubleoctagon];
+  n2 [label="Getting XP",shape=box];
+  n3 [label="1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",shape=box];
+  n4 [label="PlaCAgentNodeFindOrAssignWorkplace",shape=box];
+  n5 [label="PlaCAgentNodeSetWorkplaceAsDestination",shape=box];
+  n1 -> n0 [label="0"];
+  n1 -> n3 [label="1"];
+  n1 -> n2 [label="2"];
+}

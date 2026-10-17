@@ -1,0 +1,669 @@
+0000000140b20150  55                       push     rbp
+0000000140b20151  4157                     push     r15
+0000000140b20153  4156                     push     r14
+0000000140b20155  4155                     push     r13
+0000000140b20157  4154                     push     r12
+0000000140b20159  56                       push     rsi
+0000000140b2015a  57                       push     rdi
+0000000140b2015b  53                       push     rbx
+0000000140b2015c  4881ecc8040000           sub      rsp, 0x4c8
+0000000140b20163  488dac2480000000         lea      rbp, [rsp + 0x80]
+0000000140b2016b  48c78540040000feffffff   mov      qword ptr [rbp + 0x440], 0xfffffffffffffffe
+0000000140b20176  4d89cf                   mov      r15, r9
+0000000140b20179  4d89c4                   mov      r12, r8
+0000000140b2017c  4889d7                   mov      rdi, rdx
+0000000140b2017f  4889ce                   mov      rsi, rcx
+0000000140b20182  4881c120010000           add      rcx, 0x120
+0000000140b20189  488b9e30010000           mov      rbx, qword ptr [rsi + 0x130]
+0000000140b20190  483b9e20010000           cmp      rbx, qword ptr [rsi + 0x120]
+0000000140b20197  7505                     jne      0x140b2019e
+0000000140b20199  e832ae2602               call     0x142d8afd0 ; alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global> | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h031667e22e764d71E
+0000000140b2019e  488b8628010000           mov      rax, qword ptr [rsi + 0x128]
+0000000140b201a5  4889d9                   mov      rcx, rbx
+0000000140b201a8  48c1e104                 shl      rcx, 4
+0000000140b201ac  488d15855a5302           lea      rdx, [rip + 0x2535a85] ; 'Grass2 card splat'
+0000000140b201b3  48891408                 mov      qword ptr [rax + rcx], rdx
+0000000140b201b7  48c744080811000000       mov      qword ptr [rax + rcx + 8], 0x11
+0000000140b201c0  48ffc3                   inc      rbx
+0000000140b201c3  48899e30010000           mov      qword ptr [rsi + 0x130], rbx
+0000000140b201ca  4883bf8800000000         cmp      qword ptr [rdi + 0x88], 0
+0000000140b201d2  0f84ea0c0000             je       0x140b20ec2
+0000000140b201d8  488b4770                 mov      rax, qword ptr [rdi + 0x70]
+0000000140b201dc  488b4f78                 mov      rcx, qword ptr [rdi + 0x78]
+0000000140b201e0  48baa2b8df68b4826a1d     movabs   rdx, 0x1d6a82b468dfb8a2
+0000000140b201ea  4531c0                   xor      r8d, r8d
+0000000140b201ed  660f6f05cb4c3102         movdqa   xmm0, xmmword ptr [rip + 0x2314ccb]
+0000000140b201f5  660f76c9                 pcmpeqd  xmm1, xmm1
+0000000140b201f9  660f6f155f0c3402         movdqa   xmm2, xmmword ptr [rip + 0x2340c5f]
+0000000140b20201  4821ca                   and      rdx, rcx
+0000000140b20204  f30f6f1c10               movdqu   xmm3, xmmword ptr [rax + rdx]
+0000000140b20209  660f6fe3                 movdqa   xmm4, xmm3
+0000000140b2020d  660f74e0                 pcmpeqb  xmm4, xmm0
+0000000140b20211  66440fd7cc               pmovmskb r9d, xmm4
+0000000140b20216  4585c9                   test     r9d, r9d
+0000000140b20219  7445                     je       0x140b20260
+0000000140b2021b  f3450fbcd1               tzcnt    r10d, r9d
+0000000140b20220  4901d2                   add      r10, rdx
+0000000140b20223  4921ca                   and      r10, rcx
+0000000140b20226  49f7da                   neg      r10
+0000000140b20229  4f8d1452                 lea      r10, [r10 + r10*2]
+0000000140b2022d  f3420f6f64d0e8           movdqu   xmm4, xmmword ptr [rax + r10*8 - 0x18]
+0000000140b20234  660f74e2                 pcmpeqb  xmm4, xmm2
+0000000140b20238  66440fd7dc               pmovmskb r11d, xmm4
+0000000140b2023d  4181fbffff0000           cmp      r11d, 0xffff
+0000000140b20244  7439                     je       0x140b2027f
+0000000140b20246  458d51ff                 lea      r10d, [r9 - 1]
+0000000140b2024a  664521ca                 and      r10w, r9w
+0000000140b2024e  4589d1                   mov      r9d, r10d
+0000000140b20251  75c8                     jne      0x140b2021b
+0000000140b20253  666666662e0f1f840000000000 nop      word ptr cs:[rax + rax]
+0000000140b20260  660f74d9                 pcmpeqb  xmm3, xmm1
+0000000140b20264  66440fd7cb               pmovmskb r9d, xmm3
+0000000140b20269  4585c9                   test     r9d, r9d
+0000000140b2026c  0f85500c0000             jne      0x140b20ec2
+0000000140b20272  4c01c2                   add      rdx, r8
+0000000140b20275  4883c210                 add      rdx, 0x10
+0000000140b20279  4983c010                 add      r8, 0x10
+0000000140b2027d  eb82                     jmp      0x140b20201
+0000000140b2027f  4a8d14d0                 lea      rdx, [rax + r10*8]
+0000000140b20283  488b52f8                 mov      rdx, qword ptr [rdx - 8]
+0000000140b20287  4c8b8710020000           mov      r8, qword ptr [rdi + 0x210]
+0000000140b2028e  4c39c2                   cmp      rdx, r8
+0000000140b20291  0f832b0c0000             jae      0x140b20ec2
+0000000140b20297  4c8b8f08020000           mov      r9, qword ptr [rdi + 0x208]
+0000000140b2029e  4d8b14d1                 mov      r10, qword ptr [r9 + rdx*8]
+0000000140b202a2  4d85d2                   test     r10, r10
+0000000140b202a5  0f84170c0000             je       0x140b20ec2
+0000000140b202ab  488b97d8010000           mov      rdx, qword ptr [rdi + 0x1d8]
+0000000140b202b2  49f7d2                   not      r10
+0000000140b202b5  49c1e206                 shl      r10, 6
+0000000140b202b9  4a837c122000             cmp      qword ptr [rdx + r10 + 0x20], 0
+0000000140b202bf  0f84fd0b0000             je       0x140b20ec2
+0000000140b202c5  4901d2                   add      r10, rdx
+0000000140b202c8  4d8b6a10                 mov      r13, qword ptr [r10 + 0x10]
+0000000140b202cc  49badb5f928e35b45770     movabs   r10, 0x7057b4358e925fdb
+0000000140b202d6  4531db                   xor      r11d, r11d
+0000000140b202d9  660f6f05af3a3102         movdqa   xmm0, xmmword ptr [rip + 0x2313aaf]
+0000000140b202e1  660f76c9                 pcmpeqd  xmm1, xmm1
+0000000140b202e5  660f6f1563403102         movdqa   xmm2, xmmword ptr [rip + 0x2314063]
+0000000140b202ed  4921ca                   and      r10, rcx
+0000000140b202f0  f3420f6f1c10             movdqu   xmm3, xmmword ptr [rax + r10]
+0000000140b202f6  660f6fe3                 movdqa   xmm4, xmm3
+0000000140b202fa  660f74e0                 pcmpeqb  xmm4, xmm0
+0000000140b202fe  660fd7fc                 pmovmskb edi, xmm4
+0000000140b20302  85ff                     test     edi, edi
+0000000140b20304  743a                     je       0x140b20340
+0000000140b20306  f30fbcdf                 tzcnt    ebx, edi
+0000000140b2030a  4c01d3                   add      rbx, r10
+0000000140b2030d  4821cb                   and      rbx, rcx
+0000000140b20310  48f7db                   neg      rbx
+0000000140b20313  488d1c5b                 lea      rbx, [rbx + rbx*2]
+0000000140b20317  f30f6f64d8e8             movdqu   xmm4, xmmword ptr [rax + rbx*8 - 0x18]
+0000000140b2031d  660f74e2                 pcmpeqb  xmm4, xmm2
+0000000140b20321  66440fd7f4               pmovmskb r14d, xmm4
+0000000140b20326  4181feffff0000           cmp      r14d, 0xffff
+0000000140b2032d  742e                     je       0x140b2035d
+0000000140b2032f  8d5fff                   lea      ebx, [rdi - 1]
+0000000140b20332  6621fb                   and      bx, di
+0000000140b20335  89df                     mov      edi, ebx
+0000000140b20337  75cd                     jne      0x140b20306
+0000000140b20339  0f1f8000000000           nop      dword ptr [rax]
+0000000140b20340  660f74d9                 pcmpeqb  xmm3, xmm1
+0000000140b20344  660fd7fb                 pmovmskb edi, xmm3
+0000000140b20348  85ff                     test     edi, edi
+0000000140b2034a  0f857e0b0000             jne      0x140b20ece
+0000000140b20350  4d01da                   add      r10, r11
+0000000140b20353  4983c210                 add      r10, 0x10
+0000000140b20357  4983c310                 add      r11, 0x10
+0000000140b2035b  eb90                     jmp      0x140b202ed
+0000000140b2035d  488d04d8                 lea      rax, [rax + rbx*8]
+0000000140b20361  488b40f8                 mov      rax, qword ptr [rax - 8]
+0000000140b20365  4c39c0                   cmp      rax, r8
+0000000140b20368  0f83600b0000             jae      0x140b20ece
+0000000140b2036e  498b04c1                 mov      rax, qword ptr [r9 + rax*8]
+0000000140b20372  4885c0                   test     rax, rax
+0000000140b20375  0f84530b0000             je       0x140b20ece
+0000000140b2037b  48f7d0                   not      rax
+0000000140b2037e  48c1e006                 shl      rax, 6
+0000000140b20382  48837c022000             cmp      qword ptr [rdx + rax + 0x20], 0
+0000000140b20388  0f84400b0000             je       0x140b20ece
+0000000140b2038e  4801c2                   add      rdx, rax
+0000000140b20391  488b5a10                 mov      rbx, qword ptr [rdx + 0x10]
+0000000140b20395  458b742408               mov      r14d, dword ptr [r12 + 8]
+0000000140b2039a  c785a000000000000000     mov      dword ptr [rbp + 0xa0], 0
+0000000140b203a4  4489b5a4000000           mov      dword ptr [rbp + 0xa4], r14d
+0000000140b203ab  48b80100010010016201     movabs   rax, 0x162011000010001
+0000000140b203b5  488985a8000000           mov      qword ptr [rbp + 0xa8], rax
+0000000140b203bc  c685b000000002           mov      byte ptr [rbp + 0xb0], 2
+0000000140b203c3  488d85a0000000           lea      rax, [rbp + 0xa0]
+0000000140b203ca  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140b203cf  4c8d05aa585302           lea      r8, [rip + 0x25358aa] ; 'grass2 card splat depth'
+0000000140b203d6  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b203dd  41b917000000             mov      r9d, 0x17
+0000000140b203e3  4889f2                   mov      rdx, rsi
+0000000140b203e6  e88597c200               call     0x141749b70 ; rhapsody::rg::temporal::impl$10::get_or_create_temporal<ref$<str$> > | _ZN168_$LT$rhapsody..rg..api..GraphApi$u20$as$u20$rhapsody..rg..temporal..GetOrCreateTemporal$LT$rhapsody..raw..texture..TextureDesc$C$rhapsody..raw..texture..Texture$GT$$GT$22get_or_create_temporal17h9577019c8cc2d3d3E
+0000000140b203eb  83bd6803000001           cmp      dword ptr [rbp + 0x368], 1
+0000000140b203f2  0f84e20a0000             je       0x140b20eda
+0000000140b203f8  488b857c030000           mov      rax, qword ptr [rbp + 0x37c]
+0000000140b203ff  488985a0020000           mov      qword ptr [rbp + 0x2a0], rax
+0000000140b20406  0f10856c030000           movups   xmm0, xmmword ptr [rbp + 0x36c]
+0000000140b2040d  0f298590020000           movaps   xmmword ptr [rbp + 0x290], xmm0
+0000000140b20414  f6858403000001           test     byte ptr [rbp + 0x384], 1
+0000000140b2041b  0f85bd000000             jne      0x140b204de
+0000000140b20421  48c7854001000000000000   mov      qword ptr [rbp + 0x140], 0
+0000000140b2042c  48c7854801000008000000   mov      qword ptr [rbp + 0x148], 8
+0000000140b20437  48c7855001000000000000   mov      qword ptr [rbp + 0x150], 0
+0000000140b20442  488b8e08020000           mov      rcx, qword ptr [rsi + 0x208]
+0000000140b20449  488d1574148102           lea      rdx, [rip + 0x2811474] ; 'country_core/grass2/card_splats_clear:clearcountry_core/shadow_mask_mean:maincountry_core/nani/c'
+0000000140b20450  4c8d8d40010000           lea      r9, [rbp + 0x140]
+0000000140b20457  41b82b000000             mov      r8d, 0x2b
+0000000140b2045d  e8feb9c500               call     0x14177be60 ; _ZN8rhapsody10shader_lib13ShaderLibrary11get_compute17hf5eea14aca8cdd56E | rhapsody::shader_lib::ShaderLibrary::get_compute<shaderface::permutation::ShaderPermutationKey>
+0000000140b20462  4889742420               mov      qword ptr [rsp + 0x20], rsi
+0000000140b20467  488dbda0000000           lea      rdi, [rbp + 0xa0]
+0000000140b2046e  41b82b000000             mov      r8d, 0x2b
+0000000140b20474  4889f9                   mov      rcx, rdi
+0000000140b20477  488d1546148102           lea      rdx, [rip + 0x2811446] ; 'country_core/grass2/card_splats_clear:clearcountry_core/shadow_mask_mean:maincountry_core/nani/c'
+0000000140b2047e  4989c1                   mov      r9, rax
+0000000140b20481  e83a8d3000               call     0x140e291c0 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::new | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode3new17hc5404be2703437e5E
+0000000140b20486  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b2048d  4c8d8590020000           lea      r8, [rbp + 0x290]
+0000000140b20494  4889fa                   mov      rdx, rdi
+0000000140b20497  4531c9                   xor      r9d, r9d
+0000000140b2049a  e8e115c800               call     0x1417a1a80 ; _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17he4df2963cdcf30b9E | rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::bind_entry_point<country_core::shader::grass2::card_splats_clear::clear<rhapsody::rg::binding::RgProtocol> >
+0000000140b2049f  8b8598020000             mov      eax, dword ptr [rbp + 0x298]
+0000000140b204a5  0fb7c8                   movzx    ecx, ax
+0000000140b204a8  c1e810                   shr      eax, 0x10
+0000000140b204ab  898da4000000             mov      dword ptr [rbp + 0xa4], ecx
+0000000140b204b1  8985a8000000             mov      dword ptr [rbp + 0xa8], eax
+0000000140b204b7  c785ac00000001000000     mov      dword ptr [rbp + 0xac], 1
+0000000140b204c1  c785a000000001000000     mov      dword ptr [rbp + 0xa0], 1
+0000000140b204cb  488d95a0000000           lea      rdx, [rbp + 0xa0]
+0000000140b204d2  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b204d9  e832833000               call     0x140e28810 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::dispatch_impl | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode13dispatch_impl17h490810e96736106bE
+0000000140b204de  66c785680300000000       mov      word ptr [rbp + 0x368], 0
+0000000140b204e7  4489b56a030000           mov      dword ptr [rbp + 0x36a], r14d
+0000000140b204ee  48bf0100010001620102     movabs   rdi, 0x201620100010001
+0000000140b204f8  4889bd6e030000           mov      qword ptr [rbp + 0x36e], rdi
+0000000140b204ff  c6857603000000           mov      byte ptr [rbp + 0x376], 0
+0000000140b20506  488d05a3575302           lea      rax, [rip + 0x25357a3] ; 'grass2 card splat vbuffergrass2 resolve tile maskgrass2/card-direction-lutgrass2/card-attrib-pal'
+0000000140b2050d  48898578030000           mov      qword ptr [rbp + 0x378], rax
+0000000140b20514  48c7858003000019000000   mov      qword ptr [rbp + 0x380], 0x19
+0000000140b2051f  488d9568030000           lea      rdx, [rbp + 0x368]
+0000000140b20526  4889f1                   mov      rcx, rsi
+0000000140b20529  e8b2af3000               call     0x140e2b4e0 ; rhapsody::rg::api::GraphApi::create_raw_resource | _ZN8rhapsody2rg3api8GraphApi19create_raw_resource17he8a6e9d6a1ef44eeE
+0000000140b2052e  89856c030000             mov      dword ptr [rbp + 0x36c], eax
+0000000140b20534  4489b570030000           mov      dword ptr [rbp + 0x370], r14d
+0000000140b2053b  4889bd74030000           mov      qword ptr [rbp + 0x374], rdi
+0000000140b20542  c6857c03000000           mov      byte ptr [rbp + 0x37c], 0
+0000000140b20549  c7856803000000000000     mov      dword ptr [rbp + 0x368], 0
+0000000140b20553  80be4c02000001           cmp      byte ptr [rsi + 0x24c], 1
+0000000140b2055a  750f                     jne      0x140b2056b
+0000000140b2055c  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b20563  4889f2                   mov      rdx, rsi
+0000000140b20566  e8b5902f00               call     0x140e19620 ; rhapsody::rg::resource::impl$1::init_as_debug_garbage | _ZN89_$LT$rhapsody..raw..texture..Texture$u20$as$u20$rhapsody..rg..resource..GraphResource$GT$21init_as_debug_garbage17h4cf72d5b43ea30eeE
+0000000140b2056b  4c89a560020000           mov      qword ptr [rbp + 0x260], r12
+0000000140b20572  4c89bd58020000           mov      qword ptr [rbp + 0x258], r15
+0000000140b20579  488b8578030000           mov      rax, qword ptr [rbp + 0x378]
+0000000140b20580  48898580020000           mov      qword ptr [rbp + 0x280], rax
+0000000140b20587  8b8568030000             mov      eax, dword ptr [rbp + 0x368]
+0000000140b2058d  898570020000             mov      dword ptr [rbp + 0x270], eax
+0000000140b20593  8b856c030000             mov      eax, dword ptr [rbp + 0x36c]
+0000000140b20599  898574020000             mov      dword ptr [rbp + 0x274], eax
+0000000140b2059f  8b8570030000             mov      eax, dword ptr [rbp + 0x370]
+0000000140b205a5  898578020000             mov      dword ptr [rbp + 0x278], eax
+0000000140b205ab  8b8574030000             mov      eax, dword ptr [rbp + 0x374]
+0000000140b205b1  66410f6ec6               movd     xmm0, r14d
+0000000140b205b6  660f72d010               psrld    xmm0, 0x10
+0000000140b205bb  66410fc4c601             pinsrw   xmm0, r14d, 1
+0000000140b205c1  89857c020000             mov      dword ptr [rbp + 0x27c], eax
+0000000140b205c7  660f6fc8                 movdqa   xmm1, xmm0
+0000000140b205cb  660fdb05bd505302         pand     xmm0, xmmword ptr [rip + 0x25350bd]
+0000000140b205d3  660f71d105               psrlw    xmm1, 5
+0000000140b205d8  660fefd2                 pxor     xmm2, xmm2
+0000000140b205dc  660f75d0                 pcmpeqw  xmm2, xmm0
+0000000140b205e0  660ffdd1                 paddw    xmm2, xmm1
+0000000140b205e4  660f76c0                 pcmpeqd  xmm0, xmm0
+0000000140b205e8  660ff9d0                 psubw    xmm2, xmm0
+0000000140b205ec  660fc5c200               pextrw   eax, xmm2, 0
+0000000140b205f1  4489b524040000           mov      dword ptr [rbp + 0x424], r14d
+0000000140b205f8  89c7                     mov      edi, eax
+0000000140b205fa  660fc5ca01               pextrw   ecx, xmm2, 1
+0000000140b205ff  c1e710                   shl      edi, 0x10
+0000000140b20602  09cf                     or       edi, ecx
+0000000140b20604  0fafc1                   imul     eax, ecx
+0000000140b20607  898520040000             mov      dword ptr [rbp + 0x420], eax
+0000000140b2060d  66c785680300000000       mov      word ptr [rbp + 0x368], 0
+0000000140b20616  89bd6a030000             mov      dword ptr [rbp + 0x36a], edi
+0000000140b2061c  49be0100010001090102     movabs   r14, 0x201090100010001
+0000000140b20626  4c89b56e030000           mov      qword ptr [rbp + 0x36e], r14
+0000000140b2062d  c6857603000000           mov      byte ptr [rbp + 0x376], 0
+0000000140b20634  488d058e565302           lea      rax, [rip + 0x253568e] ; 'grass2 resolve tile maskgrass2/card-direction-lutgrass2/card-attrib-palette-albedograss2/card-at'
+0000000140b2063b  48898578030000           mov      qword ptr [rbp + 0x378], rax
+0000000140b20642  48c7858003000018000000   mov      qword ptr [rbp + 0x380], 0x18
+0000000140b2064d  488d9568030000           lea      rdx, [rbp + 0x368]
+0000000140b20654  4889f1                   mov      rcx, rsi
+0000000140b20657  e884ae3000               call     0x140e2b4e0 ; rhapsody::rg::api::GraphApi::create_raw_resource | _ZN8rhapsody2rg3api8GraphApi19create_raw_resource17he8a6e9d6a1ef44eeE
+0000000140b2065c  89856c030000             mov      dword ptr [rbp + 0x36c], eax
+0000000140b20662  89bd70030000             mov      dword ptr [rbp + 0x370], edi
+0000000140b20668  4c89b574030000           mov      qword ptr [rbp + 0x374], r14
+0000000140b2066f  c6857c03000000           mov      byte ptr [rbp + 0x37c], 0
+0000000140b20676  c7856803000000000000     mov      dword ptr [rbp + 0x368], 0
+0000000140b20680  80be4c02000001           cmp      byte ptr [rsi + 0x24c], 1
+0000000140b20687  750f                     jne      0x140b20698
+0000000140b20689  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b20690  4889f2                   mov      rdx, rsi
+0000000140b20693  e8888f2f00               call     0x140e19620 ; rhapsody::rg::resource::impl$1::init_as_debug_garbage | _ZN89_$LT$rhapsody..raw..texture..Texture$u20$as$u20$rhapsody..rg..resource..GraphResource$GT$21init_as_debug_garbage17h4cf72d5b43ea30eeE
+0000000140b20698  488b8578030000           mov      rax, qword ptr [rbp + 0x378]
+0000000140b2069f  48898540030000           mov      qword ptr [rbp + 0x340], rax
+0000000140b206a6  8b8568030000             mov      eax, dword ptr [rbp + 0x368]
+0000000140b206ac  898530030000             mov      dword ptr [rbp + 0x330], eax
+0000000140b206b2  8b856c030000             mov      eax, dword ptr [rbp + 0x36c]
+0000000140b206b8  898534030000             mov      dword ptr [rbp + 0x334], eax
+0000000140b206be  8b8570030000             mov      eax, dword ptr [rbp + 0x370]
+0000000140b206c4  898538030000             mov      dword ptr [rbp + 0x338], eax
+0000000140b206ca  8b8574030000             mov      eax, dword ptr [rbp + 0x374]
+0000000140b206d0  89853c030000             mov      dword ptr [rbp + 0x33c], eax
+0000000140b206d6  488d9530030000           lea      rdx, [rbp + 0x330]
+0000000140b206dd  4889f1                   mov      rcx, rsi
+0000000140b206e0  e8abac3000               call     0x140e2b390 ; rhapsody::rg::api::GraphApi::clear_color_texture | _ZN8rhapsody2rg3api8GraphApi19clear_color_texture17h6516b1917aafe8f9E
+0000000140b206e5  488d0df5555302           lea      rcx, [rip + 0x25355f5] ; 'grass2/card-direction-lutgrass2/card-attrib-palette-albedograss2/card-attrib-palette-normalgrass'
+0000000140b206ec  ba19000000               mov      edx, 0x19
+0000000140b206f1  e80a3d2d00               call     0x140df4400 ; utils::name_hash::NameHash::compute | _ZN5utils9name_hash8NameHash7compute17ha2b11775cb7459ffE
+0000000140b206f6  4889d9                   mov      rcx, rbx
+0000000140b206f9  4889c2                   mov      rdx, rax
+0000000140b206fc  e87fdef0ff               call     0x140a2e580 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_by_name_hash | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary16get_by_name_hash17ha3f2107a3f1096bcE
+0000000140b20701  488b10                   mov      rdx, qword ptr [rax]
+0000000140b20704  488d3da5038102           lea      rdi, [rip + 0x28103a5]
+0000000140b2070b  48897c2420               mov      qword ptr [rsp + 0x20], rdi
+0000000140b20710  488d4d68                 lea      rcx, [rbp + 0x68]
+0000000140b20714  4989f0                   mov      r8, rsi
+0000000140b20717  41b123                   mov      r9b, 0x23
+0000000140b2071a  e811e32f00               call     0x140e1ea30 ; rhapsody::rg::import_export::impl$1::import | _ZN96_$LT$rhapsody..raw..texture..Texture$u20$as$u20$rhapsody..rg..import_export..GraphImportable$GT$6import17hbb9eb47f0fd9567fE
+0000000140b2071f  488d0dd4555302           lea      rcx, [rip + 0x25355d4] ; 'grass2/card-attrib-palette-albedograss2/card-attrib-palette-normalgrass2_exemplar_paramscountry_'
+0000000140b20726  ba21000000               mov      edx, 0x21
+0000000140b2072b  e8d03c2d00               call     0x140df4400 ; utils::name_hash::NameHash::compute | _ZN5utils9name_hash8NameHash7compute17ha2b11775cb7459ffE
+0000000140b20730  4889d9                   mov      rcx, rbx
+0000000140b20733  4889c2                   mov      rdx, rax
+0000000140b20736  e845def0ff               call     0x140a2e580 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_by_name_hash | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary16get_by_name_hash17ha3f2107a3f1096bcE
+0000000140b2073b  488b10                   mov      rdx, qword ptr [rax]
+0000000140b2073e  48897c2420               mov      qword ptr [rsp + 0x20], rdi
+0000000140b20743  488d4d50                 lea      rcx, [rbp + 0x50]
+0000000140b20747  4989f0                   mov      r8, rsi
+0000000140b2074a  41b123                   mov      r9b, 0x23
+0000000140b2074d  e8dee22f00               call     0x140e1ea30 ; rhapsody::rg::import_export::impl$1::import | _ZN96_$LT$rhapsody..raw..texture..Texture$u20$as$u20$rhapsody..rg..import_export..GraphImportable$GT$6import17hbb9eb47f0fd9567fE
+0000000140b20752  488d0dc2555302           lea      rcx, [rip + 0x25355c2] ; 'grass2/card-attrib-palette-normalgrass2_exemplar_paramscountry_core/grass2/inc/card_splat_common'
+0000000140b20759  ba21000000               mov      edx, 0x21
+0000000140b2075e  e89d3c2d00               call     0x140df4400 ; utils::name_hash::NameHash::compute | _ZN5utils9name_hash8NameHash7compute17ha2b11775cb7459ffE
+0000000140b20763  4889d9                   mov      rcx, rbx
+0000000140b20766  4889c2                   mov      rdx, rax
+0000000140b20769  e812def0ff               call     0x140a2e580 ; country_core::asset_libraries::texture_library::AssetTextureLibrary::get_by_name_hash | _ZN12country_core15asset_libraries15texture_library19AssetTextureLibrary16get_by_name_hash17ha3f2107a3f1096bcE
+0000000140b2076e  488b10                   mov      rdx, qword ptr [rax]
+0000000140b20771  48897c2420               mov      qword ptr [rsp + 0x20], rdi
+0000000140b20776  488d4d38                 lea      rcx, [rbp + 0x38]
+0000000140b2077a  4989f0                   mov      r8, rsi
+0000000140b2077d  41b123                   mov      r9b, 0x23
+0000000140b20780  e8abe22f00               call     0x140e1ea30 ; rhapsody::rg::import_export::impl$1::import | _ZN96_$LT$rhapsody..raw..texture..Texture$u20$as$u20$rhapsody..rg..import_export..GraphImportable$GT$6import17hbb9eb47f0fd9567fE
+0000000140b20785  488d8d68030000           lea      rcx, [rbp + 0x368]
+0000000140b2078c  4889f2                   mov      rdx, rsi
+0000000140b2078f  4d89e8                   mov      r8, r13
+0000000140b20792  e8c996fbff               call     0x140ad9e60 ; _ZN122_$LT$$LP$T0$C$T1$C$T2$C$T3$C$T4$C$T5$C$T6$C$T7$C$T8$RP$$u20$as$u20$country_core..asset_libraries..ssbo_library..BufRef$GT$5fetch17h507f7ba44c1311bfE | country_core::asset_libraries::ssbo_library::impl$28::fetch<ref$<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPosition>,ref$<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPieceGroup>,ref$<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPositionRange>,ref$<country_core::systems::render_loop::compute_passes::grass2::Grass2ClumpAttribSsbo>,ref$<country_core::systems::render_loop::compute_passes::grass2::Grass2CardPointPlantOffsetSsbo>,ref$<country_core::systems::render_loop::compute_passes::grass2::Grass2CardPointAttribIndexSsbo>,ref$<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveInstanceSsbo>,ref$<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveCountSsbo>,ref$<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParams>,rhapsody::rg::api::GraphApi>
+0000000140b20797  4c8db508040000           lea      r14, [rbp + 0x408]
+0000000140b2079e  8b8578030000             mov      eax, dword ptr [rbp + 0x378]
+0000000140b207a4  8b8d68030000             mov      ecx, dword ptr [rbp + 0x368]
+0000000140b207aa  0fb6956c030000           movzx    edx, byte ptr [rbp + 0x36c]
+0000000140b207b1  898554020000             mov      dword ptr [rbp + 0x254], eax
+0000000140b207b7  898d44020000             mov      dword ptr [rbp + 0x244], ecx
+0000000140b207bd  889548020000             mov      byte ptr [rbp + 0x248], dl
+0000000140b207c3  488b8570030000           mov      rax, qword ptr [rbp + 0x370]
+0000000140b207ca  4889854c020000           mov      qword ptr [rbp + 0x24c], rax
+0000000140b207d1  8b85c8030000             mov      eax, dword ptr [rbp + 0x3c8]
+0000000140b207d7  8b8db8030000             mov      ecx, dword ptr [rbp + 0x3b8]
+0000000140b207dd  0fb695bc030000           movzx    edx, byte ptr [rbp + 0x3bc]
+0000000140b207e4  898540020000             mov      dword ptr [rbp + 0x240], eax
+0000000140b207ea  898d30020000             mov      dword ptr [rbp + 0x230], ecx
+0000000140b207f0  889534020000             mov      byte ptr [rbp + 0x234], dl
+0000000140b207f6  488b85c0030000           mov      rax, qword ptr [rbp + 0x3c0]
+0000000140b207fd  48898538020000           mov      qword ptr [rbp + 0x238], rax
+0000000140b20804  8b85dc030000             mov      eax, dword ptr [rbp + 0x3dc]
+0000000140b2080a  8b8dcc030000             mov      ecx, dword ptr [rbp + 0x3cc]
+0000000140b20810  0fb695d0030000           movzx    edx, byte ptr [rbp + 0x3d0]
+0000000140b20817  89852c020000             mov      dword ptr [rbp + 0x22c], eax
+0000000140b2081d  898d1c020000             mov      dword ptr [rbp + 0x21c], ecx
+0000000140b20823  889520020000             mov      byte ptr [rbp + 0x220], dl
+0000000140b20829  488b85d4030000           mov      rax, qword ptr [rbp + 0x3d4]
+0000000140b20830  48898524020000           mov      qword ptr [rbp + 0x224], rax
+0000000140b20837  8b858c030000             mov      eax, dword ptr [rbp + 0x38c]
+0000000140b2083d  8b8d7c030000             mov      ecx, dword ptr [rbp + 0x37c]
+0000000140b20843  0fb69580030000           movzx    edx, byte ptr [rbp + 0x380]
+0000000140b2084a  898518020000             mov      dword ptr [rbp + 0x218], eax
+0000000140b20850  898d08020000             mov      dword ptr [rbp + 0x208], ecx
+0000000140b20856  88950c020000             mov      byte ptr [rbp + 0x20c], dl
+0000000140b2085c  488b8584030000           mov      rax, qword ptr [rbp + 0x384]
+0000000140b20863  48898510020000           mov      qword ptr [rbp + 0x210], rax
+0000000140b2086a  8b85a0030000             mov      eax, dword ptr [rbp + 0x3a0]
+0000000140b20870  8b8d90030000             mov      ecx, dword ptr [rbp + 0x390]
+0000000140b20876  0fb69594030000           movzx    edx, byte ptr [rbp + 0x394]
+0000000140b2087d  898504020000             mov      dword ptr [rbp + 0x204], eax
+0000000140b20883  898df4010000             mov      dword ptr [rbp + 0x1f4], ecx
+0000000140b20889  8895f8010000             mov      byte ptr [rbp + 0x1f8], dl
+0000000140b2088f  488b8598030000           mov      rax, qword ptr [rbp + 0x398]
+0000000140b20896  488985fc010000           mov      qword ptr [rbp + 0x1fc], rax
+0000000140b2089d  8b85b4030000             mov      eax, dword ptr [rbp + 0x3b4]
+0000000140b208a3  8b8da4030000             mov      ecx, dword ptr [rbp + 0x3a4]
+0000000140b208a9  0fb695a8030000           movzx    edx, byte ptr [rbp + 0x3a8]
+0000000140b208b0  8985f0010000             mov      dword ptr [rbp + 0x1f0], eax
+0000000140b208b6  898de0010000             mov      dword ptr [rbp + 0x1e0], ecx
+0000000140b208bc  8895e4010000             mov      byte ptr [rbp + 0x1e4], dl
+0000000140b208c2  488b85ac030000           mov      rax, qword ptr [rbp + 0x3ac]
+0000000140b208c9  488985e8010000           mov      qword ptr [rbp + 0x1e8], rax
+0000000140b208d0  8b85f0030000             mov      eax, dword ptr [rbp + 0x3f0]
+0000000140b208d6  8b8de0030000             mov      ecx, dword ptr [rbp + 0x3e0]
+0000000140b208dc  0fb695e4030000           movzx    edx, byte ptr [rbp + 0x3e4]
+0000000140b208e3  8985dc010000             mov      dword ptr [rbp + 0x1dc], eax
+0000000140b208e9  898dcc010000             mov      dword ptr [rbp + 0x1cc], ecx
+0000000140b208ef  8895d0010000             mov      byte ptr [rbp + 0x1d0], dl
+0000000140b208f5  488b85e8030000           mov      rax, qword ptr [rbp + 0x3e8]
+0000000140b208fc  488985d4010000           mov      qword ptr [rbp + 0x1d4], rax
+0000000140b20903  8b8504040000             mov      eax, dword ptr [rbp + 0x404]
+0000000140b20909  8b8df4030000             mov      ecx, dword ptr [rbp + 0x3f4]
+0000000140b2090f  0fb695f8030000           movzx    edx, byte ptr [rbp + 0x3f8]
+0000000140b20916  89852c030000             mov      dword ptr [rbp + 0x32c], eax
+0000000140b2091c  898d1c030000             mov      dword ptr [rbp + 0x31c], ecx
+0000000140b20922  889520030000             mov      byte ptr [rbp + 0x320], dl
+0000000140b20928  488b85fc030000           mov      rax, qword ptr [rbp + 0x3fc]
+0000000140b2092f  48898524030000           mov      qword ptr [rbp + 0x324], rax
+0000000140b20936  488dbda0000000           lea      rdi, [rbp + 0xa0]
+0000000140b2093d  4889f9                   mov      rcx, rdi
+0000000140b20940  4889f2                   mov      rdx, rsi
+0000000140b20943  e818180000               call     0x140b22160 ; country_core::systems::render_loop::compute_passes::grass2::alloc_grass2_splat_buffers
+0000000140b20948  4889f1                   mov      rcx, rsi
+0000000140b2094b  4889fa                   mov      rdx, rdi
+0000000140b2094e  e82d903000               call     0x140e29980 ; rhapsody::rg::api::GraphApi::clear_buffer | _ZN8rhapsody2rg3api8GraphApi12clear_buffer17ha47fca0c02051309E
+0000000140b20953  488d95c8000000           lea      rdx, [rbp + 0xc8]
+0000000140b2095a  4889f1                   mov      rcx, rsi
+0000000140b2095d  e81e903000               call     0x140e29980 ; rhapsody::rg::api::GraphApi::clear_buffer | _ZN8rhapsody2rg3api8GraphApi12clear_buffer17ha47fca0c02051309E
+0000000140b20962  b910000000               mov      ecx, 0x10
+0000000140b20967  e8d4543000               call     0x140e25e40 ; rhapsody::rg::resource::BufferDesc::new | _ZN8rhapsody2rg8resource10BufferDesc3new17ha67ec785b14ffb68E
+0000000140b2096c  4c89ad68020000           mov      qword ptr [rbp + 0x268], r13
+0000000140b20973  4189c5                   mov      r13d, eax
+0000000140b20976  89d7                     mov      edi, edx
+0000000140b20978  66c785400100000100       mov      word ptr [rbp + 0x140], 1
+0000000140b20981  898544010000             mov      dword ptr [rbp + 0x144], eax
+0000000140b20987  889548010000             mov      byte ptr [rbp + 0x148], dl
+0000000140b2098d  488d05dc575302           lea      rax, [rip + 0x25357dc]
+0000000140b20994  48898550010000           mov      qword ptr [rbp + 0x150], rax
+0000000140b2099b  48c7855801000020000000   mov      qword ptr [rbp + 0x158], 0x20
+0000000140b209a6  488d9540010000           lea      rdx, [rbp + 0x140]
+0000000140b209ad  4889f1                   mov      rcx, rsi
+0000000140b209b0  e82bab3000               call     0x140e2b4e0 ; rhapsody::rg::api::GraphApi::create_raw_resource | _ZN8rhapsody2rg3api8GraphApi19create_raw_resource17he8a6e9d6a1ef44eeE
+0000000140b209b5  4489ad54030000           mov      dword ptr [rbp + 0x354], r13d
+0000000140b209bc  4088bd58030000           mov      byte ptr [rbp + 0x358], dil
+0000000140b209c3  48b900000000ffffffff     movabs   rcx, 0xffffffff00000000
+0000000140b209cd  48898d5c030000           mov      qword ptr [rbp + 0x35c], rcx
+0000000140b209d4  898564030000             mov      dword ptr [rbp + 0x364], eax
+0000000140b209da  48c7852804000000000000   mov      qword ptr [rbp + 0x428], 0
+0000000140b209e5  48c7853004000008000000   mov      qword ptr [rbp + 0x430], 8
+0000000140b209f0  48c7853804000000000000   mov      qword ptr [rbp + 0x438], 0
+0000000140b209fb  488b8e08020000           mov      rcx, qword ptr [rsi + 0x208]
+0000000140b20a02  488d3db7138102           lea      rdi, [rip + 0x28113b7] ; 'country_core/grass2/active_cull_dispatch_args:maincountry_core/compute_froxel_lighting:maincount'
+0000000140b20a09  4c8d8d28040000           lea      r9, [rbp + 0x428]
+0000000140b20a10  41b832000000             mov      r8d, 0x32
+0000000140b20a16  4889fa                   mov      rdx, rdi
+0000000140b20a19  e842b4c500               call     0x14177be60 ; _ZN8rhapsody10shader_lib13ShaderLibrary11get_compute17hf5eea14aca8cdd56E | rhapsody::shader_lib::ShaderLibrary::get_compute<shaderface::permutation::ShaderPermutationKey>
+0000000140b20a1e  4889742420               mov      qword ptr [rsp + 0x20], rsi
+0000000140b20a23  4c8d6db0                 lea      r13, [rbp - 0x50]
+0000000140b20a27  41b832000000             mov      r8d, 0x32
+0000000140b20a2d  4c89e9                   mov      rcx, r13
+0000000140b20a30  4889fa                   mov      rdx, rdi
+0000000140b20a33  4989c1                   mov      r9, rax
+0000000140b20a36  e885873000               call     0x140e291c0 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::new | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode3new17hc5404be2703437e5E
+0000000140b20a3b  488d8554030000           lea      rax, [rbp + 0x354]
+0000000140b20a42  488985a8020000           mov      qword ptr [rbp + 0x2a8], rax
+0000000140b20a49  488d851c030000           lea      rax, [rbp + 0x31c]
+0000000140b20a50  488985b0020000           mov      qword ptr [rbp + 0x2b0], rax
+0000000140b20a57  c785b802000040000000     mov      dword ptr [rbp + 0x2b8], 0x40
+0000000140b20a61  488dbd40010000           lea      rdi, [rbp + 0x140]
+0000000140b20a68  4c8d85a8020000           lea      r8, [rbp + 0x2a8]
+0000000140b20a6f  4889f9                   mov      rcx, rdi
+0000000140b20a72  4c89ea                   mov      rdx, r13
+0000000140b20a75  e87626c600               call     0x1417830f0 ; _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17h010418eb8031bbe9E | rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::bind_entry_point<country_core::shader::grass2::active_cull_dispatch_args::main<rhapsody::rg::binding::RgProtocol> >
+0000000140b20a7a  0f28058fbd4302           movaps   xmm0, xmmword ptr [rip + 0x243bd8f]
+0000000140b20a81  0f2945b0                 movaps   xmmword ptr [rbp - 0x50], xmm0
+0000000140b20a85  488d55b0                 lea      rdx, [rbp - 0x50]
+0000000140b20a89  4889f9                   mov      rcx, rdi
+0000000140b20a8c  e87f7d3000               call     0x140e28810 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::dispatch_impl | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode13dispatch_impl17h490810e96736106bE
+0000000140b20a91  0f108554030000           movups   xmm0, xmmword ptr [rbp + 0x354]
+0000000140b20a98  0f298580000000           movaps   xmmword ptr [rbp + 0x80], xmm0
+0000000140b20a9f  8b8564030000             mov      eax, dword ptr [rbp + 0x364]
+0000000140b20aa5  898590000000             mov      dword ptr [rbp + 0x90], eax
+0000000140b20aab  4c89742428               mov      qword ptr [rsp + 0x28], r14
+0000000140b20ab0  48c744242040000000       mov      qword ptr [rsp + 0x20], 0x40
+0000000140b20ab9  488d157c525302           lea      rdx, [rip + 0x253527c] ; 'grass2_exemplar_paramscountry_core/grass2/inc/card_splat_common/grass2_exemplar_paramsGrass2 car'
+0000000140b20ac0  4c8d0d8b525302           lea      r9, [rip + 0x253528b] ; 'country_core/grass2/inc/card_splat_common/grass2_exemplar_paramsGrass2 card splat resolveBuild g'
+0000000140b20ac7  41b816000000             mov      r8d, 0x16
+0000000140b20acd  4889f1                   mov      rcx, rsi
+0000000140b20ad0  e86b49c400               call     0x141765440 ; _ZN8rhapsody2rg3api8GraphApi24push_instant_binding_set17h20e7f96268cf5ea1E | rhapsody::rg::api::GraphApi::push_instant_binding_set<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParamsBlock<shabriri_rt::api::EmptyProtocol>,country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParamsBlock<rhapsody::rg::binding::RgProtocol> >
+0000000140b20ad5  4c8bbdb0040000           mov      r15, qword ptr [rbp + 0x4b0]
+0000000140b20adc  4d8b27                   mov      r12, qword ptr [r15]
+0000000140b20adf  4983c708                 add      r15, 8
+0000000140b20ae3  448bb598020000           mov      r14d, dword ptr [rbp + 0x298]
+0000000140b20aea  410fb7c6                 movzx    eax, r14w
+0000000140b20aee  41c1ee10                 shr      r14d, 0x10
+0000000140b20af2  49c1e620                 shl      r14, 0x20
+0000000140b20af6  4909c6                   or       r14, rax
+0000000140b20af9  48c7852804000000000000   mov      qword ptr [rbp + 0x428], 0
+0000000140b20b04  48c7853004000008000000   mov      qword ptr [rbp + 0x430], 8
+0000000140b20b0f  48c7853804000000000000   mov      qword ptr [rbp + 0x438], 0
+0000000140b20b1a  488b8e08020000           mov      rcx, qword ptr [rsi + 0x208]
+0000000140b20b21  488d3dd8098102           lea      rdi, [rip + 0x28109d8] ; 'country_core/grass2/card_splat_cull:maincountry_core/gauss_blur_building_mask:maincountry_core/g'
+0000000140b20b28  4c8d8d28040000           lea      r9, [rbp + 0x428]
+0000000140b20b2f  41b828000000             mov      r8d, 0x28
+0000000140b20b35  4889fa                   mov      rdx, rdi
+0000000140b20b38  e823b3c500               call     0x14177be60 ; _ZN8rhapsody10shader_lib13ShaderLibrary11get_compute17hf5eea14aca8cdd56E | rhapsody::shader_lib::ShaderLibrary::get_compute<shaderface::permutation::ShaderPermutationKey>
+0000000140b20b3d  4889742420               mov      qword ptr [rsp + 0x20], rsi
+0000000140b20b42  4c8dad40010000           lea      r13, [rbp + 0x140]
+0000000140b20b49  41b828000000             mov      r8d, 0x28
+0000000140b20b4f  4c89e9                   mov      rcx, r13
+0000000140b20b52  4889fa                   mov      rdx, rdi
+0000000140b20b55  4989c1                   mov      r9, rax
+0000000140b20b58  e863863000               call     0x140e291c0 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::new | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode3new17hc5404be2703437e5E
+0000000140b20b5d  488d4568                 lea      rax, [rbp + 0x68]
+0000000140b20b61  488985a8020000           mov      qword ptr [rbp + 0x2a8], rax
+0000000140b20b68  4c89bdb0020000           mov      qword ptr [rbp + 0x2b0], r15
+0000000140b20b6f  488d8508020000           lea      rax, [rbp + 0x208]
+0000000140b20b76  488985b8020000           mov      qword ptr [rbp + 0x2b8], rax
+0000000140b20b7d  488d85f4010000           lea      rax, [rbp + 0x1f4]
+0000000140b20b84  488985c0020000           mov      qword ptr [rbp + 0x2c0], rax
+0000000140b20b8b  488d85e0010000           lea      rax, [rbp + 0x1e0]
+0000000140b20b92  488985c8020000           mov      qword ptr [rbp + 0x2c8], rax
+0000000140b20b99  488d85cc010000           lea      rax, [rbp + 0x1cc]
+0000000140b20ba0  488985d0020000           mov      qword ptr [rbp + 0x2d0], rax
+0000000140b20ba7  488d851c030000           lea      rax, [rbp + 0x31c]
+0000000140b20bae  488985d8020000           mov      qword ptr [rbp + 0x2d8], rax
+0000000140b20bb5  4c8dbda0000000           lea      r15, [rbp + 0xa0]
+0000000140b20bbc  4c89bde0020000           mov      qword ptr [rbp + 0x2e0], r15
+0000000140b20bc3  488d85b4000000           lea      rax, [rbp + 0xb4]
+0000000140b20bca  488985e8020000           mov      qword ptr [rbp + 0x2e8], rax
+0000000140b20bd1  488d85c8000000           lea      rax, [rbp + 0xc8]
+0000000140b20bd8  488985f0020000           mov      qword ptr [rbp + 0x2f0], rax
+0000000140b20bdf  488d85dc000000           lea      rax, [rbp + 0xdc]
+0000000140b20be6  488985f8020000           mov      qword ptr [rbp + 0x2f8], rax
+0000000140b20bed  488d8530030000           lea      rax, [rbp + 0x330]
+0000000140b20bf4  48898500030000           mov      qword ptr [rbp + 0x300], rax
+0000000140b20bfb  4c89a508030000           mov      qword ptr [rbp + 0x308], r12
+0000000140b20c02  4c89b510030000           mov      qword ptr [rbp + 0x310], r14
+0000000140b20c09  488d7db0                 lea      rdi, [rbp - 0x50]
+0000000140b20c0d  4c8d85a8020000           lea      r8, [rbp + 0x2a8]
+0000000140b20c14  4889f9                   mov      rcx, rdi
+0000000140b20c17  4c89ea                   mov      rdx, r13
+0000000140b20c1a  e8d11ac700               call     0x1417926f0 ; _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17h7bc2ff339b886413E | rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::bind_entry_point<country_core::shader::grass2::card_splat_cull::main<rhapsody::rg::binding::RgProtocol> >
+0000000140b20c1f  488d9580000000           lea      rdx, [rbp + 0x80]
+0000000140b20c26  4889f9                   mov      rcx, rdi
+0000000140b20c29  4531c0                   xor      r8d, r8d
+0000000140b20c2c  e80f843000               call     0x140e29040 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::dispatch_indirect | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode17dispatch_indirect17heaff45e074217284E
+0000000140b20c31  4889f1                   mov      rcx, rsi
+0000000140b20c34  4c89fa                   mov      rdx, r15
+0000000140b20c37  e8a4320000               call     0x140b23ee0 ; country_core::systems::render_loop::compute_passes::grass2::grass2_splat_scan_and_header
+0000000140b20c3c  488dbdf0000000           lea      rdi, [rbp + 0xf0]
+0000000140b20c43  4c8db504010000           lea      r14, [rbp + 0x104]
+0000000140b20c4a  4c8dbd18010000           lea      r15, [rbp + 0x118]
+0000000140b20c51  48c7852804000000000000   mov      qword ptr [rbp + 0x428], 0
+0000000140b20c5c  48c7853004000008000000   mov      qword ptr [rbp + 0x430], 8
+0000000140b20c67  48c7853804000000000000   mov      qword ptr [rbp + 0x438], 0
+0000000140b20c72  488b8e08020000           mov      rcx, qword ptr [rsi + 0x208]
+0000000140b20c79  4c8d25d70a8102           lea      r12, [rip + 0x2810ad7] ; 'country_core/grass2/card_splats:prepasscountry_core/wall/prefix_brick_chunk_subtotals:maincountr'
+0000000140b20c80  4c8d8d28040000           lea      r9, [rbp + 0x428]
+0000000140b20c87  41b827000000             mov      r8d, 0x27
+0000000140b20c8d  4c89e2                   mov      rdx, r12
+0000000140b20c90  e8cbb1c500               call     0x14177be60 ; _ZN8rhapsody10shader_lib13ShaderLibrary11get_compute17hf5eea14aca8cdd56E | rhapsody::shader_lib::ShaderLibrary::get_compute<shaderface::permutation::ShaderPermutationKey>
+0000000140b20c95  4889742420               mov      qword ptr [rsp + 0x20], rsi
+0000000140b20c9a  488d9d40010000           lea      rbx, [rbp + 0x140]
+0000000140b20ca1  41b827000000             mov      r8d, 0x27
+0000000140b20ca7  4889d9                   mov      rcx, rbx
+0000000140b20caa  4c89e2                   mov      rdx, r12
+0000000140b20cad  4989c1                   mov      r9, rax
+0000000140b20cb0  e80b853000               call     0x140e291c0 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::new | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode3new17hc5404be2703437e5E
+0000000140b20cb5  488d8544020000           lea      rax, [rbp + 0x244]
+0000000140b20cbc  488985a8020000           mov      qword ptr [rbp + 0x2a8], rax
+0000000140b20cc3  488d8530020000           lea      rax, [rbp + 0x230]
+0000000140b20cca  488985b0020000           mov      qword ptr [rbp + 0x2b0], rax
+0000000140b20cd1  4889bdb8020000           mov      qword ptr [rbp + 0x2b8], rdi
+0000000140b20cd8  4c89b5c0020000           mov      qword ptr [rbp + 0x2c0], r14
+0000000140b20cdf  4c8dadb4000000           lea      r13, [rbp + 0xb4]
+0000000140b20ce6  4c89adc8020000           mov      qword ptr [rbp + 0x2c8], r13
+0000000140b20ced  488dbddc000000           lea      rdi, [rbp + 0xdc]
+0000000140b20cf4  4889bdd0020000           mov      qword ptr [rbp + 0x2d0], rdi
+0000000140b20cfb  4c89bdd8020000           mov      qword ptr [rbp + 0x2d8], r15
+0000000140b20d02  4c8db570020000           lea      r14, [rbp + 0x270]
+0000000140b20d09  4c89b5e0020000           mov      qword ptr [rbp + 0x2e0], r14
+0000000140b20d10  4c8dbd90020000           lea      r15, [rbp + 0x290]
+0000000140b20d17  4c89bde8020000           mov      qword ptr [rbp + 0x2e8], r15
+0000000140b20d1e  4c8d65b0                 lea      r12, [rbp - 0x50]
+0000000140b20d22  4c8d85a8020000           lea      r8, [rbp + 0x2a8]
+0000000140b20d29  4c89e1                   mov      rcx, r12
+0000000140b20d2c  4889da                   mov      rdx, rbx
+0000000140b20d2f  e87c98c700               call     0x14179a5b0 ; _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode16bind_entry_point17ha4d30edd8a077268E | rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::bind_entry_point<country_core::shader::grass2::card_splats::prepass<rhapsody::rg::binding::RgProtocol> >
+0000000140b20d34  4c89e1                   mov      rcx, r12
+0000000140b20d37  488d9518010000           lea      rdx, [rbp + 0x118]
+0000000140b20d3e  4531c0                   xor      r8d, r8d
+0000000140b20d41  e8fa823000               call     0x140e29040 ; rhapsody::rg::node_builder::compute_pass_builder::ComputeNode::dispatch_indirect | _ZN8rhapsody2rg12node_builder20compute_pass_builder11ComputeNode17dispatch_indirect17heaff45e074217284E
+0000000140b20d46  c745b000000000           mov      dword ptr [rbp - 0x50], 0
+0000000140b20d4d  488b8560020000           mov      rax, qword ptr [rbp + 0x260]
+0000000140b20d54  488945b8                 mov      qword ptr [rbp - 0x48], rax
+0000000140b20d58  48c745d000000000         mov      qword ptr [rbp - 0x30], 0
+0000000140b20d60  488b8558020000           mov      rax, qword ptr [rbp + 0x258]
+0000000140b20d67  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140b20d6b  c745e000000000           mov      dword ptr [rbp - 0x20], 0
+0000000140b20d72  4c89bd40010000           mov      qword ptr [rbp + 0x140], r15
+0000000140b20d79  4c89b548010000           mov      qword ptr [rbp + 0x148], r14
+0000000140b20d80  4c89ad50010000           mov      qword ptr [rbp + 0x150], r13
+0000000140b20d87  4889bd58010000           mov      qword ptr [rbp + 0x158], rdi
+0000000140b20d8e  488d85f0000000           lea      rax, [rbp + 0xf0]
+0000000140b20d95  48898560010000           mov      qword ptr [rbp + 0x160], rax
+0000000140b20d9c  488d851c020000           lea      rax, [rbp + 0x21c]
+0000000140b20da3  48898568010000           mov      qword ptr [rbp + 0x168], rax
+0000000140b20daa  488d4550                 lea      rax, [rbp + 0x50]
+0000000140b20dae  48898570010000           mov      qword ptr [rbp + 0x170], rax
+0000000140b20db5  488d4538                 lea      rax, [rbp + 0x38]
+0000000140b20db9  48898578010000           mov      qword ptr [rbp + 0x178], rax
+0000000140b20dc0  488d8530030000           lea      rax, [rbp + 0x330]
+0000000140b20dc7  48898580010000           mov      qword ptr [rbp + 0x180], rax
+0000000140b20dce  488d8524040000           lea      rax, [rbp + 0x424]
+0000000140b20dd5  48898588010000           mov      qword ptr [rbp + 0x188], rax
+0000000140b20ddc  488d8520040000           lea      rax, [rbp + 0x420]
+0000000140b20de3  48898590010000           mov      qword ptr [rbp + 0x190], rax
+0000000140b20dea  48895c2420               mov      qword ptr [rsp + 0x20], rbx
+0000000140b20def  488d159c4f5302           lea      rdx, [rip + 0x2534f9c] ; 'Grass2 card splat resolveBuild grass2 clump attribs'
+0000000140b20df6  4c8d4db0                 lea      r9, [rbp - 0x50]
+0000000140b20dfa  41b819000000             mov      r8d, 0x19
+0000000140b20e00  4889f1                   mov      rcx, rsi
+0000000140b20e03  e83888c300               call     0x141759640 ; _ZN8rhapsody2rg12node_builder11draw_stream45_$LT$impl$u20$rhapsody..rg..api..GraphApi$GT$6raster17ha1267cc54a217e1dE | rhapsody::rg::api::GraphApi::raster<1,tuple$<array$<enum2$<rhapsody::rg::node_builder::framebuffer_binding::ColorAttachment>,1>,enum2$<rhapsody::rg::node_builder::framebuffer_binding::DepthAttachment> >,country_core::systems::render_loop::compute_passes::grass2::grass2_card_splat::closure$0::closure$1::closure_env$0>
+0000000140b20e08  488bbd68020000           mov      rdi, qword ptr [rbp + 0x268]
+0000000140b20e0f  4889f9                   mov      rcx, rdi
+0000000140b20e12  4889f2                   mov      rdx, rsi
+0000000140b20e15  e89640a100               call     0x141534eb0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17h50d3df4dfd2178b4E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPosition,rhapsody::rg::api::GraphApi>
+0000000140b20e1a  4889f9                   mov      rcx, rdi
+0000000140b20e1d  4889f2                   mov      rdx, rsi
+0000000140b20e20  e82b58a100               call     0x141536650 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17hd0382c95a7fc4b1aE | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPieceGroup,rhapsody::rg::api::GraphApi>
+0000000140b20e25  4889f9                   mov      rcx, rdi
+0000000140b20e28  4889f2                   mov      rdx, rsi
+0000000140b20e2b  e8b05ea100               call     0x141536ce0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17hec10e5e094929890E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2CardPointPositionRange,rhapsody::rg::api::GraphApi>
+0000000140b20e30  4889f9                   mov      rcx, rdi
+0000000140b20e33  4889f2                   mov      rdx, rsi
+0000000140b20e36  e8853ca100               call     0x141534ac0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17h31124efd61e65491E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ClumpAttribSsbo,rhapsody::rg::api::GraphApi>
+0000000140b20e3b  4889f9                   mov      rcx, rdi
+0000000140b20e3e  4889f2                   mov      rdx, rsi
+0000000140b20e41  e82a3ba100               call     0x141534970 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17h2309b6d9440516d5E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2CardPointPlantOffsetSsbo,rhapsody::rg::api::GraphApi>
+0000000140b20e46  4889f9                   mov      rcx, rdi
+0000000140b20e49  4889f2                   mov      rdx, rsi
+0000000140b20e4c  e83f48a100               call     0x141535690 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17h829416a5086d55f4E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2CardPointAttribIndexSsbo,rhapsody::rg::api::GraphApi>
+0000000140b20e51  4889f9                   mov      rcx, rdi
+0000000140b20e54  4889f2                   mov      rdx, rsi
+0000000140b20e57  e8c439a100               call     0x141534820 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17h1bce5b1ec0f8f376E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveInstanceSsbo,rhapsody::rg::api::GraphApi>
+0000000140b20e5c  4889f9                   mov      rcx, rdi
+0000000140b20e5f  4889f2                   mov      rdx, rsi
+0000000140b20e62  e84955a100               call     0x1415363b0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17hc5670cfc1c231905E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveCountSsbo,rhapsody::rg::api::GraphApi>
+0000000140b20e67  4889f9                   mov      rcx, rdi
+0000000140b20e6a  4889f2                   mov      rdx, rsi
+0000000140b20e6d  e82e59a100               call     0x1415367a0 ; _ZN12country_core15asset_libraries12ssbo_library16AssetSsboLibrary21finish_read_rg_buffer17hd9b574784ed9b912E | country_core::asset_libraries::ssbo_library::AssetSsboLibrary::finish_read_rg_buffer<country_core::shader::grass2::inc::card_splat_common::Grass2ExemplarParams,rhapsody::rg::api::GraphApi>
+0000000140b20e72  488bbe30010000           mov      rdi, qword ptr [rsi + 0x130]
+0000000140b20e79  483bbe20010000           cmp      rdi, qword ptr [rsi + 0x120]
+0000000140b20e80  750c                     jne      0x140b20e8e
+0000000140b20e82  488d8e20010000           lea      rcx, [rsi + 0x120]
+0000000140b20e89  e842a12602               call     0x142d8afd0 ; alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global> | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h031667e22e764d71E
+0000000140b20e8e  488b8628010000           mov      rax, qword ptr [rsi + 0x128]
+0000000140b20e95  4889f9                   mov      rcx, rdi
+0000000140b20e98  48c1e104                 shl      rcx, 4
+0000000140b20e9c  48c7040800000000         mov      qword ptr [rax + rcx], 0
+0000000140b20ea4  48ffc7                   inc      rdi
+0000000140b20ea7  4889be30010000           mov      qword ptr [rsi + 0x130], rdi
+0000000140b20eae  4881c4c8040000           add      rsp, 0x4c8
+0000000140b20eb5  5b                       pop      rbx
+0000000140b20eb6  5f                       pop      rdi
+0000000140b20eb7  5e                       pop      rsi
+0000000140b20eb8  415c                     pop      r12
+0000000140b20eba  415d                     pop      r13
+0000000140b20ebc  415e                     pop      r14
+0000000140b20ebe  415f                     pop      r15
+0000000140b20ec0  5d                       pop      rbp
+0000000140b20ec1  c3                       ret      
+0000000140b20ec2  488d0d874d5302           lea      rcx, [rip + 0x2534d87]
+0000000140b20ec9  e882722a02               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+0000000140b20ece  488d0d934d5302           lea      rcx, [rip + 0x2534d93]
+0000000140b20ed5  e876722a02               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+0000000140b20eda  488b8570030000           mov      rax, qword ptr [rbp + 0x370]
+0000000140b20ee1  488985a0000000           mov      qword ptr [rbp + 0xa0], rax
+0000000140b20ee8  488d05a94d5302           lea      rax, [rip + 0x2534da9]
+0000000140b20eef  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140b20ef4  488d0d25535302           lea      rcx, [rip + 0x2535325] ; 'called `Result::unwrap()` on an `Err` valueFmt'
+0000000140b20efb  4c8d0dfe525302           lea      r9, [rip + 0x25352fe]
+0000000140b20f02  4c8d85a0000000           lea      r8, [rbp + 0xa0]
+0000000140b20f09  ba2b000000               mov      edx, 0x2b
+0000000140b20f0e  e85d722a02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+0000000140b20f13  90                       nop      
+0000000140b20f14  0f0b                     ud2      
+0000000140b20f16  662e0f1f840000000000     nop      word ptr cs:[rax + rax]
+0000000140b20f20  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140b20f25  55                       push     rbp
+0000000140b20f26  4157                     push     r15
+0000000140b20f28  4156                     push     r14
+0000000140b20f2a  4155                     push     r13
+0000000140b20f2c  4154                     push     r12
+0000000140b20f2e  56                       push     rsi
+0000000140b20f2f  57                       push     rdi
+0000000140b20f30  53                       push     rbx
+0000000140b20f31  4883ec38                 sub      rsp, 0x38
+0000000140b20f35  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000140b20f3c  488d8da0000000           lea      rcx, [rbp + 0xa0]
+0000000140b20f43  e8f85c4100               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+0000000140b20f48  90                       nop      
+0000000140b20f49  4883c438                 add      rsp, 0x38
+0000000140b20f4d  5b                       pop      rbx
+0000000140b20f4e  5f                       pop      rdi
+0000000140b20f4f  5e                       pop      rsi
+0000000140b20f50  415c                     pop      r12
+0000000140b20f52  415d                     pop      r13
+0000000140b20f54  415e                     pop      r14
+0000000140b20f56  415f                     pop      r15
+0000000140b20f58  5d                       pop      rbp
+0000000140b20f59  c3                       ret      

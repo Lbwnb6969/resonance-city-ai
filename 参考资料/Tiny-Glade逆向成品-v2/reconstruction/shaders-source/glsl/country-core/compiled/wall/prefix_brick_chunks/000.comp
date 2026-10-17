@@ -1,0 +1,123 @@
+#version 460
+layout(local_size_x = 512, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} all_lists_visible_brick_mask_in_chunk;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} all_lists_visible_brick_chunk_prefix;
+
+layout(set = 0, binding = 2, std430) buffer all_lists_visible_brick_chunk_prefix_subtotals
+{
+    uint _member0[];
+} all_lists_visible_brick_chunk_prefix_subtotals_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint range_start;
+    uint range_end;
+    uint subtotals_start;
+} push_constants;
+
+shared uint shared_data2x[1024];
+
+void main()
+{
+    uint _374 = gl_LocalInvocationID.x * 2u;
+    uint _508 = _374 + (push_constants.range_start + (gl_WorkGroupID.x * 1024u));
+    bool _513 = (_508 + 1u) < push_constants.range_end;
+    uvec2 _576;
+    if (_513)
+    {
+        uint _515 = 4u * _508;
+        _576 = uvec2(all_lists_visible_brick_mask_in_chunk._member0[_515 / 4u], all_lists_visible_brick_mask_in_chunk._member0[(_515 + 4u) / 4u]);
+    }
+    else
+    {
+        uvec2 _577;
+        if (_508 < push_constants.range_end)
+        {
+            _577 = uvec2(all_lists_visible_brick_mask_in_chunk._member0[uint(int(4u * _508)) / 4u], 0u);
+        }
+        else
+        {
+            _577 = uvec2(0u);
+        }
+        _576 = _577;
+    }
+    uvec2 _538 = uvec2(bitCount(_576));
+    shared_data2x[_374] = _538.x;
+    shared_data2x[_374 + 1u] = _538.y;
+    barrier();
+    uint _382 = gl_LocalInvocationID.x << 1u;
+    uint _383 = _382 + 1u;
+    shared_data2x[_383] += shared_data2x[_382];
+    barrier();
+    uint _392 = (gl_LocalInvocationID.x >> 1u) << 2u;
+    uint _396 = (_392 + 2u) + (gl_LocalInvocationID.x & 1u);
+    shared_data2x[_396] += shared_data2x[_392 + 1u];
+    barrier();
+    uint _403 = (gl_LocalInvocationID.x >> 2u) << 3u;
+    uint _407 = (_403 + 4u) + (gl_LocalInvocationID.x & 3u);
+    shared_data2x[_407] += shared_data2x[_403 + 3u];
+    barrier();
+    uint _414 = (gl_LocalInvocationID.x >> 3u) << 4u;
+    uint _418 = (_414 + 8u) + (gl_LocalInvocationID.x & 7u);
+    shared_data2x[_418] += shared_data2x[_414 + 7u];
+    barrier();
+    uint _425 = (gl_LocalInvocationID.x >> 4u) << 5u;
+    uint _429 = (_425 + 16u) + (gl_LocalInvocationID.x & 15u);
+    shared_data2x[_429] += shared_data2x[_425 + 15u];
+    barrier();
+    uint _436 = (gl_LocalInvocationID.x >> 5u) << 6u;
+    uint _440 = (_436 + 32u) + (gl_LocalInvocationID.x & 31u);
+    shared_data2x[_440] += shared_data2x[_436 + 31u];
+    barrier();
+    uint _447 = (gl_LocalInvocationID.x >> 6u) << 7u;
+    uint _451 = (_447 + 64u) + (gl_LocalInvocationID.x & 63u);
+    shared_data2x[_451] += shared_data2x[_447 + 63u];
+    barrier();
+    uint _458 = (gl_LocalInvocationID.x >> 7u) << 8u;
+    uint _462 = (_458 + 128u) + (gl_LocalInvocationID.x & 127u);
+    shared_data2x[_462] += shared_data2x[_458 + 127u];
+    barrier();
+    uint _469 = (gl_LocalInvocationID.x >> 8u) << 9u;
+    uint _473 = (_469 + 256u) + (gl_LocalInvocationID.x & 255u);
+    shared_data2x[_473] += shared_data2x[_469 + 255u];
+    barrier();
+    uint _480 = (gl_LocalInvocationID.x >> 9u) << 10u;
+    uint _484 = (_480 + 512u) + (gl_LocalInvocationID.x & 511u);
+    shared_data2x[_484] += shared_data2x[_480 + 511u];
+    barrier();
+    uint _578;
+    if (gl_LocalInvocationID.x > 0u)
+    {
+        _578 = shared_data2x[_374 - 1u];
+    }
+    else
+    {
+        _578 = 0u;
+    }
+    if (_513)
+    {
+        uint _548 = 4u * _508;
+        all_lists_visible_brick_chunk_prefix._member0[_548 / 4u] = _578;
+        all_lists_visible_brick_chunk_prefix._member0[(_548 + 4u) / 4u] = shared_data2x[_374];
+    }
+    else
+    {
+        if (_508 < push_constants.range_end)
+        {
+            all_lists_visible_brick_chunk_prefix._member0[(4u * _508) / 4u] = _578;
+        }
+    }
+    if (0u == gl_LocalInvocationID.x)
+    {
+        all_lists_visible_brick_chunk_prefix_subtotals_1._member0[gl_WorkGroupID.x + push_constants.subtotals_start] = shared_data2x[1023u];
+    }
+}
+

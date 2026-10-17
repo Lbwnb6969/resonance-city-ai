@@ -1,0 +1,20 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "passed": true,
+  "original_usage": [
+    0
+  ],
+  "original_allocated": 0,
+  "original_dirty": 1,
+  "portable_usage": 0,
+  "portable_allocated": 0,
+  "portable_dirty": 1,
+  "portable_free_slots": [
+    0
+  ],
+  "portable_ranges": [],
+  "limits": [
+    "Original clear used synthetic single nonempty slot and successful deadlock bookkeeping hooks.",
+    "Dirty is intentionally retained for the subsequent GPU flush; concurrent clear is outside this check."
+  ]
+}

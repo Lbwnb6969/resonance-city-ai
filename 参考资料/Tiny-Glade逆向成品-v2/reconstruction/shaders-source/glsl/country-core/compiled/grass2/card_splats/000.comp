@@ -1,0 +1,501 @@
+#version 460
+#extension GL_EXT_nonuniform_qualifier : require
+#extension GL_EXT_scalar_block_layout : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Grass2SplatVisibleInstance_natural
+{
+    uint clump_mip;
+    uint range_count;
+    uint bounds_x;
+    uint bounds_y;
+    uint bounds_z;
+};
+
+struct Grass2SplatVisibleClump_natural
+{
+    uint center_xy;
+    uint center_z_wind;
+    uint scale_packed;
+    uint rot_flags;
+};
+
+struct Grass2CardPointPosition_natural
+{
+    uint position;
+};
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+layout(set = 0, binding = 7, std430) readonly buffer StructuredBuffer
+{
+    uvec4 _member0[];
+} splat_dispatch;
+
+layout(set = 0, binding = 4, std430) readonly buffer workgroup_first_entry
+{
+    uint _member0[];
+} workgroup_first_entry_1;
+
+layout(set = 0, binding = 3, std430) readonly buffer point_search_entries
+{
+    uvec2 _member0[];
+} point_search_entries_1;
+
+layout(set = 0, binding = 5, std430) readonly buffer visible_instances
+{
+    Grass2SplatVisibleInstance_natural _member0[];
+} visible_instances_1;
+
+layout(set = 0, binding = 6, std430) readonly buffer clump_records
+{
+    Grass2SplatVisibleClump_natural _member0[];
+} clump_records_1;
+
+layout(set = 0, binding = 2, std430) readonly buffer card_point_plant_offsets
+{
+    uint _member0[];
+} card_point_plant_offsets_1;
+
+layout(set = 0, binding = 1, std430) readonly buffer card_point_positions
+{
+    Grass2CardPointPosition_natural _member0[];
+} card_point_positions_1;
+
+layout(set = 7, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uvec2 splat_depth_dims;
+    uvec2 splat_vbuffer_dims;
+} globalParams;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 3, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 11, binding = 0) uniform texture2D grass_removal_mask_tex;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 9, binding = 0) uniform texture2D object_push_grass_object_push;
+layout(set = 7, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+layout(set = 1, binding = 0) uniform texture2D resource_handles[];
+layout(set = 0, binding = 8, r32ui) uniform uimage2D splat_depth;
+layout(set = 0, binding = 9, r32ui) uniform writeonly uimage2D splat_vbuffer;
+
+void main()
+{
+    uvec4 _27 = splat_dispatch._member0[0];
+    uint vg;
+    uint _2461 = gl_WorkGroupID.x;
+    for (;;)
+    {
+        if (!(_2461 < _27.w))
+        {
+            break;
+        }
+        do
+        {
+            uint _1429 = (_2461 * 256u) + (gl_LocalInvocationID.x * 4u);
+            uint _2462;
+            uint _2463;
+            if (_2461 < 262144u)
+            {
+                _2463 = workgroup_first_entry_1._member0[_2461 + 1u];
+                _2462 = workgroup_first_entry_1._member0[_2461];
+            }
+            else
+            {
+                _2463 = splat_dispatch._member0[1].w - 1u;
+                _2462 = 0u;
+            }
+            uint _1446 = (_2463 - _2462) + 1u;
+            uint _2465;
+            _2465 = _2462;
+            uint _2580;
+            uint _2581;
+            uint _2464 = _1446;
+            for (;;)
+            {
+                if (!(_2464 > 0u))
+                {
+                    break;
+                }
+                uint _1455 = _2464 / 2u;
+                uint _1457 = _2465 + _1455;
+                if (point_search_entries_1._member0[_1457].x <= _1429)
+                {
+                    _2581 = _1457 + 1u;
+                    _2580 = _2464 - (_1455 + 1u);
+                }
+                else
+                {
+                    _2581 = _2465;
+                    _2580 = _1455;
+                }
+                _2465 = _2581;
+                _2464 = _2580;
+                continue;
+            }
+            uint _1472 = _2465 - 1u;
+            uvec2 _2467;
+            _2467 = point_search_entries_1._member0[_1472];
+            uint _1555;
+            uint _2468;
+            uint _2470;
+            uint _2472;
+            uint _2474;
+            uint _2476;
+            uint _2479;
+            bool _2481;
+            bool _2557;
+            uvec2 _2589;
+            uint _2466 = 0u;
+            uint _2469 = visible_instances_1._member0[point_search_entries_1._member0[_1472].y].bounds_z;
+            uint _2471 = visible_instances_1._member0[point_search_entries_1._member0[_1472].y].bounds_y;
+            uint _2473 = visible_instances_1._member0[point_search_entries_1._member0[_1472].y].bounds_x;
+            uint _2475 = visible_instances_1._member0[point_search_entries_1._member0[_1472].y].range_count;
+            uint _2477 = visible_instances_1._member0[point_search_entries_1._member0[_1472].y].clump_mip;
+            uint _2480 = _1472;
+            bool _2483 = false;
+            for (;;)
+            {
+                if (!(_2466 < 4u))
+                {
+                    _2557 = _2483;
+                    break;
+                }
+                uint _1502 = _1429 + _2466;
+                uint _2478;
+                _2479 = _2480;
+                _2478 = _1502 - _2467.x;
+                _2476 = _2477;
+                _2474 = _2475;
+                _2472 = _2473;
+                _2470 = _2471;
+                _2468 = _2469;
+                _2589 = _2467;
+                uint _1515;
+                uvec2 _1520;
+                uint _1529;
+                uint _1532;
+                uint _1535;
+                uint _1538;
+                uint _1541;
+                uint _1543;
+                for (;;)
+                {
+                    if (!(_2478 >= ((_2474 >> uint(20)) & 4095u)))
+                    {
+                        _2481 = _2483;
+                        break;
+                    }
+                    _1515 = _2479 + 1u;
+                    if (_1515 >= 352256u)
+                    {
+                        _2481 = true;
+                        break;
+                    }
+                    _1520 = point_search_entries_1._member0[_1515];
+                    if (_1520.x == 4294967295u)
+                    {
+                        _2481 = true;
+                        break;
+                    }
+                    _1529 = visible_instances_1._member0[_1520.y].clump_mip;
+                    _1532 = visible_instances_1._member0[_1520.y].range_count;
+                    _1535 = visible_instances_1._member0[_1520.y].bounds_x;
+                    _1538 = visible_instances_1._member0[_1520.y].bounds_y;
+                    _1541 = visible_instances_1._member0[_1520.y].bounds_z;
+                    _1543 = _1502 - _1520.x;
+                    _2479 = _1515;
+                    _2478 = _1543;
+                    _2476 = _1529;
+                    _2474 = _1532;
+                    _2472 = _1535;
+                    _2470 = _1538;
+                    _2468 = _1541;
+                    _2589 = _1520;
+                    continue;
+                }
+                if (_2481)
+                {
+                    _2557 = _2481;
+                    break;
+                }
+                do
+                {
+                    float _1875;
+                    float _1876;
+                    uint _1579 = ((_2474 & 1048575u) | (((_2476 >> uint(26)) & 3u) << uint(20))) + _2478;
+                    uint _1677 = _2476 & 131071u;
+                    bool _2514;
+                    vec3 _2515;
+                    float _2524;
+                    do
+                    {
+                        vec2 _1816 = unpackHalf2x16(clump_records_1._member0[_1677].center_xy);
+                        vec2 _1819 = unpackHalf2x16(clump_records_1._member0[_1677].center_z_wind);
+                        vec3 _1821 = vec3(_1816, _1819.x);
+                        vec2 _1832 = (vec2(float(clump_records_1._member0[_1677].rot_flags & 255u) * 0.0039215688593685626983642578125, float((clump_records_1._member0[_1677].rot_flags >> uint(8)) & 255u) * 0.0039215688593685626983642578125) * 2.0) - vec2(1.0);
+                        bool _1855 = ((clump_records_1._member0[_1677].rot_flags >> uint(18)) & 1u) != 0u;
+                        bool _1862 = ((clump_records_1._member0[_1677].rot_flags >> uint(17)) & 1u) != 0u;
+                        bool _1869 = ((clump_records_1._member0[_1677].rot_flags >> uint(16)) & 1u) != 0u;
+                        vec2 _1874 = unpackHalf2x16(clump_records_1._member0[_1677].scale_packed);
+                        _1875 = _1874.x;
+                        _1876 = _1874.y;
+                        vec2 _2495;
+                        vec2 _2498;
+                        if ((_1855 ? true : _1862) ? true : _1869)
+                        {
+                            uint _1913 = (card_point_plant_offsets_1._member0[_1579 >> uint(1)] >> ((_1579 & 1u) * 16u)) & 65535u;
+                            vec2 _1925 = (((vec2(float(_1913 & 255u), float((_1913 >> uint(8)) & 255u)) * vec2(0.0039215688593685626983642578125)) * 2.0) - vec2(1.0)) * 2.0;
+                            vec2 _1927 = _1925 * (_1875 * 0.4204482138156890869140625);
+                            float _1928 = _1832.x;
+                            float _1929 = _1832.y;
+                            float _1934 = _1927.x;
+                            float _1936 = _1927.y;
+                            _2498 = _1925;
+                            _2495 = _1821.xz + vec2((_1934 * _1928) - (_1936 * _1929), (_1934 * _1929) + (_1936 * _1928));
+                        }
+                        else
+                        {
+                            _2498 = vec2(0.0);
+                            _2495 = vec2(0.0);
+                        }
+                        float _2501;
+                        if (_1855)
+                        {
+                            vec4 _1959 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp((_2495 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0);
+                            vec2 _1992 = clamp((_2498 * vec2(0.25)) + vec2(0.5), vec2(0.0), vec2(1.0));
+                            uvec2 _1988 = uvec2(fract((((vec2(uvec2(uint((clamp(_1992.x, 0.0, 1.0) * 255.0) + 0.5), uint((clamp(_1992.y, 0.0, 1.0) * 255.0) + 0.5))) * vec2(0.0039215688593685626983642578125)) * 2.0) - vec2(1.0)) * 2.0) * 100.0);
+                            if (fract(52.98291778564453125 * fract((0.067110560834407806396484375 * float(_1988.x)) + (0.005837149918079376220703125 * float(_1988.y)))) < _1959.x)
+                            {
+                                _2524 = 0.0;
+                                _2515 = vec3(0.0);
+                                _2514 = false;
+                                break;
+                            }
+                            _2501 = _1959.y;
+                        }
+                        else
+                        {
+                            _2501 = 1.0;
+                        }
+                        vec2 _2027 = unpackHalf2x16(_2472);
+                        vec2 _2031 = unpackHalf2x16(_2470);
+                        vec2 _2035 = unpackHalf2x16(_2468);
+                        float _2100 = float((card_point_positions_1._member0[_1579].position >> uint(24)) & 255u);
+                        float _2102 = _2100 * 0.0039215688593685626983642578125;
+                        vec3 _2059 = vec3(_2027.x, _2031.x, _2035.x) + (vec4(float(card_point_positions_1._member0[_1579].position & 255u) * 0.0039215688593685626983642578125, float((card_point_positions_1._member0[_1579].position >> uint(8)) & 255u) * 0.0039215688593685626983642578125, float((card_point_positions_1._member0[_1579].position >> uint(16)) & 255u) * 0.0039215688593685626983642578125, _2102).xyz * vec3(_2027.y, _2031.y, _2035.y));
+                        _2059.y = _2059.y * _2501;
+                        vec3 _1735 = _2059 * vec3(_1875, _1876, _1875);
+                        float _1736 = _1832.x;
+                        float _1737 = _1832.y;
+                        float _2113 = _1735.x;
+                        float _2115 = _1735.z;
+                        vec3 _1739 = vec3((_2113 * _1736) - (_2115 * _1737), _1735.y, (_2113 * _1737) + (_2115 * _1736)) + _1821;
+                        float _2127 = _1819.y;
+                        vec3 _2506;
+                        float _2507;
+                        if (_1869)
+                        {
+                            vec2 _2142 = (_2495 * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+                            float _1745 = 1.0 - clamp(textureLod(sampler2D(object_push_grass_object_push, samplers_lnc_iso), _2142, 0.0).z, 0.0, 1.0);
+                            float _1747 = _1816.y;
+                            vec2 _2504;
+                            do
+                            {
+                                vec4 _2179 = textureLod(sampler2D(object_push_grass_object_push, samplers_lnc_iso), _2142, 0.0);
+                                float _2155 = clamp(_2179.z, 0.0, 1.0);
+                                if (_2155 <= 0.0)
+                                {
+                                    _2504 = vec2(0.0);
+                                    break;
+                                }
+                                float _2161 = clamp(_2100 * 0.01176470704376697540283203125, 0.0, 1.0);
+                                _2504 = (_2179.xy * _2155) * (_2161 * _2161);
+                                break;
+                            } while(false);
+                            vec2 _1762 = _1739.xz + ((_2504 * 4.0) * _1745);
+                            _2507 = _2127 * _1745;
+                            _2506 = vec3(_1762.x, _1747 + ((_1739.y - _1747) * _1745), _1762.y);
+                        }
+                        else
+                        {
+                            _2507 = _2127;
+                            _2506 = _1739;
+                        }
+                        vec2 _1780 = _2506.xz + ((((((vec2(-1.0, 0.0) * _2507) * (_2102 * _2102)) * 0.25) * 1.11449992656707763671875) * _1875) * _2501);
+                        float _1782 = _1780.x;
+                        vec3 _2455 = _2506;
+                        _2455.x = _1782;
+                        float _1784 = _1780.y;
+                        _2455.z = _1784;
+                        vec3 _2520;
+                        if (_1862)
+                        {
+                            float _2512;
+                            do
+                            {
+                                if ((abs(_2495.x) < 65.0) && (abs(_2495.y) < 65.0))
+                                {
+                                    _2512 = mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_2495 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x);
+                                    break;
+                                }
+                                else
+                                {
+                                    vec2 _2222 = (_2495 * vec2(0.001000000047497451305389404296875)) + vec2(0.5);
+                                    _2512 = textureLod(nonuniformEXT(sampler2D(resource_handles[terrain_heightmap.bg_terrain_heightmap.bindless_handle], samplers_lnc_iso)), vec2(_2222.y, 1.0 - _2222.x), 0.0).x;
+                                    break;
+                                }
+                                break; // unreachable workaround
+                            } while(false);
+                            _2520 = vec3(_1782, _2506.y + (_2512 - _1816.y), _1784);
+                        }
+                        else
+                        {
+                            _2520 = _2455;
+                        }
+                        _2524 = float((clump_records_1._member0[_1677].rot_flags >> uint(19)) & 255u) * 0.0039215688593685626983642578125;
+                        _2515 = _2520;
+                        _2514 = true;
+                        break;
+                    } while(false);
+                    if (!_2514)
+                    {
+                        break;
+                    }
+                    uint _2261 = (_2479 << uint(12)) | _2478;
+                    bool _2521;
+                    uvec2 _2522;
+                    uvec2 _2529;
+                    uint _2538;
+                    do
+                    {
+                        vec4 _2299 = vec4(_2515, 1.0) * current_view.world_to_sample;
+                        float _2300 = _2299.w;
+                        if (_2300 < 0.001000000047497451305389404296875)
+                        {
+                            _2538 = 0u;
+                            _2529 = uvec2(0u);
+                            _2522 = uvec2(0u);
+                            _2521 = false;
+                            break;
+                        }
+                        float _2304 = 1.0 / _2300;
+                        vec2 _2313 = vec2(globalParams.splat_depth_dims);
+                        vec2 _2314 = (((_2299.xy * _2304) * vec2(0.5, -0.5)) + vec2(0.5)) * _2313;
+                        vec2 _2328 = ((vec2(current_view.view_to_clip[0].x, current_view.view_to_clip[1].y) * (((float(1u << ((_2476 >> uint(23)) & 7u)) * 0.004715261049568653106689453125) * max(_1875, max(_1876, _1875))) * 0.5)) * vec2(globalParams.splat_depth_dims.xy)) * _2304;
+                        uvec2 _2336 = uvec2(floor(clamp(_2314 - _2328, vec2(0.0), _2313) + vec2(0.5)));
+                        uvec2 _2340 = uvec2(floor(clamp(_2314 + _2328, vec2(0.0), _2313) + vec2(0.5)));
+                        _2538 = floatBitsToUint(clamp(_2299.z * _2304, 0.0, 1.0));
+                        _2529 = _2340;
+                        _2522 = _2336;
+                        _2521 = all(lessThan(_2336, _2340));
+                        break;
+                    } while(false);
+                    if (!_2521)
+                    {
+                        break;
+                    }
+                    uvec2 _2370 = _2522 + uvec2(frame_counter.index);
+                    if (!(fract(52.98291778564453125 * fract((0.067110560834407806396484375 * float(_2370.x)) + (0.005837149918079376220703125 * float(_2370.y)))) < _2524))
+                    {
+                        break;
+                    }
+                    uvec2 _1619 = min((_2522 + uvec2(16u)), _2529);
+                    uint _1658;
+                    uint _2531 = _2522.y;
+                    for (;;)
+                    {
+                        if (!(_2531 < _1619.y))
+                        {
+                            break;
+                        }
+                        uint _1652;
+                        uint _2534 = _2522.x;
+                        for (;;)
+                        {
+                            if (!(_2534 < _1619.x))
+                            {
+                                break;
+                            }
+                            uvec2 _1646 = uvec2(_2534, _2531);
+                            uint _2387 = imageAtomicMax(splat_depth, ivec2(_1646), _2538);
+                            if (_2538 > _2387)
+                            {
+                                imageStore(splat_vbuffer, ivec2(_1646), uvec4(_2261));
+                            }
+                            _1652 = _2534 + 1u;
+                            _2534 = _1652;
+                            continue;
+                        }
+                        _1658 = _2531 + 1u;
+                        _2531 = _1658;
+                        continue;
+                    }
+                    break;
+                } while(false);
+                _1555 = _2466 + 1u;
+                _2483 = _2481;
+                _2480 = _2479;
+                _2477 = _2476;
+                _2475 = _2474;
+                _2473 = _2472;
+                _2471 = _2470;
+                _2469 = _2468;
+                _2467 = _2589;
+                _2466 = _1555;
+                continue;
+            }
+            if (_2557)
+            {
+                break;
+            }
+            break;
+        } while(false);
+        vg = _2461 + _27.x;
+        _2461 = vg;
+        continue;
+    }
+}
+

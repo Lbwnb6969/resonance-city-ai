@@ -1,0 +1,1336 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/Job/Behavior Gather.bt",
+  "absolute_offset": 2239554,
+  "length": 22722,
+  "sha256": "9e377ee703cecc80313a56661965e5722c3796abe4daeda6a122ac0704faa33d",
+  "rid": 5710,
+  "root_id": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Build Workplace",
+        "IsPublic": false,
+        "Id": "2e64d02f-639c-458a-86e5-6543066d0a39",
+        "TypeDefinition": "PlaSContextDataSubtree",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataSubtree"
+          },
+          "Subtree": "0bbd942b-b387-4780-a4bb-eab8701072a6"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "GatheringData",
+        "IsPublic": false,
+        "Id": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+        "TypeDefinition": "PlaSGatheringData",
+        "DefaultValue": {
+          "type": "PlaSGatheringData"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gathering Wait",
+        "IsPublic": false,
+        "Id": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "resource position",
+        "IsPublic": false,
+        "Id": "34039163-54cf-4fc4-8568-ead25eae7ef8",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Depot Position",
+        "IsPublic": false,
+        "Id": "85e8d045-36ae-41d9-8fdd-4039161b78ba",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Nothing to do",
+        "IsPublic": false,
+        "Id": "0c5290d0-7ca3-4b14-92b8-16e6858f8c6c",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 1.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "LeavingToWorkPath",
+        "IsPublic": false,
+        "Id": "4a65bf15-2917-42d0-b951-5c5d7926ac8b",
+        "TypeDefinition": "PlaSContextDataBuildingPathType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataBuildingPathType"
+          },
+          "FromPathType": "WORK",
+          "ToPathType": "DEFAULT"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "BackToWorkplacePath",
+        "IsPublic": false,
+        "Id": "47e63985-acf5-44eb-9a90-ac7c77437876",
+        "TypeDefinition": "PlaSContextDataBuildingPathType",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataBuildingPathType"
+          },
+          "FromPathType": "DEFAULT",
+          "ToPathType": "WORK"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "around resource position",
+        "IsPublic": false,
+        "Id": "6e56e8c9-14f8-4273-ba22-39b0e4427d55",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": true,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gather steps count\t",
+        "IsPublic": false,
+        "Id": "884b0980-ed45-445a-b0ec-bf1ad2ce89eb",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Gather in one step",
+        "IsPublic": false,
+        "Id": "1ff77e54-4ce2-4cff-a98b-58c8842e11b2",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 1,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Should look at ressource",
+        "IsPublic": false,
+        "Id": "75ed91ca-3941-43ad-b524-349733d381eb",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Resource Gathered",
+        "IsPublic": false,
+        "Id": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+        "TypeDefinition": "PlaSContextDataResourceProduction",
+        "DefaultValue": {
+          "type": "PlaSContextDataResourceProduction"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport To Depot",
+        "IsPublic": false,
+        "Id": "43bf0de4-f2f4-4142-b102-9b2460ce1a66",
+        "TypeDefinition": "PlaSContextResourceTransportData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextResourceTransportData"
+          },
+          "ResourceTransportSetupOverride": "00000000-0000-0000-0000-000000000000",
+          "DropoffDurationInSecs": 0.0
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "RestrictGatherToOwnedTerritory",
+        "IsPublic": true,
+        "Id": "9dd5d538-f1bd-454e-875c-fee1be1da02a",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Should Receive XP",
+        "IsPublic": true,
+        "Id": "2e76191f-ecde-44ea-b4db-189eb8fb39a0",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Is Gathering For Production",
+        "IsPublic": true,
+        "Id": "98568192-f7c5-4bb1-bab1-861fd5310827",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Has Generated Resource",
+        "IsPublic": false,
+        "Id": "7b0b1971-ed28-455c-a943-560e3354e36b",
+        "TypeDefinition": "GamSBehaviorTreeBoolData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeBoolData"
+          },
+          "Value": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Object To Pickup",
+        "IsPublic": false,
+        "Id": "d1461bcc-b1d7-477c-b2d1-91a4ff4444cd",
+        "TypeDefinition": "PlaSContextDataVoidObject",
+        "DefaultValue": {
+          "type": "PlaSContextDataVoidObject"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Location To Pickup Resource",
+        "IsPublic": false,
+        "Id": "d0325875-1742-4766-ac7a-30dec0567493",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": true,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Wait Resource Ready To Pickup",
+        "IsPublic": false,
+        "Id": "af1f1680-94d8-473d-8159-a4fe262eed37",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 60.0,
+          "MaximumDuration": 60.0,
+          "IsInfinite": false,
+          "IsDuration": true
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Transport Interactive Location",
+        "IsPublic": false,
+        "Id": "2fa54088-e1f0-4395-814f-3af891f2c974",
+        "TypeDefinition": "PlaSContextDataInteractiveLocationSetup",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataInteractiveLocationSetup"
+          },
+          "CharacterSetupPriority": "WORKSTATION",
+          "WorkstationSetup": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "GatheringActivityMessage",
+        "IsPublic": false,
+        "Id": "3677064f-70e0-4c64-a8b9-007eeb35ff9f",
+        "TypeDefinition": "GamSBehaviorTreeString",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeString"
+          },
+          "String": "I_AM_GATHERING_RESOURCE"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Next Gathering data",
+        "IsPublic": false,
+        "Id": "a4262641-19e7-4eff-bb08-3c32161b1095",
+        "TypeDefinition": "PlaSGatheringData",
+        "DefaultValue": {
+          "type": "PlaSGatheringData"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Next Gather in One Step Count",
+        "IsPublic": false,
+        "Id": "a3dc8e7b-dbe7-45e9-ac87-408f74d38b7e",
+        "TypeDefinition": "GamSBehaviorTreeLoopData",
+        "DefaultValue": {
+          "@": {
+            "type": "GamSBehaviorTreeLoopData"
+          },
+          "LoopCount": 0,
+          "Duration": 0.0,
+          "MaximumDuration": 3.4028230607370965e+38,
+          "IsInfinite": false,
+          "IsDuration": false
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "Next Gathering Wait",
+        "IsPublic": false,
+        "Id": "82a7e6fb-820d-430d-ae87-e3ce419a99cd",
+        "TypeDefinition": "PlaSWaitData",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSWaitData"
+          },
+          "TimeToWait": 0.0,
+          "Animation": "IDLE",
+          "SetIdleAfterWait": false
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        688,
+        96
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "1bede504-775f-4efa-b4e5-6825997a2025",
+      "name": "Find stuff to gather",
+      "type": "PlaCAgentNodeSetupGatheringWork",
+      "position": [
+        -312,
+        261
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Gathering Data",
+          "value": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+          "binding_status": "variable",
+          "variable_name": "GatheringData"
+        },
+        {
+          "name": "Steps Count Loop Data",
+          "value": "884b0980-ed45-445a-b0ec-bf1ad2ce89eb",
+          "binding_status": "variable",
+          "variable_name": "Gather steps count\t"
+        },
+        {
+          "name": "Gather Wait Data",
+          "value": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+          "binding_status": "variable",
+          "variable_name": "Gathering Wait"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "795248c5-cc1a-4a5e-b4b8-8598f13ff026",
+      "name": "Gathering resource",
+      "type": "PlaCAgentNodeGatherResource",
+      "position": [
+        994,
+        896
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Time To Wait",
+          "value": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+          "binding_status": "variable",
+          "variable_name": "Gathering Wait"
+        },
+        {
+          "name": "Optional Use Workstation Anim",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Gather",
+          "value": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+          "binding_status": "variable",
+          "variable_name": "GatheringData"
+        },
+        {
+          "name": "Should Receive Xp",
+          "value": "2e76191f-ecde-44ea-b4db-189eb8fb39a0",
+          "binding_status": "variable",
+          "variable_name": "Should Receive XP"
+        },
+        {
+          "name": "Optional Is Gathering For Production",
+          "value": "98568192-f7c5-4bb1-bab1-861fd5310827",
+          "binding_status": "variable",
+          "variable_name": "Is Gathering For Production"
+        },
+        {
+          "name": "Out Last Gathered Resource Object To Pickup",
+          "value": "d1461bcc-b1d7-477c-b2d1-91a4ff4444cd",
+          "binding_status": "variable",
+          "variable_name": "Object To Pickup"
+        }
+      ],
+      "data": {
+        "Guid": "795248c5-cc1a-4a5e-b4b8-8598f13ff026",
+        "FailIfInteractiveLocationIsDisabled": false
+      }
+    },
+    {
+      "id": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "name": "",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        707,
+        555
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "ef439d1a-4ada-4e55-b379-176380a2747d",
+      "name": "",
+      "type": "PlaCAgentNodeDisablePathTracing",
+      "position": [
+        -16,
+        261
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "d375d90a-2e5d-4d30-97a6-191ed198d518",
+      "name": "",
+      "type": "PlaCAgentNodeEnablePathTracing",
+      "position": [
+        2096,
+        242
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "52deb5ee-c896-46ae-a6e9-682b988ac280",
+      "name": "LookAt",
+      "type": "PlaCAgentNodeLookAt",
+      "position": [
+        391,
+        867
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "34039163-54cf-4fc4-8568-ead25eae7ef8",
+          "binding_status": "variable",
+          "variable_name": "resource position"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "90fcb9bc-315e-4224-ac09-507f39ed55ba",
+      "name": "Repeater",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeat",
+      "position": [
+        1062,
+        686
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "1ff77e54-4ce2-4cff-a98b-58c8842e11b2",
+          "binding_status": "variable",
+          "variable_name": "Gather in one step"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "7ff46d3a-0734-4c9d-b2eb-1686dac34cac",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        1134,
+        805
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "e3cd6535-57eb-48ef-b46f-a83bdb9797fb",
+      "name": "Repeat until fail",
+      "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+      "position": [
+        632,
+        417
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Repeat Data",
+          "value": "884b0980-ed45-445a-b0ec-bf1ad2ce89eb",
+          "binding_status": "variable",
+          "variable_name": "Gather steps count\t"
+        },
+        {
+          "name": "Secondary Timer Constraint",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "e3cd6535-57eb-48ef-b46f-a83bdb9797fb",
+        "FailsIfChildFails": false
+      }
+    },
+    {
+      "id": "f3240051-97ba-4c40-b82f-ae9cc5a7b5fa",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        335,
+        695
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "817d0a76-abeb-4617-b84c-424fb61c2326",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        336,
+        780
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "da407ebc-6e8c-4160-acbb-b0b77161273c",
+      "name": "",
+      "type": "PlaCAgentNodeCheckIfTrue",
+      "position": [
+        173,
+        870
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Bool Value",
+          "value": "75ed91ca-3941-43ad-b524-349733d381eb",
+          "binding_status": "variable",
+          "variable_name": "Should look at ressource"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "dfbc81a3-8d31-4fb4-ba0a-b8502aeb4c44",
+      "name": "",
+      "type": "PlaCAgentNodeGenerateGatheredResources",
+      "position": [
+        948,
+        243
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Gathering Data",
+          "value": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+          "binding_status": "variable",
+          "variable_name": "GatheringData"
+        },
+        {
+          "name": "Resource Generated List",
+          "value": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+          "binding_status": "variable",
+          "variable_name": "Resource Gathered"
+        },
+        {
+          "name": "Optional Out Has Generated Resource",
+          "value": "7b0b1971-ed28-455c-a943-560e3354e36b",
+          "binding_status": "variable",
+          "variable_name": "Has Generated Resource"
+        },
+        {
+          "name": "Optional Is Gathering For Production",
+          "value": "98568192-f7c5-4bb1-bab1-861fd5310827",
+          "binding_status": "variable",
+          "variable_name": "Is Gathering For Production"
+        },
+        {
+          "name": "Last Gathered Resource Object To Pickup",
+          "value": "d1461bcc-b1d7-477c-b2d1-91a4ff4444cd",
+          "binding_status": "variable",
+          "variable_name": "Object To Pickup"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "241ffacb-b5c2-4e52-8c58-2bd6781910bc",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        1490,
+        238
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "be4d07d3-57cb-4974-a06b-bd9af55a46cf",
+      "name": "",
+      "type": "2249161e-8294-4dfb-bc94-3bc2e99ab97d",
+      "position": [
+        1438,
+        307
+      ],
+      "behavior_asset_targets": [
+        [
+          5720,
+          "asset/Agent/Behaviors/Job/Behavior Pickup Extracted Resource.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Object To Pickup",
+          "value": "d1461bcc-b1d7-477c-b2d1-91a4ff4444cd",
+          "binding_status": "variable",
+          "variable_name": "Object To Pickup"
+        }
+      ],
+      "data": {
+        "Guid": "be4d07d3-57cb-4974-a06b-bd9af55a46cf",
+        "BehaviorTree": "2249161e-8294-4dfb-bc94-3bc2e99ab97d"
+      }
+    },
+    {
+      "id": "ee67051a-99c9-415e-9e80-f300cea9213c",
+      "name": "",
+      "type": "47158e82-12ed-4876-a475-e2c53af65d9f",
+      "position": [
+        1737,
+        303
+      ],
+      "behavior_asset_targets": [
+        [
+          5728,
+          "asset/Agent/Behaviors/Job/Behavior Transport Produced Resource.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Resource Produced",
+          "value": "2d76c9d7-f664-4353-bf20-7dee89d2744a",
+          "binding_status": "variable",
+          "variable_name": "Resource Gathered"
+        },
+        {
+          "name": "Is Gathering For Production",
+          "value": "98568192-f7c5-4bb1-bab1-861fd5310827",
+          "binding_status": "variable",
+          "variable_name": "Is Gathering For Production"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "47e63985-acf5-44eb-9a90-ac7c77437876",
+          "binding_status": "variable",
+          "variable_name": "BackToWorkplacePath"
+        }
+      ],
+      "data": {
+        "Guid": "ee67051a-99c9-415e-9e80-f300cea9213c",
+        "BehaviorTree": "47158e82-12ed-4876-a475-e2c53af65d9f"
+      }
+    },
+    {
+      "id": "7b050f97-c9b5-41cf-b17a-9070093423f6",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        1803,
+        235
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "1b2a27ca-198a-4318-8a7d-1323a7e3fbd8",
+      "name": "",
+      "type": "PlaCAgentNodeTransferGatheringData",
+      "position": [
+        1429,
+        673
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "In Gathering Data",
+          "value": "a4262641-19e7-4eff-bb08-3c32161b1095",
+          "binding_status": "variable",
+          "variable_name": "Next Gathering data"
+        },
+        {
+          "name": "Out Gathering Data",
+          "value": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+          "binding_status": "variable",
+          "variable_name": "GatheringData"
+        },
+        {
+          "name": "In Time To Wait",
+          "value": "82a7e6fb-820d-430d-ae87-e3ce419a99cd",
+          "binding_status": "variable",
+          "variable_name": "Next Gathering Wait"
+        },
+        {
+          "name": "Out Time To Wait",
+          "value": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+          "binding_status": "variable",
+          "variable_name": "Gathering Wait"
+        },
+        {
+          "name": "In Gather In One Step Loop Data",
+          "value": "a3dc8e7b-dbe7-45e9-ac87-408f74d38b7e",
+          "binding_status": "variable",
+          "variable_name": "Next Gather in One Step Count"
+        },
+        {
+          "name": "Out Gather In One Step Loop Data",
+          "value": "1ff77e54-4ce2-4cff-a98b-58c8842e11b2",
+          "binding_status": "variable",
+          "variable_name": "Gather in one step"
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "dffc4ddf-f074-492b-bd98-678c2ab4b71a",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        713,
+        695
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "0a6ac48e-7abf-4972-98fc-3f57d7713f03",
+      "name": "Go to resource",
+      "type": "PlaCAgentNodeExecutePlannedPath",
+      "position": [
+        -49,
+        671
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "f0573374-cafa-4a77-9c2b-786681b839b3",
+      "name": "",
+      "type": "f4c60044-204a-46f0-9bf7-4f0d5e5975b6",
+      "position": [
+        216,
+        266
+      ],
+      "behavior_asset_targets": [
+        [
+          5722,
+          "asset/Agent/Behaviors/Job/Behavior Prepare Next Gather.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "GatheringData",
+          "value": "8fa5dd92-7a8e-4e10-ae62-68fdf9bc9b1d",
+          "binding_status": "variable",
+          "variable_name": "GatheringData"
+        },
+        {
+          "name": "Gathering Wait",
+          "value": "796bec2f-a936-4bd2-94df-b13fd0c5bdd0",
+          "binding_status": "variable",
+          "variable_name": "Gathering Wait"
+        },
+        {
+          "name": "resource position",
+          "value": "34039163-54cf-4fc4-8568-ead25eae7ef8",
+          "binding_status": "variable",
+          "variable_name": "resource position"
+        },
+        {
+          "name": "LeavingToWorkPath",
+          "value": "4a65bf15-2917-42d0-b951-5c5d7926ac8b",
+          "binding_status": "variable",
+          "variable_name": "LeavingToWorkPath"
+        },
+        {
+          "name": "around resource position",
+          "value": "6e56e8c9-14f8-4273-ba22-39b0e4427d55",
+          "binding_status": "variable",
+          "variable_name": "around resource position"
+        },
+        {
+          "name": "Gather in one step",
+          "value": "1ff77e54-4ce2-4cff-a98b-58c8842e11b2",
+          "binding_status": "variable",
+          "variable_name": "Gather in one step"
+        },
+        {
+          "name": "Should look at ressource",
+          "value": "75ed91ca-3941-43ad-b524-349733d381eb",
+          "binding_status": "variable",
+          "variable_name": "Should look at ressource"
+        },
+        {
+          "name": "RestrictGatherToOwnedTerritory",
+          "value": "9dd5d538-f1bd-454e-875c-fee1be1da02a",
+          "binding_status": "variable",
+          "variable_name": "RestrictGatherToOwnedTerritory"
+        },
+        {
+          "name": "GatheringActivityMessage",
+          "value": "3677064f-70e0-4c64-a8b9-007eeb35ff9f",
+          "binding_status": "variable",
+          "variable_name": "GatheringActivityMessage"
+        },
+        {
+          "name": "Gather Step Count Loop Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {
+        "Guid": "f0573374-cafa-4a77-9c2b-786681b839b3",
+        "BehaviorTree": "f4c60044-204a-46f0-9bf7-4f0d5e5975b6"
+      }
+    },
+    {
+      "id": "34d49815-1c76-46c6-9f2e-2a37a5c7b911",
+      "name": "",
+      "type": "f4c60044-204a-46f0-9bf7-4f0d5e5975b6",
+      "position": [
+        627,
+        777
+      ],
+      "behavior_asset_targets": [
+        [
+          5722,
+          "asset/Agent/Behaviors/Job/Behavior Prepare Next Gather.bt",
+          ""
+        ]
+      ],
+      "slots": [
+        {
+          "name": "AgentData",
+          "value": "5e42fde5-8927-40b9-b85f-f8c9e28f94d7",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "GatheringData",
+          "value": "a4262641-19e7-4eff-bb08-3c32161b1095",
+          "binding_status": "variable",
+          "variable_name": "Next Gathering data"
+        },
+        {
+          "name": "Gathering Wait",
+          "value": "82a7e6fb-820d-430d-ae87-e3ce419a99cd",
+          "binding_status": "variable",
+          "variable_name": "Next Gathering Wait"
+        },
+        {
+          "name": "resource position",
+          "value": "34039163-54cf-4fc4-8568-ead25eae7ef8",
+          "binding_status": "variable",
+          "variable_name": "resource position"
+        },
+        {
+          "name": "LeavingToWorkPath",
+          "value": "4a65bf15-2917-42d0-b951-5c5d7926ac8b",
+          "binding_status": "variable",
+          "variable_name": "LeavingToWorkPath"
+        },
+        {
+          "name": "around resource position",
+          "value": "6e56e8c9-14f8-4273-ba22-39b0e4427d55",
+          "binding_status": "variable",
+          "variable_name": "around resource position"
+        },
+        {
+          "name": "Gather in one step",
+          "value": "a3dc8e7b-dbe7-45e9-ac87-408f74d38b7e",
+          "binding_status": "variable",
+          "variable_name": "Next Gather in One Step Count"
+        },
+        {
+          "name": "Should look at ressource",
+          "value": "75ed91ca-3941-43ad-b524-349733d381eb",
+          "binding_status": "variable",
+          "variable_name": "Should look at ressource"
+        },
+        {
+          "name": "RestrictGatherToOwnedTerritory",
+          "value": "9dd5d538-f1bd-454e-875c-fee1be1da02a",
+          "binding_status": "variable",
+          "variable_name": "RestrictGatherToOwnedTerritory"
+        },
+        {
+          "name": "GatheringActivityMessage",
+          "value": "3677064f-70e0-4c64-a8b9-007eeb35ff9f",
+          "binding_status": "variable",
+          "variable_name": "GatheringActivityMessage"
+        },
+        {
+          "name": "Gather Step Count Loop Data",
+          "value": "884b0980-ed45-445a-b0ec-bf1ad2ce89eb",
+          "binding_status": "variable",
+          "variable_name": "Gather steps count\t"
+        }
+      ],
+      "data": {
+        "Guid": "34d49815-1c76-46c6-9f2e-2a37a5c7b911",
+        "BehaviorTree": "f4c60044-204a-46f0-9bf7-4f0d5e5975b6"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "1bede504-775f-4efa-b4e5-6825997a2025",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "ef439d1a-4ada-4e55-b379-176380a2747d",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "f0573374-cafa-4a77-9c2b-786681b839b3",
+      "ordinal": 2,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "e3cd6535-57eb-48ef-b46f-a83bdb9797fb",
+      "ordinal": 3,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "dfbc81a3-8d31-4fb4-ba0a-b8502aeb4c44",
+      "ordinal": 4,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "241ffacb-b5c2-4e52-8c58-2bd6781910bc",
+      "ordinal": 5,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "7b050f97-c9b5-41cf-b17a-9070093423f6",
+      "ordinal": 6,
+      "valid_endpoints": true
+    },
+    {
+      "from": "404cca81-36a2-4a81-b28e-7b01bfc8c8cf",
+      "to": "d375d90a-2e5d-4d30-97a6-191ed198d518",
+      "ordinal": 7,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "to": "0a6ac48e-7abf-4972-98fc-3f57d7713f03",
+      "ordinal": 8,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "to": "f3240051-97ba-4c40-b82f-ae9cc5a7b5fa",
+      "ordinal": 9,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "to": "dffc4ddf-f074-492b-bd98-678c2ab4b71a",
+      "ordinal": 10,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "to": "90fcb9bc-315e-4224-ac09-507f39ed55ba",
+      "ordinal": 11,
+      "valid_endpoints": true
+    },
+    {
+      "from": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "to": "1b2a27ca-198a-4318-8a7d-1323a7e3fbd8",
+      "ordinal": 12,
+      "valid_endpoints": true
+    },
+    {
+      "from": "90fcb9bc-315e-4224-ac09-507f39ed55ba",
+      "to": "7ff46d3a-0734-4c9d-b2eb-1686dac34cac",
+      "ordinal": 13,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7ff46d3a-0734-4c9d-b2eb-1686dac34cac",
+      "to": "795248c5-cc1a-4a5e-b4b8-8598f13ff026",
+      "ordinal": 14,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e3cd6535-57eb-48ef-b46f-a83bdb9797fb",
+      "to": "8783ee76-baae-4b6b-8aa0-cf3a9899eb6f",
+      "ordinal": 15,
+      "valid_endpoints": true
+    },
+    {
+      "from": "f3240051-97ba-4c40-b82f-ae9cc5a7b5fa",
+      "to": "817d0a76-abeb-4617-b84c-424fb61c2326",
+      "ordinal": 16,
+      "valid_endpoints": true
+    },
+    {
+      "from": "817d0a76-abeb-4617-b84c-424fb61c2326",
+      "to": "da407ebc-6e8c-4160-acbb-b0b77161273c",
+      "ordinal": 17,
+      "valid_endpoints": true
+    },
+    {
+      "from": "817d0a76-abeb-4617-b84c-424fb61c2326",
+      "to": "52deb5ee-c896-46ae-a6e9-682b988ac280",
+      "ordinal": 18,
+      "valid_endpoints": true
+    },
+    {
+      "from": "241ffacb-b5c2-4e52-8c58-2bd6781910bc",
+      "to": "be4d07d3-57cb-4974-a06b-bd9af55a46cf",
+      "ordinal": 19,
+      "valid_endpoints": true
+    },
+    {
+      "from": "7b050f97-c9b5-41cf-b17a-9070093423f6",
+      "to": "ee67051a-99c9-415e-9e80-f300cea9213c",
+      "ordinal": 20,
+      "valid_endpoints": true
+    },
+    {
+      "from": "dffc4ddf-f074-492b-bd98-678c2ab4b71a",
+      "to": "34d49815-1c76-46c6-9f2e-2a37a5c7b911",
+      "ordinal": 21,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

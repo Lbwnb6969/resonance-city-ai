@@ -1,0 +1,223 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct LanternPacked_natural
+{
+    vec3 position;
+    uint intensity_color_id;
+};
+
+layout(set = 0, binding = 0, std140) uniform GlobalParams_natural
+{
+    uint lantern_count;
+} globalParams;
+
+layout(set = 0, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    LanternPacked_natural _member0[];
+} lantern_buf;
+
+layout(set = 2, binding = 0, std140) uniform FrameCounter_natural
+{
+    uint index;
+} frame_counter;
+
+layout(set = 0, binding = 2, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} indirection_grid;
+
+layout(set = 0, binding = 3, std430) buffer light_indices
+{
+    uint _member0[];
+} light_indices_1;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= globalParams.lantern_count)
+        {
+            break;
+        }
+        vec2 _545 = unpackHalf2x16(lantern_buf._member0[gl_GlobalInvocationID.x].intensity_color_id);
+        float _546 = _545.x;
+        if (_546 <= 0.0)
+        {
+            break;
+        }
+        float radius = 6.0 * intBitsToFloat(532487669 + (floatBitsToInt(_546) >> 1));
+        vec3 _157 = vec3(radius);
+        uvec3 _205 = uvec3(clamp(floor(((lantern_buf._member0[gl_GlobalInvocationID.x].position - _157) * vec3(0.24615384638309478759765625, 0.123076923191547393798828125, 0.24615384638309478759765625)) + vec3(16.0, 2.0, 16.0)), vec3(0.0), vec3(31.0, 15.0, 31.0)));
+        uvec3 _209 = uvec3(clamp(ceil(((lantern_buf._member0[gl_GlobalInvocationID.x].position + _157) * vec3(0.24615384638309478759765625, 0.123076923191547393798828125, 0.24615384638309478759765625)) + vec3(16.0, 2.0, 16.0)), vec3(0.0), vec3(32.0, 16.0, 32.0)));
+        uint _607 = frame_counter.index + (frame_counter.index << 10u);
+        uint _609 = _607 ^ (_607 >> 6u);
+        uint _611 = _609 + (_609 << 3u);
+        uint _613 = _611 ^ (_611 >> 11u);
+        uint _621 = (((gl_GlobalInvocationID.x * 1664525u) + (_613 + (_613 << 15u))) + 1013904223u) * 1664525u;
+        uint _623 = _621 ^ (_621 >> 11u);
+        uint _626 = _623 ^ ((_623 << 7u) & 2636928640u);
+        uint _629 = _626 ^ ((_626 << 15u) & 4022730752u);
+        uint _631 = _629 ^ (_629 >> 18u);
+        uint _277 = _205.z;
+        uint z;
+        uint _864;
+        uint _845 = _277;
+        uint _865 = _631;
+        for (;;)
+        {
+            if (!(_845 < _209.z))
+            {
+                break;
+            }
+            uint _283 = _205.y;
+            _864 = _865;
+            uint y;
+            uint _863;
+            uint _846 = _283;
+            for (;;)
+            {
+                if (!(_846 < _209.y))
+                {
+                    break;
+                }
+                uint _289 = _205.x;
+                _863 = _864;
+                uint x;
+                uint _893;
+                uint _848 = _289;
+                for (;;)
+                {
+                    if (!(_848 < _209.x))
+                    {
+                        break;
+                    }
+                    vec3 _647 = vec3(uvec3(_848, _846, _845));
+                    vec3 _653 = (_647 - vec3(16.0, 2.0, 16.0)) * vec3(4.0625, 8.125, 4.0625);
+                    vec3 _657 = (_647 + vec3(-15.0, -1.0, -15.0)) * vec3(4.0625, 8.125, 4.0625);
+                    float _662 = radius * radius;
+                    float _664 = _653.x;
+                    float _851;
+                    if (lantern_buf._member0[gl_GlobalInvocationID.x].position.x < _664)
+                    {
+                        float _676 = lantern_buf._member0[gl_GlobalInvocationID.x].position.x - _664;
+                        _851 = _662 - (_676 * _676);
+                    }
+                    else
+                    {
+                        float _667 = _657.x;
+                        float _852;
+                        if (lantern_buf._member0[gl_GlobalInvocationID.x].position.x > _667)
+                        {
+                            float _671 = lantern_buf._member0[gl_GlobalInvocationID.x].position.x - _667;
+                            _852 = _662 - (_671 * _671);
+                        }
+                        else
+                        {
+                            _852 = _662;
+                        }
+                        _851 = _852;
+                    }
+                    float _681 = _653.y;
+                    float _853;
+                    if (lantern_buf._member0[gl_GlobalInvocationID.x].position.y < _681)
+                    {
+                        float _693 = lantern_buf._member0[gl_GlobalInvocationID.x].position.y - _681;
+                        _853 = _851 - (_693 * _693);
+                    }
+                    else
+                    {
+                        float _684 = _657.y;
+                        float _854;
+                        if (lantern_buf._member0[gl_GlobalInvocationID.x].position.y > _684)
+                        {
+                            float _687 = lantern_buf._member0[gl_GlobalInvocationID.x].position.y - _684;
+                            _854 = _851 - (_687 * _687);
+                        }
+                        else
+                        {
+                            _854 = _851;
+                        }
+                        _853 = _854;
+                    }
+                    float _699 = _653.z;
+                    float _855;
+                    if (lantern_buf._member0[gl_GlobalInvocationID.x].position.z < _699)
+                    {
+                        float _711 = lantern_buf._member0[gl_GlobalInvocationID.x].position.z - _699;
+                        _855 = _853 - (_711 * _711);
+                    }
+                    else
+                    {
+                        float _702 = _657.z;
+                        float _856;
+                        if (lantern_buf._member0[gl_GlobalInvocationID.x].position.z > _702)
+                        {
+                            float _705 = lantern_buf._member0[gl_GlobalInvocationID.x].position.z - _702;
+                            _856 = _853 - (_705 * _705);
+                        }
+                        else
+                        {
+                            _856 = _853;
+                        }
+                        _855 = _856;
+                    }
+                    if (_855 > 0.0)
+                    {
+                        uint _739 = atomicAdd(indirection_grid._member0[(32u * ((32u * _846) + _845)) + _848], 1048576u);
+                        uint _740 = _739 & 1048575u;
+                        uint _741 = _739 >> 20u;
+                        uint _894;
+                        if (_741 < 64u)
+                        {
+                            light_indices_1._member0[_740 + _741] = gl_GlobalInvocationID.x;
+                            _894 = _863;
+                        }
+                        else
+                        {
+                            uint _776 = _863 + (_863 << 10u);
+                            uint _778 = _776 ^ (_776 >> 6u);
+                            uint _780 = _778 + (_778 << 3u);
+                            uint _782 = _780 ^ (_780 >> 11u);
+                            uint _784 = _782 + (_782 << 15u);
+                            uint _895;
+                            if ((uintBitsToFloat((_863 & 8388607u) | 1065353216u) - 1.0) < (64.0 / float(_741 + 1u)))
+                            {
+                                uint _794 = _784 + (_784 << 10u);
+                                uint _796 = _794 ^ (_794 >> 6u);
+                                uint _798 = _796 + (_796 << 3u);
+                                uint _800 = _798 ^ (_798 >> 11u);
+                                light_indices_1._member0[_740 + (_784 % 64u)] = gl_GlobalInvocationID.x;
+                                _895 = _800 + (_800 << 15u);
+                            }
+                            else
+                            {
+                                _895 = _784;
+                            }
+                            _894 = _895;
+                        }
+                        _893 = _894;
+                    }
+                    else
+                    {
+                        _893 = _863;
+                    }
+                    x = _848 + 1u;
+                    _863 = _893;
+                    _848 = x;
+                    continue;
+                }
+                y = _846 + 1u;
+                _846 = y;
+                _864 = _863;
+                continue;
+            }
+            z = _845 + 1u;
+            _845 = z;
+            _865 = _864;
+            continue;
+        }
+        break;
+    } while(false);
+}
+

@@ -1,0 +1,21 @@
+// RVA 0x875930 | Placemaker.Ui.BetterScrollRect$$OnDisable
+// PDB: BetterScrollRect_OnDisable_mA7A293F273B76132988579A7CE8E138B089A84EC
+// Body: [[10875930, 10875962]]
+// Direct callees:
+// 101d9d50 U3CBlockingU3Ed__3_System_IDisposable_Dispose_mEF0C01D581B3CCBB1A69A8FDDD3CAE41E08DFC43
+// 10672d70 Vector2_get_zero_m621041B9DF5FAE86C1EF4CB28C224FEA089CB828
+
+void __cdecl
+BetterScrollRect_OnDisable_mA7A293F273B76132988579A7CE8E138B089A84EC
+          (BetterScrollRect_t4A98E5323F5BAE8BFBA9E54B1E4DD8F45CBA46B5 *param_1,MethodInfo *param_2)
+
+{
+  Vector2_tBB32F2736AEC229A7BFBCE18197EC0F6AC7EC2D9 VVar1;
+
+  U3CBlockingU3Ed__3_System_IDisposable_Dispose_mEF0C01D581B3CCBB1A69A8FDDD3CAE41E08DFC43
+            ((U3CBlockingU3Ed__3_t0ABB38B9148453B222005009759FAEAAA1F193A4 *)param_1,
+             (MethodInfo *)0x0);
+  VVar1 = Vector2_get_zero_m621041B9DF5FAE86C1EF4CB28C224FEA089CB828((MethodInfo *)0x0);
+  param_1->___velocity_9 = VVar1;
+  return;
+}

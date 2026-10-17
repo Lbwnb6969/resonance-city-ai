@@ -1,0 +1,22 @@
+flowchart TD
+  n0["Sequencer"]
+  n1["GoTo"]
+  n2["PlaCAgentNodeCheckIfNotNull"]
+  n3["Repeat until success"]
+  n4["PlaCAgentNodeIsResourceReadyToPickup"]
+  n5["PlaCAgentNodeSetObjectAsDestination"]
+  n6["PlaCAgentNodeDestroyObject"]
+  n7["Succeeder"]
+  n8["Sequencer"]
+  n9["Sequencer"]
+  n10["Waiting"]
+  n0 -->|0| n2
+  n0 -->|1| n7
+  n0 -->|2| n6
+  n3 -->|3| n9
+  n7 -->|4| n8
+  n8 -->|5| n3
+  n8 -->|6| n5
+  n8 -->|7| n1
+  n9 -->|8| n10
+  n9 -->|9| n4

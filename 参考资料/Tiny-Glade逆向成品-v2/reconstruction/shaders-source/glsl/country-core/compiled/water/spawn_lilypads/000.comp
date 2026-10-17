@@ -1,0 +1,837 @@
+#version 460
+#extension GL_EXT_scalar_block_layout : require
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+struct DrawIndexedIndirectCommand_natural
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint vertexOffset;
+    uint firstInstance;
+};
+
+struct _Array_natural_float12
+{
+    float data[12];
+};
+
+struct Affine3Packed_natural
+{
+    _Array_natural_float12 data;
+};
+
+struct LilypadXform_natural
+{
+    Affine3Packed_natural xform;
+};
+
+float _3013;
+
+layout(set = 0, binding = 0, scalar) uniform GlobalParams_natural
+{
+    int draw_indirect_buffer_offset;
+    uvec2 animation_dims;
+    ivec2 grid_dims;
+} globalParams;
+
+layout(set = 6, binding = 0, std140) uniform PathExclusionMask_natural
+{
+    uvec2 tex_dims;
+} path_mask;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    DrawIndexedIndirectCommand_natural _member0[];
+} draw_commands;
+
+layout(set = 0, binding = 3, std430) buffer lilypad_buffer
+{
+    LilypadXform_natural _member0[];
+} lilypad_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer lilypad_flower_buffer
+{
+    LilypadXform_natural _member0[];
+} lilypad_flower_buffer_1;
+
+layout(set = 10, binding = 0) uniform texture2D water_mask_tex;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 2, binding = 4) uniform sampler samplers_llb;
+layout(set = 6, binding = 1) uniform texture2D path_mask_tex;
+layout(set = 13, binding = 1) uniform texture2D garden_mask_tex;
+layout(set = 0, binding = 2, r16f) uniform image2D animation;
+
+void main()
+{
+    do
+    {
+        if (any(greaterThanEqual(gl_GlobalInvocationID.xy, globalParams.animation_dims)))
+        {
+            break;
+        }
+        vec2 _1110;
+        uint _1066 = gl_GlobalInvocationID.x + (gl_GlobalInvocationID.x << 10u);
+        uint _1068 = _1066 ^ (_1066 >> 6u);
+        uint _1070 = _1068 + (_1068 << 3u);
+        uint _1072 = _1070 ^ (_1070 >> 11u);
+        uint _1088 = gl_GlobalInvocationID.y + (gl_GlobalInvocationID.y << 10u);
+        uint _1090 = _1088 ^ (_1088 >> 6u);
+        uint _1092 = _1090 + (_1090 << 3u);
+        uint _1094 = _1092 ^ (_1092 >> 11u);
+        vec2 cell_center_ws = ((((vec2(gl_GlobalInvocationID.xy) + vec2(0.5)) / vec2(globalParams.grid_dims)) - vec2(0.5)) * vec2(130.0)) + vec2(mix(-0.25, 0.25, ((uintBitsToFloat(((_1072 + (_1072 << 15u)) & 8388607u) | 1065353216u) - 1.0) + (uintBitsToFloat(((_1094 + (_1094 << 15u)) & 8388607u) | 1065353216u) - 1.0)) * 0.5) * 2.0);
+        float _3005;
+        do
+        {
+            _1110 = (cell_center_ws * vec2(0.0076923076994717121124267578125)) + vec2(0.5);
+            bool _3002;
+            if (_1110.x < 0.0)
+            {
+                _3002 = true;
+            }
+            else
+            {
+                _3002 = _1110.x > 1.0;
+            }
+            bool _3003;
+            if (_3002)
+            {
+                _3003 = true;
+            }
+            else
+            {
+                _3003 = _1110.y < 0.0;
+            }
+            bool _3004;
+            if (_3003)
+            {
+                _3004 = true;
+            }
+            else
+            {
+                _3004 = _1110.y > 1.0;
+            }
+            if (_3004)
+            {
+                _3005 = 0.0;
+                break;
+            }
+            else
+            {
+                _3005 = textureLod(sampler2D(water_mask_tex, samplers_lnc_iso), _1110, 0.0).y;
+                break;
+            }
+            break; // unreachable workaround
+        } while(false);
+        float _272 = smoothstep(0.4000000059604644775390625, 0.5, smoothstep(0.0, 0.5, textureLod(sampler2D(garden_mask_tex, samplers_lnc_iso), _1110, 0.0).y));
+        ivec2 _293 = ivec2(gl_GlobalInvocationID.xy);
+        imageStore(animation, _293, vec4(mix(imageLoad(animation, _293).x, float(_272 > 0.0), 1.5 * frame_constants.delta_time_seconds), 0.0, 0.0, 0.0));
+        bool _1166 = frame_constants.glade_theme_id == 2u;
+        float _3046;
+        if (_1166)
+        {
+            vec2 _318 = cell_center_ws * 1.83000004291534423828125;
+            ivec2 _1200 = ivec2(floor(_318));
+            vec2 _1201 = fract(_318);
+            uvec2 _1202 = uvec2(_1200);
+            uint _1252 = _1202.y;
+            uint _1258 = _1252 + (_1252 << 10u);
+            uint _1260 = _1258 ^ (_1258 >> 6u);
+            uint _1262 = _1260 + (_1260 << 3u);
+            uint _1264 = _1262 ^ (_1262 >> 11u);
+            uint _1272 = (((_1202.x * 1664525u) + (_1264 + (_1264 << 15u))) + 1013904223u) * 1664525u;
+            uint _1274 = _1272 ^ (_1272 >> 11u);
+            uint _1277 = _1274 ^ ((_1274 << 7u) & 2636928640u);
+            uint _1280 = _1277 ^ ((_1277 << 15u) & 4022730752u);
+            uint _1282 = _1280 ^ (_1280 >> 18u);
+            float _3015;
+            _3015 = _3013;
+            uint _1299;
+            uint _1318;
+            float _1324;
+            uint _3014 = 0u;
+            uint _3218 = _1282;
+            for (;;)
+            {
+                if (!(_3014 < 1u))
+                {
+                    break;
+                }
+                uint _1310 = _3218 + (_3218 << 10u);
+                uint _1312 = _1310 ^ (_1310 >> 6u);
+                uint _1314 = _1312 + (_1312 << 3u);
+                uint _1316 = _1314 ^ (_1314 >> 11u);
+                _1318 = _1316 + (_1316 << 15u);
+                _1324 = uintBitsToFloat((_3218 & 8388607u) | 1065353216u) - 1.0;
+                _1299 = _3014 + 1u;
+                _3218 = _1318;
+                _3015 = _1324;
+                _3014 = _1299;
+                continue;
+            }
+            uvec2 _1210 = uvec2(_1200 + ivec2(1, 0));
+            uint _1328 = _1210.y;
+            uint _1334 = _1328 + (_1328 << 10u);
+            uint _1336 = _1334 ^ (_1334 >> 6u);
+            uint _1338 = _1336 + (_1336 << 3u);
+            uint _1340 = _1338 ^ (_1338 >> 11u);
+            uint _1348 = (((_1210.x * 1664525u) + (_1340 + (_1340 << 15u))) + 1013904223u) * 1664525u;
+            uint _1350 = _1348 ^ (_1348 >> 11u);
+            uint _1353 = _1350 ^ ((_1350 << 7u) & 2636928640u);
+            uint _1356 = _1353 ^ ((_1353 << 15u) & 4022730752u);
+            uint _1358 = _1356 ^ (_1356 >> 18u);
+            float _3023;
+            _3023 = _3013;
+            uint _1375;
+            uint _1394;
+            float _1400;
+            uint _3022 = 0u;
+            uint _3217 = _1358;
+            for (;;)
+            {
+                if (!(_3022 < 1u))
+                {
+                    break;
+                }
+                uint _1386 = _3217 + (_3217 << 10u);
+                uint _1388 = _1386 ^ (_1386 >> 6u);
+                uint _1390 = _1388 + (_1388 << 3u);
+                uint _1392 = _1390 ^ (_1390 >> 11u);
+                _1394 = _1392 + (_1392 << 15u);
+                _1400 = uintBitsToFloat((_3217 & 8388607u) | 1065353216u) - 1.0;
+                _1375 = _3022 + 1u;
+                _3217 = _1394;
+                _3023 = _1400;
+                _3022 = _1375;
+                continue;
+            }
+            uvec2 _1217 = uvec2(_1200 + ivec2(0, 1));
+            uint _1404 = _1217.y;
+            uint _1410 = _1404 + (_1404 << 10u);
+            uint _1412 = _1410 ^ (_1410 >> 6u);
+            uint _1414 = _1412 + (_1412 << 3u);
+            uint _1416 = _1414 ^ (_1414 >> 11u);
+            uint _1424 = (((_1217.x * 1664525u) + (_1416 + (_1416 << 15u))) + 1013904223u) * 1664525u;
+            uint _1426 = _1424 ^ (_1424 >> 11u);
+            uint _1429 = _1426 ^ ((_1426 << 7u) & 2636928640u);
+            uint _1432 = _1429 ^ ((_1429 << 15u) & 4022730752u);
+            uint _1434 = _1432 ^ (_1432 >> 18u);
+            float _3032;
+            _3032 = _3013;
+            uint _1451;
+            uint _1470;
+            float _1476;
+            uint _3031 = 0u;
+            uint _3216 = _1434;
+            for (;;)
+            {
+                if (!(_3031 < 1u))
+                {
+                    break;
+                }
+                uint _1462 = _3216 + (_3216 << 10u);
+                uint _1464 = _1462 ^ (_1462 >> 6u);
+                uint _1466 = _1464 + (_1464 << 3u);
+                uint _1468 = _1466 ^ (_1466 >> 11u);
+                _1470 = _1468 + (_1468 << 15u);
+                _1476 = uintBitsToFloat((_3216 & 8388607u) | 1065353216u) - 1.0;
+                _1451 = _3031 + 1u;
+                _3216 = _1470;
+                _3032 = _1476;
+                _3031 = _1451;
+                continue;
+            }
+            uvec2 _1225 = uvec2(_1200 + ivec2(1));
+            uint _1480 = _1225.y;
+            uint _1486 = _1480 + (_1480 << 10u);
+            uint _1488 = _1486 ^ (_1486 >> 6u);
+            uint _1490 = _1488 + (_1488 << 3u);
+            uint _1492 = _1490 ^ (_1490 >> 11u);
+            uint _1500 = (((_1225.x * 1664525u) + (_1492 + (_1492 << 15u))) + 1013904223u) * 1664525u;
+            uint _1502 = _1500 ^ (_1500 >> 11u);
+            uint _1505 = _1502 ^ ((_1502 << 7u) & 2636928640u);
+            uint _1508 = _1505 ^ ((_1505 << 15u) & 4022730752u);
+            uint _1510 = _1508 ^ (_1508 >> 18u);
+            float _3042;
+            _3042 = _3013;
+            uint _1527;
+            uint _1546;
+            float _1552;
+            uint _3041 = 0u;
+            uint _3215 = _1510;
+            for (;;)
+            {
+                if (!(_3041 < 1u))
+                {
+                    break;
+                }
+                uint _1538 = _3215 + (_3215 << 10u);
+                uint _1540 = _1538 ^ (_1538 >> 6u);
+                uint _1542 = _1540 + (_1540 << 3u);
+                uint _1544 = _1542 ^ (_1542 >> 11u);
+                _1546 = _1544 + (_1544 << 15u);
+                _1552 = uintBitsToFloat((_3215 & 8388607u) | 1065353216u) - 1.0;
+                _1527 = _3041 + 1u;
+                _3215 = _1546;
+                _3042 = _1552;
+                _3041 = _1527;
+                continue;
+            }
+            vec2 _1559 = (_1201 * _1201) * (vec2(3.0) - (vec2(2.0) * _1201));
+            float _1233 = _1559.x;
+            float _1234 = 1.0 - _1233;
+            float _1236 = _1559.y;
+            float _3043;
+            do
+            {
+                float _1568 = abs((_3005 + (((((1.0 - _1236) * ((_3015 * _1234) + (_3023 * _1233))) + ((_3032 * _1234) * _1236)) + ((_3042 * _1233) * _1236)) * 0.300000011920928955078125)) - 0.662000000476837158203125);
+                if (_1568 > 0.39300000667572021484375)
+                {
+                    _3043 = 0.0;
+                    break;
+                }
+                float _1572 = _1568 * 2.5445291996002197265625;
+                _3043 = 1.0 - ((_1572 * _1572) * (3.0 - (_1568 * 5.089058399200439453125)));
+                break;
+            } while(false);
+            _3046 = _3043;
+        }
+        else
+        {
+            float _3007;
+            do
+            {
+                float _1173 = abs(_3005 - 0.449999988079071044921875);
+                if (_1173 > 0.300000011920928955078125)
+                {
+                    _3007 = 0.0;
+                    break;
+                }
+                float _1177 = _1173 * 3.3333332538604736328125;
+                _3007 = 1.0 - ((_1177 * _1177) * (3.0 - (_1173 * 6.666666507720947265625)));
+                break;
+            } while(false);
+            _3046 = _3007;
+        }
+        float _3044;
+        do
+        {
+            float _1586 = abs(textureLod(sampler2D(path_mask_tex, samplers_llb), _1110, 0.0).x - 0.20000000298023223876953125);
+            if (_1586 > 0.20000000298023223876953125)
+            {
+                _3044 = 0.0;
+                break;
+            }
+            float _1590 = _1586 * 5.0;
+            _3044 = 1.0 - ((_1590 * _1590) * (3.0 - (_1586 * 10.0)));
+            break;
+        } while(false);
+        float cubic_pulse_val = _3046 + (_3044 * smoothstep(0.60000002384185791015625, 0.800000011920928955078125, _3005));
+        float garden_water_overlap = _272 * smoothstep(0.4000000059604644775390625, 0.5, _3005);
+        bool _3113;
+        if (cubic_pulse_val > 0.0)
+        {
+            ivec2 _1613 = ivec2(floor(cell_center_ws));
+            vec2 _1614 = fract(cell_center_ws);
+            uvec2 _1615 = uvec2(_1613);
+            uint _1665 = _1615.y;
+            uint _1671 = _1665 + (_1665 << 10u);
+            uint _1673 = _1671 ^ (_1671 >> 6u);
+            uint _1675 = _1673 + (_1673 << 3u);
+            uint _1677 = _1675 ^ (_1675 >> 11u);
+            uint _1685 = (((_1615.x * 1664525u) + (_1677 + (_1677 << 15u))) + 1013904223u) * 1664525u;
+            uint _1687 = _1685 ^ (_1685 >> 11u);
+            uint _1690 = _1687 ^ ((_1687 << 7u) & 2636928640u);
+            uint _1693 = _1690 ^ ((_1690 << 15u) & 4022730752u);
+            uint _1695 = _1693 ^ (_1693 >> 18u);
+            float _3061;
+            _3061 = _3013;
+            uint _1712;
+            uint _1731;
+            float _1737;
+            uint _3060 = 0u;
+            uint _3214 = _1695;
+            for (;;)
+            {
+                if (!(_3060 < 1u))
+                {
+                    break;
+                }
+                uint _1723 = _3214 + (_3214 << 10u);
+                uint _1725 = _1723 ^ (_1723 >> 6u);
+                uint _1727 = _1725 + (_1725 << 3u);
+                uint _1729 = _1727 ^ (_1727 >> 11u);
+                _1731 = _1729 + (_1729 << 15u);
+                _1737 = uintBitsToFloat((_3214 & 8388607u) | 1065353216u) - 1.0;
+                _1712 = _3060 + 1u;
+                _3214 = _1731;
+                _3061 = _1737;
+                _3060 = _1712;
+                continue;
+            }
+            uvec2 _1623 = uvec2(_1613 + ivec2(1, 0));
+            uint _1741 = _1623.y;
+            uint _1747 = _1741 + (_1741 << 10u);
+            uint _1749 = _1747 ^ (_1747 >> 6u);
+            uint _1751 = _1749 + (_1749 << 3u);
+            uint _1753 = _1751 ^ (_1751 >> 11u);
+            uint _1761 = (((_1623.x * 1664525u) + (_1753 + (_1753 << 15u))) + 1013904223u) * 1664525u;
+            uint _1763 = _1761 ^ (_1761 >> 11u);
+            uint _1766 = _1763 ^ ((_1763 << 7u) & 2636928640u);
+            uint _1769 = _1766 ^ ((_1766 << 15u) & 4022730752u);
+            uint _1771 = _1769 ^ (_1769 >> 18u);
+            float _3077;
+            _3077 = _3013;
+            uint _1788;
+            uint _1807;
+            float _1813;
+            uint _3076 = 0u;
+            uint _3213 = _1771;
+            for (;;)
+            {
+                if (!(_3076 < 1u))
+                {
+                    break;
+                }
+                uint _1799 = _3213 + (_3213 << 10u);
+                uint _1801 = _1799 ^ (_1799 >> 6u);
+                uint _1803 = _1801 + (_1801 << 3u);
+                uint _1805 = _1803 ^ (_1803 >> 11u);
+                _1807 = _1805 + (_1805 << 15u);
+                _1813 = uintBitsToFloat((_3213 & 8388607u) | 1065353216u) - 1.0;
+                _1788 = _3076 + 1u;
+                _3213 = _1807;
+                _3077 = _1813;
+                _3076 = _1788;
+                continue;
+            }
+            uvec2 _1630 = uvec2(_1613 + ivec2(0, 1));
+            uint _1817 = _1630.y;
+            uint _1823 = _1817 + (_1817 << 10u);
+            uint _1825 = _1823 ^ (_1823 >> 6u);
+            uint _1827 = _1825 + (_1825 << 3u);
+            uint _1829 = _1827 ^ (_1827 >> 11u);
+            uint _1837 = (((_1630.x * 1664525u) + (_1829 + (_1829 << 15u))) + 1013904223u) * 1664525u;
+            uint _1839 = _1837 ^ (_1837 >> 11u);
+            uint _1842 = _1839 ^ ((_1839 << 7u) & 2636928640u);
+            uint _1845 = _1842 ^ ((_1842 << 15u) & 4022730752u);
+            uint _1847 = _1845 ^ (_1845 >> 18u);
+            float _3094;
+            _3094 = _3013;
+            uint _1864;
+            uint _1883;
+            float _1889;
+            uint _3093 = 0u;
+            uint _3212 = _1847;
+            for (;;)
+            {
+                if (!(_3093 < 1u))
+                {
+                    break;
+                }
+                uint _1875 = _3212 + (_3212 << 10u);
+                uint _1877 = _1875 ^ (_1875 >> 6u);
+                uint _1879 = _1877 + (_1877 << 3u);
+                uint _1881 = _1879 ^ (_1879 >> 11u);
+                _1883 = _1881 + (_1881 << 15u);
+                _1889 = uintBitsToFloat((_3212 & 8388607u) | 1065353216u) - 1.0;
+                _1864 = _3093 + 1u;
+                _3212 = _1883;
+                _3094 = _1889;
+                _3093 = _1864;
+                continue;
+            }
+            uvec2 _1638 = uvec2(_1613 + ivec2(1));
+            uint _1893 = _1638.y;
+            uint _1899 = _1893 + (_1893 << 10u);
+            uint _1901 = _1899 ^ (_1899 >> 6u);
+            uint _1903 = _1901 + (_1901 << 3u);
+            uint _1905 = _1903 ^ (_1903 >> 11u);
+            uint _1913 = (((_1638.x * 1664525u) + (_1905 + (_1905 << 15u))) + 1013904223u) * 1664525u;
+            uint _1915 = _1913 ^ (_1913 >> 11u);
+            uint _1918 = _1915 ^ ((_1915 << 7u) & 2636928640u);
+            uint _1921 = _1918 ^ ((_1918 << 15u) & 4022730752u);
+            uint _1923 = _1921 ^ (_1921 >> 18u);
+            float _3112;
+            _3112 = _3013;
+            uint _1940;
+            uint _1959;
+            float _1965;
+            uint _3111 = 0u;
+            uint _3211 = _1923;
+            for (;;)
+            {
+                if (!(_3111 < 1u))
+                {
+                    break;
+                }
+                uint _1951 = _3211 + (_3211 << 10u);
+                uint _1953 = _1951 ^ (_1951 >> 6u);
+                uint _1955 = _1953 + (_1953 << 3u);
+                uint _1957 = _1955 ^ (_1955 >> 11u);
+                _1959 = _1957 + (_1957 << 15u);
+                _1965 = uintBitsToFloat((_3211 & 8388607u) | 1065353216u) - 1.0;
+                _1940 = _3111 + 1u;
+                _3211 = _1959;
+                _3112 = _1965;
+                _3111 = _1940;
+                continue;
+            }
+            vec2 _1971 = (_1614 * _1614) * (vec2(3.0) - (vec2(2.0) * _1614));
+            float _1646 = _1971.x;
+            float _1647 = 1.0 - _1646;
+            float _1649 = _1971.y;
+            _3113 = ((((1.0 - _1649) * ((_3061 * _1647) + (_3077 * _1646))) + ((_3094 * _1647) * _1649)) + ((_3112 * _1646) * _1649)) > 0.5;
+        }
+        else
+        {
+            _3113 = false;
+        }
+        bool _3204;
+        if (_3113)
+        {
+            _3204 = true;
+        }
+        else
+        {
+            bool _3205;
+            if (garden_water_overlap > 0.0)
+            {
+                vec2 _560 = cell_center_ws * 2.0;
+                ivec2 _1989 = ivec2(floor(_560));
+                vec2 _1990 = fract(_560);
+                uvec2 _1991 = uvec2(_1989);
+                uint _2041 = _1991.y;
+                uint _2047 = _2041 + (_2041 << 10u);
+                uint _2049 = _2047 ^ (_2047 >> 6u);
+                uint _2051 = _2049 + (_2049 << 3u);
+                uint _2053 = _2051 ^ (_2051 >> 11u);
+                uint _2061 = (((_1991.x * 1664525u) + (_2053 + (_2053 << 15u))) + 1013904223u) * 1664525u;
+                uint _2063 = _2061 ^ (_2061 >> 11u);
+                uint _2066 = _2063 ^ ((_2063 << 7u) & 2636928640u);
+                uint _2069 = _2066 ^ ((_2066 << 15u) & 4022730752u);
+                uint _2071 = _2069 ^ (_2069 >> 18u);
+                float _3133;
+                _3133 = _3013;
+                uint _2088;
+                uint _2107;
+                float _2113;
+                uint _3132 = 0u;
+                uint _3203 = _2071;
+                for (;;)
+                {
+                    if (!(_3132 < 1u))
+                    {
+                        break;
+                    }
+                    uint _2099 = _3203 + (_3203 << 10u);
+                    uint _2101 = _2099 ^ (_2099 >> 6u);
+                    uint _2103 = _2101 + (_2101 << 3u);
+                    uint _2105 = _2103 ^ (_2103 >> 11u);
+                    _2107 = _2105 + (_2105 << 15u);
+                    _2113 = uintBitsToFloat((_3203 & 8388607u) | 1065353216u) - 1.0;
+                    _2088 = _3132 + 1u;
+                    _3203 = _2107;
+                    _3133 = _2113;
+                    _3132 = _2088;
+                    continue;
+                }
+                uvec2 _1999 = uvec2(_1989 + ivec2(1, 0));
+                uint _2117 = _1999.y;
+                uint _2123 = _2117 + (_2117 << 10u);
+                uint _2125 = _2123 ^ (_2123 >> 6u);
+                uint _2127 = _2125 + (_2125 << 3u);
+                uint _2129 = _2127 ^ (_2127 >> 11u);
+                uint _2137 = (((_1999.x * 1664525u) + (_2129 + (_2129 << 15u))) + 1013904223u) * 1664525u;
+                uint _2139 = _2137 ^ (_2137 >> 11u);
+                uint _2142 = _2139 ^ ((_2139 << 7u) & 2636928640u);
+                uint _2145 = _2142 ^ ((_2142 << 15u) & 4022730752u);
+                uint _2147 = _2145 ^ (_2145 >> 18u);
+                float _3154;
+                _3154 = _3013;
+                uint _2164;
+                uint _2183;
+                float _2189;
+                uint _3153 = 0u;
+                uint _3202 = _2147;
+                for (;;)
+                {
+                    if (!(_3153 < 1u))
+                    {
+                        break;
+                    }
+                    uint _2175 = _3202 + (_3202 << 10u);
+                    uint _2177 = _2175 ^ (_2175 >> 6u);
+                    uint _2179 = _2177 + (_2177 << 3u);
+                    uint _2181 = _2179 ^ (_2179 >> 11u);
+                    _2183 = _2181 + (_2181 << 15u);
+                    _2189 = uintBitsToFloat((_3202 & 8388607u) | 1065353216u) - 1.0;
+                    _2164 = _3153 + 1u;
+                    _3202 = _2183;
+                    _3154 = _2189;
+                    _3153 = _2164;
+                    continue;
+                }
+                uvec2 _2006 = uvec2(_1989 + ivec2(0, 1));
+                uint _2193 = _2006.y;
+                uint _2199 = _2193 + (_2193 << 10u);
+                uint _2201 = _2199 ^ (_2199 >> 6u);
+                uint _2203 = _2201 + (_2201 << 3u);
+                uint _2205 = _2203 ^ (_2203 >> 11u);
+                uint _2213 = (((_2006.x * 1664525u) + (_2205 + (_2205 << 15u))) + 1013904223u) * 1664525u;
+                uint _2215 = _2213 ^ (_2213 >> 11u);
+                uint _2218 = _2215 ^ ((_2215 << 7u) & 2636928640u);
+                uint _2221 = _2218 ^ ((_2218 << 15u) & 4022730752u);
+                uint _2223 = _2221 ^ (_2221 >> 18u);
+                float _3176;
+                _3176 = _3013;
+                uint _2240;
+                uint _2259;
+                float _2265;
+                uint _3175 = 0u;
+                uint _3201 = _2223;
+                for (;;)
+                {
+                    if (!(_3175 < 1u))
+                    {
+                        break;
+                    }
+                    uint _2251 = _3201 + (_3201 << 10u);
+                    uint _2253 = _2251 ^ (_2251 >> 6u);
+                    uint _2255 = _2253 + (_2253 << 3u);
+                    uint _2257 = _2255 ^ (_2255 >> 11u);
+                    _2259 = _2257 + (_2257 << 15u);
+                    _2265 = uintBitsToFloat((_3201 & 8388607u) | 1065353216u) - 1.0;
+                    _2240 = _3175 + 1u;
+                    _3201 = _2259;
+                    _3176 = _2265;
+                    _3175 = _2240;
+                    continue;
+                }
+                uvec2 _2014 = uvec2(_1989 + ivec2(1));
+                uint _2269 = _2014.y;
+                uint _2275 = _2269 + (_2269 << 10u);
+                uint _2277 = _2275 ^ (_2275 >> 6u);
+                uint _2279 = _2277 + (_2277 << 3u);
+                uint _2281 = _2279 ^ (_2279 >> 11u);
+                uint _2289 = (((_2014.x * 1664525u) + (_2281 + (_2281 << 15u))) + 1013904223u) * 1664525u;
+                uint _2291 = _2289 ^ (_2289 >> 11u);
+                uint _2294 = _2291 ^ ((_2291 << 7u) & 2636928640u);
+                uint _2297 = _2294 ^ ((_2294 << 15u) & 4022730752u);
+                uint _2299 = _2297 ^ (_2297 >> 18u);
+                float _3199;
+                _3199 = _3013;
+                uint _2316;
+                uint _2335;
+                float _2341;
+                uint _3198 = 0u;
+                uint _3200 = _2299;
+                for (;;)
+                {
+                    if (!(_3198 < 1u))
+                    {
+                        break;
+                    }
+                    uint _2327 = _3200 + (_3200 << 10u);
+                    uint _2329 = _2327 ^ (_2327 >> 6u);
+                    uint _2331 = _2329 + (_2329 << 3u);
+                    uint _2333 = _2331 ^ (_2331 >> 11u);
+                    _2335 = _2333 + (_2333 << 15u);
+                    _2341 = uintBitsToFloat((_3200 & 8388607u) | 1065353216u) - 1.0;
+                    _2316 = _3198 + 1u;
+                    _3200 = _2335;
+                    _3199 = _2341;
+                    _3198 = _2316;
+                    continue;
+                }
+                vec2 _2347 = (_1990 * _1990) * (vec2(3.0) - (vec2(2.0) * _1990));
+                float _2022 = _2347.x;
+                float _2023 = 1.0 - _2022;
+                float _2025 = _2347.y;
+                _3205 = ((((1.0 - _2025) * ((_3133 * _2023) + (_3154 * _2022))) + ((_3176 * _2023) * _2025)) + ((_3199 * _2022) * _2025)) > 0.5;
+            }
+            else
+            {
+                _3205 = false;
+            }
+            _3204 = _3205;
+        }
+        if (_3204)
+        {
+            int seed = int((gl_GlobalInvocationID.x * gl_GlobalInvocationID.y) + gl_GlobalInvocationID.x);
+            vec3 _590 = cell_center_ws.xxy;
+            _590.y = 0.0;
+            vec3 _3208;
+            if (frame_constants.glade_theme_id == 4u)
+            {
+                vec3 _2990 = _590;
+                _2990.y = -0.100000001490116119384765625;
+                _3208 = _2990;
+            }
+            else
+            {
+                _3208 = _590;
+            }
+            uint _612 = gl_GlobalInvocationID.x + gl_GlobalInvocationID.y;
+            uint _2362 = _612 + (_612 << 10u);
+            uint _2364 = _2362 ^ (_2362 >> 6u);
+            uint _2366 = _2364 + (_2364 << 3u);
+            uint _2368 = _2366 ^ (_2366 >> 11u);
+            float _2376 = uintBitsToFloat(((_2368 + (_2368 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+            vec3 scale = vec3(mix(0.800000011920928955078125, _1166 ? 1.2999999523162841796875 : 2.0, _2376) * mix(0.5, 1.0, clamp(cubic_pulse_val + garden_water_overlap, 0.0, 1.0))) * mix(1.0, 0.75, garden_water_overlap);
+            uint _624 = uint(seed ^ 234);
+            uint _2384 = _624 + (_624 << 10u);
+            uint _2386 = _2384 ^ (_2384 >> 6u);
+            uint _2388 = _2386 + (_2386 << 3u);
+            uint _2390 = _2388 ^ (_2388 >> 11u);
+            uint _628 = uint(seed ^ 8634);
+            uint _2406 = _628 + (_628 << 10u);
+            uint _2408 = _2406 ^ (_2406 >> 6u);
+            uint _2410 = _2408 + (_2408 << 3u);
+            uint _2412 = _2410 ^ (_2410 >> 11u);
+            vec3 _631 = normalize(vec3(uintBitsToFloat(((_2390 + (_2390 << 15u)) & 8388607u) | 1065353216u) - 1.0, 0.0, uintBitsToFloat(((_2412 + (_2412 << 15u)) & 8388607u) | 1065353216u) - 1.0));
+            mat4 _2454 = transpose(mat4(vec4(_631, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(cross(_631, vec3(0.0, 1.0, 0.0)), 0.0), vec4(0.0, 0.0, 0.0, 1.0)));
+            float _687 = 3.1400001049041748046875 * _2376;
+            vec3 _2481 = normalize(vec3(0.0, 1.0, 0.0));
+            float _2482 = sin(_687);
+            float _2483 = cos(_687);
+            float _2484 = 1.0 - _2483;
+            float _2486 = _2484 * _2481.x;
+            float _2490 = _2486 * _2481.y;
+            float _2492 = _2481.z * _2482;
+            float _2494 = _2484 * _2481.z;
+            float _2495 = _2494 * _2481.x;
+            float _2496 = _2481.y * _2482;
+            float _2499 = _2484 * _2481.y;
+            float _2502 = _2499 * _2481.z;
+            float _2503 = _2481.x * _2482;
+            mat4 _732 = transpose(mat4(vec4((_2486 * _2481.x) + _2483, _2490 - _2492, _2495 + _2496, 0.0), vec4(_2490 + _2492, (_2499 * _2481.y) + _2483, _2502 - _2503, 0.0), vec4(_2495 - _2496, _2502 + _2503, (_2494 * _2481.z) + _2483, 0.0), vec4(0.0, 0.0, 0.0, 1.0))) * ((mat4(vec4(scale.x, 0.0, 0.0, 0.0), vec4(0.0, scale.y, 0.0, 0.0), vec4(0.0, 0.0, scale.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * _2454) * mat4(vec4(1.0, 0.0, 0.0, _3208.x), vec4(0.0, 1.0, 0.0, _3208.y), vec4(0.0, 0.0, 1.0, _3208.z), vec4(0.0, 0.0, 0.0, 1.0)));
+            vec4 _2518 = _732[0];
+            vec4 _2521 = _732[1];
+            vec4 _2524 = _732[2];
+            uint instance_offset = atomicAdd(draw_commands._member0[globalParams.draw_indirect_buffer_offset].instanceCount, 1u);
+            int instance_offset_1 = int(instance_offset);
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[0] = _2518.x;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[1] = _2521.x;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[2] = _2524.x;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[3] = _2518.y;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[4] = _2521.y;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[5] = _2524.y;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[6] = _2518.z;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[7] = _2521.z;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[8] = _2524.z;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[9] = _2518.w;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[10] = _2521.w;
+            lilypad_buffer_1._member0[instance_offset_1].xform.data.data[11] = _2524.w;
+            uint _875 = _612 + 345u;
+            uint _2592 = _875 + (_875 << 10u);
+            uint _2594 = _2592 ^ (_2592 >> 6u);
+            uint _2596 = _2594 + (_2594 << 3u);
+            uint _2598 = _2596 ^ (_2596 >> 11u);
+            if ((garden_water_overlap > 0.699999988079071044921875) && ((uintBitsToFloat(((_2598 + (_2598 << 15u)) & 8388607u) | 1065353216u) - 1.0) > 0.20000000298023223876953125))
+            {
+                uint instance_offset_1_1 = atomicAdd(draw_commands._member0[14u].instanceCount, 1u);
+                int instance_offset_2 = int(instance_offset_1_1);
+                uint _889 = gl_GlobalInvocationID.x * 10u;
+                uint _895 = (_889 + (gl_GlobalInvocationID.y * 10u)) + 45u;
+                uint _2614 = _895 + (_895 << 10u);
+                uint _2616 = _2614 ^ (_2614 >> 6u);
+                uint _2618 = _2616 + (_2616 << 3u);
+                uint _2620 = _2618 ^ (_2618 >> 11u);
+                float _2632 = clamp(1.0 - smoothstep(((uintBitsToFloat(((_2620 + (_2620 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 0.20000000298023223876953125) - 0.20000000298023223876953125, 1.0, imageLoad(animation, _293).x), 0.0, 1.0);
+                float _2638 = ((_2632 * _2632) * _2632) - ((_2632 * sin(_2632 * 3.1400001049041748046875)) * 1.5);
+                vec3 scale_1 = (scale * (garden_water_overlap * 0.800000011920928955078125)) * (1.0 - _2638);
+                vec3 _3210;
+                if (_1166)
+                {
+                    _3210 = scale_1 * 2.0;
+                }
+                else
+                {
+                    _3210 = scale_1;
+                }
+                uint _950 = (gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * 2u)) + 345u;
+                uint _2651 = _950 + (_950 << 10u);
+                uint _2653 = _2651 ^ (_2651 >> 6u);
+                uint _2655 = _2653 + (_2653 << 3u);
+                uint _2657 = _2655 ^ (_2655 >> 11u);
+                uint _966 = (gl_GlobalInvocationID.x + (gl_GlobalInvocationID.y * 3u)) - 345u;
+                uint _2673 = _966 + (_966 << 10u);
+                uint _2675 = _2673 ^ (_2673 >> 6u);
+                uint _2677 = _2675 + (_2675 << 3u);
+                uint _2679 = _2677 ^ (_2677 >> 11u);
+                uint _980 = _889 + (gl_GlobalInvocationID.y * 345u);
+                uint _2695 = _980 + (_980 << 10u);
+                uint _2697 = _2695 ^ (_2695 >> 6u);
+                uint _2699 = _2697 + (_2697 << 3u);
+                uint _2701 = _2699 ^ (_2699 >> 11u);
+                mat4 _2744 = (mat4(vec4(_3210.x, 0.0, 0.0, 0.0), vec4(0.0, _3210.y, 0.0, 0.0), vec4(0.0, 0.0, _3210.z, 0.0), vec4(0.0, 0.0, 0.0, 1.0)) * _2454) * mat4(vec4(1.0, 0.0, 0.0, _3208.x + mix(-0.300000011920928955078125, 0.300000011920928955078125, uintBitsToFloat(((_2657 + (_2657 << 15u)) & 8388607u) | 1065353216u) - 1.0)), vec4(0.0, 1.0, 0.0, (_3208.y - (_2638 * 0.300000011920928955078125)) + ((uintBitsToFloat(((_2701 + (_2701 << 15u)) & 8388607u) | 1065353216u) - 1.0) * 0.100000001490116119384765625)), vec4(0.0, 0.0, 1.0, _3208.z + mix(-0.300000011920928955078125, 0.300000011920928955078125, uintBitsToFloat(((_2679 + (_2679 << 15u)) & 8388607u) | 1065353216u) - 1.0)), vec4(0.0, 0.0, 0.0, 1.0));
+                vec4 _2748 = _2744[0];
+                vec4 _2751 = _2744[1];
+                vec4 _2754 = _2744[2];
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[0] = _2748.x;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[1] = _2751.x;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[2] = _2754.x;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[3] = _2748.y;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[4] = _2751.y;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[5] = _2754.y;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[6] = _2748.z;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[7] = _2751.z;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[8] = _2754.z;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[9] = _2748.w;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[10] = _2751.w;
+                lilypad_flower_buffer_1._member0[instance_offset_2].xform.data.data[11] = _2754.w;
+            }
+        }
+        break;
+    } while(false);
+}
+

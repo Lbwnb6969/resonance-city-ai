@@ -1,0 +1,34 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=box];
+  n1 [label="Selector",shape=doubleoctagon];
+  n2 [label="Reaching Need",shape=box];
+  n3 [label="Filling a need : waiting a bit",shape=box];
+  n4 [label="PlaCAgentNodeUnfillNeed",shape=box];
+  n5 [label="FillNeed",shape=box];
+  n6 [label="PlaCAgentNodeFindInteractiveLocationInBuilding",shape=box];
+  n7 [label="Selector",shape=box];
+  n8 [label="Repeater",shape=box];
+  n9 [label="Sequencer",shape=box];
+  n10 [label="PlaCAgentNodeFindRandomPositionInBuilding",shape=box];
+  n11 [label="Sequencer",shape=box];
+  n12 [label="GoTo",shape=box];
+  n13 [label="Waiting",shape=box];
+  n14 [label="PlaCAgentNodeCheckIfTrue",shape=box];
+  n15 [label="PlaCAgentNodeSetupVisitBuilding",shape=box];
+  n0 -> n10 [label="0"];
+  n0 -> n12 [label="1"];
+  n0 -> n13 [label="2"];
+  n1 -> n9 [label="3"];
+  n1 -> n4 [label="4"];
+  n7 -> n11 [label="5"];
+  n7 -> n0 [label="6"];
+  n8 -> n7 [label="7"];
+  n9 -> n15 [label="8"];
+  n9 -> n8 [label="9"];
+  n9 -> n5 [label="10"];
+  n11 -> n6 [label="11"];
+  n11 -> n14 [label="12"];
+  n11 -> n2 [label="13"];
+  n11 -> n3 [label="14"];
+}

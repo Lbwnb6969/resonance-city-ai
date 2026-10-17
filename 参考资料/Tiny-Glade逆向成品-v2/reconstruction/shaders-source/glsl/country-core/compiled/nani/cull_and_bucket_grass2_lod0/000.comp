@@ -1,0 +1,409 @@
+#version 460
+#extension GL_EXT_nonuniform_qualifier : require
+#extension GL_EXT_scalar_block_layout : require
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Tex2D_natural
+{
+    uint bindless_handle;
+};
+
+struct Bindless_natural
+{
+    uint bindless_handle;
+};
+
+struct Grass2ExemplarParams_natural
+{
+    float radius_xz;
+    float center_y;
+    float half_y;
+    float max_y;
+    float wind_wave_scale;
+    uint shadow_opacity;
+    float height_scale_min;
+    float height_scale_max;
+    float xz_scale_min;
+    float xz_scale_max;
+    Bindless_natural world_albedo_tint;
+};
+
+struct NaniDrawListInfo_natural
+{
+    uint global_instance_offset;
+};
+
+struct GpuFilteredInstanceMeta_natural
+{
+    uint raw;
+};
+
+vec4 _2097;
+
+layout(set = 12, binding = 1, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} grass2_active_instances_count;
+
+layout(set = 12, binding = 0, std430) readonly buffer grass2_active_instances_instances
+{
+    uint _member0[];
+} grass2_active_instances_instances_1;
+
+layout(set = 0, binding = 10, std430) readonly buffer instance_buffer
+{
+    uint _member0[];
+} instance_buffer_1;
+
+layout(set = 9, binding = 0, scalar) uniform TerrainHeightmap_natural
+{
+    uvec2 terrain_heightmap_dims;
+    Tex2D_natural bg_terrain_heightmap;
+    Tex2D_natural bg_terrain_fog_height;
+    vec2 bg_terrain_height_bounds_ws;
+    vec4 bg_water_footprint_ws;
+} terrain_heightmap;
+
+layout(set = 11, binding = 0, std430) readonly buffer grass2_exemplar_params_params
+{
+    Grass2ExemplarParams_natural _member0[];
+} grass2_exemplar_params_params_1;
+
+layout(set = 4, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 5, binding = 0, std140) uniform ViewConstants_natural
+{
+    layout(row_major) mat4 view_to_clip;
+    layout(row_major) mat4 clip_to_view;
+    layout(row_major) mat4 view_to_sample;
+    layout(row_major) mat4 sample_to_view;
+    layout(row_major) mat4 world_to_view;
+    layout(row_major) mat4 view_to_world;
+    layout(row_major) mat4 world_to_sample;
+    layout(row_major) mat4 clip_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_clip;
+    layout(row_major) mat4 prev_view_to_prev_clip;
+    layout(row_major) mat4 prev_clip_to_prev_view;
+    layout(row_major) mat4 prev_world_to_prev_view;
+    layout(row_major) mat4 prev_view_to_prev_world;
+    vec2 sample_offset_pixels;
+    vec2 sample_offset_clip;
+    vec2 prev_sample_offset_pixels;
+    vec2 prev_sample_offset_clip;
+    layout(row_major) mat4 pad0;
+    layout(row_major) mat4 pad1;
+    vec4 pad2;
+    float pad3;
+    float pad4;
+    float pad5;
+    float mip_bias;
+} current_view;
+
+layout(set = 0, binding = 8, std430) readonly buffer draw_list_info
+{
+    NaniDrawListInfo_natural _member0[];
+} draw_list_info_1;
+
+layout(set = 0, binding = 6, std430) readonly buffer prev_visibility_bitmask
+{
+    uint _member0[];
+} prev_visibility_bitmask_1;
+
+layout(set = 0, binding = 7, std430) buffer RWStructuredBuffer
+{
+    uint _member0[];
+} next_visibility_bitmask;
+
+layout(set = 0, binding = 3, std430) buffer filtered_instance_allocator_buffer
+{
+    uint _member0[];
+} filtered_instance_allocator_buffer_1;
+
+layout(set = 0, binding = 2, std430) buffer filtered_instance_buffer
+{
+    uint _member0[];
+} filtered_instance_buffer_1;
+
+layout(set = 0, binding = 4, std430) buffer filtered_instance_meta_buffer
+{
+    GpuFilteredInstanceMeta_natural _member0[];
+} filtered_instance_meta_buffer_1;
+
+layout(set = 0, binding = 5, std430) buffer output_histogram
+{
+    uint _member0[];
+} output_histogram_1;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint world_subset;
+    uint first_instance;
+    uint instance_count;
+    uint draw_list_index_base;
+} push_constants;
+
+layout(set = 9, binding = 1) uniform texture2D terrain_heightmap_terrain_heightmap;
+layout(set = 2, binding = 5) uniform sampler samplers_lnc_iso;
+layout(set = 1, binding = 0) uniform texture2D resource_handles[];
+layout(set = 16, binding = 0) uniform texture2D grass_removal_mask_tex;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= grass2_active_instances_count._member0[0])
+        {
+            break;
+        }
+        bool _1136;
+        uint _46 = grass2_active_instances_instances_1._member0[gl_GlobalInvocationID.x];
+        uint _49 = instance_buffer_1._member0[_46];
+        uint _1086 = _49 & 255u;
+        uint _1095 = _46 + (_46 << 10u);
+        uint _1097 = _1095 ^ (_1095 >> 6u);
+        uint _1099 = _1097 + (_1097 << 3u);
+        uint _1101 = _1099 ^ (_1099 >> 11u);
+        uint _1103 = _1101 + (_1101 << 15u);
+        vec2 _2054;
+        do
+        {
+            _1136 = _46 < 57344u;
+            if (_1136)
+            {
+                uint _1154 = (_46 % 14336u) + 1u;
+                uint _1164 = (_1154 << 16u) | (_1154 >> 16u);
+                uint _1169 = ((_1164 & 1431655765u) << 1u) | ((_1164 & 2863311530u) >> 1u);
+                uint _1174 = ((_1169 & 858993459u) << 2u) | ((_1169 & 3435973836u) >> 2u);
+                uint _1179 = ((_1174 & 252645135u) << 4u) | ((_1174 & 4042322160u) >> 4u);
+                _2054 = (vec2(float(_1154) * 6.9754467403981834650039672851562e-05, float(((_1179 & 16711935u) << 8u) | ((_1179 & 4278255360u) >> 8u)) * 2.3283064365386962890625e-10) - vec2(0.5)) * 130.0;
+                break;
+            }
+            uint _1189 = ((_46 - 57344u) % 30720u) + 1u;
+            uint _1199 = (_1189 << 16u) | (_1189 >> 16u);
+            uint _1204 = ((_1199 & 1431655765u) << 1u) | ((_1199 & 2863311530u) >> 1u);
+            uint _1209 = ((_1204 & 858993459u) << 2u) | ((_1204 & 3435973836u) >> 2u);
+            uint _1214 = ((_1209 & 252645135u) << 4u) | ((_1209 & 4042322160u) >> 4u);
+            _2054 = (vec2(float(_1189) * 3.2552085031056776642799377441406e-05, float(((_1214 & 16711935u) << 8u) | ((_1214 & 4278255360u) >> 8u)) * 2.3283064365386962890625e-10) - vec2(0.5)) * 190.0;
+            break;
+        } while(false);
+        vec3 _1226 = vec3(_2054.x, 0.0, _2054.y);
+        vec2 _1126 = _1226.xz;
+        float _2055;
+        do
+        {
+            if ((abs(_2054.x) < 65.0) && (abs(_2054.y) < 65.0))
+            {
+                _2055 = mix(-2.5, 24.0, textureLod(sampler2D(terrain_heightmap_terrain_heightmap, samplers_lnc_iso), (_1126 * vec2(0.0076923076994717121124267578125)) + vec2(0.5), 0.0).x);
+                break;
+            }
+            else
+            {
+                vec2 _1262 = (_1126 * vec2(0.001000000047497451305389404296875)) + vec2(0.5);
+                _2055 = textureLod(nonuniformEXT(sampler2D(resource_handles[terrain_heightmap.bg_terrain_heightmap.bindless_handle], samplers_lnc_iso)), vec2(_1262.y, 1.0 - _1262.x), 0.0).x;
+                break;
+            }
+            break; // unreachable workaround
+        } while(false);
+        _1226.y = _2055;
+        uint _1287 = min(_1086, 55u);
+        float _1294 = grass2_exemplar_params_params_1._member0[_1287].center_y;
+        float _1309 = grass2_exemplar_params_params_1._member0[_1287].height_scale_min;
+        float _1312 = grass2_exemplar_params_params_1._member0[_1287].height_scale_max;
+        float _1357 = exp2(mix(log2(grass2_exemplar_params_params_1._member0[_1287].xz_scale_min), log2(grass2_exemplar_params_params_1._member0[_1287].xz_scale_max), uintBitsToFloat((_1103 & 8388607u) | 1065353216u) - 1.0));
+        float _1344 = _1357 * 2.378414154052734375;
+        uint _1407 = _1103 * 13u;
+        uint _1418 = _1407 + (_1407 << 10u);
+        uint _1420 = _1418 ^ (_1418 >> 6u);
+        uint _1422 = _1420 + (_1420 << 3u);
+        uint _1424 = _1422 ^ (_1422 >> 11u);
+        float _1432 = uintBitsToFloat(((_1424 + (_1424 << 15u)) & 8388607u) | 1065353216u) - 1.0;
+        float _1346 = mix(_1309, _1312, _1432 * _1432) * (float(_49 >> 16u) * 1.525902189314365386962890625e-05);
+        if (!(clamp(((7.0 + (current_view.mip_bias * 0.5)) - log2(max(9.9999996826552253889678874634872e-21, (max(_1344, _1346) * frame_constants.main_view_lod_scale) / max(0.001000000047497451305389404296875, distance(_1226, frame_constants.main_view_eye_position.xyz))))) * 4.0, 0.0, 1.0) < 1.0))
+        {
+            break;
+        }
+        bool _1544;
+        float _584 = 2.0 * _1357;
+        vec2 _2057;
+        do
+        {
+            _1544 = !_1136;
+            if (_1544)
+            {
+                _2057 = vec2(0.0, 1.0);
+                break;
+            }
+            _2057 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp((_1226.xz * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _1514 = vec2(_584, 0.0);
+        vec2 _2060;
+        do
+        {
+            if (_1544)
+            {
+                _2060 = vec2(0.0, 1.0);
+                break;
+            }
+            _2060 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1226.xz + _1514) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _2063;
+        do
+        {
+            if (_1544)
+            {
+                _2063 = vec2(0.0, 1.0);
+                break;
+            }
+            _2063 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1226.xz - _1514) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _1519 = vec2(0.0, _584);
+        vec2 _2066;
+        do
+        {
+            if (_1544)
+            {
+                _2066 = vec2(0.0, 1.0);
+                break;
+            }
+            _2066 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1226.xz + _1519) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        vec2 _2069;
+        do
+        {
+            if (_1544)
+            {
+                _2069 = vec2(0.0, 1.0);
+                break;
+            }
+            _2069 = textureLod(sampler2D(grass_removal_mask_tex, samplers_lnc_iso), clamp(((_1226.xz - _1519) * vec2(0.0076923076994717121124267578125)) + vec2(0.5), vec2(0.0), vec2(1.0)), 0.0).xy;
+            break;
+        } while(false);
+        if (min(min(min(min(min(1.0, _2057.x), _2060.x), _2063.x), _2066.x), _2069.x) >= 1.0)
+        {
+            break;
+        }
+        float _1727 = grass2_exemplar_params_params_1._member0[_1287].radius_xz * _1344;
+        float _1730 = grass2_exemplar_params_params_1._member0[_1287].half_y * _1346;
+        float _1740 = sqrt((_1727 * _1727) + (_1730 * _1730));
+        vec4 _1840 = vec4(_1226 + vec3(0.0, _1294 * _1346, 0.0), 1.0) * current_view.world_to_view;
+        vec3 _1841 = _1840.xyz;
+        float _1792 = _1840.z;
+        uint _1797 = clamp(uint(clamp((32.0 - _1792) * 0.00347222224809229373931884765625, 0.0, 1.0) * 1024.0), 0u, 1023u);
+        vec4 _1882 = vec4(-current_view.view_to_clip[0].x, current_view.view_to_clip[0].y, 0.0, current_view.view_to_clip[0].w);
+        vec4 _1890 = vec4(current_view.view_to_clip[1].xy, 0.0, current_view.view_to_clip[1].w);
+        vec4 _1895 = vec4(current_view.view_to_clip[3].xy, -1.0, current_view.view_to_clip[3].w);
+        vec4 _1989[4];
+        _1989[0] = _1895 + _1882;
+        _1989[1] = _1895 - _1882;
+        _1989[2] = _1895 + _1890;
+        _1989[3] = _1895 - _1890;
+        int _1928;
+        int _2072 = 0;
+        for (;;)
+        {
+            if (!(_2072 < 4))
+            {
+                break;
+            }
+            _1989[_2072] /= vec4(length(_1989[_2072].xyz));
+            _1928 = _2072 + 1;
+            _2072 = _1928;
+            continue;
+        }
+        vec4 _2000[4] = _1989;
+        bool _2074;
+        _2074 = ((-_1792) + _1740) > current_view.view_to_clip[2].w;
+        int _1965;
+        bool _2079;
+        int _2073 = 0;
+        for (;;)
+        {
+            if (!(_2073 < 4))
+            {
+                break;
+            }
+            if (_2074)
+            {
+                _2079 = dot(vec4(_1841, 1.0), _2000[_2073]) > (-_1740);
+            }
+            else
+            {
+                _2079 = false;
+            }
+            _1965 = _2073 + 1;
+            _2074 = _2079;
+            _2073 = _1965;
+            continue;
+        }
+        uint _1811 = _46 + draw_list_info_1._member0[push_constants.draw_list_index_base].global_instance_offset;
+        bool _2075;
+        if (_2074)
+        {
+            _2075 = (prev_visibility_bitmask_1._member0[_1811 / 32u] & (1u << (_1811 % 32u))) != 0u;
+        }
+        else
+        {
+            _2075 = false;
+        }
+        if (_2075)
+        {
+            uint _1823 = atomicOr(next_visibility_bitmask._member0[_1811 / 32u], 1u << (_1811 % 32u));
+            uint _1825 = atomicAdd(filtered_instance_allocator_buffer_1._member0[push_constants.draw_list_index_base], 1u);
+            filtered_instance_buffer_1._member0[_1825] = (_46 * 1024u) + _1797;
+            filtered_instance_meta_buffer_1._member0[_1825].raw = _1086;
+            uint _1832 = atomicAdd(output_histogram_1._member0[(push_constants.draw_list_index_base * 1024u) + _1797], 1u);
+        }
+        break;
+    } while(false);
+}
+

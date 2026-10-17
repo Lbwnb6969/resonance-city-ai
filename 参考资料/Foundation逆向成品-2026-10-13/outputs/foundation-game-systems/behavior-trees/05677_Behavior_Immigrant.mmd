@@ -1,0 +1,10 @@
+flowchart TD
+  n0["GamCBehaviorTreeNodeCompositeSequencer"]
+  n1["Going to village center"]
+  n2["Join village"]
+  n3["Selector"]
+  n4["PlaCAgentNodeDisable"]
+  n0 -->|0| n1
+  n0 -->|1| n2
+  n3 -->|2| n0
+  n3 -->|3| n4

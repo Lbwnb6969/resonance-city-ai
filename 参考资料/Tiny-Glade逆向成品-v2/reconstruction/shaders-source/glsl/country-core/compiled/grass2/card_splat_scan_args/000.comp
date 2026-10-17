@@ -1,0 +1,37 @@
+#version 460
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, std430) readonly buffer StructuredBuffer
+{
+    uint _member0[];
+} bin_counts;
+
+layout(set = 0, binding = 1, std430) buffer RWStructuredBuffer
+{
+    uvec4 _member0[];
+} scan_stage_args;
+
+void main()
+{
+    uint _95;
+    _95 = 0u;
+    uint visible;
+    uint bin;
+    uint _94 = 0u;
+    for (;;)
+    {
+        if (!(_94 < 6u))
+        {
+            break;
+        }
+        visible = _95 + min(bin_counts._member0[_94], 352256u);
+        bin = _94 + 1u;
+        _95 = visible;
+        _94 = bin;
+        continue;
+    }
+    uint _66 = min((((min(_95, 352256u) + 1024u) / 1024u) * 1024u), 352256u);
+    scan_stage_args._member0[0] = uvec4((_66 + 63u) / 64u, 1u, 1u, _66);
+    scan_stage_args._member0[1] = uvec4(_66 / 1024u, 1u, 1u, 0u);
+}
+

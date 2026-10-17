@@ -1,0 +1,4256 @@
+[
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/AbbeyFish.data",
+    "absolute_offset": 360328541,
+    "length": 1615,
+    "sha256": "e3b5cd6790368109934f86c592c9fc2e4667a9bf20c4f601c5ea2d492287eabc",
+    "rid": 3309,
+    "uuid": "1345d236-2965-445b-a698-b52a8e1c3aa0",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_ABBEYFISH",
+    "name_key": "RESOURCE_FESTIVAL_ABBEYFISH",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/BraisedFish.data",
+    "absolute_offset": 360330326,
+    "length": 1617,
+    "sha256": "778dec93d45c29b812634a576f7c72ebb36bb218223b8dcd5e23d0726580b619",
+    "rid": 3311,
+    "uuid": "f8f5b11d-7bae-4eee-9505-8533cdeb7425",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_BRAISEDFISH",
+    "name_key": "RESOURCE_FESTIVAL_BRAISEDFISH",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/BrewetStew.data",
+    "absolute_offset": 360332112,
+    "length": 1616,
+    "sha256": "637651b193d75d42d7c9670dd92f62133a214f787fdb1ce2066a689ad19a78bf",
+    "rid": 3313,
+    "uuid": "d01da449-d89f-4222-9d7a-783bc5b8a9fe",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_BREWETSTEW",
+    "name_key": "RESOURCE_FESTIVAL_BREWETSTEW",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/CabbageFarci.data",
+    "absolute_offset": 360333899,
+    "length": 1618,
+    "sha256": "91bc83669e6fce7ce276be31c903c47bda5291716c1ce8e7ee11826b8410075e",
+    "rid": 3315,
+    "uuid": "a2f2d678-07c0-4ada-9b0e-1fc3faff6f88",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_CABBAGEFARCI",
+    "name_key": "RESOURCE_FESTIVAL_CABBAGEFARCI",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/ForagerBread.data",
+    "absolute_offset": 360335688,
+    "length": 1618,
+    "sha256": "4c23c834be222625293df2a785c25995f733bfa1f281bfcfe643d7193194724a",
+    "rid": 3317,
+    "uuid": "50cb668e-c7a5-44cf-9054-381095cd18ef",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_FORAGERBREAD",
+    "name_key": "RESOURCE_FESTIVAL_FORAGERBREAD",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/ForestSausage.data",
+    "absolute_offset": 360337478,
+    "length": 1619,
+    "sha256": "ff46a839ff0cdcc5c75e08ec8b4288c984353e6d30bff14d04e33edfeff0e0ab",
+    "rid": 3319,
+    "uuid": "620ae252-f8b6-4170-99b6-4233fb9984e8",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_FORESTSAUSAGE",
+    "name_key": "RESOURCE_FESTIVAL_FORESTSAUSAGE",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/FruitFrumenty.data",
+    "absolute_offset": 360339269,
+    "length": 1619,
+    "sha256": "69471fcfa2882d6abdc10bcac1702103eee699f80b68a39499023f62b12878ca",
+    "rid": 3321,
+    "uuid": "73a5e175-e5fe-46a9-8364-0f7a010b633d",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_FRUITFRUMENTY",
+    "name_key": "RESOURCE_FESTIVAL_FRUITFRUMENTY",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/GreatPie.data",
+    "absolute_offset": 360341055,
+    "length": 1614,
+    "sha256": "9aa9d7f32168e0c20aa0a14ac511cf7fa4cb30631a5ad34eb843277f4d070285",
+    "rid": 3323,
+    "uuid": "6ce998f3-b92e-48db-89c8-facc4aee9425",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_GREATPIE",
+    "name_key": "RESOURCE_FESTIVAL_GREATPIE",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/HarvestHam.data",
+    "absolute_offset": 360342838,
+    "length": 1616,
+    "sha256": "42526825946dbd5c67e3a337d898e6558e3e4dbffffd8435c9c840836bb7ea14",
+    "rid": 3325,
+    "uuid": "fe8011e6-0915-4d44-b432-f673ff1d28d8",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_HARVESTHAM",
+    "name_key": "RESOURCE_FESTIVAL_HARVESTHAM",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/Nutcake.data",
+    "absolute_offset": 360344620,
+    "length": 1613,
+    "sha256": "c2d0973bf642efb249b005784beb3089823bf31c11516b203f432d102a008c1d",
+    "rid": 3327,
+    "uuid": "60ed187a-f677-4f14-a1db-55cefdb9f3b5",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_NUTCAKE",
+    "name_key": "RESOURCE_FESTIVAL_NUTCAKE",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/PigRoast.data",
+    "absolute_offset": 360346400,
+    "length": 1614,
+    "sha256": "c0f614c5995aa9c156349b26da570bb65e407ec4993f4674467968831319a6bb",
+    "rid": 3329,
+    "uuid": "70f1eabb-afd1-4721-8ece-c622c592932f",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_PIGROAST",
+    "name_key": "RESOURCE_FESTIVAL_PIGROAST",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/RoyalGoose.data",
+    "absolute_offset": 360348183,
+    "length": 1616,
+    "sha256": "9545b750ad63c8772b6fceee394db6deb541579fece9f192c4b2974c35b99822",
+    "rid": 3331,
+    "uuid": "57c59200-73cb-464b-b29c-6769b6d0c4f0",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_GOOSEROAST",
+    "name_key": "RESOURCE_FESTIVAL_GOOSEROAST",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/SweetOmelet.data",
+    "absolute_offset": 360349969,
+    "length": 1617,
+    "sha256": "d50f98a11eb6c302fa6a14055237a91729cf9532b83e351efb55509118fd0c09",
+    "rid": 3333,
+    "uuid": "ee743e80-95eb-4e88-bc51-e071ddd8fccf",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_SWEETOMELET",
+    "name_key": "RESOURCE_FESTIVAL_SWEETOMELET",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Festival/Meal Resources/SweetRoastedChicken.data",
+    "absolute_offset": 360351764,
+    "length": 1625,
+    "sha256": "9e1ab958a0d43ac2d09a15aab6f06e89c0f85dc65d96bd9e55453d2cf2bd1212",
+    "rid": 3335,
+    "uuid": "830848cd-26a1-4a43-ad13-19c30834208f",
+    "scripting_id": "AGRI_RESOURCE_FESTIVAL_SWEETROASTEDCHICKEN",
+    "name_key": "RESOURCE_FESTIVAL_SWEETROASTEDCHICKEN",
+    "is_tradable": false,
+    "resource_types": [
+      "FESTIVAL_MEAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/AnimalFat.data",
+    "absolute_offset": 447061860,
+    "length": 1637,
+    "sha256": "8008524dcebf194cfc0996bfb6a83204c62515163a14e83a930daead33a639e9",
+    "rid": 3911,
+    "uuid": "049c5ea4-aa5e-4731-a1ba-0e72fff4cc9d",
+    "scripting_id": "AGRI_RESOURCE_ANIMAL_FAT",
+    "name_key": "RESOURCE_ANIMALFAT",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Apple.data",
+    "absolute_offset": 447063653,
+    "length": 1661,
+    "sha256": "d125933dc61acb1ebbb26fb7fbf0e82c64b0bf87e47600c1725c17dbd0c650be",
+    "rid": 3913,
+    "uuid": "cb8dbd7c-3926-4176-b4fd-c333b2977c7c",
+    "scripting_id": "AGRI_RESOURCE_APPLES",
+    "name_key": "RESOURCE_APPLES",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Chicken.data",
+    "absolute_offset": 447065471,
+    "length": 1641,
+    "sha256": "76c24e5678b10658d0b15bd5d5f0b1dd6c35f09f409e01cebe04b1a64e9bc4a8",
+    "rid": 3915,
+    "uuid": "22e3c2ee-b20b-4b27-8fe5-e1bc8a35675b",
+    "scripting_id": "AGRI_RESOURCE_CHICKEN",
+    "name_key": "RESOURCE_CHICKEN",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/CuredHam.data",
+    "absolute_offset": 447067271,
+    "length": 1611,
+    "sha256": "b7d7d0ba4a4e237ccc1f41d16f6266b0620d9d2f3273d9284ca84521f155e6b5",
+    "rid": 3917,
+    "uuid": "b01e7bba-6925-460a-86cc-e45331594912",
+    "scripting_id": "AGRI_RESOURCE_CURED_HAM",
+    "name_key": "RESOURCE_CUREDHAM",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD_ADVANCED"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/DriedFruits.data",
+    "absolute_offset": 447069044,
+    "length": 1614,
+    "sha256": "e4083a329834ba7777e2bf70340ff043be4c5bbda21fc148b7da37af9d3cb50c",
+    "rid": 3919,
+    "uuid": "f7f0a7ef-34a0-4f9a-b395-4151666cbc5f",
+    "scripting_id": "AGRI_RESOURCE_DRIED_FRUITS",
+    "name_key": "RESOURCE_DRIEDFRUITS",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD_ADVANCED"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Eggs.data",
+    "absolute_offset": 447070812,
+    "length": 1665,
+    "sha256": "06c1046835d8205d161843f7a215e130756c422b558e9fff0cb0b38247345eb6",
+    "rid": 3921,
+    "uuid": "21084b64-ffb5-4990-9ec4-cf32d39cbd87",
+    "scripting_id": "AGRI_RESOURCE_EGGS",
+    "name_key": "RESOURCE_EGGS",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Goose.data",
+    "absolute_offset": 447072632,
+    "length": 1637,
+    "sha256": "e2de87b1e8bf1925d9709b3c5c223062ca99d1dc43bc022fa1f25f6aba9d98a2",
+    "rid": 3923,
+    "uuid": "ff345f03-27f3-42b4-a018-36cc53a754ad",
+    "scripting_id": "AGRI_RESOURCE_GOOSE",
+    "name_key": "RESOURCE_GOOSE",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Hazelnuts.data",
+    "absolute_offset": 447074428,
+    "length": 1662,
+    "sha256": "2722484e1e24a0e4dd4b6d4017684227c4dc1401fb20a62b5d473776b505a7b7",
+    "rid": 3925,
+    "uuid": "2e74bdc4-96ac-483c-af85-871472967904",
+    "scripting_id": "AGRI_RESOURCE_HAZELNUTS",
+    "name_key": "RESOURCE_HAZELNUTS",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "FODDER"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Pig.data",
+    "absolute_offset": 447076243,
+    "length": 1635,
+    "sha256": "40f1d8a0b14e15a3986cd6c0254f6ea67cff482abf4b9980118938e50604bd72",
+    "rid": 3927,
+    "uuid": "3d723ea2-aafc-4588-97d7-62f62d091472",
+    "scripting_id": "AGRI_RESOURCE_PIG",
+    "name_key": "RESOURCE_PIG",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Plums.data",
+    "absolute_offset": 447078033,
+    "length": 1660,
+    "sha256": "9960e8c5bdf740a344813e6264eb03de8f0596c3dea27e15fa3f89e6348448c9",
+    "rid": 3929,
+    "uuid": "57931578-21f5-490f-a252-63bb8b7ab96a",
+    "scripting_id": "AGRI_RESOURCE_PLUMS",
+    "name_key": "RESOURCE_PLUMS",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Food/Turnips.data",
+    "absolute_offset": 447079850,
+    "length": 1697,
+    "sha256": "80fd69b7d5484820cbe3dea117a193203013e87c5dbd34fa686af70cdfbfe146",
+    "rid": 3931,
+    "uuid": "e0f24909-635f-417f-9c65-4ff151fb622f",
+    "scripting_id": "AGRI_RESOURCE_TURNIPS",
+    "name_key": "RESOURCE_TURNIPS",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC",
+      "FODDER"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Cider.data",
+    "absolute_offset": 447086768,
+    "length": 1662,
+    "sha256": "68ae304aecad20a602bf99444eb1c33bf8f83416b3f0a6b1cfd26c86d62f1770",
+    "rid": 3936,
+    "uuid": "fb305a44-74cb-4f71-b1ef-86688b903961",
+    "scripting_id": "AGRI_RESOURCE_CIDER",
+    "name_key": "RESOURCE_CIDER",
+    "is_tradable": true,
+    "resource_types": [
+      "TAVERN",
+      "GRANARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Confiture.data",
+    "absolute_offset": 447088589,
+    "length": 1641,
+    "sha256": "e955087da2f8080a6c243aa3f286fac3b68326ed18bad1d6dcc9b51489694348",
+    "rid": 3938,
+    "uuid": "efefe9be-7eb7-42c6-9c1a-0ded65fc7e22",
+    "scripting_id": "AGRI_RESOURCE_CONFITURE",
+    "name_key": "RESOURCE_CONFITURE",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Monastic_ChickenCaboche.data",
+    "absolute_offset": 447090404,
+    "length": 1364,
+    "sha256": "9b57d0823a570bcd6b5cb53b78e5024d2fa599fe6b857352763b16fed496863b",
+    "rid": 3940,
+    "uuid": "2e8fd722-0bd8-44a9-992d-ce78aa23f6d3",
+    "scripting_id": "AGRI_RESOURCE_MONASTIC_CHICKEN_CABOCHE",
+    "name_key": "MONASTIC_CHICKENCABOCHE",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Monastic_FriedFish.data",
+    "absolute_offset": 447091937,
+    "length": 1359,
+    "sha256": "52e9c8fa6cee892dff55ce8f1eab9a668488a7cdb14172103a248b8338c52314",
+    "rid": 3942,
+    "uuid": "5fe6d6cb-7d35-4a41-9f2f-fb607b0c7f0d",
+    "scripting_id": "AGRI_RESOURCE_MONASTIC_FRIED_FISH",
+    "name_key": "MONASTIC_FRIEDFISH",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Monastic_GlazedGoose.data",
+    "absolute_offset": 447093467,
+    "length": 1361,
+    "sha256": "d75145781db5b012671ea94e6cfbc719236f9bb2d8e1f395e6256bb6ba531bbc",
+    "rid": 3944,
+    "uuid": "f255509b-6ca1-4c7c-a36c-98332ddc9049",
+    "scripting_id": "AGRI_RESOURCE_MONASTIC_GLAZED_GOOSE",
+    "name_key": "MONASTIC_GLAZEDGOOSE",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Resources/Luxury/Pastry.data",
+    "absolute_offset": 447094984,
+    "length": 1607,
+    "sha256": "0af234c8a07a1404476dfbb00989756546caca94cf80a25fbb24f8c87faccc02",
+    "rid": 3946,
+    "uuid": "fdfa3503-119b-42e3-9e52-d97aed573ab7",
+    "scripting_id": "AGRI_RESOURCE_PASTRY",
+    "name_key": "RESOURCE_PASTRY",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Faith.data",
+    "absolute_offset": 3280363402,
+    "length": 1215,
+    "sha256": "250677b02ba3fa8c80f4aa457830acc606fbda508903974ee06a0f12c1572e96",
+    "rid": 25060,
+    "uuid": "7500a865-a6b4-4764-91d7-5a556b5a0fe8",
+    "scripting_id": "FAITH",
+    "name_key": "FAITH",
+    "is_tradable": false,
+    "resource_types": [
+      "SERVICE"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Berries.data",
+    "absolute_offset": 3280364859,
+    "length": 1653,
+    "sha256": "5e7b545945946319645f4eccfc02b738f51affc8189ca227e115e3acf015217d",
+    "rid": 25063,
+    "uuid": "1cbdcbbd-14ef-4109-bd02-a46a94951555",
+    "scripting_id": "BERRIES",
+    "name_key": "BERRIES",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Boar.data",
+    "absolute_offset": 3280375308,
+    "length": 1590,
+    "sha256": "c810eea5c6c1309cfdbd0bf9b73ac14a77eafee267949ad9e331e0e7d27758dd",
+    "rid": 25067,
+    "uuid": "59e6b469-c71b-4745-ae38-9975f5b7df65",
+    "scripting_id": "BOAR",
+    "name_key": "BOAR",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Bread.data",
+    "absolute_offset": 3280377039,
+    "length": 1662,
+    "sha256": "68724b0d4b350163495b1f025c0dbe23127fb5173fa1b16edd84120899e4beb5",
+    "rid": 25069,
+    "uuid": "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+    "scripting_id": "BREAD",
+    "name_key": "BREAD",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD_ADVANCED",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Cabbages.data",
+    "absolute_offset": 3280378858,
+    "length": 1663,
+    "sha256": "a5e190639dd23c5527c08ecc0d9b21dea5b427b2fd6bd36dd30391667482fd75",
+    "rid": 25071,
+    "uuid": "4ea921b6-6107-4771-8870-65a46dad5892",
+    "scripting_id": "CABBAGES | VEGETABLES",
+    "name_key": "RESOURCE_CABBAGES",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Cheese.data",
+    "absolute_offset": 3280380663,
+    "length": 1661,
+    "sha256": "a48babfa3e3cfeeb22c59016af5eb96f465e01d3ca2a0cee440b3f2818d9aad2",
+    "rid": 25073,
+    "uuid": "685ad6c2-a230-45f7-8ad5-aa894d56ff34",
+    "scripting_id": "CHEESE",
+    "name_key": "CHEESE",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD_ADVANCED",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Fish.data",
+    "absolute_offset": 3280384338,
+    "length": 1583,
+    "sha256": "b57fe6e9c745f298c3bd58a26576fab08488ae323de40fd222e345bc87f78ec1",
+    "rid": 25077,
+    "uuid": "314c2282-da7f-40d1-8002-6aca8ae44248",
+    "scripting_id": "FISH",
+    "name_key": "FISH",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Flour.data",
+    "absolute_offset": 3280391304,
+    "length": 1592,
+    "sha256": "dad5767594e44a90ae49a93029156f8a674180ce6ca4b139ff717cfbc6dda3ef",
+    "rid": 25081,
+    "uuid": "ce07bea0-5650-4043-92e0-9867c558235b",
+    "scripting_id": "FLOUR",
+    "name_key": "FLOUR",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Meat.data",
+    "absolute_offset": 3280393903,
+    "length": 1629,
+    "sha256": "fdfe036f01e665edae350a9da67aecdbdb7a185b4d252c2009d8278c629622ad",
+    "rid": 25085,
+    "uuid": "a674825e-9157-44bc-af71-ceac9b3907a8",
+    "scripting_id": "MEAT",
+    "name_key": "MEAT",
+    "is_tradable": true,
+    "resource_types": [
+      "FOOD_ADVANCED",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Milk.data",
+    "absolute_offset": 3280395672,
+    "length": 1623,
+    "sha256": "edb66949f0fa1c5ad3635985c312b18f921e05a64a297bc08aeaadf9c999a262",
+    "rid": 25087,
+    "uuid": "c5cb0474-8088-4246-bae1-6ad2b062c7bc",
+    "scripting_id": "MILK",
+    "name_key": "MILK",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/WarRation.data",
+    "absolute_offset": 3280397441,
+    "length": 1591,
+    "sha256": "207487e2922671572fa5162db781b58732c2a93a87c719aab7a506f44161cd9e",
+    "rid": 25089,
+    "uuid": "046a27e8-1776-4e44-9eac-b987186bd35e",
+    "scripting_id": "WAR_RATION",
+    "name_key": "WAR_RATION",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Food/Wheat.data",
+    "absolute_offset": 3280399173,
+    "length": 1631,
+    "sha256": "8f9b9241f3fbe163e18e5b4f44627894de7d5b8693bcc2d130a50f60faa8e3ea",
+    "rid": 25091,
+    "uuid": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+    "scripting_id": "WHEAT",
+    "name_key": "WHEAT",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/GoldCoins.data",
+    "absolute_offset": 3280400957,
+    "length": 1261,
+    "sha256": "3b0746be3902108eaa3d2465019812a7d29c34b213acee4be03e7cda9b6f9a47",
+    "rid": 25093,
+    "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+    "scripting_id": "GOLD_COINS | GOLD",
+    "name_key": "GOLD_COINS",
+    "is_tradable": false,
+    "resource_types": [
+      "GOLD"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Goods/Candle.data",
+    "absolute_offset": 3280402459,
+    "length": 1586,
+    "sha256": "60514ead6787eff2bf541e188ea03d1609966e48bf710b767af3671e99a0bb51",
+    "rid": 25096,
+    "uuid": "88af3a80-4795-48c5-a172-1172ae116dd5",
+    "scripting_id": "CANDLE",
+    "name_key": "CANDLE",
+    "is_tradable": true,
+    "resource_types": [
+      "GOODS"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Goods/Cloth.data",
+    "absolute_offset": 3280404193,
+    "length": 1629,
+    "sha256": "f0adf1f9023437ea1433ee2a74cf8e662493c633593d21611454208867b81273",
+    "rid": 25098,
+    "uuid": "a433b48f-7042-4cc4-828a-2d104204a15b",
+    "scripting_id": "WOOLEN_CLOTH",
+    "name_key": "WOOLEN_CLOTH",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Goods/CommonClothes.data",
+    "absolute_offset": 3280405965,
+    "length": 1594,
+    "sha256": "bec905b0a11415fd5de73fc3f90d564e10ef106407a7b65fd9c0940afd533af8",
+    "rid": 25100,
+    "uuid": "49c15db3-2a6d-4591-85ea-72d939f0367d",
+    "scripting_id": "CLOTHES",
+    "name_key": "COMMON_CLOTHES",
+    "is_tradable": true,
+    "resource_types": [
+      "GOODS"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Goods/CommonWares.data",
+    "absolute_offset": 3280407707,
+    "length": 1592,
+    "sha256": "ec3e9696b4dee0a46c545b2592792e4d1a30dbf8d1aa5689dfa490ccdba05571",
+    "rid": 25102,
+    "uuid": "66e9bcf4-dcb6-4e90-a185-91267f82454c",
+    "scripting_id": "COMMON_WARES",
+    "name_key": "COMMON_WARES",
+    "is_tradable": true,
+    "resource_types": [
+      "GOODS"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Goods/Wool.data",
+    "absolute_offset": 3280409439,
+    "length": 1587,
+    "sha256": "1572041120eb02b37b9bb6735309d9be7898d6855ff1f8c9de1f1c8a4302d564",
+    "rid": 25104,
+    "uuid": "128f378c-b1d9-4f24-8476-8fb38aae6e85",
+    "scripting_id": "WOOL",
+    "name_key": "WOOL",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/DormMonk.data",
+    "absolute_offset": 3280411283,
+    "length": 1231,
+    "sha256": "f30c4c10b97e75e6e4c41e94dfd4e0320c633b12e63c0397445c11056ed41413",
+    "rid": 25107,
+    "uuid": "83302b71-8f96-4060-bba1-a9308c02c36f",
+    "scripting_id": "HOUSING_DORM_MONASTERY",
+    "name_key": "MONASTERY_DORM",
+    "is_tradable": false,
+    "resource_types": [
+      "MONASTERY_DORM"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/DormSoldier.data",
+    "absolute_offset": 3280412670,
+    "length": 1225,
+    "sha256": "89e6ea02b3370504a785d34501cca411322a70d93116a688abfd32576a57cb39",
+    "rid": 25109,
+    "uuid": "c0d98d0f-a8b6-490b-ba4e-6998ba155668",
+    "scripting_id": "HOUSING_DORM_SOLDIER",
+    "name_key": "KEEP_DORM",
+    "is_tradable": false,
+    "resource_types": [
+      "HOUSE_SOLDIER"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/HousingLevel1.data",
+    "absolute_offset": 3280414046,
+    "length": 1221,
+    "sha256": "46f80c07acdeb2df19fa3fca48477d1391ed257a97253293dee5b88bd0e97010",
+    "rid": 25111,
+    "uuid": "e24dda01-744e-47af-a29e-aa46fd65e301",
+    "scripting_id": "HOUSING_LEVEL_1",
+    "name_key": "HOUSE",
+    "is_tradable": false,
+    "resource_types": [
+      "HOUSE_LEVEL_1"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/HousingLevel2.data",
+    "absolute_offset": 3280415418,
+    "length": 1221,
+    "sha256": "03e4cbb2134071a3ddeb1a8c9c2643b13bedb51b4c02e7c660e19df574717e63",
+    "rid": 25113,
+    "uuid": "dc990f6a-e6cc-4c0a-ad62-90b01ba98a37",
+    "scripting_id": "HOUSING_LEVEL_2",
+    "name_key": "HOUSE",
+    "is_tradable": false,
+    "resource_types": [
+      "HOUSE_LEVEL_2"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/HousingLevel3.data",
+    "absolute_offset": 3280416790,
+    "length": 1221,
+    "sha256": "63778d7ecd4f959bc4c9813955e6ff6e325e5d075cc840fa12532a8bfe0362d1",
+    "rid": 25115,
+    "uuid": "fa8bd979-0b8b-4e3a-8c6e-83fe1e79fa2b",
+    "scripting_id": "HOUSING_LEVEL_3",
+    "name_key": "HOUSE",
+    "is_tradable": false,
+    "resource_types": [
+      "HOUSE_LEVEL_3"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Housing/QuartersKnight.data",
+    "absolute_offset": 3280418170,
+    "length": 1230,
+    "sha256": "ba3e5ca9bb15f7f902b63e4326adb1525f9b13ac3749cb6fd82a99bd4dcd7d00",
+    "rid": 25117,
+    "uuid": "b8305122-aaa0-4abe-a71d-ff1120f1673f",
+    "scripting_id": "HOUSING_CASTLE_QUARTERS",
+    "name_key": "CASTLE_QUARTERS",
+    "is_tradable": false,
+    "resource_types": [
+      "HOUSE_KNIGHT"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Beer.data",
+    "absolute_offset": 3280419639,
+    "length": 1621,
+    "sha256": "04f580b3d107f759b56991ad8103e4dcfa3e03fba49b3d449fad6781487d7600",
+    "rid": 25120,
+    "uuid": "01acd535-9d88-42a6-a043-e2041ce62299",
+    "scripting_id": "BEER",
+    "name_key": "BEER",
+    "is_tradable": true,
+    "resource_types": [
+      "TAVERN",
+      "GRANARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/BerryBrew.data",
+    "absolute_offset": 3280421406,
+    "length": 1627,
+    "sha256": "7669a0fee680bd33c1aaf39893adb24a9d30731d3043af85a200a9234b925fb3",
+    "rid": 25122,
+    "uuid": "5c9e44db-a3f2-4c57-a13e-e064dd32c131",
+    "scripting_id": "BERRY_BREW",
+    "name_key": "BERRYBREW",
+    "is_tradable": false,
+    "resource_types": [
+      "TAVERN",
+      "GRANARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Gems.data",
+    "absolute_offset": 3280423173,
+    "length": 1583,
+    "sha256": "d62200f9adcb20ac96c48801aa578b64489bdf8d571319716cfd569f611b8d7f",
+    "rid": 25124,
+    "uuid": "8027ba47-ab9f-4da2-9be2-b19cbedd25c8",
+    "scripting_id": "GEMS",
+    "name_key": "GEMS",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 7
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Grapes.data",
+    "absolute_offset": 3280424898,
+    "length": 1631,
+    "sha256": "e7af302b897253d355e35694ed36ceb6481c83c5c6e5275d4b7efd656a37c761",
+    "rid": 25126,
+    "uuid": "114ff377-cab8-4de0-87b7-e0eb6e983ded",
+    "scripting_id": "GRAPES",
+    "name_key": "GRAPES",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Herbs.data",
+    "absolute_offset": 3280426670,
+    "length": 1629,
+    "sha256": "bac11fde078e0bf598fa795624b914a7096e8f2362ebc411355b7b9e022edd62",
+    "rid": 25128,
+    "uuid": "cc445ded-9d53-4b39-96a5-0d2beb909ec2",
+    "scripting_id": "HERBS",
+    "name_key": "HERBS",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Honey.data",
+    "absolute_offset": 3280428440,
+    "length": 1629,
+    "sha256": "8832c3f6e6f4e50de7c36e7fa5f0a15132f4d385bde98d2fbc3d54a2a7773c2e",
+    "rid": 25130,
+    "uuid": "50e200cb-a8a0-4e92-897b-5635e2d9a639",
+    "scripting_id": "HONEY",
+    "name_key": "HONEY",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY_FOOD",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Hop.data",
+    "absolute_offset": 3280430208,
+    "length": 1591,
+    "sha256": "c6846ac8a6ff15baa239cfeff8e6f7cc60ed3455ded55b2482d31d478a72dbbe",
+    "rid": 25132,
+    "uuid": "a4c7df62-4e7b-44d7-8897-2bd3a2ca789d",
+    "scripting_id": "HOP",
+    "name_key": "HOP",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE_FOOD"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Jewelry.data",
+    "absolute_offset": 3280431942,
+    "length": 1588,
+    "sha256": "3e7810159ecd3a268615285dbc64b4d6e5cdc3ec66566e3f597322d9ad8698b7",
+    "rid": 25134,
+    "uuid": "faa615db-6e40-4905-b8d5-b4dc95f0ef8d",
+    "scripting_id": "JEWELRY",
+    "name_key": "JEWELRY",
+    "is_tradable": true,
+    "resource_types": [
+      "LUXURY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Meal.data",
+    "absolute_offset": 3280433670,
+    "length": 1299,
+    "sha256": "bd67ac90adb2a5abc7807ca76069a6de3d9ff4abe70961ea9f6fd332e1641a40",
+    "rid": 25136,
+    "uuid": "5b4b029c-daae-4d5e-b52c-e65779bd2c51",
+    "scripting_id": "MEAL",
+    "name_key": "MEAL",
+    "is_tradable": false,
+    "resource_types": [
+      "MEAL"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Monastic_GarnishedGreens.data",
+    "absolute_offset": 3280435130,
+    "length": 1365,
+    "sha256": "f5b36f2d49c8644c02a253a7c95742d0d5b26d07c6edef93890d0a359cc60fd2",
+    "rid": 25138,
+    "uuid": "0776c5a3-af98-47f4-bfc2-55c6718708cf",
+    "scripting_id": "MONASTIC_GARNISHED_GREENS",
+    "name_key": "MONASTIC_GARNISHEDGREENS",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Monastic_GoldenGruel.data",
+    "absolute_offset": 3280436652,
+    "length": 1361,
+    "sha256": "bf4527489e182057b97dd598061ce8eb6876e822a0543eb307e378fbd40fce23",
+    "rid": 25140,
+    "uuid": "7935e3c1-7f96-4fc0-9fa6-b388f5d5ef8e",
+    "scripting_id": "MONASTIC_GOLDEN_GRUEL",
+    "name_key": "MONASTIC_GOLDENGRUEL",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Monastic_RobustRoast.data",
+    "absolute_offset": 3280438170,
+    "length": 1361,
+    "sha256": "b22fb37364741778917fdc51616e6a23fc0edee7406021f8ea898f5193958ab8",
+    "rid": 25142,
+    "uuid": "b2360761-4a31-46eb-8960-238518fca163",
+    "scripting_id": "MONASTIC_ROBUST_ROAST",
+    "name_key": "MONASTIC_ROBUSTROAST",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Monastic_SimpleStew.data",
+    "absolute_offset": 3280439703,
+    "length": 1360,
+    "sha256": "14554a01e5892d1c0c504b758167e71e6716cb67b073c69ac7d970cd65aae8ac",
+    "rid": 25144,
+    "uuid": "abccb0cd-2f62-4d4d-aaa6-8f962c540f6a",
+    "scripting_id": "MONASTIC_SIMPLE_STEW | MONASTIC_MEAL",
+    "name_key": "MONASTIC_SIMPLESTEW",
+    "is_tradable": false,
+    "resource_types": [
+      "FOOD_MONASTIC",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Wax.data",
+    "absolute_offset": 3280441202,
+    "length": 1623,
+    "sha256": "c83d0e4b8effed9820291445d2e56c80b37b8407391fd4f546816edfeaea5ae2",
+    "rid": 25146,
+    "uuid": "bc7412d4-774e-4dcf-8f4f-b84f4bc47b24",
+    "scripting_id": "WAX",
+    "name_key": "WAX",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Luxury/Wine.data",
+    "absolute_offset": 3280442965,
+    "length": 1689,
+    "sha256": "a4503df74354bd53a5a35bec7d31e2017ae0ec45097e463a92747107e4c1d06e",
+    "rid": 25148,
+    "uuid": "4f10f37a-a2de-4b33-8320-fc73be4d219c",
+    "scripting_id": "WINE",
+    "name_key": "WINE",
+    "is_tradable": true,
+    "resource_types": [
+      "TAVERN",
+      "GRANARY",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Manuscripts/Manuscript.data",
+    "absolute_offset": 3280444899,
+    "length": 1348,
+    "sha256": "e76f6e76fcb9ad6825243369fd0bdcae2d3dcf6f0ad8c3a49a12fef09e10268c",
+    "rid": 25151,
+    "uuid": "fe81be74-663f-40a0-9806-1f0c4eab1703",
+    "scripting_id": "MANUSCRIPT",
+    "name_key": "MANUSCRIPT",
+    "is_tradable": true,
+    "resource_types": [
+      "LITERATURE",
+      "MONASTIC"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Barrel.data",
+    "absolute_offset": 3280446488,
+    "length": 1626,
+    "sha256": "12d5a4e04a957f48192727caa4d2c683027d58b5e6b0bc0522c142a1da2a6275",
+    "rid": 25154,
+    "uuid": "37e777ba-033a-4981-a18b-214d85b6d680",
+    "scripting_id": "BARREL",
+    "name_key": "BARREL",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL",
+      "MONASTIC"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Coal.data",
+    "absolute_offset": 3280448254,
+    "length": 1617,
+    "sha256": "d6365ce3454e9e2919a779823737524750c0b91c612a523ce8fb793753f15715",
+    "rid": 25156,
+    "uuid": "229bd905-22ca-436d-aa74-3db2cbbff3be",
+    "scripting_id": "COAL",
+    "name_key": "COAL",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Glass.data",
+    "absolute_offset": 3280450012,
+    "length": 1588,
+    "sha256": "744083ccd0a78279468894d85315deec9c7df4d363ee89af32454c557bbb5e26",
+    "rid": 25158,
+    "uuid": "fcf926a7-f1f5-42e3-b28c-3ff9d048f5a2",
+    "scripting_id": "GLASS",
+    "name_key": "GLASS",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 7
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Leather.data",
+    "absolute_offset": 3280451775,
+    "length": 1546,
+    "sha256": "5cf3177a1c57c7484bd4092ad76cda6ee99af1af90eacc25684ee83db992dd74",
+    "rid": 25160,
+    "uuid": "e0982f10-2d41-4f41-b52f-2cb0ea51e2a3",
+    "scripting_id": "LEATHER",
+    "name_key": "LEATHER",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Plank.data",
+    "absolute_offset": 3280453462,
+    "length": 1589,
+    "sha256": "967d36b516e0c955f75189de2f670c923e70e0f9466522da4ec0d6d909b417aa",
+    "rid": 25162,
+    "uuid": "47736935-4c6c-42c7-9497-beb91e519e05",
+    "scripting_id": "PLANK",
+    "name_key": "PLANKS",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Tool.data",
+    "absolute_offset": 3280455191,
+    "length": 1619,
+    "sha256": "1204c6861e8545de8a8740b938833992d931232d8bb8554a1ae8f393e959a98e",
+    "rid": 25164,
+    "uuid": "7e4a9153-d053-49cc-92eb-10453fc2366c",
+    "scripting_id": "TOOL",
+    "name_key": "TOOLS",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Materials/Wood.data",
+    "absolute_offset": 3280456950,
+    "length": 1674,
+    "sha256": "39755e7288f7f1f7771b8ca06cc0f130d741b950327853e7dffbd6055a8308e8",
+    "rid": 25166,
+    "uuid": "f8a4a5a2-de73-499c-90e7-40774f26853d",
+    "scripting_id": "WOOD",
+    "name_key": "WOOD",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/GoldBars.data",
+    "absolute_offset": 3282341912,
+    "length": 1592,
+    "sha256": "f826c1047411fcc425fb0eddae7823749ba032819b42bd9c049a16276583f9c8",
+    "rid": 25185,
+    "uuid": "c7e6ddb4-4dd1-4e35-a5d0-6381e75741cb",
+    "scripting_id": "GOLD_BARS",
+    "name_key": "GOLD_BARS",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 7
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/GoldOre.data",
+    "absolute_offset": 3282343648,
+    "length": 1591,
+    "sha256": "65bff2e053c0377a3d68232356f0864317f39bb0fdf33a898ae47ecd892409d9",
+    "rid": 25187,
+    "uuid": "ca3581f2-2a37-4254-9740-bc3f2579954d",
+    "scripting_id": "GOLD_ORE",
+    "name_key": "GOLD_ORE",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 4
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Iron.data",
+    "absolute_offset": 3282345379,
+    "length": 1617,
+    "sha256": "39720482bbd87618d285e09ddb033ef0cafbbc37e1828b7db310403bd7b0c088",
+    "rid": 25189,
+    "uuid": "7389f79a-b8dc-488a-9e83-60466cab3572",
+    "scripting_id": "IRON",
+    "name_key": "IRON",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/IronOre.data",
+    "absolute_offset": 3282347140,
+    "length": 1591,
+    "sha256": "80f3a1dccd3003c13e3191fe3f126374c6c97c2d4b815582d40205c9367b7a2d",
+    "rid": 25191,
+    "uuid": "40984b11-9e54-4679-9ef8-707a59f361d1",
+    "scripting_id": "IRON_ORE",
+    "name_key": "IRON_ORE",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Marble.data",
+    "absolute_offset": 3282348873,
+    "length": 1550,
+    "sha256": "1167431a06e1da8cac9f65a948888a3e101c83d8eea528445b4e2e7840c71d32",
+    "rid": 25193,
+    "uuid": "5ec260a6-b982-43e0-832b-e03d6cd7ba1e",
+    "scripting_id": "MARBLE",
+    "name_key": "MARBLE",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Polish Stone.data",
+    "absolute_offset": 3282350573,
+    "length": 1603,
+    "sha256": "b31cac1df413ab3c540729d75c9fe18899f5fcc03e3334570f2264cdc47c22ef",
+    "rid": 25195,
+    "uuid": "2ee588e2-dedd-4940-b3c3-59ff0322b77b",
+    "scripting_id": "POLISHED_STONE",
+    "name_key": "POLISHED_STONES",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Quartz.data",
+    "absolute_offset": 3282352318,
+    "length": 1589,
+    "sha256": "33361d783aeded3b0d7b1d0392676e9e5e7492ddfad0b30022c143d2e71bbd3f",
+    "rid": 25197,
+    "uuid": "3b2c62ec-f6c1-4cd8-b45d-acefd58d231b",
+    "scripting_id": "QUARTZ",
+    "name_key": "QUARTZ",
+    "is_tradable": true,
+    "resource_types": [
+      "RESOURCE"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Steel.data",
+    "absolute_offset": 3282354048,
+    "length": 1655,
+    "sha256": "2228d48ae06f03ca4c71ddcc822775ebe0ee126161551779c74b504549a6dcb3",
+    "rid": 25199,
+    "uuid": "6f6a8e5c-fa17-4bda-8d8f-50ab599698f1",
+    "scripting_id": "STEEL",
+    "name_key": "STEEL",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 8
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 16
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Minerals/Stone.data",
+    "absolute_offset": 3282355844,
+    "length": 1796,
+    "sha256": "292c78faf3ea393f83ec15c1b60c0a42533f0bca4b51e05361f6d63bee0a536b",
+    "rid": 25201,
+    "uuid": "08472695-9582-47f8-bc7e-326907b7af2a",
+    "scripting_id": "STONE",
+    "name_key": "STONES",
+    "is_tradable": true,
+    "resource_types": [
+      "MATERIAL"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 1
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/UniqueMaterial/Sculpture.data",
+    "absolute_offset": 3291321314,
+    "length": 1221,
+    "sha256": "6c29d0197985caa09f39bba7dd872542cae2baf11461b9f737c8b9255beab89c",
+    "rid": 25288,
+    "uuid": "12fd28c2-5df8-43d9-b21c-829ba16674d1",
+    "scripting_id": "SCULPTURE",
+    "name_key": "SCULPTURE",
+    "is_tradable": true,
+    "resource_types": [
+      "SCULPTURE"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/UniqueMaterial/StainedGlass.data",
+    "absolute_offset": 3291322684,
+    "length": 1231,
+    "sha256": "37f32b2d1b8567cf51b65eb9c6472b6a25d1e4d04753cc7506c8812da2d98c9f",
+    "rid": 25290,
+    "uuid": "e4a19d95-6be7-4048-8237-9c06d16be6b9",
+    "scripting_id": "STAINED_GLASS",
+    "name_key": "STAINED_GLASS",
+    "is_tradable": true,
+    "resource_types": [],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Water.data",
+    "absolute_offset": 3291324056,
+    "length": 1213,
+    "sha256": "6aaa5c5bb32aba5f983a0bdc7fb6cfa27cb925eb43c54fcc8ce6ea56b91ee52f",
+    "rid": 25292,
+    "uuid": "e2190aa6-68ae-4955-9f76-be71cfb53932",
+    "scripting_id": "WATER",
+    "name_key": "WATER",
+    "is_tradable": false,
+    "resource_types": [
+      "WATER"
+    ],
+    "buying_price": [],
+    "selling_price": []
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Bow_1.data",
+    "absolute_offset": 3291325512,
+    "length": 1654,
+    "sha256": "dbb4fa3335ab24f2a21af7134eb6530717edf339cf7259d03e84bcf7de102f1e",
+    "rid": 25295,
+    "uuid": "51f30b86-68d5-435e-b0b9-cf5089ca64d9",
+    "scripting_id": "SHORTBOW",
+    "name_key": "BOW_1",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Bow_2.data",
+    "absolute_offset": 3291327313,
+    "length": 1654,
+    "sha256": "2c0c2796e037d8011126eef17acd5111434353cdc8580322a9ee4bd09de223b3",
+    "rid": 25297,
+    "uuid": "b8fbfa55-259c-4477-bdb1-1b0646117fa8",
+    "scripting_id": "RECURVE_BOW",
+    "name_key": "BOW_2",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Bow_3.data",
+    "absolute_offset": 3291329110,
+    "length": 1654,
+    "sha256": "d7a8a2a9111e04199dc4791146385c5c0179d045440e9c536166a33c28b4fcd4",
+    "rid": 25299,
+    "uuid": "15aa6f4b-4c4c-4d03-8ef3-3c514c94d62f",
+    "scripting_id": "LONGBOW",
+    "name_key": "BOW_3",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 15
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Spear_1.data",
+    "absolute_offset": 3291330905,
+    "length": 1656,
+    "sha256": "1d163211139be122eb5c0991cbd8bb3eff2a931807558f3f9532d4044f326942",
+    "rid": 25301,
+    "uuid": "0638109e-b833-4528-82e1-fa177084833d",
+    "scripting_id": "SPEAR",
+    "name_key": "SPEAR_1",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Spear_2.data",
+    "absolute_offset": 3291332704,
+    "length": 1656,
+    "sha256": "d16ac487105b4b4016ed3ef358ba60924531dbad2d610409b1966dbf7722deee",
+    "rid": 25303,
+    "uuid": "4c2c17fa-21f0-4aef-bd7a-675dd6c3440b",
+    "scripting_id": "POLEARM",
+    "name_key": "SPEAR_2",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Spear_3.data",
+    "absolute_offset": 3291334500,
+    "length": 1656,
+    "sha256": "81768678a6ea8f3aba4bc31add7bce5472f52ab8cf2fda97d88834ce3a18579c",
+    "rid": 25305,
+    "uuid": "1b0a93d7-b998-4037-983b-d75cfda8fd1d",
+    "scripting_id": "PIKE",
+    "name_key": "SPEAR_3",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 15
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Sword_1.data",
+    "absolute_offset": 3291336297,
+    "length": 1656,
+    "sha256": "3a4ea11b71fbb36cf11eb834fe641302c0c1abfc5ccd3b77fea9abc74786ff13",
+    "rid": 25307,
+    "uuid": "25fa23c5-46b2-43db-ba76-b911b4ac4a47",
+    "scripting_id": "SWORD",
+    "name_key": "SWORD_1",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 5
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Sword_2.data",
+    "absolute_offset": 3291338100,
+    "length": 1656,
+    "sha256": "81d7221492f32806f6c8b0647af0bb9d1da189b44c13907880acf5b7980beea8",
+    "rid": 25309,
+    "uuid": "d52c6096-5241-4ece-9059-e28147718e0f",
+    "scripting_id": "STEEL_SWORD",
+    "name_key": "SWORD_2",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 10
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Resources/Weapons/Sword_3.data",
+    "absolute_offset": 3291339901,
+    "length": 1656,
+    "sha256": "91ef4439bd0d5d3f40159f889a573d41c43d7c3e2b3c977ff0021eb12eedb293",
+    "rid": 25311,
+    "uuid": "d5f103a0-9d50-4b55-9744-4d753674f838",
+    "scripting_id": "LONGSWORD",
+    "name_key": "SWORD_3",
+    "is_tradable": true,
+    "resource_types": [
+      "WEAPON",
+      "MILITARY"
+    ],
+    "buying_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 15
+      }
+    ],
+    "selling_price": [
+      {
+        "resource": {
+          "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "status": "resolved",
+          "assets": [
+            {
+              "rid": 25093,
+              "resource": "asset/Resources/GoldCoins.data",
+              "type": "PlaCAssetResource",
+              "scripting_id": "GOLD_COINS | GOLD"
+            }
+          ]
+        },
+        "quantity": 30
+      }
+    ]
+  }
+]

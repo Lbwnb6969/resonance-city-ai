@@ -1,0 +1,175 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/Behaviors/BT_LeaveVillage.bt",
+  "absolute_offset": 2176646,
+  "length": 3011,
+  "sha256": "12ff5a378d237fbd56a16274fb057ced06702e9d293d1b17a6b8744224f89618",
+  "rid": 5695,
+  "root_id": "d002bfbf-7557-4c9e-920b-024ec66a1592",
+  "variables": {
+    "Item": [
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "AgentData",
+        "IsPublic": true,
+        "Id": "64132477-ed55-4cae-909d-d89520f3e723",
+        "TypeDefinition": "PlaSContextDataAgent",
+        "DefaultValue": {
+          "type": "PlaSContextDataAgent"
+        }
+      },
+      {
+        "@": {
+          "type": "GamSBehaviorTreeVariableInfo"
+        },
+        "Name": "VillageExit",
+        "IsPublic": true,
+        "Id": "d158cfe9-08ae-4524-8349-4e93069dec8f",
+        "TypeDefinition": "PlaSContextDataLocation",
+        "DefaultValue": {
+          "@": {
+            "type": "PlaSContextDataLocation"
+          },
+          "CanNavigateOnGround": true,
+          "CanNavigateOnWater": false,
+          "GotoObjectPosition": false,
+          "IsSetOrientationOnDestination": false,
+          "OrientationOffset": 0.0,
+          "MinDistanceToDestination": 0.0,
+          "DestinationPosition": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "DestinationObject": "00000000-0000-0000-0000-000000000000",
+          "HasOffset": false,
+          "AlternativeDestinationList": {}
+        }
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "7f08f6d3-9347-46b1-b42d-fb840d6aef8b",
+      "name": "GoTo",
+      "type": "PlaCAgentNodeGoTo",
+      "position": [
+        -278,
+        411
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "64132477-ed55-4cae-909d-d89520f3e723",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Destination",
+          "value": "d158cfe9-08ae-4524-8349-4e93069dec8f",
+          "binding_status": "variable",
+          "variable_name": "VillageExit"
+        },
+        {
+          "name": "Building Path Type",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Data",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Walk Interactive Setup",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        },
+        {
+          "name": "Animation Speed Multiplier",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "d002bfbf-7557-4c9e-920b-024ec66a1592",
+      "name": "Sequencer",
+      "type": "GamCBehaviorTreeNodeCompositeSequencer",
+      "position": [
+        0,
+        155
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    },
+    {
+      "id": "e4ad9834-1d45-4b2b-8d94-321e206b0510",
+      "name": "",
+      "type": "PlaCAgentNodeDisable",
+      "position": [
+        143,
+        328
+      ],
+      "behavior_asset_targets": [],
+      "slots": [
+        {
+          "name": "Agent Data",
+          "value": "64132477-ed55-4cae-909d-d89520f3e723",
+          "binding_status": "variable",
+          "variable_name": "AgentData"
+        },
+        {
+          "name": "Disable Vehicle",
+          "value": "00000000-0000-0000-0000-000000000000",
+          "binding_status": "null",
+          "variable_name": null
+        }
+      ],
+      "data": {}
+    },
+    {
+      "id": "e7868032-48f6-4106-9ccf-2d667eb174a1",
+      "name": "Succeeder",
+      "type": "GamCBehaviorTreeNodeDecoratorSucceeder",
+      "position": [
+        -115,
+        304
+      ],
+      "behavior_asset_targets": [],
+      "slots": [],
+      "data": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "d002bfbf-7557-4c9e-920b-024ec66a1592",
+      "to": "e7868032-48f6-4106-9ccf-2d667eb174a1",
+      "ordinal": 0,
+      "valid_endpoints": true
+    },
+    {
+      "from": "d002bfbf-7557-4c9e-920b-024ec66a1592",
+      "to": "e4ad9834-1d45-4b2b-8d94-321e206b0510",
+      "ordinal": 1,
+      "valid_endpoints": true
+    },
+    {
+      "from": "e7868032-48f6-4106-9ccf-2d667eb174a1",
+      "to": "7f08f6d3-9347-46b1-b42d-fb840d6aef8b",
+      "ordinal": 2,
+      "valid_endpoints": true
+    }
+  ],
+  "unreachable_node_ids": [],
+  "validation_issues": []
+}

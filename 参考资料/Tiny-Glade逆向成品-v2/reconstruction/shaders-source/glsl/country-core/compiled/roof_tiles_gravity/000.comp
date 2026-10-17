@@ -1,0 +1,169 @@
+#version 460
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct RoofShingle_natural
+{
+    vec3 base_position;
+    float current_height;
+    uvec2 clipping_plane_;
+    uvec2 scale_t;
+    uvec2 rotation_quat_;
+    uint wall_slot_id;
+    uint velocity_rotation;
+    float animation_t;
+    int seed;
+    int is_circle;
+    int is_main_roof_body;
+};
+
+layout(set = 3, binding = 0, std140) uniform FrameConstants_natural
+{
+    vec4 sun_color;
+    vec4 sky_low_color;
+    vec4 sky_high_color;
+    vec4 fog_tint_thickness;
+    vec4 fake_light_color;
+    vec4 fake_light_dir;
+    vec4 fake_light2_color;
+    vec4 fake_light2_dir;
+    float time_since_startup_secs;
+    float delta_time_seconds;
+    float ev_mult;
+    uint glade_theme_id;
+    uvec2 world_render_resolution;
+    uint game_time_sec;
+    float game_time_frac;
+    vec3 editing_highlight_color;
+    float time_of_day;
+    vec3 dir_to_sun;
+    uint camera_idx;
+    vec3 dir_to_moon;
+    uint render_overrides;
+    vec3 dir_to_primary_directional_light;
+    float main_view_lod_scale;
+    vec4 main_view_eye_position;
+    float fog_relative_extinction;
+    uint highlighted_transient_stair_edge_id;
+    uvec2 swapchain_dims;
+    float swapchain_aspect_ratio;
+    uint is_photomode;
+    uint is_topdown_mode;
+    uint is_firstperson_mode;
+    vec3 brush_position;
+    float eraser_size_multiplier;
+    uint roof_highlighted_slot_id;
+    uint roof_highlight_mode;
+    uint wall_highlighted_slot_id;
+    uint wall_highlight_mode;
+    uint highlight_bricks_to_delete;
+    float wind_strength;
+    float tree_canopy_cone_angle_mult;
+    float tree_canopy_max_cone_cull_dist_range;
+    vec4 debug_tweakers;
+    vec3 ground_fog;
+    float moonswap;
+} frame_constants;
+
+layout(set = 0, binding = 0, std430) buffer RWStructuredBuffer
+{
+    RoofShingle_natural _member0[];
+} instanced_data;
+
+layout(push_constant, std430) uniform PushConstants_natural
+{
+    uint first_instance;
+    uint instance_count;
+    float wall_height_delta;
+    float roof_pivot_y;
+    float animation_t;
+} push_constants;
+
+void main()
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= push_constants.instance_count)
+        {
+            break;
+        }
+        uint idx = push_constants.first_instance + gl_GlobalInvocationID.x;
+        uvec2 _105 = instanced_data._member0[idx].clipping_plane_;
+        uvec2 _109 = instanced_data._member0[idx].scale_t;
+        uvec2 _114 = instanced_data._member0[idx].rotation_quat_;
+        uint _121 = instanced_data._member0[idx].wall_slot_id;
+        uint _126 = instanced_data._member0[idx].velocity_rotation;
+        int _138 = instanced_data._member0[idx].seed;
+        int _142 = instanced_data._member0[idx].is_circle;
+        int _147 = instanced_data._member0[idx].is_main_roof_body;
+        bool _603;
+        if (push_constants.wall_height_delta < 0.0)
+        {
+            _603 = (push_constants.wall_height_delta / frame_constants.delta_time_seconds) > (-120.0);
+        }
+        else
+        {
+            _603 = false;
+        }
+        bool _605;
+        if (_603)
+        {
+            _605 = instanced_data._member0[idx].current_height <= (push_constants.roof_pivot_y - push_constants.wall_height_delta);
+        }
+        else
+        {
+            _605 = false;
+        }
+        float _210 = floor(unpackHalf2x16(_109.y).y * 50.0) * 0.0199999995529651641845703125;
+        float velocity = unpackHalf2x16(_126).x + (((-98.100006103515625) * mix(1.0, 0.4000000059604644775390625, _210)) * frame_constants.delta_time_seconds);
+        float _238 = (_605 ? push_constants.roof_pivot_y : instanced_data._member0[idx].current_height) + (velocity * frame_constants.delta_time_seconds);
+        float _616;
+        float _620;
+        if (_238 <= push_constants.roof_pivot_y)
+        {
+            _620 = min(15.0, max((push_constants.wall_height_delta / frame_constants.delta_time_seconds) * 0.16599999368190765380859375, velocity));
+            _616 = max(_238, push_constants.roof_pivot_y);
+        }
+        else
+        {
+            _620 = velocity;
+            _616 = _238;
+        }
+        uint _257 = uint(_138);
+        uint _478 = _257 + (_257 << 10u);
+        uint _480 = _478 ^ (_478 >> 6u);
+        uint _482 = _480 + (_480 << 3u);
+        uint _484 = _482 ^ (_482 >> 11u);
+        float _617;
+        if (_210 > 0.89999997615814208984375)
+        {
+            _617 = push_constants.roof_pivot_y;
+        }
+        else
+        {
+            _617 = mix(_616, push_constants.roof_pivot_y, 1.0 - exp((-frame_constants.delta_time_seconds) * ((5.0 * mix(0.0, 2.0, 1.0 - (((_210 * _210) * _210) * _210))) * ((((uintBitsToFloat(((_484 + (_484 << 15u)) & 8388607u) | 1065353216u) - 1.0) * _210) > 0.300000011920928955078125) ? 1.0 : 1000.0))));
+        }
+        float _330 = abs(push_constants.roof_pivot_y - _617);
+        float _621;
+        if (_620 > 0.0)
+        {
+            _621 = (1.0 - exp(((-_330) * _330) * _330)) * (-1.57000005245208740234375);
+        }
+        else
+        {
+            _621 = 0.0;
+        }
+        instanced_data._member0[idx].base_position = instanced_data._member0[idx].base_position;
+        instanced_data._member0[idx].current_height = _617;
+        instanced_data._member0[idx].clipping_plane_ = _105;
+        instanced_data._member0[idx].scale_t = _109;
+        instanced_data._member0[idx].rotation_quat_ = _114;
+        instanced_data._member0[idx].wall_slot_id = _121;
+        instanced_data._member0[idx].velocity_rotation = (((_126 & 65535u) | ((packHalf2x16(vec2(_621, 0.0)) & 65535u) << 16u)) & 4294901760u) | (packHalf2x16(vec2(_620, 0.0)) & 65535u);
+        instanced_data._member0[idx].animation_t = push_constants.animation_t;
+        instanced_data._member0[idx].seed = _138;
+        instanced_data._member0[idx].is_circle = _142;
+        instanced_data._member0[idx].is_main_roof_body = _147;
+        break;
+    } while(false);
+}
+

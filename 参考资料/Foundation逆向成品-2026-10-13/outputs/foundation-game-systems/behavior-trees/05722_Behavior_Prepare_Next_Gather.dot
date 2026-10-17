@@ -1,0 +1,10 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="PlaCAgentNodeFetchNextGatherable",shape=box];
+  n1 [label="PlaCAgentNodeGatherRequest",shape=box];
+  n2 [label="Sequencer",shape=doubleoctagon];
+  n3 [label="PlaCAgentNodePlanPath",shape=box];
+  n2 -> n1 [label="0"];
+  n2 -> n0 [label="1"];
+  n2 -> n3 [label="2"];
+}

@@ -1,0 +1,22 @@
+digraph behavior {
+  rankdir=TB;
+  n0 [label="Sequencer",shape=box];
+  n1 [label="GoTo",shape=box];
+  n2 [label="Waiting",shape=box];
+  n3 [label="PlaCAgentNodeSetupResourceRemoval",shape=box];
+  n4 [label="PlaCAgentNodeRemoveResource",shape=box];
+  n5 [label="PlaCAgentNodeDisablePathTracing",shape=box];
+  n6 [label="PlaCAgentNodeEnablePathTracing",shape=box];
+  n7 [label="Succeeder",shape=box];
+  n8 [label="Sequencer",shape=box];
+  n9 [label="Repeat until fail",shape=doubleoctagon];
+  n0 -> n1 [label="0"];
+  n0 -> n2 [label="1"];
+  n7 -> n0 [label="2"];
+  n8 -> n3 [label="3"];
+  n8 -> n5 [label="4"];
+  n8 -> n7 [label="5"];
+  n8 -> n4 [label="6"];
+  n8 -> n6 [label="7"];
+  n9 -> n8 [label="8"];
+}
