@@ -17,7 +17,7 @@ func _initialize() -> void:
 	var field := Field.new()
 	field.setup(city)
 	var texture_id := field.texture.get_instance_id()
-	_check(field.texture.get_width() == 256 and field.texture.get_height() == 256 and field.image.get_format() == Image.FORMAT_RF, "RF texture dimensions")
+	_check(field.texture.get_width() == 66 and field.texture.get_height() == 66 and field.texture.get_layers()==64 and field.image.get_width()==512 and field.image.get_format() == Image.FORMAT_RF, "RF field uses padded sixty-four-layer GPU tiles at full source resolution")
 	_check(city.snapshot() == original, "setup does not author water or consume identities")
 	_check_image(field, city, "base river")
 	var original_bytes := field.image.get_data()
@@ -30,7 +30,7 @@ func _initialize() -> void:
 	update_ms.append(field.diagnostics().elapsed_ms)
 	_check(field.diagnostics().texels_changed > 0 and field.diagnostics().texels_recomputed < 4000, "one pond updates a local pixel rectangle")
 	_check_unchanged_outside(field, original_bytes, Rect2(-7, 0, 0, 0).grow(2.0 + Field.DISTANCE_LIMIT + Field.PIXEL_SIZE.x))
-	_check(field.texture.get_instance_id() == texture_id and field.diagnostics().uploads == upload_count + 1, "one upload keeps the ImageTexture instance")
+	_check(field.texture.get_instance_id() == texture_id and field.diagnostics().uploads == upload_count + 1, "local layer upload keeps the texture array instance")
 	_check_image(field, city, "pond")
 	var joined: Array[Vector2] = [Vector2(-7, 0), Vector2(-5, 1)]
 	_check(city.add_water(joined, 2.4, "pond").ok, "overlapping pond creates union")

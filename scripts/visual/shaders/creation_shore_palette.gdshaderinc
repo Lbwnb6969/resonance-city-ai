@@ -1,11 +1,15 @@
-uniform sampler2D water_field : filter_linear, repeat_disable;
+#include "res://scripts/visual/shaders/creation_tiled_field.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_valley_river.gdshaderinc"
+uniform bool scenery_river = false;
+uniform sampler2DArray water_field : filter_linear, repeat_disable;
 uniform vec4 water_world_rect = vec4(-48.0,-48.0,96.0,96.0);
 uniform vec4 bank_soil : source_color = vec4(0.55,0.56,0.40,1.0);
 uniform sampler2D bank_sand : source_color, filter_linear_mipmap, repeat_enable;
 uniform bool bank_sand_enabled = false;
 uniform vec4 bank_sand_tint : source_color = vec4(0.60,0.57,0.46,1.0);
 float shore_distance(vec2 at) {
-	return texture(water_field,(at-water_world_rect.xy)/water_world_rect.zw).r;
+	if (scenery_river) { return abs(at.x-valley_river_x(at.y,water_world_rect.y+water_world_rect.w))-2.3; }
+	return tiled_field_sample(water_field,(at-water_world_rect.xy)/water_world_rect.zw).r;
 }
 vec3 shore_ground(vec2 at,vec3 grass) {
 	float distance = shore_distance(at);

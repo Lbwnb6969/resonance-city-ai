@@ -1,4 +1,5 @@
 extends RefCounted
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original low-poly stones. The local Tiny Glade path_pebbles compute shader
 ## informs stable scatter + path/water masking; no recovered mesh is used.
 const State := preload("res://scripts/world/city_creation_state.gd")
@@ -12,6 +13,7 @@ var segments: Array[Dictionary] = []
 var meshes: Array[Mesh] = []
 var material: ShaderMaterial
 var detail := 1.0
+var batches:Array[WeakRef]=[]
 var _geometry: Array = []
 var _layout_cache: Dictionary = {}
 var _record_cache: Dictionary = {}
@@ -70,8 +72,18 @@ func signature(road: Dictionary) -> Array:
 
 func set_view_scale(zoom: float) -> void:
 	# Continuous shrink below the turf, without mesh replacement or random drift.
-	detail = 1.0 - smoothstep(16.0, 28.0, zoom)
+	var next:=1.0-smoothstep(16.0,28.0,zoom)
+	if next==detail:return
+	detail=next
 	if material != null: material.set_shader_parameter("detail", detail)
+	apply_view_detail()
+
+func apply_view_detail()->void:
+	var live:Array[WeakRef]=[]
+	for entry:WeakRef in batches:
+		var multi:MultiMesh=entry.get_ref()
+		if multi!=null:multi.visible_instance_count=0 if detail<=0. else -1;live.append(entry)
+	batches=live
 
 func build(_renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
 	var candidates := layout(road)
@@ -100,6 +112,9 @@ func build(_renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
 		multi.custom_aabb=bounds
 		var instance := MultiMeshInstance3D.new()
 		instance.name = "PathPebbles_%d_%d_%d" % [key.x, key.y, key.z]
+		DetailLod.bind(instance,DetailLod.PEBBLES)
+		multi.visible_instance_count=0 if detail<=0. else -1
+		batches.append(weakref(multi))
 		instance.position = block_origin
 		instance.multimesh = multi
 		instance.material_override = _material()

@@ -209,6 +209,15 @@ func region_signature(bounds: Rect2, include_raw: bool=false) -> int:
 		if include_raw: rows.append(raw_vertices.slice(z*COLUMNS+int(low.x),z*COLUMNS+int(high.x)+1))
 	return hash(rows)
 
+func raw_region_signature(bounds:Rect2)->int:
+	# Road profiles read the unprotected grid. Protected building pads can be
+	# prepared later by a different worker and do not invalidate that input.
+	var low:=((bounds.position-LAND_RECT.position)/STEP).floor().max(Vector2.ZERO)
+	var high:=((bounds.end-LAND_RECT.position)/STEP).ceil().min(Vector2(COLUMNS-1,ROWS-1))
+	var rows:Array=[]
+	for z:int in range(int(low.y),int(high.y)+1):rows.append(raw_vertices.slice(z*COLUMNS+int(low.x),z*COLUMNS+int(high.x)+1))
+	return hash(rows)
+
 func _stroke_bounds(row: Dictionary) -> Rect2:
 	var bounds := Rect2(Vector2(float(row.points[0][0]),float(row.points[0][1])),Vector2.ZERO)
 	for point: Array in row.points: bounds = bounds.expand(Vector2(float(point[0]),float(point[1])))

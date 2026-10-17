@@ -14,7 +14,7 @@ func _run() -> void:
 	var render := Renderer.new()
 	root.add_child(render)
 	render.setup(city)
-	var original_texture: Texture2D = render.ground_contact_field.texture
+	var original_texture: Texture2DArray = render.ground_contact_field.texture
 	var world_tint: Texture2D = render.grass_world_tint
 	_check(world_tint != null and world_tint.get_width()==512 and world_tint.get_height()==512,"single extracted world tint uploaded")
 	_check(render.ground_material.get_shader_parameter("grass2_world_tint")==world_tint and render.meadow.materials.lawn.get_shader_parameter("grass2_world_tint")==world_tint,"ground and grass share one world tint texture")
@@ -32,9 +32,9 @@ func _run() -> void:
 		polls += 1
 		await process_frame
 	_check(bool(report.get("ready",false)),"budget work ready")
-	var staged_texture: Texture2D = render.budget_rebuild.staging.ground_contact_field.texture
-	_check(staged_texture != original_texture,"staging owns new upload")
-	_check(not render.budget_rebuild.staging.ground_contact_field.changed,"upload completed on main thread")
+	var staged_texture: Texture2DArray = render.budget_rebuild.staging.ground_contact_field.texture
+	_check(staged_texture == original_texture and not render.budget_rebuild.staging.ground_contact_field.tiled.changed_layers.is_empty(),"staging retains live array while preparing private dirty layers")
+	_check(render.budget_rebuild.staging.ground_contact_field.changed,"GPU upload remains pending until publication")
 	render.cancel_budget_rebuild()
 	_check(render.grass_world_tint==world_tint,"cancel does not decode or replace constant world tint")
 	_check(render.ground_contact_field.texture == original_texture,"cancel discards uploaded pending texture")
@@ -52,9 +52,9 @@ func _run() -> void:
 	var expected := Field.new()
 	expected.prepare(city)
 	_check(render.ground_contact_field.pixels == expected.pixels,"latest worker pixels equal complete synchronous rebuild")
-	var published: Texture2D = render.ground_contact_field.texture
+	var published: Texture2DArray = render.ground_contact_field.texture
 	_check(render.grass_world_tint==world_tint and render.meadow.materials.lawn.get_shader_parameter("grass2_world_tint")==world_tint,"latest publication retains same shared world tint on replaced grass")
-	_check(published != original_texture and render.ground_material.get_shader_parameter("ground_contact_field") == published,"commit atomically binds ground")
+	_check(published == original_texture and render.ground_material.get_shader_parameter("ground_contact_field") == published,"commit atomically binds ground")
 	_check(render.meadow.materials.lawn.get_shader_parameter("ground_contact_field") == published,"commit atomically binds retained and replaced grass")
 	print("CONTACT_PUBLISH_STATS ",report.get("stats",{}))
 	render.queue_free()

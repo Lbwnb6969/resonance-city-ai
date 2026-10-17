@@ -1,7 +1,7 @@
 class_name CityCreationMusic
 extends Node
-## Original D-major pentatonic morning miniature. PCM is rendered once on a
-## worker. Twelve shared synchronized loops give districts distinct phrases
+## Original D-major pentatonic morning miniature. A worker loads the baked
+## PCM bank, or synthesizes changed sources. Twelve synchronized loops give districts distinct phrases
 ## without adding a voice for every house or restarting the musical clock.
 const RATE := 22050
 const SHORT_GAIN_DB := -12.0
@@ -9,6 +9,7 @@ const SECONDS := 24.0
 const FRAMES := 529200
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const ThemePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
+const BankCache=preload("res://scripts/audio/city_creation_bank_cache.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Towers = preload("res://scripts/world/city_creation_towers.gd")
 const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.gd")
@@ -599,7 +600,7 @@ func setup(state: RefCounted) -> void:
 	spatial.set_listener(_listener_focus,_listener_right)
 	_worker = Thread.new()
 	_loading = true
-	_worker.start(_render_bank)
+	_worker.start(_load_bank)
 
 
 func update_city(state: RefCounted) -> void:
@@ -1145,6 +1146,10 @@ func _exit_tree() -> void:
 	_worker = null
 	_edit_streams.clear()
 
+
+func _load_bank()->Dictionary:
+	var cached:=BankCache.load_bank()
+	return cached if not cached.is_empty() else _render_bank()
 
 func _render_bank() -> Dictionary:
 	var synthesis_started:=Time.get_ticks_usec()

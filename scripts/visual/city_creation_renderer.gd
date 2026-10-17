@@ -14,6 +14,8 @@ const GroundShader = preload("res://scripts/visual/shaders/creation_ground.gdsha
 const CliffSurface = preload("res://资源/自然参考/层理岩壁.png")
 const Terrain = preload("res://scripts/world/city_creation_terrain.gd")
 const TerrainSurface = preload("res://scripts/visual/city_creation_terrain_surface.gd")
+const Valley=preload("res://scripts/visual/city_creation_valley.gd")
+var valley:Node3D
 const TerrainPreview = preload("res://scripts/visual/city_creation_terrain_preview.gd")
 const ContactShader = preload("res://scripts/visual/shaders/creation_contact.gdshader")
 const RoadShader = preload("res://scripts/visual/shaders/creation_road.gdshader")
@@ -334,6 +336,10 @@ func rebuild() -> void:
 	if districts_visible: _rebuild_districts()
 	rebuild_stats["elapsed_ms"] = float(Time.get_ticks_usec()-started)/1000.0
 	_bind_era_road_field()
+	# The first local edit compares against the already visible city, just as
+	# subsequent commits do. An empty baseline marks every domain dirty.
+	if budget_rebuild==null:budget_rebuild=BudgetRebuild.new()
+	budget_rebuild.record_published(state)
 
 func _bind_era_road_field()->void:
 	for material:ShaderMaterial in [_shared_road_material(),promenade.road_material(),path_edge.material]:
@@ -802,6 +808,7 @@ func set_light_phase(phase: int) -> void:
 	Bunting.set_light(ecology_layer,phase)
 	water_material.set_shader_parameter("evening",1.0 if phase==1 else 0.0)
 	water_material.set_shader_parameter("night",1.0 if phase==2 else 0.0)
+	if valley!=null:valley.set_light(phase)
 
 func refresh_ecology() -> void:
 	if ecology_layer==null: return
@@ -2165,6 +2172,7 @@ func _build_landscape() -> void:
 	terrain_surface = TerrainSurface.new()
 	add_child(terrain_surface)
 	terrain_surface.setup(state,ground_material)
+	valley=Valley.new();add_child(valley);valley.build()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 261014
 	for i in range(75):

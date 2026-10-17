@@ -1,4 +1,5 @@
 extends RefCounted
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Permanent, delivered improvements are independent of structural house meshes
 ## and the music rig. Shared prefab meshes and one material serve the whole city.
 const CraftShader = preload("res://scripts/visual/shaders/creation_craft.gdshader")
@@ -105,6 +106,7 @@ func _mechanisms(renderer)->void:
 			renderer._box(root,Vector3(.58,.035,.045),at+Vector3.UP*.45,brass)
 			renderer._triangles(root,[at+Vector3(.27,.45,-.035),at+Vector3(.05,.45,-.035),at+Vector3(.05,.63,-.035)],Color("c8aa63"))
 		renderer._merge_meshes(root)
+		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		mechanism_roots[id]=root;mechanism_fingerprints[id]=signature
 	for id: String in mechanism_roots.keys():
 		if not live.has(id):_remove(id,mechanism_roots,mechanism_fingerprints)
@@ -147,6 +149,7 @@ func _culture(renderer) -> void:
 				renderer.Renaissance.art(renderer,face,level); placed=true; break
 			if placed: break
 		renderer._merge_meshes(root)
+		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		culture_roots[id]=root; culture_fingerprints[id]=signature
 	for id: String in culture_roots.keys():
 		if not live.has(id): _remove(id,culture_roots,culture_fingerprints)
@@ -286,6 +289,7 @@ func _batch(parent: Node3D, kind: String, transforms: Array, phase: float) -> vo
 		multi.set_instance_custom_data(index,Color(phase,0,0,0))
 	var instance := MultiMeshInstance3D.new()
 	instance.name = kind.capitalize()
+	DetailLod.bind(instance,DetailLod.CHIME)
 	instance.multimesh = multi
 	instance.material_override = material
 	instance.custom_aabb = multi.get_aabb().grow(0.06)
@@ -302,6 +306,7 @@ func _static_batch(parent: Node3D, records: Dictionary) -> void:
 	if pieces == 0: return
 	var instance := MeshInstance3D.new()
 	instance.name = "StaticCraft"
+	DetailLod.bind(instance,DetailLod.GALLERY if not records.get("pergola",[]).is_empty() else DetailLod.FLOWERBOX)
 	instance.mesh = surface.commit()
 	instance.material_override = material
 	parent.add_child(instance)

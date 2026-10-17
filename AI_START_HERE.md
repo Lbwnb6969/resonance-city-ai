@@ -24,7 +24,7 @@ Godot：`D:/GODOT/Godot_v4.7.2-stable_win64_console.exe`，Compatibility，1440�
 
 旧蓝图、四指南、三套用户材料与旧入口原文完整保存在本地 `废弃/文档_旧体系归档_2026-10-17_四库路线/`；旧2.5D文档和验证已在此前归档。开发入口只读现行五份文档；具体架构见 [3D速查](文档/21_新城创作切片.md)，来源见 [四库索引](文档/参考索引.md)。
 
-Phase1～9已完成，Eras.AVAILABLE_COUNT=4。下一步按第七章/Phase10验证150～300屋、200+居民、分级LOD、脏子区域上传与分帧编辑。当前50屋近景数据不能替代大城验收；12轨PCM冷合成28.709秒、编辑准备/发布与盛典尾帧仍待性能收口。
+Phase1～9已完成，Eras.AVAILABLE_COUNT=4。下一步按第七章/Phase10验证150～300屋、200+居民、分级LOD、脏子区域上传与分帧编辑。当前50屋近景数据不能替代大城验收；12轨PCM已预编译为14.5MB资源、约48ms加载；编辑准备/发布与盛典尾帧仍待性能收口。
 
 时代入口：`city_creation_eras.gd`；Schema16的`era_answers`记录实际问答播放双方时代，50屋与三时代已听问答解锁modern_eco；旧问答不能靠重涂追认。建筑入口为`city_creation_renaissance.gd`、`city_creation_clockwork.gd`、`city_creation_modern.gd`及`city_creation_skybridge_plan.gd`。音乐固定12长+4短/6总线，自然声2固定节点。
 
@@ -36,6 +36,18 @@ Phase1～9已完成，Eras.AVAILABLE_COUNT=4。下一步按第七章/Phase10验�
 
 阶段命令、截图与剩余性能工作见本地`验证记录/四库路线_2026-10-17/README.md`；PROJECT只记录当前状态。
 
-Phase10入口：`city_creation_citizen_motion.gd`为运行时标量路段，Life.citizen_position读取真实逻辑位置，flush_citizen在实际到达/进入视野/编辑/存档时发布节点姿态；不保存LOD状态。每帧16人判视锥、16屋扫描品质；tools/fixtures/city_creation_large_town_fixture.gd与tools/check_creation_large_town_live.gd提供300屋实景。当前Life实窗1.035ms仍未达标，最新路高优化须继续实窗复核。
+Phase10入口：`city_creation_citizen_motion.gd`为运行时标量路段，Life.citizen_position读取真实逻辑位置，flush_citizen在实际到达/进入视野/编辑/存档时发布节点姿态；不保存LOD状态。每帧16人判视锥、16屋扫描品质；tools/fixtures/city_creation_large_town_fixture.gd与tools/check_creation_large_town_live.gd提供300屋实景。含远景的300屋Life实窗均值0.896ms，281人实走，近景/全景p95为6.318/13.564ms；可见居民先计算实际路高再一次发布完整位置。
 
 瓦片入口：`city_creation_roof_surface.gd`在实际面上预烘焙固定UV/平面法线；Renderer._roof_surface供连排屋、方塔、圆塔共用。`creation_joined_roof.gdshader`仅用UV导数求像素覆盖，做瓦缝/桶瓦法线积分过滤；不再用屏幕位置导数重算投影。
+
+距离场：`city_creation_tiled_field.gd`把512²源场切成64层64+2边框图像，CPU数据仍完整保存；共享shader `creation_tiled_field.gdshaderinc`保持跨块双线性。water_field/contact_field准备私有层，budget_rebuild仅在commit上传变化层，保留纹理RID和所有材质绑定；取消不动GPU。实窗RF回读须用floatBitsToUint编码，Compatibility公共layer读图会归一化，不能拿来验证带符号浮点。
+
+分级消隐入口：`city_creation_detail_lod.gd`校准正交镜头最少42m的观察距离（细草56/卵石52/风铃54/花箱58/烟团64/廊架80m）；Compatibility用原生2m迟滞，Forward+用self fade。mesh_batcher保留范围属性；PathPebbles远景置visible_instance_count=0，worker发布按当前视角重用原批次。TerrainSurface首次必建96m地板36块，后续小笔刷仍1～4块。
+
+音乐银行入口：`city_creation_bank_cache.gd`异步加载原始251样本资源；开发环境按六份合成源文件的LF归一化签名校验，导出使用`city_creation_bank_stamp.gd`。修改合成后运行`Godot --headless --path . --script tools/bake_creation_music_bank.gd`，工具先核对全部PCM/循环属性/音符与峰值报告，原银行按计划移入唯一废弃目录，再发布新资源与签名；未匹配时保留原在线合成路径。
+
+局部编辑基线：Renderer.rebuild结束调用BudgetRebuild.record_published；异步held/cancel不推进，只有commit更新。commit直接接管已join的Terrain/RoadHeights解算器，下一次request仍复制私有缓存；不在原子发布帧深拷贝路高轮廓。
+
+远景入口：`city_creation_valley.gd`在96m原地板之外建立320m纯景观，河道延伸函数在原地板内恒等于State.river_x；10座Foundation远山共用一个MultiMesh，原模型来源和哈希在资源/自然参考/远山/README.md。无碰撞/导航/存档字段。CameraRig.orthographic_distance让最低0.3俯角下的前景射线仍从地面上方出发，相机far=400覆盖完整轮廓。
+
+路高轮廓：RoadHeights为每路记录原始地形局部签名、门口/交叉口/水系/时代/环岛约束；未变轮廓和查询记录发布后只读，新prepare替换容器。Life的隔离worker也继承已发布的路高种子；actual近路雕刻重算3/16路，完整重算oracle覆盖台阶、桥型、环岛和撤销。

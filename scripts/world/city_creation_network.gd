@@ -44,6 +44,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 		state._ground_terrain = snapshot.ground_cache
 	if snapshot.has("protection_cache"):
 		state._terrain_protection = snapshot.protection_cache
+	if snapshot.has("road_height_cache"):state._road_heights=snapshot.road_height_cache
 	connected_houses = prior
 	var stage_started := Time.get_ticks_usec()
 	_build_graph()
@@ -117,6 +118,7 @@ func _build_graph() -> void:
 	# pipeline; rebuilding it here duplicated 37k samples on every edit.
 	state._prepare_raw_height()
 	state._road_heights.prepare(state)
+	prepare_stats["road_profiles"]=state._road_heights.stats.duplicate()
 	prepare_stats["ground_ms"] = float(Time.get_ticks_usec()-ground_started)/1000.0
 	var prior := connected_houses.duplicate()
 	graph.clear()

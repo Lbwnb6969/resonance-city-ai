@@ -12,11 +12,12 @@ func _initialize() -> void:
 	field.prepare(city)
 	print("CONTACT_INITIAL ",field.stats)
 	_check(city.snapshot() == original,"visual preparation preserves authored city")
-	_check(field.texture == null and field.pixels.size() == 256*256*4,"CPU preparation owns no image or RID")
+	_check(field.texture == null and field.pixels.size() == Field.WIDTH*Field.HEIGHT*4,"CPU preparation owns no image or RID")
 	_compare(field,city)
 	field.upload()
 	var initial_texture := field.texture
 	var initial_pixels := field.pixels.duplicate()
+	var distant_bytes:PackedByteArray=field.tiled.images[63].get_data()
 	field.prepare(city)
 	field.upload()
 	_check(field.stats.texels == 0 and field.texture == initial_texture,"unchanged geometry neither calculates nor uploads")
@@ -34,7 +35,7 @@ func _initialize() -> void:
 	thread.wait_to_finish()
 	_check(field.pixels == old_pixels and field.texture == initial_texture,"worker fork cannot mutate visible pixels or texture")
 	_check(fork.texture == null and fork.stats.changed,"worker computes only CPU payload")
-	_check(fork.stats.texels < 3000,"short new road touches local field tiles")
+	_check(fork.stats.texels < 6000,"short new road touches local field tiles")
 	print("CONTACT_LOCAL_ROAD ",fork.stats)
 	_compare(fork,city)
 	var changed_pixels := 0
@@ -44,7 +45,7 @@ func _initialize() -> void:
 	field.prepare(city)
 	_check(field.pixels == fork.pixels,"synchronous and worker preparation agree byte-for-byte")
 	field.upload()
-	_check(field.texture != initial_texture and initial_texture.get_image().get_data() == initial_pixels,"published upload preserves prior staging texture")
+	_check(field.texture == initial_texture and field.tiled.images[63].get_data()==distant_bytes and field.stats.uploaded_layers<8,"local upload retains texture identity and distant layers")
 	city.roads.pop_back()
 	field.prepare(city)
 	_check(field.pixels == initial_pixels,"remove road clears prior contact without ghosts")
@@ -63,7 +64,7 @@ func _compare(field: RefCounted, city: RefCounted) -> void:
 	rng.seed = 20261015
 	var junctions: RefCounted=city.road_junctions()
 	for index in range(320):
-		var pixel := Vector2i(rng.randi_range(0,255),rng.randi_range(0,255))
+		var pixel := Vector2i(rng.randi_range(0,Field.WIDTH-1),rng.randi_range(0,Field.HEIGHT-1))
 		var at: Vector2 = field.pixel_world(pixel)
 		var expected := _oracle(at,city,junctions)
 		var actual: Vector3 = field._pixel(pixel)*Field.RANGE

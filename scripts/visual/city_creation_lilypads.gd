@@ -1,4 +1,5 @@
 extends Node3D
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Derived pond-only records. Workers never load source meshes or textures.
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
@@ -157,6 +158,7 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 		bounds=bounds.merge(records[index].transform*multi.mesh.get_aabb())
 	multi.custom_aabb=bounds
 	var instance := MultiMeshInstance3D.new();instance.name="Lilypads_"+part
+	DetailLod.bind(instance,72. if part=="leaf" else DetailLod.FURNITURE)
 	instance.multimesh=multi;instance.material_override=_material(part)
 	instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(instance)

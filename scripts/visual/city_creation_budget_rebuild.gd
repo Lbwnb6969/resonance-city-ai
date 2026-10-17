@@ -22,6 +22,9 @@ var _max_step_ms := 0.0
 var _main_ms := 0.0
 var _published_snapshot: Dictionary = {}
 
+func record_published(state:RefCounted)->void:
+	_published_snapshot=ChangeSet.snapshot(state)
+
 func _copy_fields(source: Object, target: Object, fields: Array) -> void:
 	for field: String in fields:
 		var value: Variant = source.get(field)
@@ -284,9 +287,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	tasks.clear()
 	task_index = 0
 	staging.set_meta("result",result)
-	if staging.water_field.changed: tasks.append(["water_field"])
 	for key: String in result.water.changes: tasks.append(["water_surface",key,result.water.changes[key]])
-	if staging.ground_contact_field.changed: tasks.append(["contact_field"])
 	if owner.districts_visible: tasks.append(["districts"])
 	stats.worker_ms = result.worker_ms
 	stats.worker_stages = result.worker_stages
@@ -311,20 +312,11 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 
 func _step(task: Array) -> void:
 	match str(task[0]):
-		"water_field":
-			# Shared live materials must keep their old texture until commit.
-			# PathEdge.install also binds this field, so restore its live handle
-			# after privately uploading the prepared independent Image.
-			var live_texture: ImageTexture = staging.water_field.texture
-			staging.water_field.upload(true)
-			staging.set_meta("prepared_water_texture",staging.water_field.texture)
-			staging.water_field.texture=live_texture
 		"water_surface":
 			var node: MeshInstance3D = staging._triangles(staging.water_layer,task[2],Color.WHITE)
 			node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			node.material_override=staging.water_material
 			staging.water_components[str(task[1])]=node
-		"contact_field": staging.ground_contact_field.upload()
 		"districts": staging._rebuild_districts()
 		"terrain":
 			var block: Vector2i = task[1]
@@ -464,10 +456,13 @@ func _commit(owner: Node3D) -> void:
 	if int(staging.get_meta("generation"))!=generation: return
 	# Publish this generation's height queries, visible triangles and picking
 	# together. A discarded worker has never touched the live field or chunks.
-	owner.state._ground_terrain.copy_cache_from(staging.state._ground_terrain)
+	# The worker has joined and this staging context is retired below. Move
+	# its complete derived solvers instead of cloning every road profile and
+	# terrain history again inside the atomic publication frame.
+	owner.state._ground_terrain=staging.state._ground_terrain
 	owner.state._ground_revision = owner.state.revision
 	owner.state._raw_ground_revision = owner.state.revision
-	owner.state._road_heights.copy_cache_from(staging.state._road_heights)
+	owner.state._road_heights=staging.state._road_heights
 	owner.state._terrain_protection.copy_cache_from(staging.state._terrain_protection)
 	owner.state._courtyards=staging.state._courtyards
 	owner.state._courtyard_plans_cache=staging.state._courtyard_plans_cache
@@ -503,10 +498,12 @@ func _commit(owner: Node3D) -> void:
 	else:
 		owner.water_edit_stats=owner.water_edit_stats.duplicate()
 		owner.water_edit_stats.changed=false
-	if staging.has_meta("prepared_water_texture"): staging.water_field.texture=staging.get_meta("prepared_water_texture")
+	staging.water_field.upload()
+	staging.ground_contact_field.upload()
 	owner.water_field=staging.water_field
 	owner.water_field._state=owner.state
-	if staging.has_meta("prepared_water_texture"): _bind_water_field(owner)
+	# The retained texture arrays publish their dirty layers here, atomically
+	# with geometry. Shared ground/grass/water bindings keep the same RID.
 	stages.water_ms=float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start=Time.get_ticks_usec()
 	var live_houses := {}
@@ -610,6 +607,8 @@ func _commit(owner: Node3D) -> void:
 	owner.path_pebbles._geometry = staging.path_pebbles._geometry
 	owner.path_pebbles._record_cache = staging.path_pebbles._record_cache
 	owner.path_pebbles._layout_cache = staging.path_pebbles._layout_cache
+	owner.path_pebbles.batches.append_array(staging.path_pebbles.batches)
+	owner.path_pebbles.apply_view_detail()
 	owner.path_pebbles.city = owner.state
 	owner.path_pebbles.footprints = staging.path_pebbles.footprints
 	owner.path_pebbles.doors = staging.path_pebbles.doors
@@ -659,23 +658,6 @@ func _commit(owner: Node3D) -> void:
 	_discard_staging()
 	stages.dispose_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stats.commit_stages = stages
-
-func _bind_water_field(owner: Node3D) -> void:
-	var field: Texture2D = owner.water_field.texture
-	var rect: Rect2 = owner.WaterField.FIELD_RECT
-	var world_rect := Vector4(rect.position.x,rect.position.y,rect.size.x,rect.size.y)
-	var materials: Array = [owner.water_material,owner.ground_material,owner.terrain_surface.material,owner.path_edge.material]
-	materials.append_array(owner.meadow.materials.values())
-	materials.append_array(owner.shore.materials.values())
-	var seen := {}
-	for material: Variant in materials:
-		if not material is ShaderMaterial or seen.has(material.get_instance_id()): continue
-		seen[material.get_instance_id()]=true
-		if material.shader==null: continue
-		for uniform: Dictionary in material.shader.get_shader_uniform_list():
-			if str(uniform.name)=="water_field": material.set_shader_parameter("water_field",field)
-			elif str(uniform.name)=="water_world_rect": material.set_shader_parameter("water_world_rect",world_rect)
-	owner.meadow.water_field=field
 
 func _discard_staging() -> void:
 	if staging == null: return

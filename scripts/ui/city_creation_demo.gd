@@ -361,7 +361,9 @@ func _setup_world() -> void:
 	camera.name = "Camera"
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.near = 0.1
-	camera.far = 140.0
+	# The editable parcel stays 80m; retain the surrounding valley and full
+	# distant mountain silhouettes when the orthographic camera pulls back.
+	camera.far = 400.0
 	add_child(camera)
 	camera.current = true
 
@@ -930,7 +932,7 @@ func _update_camera() -> void:
 		camera.position = focus
 		camera.look_at(focus-direction*6.5)
 	else:
-		camera.position = focus + direction * maxf(42.0,zoom*1.1)
+		camera.position = focus + direction * camera_rig.orthographic_distance(zoom,pitch)
 		camera.look_at(focus)
 	if music != null: music.set_listener_frame(Vector2(focus.x,focus.z),Vector2(camera.global_basis.x.x,camera.global_basis.x.z),zoom,_acoustic_in_view,_acoustic_point_in_view)
 	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)

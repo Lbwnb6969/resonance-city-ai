@@ -27,6 +27,7 @@ func _run()->void:
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	var city:=Fixture.build(300,true);print("LARGE_FIXTURE_READY ",city.houses.size())
+	var scene_started:=Time.get_ticks_usec()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库";root.add_child(demo);root.add_child(FixtureInput.new());demo.life.set_process(false)
 	var restored:Dictionary=demo.state.restore(JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)))
 	_check(restored.ok,"three hundred authored four-era buildings restore through actual production schema")
@@ -38,6 +39,8 @@ func _run()->void:
 	_check(demo.town.buildings.get_child_count()==300 and eras.size()==4,"all three hundred real rendered buildings coexist in four district eras on eighty-metre canvas")
 	var deadline:=Time.get_ticks_msec()+90000
 	while demo.music.audio_report.is_empty() and Time.get_ticks_msec()<deadline:await process_frame
+	_check(demo.music.audio_report.get("bank_source","")=="precompiled","native production scene uses the precompiled original PCM bank")
+	var bank_metrics:Dictionary={"source":demo.music.audio_report.get("bank_source",""),"load_ms":demo.music.audio_report.get("bank_load_ms",-1.),"scene_ready_ms":float(Time.get_ticks_usec()-scene_started)/1000.}
 	await _capture("01_three_hundred_buildings_four_eras_full_canvas")
 	var overview:Array[float]=[];var last:=Time.get_ticks_usec()
 	for i in range(180):
@@ -68,5 +71,5 @@ func _run()->void:
 	var cpu_metrics:=_metrics(cpu);var frames_metrics:=_metrics(frames)
 	_check(cpu_metrics.mean_ms<1.,"production life mean CPU remains below one millisecond with over two hundred actual simultaneous travellers")
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"production scale validation preserves personal saved city bytes")
-	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview)}
+	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics}
 	FileAccess.open(OUT+"/large_town_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("LARGE_TOWN_LIVE ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)

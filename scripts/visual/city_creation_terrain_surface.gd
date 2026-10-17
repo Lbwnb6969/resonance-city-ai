@@ -37,6 +37,9 @@ func prepare_blocks() -> Array:
 	var changes: Array = []
 	var regions: Array = state._ground_terrain.stats.get("changed_regions",[])
 	var candidates: Dictionary = {}
+	# A new surface has no published chunks, even when the supplied State has
+	# already simulated many edits and its height cache reports only the last.
+	if fingerprints.is_empty():regions=[Terrain.LAND_RECT]
 	if regions.is_empty() and not fingerprints.is_empty():
 		stats.changed = 0
 		stats.elapsed_ms = float(Time.get_ticks_usec()-started)/1000.0

@@ -1,4 +1,5 @@
 extends RefCounted
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## One shared puff mesh. Only actual attended, unblocked baking emits.
 const ShaderSource=preload("res://scripts/visual/shaders/creation_bakery_smoke.gdshader")
 var mesh: ArrayMesh
@@ -13,7 +14,7 @@ func build(parent: Node3D,at: Vector3) -> void:
 	smoke.position=at
 	smoke.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	smoke.custom_aabb=AABB(Vector3(-0.5,-0.3,-0.5),Vector3(1.6,2.4,1.3))
-	smoke.visibility_range_end=48.0
+	DetailLod.bind(smoke,DetailLod.SMOKE)
 	smoke.visible=false
 	smoke.set_meta("working",false)
 	parent.add_child(smoke)

@@ -1,5 +1,6 @@
 class_name CityCreationShore
 extends Node3D
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original shore exemplars: deterministic placement, obstacle removal and
 ## tip-weighted wind informed by Tiny Glade's Grass2 report, without assets.
 const State := preload("res://scripts/world/city_creation_state.gd")
@@ -438,6 +439,7 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 	multi.custom_aabb = bounds.grow(0.06)
 	var instance := MultiMeshInstance3D.new()
 	instance.name = "Shore_%s" % part
+	DetailLod.bind(instance,72. if part=="reed" else DetailLod.FINE_GRASS if part=="grass" else DetailLod.FLOWERBOX)
 	instance.multimesh = multi
 	instance.material_override = _material(part)
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

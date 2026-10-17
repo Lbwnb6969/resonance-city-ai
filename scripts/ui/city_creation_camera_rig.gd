@@ -5,6 +5,11 @@ var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
 
+static func orthographic_distance(zoom:float,pitch:float)->float:
+	# At the lowest supported pitch the bottom viewport ray must still start
+	# above the ground. A fixed zoom multiplier cuts the valley at the near plane.
+	return maxf(maxf(42.,zoom*1.1),zoom*.5*cos(pitch)/sin(pitch)+12.)
+
 func toggle(demo: Node3D) -> void:
 	demo._cancel_draft()
 	strolling = not strolling

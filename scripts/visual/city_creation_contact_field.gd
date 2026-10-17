@@ -12,7 +12,10 @@ const TILE_COLUMNS := ceili(float(WIDTH)/TILE_SIZE)
 const TILE_ROWS := ceili(float(HEIGHT)/TILE_SIZE)
 const PIXEL_SIZE := Vector2(FIELD_RECT.size.x/WIDTH,FIELD_RECT.size.y/HEIGHT)
 const INTERPOLATION_ERROR := 0.5*sqrt(PIXEL_SIZE.x*PIXEL_SIZE.x+PIXEL_SIZE.y*PIXEL_SIZE.y)+RANGE/255.0
-var texture: ImageTexture
+var tiled=preload("res://scripts/visual/city_creation_tiled_field.gd").new()
+var texture:Texture2DArray:
+	get:return tiled.texture
+	set(value):tiled.texture=value
 var pixels := PackedByteArray()
 var records: Dictionary = {}
 var stats: Dictionary = {}
@@ -24,6 +27,7 @@ func copy_cpu_from(source: RefCounted) -> void:
 	# GDScript, so a worker requires its own bytes, even when upload is deferred.
 	records = source.records.duplicate()
 	pixels = source.pixels.duplicate()
+	tiled.copy_cpu_from(source.tiled)
 
 func prepare(city: RefCounted) -> void:
 	var started := Time.get_ticks_usec()
@@ -55,6 +59,9 @@ func prepare(city: RefCounted) -> void:
 					pixels[offset+2] = clampi(roundi(value.z*255.0),0,255)
 					recomputed += 1
 		_bins.clear()
+	var regions:Array[Rect2i]=[]
+	for tile:Vector2i in dirty:regions.append(Rect2i(tile*16,Vector2i(16,16)))
+	tiled.prepare(Image.create_from_data(WIDTH,HEIGHT,false,Image.FORMAT_RGBA8,pixels),regions)
 	stats = {"changed":changed,"tiles":dirty.size(),"texels":recomputed,"elapsed_ms":float(Time.get_ticks_usec()-started)/1000.0,
 		"width":WIDTH,"height":HEIGHT,"field_rect":FIELD_RECT,"pixel_size":PIXEL_SIZE,"interpolation_error":INTERPOLATION_ERROR,
 		"tile_columns":TILE_COLUMNS,"tile_rows":TILE_ROWS}
@@ -63,7 +70,8 @@ func upload() -> void:
 	stats["upload_ms"] = 0.0
 	if not changed and texture != null: return
 	var started := Time.get_ticks_usec()
-	texture = ImageTexture.create_from_image(Image.create_from_data(WIDTH,HEIGHT,false,Image.FORMAT_RGBA8,pixels))
+	tiled.upload()
+	stats.merge(tiled.stats,true)
 	stats["upload_ms"] = float(Time.get_ticks_usec()-started)/1000.0
 	changed = false
 

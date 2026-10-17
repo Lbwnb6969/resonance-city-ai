@@ -12,29 +12,42 @@ const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 var profiles: Dictionary = {}
 var _bins: Dictionary = {}
 var _signature: Variant = null
+var _input_signatures:Dictionary={}
+var stats:Dictionary={}
 
 func copy_cache_from(source: RefCounted) -> void:
 	# Published profiles are immutable; a new prepare replaces dictionaries.
-	profiles = source.profiles.duplicate(true)
-	_bins = source._bins.duplicate(true)
+	# Every published container is read-only. prepare() replaces the maps and
+	# only _build() creates new sample records, so workers may share old values.
+	profiles = source.profiles
+	_bins = source._bins
+	_input_signatures=source._input_signatures
 	_signature = source._signature
 
 func prepare(city: RefCounted) -> void:
 	var houses: Array = []
 	for house: Dictionary in city.houses: houses.append([house.id,house.origin,house.cells,float(house.get("base_y",0.0))])
 	var signature := hash([city._ground_terrain.raw_generation,city.roads,houses,Bridges.era_signature(city)])
-	if signature==_signature: return
+	if signature==_signature:stats={"rebuilt":0,"reused":profiles.size()};return
 	_signature = signature
-	profiles.clear()
-	_bins.clear()
+	var previous:=profiles;var previous_inputs:=_input_signatures
+	profiles={};_bins={};_input_signatures={};stats={"rebuilt":0,"reused":0}
 	var doors: Array = []
 	for house: Dictionary in city.houses:
 		for entry: Dictionary in city.house_entrances(str(house.id)):
 			doors.append({"house_id":str(house.id),"at":entry.at,"y":float(house.get("base_y",0.0))+0.055,"road_id":str(entry.get("road_id","")),"active":bool(entry.active)})
 	var junctions := _junctions(city)
+	var marker_inputs:Array=[]
+	for marker:Dictionary in Roundabouts.all(city.roads):marker_inputs.append([marker,city._ground_terrain.raw_height_at(marker.center)])
+	var common:=hash([doors,city.waters,Bridges.era_signature(city),marker_inputs])
 	for road: Dictionary in city.roads:
-		var profile := _build(city,road,doors,junctions.get(str(road.id),[]))
-		profiles[str(road.id)] = profile
+		var id:=str(road.id);var profile_bounds:=Rect2(Vector2(road.points[0][0],road.points[0][1]),Vector2.ZERO)
+		for point:Array in road.points:profile_bounds=profile_bounds.expand(Vector2(point[0],point[1]))
+		var input:=hash([road,common,junctions.get(id,[]),city._ground_terrain.raw_region_signature(profile_bounds.grow(float(road.width)+2.))])
+		var reuse:bool=previous.has(id) and previous_inputs.get(id)!=null and previous_inputs[id]==input
+		var profile:Dictionary=previous[id] if reuse else _build(city,road,doors,junctions.get(id,[]))
+		stats["reused" if reuse else "rebuilt"]+=1
+		profiles[id] = profile;_input_signatures[id]=input
 		var samples: Array = profile.samples
 		for i in range(samples.size()-1):
 			var a: Vector2 = samples[i].xz

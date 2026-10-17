@@ -1,12 +1,13 @@
 // Shared visual contact data. It never replaces authored clearance/collision.
-uniform sampler2D ground_contact_field : filter_linear, repeat_disable;
+#include "res://scripts/visual/shaders/creation_tiled_field.gdshaderinc"
+uniform sampler2DArray ground_contact_field : filter_linear, repeat_disable;
 uniform bool ground_contact_enabled = false;
 uniform vec4 ground_contact_world_rect = vec4(-48.0,-48.0,96.0,96.0);
 uniform float ground_contact_range = 1.2;
 vec3 meadow_contact_color(vec2 at,vec3 grass) {
 	if (!ground_contact_enabled) { return grass; }
 	vec2 uv = (at-ground_contact_world_rect.xy)/ground_contact_world_rect.zw;
-	vec3 field = texture(ground_contact_field,uv).rgb*ground_contact_range;
+	vec3 field = tiled_field_sample(ground_contact_field,uv).rgb*ground_contact_range;
 	float wall = 1.0-smoothstep(0.02,0.65,field.r);
 	float road = 1.0-smoothstep(0.04,0.72,field.g);
 	float root = 1.0-smoothstep(0.06,0.70,field.b);

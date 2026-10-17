@@ -1,4 +1,5 @@
 extends RefCounted
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Shared, immutable garden furniture. Real life drives prebuilt cup/bubble
 ## visibility; a status refresh never allocates geometry or invents residents.
 const Layout = preload("res://scripts/world/city_creation_cafe_layout.gd")
@@ -156,6 +157,7 @@ func _batch(parent: Node3D, name: String, transforms: Array, kind: String) -> vo
 		multi.set_instance_custom_data(index,Color(float(index)/3.0,1.0 if kind=="chat" else 0.0,0,0))
 	var instance := MultiMeshInstance3D.new()
 	instance.name=name
+	DetailLod.bind(instance,DetailLod.CHIME if kind in ["cup","chat"] else DetailLod.FURNITURE)
 	instance.multimesh=multi
 	instance.material_override=material
 	instance.custom_aabb=multi.get_aabb().grow(0.08)

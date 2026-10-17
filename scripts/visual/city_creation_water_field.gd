@@ -25,7 +25,10 @@ class Capsule extends RefCounted:
 class Bin extends RefCounted:
 	var capsules: Array[Capsule] = []
 
-var texture: ImageTexture
+var tiled=preload("res://scripts/visual/city_creation_tiled_field.gd").new()
+var texture:Texture2DArray:
+	get:return tiled.texture
+	set(value):tiled.texture=value
 var image: Image
 var _state: RefCounted
 var _previous: Dictionary = {}
@@ -45,6 +48,7 @@ func copy_cpu_from(source: RefCounted, state: RefCounted) -> void:
 	_uploads=source._uploads
 	_initial_ms=source._initial_ms
 	_diagnostics=source._diagnostics.duplicate()
+	tiled.copy_cpu_from(source.tiled)
 	changed=false
 
 func setup(state: RefCounted) -> void:
@@ -63,6 +67,7 @@ func _prepare_initial() -> void:
 	for y in range(HEIGHT):
 		for x in range(WIDTH):
 			image.set_pixel(x, y, Color(_distance(pixel_world(Vector2i(x, y))), 0.0, 0.0, 1.0))
+	var regions:Array[Rect2i]=[];tiled.prepare(image,regions)
 	changed=true
 	_diagnostics = {"changed": true, "texels_changed": WIDTH * HEIGHT, "texels_recomputed": WIDTH * HEIGHT, "elapsed_ms": 0.0}
 
@@ -86,6 +91,7 @@ func prepare_update() -> void:
 		if not _previous.has(key) or _previous_hashes[key] != current_hashes[key] or _previous[key] != current[key]:
 			regions.append(_pixel_bounds(current[key]))
 	if regions.is_empty():
+		tiled.prepare(image,regions)
 		_diagnostics = {"changed": false, "texels_changed": 0, "texels_recomputed": 0, "elapsed_ms": float(Time.get_ticks_usec() - started) / 1000.0}
 		return
 	_previous = current
@@ -109,18 +115,19 @@ func prepare_update() -> void:
 				if image.get_pixel(x, y).r != color.r:
 					image.set_pixel(x, y, color)
 					texels_changed += 1
+	tiled.prepare(image,regions)
 	changed=changed or texels_changed>0
 	_diagnostics = {"changed": true, "texels_changed": texels_changed, "texels_recomputed": recomputed, "elapsed_ms": float(Time.get_ticks_usec() - started) / 1000.0}
 
 func upload(create_new: bool = false) -> void:
 	if not changed and texture!=null: return
-	if texture==null or create_new: texture=ImageTexture.create_from_image(image)
-	else: texture.update(image)
+	tiled.upload(create_new)
 	_uploads+=1
 	changed=false
 
 func diagnostics() -> Dictionary:
 	var result := _diagnostics.duplicate()
+	result.merge(tiled.stats,true)
 	result.merge({"initial_ms": _initial_ms, "width": WIDTH, "height": HEIGHT, "uploads": _uploads,
 		"field_rect":FIELD_RECT,"pixel_size":PIXEL_SIZE,"interpolation_error":INTERPOLATION_ERROR,"bin_columns":BIN_COLUMNS,"bin_rows":BIN_ROWS})
 	return result

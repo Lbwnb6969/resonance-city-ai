@@ -1,4 +1,5 @@
 extends RefCounted
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Quality decor has independent ownership: no road, terrain or house rebuild.
 const NAMES := ["初筑小屋","安居暖舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
 var layer: Node3D
@@ -16,7 +17,7 @@ func setup(renderer: Node3D)->void:
 		var effect:=CPUParticles3D.new();effect.name="QualityUpgrade_%d"%i;effect.mesh=mesh;effect.material_override=material
 		effect.amount=18;effect.lifetime=1.15;effect.one_shot=true;effect.explosiveness=.9;effect.emitting=false
 		effect.direction=Vector3.UP;effect.spread=42;effect.initial_velocity_min=.7;effect.initial_velocity_max=1.5;effect.gravity=Vector3(0,-.35,0)
-		effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
+		DetailLod.bind(effect,DetailLod.SMOKE);effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
 
 func progress(renderer)->void:
 	var live: Dictionary={}
@@ -61,6 +62,7 @@ func progress(renderer)->void:
 			_rose_window(renderer,root,house)
 			features.append_array(["golden_weather_vane","painted_rose_window","golden_halo"])
 		root.set_meta("features",features);renderer._merge_meshes(root)
+		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		roots[id]=root;fingerprints[id]=signature;build_count+=1
 	for id: String in roots.keys():
 		if not live.has(id):_remove(id)

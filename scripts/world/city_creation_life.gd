@@ -22,6 +22,7 @@ const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd
 const Network := preload("res://scripts/world/city_creation_network.gd")
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
 const TerrainProtection := preload("res://scripts/world/city_creation_terrain_protection.gd")
+const RoadHeights=preload("res://scripts/world/city_creation_road_heights.gd")
 const DistrictLinks=preload("res://scripts/world/city_creation_district_links.gd")
 var _district_link_network: RefCounted
 var _district_link_signature: Variant=null
@@ -157,8 +158,9 @@ func begin_budget_sync() -> bool:
 	terrain_seed.copy_cache_from(state._ground_terrain)
 	var protection_seed := TerrainProtection.new()
 	protection_seed.copy_cache_from(state._terrain_protection)
+	var road_seed:=RoadHeights.new();road_seed.copy_cache_from(state._road_heights)
 	_budget_request = {"generation":_budget_generation,"revision":state.revision,"signature":signature,
-		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"districts":state.districts.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed},
+		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"districts":state.districts.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed,"road_height_cache":road_seed},
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_started_usec = Time.get_ticks_usec()
 	if _budget_thread == null: _start_budget_worker()
@@ -383,20 +385,24 @@ func _tick_life(delta: float) -> void:
 			if resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering":_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
 			continue
 		var node: Node3D = resident.node
-		var previous_position := Vector2(node.position.x, node.position.z)
+		var point:=node.position
+		var previous_position := Vector2(point.x,point.z)
 		var target: Vector3 = route[index]
-		var remaining := node.position.distance_to(target)
+		var remaining := point.distance_to(target)
 		if remaining < walk_step:
-			node.position = target
+			point = target
 			resident.index = index + 1
 		else:
-			var direction := (target - node.position).normalized()
-			node.position += direction * walk_step
+			var direction := (target - point).normalized()
+			point += direction * walk_step
 			node.rotation.y = atan2(direction.x, direction.z)
-		node.position.y = state.street_height(Vector2(node.position.x,node.position.z))+0.10
-		record_travel("resident/"+str(resident.home_id),previous_position,Vector2(node.position.x,node.position.z))
+		point.y = state.street_height(Vector2(point.x,point.z))+0.10
+		# Publish the complete transform once, after resolving the physical
+		# street height; no transient route-interpolated Y reaches the scene.
+		node.position=point
+		record_travel("resident/"+str(resident.home_id),previous_position,Vector2(point.x,point.z))
 		if resident.has("daily_snapshot") and str(_concert.get("phase", "idle")) == "gathering":
-			_wake_passed_houses(previous_position, Vector2(node.position.x, node.position.z))
+			_wake_passed_houses(previous_position, Vector2(point.x,point.z))
 		var body: Node3D = node.get_child(0)
 		body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
 	if profile_tick:tick_profile.citizens=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()

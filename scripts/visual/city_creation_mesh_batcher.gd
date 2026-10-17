@@ -32,7 +32,7 @@ func merge(parent: Node3D) -> Dictionary:
 			profiles[material_id] = wall_profile if not wall_profile.is_empty() else _solid_profile(material)
 		var profile: Array = profiles[material_id]
 		var overlay: Material = instance.material_overlay
-		var state: Array = [instance.cast_shadow,instance.layers,instance.gi_mode,instance.ignore_occlusion_culling,0 if overlay==null else overlay.get_instance_id()]
+		var state: Array = [instance.cast_shadow,instance.layers,instance.gi_mode,instance.ignore_occlusion_culling,0 if overlay==null else overlay.get_instance_id(),instance.visibility_range_begin,instance.visibility_range_end,instance.visibility_range_begin_margin,instance.visibility_range_end_margin,instance.visibility_range_fade_mode]
 		var transform: Transform3D = inverse*instance.global_transform
 		for index in range(source.get_surface_count()):
 			var colored: ArrayMesh
@@ -65,6 +65,8 @@ func merge(parent: Node3D) -> Dictionary:
 		instance.layers = int(batch.state[1])
 		instance.gi_mode = int(batch.state[2])
 		instance.ignore_occlusion_culling = bool(batch.state[3])
+		instance.visibility_range_begin=float(batch.state[5]);instance.visibility_range_end=float(batch.state[6])
+		instance.visibility_range_begin_margin=float(batch.state[7]);instance.visibility_range_end_margin=float(batch.state[8]);instance.visibility_range_fade_mode=int(batch.state[9])
 		instance.extra_cull_margin = float(batch.margin)
 		parent.add_child(instance)
 	stats.output_batches = batches.size()

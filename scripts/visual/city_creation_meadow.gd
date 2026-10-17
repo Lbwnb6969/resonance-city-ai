@@ -1,5 +1,6 @@
 class_name CityCreationMeadow
 extends Node3D
+const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original low-detail meadow exemplars. Tiny Glade's recovered Grass2
 ## records inform deterministic clumps, obstacle removal and tip-weighted
 ## wind. CPU meshes and records are authored here; the shared material also
@@ -39,7 +40,7 @@ var materials: Dictionary = {}
 var last_changed := 0
 var elapsed_ms := 0.0
 var detail := 1.0
-var water_field: Texture2D
+var water_field: Texture2DArray
 var stage_ms: Dictionary = {}
 
 func setup(city_state: RefCounted) -> void:
@@ -177,7 +178,7 @@ func _apply_lawn_detail(multi: MultiMesh) -> void:
 	multi.mesh = _mesh("lawn_lod" if detail <= 0.84375 else "lawn")
 	multi.visible_instance_count = 0 if detail <= 0.0 else -1
 
-func set_water_field(texture: Texture2D) -> void:
+func set_water_field(texture: Texture2DArray) -> void:
 	water_field = texture
 	for part in ["lawn", "grass"]:
 		if materials.has(part): materials[part].set_shader_parameter("water_field",texture)
@@ -569,6 +570,9 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 	if part == "lawn": _apply_lawn_detail(multi)
 	var instance := MultiMeshInstance3D.new()
 	instance.name = "Meadow_%s" % part
+	if part in ["lawn","grass"]:DetailLod.bind(instance,DetailLod.FINE_GRASS)
+	elif part in ["fern","flower"]:DetailLod.bind(instance,DetailLod.FURNITURE)
+	elif part=="stone":DetailLod.bind(instance,DetailLod.PEBBLES)
 	instance.multimesh = multi
 	instance.material_override = _material(part)
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
