@@ -8,6 +8,30 @@ var fingerprints: Dictionary={}
 var particles: Array[CPUParticles3D]=[]
 var next_particle:=0
 var build_count:=0
+var build_stats: Dictionary={}
+var geometry_inputs: Dictionary={}
+var geometry_signatures: Dictionary={}
+
+func prepare_geometry(renderer,house: Dictionary,frontage: Array,arcades: Array)->void:
+	var id:=str(house.id)
+	geometry_inputs[id]=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
+	geometry_signatures[id]=hash([house,frontage,arcades])
+
+func _geometry_signature(renderer,house: Dictionary)->int:
+	var id:=str(house.id)
+	var key: Array=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
+	if geometry_inputs.get(id,[])!=key:
+		prepare_geometry(renderer,house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house))
+	return int(geometry_signatures[id])
+
+func adopt_geometry(source: RefCounted,renderer)->void:
+	geometry_inputs.clear();geometry_signatures.clear()
+	for house: Dictionary in renderer.state.houses:
+		var id:=str(house.id)
+		if not source.geometry_signatures.has(id):continue
+		geometry_inputs[id]=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
+		geometry_signatures[id]=source.geometry_signatures[id]
+
 
 func setup(renderer: Node3D)->void:
 	layer=Node3D.new();layer.name="BuildingQuality";renderer.add_child(layer)
@@ -21,6 +45,7 @@ func setup(renderer: Node3D)->void:
 
 func progress(renderer,only:Array[String]=[])->void:
 	if renderer.state.building_quality.is_empty() and roots.is_empty():return
+	build_stats={"signature_us":0,"placement_us":0,"geometry_us":0,"merge_us":0,"houses":[]}
 	var live: Dictionary={}
 	var houses:Array=renderer.state.houses
 	if not only.is_empty():
@@ -33,12 +58,20 @@ func progress(renderer,only:Array[String]=[])->void:
 		if renderer.resonance.rigs.has(id):renderer.resonance.rigs[id].level_tier=tier
 		if tier<2:continue
 		live[id]=true
-		var signature:=hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house),tier,renderer.state.improvement_level(id)])
+		var began:=Time.get_ticks_usec()
+		var signature:=hash([_geometry_signature(renderer,house),tier,renderer.state.improvement_level(id)])
+		build_stats.signature_us+=Time.get_ticks_usec()-began
 		if fingerprints.get(id,-1)==signature:continue
+		build_stats.houses.append(id);began=Time.get_ticks_usec()
 		_remove(id)
 		var root:=Node3D.new();root.name="Quality_"+id;root.set_meta("level_tier",tier);layer.add_child(root)
 		var entry: Dictionary=renderer._primary_entrance(house)
-		var records: Dictionary=renderer.craft._placements(renderer,house,3 if tier>=4 else 2)
+		var records: Dictionary={}
+		# The welcome apron/pot/lamp use only the entrance. Third-level window
+		# boxes and fourth-level galleries need the delivered-craft layout.
+		if (tier>=3 and renderer.state.improvement_level(id)<2) or (tier>=4 and renderer.state.improvement_level(id)<3):
+			records=renderer.craft._placements(renderer,house,3 if tier>=4 else 2)
+		build_stats.placement_us+=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 		var features: Array[String]=[]
 		if not entry.is_empty():
 			var frame:=Node3D.new();root.add_child(frame)
@@ -79,7 +112,10 @@ func progress(renderer,only:Array[String]=[])->void:
 			_vane(renderer,root,house)
 			_rose_window(renderer,root,house)
 			features.append_array(["golden_weather_vane","painted_rose_window","golden_halo"])
-		root.set_meta("features",features);renderer._merge_meshes(root)
+		root.set_meta("features",features)
+		build_stats.geometry_us+=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
+		renderer._merge_meshes(root)
+		build_stats.merge_us+=Time.get_ticks_usec()-began
 		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		roots[id]=root;fingerprints[id]=signature;build_count+=1
 	for id: String in (roots.keys() if only.is_empty() else only):

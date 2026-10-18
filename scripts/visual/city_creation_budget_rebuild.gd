@@ -717,6 +717,7 @@ func _commit(owner: Node3D) -> void:
 		owner._clear(owner.districts_layer)
 		for child: Node in staging.districts_layer.get_children(): child.reparent(owner.districts_layer,false)
 		owner.districts_fingerprint = staging.districts_fingerprint
+	owner.quality_visual.adopt_geometry(staging.quality_visual,owner)
 	owner.update_craft_progress()
 	stages.craft_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()

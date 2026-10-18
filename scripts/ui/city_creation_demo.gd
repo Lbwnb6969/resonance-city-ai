@@ -2095,14 +2095,18 @@ func _on_era_unlocked(era: String)->void:
 
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return
+	var began:=Time.get_ticks_usec() if life.profile_tick else 0
 	town.quality_visual.flash(town,events)
+	if life.profile_tick:life.tick_profile.quality_visual_us=Time.get_ticks_usec()-began;life.tick_profile.quality_geometry=town.quality_visual.build_stats.duplicate(true);began=Time.get_ticks_usec()
 	music.update_quality(state,events)
 	_music_catalog_key=_music_catalog_signature()
 	for event: Dictionary in events: music.play_quality_upgrade(str(event.house_id),int(event.to))
+	if life.profile_tick:life.tick_profile.quality_music_us=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 	if not events.is_empty():
 		var event: Dictionary=events[-1]
 		_message("♫ 共鸣品质 %d / 5 · %s"%[int(event.to),State.Quality.NAMES[int(event.to)-1]])
 	_refresh_place();save_delay=3.0
+	if life.profile_tick:life.tick_profile.quality_ui_us=Time.get_ticks_usec()-began
 
 func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
 	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")

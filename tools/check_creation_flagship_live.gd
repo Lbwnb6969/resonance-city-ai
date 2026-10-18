@@ -75,10 +75,11 @@ func _run()->void:
 	_camera(Vector3(27,1,-18),25.,.7,.3);await _capture("09_夜色植物宫与总站")
 	_light(0);_camera(Vector3(-25,2,-27),23.,.75,.3)
 	var wall: Array[float]=[];var cpu: Array[float]=[];var last:=Time.get_ticks_usec()
-	facts.slow_daily_ticks=[];demo.life.profile_tick=true
+	facts.slow_daily_ticks=[];facts.quality_callbacks=[];demo.life.profile_tick=true
 	for i in range(600):
 		await process_frame;var now:=Time.get_ticks_usec();var began:=Time.get_ticks_usec()
 		demo.life._process((now-last)/1000000.);cpu.append((Time.get_ticks_usec()-began)/1000.);wall.append((now-last)/1000.);last=now
+		if int(demo.life.tick_profile.get("quality_callback",0))>0:facts.quality_callbacks.append(demo.life.tick_profile.duplicate(true))
 		if cpu[-1]>4.:facts.slow_daily_ticks.append({"frame":i,"cpu_ms":cpu[-1],"stages_us":demo.life.tick_profile.duplicate(true)})
 	demo.life.profile_tick=false
 	facts.daily_frames=_metrics(wall);facts.daily_life_cpu=_metrics(cpu)
