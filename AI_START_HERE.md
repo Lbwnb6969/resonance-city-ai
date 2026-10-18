@@ -19,7 +19,7 @@ Phase 1～8 已完成（Phase 8沿用已验收的水生态）。Phase 7补齐品
 - 海拔/坡路：`city_creation_terrain_protection.gd`、`city_creation_road_heights.gd`、`city_creation_highland.gd`、`city_creation_frontage.gd`、`city_creation_road_earthworks.gd`。新宽街 2.10m，旧 2.0m 作品保原宽；重刷才扩宽。
 - 拉路：`city_creation_road_gesture.gd` 固定旧曲段并维护活动末端，UI按像素跟手；`RoadIntent` 的soft模式渐进吸附，松手用none模式校验已显示点，避免二次吸附。`city_creation_road_draft_field.gd` 仅给草/预览材质提供临时4cm场，取消/正式发布时清除；旧存档和默认State道路API保持。
 - 时代/品质/地标：`city_creation_eras.gd`、`city_creation_quality.gd`、`city_creation_signatures.gd`。作品兼容 Schema 1～17；新品质履历保存prestige，旧四字段等级和单层磨坊继续有效。Lv.2步速与钟塔增益相乘；Lv.5余韵按房屋翻倍。
-- 大城：`city_creation_citizen_motion.gd`、`city_creation_detail_lod.gd`、`city_creation_tiled_field.gd`、`city_creation_budget_rebuild.gd`。已有300屋测试夹具，尚未成为可选旗舰示范存档。
+- 大城：`city_creation_citizen_motion.gd`、`city_creation_detail_lod.gd`、`city_creation_tiled_field.gd`、`city_creation_budget_rebuild.gd`。已有300屋测试夹具，尚未成为可选旗舰示范存档。轻经营采用分档模拟：视野内完整表演，近邻错峰低频推进，远端普通服务按时/按街坊汇总结算；音乐事件保持共享拍点。远端动作可近似，以回镜连续、一次结算、编辑和存档一致验收；详见蓝图第八章第5项，当前代码尚需实现这些进一步简化。
 - 验证：Godot Compatibility，1440×900；选相关脚本一次CPU/一次实窗，GPU回读检查须运行OpenGL，不能用headless结果替代。不要跑九入口冷启动或整库哈希。
 - 画面缺陷：两个同宽道路终端按普通转弯衔接，三角闭环角部不再额外扩口；T/X路口保留。巨大彩色面仍开放；用户记得起点为几屋小河湾，优先从小样例复现。F10保存截图/城镇/相机/生活现场到 `user://render_diagnostics/`，不覆盖个人存档。
 - 音乐：12长轨+4短槽/6声像总线，另2自然声节点；PitchPluck按真实house_era选时代乐器，.42秒短音/.6秒共享拍钟窗光，田园仍有五主题；跨时代Reply按实际源风貌选木拨弦/羽管键琴/钢琴/毡音钢琴，田园内部对答保留五主题。银行为12长+307短样本，`city_creation_bank_cache.gd`读取预编译PCM。修改合成源后运行 `tools/bake_creation_music_bank.gd`，旧银行自动移入废弃。
