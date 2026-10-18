@@ -43,6 +43,14 @@ func _compare(city:RefCounted,decorator:RefCounted)->bool:
 		for point:Vector2 in points:
 			if decorator._clear(city,city.roads[0],point,radius)!=_reference(city,city.roads[0],point,radius,doors):
 				push_error("clearance differs at %s radius %s"%[point,radius]);return false
+	for reach:float in [.2,1.08,2.4]:
+		for point:Vector2 in points:
+			var expected:=true
+			for entries:Array in doors.values():
+				for entry:Dictionary in entries:
+					if point.distance_to(entry.clearance_at)<reach:expected=false
+			if decorator.doors_clear(city,point,reach)!=expected:
+				push_error("door clearance differs at %s reach %s"%[point,reach]);return false
 	return true
 func _run()->void:
 	var city:=Fixture.build(300,true);var decorator:=Promenade.new();var began:=Time.get_ticks_usec()

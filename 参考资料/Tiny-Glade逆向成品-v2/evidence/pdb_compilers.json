@@ -1,0 +1,156 @@
+[
+  {
+    "producer": "clang LLVM (rustc version 1.95.0 (59807616e 2026-04-14))",
+    "machine": 208,
+    "version_parts": [
+      1,
+      95,
+      0,
+      0,
+      22012,
+      0,
+      0,
+      0
+    ],
+    "flags": "0x15",
+    "record_count": 4982,
+    "distinct_module_stream_count": 4982,
+    "example_modules": [
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/deps/tiny_glade.05667nta4vd7m53gnjw9717cp.1s6fs6d.rcgu.o",
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/deps/tiny_glade.062g9dp6oitcd4e4g2k3fj9gd.1s6fs6d.rcgu.o",
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/deps/tiny_glade.06fr03ez0c72mwxloxe5w5fgn.1s6fs6d.rcgu.o"
+    ]
+  },
+  {
+    "producer": "clang version 22.1.8",
+    "machine": 208,
+    "version_parts": [
+      22,
+      1,
+      8,
+      0,
+      22018,
+      0,
+      0,
+      0
+    ],
+    "flags": "0x0",
+    "record_count": 67,
+    "distinct_module_stream_count": 67,
+    "example_modules": [
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/build/lcms2-sys-67d440f4d587be96/out/713e2796ca293819-cmsxform.o",
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/build/lcms2-sys-67d440f4d587be96/out/713e2796ca293819-cmsio0.o",
+      "/home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/build/lcms2-sys-67d440f4d587be96/out/713e2796ca293819-cmsvirt.o"
+    ]
+  },
+  {
+    "producer": "Microsoft (R) Optimizing Compiler",
+    "machine": 208,
+    "version_parts": [
+      19,
+      44,
+      35207,
+      1,
+      19,
+      44,
+      35207,
+      1
+    ],
+    "flags": "0x6001",
+    "record_count": 23,
+    "distinct_module_stream_count": 23,
+    "example_modules": [
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\std_type_info_static.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\fltused.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\tlssup.obj"
+    ]
+  },
+  {
+    "producer": "Microsoft (R) Macro Assembler",
+    "machine": 208,
+    "version_parts": [
+      0,
+      0,
+      0,
+      0,
+      14,
+      44,
+      35207,
+      1
+    ],
+    "flags": "0x3",
+    "record_count": 4,
+    "distinct_module_stream_count": 4,
+    "example_modules": [
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\chkstk.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\amdsecgs.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\guard_dispatch.obj"
+    ]
+  },
+  {
+    "producer": "Microsoft (R) Optimizing Compiler",
+    "machine": 208,
+    "version_parts": [
+      19,
+      44,
+      35207,
+      1,
+      19,
+      44,
+      35207,
+      1
+    ],
+    "flags": "0x6000",
+    "record_count": 10,
+    "distinct_module_stream_count": 10,
+    "example_modules": [
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\gs_cookie.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\gs_report.obj",
+      "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\amd64\\loadcfg.obj"
+    ]
+  },
+  {
+    "producer": "Intel(r) Implicit SPMD Program Compiler (Intel(r) ISPC), 1.20.0 (build commit f8a23fc90425b1e8 @ 20230505, LLVM 15.0.7)",
+    "machine": 208,
+    "version_parts": [
+      1,
+      20,
+      0,
+      0,
+      15007,
+      0,
+      0,
+      0
+    ],
+    "flags": "0x1",
+    "record_count": 6,
+    "distinct_module_stream_count": 6,
+    "example_modules": [
+      "D:\\a\\intel-tex-rs-2\\intel-tex-rs-2\\target\\debug\\build\\intel_tex_2-cc614ee0c51aa035\\out\\kernel_ispc_avx512skx.o",
+      "D:\\a\\intel-tex-rs-2\\intel-tex-rs-2\\target\\debug\\build\\intel_tex_2-cc614ee0c51aa035\\out\\kernel_ispc_avx512knl.o",
+      "D:\\a\\intel-tex-rs-2\\intel-tex-rs-2\\target\\debug\\build\\intel_tex_2-cc614ee0c51aa035\\out\\kernel_ispc_avx2.o"
+    ]
+  },
+  {
+    "producer": "LLVM Linker",
+    "machine": 208,
+    "version_parts": [
+      0,
+      0,
+      0,
+      0,
+      14,
+      10,
+      25019,
+      0
+    ],
+    "flags": "0x7",
+    "record_count": 225,
+    "distinct_module_stream_count": 17,
+    "example_modules": [
+      "Import:kernel32.dll",
+      "Import:USER32.dll",
+      "Import:GDI32.dll"
+    ]
+  }
+]

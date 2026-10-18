@@ -1,0 +1,146 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                512,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_24" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "range_start",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "range_end",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "draw_list_index",
+                    "type" : "uint",
+                    "offset" : 8
+                }
+            ]
+        },
+        "_60" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_379" : {
+            "name" : "DrawIndexedIndirectCommand_natural",
+            "members" : [
+                {
+                    "name" : "count",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "instanceCount",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "firstIndex",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "vertexOffset",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "firstInstance",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_381" : {
+            "name" : "draw_commands",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "_379",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 20
+                }
+            ]
+        },
+        "_384" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "draw_indirect_buffer_offset",
+                    "type" : "int",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_60",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_381",
+            "name" : "draw_commands",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_384",
+            "name" : "GlobalParams_natural",
+            "block_size" : 4,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_24",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

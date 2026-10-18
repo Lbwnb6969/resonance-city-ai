@@ -1,0 +1,570 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_24" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "instance_buffer_addr",
+                    "type" : "_8",
+                    "offset" : 0,
+                    "physical_pointer" : true
+                },
+                {
+                    "name" : "world_subset",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "input_instance_count",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "draw_list_index_base",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_206" : {
+            "name" : "MeshAtlasPartInfo_natural",
+            "members" : [
+                {
+                    "name" : "first_index",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "index_count",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "bounding_sphere_radius",
+                    "type" : "float",
+                    "offset" : 8
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "uint",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_204" : {
+            "name" : "_Array_natural_MeshAtlasPartInfo1024",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "_206",
+                    "array" : [
+                        1024
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_210" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_204",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16384
+                }
+            ]
+        },
+        "_266" : {
+            "name" : "CurvedHalftimberInstanceData_natural",
+            "members" : [
+                {
+                    "name" : "position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "color_id",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "radius0",
+                    "type" : "float",
+                    "offset" : 16
+                },
+                {
+                    "name" : "radius1",
+                    "type" : "float",
+                    "offset" : 20
+                },
+                {
+                    "name" : "angle0",
+                    "type" : "float",
+                    "offset" : 24
+                },
+                {
+                    "name" : "angle1",
+                    "type" : "float",
+                    "offset" : 28
+                },
+                {
+                    "name" : "is_straight",
+                    "type" : "int",
+                    "offset" : 32
+                },
+                {
+                    "name" : "is_xz",
+                    "type" : "int",
+                    "offset" : 36
+                },
+                {
+                    "name" : "plank_depth",
+                    "type" : "float",
+                    "offset" : 40
+                },
+                {
+                    "name" : "caps",
+                    "type" : "int",
+                    "offset" : 44
+                },
+                {
+                    "name" : "mesh_atlas_part_idx",
+                    "type" : "int",
+                    "offset" : 48
+                },
+                {
+                    "name" : "seed",
+                    "type" : "uint",
+                    "offset" : 52
+                },
+                {
+                    "name" : "flags",
+                    "type" : "uint",
+                    "offset" : 56
+                },
+                {
+                    "name" : "wall_slot_id",
+                    "type" : "uint",
+                    "offset" : 60
+                },
+                {
+                    "name" : "window_cut_buffer_address",
+                    "type" : "uvec2",
+                    "offset" : 64
+                },
+                {
+                    "name" : "window_cut_list",
+                    "type" : "uint",
+                    "offset" : 72
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "uint",
+                    "offset" : 76
+                }
+            ]
+        },
+        "_269" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_266",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 80
+                }
+            ]
+        },
+        "_474" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_696" : {
+            "name" : "NaniDrawListInfo_natural",
+            "members" : [
+                {
+                    "name" : "global_instance_offset",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_699" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_696",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_799" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "hzb_tex_inner_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_920" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_934" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_975" : {
+            "name" : "GpuFilteredInstanceMeta_natural",
+            "members" : [
+                {
+                    "name" : "raw",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_978" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_975",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_8" : {
+            "name" : "uint",
+            "members" : [
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2DArray",
+            "name" : "hzb_tex",
+            "set" : 0,
+            "binding" : 9
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_210",
+            "name" : "atlas_part_info",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_269",
+            "name" : "instance_buffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 10
+        },
+        {
+            "type" : "_699",
+            "name" : "draw_list_info",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 8
+        },
+        {
+            "type" : "_920",
+            "name" : "next_visibility_bitmask",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 7
+        },
+        {
+            "type" : "_934",
+            "name" : "prev_visibility_bitmask",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 6
+        },
+        {
+            "type" : "_920",
+            "name" : "filtered_instance_allocator_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "_920",
+            "name" : "filtered_instance_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_978",
+            "name" : "filtered_instance_meta_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 4
+        },
+        {
+            "type" : "_920",
+            "name" : "output_histogram",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 5
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_474",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 5,
+            "binding" : 0
+        },
+        {
+            "type" : "_799",
+            "name" : "GlobalParams_natural",
+            "block_size" : 8,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_24",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

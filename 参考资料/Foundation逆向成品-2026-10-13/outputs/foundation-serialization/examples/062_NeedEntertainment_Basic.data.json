@@ -1,0 +1,451 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Basic.data",
+  "absolute_offset": 1513704,
+  "length": 1168,
+  "sha256": "868b3c0a66c92d1f0a372772dcf4fca12a8b3c66af8a57378f3bb67b5d451528",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Basic.data",
+    "id": "dc91f273-42b7-41f6-af5b-0d783d91a390",
+    "type": "PlaCAssetAgentNeedTypeResource",
+    "scriptingId": "NEED_ESSENTIAL_ENTERTAINMENT"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Icon": {
+        "@": {
+          "value": "46e67208-ed57-4cbc-ba2c-8a322814a75e"
+        }
+      },
+      "NeedTypeName": {
+        "@": {
+          "value": "ENTERTAINMENT"
+        }
+      },
+      "NeedTypeDescription": {
+        "@": {
+          "value": "ENTERTAINMENT_DESC"
+        }
+      },
+      "FillDurationInSeconds": {
+        "@": {
+          "value": 630.0
+        }
+      },
+      "FillRate": {
+        "@": {
+          "value": 630.0
+        }
+      },
+      "GracePeriod": {
+        "@": {
+          "value": 300
+        }
+      },
+      "DaysBeforeReapplyingHappinessFactor": {
+        "@": {
+          "value": 30
+        }
+      },
+      "DelayAfterUnsuccessfulFill": {
+        "@": {
+          "value": 60.0
+        }
+      },
+      "IsUnique": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsNeedFirstConsumptionBeforeLacking": {
+        "@": {
+          "value": false
+        }
+      },
+      "HappinessFactor": {
+        "@": {
+          "value": "800f1e3d-528c-4d8d-ac63-f6135affd629"
+        }
+      },
+      "NeedTypeList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "value": "TAVERN"
+            }
+          }
+        ]
+      },
+      "RestrictToLocalProviders": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsRequiringConsumeInteractiveLocation": {
+        "@": {
+          "value": false
+        }
+      },
+      "ResourceNeedActivityMessage": {
+        "@": {
+          "type": "PlaCDataResourceFetchingActivityMessage"
+        },
+        "ControlString": {
+          "@": {
+            "value": "FETCHING_RESOURCE_X_AT_Y"
+          }
+        },
+        "ActivityMessageParameters": {
+          "@": {},
+          "RESOURCE": {
+            "@": {
+              "value": true
+            }
+          },
+          "DEPOT": {
+            "@": {
+              "value": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Icon",
+      "value",
+      "NeedTypeName",
+      "NeedTypeDescription",
+      "FillDurationInSeconds",
+      "FillRate",
+      "GracePeriod",
+      "DaysBeforeReapplyingHappinessFactor",
+      "DelayAfterUnsuccessfulFill",
+      "IsUnique",
+      "IsNeedFirstConsumptionBeforeLacking",
+      "HappinessFactor",
+      "NeedTypeList",
+      "Item",
+      "RestrictToLocalProviders",
+      "IsRequiringConsumeInteractiveLocation",
+      "ResourceNeedActivityMessage",
+      "type",
+      "ControlString",
+      "ActivityMessageParameters",
+      "RESOURCE",
+      "DEPOT"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Icon",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "46e67208-ed57-4cbc-ba2c-8a322814a75e",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeName",
+            "offset": 80,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "ENTERTAINMENT",
+                "offset": 96
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeDescription",
+            "offset": 122,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "ENTERTAINMENT_DESC",
+                "offset": 138
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "FillDurationInSeconds",
+            "offset": 169,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 630.0,
+                "offset": 185
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "FillRate",
+            "offset": 201,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 630.0,
+                "offset": 217
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "GracePeriod",
+            "offset": 233,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 300,
+                "offset": 249
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DaysBeforeReapplyingHappinessFactor",
+            "offset": 265,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 30,
+                "offset": 281
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DelayAfterUnsuccessfulFill",
+            "offset": 297,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 60.0,
+                "offset": 313
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsUnique",
+            "offset": 329,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 345
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsNeedFirstConsumptionBeforeLacking",
+            "offset": 361,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 377
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HappinessFactor",
+            "offset": 393,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "800f1e3d-528c-4d8d-ac63-f6135affd629",
+                "offset": 409
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeList",
+            "offset": 437,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 453,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "TAVERN",
+                    "offset": 469
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "RestrictToLocalProviders",
+            "offset": 488,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 504
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsRequiringConsumeInteractiveLocation",
+            "offset": 520,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 536
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ResourceNeedActivityMessage",
+            "offset": 552,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataResourceFetchingActivityMessage",
+                "offset": 568
+              }
+            ],
+            "children": [
+              {
+                "name": "ControlString",
+                "offset": 620,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "FETCHING_RESOURCE_X_AT_Y",
+                    "offset": 636
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "ActivityMessageParameters",
+                "offset": 673,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "RESOURCE",
+                    "offset": 689,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 705
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "DEPOT",
+                    "offset": 721,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 737
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "record_count": 40,
+    "tag_counts": {
+      "0": 3,
+      "8": 2,
+      "7": 5,
+      "4": 3,
+      "6": 6
+    }
+  },
+  "references": [
+    {
+      "property": "/object/Icon/@value",
+      "uuid": "46e67208-ed57-4cbc-ba2c-8a322814a75e",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/Shared Textures/Icons/Needs/Icon_Need_Entertainment_16px.png",
+          "id": "46e67208-ed57-4cbc-ba2c-8a322814a75e",
+          "scriptingId": "ICON_NEED_ENTERTAINMENT"
+        }
+      ]
+    },
+    {
+      "property": "/object/HappinessFactor/@value",
+      "uuid": "800f1e3d-528c-4d8d-ac63-f6135affd629",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Agent/HappinessFactors/EntertainmentFail.data",
+          "id": "800f1e3d-528c-4d8d-ac63-f6135affd629",
+          "type": "PlaCAssetHappinessFactor",
+          "scriptingId": "HAPPINESS_FACTOR_LACK_ENTERTAINMENT"
+        }
+      ]
+    }
+  ]
+}

@@ -113,8 +113,9 @@ func close_panel() -> void:
 	panel.hide();close_button.release_focus();demo.preview_key=""
 
 func refresh(notify: bool=true) -> void:
-	var earned: Array=demo.state.refresh_growth()
 	rows=Growth.report(demo.state)
+	var earned: Array=demo.state.refresh_growth(rows)
+	if not earned.is_empty():rows=Growth.report(demo.state)
 	era_label.text=demo.state.Eras.journal(demo.state)
 	var stage:=0
 	for row: Dictionary in rows:

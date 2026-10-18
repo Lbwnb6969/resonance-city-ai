@@ -22,6 +22,7 @@ var _max_step_ms := 0.0
 var _main_ms := 0.0
 var _published_snapshot: Dictionary = {}
 var retired_values:Array=[]
+var retired_solvers:Array[RefCounted]=[]
 var retired_contexts:Array[Node3D]=[]
 var _task_peak_ms:Dictionary={}
 var _task_max_units:Dictionary={}
@@ -45,7 +46,7 @@ func _account_work(ms:float)->void:
 	_frame_work_ms+=ms
 	stats["max_frame_work_ms"]=maxf(float(stats.get("max_frame_work_ms",0.)),_frame_work_ms)
 
-func retirement_pending()->bool:return not retired_values.is_empty() or not retired_contexts.is_empty()
+func retirement_pending()->bool:return not retired_values.is_empty() or not retired_contexts.is_empty() or not retired_solvers.is_empty()
 
 func retire_idle()->void:
 	if not retirement_pending() or Engine.get_process_frames()==_retirement_blocked_frame:return
@@ -55,7 +56,9 @@ func retire_idle()->void:
 	var available:=minf(.5,remaining)
 	if available<.1:return
 	var began:=Time.get_ticks_usec()
-	if context_only:_dispose_context(retired_contexts.pop_back())
+	if context_only:
+		if not retired_solvers.is_empty():retired_solvers.pop_back()
+		else:_dispose_context(retired_contexts.pop_back())
 	else:
 		while not retired_values.is_empty() and float(Time.get_ticks_usec()-began)/1000.<available:retired_values.pop_back()
 	var elapsed:=float(Time.get_ticks_usec()-began)/1000.
@@ -63,7 +66,7 @@ func retire_idle()->void:
 	_main_ms+=elapsed;stats["main_ms"]=_main_ms
 	stats["retirement_total_ms"]=float(stats.get("retirement_total_ms",0.))+elapsed
 	stats["retirement_max_ms"]=maxf(float(stats.get("retirement_max_ms",0.)),elapsed)
-	stats["retirement_pending"]=retired_values.size()+retired_contexts.size()
+	stats["retirement_pending"]=retired_values.size()+retired_contexts.size()+retired_solvers.size()
 
 func _merge_value_cache(target:Dictionary,incoming:Dictionary)->void:
 	# The old block's records are no longer used by the published geometry.
@@ -82,12 +85,17 @@ func _copy_fields(source: Object, target: Object, fields: Array) -> void:
 		var value: Variant = source.get(field)
 		target.set(field,value.duplicate(true) if value is Dictionary or value is Array else value)
 
-func _context(owner: Node3D) -> Node3D:
+func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	# Constructors run on the main thread. No render resource is copied into
 	# the worker context, and State's mutable frontage cache starts empty.
 	var context: Node3D = owner.get_script().new()
 	var city := State.new()
-	_copy_fields(owner.state,city,["houses","roads","plants","waters","terrain_strokes","districts","musical_links","house_improvements","house_culture","house_clockwork","era_unlocks","revision"])
+	# The change snapshot is already detached from the owner. Authored rows
+	# remain read only throughout preparation, so capture them only once.
+	city.houses.assign(snapshot.houses);city.roads.assign(snapshot.roads)
+	city.plants.assign(snapshot.plants);city.waters.assign(snapshot.waters)
+	city.terrain_strokes.assign(snapshot.terrain)
+	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","era_unlocks","revision"])
 	context.state = city
 	city._ground_terrain.copy_cache_from(owner.state._ground_terrain)
 	city._ground_revision = owner.state._ground_revision
@@ -112,7 +120,10 @@ func _context(owner: Node3D) -> Node3D:
 	context.water_fingerprint = owner.water_fingerprint
 	context.road_layout_signature = owner.road_layout_signature
 	context.vegetation_obstacle_signature = owner.vegetation_obstacle_signature
-	_copy_fields(owner,context,ROAD_FIELDS+VEGETATION_FIELDS+["house_fingerprints","road_fingerprints"])
+	# These maps replace completed records; layout rebuilds clear only their
+	# private top-level containers. Nested road geometry is immutable.
+	for field:String in ROAD_FIELDS+VEGETATION_FIELDS+["house_fingerprints","road_fingerprints"]:
+		context.set(field,Dictionary(owner.get(field)).duplicate())
 	context.meadow = owner.Meadow.new()
 	context.meadow.state = city
 	context.meadow.record_only = true
@@ -136,7 +147,8 @@ func request(owner: Node3D) -> int:
 	generation += 1
 	_discard_staging()
 	if queued != null: _dispose_context(queued)
-	queued = _context(owner)
+	queued = _context(owner,current_snapshot)
+	queued.set_meta("snapshot",current_snapshot)
 	queued.set_meta("generation",generation)
 	queued.set_meta("changes",changes)
 	_request_ms = float(Time.get_ticks_usec()-start)/1000.0
@@ -182,6 +194,7 @@ func _work(context: Node3D) -> Dictionary:
 		context.road_join_signatures.clear()
 		context._prepare_road_layout()
 	context.path_pebbles.prepare(context.state)
+	context.promenade._prepare_clearance(context.state)
 	var houses: Array = []
 	var roads: Array = []
 	for house: Dictionary in context.state.houses:
@@ -535,11 +548,14 @@ func _commit(owner: Node3D) -> void:
 	# The worker has joined and this staging context is retired below. Move
 	# its complete derived solvers instead of cloning every road profile and
 	# terrain history again inside the atomic publication frame.
+	retired_solvers.append(owner.state._ground_terrain)
+	retired_solvers.append(owner.state._terrain_protection)
 	owner.state._ground_terrain=staging.state._ground_terrain
 	owner.state._ground_revision = owner.state.revision
 	owner.state._raw_ground_revision = owner.state.revision
 	owner.state._road_heights=staging.state._road_heights
-	owner.state._terrain_protection.copy_cache_from(staging.state._terrain_protection)
+	owner.state._terrain_protection=staging.state._terrain_protection
+	owner.state._terrain_protection.cafes.rebind_city(staging.state,owner.state)
 	owner.state._courtyards=staging.state._courtyards
 	owner.state._courtyard_plans_cache=staging.state._courtyard_plans_cache
 	owner.state._courtyard_revision=owner.state.revision
@@ -682,15 +698,14 @@ func _commit(owner: Node3D) -> void:
 	owner.shore.last_changed = staging.shore.last_changed
 	owner.shore.elapsed_ms = staging.shore.elapsed_ms
 	owner.shore._geometry = staging.shore._geometry
-	owner.path_pebbles._geometry = staging.path_pebbles._geometry
-	owner.path_pebbles._record_cache = staging.path_pebbles._record_cache
-	owner.path_pebbles._layout_cache = staging.path_pebbles._layout_cache
+	for field:String in ["_geometry","_record_cache","_layout_cache","footprints","doors","segments"]:
+		var prior:Variant=owner.path_pebbles.get(field);var incoming:Variant=staging.path_pebbles.get(field)
+		if not is_same(prior,incoming):retired_values.append(prior)
+		owner.path_pebbles.set(field,incoming)
 	owner.path_pebbles.batches.append_array(staging.path_pebbles.batches)
 	owner.path_pebbles.apply_view_detail()
 	owner.path_pebbles.city = owner.state
-	owner.path_pebbles.footprints = staging.path_pebbles.footprints
-	owner.path_pebbles.doors = staging.path_pebbles.doors
-	owner.path_pebbles.segments = staging.path_pebbles.segments
+	owner.promenade.adopt_clearance(staging.promenade,owner.state)
 	stages.caches_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	# A newer held brush may already be on screen while this older committed
@@ -732,7 +747,8 @@ func _commit(owner: Node3D) -> void:
 	owner.rebuild_stats["change_labels"] = committed_changes.get("labels",[]).duplicate()
 	owner.rebuild_stats["change_counts"] = committed_changes.get("counts",{}).duplicate()
 	committed_generation = generation
-	_published_snapshot = ChangeSet.snapshot(owner.state)
+	retired_values.append(_published_snapshot)
+	_published_snapshot = staging.get_meta("snapshot")
 	_discard_staging(true)
 	stages.dispose_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stats.commit_stages = stages
@@ -770,5 +786,6 @@ func close() -> void:
 		_dispose_context(running)
 		running = null
 	retired_values.clear()
+	retired_solvers.clear()
 	for context:Node3D in retired_contexts:_dispose_context(context)
 	retired_contexts.clear()

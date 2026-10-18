@@ -1,0 +1,423 @@
+000000014280dd10  55                       push     rbp
+000000014280dd11  4157                     push     r15
+000000014280dd13  4156                     push     r14
+000000014280dd15  4155                     push     r13
+000000014280dd17  4154                     push     r12
+000000014280dd19  56                       push     rsi
+000000014280dd1a  57                       push     rdi
+000000014280dd1b  53                       push     rbx
+000000014280dd1c  4881ec78030000           sub      rsp, 0x378
+000000014280dd23  488dac2480000000         lea      rbp, [rsp + 0x80]
+000000014280dd2b  440f298de0020000         movaps   xmmword ptr [rbp + 0x2e0], xmm9
+000000014280dd33  440f2985d0020000         movaps   xmmword ptr [rbp + 0x2d0], xmm8
+000000014280dd3b  0f29bdc0020000           movaps   xmmword ptr [rbp + 0x2c0], xmm7
+000000014280dd42  0f29b5b0020000           movaps   xmmword ptr [rbp + 0x2b0], xmm6
+000000014280dd49  48c785a8020000feffffff   mov      qword ptr [rbp + 0x2a8], 0xfffffffffffffffe
+000000014280dd54  488b19                   mov      rbx, qword ptr [rcx]
+000000014280dd57  488b4908                 mov      rcx, qword ptr [rcx + 8]
+000000014280dd5b  4c8b1b                   mov      r11, qword ptr [rbx]
+000000014280dd5e  4531d2                   xor      r10d, r10d
+000000014280dd61  4c89d8                   mov      rax, r11
+000000014280dd64  482b4118                 sub      rax, qword ptr [rcx + 0x18]
+000000014280dd68  490f42c2                 cmovb    rax, r10
+000000014280dd6c  4c2b5938                 sub      r11, qword ptr [rcx + 0x38]
+000000014280dd70  4d0f42da                 cmovb    r11, r10
+000000014280dd74  4889c7                   mov      rdi, rax
+000000014280dd77  48c1e706                 shl      rdi, 6
+000000014280dd7b  48037908                 add      rdi, qword ptr [rcx + 8]
+000000014280dd7f  4c8b7110                 mov      r14, qword ptr [rcx + 0x10]
+000000014280dd83  4929c6                   sub      r14, rax
+000000014280dd86  4d0f42f2                 cmovb    r14, r10
+000000014280dd8a  be08000000               mov      esi, 8
+000000014280dd8f  480f42fe                 cmovb    rdi, rsi
+000000014280dd93  4c89d8                   mov      rax, r11
+000000014280dd96  48c1e006                 shl      rax, 6
+000000014280dd9a  48034128                 add      rax, qword ptr [rcx + 0x28]
+000000014280dd9e  4c8b7930                 mov      r15, qword ptr [rcx + 0x30]
+000000014280dda2  4d29df                   sub      r15, r11
+000000014280dda5  480f42c6                 cmovb    rax, rsi
+000000014280dda9  4c8b9d60030000           mov      r11, qword ptr [rbp + 0x360]
+000000014280ddb0  4d0f42fa                 cmovb    r15, r10
+000000014280ddb4  488b4940                 mov      rcx, qword ptr [rcx + 0x40]
+000000014280ddb8  4c29f9                   sub      rcx, r15
+000000014280ddbb  4c29f1                   sub      rcx, r14
+000000014280ddbe  48899d30020000           mov      qword ptr [rbp + 0x230], rbx
+000000014280ddc5  48890b                   mov      qword ptr [rbx], rcx
+000000014280ddc8  49c1e606                 shl      r14, 6
+000000014280ddcc  4901fe                   add      r14, rdi
+000000014280ddcf  4c89b550020000           mov      qword ptr [rbp + 0x250], r14
+000000014280ddd6  49c1e706                 shl      r15, 6
+000000014280ddda  4901c7                   add      r15, rax
+000000014280dddd  4c89bd58020000           mov      qword ptr [rbp + 0x258], r15
+000000014280dde4  488b1a                   mov      rbx, qword ptr [rdx]
+000000014280dde7  418b491c                 mov      ecx, dword ptr [r9 + 0x1c]
+000000014280ddeb  898da0020000             mov      dword ptr [rbp + 0x2a0], ecx
+000000014280ddf1  498b09                   mov      rcx, qword ptr [r9]
+000000014280ddf4  498b5110                 mov      rdx, qword ptr [r9 + 0x10]
+000000014280ddf8  48899560020000           mov      qword ptr [rbp + 0x260], rdx
+000000014280ddff  418b531c                 mov      edx, dword ptr [r11 + 0x1c]
+000000014280de03  899598020000             mov      dword ptr [rbp + 0x298], edx
+000000014280de09  498b13                   mov      rdx, qword ptr [r11]
+000000014280de0c  4d8b4b10                 mov      r9, qword ptr [r11 + 0x10]
+000000014280de10  4c898d40020000           mov      qword ptr [rbp + 0x240], r9
+000000014280de17  458b481c                 mov      r9d, dword ptr [r8 + 0x1c]
+000000014280de1b  44898d9c020000           mov      dword ptr [rbp + 0x29c], r9d
+000000014280de22  498b30                   mov      rsi, qword ptr [r8]
+000000014280de25  4d8b4010                 mov      r8, qword ptr [r8 + 0x10]
+000000014280de29  4c898548020000           mov      qword ptr [rbp + 0x248], r8
+000000014280de30  440f280d18086400         movaps   xmm9, xmmword ptr [rip + 0x640818]
+000000014280de38  4c8d7508                 lea      r14, [rbp + 8]
+000000014280de3c  48898d90020000           mov      qword ptr [rbp + 0x290], rcx
+000000014280de43  4883c120                 add      rcx, 0x20
+000000014280de47  48898d70020000           mov      qword ptr [rbp + 0x270], rcx
+000000014280de4e  48899578020000           mov      qword ptr [rbp + 0x278], rdx
+000000014280de55  488d4a20                 lea      rcx, [rdx + 0x20]
+000000014280de59  48898d68020000           mov      qword ptr [rbp + 0x268], rcx
+000000014280de60  48899d38020000           mov      qword ptr [rbp + 0x238], rbx
+000000014280de67  eb45                     jmp      0x14280deae
+000000014280de69  0f1f8000000000           nop      dword ptr [rax]
+000000014280de70  488b4628                 mov      rax, qword ptr [rsi + 0x28]
+000000014280de74  4c89f9                   mov      rcx, r15
+000000014280de77  48c1e105                 shl      rcx, 5
+000000014280de7b  4c892408                 mov      qword ptr [rax + rcx], r12
+000000014280de7f  48897c0808               mov      qword ptr [rax + rcx + 8], rdi
+000000014280de84  4c896c0810               mov      qword ptr [rax + rcx + 0x10], r13
+000000014280de89  c644081800               mov      byte ptr [rax + rcx + 0x18], 0
+000000014280de8e  49ffc7                   inc      r15
+000000014280de91  4c897e30                 mov      qword ptr [rsi + 0x30], r15
+000000014280de95  48ff4640                 inc      qword ptr [rsi + 0x40]
+000000014280de99  488bbd80020000           mov      rdi, qword ptr [rbp + 0x280]
+000000014280dea0  488b8528020000           mov      rax, qword ptr [rbp + 0x228]
+000000014280dea7  488b9d38020000           mov      rbx, qword ptr [rbp + 0x238]
+000000014280deae  4885ff                   test     rdi, rdi
+000000014280deb1  741d                     je       0x14280ded0
+000000014280deb3  483bbd50020000           cmp      rdi, qword ptr [rbp + 0x250]
+000000014280deba  7414                     je       0x14280ded0
+000000014280debc  488d4f40                 lea      rcx, [rdi + 0x40]
+000000014280dec0  48898d80020000           mov      qword ptr [rbp + 0x280], rcx
+000000014280dec7  4989c4                   mov      r12, rax
+000000014280deca  eb2c                     jmp      0x14280def8
+000000014280decc  0f1f4000                 nop      dword ptr [rax]
+000000014280ded0  4885c0                   test     rax, rax
+000000014280ded3  0f8494040000             je       0x14280e36d
+000000014280ded9  483b8558020000           cmp      rax, qword ptr [rbp + 0x258]
+000000014280dee0  0f8487040000             je       0x14280e36d
+000000014280dee6  4c8d6040                 lea      r12, [rax + 0x40]
+000000014280deea  48c7858002000000000000   mov      qword ptr [rbp + 0x280], 0
+000000014280def5  4889c7                   mov      rdi, rax
+000000014280def8  488b8530020000           mov      rax, qword ptr [rbp + 0x230]
+000000014280deff  48ff00                   inc      qword ptr [rax]
+000000014280df02  4c8b6f08                 mov      r13, qword ptr [rdi + 8]
+000000014280df06  4889d9                   mov      rcx, rbx
+000000014280df09  4c89ea                   mov      rdx, r13
+000000014280df0c  4c8d0585e5d800           lea      r8, [rip + 0xd8e585]
+000000014280df13  e8687034fe               call     0x140b54f80 ; country_core::resources::walls::public_walls::PublicWalls::get | _ZN12country_core9resources5walls12public_walls11PublicWalls3get17hba8f730dba42ddddE
+000000014280df18  4885c0                   test     rax, rax
+000000014280df1b  0f84aa040000             je       0x14280e3cb
+000000014280df21  4989c7                   mov      r15, rax
+000000014280df24  4889d9                   mov      rcx, rbx
+000000014280df27  4c89ea                   mov      rdx, r13
+000000014280df2a  4c8d0597e5d800           lea      r8, [rip + 0xd8e597]
+000000014280df31  e84a7034fe               call     0x140b54f80 ; country_core::resources::walls::public_walls::PublicWalls::get | _ZN12country_core9resources5walls12public_walls11PublicWalls3get17hba8f730dba42ddddE
+000000014280df36  4885c0                   test     rax, rax
+000000014280df39  0f8498040000             je       0x14280e3d7
+000000014280df3f  8b8858020000             mov      ecx, dword ptr [rax + 0x258]
+000000014280df45  83f902                   cmp      ecx, 2
+000000014280df48  0f8351040000             jae      0x14280e39f
+000000014280df4e  4c89a528020000           mov      qword ptr [rbp + 0x228], r12
+000000014280df55  488b906c020000           mov      rdx, qword ptr [rax + 0x26c]
+000000014280df5c  4c8d85a0010000           lea      r8, [rbp + 0x1a0]
+000000014280df63  49895010                 mov      qword ptr [r8 + 0x10], rdx
+000000014280df67  0f10805c020000           movups   xmm0, xmmword ptr [rax + 0x25c]
+000000014280df6e  410f1100                 movups   xmmword ptr [r8], xmm0
+000000014280df72  0fb6909f020000           movzx    edx, byte ptr [rax + 0x29f]
+000000014280df79  440fb6a0a3020000         movzx    r12d, byte ptr [rax + 0x2a3]
+000000014280df81  898d9c010000             mov      dword ptr [rbp + 0x19c], ecx
+000000014280df87  4488a5a6020000           mov      byte ptr [rbp + 0x2a6], r12b
+000000014280df8e  8895a5020000             mov      byte ptr [rbp + 0x2a5], dl
+000000014280df94  4c89f9                   mov      rcx, r15
+000000014280df97  e8f42312fe               call     0x140930390 ; country_core::resources::walls::public_wall_state::PublicWallState::max_y | _ZN12country_core9resources5walls17public_wall_state15PublicWallState5max_y17h1995022105bcfb23E
+000000014280df9c  0f28f0                   movaps   xmm6, xmm0
+000000014280df9f  0f104720                 movups   xmm0, xmmword ptr [rdi + 0x20]
+000000014280dfa3  0f104f2c                 movups   xmm1, xmmword ptr [rdi + 0x2c]
+000000014280dfa7  0f118d4c010000           movups   xmmword ptr [rbp + 0x14c], xmm1
+000000014280dfae  0f298540010000           movaps   xmmword ptr [rbp + 0x140], xmm0
+000000014280dfb5  8b5f10                   mov      ebx, dword ptr [rdi + 0x10]
+000000014280dfb8  488d8da5020000           lea      rcx, [rbp + 0x2a5]
+000000014280dfbf  4489e2                   mov      edx, r12d
+000000014280dfc2  e8495142fe               call     0x140c33110 ; country_core::resources::walls::inner_wall_state::WallMaterial::gable_roof_style | _ZN12country_core9resources5walls16inner_wall_state12WallMaterial16gable_roof_style17h465c746497d41007E
+000000014280dfc7  8b4f1c                   mov      ecx, dword ptr [rdi + 0x1c]
+000000014280dfca  898dc0010000             mov      dword ptr [rbp + 0x1c0], ecx
+000000014280dfd0  488b4f14                 mov      rcx, qword ptr [rdi + 0x14]
+000000014280dfd4  48898db8010000           mov      qword ptr [rbp + 0x1b8], rcx
+000000014280dfdb  0f10859c010000           movups   xmm0, xmmword ptr [rbp + 0x19c]
+000000014280dfe2  0f108da8010000           movups   xmm1, xmmword ptr [rbp + 0x1a8]
+000000014280dfe9  0f114dcc                 movups   xmmword ptr [rbp - 0x34], xmm1
+000000014280dfed  0f2945c0                 movaps   xmmword ptr [rbp - 0x40], xmm0
+000000014280dff1  488d8db8010000           lea      rcx, [rbp + 0x1b8]
+000000014280dff8  48894c2438               mov      qword ptr [rsp + 0x38], rcx
+000000014280dffd  88442430                 mov      byte ptr [rsp + 0x30], al
+000000014280e001  895c2428                 mov      dword ptr [rsp + 0x28], ebx
+000000014280e005  f30f11742420             movss    dword ptr [rsp + 0x20], xmm6
+000000014280e00b  488dbde8000000           lea      rdi, [rbp + 0xe8]
+000000014280e012  4889f9                   mov      rcx, rdi
+000000014280e015  4c89ea                   mov      rdx, r13
+000000014280e018  4c8d8540010000           lea      r8, [rbp + 0x140]
+000000014280e01f  4c8d4dc0                 lea      r9, [rbp - 0x40]
+000000014280e023  e8789936fe               call     0x140b779a0 ; country_core::resources::roofs::roof_shape::Roof::new | _ZN12country_core9resources5roofs10roof_shape4Roof3new17hda72712b60d183fbE
+000000014280e028  4889f9                   mov      rcx, rdi
+000000014280e02b  e8609936fe               call     0x140b77990 ; country_core::resources::roofs::roof_shape::Roof::ty | _ZN12country_core9resources5roofs10roof_shape4Roof2ty17h0e4e73686546e1aeE
+000000014280e030  89c3                     mov      ebx, eax
+000000014280e032  4889f9                   mov      rcx, rdi
+000000014280e035  e8269b36fe               call     0x140b77b60 ; country_core::resources::roofs::roof_shape::Roof::is_gable | _ZN12country_core9resources5roofs10roof_shape4Roof8is_gable17h43da426e1cedc684E
+000000014280e03a  84c0                     test     al, al
+000000014280e03c  745d                     je       0x14280e09b
+000000014280e03e  4c8bbde8000000           mov      r15, qword ptr [rbp + 0xe8]
+000000014280e045  8b85a0020000             mov      eax, dword ptr [rbp + 0x2a0]
+000000014280e04b  488b8d60020000           mov      rcx, qword ptr [rbp + 0x260]
+000000014280e052  8901                     mov      dword ptr [rcx], eax
+000000014280e054  488b8590020000           mov      rax, qword ptr [rbp + 0x290]
+000000014280e05b  488b7830                 mov      rdi, qword ptr [rax + 0x30]
+000000014280e05f  4c8b6040                 mov      r12, qword ptr [rax + 0x40]
+000000014280e063  483b7820                 cmp      rdi, qword ptr [rax + 0x20]
+000000014280e067  750c                     jne      0x14280e075
+000000014280e069  488b8d70020000           mov      rcx, qword ptr [rbp + 0x270]
+000000014280e070  e80b095700               call     0x142d7e980 ; alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global> | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h02b6d67cf6d6f967E
+000000014280e075  488b9590020000           mov      rdx, qword ptr [rbp + 0x290]
+000000014280e07c  488b4228                 mov      rax, qword ptr [rdx + 0x28]
+000000014280e080  4889f9                   mov      rcx, rdi
+000000014280e083  48c1e104                 shl      rcx, 4
+000000014280e087  4c892408                 mov      qword ptr [rax + rcx], r12
+000000014280e08b  4c897c0808               mov      qword ptr [rax + rcx + 8], r15
+000000014280e090  48ffc7                   inc      rdi
+000000014280e093  48897a30                 mov      qword ptr [rdx + 0x30], rdi
+000000014280e097  48ff4240                 inc      qword ptr [rdx + 0x40]
+000000014280e09b  488d8d10020000           lea      rcx, [rbp + 0x210]
+000000014280e0a2  0f28ce                   movaps   xmm1, xmm6
+000000014280e0a5  e8c6321dfe               call     0x1409e1370 ; country_core::resources::roofs::roof_tile_sim::RoofTileSimulation::new | _ZN12country_core9resources5roofs13roof_tile_sim18RoofTileSimulation3new17h562faeaf30af4b67E
+000000014280e0aa  488d8db8010000           lea      rcx, [rbp + 0x1b8]
+000000014280e0b1  e8ba2d1ffe               call     0x140a00e70 ; country_core::resources::roofs::roof_trigger_volume::impl$0::default | _ZN12country_core9resources5roofs19roof_trigger_volume17RoofTriggerVolume3new17h8b1732c561d78e46E
+000000014280e0b6  90                       nop      
+000000014280e0b7  e814271ffe               call     0x140a007d0 ; country_core::resources::roofs::roof_animation::RoofAnimation::new | _ZN12country_core9resources5roofs14roof_animation13RoofAnimation3new17ha651a5484ca305f8E
+000000014280e0bc  90                       nop      
+000000014280e0bd  0f28f8                   movaps   xmm7, xmm0
+000000014280e0c0  440f28c1                 movaps   xmm8, xmm1
+000000014280e0c4  e8f71987fd               call     0x14007fac0 ; log::impl$17::enabled | rancor::impl$20::source
+000000014280e0c9  90                       nop      
+000000014280e0ca  4989d7                   mov      r15, rdx
+000000014280e0cd  48898588020000           mov      qword ptr [rbp + 0x288], rax
+000000014280e0d4  48898500020000           mov      qword ptr [rbp + 0x200], rax
+000000014280e0db  48899508020000           mov      qword ptr [rbp + 0x208], rdx
+000000014280e0e2  31c9                     xor      ecx, ecx
+000000014280e0e4  e8d7310ffe               call     0x1409012c0 ; country_core::LazyTile::from_index | rhapsody::raw::texture::impl$17::into_tex_dim
+000000014280e0e9  90                       nop      
+000000014280e0ea  488dbd70010000           lea      rdi, [rbp + 0x170]
+000000014280e0f1  4889f9                   mov      rcx, rdi
+000000014280e0f4  89c2                     mov      edx, eax
+000000014280e0f6  e855f40efe               call     0x1408fd550 ; country_core::components::drawable::impl$5::from | _ZN157_$LT$country_core..components..drawable..NaniInstanceMeshDesc$u20$as$u20$core..convert..From$LT$country_core..render..nani..mesh_atlas..MeshAtlasPart$GT$$GT$4from17h9f2946cc73c4e025E
+000000014280e0fb  90                       nop      
+000000014280e0fc  c747e800000000           mov      dword ptr [rdi - 0x18], 0
+000000014280e103  48c747e000000000         mov      qword ptr [rdi - 0x20], 0
+000000014280e10b  e8500d87fd               call     0x14007ee60 ; log::impl$17::log | log::impl$17::flush
+000000014280e110  90                       nop      
+000000014280e111  c6858001000007           mov      byte ptr [rbp + 0x180], 7
+000000014280e118  440f298d40010000         movaps   xmmword ptr [rbp + 0x140], xmm9
+000000014280e120  8b0516e8d800             mov      eax, dword ptr [rip + 0xd8e816]
+000000014280e126  8947f4                   mov      dword ptr [rdi - 0xc], eax
+000000014280e129  488b0504e8d800           mov      rax, qword ptr [rip + 0xd8e804]
+000000014280e130  488947ec                 mov      qword ptr [rdi - 0x14], rax
+000000014280e134  488b8538010000           mov      rax, qword ptr [rbp + 0x138]
+000000014280e13b  49894650                 mov      qword ptr [r14 + 0x50], rax
+000000014280e13f  0f108528010000           movups   xmm0, xmmword ptr [rbp + 0x128]
+000000014280e146  410f114640               movups   xmmword ptr [r14 + 0x40], xmm0
+000000014280e14b  0f1085e8000000           movups   xmm0, xmmword ptr [rbp + 0xe8]
+000000014280e152  0f108df8000000           movups   xmm1, xmmword ptr [rbp + 0xf8]
+000000014280e159  0f109508010000           movups   xmm2, xmmword ptr [rbp + 0x108]
+000000014280e160  0f109d18010000           movups   xmm3, xmmword ptr [rbp + 0x118]
+000000014280e167  410f115e30               movups   xmmword ptr [r14 + 0x30], xmm3
+000000014280e16c  410f115620               movups   xmmword ptr [r14 + 0x20], xmm2
+000000014280e171  410f114e10               movups   xmmword ptr [r14 + 0x10], xmm1
+000000014280e176  410f1106                 movups   xmmword ptr [r14], xmm0
+000000014280e17a  0f108510020000           movups   xmm0, xmmword ptr [rbp + 0x210]
+000000014280e181  410f114658               movups   xmmword ptr [r14 + 0x58], xmm0
+000000014280e186  488b8520020000           mov      rax, qword ptr [rbp + 0x220]
+000000014280e18d  49894668                 mov      qword ptr [r14 + 0x68], rax
+000000014280e191  0f1085b8010000           movups   xmm0, xmmword ptr [rbp + 0x1b8]
+000000014280e198  0f108dc8010000           movups   xmm1, xmmword ptr [rbp + 0x1c8]
+000000014280e19f  0f1095d8010000           movups   xmm2, xmmword ptr [rbp + 0x1d8]
+000000014280e1a6  0f109de8010000           movups   xmm3, xmmword ptr [rbp + 0x1e8]
+000000014280e1ad  0f2945c0                 movaps   xmmword ptr [rbp - 0x40], xmm0
+000000014280e1b1  0f294dd0                 movaps   xmmword ptr [rbp - 0x30], xmm1
+000000014280e1b5  0f2955e0                 movaps   xmmword ptr [rbp - 0x20], xmm2
+000000014280e1b9  0f295df0                 movaps   xmmword ptr [rbp - 0x10], xmm3
+000000014280e1bd  488b85f8010000           mov      rax, qword ptr [rbp + 0x1f8]
+000000014280e1c4  48894500                 mov      qword ptr [rbp], rax
+000000014280e1c8  f30f117d78               movss    dword ptr [rbp + 0x78], xmm7
+000000014280e1cd  f3440f11457c             movss    dword ptr [rbp + 0x7c], xmm8
+000000014280e1d3  488b8588020000           mov      rax, qword ptr [rbp + 0x288]
+000000014280e1da  48898580000000           mov      qword ptr [rbp + 0x80], rax
+000000014280e1e1  4c89bd88000000           mov      qword ptr [rbp + 0x88], r15
+000000014280e1e8  0f288580010000           movaps   xmm0, xmmword ptr [rbp + 0x180]
+000000014280e1ef  410f2986c8000000         movaps   xmmword ptr [r14 + 0xc8], xmm0
+000000014280e1f7  0f288540010000           movaps   xmm0, xmmword ptr [rbp + 0x140]
+000000014280e1fe  0f288d50010000           movaps   xmm1, xmmword ptr [rbp + 0x150]
+000000014280e205  0f289560010000           movaps   xmm2, xmmword ptr [rbp + 0x160]
+000000014280e20c  0f289d70010000           movaps   xmm3, xmmword ptr [rbp + 0x170]
+000000014280e213  410f299eb8000000         movaps   xmmword ptr [r14 + 0xb8], xmm3
+000000014280e21b  410f2996a8000000         movaps   xmmword ptr [r14 + 0xa8], xmm2
+000000014280e223  410f298e98000000         movaps   xmmword ptr [r14 + 0x98], xmm1
+000000014280e22b  410f298688000000         movaps   xmmword ptr [r14 + 0x88], xmm0
+000000014280e233  488d8d40010000           lea      rcx, [rbp + 0x140]
+000000014280e23a  488b9568030000           mov      rdx, qword ptr [rbp + 0x368]
+000000014280e241  4c8d45c0                 lea      r8, [rbp - 0x40]
+000000014280e245  4c8d0dace2d800           lea      r9, [rip + 0xd8e2ac]
+000000014280e24c  e89f887bfe               call     0x140fc6af0 ; _ZN8bevy_ecs6system8commands8Commands5spawn17h56d0a410438d853fE | bevy_ecs::system::commands::Commands::spawn<tuple$<country_core::resources::roofs::roof_shape::Roof,country_core::resources::roofs::roof_tile_sim::RoofTileSimulation,country_core::resources::roofs::roof_trigger_volume::RoofTriggerVolume,country_core::resources::roofs::roof_animation::RoofAnimation,country_core::resources::roofs::roof_tiles::RoofTiles,system_roof::utils::components::RoofSpire,system_roof::utils::components::RoofSupportBeams,country_core::components::drawable::NaniBundle<country_core::render::nani::instance_data::StoneFloorInstanceData> > >
+000000014280e251  488bbd40010000           mov      rdi, qword ptr [rbp + 0x140]
+000000014280e258  84db                     test     bl, bl
+000000014280e25a  7414                     je       0x14280e270
+000000014280e25c  4531ff                   xor      r15d, r15d
+000000014280e25f  eb24                     jmp      0x14280e285
+000000014280e261  6666666666662e0f1f840000000000 nop      word ptr cs:[rax + rax]
+000000014280e270  488d8da6020000           lea      rcx, [rbp + 0x2a6]
+000000014280e277  e814170ffe               call     0x1408ff990 ; country_core::resources::session::GladeType::is_flowery | country_core::systems::ui::resources::ui_state::ActiveWidget::is_dragging
+000000014280e27c  8885a7020000             mov      byte ptr [rbp + 0x2a7], al
+000000014280e282  41b706                   mov      r15b, 6
+000000014280e285  488d8d9c010000           lea      rcx, [rbp + 0x19c]
+000000014280e28c  e87f6e27fe               call     0x140a85110 ; country_core::systems::wall::valid_enclosure::ShapeParameters::center | _ZN12country_core7systems4wall15valid_enclosure15ShapeParameters6center17h1b3fc352591345f4E
+000000014280e291  f30f118510020000         movss    dword ptr [rbp + 0x210], xmm0
+000000014280e299  f30f118d14020000         movss    dword ptr [rbp + 0x214], xmm1
+000000014280e2a1  488d8db8010000           lea      rcx, [rbp + 0x1b8]
+000000014280e2a8  488d9510020000           lea      rdx, [rbp + 0x210]
+000000014280e2af  0f28d6                   movaps   xmm2, xmm6
+000000014280e2b2  e889625efe               call     0x140df4540 ; utils::swizzlers::impl$1::xvy | _ZN71_$LT$glam..f32..vec2..Vec2$u20$as$u20$utils..swizzlers..SwizzlerXVY$GT$3xvy17hcb9aa753d52e64e7E
+000000014280e2b7  8b85c0010000             mov      eax, dword ptr [rbp + 0x1c0]
+000000014280e2bd  418946ce                 mov      dword ptr [r14 - 0x32], eax
+000000014280e2c1  488b85b8010000           mov      rax, qword ptr [rbp + 0x1b8]
+000000014280e2c8  498946c6                 mov      qword ptr [r14 - 0x3a], rax
+000000014280e2cc  8b8598020000             mov      eax, dword ptr [rbp + 0x298]
+000000014280e2d2  488b8d40020000           mov      rcx, qword ptr [rbp + 0x240]
+000000014280e2d9  8901                     mov      dword ptr [rcx], eax
+000000014280e2db  488b8578020000           mov      rax, qword ptr [rbp + 0x278]
+000000014280e2e2  4c8b6030                 mov      r12, qword ptr [rax + 0x30]
+000000014280e2e6  488b5840                 mov      rbx, qword ptr [rax + 0x40]
+000000014280e2ea  4c3b6020                 cmp      r12, qword ptr [rax + 0x20]
+000000014280e2ee  750c                     jne      0x14280e2fc
+000000014280e2f0  488b8d68020000           mov      rcx, qword ptr [rbp + 0x268]
+000000014280e2f7  e8e40a5700               call     0x142d7ede0 ; _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h01e56cf28dccb067E | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h02f6c3bd9325fc3fE
+000000014280e2fc  488b9578020000           mov      rdx, qword ptr [rbp + 0x278]
+000000014280e303  488b4228                 mov      rax, qword ptr [rdx + 0x28]
+000000014280e307  4b8d0ca4                 lea      rcx, [r12 + r12*4]
+000000014280e30b  48891cc8                 mov      qword ptr [rax + rcx*8], rbx
+000000014280e30f  44887cc808               mov      byte ptr [rax + rcx*8 + 8], r15b
+000000014280e314  440fb685a7020000         movzx    r8d, byte ptr [rbp + 0x2a7]
+000000014280e31c  448844c809               mov      byte ptr [rax + rcx*8 + 9], r8b
+000000014280e321  0f1045c0                 movups   xmm0, xmmword ptr [rbp - 0x40]
+000000014280e325  0f104dca                 movups   xmm1, xmmword ptr [rbp - 0x36]
+000000014280e329  0f114cc814               movups   xmmword ptr [rax + rcx*8 + 0x14], xmm1
+000000014280e32e  0f1144c80a               movups   xmmword ptr [rax + rcx*8 + 0xa], xmm0
+000000014280e333  49ffc4                   inc      r12
+000000014280e336  4c896230                 mov      qword ptr [rdx + 0x30], r12
+000000014280e33a  48ff4240                 inc      qword ptr [rdx + 0x40]
+000000014280e33e  8b859c020000             mov      eax, dword ptr [rbp + 0x29c]
+000000014280e344  488b8d48020000           mov      rcx, qword ptr [rbp + 0x248]
+000000014280e34b  8901                     mov      dword ptr [rcx], eax
+000000014280e34d  4c8b7e30                 mov      r15, qword ptr [rsi + 0x30]
+000000014280e351  4c8b6640                 mov      r12, qword ptr [rsi + 0x40]
+000000014280e355  4c3b7e20                 cmp      r15, qword ptr [rsi + 0x20]
+000000014280e359  0f8511fbffff             jne      0x14280de70
+000000014280e35f  488d4e20                 lea      rcx, [rsi + 0x20]
+000000014280e363  e878035700               call     0x142d7e6e0 ; _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h06a006fc62d75eccE | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af844f1d04ee6a4E
+000000014280e368  e903fbffff               jmp      0x14280de70
+000000014280e36d  0f28b5b0020000           movaps   xmm6, xmmword ptr [rbp + 0x2b0]
+000000014280e374  0f28bdc0020000           movaps   xmm7, xmmword ptr [rbp + 0x2c0]
+000000014280e37b  440f2885d0020000         movaps   xmm8, xmmword ptr [rbp + 0x2d0]
+000000014280e383  440f288de0020000         movaps   xmm9, xmmword ptr [rbp + 0x2e0]
+000000014280e38b  4881c478030000           add      rsp, 0x378
+000000014280e392  5b                       pop      rbx
+000000014280e393  5f                       pop      rdi
+000000014280e394  5e                       pop      rsi
+000000014280e395  415c                     pop      r12
+000000014280e397  415d                     pop      r13
+000000014280e399  415e                     pop      r14
+000000014280e39b  415f                     pop      r15
+000000014280e39d  5d                       pop      rbp
+000000014280e39e  c3                       ret      
+000000014280e39f  480558020000             add      rax, 0x258
+000000014280e3a5  488945c0                 mov      qword ptr [rbp - 0x40], rax
+000000014280e3a9  488d0530010000           lea      rax, [rip + 0x130]
+000000014280e3b0  488945c8                 mov      qword ptr [rbp - 0x38], rax
+000000014280e3b4  488d0d55e1d800           lea      rcx, [rip + 0xd8e155]
+000000014280e3bb  4c8d059ee1d800           lea      r8, [rip + 0xd8e19e]
+000000014280e3c2  488d55c0                 lea      rdx, [rbp - 0x40]
+000000014280e3c6  e805a05b00               call     0x142dc83d0 ; core::panicking::panic_fmt | _RNvNtCs8icZUrvfcq9_4core9panicking9panic_fmt
+000000014280e3cb  488d0ddee0d800           lea      rcx, [rip + 0xd8e0de]
+000000014280e3d2  e8799d5b00               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+000000014280e3d7  488d0d02e1d800           lea      rcx, [rip + 0xd8e102]
+000000014280e3de  e86d9d5b00               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+000000014280e3e3  cc                       int3     
+000000014280e3e4  6666662e0f1f840000000000 nop      word ptr cs:[rax + rax]
+000000014280e3f0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+000000014280e3f5  55                       push     rbp
+000000014280e3f6  4157                     push     r15
+000000014280e3f8  4156                     push     r14
+000000014280e3fa  4155                     push     r13
+000000014280e3fc  4154                     push     r12
+000000014280e3fe  56                       push     rsi
+000000014280e3ff  57                       push     rdi
+000000014280e400  53                       push     rbx
+000000014280e401  4881ec88000000           sub      rsp, 0x88
+000000014280e408  488daa80000000           lea      rbp, [rdx + 0x80]
+000000014280e40f  440f294c2440             movaps   xmmword ptr [rsp + 0x40], xmm9
+000000014280e415  440f29442450             movaps   xmmword ptr [rsp + 0x50], xmm8
+000000014280e41b  0f297c2460               movaps   xmmword ptr [rsp + 0x60], xmm7
+000000014280e420  0f29742470               movaps   xmmword ptr [rsp + 0x70], xmm6
+000000014280e425  4883bd8802000000         cmp      qword ptr [rbp + 0x288], 0
+000000014280e42d  740c                     je       0x14280e43b
+000000014280e42f  488d8d00020000           lea      rcx, [rbp + 0x200]
+000000014280e436  e895a77bfe               call     0x140fc8bd0 ; core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::resources::roof_tile_ssbo::RoofTileSsbo> > | core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::geometry::instanced_wall::BrickTransformSsbo> >
+000000014280e43b  0f28742470               movaps   xmm6, xmmword ptr [rsp + 0x70]
+000000014280e440  0f287c2460               movaps   xmm7, xmmword ptr [rsp + 0x60]
+000000014280e445  440f28442450             movaps   xmm8, xmmword ptr [rsp + 0x50]
+000000014280e44b  440f284c2440             movaps   xmm9, xmmword ptr [rsp + 0x40]
+000000014280e451  4881c488000000           add      rsp, 0x88
+000000014280e458  5b                       pop      rbx
+000000014280e459  5f                       pop      rdi
+000000014280e45a  5e                       pop      rsi
+000000014280e45b  415c                     pop      r12
+000000014280e45d  415d                     pop      r13
+000000014280e45f  415e                     pop      r14
+000000014280e461  415f                     pop      r15
+000000014280e463  5d                       pop      rbp
+000000014280e464  c3                       ret      
+000000014280e465  66662e0f1f840000000000   nop      word ptr cs:[rax + rax]
+000000014280e470  4889542410               mov      qword ptr [rsp + 0x10], rdx
+000000014280e475  55                       push     rbp
+000000014280e476  4157                     push     r15
+000000014280e478  4156                     push     r14
+000000014280e47a  4155                     push     r13
+000000014280e47c  4154                     push     r12
+000000014280e47e  56                       push     rsi
+000000014280e47f  57                       push     rdi
+000000014280e480  53                       push     rbx
+000000014280e481  4881ec88000000           sub      rsp, 0x88
+000000014280e488  488daa80000000           lea      rbp, [rdx + 0x80]
+000000014280e48f  440f294c2440             movaps   xmmword ptr [rsp + 0x40], xmm9
+000000014280e495  440f29442450             movaps   xmmword ptr [rsp + 0x50], xmm8
+000000014280e49b  0f297c2460               movaps   xmmword ptr [rsp + 0x60], xmm7
+000000014280e4a0  0f29742470               movaps   xmmword ptr [rsp + 0x70], xmm6
+000000014280e4a5  488d8db8010000           lea      rcx, [rbp + 0x1b8]
+000000014280e4ac  e89fdc8cfd               call     0x1400dc150 ; _ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h198901d98d5afd7eE | _ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h784c950d9981b97eE
+000000014280e4b1  0f28742470               movaps   xmm6, xmmword ptr [rsp + 0x70]
+000000014280e4b6  0f287c2460               movaps   xmm7, xmmword ptr [rsp + 0x60]
+000000014280e4bb  440f28442450             movaps   xmm8, xmmword ptr [rsp + 0x50]
+000000014280e4c1  440f284c2440             movaps   xmm9, xmmword ptr [rsp + 0x40]
+000000014280e4c7  4881c488000000           add      rsp, 0x88
+000000014280e4ce  5b                       pop      rbx
+000000014280e4cf  5f                       pop      rdi
+000000014280e4d0  5e                       pop      rsi
+000000014280e4d1  415c                     pop      r12
+000000014280e4d3  415d                     pop      r13
+000000014280e4d5  415e                     pop      r14
+000000014280e4d7  415f                     pop      r15
+000000014280e4d9  5d                       pop      rbp
+000000014280e4da  c3                       ret      

@@ -1,0 +1,10 @@
+{
+  "converted": 1172,
+  "errors": [],
+  "formats": {
+    "DXT1": 675,
+    "DXT3": 497
+  },
+  "verification": "Every mip block length verified; compressed blocks copied exactly to DDS; top mip decoded by Pillow and PNG re-opened/verified",
+  "limits": "PNG is top mip preview only; DDS retains all source mip levels. No GPU shader execution or color-space inference."
+}

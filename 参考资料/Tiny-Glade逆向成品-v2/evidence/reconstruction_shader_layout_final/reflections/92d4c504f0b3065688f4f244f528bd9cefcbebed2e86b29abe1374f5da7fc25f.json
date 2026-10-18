@@ -1,0 +1,132 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_33" : {
+            "name" : "PainterlyStrokePacked_natural",
+            "members" : [
+                {
+                    "name" : "pos",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "color",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "size_rotation",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "appear_t",
+                    "type" : "float",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_36" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_33",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_202" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_201" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "brush_tex",
+                    "type" : "_202",
+                    "offset" : 0
+                },
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 4
+                },
+                {
+                    "name" : "current_t",
+                    "type" : "float",
+                    "offset" : 12
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_vs_main.tint",
+            "location" : 0
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.uv",
+            "location" : 1
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main.appear_frac",
+            "location" : 2
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "resource_handles",
+            "array" : [
+                0
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_36",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_201",
+            "name" : "GlobalParams_natural",
+            "block_size" : 16,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

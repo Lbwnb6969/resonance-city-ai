@@ -1,0 +1,377 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_48" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "first_instance",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "instance_count",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "wall_height_delta",
+                    "type" : "float",
+                    "offset" : 8
+                },
+                {
+                    "name" : "roof_pivot_y",
+                    "type" : "float",
+                    "offset" : 12
+                },
+                {
+                    "name" : "animation_t",
+                    "type" : "float",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_76" : {
+            "name" : "FrameConstants_natural",
+            "members" : [
+                {
+                    "name" : "sun_color",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "sky_low_color",
+                    "type" : "vec4",
+                    "offset" : 16
+                },
+                {
+                    "name" : "sky_high_color",
+                    "type" : "vec4",
+                    "offset" : 32
+                },
+                {
+                    "name" : "fog_tint_thickness",
+                    "type" : "vec4",
+                    "offset" : 48
+                },
+                {
+                    "name" : "fake_light_color",
+                    "type" : "vec4",
+                    "offset" : 64
+                },
+                {
+                    "name" : "fake_light_dir",
+                    "type" : "vec4",
+                    "offset" : 80
+                },
+                {
+                    "name" : "fake_light2_color",
+                    "type" : "vec4",
+                    "offset" : 96
+                },
+                {
+                    "name" : "fake_light2_dir",
+                    "type" : "vec4",
+                    "offset" : 112
+                },
+                {
+                    "name" : "time_since_startup_secs",
+                    "type" : "float",
+                    "offset" : 128
+                },
+                {
+                    "name" : "delta_time_seconds",
+                    "type" : "float",
+                    "offset" : 132
+                },
+                {
+                    "name" : "ev_mult",
+                    "type" : "float",
+                    "offset" : 136
+                },
+                {
+                    "name" : "glade_theme_id",
+                    "type" : "uint",
+                    "offset" : 140
+                },
+                {
+                    "name" : "world_render_resolution",
+                    "type" : "uvec2",
+                    "offset" : 144
+                },
+                {
+                    "name" : "game_time_sec",
+                    "type" : "uint",
+                    "offset" : 152
+                },
+                {
+                    "name" : "game_time_frac",
+                    "type" : "float",
+                    "offset" : 156
+                },
+                {
+                    "name" : "editing_highlight_color",
+                    "type" : "vec3",
+                    "offset" : 160
+                },
+                {
+                    "name" : "time_of_day",
+                    "type" : "float",
+                    "offset" : 172
+                },
+                {
+                    "name" : "dir_to_sun",
+                    "type" : "vec3",
+                    "offset" : 176
+                },
+                {
+                    "name" : "camera_idx",
+                    "type" : "uint",
+                    "offset" : 188
+                },
+                {
+                    "name" : "dir_to_moon",
+                    "type" : "vec3",
+                    "offset" : 192
+                },
+                {
+                    "name" : "render_overrides",
+                    "type" : "uint",
+                    "offset" : 204
+                },
+                {
+                    "name" : "dir_to_primary_directional_light",
+                    "type" : "vec3",
+                    "offset" : 208
+                },
+                {
+                    "name" : "main_view_lod_scale",
+                    "type" : "float",
+                    "offset" : 220
+                },
+                {
+                    "name" : "main_view_eye_position",
+                    "type" : "vec4",
+                    "offset" : 224
+                },
+                {
+                    "name" : "fog_relative_extinction",
+                    "type" : "float",
+                    "offset" : 240
+                },
+                {
+                    "name" : "highlighted_transient_stair_edge_id",
+                    "type" : "uint",
+                    "offset" : 244
+                },
+                {
+                    "name" : "swapchain_dims",
+                    "type" : "uvec2",
+                    "offset" : 248
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 256
+                },
+                {
+                    "name" : "is_photomode",
+                    "type" : "uint",
+                    "offset" : 260
+                },
+                {
+                    "name" : "is_topdown_mode",
+                    "type" : "uint",
+                    "offset" : 264
+                },
+                {
+                    "name" : "is_firstperson_mode",
+                    "type" : "uint",
+                    "offset" : 268
+                },
+                {
+                    "name" : "brush_position",
+                    "type" : "vec3",
+                    "offset" : 272
+                },
+                {
+                    "name" : "eraser_size_multiplier",
+                    "type" : "float",
+                    "offset" : 284
+                },
+                {
+                    "name" : "roof_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 288
+                },
+                {
+                    "name" : "roof_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 292
+                },
+                {
+                    "name" : "wall_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 296
+                },
+                {
+                    "name" : "wall_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 300
+                },
+                {
+                    "name" : "highlight_bricks_to_delete",
+                    "type" : "uint",
+                    "offset" : 304
+                },
+                {
+                    "name" : "wind_strength",
+                    "type" : "float",
+                    "offset" : 308
+                },
+                {
+                    "name" : "tree_canopy_cone_angle_mult",
+                    "type" : "float",
+                    "offset" : 312
+                },
+                {
+                    "name" : "tree_canopy_max_cone_cull_dist_range",
+                    "type" : "float",
+                    "offset" : 316
+                },
+                {
+                    "name" : "debug_tweakers",
+                    "type" : "vec4",
+                    "offset" : 320
+                },
+                {
+                    "name" : "ground_fog",
+                    "type" : "vec3",
+                    "offset" : 336
+                },
+                {
+                    "name" : "moonswap",
+                    "type" : "float",
+                    "offset" : 348
+                }
+            ]
+        },
+        "_84" : {
+            "name" : "RoofShingle_natural",
+            "members" : [
+                {
+                    "name" : "base_position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "current_height",
+                    "type" : "float",
+                    "offset" : 12
+                },
+                {
+                    "name" : "clipping_plane__",
+                    "type" : "uvec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "scale__t",
+                    "type" : "uvec2",
+                    "offset" : 24
+                },
+                {
+                    "name" : "rotation_quat__",
+                    "type" : "uvec2",
+                    "offset" : 32
+                },
+                {
+                    "name" : "wall_slot_id",
+                    "type" : "uint",
+                    "offset" : 40
+                },
+                {
+                    "name" : "velocity__rotation",
+                    "type" : "uint",
+                    "offset" : 44
+                },
+                {
+                    "name" : "animation_t",
+                    "type" : "float",
+                    "offset" : 48
+                },
+                {
+                    "name" : "seed",
+                    "type" : "int",
+                    "offset" : 52
+                },
+                {
+                    "name" : "is_circle",
+                    "type" : "int",
+                    "offset" : 56
+                },
+                {
+                    "name" : "is_main_roof_body",
+                    "type" : "int",
+                    "offset" : 60
+                }
+            ]
+        },
+        "_87" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_84",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 64
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_87",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_76",
+            "name" : "FrameConstants_natural",
+            "block_size" : 352,
+            "set" : 3,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_48",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

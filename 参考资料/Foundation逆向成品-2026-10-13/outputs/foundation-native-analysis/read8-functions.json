@@ -1,0 +1,2101 @@
+{
+  "profile": "Ghidra 12.1.4 PE import -noanalysis; exact .pdata-bounded seed disassembly; decoded E8 rel32 direct calls and RIP-relative LEA/MOV ASCII references explicitly marked; one direct-call expansion; no auto-analysis, demangler, PDB, RTTI or whole-program call graph; decompiler timeout 45s per seed",
+  "program": "/D:/steamtest/steamapps/common/Foundation/foundation.exe",
+  "sha256": "2c0a048bc1fa2791f58ea432b85cbd9b816af0efec6d6d1c0be6c12195da31af",
+  "seed_count": 3,
+  "selected_count": 34,
+  "functions": [
+    {
+      "entry": "0x1401507e0",
+      "name": "FUN_1401507e0",
+      "seed": "Candidate fread with eight-byte field",
+      "pdata_end_exclusive": "0x14015091e",
+      "calls": [],
+      "referenced_strings": [],
+      "decompile_completed": true,
+      "decompile_error": ""
+    },
+    {
+      "entry": "0x140158170",
+      "name": "FUN_140158170",
+      "seed": "Candidate fread with eight-byte field",
+      "pdata_end_exclusive": "0x140159015",
+      "calls": [
+        {
+          "from": "1401581a1",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158207",
+          "to": "1401272a0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158286",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015835d",
+          "to": "1401235f0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401583a5",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401583d9",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158437",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158445",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158462",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158489",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158497",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401584d8",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401584e3",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158508",
+          "to": "1401757d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158524",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158548",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158585",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401585b8",
+          "to": "14016c020",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401585bd",
+          "to": "140110f80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158624",
+          "to": "1401172b0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015865d",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158675",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401586cc",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401586da",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401586fc",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158723",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158731",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158772",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015877d",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401587a2",
+          "to": "1401757d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401587c5",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401587ee",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015882b",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015888c",
+          "to": "140167890",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401588bd",
+          "to": "140167800",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401588ee",
+          "to": "140167890",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158930",
+          "to": "14013d840",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015894c",
+          "to": "1401101d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015895e",
+          "to": "140132a10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158989",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401589ac",
+          "to": "1401124e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401589b7",
+          "to": "14012c350",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158a48",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158a55",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158a6a",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ac0",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ace",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158af2",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158b19",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158b27",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158b68",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158b83",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158b9b",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158bee",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158bff",
+          "to": "140127e80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158c2c",
+          "to": "142a93d00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ce0",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158cf2",
+          "to": "142a93e7a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d07",
+          "to": "14016cf80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d16",
+          "to": "140168800",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d31",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d3d",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d4a",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d5f",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d84",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158d92",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158db6",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ddd",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158deb",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158e2c",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158e47",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158e60",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158eb7",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ec8",
+          "to": "140127e80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158ef4",
+          "to": "142a93d00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158faa",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158fbc",
+          "to": "142a93e7a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158fd4",
+          "to": "14016cf80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140158fe6",
+          "to": "140168800",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140159009",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "1401583c9",
+          "to": "142c7b8f0",
+          "type": "DATA",
+          "ascii": "Non-empty string without data"
+        },
+        {
+          "from": "1401584f7",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        },
+        {
+          "from": "14015856a",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        },
+        {
+          "from": "140158665",
+          "to": "142c785d0",
+          "type": "DATA",
+          "ascii": "Category with name \u0027%s\u0027 not found"
+        },
+        {
+          "from": "140158791",
+          "to": "142c785f8",
+          "type": "DATA",
+          "ascii": "ComCLogger::loadSerializedLogFile"
+        },
+        {
+          "from": "140158810",
+          "to": "142c785f8",
+          "type": "DATA",
+          "ascii": "ComCLogger::loadSerializedLogFile"
+        },
+        {
+          "from": "140158bbb",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        },
+        {
+          "from": "140158e80",
+          "to": "142c785f8",
+          "type": "DATA",
+          "ascii": "ComCLogger::loadSerializedLogFile"
+        }
+      ],
+      "decompile_completed": true,
+      "decompile_error": ""
+    },
+    {
+      "entry": "0x1401708d0",
+      "name": "FUN_1401708d0",
+      "seed": "Candidate fread with eight-byte field",
+      "pdata_end_exclusive": "0x14017119c",
+      "calls": [
+        {
+          "from": "140170999",
+          "to": "1401235f0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401709e5",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170a1e",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170a7f",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170ab8",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170b01",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170b1f",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170b62",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170b7b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170ba2",
+          "to": "14016ae10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170bd2",
+          "to": "142a93ce8",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170beb",
+          "to": "14012fa30",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170c10",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170cd4",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170ce2",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170d02",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170d3d",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170d5d",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170d7e",
+          "to": "14016ae10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170e77",
+          "to": "1401708d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170ea0",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170fba",
+          "to": "14011b600",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170fca",
+          "to": "14012e9d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140170ffa",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14017101b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14017113b",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140171178",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140171184",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140171191",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "140170a0e",
+          "to": "142c7b8f0",
+          "type": "DATA",
+          "ascii": "Non-empty string without data"
+        },
+        {
+          "from": "140170a3e",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        },
+        {
+          "from": "140171156",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        }
+      ],
+      "decompile_completed": true,
+      "decompile_error": ""
+    },
+    {
+      "entry": "0x14014ef90",
+      "name": "FUN_14014ef90",
+      "pdata_end_exclusive": "0x14014f109",
+      "calls": [
+        {
+          "from": "14014efe2",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f050",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f08f",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f0b3",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f0e6",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f0f2",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014f0ff",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14014efd1",
+          "to": "142c7b8f0",
+          "type": "DATA",
+          "ascii": "Non-empty string without data"
+        },
+        {
+          "from": "14014efff",
+          "to": "142c7ba28",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cwchar_t\u003e::getConstBuffer"
+        }
+      ]
+    },
+    {
+      "entry": "0x1401272a0",
+      "name": "FUN_1401272a0",
+      "pdata_end_exclusive": "0x140127404",
+      "calls": [
+        {
+          "from": "1401272db",
+          "to": "14015ecc0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140127324",
+          "to": "14015f820",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012732b",
+          "to": "140110f80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140127367",
+          "to": "140159460",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140127377",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140127393",
+          "to": "140152070",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401273a8",
+          "to": "140160090",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401273af",
+          "to": "140110f80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401273eb",
+          "to": "140159460",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "140127330",
+          "to": "142c78308",
+          "type": "DATA",
+          "ascii": "can\u0027t extract from data locator"
+        },
+        {
+          "from": "14012733c",
+          "to": "142c781b0",
+          "type": "DATA",
+          "ascii": "ComCFileReader::open"
+        },
+        {
+          "from": "1401273b4",
+          "to": "142c78328",
+          "type": "DATA",
+          "ascii": "can\u0027t open file location"
+        },
+        {
+          "from": "1401273c0",
+          "to": "142c781b0",
+          "type": "DATA",
+          "ascii": "ComCFileReader::open"
+        }
+      ]
+    },
+    {
+      "entry": "0x1401235f0",
+      "name": "FUN_1401235f0",
+      "pdata_end_exclusive": "0x1401236b5",
+      "calls": [
+        {
+          "from": "140123630",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012365c",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123685",
+          "to": "142a93ce8",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140142470",
+      "name": "FUN_140142470",
+      "pdata_end_exclusive": "0x1401424ca",
+      "calls": [
+        {
+          "from": "140142493",
+          "to": "140181af0",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14016ca40",
+      "name": "FUN_14016ca40",
+      "pdata_end_exclusive": "0x14016cac9",
+      "calls": [
+        {
+          "from": "14016ca80",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x1401493d0",
+      "name": "FUN_1401493d0",
+      "pdata_end_exclusive": "0x1401495c7",
+      "calls": [
+        {
+          "from": "140149427",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140149463",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401494a1",
+          "to": "142a93dba",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401494b1",
+          "to": "1401152d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401494bf",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140149548",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401495a2",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140123a80",
+      "name": "FUN_140123a80",
+      "pdata_end_exclusive": "0x140123c32",
+      "calls": [
+        {
+          "from": "140123b18",
+          "to": "140109d30",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123b3a",
+          "to": "142a93cdc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123b60",
+          "to": "14016cad0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123b7e",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123c07",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123c26",
+          "to": "14010db40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140123c2c",
+          "to": "14010da20",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x1401757d0",
+      "name": "FUN_1401757d0",
+      "pdata_end_exclusive": "0x1401758d3",
+      "calls": [
+        {
+          "from": "140175835",
+          "to": "142a93ce8",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175847",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175860",
+          "to": "140181b00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175881",
+          "to": "140181b00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401758a1",
+          "to": "140135160",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140159190",
+      "name": "FUN_140159190",
+      "pdata_end_exclusive": "0x14015934d",
+      "calls": [
+        {
+          "from": "1401591e0",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401591ed",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015920a",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140159232",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140159240",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140159298",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401592b3",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401592c2",
+          "to": "140110f80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401592e9",
+          "to": "140159690",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14015930d",
+          "to": "14017d4c0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140159326",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14016c020",
+      "name": "FUN_14016c020",
+      "pdata_end_exclusive": "0x14016c057",
+      "calls": [
+        {
+          "from": "14016c042",
+          "to": "140180650",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140110f80",
+      "name": "FUN_140110f80",
+      "pdata_end_exclusive": "0x140110fc1",
+      "calls": [
+        {
+          "from": "140110f9d",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140110faf",
+          "to": "140127e80",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x1401172b0",
+      "name": "FUN_1401172b0",
+      "pdata_end_exclusive": "0x1401172ff",
+      "calls": [],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14014ee10",
+      "name": "FUN_14014ee10",
+      "pdata_end_exclusive": "0x14014ef89",
+      "calls": [
+        {
+          "from": "14014ee62",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014eed0",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014ef0f",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014ef33",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014ef66",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014ef72",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14014ef7f",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14014ee51",
+          "to": "142c7b8f0",
+          "type": "DATA",
+          "ascii": "Non-empty string without data"
+        },
+        {
+          "from": "14014ee7f",
+          "to": "142c7b910",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::getConstBuffer"
+        }
+      ]
+    },
+    {
+      "entry": "0x140167890",
+      "name": "FUN_140167890",
+      "pdata_end_exclusive": "0x1401678fd",
+      "calls": [
+        {
+          "from": "1401678b3",
+          "to": "14016c110",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401678bb",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140167800",
+      "name": "FUN_140167800",
+      "pdata_end_exclusive": "0x140167888",
+      "calls": [
+        {
+          "from": "14016781f",
+          "to": "1401235f0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016782a",
+          "to": "14012e6f0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140167847",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016784f",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14013d840",
+      "name": "FUN_14013d840",
+      "pdata_end_exclusive": "0x14013d9dd",
+      "calls": [
+        {
+          "from": "14013d87c",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d8ea",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d929",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d987",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d9ba",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d9c6",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14013d9d3",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14013d86b",
+          "to": "142c756c0",
+          "type": "DATA",
+          "ascii": "object is already linked to a list"
+        },
+        {
+          "from": "14013d899",
+          "to": "142c7bb68",
+          "type": "DATA",
+          "ascii": "ComCIntrusiveList\u003cstruct ComSLogItem\u003e::add"
+        }
+      ]
+    },
+    {
+      "entry": "0x140132a10",
+      "name": "FUN_140132a10",
+      "pdata_end_exclusive": "0x140132b1c",
+      "calls": [
+        {
+          "from": "140132a2d",
+          "to": "14010b230",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132a4b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132a6e",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132a8b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132aac",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132ac9",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132ae8",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140132aff",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x1401124e0",
+      "name": "FUN_1401124e0",
+      "pdata_end_exclusive": "0x1401128f1",
+      "calls": [
+        {
+          "from": "1401125fd",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112636",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112664",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112670",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011267d",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401126b9",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401126f7",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112714",
+          "to": "14010f550",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011273d",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112776",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401127a4",
+          "to": "140126510",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401127b0",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401127bd",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401127f5",
+          "to": "1401758e0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140112833",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401128eb",
+          "to": "142a92f95",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "1401125ed",
+          "to": "142c759d0",
+          "type": "DATA",
+          "ascii": "m_iterationData wrong pointer"
+        },
+        {
+          "from": "140112615",
+          "to": "142c759f0",
+          "type": "DATA",
+          "ascii": "ComCEvent\u003c\u003e::triggerWithoutProfile"
+        },
+        {
+          "from": "14011272d",
+          "to": "142c75fd8",
+          "type": "DATA",
+          "ascii": "Expected identical hook offsets when moving intrusive list"
+        },
+        {
+          "from": "140112755",
+          "to": "142c76020",
+          "type": "DATA",
+          "ascii": "ComCIntrusiveList\u003cclass ComCEvent\u003c\u003e::CEventListenerManager\u003e::moveAllTo"
+        }
+      ]
+    },
+    {
+      "entry": "0x14012c350",
+      "name": "FUN_14012c350",
+      "pdata_end_exclusive": "0x14012c886",
+      "calls": [
+        {
+          "from": "14012c3af",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c429",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c437",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c454",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c47c",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c489",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c4dd",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c4e7",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c504",
+          "to": "1401757d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c520",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c542",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c57c",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c58a",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c5b8",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c5c4",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c5e3",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c602",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c610",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c62d",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c655",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c662",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c6b6",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c6d0",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c6df",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c732",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c73f",
+          "to": "140127e80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c75f",
+          "to": "142a93d00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c822",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c834",
+          "to": "142a93e7a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c849",
+          "to": "14016cf80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c858",
+          "to": "140168800",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012c87a",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14012c39f",
+          "to": "142c78098",
+          "type": "DATA",
+          "ascii": "fail to close"
+        },
+        {
+          "from": "14012c3dd",
+          "to": "142c780a8",
+          "type": "DATA",
+          "ascii": "ComCFileReader::~ComCFileReader"
+        },
+        {
+          "from": "14012c5d0",
+          "to": "142c780a8",
+          "type": "DATA",
+          "ascii": "ComCFileReader::~ComCFileReader"
+        },
+        {
+          "from": "14012c6ff",
+          "to": "142c780a8",
+          "type": "DATA",
+          "ascii": "ComCFileReader::~ComCFileReader"
+        }
+      ]
+    },
+    {
+      "entry": "0x142a8ce10",
+      "name": "FUN_142a8ce10",
+      "pdata_end_exclusive": "0x142a8ce27",
+      "calls": [
+        {
+          "from": "142a8ce14",
+          "to": "142a8cdd4",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x142a8cacc",
+      "name": "FUN_142a8cacc",
+      "pdata_end_exclusive": "0x142a8cb35",
+      "calls": [],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x142a8cb38",
+      "name": "FUN_142a8cb38",
+      "pdata_end_exclusive": "0x142a8cbb3",
+      "calls": [],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140127e80",
+      "name": "FUN_140127e80",
+      "pdata_end_exclusive": "0x140128059",
+      "calls": [
+        {
+          "from": "140127f8e",
+          "to": "14012a0a0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140127fe8",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140128039",
+          "to": "140137300",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "140127f80",
+          "to": "142c78620",
+          "type": "DATA",
+          "ascii": "Master Logger"
+        }
+      ]
+    },
+    {
+      "entry": "0x14016cf80",
+      "name": "FUN_14016cf80",
+      "pdata_end_exclusive": "0x14016cfbd",
+      "calls": [
+        {
+          "from": "14016cf99",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016cfab",
+          "to": "1401266d0",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140168800",
+      "name": "FUN_140168800",
+      "pdata_end_exclusive": "0x140168950",
+      "calls": [
+        {
+          "from": "1401688a4",
+          "to": "140109d30",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401688e0",
+          "to": "142a93ce2",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401688f7",
+          "to": "142a93ce2",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016890a",
+          "to": "140137690",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140168916",
+          "to": "14017c250",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140168944",
+          "to": "14010db60",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016894a",
+          "to": "14010da20",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x1401758e0",
+      "name": "FUN_1401758e0",
+      "pdata_end_exclusive": "0x140175a66",
+      "calls": [
+        {
+          "from": "140175926",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175933",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175950",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175978",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175986",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401759db",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401759e6",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175a04",
+          "to": "1401757d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175a20",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140175a42",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14016ae10",
+      "name": "FUN_14016ae10",
+      "pdata_end_exclusive": "0x14016b42d",
+      "calls": [
+        {
+          "from": "14016ae64",
+          "to": "140142470",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016aedf",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016aeed",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016af0b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016af33",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016af41",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016af96",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016afa1",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016afbb",
+          "to": "1401757d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016afd8",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016affd",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b03b",
+          "to": "140159190",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b064",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b08b",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b0d6",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b0f1",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b123",
+          "to": "142a8ce10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b130",
+          "to": "142a8cacc",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b148",
+          "to": "142a8cb38",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b19c",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b1aa",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b1c8",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b1f0",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b1fe",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b253",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b26f",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b288",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b2d3",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b2e7",
+          "to": "140127e80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b314",
+          "to": "142a93d00",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b3c5",
+          "to": "142a8c944",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b3d7",
+          "to": "142a93e7a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b3ec",
+          "to": "14016cf80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b3fe",
+          "to": "140168800",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14016b422",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14016ae54",
+          "to": "142c7b938",
+          "type": "DATA",
+          "ascii": "can\u0027t change dynamic buffer of const string"
+        },
+        {
+          "from": "14016ae88",
+          "to": "142c7b968",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::reserveMoreBuffer"
+        },
+        {
+          "from": "14016b135",
+          "to": "142c7b968",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::reserveMoreBuffer"
+        },
+        {
+          "from": "14016b2a1",
+          "to": "142c7b968",
+          "type": "DATA",
+          "ascii": "ComCGenericString\u003cchar\u003e::reserveMoreBuffer"
+        }
+      ]
+    },
+    {
+      "entry": "0x14012fa30",
+      "name": "FUN_14012fa30",
+      "pdata_end_exclusive": "0x14012fbb0",
+      "calls": [
+        {
+          "from": "14012fa86",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fa94",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fab8",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fb08",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fb23",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fb53",
+          "to": "14016ae10",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012fb5b",
+          "to": "14014ee10",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x14011b600",
+      "name": "FUN_14011b600",
+      "pdata_end_exclusive": "0x14011b8c6",
+      "calls": [
+        {
+          "from": "14011b676",
+          "to": "1401172b0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011b6bd",
+          "to": "142a8c93e",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011b81d",
+          "to": "14013ace0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011b831",
+          "to": "1401172b0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14011b8c0",
+          "to": "142a92f7d",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": [
+        {
+          "from": "14011b8b9",
+          "to": "142c7cda0",
+          "type": "DATA",
+          "ascii": "unordered_map/set too long"
+        }
+      ]
+    },
+    {
+      "entry": "0x14012e9d0",
+      "name": "FUN_14012e9d0",
+      "pdata_end_exclusive": "0x14012e9e5",
+      "calls": [],
+      "referenced_strings": []
+    },
+    {
+      "entry": "0x140126510",
+      "name": "FUN_140126510",
+      "pdata_end_exclusive": "0x1401266c9",
+      "calls": [
+        {
+          "from": "14012657a",
+          "to": "142a93db4",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140126587",
+          "to": "14016ca40",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401265a4",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401265cc",
+          "to": "1401493d0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401265da",
+          "to": "140123a80",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140126632",
+          "to": "142a8cbe0",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012664d",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "140126665",
+          "to": "14014ef90",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "14012668c",
+          "to": "140156990",
+          "type": "UNCONDITIONAL_CALL"
+        },
+        {
+          "from": "1401266a5",
+          "to": "142a8c94a",
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "referenced_strings": []
+    }
+  ]
+}

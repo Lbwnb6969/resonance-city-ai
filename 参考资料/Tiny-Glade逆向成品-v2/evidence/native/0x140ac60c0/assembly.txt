@@ -1,0 +1,16 @@
+0000000140ac60c0  84d2                     test     dl, dl
+0000000140ac60c2  7503                     jne      0x140ac60c7
+0000000140ac60c4  0f28da                   movaps   xmm3, xmm2
+0000000140ac60c7  f30f100d590e3702         movss    xmm1, dword ptr [rip + 0x2370e59]
+0000000140ac60cf  f30f5cc8                 subss    xmm1, xmm0
+0000000140ac60d3  f30f590dfd503702         mulss    xmm1, dword ptr [rip + 0x23750fd]
+0000000140ac60db  f30f59d8                 mulss    xmm3, xmm0
+0000000140ac60df  f30f58d9                 addss    xmm3, xmm1
+0000000140ac60e3  660f7ed9                 movd     ecx, xmm3
+0000000140ac60e7  48b800000000cdcccc3d     movabs   rax, 0x3dcccccd00000000
+0000000140ac60f1  4809c8                   or       rax, rcx
+0000000140ac60f4  48c1e120                 shl      rcx, 0x20
+0000000140ac60f8  4881c9cdcccc3d           or       rcx, 0x3dcccccd
+0000000140ac60ff  84d2                     test     dl, dl
+0000000140ac6101  480f45c1                 cmovne   rax, rcx
+0000000140ac6105  c3                       ret      

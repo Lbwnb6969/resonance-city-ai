@@ -1,0 +1,39 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_75" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "obj_position_radius",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "push_strength",
+                    "type" : "float",
+                    "offset" : 16
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.frag_uv",
+            "location" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_75",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

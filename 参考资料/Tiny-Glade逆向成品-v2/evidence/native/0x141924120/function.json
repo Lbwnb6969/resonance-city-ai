@@ -1,0 +1,3244 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1697,
+    "record_offset": 23352,
+    "module": "country_core-75de4a05f1ed4a16.6tqsyz765c5nhf17qu207ck38.1euy9uv.rcgu.o",
+    "name": "country_core::systems::save::load_game::load_game",
+    "segment": 1,
+    "offset": 26358048,
+    "rva": 26362144,
+    "va": "0x141924120",
+    "size": 24263,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "8bbfef1c678283c0a25ce1b7150e01a6abbf85854721dac0d1832395ce6edee0",
+  "code_bytes": 24263,
+  "decoded_bytes": 24263,
+  "instructions": 4765,
+  "calls_and_jumps": [
+    {
+      "address": "0x14192447d",
+      "kind": "call",
+      "target": "0x140f4f620",
+      "target_names": [
+        "std::sys::fs::metadata",
+        "_RNvNtNtCs1aoCESei0z2_3std3sys2fs8metadata"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192454b",
+      "kind": "jmp",
+      "target": "0x141924575",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419245ab",
+      "kind": "call",
+      "target": "0x142d7e980",
+      "target_names": [
+        "alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global>",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h02b6d67cf6d6f967E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0454350f485ef7baE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h04a9b828faae8034E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h076716fd0cfaf2a8E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0a56639b26bc9b00E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0ebeaec6dc4329d9E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h113d34856ff6fe6dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419245b1",
+      "kind": "jmp",
+      "target": "0x141924550",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419246a3",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419246ec",
+      "kind": "call",
+      "target": "0x140b7e580",
+      "target_names": [
+        "country_core::systems::save::load_completion_checker::mark_session_loading",
+        "_ZN12country_core7systems4save23load_completion_checker20mark_session_loading17h8e4e92b0639fb886E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419247c3",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924810",
+      "kind": "call",
+      "target": "0x142d7e8a0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h070b16aed4f7fb97E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0914bc6deaaa975dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h092c744c6ef8d87dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af361c9867fe2d6E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0e784851615d7a0cE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10ac4d6728742801E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10e072fddd90055aE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h11b96b5a93e0a1f8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419248f6",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419248fc",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419249a2",
+      "kind": "jmp",
+      "target": "0x1419249f8",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924a6d",
+      "kind": "call",
+      "target": "0x140928690",
+      "target_names": [
+        "_ZN117_$LT$alloc..collections..vec_deque..VecDeque$LT$T$C$A$GT$$u20$as$u20$core..iter..traits..collect..Extend$LT$T$GT$$GT$6extend17h8c36a4e5b4f334a8E",
+        "alloc::collections::vec_deque::impl$20::extend<enum2$<country_core::meta_commander::MetaCommand>,alloc::alloc::Global,alloc::collections::vec_deque::VecDeque<enum2$<country_core::meta_commander::MetaCommand>,alloc::alloc::Global> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924a73",
+      "kind": "jmp",
+      "target": "0x1419249e4",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924abb",
+      "kind": "call",
+      "target": "0x142d7e6e0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h06a006fc62d75eccE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af844f1d04ee6a4E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h12bc618aee413b6eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h1388e9947e9e6456E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h19c9589a8971afd9E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h214cb23f19c0ed3eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h24d51b1e12cd1511E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h29bef72282389042E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924ac1",
+      "kind": "jmp",
+      "target": "0x1419249b0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924aed",
+      "kind": "call",
+      "target": "0x140315620",
+      "target_names": [
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h01043904f0a40f12E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h0411ed1f589acbbbE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h08658d83c41d86f4E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h20f898bab946b0faE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28d40850a9ef44e7E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28df192c3f238ec9E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h2c8ff8d3cc693cc8E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h828837a39a9a8c90E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924af3",
+      "kind": "jmp",
+      "target": "0x1419249e4",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924b17",
+      "kind": "call",
+      "target": "0x140970d20",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::into_iter::IntoIter<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >",
+        "_ZN4core3ptr119drop_in_place$LT$alloc..vec..into_iter..IntoIter$LT$country_core..systems..save..load_game..PostGameLoadCommand$GT$$GT$17hbf7107c0efbde7e5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924b1d",
+      "kind": "jmp",
+      "target": "0x141926e80",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924b57",
+      "kind": "call",
+      "target": "0x141920a00",
+      "target_names": [
+        "country_core::systems::save::load_game::parse_saved_game_data",
+        "_ZN12country_core7systems4save9load_game21parse_saved_game_data17hdda0c5a503c2bda6E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924b67",
+      "kind": "call",
+      "target": "0x140f3eaf0",
+      "target_names": [
+        "std::path::Path::parent",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path6parent"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924b96",
+      "kind": "call",
+      "target": "0x140f3e9e0",
+      "target_names": [
+        "std::path::Path::_join",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path5__join"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924be2",
+      "kind": "jmp",
+      "target": "0x141924d24",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924bec",
+      "kind": "jmp",
+      "target": "0x141924c15",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924c47",
+      "kind": "call",
+      "target": "0x142d7e980",
+      "target_names": [
+        "alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global>",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h02b6d67cf6d6f967E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0454350f485ef7baE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h04a9b828faae8034E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h076716fd0cfaf2a8E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0a56639b26bc9b00E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0ebeaec6dc4329d9E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h113d34856ff6fe6dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924c4d",
+      "kind": "jmp",
+      "target": "0x141924bf0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924c6a",
+      "kind": "jmp",
+      "target": "0x141926e80",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924c7f",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924c92",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924cb0",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924cb5",
+      "kind": "jmp",
+      "target": "0x141924cc3",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924d8e",
+      "kind": "call",
+      "target": "0x140a937d0",
+      "target_names": [
+        "country_core::resources::session::SessionId::save_folder_path",
+        "_ZN12country_core9resources7session9SessionId16save_folder_path17h96d18e814f4d1088E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924dc0",
+      "kind": "call",
+      "target": "0x140f3e9e0",
+      "target_names": [
+        "std::path::Path::_join",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path5__join"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924de9",
+      "kind": "call",
+      "target": "0x140f3ddd0",
+      "target_names": [
+        "std::path::Path::components",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path10components"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924e00",
+      "kind": "call",
+      "target": "0x140f3ddd0",
+      "target_names": [
+        "std::path::Path::components",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path10components"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924e4e",
+      "kind": "call",
+      "target": "0x142e32750",
+      "target_names": [
+        "memcmp"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924ecf",
+      "kind": "call",
+      "target": "0x141b03d50",
+      "target_names": [
+        "_ZN4core4iter6traits8iterator8Iterator5eq_by17h35e2f0e8f423794aE",
+        "core::iter::traits::iterator::Iterator::eq_by<core::iter::adapters::rev::Rev<std::path::Components>,core::iter::adapters::rev::Rev<std::path::Components>,core::iter::traits::iterator::Iterator::eq::closure_env$0<core::iter::adapters::rev::Rev<std::path::Components>,core::iter::adapters::rev::Rev<std::path::Components> > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924ef4",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924f12",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924f52",
+      "kind": "call",
+      "target": "0x140b7f050",
+      "target_names": [
+        "country_core::systems::save::load_completion_checker::clear_session_loading_marker",
+        "_ZN12country_core7systems4save23load_completion_checker28clear_session_loading_marker17h4619a446617b89dcE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924f5f",
+      "kind": "call",
+      "target": "0x140eacc10",
+      "target_names": [
+        "uuid::Uuid::new_v4",
+        "_ZN4uuid2v428_$LT$impl$u20$uuid..Uuid$GT$6new_v417h6610840c8f48b392E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924f9b",
+      "kind": "call",
+      "target": "0x141b1e240",
+      "target_names": [
+        "paths::impl$0::tail",
+        "_ZN51_$LT$std..path..Path$u20$as$u20$paths..PathTail$GT$4tail17h2295a7e54fee268fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924fe0",
+      "kind": "call",
+      "target": "0x140f60760",
+      "target_names": [
+        "alloc::fmt::format::format_inner",
+        "_RNvNvNtCs1f2BdUxKfgg_5alloc3fmt6format12format_inner"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141924fff",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419250ea",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419250fe",
+      "kind": "call",
+      "target": "0x140a43130",
+      "target_names": [
+        "country_core::systems::backend::flush_screen_log::log_error_to_screen",
+        "_ZN12country_core7systems7backend16flush_screen_log19log_error_to_screen17hec82fdeffaa1304fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192516e",
+      "kind": "call",
+      "target": "0x142d7e8a0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h070b16aed4f7fb97E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0914bc6deaaa975dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h092c744c6ef8d87dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af361c9867fe2d6E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0e784851615d7a0cE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10ac4d6728742801E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10e072fddd90055aE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h11b96b5a93e0a1f8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192528e",
+      "kind": "jmp",
+      "target": "0x1419252cf",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925342",
+      "kind": "call",
+      "target": "0x142d7e6e0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h06a006fc62d75eccE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af844f1d04ee6a4E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h12bc618aee413b6eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h1388e9947e9e6456E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h19c9589a8971afd9E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h214cb23f19c0ed3eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h24d51b1e12cd1511E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h29bef72282389042E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925348",
+      "kind": "jmp",
+      "target": "0x141925290",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419253fa",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925400",
+      "kind": "jmp",
+      "target": "0x1419252c1",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925435",
+      "kind": "call",
+      "target": "0x142d7e6e0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h06a006fc62d75eccE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af844f1d04ee6a4E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h12bc618aee413b6eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h1388e9947e9e6456E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h19c9589a8971afd9E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h214cb23f19c0ed3eE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h24d51b1e12cd1511E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h29bef72282389042E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192543b",
+      "kind": "jmp",
+      "target": "0x141925290",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192544e",
+      "kind": "call",
+      "target": "0x140970d20",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::into_iter::IntoIter<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >",
+        "_ZN4core3ptr119drop_in_place$LT$alloc..vec..into_iter..IntoIter$LT$country_core..systems..save..load_game..PostGameLoadCommand$GT$$GT$17hbf7107c0efbde7e5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192546b",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925488",
+      "kind": "call",
+      "target": "0x141618e00",
+      "target_names": [
+        "_ZN8bevy_ecs6system8commands8Commands15insert_resource17h6e330c453cd8f509E",
+        "bevy_ecs::system::commands::Commands::insert_resource<country_core::resources::session::NextSession>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419254a7",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419254c8",
+      "kind": "call",
+      "target": "0x140f36c40",
+      "target_names": [
+        "anyhow::error::impl$6::drop",
+        "_ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419254e7",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925509",
+      "kind": "jmp",
+      "target": "0x141926e7b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419255d6",
+      "kind": "call",
+      "target": "0x140a939a0",
+      "target_names": [
+        "country_core::resources::session::SessionId::backup_folder_path",
+        "_ZN12country_core9resources7session9SessionId18backup_folder_path17ha2486617e4591d3eE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419255fb",
+      "kind": "call",
+      "target": "0x140dee3a0",
+      "target_names": [
+        "utils::file::date_time_string_for_filename",
+        "_ZN5utils4file29date_time_string_for_filename17h4b0bd1bc4b8a1b7cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925644",
+      "kind": "call",
+      "target": "0x140f60760",
+      "target_names": [
+        "alloc::fmt::format::format_inner",
+        "_RNvNvNtCs1f2BdUxKfgg_5alloc3fmt6format12format_inner"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925663",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925698",
+      "kind": "call",
+      "target": "0x140f3e9e0",
+      "target_names": [
+        "std::path::Path::_join",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path5__join"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419256b7",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419256ea",
+      "kind": "call",
+      "target": "0x141b1e240",
+      "target_names": [
+        "paths::impl$0::tail",
+        "_ZN51_$LT$std..path..Path$u20$as$u20$paths..PathTail$GT$4tail17h2295a7e54fee268fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192570b",
+      "kind": "call",
+      "target": "0x141b1e240",
+      "target_names": [
+        "paths::impl$0::tail",
+        "_ZN51_$LT$std..path..Path$u20$as$u20$paths..PathTail$GT$4tail17h2295a7e54fee268fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419257db",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419257f7",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925815",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925832",
+      "kind": "call",
+      "target": "0x140f46c40",
+      "target_names": [
+        "std::fs::DirBuilder::_create",
+        "_RNvMsF_NtCs1aoCESei0z2_3std2fsNtB5_10DirBuilder7__create"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925845",
+      "kind": "jmp",
+      "target": "0x141925868",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192585f",
+      "kind": "call",
+      "target": "0x140f4f180",
+      "target_names": [
+        "std::sys::fs::copy",
+        "_RNvNtNtCs1aoCESei0z2_3std3sys2fs4copy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925884",
+      "kind": "call",
+      "target": "0x140f3f5b0",
+      "target_names": [
+        "std::backtrace::Backtrace::capture",
+        "_RNvMs2_NtCs1aoCESei0z2_3std9backtraceNtB5_9Backtrace7capture"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419258eb",
+      "kind": "call",
+      "target": "0x142dea990",
+      "target_names": [
+        "anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,std::io::error::Error> >",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$9construct17heb40374f9925799aE.llvm.11660518155881927643"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192590d",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192592b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925934",
+      "kind": "call",
+      "target": "0x140994f20",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::save_game::GameSaveData>",
+        "_ZN4core3ptr73drop_in_place$LT$country_core..systems..save..save_game..GameSaveData$GT$17h9fab0afcbfd3b626E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925953",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925971",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925979",
+      "kind": "jmp",
+      "target": "0x141924f38",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925997",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419259b5",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925a89",
+      "kind": "call",
+      "target": "0x140a34510",
+      "target_names": [
+        "country_core::systems::camera_rig::MainCamera::load_parameters",
+        "_ZN12country_core7systems10camera_rig10MainCamera15load_parameters17h05552a69209a749cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925ab4",
+      "kind": "call",
+      "target": "0x140a34f80",
+      "target_names": [
+        "country_core::systems::camera_rig::MainCamera::immediately_finish_interpolating",
+        "_ZN12country_core7systems10camera_rig10MainCamera32immediately_finish_interpolating17h1e29f210da3ea686E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925c3e",
+      "kind": "call",
+      "target": "0x140c7e590",
+      "target_names": [
+        "_ZN5alloc3vec16in_place_collect18from_iter_in_place17hda7c326dfb7a2204E",
+        "alloc::vec::in_place_collect::from_iter_in_place<core::iter::adapters::map::Map<alloc::vec::into_iter::IntoIter<country_core::resources::history::ResolvedHistoryChainSnapshot,alloc::alloc::Global>,country_core::resources::history::HistoryChainSnapshot (*)(country_core::resources::history::ResolvedHistoryChainSnapshot)>,country_core::resources::history::HistoryChainSnapshot>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925c6e",
+      "kind": "call",
+      "target": "0x14098f1a0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::History>",
+        "_ZN4core3ptr62drop_in_place$LT$country_core..resources..history..History$GT$17h01925efe2ee73868E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925d36",
+      "kind": "call",
+      "target": "0x142d7e8a0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h070b16aed4f7fb97E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0914bc6deaaa975dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h092c744c6ef8d87dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af361c9867fe2d6E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0e784851615d7a0cE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10ac4d6728742801E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10e072fddd90055aE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h11b96b5a93e0a1f8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925da5",
+      "kind": "call",
+      "target": "0x141bf6820",
+      "target_names": [
+        "country_core::systems::save::snapshot::validate_and_load_closest_snapshot_data",
+        "_ZN12country_core7systems4save8snapshot39validate_and_load_closest_snapshot_data17hb1470674706769eaE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925dd7",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925e17",
+      "kind": "call",
+      "target": "0x140f3bda0",
+      "target_names": [
+        "std::hash::random::impl$0::new::KEYS::constant$0::closure$1::__RUST_STD_INTERNAL_VAL",
+        "_RNSNvNCNKNvNvMNtNtCs1aoCESei0z2_3std4hash6randomNtBc_11RandomState3new4KEYS0s_023___RUST_STD_INTERNAL_VAL3tls"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925ea3",
+      "kind": "jmp",
+      "target": "0x141925ec8",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925ef2",
+      "kind": "jmp",
+      "target": "0x141925f38",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925f1a",
+      "kind": "call",
+      "target": "0x1403b05d0",
+      "target_names": [
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h0152cc302d84643fE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h145ad6a089b3d550E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h2536db3bcdda0009E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h4a86f49bda5648acE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58ac0f751db83969E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58adb05b847d105bE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h5bec43a439e9dd71E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h632ee5c900eefd63E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925f80",
+      "kind": "jmp",
+      "operand": "rcx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141925f8c",
+      "kind": "call",
+      "target": "0x1403b05d0",
+      "target_names": [
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h0152cc302d84643fE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h145ad6a089b3d550E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h2536db3bcdda0009E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h4a86f49bda5648acE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58ac0f751db83969E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58adb05b847d105bE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h5bec43a439e9dd71E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h632ee5c900eefd63E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925f92",
+      "kind": "jmp",
+      "target": "0x141925f20",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141925faf",
+      "kind": "jmp",
+      "target": "0x141925fc3",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926018",
+      "kind": "call",
+      "target": "0x1403b05d0",
+      "target_names": [
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h0152cc302d84643fE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h145ad6a089b3d550E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h2536db3bcdda0009E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h4a86f49bda5648acE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58ac0f751db83969E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h58adb05b847d105bE",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h5bec43a439e9dd71E",
+        "_ZN9hashbrown3map28HashMap$LT$K$C$V$C$S$C$A$GT$6insert17h632ee5c900eefd63E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192601e",
+      "kind": "jmp",
+      "target": "0x141925ff0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926024",
+      "kind": "jmp",
+      "target": "0x141925f86",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419260f8",
+      "kind": "call",
+      "target": "0x140ca82b0",
+      "target_names": [
+        "_ZN9hashbrown3raw21RawIterRange$LT$T$GT$9fold_impl17h4043e69f3914d4aeE",
+        "hashbrown::raw::RawIterRange::fold_impl<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,hashbrown::map::impl$44::fold::closure_env$0<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState,tuple$<>,std::collections::hash::map::impl$49::fold::closure_env$0<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState,tuple$<>,core::iter::adapters::copied::copy_fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,core::iter::adapters::map::map_fold::closure_env$0<country_core::resources::walls::WallId,tuple$<country_core::resources::walls::WallId,tuple$<> >,tuple$<>,hashbrown::set::impl$10::extend::closure_env$0<country_core::resources::walls::WallId,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> > >,core::iter::traits::iterator::Iterator::for_each::call::closure_env$0<tuple$<country_core::resources::walls::WallId,tuple$<> >,hashbrown::map::impl$82::extend::closure_env$0<country_core::resources::walls::WallId,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::map::Map<core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> >,hashbrown::set::impl$10::extend::closure_env$0<country_core::resources::walls::WallId,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> > > > > > > > > >,tuple$<> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926113",
+      "kind": "call",
+      "target": "0x1415e5900",
+      "target_names": [
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h190067aefb3136b0E",
+        "alloc::vec::impl$12::clone<country_core::systems::mode_manager::WallSelectionGroup,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192612a",
+      "kind": "jmp",
+      "target": "0x141926139",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192614f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926154",
+      "kind": "jmp",
+      "target": "0x141926130",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192616f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926196",
+      "kind": "call",
+      "target": "0x140b43320",
+      "target_names": [
+        "country_core::systems::mode_manager::WallSelectionGroups::retain_history_walls",
+        "_ZN12country_core7systems12mode_manager19WallSelectionGroups20retain_history_walls17h9f5699292f55ecc3E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926251",
+      "kind": "call",
+      "target": "0x140ca8500",
+      "target_names": [
+        "_ZN9hashbrown3raw21RawIterRange$LT$T$GT$9fold_impl17h5eeb6d7fb90452f1E",
+        "hashbrown::raw::RawIterRange::fold_impl<tuple$<country_core::resources::walls::WallId,tuple$<> >,hashbrown::map::impl$44::fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,usize,hashbrown::map::impl$58::fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,usize,core::iter::adapters::map::map_fold::closure_env$0<ref$<country_core::resources::walls::WallId>,usize,usize,usize (*)(ref$<country_core::resources::walls::WallId>),core::iter::traits::iterator::Iterator::max_by::fold::closure_env$0<usize,core::cmp::Ordering (*)(ref$<usize>,ref$<usize>)> > > >,usize>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926257",
+      "kind": "jmp",
+      "target": "0x14192625b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926284",
+      "kind": "call",
+      "target": "0x140f3c9d0",
+      "target_names": [
+        "std::time::Instant::now",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant3now"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419262b7",
+      "kind": "call",
+      "target": "0x140a34930",
+      "target_names": [
+        "country_core::systems::camera_rig::MainCamera::store_parameters",
+        "_ZN12country_core7systems10camera_rig10MainCamera16store_parameters17hc772bd9bdcff3d5aE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926322",
+      "kind": "call",
+      "target": "0x1415e9150",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h00703ba281bdf1e1E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::MultiEdit,core::iter::adapters::cloned::Cloned<core::slice::iter::Iter<country_core::resources::history::MultiEdit> > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926345",
+      "kind": "call",
+      "target": "0x1415ed4a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h1e1ca1fbc6fa7287E",
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h207f76d913d2f86bE",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::ResolvedHistoryChainSnapshot,core::iter::adapters::filter_map::FilterMap<core::slice::iter::Iter<country_core::resources::history::HistoryChainSnapshot>,country_core::resources::history::impl$1::serialize::closure_env$0<ref_mut$<serde_json::ser::Serializer<ref_mut$<alloc::vec::Vec<u8,alloc::alloc::Global> >,serde_json::ser::CompactFormatter> > > > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926413",
+      "kind": "call",
+      "target": "0x1415e5900",
+      "target_names": [
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h190067aefb3136b0E",
+        "alloc::vec::impl$12::clone<country_core::systems::mode_manager::WallSelectionGroup,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419265d9",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419265e8",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192660d",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926649",
+      "kind": "call",
+      "target": "0x140f3cb70",
+      "target_names": [
+        "std::time::Instant::elapsed",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant7elapsed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192670f",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192674d",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192676a",
+      "kind": "jmp",
+      "target": "0x141926779",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192678f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926794",
+      "kind": "jmp",
+      "target": "0x141926770",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419267b6",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419267cd",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419267ee",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419268b2",
+      "kind": "call",
+      "target": "0x142dc83d0",
+      "target_names": [
+        "core::panicking::panic_fmt",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking9panic_fmt"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419268b8",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419268e5",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419268eb",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419269c3",
+      "kind": "jmp",
+      "target": "0x141926a8b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926ab8",
+      "kind": "jmp",
+      "target": "0x141926bc0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926ae5",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926af8",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926b1f",
+      "kind": "jmp",
+      "target": "0x141926b85",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926bb4",
+      "kind": "jmp",
+      "target": "0x141926b21",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926bde",
+      "kind": "jmp",
+      "target": "0x141926c1e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926be5",
+      "kind": "jmp",
+      "target": "0x141926c00",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926c5e",
+      "kind": "call",
+      "target": "0x142dc8170",
+      "target_names": [
+        "core::result::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926c64",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926c94",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926cfe",
+      "kind": "call",
+      "target": "0x142d7e8a0",
+      "target_names": [
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h070b16aed4f7fb97E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0914bc6deaaa975dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h092c744c6ef8d87dE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0af361c9867fe2d6E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0e784851615d7a0cE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10ac4d6728742801E",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h10e072fddd90055aE",
+        "_ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h11b96b5a93e0a1f8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926d46",
+      "kind": "call",
+      "target": "0x140a3cc40",
+      "target_names": [
+        "country_core::systems::save::save_backup_list::SaveBackupList::adopt_legacy_upgrade_backups",
+        "_ZN12country_core7systems4save16save_backup_list14SaveBackupList28adopt_legacy_upgrade_backups17hb98098f7895e0a7cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926d7b",
+      "kind": "call",
+      "target": "0x140a3bf60",
+      "target_names": [
+        "country_core::systems::save::save_backup_list::SaveBackupList::new_from_session",
+        "_ZN12country_core7systems4save16save_backup_list14SaveBackupList16new_from_session17h291f800d6d78cda1E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926e2e",
+      "kind": "call",
+      "target": "0x141a55160",
+      "target_names": [
+        "_ZN3std4sync4mpmc15Sender$LT$T$GT$4send17he05358b719a29783E",
+        "std::sync::mpmc::Sender::send<enum2$<country_core::systems::save::save_game::AsyncSaveCmd> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926e61",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926e7b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926ef4",
+      "kind": "jmp",
+      "target": "0x141924ef9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926f1f",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926f98",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141926fc7",
+      "kind": "jmp",
+      "target": "0x141926fd6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927012",
+      "kind": "jmp",
+      "target": "0x14192702b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192705a",
+      "kind": "jmp",
+      "target": "0x141927082",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192708c",
+      "kind": "jmp",
+      "target": "0x141927020",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927099",
+      "kind": "jmp",
+      "target": "0x1419270ad",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419270ba",
+      "kind": "jmp",
+      "target": "0x1419270a0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927137",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927180",
+      "kind": "jmp",
+      "operand": "r10",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141927189",
+      "kind": "jmp",
+      "target": "0x141927216",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192719c",
+      "kind": "jmp",
+      "target": "0x14192638f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419271b1",
+      "kind": "jmp",
+      "target": "0x14192638f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419271c8",
+      "kind": "jmp",
+      "target": "0x14192638f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419271de",
+      "kind": "jmp",
+      "target": "0x141927216",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419271f3",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419271fe",
+      "kind": "jmp",
+      "target": "0x141927216",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927206",
+      "kind": "jmp",
+      "target": "0x141927216",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192720e",
+      "kind": "jmp",
+      "target": "0x141927216",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927238",
+      "kind": "jmp",
+      "target": "0x14192724e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192725f",
+      "kind": "jmp",
+      "operand": "r9",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141927268",
+      "kind": "jmp",
+      "target": "0x14192727c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927291",
+      "kind": "jmp",
+      "operand": "r9",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x14192729a",
+      "kind": "jmp",
+      "target": "0x14192723d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272ab",
+      "kind": "jmp",
+      "target": "0x14192723a",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272b3",
+      "kind": "jmp",
+      "target": "0x14192727c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272bb",
+      "kind": "jmp",
+      "target": "0x14192723d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272c3",
+      "kind": "jmp",
+      "target": "0x14192727c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272cb",
+      "kind": "jmp",
+      "target": "0x14192727c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272d3",
+      "kind": "jmp",
+      "target": "0x14192723d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272de",
+      "kind": "jmp",
+      "target": "0x14192723d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272e9",
+      "kind": "jmp",
+      "target": "0x14192727c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419272f1",
+      "kind": "jmp",
+      "target": "0x14192723d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927334",
+      "kind": "jmp",
+      "target": "0x141927343",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927385",
+      "kind": "jmp",
+      "operand": "rdx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x14192738c",
+      "kind": "jmp",
+      "target": "0x14192739f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419273b2",
+      "kind": "jmp",
+      "target": "0x1419273cc",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419273e2",
+      "kind": "jmp",
+      "operand": "rdx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x1419273e9",
+      "kind": "jmp",
+      "target": "0x141927407",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419273f6",
+      "kind": "jmp",
+      "target": "0x141927410",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927423",
+      "kind": "jmp",
+      "operand": "rdx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x14192742a",
+      "kind": "jmp",
+      "target": "0x1419273b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192743d",
+      "kind": "jmp",
+      "target": "0x1419273b4",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927447",
+      "kind": "jmp",
+      "target": "0x141927407",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192744e",
+      "kind": "jmp",
+      "target": "0x1419273b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927458",
+      "kind": "jmp",
+      "target": "0x141927407",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192745f",
+      "kind": "jmp",
+      "target": "0x1419273b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927469",
+      "kind": "jmp",
+      "target": "0x141927407",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927470",
+      "kind": "jmp",
+      "target": "0x1419273b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192747a",
+      "kind": "jmp",
+      "target": "0x141927407",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927481",
+      "kind": "jmp",
+      "target": "0x1419273b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192748b",
+      "kind": "jmp",
+      "target": "0x14192739f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927495",
+      "kind": "jmp",
+      "target": "0x14192739f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192749f",
+      "kind": "jmp",
+      "target": "0x14192739f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419274a9",
+      "kind": "jmp",
+      "target": "0x14192739f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419274c5",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419274e1",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419274fa",
+      "kind": "call",
+      "target": "0x141bf3100",
+      "target_names": [
+        "country_core::systems::save::snapshot::init_game_state_from_snapshot",
+        "_ZN12country_core7systems4save8snapshot29init_game_state_from_snapshot17h9277e056b674df1cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419275cd",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419275e0",
+      "kind": "call",
+      "target": "0x140ae4430",
+      "target_names": [
+        "country_core::resources::history::History::restart_from_snapshot",
+        "_ZN12country_core9resources7history7History21restart_from_snapshot17h1998548ae1a86190E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927638",
+      "kind": "jmp",
+      "target": "0x141927659",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192766c",
+      "kind": "call",
+      "target": "0x140315620",
+      "target_names": [
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h01043904f0a40f12E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h0411ed1f589acbbbE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h08658d83c41d86f4E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h20f898bab946b0faE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28d40850a9ef44e7E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28df192c3f238ec9E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h2c8ff8d3cc693cc8E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h828837a39a9a8c90E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927672",
+      "kind": "jmp",
+      "target": "0x14192763a",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192769f",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419276a5",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419276b1",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419276b7",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419276e2",
+      "kind": "call",
+      "target": "0x140f4fd10",
+      "target_names": [
+        "std::sys::random::hashmap_random_keys",
+        "_RNvNtNtCs1aoCESei0z2_3std3sys6random19hashmap_random_keys"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419276f9",
+      "kind": "jmp",
+      "target": "0x141925e2e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927715",
+      "kind": "call",
+      "target": "0x142d974a0",
+      "target_names": [
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17h26c3c6b40770ac99E",
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17h5b72b0d699cc8d07E",
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17h7dd89226ccfc5c06E",
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17hd9352dc5e750758bE",
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17hecdf37d543d44755E",
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$14reserve_rehash17hfc83307bcd4cec99E",
+        "hashbrown::raw::RawTable::reserve_rehash<tuple$<u64,tuple$<> >,alloc::alloc::Global,hashbrown::map::make_hasher::closure_env$0<u64,tuple$<>,std::hash::random::RandomState> >",
+        "hashbrown::raw::RawTable::reserve_rehash<tuple$<bevy_ecs::entity::Entity,tuple$<> >,alloc::alloc::Global,hashbrown::map::make_hasher::closure_env$0<bevy_ecs::entity::Entity,tuple$<>,std::hash::random::RandomState> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192771d",
+      "kind": "jmp",
+      "target": "0x1419260a7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192772c",
+      "kind": "call",
+      "target": "0x142dc7e11",
+      "target_names": [
+        "alloc::alloc::handle_alloc_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc5alloc18handle_alloc_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927732",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927797",
+      "kind": "call",
+      "target": "0x142dc8170",
+      "target_names": [
+        "core::result::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192779d",
+      "kind": "jmp",
+      "target": "0x14192782b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419277c2",
+      "kind": "call",
+      "target": "0x1404b38e0",
+      "target_names": [
+        "core::ptr::drop_in_place<std::io::error::Error>",
+        "core::ptr::drop_in_place<libloading::error::WindowsError>",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0844e92c93fafb44E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0bd9201330d5a31dE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h10704bd736e14846E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h11bbb04ec3a7578cE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h25d2c2a55e695674E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h2eedafc438b09785E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419277f8",
+      "kind": "call",
+      "target": "0x142dc83d0",
+      "target_names": [
+        "core::panicking::panic_fmt",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking9panic_fmt"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419277ff",
+      "kind": "jmp",
+      "target": "0x141926c24",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927825",
+      "kind": "call",
+      "target": "0x142dc83d0",
+      "target_names": [
+        "core::panicking::panic_fmt",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking9panic_fmt"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192782f",
+      "kind": "jmp",
+      "target": "0x141926c24",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419278b8",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419278db",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419279d9",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927b45",
+      "kind": "call",
+      "target": "0x140315620",
+      "target_names": [
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h01043904f0a40f12E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h0411ed1f589acbbbE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h08658d83c41d86f4E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h20f898bab946b0faE",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28d40850a9ef44e7E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h28df192c3f238ec9E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h2c8ff8d3cc693cc8E",
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17h828837a39a9a8c90E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927b4a",
+      "kind": "jmp",
+      "target": "0x141927b22",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927bcf",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927ca3",
+      "kind": "call",
+      "target": "0x1404b38e0",
+      "target_names": [
+        "core::ptr::drop_in_place<std::io::error::Error>",
+        "core::ptr::drop_in_place<libloading::error::WindowsError>",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0844e92c93fafb44E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0bd9201330d5a31dE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h10704bd736e14846E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h11bbb04ec3a7578cE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h25d2c2a55e695674E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h2eedafc438b09785E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927d94",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927e7f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141927f4d",
+      "kind": "call",
+      "target": "0x14192a200",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::boxed::Box<country_core::systems::save::save_game::GameSaveData,alloc::alloc::Global> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928046",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192812a",
+      "kind": "call",
+      "target": "0x140999730",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::snapshot::LoadedSnapshotData>",
+        "_ZN4core3ptr78drop_in_place$LT$country_core..systems..save..snapshot..LoadedSnapshotData$GT$17h0897d36cec83bfddE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928420",
+      "kind": "call",
+      "target": "0x14099e410",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::history_chain::HistoryEditChain>",
+        "core::ptr::drop_in_place<alloc::vec::Vec<country_core::resources::history::MultiEdit,alloc::alloc::Global> >",
+        "_ZN4core3ptr86drop_in_place$LT$country_core..resources..history..history_chain..HistoryEditChain$GT$17he8f49c6d613e6504E",
+        "_ZN4core3ptr87drop_in_place$LT$alloc..vec..Vec$LT$country_core..resources..history..MultiEdit$GT$$GT$17h7c77b0d43592bfc8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192851f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419285ff",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419286cd",
+      "kind": "call",
+      "target": "0x1418c22c0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::resources::session::SessionOnLoadCmd> >",
+        "_ZN4core3ptr71drop_in_place$LT$country_core..resources..session..SessionOnLoadCmd$GT$17h44d9262e6ff61fe2E.llvm.14907169669927358497"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192879d",
+      "kind": "call",
+      "target": "0x1418c22c0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::resources::session::SessionOnLoadCmd> >",
+        "_ZN4core3ptr71drop_in_place$LT$country_core..resources..session..SessionOnLoadCmd$GT$17h44d9262e6ff61fe2E.llvm.14907169669927358497"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192887f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192896c",
+      "kind": "call",
+      "target": "0x140997950",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::load_game::ParsedGameData>",
+        "_ZN4core3ptr75drop_in_place$LT$country_core..systems..save..load_game..ParsedGameData$GT$17he4981b2750a35d13E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928a6f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928b4f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928c3d",
+      "kind": "call",
+      "target": "0x140970d20",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::into_iter::IntoIter<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >",
+        "_ZN4core3ptr119drop_in_place$LT$alloc..vec..into_iter..IntoIter$LT$country_core..systems..save..load_game..PostGameLoadCommand$GT$$GT$17hbf7107c0efbde7e5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928d26",
+      "kind": "call",
+      "target": "0x140991cd0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::session::NextSession>",
+        "_ZN4core3ptr66drop_in_place$LT$country_core..resources..session..NextSession$GT$17h48723f6751825167E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928e63",
+      "kind": "call",
+      "target": "0x1409680a0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >",
+        "_ZN4core3ptr103drop_in_place$LT$alloc..vec..Vec$LT$country_core..systems..save..load_game..PostGameLoadCommand$GT$$GT$17h3a564e743c1055efE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141928f9f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192906d",
+      "kind": "call",
+      "target": "0x140970d20",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::into_iter::IntoIter<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >",
+        "_ZN4core3ptr119drop_in_place$LT$alloc..vec..into_iter..IntoIter$LT$country_core..systems..save..load_game..PostGameLoadCommand$GT$$GT$17hbf7107c0efbde7e5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192915d",
+      "kind": "call",
+      "target": "0x140f36c40",
+      "target_names": [
+        "anyhow::error::impl$6::drop",
+        "_ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192925b",
+      "kind": "call",
+      "target": "0x140994800",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::systems::save::save_game::AsyncSaveCmd> >",
+        "_ZN4core3ptr73drop_in_place$LT$country_core..systems..save..save_game..AsyncSaveCmd$GT$17h222906310995c399E.llvm.6712201347883252993"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192933d",
+      "kind": "call",
+      "target": "0x140994f20",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::save_game::GameSaveData>",
+        "_ZN4core3ptr73drop_in_place$LT$country_core..systems..save..save_game..GameSaveData$GT$17h9fab0afcbfd3b626E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929421",
+      "kind": "call",
+      "target": "0x14192a200",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::boxed::Box<country_core::systems::save::save_game::GameSaveData,alloc::alloc::Global> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419295ad",
+      "kind": "call",
+      "target": "0x141929ff0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<core::result::Result<country_core::systems::save::load_game::ParsedGameData,anyhow::Error> > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929694",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419297a0",
+      "kind": "call",
+      "target": "0x1400db1d0",
+      "target_names": [
+        "hashbrown::raw::impl$18::drop<tuple$<usize,tuple$<> >,alloc::alloc::Global>",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h2b17afba193cc8e7E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h2b31bb6f42e4cb1eE",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h3dacb4df7f1c6630E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h542013cef44fe471E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h6f93f6148712fe60E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h9182c9826dd60aa1E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17hf13f93307a6f973aE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419298a3",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192997d",
+      "kind": "call",
+      "target": "0x14099e410",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::history_chain::HistoryEditChain>",
+        "core::ptr::drop_in_place<alloc::vec::Vec<country_core::resources::history::MultiEdit,alloc::alloc::Global> >",
+        "_ZN4core3ptr86drop_in_place$LT$country_core..resources..history..history_chain..HistoryEditChain$GT$17he8f49c6d613e6504E",
+        "_ZN4core3ptr87drop_in_place$LT$alloc..vec..Vec$LT$country_core..resources..history..MultiEdit$GT$$GT$17h7c77b0d43592bfc8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929a4d",
+      "kind": "call",
+      "target": "0x1400db1d0",
+      "target_names": [
+        "hashbrown::raw::impl$18::drop<tuple$<usize,tuple$<> >,alloc::alloc::Global>",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h2b17afba193cc8e7E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h2b31bb6f42e4cb1eE",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h3dacb4df7f1c6630E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h542013cef44fe471E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h6f93f6148712fe60E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h9182c9826dd60aa1E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17hf13f93307a6f973aE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929b7a",
+      "kind": "call",
+      "target": "0x14099e410",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::history_chain::HistoryEditChain>",
+        "core::ptr::drop_in_place<alloc::vec::Vec<country_core::resources::history::MultiEdit,alloc::alloc::Global> >",
+        "_ZN4core3ptr86drop_in_place$LT$country_core..resources..history..history_chain..HistoryEditChain$GT$17he8f49c6d613e6504E",
+        "_ZN4core3ptr87drop_in_place$LT$alloc..vec..Vec$LT$country_core..resources..history..MultiEdit$GT$$GT$17h7c77b0d43592bfc8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929b96",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929bb6",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929bdb",
+      "kind": "call",
+      "target": "0x1400dbc80",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h70e35e5b2801eb5dE",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17ha2f581247ae6d2f1E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17hcc3561b6c98d4f47E",
+        "core::ptr::drop_in_place<country_core::systems::mode_manager::WallSelectionGroups>",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17h5a1a42d9b0f94f66E",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17hdf30190265223625E",
+        "core::ptr::drop_in_place<alloc::vec::Vec<alloc::vec::Vec<usize,alloc::alloc::Global>,alloc::alloc::Global> >",
+        "_ZN4core3ptr77drop_in_place$LT$country_core..systems..mode_manager..WallSelectionGroups$GT$17h7223608f1cec3df6E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929bee",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929c08",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929d1b",
+      "kind": "call",
+      "target": "0x141929ff0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<core::result::Result<country_core::systems::save::load_game::ParsedGameData,anyhow::Error> > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929d40",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929d5a",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929e5f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929e6b",
+      "kind": "call",
+      "target": "0x140997950",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::load_game::ParsedGameData>",
+        "_ZN4core3ptr75drop_in_place$LT$country_core..systems..save..load_game..ParsedGameData$GT$17he4981b2750a35d13E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141929f88",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x1419245da",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x1419245f9",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192461d",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x141924664",
+      "target": "0x143359908",
+      "operand_bytes": 8,
+      "bytes_hex": "4c6f616447616d6553746174653a3a4c6f616447616d65446174614c6f616469",
+      "ascii_candidate": "LoadGameState::LoadGameDataLoading a new glade. Spawn pre-placed treesinternal error: entered un"
+    },
+    {
+      "address": "0x1419246fa",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141924719",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192473d",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x141924784",
+      "target": "0x143359923",
+      "operand_bytes": 8,
+      "bytes_hex": "4c6f6164696e672061206e657720676c6164652e20537061776e207072652d70",
+      "ascii_candidate": "Loading a new glade. Spawn pre-placed treesinternal error: entered unreachable code"
+    },
+    {
+      "address": "0x141924b85",
+      "target": "0x1433599a8",
+      "operand_bytes": 8,
+      "bytes_hex": "736e617073686f7473686973746f72792e6a736f6e436f6d6d616e6420736b69",
+      "ascii_candidate": "snapshotshistory.jsonCommand skipping must not be used together with snapshots"
+    },
+    {
+      "address": "0x141924dab",
+      "target": "0x1433599b1",
+      "operand_bytes": 8,
+      "bytes_hex": "686973746f72792e6a736f6e436f6d6d616e6420736b697070696e67206d7573",
+      "ascii_candidate": "history.jsonCommand skipping must not be used together with snapshots"
+    },
+    {
+      "address": "0x141924fa8",
+      "target": "0x140f58250",
+      "operand_bytes": 8,
+      "names": [
+        "std::sys::os_str::wtf8::impl$3::fmt",
+        "_RNvXsG_NtCs1aoCESei0z2_3std4pathNtB5_7PathBufNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt",
+        "_RNvXs9_NtNtCs1aoCESei0z2_3std3ffi6os_strNtB5_8OsStringNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt",
+        "_RNvXs1_NtNtNtCs1aoCESei0z2_3std3sys6os_str4wtf8NtB5_3BufNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt"
+      ],
+      "bytes_hex": "4989d0488b4108488b51104889c1e9ed6c0100cccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x141924fbd",
+      "target": "0x140f36c30",
+      "operand_bytes": 8,
+      "names": [
+        "anyhow::error::impl$4::fmt",
+        "_ZN6anyhow5error62_$LT$impl$u20$core..fmt..Display$u20$for$u20$anyhow..Error$GT$3fmt17h7e8f1fb9202d70f9E"
+      ],
+      "bytes_hex": "488b09e9d8fcffffcccccccccccccccc488b09488b0148ff20cccccccccccccc"
+    },
+    {
+      "address": "0x141924fcb",
+      "target": "0x143359a98",
+      "operand_bytes": 8,
+      "bytes_hex": "1d436f756c646e2774206c6f616420736176652066696c652066726f6d20c002"
+    },
+    {
+      "address": "0x141925022",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141925043",
+      "target": "0x140001020",
+      "operand_bytes": 8,
+      "names": [
+        "url::impl$4::fmt",
+        "alloc::string::impl$28::fmt",
+        "alloc::borrow::impl$13::fmt<str$>",
+        "relative_path::relative_path_buf::impl$19::fmt"
+      ],
+      "bytes_hex": "4989d0488b4108488b51104889c1e90d21f700cccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x14192505c",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141925080",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x1419250c7",
+      "target": "0x143359ac0",
+      "operand_bytes": 8,
+      "bytes_hex": "c000000000000000c4913543010000003100000000000000710100001e000000"
+    },
+    {
+      "address": "0x141925280",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141925350",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192538c",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x1419253d3",
+      "target": "0x143359ae0",
+      "operand_bytes": 8,
+      "bytes_hex": "49676e6f72696e6720506f737447616d654c6f6164436f6d6d616e643a3a5377"
+    },
+    {
+      "address": "0x141925477",
+      "target": "0x143359ac8",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000710100001e00000049676e6f72696e67"
+    },
+    {
+      "address": "0x141925575",
+      "target": "0x143359b0b",
+      "operand_bytes": 8,
+      "bytes_hex": "686973746f72792d6265666f72652d757067726164652d686973746f72792d62"
+    },
+    {
+      "address": "0x14192558c",
+      "target": "0x143359b22",
+      "operand_bytes": 8,
+      "bytes_hex": "686973746f72792d6265666f72652d7265736375652dc0c0052e6a736f6e000b"
+    },
+    {
+      "address": "0x14192560f",
+      "target": "0x1402ed400",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::impl$82::fmt<str$>",
+        "anyhow::wrapper::impl$3::fmt<ref$<str$> >",
+        "anyhow::wrapper::impl$1::fmt<ref$<str$> >",
+        "anyhow::context::impl$3::fmt<ref$<str$>,anyhow::Error>"
+      ],
+      "bytes_hex": "4989d0488b01488b51084889c1e92e5dc800cccccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x141925624",
+      "target": "0x140001020",
+      "operand_bytes": 8,
+      "names": [
+        "url::impl$4::fmt",
+        "alloc::string::impl$28::fmt",
+        "alloc::borrow::impl$13::fmt<str$>",
+        "relative_path::relative_path_buf::impl$19::fmt"
+      ],
+      "bytes_hex": "4989d0488b4108488b51104889c1e90d21f700cccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x141925632",
+      "target": "0x143359b38",
+      "operand_bytes": 8,
+      "bytes_hex": "c0c0052e6a736f6e000b4261636b696e6720757020c00420746f20c000426163"
+    },
+    {
+      "address": "0x1419256bc",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192571f",
+      "target": "0x140f58250",
+      "operand_bytes": 8,
+      "names": [
+        "std::sys::os_str::wtf8::impl$3::fmt",
+        "_RNvXsG_NtCs1aoCESei0z2_3std4pathNtB5_7PathBufNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt",
+        "_RNvXs9_NtNtCs1aoCESei0z2_3std3ffi6os_strNtB5_8OsStringNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt",
+        "_RNvXs1_NtNtNtCs1aoCESei0z2_3std3sys6os_str4wtf8NtB5_3BufNtNtCs8icZUrvfcq9_4core3fmt5Debug3fmt"
+      ],
+      "bytes_hex": "4989d0488b4108488b51104889c1e9ed6c0100cccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x141925746",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192576a",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x1419257b1",
+      "target": "0x143359b41",
+      "operand_bytes": 8,
+      "bytes_hex": "0b4261636b696e6720757020c00420746f20c0004261636b696e672075702074"
+    },
+    {
+      "address": "0x1419258b6",
+      "target": "0x143359b55",
+      "operand_bytes": 8,
+      "bytes_hex": "4261636b696e672075702074686520736176652066696c65206265666f726520",
+      "ascii_candidate": "Backing up the save file before rewriting it"
+    },
+    {
+      "address": "0x141925a4f",
+      "target": "0x143ca4b38",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN5utils10float_grid27USE_FLOAT_GRID_SAMPLING_FIX17h2d797c76c29f48c4E"
+      ],
+      "bytes_hex": "e02dcb43010000000200000000000000404bca43010000000201000000000000"
+    },
+    {
+      "address": "0x141925a59",
+      "target": "0x143ca4321",
+      "operand_bytes": 1,
+      "names": [
+        "_ZN12country_core9resources6stairs12stairs_state22VERIFY_STAIR_CHECKSUMS17hb7eef4f4101dc065E"
+      ],
+      "bytes_hex": "01000000000000cc2ccb43010000002043ca4301000000000000000000000000"
+    },
+    {
+      "address": "0x141925e35",
+      "target": "0x143359bb0",
+      "operand_bytes": 16,
+      "bytes_hex": "0000000000000000000000000000000050999640010000004000000000000000"
+    },
+    {
+      "address": "0x141925e43",
+      "target": "0x143359ba0",
+      "operand_bytes": 16,
+      "bytes_hex": "909b354301000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "address": "0x141925e95",
+      "target": "0x143359d60",
+      "operand_bytes": 8,
+      "bytes_hex": "e000000000000000780000000000000078000000000000000800000000000000"
+    },
+    {
+      "address": "0x141925f08",
+      "target": "0x143359e08",
+      "operand_bytes": 8,
+      "bytes_hex": "4000000000000000400000000000000038000000000000001800000000000000"
+    },
+    {
+      "address": "0x141925f72",
+      "target": "0x143359fbc",
+      "operand_bytes": 8,
+      "bytes_hex": "c6bf5cfec6bf5cfec6bf5cfec6bf5cfec6bf5cfe64c05cfe64bf5cfe64bf5cfe"
+    },
+    {
+      "address": "0x141926612",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141926661",
+      "target": "0x140f72840",
+      "operand_bytes": 8,
+      "names": [
+        "core::time::impl$12::fmt",
+        "_RNvXsa_NtCs8icZUrvfcq9_4core4timeNtB5_8DurationNtNtB7_3fmt5Debug3fmt"
+      ],
+      "bytes_hex": "554883ec40488d6c24404889d0ba000020002350104189d141c1e91585d2488d"
+    },
+    {
+      "address": "0x14192667a",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192669e",
+      "target": "0x1433591c4",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x1419266e5",
+      "target": "0x143359840",
+      "operand_bytes": 8,
+      "bytes_hex": "29436c6f6e696e672067616d6520737461746520666f72207361766520726577"
+    },
+    {
+      "address": "0x141926865",
+      "target": "0x140f72a40",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$15::fmt",
+        "_RNvXsd_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impyNtB9_7Display3fmt",
+        "_RNvXsi_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impjNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24404989d14c8b11b8140000004c8d05e3212d024c"
+    },
+    {
+      "address": "0x141926881",
+      "target": "0x140f71c50",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$11::fmt",
+        "_RNvXs9_NtNtNtCs8icZUrvfcq9_4core3fmt3num3implNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24408b014189c241f7da440f48d04889d141b80a00"
+    },
+    {
+      "address": "0x14192689d",
+      "target": "0x143359a10",
+      "operand_bytes": 8,
+      "bytes_hex": "0b43616e277420736b697020c02120636f6d6d616e64733a20686973746f7279"
+    },
+    {
+      "address": "0x1419268a4",
+      "target": "0x143359a50",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000009701000011000000c491354301000000"
+    },
+    {
+      "address": "0x141926c38",
+      "target": "0x143359a68",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000a401000040000000c491354301000000"
+    },
+    {
+      "address": "0x141926c44",
+      "target": "0x143359be0",
+      "operand_bytes": 8,
+      "bytes_hex": "63616c6c65642060526573756c743a3a756e77726170282960206f6e20616e20",
+      "ascii_candidate": "called `Result::unwrap()` on an `Err` value"
+    },
+    {
+      "address": "0x141926c4b",
+      "target": "0x143359c10",
+      "operand_bytes": 8,
+      "bytes_hex": "00000000000000000100000000000000010000000000000010d1924101000000"
+    },
+    {
+      "address": "0x141926f2f",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141926f3f",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141926f6a",
+      "target": "0x143359760",
+      "operand_bytes": 8,
+      "bytes_hex": "c491354301000000310000000000000084030000110000004465746563746564"
+    },
+    {
+      "address": "0x141926f7f",
+      "target": "0x143359722",
+      "operand_bytes": 8,
+      "bytes_hex": "4465746563746564206f6c642076657273696f6e206f66206172726f7720736c",
+      "ascii_candidate": "Detected old version of arrow slits color IDs. Upgrading..."
+    },
+    {
+      "address": "0x1419270ce",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x1419270de",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141927109",
+      "target": "0x1433597b0",
+      "operand_bytes": 8,
+      "bytes_hex": "c491354301000000310000000000000090030000110000001054686520656469"
+    },
+    {
+      "address": "0x14192711e",
+      "target": "0x143359778",
+      "operand_bytes": 8,
+      "bytes_hex": "4465746563746564206f6c642076657273696f6e206f662077696e646f772063",
+      "ascii_candidate": "Detected old version of window color IDs. Upgrading..."
+    },
+    {
+      "address": "0x141927172",
+      "target": "0x143359ee4",
+      "operand_bytes": 8,
+      "bytes_hex": "f7d25cfe1cd35cfe24d35cfe9fd25cfe14d35cfe9fd25cfef7d25cfef7d25cfe"
+    },
+    {
+      "address": "0x1419271e0",
+      "target": "0x143359898",
+      "operand_bytes": 8,
+      "bytes_hex": "617373657274696f6e206661696c65643a206d6174636865732128266c6f6164"
+    },
+    {
+      "address": "0x1419271e7",
+      "target": "0x1433598f0",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000c10000000d0000004c6f616447616d65"
+    },
+    {
+      "address": "0x14192722a",
+      "target": "0x143359f2c",
+      "operand_bytes": 8,
+      "bytes_hex": "0ed35cfebfd35cfea1d35cfe68d35cfe89d35cfe68d35cfe0ed35cfe0ed35cfe"
+    },
+    {
+      "address": "0x141927231",
+      "target": "0x143359f08",
+      "operand_bytes": 8,
+      "bytes_hex": "71d35cfedbd35cfeb5d35cfe5ad35cfea5d35cfe5ad35cfe71d35cfe71d35cfe"
+    },
+    {
+      "address": "0x14192731f",
+      "target": "0x143359f50",
+      "operand_bytes": 8,
+      "bytes_hex": "4cd45cfe40d55cfe4ad55cfe37d45cfe36d55cfe37d45cfe4cd45cfe4cd45cfe"
+    },
+    {
+      "address": "0x141927326",
+      "target": "0x143359f74",
+      "operand_bytes": 8,
+      "bytes_hex": "91d45cfe01d55cfedfd45cfe70d45cfeced45cfe70d45cfe91d45cfe91d45cfe"
+    },
+    {
+      "address": "0x14192732d",
+      "target": "0x143359f98",
+      "operand_bytes": 8,
+      "bytes_hex": "1cd45cfee4d45cfec2d45cfe8dd45cfeb1d45cfe8dd45cfe1cd45cfe1cd45cfe"
+    },
+    {
+      "address": "0x14192751f",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192754f",
+      "target": "0x140f72a40",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$15::fmt",
+        "_RNvXsd_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impyNtB9_7Display3fmt",
+        "_RNvXsi_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impjNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24404989d14c8b11b8140000004c8d05e3212d024c"
+    },
+    {
+      "address": "0x141927564",
+      "target": "0x140bbbec0",
+      "operand_bytes": 8,
+      "names": [
+        "country_core::resources::history::history_chain::impl$2::fmt",
+        "_ZN105_$LT$country_core..resources..history..history_chain..HistoryChainIndex$u20$as$u20$core..fmt..Display$GT$3fmt17haf0bc69fa4d889ddE"
+      ],
+      "bytes_hex": "4883ec3848894c2428488d05805d3b004889442430488b0a488b52084c8d055d"
+    },
+    {
+      "address": "0x141927572",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192759d",
+      "target": "0x143359828",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000ac0300001100000029436c6f6e696e67"
+    },
+    {
+      "address": "0x1419275b2",
+      "target": "0x1433597c8",
+      "operand_bytes": 8,
+      "bytes_hex": "10546865206564697420636861696e2028c01f2065646974732920646f65736e"
+    },
+    {
+      "address": "0x14192768c",
+      "target": "0x14335994e",
+      "operand_bytes": 8,
+      "bytes_hex": "696e7465726e616c206572726f723a20656e746572656420756e726561636861",
+      "ascii_candidate": "internal error: entered unreachable code"
+    },
+    {
+      "address": "0x141927693",
+      "target": "0x143359978",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000e30000002d000000c491354301000000"
+    },
+    {
+      "address": "0x1419276aa",
+      "target": "0x143359990",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000e600000043000000736e617073686f74"
+    },
+    {
+      "address": "0x141927771",
+      "target": "0x143359a80",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000c0010000120000001d436f756c646e27"
+    },
+    {
+      "address": "0x14192777d",
+      "target": "0x143359be0",
+      "operand_bytes": 8,
+      "bytes_hex": "63616c6c65642060526573756c743a3a756e77726170282960206f6e20616e20",
+      "ascii_candidate": "called `Result::unwrap()` on an `Err` value"
+    },
+    {
+      "address": "0x141927784",
+      "target": "0x143359bc0",
+      "operand_bytes": 8,
+      "bytes_hex": "50999640010000004000000000000000080000000000000000fcae4001000000"
+    },
+    {
+      "address": "0x1419277d5",
+      "target": "0x140117660",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::impl$80::fmt<std::path::PathBuf>",
+        "core::fmt::impl$80::fmt<std::ffi::os_str::OsString>",
+        "_ZN42_$LT$$RF$T$u20$as$u20$core..fmt..Debug$GT$3fmt17h0902980b60e1bff6E",
+        "_ZN42_$LT$$RF$T$u20$as$u20$core..fmt..Debug$GT$3fmt17h33503c18c309b120E"
+      ],
+      "bytes_hex": "488b09e9e80be400cccccccccccccccc4989d0488b01488b51084889c1e9fe09"
+    },
+    {
+      "address": "0x1419277e3",
+      "target": "0x14335986c",
+      "operand_bytes": 8,
+      "bytes_hex": "c00e20646f65736e277420657869737400000000c49135430100000031000000"
+    },
+    {
+      "address": "0x1419277ea",
+      "target": "0x143359880",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000be00000011000000617373657274696f"
+    },
+    {
+      "address": "0x141927812",
+      "target": "0x1433599bd",
+      "operand_bytes": 8,
+      "bytes_hex": "436f6d6d616e6420736b697070696e67206d757374206e6f7420626520757365",
+      "ascii_candidate": "Command skipping must not be used together with snapshots"
+    },
+    {
+      "address": "0x141927819",
+      "target": "0x1433599f8",
+      "operand_bytes": 8,
+      "bytes_hex": "c491354301000000310000000000000092010000110000000b43616e27742073"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

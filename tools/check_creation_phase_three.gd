@@ -28,6 +28,16 @@ func _cpu(city: RefCounted)->void:
 	for style: String in ["promenade","avenue","tram"]:
 		var changed: Dictionary=city.add_road(points,style)
 		_check(changed.ok and changed.upgraded and city.roads.size()==count and city._next_road_id==issued and city.roads[-2].id==old.id and city.roads[-2].points==old.points and city.roads[-2].width==State.RoadUpgrade.width_for(style),"in-place "+style+" retains centreline ID and all road counters")
+	_check(is_equal_approx(float(city.roads[-2].width),2.10),"new tram avenue uses the twelve-phase 2.10m street width")
+	var legacy: Dictionary=city.snapshot()
+	legacy.roads[-2].width=2.0
+	var legacy_city:=State.new()
+	_check(legacy_city.restore(JSON.parse_string(JSON.stringify(legacy))).ok and is_equal_approx(float(legacy_city.roads[-2].width),2.0),"legacy 2.0m tram loads without widening its authored footprint")
+	var legacy_id: String=legacy_city.roads[-2].id
+	var widened: Dictionary=legacy_city.add_road(points,"tram")
+	_check(widened.ok and widened.upgraded and legacy_city.roads[-2].id==legacy_id and is_equal_approx(float(legacy_city.roads[-2].width),2.10) and legacy_city.undo().ok and legacy_city.roads==legacy.roads,"explicit retrace widens a legacy street while undo restores its exact original geometry")
+	legacy.roads[-2].width=2.05
+	_check(not legacy_city.restore(legacy).ok,"unrecognized intermediate styled-road width is still rejected")
 	var same: Dictionary=city.snapshot();var history: int=city._undo.size()
 	_check(city.add_road(points,"tram").no_op and city.snapshot()==same and city._undo.size()==history,"same-style retrace does not add history")
 	_check(city.add_road(points,"avenue").ok,"choose tree-lined road at same crossing")

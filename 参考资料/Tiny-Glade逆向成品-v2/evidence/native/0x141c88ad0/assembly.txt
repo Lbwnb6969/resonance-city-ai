@@ -1,0 +1,490 @@
+0000000141c88ad0  55                       push     rbp
+0000000141c88ad1  4157                     push     r15
+0000000141c88ad3  4156                     push     r14
+0000000141c88ad5  4155                     push     r13
+0000000141c88ad7  4154                     push     r12
+0000000141c88ad9  56                       push     rsi
+0000000141c88ada  57                       push     rdi
+0000000141c88adb  53                       push     rbx
+0000000141c88adc  4881ec08020000           sub      rsp, 0x208
+0000000141c88ae3  488dac2480000000         lea      rbp, [rsp + 0x80]
+0000000141c88aeb  440f29b570010000         movaps   xmmword ptr [rbp + 0x170], xmm14
+0000000141c88af3  440f29ad60010000         movaps   xmmword ptr [rbp + 0x160], xmm13
+0000000141c88afb  440f29a550010000         movaps   xmmword ptr [rbp + 0x150], xmm12
+0000000141c88b03  440f299d40010000         movaps   xmmword ptr [rbp + 0x140], xmm11
+0000000141c88b0b  440f299530010000         movaps   xmmword ptr [rbp + 0x130], xmm10
+0000000141c88b13  440f298d20010000         movaps   xmmword ptr [rbp + 0x120], xmm9
+0000000141c88b1b  440f298510010000         movaps   xmmword ptr [rbp + 0x110], xmm8
+0000000141c88b23  0f29bd00010000           movaps   xmmword ptr [rbp + 0x100], xmm7
+0000000141c88b2a  0f29b5f0000000           movaps   xmmword ptr [rbp + 0xf0], xmm6
+0000000141c88b31  48c785e8000000feffffff   mov      qword ptr [rbp + 0xe8], 0xfffffffffffffffe
+0000000141c88b3c  4c89c3                   mov      rbx, r8
+0000000141c88b3f  4989d6                   mov      r14, rdx
+0000000141c88b42  4d85c0                   test     r8, r8
+0000000141c88b45  48898d98000000           mov      qword ptr [rbp + 0x98], rcx
+0000000141c88b4c  4c898da8000000           mov      qword ptr [rbp + 0xa8], r9
+0000000141c88b53  746d                     je       0x141c88bc2
+0000000141c88b55  4989df                   mov      r15, rbx
+0000000141c88b58  49c1e705                 shl      r15, 5
+0000000141c88b5c  e8ff623ffe               call     0x14007ee60 ; log::impl$17::log | log::impl$17::flush
+0000000141c88b61  ba10000000               mov      edx, 0x10
+0000000141c88b66  4c89f9                   mov      rcx, r15
+0000000141c88b69  e8422fa2fe               call     0x1406abab0 ; _RNvCsfLfy6EI15iL_7___rustc12___rust_alloc
+0000000141c88b6e  4885c0                   test     rax, rax
+0000000141c88b71  0f84b1040000             je       0x141c89028
+0000000141c88b77  48899dc8000000           mov      qword ptr [rbp + 0xc8], rbx
+0000000141c88b7e  488985d0000000           mov      qword ptr [rbp + 0xd0], rax
+0000000141c88b85  48c785d800000000000000   mov      qword ptr [rbp + 0xd8], 0
+0000000141c88b90  4c8d3c9d00000000         lea      r15, [rbx*4]
+0000000141c88b98  e8c3623ffe               call     0x14007ee60 ; log::impl$17::log | log::impl$17::flush
+0000000141c88b9d  ba04000000               mov      edx, 4
+0000000141c88ba2  4c89f9                   mov      rcx, r15
+0000000141c88ba5  e8062fa2fe               call     0x1406abab0 ; _RNvCsfLfy6EI15iL_7___rustc12___rust_alloc
+0000000141c88baa  4885c0                   test     rax, rax
+0000000141c88bad  7539                     jne      0x141c88be8
+0000000141c88baf  b904000000               mov      ecx, 4
+0000000141c88bb4  4c89fa                   mov      rdx, r15
+0000000141c88bb7  e86ef21301               call     0x142dc7e2a ; alloc::raw_vec::handle_error | _RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error
+0000000141c88bbc  90                       nop      
+0000000141c88bbd  e964040000               jmp      0x141c89026
+0000000141c88bc2  48c785c800000000000000   mov      qword ptr [rbp + 0xc8], 0
+0000000141c88bcd  48c785d000000010000000   mov      qword ptr [rbp + 0xd0], 0x10
+0000000141c88bd8  48c785d800000000000000   mov      qword ptr [rbp + 0xd8], 0
+0000000141c88be3  b804000000               mov      eax, 4
+0000000141c88be8  48899db0000000           mov      qword ptr [rbp + 0xb0], rbx
+0000000141c88bef  488985b8000000           mov      qword ptr [rbp + 0xb8], rax
+0000000141c88bf6  48c785c000000000000000   mov      qword ptr [rbp + 0xc0], 0
+0000000141c88c01  4c8d2c5b                 lea      r13, [rbx + rbx*2]
+0000000141c88c05  49c1e504                 shl      r13, 4
+0000000141c88c09  4d01f5                   add      r13, r14
+0000000141c88c0c  0f57f6                   xorps    xmm6, xmm6
+0000000141c88c0f  31f6                     xor      esi, esi
+0000000141c88c11  440f2805471e3b01         movaps   xmm8, xmmword ptr [rip + 0x13b1e47]
+0000000141c88c19  440f280dbfe03f01         movaps   xmm9, xmmword ptr [rip + 0x13fe0bf]
+0000000141c88c21  4c8dbdc8000000           lea      r15, [rbp + 0xc8]
+0000000141c88c28  4c8da5b0000000           lea      r12, [rbp + 0xb0]
+0000000141c88c2f  4c89b5a0000000           mov      qword ptr [rbp + 0xa0], r14
+0000000141c88c36  0f57ff                   xorps    xmm7, xmm7
+0000000141c88c39  eb70                     jmp      0x141c88cab
+0000000141c88c3b  0f1f440000               nop      dword ptr [rax + rax]
+0000000141c88c40  4983c630                 add      r14, 0x30
+0000000141c88c44  488b85b8000000           mov      rax, qword ptr [rbp + 0xb8]
+0000000141c88c4b  8934b8                   mov      dword ptr [rax + rdi*4], esi
+0000000141c88c4e  8d4601                   lea      eax, [rsi + 1]
+0000000141c88c51  450f5cd3                 subps    xmm10, xmm11
+0000000141c88c55  f3410f16c2               movshdup xmm0, xmm10
+0000000141c88c5a  410f28ca                 movaps   xmm1, xmm10
+0000000141c88c5e  f30f58c8                 addss    xmm1, xmm0
+0000000141c88c62  410f28d2                 movaps   xmm2, xmm10
+0000000141c88c66  66410f15d2               unpckhpd xmm2, xmm10
+0000000141c88c6b  f30f59d1                 mulss    xmm2, xmm1
+0000000141c88c6f  f3440f59d0               mulss    xmm10, xmm0
+0000000141c88c74  f3440f58d2               addss    xmm10, xmm2
+0000000141c88c79  0f28c7                   movaps   xmm0, xmm7
+0000000141c88c7c  f3410f5fc2               maxss    xmm0, xmm10
+0000000141c88c81  f3410f58f2               addss    xmm6, xmm10
+0000000141c88c86  f3450fc2d203             cmpunordss xmm10, xmm10
+0000000141c88c8c  410f28ca                 movaps   xmm1, xmm10
+0000000141c88c90  0f55c8                   andnps   xmm1, xmm0
+0000000141c88c93  440f54d7                 andps    xmm10, xmm7
+0000000141c88c97  440f56d1                 orps     xmm10, xmm1
+0000000141c88c9b  48ffc7                   inc      rdi
+0000000141c88c9e  4889bdc0000000           mov      qword ptr [rbp + 0xc0], rdi
+0000000141c88ca5  89c6                     mov      esi, eax
+0000000141c88ca7  410f28fa                 movaps   xmm7, xmm10
+0000000141c88cab  4d39ee                   cmp      r14, r13
+0000000141c88cae  0f849a000000             je       0x141c88d4e
+0000000141c88cb4  450f2836                 movaps   xmm14, xmmword ptr [r14]
+0000000141c88cb8  450f286e10               movaps   xmm13, xmmword ptr [r14 + 0x10]
+0000000141c88cbd  450f286620               movaps   xmm12, xmmword ptr [r14 + 0x20]
+0000000141c88cc2  488bbdd8000000           mov      rdi, qword ptr [rbp + 0xd8]
+0000000141c88cc9  483bbdc8000000           cmp      rdi, qword ptr [rbp + 0xc8]
+0000000141c88cd0  7510                     jne      0x141c88ce2
+0000000141c88cd2  c685e700000001           mov      byte ptr [rbp + 0xe7], 1
+0000000141c88cd9  4c89f9                   mov      rcx, r15
+0000000141c88cdc  e86ff71201               call     0x142db8450 ; _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h0953a0f73d80a2a7E | _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$8grow_one17h307deb8d843ddda7E
+0000000141c88ce1  90                       nop      
+0000000141c88ce2  450f28d8                 movaps   xmm11, xmm8
+0000000141c88ce6  450f5dde                 minps    xmm11, xmm14
+0000000141c88cea  450f28d1                 movaps   xmm10, xmm9
+0000000141c88cee  450f5fd6                 maxps    xmm10, xmm14
+0000000141c88cf2  450f5ddd                 minps    xmm11, xmm13
+0000000141c88cf6  450f5fd5                 maxps    xmm10, xmm13
+0000000141c88cfa  450f5ddc                 minps    xmm11, xmm12
+0000000141c88cfe  450f5fd4                 maxps    xmm10, xmm12
+0000000141c88d02  488b85d0000000           mov      rax, qword ptr [rbp + 0xd0]
+0000000141c88d09  4889f9                   mov      rcx, rdi
+0000000141c88d0c  48c1e105                 shl      rcx, 5
+0000000141c88d10  440f291c08               movaps   xmmword ptr [rax + rcx], xmm11
+0000000141c88d15  440f29540810             movaps   xmmword ptr [rax + rcx + 0x10], xmm10
+0000000141c88d1b  48ffc7                   inc      rdi
+0000000141c88d1e  4889bdd8000000           mov      qword ptr [rbp + 0xd8], rdi
+0000000141c88d25  488bbdc0000000           mov      rdi, qword ptr [rbp + 0xc0]
+0000000141c88d2c  483bbdb0000000           cmp      rdi, qword ptr [rbp + 0xb0]
+0000000141c88d33  0f8507ffffff             jne      0x141c88c40
+0000000141c88d39  c685e700000001           mov      byte ptr [rbp + 0xe7], 1
+0000000141c88d40  4c89e1                   mov      rcx, r12
+0000000141c88d43  e8d8091001               call     0x142d89720 ; alloc::raw_vec::RawVec::grow_one<f32,alloc::alloc::Global> | alloc::raw_vec::RawVec::grow_one<i32,alloc::alloc::Global>
+0000000141c88d48  90                       nop      
+0000000141c88d49  e9f2feffff               jmp      0x141c88c40
+0000000141c88d4e  c685e700000001           mov      byte ptr [rbp + 0xe7], 1
+0000000141c88d55  e8763c2bff               call     0x140f3c9d0 ; std::time::Instant::now | _RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant3now
+0000000141c88d5a  90                       nop      
+0000000141c88d5b  48898588000000           mov      qword ptr [rbp + 0x88], rax
+0000000141c88d62  899590000000             mov      dword ptr [rbp + 0x90], edx
+0000000141c88d68  488b85a8000000           mov      rax, qword ptr [rbp + 0xa8]
+0000000141c88d6f  80781900                 cmp      byte ptr [rax + 0x19], 0
+0000000141c88d73  0f84a1000000             je       0x141c88e1a
+0000000141c88d79  0f57c0                   xorps    xmm0, xmm0
+0000000141c88d7c  f3480f2ac3               cvtsi2ss xmm0, rbx
+0000000141c88d81  f30f5ef0                 divss    xmm6, xmm0
+0000000141c88d85  f30f1005ffea1a01         movss    xmm0, dword ptr [rip + 0x11aeaff]
+0000000141c88d8d  f30f59c6                 mulss    xmm0, xmm6
+0000000141c88d91  f30f100d43ed1a01         movss    xmm1, dword ptr [rip + 0x11aed43]
+0000000141c88d99  f30f59ce                 mulss    xmm1, xmm6
+0000000141c88d9d  f30f5935f3eb3701         mulss    xmm6, dword ptr [rip + 0x137ebf3] ; 'fff?/home/h3/.rustup/toolchains/1.95-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library\\core\\'
+0000000141c88da5  f30f593d2b241b01         mulss    xmm7, dword ptr [rip + 0x11b242b]
+0000000141c88dad  f30f58fe                 addss    xmm7, xmm6
+0000000141c88db1  0f28d1                   movaps   xmm2, xmm1
+0000000141c88db4  f30fc2d103               cmpunordss xmm2, xmm1
+0000000141c88db9  0f28da                   movaps   xmm3, xmm2
+0000000141c88dbc  0f54df                   andps    xmm3, xmm7
+0000000141c88dbf  f30f5ff9                 maxss    xmm7, xmm1
+0000000141c88dc3  0f55d7                   andnps   xmm2, xmm7
+0000000141c88dc6  0f56d3                   orps     xmm2, xmm3
+0000000141c88dc9  c685e700000001           mov      byte ptr [rbp + 0xe7], 1
+0000000141c88dd0  f30f11442420             movss    dword ptr [rsp + 0x20], xmm0
+0000000141c88dd6  f30f11542428             movss    dword ptr [rsp + 0x28], xmm2
+0000000141c88ddc  c74424480c000000         mov      dword ptr [rsp + 0x48], 0xc
+0000000141c88de4  c74424400c000000         mov      dword ptr [rsp + 0x40], 0xc
+0000000141c88dec  c7442438cdcccc3f         mov      dword ptr [rsp + 0x38], 0x3fcccccd
+0000000141c88df4  c74424306666e63f         mov      dword ptr [rsp + 0x30], 0x3fe66666
+0000000141c88dfc  488d8dc8000000           lea      rcx, [rbp + 0xc8]
+0000000141c88e03  488d95b0000000           lea      rdx, [rbp + 0xb0]
+0000000141c88e0a  4c8b85a0000000           mov      r8, qword ptr [rbp + 0xa0]
+0000000141c88e11  4989d9                   mov      r9, rbx
+0000000141c88e14  e807060000               call     0x141c89420 ; obvhs::splits::split_aabbs_precise | _ZN5obvhs6splits19split_aabbs_precise17h2c6ecf758327b3bfE
+0000000141c88e19  90                       nop      
+0000000141c88e1a  488b8da8000000           mov      rcx, qword ptr [rbp + 0xa8]
+0000000141c88e21  488d5118                 lea      rdx, [rcx + 0x18]
+0000000141c88e25  4c8b85d0000000           mov      r8, qword ptr [rbp + 0xd0]
+0000000141c88e2c  4c8b8dd8000000           mov      r9, qword ptr [rbp + 0xd8]
+0000000141c88e33  488b85c0000000           mov      rax, qword ptr [rbp + 0xc0]
+0000000141c88e3a  48894520                 mov      qword ptr [rbp + 0x20], rax
+0000000141c88e3e  0f1085b0000000           movups   xmm0, xmmword ptr [rbp + 0xb0]
+0000000141c88e45  0f294510                 movaps   xmmword ptr [rbp + 0x10], xmm0
+0000000141c88e49  0fb6411a                 movzx    eax, byte ptr [rcx + 0x1a]
+0000000141c88e4d  4889ce                   mov      rsi, rcx
+0000000141c88e50  488b09                   mov      rcx, qword ptr [rcx]
+0000000141c88e53  c685e700000000           mov      byte ptr [rbp + 0xe7], 0
+0000000141c88e5a  48894c2430               mov      qword ptr [rsp + 0x30], rcx
+0000000141c88e5f  88442428                 mov      byte ptr [rsp + 0x28], al
+0000000141c88e63  488d4510                 lea      rax, [rbp + 0x10]
+0000000141c88e67  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000141c88e6c  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000141c88e70  e8dbd69a00               call     0x142636550 ; obvhs::ploc::PlocSearchDistance::build | _ZN5obvhs4ploc18PlocSearchDistance5build17hbb9d5392a81dc9bfE
+0000000141c88e75  90                       nop      
+0000000141c88e76  f30f104e08               movss    xmm1, dword ptr [rsi + 8]
+0000000141c88e7b  48b80000000000000080     movabs   rax, 0x8000000000000000
+0000000141c88e85  48894510                 mov      qword ptr [rbp + 0x10], rax
+0000000141c88e89  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000141c88e8d  4c8d4510                 lea      r8, [rbp + 0x10]
+0000000141c88e91  e82a499b00               call     0x14263d7c0 ; obvhs::bvh2::reinsertion::ReinsertionOptimizer::run | _ZN5obvhs4bvh211reinsertion20ReinsertionOptimizer3run17h83c1bb5866c3ca9bE
+0000000141c88e96  90                       nop      
+0000000141c88e97  8b4610                   mov      eax, dword ptr [rsi + 0x10]
+0000000141c88e9a  83f803                   cmp      eax, 3
+0000000141c88e9d  b903000000               mov      ecx, 3
+0000000141c88ea2  0f42c8                   cmovb    ecx, eax
+0000000141c88ea5  85c0                     test     eax, eax
+0000000141c88ea7  41b801000000             mov      r8d, 1
+0000000141c88ead  440f45c1                 cmovne   r8d, ecx
+0000000141c88eb1  c644242000               mov      byte ptr [rsp + 0x20], 0
+0000000141c88eb6  488d4d10                 lea      rcx, [rbp + 0x10]
+0000000141c88eba  488d55d0                 lea      rdx, [rbp - 0x30]
+0000000141c88ebe  41b101                   mov      r9b, 1
+0000000141c88ec1  e88a6f9b00               call     0x14263fe50 ; obvhs::cwbvh::bvh2_to_cwbvh::bvh2_to_cwbvh | _ZN5obvhs5cwbvh13bvh2_to_cwbvh13bvh2_to_cwbvh17hec6d2c4813a99454E
+0000000141c88ec6  90                       nop      
+0000000141c88ec7  488d8d88000000           lea      rcx, [rbp + 0x88]
+0000000141c88ece  e89d3c2bff               call     0x140f3cb70 ; std::time::Instant::elapsed | _RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant7elapsed
+0000000141c88ed3  90                       nop      
+0000000141c88ed4  488bb598000000           mov      rsi, qword ptr [rbp + 0x98]
+0000000141c88edb  488b8df0010000           mov      rcx, qword ptr [rbp + 0x1f0]
+0000000141c88ee2  480301                   add      rax, qword ptr [rcx]
+0000000141c88ee5  0f8222010000             jb       0x141c8900d
+0000000141c88eeb  035108                   add      edx, dword ptr [rcx + 8]
+0000000141c88eee  81fa00ca9a3b             cmp      edx, 0x3b9aca00
+0000000141c88ef4  721f                     jb       0x141c88f15
+0000000141c88ef6  4883f8ff                 cmp      rax, -1
+0000000141c88efa  0f840d010000             je       0x141c8900d
+0000000141c88f00  81c2003665c4             add      edx, 0xc4653600
+0000000141c88f06  81fa00ca9a3b             cmp      edx, 0x3b9aca00
+0000000141c88f0c  0f84fb000000             je       0x141c8900d
+0000000141c88f12  48ffc0                   inc      rax
+0000000141c88f15  488901                   mov      qword ptr [rcx], rax
+0000000141c88f18  895108                   mov      dword ptr [rcx + 8], edx
+0000000141c88f1b  0f284570                 movaps   xmm0, xmmword ptr [rbp + 0x70]
+0000000141c88f1f  0f294660                 movaps   xmmword ptr [rsi + 0x60], xmm0
+0000000141c88f23  0f284560                 movaps   xmm0, xmmword ptr [rbp + 0x60]
+0000000141c88f27  0f294650                 movaps   xmmword ptr [rsi + 0x50], xmm0
+0000000141c88f2b  0f284550                 movaps   xmm0, xmmword ptr [rbp + 0x50]
+0000000141c88f2f  0f294640                 movaps   xmmword ptr [rsi + 0x40], xmm0
+0000000141c88f33  0f284510                 movaps   xmm0, xmmword ptr [rbp + 0x10]
+0000000141c88f37  0f284d20                 movaps   xmm1, xmmword ptr [rbp + 0x20]
+0000000141c88f3b  0f285530                 movaps   xmm2, xmmword ptr [rbp + 0x30]
+0000000141c88f3f  0f285d40                 movaps   xmm3, xmmword ptr [rbp + 0x40]
+0000000141c88f43  0f295e30                 movaps   xmmword ptr [rsi + 0x30], xmm3
+0000000141c88f47  0f295620                 movaps   xmmword ptr [rsi + 0x20], xmm2
+0000000141c88f4b  0f294e10                 movaps   xmmword ptr [rsi + 0x10], xmm1
+0000000141c88f4f  0f2906                   movaps   xmmword ptr [rsi], xmm0
+0000000141c88f52  488b45e0                 mov      rax, qword ptr [rbp - 0x20]
+0000000141c88f56  4885c0                   test     rax, rax
+0000000141c88f59  7417                     je       0x141c88f72
+0000000141c88f5b  48c1e004                 shl      rax, 4
+0000000141c88f5f  488d1440                 lea      rdx, [rax + rax*2]
+0000000141c88f63  488b4de8                 mov      rcx, qword ptr [rbp - 0x18]
+0000000141c88f67  41b810000000             mov      r8d, 0x10
+0000000141c88f6d  e84e2ba2fe               call     0x1406abac0 ; _RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc
+0000000141c88f72  488b55f8                 mov      rdx, qword ptr [rbp - 8]
+0000000141c88f76  4885d2                   test     rdx, rdx
+0000000141c88f79  7413                     je       0x141c88f8e
+0000000141c88f7b  48c1e202                 shl      rdx, 2
+0000000141c88f7f  488b4d00                 mov      rcx, qword ptr [rbp]
+0000000141c88f83  41b804000000             mov      r8d, 4
+0000000141c88f89  e8322ba2fe               call     0x1406abac0 ; _RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc
+0000000141c88f8e  488b95c8000000           mov      rdx, qword ptr [rbp + 0xc8]
+0000000141c88f95  4885d2                   test     rdx, rdx
+0000000141c88f98  7416                     je       0x141c88fb0
+0000000141c88f9a  48c1e205                 shl      rdx, 5
+0000000141c88f9e  488b8dd0000000           mov      rcx, qword ptr [rbp + 0xd0]
+0000000141c88fa5  41b810000000             mov      r8d, 0x10
+0000000141c88fab  e8102ba2fe               call     0x1406abac0 ; _RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc
+0000000141c88fb0  4889f0                   mov      rax, rsi
+0000000141c88fb3  0f28b5f0000000           movaps   xmm6, xmmword ptr [rbp + 0xf0]
+0000000141c88fba  0f28bd00010000           movaps   xmm7, xmmword ptr [rbp + 0x100]
+0000000141c88fc1  440f288510010000         movaps   xmm8, xmmword ptr [rbp + 0x110]
+0000000141c88fc9  440f288d20010000         movaps   xmm9, xmmword ptr [rbp + 0x120]
+0000000141c88fd1  440f289530010000         movaps   xmm10, xmmword ptr [rbp + 0x130]
+0000000141c88fd9  440f289d40010000         movaps   xmm11, xmmword ptr [rbp + 0x140]
+0000000141c88fe1  440f28a550010000         movaps   xmm12, xmmword ptr [rbp + 0x150]
+0000000141c88fe9  440f28ad60010000         movaps   xmm13, xmmword ptr [rbp + 0x160]
+0000000141c88ff1  440f28b570010000         movaps   xmm14, xmmword ptr [rbp + 0x170]
+0000000141c88ff9  4881c408020000           add      rsp, 0x208
+0000000141c89000  5b                       pop      rbx
+0000000141c89001  5f                       pop      rdi
+0000000141c89002  5e                       pop      rsi
+0000000141c89003  415c                     pop      r12
+0000000141c89005  415d                     pop      r13
+0000000141c89007  415e                     pop      r14
+0000000141c89009  415f                     pop      r15
+0000000141c8900b  5d                       pop      rbp
+0000000141c8900c  c3                       ret      
+0000000141c8900d  488d0d84b67101           lea      rcx, [rip + 0x171b684] ; 'overflow when adding durations'
+0000000141c89014  4c8d059db67101           lea      r8, [rip + 0x171b69d]
+0000000141c8901b  ba1e000000               mov      edx, 0x1e
+0000000141c89020  e8ebf01301               call     0x142dc8110 ; core::option::expect_failed | _RNvNtCs8icZUrvfcq9_4core6option13expect_failed
+0000000141c89025  90                       nop      
+0000000141c89026  0f0b                     ud2      
+0000000141c89028  b910000000               mov      ecx, 0x10
+0000000141c8902d  4c89fa                   mov      rdx, r15
+0000000141c89030  e8f5ed1301               call     0x142dc7e2a ; alloc::raw_vec::handle_error | _RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error
+0000000141c89035  cc                       int3     
+0000000141c89036  662e0f1f840000000000     nop      word ptr cs:[rax + rax]
+0000000141c89040  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000141c89045  55                       push     rbp
+0000000141c89046  4157                     push     r15
+0000000141c89048  4156                     push     r14
+0000000141c8904a  4155                     push     r13
+0000000141c8904c  4154                     push     r12
+0000000141c8904e  56                       push     rsi
+0000000141c8904f  57                       push     rdi
+0000000141c89050  53                       push     rbx
+0000000141c89051  4881ece8000000           sub      rsp, 0xe8
+0000000141c89058  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000141c8905f  440f29742450             movaps   xmmword ptr [rsp + 0x50], xmm14
+0000000141c89065  440f296c2460             movaps   xmmword ptr [rsp + 0x60], xmm13
+0000000141c8906b  440f29642470             movaps   xmmword ptr [rsp + 0x70], xmm12
+0000000141c89071  440f299c2480000000       movaps   xmmword ptr [rsp + 0x80], xmm11
+0000000141c8907a  440f29942490000000       movaps   xmmword ptr [rsp + 0x90], xmm10
+0000000141c89083  440f298c24a0000000       movaps   xmmword ptr [rsp + 0xa0], xmm9
+0000000141c8908c  440f298424b0000000       movaps   xmmword ptr [rsp + 0xb0], xmm8
+0000000141c89095  0f29bc24c0000000         movaps   xmmword ptr [rsp + 0xc0], xmm7
+0000000141c8909d  0f29b424d0000000         movaps   xmmword ptr [rsp + 0xd0], xmm6
+0000000141c890a5  488b95c8000000           mov      rdx, qword ptr [rbp + 0xc8]
+0000000141c890ac  4885d2                   test     rdx, rdx
+0000000141c890af  7416                     je       0x141c890c7
+0000000141c890b1  48c1e205                 shl      rdx, 5
+0000000141c890b5  488b8dd0000000           mov      rcx, qword ptr [rbp + 0xd0]
+0000000141c890bc  41b810000000             mov      r8d, 0x10
+0000000141c890c2  e8f929a2fe               call     0x1406abac0 ; _RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc
+0000000141c890c7  0f28b424d0000000         movaps   xmm6, xmmword ptr [rsp + 0xd0]
+0000000141c890cf  0f28bc24c0000000         movaps   xmm7, xmmword ptr [rsp + 0xc0]
+0000000141c890d7  440f288424b0000000       movaps   xmm8, xmmword ptr [rsp + 0xb0]
+0000000141c890e0  440f288c24a0000000       movaps   xmm9, xmmword ptr [rsp + 0xa0]
+0000000141c890e9  440f28942490000000       movaps   xmm10, xmmword ptr [rsp + 0x90]
+0000000141c890f2  440f289c2480000000       movaps   xmm11, xmmword ptr [rsp + 0x80]
+0000000141c890fb  440f28642470             movaps   xmm12, xmmword ptr [rsp + 0x70]
+0000000141c89101  440f286c2460             movaps   xmm13, xmmword ptr [rsp + 0x60]
+0000000141c89107  440f28742450             movaps   xmm14, xmmword ptr [rsp + 0x50]
+0000000141c8910d  4881c4e8000000           add      rsp, 0xe8
+0000000141c89114  5b                       pop      rbx
+0000000141c89115  5f                       pop      rdi
+0000000141c89116  5e                       pop      rsi
+0000000141c89117  415c                     pop      r12
+0000000141c89119  415d                     pop      r13
+0000000141c8911b  415e                     pop      r14
+0000000141c8911d  415f                     pop      r15
+0000000141c8911f  5d                       pop      rbp
+0000000141c89120  c3                       ret      
+0000000141c89121  6666666666662e0f1f840000000000 nop      word ptr cs:[rax + rax]
+0000000141c89130  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000141c89135  55                       push     rbp
+0000000141c89136  4157                     push     r15
+0000000141c89138  4156                     push     r14
+0000000141c8913a  4155                     push     r13
+0000000141c8913c  4154                     push     r12
+0000000141c8913e  56                       push     rsi
+0000000141c8913f  57                       push     rdi
+0000000141c89140  53                       push     rbx
+0000000141c89141  4881ece8000000           sub      rsp, 0xe8
+0000000141c89148  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000141c8914f  440f29742450             movaps   xmmword ptr [rsp + 0x50], xmm14
+0000000141c89155  440f296c2460             movaps   xmmword ptr [rsp + 0x60], xmm13
+0000000141c8915b  440f29642470             movaps   xmmword ptr [rsp + 0x70], xmm12
+0000000141c89161  440f299c2480000000       movaps   xmmword ptr [rsp + 0x80], xmm11
+0000000141c8916a  440f29942490000000       movaps   xmmword ptr [rsp + 0x90], xmm10
+0000000141c89173  440f298c24a0000000       movaps   xmmword ptr [rsp + 0xa0], xmm9
+0000000141c8917c  440f298424b0000000       movaps   xmmword ptr [rsp + 0xb0], xmm8
+0000000141c89185  0f29bc24c0000000         movaps   xmmword ptr [rsp + 0xc0], xmm7
+0000000141c8918d  0f29b424d0000000         movaps   xmmword ptr [rsp + 0xd0], xmm6
+0000000141c89195  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000141c89199  e872f8ffff               call     0x141c88a10 ; core::ptr::drop_in_place<obvhs::bvh2::Bvh2>
+0000000141c8919e  c685e700000000           mov      byte ptr [rbp + 0xe7], 0
+0000000141c891a5  0f28b424d0000000         movaps   xmm6, xmmword ptr [rsp + 0xd0]
+0000000141c891ad  0f28bc24c0000000         movaps   xmm7, xmmword ptr [rsp + 0xc0]
+0000000141c891b5  440f288424b0000000       movaps   xmm8, xmmword ptr [rsp + 0xb0]
+0000000141c891be  440f288c24a0000000       movaps   xmm9, xmmword ptr [rsp + 0xa0]
+0000000141c891c7  440f28942490000000       movaps   xmm10, xmmword ptr [rsp + 0x90]
+0000000141c891d0  440f289c2480000000       movaps   xmm11, xmmword ptr [rsp + 0x80]
+0000000141c891d9  440f28642470             movaps   xmm12, xmmword ptr [rsp + 0x70]
+0000000141c891df  440f286c2460             movaps   xmm13, xmmword ptr [rsp + 0x60]
+0000000141c891e5  440f28742450             movaps   xmm14, xmmword ptr [rsp + 0x50]
+0000000141c891eb  4881c4e8000000           add      rsp, 0xe8
+0000000141c891f2  5b                       pop      rbx
+0000000141c891f3  5f                       pop      rdi
+0000000141c891f4  5e                       pop      rsi
+0000000141c891f5  415c                     pop      r12
+0000000141c891f7  415d                     pop      r13
+0000000141c891f9  415e                     pop      r14
+0000000141c891fb  415f                     pop      r15
+0000000141c891fd  5d                       pop      rbp
+0000000141c891fe  c3                       ret      
+0000000141c891ff  90                       nop      
+0000000141c89200  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000141c89205  55                       push     rbp
+0000000141c89206  4157                     push     r15
+0000000141c89208  4156                     push     r14
+0000000141c8920a  4155                     push     r13
+0000000141c8920c  4154                     push     r12
+0000000141c8920e  56                       push     rsi
+0000000141c8920f  57                       push     rdi
+0000000141c89210  53                       push     rbx
+0000000141c89211  4881ece8000000           sub      rsp, 0xe8
+0000000141c89218  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000141c8921f  440f29742450             movaps   xmmword ptr [rsp + 0x50], xmm14
+0000000141c89225  440f296c2460             movaps   xmmword ptr [rsp + 0x60], xmm13
+0000000141c8922b  440f29642470             movaps   xmmword ptr [rsp + 0x70], xmm12
+0000000141c89231  440f299c2480000000       movaps   xmmword ptr [rsp + 0x80], xmm11
+0000000141c8923a  440f29942490000000       movaps   xmmword ptr [rsp + 0x90], xmm10
+0000000141c89243  440f298c24a0000000       movaps   xmmword ptr [rsp + 0xa0], xmm9
+0000000141c8924c  440f298424b0000000       movaps   xmmword ptr [rsp + 0xb0], xmm8
+0000000141c89255  0f29bc24c0000000         movaps   xmmword ptr [rsp + 0xc0], xmm7
+0000000141c8925d  0f29b424d0000000         movaps   xmmword ptr [rsp + 0xd0], xmm6
+0000000141c89265  488d4d10                 lea      rcx, [rbp + 0x10]
+0000000141c89269  e8f2f7ffff               call     0x141c88a60 ; core::ptr::drop_in_place<obvhs::cwbvh::CwBvh>
+0000000141c8926e  0f28b424d0000000         movaps   xmm6, xmmword ptr [rsp + 0xd0]
+0000000141c89276  0f28bc24c0000000         movaps   xmm7, xmmword ptr [rsp + 0xc0]
+0000000141c8927e  440f288424b0000000       movaps   xmm8, xmmword ptr [rsp + 0xb0]
+0000000141c89287  440f288c24a0000000       movaps   xmm9, xmmword ptr [rsp + 0xa0]
+0000000141c89290  440f28942490000000       movaps   xmm10, xmmword ptr [rsp + 0x90]
+0000000141c89299  440f289c2480000000       movaps   xmm11, xmmword ptr [rsp + 0x80]
+0000000141c892a2  440f28642470             movaps   xmm12, xmmword ptr [rsp + 0x70]
+0000000141c892a8  440f286c2460             movaps   xmm13, xmmword ptr [rsp + 0x60]
+0000000141c892ae  440f28742450             movaps   xmm14, xmmword ptr [rsp + 0x50]
+0000000141c892b4  4881c4e8000000           add      rsp, 0xe8
+0000000141c892bb  5b                       pop      rbx
+0000000141c892bc  5f                       pop      rdi
+0000000141c892bd  5e                       pop      rsi
+0000000141c892be  415c                     pop      r12
+0000000141c892c0  415d                     pop      r13
+0000000141c892c2  415e                     pop      r14
+0000000141c892c4  415f                     pop      r15
+0000000141c892c6  5d                       pop      rbp
+0000000141c892c7  c3                       ret      
+0000000141c892c8  0f1f840000000000         nop      dword ptr [rax + rax]
+0000000141c892d0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000141c892d5  55                       push     rbp
+0000000141c892d6  4157                     push     r15
+0000000141c892d8  4156                     push     r14
+0000000141c892da  4155                     push     r13
+0000000141c892dc  4154                     push     r12
+0000000141c892de  56                       push     rsi
+0000000141c892df  57                       push     rdi
+0000000141c892e0  53                       push     rbx
+0000000141c892e1  4881ece8000000           sub      rsp, 0xe8
+0000000141c892e8  488daa80000000           lea      rbp, [rdx + 0x80]
+0000000141c892ef  440f29742450             movaps   xmmword ptr [rsp + 0x50], xmm14
+0000000141c892f5  440f296c2460             movaps   xmmword ptr [rsp + 0x60], xmm13
+0000000141c892fb  440f29642470             movaps   xmmword ptr [rsp + 0x70], xmm12
+0000000141c89301  440f299c2480000000       movaps   xmmword ptr [rsp + 0x80], xmm11
+0000000141c8930a  440f29942490000000       movaps   xmmword ptr [rsp + 0x90], xmm10
+0000000141c89313  440f298c24a0000000       movaps   xmmword ptr [rsp + 0xa0], xmm9
+0000000141c8931c  440f298424b0000000       movaps   xmmword ptr [rsp + 0xb0], xmm8
+0000000141c89325  0f29bc24c0000000         movaps   xmmword ptr [rsp + 0xc0], xmm7
+0000000141c8932d  0f29b424d0000000         movaps   xmmword ptr [rsp + 0xd0], xmm6
+0000000141c89335  80bde700000000           cmp      byte ptr [rbp + 0xe7], 0
+0000000141c8933c  747c                     je       0x141c893ba
+0000000141c8933e  488b95b0000000           mov      rdx, qword ptr [rbp + 0xb0]
+0000000141c89345  4885d2                   test     rdx, rdx
+0000000141c89348  7416                     je       0x141c89360
+0000000141c8934a  48c1e202                 shl      rdx, 2
+0000000141c8934e  488b8db8000000           mov      rcx, qword ptr [rbp + 0xb8]
+0000000141c89355  41b804000000             mov      r8d, 4
+0000000141c8935b  e86027a2fe               call     0x1406abac0 ; _RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc
+0000000141c89360  0f28b424d0000000         movaps   xmm6, xmmword ptr [rsp + 0xd0]
+0000000141c89368  0f28bc24c0000000         movaps   xmm7, xmmword ptr [rsp + 0xc0]
+0000000141c89370  440f288424b0000000       movaps   xmm8, xmmword ptr [rsp + 0xb0]
+0000000141c89379  440f288c24a0000000       movaps   xmm9, xmmword ptr [rsp + 0xa0]
+0000000141c89382  440f28942490000000       movaps   xmm10, xmmword ptr [rsp + 0x90]
+0000000141c8938b  440f289c2480000000       movaps   xmm11, xmmword ptr [rsp + 0x80]
+0000000141c89394  440f28642470             movaps   xmm12, xmmword ptr [rsp + 0x70]
+0000000141c8939a  440f286c2460             movaps   xmm13, xmmword ptr [rsp + 0x60]
+0000000141c893a0  440f28742450             movaps   xmm14, xmmword ptr [rsp + 0x50]
+0000000141c893a6  4881c4e8000000           add      rsp, 0xe8
+0000000141c893ad  5b                       pop      rbx
+0000000141c893ae  5f                       pop      rdi
+0000000141c893af  5e                       pop      rsi
+0000000141c893b0  415c                     pop      r12
+0000000141c893b2  415d                     pop      r13
+0000000141c893b4  415e                     pop      r14
+0000000141c893b6  415f                     pop      r15
+0000000141c893b8  5d                       pop      rbp
+0000000141c893b9  c3                       ret      
+0000000141c893ba  0f28b424d0000000         movaps   xmm6, xmmword ptr [rsp + 0xd0]
+0000000141c893c2  0f28bc24c0000000         movaps   xmm7, xmmword ptr [rsp + 0xc0]
+0000000141c893ca  440f288424b0000000       movaps   xmm8, xmmword ptr [rsp + 0xb0]
+0000000141c893d3  440f288c24a0000000       movaps   xmm9, xmmword ptr [rsp + 0xa0]
+0000000141c893dc  440f28942490000000       movaps   xmm10, xmmword ptr [rsp + 0x90]
+0000000141c893e5  440f289c2480000000       movaps   xmm11, xmmword ptr [rsp + 0x80]
+0000000141c893ee  440f28642470             movaps   xmm12, xmmword ptr [rsp + 0x70]
+0000000141c893f4  440f286c2460             movaps   xmm13, xmmword ptr [rsp + 0x60]
+0000000141c893fa  440f28742450             movaps   xmm14, xmmword ptr [rsp + 0x50]
+0000000141c89400  4881c4e8000000           add      rsp, 0xe8
+0000000141c89407  5b                       pop      rbx
+0000000141c89408  5f                       pop      rdi
+0000000141c89409  5e                       pop      rsi
+0000000141c8940a  415c                     pop      r12
+0000000141c8940c  415d                     pop      r13
+0000000141c8940e  415e                     pop      r14
+0000000141c89410  415f                     pop      r15
+0000000141c89412  5d                       pop      rbp
+0000000141c89413  c3                       ret      

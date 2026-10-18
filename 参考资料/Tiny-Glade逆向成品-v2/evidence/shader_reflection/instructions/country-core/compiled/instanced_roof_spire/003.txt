@@ -1,0 +1,16 @@
+; Numeric operand listing, not a semantic decompiler.
+; SHA256 d7e5158f6b8764a391cbf997588aeeb75c3f8f7509064ce0627e8fa2c0358e25
+00000014: OpCapability 1
+0000001c: OpCapability 49
+00000024: OpExtInstImport 36 1280527431 1685353262 808793134 0
+0000003c: OpMemoryModel 0 1
+00000048: OpEntryPoint 4 2 1852399981 0
+0000005c: OpExecutionMode 2 7
+00000068: OpSource 11 1
+00000074: OpName 2 1834972016 7235937
+00000084: OpTypeVoid 1
+0000008c: OpTypeFunction 3 1
+00000098: OpFunction 1 2 0 3
+000000ac: OpLabel 4
+000000b4: OpReturn 
+000000b8: OpFunctionEnd 

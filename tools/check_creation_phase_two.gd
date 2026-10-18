@@ -65,9 +65,23 @@ func _cpu(city: RefCounted)->void:
 	var flat: Dictionary=Frontage.porch_plan(city,house,entry)
 	var lifted: Dictionary=house.duplicate(true);lifted.base_y=1.0
 	var tall: Dictionary=Frontage.porch_plan(city,lifted,entry)
-	_check(flat.count==3 and tall.count==8 and tall.bottom<-.8,"door plan keeps three flat treads and adapts to raised doorway within eight steps")
+	_check(flat.count==3 and tall.count==10 and tall.bottom<-.8,"door plan keeps three flat treads and adapts to raised doorway within ten steps")
+	var porch:=Node3D.new()
+	renderer._door_porch(porch,false,tall)
+	var tops: Array[float]=[]
+	for part: Node in porch.get_children():
+		if part is MeshInstance3D and part.mesh is BoxMesh and is_equal_approx(part.mesh.size.z,.29):
+			tops.append(part.position.y+part.mesh.size.y*.5)
+	_check(porch.get_meta("porch_steps")==10 and tops.size()==10 and is_equal_approx(tops[0],.15) and is_equal_approx(tops[-1],float(tall.bottom)+(.15-float(tall.bottom))/10),"real porch mesh publishes all ten continuous treads between ground and doorway")
+	porch.free()
 	facts={"cuts":cuts,"fills":fills,"triangles":data.faces.size()/3,"treads":profile.treads.size(),"max_riser":maximum_rise,"flat_porch":flat,"raised_porch":tall}
-	other.free();renderer.free()
+	for owner: Node in [other,renderer]:
+		# These CPU-only renderers never run setup(), which normally parents
+		# their eagerly-created visual modules to the scene tree.
+		for property: Dictionary in owner.get_script().get_script_property_list():
+			var value: Variant=owner.get(property.name)
+			if value is Node and value.get_parent()==null: value.free()
+		owner.free()
 func _live(city: RefCounted)->void:
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)

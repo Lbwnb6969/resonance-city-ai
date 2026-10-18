@@ -1,0 +1,28 @@
+0000000140ac6180  4883ec28                 sub      rsp, 0x28
+0000000140ac6184  84d2                     test     dl, dl
+0000000140ac6186  7503                     jne      0x140ac618b
+0000000140ac6188  0f28da                   movaps   xmm3, xmm2
+0000000140ac618b  0f2e1d46503702           ucomiss  xmm3, dword ptr [rip + 0x2375046]
+0000000140ac6192  7502                     jne      0x140ac6196
+0000000140ac6194  7b3c                     jnp      0x140ac61d2
+0000000140ac6196  f30f100dc2c13702         movss    xmm1, dword ptr [rip + 0x237c1c2]
+0000000140ac619e  f30f58c1                 addss    xmm0, xmm1
+0000000140ac61a2  f30f58d9                 addss    xmm3, xmm1
+0000000140ac61a6  f30f5ec3                 divss    xmm0, xmm3
+0000000140ac61aa  0f57c9                   xorps    xmm1, xmm1
+0000000140ac61ad  f30f5fc8                 maxss    xmm1, xmm0
+0000000140ac61b1  f30f10056f0d3702         movss    xmm0, dword ptr [rip + 0x2370d6f]
+0000000140ac61b9  f30f5dc1                 minss    xmm0, xmm1
+0000000140ac61bd  660f7ec0                 movd     eax, xmm0
+0000000140ac61c1  25ffffff7f               and      eax, 0x7fffffff
+0000000140ac61c6  3d0000807f               cmp      eax, 0x7f800000
+0000000140ac61cb  7d11                     jge      0x140ac61de
+0000000140ac61cd  4883c428                 add      rsp, 0x28
+0000000140ac61d1  c3                       ret      
+0000000140ac61d2  488d0daf615802           lea      rcx, [rip + 0x25861af]
+0000000140ac61d9  e8721f3002               call     0x142dc8150 ; core::option::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed
+0000000140ac61de  488d0dbb615802           lea      rcx, [rip + 0x25861bb] ; 'assertion failed: ridge_param.is_finite()'
+0000000140ac61e5  4c8d05e4615802           lea      r8, [rip + 0x25861e4]
+0000000140ac61ec  ba29000000               mov      edx, 0x29
+0000000140ac61f1  e8ba213002               call     0x142dc83b0 ; core::panicking::panic | _RNvNtCs8icZUrvfcq9_4core9panicking5panic
+0000000140ac61f6  cc                       int3     

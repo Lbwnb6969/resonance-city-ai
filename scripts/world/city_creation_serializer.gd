@@ -404,7 +404,9 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			if not road.style is String or road.style not in city.ROAD_STYLES: return city._fail("城市存档道路样式无效")
 			if road.style in ["cobble","avenue","tram"] and data.schema<city.ROAD_NETWORK_SCHEMA: return city._fail("新道路样式需要新存档版本")
 			var style_width: float=city.RoadUpgrade.width_for(road.style)
-			if not city._is_number(road.get("width")) or absf(float(road.width)-style_width)>0.00001: return city._fail("城市存档道路样式与宽度不符")
+			# Earlier authored avenues and tram streets retain their exact footprint.
+			var legacy_width: bool=road.style in ["avenue","tram"] and city._is_number(road.get("width")) and is_equal_approx(float(road.width),2.0)
+			if not city._is_number(road.get("width")) or (absf(float(road.width)-style_width)>0.00001 and not legacy_width): return city._fail("城市存档道路样式与宽度不符")
 		max_road = maxi(max_road, int(road.id.substr(1)))
 		if not road.get("points") is Array or road.points.size() < 2 or not city._is_number(road.get("width")) or road.width <= 0:
 			return city._fail("城市存档道路字段无效")

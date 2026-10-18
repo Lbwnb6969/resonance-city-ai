@@ -1,0 +1,896 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Unlockables/UNL_4_CommonCroft_Goose.data",
+  "absolute_offset": 447323031,
+  "length": 2164,
+  "sha256": "fef1b9f11115e5f06713f43501a4c112360a81a6c8122e6b8c1f0e61dfdf1692",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Unlockables/UNL_4_CommonCroft_Goose.data",
+    "id": "d5924435-999d-417e-af60-6537c54513de",
+    "type": "PlaCAssetUnlockableEdict",
+    "scriptingId": "AGRI_UNLOCKABLE_COMMON_CROFT_GOOSE"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Name": {
+        "@": {
+          "value": "CROFT_GOOSERY"
+        }
+      },
+      "Description": {
+        "@": {
+          "value": "UNLOCKABLE_GOOSE_COMMON_CROFT_DESC"
+        }
+      },
+      "OptionalNameParameter": {
+        "@": {
+          "value": ""
+        }
+      },
+      "BoughtText": {
+        "@": {
+          "value": ""
+        }
+      },
+      "DataCost": {
+        "@": {
+          "type": "PlaCDataUnlockableCost"
+        },
+        "DataInfluenceCostList": {
+          "@": {}
+        },
+        "ResourceCollection": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 250
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "InfluenceCap": {
+          "@": {
+            "value": 0
+          }
+        }
+      },
+      "PrerequisiteUnlockableList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "value": "158ca3bc-fc47-46bc-8cfb-23da4f6271f0"
+            }
+          }
+        ]
+      },
+      "IsRecurrent": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsComingSoon": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsMajor": {
+        "@": {
+          "value": false
+        }
+      },
+      "DaysBeforeBuyingAgain": {
+        "@": {
+          "value": 0
+        }
+      },
+      "ActionList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockBuildingList"
+            },
+            "DebugComment": {
+              "@": {
+                "value": ""
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": false
+              }
+            },
+            "BuildingProgressData": {
+              "@": {
+                "type": "PlaCDataBuildingProgress"
+              },
+              "UnlockName": {
+                "@": {
+                  "value": ""
+                }
+              },
+              "AssetBuildingList": {
+                "@": {}
+              },
+              "AdditionalBuildingUnlockList": {
+                "@": {},
+                "Item": [
+                  {
+                    "@": {
+                      "type": "PlaCDataProgressUnlockBuildingPart"
+                    },
+                    "OwnerBuilding": {
+                      "@": {
+                        "value": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b"
+                      }
+                    },
+                    "AssetBuildingPartList": {
+                      "@": {},
+                      "Item": [
+                        {
+                          "@": {
+                            "value": "c2430412-3613-4ae7-9281-f4f9c513efdd"
+                          }
+                        }
+                      ]
+                    },
+                    "SubBuildingList": {
+                      "@": {}
+                    }
+                  }
+                ]
+              },
+              "AssetBuildingFunctionList": {
+                "@": {}
+              },
+              "DataEstateDecorationList": {
+                "@": {}
+              }
+            }
+          },
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockWorkplaceRecipe"
+            },
+            "DebugComment": {
+              "@": {
+                "value": ""
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": false
+              }
+            },
+            "AssetBuildingFunctionWorkplace": {
+              "@": {
+                "value": "637b4544-a544-4b48-a398-20721c9bb439"
+              }
+            },
+            "AssetWorkplaceRecipeToUnlockList": {
+              "@": {},
+              "Item": [
+                {
+                  "@": {
+                    "value": "68d12df8-da3d-405a-a66c-f8557fc66695"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "ExecuteOnceActionList": {
+        "@": {}
+      },
+      "IsAvailableInDemo": {
+        "@": {
+          "value": false
+        }
+      },
+      "UnlockableImage": {
+        "@": {
+          "value": "062d97d4-d9ca-44be-9dad-25b7194c10fb"
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Name",
+      "value",
+      "Description",
+      "OptionalNameParameter",
+      "BoughtText",
+      "DataCost",
+      "type",
+      "DataInfluenceCostList",
+      "ResourceCollection",
+      "Collection",
+      "Item",
+      "Resource",
+      "Quantity",
+      "InfluenceCap",
+      "PrerequisiteUnlockableList",
+      "IsRecurrent",
+      "IsComingSoon",
+      "IsMajor",
+      "DaysBeforeBuyingAgain",
+      "ActionList",
+      "DebugComment",
+      "Delay",
+      "IsHidden",
+      "BuildingProgressData",
+      "UnlockName",
+      "AssetBuildingList",
+      "AdditionalBuildingUnlockList",
+      "OwnerBuilding",
+      "AssetBuildingPartList",
+      "SubBuildingList",
+      "AssetBuildingFunctionList",
+      "DataEstateDecorationList",
+      "AssetBuildingFunctionWorkplace",
+      "AssetWorkplaceRecipeToUnlockList",
+      "ExecuteOnceActionList",
+      "IsAvailableInDemo",
+      "UnlockableImage"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Name",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "CROFT_GOOSERY",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Description",
+            "offset": 78,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "UNLOCKABLE_GOOSE_COMMON_CROFT_DESC",
+                "offset": 94
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "OptionalNameParameter",
+            "offset": 141,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 157
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BoughtText",
+            "offset": 170,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 186
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DataCost",
+            "offset": 199,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataUnlockableCost",
+                "offset": 215
+              }
+            ],
+            "children": [
+              {
+                "name": "DataInfluenceCostList",
+                "offset": 250,
+                "attributes": [],
+                "children": []
+              },
+              {
+                "name": "ResourceCollection",
+                "offset": 266,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCResourceCollection",
+                    "offset": 282
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "Collection",
+                    "offset": 317,
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "Item",
+                        "offset": 333,
+                        "attributes": [
+                          {
+                            "name": "type",
+                            "tag": 7,
+                            "value": "PlaCDataResourceQuantityPair",
+                            "offset": 349
+                          }
+                        ],
+                        "children": [
+                          {
+                            "name": "Resource",
+                            "offset": 390,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+                                "offset": 406
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Quantity",
+                            "offset": 434,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 0,
+                                "value": 250,
+                                "offset": 450
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "InfluenceCap",
+                "offset": 466,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 0,
+                    "value": 0,
+                    "offset": 482
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "PrerequisiteUnlockableList",
+            "offset": 498,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 514,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 8,
+                    "value": "158ca3bc-fc47-46bc-8cfb-23da4f6271f0",
+                    "offset": 530
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "IsRecurrent",
+            "offset": 558,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 574
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsComingSoon",
+            "offset": 590,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 606
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsMajor",
+            "offset": 622,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 638
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DaysBeforeBuyingAgain",
+            "offset": 654,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 0,
+                "offset": 670
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ActionList",
+            "offset": 686,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 702,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockBuildingList",
+                    "offset": 718
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 767,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "",
+                        "offset": 783
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 796,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 812
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 829,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 845
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "BuildingProgressData",
+                    "offset": 861,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataBuildingProgress",
+                        "offset": 877
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "UnlockName",
+                        "offset": 914,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "",
+                            "offset": 930
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingList",
+                        "offset": 943,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "AdditionalBuildingUnlockList",
+                        "offset": 959,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Item",
+                            "offset": 975,
+                            "attributes": [
+                              {
+                                "name": "type",
+                                "tag": 7,
+                                "value": "PlaCDataProgressUnlockBuildingPart",
+                                "offset": 991
+                              }
+                            ],
+                            "children": [
+                              {
+                                "name": "OwnerBuilding",
+                                "offset": 1038,
+                                "attributes": [
+                                  {
+                                    "name": "value",
+                                    "tag": 8,
+                                    "value": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+                                    "offset": 1054
+                                  }
+                                ],
+                                "children": []
+                              },
+                              {
+                                "name": "AssetBuildingPartList",
+                                "offset": 1082,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Item",
+                                    "offset": 1098,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "c2430412-3613-4ae7-9281-f4f9c513efdd",
+                                        "offset": 1114
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "SubBuildingList",
+                                "offset": 1142,
+                                "attributes": [],
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "AssetBuildingFunctionList",
+                        "offset": 1158,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "DataEstateDecorationList",
+                        "offset": 1174,
+                        "attributes": [],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Item",
+                "offset": 1190,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockWorkplaceRecipe",
+                    "offset": 1206
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 1258,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "",
+                        "offset": 1274
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 1287,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 1303
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 1320,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 1336
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "AssetBuildingFunctionWorkplace",
+                    "offset": 1352,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 8,
+                        "value": "637b4544-a544-4b48-a398-20721c9bb439",
+                        "offset": 1368
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "AssetWorkplaceRecipeToUnlockList",
+                    "offset": 1396,
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "Item",
+                        "offset": 1412,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 8,
+                            "value": "68d12df8-da3d-405a-a66c-f8557fc66695",
+                            "offset": 1428
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ExecuteOnceActionList",
+            "offset": 1456,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "IsAvailableInDemo",
+            "offset": 1472,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 1488
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "UnlockableImage",
+            "offset": 1504,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "062d97d4-d9ca-44be-9dad-25b7194c10fb",
+                "offset": 1520
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 78,
+    "tag_counts": {
+      "0": 4,
+      "7": 16,
+      "8": 7,
+      "6": 6
+    }
+  },
+  "references": [
+    {
+      "property": "/object/DataCost/ResourceCollection/Collection/Item/Resource/@value",
+      "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Resources/GoldCoins.data",
+          "id": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "type": "PlaCAssetResource",
+          "scriptingId": "GOLD_COINS | GOLD"
+        }
+      ]
+    },
+    {
+      "property": "/object/PrerequisiteUnlockableList/Item/@value",
+      "uuid": "158ca3bc-fc47-46bc-8cfb-23da4f6271f0",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Unlockables/UNL_2_TurnipCommonCroft.data",
+          "id": "158ca3bc-fc47-46bc-8cfb-23da4f6271f0",
+          "type": "PlaCAssetUnlockableEdict",
+          "scriptingId": "AGRI_UNLOCKABLE_COMMON_CROFT_TURNIP"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/OwnerBuilding/@value",
+      "uuid": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Workplaces/CommonCroft/AGR_CommonCroft.data",
+          "id": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "AGRI_BUILDING_COMMON_CROFT"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/AssetBuildingPartList/Item/@value",
+      "uuid": "c2430412-3613-4ae7-9281-f4f9c513efdd",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Workplaces/CommonCroft/Parts/AGR_CommonCroft/AGR_Goosery_01A/AGR_Goosery_01A_RootPart.data",
+          "id": "c2430412-3613-4ae7-9281-f4f9c513efdd",
+          "type": "PlaCAssetBuildingPart",
+          "scriptingId": "AGRI_BUILDING_PART_CROFT_GOOSERY"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/AssetBuildingFunctionWorkplace/@value",
+      "uuid": "637b4544-a544-4b48-a398-20721c9bb439",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Buildings/_Functions/BuildingFunction_ButcherPart.data",
+          "id": "637b4544-a544-4b48-a398-20721c9bb439",
+          "type": "PlaCAssetBuildingFunctionWorkplace",
+          "scriptingId": "BUILDING_FUNCTION_BUTCHER"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/AssetWorkplaceRecipeToUnlockList/Item/@value",
+      "uuid": "68d12df8-da3d-405a-a66c-f8557fc66695",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/_Functions/_Recipes/Unlockables/WorkplaceRecipe_BuildingFunction_Butcher_Goose.data",
+          "id": "68d12df8-da3d-405a-a66c-f8557fc66695",
+          "type": "PlaCAssetWorkplaceRecipe",
+          "scriptingId": "AGRI_WORKPLACE_RECIPE_BUTCHER_MEAT_GOOSE"
+        }
+      ]
+    },
+    {
+      "property": "/object/UnlockableImage/@value",
+      "uuid": "062d97d4-d9ca-44be-9dad-25b7194c10fb",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "GuiSettings/Icons/Book/Progression/Unlockables/Icon_Unlockable_CroftGoosery.png",
+          "id": "062d97d4-d9ca-44be-9dad-25b7194c10fb"
+        }
+      ]
+    }
+  ]
+}

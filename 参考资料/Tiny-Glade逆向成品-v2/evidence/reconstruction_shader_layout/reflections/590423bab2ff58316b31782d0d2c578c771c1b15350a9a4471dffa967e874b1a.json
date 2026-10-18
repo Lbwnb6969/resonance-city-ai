@@ -1,0 +1,145 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_22" : {
+            "name" : "gl_PerVertex",
+            "members" : [
+                {
+                    "name" : "gl_Position",
+                    "type" : "vec4"
+                },
+                {
+                    "name" : "gl_PointSize",
+                    "type" : "float"
+                },
+                {
+                    "name" : "gl_ClipDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                },
+                {
+                    "name" : "gl_CullDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        },
+        "_29" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "world_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "has_albedo_map",
+                    "type" : "uint",
+                    "offset" : 128
+                },
+                {
+                    "name" : "has_emissive_map",
+                    "type" : "uint",
+                    "offset" : 132
+                },
+                {
+                    "name" : "albedo_gated_by_vertex_flag",
+                    "type" : "uint",
+                    "offset" : 136
+                },
+                {
+                    "name" : "emissive_factor",
+                    "type" : "vec3",
+                    "offset" : 140
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Position",
+            "location" : 0
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Color",
+            "location" : 1
+        },
+        {
+            "type" : "vec2",
+            "name" : "Vertex_UV",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Normal",
+            "location" : 2
+        },
+        {
+            "type" : "int",
+            "name" : "flags",
+            "location" : 4
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_color",
+            "location" : 0
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_uv",
+            "location" : 1
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_normal_view",
+            "location" : 2
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main_view_z",
+            "location" : 3
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main_flags",
+            "location" : 4
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_29",
+            "name" : "GlobalParams_natural",
+            "block_size" : 152,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

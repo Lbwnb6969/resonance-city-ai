@@ -1,0 +1,253 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 612,
+    "record_offset": 108644,
+    "module": "country_core-75de4a05f1ed4a16.8754fth9l3m8diu9lr7etdprc.1euy9uv.rcgu.o",
+    "name": "country_core::resources::rt::bvh::build_gpu_bvh",
+    "segment": 1,
+    "offset": 12960976,
+    "rva": 12965072,
+    "va": "0x140c5d4d0",
+    "size": 1232,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "4029303043ae95fdf7329af62ff319254b1c4e25044580da59062bbf1bba11a5",
+  "code_bytes": 1232,
+  "decoded_bytes": 1232,
+  "instructions": 300,
+  "calls_and_jumps": [
+    {
+      "address": "0x140c5d50c",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d52a",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d53d",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d552",
+      "kind": "jmp",
+      "target": "0x140c5d613",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d589",
+      "kind": "jmp",
+      "target": "0x140c5d8ab",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d666",
+      "kind": "call",
+      "target": "0x140f3c9d0",
+      "target_names": [
+        "std::time::Instant::now",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant3now"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d6d2",
+      "kind": "call",
+      "target": "0x141c88ad0",
+      "target_names": [
+        "obvhs::cwbvh::builder::build_cwbvh_from_tris",
+        "_ZN5obvhs5cwbvh7builder21build_cwbvh_from_tris17h4ca83b2abc9b004dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d6d8",
+      "kind": "call",
+      "target": "0x140f3c9d0",
+      "target_names": [
+        "std::time::Instant::now",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant3now"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d703",
+      "kind": "call",
+      "target": "0x140f3c790",
+      "target_names": [
+        "std::time::Instant::duration_since",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant14duration_since",
+        "_RNvMNtCs1aoCESei0z2_3std4timeNtB2_7Instant25saturating_duration_since"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d7bd",
+      "kind": "call",
+      "target": "0x140f332f0",
+      "target_names": [
+        "log::__private_api::impl$2::log",
+        "_ZN61_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$3log17h18d828029531af6fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d7ed",
+      "kind": "call",
+      "target": "0x1415efff0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h29d62983ca0ff17eE",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::rt::GpuRtTriangle,core::iter::adapters::map::Map<core::slice::iter::Iter<u32>,country_core::resources::rt::bvh::build_gpu_bvh::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d80e",
+      "kind": "call",
+      "target": "0x1415f81d0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h6eedc2535fef2b59E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<u32,core::iter::adapters::map::Map<core::slice::iter::Iter<u32>,country_core::resources::rt::bvh::build_gpu_bvh::closure_env$2> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d85f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d880",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d8a6",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d8fb",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d92e",
+      "kind": "call",
+      "target": "0x140986bc0",
+      "target_names": [
+        "core::ptr::drop_in_place<obvhs::cwbvh::CwBvh>",
+        "_ZN4core3ptr40drop_in_place$LT$obvhs..cwbvh..CwBvh$GT$17h82b3d7fd19a745d4E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140c5d98b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140c5d699",
+      "target": "0x1430348f0",
+      "operand_bytes": 8,
+      "names": [
+        "__xmm@00000000000000003f8000003e4ccccd"
+      ],
+      "bytes_hex": "cdcc4c3e0000803f0000000000000000f90215d0f90215500000000000000000"
+    },
+    {
+      "address": "0x140c5d6e5",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x140c5d71b",
+      "target": "0x140f72840",
+      "operand_bytes": 8,
+      "names": [
+        "core::time::impl$12::fmt",
+        "_RNvXsa_NtCs8icZUrvfcq9_4core4timeNtB5_8DurationNtNtB7_3fmt5Debug3fmt"
+      ],
+      "bytes_hex": "554883ec40488d6c24404889d0ba000020002350104189d141c1e91585d2488d"
+    },
+    {
+      "address": "0x140c5d731",
+      "target": "0x14306f4ce",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a7265736f75726365733a3a72743a3a627668",
+      "ascii_candidate": "country_core::resources::rt::bvhstruct GladeSettingsstruct PlacementConfigEntry"
+    },
+    {
+      "address": "0x140c5d74f",
+      "target": "0x14306f4a2",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f7265736f75726365",
+      "ascii_candidate": "crates/country-core/src/resources/rt/bvh.rs"
+    },
+    {
+      "address": "0x140c5d796",
+      "target": "0x14306f47d",
+      "operand_bytes": 8,
+      "bytes_hex": "224772696666696e20686173206275696c742075732061204750552042564820"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

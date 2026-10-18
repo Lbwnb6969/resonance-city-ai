@@ -186,7 +186,7 @@ func _run()->void:
 	for row:Dictionary in VIEWS: await _view(row)
 	_check(demo.state.snapshot()==snapshot and FileAccess.get_file_as_bytes(SAMPLE)==sample_bytes,"fixed shore viewing preserves authored State and source sample")
 	if not before: await _after_checks()
-	_check(_identity()==audio and demo.music.get_child_count()==13 and demo.music._playback_clock()>clock,"nine original PCM and thirteen Players keep identities with actual advancing transport")
+	_check(_identity()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.music._playback_clock()>clock,"all shared PCM and the fixed long-track plus four-short pool keep identities with advancing transport")
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal city bytes preserved")
 	facts.sample_sha256=_sha(sample_bytes);facts.records_sha256=_sha(var_to_bytes(records));facts.record_blocks=records.size();facts.life_paused=true;facts.vsync=0;facts.max_fps=180
 	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"count":checks.size(),"facts":facts,"scope":"Fixed actual GL views, paused Life/live Music; capped wall reference, not throughput/full-grass/economy acceptance. After adds actual installed geometry, public State water/road/undo and real latest Budget checks.","command":"Godot_v4.7.2-stable_win64_console.exe --path . --audio-driver Dummy --max-fps 180 --script tools/check_creation_shore_clusters_live.gd"+(" -- --before" if before else "")}

@@ -1,0 +1,87 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_25" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "resolve_tile_mask_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "resolve_output_dims",
+                    "type" : "uvec2",
+                    "offset" : 8
+                },
+                {
+                    "name" : "shadow_depth_dims",
+                    "type" : "uvec2",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_71" : {
+            "name" : "gl_PerVertex",
+            "members" : [
+                {
+                    "name" : "gl_Position",
+                    "type" : "vec4"
+                },
+                {
+                    "name" : "gl_PointSize",
+                    "type" : "float"
+                },
+                {
+                    "name" : "gl_ClipDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                },
+                {
+                    "name" : "gl_CullDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_uv",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "resolve_tile_mask",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_25",
+            "name" : "GlobalParams_natural",
+            "block_size" : 24,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

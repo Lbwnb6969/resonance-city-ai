@@ -1,0 +1,70 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_27" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "paths_visual_src_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "paths_visual_margin_dims",
+                    "type" : "uvec2",
+                    "offset" : 8
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "paths_visual_src",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_lnc",
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "images" : [
+        {
+            "type" : "image2D",
+            "name" : "paths_visual_margin",
+            "writeonly" : true,
+            "set" : 0,
+            "binding" : 2,
+            "format" : "rgba8"
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_27",
+            "name" : "GlobalParams_natural",
+            "block_size" : 16,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

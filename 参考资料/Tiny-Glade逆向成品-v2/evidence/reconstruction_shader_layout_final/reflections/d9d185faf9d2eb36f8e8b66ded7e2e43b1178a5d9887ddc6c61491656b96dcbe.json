@@ -1,0 +1,1209 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_89" : {
+            "name" : "Reservoir1sppStreamState",
+            "members" : [
+                {
+                    "name" : "p_q_sel",
+                    "type" : "float"
+                },
+                {
+                    "name" : "M_sum",
+                    "type" : "float"
+                }
+            ]
+        },
+        "_94" : {
+            "name" : "Reservoir1spp",
+            "members" : [
+                {
+                    "name" : "w_sum",
+                    "type" : "float"
+                },
+                {
+                    "name" : "payload",
+                    "type" : "uint"
+                },
+                {
+                    "name" : "M",
+                    "type" : "float"
+                },
+                {
+                    "name" : "W",
+                    "type" : "float"
+                }
+            ]
+        },
+        "_338" : {
+            "name" : "FrameCounter_natural",
+            "members" : [
+                {
+                    "name" : "index",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_501" : {
+            "name" : "FrameConstants_natural",
+            "members" : [
+                {
+                    "name" : "sun_color",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "sky_low_color",
+                    "type" : "vec4",
+                    "offset" : 16
+                },
+                {
+                    "name" : "sky_high_color",
+                    "type" : "vec4",
+                    "offset" : 32
+                },
+                {
+                    "name" : "fog_tint_thickness",
+                    "type" : "vec4",
+                    "offset" : 48
+                },
+                {
+                    "name" : "fake_light_color",
+                    "type" : "vec4",
+                    "offset" : 64
+                },
+                {
+                    "name" : "fake_light_dir",
+                    "type" : "vec4",
+                    "offset" : 80
+                },
+                {
+                    "name" : "fake_light2_color",
+                    "type" : "vec4",
+                    "offset" : 96
+                },
+                {
+                    "name" : "fake_light2_dir",
+                    "type" : "vec4",
+                    "offset" : 112
+                },
+                {
+                    "name" : "time_since_startup_secs",
+                    "type" : "float",
+                    "offset" : 128
+                },
+                {
+                    "name" : "delta_time_seconds",
+                    "type" : "float",
+                    "offset" : 132
+                },
+                {
+                    "name" : "ev_mult",
+                    "type" : "float",
+                    "offset" : 136
+                },
+                {
+                    "name" : "glade_theme_id",
+                    "type" : "uint",
+                    "offset" : 140
+                },
+                {
+                    "name" : "world_render_resolution",
+                    "type" : "uvec2",
+                    "offset" : 144
+                },
+                {
+                    "name" : "game_time_sec",
+                    "type" : "uint",
+                    "offset" : 152
+                },
+                {
+                    "name" : "game_time_frac",
+                    "type" : "float",
+                    "offset" : 156
+                },
+                {
+                    "name" : "editing_highlight_color",
+                    "type" : "vec3",
+                    "offset" : 160
+                },
+                {
+                    "name" : "time_of_day",
+                    "type" : "float",
+                    "offset" : 172
+                },
+                {
+                    "name" : "dir_to_sun",
+                    "type" : "vec3",
+                    "offset" : 176
+                },
+                {
+                    "name" : "camera_idx",
+                    "type" : "uint",
+                    "offset" : 188
+                },
+                {
+                    "name" : "dir_to_moon",
+                    "type" : "vec3",
+                    "offset" : 192
+                },
+                {
+                    "name" : "render_overrides",
+                    "type" : "uint",
+                    "offset" : 204
+                },
+                {
+                    "name" : "dir_to_primary_directional_light",
+                    "type" : "vec3",
+                    "offset" : 208
+                },
+                {
+                    "name" : "main_view_lod_scale",
+                    "type" : "float",
+                    "offset" : 220
+                },
+                {
+                    "name" : "main_view_eye_position",
+                    "type" : "vec4",
+                    "offset" : 224
+                },
+                {
+                    "name" : "fog_relative_extinction",
+                    "type" : "float",
+                    "offset" : 240
+                },
+                {
+                    "name" : "highlighted_transient_stair_edge_id",
+                    "type" : "uint",
+                    "offset" : 244
+                },
+                {
+                    "name" : "swapchain_dims",
+                    "type" : "uvec2",
+                    "offset" : 248
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 256
+                },
+                {
+                    "name" : "is_photomode",
+                    "type" : "uint",
+                    "offset" : 260
+                },
+                {
+                    "name" : "is_topdown_mode",
+                    "type" : "uint",
+                    "offset" : 264
+                },
+                {
+                    "name" : "is_firstperson_mode",
+                    "type" : "uint",
+                    "offset" : 268
+                },
+                {
+                    "name" : "brush_position",
+                    "type" : "vec3",
+                    "offset" : 272
+                },
+                {
+                    "name" : "eraser_size_multiplier",
+                    "type" : "float",
+                    "offset" : 284
+                },
+                {
+                    "name" : "roof_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 288
+                },
+                {
+                    "name" : "roof_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 292
+                },
+                {
+                    "name" : "wall_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 296
+                },
+                {
+                    "name" : "wall_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 300
+                },
+                {
+                    "name" : "highlight_bricks_to_delete",
+                    "type" : "uint",
+                    "offset" : 304
+                },
+                {
+                    "name" : "wind_strength",
+                    "type" : "float",
+                    "offset" : 308
+                },
+                {
+                    "name" : "tree_canopy_cone_angle_mult",
+                    "type" : "float",
+                    "offset" : 312
+                },
+                {
+                    "name" : "tree_canopy_max_cone_cull_dist_range",
+                    "type" : "float",
+                    "offset" : 316
+                },
+                {
+                    "name" : "debug_tweakers",
+                    "type" : "vec4",
+                    "offset" : 320
+                },
+                {
+                    "name" : "ground_fog",
+                    "type" : "vec3",
+                    "offset" : 336
+                },
+                {
+                    "name" : "moonswap",
+                    "type" : "float",
+                    "offset" : 348
+                }
+            ]
+        },
+        "_509" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "gbuffer_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "depth_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 8
+                },
+                {
+                    "name" : "half_depth_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "taa_history_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 24
+                },
+                {
+                    "name" : "taa_history_valid",
+                    "type" : "uint",
+                    "offset" : 32
+                },
+                {
+                    "name" : "ssgi_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 36
+                },
+                {
+                    "name" : "lantern_count",
+                    "type" : "uint",
+                    "offset" : 44
+                },
+                {
+                    "name" : "indirect_radiance_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 48
+                },
+                {
+                    "name" : "rdi_reservoir_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 56
+                }
+            ]
+        },
+        "_550" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_725" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_724" : {
+            "name" : "TerrainHeightmap_natural",
+            "members" : [
+                {
+                    "name" : "terrain_heightmap_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "bg_terrain_heightmap",
+                    "type" : "_725",
+                    "offset" : 8
+                },
+                {
+                    "name" : "bg_terrain_fog_height",
+                    "type" : "_725",
+                    "offset" : 12
+                },
+                {
+                    "name" : "bg_terrain_height_bounds_ws",
+                    "type" : "vec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "bg_water_footprint_ws",
+                    "type" : "vec4",
+                    "offset" : 24
+                }
+            ]
+        },
+        "_1117" : {
+            "name" : "RootFinderInput",
+            "members" : [
+                {
+                    "name" : "_distance",
+                    "type" : "float"
+                },
+                {
+                    "name" : "_valid",
+                    "type" : "bool"
+                }
+            ]
+        },
+        "_1116" : {
+            "name" : "DistanceWithPenetration",
+            "members" : [
+                {
+                    "name" : "base",
+                    "type" : "_1117"
+                },
+                {
+                    "name" : "penetration",
+                    "type" : "float"
+                },
+                {
+                    "name" : "thickness",
+                    "type" : "float"
+                }
+            ]
+        },
+        "_2136" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "vec4",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_2173" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_2176" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_2173",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 1024
+                }
+            ]
+        },
+        "_2631" : {
+            "name" : "_Array_natural_vector<int,4>512",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "ivec4",
+                    "array" : [
+                        512
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_2630" : {
+            "name" : "SpatialResolveOffsets_natural",
+            "members" : [
+                {
+                    "name" : "values",
+                    "type" : "_2631",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_2903" : {
+            "name" : "ColorLibraryData_natural",
+            "members" : [
+                {
+                    "name" : "temp_color_1",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "temp_color_2",
+                    "type" : "vec4",
+                    "offset" : 16
+                },
+                {
+                    "name" : "temp_color_3",
+                    "type" : "vec4",
+                    "offset" : 32
+                },
+                {
+                    "name" : "roof_color_1",
+                    "type" : "vec4",
+                    "offset" : 48
+                },
+                {
+                    "name" : "roof_color_2",
+                    "type" : "vec4",
+                    "offset" : 64
+                },
+                {
+                    "name" : "sky_low_day",
+                    "type" : "vec4",
+                    "offset" : 80
+                },
+                {
+                    "name" : "sky_high_day",
+                    "type" : "vec4",
+                    "offset" : 96
+                },
+                {
+                    "name" : "sun_tint_day",
+                    "type" : "vec4",
+                    "offset" : 112
+                },
+                {
+                    "name" : "sky_low_dusk",
+                    "type" : "vec4",
+                    "offset" : 128
+                },
+                {
+                    "name" : "sky_high_dusk",
+                    "type" : "vec4",
+                    "offset" : 144
+                },
+                {
+                    "name" : "sun_tint_dusk",
+                    "type" : "vec4",
+                    "offset" : 160
+                },
+                {
+                    "name" : "indirect_light_tint",
+                    "type" : "vec4",
+                    "offset" : 176
+                },
+                {
+                    "name" : "fence_color_1",
+                    "type" : "vec4",
+                    "offset" : 192
+                },
+                {
+                    "name" : "fence_color_2",
+                    "type" : "vec4",
+                    "offset" : 208
+                },
+                {
+                    "name" : "flower_color_1",
+                    "type" : "vec4",
+                    "offset" : 224
+                },
+                {
+                    "name" : "flower_color_2",
+                    "type" : "vec4",
+                    "offset" : 240
+                },
+                {
+                    "name" : "canopy_color_1",
+                    "type" : "vec4",
+                    "offset" : 256
+                },
+                {
+                    "name" : "canopy_color_2",
+                    "type" : "vec4",
+                    "offset" : 272
+                },
+                {
+                    "name" : "grass_1",
+                    "type" : "vec4",
+                    "offset" : 288
+                },
+                {
+                    "name" : "grass_2",
+                    "type" : "vec4",
+                    "offset" : 304
+                },
+                {
+                    "name" : "path",
+                    "type" : "vec4",
+                    "offset" : 320
+                },
+                {
+                    "name" : "sky_base",
+                    "type" : "vec4",
+                    "offset" : 336
+                },
+                {
+                    "name" : "sky_horizon",
+                    "type" : "vec4",
+                    "offset" : 352
+                },
+                {
+                    "name" : "sky_clouds_1",
+                    "type" : "vec4",
+                    "offset" : 368
+                },
+                {
+                    "name" : "sky_clouds_2",
+                    "type" : "vec4",
+                    "offset" : 384
+                },
+                {
+                    "name" : "terrain_1",
+                    "type" : "vec4",
+                    "offset" : 400
+                },
+                {
+                    "name" : "terrain_2",
+                    "type" : "vec4",
+                    "offset" : 416
+                },
+                {
+                    "name" : "terrain_flattened",
+                    "type" : "vec4",
+                    "offset" : 432
+                },
+                {
+                    "name" : "wall_1",
+                    "type" : "vec4",
+                    "offset" : 448
+                },
+                {
+                    "name" : "wall_2",
+                    "type" : "vec4",
+                    "offset" : 464
+                },
+                {
+                    "name" : "wall_moss",
+                    "type" : "vec4",
+                    "offset" : 480
+                },
+                {
+                    "name" : "wall_bricks",
+                    "type" : "vec4",
+                    "offset" : 496
+                },
+                {
+                    "name" : "ivy_branch",
+                    "type" : "vec4",
+                    "offset" : 512
+                },
+                {
+                    "name" : "ivy_leaf_1",
+                    "type" : "vec4",
+                    "offset" : 528
+                },
+                {
+                    "name" : "ivy_leaf_2",
+                    "type" : "vec4",
+                    "offset" : 544
+                },
+                {
+                    "name" : "terrain_highlight",
+                    "type" : "vec4",
+                    "offset" : 560
+                },
+                {
+                    "name" : "night_tint",
+                    "type" : "vec4",
+                    "offset" : 576
+                }
+            ]
+        },
+        "_4099" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_4523" : {
+            "name" : "LanternPacked_natural",
+            "members" : [
+                {
+                    "name" : "position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "intensity__color_id",
+                    "type" : "uint",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_4526" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_4523",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main._color",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "blue_noise_textures.uniform01",
+            "set" : 7,
+            "binding" : 0
+        },
+        {
+            "type" : "utexture2D",
+            "name" : "gbuffer_tex",
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "depth_tex",
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "texture2D",
+            "name" : "ssgi_tex",
+            "set" : 0,
+            "binding" : 5
+        },
+        {
+            "type" : "texture2D",
+            "name" : "resource_handles",
+            "array" : [
+                0
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 1,
+            "binding" : 0
+        },
+        {
+            "type" : "texture2D",
+            "name" : "shadows.screen_shadows_tex",
+            "set" : 0,
+            "binding" : 6
+        },
+        {
+            "type" : "texture2D",
+            "name" : "half_depth_tex",
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2DArray",
+            "name" : "csm.sun_shadow_map",
+            "set" : 26,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "indirect_radiance_tex",
+            "set" : 0,
+            "binding" : 10
+        },
+        {
+            "type" : "utexture2D",
+            "name" : "rdi_reservoir_tex",
+            "set" : 0,
+            "binding" : 11
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.nnc",
+            "set" : 3,
+            "binding" : 2
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc_iso",
+            "set" : 3,
+            "binding" : 5
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers.llc",
+            "set" : 3,
+            "binding" : 3
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc",
+            "set" : 3,
+            "binding" : 0
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers.shadow_nearest_b1",
+            "set" : 3,
+            "binding" : 10
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_2136",
+            "name" : "csm_setup.cascade_splits_buf",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 25,
+            "binding" : 1
+        },
+        {
+            "type" : "_2176",
+            "name" : "csm_setup.sun_view",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 25,
+            "binding" : 0
+        },
+        {
+            "type" : "_4099",
+            "name" : "light_indirection_grid",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 12
+        },
+        {
+            "type" : "_4526",
+            "name" : "lantern_buf",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 9
+        },
+        {
+            "type" : "_4099",
+            "name" : "grid_light_indices",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 13
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_338",
+            "name" : "FrameCounter_natural",
+            "block_size" : 4,
+            "set" : 4,
+            "binding" : 0
+        },
+        {
+            "type" : "_501",
+            "name" : "FrameConstants_natural",
+            "block_size" : 352,
+            "set" : 5,
+            "binding" : 0
+        },
+        {
+            "type" : "_509",
+            "name" : "GlobalParams_natural",
+            "block_size" : 64,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_550",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 2,
+            "binding" : 0
+        },
+        {
+            "type" : "_724",
+            "name" : "TerrainHeightmap_natural",
+            "block_size" : 40,
+            "set" : 22,
+            "binding" : 0
+        },
+        {
+            "type" : "_2630",
+            "name" : "SpatialResolveOffsets_natural",
+            "block_size" : 8192,
+            "set" : 0,
+            "binding" : 8
+        },
+        {
+            "type" : "_2903",
+            "name" : "ColorLibraryData_natural",
+            "block_size" : 592,
+            "set" : 21,
+            "binding" : 0
+        }
+    ]
+}

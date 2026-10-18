@@ -1,0 +1,96 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_34" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uvec4",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_63" : {
+            "name" : "point_search_entries",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uvec2",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 8
+                }
+            ]
+        },
+        "_97" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_34",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_63",
+            "name" : "point_search_entries",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_97",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        }
+    ]
+}

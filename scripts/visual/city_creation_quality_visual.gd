@@ -19,9 +19,16 @@ func setup(renderer: Node3D)->void:
 		effect.direction=Vector3.UP;effect.spread=42;effect.initial_velocity_min=.7;effect.initial_velocity_max=1.5;effect.gravity=Vector3(0,-.35,0)
 		DetailLod.bind(effect,DetailLod.SMOKE);effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
 
-func progress(renderer)->void:
+func progress(renderer,only:Array[String]=[])->void:
+	if renderer.state.building_quality.is_empty() and roots.is_empty():return
 	var live: Dictionary={}
-	for house: Dictionary in renderer.state.houses:
+	var houses:Array=renderer.state.houses
+	if not only.is_empty():
+		houses=[]
+		for id:String in only:
+			var index:int=renderer.state._house_index(id)
+			if index>=0:houses.append(renderer.state.houses[index])
+	for house: Dictionary in houses:
 		var id:=str(house.id);var tier: int=renderer.state.level_tier(id)
 		if tier<2:continue
 		live[id]=true
@@ -30,7 +37,7 @@ func progress(renderer)->void:
 		_remove(id)
 		var root:=Node3D.new();root.name="Quality_"+id;root.set_meta("level_tier",tier);layer.add_child(root)
 		var entry: Dictionary=renderer._primary_entrance(house)
-		var records: Dictionary=renderer.craft._placements(renderer,house,3)
+		var records: Dictionary=renderer.craft._placements(renderer,house,3 if tier>=4 else 2)
 		var features: Array[String]=[]
 		if not entry.is_empty():
 			var frame:=Node3D.new();root.add_child(frame)
@@ -64,7 +71,7 @@ func progress(renderer)->void:
 		root.set_meta("features",features);renderer._merge_meshes(root)
 		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		roots[id]=root;fingerprints[id]=signature;build_count+=1
-	for id: String in roots.keys():
+	for id: String in (roots.keys() if only.is_empty() else only):
 		if not live.has(id):_remove(id)
 
 func _canopy(renderer,root: Node3D,house: Dictionary,features: Array[String])->void:
@@ -102,7 +109,11 @@ func _rose_window(renderer,root: Node3D,house: Dictionary)->void:
 		break
 
 func flash(renderer, events: Array)->void:
-	progress(renderer)
+	var changed:Array[String]=[]
+	for event:Dictionary in events:
+		var id:=str(event.house_id)
+		if not changed.has(id):changed.append(id)
+	progress(renderer,changed)
 	for event: Dictionary in events.slice(0,4):
 		var id:=str(event.house_id)
 		if not renderer.resonance.rigs.has(id):continue

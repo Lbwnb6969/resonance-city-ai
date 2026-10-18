@@ -80,7 +80,12 @@ func _run() -> void:
 func _check_production(city: RefCounted, shore: Node3D) -> void:
 	for record: Dictionary in _records(shore).values():
 		var at: Vector2 = record.position
-		_check(city.water_clearance(at) > 0.105 and city.water_clearance(at) <= 0.9, "center stays in dry shore band")
+		_check(city.water_clearance(at) > 0.105, "each exemplar stays on dry shore")
+		if record.has("cluster_id"):
+			var root_at: Vector2=record.root_position
+			_check(city.water_clearance(root_at)>=0.4 and city.water_clearance(root_at)<=0.95 and at.distance_to(root_at)<=Shore.CLUSTER_REACH,"mother root anchors its bounded companions to the shore band")
+		else:
+			_check(city.water_clearance(at)<=0.9,"individual reed and grass roots stay in their dry shore band")
 		if State.WORLD_RECT.has_point(at):
 			var plant := {"id": "ptest", "position": [at.x, at.y], "kind": "shrub", "scale": 0.25, "seed": 0, "source": "seed"}
 			_check(city.vegetation_visible(plant), "production room/door/road/water footprint predicate")

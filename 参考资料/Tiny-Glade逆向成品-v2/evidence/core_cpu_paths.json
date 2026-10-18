@@ -1,0 +1,2521 @@
+[
+  {
+    "va": "0x140c5d4d0",
+    "name": "country_core::resources::rt::bvh::build_gpu_bvh",
+    "size": 1232,
+    "size_variants": "[1232]",
+    "module": "country_core-75de4a05f1ed4a16.8754fth9l3m8diu9lr7etdprc.1euy9uv.rcgu.o",
+    "file_offset": 12962000,
+    "decoded_bytes": 1232,
+    "instructions": 300,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x140c5d50c",
+        "target": "0x142dc7e2a",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::handle_error"
+      },
+      {
+        "site": "0x140c5d52a",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x140c5d53d",
+        "target": "0x1406abab0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x140c5d666",
+        "target": "0x140f3c9d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::time::Instant::now"
+      },
+      {
+        "site": "0x140c5d6d2",
+        "target": "0x141c88ad0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::cwbvh::builder::build_cwbvh_from_tris"
+      },
+      {
+        "site": "0x140c5d6d8",
+        "target": "0x140f3c9d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::time::Instant::now"
+      },
+      {
+        "site": "0x140c5d703",
+        "target": "0x140f3c790",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::time::Instant::duration_since"
+      },
+      {
+        "site": "0x140c5d7bd",
+        "target": "0x140f332f0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::__private_api::impl$2::log"
+      },
+      {
+        "site": "0x140c5d7ed",
+        "target": "0x1415efff0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::rt::GpuRtTriangle,core::iter::adapters::map::Map<core::slice::iter::Iter<u32>,country_core::resources::rt::bvh::build_gpu_bvh::closure_env$1> >"
+      },
+      {
+        "site": "0x140c5d80e",
+        "target": "0x1415f81d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::vec::spec_from_iter::impl$0::from_iter<u32,core::iter::adapters::map::Map<core::slice::iter::Iter<u32>,country_core::resources::rt::bvh::build_gpu_bvh::closure_env$2> >"
+      },
+      {
+        "site": "0x140c5d85f",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x140c5d880",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x140c5d8a6",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x140c5d8fb",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x140c5d92e",
+        "target": "0x140986bc0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<obvhs::cwbvh::CwBvh>"
+      },
+      {
+        "site": "0x140c5d98b",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      }
+    ]
+  },
+  {
+    "va": "0x141c88ad0",
+    "name": "obvhs::cwbvh::builder::build_cwbvh_from_tris",
+    "size": 2372,
+    "size_variants": "[2372]",
+    "module": "obvhs-5dce96ab19c7db7c.obvhs.b761c5611a1d8422-cgu.14.rcgu.o",
+    "file_offset": 29916880,
+    "decoded_bytes": 2372,
+    "instructions": 490,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x141c88b5c",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x141c88b69",
+        "target": "0x1406abab0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c88b98",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x141c88ba5",
+        "target": "0x1406abab0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c88bb7",
+        "target": "0x142dc7e2a",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::handle_error"
+      },
+      {
+        "site": "0x141c88cdc",
+        "target": "0x142db8450",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<obvhs::aabb::Aabb,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c88d43",
+        "target": "0x142d89720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<f32,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c88d55",
+        "target": "0x140f3c9d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::time::Instant::now"
+      },
+      {
+        "site": "0x141c88e14",
+        "target": "0x141c89420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::splits::split_aabbs_precise"
+      },
+      {
+        "site": "0x141c88e70",
+        "target": "0x142636550",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::ploc::PlocSearchDistance::build"
+      },
+      {
+        "site": "0x141c88e91",
+        "target": "0x14263d7c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::bvh2::reinsertion::ReinsertionOptimizer::run"
+      },
+      {
+        "site": "0x141c88ec1",
+        "target": "0x14263fe50",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::cwbvh::bvh2_to_cwbvh::bvh2_to_cwbvh"
+      },
+      {
+        "site": "0x141c88ece",
+        "target": "0x140f3cb70",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::time::Instant::elapsed"
+      },
+      {
+        "site": "0x141c88f6d",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c88f89",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c88fab",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c89020",
+        "target": "0x142dc8110",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::expect_failed"
+      },
+      {
+        "site": "0x141c89030",
+        "target": "0x142dc7e2a",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::handle_error"
+      },
+      {
+        "site": "0x141c890c2",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c89199",
+        "target": "0x141c88a10",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<obvhs::bvh2::Bvh2>"
+      },
+      {
+        "site": "0x141c89269",
+        "target": "0x141c88a60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<obvhs::cwbvh::CwBvh>"
+      },
+      {
+        "site": "0x141c8935b",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      }
+    ]
+  },
+  {
+    "va": "0x14263fe50",
+    "name": "obvhs::cwbvh::bvh2_to_cwbvh::bvh2_to_cwbvh",
+    "size": 438,
+    "size_variants": "[438]",
+    "module": "obvhs-5dce96ab19c7db7c.obvhs.b761c5611a1d8422-cgu.11.rcgu.o",
+    "file_offset": 40104528,
+    "decoded_bytes": 438,
+    "instructions": 120,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x14263fe98",
+        "target": "0x14263f870",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::cwbvh::bvh2_to_cwbvh::Bvh2Converter::new"
+      },
+      {
+        "site": "0x14263fea9",
+        "target": "0x14263e720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::cwbvh::bvh2_to_cwbvh::Bvh2Converter::calculate_cost_impl"
+      },
+      {
+        "site": "0x14263feb8",
+        "target": "0x14263ee70",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "obvhs::cwbvh::bvh2_to_cwbvh::Bvh2Converter::convert_to_cwbvh_impl"
+      },
+      {
+        "site": "0x14263ff17",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14263ffa1",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14263ffbd",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14263ffd9",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14263fff5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      }
+    ]
+  },
+  {
+    "va": "0x142812c70",
+    "name": "system_roof::utils::assemble_rectangular_roof::assemble_rectangular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>",
+    "size": 15015,
+    "size_variants": "[15015]",
+    "module": "system_roof-838a4a2e2b945fd4.4uulzmb2ayy5p6v97575dil8a.15eaz58.rcgu.o",
+    "file_offset": 42016880,
+    "decoded_bytes": 15015,
+    "instructions": 3056,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x142812d11",
+        "target": "0x140b73b80",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_visual_shape::get_roof_expanded_top_and_bottom"
+      },
+      {
+        "site": "0x142812d20",
+        "target": "0x140b73b00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_visual_shape::RoofBoundsDims::as_rectangle"
+      },
+      {
+        "site": "0x142812d58",
+        "target": "0x140b772d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::profile_curve_normalized"
+      },
+      {
+        "site": "0x142812d72",
+        "target": "0x140df2970",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::new_centered_axis_aligned"
+      },
+      {
+        "site": "0x142812d85",
+        "target": "0x140ac6200",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_ridge::calc_roof_tip_center_ls"
+      },
+      {
+        "site": "0x142812dbc",
+        "target": "0x140df1b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::new_axis_aligned"
+      },
+      {
+        "site": "0x142812dd0",
+        "target": "0x140df1c10",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::orientation_mat2"
+      },
+      {
+        "site": "0x142812ddd",
+        "target": "0x140b77b60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::is_gable"
+      },
+      {
+        "site": "0x142812e0f",
+        "target": "0x140b76870",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::RoofShapeParams::eave_length_ws"
+      },
+      {
+        "site": "0x142812e50",
+        "target": "0x140b76870",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::RoofShapeParams::eave_length_ws"
+      },
+      {
+        "site": "0x142812e8a",
+        "target": "0x140b77190",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::gable_sides"
+      },
+      {
+        "site": "0x142812e9b",
+        "target": "0x140df37e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::as_curve2"
+      },
+      {
+        "site": "0x142812ec3",
+        "target": "0x140df37e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::as_curve2"
+      },
+      {
+        "site": "0x142812f4d",
+        "target": "0x140b77a00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::height"
+      },
+      {
+        "site": "0x142812f77",
+        "target": "0x140df0010",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::as_points2"
+      },
+      {
+        "site": "0x142812f8d",
+        "target": "0x140df0010",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::as_points2"
+      },
+      {
+        "site": "0x142812fe6",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x142813012",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x142813036",
+        "target": "0x140df0010",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::rectangle::Rectangle2d::as_points2"
+      },
+      {
+        "site": "0x142813072",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x1428130d1",
+        "target": "0x140b768b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::profile_curve_ws"
+      },
+      {
+        "site": "0x1428130fc",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281311e",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281312e",
+        "target": "0x142e32b00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428131a0",
+        "target": "0x140de8290",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::random_splits"
+      },
+      {
+        "site": "0x142813316",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x14281337c",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x1428137bd",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x1428137e6",
+        "target": "0x141e3c580",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$2::to_f16"
+      },
+      {
+        "site": "0x1428137f2",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x142813872",
+        "target": "0x142816720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x1428138a9",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428138ba",
+        "target": "0x140ac6110",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_ridge::RoofRidgeDims::from"
+      },
+      {
+        "site": "0x1428138dc",
+        "target": "0x140ac5730",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_ridge::RoofRidgeDims::to_world_space"
+      },
+      {
+        "site": "0x142813967",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x1428139a3",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142813a01",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x142813a0e",
+        "target": "0x140b77a00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::height"
+      },
+      {
+        "site": "0x142813a69",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x142813a76",
+        "target": "0x140b77a00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::height"
+      },
+      {
+        "site": "0x142813aa4",
+        "target": "0x140b77b60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::is_gable"
+      },
+      {
+        "site": "0x142813ba9",
+        "target": "0x142e32b00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142813c1e",
+        "target": "0x140de8290",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::random_splits"
+      },
+      {
+        "site": "0x142813dee",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x142813eac",
+        "target": "0x141e3c580",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$2::to_f16"
+      },
+      {
+        "site": "0x142813ed4",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x14281403c",
+        "target": "0x142816720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x142814105",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x142814134",
+        "target": "0x141e3c580",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$2::to_f16"
+      },
+      {
+        "site": "0x14281415c",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x142814216",
+        "target": "0x142816720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x142814250",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428147c1",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x142814805",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x1428148ab",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x1428148e4",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x14281498e",
+        "target": "0x140b77a00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::height"
+      },
+      {
+        "site": "0x1428149f2",
+        "target": "0x140b768b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::profile_curve_ws"
+      },
+      {
+        "site": "0x142814a08",
+        "target": "0x142e329c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142814ab2",
+        "target": "0x140fc8030",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D>,glam::f32::vec2::Vec2,glam::f32::vec2::Vec2,f32>,core::iter::adapters::map::Map<core::ops::range::Range<i32>,system_roof::utils::assemble_rectangular_roof::assemble_rectangular_roof::closure_env$2<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1> > >"
+      },
+      {
+        "site": "0x142814b10",
+        "target": "0x142d89250",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<system_critters::boids::Boid,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x142814c0d",
+        "target": "0x142e329c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142814c60",
+        "target": "0x140de8290",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::random_splits"
+      },
+      {
+        "site": "0x142814c8c",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142814cb2",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142814d32",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142814d58",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142814e02",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x142814e11",
+        "target": "0x1406abab0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142814e50",
+        "target": "0x142802830",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::crashy_new_from_points<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>"
+      },
+      {
+        "site": "0x142814f70",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x142814fc3",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x1428150c1",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x1428150ce",
+        "target": "0x140e02880",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "fastrand::Rng::f32"
+      },
+      {
+        "site": "0x142815102",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x142815166",
+        "target": "0x142e32990",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281517d",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x14281519e",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x1428151cb",
+        "target": "0x142e32b30",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428151ed",
+        "target": "0x142e329e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815476",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x142815496",
+        "target": "0x141e3c5c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$3::to_f16"
+      },
+      {
+        "site": "0x1428154cb",
+        "target": "0x140df4560",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$5::to_f16"
+      },
+      {
+        "site": "0x1428154e4",
+        "target": "0x140e02880",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "fastrand::Rng::f32"
+      },
+      {
+        "site": "0x14281551b",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x1428155f7",
+        "target": "0x142816720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x142815683",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x1428157db",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x1428157e8",
+        "target": "0x141e3c5c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$3::to_f16"
+      },
+      {
+        "site": "0x1428157f8",
+        "target": "0x140df4560",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$5::to_f16"
+      },
+      {
+        "site": "0x142815804",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x142815877",
+        "target": "0x142816720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x1428158ad",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428158dd",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815903",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281593c",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281595e",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815980",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815b0d",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815b29",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815b45",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815b61",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815b83",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815ba5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815c3d",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142815c79",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142815c8e",
+        "target": "0x142dc7e11",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::alloc::handle_alloc_error"
+      },
+      {
+        "site": "0x142815ca6",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815cbe",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815cd3",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815ce5",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815cfa",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d0c",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d1e",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x142815d36",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d4e",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d66",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d7e",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815d93",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815da5",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815db7",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815dc9",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815ddd",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815def",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815e01",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815e13",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815e25",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142815eb5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815ed7",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815fbf",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142815fdb",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428160bf",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428160db",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428161c5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428162b5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428162d7",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428163c9",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428164b5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428165a5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428165c7",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428166b5",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      }
+    ]
+  },
+  {
+    "va": "0x142816ba0",
+    "name": "system_roof::utils::assemble_circular_roof::assemble_circular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>",
+    "size": 4728,
+    "size_variants": "[4728]",
+    "module": "system_roof-838a4a2e2b945fd4.7pbz2ezkye2cgvw14nv90dlqo.15eaz58.rcgu.o",
+    "file_offset": 42033056,
+    "decoded_bytes": 4728,
+    "instructions": 989,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x142816c39",
+        "target": "0x140b73b80",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_visual_shape::get_roof_expanded_top_and_bottom"
+      },
+      {
+        "site": "0x142816c41",
+        "target": "0x140b73b40",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_visual_shape::RoofBoundsDims::as_circle"
+      },
+      {
+        "site": "0x142816c53",
+        "target": "0x140b772d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::profile_curve_normalized"
+      },
+      {
+        "site": "0x142816c5c",
+        "target": "0x140b77a00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::height"
+      },
+      {
+        "site": "0x142816c76",
+        "target": "0x140b768b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::profile_curve_ws"
+      },
+      {
+        "site": "0x142816c8c",
+        "target": "0x142e329c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142816d70",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x142816dc3",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x142816dfd",
+        "target": "0x140b771f0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::roof_tip_offset_xz"
+      },
+      {
+        "site": "0x142816e42",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142816e6c",
+        "target": "0x140def2a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::circle::Circle2d::new_rotated"
+      },
+      {
+        "site": "0x142816e86",
+        "target": "0x140de8220",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::inverse_lerp"
+      },
+      {
+        "site": "0x142816eaf",
+        "target": "0x140deff30",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::circle::Circle2d::perimeter"
+      },
+      {
+        "site": "0x142816ec0",
+        "target": "0x140e02880",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "fastrand::Rng::f32"
+      },
+      {
+        "site": "0x142816eeb",
+        "target": "0x142e329c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142816f23",
+        "target": "0x142e32b30",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142816f30",
+        "target": "0x142e329e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142816f67",
+        "target": "0x140de8290",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::random_splits"
+      },
+      {
+        "site": "0x142817065",
+        "target": "0x140def2c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::circle::Circle2d::get_pos_at_u"
+      },
+      {
+        "site": "0x14281707e",
+        "target": "0x140def2c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::circle::Circle2d::get_pos_at_u"
+      },
+      {
+        "site": "0x1428170d5",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x14281710b",
+        "target": "0x140e02880",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "fastrand::Rng::f32"
+      },
+      {
+        "site": "0x142817140",
+        "target": "0x142802660",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::curve::Curve::get_coord_at_u<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D,utils::curve::curve_u::CurveU<utils::curve::CurveCoordSemantic2D> >"
+      },
+      {
+        "site": "0x1428171a8",
+        "target": "0x142e32990",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x1428171e7",
+        "target": "0x140def5e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::geometry::circle::Circle2d::get_normal_at_u"
+      },
+      {
+        "site": "0x142817211",
+        "target": "0x140df4520",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$0::x0y"
+      },
+      {
+        "site": "0x14281726b",
+        "target": "0x142e32b30",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817278",
+        "target": "0x142e329e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817505",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x142817553",
+        "target": "0x140df4560",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$5::to_f16"
+      },
+      {
+        "site": "0x142817563",
+        "target": "0x140e02880",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "fastrand::Rng::f32"
+      },
+      {
+        "site": "0x14281758c",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x14281764a",
+        "target": "0x142817e20",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x1428176b8",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x142817821",
+        "target": "0x1424e5b90",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$7::to_f16"
+      },
+      {
+        "site": "0x142817831",
+        "target": "0x140df4560",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$5::to_f16"
+      },
+      {
+        "site": "0x14281783d",
+        "target": "0x141e3c420",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::halver::impl$0::to_f16"
+      },
+      {
+        "site": "0x1428178b9",
+        "target": "0x142817e20",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure$1"
+      },
+      {
+        "site": "0x1428178ed",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281792a",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817946",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817962",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x14281797e",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817a16",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142817a52",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142817a8e",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142817aca",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x142817ae8",
+        "target": "0x142dc83b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic"
+      },
+      {
+        "site": "0x142817b00",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b15",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b2b",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b3a",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b53",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b62",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817b7b",
+        "target": "0x142dc81f2",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_bounds_check"
+      },
+      {
+        "site": "0x142817c12",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x142817ce9",
+        "target": "0x14049c2a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::resources::walls::inner_wall_state::WallState>"
+      },
+      {
+        "site": "0x142817db9",
+        "target": "0x14049c2a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::resources::walls::inner_wall_state::WallState>"
+      }
+    ]
+  },
+  {
+    "va": "0x14280dd10",
+    "name": "system_roof::create_roof::create_roof",
+    "size": 1995,
+    "size_variants": "[1995]",
+    "module": "system_roof-838a4a2e2b945fd4.72kfrfl8hdzpzpqnuvsnyolnj.15eaz58.rcgu.o",
+    "file_offset": 41996560,
+    "decoded_bytes": 1995,
+    "instructions": 423,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x14280df13",
+        "target": "0x140b54f80",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::walls::public_walls::PublicWalls::get"
+      },
+      {
+        "site": "0x14280df31",
+        "target": "0x140b54f80",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::walls::public_walls::PublicWalls::get"
+      },
+      {
+        "site": "0x14280df97",
+        "target": "0x140930390",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::walls::public_wall_state::PublicWallState::max_y"
+      },
+      {
+        "site": "0x14280dfc2",
+        "target": "0x140c33110",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::walls::inner_wall_state::WallMaterial::gable_roof_style"
+      },
+      {
+        "site": "0x14280e023",
+        "target": "0x140b779a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::new"
+      },
+      {
+        "site": "0x14280e02b",
+        "target": "0x140b77990",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::ty"
+      },
+      {
+        "site": "0x14280e035",
+        "target": "0x140b77b60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::is_gable"
+      },
+      {
+        "site": "0x14280e070",
+        "target": "0x142d7e980",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x14280e0a5",
+        "target": "0x1409e1370",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_tile_sim::RoofTileSimulation::new"
+      },
+      {
+        "site": "0x14280e0b1",
+        "target": "0x140a00e70",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_trigger_volume::impl$0::default"
+      },
+      {
+        "site": "0x14280e0b7",
+        "target": "0x140a007d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_animation::RoofAnimation::new"
+      },
+      {
+        "site": "0x14280e0c4",
+        "target": "0x14007fac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::enabled"
+      },
+      {
+        "site": "0x14280e0e4",
+        "target": "0x1409012c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::LazyTile::from_index"
+      },
+      {
+        "site": "0x14280e0f6",
+        "target": "0x1408fd550",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::components::drawable::impl$5::from"
+      },
+      {
+        "site": "0x14280e10b",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x14280e24c",
+        "target": "0x140fc6af0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "bevy_ecs::system::commands::Commands::spawn<tuple$<country_core::resources::roofs::roof_shape::Roof,country_core::resources::roofs::roof_tile_sim::RoofTileSimulation,country_core::resources::roofs::roof_trigger_volume::RoofTriggerVolume,country_core::resources::roofs::roof_animation::RoofAnimation,country_core::resources::roofs::roof_tiles::RoofTiles,system_roof::utils::components::RoofSpire,system_roof::utils::components::RoofSupportBeams,country_core::components::drawable::NaniBundle<country_core::render::nani::instance_data::StoneFloorInstanceData> > >"
+      },
+      {
+        "site": "0x14280e277",
+        "target": "0x1408ff990",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::session::GladeType::is_flowery"
+      },
+      {
+        "site": "0x14280e28c",
+        "target": "0x140a85110",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::systems::wall::valid_enclosure::ShapeParameters::center"
+      },
+      {
+        "site": "0x14280e2b2",
+        "target": "0x140df4540",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "utils::swizzlers::impl$1::xvy"
+      },
+      {
+        "site": "0x14280e2f7",
+        "target": "0x142d7ede0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<memmap2::Mmap,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x14280e363",
+        "target": "0x142d7e6e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<std::path::PathBuf,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x14280e3c6",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x14280e3d2",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x14280e3de",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x14280e436",
+        "target": "0x140fc8bd0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::resources::roof_tile_ssbo::RoofTileSsbo> >"
+      },
+      {
+        "site": "0x14280e4ac",
+        "target": "0x1400dc150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::resources::roofs::roof_trigger_volume::RoofTriggerVolume>"
+      }
+    ]
+  },
+  {
+    "va": "0x141f46490",
+    "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles",
+    "size": 2917,
+    "size_variants": "[2917]",
+    "module": "system_roof-838a4a2e2b945fd4.6z2pubxodab55pv1ue050h5ru.15eaz58.rcgu.o",
+    "file_offset": 32790672,
+    "decoded_bytes": 2917,
+    "instructions": 727,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x141f464ca",
+        "target": "0x140e94b40",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "puffin::are_scopes_on"
+      },
+      {
+        "site": "0x141f464e1",
+        "target": "0x141f47000",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::str::impl$0::rfind<ref$<str$> >"
+      },
+      {
+        "site": "0x141f46503",
+        "target": "0x141f47000",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::str::impl$0::rfind<ref$<str$> >"
+      },
+      {
+        "site": "0x141f46600",
+        "target": "0x140e97000",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL"
+      },
+      {
+        "site": "0x141f4664b",
+        "target": "0x140e94f10",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "puffin::ThreadProfiler::begin_scope"
+      },
+      {
+        "site": "0x141f467bf",
+        "target": "0x141f4aec0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "frozen::FrozenMap::get<country_core::asset_libraries::ssbo_library::SsboId,alloc::boxed::Box<country_core::asset_libraries::ssbo_library::BufferState,alloc::alloc::Global>,core::hash::BuildHasherDefault<nohash_hasher::NoHashHasher<country_core::asset_libraries::ssbo_library::SsboId> >,country_core::asset_libraries::ssbo_library::SsboId>"
+      },
+      {
+        "site": "0x141f467d5",
+        "target": null,
+        "kind": "call",
+        "resolution": "unresolved-indirect",
+        "name": null
+      },
+      {
+        "site": "0x141f468ec",
+        "target": "0x14007ee60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "log::impl$17::log"
+      },
+      {
+        "site": "0x141f468fb",
+        "target": "0x1406abab0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141f46987",
+        "target": "0x140fc8bd0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::resources::roof_tile_ssbo::RoofTileSsbo> >"
+      },
+      {
+        "site": "0x141f469e0",
+        "target": "0x140e9a150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot_core::parking_lot::deadlock_impl::acquire_resource"
+      },
+      {
+        "site": "0x141f46a65",
+        "target": "0x141f4a6c0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter::clear<country_core::resources::roof_tile_ssbo::RoofTileSsbo>"
+      },
+      {
+        "site": "0x141f46a75",
+        "target": "0x140b77b50",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::roofs::roof_shape::Roof::is_flat"
+      },
+      {
+        "site": "0x141f46a95",
+        "target": "0x140b54f80",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::resources::walls::public_walls::PublicWalls::get"
+      },
+      {
+        "site": "0x141f46ac6",
+        "target": "0x140fc4ba0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::hash::BuildHasher::hash_one<std::hash::random::RandomState,ref$<bevy_ecs::entity::Entity> >"
+      },
+      {
+        "site": "0x141f46b6b",
+        "target": "0x140e9a350",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot_core::parking_lot::deadlock_impl::release_resource"
+      },
+      {
+        "site": "0x141f46b84",
+        "target": "0x142dbcef0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot::raw_mutex::RawMutex::unlock_slow"
+      },
+      {
+        "site": "0x141f46bcd",
+        "target": "0x142812c70",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::utils::assemble_rectangular_roof::assemble_rectangular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>"
+      },
+      {
+        "site": "0x141f46c05",
+        "target": "0x142816ba0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "system_roof::utils::assemble_circular_roof::assemble_circular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>"
+      },
+      {
+        "site": "0x141f46c16",
+        "target": "0x140e9a350",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot_core::parking_lot::deadlock_impl::release_resource"
+      },
+      {
+        "site": "0x141f46c2f",
+        "target": "0x142dbcef0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot::raw_mutex::RawMutex::unlock_slow"
+      },
+      {
+        "site": "0x141f46c43",
+        "target": "0x142dbd1a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "parking_lot::raw_mutex::RawMutex::lock_slow"
+      },
+      {
+        "site": "0x141f46c58",
+        "target": "0x140e97000",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL"
+      },
+      {
+        "site": "0x141f46c8a",
+        "target": "0x140e95370",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "puffin::ThreadProfiler::end_scope"
+      },
+      {
+        "site": "0x141f46cdd",
+        "target": "0x142dc83d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::panicking::panic_fmt"
+      },
+      {
+        "site": "0x141f46cef",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x141f46d01",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x141f46d13",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x141f46d28",
+        "target": "0x142dc7e11",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::alloc::handle_alloc_error"
+      },
+      {
+        "site": "0x141f46d3a",
+        "target": "0x142dc8090",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::cell::panic_already_borrowed"
+      },
+      {
+        "site": "0x141f46d44",
+        "target": "0x142e293d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      },
+      {
+        "site": "0x141f46d59",
+        "target": "0x142e293d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      },
+      {
+        "site": "0x141f46d6e",
+        "target": "0x142dc7890",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::thread::local::panic_access_error"
+      },
+      {
+        "site": "0x141f46db4",
+        "target": "0x142dc8170",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::result::unwrap_failed"
+      },
+      {
+        "site": "0x141f46dc3",
+        "target": "0x142dc8150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::option::unwrap_failed"
+      },
+      {
+        "site": "0x141f46de9",
+        "target": "0x142dc8070",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::str::slice_error_fail"
+      },
+      {
+        "site": "0x141f46e09",
+        "target": "0x142dc8070",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::str::slice_error_fail"
+      },
+      {
+        "site": "0x141f46e2c",
+        "target": "0x142dc8070",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::str::slice_error_fail"
+      },
+      {
+        "site": "0x141f46f66",
+        "target": "0x1404a99b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter<country_core::resources::sparkle::SparkleSsbo> >"
+      },
+      {
+        "site": "0x141f46fda",
+        "target": "0x142807ee0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::thread::local::LocalKey::with<core::cell::RefCell<puffin::ThreadProfiler>,puffin::impl$6::call::closure_env$0<tuple$<>,puffin::impl$10::drop::closure_env$0>,tuple$<> >"
+      }
+    ]
+  },
+  {
+    "va": "0x141c24750",
+    "name": "country_core::systems::history::replay_wall::replay_wall",
+    "size": 3673,
+    "size_variants": "[3673]",
+    "module": "country_core-75de4a05f1ed4a16.ek511wzwp49ea50ux5z6ddxqh.1euy9uv.rcgu.o",
+    "file_offset": 29506384,
+    "decoded_bytes": 3673,
+    "instructions": 842,
+    "status": "decoded",
+    "edges": [
+      {
+        "site": "0x141c2485f",
+        "target": "0x140f3bda0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::hash::random::impl$0::new::KEYS::constant$0::closure$1::__RUST_STD_INTERNAL_VAL"
+      },
+      {
+        "site": "0x141c24996",
+        "target": "0x140c1c8b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "country_core::systems::history::replay_wall::WallReplayEditCmd::process<country_core::systems::history::replay_wall::replay_wall::closure_env$0,country_core::systems::history::replay_wall::replay_wall::closure_env$1>"
+      },
+      {
+        "site": "0x141c24a09",
+        "target": "0x1403b05d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "hashbrown::map::HashMap::insert<u64,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c24a20",
+        "target": "0x140f3bda0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::hash::random::impl$0::new::KEYS::constant$0::closure$1::__RUST_STD_INTERNAL_VAL"
+      },
+      {
+        "site": "0x141c24aec",
+        "target": "0x1403b05d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "hashbrown::map::HashMap::insert<u64,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c24b94",
+        "target": "0x1400af0a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::hash::BuildHasher::hash_one<std::hash::random::RandomState,ref$<usize> >"
+      },
+      {
+        "site": "0x141c24cd7",
+        "target": "0x1400af0a0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::hash::BuildHasher::hash_one<std::hash::random::RandomState,ref$<usize> >"
+      },
+      {
+        "site": "0x141c24e25",
+        "target": "0x14049bb00",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<alloc::vec::Vec<country_core::systems::history::replay_wall::WallReplayEditCmd,alloc::alloc::Global> >"
+      },
+      {
+        "site": "0x141c24e71",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c24e7b",
+        "target": "0x140f4fd10",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::sys::random::hashmap_random_keys"
+      },
+      {
+        "site": "0x141c24e9f",
+        "target": "0x142d896b0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::raw_vec::RawVec::grow_one<i64,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c24eeb",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c24f23",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c24f2d",
+        "target": "0x140f4fd10",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "std::sys::random::hashmap_random_keys"
+      },
+      {
+        "site": "0x141c25078",
+        "target": "0x14099a2e0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "core::ptr::drop_in_place<country_core::systems::history::replay_wall::WallReplayCmd>"
+      },
+      {
+        "site": "0x141c250f9",
+        "target": "0x142e32770",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c25149",
+        "target": null,
+        "kind": "jmp",
+        "resolution": "unresolved-indirect",
+        "name": null
+      },
+      {
+        "site": "0x141c2516a",
+        "target": "0x140c7b830",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<country_core::resources::history::path_edit::RasterEdit,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c25194",
+        "target": "0x140315620",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<core::sync::atomic::AtomicBool,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c251be",
+        "target": "0x140c7b830",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<country_core::resources::history::path_edit::RasterEdit,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c251e4",
+        "target": "0x140c7a720",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<enum2$<country_core::resources::history::terrain_edit::TerrainEdit>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c2520e",
+        "target": "0x140c7a030",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<enum2$<country_core::resources::history::decorator_edit::DecoratorHistoryEdit>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c25238",
+        "target": "0x140c7b830",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<country_core::resources::history::path_edit::RasterEdit,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c25262",
+        "target": "0x140c7a0f0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<enum2$<country_core::resources::history::roof_edit::RoofEdit>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c2528c",
+        "target": "0x140c7a030",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<enum2$<country_core::resources::history::decorator_edit::DecoratorHistoryEdit>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c252b6",
+        "target": "0x140740180",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<parking::Inner,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c252e0",
+        "target": "0x140c7b150",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<enum2$<country_core::resources::history::tree_edit::TreeEdit>,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c25306",
+        "target": "0x140c7bc60",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::sync::Arc::drop_slow<country_core::resources::history::plant_paint_edit::PlantPaintEdit,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c2532b",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c2536f",
+        "target": "0x142dc7ef8",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "alloc::vec::impl$1::remove::assert_failed"
+      },
+      {
+        "site": "0x141c253d8",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c25470",
+        "target": "0x1406abac0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": null
+      },
+      {
+        "site": "0x141c254f0",
+        "target": "0x1400db1d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "hashbrown::raw::impl$18::drop<tuple$<usize,tuple$<> >,alloc::alloc::Global>"
+      },
+      {
+        "site": "0x141c25573",
+        "target": "0x1400db1d0",
+        "kind": "call",
+        "resolution": "direct-immediate",
+        "name": "hashbrown::raw::impl$18::drop<tuple$<usize,tuple$<> >,alloc::alloc::Global>"
+      }
+    ]
+  }
+]

@@ -1,0 +1,279 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_101" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_100" : {
+            "name" : "TerrainHeightmap_natural",
+            "members" : [
+                {
+                    "name" : "terrain_heightmap_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "bg_terrain_heightmap",
+                    "type" : "_101",
+                    "offset" : 8
+                },
+                {
+                    "name" : "bg_terrain_fog_height",
+                    "type" : "_101",
+                    "offset" : 12
+                },
+                {
+                    "name" : "bg_terrain_height_bounds_ws",
+                    "type" : "vec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "bg_water_footprint_ws",
+                    "type" : "vec4",
+                    "offset" : 24
+                }
+            ]
+        },
+        "_475" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.normal_ws",
+            "location" : 0
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.position_ws",
+            "location" : 1
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "terrain_heightmap.terrain_heightmap",
+            "set" : 20,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "resource_handles",
+            "array" : [
+                0
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 1,
+            "binding" : 0
+        },
+        {
+            "type" : "texture2D",
+            "name" : "rocky_terrain.tex",
+            "set" : 10,
+            "binding" : 0
+        },
+        {
+            "type" : "texture2D",
+            "name" : "water_mask.tex",
+            "set" : 11,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc_iso",
+            "set" : 2,
+            "binding" : 5
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers.llc",
+            "set" : 2,
+            "binding" : 3
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_100",
+            "name" : "TerrainHeightmap_natural",
+            "block_size" : 40,
+            "set" : 20,
+            "binding" : 0
+        },
+        {
+            "type" : "_475",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 18,
+            "binding" : 0
+        }
+    ]
+}

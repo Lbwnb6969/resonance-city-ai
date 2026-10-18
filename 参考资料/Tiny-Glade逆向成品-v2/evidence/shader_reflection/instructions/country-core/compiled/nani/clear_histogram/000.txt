@@ -1,0 +1,40 @@
+; Numeric operand listing, not a semantic decompiler.
+; SHA256 c5d74f6f6f7045f14e829ce510deb8a850ab8c64532b878bad5d910957d43085
+00000014: OpCapability 1
+0000001c: OpCapability 49
+00000024: OpMemoryModel 0 1
+00000030: OpEntryPoint 5 2 1852399981 0 9
+00000048: OpExecutionMode 2 17 64 1 1
+00000060: OpSource 11 1
+0000006c: OpName 21 1951618898 1952675186 1684370037 1717990722 29285
+00000088: OpMemberName 21 0 1701666655 1919246957 48
+000000a0: OpName 24 1953720680 1634887535 109
+000000b4: OpName 2 1852399981 0
+000000c4: OpDecorate 9 11 28
+000000d4: OpDecorate 22 6 4
+000000e4: OpDecorate 21 3
+000000f0: OpMemberDecorate 21 0 35 0
+00000104: OpDecorate 24 33 0
+00000114: OpDecorate 24 34 0
+00000124: OpTypeVoid 1
+0000012c: OpTypeFunction 3 1
+00000138: OpTypeInt 5 32 0
+00000148: OpTypeVector 6 5 3
+00000158: OpTypePointer 8 1 6
+00000168: OpTypeInt 17 32 1
+00000178: OpConstant 17 18 0
+00000188: OpTypePointer 19 2 5
+00000198: OpTypeRuntimeArray 22 5
+000001a4: OpTypeStruct 21 22
+000001b0: OpTypePointer 23 2 21
+000001c0: OpConstant 5 27 0
+000001d0: OpVariable 8 9 1
+000001e0: OpVariable 23 24 2
+000001f0: OpFunction 1 2 0 3
+00000204: OpLabel 4
+0000020c: OpLoad 6 7 9
+0000021c: OpCompositeExtract 5 10 7 0
+00000230: OpAccessChain 19 30 24 18 10
+00000248: OpStore 30 27
+00000254: OpReturn 
+00000258: OpFunctionEnd 

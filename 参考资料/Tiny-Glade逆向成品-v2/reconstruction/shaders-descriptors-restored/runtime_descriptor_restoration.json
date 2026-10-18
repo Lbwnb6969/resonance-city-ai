@@ -1,0 +1,121 @@
+{
+  "modules": 5,
+  "records": [
+    {
+      "original": "country-core/compiled/nani_cloth/003.spv",
+      "original_sha256": "834520d28e602d262327606cb6554472d76adc8d9a78b8d969691513e20b5804",
+      "glsl_sha256": "ea7b329c57a5a3b1f7e1b2e974c0909fe56d37e0faee8a7fdb47c1ec40a5e005",
+      "unmodified_recompiled_sha256": "8e93039251089865e1e12cbedaa773fadd6ec1a952c25769d72c3881a373dfba",
+      "restored_file": "ea7b329c57a5a3b1f7e1b2e974c0909fe56d37e0faee8a7fdb47c1ec40a5e005.spv",
+      "restored_sha256": "658525431c2c61441c0a6d05d2353c66749698cae1af22dbd19337b5a17633aa",
+      "replacements": [
+        {
+          "type_id": 31,
+          "element_type_id": 24,
+          "old_opcode": "OpTypeArray",
+          "new_opcode": "OpTypeRuntimeArray",
+          "descriptor_slots": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "added_capability_if_absent": "RuntimeDescriptorArray (5302)"
+    },
+    {
+      "original": "country-core/compiled/nani_solid_vertex_color_window_glass/003.spv",
+      "original_sha256": "381c29914d5e01959687df5776235ac07fad44360784422f8cdd1112a97028d3",
+      "glsl_sha256": "62ede21de1072663583a38ac0c382bfd57201c2d0a293d533aff6ada74df2e83",
+      "unmodified_recompiled_sha256": "d2b025cde3bcc2d153595b02d4f0f6eba1f8bd657fa513d6e1101c16f8b8ca09",
+      "restored_file": "62ede21de1072663583a38ac0c382bfd57201c2d0a293d533aff6ada74df2e83.spv",
+      "restored_sha256": "12643f29463a66e934a2bce013b92d338831bc4ef8952ffa4112ccfe38a55b41",
+      "replacements": [
+        {
+          "type_id": 29,
+          "element_type_id": 27,
+          "old_opcode": "OpTypeArray",
+          "new_opcode": "OpTypeRuntimeArray",
+          "descriptor_slots": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "added_capability_if_absent": "RuntimeDescriptorArray (5302)"
+    },
+    {
+      "original": "country-core/compiled/nani_uber/003.spv",
+      "original_sha256": "e8fe27e761cc6a0a4c50ae0c0a7a45507d02d986ac186d52694faf48f0dd2e92",
+      "glsl_sha256": "22430458fda6fd7c2b8c574994715c3b1e8b0566ccbb24e5340fad6639ed2ccb",
+      "unmodified_recompiled_sha256": "c69cc17493848b6922fd83edbde349cfa5ee0c3ed1d79ebd564daf3eb6c027ea",
+      "restored_file": "22430458fda6fd7c2b8c574994715c3b1e8b0566ccbb24e5340fad6639ed2ccb.spv",
+      "restored_sha256": "6ee593173822abce6f70285ba28fe6f1f2328a29afb9d4a29959dab53f817b43",
+      "replacements": [
+        {
+          "type_id": 27,
+          "element_type_id": 25,
+          "old_opcode": "OpTypeArray",
+          "new_opcode": "OpTypeRuntimeArray",
+          "descriptor_slots": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "added_capability_if_absent": "RuntimeDescriptorArray (5302)"
+    },
+    {
+      "original": "country-core/compiled/nani_uber_emissive/003.spv",
+      "original_sha256": "82a3fb1f8602df82b91227eb635c2af2ac7c62f8208597a09981e0b4f89896ff",
+      "glsl_sha256": "08c01784c47d887174f2c2fd7f2808a1df18f82e198769c4424c5dfca167b9a9",
+      "unmodified_recompiled_sha256": "c01a759855037d77c749cc96f5f4c4d44f631e6e82cce9f040d9fa3737b4e172",
+      "restored_file": "08c01784c47d887174f2c2fd7f2808a1df18f82e198769c4424c5dfca167b9a9.spv",
+      "restored_sha256": "7d71da46303ed4a79fbff328883bb1b6b7328567b796dcba2b01866712e7d2e1",
+      "replacements": [
+        {
+          "type_id": 88,
+          "element_type_id": 87,
+          "old_opcode": "OpTypeArray",
+          "new_opcode": "OpTypeRuntimeArray",
+          "descriptor_slots": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "added_capability_if_absent": "RuntimeDescriptorArray (5302)"
+    },
+    {
+      "original": "country-core/compiled/water_plane/003.spv",
+      "original_sha256": "cb77804ecd9a7fcefc574e89fb73d4aab7b9c91c3eaf661c0f78a2c057d8bc0d",
+      "glsl_sha256": "35157c92994a2095e2921491ae9d963ee18cb3cea4c0c0c8f87d15fb8fa4c5d2",
+      "unmodified_recompiled_sha256": "f6e264ac26133ae2bb34f9a4ed71be075b6e4c9964ebc0d430bf976cfe33fc9b",
+      "restored_file": "35157c92994a2095e2921491ae9d963ee18cb3cea4c0c0c8f87d15fb8fa4c5d2.spv",
+      "restored_sha256": "d82808610484dd143490fd93068f9c100a59e9cd690bf23ed453cc7638a1aeaf",
+      "replacements": [
+        {
+          "type_id": 1717,
+          "element_type_id": 450,
+          "old_opcode": "OpTypeArray",
+          "new_opcode": "OpTypeRuntimeArray",
+          "descriptor_slots": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "added_capability_if_absent": "RuntimeDescriptorArray (5302)"
+    }
+  ],
+  "limits": "Descriptor schema restoration only; no shader arithmetic is changed or runtime-tested."
+}

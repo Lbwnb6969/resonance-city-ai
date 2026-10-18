@@ -25,6 +25,8 @@ var _service_routes: Dictionary = {}
 var _route_cache_entries := 0
 var _route_searches: Dictionary = {}
 var prepared_positions: Dictionary = {}
+var prepared_street_heights:Dictionary={}
+var prepared_home_stops:Dictionary={}
 var prepared_exterior: Dictionary = {}
 var prepared_travel: RefCounted
 var travel_prepare_ms := 0.0
@@ -109,13 +111,48 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 			if not _service_routes.has(start):_service_routes[start]={}
 			_service_routes[start][finish]=route
 	prepare_stats["pairs_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
+	stage_started=Time.get_ticks_usec()
+	_prepare_home_stops(snapshot.get("resident_stops",{}))
+	prepare_stats["home_stops_ms"]=float(Time.get_ticks_usec()-stage_started)/1000.
 	var travel_started := Time.get_ticks_usec()
 	prepared_travel=Travel.new()
 	prepared_travel.sync(state)
 	travel_prepare_ms=float(Time.get_ticks_usec()-travel_started)/1000.0
 	prepare_stats["travel_ms"] = travel_prepare_ms
+	stage_started=Time.get_ticks_usec()
+	if not actors.is_empty():
+		# Actors are held at these exact planar points until publication. Use
+		# the original protected street-height solver, including cafe/venue
+		# pads and roundabouts; navigation's raw-height fallback is different.
+		state.prepare_ground_height()
+		for actor:Dictionary in actors:
+			var point:Vector3=actor.point;var at:=Vector2(point.x,point.z)
+			if not prepared_street_heights.has(at):prepared_street_heights[at]=state.street_height(at)
+	prepare_stats["actor_heights_ms"]=float(Time.get_ticks_usec()-stage_started)/1000.
 	prepare_stats["total_ms"] = float(Time.get_ticks_usec()-started)/1000.0
 	return self
+
+func _prepare_home_stops(previous:Dictionary)->void:
+	var shops:Array[String]=[];var venues:Array[String]=[];var homes:Array[String]=[]
+	for house:Dictionary in state.houses:
+		var id:=str(house.id);var role:=str(house.get("role","residential"))
+		if role=="residential":homes.append(id)
+		elif connected_houses.has(id):
+			if role=="bakery":shops.append(id)
+			elif role in ["venue","symphony_hall"]:venues.append(id)
+	for serial in range(homes.size()):
+		var home:=homes[serial];var stops:Array[String]=[home]
+		if connected_houses.has(home):
+			for candidates:Array[String] in [shops,venues]:
+				var chosen:=""
+				for candidate:String in previous.get(home,[]):
+					if candidates.has(candidate) and not _route(connected_houses[home],connected_houses[candidate]).is_empty():chosen=candidate;break
+				if chosen.is_empty():
+					for offset in range(candidates.size()):
+						var candidate:=candidates[(serial+offset)%candidates.size()]
+						if not _route(connected_houses[home],connected_houses[candidate]).is_empty():chosen=candidate;break
+				if not chosen.is_empty():stops.append(chosen)
+		prepared_home_stops[home]=stops
 
 func _prepare_cafe_attachment(point:Vector3,finish:String,layouts:Dictionary)->bool:
 	# Preserve Cafe.street_attachment's order and exact planar route. The
@@ -153,6 +190,8 @@ func _build_graph() -> void:
 	_route_cache_entries = 0
 	_route_searches.clear()
 	prepared_positions.clear()
+	prepared_street_heights.clear()
+	prepared_home_stops.clear()
 	prepared_exterior.clear()
 	component_of.clear()
 	_edge_bins.clear()

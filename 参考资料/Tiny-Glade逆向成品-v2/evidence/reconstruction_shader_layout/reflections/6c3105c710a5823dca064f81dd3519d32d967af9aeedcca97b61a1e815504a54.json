@@ -1,0 +1,91 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_20" : {
+            "name" : "MaterialData_natural",
+            "members" : [
+                {
+                    "name" : "anim_t",
+                    "type" : "float",
+                    "offset" : 0
+                },
+                {
+                    "name" : "fade_out",
+                    "type" : "float",
+                    "offset" : 4
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 8
+                }
+            ]
+        },
+        "_34" : {
+            "name" : "gl_PerVertex",
+            "members" : [
+                {
+                    "name" : "gl_Position",
+                    "type" : "vec4"
+                },
+                {
+                    "name" : "gl_PointSize",
+                    "type" : "float"
+                },
+                {
+                    "name" : "gl_ClipDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                },
+                {
+                    "name" : "gl_CullDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Position",
+            "location" : 0
+        },
+        {
+            "type" : "vec2",
+            "name" : "Vertex_UV",
+            "location" : 1
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_frag_uv",
+            "location" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_20",
+            "name" : "MaterialData_natural",
+            "block_size" : 12,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

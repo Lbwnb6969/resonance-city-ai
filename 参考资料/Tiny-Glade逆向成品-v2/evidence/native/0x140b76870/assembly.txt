@@ -1,0 +1,14 @@
+0000000140b76870  f30f104108               movss    xmm0, dword ptr [rcx + 8]
+0000000140b76875  f30f104914               movss    xmm1, dword ptr [rcx + 0x14]
+0000000140b7687a  f30f1015b60f2c02         movss    xmm2, dword ptr [rip + 0x22c0fb6]
+0000000140b76882  f30f59d1                 mulss    xmm2, xmm1
+0000000140b76886  f30f51c0                 sqrtss   xmm0, xmm0
+0000000140b7688a  0f14c8                   unpcklps xmm1, xmm0
+0000000140b7688d  0f2805bc102c02           movaps   xmm0, xmmword ptr [rip + 0x22c10bc]
+0000000140b76894  0f5cc1                   subps    xmm0, xmm1
+0000000140b76897  0f5905a22d4102           mulps    xmm0, xmmword ptr [rip + 0x2412da2]
+0000000140b7689e  f30f10ca                 movss    xmm1, xmm2
+0000000140b768a2  0f58c8                   addps    xmm1, xmm0
+0000000140b768a5  f30f16c1                 movshdup xmm0, xmm1
+0000000140b768a9  f30f59c1                 mulss    xmm0, xmm1
+0000000140b768ad  c3                       ret      

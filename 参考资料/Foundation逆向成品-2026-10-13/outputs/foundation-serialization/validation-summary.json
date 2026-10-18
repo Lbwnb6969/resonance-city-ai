@@ -1,0 +1,81 @@
+{
+  "evidence_kind": "local-package-bytes",
+  "totals": {
+    "decoded": 26274,
+    "nodes_and_attributes": 6856434,
+    "uuid_resolved_metadata": 77759,
+    "uuid_null": 91930,
+    "uuid_unresolved_or_local_id": 171292,
+    "other_format": 2418
+  },
+  "tags": {
+    "8": {
+      "interpretation": "uuid_network_order",
+      "count": 554416
+    },
+    "6": {
+      "interpretation": "bool32",
+      "count": 324823
+    },
+    "7": {
+      "interpretation": "utf8_z",
+      "count": 691168
+    },
+    "0": {
+      "interpretation": "uint32",
+      "count": 41850
+    },
+    "4": {
+      "interpretation": "float32",
+      "count": 1165030
+    },
+    "13": {
+      "interpretation": "int32x2",
+      "count": 887
+    },
+    "2": {
+      "interpretation": "int32",
+      "count": 462166
+    },
+    "17": {
+      "interpretation": "utf16le_z",
+      "count": 17478
+    },
+    "16": {
+      "interpretation": "blob_u64_length",
+      "count": 1352
+    },
+    "5": {
+      "interpretation": "float64",
+      "count": 26
+    },
+    "1": {
+      "interpretation": "uint64",
+      "count": 2
+    }
+  },
+  "metadata_uuids": 15589,
+  "duplicate_uuids": {},
+  "asset_type_count": 391,
+  "errors": [],
+  "examples": 69,
+  "limitations": [
+    "Decoder supports observed uncompressed v2 files only; native supports compressed and v3 paths outside decoder.",
+    "Tag13 int32x2 meaning inferred from graph coordinates; validator confirms8 bytes.",
+    "Tag16 length high32 zero across dataset; native validator uses only low32. Blob field-dependent inner schema opaque.",
+    "Unresolved UUIDs include local graph/component IDs, engine-builtins, subassets and noncovered resources; absence is not a broken-reference diagnosis.",
+    "Extra2418 meta caches decoded separately in cache-validation-summary.json.",
+    "Static packaged values do not establish runtime execution or DLC ownership."
+  ],
+  "type_code_corrobation": {
+    "0": "0x1403267d0 unsigned int",
+    "1": "0x140326ef0 unsigned __int64",
+    "2": "0x140326680 int",
+    "4": "0x140327dd0 float",
+    "5": "0x1403279d0 double",
+    "6": "0x140327040 bool",
+    "7": "0x140326920 char",
+    "8": "0x140326c40 ComCGuid",
+    "17": "0x140326aa0 wchar_t"
+  }
+}

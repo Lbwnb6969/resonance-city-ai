@@ -1,0 +1,3017 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1697,
+    "record_offset": 3376,
+    "module": "country_core-75de4a05f1ed4a16.6tqsyz765c5nhf17qu207ck38.1euy9uv.rcgu.o",
+    "name": "country_core::systems::save::load_game::parse_saved_game_data",
+    "segment": 1,
+    "offset": 26343936,
+    "rva": 26348032,
+    "va": "0x141920a00",
+    "size": 14101,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "498dccf3b738ca5634a21caf49c91947c112f75c93b772b1911077fef0258699",
+  "code_bytes": 14101,
+  "decoded_bytes": 14101,
+  "instructions": 2773,
+  "calls_and_jumps": [
+    {
+      "address": "0x141920a87",
+      "kind": "call",
+      "target": "0x140f55d10",
+      "target_names": [
+        "std::fs::read_to_string::inner",
+        "_RNvNvNtCs1aoCESei0z2_3std2fs14read_to_string5inner"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920abb",
+      "kind": "call",
+      "target": "0x140f3f5b0",
+      "target_names": [
+        "std::backtrace::Backtrace::capture",
+        "_RNvMs2_NtCs1aoCESei0z2_3std9backtraceNtB5_9Backtrace7capture"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920b20",
+      "kind": "call",
+      "target": "0x142dea990",
+      "target_names": [
+        "anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,std::io::error::Error> >",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$9construct17heb40374f9925799aE.llvm.11660518155881927643"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920b37",
+      "kind": "jmp",
+      "target": "0x14192126d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920b5b",
+      "kind": "call",
+      "target": "0x14164f410",
+      "target_names": [
+        "_ZN10serde_json2de8from_str17h4f566b823bdb9819E",
+        "serde_json::de::from_str<enum2$<serde_json::value::Value> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920b8c",
+      "kind": "call",
+      "target": "0x140f3f5b0",
+      "target_names": [
+        "std::backtrace::Backtrace::capture",
+        "_RNvMs2_NtCs1aoCESei0z2_3std9backtraceNtB5_9Backtrace7capture"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920bf1",
+      "kind": "call",
+      "target": "0x142de9590",
+      "target_names": [
+        "anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,serde_json::error::Error> >",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$9construct17h0cc7a28c26a5c71bE.llvm.11660518155881927643"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920c08",
+      "kind": "jmp",
+      "target": "0x14192124f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920c5a",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920c7d",
+      "kind": "jmp",
+      "operand": "rcx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141920c94",
+      "kind": "jmp",
+      "target": "0x141920d50",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920ca7",
+      "kind": "call",
+      "target": "0x1415e5d30",
+      "target_names": [
+        "alloc::vec::impl$12::clone<enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h33ec9dce532ed636E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920cb4",
+      "kind": "jmp",
+      "target": "0x141920d50",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920cc0",
+      "kind": "jmp",
+      "target": "0x141920d50",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920cd3",
+      "kind": "call",
+      "target": "0x140f60be0",
+      "target_names": [
+        "alloc::string::impl$6::clone",
+        "_RNvXs4_NtCs1f2BdUxKfgg_5alloc6stringNtB5_6StringNtNtCs8icZUrvfcq9_4core5clone5Clone5clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920ce0",
+      "kind": "jmp",
+      "target": "0x141920d50",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920d01",
+      "kind": "call",
+      "target": "0x14192d190",
+      "target_names": [
+        "alloc::collections::btree::map::impl$2::clone::clone_subtree<alloc::string::String,enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN96_$LT$alloc..collections..btree..map..BTreeMap$LT$K$C$V$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone13clone_subtree17h114c991f6ee717daE.llvm.15453247584174848984"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920d07",
+      "kind": "jmp",
+      "target": "0x141920d1f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920d5e",
+      "kind": "call",
+      "target": "0x1414fe290",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_i32<serde_core::de::impls::impl$55::deserialize::PrimitiveVisitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$15deserialize_i3217h8338b4c03a245a59E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920d74",
+      "kind": "call",
+      "target": "0x142dead00",
+      "target_names": [
+        "anyhow::error::impl$1::from<serde_json::error::Error>",
+        "_ZN6anyhow5error72_$LT$impl$u20$core..convert..From$LT$E$GT$$u20$for$u20$anyhow..Error$GT$4from17h2d5b0ad8e3d9e9c6E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920d7a",
+      "kind": "jmp",
+      "target": "0x1419211bf",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920dd6",
+      "kind": "call",
+      "target": "0x140f60760",
+      "target_names": [
+        "alloc::fmt::format::format_inner",
+        "_RNvNvNtCs1f2BdUxKfgg_5alloc3fmt6format12format_inner"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920dff",
+      "kind": "call",
+      "target": "0x142de92b0",
+      "target_names": [
+        "anyhow::Error::msg<alloc::string::String>",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920e05",
+      "kind": "jmp",
+      "target": "0x1419211bf",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920e55",
+      "kind": "call",
+      "target": "0x140f60760",
+      "target_names": [
+        "alloc::fmt::format::format_inner",
+        "_RNvNvNtCs1f2BdUxKfgg_5alloc3fmt6format12format_inner"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920e7e",
+      "kind": "call",
+      "target": "0x142de92b0",
+      "target_names": [
+        "anyhow::Error::msg<alloc::string::String>",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920e84",
+      "kind": "jmp",
+      "target": "0x1419211bf",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920e9c",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920ebf",
+      "kind": "jmp",
+      "operand": "rcx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141920ed6",
+      "kind": "jmp",
+      "target": "0x141920f92",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920ee9",
+      "kind": "call",
+      "target": "0x1415e5d30",
+      "target_names": [
+        "alloc::vec::impl$12::clone<enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h33ec9dce532ed636E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920ef6",
+      "kind": "jmp",
+      "target": "0x141920f92",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920f02",
+      "kind": "jmp",
+      "target": "0x141920f92",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920f15",
+      "kind": "call",
+      "target": "0x140f60be0",
+      "target_names": [
+        "alloc::string::impl$6::clone",
+        "_RNvXs4_NtCs1f2BdUxKfgg_5alloc6stringNtB5_6StringNtNtCs8icZUrvfcq9_4core5clone5Clone5clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920f22",
+      "kind": "jmp",
+      "target": "0x141920f92",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920f43",
+      "kind": "call",
+      "target": "0x14192d190",
+      "target_names": [
+        "alloc::collections::btree::map::impl$2::clone::clone_subtree<alloc::string::String,enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN96_$LT$alloc..collections..btree..map..BTreeMap$LT$K$C$V$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone13clone_subtree17h114c991f6ee717daE.llvm.15453247584174848984"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920f49",
+      "kind": "jmp",
+      "target": "0x141920f61",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920fa0",
+      "kind": "call",
+      "target": "0x1414fe290",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_i32<serde_core::de::impls::impl$55::deserialize::PrimitiveVisitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$15deserialize_i3217h8338b4c03a245a59E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920fd8",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920fde",
+      "kind": "jmp",
+      "target": "0x141920fec",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141920fff",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921022",
+      "kind": "jmp",
+      "operand": "rcx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141921039",
+      "kind": "jmp",
+      "target": "0x1419210f5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192104c",
+      "kind": "call",
+      "target": "0x1415e5d30",
+      "target_names": [
+        "alloc::vec::impl$12::clone<enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h33ec9dce532ed636E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921059",
+      "kind": "jmp",
+      "target": "0x1419210f5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921065",
+      "kind": "jmp",
+      "target": "0x1419210f5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921078",
+      "kind": "call",
+      "target": "0x140f60be0",
+      "target_names": [
+        "alloc::string::impl$6::clone",
+        "_RNvXs4_NtCs1f2BdUxKfgg_5alloc6stringNtB5_6StringNtNtCs8icZUrvfcq9_4core5clone5Clone5clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921085",
+      "kind": "jmp",
+      "target": "0x1419210f5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419210a6",
+      "kind": "call",
+      "target": "0x14192d190",
+      "target_names": [
+        "alloc::collections::btree::map::impl$2::clone::clone_subtree<alloc::string::String,enum2$<serde_json::value::Value>,alloc::alloc::Global>",
+        "_ZN96_$LT$alloc..collections..btree..map..BTreeMap$LT$K$C$V$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone13clone_subtree17h114c991f6ee717daE.llvm.15453247584174848984"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419210ac",
+      "kind": "jmp",
+      "target": "0x1419210c4",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921125",
+      "kind": "call",
+      "target": "0x141500ba0",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_struct<country_core::systems::camera_rig::_::impl$0::deserialize::__Visitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$18deserialize_struct17h0974919899f9115dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921154",
+      "kind": "call",
+      "target": "0x140f3f5b0",
+      "target_names": [
+        "std::backtrace::Backtrace::capture",
+        "_RNvMs2_NtCs1aoCESei0z2_3std9backtraceNtB5_9Backtrace7capture"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419211b9",
+      "kind": "call",
+      "target": "0x142de9590",
+      "target_names": [
+        "anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,serde_json::error::Error> >",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$9construct17h0cc7a28c26a5c71bE.llvm.11660518155881927643"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419211f8",
+      "kind": "call",
+      "target": "0x14098ae50",
+      "target_names": [
+        "core::ptr::drop_in_place<slice2$<enum2$<serde_json::value::Value> > >",
+        "_ZN4core3ptr55drop_in_place$LT$$u5b$serde_json..value..Value$u5d$$GT$17hbaaa148206cf9f29E.llvm.6712201347883252993"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192121b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921220",
+      "kind": "jmp",
+      "target": "0x14192124f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192123b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921240",
+      "kind": "jmp",
+      "target": "0x14192124f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921249",
+      "kind": "call",
+      "target": "0x1409a45e0",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::map::Map<alloc::string::String,enum2$<serde_json::value::Value> > >",
+        "_ZN4core3ptr97drop_in_place$LT$serde_json..map..Map$LT$alloc..string..String$C$serde_json..value..Value$GT$$GT$17h6b392d82740c1924E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921268",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921312",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192132e",
+      "kind": "call",
+      "target": "0x14192d030",
+      "target_names": [
+        "serde_json::value::impl$5::clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921364",
+      "kind": "call",
+      "target": "0x1415020f0",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_struct<country_core::resources::time_of_day::_::impl$0::deserialize::__Visitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$18deserialize_struct17h7a2b85f723485e60E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192137e",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921397",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419213b3",
+      "kind": "call",
+      "target": "0x14192d030",
+      "target_names": [
+        "serde_json::value::impl$5::clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419213c7",
+      "kind": "call",
+      "target": "0x1414fde70",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_f32<serde_core::de::impls::impl$77::deserialize::PrimitiveVisitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$15deserialize_f3217h265745be4420ff0bE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419213e1",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921473",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921479",
+      "kind": "jmp",
+      "target": "0x1419214de",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419214ad",
+      "kind": "jmp",
+      "target": "0x1419214de",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419214f1",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419214fe",
+      "kind": "call",
+      "target": "0x14192a7f0",
+      "target_names": [
+        "core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::resources::weather::FogSaveState,country_core::systems::save::load_game::parse_saved_game_data::closure_env$0>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921517",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921520",
+      "kind": "call",
+      "target": "0x14192a550",
+      "target_names": [
+        "core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::resources::weather::PrecipitationSaveState,country_core::systems::save::load_game::parse_saved_game_data::closure_env$1>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921542",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192155e",
+      "kind": "call",
+      "target": "0x14192d030",
+      "target_names": [
+        "serde_json::value::impl$5::clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921594",
+      "kind": "call",
+      "target": "0x141500e70",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_struct<country_core::resources::critters::sheep::control::_::impl$0::deserialize::__Visitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$18deserialize_struct17h1fd15b87f6e9a6a3E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419215a8",
+      "kind": "call",
+      "target": "0x14192aae0",
+      "target_names": [
+        "core::result::Result::inspect_err<country_core::resources::critters::sheep::control::SheepControlSnapshot,serde_json::error::Error,country_core::systems::save::load_game::parse_saved_game_data::closure_env$2>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419215d1",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419215d7",
+      "kind": "jmp",
+      "target": "0x1419215f5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921608",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921624",
+      "kind": "call",
+      "target": "0x14192d030",
+      "target_names": [
+        "serde_json::value::impl$5::clone"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192165a",
+      "kind": "call",
+      "target": "0x141501c70",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_struct<country_core::resources::glade_color_customization::_::impl$0::deserialize::__Visitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$18deserialize_struct17h5ea2920365aae656E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921674",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419216dc",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192174a",
+      "kind": "jmp",
+      "target": "0x141921876",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192185c",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921889",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921899",
+      "kind": "call",
+      "target": "0x14192a270",
+      "target_names": [
+        "core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::systems::mode_manager::WallSelectionGroups,country_core::systems::save::load_game::parse_saved_game_data::closure_env$3>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419218cb",
+      "kind": "jmp",
+      "target": "0x1419218e9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921903",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921920",
+      "kind": "jmp",
+      "target": "0x14192193e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921975",
+      "kind": "call",
+      "target": "0x1415032f0",
+      "target_names": [
+        "serde_json::value::de::impl$4::deserialize_struct<country_core::resources::history::_::impl$0::deserialize::__Visitor>",
+        "_ZN10serde_json5value2de83_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$18deserialize_struct17he3effe121483ed2dE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192199d",
+      "kind": "call",
+      "target": "0x141707d20",
+      "target_names": [
+        "anyhow::context::impl$0::context<country_core::resources::history::History,serde_json::error::Error,ref$<str$> >",
+        "_ZN6anyhow7context92_$LT$impl$u20$anyhow..Context$LT$T$C$E$GT$$u20$for$u20$core..result..Result$LT$T$C$E$GT$$GT$7context17h40b7eb06855c32adE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419219d1",
+      "kind": "call",
+      "target": "0x1400dbc80",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h70e35e5b2801eb5dE",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17ha2f581247ae6d2f1E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17hcc3561b6c98d4f47E",
+        "core::ptr::drop_in_place<country_core::systems::mode_manager::WallSelectionGroups>",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17h5a1a42d9b0f94f66E",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17hdf30190265223625E",
+        "core::ptr::drop_in_place<alloc::vec::Vec<alloc::vec::Vec<usize,alloc::alloc::Global>,alloc::alloc::Global> >",
+        "_ZN4core3ptr77drop_in_place$LT$country_core..systems..mode_manager..WallSelectionGroups$GT$17h7223608f1cec3df6E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921a05",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921a0a",
+      "kind": "jmp",
+      "target": "0x1419211d0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921b38",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921b58",
+      "kind": "call",
+      "target": "0x141c0c220",
+      "target_names": [
+        "serde_json::value::index::impl$1::index_into",
+        "serde_json::value::index::impl$1::index_into_mut",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$10index_into17hc809d9d20e163811E",
+        "_ZN55_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$14index_into_mut17h405e5408f34cf15cE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921b74",
+      "kind": "call",
+      "target": "0x142de9270",
+      "target_names": [
+        "anyhow::Error::msg<ref$<str$> >",
+        "_ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17h08b1a10efd3dad46E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921b98",
+      "kind": "call",
+      "target": "0x140f36c40",
+      "target_names": [
+        "anyhow::error::impl$6::drop",
+        "_ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921ba3",
+      "kind": "jmp",
+      "target": "0x141922704",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921c48",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921d15",
+      "kind": "jmp",
+      "target": "0x141921d28",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921d51",
+      "kind": "jmp",
+      "target": "0x141921d6d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921d7f",
+      "kind": "jmp",
+      "target": "0x141921da2",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921e47",
+      "kind": "call",
+      "target": "0x140a1ebf0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::resources::history::wall_compound_edit::WallHistoryEdit> >",
+        "_ZN4core3ptr90drop_in_place$LT$country_core..resources..history..wall_compound_edit..WallHistoryEdit$GT$17h7eb9a6db44068631E.llvm.12802158024147891705"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921eb1",
+      "kind": "jmp",
+      "target": "0x141921d91",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921f36",
+      "kind": "jmp",
+      "target": "0x141922bc1",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141921f3d",
+      "kind": "jmp",
+      "target": "0x141921d93",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192205e",
+      "kind": "jmp",
+      "target": "0x14192206a",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922082",
+      "kind": "jmp",
+      "operand": "r8",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x14192208b",
+      "kind": "jmp",
+      "target": "0x14192209f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419220bb",
+      "kind": "jmp",
+      "operand": "rdx",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x1419220c5",
+      "kind": "jmp",
+      "target": "0x141921d1b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419220dc",
+      "kind": "jmp",
+      "target": "0x141922115",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419220e4",
+      "kind": "jmp",
+      "target": "0x14192209f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419220ee",
+      "kind": "jmp",
+      "target": "0x141921d1b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419220f9",
+      "kind": "jmp",
+      "target": "0x14192209f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922103",
+      "kind": "jmp",
+      "target": "0x141921d1b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192210e",
+      "kind": "jmp",
+      "target": "0x14192209f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922118",
+      "kind": "jmp",
+      "target": "0x141921d1b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922123",
+      "kind": "jmp",
+      "target": "0x14192209f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922130",
+      "kind": "jmp",
+      "target": "0x141921d1b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192216d",
+      "kind": "jmp",
+      "target": "0x1419221ab",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922181",
+      "kind": "call",
+      "target": "0x140c79ae0",
+      "target_names": [
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$17clone_from_ref_in17h6dbe90a63e405f9aE",
+        "alloc::sync::Arc::clone_from_ref_in<country_core::resources::history::decorator_edit::DecoratorHistoryDiff,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922197",
+      "kind": "call",
+      "target": "0x140c7bbc0",
+      "target_names": [
+        "_ZN5alloc4sync16Arc$LT$T$C$A$GT$9drop_slow17hfcbe962ed8dbe36aE",
+        "alloc::sync::Arc::drop_slow<country_core::resources::history::decorator_edit::DecoratorHistoryDiff,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419221b9",
+      "kind": "call",
+      "target": "0x140cac7f0",
+      "target_names": [
+        "_ZN9hashbrown3raw21RawTable$LT$T$C$A$GT$5clear17hc9f2849350497392E",
+        "hashbrown::raw::RawTable::clear<tuple$<enum2$<country_core::resources::walls::decorator_storage::DecoratorStorageAddr>,country_core::resources::history::decorator_edit::DecoratorStorageHistoryDiff>,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419221d7",
+      "kind": "call",
+      "target": "0x1415e1210",
+      "target_names": [
+        "_ZN5alloc3vec16Vec$LT$T$C$A$GT$6retain17ha3638c866300b8b4E",
+        "alloc::vec::Vec::retain<enum2$<country_core::resources::history::EditType>,alloc::alloc::Global,country_core::systems::save::load_game::parse_saved_game_data::closure_env$5>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192224e",
+      "kind": "jmp",
+      "target": "0x141922275",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419222f7",
+      "kind": "jmp",
+      "target": "0x1419223b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419223a8",
+      "kind": "jmp",
+      "operand": "r13",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x1419223b1",
+      "kind": "jmp",
+      "target": "0x14192240b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419223ed",
+      "kind": "jmp",
+      "target": "0x1419222fc",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922423",
+      "kind": "jmp",
+      "target": "0x1419223b6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192242b",
+      "kind": "jmp",
+      "target": "0x14192240b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922433",
+      "kind": "jmp",
+      "target": "0x14192240b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192243b",
+      "kind": "jmp",
+      "target": "0x14192240b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922443",
+      "kind": "jmp",
+      "target": "0x14192240b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922461",
+      "kind": "call",
+      "target": "0x140f606e0",
+      "target_names": [
+        "alloc::sync::arcinner_layout_for_value_layout",
+        "_RNvNtCs1f2BdUxKfgg_5alloc4sync32arcinner_layout_for_value_layout"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922479",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922484",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419224f3",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419224f8",
+      "kind": "jmp",
+      "target": "0x1419221ab",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192257f",
+      "kind": "jmp",
+      "target": "0x14192259b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922624",
+      "kind": "jmp",
+      "target": "0x1419226bb",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419226b6",
+      "kind": "jmp",
+      "target": "0x1419226bb",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419226e8",
+      "kind": "jmp",
+      "target": "0x141922629",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419226fa",
+      "kind": "jmp",
+      "target": "0x141921ce7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x14192270e",
+      "kind": "call",
+      "target": "0x14192ac10",
+      "target_names": [
+        "core::result::Result::and_then<ref$<enum2$<serde_json::value::Value> >,anyhow::Error,country_core::resources::history::HistoryIdentity,country_core::systems::save::load_game::parse_saved_game_data::closure_env$7>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419227a0",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419227ad",
+      "kind": "call",
+      "target": "0x1418c0450",
+      "target_names": [
+        "country_core::systems::save::save_file_identity::derive_fallback_save_file_identity",
+        "_ZN12country_core7systems4save18save_file_identity34derive_fallback_save_file_identity17h7169d0ebeff294f8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922836",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922847",
+      "kind": "call",
+      "target": "0x140f36c40",
+      "target_names": [
+        "anyhow::error::impl$6::drop",
+        "_ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922876",
+      "kind": "call",
+      "target": "0x1415e9150",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h00703ba281bdf1e1E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::MultiEdit,core::iter::adapters::cloned::Cloned<core::slice::iter::Iter<country_core::resources::history::MultiEdit> > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922898",
+      "kind": "call",
+      "target": "0x1415ed4a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h1e1ca1fbc6fa7287E",
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h207f76d913d2f86bE",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::ResolvedHistoryChainSnapshot,core::iter::adapters::filter_map::FilterMap<core::slice::iter::Iter<country_core::resources::history::HistoryChainSnapshot>,country_core::resources::history::impl$1::serialize::closure_env$0<ref_mut$<serde_json::ser::Serializer<ref_mut$<alloc::vec::Vec<u8,alloc::alloc::Global> >,serde_json::ser::CompactFormatter> > > > >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419228c5",
+      "kind": "jmp",
+      "target": "0x1419228db",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419228d5",
+      "kind": "call",
+      "target": "0x1415e7c60",
+      "target_names": [
+        "_ZN67_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17hfc91908241d39fe2E",
+        "alloc::vec::impl$12::clone<country_core::resources::critters::sheep::control::SheepSnapshot,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922a96",
+      "kind": "call",
+      "target": "0x141920580",
+      "target_names": [
+        "alloc::boxed::box_new_uninit"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922ab3",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922ad0",
+      "kind": "call",
+      "target": "0x140f3e010",
+      "target_names": [
+        "std::path::Path::to_path_buf",
+        "_RNvMs16_NtCs1aoCESei0z2_3std4pathNtB6_4Path11to_path_buf"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b3a",
+      "kind": "call",
+      "target": "0x14098f1a0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::History>",
+        "_ZN4core3ptr62drop_in_place$LT$country_core..resources..history..History$GT$17h01925efe2ee73868E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b5f",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b6c",
+      "kind": "call",
+      "target": "0x140a7a6f0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<serde_json::value::Value> >",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.839339460730848927",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.1555704729706194303",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.3369136693271219788",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.4194790630819140222",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.5049645940371996074",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.6248505642955255051",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.7397514774937219046"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b72",
+      "kind": "jmp",
+      "target": "0x14192124f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b91",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922b97",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922bb6",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922bbc",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922bdb",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922be1",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922c7c",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922ce7",
+      "kind": "jmp",
+      "target": "0x141922cf6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922d0d",
+      "kind": "jmp",
+      "target": "0x141922d1f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922d7e",
+      "kind": "jmp",
+      "target": "0x141922d0f",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922dd7",
+      "kind": "jmp",
+      "target": "0x141922d16",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922e01",
+      "kind": "call",
+      "target": "0x140ae4eb0",
+      "target_names": [
+        "country_core::resources::history::History::finish_potential_mutation",
+        "_ZN12country_core9resources7history7History25finish_potential_mutation17h1fd9ad34daf7804bE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922eaf",
+      "kind": "call",
+      "target": "0x1400c9be0",
+      "target_names": [
+        "_ZN3log13__private_api3log17h0d02750b5ad3ccc9E",
+        "_ZN3log13__private_api3log17h1aeda848abebdb7bE",
+        "_ZN3log13__private_api3log17h29a1462a44aad3cdE",
+        "_ZN3log13__private_api3log17h3435470bcd96df0fE",
+        "_ZN3log13__private_api3log17h532075b79da036a5E",
+        "_ZN3log13__private_api3log17h66dfe76cf65a0935E",
+        "_ZN3log13__private_api3log17h7ade9b3fba8c471dE",
+        "_ZN3log13__private_api3log17h918b238a3e9304bfE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922eb5",
+      "kind": "jmp",
+      "target": "0x141921b3e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922eec",
+      "kind": "jmp",
+      "target": "0x141921b3e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922eff",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f05",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f11",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f17",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f23",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f29",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f35",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f3b",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f4a",
+      "kind": "call",
+      "target": "0x142dc7e11",
+      "target_names": [
+        "alloc::alloc::handle_alloc_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc5alloc18handle_alloc_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f50",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f63",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f69",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f79",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f7f",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f8f",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922f95",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922fa5",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922fab",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922fbb",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922fc1",
+      "kind": "jmp",
+      "target": "0x141922fd7",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141922fd1",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419230b5",
+      "kind": "call",
+      "target": "0x1404b38e0",
+      "target_names": [
+        "core::ptr::drop_in_place<std::io::error::Error>",
+        "core::ptr::drop_in_place<libloading::error::WindowsError>",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0844e92c93fafb44E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h0bd9201330d5a31dE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h10704bd736e14846E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h11bbb04ec3a7578cE",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h25d2c2a55e695674E",
+        "_ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17h2eedafc438b09785E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419230ba",
+      "kind": "jmp",
+      "target": "0x141923051",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923141",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923228",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419232ff",
+      "kind": "call",
+      "target": "0x140a7a6f0",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<serde_json::value::Value> >",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.839339460730848927",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.1555704729706194303",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.3369136693271219788",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.4194790630819140222",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.5049645940371996074",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.6248505642955255051",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb467b40b0cdb03cdE.llvm.7397514774937219046"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419233e8",
+      "kind": "call",
+      "target": "0x1404b4b10",
+      "target_names": [
+        "core::ptr::drop_in_place<serde_json::error::Error>",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h4c0d9534c006f097E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h6fce3f84e2810dc0E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h7a50412b1c0d5d53E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h84f428538c04a3adE",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17h97ec183d886635a5E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17haeda81297ecb6f88E",
+        "_ZN4core3ptr45drop_in_place$LT$serde_json..error..Error$GT$17hd15bb678acb0fcbbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419234d9",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419235b6",
+      "kind": "call",
+      "target": "0x14098f1a0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::History>",
+        "_ZN4core3ptr62drop_in_place$LT$country_core..resources..history..History$GT$17h01925efe2ee73868E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419236a5",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419237a1",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923a98",
+      "kind": "call",
+      "target": "0x140997820",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::HistoryMutationToken>",
+        "_ZN4core3ptr75drop_in_place$LT$country_core..resources..history..HistoryMutationToken$GT$17he03329e56237d751E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923be8",
+      "kind": "call",
+      "target": "0x1400dbc80",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h70e35e5b2801eb5dE",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17ha2f581247ae6d2f1E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17hcc3561b6c98d4f47E",
+        "core::ptr::drop_in_place<country_core::systems::mode_manager::WallSelectionGroups>",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17h5a1a42d9b0f94f66E",
+        "_ZN4core3ptr72drop_in_place$LT$alloc..vec..Vec$LT$alloc..vec..Vec$LT$usize$GT$$GT$$GT$17hdf30190265223625E",
+        "core::ptr::drop_in_place<alloc::vec::Vec<alloc::vec::Vec<usize,alloc::alloc::Global>,alloc::alloc::Global> >",
+        "_ZN4core3ptr77drop_in_place$LT$country_core..systems..mode_manager..WallSelectionGroups$GT$17h7223608f1cec3df6E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923d35",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923e0c",
+      "kind": "call",
+      "target": "0x14099e410",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::history::history_chain::HistoryEditChain>",
+        "core::ptr::drop_in_place<alloc::vec::Vec<country_core::resources::history::MultiEdit,alloc::alloc::Global> >",
+        "_ZN4core3ptr86drop_in_place$LT$country_core..resources..history..history_chain..HistoryEditChain$GT$17he8f49c6d613e6504E",
+        "_ZN4core3ptr87drop_in_place$LT$alloc..vec..Vec$LT$country_core..resources..history..MultiEdit$GT$$GT$17h7c77b0d43592bfc8E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923ef6",
+      "kind": "call",
+      "target": "0x140994f20",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::save_game::GameSaveData>",
+        "_ZN4core3ptr73drop_in_place$LT$country_core..systems..save..save_game..GameSaveData$GT$17h9fab0afcbfd3b626E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141923fcf",
+      "kind": "call",
+      "target": "0x14192a200",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::boxed::Box<country_core::systems::save::save_game::GameSaveData,alloc::alloc::Global> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x1419240ac",
+      "kind": "call",
+      "target": "0x140f36c40",
+      "target_names": [
+        "anyhow::error::impl$6::drop",
+        "_ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x141920aeb",
+      "target": "0x1433591a0",
+      "operand_bytes": 8,
+      "bytes_hex": "52656164696e672066696c65206461746150617273696e67204a534f4e566572",
+      "ascii_candidate": "Reading file dataParsing JSONVersioncrates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x141920bbc",
+      "target": "0x1433591b1",
+      "operand_bytes": 8,
+      "bytes_hex": "50617273696e67204a534f4e56657273696f6e6372617465732f636f756e7472",
+      "ascii_candidate": "Parsing JSONVersioncrates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x141920c47",
+      "target": "0x1433591bd",
+      "operand_bytes": 8,
+      "bytes_hex": "56657273696f6e6372617465732f636f756e7472792d636f72652f7372632f73",
+      "ascii_candidate": "Versioncrates/country-core/src/systems/save/load_game.rs"
+    },
+    {
+      "address": "0x141920c65",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x141920c6f",
+      "target": "0x143359e30",
+      "operand_bytes": 8,
+      "bytes_hex": "896e5cfe4f6e5cfe4f6e5cfe956e5cfe696e5cfeb26e5cfeb3705cfe79705cfe"
+    },
+    {
+      "address": "0x141920d9e",
+      "target": "0x140f71c50",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$11::fmt",
+        "_RNvXs9_NtNtNtCs8icZUrvfcq9_4core3fmt3num3implNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24408b014189c241f7da440f48d04889d141b80a00"
+    },
+    {
+      "address": "0x141920dac",
+      "target": "0x143359660",
+      "operand_bytes": 8,
+      "bytes_hex": "030000001a5468697320736176652066696c652069732076657273696f6e20c0"
+    },
+    {
+      "address": "0x141920dc1",
+      "target": "0x143359664",
+      "operand_bytes": 8,
+      "bytes_hex": "1a5468697320736176652066696c652069732076657273696f6e20c0202e204d"
+    },
+    {
+      "address": "0x141920e1d",
+      "target": "0x140f71c50",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$11::fmt",
+        "_RNvXs9_NtNtNtCs8icZUrvfcq9_4core3fmt3num3implNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24408b014189c241f7da440f48d04889d141b80a00"
+    },
+    {
+      "address": "0x141920e2b",
+      "target": "0x14335934c",
+      "operand_bytes": 8,
+      "bytes_hex": "1e0000001d4465746563746564206120736176652066696c652076657273696f"
+    },
+    {
+      "address": "0x141920e40",
+      "target": "0x143359618",
+      "operand_bytes": 8,
+      "bytes_hex": "175468697320736176652066696c652076657273696f6e20c02a206973206162"
+    },
+    {
+      "address": "0x141920e89",
+      "target": "0x1433591f6",
+      "operand_bytes": 8,
+      "bytes_hex": "4261636b77617264436f6d7061746962696c69747943616d6572617061727369",
+      "ascii_candidate": "BackwardCompatibilityCameraparsing cameraTime of dayThis save file had no `Time of day` data"
+    },
+    {
+      "address": "0x141920ea7",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x141920eb1",
+      "target": "0x143359e48",
+      "operand_bytes": 8,
+      "bytes_hex": "b3705cfe79705cfe79705cfebf705cfe93705cfedc705cfefe715cfec4715cfe"
+    },
+    {
+      "address": "0x141920fec",
+      "target": "0x14335920b",
+      "operand_bytes": 8,
+      "bytes_hex": "43616d65726170617273696e672063616d65726154696d65206f662064617954",
+      "ascii_candidate": "Cameraparsing cameraTime of dayThis save file had no `Time of day` data"
+    },
+    {
+      "address": "0x14192100a",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x141921014",
+      "target": "0x143359e60",
+      "operand_bytes": 8,
+      "bytes_hex": "fe715cfec4715cfec4715cfe0a725cfede715cfe27725cfe24825cfea5825cfe"
+    },
+    {
+      "address": "0x1419210f5",
+      "target": "0x1433978a0",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c26a6b25fa0f5b9c3de777c1d843f8ab.13.llvm.15723612070330080131"
+      ],
+      "bytes_hex": "3e78394301000000030000000000000079783943010000000900000000000000"
+    },
+    {
+      "address": "0x14192110a",
+      "target": "0x143397826",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c26a6b25fa0f5b9c3de777c1d843f8ab.3.llvm.15723612070330080131"
+      ],
+      "bytes_hex": "43616d657261526967506172616d657465727343616368657961777069746368",
+      "ascii_candidate": "CameraRigParametersCacheyawpitchpositioncamera_rig_arm_lengthpitch_offsetyaw_offsetyaw_cachepitc"
+    },
+    {
+      "address": "0x141921184",
+      "target": "0x143359211",
+      "operand_bytes": 8,
+      "bytes_hex": "70617273696e672063616d65726154696d65206f662064617954686973207361",
+      "ascii_candidate": "parsing cameraTime of dayThis save file had no `Time of day` data"
+    },
+    {
+      "address": "0x1419212ff",
+      "target": "0x14335921f",
+      "operand_bytes": 8,
+      "bytes_hex": "54696d65206f66206461795468697320736176652066696c6520686164206e6f",
+      "ascii_candidate": "Time of dayThis save file had no `Time of day` data"
+    },
+    {
+      "address": "0x14192131d",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x141921334",
+      "target": "0x14304c9c8",
+      "operand_bytes": 8,
+      "names": [
+        "anon.918c150f9ca9d13508388b8525b5632d.8.llvm.18020536372015465026"
+      ],
+      "bytes_hex": "98c90443010000000b00000000000000a3c90443010000000f00000000000000"
+    },
+    {
+      "address": "0x141921349",
+      "target": "0x14304c98f",
+      "operand_bytes": 8,
+      "names": [
+        "anon.918c150f9ca9d13508388b8525b5632d.4.llvm.18020536372015465026"
+      ],
+      "bytes_hex": "54696d654f6644617974696d655f6f665f64617973756e5f787a5f726f746174",
+      "ascii_candidate": "TimeOfDaytime_of_daysun_xz_rotationlatitude_degrees"
+    },
+    {
+      "address": "0x141921384",
+      "target": "0x14335921f",
+      "operand_bytes": 8,
+      "bytes_hex": "54696d65206f66206461795468697320736176652066696c6520686164206e6f",
+      "ascii_candidate": "Time of dayThis save file had no `Time of day` data"
+    },
+    {
+      "address": "0x1419213a2",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x1419213e7",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x1419213f1",
+      "target": "0x1433590d0",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@000000003e19999a3f50a3d73f0147ae"
+      ],
+      "bytes_hex": "ae47013fd7a3503f9a99193e00000000000000009a99993e0000000034516d42"
+    },
+    {
+      "address": "0x1419213f9",
+      "target": "0x1433590e0",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@426d5134000000003e99999a00000000"
+      ],
+      "bytes_hex": "000000009a99993e0000000034516d4200000001000000000000000000000000"
+    },
+    {
+      "address": "0x141921421",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192144c",
+      "target": "0x143359258",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000001102000009000000636f756e7472795f"
+    },
+    {
+      "address": "0x14192145a",
+      "target": "0x14335922a",
+      "operand_bytes": 8,
+      "bytes_hex": "5468697320736176652066696c6520686164206e6f206054696d65206f662064",
+      "ascii_candidate": "This save file had no `Time of day` data"
+    },
+    {
+      "address": "0x1419214b7",
+      "target": "0x1433590c0",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@426d5134000000000000000000000000"
+      ],
+      "bytes_hex": "00000000000000000000000034516d42ae47013fd7a3503f9a99193e00000000"
+    },
+    {
+      "address": "0x1419214bf",
+      "target": "0x1433590d0",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@000000003e19999a3f50a3d73f0147ae"
+      ],
+      "bytes_hex": "ae47013fd7a3503f9a99193e00000000000000009a99993e0000000034516d42"
+    },
+    {
+      "address": "0x1419214de",
+      "target": "0x143359296",
+      "operand_bytes": 8,
+      "bytes_hex": "466f6750726563697069746174696f6e5368656570436f6c6f72734c6f616469",
+      "ascii_candidate": "FogPrecipitationSheepColorsLoading existing color customization"
+    },
+    {
+      "address": "0x141921504",
+      "target": "0x143359299",
+      "operand_bytes": 8,
+      "bytes_hex": "50726563697069746174696f6e5368656570436f6c6f72734c6f6164696e6720",
+      "ascii_candidate": "PrecipitationSheepColorsLoading existing color customization"
+    },
+    {
+      "address": "0x14192152f",
+      "target": "0x1433592a6",
+      "operand_bytes": 8,
+      "bytes_hex": "5368656570436f6c6f72734c6f6164696e67206578697374696e6720636f6c6f",
+      "ascii_candidate": "SheepColorsLoading existing color customization"
+    },
+    {
+      "address": "0x14192154d",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x141921564",
+      "target": "0x143397e40",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c26a6b25fa0f5b9c3de777c1d843f8ab.71.llvm.15723612070330080131"
+      ],
+      "bytes_hex": "347e39430100000005000000000000008c7c3943010000000c00000000000000"
+    },
+    {
+      "address": "0x141921579",
+      "target": "0x143397e20",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c26a6b25fa0f5b9c3de777c1d843f8ab.69.llvm.15723612070330080131"
+      ],
+      "bytes_hex": "5368656570436f6e74726f6c536e617073686f74736865657000000000000000",
+      "ascii_candidate": "SheepControlSnapshotsheep"
+    },
+    {
+      "address": "0x1419215f5",
+      "target": "0x1433592ab",
+      "operand_bytes": 8,
+      "bytes_hex": "436f6c6f72734c6f6164696e67206578697374696e6720636f6c6f7220637573",
+      "ascii_candidate": "ColorsLoading existing color customization"
+    },
+    {
+      "address": "0x141921613",
+      "target": "0x143cad928",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN10serde_json5value5index87_$LT$impl$u20$core..ops..index..Index$LT$I$GT$$u20$for$u20$serde_json..value..Value$GT$5index4NULL17h439de053693bc870E"
+      ],
+      "bytes_hex": "08ce394301000000ff00000000000000f8ef3943010000000000000000000000"
+    },
+    {
+      "address": "0x14192162a",
+      "target": "0x1430628e8",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c8541a7a86279add78d1a2740eecf030.87.llvm.4194790630819140222"
+      ],
+      "bytes_hex": "09280643010000000d0000000000000016280643010000000800000000000000"
+    },
+    {
+      "address": "0x14192163f",
+      "target": "0x1430627f2",
+      "operand_bytes": 8,
+      "names": [
+        "anon.c8541a7a86279add78d1a2740eecf030.66.llvm.4194790630819140222"
+      ],
+      "bytes_hex": "476c616465436f6c6f72437573746f6d697a6174696f6e66726565666f726d5f",
+      "ascii_candidate": "GladeColorCustomizationfreeform_wallbuildingwooden_wallstone_foundationroofbuilding_wall_stylefr"
+    },
+    {
+      "address": "0x14192167a",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192168a",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x1419216b5",
+      "target": "0x143359318",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000002b0200000900000047726f7570734869"
+    },
+    {
+      "address": "0x1419216c3",
+      "target": "0x1433592f0",
+      "operand_bytes": 8,
+      "bytes_hex": "496e697469616c697a696e67206e657720636f6c6f7220637573746f6d697a61",
+      "ascii_candidate": "Initializing new color customization"
+    },
+    {
+      "address": "0x1419216e8",
+      "target": "0x14303f620",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@00000003000000000000000000000000"
+      ],
+      "bytes_hex": "00000000000000000000000003000000030000000000000000000000ffffffff"
+    },
+    {
+      "address": "0x1419216f8",
+      "target": "0x143359100",
+      "operand_bytes": 4,
+      "names": [
+        "__real@000186a3"
+      ],
+      "bytes_hex": "a38601002f686f6d652f68332f2e7275737475702f746f6f6c636861696e732f"
+    },
+    {
+      "address": "0x141921704",
+      "target": "0x1433590f0",
+      "operand_bytes": 4,
+      "names": [
+        "__xmm@00000000000000000000000001000000"
+      ],
+      "bytes_hex": "00000001000000000000000000000000a38601002f686f6d652f68332f2e7275"
+    },
+    {
+      "address": "0x14192170d",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x1419217fa",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192180a",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141921835",
+      "target": "0x1433592d8",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000002802000009000000496e697469616c69"
+    },
+    {
+      "address": "0x141921843",
+      "target": "0x1433592b1",
+      "operand_bytes": 8,
+      "bytes_hex": "4c6f6164696e67206578697374696e6720636f6c6f7220637573746f6d697a61",
+      "ascii_candidate": "Loading existing color customization"
+    },
+    {
+      "address": "0x141921876",
+      "target": "0x143359330",
+      "operand_bytes": 8,
+      "bytes_hex": "47726f757073486973746f727970617273696e6720686973746f72791e000000"
+    },
+    {
+      "address": "0x1419218f0",
+      "target": "0x143359336",
+      "operand_bytes": 8,
+      "bytes_hex": "486973746f727970617273696e6720686973746f72791e0000001d4465746563"
+    },
+    {
+      "address": "0x141921945",
+      "target": "0x14335cad8",
+      "operand_bytes": 8,
+      "names": [
+        "anon.34ec4dde77fe945447c99e0a889f7485.84.llvm.5049645940371996074"
+      ],
+      "bytes_hex": "79ca3543010000000b00000000000000b7ca3543010000000d00000000000000"
+    },
+    {
+      "address": "0x14192195a",
+      "target": "0x14335cab0",
+      "operand_bytes": 8,
+      "names": [
+        "anon.34ec4dde77fe945447c99e0a889f7485.80.llvm.5049645940371996074"
+      ],
+      "bytes_hex": "486973746f7279686973746f72795f7374617274656469745f636861696e736e",
+      "ascii_candidate": "Historyhistory_startedit_chainsnapshots"
+    },
+    {
+      "address": "0x141921982",
+      "target": "0x14335933d",
+      "operand_bytes": 8,
+      "bytes_hex": "70617273696e6720686973746f72791e0000001d446574656374656420612073"
+    },
+    {
+      "address": "0x141921acf",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141921adf",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141921b0a",
+      "target": "0x143359460",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000000e030000090000004465707265636174"
+    },
+    {
+      "address": "0x141921b1f",
+      "target": "0x143359430",
+      "operand_bytes": 8,
+      "bytes_hex": "4e6f2064657072656361746564206f7065726174696f6e732068617665206265",
+      "ascii_candidate": "No deprecated operations have been found."
+    },
+    {
+      "address": "0x141921b45",
+      "target": "0x1433594d0",
+      "operand_bytes": 8,
+      "bytes_hex": "4964656e746974794669656c64206e6f7420666f756e641d436f756c646e2774"
+    },
+    {
+      "address": "0x141921b68",
+      "target": "0x1433594d8",
+      "operand_bytes": 8,
+      "bytes_hex": "4669656c64206e6f7420666f756e641d436f756c646e27742072656164207361"
+    },
+    {
+      "address": "0x141921ba8",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141921bca",
+      "target": "0x140f71c50",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$11::fmt",
+        "_RNvXs9_NtNtNtCs8icZUrvfcq9_4core3fmt3num3implNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24408b014189c241f7da440f48d04889d141b80a00"
+    },
+    {
+      "address": "0x141921bd8",
+      "target": "0x14335934c",
+      "operand_bytes": 8,
+      "bytes_hex": "1e0000001d4465746563746564206120736176652066696c652076657273696f"
+    },
+    {
+      "address": "0x141921bed",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141921c18",
+      "target": "0x1433593c0",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000004f02000009000000130000001b536176"
+    },
+    {
+      "address": "0x141921c2d",
+      "target": "0x143359350",
+      "operand_bytes": 8,
+      "bytes_hex": "1d4465746563746564206120736176652066696c652076657273696f6e20c013"
+    },
+    {
+      "address": "0x141921cae",
+      "target": "0x14300d240",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bc23d70a"
+      ],
+      "bytes_hex": "0ad723bc000000000000000000000000000000000000803f0000000000000080"
+    },
+    {
+      "address": "0x141921cb7",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x141921cbf",
+      "target": "0x142e37848",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3c23d70a"
+      ],
+      "bytes_hex": "0ad7233c6f1283ba6f12833a6f12833a00000000000000000000a0400000a040"
+    },
+    {
+      "address": "0x141921cc8",
+      "target": "0x142f7737c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@7f800000"
+      ],
+      "bytes_hex": "0000807f00c0000205706f707570000000000000609460400100000020010000"
+    },
+    {
+      "address": "0x141921fd4",
+      "target": "0x142e37870",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3a83126f"
+      ],
+      "bytes_hex": "6f12833a0000204000002041cdcc4c3e0000704100004842000000c100004040"
+    },
+    {
+      "address": "0x141922074",
+      "target": "0x143359e78",
+      "operand_bytes": 8,
+      "bytes_hex": "24825cfea5825cfe7b825cfe0d825cfe66825cfe0d825cfe24825cfe24825cfe"
+    },
+    {
+      "address": "0x1419220ad",
+      "target": "0x143359e9c",
+      "operand_bytes": 8,
+      "bytes_hex": "7b7e5cfe8c825cfe5f825cfe21825cfe4a825cfe21825cfe7b7e5cfe7b7e5cfe"
+    },
+    {
+      "address": "0x141922392",
+      "target": "0x143359ec0",
+      "operand_bytes": 8,
+      "bytes_hex": "44855cfe7d855cfe6d855cfeeb845cfe65855cfeeb845cfe44855cfe44855cfe"
+    },
+    {
+      "address": "0x14192239e",
+      "target": "0x143359ec0",
+      "operand_bytes": 8,
+      "bytes_hex": "44855cfe7d855cfe6d855cfeeb845cfe65855cfeeb845cfe44855cfe44855cfe"
+    },
+    {
+      "address": "0x141922723",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x14192273e",
+      "target": "0x140f36c20",
+      "operand_bytes": 8,
+      "names": [
+        "anyhow::error::impl$5::fmt",
+        "_ZN6anyhow5error60_$LT$impl$u20$core..fmt..Debug$u20$for$u20$anyhow..Error$GT$3fmt17h14380b2e060522dbE"
+      ],
+      "bytes_hex": "488b09e9d8f8ffffcccccccccccccccc488b09e9d8fcffffcccccccccccccccc"
+    },
+    {
+      "address": "0x14192274c",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141922777",
+      "target": "0x143359510",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000190300000d0000002644657269766564"
+    },
+    {
+      "address": "0x141922785",
+      "target": "0x1433594e7",
+      "operand_bytes": 8,
+      "bytes_hex": "1d436f756c646e277420726561642073617665206964656e746974793a20c001"
+    },
+    {
+      "address": "0x1419227d4",
+      "target": "0x140f72a40",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$15::fmt",
+        "_RNvXsd_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impyNtB9_7Display3fmt",
+        "_RNvXsi_NtNtNtCs8icZUrvfcq9_4core3fmt3num3impjNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24404989d14c8b11b8140000004c8d05e3212d024c"
+    },
+    {
+      "address": "0x1419227e2",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x14192280d",
+      "target": "0x143359558",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000001b0300000d000000c491354301000000"
+    },
+    {
+      "address": "0x14192281b",
+      "target": "0x143359528",
+      "operand_bytes": 8,
+      "bytes_hex": "26446572697665642073617665206964656e746974792066726f6d2066696c65"
+    },
+    {
+      "address": "0x141922b7e",
+      "target": "0x14335ec63",
+      "operand_bytes": 8,
+      "names": [
+        "anon.1a3cad76e8dcb5eeb23775feb3658015.19.llvm.4460995882820341410"
+      ],
+      "bytes_hex": "617373657274696f6e206661696c65643a2021752e69735f6e616e2829617373",
+      "ascii_candidate": "assertion failed: !u.is_nan()assertion failed: (0.0..=1.0).contains(&t)crates/utils/src/curve/cu"
+    },
+    {
+      "address": "0x141922b85",
+      "target": "0x1430372b0",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ccec12eb48f48aa89639b34a04e2501e.308.llvm.12802158024147891705"
+      ],
+      "bytes_hex": "0d6a0343010000003f000000000000002f010000240000000d6a034301000000"
+    },
+    {
+      "address": "0x141922ba3",
+      "target": "0x14335ed00",
+      "operand_bytes": 8,
+      "names": [
+        "anon.1a3cad76e8dcb5eeb23775feb3658015.24.llvm.4460995882820341410"
+      ],
+      "bytes_hex": "617373657274696f6e206661696c65643a2021752e69735f696e66696e697465",
+      "ascii_candidate": "assertion failed: !u.is_infinite()an f32 between 0.0 and 1.0"
+    },
+    {
+      "address": "0x141922baa",
+      "target": "0x1430372b0",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ccec12eb48f48aa89639b34a04e2501e.308.llvm.12802158024147891705"
+      ],
+      "bytes_hex": "0d6a0343010000003f000000000000002f010000240000000d6a034301000000"
+    },
+    {
+      "address": "0x141922bc8",
+      "target": "0x14335ed00",
+      "operand_bytes": 8,
+      "names": [
+        "anon.1a3cad76e8dcb5eeb23775feb3658015.24.llvm.4460995882820341410"
+      ],
+      "bytes_hex": "617373657274696f6e206661696c65643a2021752e69735f696e66696e697465",
+      "ascii_candidate": "assertion failed: !u.is_infinite()an f32 between 0.0 and 1.0"
+    },
+    {
+      "address": "0x141922bcf",
+      "target": "0x1430372c8",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ccec12eb48f48aa89639b34a04e2501e.309.llvm.12802158024147891705"
+      ],
+      "bytes_hex": "0d6a0343010000003f0000000000000030010000220000000d6a034301000000"
+    },
+    {
+      "address": "0x141922bef",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141922c05",
+      "target": "0x1433593d8",
+      "operand_bytes": 8,
+      "bytes_hex": "130000001b536176652066696c652076657273696f6e2069732062656c6f7720"
+    },
+    {
+      "address": "0x141922c13",
+      "target": "0x140f71c50",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::num::imp::impl$11::fmt",
+        "_RNvXs9_NtNtNtCs8icZUrvfcq9_4core3fmt3num3implNtB9_7Display3fmt"
+      ],
+      "bytes_hex": "555657534883ec48488d6c24408b014189c241f7da440f48d04889d141b80a00"
+    },
+    {
+      "address": "0x141922c21",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141922c4c",
+      "target": "0x143359418",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000d00200000d0000004e6f206465707265"
+    },
+    {
+      "address": "0x141922c61",
+      "target": "0x1433593dc",
+      "operand_bytes": 8,
+      "bytes_hex": "1b536176652066696c652076657273696f6e2069732062656c6f7720c01b2e20"
+    },
+    {
+      "address": "0x141922cbf",
+      "target": "0x142e37878",
+      "operand_bytes": 4,
+      "names": [
+        "__real@41200000"
+      ],
+      "bytes_hex": "00002041cdcc4c3e0000704100004842000000c100004040000000c000000000"
+    },
+    {
+      "address": "0x141922cc7",
+      "target": "0x142e382c8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@41a00000"
+      ],
+      "bytes_hex": "0000a041ffffff4e0000c0c1000040c03e0a5741000000000000000000000000"
+    },
+    {
+      "address": "0x141922cd9",
+      "target": "0x143314da0",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@00000000000000004120000041200000"
+      ],
+      "bytes_hex": "000020410000204100000000000000000bd7a33d000000000000000000000000"
+    },
+    {
+      "address": "0x141922ce0",
+      "target": "0x143040f80",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@000000000000000041a0000041a00000"
+      ],
+      "bytes_hex": "0000a0410000a041000000000000000000007042000070420000000000000000"
+    },
+    {
+      "address": "0x141922e24",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141922e56",
+      "target": "0x143359270",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a6c6f61",
+      "ascii_candidate": "country_core::systems::save::load_gameFogPrecipitationSheepColorsLoading existing color customiz"
+    },
+    {
+      "address": "0x141922e81",
+      "target": "0x1433594b8",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000000c030000090000004964656e74697479"
+    },
+    {
+      "address": "0x141922e96",
+      "target": "0x143359478",
+      "operand_bytes": 8,
+      "bytes_hex": "44657072656361746564206f7065726174696f6e732068617665206265656e20",
+      "ascii_candidate": "Deprecated operations have been found. Upgrading the save file"
+    },
+    {
+      "address": "0x141922ed8",
+      "target": "0x143ca8e90",
+      "operand_bytes": 8,
+      "names": [
+        "__imp__ZN3log20MAX_LOG_LEVEL_FILTER17h602a680df772a389E"
+      ],
+      "bytes_hex": "202ecb4301000000988eca430100000008000000000000003000000000000000"
+    },
+    {
+      "address": "0x141922ef8",
+      "target": "0x1433595d0",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000006002000022000000c491354301000000"
+    },
+    {
+      "address": "0x141922f0a",
+      "target": "0x143359d48",
+      "operand_bytes": 8,
+      "names": [
+        "anon.5afea5b61940683c37e35e7f1f284755.126.llvm.15453247584174848984"
+      ],
+      "bytes_hex": "b29c3543010000007900000000000000320100002e000000e000000000000000"
+    },
+    {
+      "address": "0x141922f1c",
+      "target": "0x143359d48",
+      "operand_bytes": 8,
+      "names": [
+        "anon.5afea5b61940683c37e35e7f1f284755.126.llvm.15453247584174848984"
+      ],
+      "bytes_hex": "b29c3543010000007900000000000000320100002e000000e000000000000000"
+    },
+    {
+      "address": "0x141922f2e",
+      "target": "0x143359d48",
+      "operand_bytes": 8,
+      "names": [
+        "anon.5afea5b61940683c37e35e7f1f284755.126.llvm.15453247584174848984"
+      ],
+      "bytes_hex": "b29c3543010000007900000000000000320100002e000000e000000000000000"
+    },
+    {
+      "address": "0x141922f5c",
+      "target": "0x1433595e8",
+      "operand_bytes": 8,
+      "bytes_hex": "c49135430100000031000000000000006b02000040000000c491354301000000"
+    },
+    {
+      "address": "0x141922f72",
+      "target": "0x143359600",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000790200003d0000001754686973207361"
+    },
+    {
+      "address": "0x141922f88",
+      "target": "0x143359570",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000ec02000044000000c491354301000000"
+    },
+    {
+      "address": "0x141922f9e",
+      "target": "0x143359588",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000f802000044000000c491354301000000"
+    },
+    {
+      "address": "0x141922fb4",
+      "target": "0x1433595a0",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000ab02000016000000c491354301000000"
+    },
+    {
+      "address": "0x141922fca",
+      "target": "0x1433595b8",
+      "operand_bytes": 8,
+      "bytes_hex": "c4913543010000003100000000000000c102000016000000c491354301000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

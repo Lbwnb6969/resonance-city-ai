@@ -1,0 +1,48 @@
+; Numeric operand listing, not a semantic decompiler.
+; SHA256 e5936a6c763f40e4c57e4b324718f49c9e98d99ec7a007aea3c669732631e466
+00000014: OpCapability 49
+0000001c: OpCapability 1
+00000024: OpCapability 49
+0000002c: OpMemoryModel 0 1
+00000038: OpEntryPoint 5 2 1852399981 0 9
+00000050: OpExecutionMode 2 17 8 8 1
+00000068: OpSource 11 1
+00000074: OpName 16 1684956530 1684370021 2019914847 0
+0000008c: OpName 18 1886216563 6579564
+0000009c: OpName 28 1701209458 1668179314 1702125413 120
+000000b4: OpName 2 1953522019 6648437
+000000c4: OpDecorate 9 11 28
+000000d4: OpDecorate 16 33 1
+000000e4: OpDecorate 16 34 0
+000000f4: OpDecorate 28 33 2
+00000104: OpDecorate 28 34 0
+00000114: OpTypeVoid 1
+0000011c: OpTypeFunction 3 1
+00000128: OpTypeInt 5 32 0
+00000138: OpTypeVector 6 5 3
+00000148: OpTypePointer 8 1 6
+00000158: OpTypeVector 10 5 2
+00000168: OpTypeFloat 12 32
+00000174: OpTypeImage 13 12 1 2 0 0 1 0
+00000198: OpTypePointer 15 0 13
+000001a8: OpTypeVector 17 12 4
+000001b8: OpTypeImage 25 12 1 2 0 0 2 8
+000001dc: OpTypePointer 27 0 25
+000001ec: OpConstant 12 33 0
+000001fc: OpVariable 8 9 1
+0000020c: OpVariable 15 16 0
+0000021c: OpVariable 27 28 0
+0000022c: OpFunction 1 2 0 3
+00000240: OpLabel 4
+00000248: OpLoad 6 7 9
+00000258: OpVectorShuffle 10 11 7 7 0 1
+00000274: OpLoad 13 14 16
+00000284: OpImageFetch 17 18 14 11
+00000298: OpLoad 25 26 28
+000002a8: OpCompositeExtract 12 29 18 0
+000002bc: OpCompositeExtract 12 30 18 1
+000002d0: OpCompositeExtract 12 31 18 2
+000002e4: OpCompositeConstruct 17 32 29 30 31 33
+00000300: OpImageWrite 26 11 32
+00000310: OpReturn 
+00000314: OpFunctionEnd 

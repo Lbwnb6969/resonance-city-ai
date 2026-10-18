@@ -1,0 +1,4652 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Events/FestivalRecipeUnlock/Outcome Panel FestivalMeal Unlocked.gui",
+  "absolute_offset": 360108513,
+  "length": 9403,
+  "sha256": "8f19e27da7d1bbc53b06d885c33d9a4069b03033a1b9080cbf44fc8860de7623",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Events/FestivalRecipeUnlock/Outcome Panel FestivalMeal Unlocked.gui",
+    "id": "c30e1b25-ea1e-419e-9e87-4576d7cf4707",
+    "type": "GamCAssetGui"
+  },
+  "roots": {
+    "root": {
+      "@": {},
+      "asset": {
+        "@": {},
+        "Id": {
+          "@": {
+            "value": ""
+          }
+        },
+        "DefaultSkin": {
+          "@": {
+            "value": "df3cdeb8-0654-467e-a19f-f41aa88839db"
+          }
+        },
+        "ControllerClassName": {
+          "@": {
+            "value": "PlaCGuiOutcomePanelFestivalMealUnlocked"
+          }
+        },
+        "RootViewDefinition": {
+          "@": {
+            "value": "GuiCViewStack"
+          }
+        },
+        "Controller": {
+          "@": {
+            "type": "PlaCGuiOutcomePanelFestivalMealUnlocked"
+          },
+          "RecipeIconSize": {
+            "@": {
+              "x": 50,
+              "y": 50
+            }
+          },
+          "WorkplaceRecipeAssetGui": {
+            "@": {
+              "value": "2e7f45b7-e196-4ac2-b604-67df221c80a4"
+            }
+          }
+        }
+      },
+      "object": {
+        "@": {
+          "name": "Main Stack",
+          "type": "GuiCViewStack"
+        },
+        "data": {
+          "@": {},
+          "Style": {
+            "@": {
+              "value": "00000000-0000-0000-0000-000000000000"
+            }
+          },
+          "MinimumSize": {
+            "@": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "MaximumSize": {
+            "@": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "Visible": {
+            "@": {
+              "value": true
+            }
+          },
+          "DebugDraw": {
+            "@": {
+              "value": false
+            }
+          },
+          "Tooltip": {
+            "@": {
+              "value": ""
+            }
+          },
+          "LeftMargin": {
+            "@": {
+              "value": 0
+            }
+          },
+          "RightMargin": {
+            "@": {
+              "value": 0
+            }
+          },
+          "TopMargin": {
+            "@": {
+              "value": 0
+            }
+          },
+          "BottomMargin": {
+            "@": {
+              "value": 0
+            }
+          },
+          "Size": {
+            "@": {
+              "x": 800,
+              "y": 300
+            }
+          },
+          "RelativeSize": {
+            "@": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          },
+          "FillWidth": {
+            "@": {
+              "value": false
+            }
+          },
+          "FillHeight": {
+            "@": {
+              "value": false
+            }
+          },
+          "MouseEventStrategy": {
+            "@": {
+              "value": "ALL"
+            }
+          },
+          "MouseEventReceiverViewCount": {
+            "@": {
+              "value": 1
+            }
+          },
+          "HorizontalAlignment": {
+            "@": {
+              "value": "CENTER"
+            }
+          },
+          "VerticalAlignment": {
+            "@": {
+              "value": "TOP"
+            }
+          },
+          "HorizontalAutoSize": {
+            "@": {
+              "value": false
+            }
+          },
+          "VerticalAutoSize": {
+            "@": {
+              "value": true
+            }
+          }
+        },
+        "repeatPreview": {
+          "@": {},
+          "Count": {
+            "@": {
+              "value": 1
+            }
+          },
+          "Enabled": {
+            "@": {
+              "value": false
+            }
+          }
+        },
+        "children": {
+          "@": {},
+          "object": [
+            {
+              "@": {
+                "type": "GuiCViewAppender"
+              },
+              "data": {
+                "@": {},
+                "Style": {
+                  "@": {
+                    "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70"
+                  }
+                },
+                "MinimumSize": {
+                  "@": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                "MaximumSize": {
+                  "@": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                "Visible": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "DebugDraw": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Tooltip": {
+                  "@": {
+                    "value": ""
+                  }
+                },
+                "LeftMargin": {
+                  "@": {
+                    "value": 100
+                  }
+                },
+                "RightMargin": {
+                  "@": {
+                    "value": 100
+                  }
+                },
+                "TopMargin": {
+                  "@": {
+                    "value": 75
+                  }
+                },
+                "BottomMargin": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "Size": {
+                  "@": {
+                    "x": 100,
+                    "y": 250
+                  }
+                },
+                "RelativeSize": {
+                  "@": {
+                    "x": 1.0,
+                    "y": 0.0
+                  }
+                },
+                "FillWidth": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "FillHeight": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Type": {
+                  "@": {
+                    "value": "VERTICAL"
+                  }
+                },
+                "HorizontalAlignment": {
+                  "@": {
+                    "value": "CENTER"
+                  }
+                },
+                "VerticalAlignment": {
+                  "@": {
+                    "value": "TOP"
+                  }
+                },
+                "Space": {
+                  "@": {
+                    "value": 25
+                  }
+                },
+                "StickDown": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "AllowVerticalScrolling": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "EnableChildrenFixedSizeOptimization": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "BackgroundColor": {
+                  "@": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                  }
+                },
+                "HorizontalAutoSize": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "VerticalAutoSize": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "BackgroundColorEnabled": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              },
+              "repeatPreview": {
+                "@": {},
+                "Count": {
+                  "@": {
+                    "value": 1
+                  }
+                },
+                "Enabled": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              },
+              "children": {
+                "@": {},
+                "object": [
+                  {
+                    "@": {
+                      "type": "GuiCViewSlotRichText"
+                    },
+                    "data": {
+                      "@": {},
+                      "Style": {
+                        "@": {
+                          "value": "00000000-0000-0000-0000-000000000000"
+                        }
+                      },
+                      "MinimumSize": {
+                        "@": {
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "MaximumSize": {
+                        "@": {
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "Visible": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "DebugDraw": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "Tooltip": {
+                        "@": {
+                          "value": ""
+                        }
+                      },
+                      "LeftMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "RightMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "TopMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "BottomMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "Size": {
+                        "@": {
+                          "x": 100,
+                          "y": 100
+                        }
+                      },
+                      "RelativeSize": {
+                        "@": {
+                          "x": 1.0,
+                          "y": 0.0
+                        }
+                      },
+                      "FillWidth": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "FillHeight": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "HorizontalAlignment": {
+                        "@": {
+                          "value": "CENTER"
+                        }
+                      },
+                      "VerticalAlignment": {
+                        "@": {
+                          "value": "TOP"
+                        }
+                      },
+                      "Space": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "Unbreakable": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "OnlyAdjustLineHeightWithText": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "CutToEllipsis": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "HorizontalAutoSize": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "VerticalAutoSize": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "ControlString": {
+                        "@": {
+                          "value": "#NEW_FESTIVAL_MEAL_UNLOCKED_FOR_X"
+                        }
+                      },
+                      "ParagraphStyle": {
+                        "@": {
+                          "value": "3fd1f714-6f05-4be0-83c2-311781a5bf1d"
+                        }
+                      },
+                      "EmphasizedParagraphStyle": {
+                        "@": {
+                          "value": "3fd1f714-6f05-4be0-83c2-311781a5bf1d"
+                        }
+                      }
+                    },
+                    "repeatPreview": {
+                      "@": {},
+                      "Count": {
+                        "@": {
+                          "value": 1
+                        }
+                      },
+                      "Enabled": {
+                        "@": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "children": {
+                      "@": {},
+                      "object": {
+                        "@": {
+                          "type": "GuiCViewSlotRichText"
+                        },
+                        "data": {
+                          "@": {},
+                          "Style": {
+                            "@": {
+                              "value": "00000000-0000-0000-0000-000000000000"
+                            }
+                          },
+                          "MinimumSize": {
+                            "@": {
+                              "x": 0,
+                              "y": 0
+                            }
+                          },
+                          "MaximumSize": {
+                            "@": {
+                              "x": 0,
+                              "y": 0
+                            }
+                          },
+                          "Visible": {
+                            "@": {
+                              "value": true
+                            }
+                          },
+                          "DebugDraw": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "Tooltip": {
+                            "@": {
+                              "value": ""
+                            }
+                          },
+                          "LeftMargin": {
+                            "@": {
+                              "value": 0
+                            }
+                          },
+                          "RightMargin": {
+                            "@": {
+                              "value": 0
+                            }
+                          },
+                          "TopMargin": {
+                            "@": {
+                              "value": 0
+                            }
+                          },
+                          "BottomMargin": {
+                            "@": {
+                              "value": 0
+                            }
+                          },
+                          "Size": {
+                            "@": {
+                              "x": 100,
+                              "y": 100
+                            }
+                          },
+                          "RelativeSize": {
+                            "@": {
+                              "x": 0.0,
+                              "y": 0.0
+                            }
+                          },
+                          "FillWidth": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "FillHeight": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "HorizontalAlignment": {
+                            "@": {
+                              "value": "LEFT"
+                            }
+                          },
+                          "VerticalAlignment": {
+                            "@": {
+                              "value": "TOP"
+                            }
+                          },
+                          "Space": {
+                            "@": {
+                              "value": 0
+                            }
+                          },
+                          "Unbreakable": {
+                            "@": {
+                              "value": true
+                            }
+                          },
+                          "OnlyAdjustLineHeightWithText": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "CutToEllipsis": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "HorizontalAutoSize": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "VerticalAutoSize": {
+                            "@": {
+                              "value": false
+                            }
+                          },
+                          "ControlString": {
+                            "@": {
+                              "value": ""
+                            }
+                          },
+                          "ParagraphStyle": {
+                            "@": {
+                              "value": "00000000-0000-0000-0000-000000000000"
+                            }
+                          },
+                          "EmphasizedParagraphStyle": {
+                            "@": {
+                              "value": "00000000-0000-0000-0000-000000000000"
+                            }
+                          }
+                        },
+                        "repeatPreview": {
+                          "@": {},
+                          "Count": {
+                            "@": {
+                              "value": 1
+                            }
+                          },
+                          "Enabled": {
+                            "@": {
+                              "value": false
+                            }
+                          }
+                        },
+                        "children": {
+                          "@": {},
+                          "object": {
+                            "@": {
+                              "name": "Buildable Title Names Label",
+                              "type": "GuiCViewLabel"
+                            },
+                            "data": {
+                              "@": {},
+                              "Style": {
+                                "@": {
+                                  "value": "9dc57ced-94be-41bc-8248-9217163628d0"
+                                }
+                              },
+                              "MinimumSize": {
+                                "@": {
+                                  "x": 0,
+                                  "y": 0
+                                }
+                              },
+                              "MaximumSize": {
+                                "@": {
+                                  "x": 0,
+                                  "y": 0
+                                }
+                              },
+                              "Visible": {
+                                "@": {
+                                  "value": true
+                                }
+                              },
+                              "DebugDraw": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "Tooltip": {
+                                "@": {
+                                  "value": ""
+                                }
+                              },
+                              "LeftMargin": {
+                                "@": {
+                                  "value": 0
+                                }
+                              },
+                              "RightMargin": {
+                                "@": {
+                                  "value": 0
+                                }
+                              },
+                              "TopMargin": {
+                                "@": {
+                                  "value": 0
+                                }
+                              },
+                              "BottomMargin": {
+                                "@": {
+                                  "value": 0
+                                }
+                              },
+                              "Size": {
+                                "@": {
+                                  "x": 80,
+                                  "y": 15
+                                }
+                              },
+                              "RelativeSize": {
+                                "@": {
+                                  "x": 0.0,
+                                  "y": 0.0
+                                }
+                              },
+                              "FillWidth": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "FillHeight": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "Text": {
+                                "@": {
+                                  "value": "#BUILDINGS"
+                                }
+                              },
+                              "ParagraphStyle": {
+                                "@": {
+                                  "value": "d4edc74c-8d3e-446c-9d4a-5cf7f2510548"
+                                }
+                              },
+                              "Alignment": {
+                                "@": {
+                                  "value": ""
+                                }
+                              },
+                              "VerticalAlignment": {
+                                "@": {
+                                  "value": ""
+                                }
+                              },
+                              "FontSizeOverride": {
+                                "@": {
+                                  "value": 33
+                                }
+                              },
+                              "ColorOverride": {
+                                "@": {
+                                  "r": 1.0,
+                                  "g": 1.0,
+                                  "b": 1.0,
+                                  "a": 1.0
+                                }
+                              },
+                              "MaxLineCount": {
+                                "@": {
+                                  "value": 0
+                                }
+                              },
+                              "TabSpaceCount": {
+                                "@": {
+                                  "value": 1
+                                }
+                              },
+                              "WrapEnabled": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "CutToEllipsis": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "EnableScissor": {
+                                "@": {
+                                  "value": true
+                                }
+                              },
+                              "HorizontalAutoSize": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "VerticalAutoSize": {
+                                "@": {
+                                  "value": false
+                                }
+                              },
+                              "FontSizeOverrideEnabled": {
+                                "@": {
+                                  "value": true
+                                }
+                              },
+                              "ColorOverrideEnabled": {
+                                "@": {
+                                  "value": false
+                                }
+                              }
+                            },
+                            "children": {
+                              "@": {}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "@": {
+                      "name": "Recipe Appender",
+                      "type": "GuiCViewAppender"
+                    },
+                    "data": {
+                      "@": {},
+                      "Style": {
+                        "@": {
+                          "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70"
+                        }
+                      },
+                      "MinimumSize": {
+                        "@": {
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "MaximumSize": {
+                        "@": {
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "Visible": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "DebugDraw": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "Tooltip": {
+                        "@": {
+                          "value": ""
+                        }
+                      },
+                      "LeftMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "RightMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "TopMargin": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "BottomMargin": {
+                        "@": {
+                          "value": 30
+                        }
+                      },
+                      "Size": {
+                        "@": {
+                          "x": 100,
+                          "y": 100
+                        }
+                      },
+                      "RelativeSize": {
+                        "@": {
+                          "x": 1.0,
+                          "y": 0.0
+                        }
+                      },
+                      "FillWidth": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "FillHeight": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "Type": {
+                        "@": {
+                          "value": "VERTICAL"
+                        }
+                      },
+                      "HorizontalAlignment": {
+                        "@": {
+                          "value": "CENTER"
+                        }
+                      },
+                      "VerticalAlignment": {
+                        "@": {
+                          "value": "TOP"
+                        }
+                      },
+                      "Space": {
+                        "@": {
+                          "value": 0
+                        }
+                      },
+                      "StickDown": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "AllowVerticalScrolling": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "EnableChildrenFixedSizeOptimization": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "BackgroundColor": {
+                        "@": {
+                          "r": 0.0,
+                          "g": 0.0,
+                          "b": 0.0,
+                          "a": 0.0
+                        }
+                      },
+                      "HorizontalAutoSize": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "VerticalAutoSize": {
+                        "@": {
+                          "value": true
+                        }
+                      },
+                      "BackgroundColorEnabled": {
+                        "@": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "repeatPreview": {
+                      "@": {},
+                      "Count": {
+                        "@": {
+                          "value": 5
+                        }
+                      },
+                      "Enabled": {
+                        "@": {
+                          "value": true
+                        }
+                      }
+                    },
+                    "children": {
+                      "@": {},
+                      "object": {
+                        "@": {
+                          "id": "2e7f45b7-e196-4ac2-b604-67df221c80a4"
+                        },
+                        "data": {
+                          "@": {},
+                          "Controller": {
+                            "@": {
+                              "type": "PlaCGuiWorkplaceRecipe"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "@": {
+                "name": "HeaderAppender",
+                "type": "GuiCViewAppender"
+              },
+              "data": {
+                "@": {},
+                "Style": {
+                  "@": {
+                    "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70"
+                  }
+                },
+                "MinimumSize": {
+                  "@": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                "MaximumSize": {
+                  "@": {
+                    "x": 0,
+                    "y": 0
+                  }
+                },
+                "Visible": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "DebugDraw": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Tooltip": {
+                  "@": {
+                    "value": ""
+                  }
+                },
+                "LeftMargin": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "RightMargin": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "TopMargin": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "BottomMargin": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "Size": {
+                  "@": {
+                    "x": 100,
+                    "y": 100
+                  }
+                },
+                "RelativeSize": {
+                  "@": {
+                    "x": 1.0,
+                    "y": 0.0
+                  }
+                },
+                "FillWidth": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "FillHeight": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Type": {
+                  "@": {
+                    "value": "HORIZONTAL"
+                  }
+                },
+                "HorizontalAlignment": {
+                  "@": {
+                    "value": "CENTER"
+                  }
+                },
+                "VerticalAlignment": {
+                  "@": {
+                    "value": "CENTER"
+                  }
+                },
+                "Space": {
+                  "@": {
+                    "value": 0
+                  }
+                },
+                "StickDown": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "AllowVerticalScrolling": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "EnableChildrenFixedSizeOptimization": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "BackgroundColor": {
+                  "@": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.0
+                  }
+                },
+                "HorizontalAutoSize": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "VerticalAutoSize": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "BackgroundColorEnabled": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              },
+              "repeatPreview": {
+                "@": {},
+                "Count": {
+                  "@": {
+                    "value": 1
+                  }
+                },
+                "Enabled": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              },
+              "children": {
+                "@": {},
+                "object": {
+                  "@": {
+                    "name": "ResourceCollectionHeader",
+                    "id": "8cabc2f4-1e9e-4b62-8976-daeb3d1ada0e"
+                  },
+                  "data": {
+                    "@": {},
+                    "RelativeSize": {
+                      "@": {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    },
+                    "WidthStrategy": {
+                      "@": {
+                        "value": "FIT_CONTENT"
+                      }
+                    },
+                    "HeightStrategy": {
+                      "@": {
+                        "value": "FILL_PARENT"
+                      }
+                    },
+                    "Controller": {
+                      "@": {
+                        "type": "PlaCGuiResourceCollection"
+                      },
+                      "IsDisplayStockpile": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "DisplayZeroQuantityResources": {
+                        "@": {
+                          "value": false
+                        }
+                      },
+                      "IconSize": {
+                        "@": {
+                          "x": 100,
+                          "y": 100
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "root",
+      "asset",
+      "Id",
+      "value",
+      "DefaultSkin",
+      "ControllerClassName",
+      "RootViewDefinition",
+      "Controller",
+      "type",
+      "RecipeIconSize",
+      "x",
+      "y",
+      "WorkplaceRecipeAssetGui",
+      "object",
+      "name",
+      "data",
+      "Style",
+      "MinimumSize",
+      "MaximumSize",
+      "Visible",
+      "DebugDraw",
+      "Tooltip",
+      "LeftMargin",
+      "RightMargin",
+      "TopMargin",
+      "BottomMargin",
+      "Size",
+      "RelativeSize",
+      "FillWidth",
+      "FillHeight",
+      "MouseEventStrategy",
+      "MouseEventReceiverViewCount",
+      "HorizontalAlignment",
+      "VerticalAlignment",
+      "HorizontalAutoSize",
+      "VerticalAutoSize",
+      "repeatPreview",
+      "Count",
+      "Enabled",
+      "children",
+      "Type",
+      "Space",
+      "StickDown",
+      "AllowVerticalScrolling",
+      "EnableChildrenFixedSizeOptimization",
+      "BackgroundColor",
+      "r",
+      "g",
+      "b",
+      "a",
+      "BackgroundColorEnabled",
+      "Unbreakable",
+      "OnlyAdjustLineHeightWithText",
+      "CutToEllipsis",
+      "ControlString",
+      "ParagraphStyle",
+      "EmphasizedParagraphStyle",
+      "Text",
+      "Alignment",
+      "FontSizeOverride",
+      "ColorOverride",
+      "MaxLineCount",
+      "TabSpaceCount",
+      "WrapEnabled",
+      "EnableScissor",
+      "FontSizeOverrideEnabled",
+      "ColorOverrideEnabled",
+      "id",
+      "WidthStrategy",
+      "HeightStrategy",
+      "IsDisplayStockpile",
+      "DisplayZeroQuantityResources",
+      "IconSize"
+    ],
+    "tree": [
+      {
+        "name": "root",
+        "offset": 4,
+        "attributes": [],
+        "children": [
+          {
+            "name": "asset",
+            "offset": 20,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Id",
+                "offset": 36,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "",
+                    "offset": 52
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "DefaultSkin",
+                "offset": 65,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 8,
+                    "value": "df3cdeb8-0654-467e-a19f-f41aa88839db",
+                    "offset": 81
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "ControllerClassName",
+                "offset": 109,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "PlaCGuiOutcomePanelFestivalMealUnlocked",
+                    "offset": 125
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "RootViewDefinition",
+                "offset": 177,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "GuiCViewStack",
+                    "offset": 193
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "Controller",
+                "offset": 219,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCGuiOutcomePanelFestivalMealUnlocked",
+                    "offset": 235
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "RecipeIconSize",
+                    "offset": 287,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 2,
+                        "value": 50,
+                        "offset": 303
+                      },
+                      {
+                        "name": "y",
+                        "tag": 2,
+                        "value": 50,
+                        "offset": 319
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "WorkplaceRecipeAssetGui",
+                    "offset": 335,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 8,
+                        "value": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+                        "offset": 351
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "object",
+            "offset": 379,
+            "attributes": [
+              {
+                "name": "name",
+                "tag": 7,
+                "value": "Main Stack",
+                "offset": 395
+              },
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "GuiCViewStack",
+                "offset": 418
+              }
+            ],
+            "children": [
+              {
+                "name": "data",
+                "offset": 444,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Style",
+                    "offset": 460,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 8,
+                        "value": "00000000-0000-0000-0000-000000000000",
+                        "offset": 476
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "MinimumSize",
+                    "offset": 504,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 520
+                      },
+                      {
+                        "name": "y",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 536
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "MaximumSize",
+                    "offset": 552,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 568
+                      },
+                      {
+                        "name": "y",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 584
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Visible",
+                    "offset": 600,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 616
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "DebugDraw",
+                    "offset": 632,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 648
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Tooltip",
+                    "offset": 664,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 17,
+                        "value": "",
+                        "offset": 680
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "LeftMargin",
+                    "offset": 694,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 710
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "RightMargin",
+                    "offset": 726,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 742
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "TopMargin",
+                    "offset": 758,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 774
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "BottomMargin",
+                    "offset": 790,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 2,
+                        "value": 0,
+                        "offset": 806
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Size",
+                    "offset": 822,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 2,
+                        "value": 800,
+                        "offset": 838
+                      },
+                      {
+                        "name": "y",
+                        "tag": 2,
+                        "value": 300,
+                        "offset": 854
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "RelativeSize",
+                    "offset": 870,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 4,
+                        "value": 0.0,
+                        "offset": 886
+                      },
+                      {
+                        "name": "y",
+                        "tag": 4,
+                        "value": 0.0,
+                        "offset": 902
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "FillWidth",
+                    "offset": 918,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 934
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "FillHeight",
+                    "offset": 950,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 966
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "MouseEventStrategy",
+                    "offset": 982,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "ALL",
+                        "offset": 998
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "MouseEventReceiverViewCount",
+                    "offset": 1014,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 0,
+                        "value": 1,
+                        "offset": 1030
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "HorizontalAlignment",
+                    "offset": 1046,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "CENTER",
+                        "offset": 1062
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "VerticalAlignment",
+                    "offset": 1081,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "TOP",
+                        "offset": 1097
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "HorizontalAutoSize",
+                    "offset": 1113,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 1129
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "VerticalAutoSize",
+                    "offset": 1145,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 1161
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "repeatPreview",
+                "offset": 1177,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Count",
+                    "offset": 1193,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 0,
+                        "value": 1,
+                        "offset": 1209
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Enabled",
+                    "offset": 1225,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 1241
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "children",
+                "offset": 1257,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "object",
+                    "offset": 1273,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "GuiCViewAppender",
+                        "offset": 1289
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "data",
+                        "offset": 1318,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Style",
+                            "offset": 1334,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+                                "offset": 1350
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "MinimumSize",
+                            "offset": 1378,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 1394
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 1410
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "MaximumSize",
+                            "offset": 1426,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 1442
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 1458
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Visible",
+                            "offset": 1474,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 1490
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "DebugDraw",
+                            "offset": 1506,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1522
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Tooltip",
+                            "offset": 1538,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 17,
+                                "value": "",
+                                "offset": 1554
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "LeftMargin",
+                            "offset": 1568,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 100,
+                                "offset": 1584
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "RightMargin",
+                            "offset": 1600,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 100,
+                                "offset": 1616
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "TopMargin",
+                            "offset": 1632,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 75,
+                                "offset": 1648
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BottomMargin",
+                            "offset": 1664,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 1680
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Size",
+                            "offset": 1696,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 100,
+                                "offset": 1712
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 250,
+                                "offset": 1728
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "RelativeSize",
+                            "offset": 1744,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 4,
+                                "value": 1.0,
+                                "offset": 1760
+                              },
+                              {
+                                "name": "y",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 1776
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "FillWidth",
+                            "offset": 1792,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 1808
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "FillHeight",
+                            "offset": 1824,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1840
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Type",
+                            "offset": 1856,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "VERTICAL",
+                                "offset": 1872
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "HorizontalAlignment",
+                            "offset": 1893,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "CENTER",
+                                "offset": 1909
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "VerticalAlignment",
+                            "offset": 1928,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "TOP",
+                                "offset": 1944
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Space",
+                            "offset": 1960,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 25,
+                                "offset": 1976
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "StickDown",
+                            "offset": 1992,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2008
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "AllowVerticalScrolling",
+                            "offset": 2024,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2040
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "EnableChildrenFixedSizeOptimization",
+                            "offset": 2056,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2072
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BackgroundColor",
+                            "offset": 2088,
+                            "attributes": [
+                              {
+                                "name": "r",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 2104
+                              },
+                              {
+                                "name": "g",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 2120
+                              },
+                              {
+                                "name": "b",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 2136
+                              },
+                              {
+                                "name": "a",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 2152
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "HorizontalAutoSize",
+                            "offset": 2168,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2184
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "VerticalAutoSize",
+                            "offset": 2200,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 2216
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BackgroundColorEnabled",
+                            "offset": 2232,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2248
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "repeatPreview",
+                        "offset": 2264,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Count",
+                            "offset": 2280,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 0,
+                                "value": 1,
+                                "offset": 2296
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Enabled",
+                            "offset": 2312,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 2328
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "children",
+                        "offset": 2344,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "object",
+                            "offset": 2360,
+                            "attributes": [
+                              {
+                                "name": "type",
+                                "tag": 7,
+                                "value": "GuiCViewSlotRichText",
+                                "offset": 2376
+                              }
+                            ],
+                            "children": [
+                              {
+                                "name": "data",
+                                "offset": 2409,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Style",
+                                    "offset": 2425,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "00000000-0000-0000-0000-000000000000",
+                                        "offset": 2441
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "MinimumSize",
+                                    "offset": 2469,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2485
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2501
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "MaximumSize",
+                                    "offset": 2517,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2533
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2549
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Visible",
+                                    "offset": 2565,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 2581
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "DebugDraw",
+                                    "offset": 2597,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 2613
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Tooltip",
+                                    "offset": 2629,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 17,
+                                        "value": "",
+                                        "offset": 2645
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "LeftMargin",
+                                    "offset": 2659,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2675
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "RightMargin",
+                                    "offset": 2691,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2707
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "TopMargin",
+                                    "offset": 2723,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2739
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "BottomMargin",
+                                    "offset": 2755,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 2771
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Size",
+                                    "offset": 2787,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 100,
+                                        "offset": 2803
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 100,
+                                        "offset": 2819
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "RelativeSize",
+                                    "offset": 2835,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 4,
+                                        "value": 1.0,
+                                        "offset": 2851
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 2867
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "FillWidth",
+                                    "offset": 2883,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 2899
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "FillHeight",
+                                    "offset": 2915,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 2931
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "HorizontalAlignment",
+                                    "offset": 2947,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "CENTER",
+                                        "offset": 2963
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "VerticalAlignment",
+                                    "offset": 2982,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "TOP",
+                                        "offset": 2998
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Space",
+                                    "offset": 3014,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 3030
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Unbreakable",
+                                    "offset": 3046,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 3062
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "OnlyAdjustLineHeightWithText",
+                                    "offset": 3078,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 3094
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "CutToEllipsis",
+                                    "offset": 3110,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 3126
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "HorizontalAutoSize",
+                                    "offset": 3142,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 3158
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "VerticalAutoSize",
+                                    "offset": 3174,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 3190
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "ControlString",
+                                    "offset": 3206,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 17,
+                                        "value": "#NEW_FESTIVAL_MEAL_UNLOCKED_FOR_X",
+                                        "offset": 3222
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "ParagraphStyle",
+                                    "offset": 3302,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+                                        "offset": 3318
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "EmphasizedParagraphStyle",
+                                    "offset": 3346,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+                                        "offset": 3362
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "repeatPreview",
+                                "offset": 3390,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Count",
+                                    "offset": 3406,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 0,
+                                        "value": 1,
+                                        "offset": 3422
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Enabled",
+                                    "offset": 3438,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 3454
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "children",
+                                "offset": 3470,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "object",
+                                    "offset": 3486,
+                                    "attributes": [
+                                      {
+                                        "name": "type",
+                                        "tag": 7,
+                                        "value": "GuiCViewSlotRichText",
+                                        "offset": 3502
+                                      }
+                                    ],
+                                    "children": [
+                                      {
+                                        "name": "data",
+                                        "offset": 3535,
+                                        "attributes": [],
+                                        "children": [
+                                          {
+                                            "name": "Style",
+                                            "offset": 3551,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 8,
+                                                "value": "00000000-0000-0000-0000-000000000000",
+                                                "offset": 3567
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "MinimumSize",
+                                            "offset": 3595,
+                                            "attributes": [
+                                              {
+                                                "name": "x",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3611
+                                              },
+                                              {
+                                                "name": "y",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3627
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "MaximumSize",
+                                            "offset": 3643,
+                                            "attributes": [
+                                              {
+                                                "name": "x",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3659
+                                              },
+                                              {
+                                                "name": "y",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3675
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Visible",
+                                            "offset": 3691,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": true,
+                                                "offset": 3707
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "DebugDraw",
+                                            "offset": 3723,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 3739
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Tooltip",
+                                            "offset": 3755,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 17,
+                                                "value": "",
+                                                "offset": 3771
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "LeftMargin",
+                                            "offset": 3785,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3801
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "RightMargin",
+                                            "offset": 3817,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3833
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "TopMargin",
+                                            "offset": 3849,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3865
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "BottomMargin",
+                                            "offset": 3881,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 3897
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Size",
+                                            "offset": 3913,
+                                            "attributes": [
+                                              {
+                                                "name": "x",
+                                                "tag": 2,
+                                                "value": 100,
+                                                "offset": 3929
+                                              },
+                                              {
+                                                "name": "y",
+                                                "tag": 2,
+                                                "value": 100,
+                                                "offset": 3945
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "RelativeSize",
+                                            "offset": 3961,
+                                            "attributes": [
+                                              {
+                                                "name": "x",
+                                                "tag": 4,
+                                                "value": 0.0,
+                                                "offset": 3977
+                                              },
+                                              {
+                                                "name": "y",
+                                                "tag": 4,
+                                                "value": 0.0,
+                                                "offset": 3993
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "FillWidth",
+                                            "offset": 4009,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4025
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "FillHeight",
+                                            "offset": 4041,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4057
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "HorizontalAlignment",
+                                            "offset": 4073,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 7,
+                                                "value": "LEFT",
+                                                "offset": 4089
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "VerticalAlignment",
+                                            "offset": 4106,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 7,
+                                                "value": "TOP",
+                                                "offset": 4122
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Space",
+                                            "offset": 4138,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 2,
+                                                "value": 0,
+                                                "offset": 4154
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Unbreakable",
+                                            "offset": 4170,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": true,
+                                                "offset": 4186
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "OnlyAdjustLineHeightWithText",
+                                            "offset": 4202,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4218
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "CutToEllipsis",
+                                            "offset": 4234,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4250
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "HorizontalAutoSize",
+                                            "offset": 4266,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4282
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "VerticalAutoSize",
+                                            "offset": 4298,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4314
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "ControlString",
+                                            "offset": 4330,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 17,
+                                                "value": "",
+                                                "offset": 4346
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "ParagraphStyle",
+                                            "offset": 4360,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 8,
+                                                "value": "00000000-0000-0000-0000-000000000000",
+                                                "offset": 4376
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "EmphasizedParagraphStyle",
+                                            "offset": 4404,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 8,
+                                                "value": "00000000-0000-0000-0000-000000000000",
+                                                "offset": 4420
+                                              }
+                                            ],
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "repeatPreview",
+                                        "offset": 4448,
+                                        "attributes": [],
+                                        "children": [
+                                          {
+                                            "name": "Count",
+                                            "offset": 4464,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 0,
+                                                "value": 1,
+                                                "offset": 4480
+                                              }
+                                            ],
+                                            "children": []
+                                          },
+                                          {
+                                            "name": "Enabled",
+                                            "offset": 4496,
+                                            "attributes": [
+                                              {
+                                                "name": "value",
+                                                "tag": 6,
+                                                "value": false,
+                                                "offset": 4512
+                                              }
+                                            ],
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "children",
+                                        "offset": 4528,
+                                        "attributes": [],
+                                        "children": [
+                                          {
+                                            "name": "object",
+                                            "offset": 4544,
+                                            "attributes": [
+                                              {
+                                                "name": "name",
+                                                "tag": 7,
+                                                "value": "Buildable Title Names Label",
+                                                "offset": 4560
+                                              },
+                                              {
+                                                "name": "type",
+                                                "tag": 7,
+                                                "value": "GuiCViewLabel",
+                                                "offset": 4600
+                                              }
+                                            ],
+                                            "children": [
+                                              {
+                                                "name": "data",
+                                                "offset": 4626,
+                                                "attributes": [],
+                                                "children": [
+                                                  {
+                                                    "name": "Style",
+                                                    "offset": 4642,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 8,
+                                                        "value": "9dc57ced-94be-41bc-8248-9217163628d0",
+                                                        "offset": 4658
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "MinimumSize",
+                                                    "offset": 4686,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "x",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4702
+                                                      },
+                                                      {
+                                                        "name": "y",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4718
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "MaximumSize",
+                                                    "offset": 4734,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "x",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4750
+                                                      },
+                                                      {
+                                                        "name": "y",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4766
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "Visible",
+                                                    "offset": 4782,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": true,
+                                                        "offset": 4798
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "DebugDraw",
+                                                    "offset": 4814,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 4830
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "Tooltip",
+                                                    "offset": 4846,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 17,
+                                                        "value": "",
+                                                        "offset": 4862
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "LeftMargin",
+                                                    "offset": 4876,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4892
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "RightMargin",
+                                                    "offset": 4908,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4924
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "TopMargin",
+                                                    "offset": 4940,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4956
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "BottomMargin",
+                                                    "offset": 4972,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 2,
+                                                        "value": 0,
+                                                        "offset": 4988
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "Size",
+                                                    "offset": 5004,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "x",
+                                                        "tag": 2,
+                                                        "value": 80,
+                                                        "offset": 5020
+                                                      },
+                                                      {
+                                                        "name": "y",
+                                                        "tag": 2,
+                                                        "value": 15,
+                                                        "offset": 5036
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "RelativeSize",
+                                                    "offset": 5052,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "x",
+                                                        "tag": 4,
+                                                        "value": 0.0,
+                                                        "offset": 5068
+                                                      },
+                                                      {
+                                                        "name": "y",
+                                                        "tag": 4,
+                                                        "value": 0.0,
+                                                        "offset": 5084
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "FillWidth",
+                                                    "offset": 5100,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5116
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "FillHeight",
+                                                    "offset": 5132,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5148
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "Text",
+                                                    "offset": 5164,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 17,
+                                                        "value": "#BUILDINGS",
+                                                        "offset": 5180
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "ParagraphStyle",
+                                                    "offset": 5214,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 8,
+                                                        "value": "d4edc74c-8d3e-446c-9d4a-5cf7f2510548",
+                                                        "offset": 5230
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "Alignment",
+                                                    "offset": 5258,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 7,
+                                                        "value": "",
+                                                        "offset": 5274
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "VerticalAlignment",
+                                                    "offset": 5287,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 7,
+                                                        "value": "",
+                                                        "offset": 5303
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "FontSizeOverride",
+                                                    "offset": 5316,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 0,
+                                                        "value": 33,
+                                                        "offset": 5332
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "ColorOverride",
+                                                    "offset": 5348,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "r",
+                                                        "tag": 4,
+                                                        "value": 1.0,
+                                                        "offset": 5364
+                                                      },
+                                                      {
+                                                        "name": "g",
+                                                        "tag": 4,
+                                                        "value": 1.0,
+                                                        "offset": 5380
+                                                      },
+                                                      {
+                                                        "name": "b",
+                                                        "tag": 4,
+                                                        "value": 1.0,
+                                                        "offset": 5396
+                                                      },
+                                                      {
+                                                        "name": "a",
+                                                        "tag": 4,
+                                                        "value": 1.0,
+                                                        "offset": 5412
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "MaxLineCount",
+                                                    "offset": 5428,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 0,
+                                                        "value": 0,
+                                                        "offset": 5444
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "TabSpaceCount",
+                                                    "offset": 5460,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 0,
+                                                        "value": 1,
+                                                        "offset": 5476
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "WrapEnabled",
+                                                    "offset": 5492,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5508
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "CutToEllipsis",
+                                                    "offset": 5524,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5540
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "EnableScissor",
+                                                    "offset": 5556,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": true,
+                                                        "offset": 5572
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "HorizontalAutoSize",
+                                                    "offset": 5588,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5604
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "VerticalAutoSize",
+                                                    "offset": 5620,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5636
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "FontSizeOverrideEnabled",
+                                                    "offset": 5652,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": true,
+                                                        "offset": 5668
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "name": "ColorOverrideEnabled",
+                                                    "offset": 5684,
+                                                    "attributes": [
+                                                      {
+                                                        "name": "value",
+                                                        "tag": 6,
+                                                        "value": false,
+                                                        "offset": 5700
+                                                      }
+                                                    ],
+                                                    "children": []
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "children",
+                                                "offset": 5716,
+                                                "attributes": [],
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "object",
+                            "offset": 5732,
+                            "attributes": [
+                              {
+                                "name": "name",
+                                "tag": 7,
+                                "value": "Recipe Appender",
+                                "offset": 5748
+                              },
+                              {
+                                "name": "type",
+                                "tag": 7,
+                                "value": "GuiCViewAppender",
+                                "offset": 5776
+                              }
+                            ],
+                            "children": [
+                              {
+                                "name": "data",
+                                "offset": 5805,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Style",
+                                    "offset": 5821,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+                                        "offset": 5837
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "MinimumSize",
+                                    "offset": 5865,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 5881
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 5897
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "MaximumSize",
+                                    "offset": 5913,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 5929
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 5945
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Visible",
+                                    "offset": 5961,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 5977
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "DebugDraw",
+                                    "offset": 5993,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6009
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Tooltip",
+                                    "offset": 6025,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 17,
+                                        "value": "",
+                                        "offset": 6041
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "LeftMargin",
+                                    "offset": 6055,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 6071
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "RightMargin",
+                                    "offset": 6087,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 6103
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "TopMargin",
+                                    "offset": 6119,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 6135
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "BottomMargin",
+                                    "offset": 6151,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 30,
+                                        "offset": 6167
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Size",
+                                    "offset": 6183,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 2,
+                                        "value": 100,
+                                        "offset": 6199
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 2,
+                                        "value": 100,
+                                        "offset": 6215
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "RelativeSize",
+                                    "offset": 6231,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 4,
+                                        "value": 1.0,
+                                        "offset": 6247
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 6263
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "FillWidth",
+                                    "offset": 6279,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 6295
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "FillHeight",
+                                    "offset": 6311,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6327
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Type",
+                                    "offset": 6343,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "VERTICAL",
+                                        "offset": 6359
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "HorizontalAlignment",
+                                    "offset": 6380,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "CENTER",
+                                        "offset": 6396
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "VerticalAlignment",
+                                    "offset": 6415,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "TOP",
+                                        "offset": 6431
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Space",
+                                    "offset": 6447,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 2,
+                                        "value": 0,
+                                        "offset": 6463
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "StickDown",
+                                    "offset": 6479,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6495
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "AllowVerticalScrolling",
+                                    "offset": 6511,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6527
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "EnableChildrenFixedSizeOptimization",
+                                    "offset": 6543,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6559
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "BackgroundColor",
+                                    "offset": 6575,
+                                    "attributes": [
+                                      {
+                                        "name": "r",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 6591
+                                      },
+                                      {
+                                        "name": "g",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 6607
+                                      },
+                                      {
+                                        "name": "b",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 6623
+                                      },
+                                      {
+                                        "name": "a",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 6639
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "HorizontalAutoSize",
+                                    "offset": 6655,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6671
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "VerticalAutoSize",
+                                    "offset": 6687,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 6703
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "BackgroundColorEnabled",
+                                    "offset": 6719,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": false,
+                                        "offset": 6735
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "repeatPreview",
+                                "offset": 6751,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Count",
+                                    "offset": 6767,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 0,
+                                        "value": 5,
+                                        "offset": 6783
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Enabled",
+                                    "offset": 6799,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 6,
+                                        "value": true,
+                                        "offset": 6815
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "children",
+                                "offset": 6831,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "object",
+                                    "offset": 6847,
+                                    "attributes": [
+                                      {
+                                        "name": "id",
+                                        "tag": 8,
+                                        "value": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+                                        "offset": 6863
+                                      }
+                                    ],
+                                    "children": [
+                                      {
+                                        "name": "data",
+                                        "offset": 6891,
+                                        "attributes": [],
+                                        "children": [
+                                          {
+                                            "name": "Controller",
+                                            "offset": 6907,
+                                            "attributes": [
+                                              {
+                                                "name": "type",
+                                                "tag": 7,
+                                                "value": "PlaCGuiWorkplaceRecipe",
+                                                "offset": 6923
+                                              }
+                                            ],
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "object",
+                    "offset": 6958,
+                    "attributes": [
+                      {
+                        "name": "name",
+                        "tag": 7,
+                        "value": "HeaderAppender",
+                        "offset": 6974
+                      },
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "GuiCViewAppender",
+                        "offset": 7001
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "data",
+                        "offset": 7030,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Style",
+                            "offset": 7046,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+                                "offset": 7062
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "MinimumSize",
+                            "offset": 7090,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7106
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7122
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "MaximumSize",
+                            "offset": 7138,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7154
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7170
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Visible",
+                            "offset": 7186,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 7202
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "DebugDraw",
+                            "offset": 7218,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7234
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Tooltip",
+                            "offset": 7250,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 17,
+                                "value": "",
+                                "offset": 7266
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "LeftMargin",
+                            "offset": 7280,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7296
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "RightMargin",
+                            "offset": 7312,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7328
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "TopMargin",
+                            "offset": 7344,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7360
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BottomMargin",
+                            "offset": 7376,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7392
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Size",
+                            "offset": 7408,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 2,
+                                "value": 100,
+                                "offset": 7424
+                              },
+                              {
+                                "name": "y",
+                                "tag": 2,
+                                "value": 100,
+                                "offset": 7440
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "RelativeSize",
+                            "offset": 7456,
+                            "attributes": [
+                              {
+                                "name": "x",
+                                "tag": 4,
+                                "value": 1.0,
+                                "offset": 7472
+                              },
+                              {
+                                "name": "y",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 7488
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "FillWidth",
+                            "offset": 7504,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 7520
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "FillHeight",
+                            "offset": 7536,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7552
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Type",
+                            "offset": 7568,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "HORIZONTAL",
+                                "offset": 7584
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "HorizontalAlignment",
+                            "offset": 7607,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "CENTER",
+                                "offset": 7623
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "VerticalAlignment",
+                            "offset": 7642,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 7,
+                                "value": "CENTER",
+                                "offset": 7658
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Space",
+                            "offset": 7677,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 2,
+                                "value": 0,
+                                "offset": 7693
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "StickDown",
+                            "offset": 7709,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7725
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "AllowVerticalScrolling",
+                            "offset": 7741,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7757
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "EnableChildrenFixedSizeOptimization",
+                            "offset": 7773,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7789
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BackgroundColor",
+                            "offset": 7805,
+                            "attributes": [
+                              {
+                                "name": "r",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 7821
+                              },
+                              {
+                                "name": "g",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 7837
+                              },
+                              {
+                                "name": "b",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 7853
+                              },
+                              {
+                                "name": "a",
+                                "tag": 4,
+                                "value": 0.0,
+                                "offset": 7869
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "HorizontalAutoSize",
+                            "offset": 7885,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7901
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "VerticalAutoSize",
+                            "offset": 7917,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7933
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "BackgroundColorEnabled",
+                            "offset": 7949,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 7965
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "repeatPreview",
+                        "offset": 7981,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Count",
+                            "offset": 7997,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 0,
+                                "value": 1,
+                                "offset": 8013
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Enabled",
+                            "offset": 8029,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 8045
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "children",
+                        "offset": 8061,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "object",
+                            "offset": 8077,
+                            "attributes": [
+                              {
+                                "name": "name",
+                                "tag": 7,
+                                "value": "ResourceCollectionHeader",
+                                "offset": 8093
+                              },
+                              {
+                                "name": "id",
+                                "tag": 8,
+                                "value": "8cabc2f4-1e9e-4b62-8976-daeb3d1ada0e",
+                                "offset": 8130
+                              }
+                            ],
+                            "children": [
+                              {
+                                "name": "data",
+                                "offset": 8158,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "RelativeSize",
+                                    "offset": 8174,
+                                    "attributes": [
+                                      {
+                                        "name": "x",
+                                        "tag": 4,
+                                        "value": 0.0,
+                                        "offset": 8190
+                                      },
+                                      {
+                                        "name": "y",
+                                        "tag": 4,
+                                        "value": 1.0,
+                                        "offset": 8206
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "WidthStrategy",
+                                    "offset": 8222,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "FIT_CONTENT",
+                                        "offset": 8238
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "HeightStrategy",
+                                    "offset": 8262,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 7,
+                                        "value": "FILL_PARENT",
+                                        "offset": 8278
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Controller",
+                                    "offset": 8302,
+                                    "attributes": [
+                                      {
+                                        "name": "type",
+                                        "tag": 7,
+                                        "value": "PlaCGuiResourceCollection",
+                                        "offset": 8318
+                                      }
+                                    ],
+                                    "children": [
+                                      {
+                                        "name": "IsDisplayStockpile",
+                                        "offset": 8356,
+                                        "attributes": [
+                                          {
+                                            "name": "value",
+                                            "tag": 6,
+                                            "value": false,
+                                            "offset": 8372
+                                          }
+                                        ],
+                                        "children": []
+                                      },
+                                      {
+                                        "name": "DisplayZeroQuantityResources",
+                                        "offset": 8388,
+                                        "attributes": [
+                                          {
+                                            "name": "value",
+                                            "tag": 6,
+                                            "value": false,
+                                            "offset": 8404
+                                          }
+                                        ],
+                                        "children": []
+                                      },
+                                      {
+                                        "name": "IconSize",
+                                        "offset": 8420,
+                                        "attributes": [
+                                          {
+                                            "name": "x",
+                                            "tag": 2,
+                                            "value": 100,
+                                            "offset": 8436
+                                          },
+                                          {
+                                            "name": "y",
+                                            "tag": 2,
+                                            "value": 100,
+                                            "offset": 8452
+                                          }
+                                        ],
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "record_count": 492,
+    "tag_counts": {
+      "7": 38,
+      "8": 16,
+      "2": 79,
+      "6": 73,
+      "17": 10,
+      "4": 32,
+      "0": 10
+    }
+  },
+  "references": [
+    {
+      "property": "/root/asset/DefaultSkin/@value",
+      "uuid": "df3cdeb8-0654-467e-a19f-f41aa88839db",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/GameSkin.data",
+          "id": "df3cdeb8-0654-467e-a19f-f41aa88839db",
+          "type": "PlaCSkin",
+          "export": "FORCE_EXPORT"
+        }
+      ]
+    },
+    {
+      "property": "/root/asset/Controller/WorkplaceRecipeAssetGui/@value",
+      "uuid": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Gui/MainHUD/Book/Workplaces/Workplace Recipe Centered.gui",
+          "id": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+          "type": "GamCAssetGui"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/data/Style/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/root/object/children/object/data/Style/@value",
+      "uuid": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Appender/AppenderEmptyStyle_unclipped.data",
+          "id": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+          "type": "GuiCStyleAppender"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/data/Style/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/root/object/children/object/children/object/data/ParagraphStyle/@value",
+      "uuid": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Paragraph/Main Menu/ParagraphStyle_Asul.data",
+          "id": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+          "type": "GuiCStyleParagraph"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/data/EmphasizedParagraphStyle/@value",
+      "uuid": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Paragraph/Main Menu/ParagraphStyle_Asul.data",
+          "id": "3fd1f714-6f05-4be0-83c2-311781a5bf1d",
+          "type": "GuiCStyleParagraph"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/data/Style/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/data/ParagraphStyle/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/data/EmphasizedParagraphStyle/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/children/object/data/Style/@value",
+      "uuid": "9dc57ced-94be-41bc-8248-9217163628d0",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Label/LabelStyle_Default_36.data",
+          "id": "9dc57ced-94be-41bc-8248-9217163628d0",
+          "type": "GuiCStyleLabel"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/children/object/data/ParagraphStyle/@value",
+      "uuid": "d4edc74c-8d3e-446c-9d4a-5cf7f2510548",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Paragraph/Main Menu/ParagraphStyle_Asul_75_Orange.data",
+          "id": "d4edc74c-8d3e-446c-9d4a-5cf7f2510548",
+          "type": "GuiCStyleParagraph"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/data/Style/@value",
+      "uuid": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Appender/AppenderEmptyStyle_unclipped.data",
+          "id": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+          "type": "GuiCStyleAppender"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/children/object/@id",
+      "uuid": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Gui/MainHUD/Book/Workplaces/Workplace Recipe Centered.gui",
+          "id": "2e7f45b7-e196-4ac2-b604-67df221c80a4",
+          "type": "GamCAssetGui"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/data/Style/@value",
+      "uuid": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/GameSkin/Styles/Appender/AppenderEmptyStyle_unclipped.data",
+          "id": "cddfeeee-dbd7-48ff-a62f-74844d64cb70",
+          "type": "GuiCStyleAppender"
+        }
+      ]
+    },
+    {
+      "property": "/root/object/children/object/children/object/@id",
+      "uuid": "8cabc2f4-1e9e-4b62-8976-daeb3d1ada0e",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Gui/Resources/ResourceCollection.gui",
+          "id": "8cabc2f4-1e9e-4b62-8976-daeb3d1ada0e",
+          "type": "GamCAssetGui"
+        }
+      ]
+    }
+  ]
+}

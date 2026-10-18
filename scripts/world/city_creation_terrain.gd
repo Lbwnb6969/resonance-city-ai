@@ -44,9 +44,11 @@ func copy_cache_from(source: RefCounted) -> void:
 	_pending_raw_regions = source._pending_raw_regions.duplicate()
 	generation = source.generation
 	_water_signature = source._water_signature
-	_previous_waters = source._previous_waters.duplicate(true)
-	_previous_strokes = source._previous_strokes.duplicate(true)
-	_previous_protection = source._previous_protection.duplicate(true)
+	# These are already detached snapshots, read only by diff routines. Every
+	# preparation replaces them with new snapshots; no worker edits a record.
+	_previous_waters = source._previous_waters
+	_previous_strokes = source._previous_strokes
+	_previous_protection = source._previous_protection
 	stats = source.stats.duplicate()
 
 func prepare_raw(waters: Array,water_clearance: Callable,strokes: Array = []) -> bool:

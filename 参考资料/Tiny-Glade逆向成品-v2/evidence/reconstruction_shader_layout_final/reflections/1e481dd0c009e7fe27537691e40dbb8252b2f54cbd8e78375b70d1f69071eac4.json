@@ -1,0 +1,112 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_61" : {
+            "name" : "MaterialData_natural",
+            "members" : [
+                {
+                    "name" : "has_normal_map",
+                    "type" : "int",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_86" : {
+            "name" : "_MatrixStorage_float3x3_ColMajornatural",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "vec3",
+                    "array" : [
+                        3
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec2",
+            "name" : "vs_out_frag_uv_alpha",
+            "location" : 4
+        },
+        {
+            "type" : "vec2",
+            "name" : "vs_out_frag_uv",
+            "location" : 0
+        },
+        {
+            "type" : "int",
+            "name" : "vs_out_is_stem",
+            "location" : 3
+        },
+        {
+            "type" : "_86",
+            "name" : "vs_out_frag_tangent_to_world",
+            "location" : 5
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out_frag_normal",
+            "location" : 2
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "uvec2",
+            "name" : "entryPointParam_ps_main_gbuffer",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "material_data_alpha_map",
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_albedo_map",
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_leafy_greens",
+            "set" : 0,
+            "binding" : 4
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_normal_map",
+            "set" : 0,
+            "binding" : 2
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_llr",
+            "set" : 2,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_61",
+            "name" : "MaterialData_natural",
+            "block_size" : 4,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

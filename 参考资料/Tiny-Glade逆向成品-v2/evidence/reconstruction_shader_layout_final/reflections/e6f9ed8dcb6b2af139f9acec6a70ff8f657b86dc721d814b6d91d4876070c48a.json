@@ -1,0 +1,171 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                32,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_10" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_15" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "draw_list_index",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "histogram_offset",
+                    "type" : "uint",
+                    "offset" : 4
+                }
+            ]
+        },
+        "_44" : {
+            "name" : "_Array_natural_vector_uint_4_34",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "uvec4",
+                    "array" : [
+                        34
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_45" : {
+            "name" : "DrawListMergeWindows_natural",
+            "members" : [
+                {
+                    "name" : "array",
+                    "type" : "_44",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_118" : {
+            "name" : "sorted_instances_buffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_122" : {
+            "name" : "InstanceListOffset_natural",
+            "members" : [
+                {
+                    "name" : "array",
+                    "type" : "_44",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_170" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_10",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "_118",
+            "name" : "sorted_instances_buffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_170",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 4
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_45",
+            "name" : "DrawListMergeWindows_natural",
+            "block_size" : 544,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_122",
+            "name" : "InstanceListOffset_natural",
+            "block_size" : 544,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_15",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

@@ -1,0 +1,859 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_103" : {
+            "name" : "InstanceData_natural",
+            "members" : [
+                {
+                    "name" : "position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "wall_slot_id",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "basis0_xz",
+                    "type" : "vec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "scale",
+                    "type" : "vec2",
+                    "offset" : 24
+                },
+                {
+                    "name" : "roof_animation",
+                    "type" : "float",
+                    "offset" : 32
+                },
+                {
+                    "name" : "shape",
+                    "type" : "uint",
+                    "offset" : 36
+                },
+                {
+                    "name" : "double_sided",
+                    "type" : "uint",
+                    "offset" : 40
+                },
+                {
+                    "name" : "is_roof_bottom",
+                    "type" : "uint",
+                    "offset" : 44
+                },
+                {
+                    "name" : "material_id",
+                    "type" : "uint",
+                    "offset" : 48
+                },
+                {
+                    "name" : "override_color_id",
+                    "type" : "uint",
+                    "offset" : 52
+                },
+                {
+                    "name" : "pattern_id",
+                    "type" : "uint",
+                    "offset" : 56
+                },
+                {
+                    "name" : "pad_1",
+                    "type" : "uint",
+                    "offset" : 60
+                }
+            ]
+        },
+        "_106" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_103",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 64
+                }
+            ]
+        },
+        "_176" : {
+            "name" : "FrameConstants_natural",
+            "members" : [
+                {
+                    "name" : "sun_color",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "sky_low_color",
+                    "type" : "vec4",
+                    "offset" : 16
+                },
+                {
+                    "name" : "sky_high_color",
+                    "type" : "vec4",
+                    "offset" : 32
+                },
+                {
+                    "name" : "fog_tint_thickness",
+                    "type" : "vec4",
+                    "offset" : 48
+                },
+                {
+                    "name" : "fake_light_color",
+                    "type" : "vec4",
+                    "offset" : 64
+                },
+                {
+                    "name" : "fake_light_dir",
+                    "type" : "vec4",
+                    "offset" : 80
+                },
+                {
+                    "name" : "fake_light2_color",
+                    "type" : "vec4",
+                    "offset" : 96
+                },
+                {
+                    "name" : "fake_light2_dir",
+                    "type" : "vec4",
+                    "offset" : 112
+                },
+                {
+                    "name" : "time_since_startup_secs",
+                    "type" : "float",
+                    "offset" : 128
+                },
+                {
+                    "name" : "delta_time_seconds",
+                    "type" : "float",
+                    "offset" : 132
+                },
+                {
+                    "name" : "ev_mult",
+                    "type" : "float",
+                    "offset" : 136
+                },
+                {
+                    "name" : "glade_theme_id",
+                    "type" : "uint",
+                    "offset" : 140
+                },
+                {
+                    "name" : "world_render_resolution",
+                    "type" : "uvec2",
+                    "offset" : 144
+                },
+                {
+                    "name" : "game_time_sec",
+                    "type" : "uint",
+                    "offset" : 152
+                },
+                {
+                    "name" : "game_time_frac",
+                    "type" : "float",
+                    "offset" : 156
+                },
+                {
+                    "name" : "editing_highlight_color",
+                    "type" : "vec3",
+                    "offset" : 160
+                },
+                {
+                    "name" : "time_of_day",
+                    "type" : "float",
+                    "offset" : 172
+                },
+                {
+                    "name" : "dir_to_sun",
+                    "type" : "vec3",
+                    "offset" : 176
+                },
+                {
+                    "name" : "camera_idx",
+                    "type" : "uint",
+                    "offset" : 188
+                },
+                {
+                    "name" : "dir_to_moon",
+                    "type" : "vec3",
+                    "offset" : 192
+                },
+                {
+                    "name" : "render_overrides",
+                    "type" : "uint",
+                    "offset" : 204
+                },
+                {
+                    "name" : "dir_to_primary_directional_light",
+                    "type" : "vec3",
+                    "offset" : 208
+                },
+                {
+                    "name" : "main_view_lod_scale",
+                    "type" : "float",
+                    "offset" : 220
+                },
+                {
+                    "name" : "main_view_eye_position",
+                    "type" : "vec4",
+                    "offset" : 224
+                },
+                {
+                    "name" : "fog_relative_extinction",
+                    "type" : "float",
+                    "offset" : 240
+                },
+                {
+                    "name" : "highlighted_transient_stair_edge_id",
+                    "type" : "uint",
+                    "offset" : 244
+                },
+                {
+                    "name" : "swapchain_dims",
+                    "type" : "uvec2",
+                    "offset" : 248
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 256
+                },
+                {
+                    "name" : "is_photomode",
+                    "type" : "uint",
+                    "offset" : 260
+                },
+                {
+                    "name" : "is_topdown_mode",
+                    "type" : "uint",
+                    "offset" : 264
+                },
+                {
+                    "name" : "is_firstperson_mode",
+                    "type" : "uint",
+                    "offset" : 268
+                },
+                {
+                    "name" : "brush_position",
+                    "type" : "vec3",
+                    "offset" : 272
+                },
+                {
+                    "name" : "eraser_size_multiplier",
+                    "type" : "float",
+                    "offset" : 284
+                },
+                {
+                    "name" : "roof_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 288
+                },
+                {
+                    "name" : "roof_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 292
+                },
+                {
+                    "name" : "wall_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 296
+                },
+                {
+                    "name" : "wall_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 300
+                },
+                {
+                    "name" : "highlight_bricks_to_delete",
+                    "type" : "uint",
+                    "offset" : 304
+                },
+                {
+                    "name" : "wind_strength",
+                    "type" : "float",
+                    "offset" : 308
+                },
+                {
+                    "name" : "tree_canopy_cone_angle_mult",
+                    "type" : "float",
+                    "offset" : 312
+                },
+                {
+                    "name" : "tree_canopy_max_cone_cull_dist_range",
+                    "type" : "float",
+                    "offset" : 316
+                },
+                {
+                    "name" : "debug_tweakers",
+                    "type" : "vec4",
+                    "offset" : 320
+                },
+                {
+                    "name" : "ground_fog",
+                    "type" : "vec3",
+                    "offset" : 336
+                },
+                {
+                    "name" : "moonswap",
+                    "type" : "float",
+                    "offset" : 348
+                }
+            ]
+        },
+        "_362" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_380" : {
+            "name" : "DormerHole_natural",
+            "members" : [
+                {
+                    "name" : "position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "wall_slot_id",
+                    "type" : "int",
+                    "offset" : 12
+                },
+                {
+                    "name" : "size",
+                    "type" : "vec3",
+                    "offset" : 16
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "int",
+                    "offset" : 28
+                },
+                {
+                    "name" : "normal",
+                    "type" : "vec2",
+                    "offset" : 32
+                },
+                {
+                    "name" : "k",
+                    "type" : "float",
+                    "offset" : 40
+                },
+                {
+                    "name" : "a",
+                    "type" : "float",
+                    "offset" : 44
+                }
+            ]
+        },
+        "_383" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_380",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 48
+                }
+            ]
+        },
+        "_788" : {
+            "name" : "FrameCounter_natural",
+            "members" : [
+                {
+                    "name" : "index",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_823" : {
+            "name" : "StoneFloorTextures_natural",
+            "members" : [
+                {
+                    "name" : "stone_floor_height_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_860" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_4195" : {
+            "name" : "WoodenFloorTextures_natural",
+            "members" : [
+                {
+                    "name" : "wooden_floor_height_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "uint",
+            "name" : "vs_out.instance_index",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out.pos_ws",
+            "location" : 1
+        },
+        {
+            "type" : "uint",
+            "name" : "vs_out.material_id",
+            "location" : 5
+        },
+        {
+            "type" : "vec2",
+            "name" : "vs_out.uv",
+            "location" : 2
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out.normal_ws",
+            "location" : 0
+        },
+        {
+            "type" : "uint",
+            "name" : "vs_out.pattern_id",
+            "location" : 7
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_height",
+            "set" : 11,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_normal",
+            "set" : 11,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_seed",
+            "set" : 11,
+            "binding" : 2
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_roughness",
+            "set" : 11,
+            "binding" : 4
+        },
+        {
+            "type" : "texture2DArray",
+            "name" : "wall_color_data.brick_colors",
+            "set" : 6,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_height_2",
+            "set" : 11,
+            "binding" : 7
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_normal_2",
+            "set" : 11,
+            "binding" : 6
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_seed_2",
+            "set" : 11,
+            "binding" : 5
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_roughness_2",
+            "set" : 11,
+            "binding" : 8
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_height_3",
+            "set" : 11,
+            "binding" : 11
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_normal_3",
+            "set" : 11,
+            "binding" : 10
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_seed_3",
+            "set" : 11,
+            "binding" : 9
+        },
+        {
+            "type" : "texture2D",
+            "name" : "stone_floor_textures.stone_floor_roughness_3",
+            "set" : 11,
+            "binding" : 12
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_height",
+            "set" : 10,
+            "binding" : 2
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_normal",
+            "set" : 10,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_seed",
+            "set" : 10,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2DArray",
+            "name" : "halftimber_colors.tex",
+            "set" : 9,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_roughness",
+            "set" : 10,
+            "binding" : 4
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_height_2",
+            "set" : 10,
+            "binding" : 6
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_normal_2",
+            "set" : 10,
+            "binding" : 5
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_seed_2",
+            "set" : 10,
+            "binding" : 7
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_roughness_2",
+            "set" : 10,
+            "binding" : 8
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_height_3",
+            "set" : 10,
+            "binding" : 10
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_normal_3",
+            "set" : 10,
+            "binding" : 9
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_seed_3",
+            "set" : 10,
+            "binding" : 11
+        },
+        {
+            "type" : "texture2D",
+            "name" : "wooden_floor_textures.wooden_floor_roughness_3",
+            "set" : 10,
+            "binding" : 12
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data.dirtpath_heightmap",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.llr",
+            "set" : 2,
+            "binding" : 1
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_106",
+            "name" : "material_data.nani_instance_data",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_362",
+            "name" : "data.count",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 8,
+            "binding" : 1
+        },
+        {
+            "type" : "_383",
+            "name" : "data.holes",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 8,
+            "binding" : 0
+        },
+        {
+            "type" : "_362",
+            "name" : "wall_color_data.wall_color_ids",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 6,
+            "binding" : 0
+        },
+        {
+            "type" : "_362",
+            "name" : "halftimber_colors.ids",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 9,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_176",
+            "name" : "FrameConstants_natural",
+            "block_size" : 352,
+            "set" : 4,
+            "binding" : 0
+        },
+        {
+            "type" : "_788",
+            "name" : "FrameCounter_natural",
+            "block_size" : 4,
+            "set" : 3,
+            "binding" : 0
+        },
+        {
+            "type" : "_823",
+            "name" : "StoneFloorTextures_natural",
+            "block_size" : 8,
+            "set" : 11,
+            "binding" : 0
+        },
+        {
+            "type" : "_860",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 5,
+            "binding" : 0
+        },
+        {
+            "type" : "_4195",
+            "name" : "WoodenFloorTextures_natural",
+            "block_size" : 8,
+            "set" : 10,
+            "binding" : 0
+        }
+    ]
+}

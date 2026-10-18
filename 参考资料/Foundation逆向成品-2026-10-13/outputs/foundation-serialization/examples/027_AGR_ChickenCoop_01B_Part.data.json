@@ -1,0 +1,1491 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Buildings/Workplaces/CommonCroft/Parts/AGR_CommonCroft/AGR_ChickenCoop_01A/AGR_ChickenCoop_01B_Part.data",
+  "absolute_offset": 312708041,
+  "length": 3757,
+  "sha256": "9516c665427db294256392f4c39e74cb54d051f41d38350d77945ebc75a3fae4",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Buildings/Workplaces/CommonCroft/Parts/AGR_CommonCroft/AGR_ChickenCoop_01A/AGR_ChickenCoop_01B_Part.data",
+    "id": "d53f268c-3e32-4ebe-a746-7f1db1493c22",
+    "type": "PlaCAssetBuildingPart"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Name": {
+        "@": {
+          "value": ""
+        }
+      },
+      "Description": {
+        "@": {
+          "value": ""
+        }
+      },
+      "Category": {
+        "@": {
+          "value": "CORE"
+        }
+      },
+      "PrefabGuid": {
+        "@": {
+          "value": "e6551136-da33-4908-be95-24c6309c1aa7"
+        }
+      },
+      "Miniature": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "IsMonumentCore": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsDestructible": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsVisibleWhenBuilt": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsShowInUi": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsOnlyAttached": {
+        "@": {
+          "value": false
+        }
+      },
+      "OrientationOnlyAttached": {
+        "@": {
+          "value": "NONE"
+        }
+      },
+      "IsRestrictedToBuilding": {
+        "@": {
+          "value": false
+        }
+      },
+      "HasMaximumInstancePerBuilding": {
+        "@": {
+          "value": false
+        }
+      },
+      "MaximumInstancePerBuilding": {
+        "@": {
+          "value": 0
+        }
+      },
+      "ConstructorData": {
+        "@": {
+          "type": "PlaCDataBuildingConstructor"
+        },
+        "MiniatureConfig": {
+          "@": {
+            "type": "PlaCDataBuildingMiniatureConfig"
+          },
+          "ClipUnderGround": {
+            "@": {
+              "value": true
+            }
+          },
+          "GroupHeight": {
+            "@": {
+              "value": 0.0
+            }
+          },
+          "CameraPosition": {
+            "@": {
+              "x": -0.18081660568714142,
+              "y": 1.4450329542160034,
+              "z": -11.125060081481934
+            }
+          },
+          "OrientationOffset": {
+            "@": {
+              "value": -180.0
+            }
+          },
+          "CameraPitchOffset": {
+            "@": {
+              "value": 0.0
+            }
+          },
+          "IgnoreBulkAutomaticAdjustment": {
+            "@": {
+              "value": false
+            }
+          }
+        },
+        "IsValidateGround": {
+          "@": {
+            "value": true
+          }
+        },
+        "CoreObjectPrefab": {
+          "@": {
+            "value": "e6551136-da33-4908-be95-24c6309c1aa7"
+          }
+        }
+      },
+      "AssetBuildingFunction": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "BuildingZone": {
+        "@": {
+          "type": "PlaCBuildingZone"
+        },
+        "ZoneEntryList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCBuildingZoneEntry"
+              },
+              "Polygon": {
+                "@": {
+                  "value": {
+                    "bytes": 56,
+                    "sha256": "61f767a877cb0e2366a57a02113821910b622c540ba17fc865f6e375acc246e4",
+                    "hex": "502472bfe4c6ab3fa853cdbf001b6c3ea853cdbff462a6bfd005febed01e0bc048a6823fd01e0bc098930240004a4abe48a6823fe4c6ab3f"
+                  }
+                }
+              },
+              "Type": {
+                "@": {},
+                "DEFAULT": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "GROUND_CONSTRAINT": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "WATER_CONSTRAINT": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "NAVIGABLE_PART": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "NAVIGABLE_PRIVATE": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "GRASS_CLEAR": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "GROUNDING": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              }
+            },
+            {
+              "@": {
+                "type": "PlaCBuildingZoneEntry"
+              },
+              "Polygon": {
+                "@": {
+                  "value": {
+                    "bytes": 32,
+                    "sha256": "1ba85c3365ae322ef692b63a1693ac0df32a1cc76190416e903866f3ab759d00",
+                    "hex": "0e2bab3f3286c2bf4c93813fe0820fc0f0be0e4030172ac0f0be0e401957f1bf"
+                  }
+                }
+              },
+              "Type": {
+                "@": {},
+                "DEFAULT": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "GROUND_CONSTRAINT": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "WATER_CONSTRAINT": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "NAVIGABLE_PART": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "NAVIGABLE_PRIVATE": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "GRASS_CLEAR": {
+                  "@": {
+                    "value": true
+                  }
+                },
+                "GROUNDING": {
+                  "@": {
+                    "value": false
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ConstructionVisual": {
+        "@": {
+          "value": "1cac3908-663a-4288-a6bd-9f8fa22d93e7"
+        }
+      },
+      "ConstructionStepMode": {
+        "@": {
+          "value": "REPLACE"
+        }
+      },
+      "EstateSplendor": {
+        "@": {}
+      },
+      "Cost": {
+        "@": {
+          "type": "PlaCDataBuildingPartCost"
+        },
+        "BuildRightTaxes": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {}
+          }
+        },
+        "UpkeepCost": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {}
+          }
+        },
+        "ResourceNeededList": {
+          "@": {}
+        }
+      },
+      "CraftedResourceNeeded": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "Capacity": {
+        "@": {
+          "value": 0
+        }
+      },
+      "BeautificationValue": {
+        "@": {
+          "value": 0
+        }
+      },
+      "BeautificationCategory": {
+        "@": {
+          "value": "GENERAL"
+        }
+      },
+      "UndesirabilityValue": {
+        "@": {
+          "value": 0
+        }
+      },
+      "DesirabilityModifiers": {
+        "@": {}
+      },
+      "DataFortificationParameters": {
+        "@": {
+          "type": "null"
+        }
+      },
+      "AssetMaterialSetList": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "BuildingPath": {
+        "@": {
+          "type": "PlaCBuildingPathData"
+        },
+        "WaypointPositionList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "x": -0.4000000059604645,
+                "y": 0.0,
+                "z": -2.8737499713897705
+              }
+            }
+          ]
+        },
+        "WaypointLinkList": {
+          "@": {}
+        },
+        "EntranceList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCBuildingEntranceData"
+              },
+              "WaypointId": {
+                "@": {
+                  "value": 0
+                }
+              },
+              "Orientation": {
+                "@": {
+                  "value": 0.0
+                }
+              },
+              "Hidden": {
+                "@": {
+                  "value": false
+                }
+              },
+              "Water": {
+                "@": {
+                  "value": false
+                }
+              }
+            }
+          ]
+        },
+        "WaypointDataList": {
+          "@": {}
+        }
+      },
+      "ScriptingIdMonument": {
+        "@": {
+          "value": ""
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Name",
+      "value",
+      "Description",
+      "Category",
+      "PrefabGuid",
+      "Miniature",
+      "IsMonumentCore",
+      "IsDestructible",
+      "IsVisibleWhenBuilt",
+      "IsShowInUi",
+      "IsOnlyAttached",
+      "OrientationOnlyAttached",
+      "IsRestrictedToBuilding",
+      "HasMaximumInstancePerBuilding",
+      "MaximumInstancePerBuilding",
+      "ConstructorData",
+      "type",
+      "MiniatureConfig",
+      "ClipUnderGround",
+      "GroupHeight",
+      "CameraPosition",
+      "x",
+      "y",
+      "z",
+      "OrientationOffset",
+      "CameraPitchOffset",
+      "IgnoreBulkAutomaticAdjustment",
+      "IsValidateGround",
+      "CoreObjectPrefab",
+      "AssetBuildingFunction",
+      "BuildingZone",
+      "ZoneEntryList",
+      "Item",
+      "Polygon",
+      "Type",
+      "DEFAULT",
+      "GROUND_CONSTRAINT",
+      "WATER_CONSTRAINT",
+      "NAVIGABLE_PART",
+      "NAVIGABLE_PRIVATE",
+      "GRASS_CLEAR",
+      "GROUNDING",
+      "ConstructionVisual",
+      "ConstructionStepMode",
+      "EstateSplendor",
+      "Cost",
+      "BuildRightTaxes",
+      "Collection",
+      "UpkeepCost",
+      "ResourceNeededList",
+      "CraftedResourceNeeded",
+      "Capacity",
+      "BeautificationValue",
+      "BeautificationCategory",
+      "UndesirabilityValue",
+      "DesirabilityModifiers",
+      "DataFortificationParameters",
+      "AssetMaterialSetList",
+      "BuildingPath",
+      "WaypointPositionList",
+      "WaypointLinkList",
+      "EntranceList",
+      "WaypointId",
+      "Orientation",
+      "Hidden",
+      "Water",
+      "WaypointDataList",
+      "ScriptingIdMonument"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Name",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Description",
+            "offset": 65,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 81
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Category",
+            "offset": 94,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "CORE",
+                "offset": 110
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "PrefabGuid",
+            "offset": 127,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "e6551136-da33-4908-be95-24c6309c1aa7",
+                "offset": 143
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Miniature",
+            "offset": 171,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 187
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsMonumentCore",
+            "offset": 215,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 231
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsDestructible",
+            "offset": 247,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 263
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsVisibleWhenBuilt",
+            "offset": 279,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 295
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsShowInUi",
+            "offset": 311,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 327
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsOnlyAttached",
+            "offset": 343,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 359
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "OrientationOnlyAttached",
+            "offset": 375,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "NONE",
+                "offset": 391
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsRestrictedToBuilding",
+            "offset": 408,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 424
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HasMaximumInstancePerBuilding",
+            "offset": 440,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 456
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "MaximumInstancePerBuilding",
+            "offset": 472,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 0,
+                "offset": 488
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ConstructorData",
+            "offset": 504,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataBuildingConstructor",
+                "offset": 520
+              }
+            ],
+            "children": [
+              {
+                "name": "MiniatureConfig",
+                "offset": 560,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataBuildingMiniatureConfig",
+                    "offset": 576
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "ClipUnderGround",
+                    "offset": 620,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 636
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "GroupHeight",
+                    "offset": 652,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 4,
+                        "value": 0.0,
+                        "offset": 668
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "CameraPosition",
+                    "offset": 684,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 4,
+                        "value": -0.18081660568714142,
+                        "offset": 700
+                      },
+                      {
+                        "name": "y",
+                        "tag": 4,
+                        "value": 1.4450329542160034,
+                        "offset": 716
+                      },
+                      {
+                        "name": "z",
+                        "tag": 4,
+                        "value": -11.125060081481934,
+                        "offset": 732
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "OrientationOffset",
+                    "offset": 748,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 4,
+                        "value": -180.0,
+                        "offset": 764
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "CameraPitchOffset",
+                    "offset": 780,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 4,
+                        "value": 0.0,
+                        "offset": 796
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IgnoreBulkAutomaticAdjustment",
+                    "offset": 812,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 828
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "IsValidateGround",
+                "offset": 844,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 6,
+                    "value": true,
+                    "offset": 860
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "CoreObjectPrefab",
+                "offset": 876,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 8,
+                    "value": "e6551136-da33-4908-be95-24c6309c1aa7",
+                    "offset": 892
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "AssetBuildingFunction",
+            "offset": 920,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 936
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BuildingZone",
+            "offset": 964,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCBuildingZone",
+                "offset": 980
+              }
+            ],
+            "children": [
+              {
+                "name": "ZoneEntryList",
+                "offset": 1009,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 1025,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCBuildingZoneEntry",
+                        "offset": 1041
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "Polygon",
+                        "offset": 1075,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 16,
+                            "value": {
+                              "bytes": 56,
+                              "sha256": "61f767a877cb0e2366a57a02113821910b622c540ba17fc865f6e375acc246e4",
+                              "hex": "502472bfe4c6ab3fa853cdbf001b6c3ea853cdbff462a6bfd005febed01e0bc048a6823fd01e0bc098930240004a4abe48a6823fe4c6ab3f"
+                            },
+                            "offset": 1091
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Type",
+                        "offset": 1167,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "DEFAULT",
+                            "offset": 1183,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 1199
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GROUND_CONSTRAINT",
+                            "offset": 1215,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1231
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "WATER_CONSTRAINT",
+                            "offset": 1247,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1263
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "NAVIGABLE_PART",
+                            "offset": 1279,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1295
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "NAVIGABLE_PRIVATE",
+                            "offset": 1311,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1327
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GRASS_CLEAR",
+                            "offset": 1343,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 1359
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GROUNDING",
+                            "offset": 1375,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1391
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Item",
+                    "offset": 1407,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCBuildingZoneEntry",
+                        "offset": 1423
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "Polygon",
+                        "offset": 1457,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 16,
+                            "value": {
+                              "bytes": 32,
+                              "sha256": "1ba85c3365ae322ef692b63a1693ac0df32a1cc76190416e903866f3ab759d00",
+                              "hex": "0e2bab3f3286c2bf4c93813fe0820fc0f0be0e4030172ac0f0be0e401957f1bf"
+                            },
+                            "offset": 1473
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Type",
+                        "offset": 1525,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "DEFAULT",
+                            "offset": 1541,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1557
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GROUND_CONSTRAINT",
+                            "offset": 1573,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1589
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "WATER_CONSTRAINT",
+                            "offset": 1605,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1621
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "NAVIGABLE_PART",
+                            "offset": 1637,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1653
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "NAVIGABLE_PRIVATE",
+                            "offset": 1669,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1685
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GRASS_CLEAR",
+                            "offset": 1701,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": true,
+                                "offset": 1717
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "GROUNDING",
+                            "offset": 1733,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 6,
+                                "value": false,
+                                "offset": 1749
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ConstructionVisual",
+            "offset": 1765,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "1cac3908-663a-4288-a6bd-9f8fa22d93e7",
+                "offset": 1781
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ConstructionStepMode",
+            "offset": 1809,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "REPLACE",
+                "offset": 1825
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "EstateSplendor",
+            "offset": 1845,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "Cost",
+            "offset": 1861,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataBuildingPartCost",
+                "offset": 1877
+              }
+            ],
+            "children": [
+              {
+                "name": "BuildRightTaxes",
+                "offset": 1914,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCResourceCollection",
+                    "offset": 1930
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "Collection",
+                    "offset": 1965,
+                    "attributes": [],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "UpkeepCost",
+                "offset": 1981,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCResourceCollection",
+                    "offset": 1997
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "Collection",
+                    "offset": 2032,
+                    "attributes": [],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "ResourceNeededList",
+                "offset": 2048,
+                "attributes": [],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "CraftedResourceNeeded",
+            "offset": 2064,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 2080
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Capacity",
+            "offset": 2108,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 0,
+                "offset": 2124
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BeautificationValue",
+            "offset": 2140,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 2,
+                "value": 0,
+                "offset": 2156
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BeautificationCategory",
+            "offset": 2172,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "GENERAL",
+                "offset": 2188
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "UndesirabilityValue",
+            "offset": 2208,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 2,
+                "value": 0,
+                "offset": 2224
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DesirabilityModifiers",
+            "offset": 2240,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "DataFortificationParameters",
+            "offset": 2256,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "null",
+                "offset": 2272
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "AssetMaterialSetList",
+            "offset": 2289,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 2305
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BuildingPath",
+            "offset": 2333,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCBuildingPathData",
+                "offset": 2349
+              }
+            ],
+            "children": [
+              {
+                "name": "WaypointPositionList",
+                "offset": 2382,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 2398,
+                    "attributes": [
+                      {
+                        "name": "x",
+                        "tag": 4,
+                        "value": -0.4000000059604645,
+                        "offset": 2414
+                      },
+                      {
+                        "name": "y",
+                        "tag": 4,
+                        "value": 0.0,
+                        "offset": 2430
+                      },
+                      {
+                        "name": "z",
+                        "tag": 4,
+                        "value": -2.8737499713897705,
+                        "offset": 2446
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "WaypointLinkList",
+                "offset": 2462,
+                "attributes": [],
+                "children": []
+              },
+              {
+                "name": "EntranceList",
+                "offset": 2478,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 2494,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCBuildingEntranceData",
+                        "offset": 2510
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "WaypointId",
+                        "offset": 2547,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 0,
+                            "value": 0,
+                            "offset": 2563
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Orientation",
+                        "offset": 2579,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 0.0,
+                            "offset": 2595
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Hidden",
+                        "offset": 2611,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 6,
+                            "value": false,
+                            "offset": 2627
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Water",
+                        "offset": 2643,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 6,
+                            "value": false,
+                            "offset": 2659
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "WaypointDataList",
+                "offset": 2675,
+                "attributes": [],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "ScriptingIdMonument",
+            "offset": 2691,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 2707
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 146,
+    "tag_counts": {
+      "0": 4,
+      "7": 18,
+      "8": 7,
+      "6": 26,
+      "4": 10,
+      "16": 2,
+      "2": 2
+    }
+  },
+  "references": [
+    {
+      "property": "/object/PrefabGuid/@value",
+      "uuid": "e6551136-da33-4908-be95-24c6309c1aa7",
+      "status": "unresolved_or_local_id",
+      "targets": []
+    },
+    {
+      "property": "/object/Miniature/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/ConstructorData/CoreObjectPrefab/@value",
+      "uuid": "e6551136-da33-4908-be95-24c6309c1aa7",
+      "status": "unresolved_or_local_id",
+      "targets": []
+    },
+    {
+      "property": "/object/AssetBuildingFunction/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/ConstructionVisual/@value",
+      "uuid": "1cac3908-663a-4288-a6bd-9f8fa22d93e7",
+      "status": "unresolved_or_local_id",
+      "targets": []
+    },
+    {
+      "property": "/object/CraftedResourceNeeded/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/AssetMaterialSetList/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    }
+  ]
+}

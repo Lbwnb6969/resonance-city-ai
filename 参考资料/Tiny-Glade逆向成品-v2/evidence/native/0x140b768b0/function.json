@@ -1,0 +1,154 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 583,
+    "record_offset": 29300,
+    "module": "country_core-75de4a05f1ed4a16.8q1zvr752b4jjl06xox366elf.1euy9uv.rcgu.o",
+    "name": "country_core::resources::roofs::roof_shape::profile_curve_ws",
+    "segment": 1,
+    "offset": 12015792,
+    "rva": 12019888,
+    "va": "0x140b768b0",
+    "size": 687,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "e22c085b899b749cd29e852caac42a704d55fcc0b03badb75fd446db2b93a98f",
+  "code_bytes": 687,
+  "decoded_bytes": 687,
+  "instructions": 154,
+  "calls_and_jumps": [
+    {
+      "address": "0x140b76900",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b7690d",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b76a09",
+      "kind": "jmp",
+      "target": "0x140b76a10",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b76a2e",
+      "kind": "call",
+      "target": "0x140080c90",
+      "target_names": [
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17h18eddd6514be63e0E",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17h7040a5328b0448bbE",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17hd4ab56741efef02aE",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17hfe4f00148eeff81dE",
+        "utils::curve::Curve::try_new_from_points<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b76b19",
+      "kind": "jmp",
+      "target": "0x140b76948",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b76b4c",
+      "kind": "call",
+      "target": "0x142dc8170",
+      "target_names": [
+        "core::result::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140b76b59",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140b7695a",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x140b76994",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x140b76ab1",
+      "target": "0x142e3c640",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@3f8000003f8000003f8000003f800000"
+      ],
+      "bytes_hex": "0000803f0000803f0000803f0000803f295c8f3d0000c8c23333b33e00000000"
+    },
+    {
+      "address": "0x140b76b28",
+      "target": "0x14305c368",
+      "operand_bytes": 8,
+      "bytes_hex": "30c30543010000003500000000000000fe010000050000000200000000000000"
+    },
+    {
+      "address": "0x140b76b34",
+      "target": "0x14335e278",
+      "operand_bytes": 8,
+      "names": [
+        "anon.cd7353ea5bba494e517e8c4948340934.7.llvm.2005072411065386140"
+      ],
+      "bytes_hex": "63616c6c65642060526573756c743a3a756e77726170282960206f6e20616e20",
+      "ascii_candidate": "called `Result::unwrap()` on an `Err` valuecrates/utils/src/curve/mod.rs"
+    },
+    {
+      "address": "0x140b76b3b",
+      "target": "0x14335e258",
+      "operand_bytes": 8,
+      "names": [
+        "anon.cd7353ea5bba494e517e8c4948340934.6.llvm.2005072411065386140"
+      ],
+      "bytes_hex": "000000000000000010000000000000000800000000000000a0d19a4101000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

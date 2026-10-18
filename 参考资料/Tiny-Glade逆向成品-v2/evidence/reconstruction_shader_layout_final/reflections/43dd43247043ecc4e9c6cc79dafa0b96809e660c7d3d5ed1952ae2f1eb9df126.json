@@ -1,0 +1,74 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_10" : {
+            "name" : "MaterialData_natural",
+            "members" : [
+                {
+                    "name" : "animation_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "progress_time",
+                    "type" : "float",
+                    "offset" : 8
+                },
+                {
+                    "name" : "fade",
+                    "type" : "float",
+                    "offset" : 12
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 16
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec2",
+            "name" : "vs_out.uv",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main.color",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2DArray",
+            "name" : "material_data.animation",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc",
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_10",
+            "name" : "MaterialData_natural",
+            "block_size" : 20,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

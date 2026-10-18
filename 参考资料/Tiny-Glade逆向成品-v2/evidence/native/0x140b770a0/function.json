@@ -1,0 +1,83 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 583,
+    "record_offset": 34564,
+    "module": "country_core-75de4a05f1ed4a16.8q1zvr752b4jjl06xox366elf.1euy9uv.rcgu.o",
+    "name": "country_core::resources::roofs::roof_shape::ridge_length_01_from_rectangle_ratio",
+    "segment": 1,
+    "offset": 12017824,
+    "rva": 12021920,
+    "va": "0x140b770a0",
+    "size": 205,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "85d618f4cad65ce22ca61006029cfb52894a704961b2df0e3322265402e3b9c5",
+  "code_bytes": 205,
+  "decoded_bytes": 205,
+  "instructions": 50,
+  "calls_and_jumps": [],
+  "rip_references": [
+    {
+      "address": "0x140b770e3",
+      "target": "0x14303c690",
+      "operand_bytes": 4,
+      "names": [
+        "__real@c0100000"
+      ],
+      "bytes_hex": "000010c00000a84000004c41666174616c2072756e74696d65206572726f723a"
+    },
+    {
+      "address": "0x140b770eb",
+      "target": "0x14303c694",
+      "operand_bytes": 4,
+      "names": [
+        "__real@40a80000"
+      ],
+      "bytes_hex": "0000a84000004c41666174616c2072756e74696d65206572726f723a20746872"
+    },
+    {
+      "address": "0x140b77100",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x140b7711a",
+      "target": "0x142e3788c",
+      "operand_bytes": 4,
+      "names": [
+        "__real@40400000"
+      ],
+      "bytes_hex": "00004040000000c000000000000000000000000075657370656d6f736172656e"
+    },
+    {
+      "address": "0x140b7712d",
+      "target": "0x142e37838",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3fc00000"
+      ],
+      "bytes_hex": "0000c03f3333333f8fc2f53c0000f0410ad7233c6f1283ba6f12833a6f12833a"
+    },
+    {
+      "address": "0x140b7713d",
+      "target": "0x142f61000",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bfc00000"
+      ],
+      "bytes_hex": "0000c0bf000000000000000000000000e3a59bbde3a59bbd0000000000000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

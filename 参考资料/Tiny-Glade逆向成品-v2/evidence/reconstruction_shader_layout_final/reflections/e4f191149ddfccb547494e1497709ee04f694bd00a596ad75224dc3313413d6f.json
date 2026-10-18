@@ -1,0 +1,150 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_22" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "args_type_count",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_36" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uvec4",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_50" : {
+            "name" : "_Array_natural_vector<uint,4>2",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "uvec4",
+                    "array" : [
+                        2
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_49" : {
+            "name" : "DofTileOffsetsPacked_natural",
+            "members" : [
+                {
+                    "name" : "offsets",
+                    "type" : "_50",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_71" : {
+            "name" : "_Array_natural_vector<uint,4>2",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "uvec4",
+                    "array" : [
+                        2
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_70" : {
+            "name" : "DofTileOffsetsPacked_natural",
+            "members" : [
+                {
+                    "name" : "offsets",
+                    "type" : "_71",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_74" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_70",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 32
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_36",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_74",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_22",
+            "name" : "GlobalParams_natural",
+            "block_size" : 4,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_49",
+            "name" : "DofTileOffsetsPacked_natural",
+            "block_size" : 32,
+            "set" : 0,
+            "binding" : 1
+        }
+    ]
+}

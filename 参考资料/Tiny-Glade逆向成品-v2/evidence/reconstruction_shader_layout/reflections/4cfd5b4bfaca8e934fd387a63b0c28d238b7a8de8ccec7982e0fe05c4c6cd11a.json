@@ -1,0 +1,49 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_15" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "transform_image",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 4
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main._color",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2DMS",
+            "name" : "input_tex",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_15",
+            "name" : "GlobalParams_natural",
+            "block_size" : 12,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

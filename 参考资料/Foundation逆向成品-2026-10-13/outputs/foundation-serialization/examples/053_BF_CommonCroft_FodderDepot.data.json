@@ -1,0 +1,553 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Buildings/_Functions/Croft/BF_CommonCroft_FodderDepot.data",
+  "absolute_offset": 359556557,
+  "length": 1519,
+  "sha256": "283f33e5dd2209d43366cad71bb8bdb849b91730e576d48f81405ce07ff1472c",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Buildings/_Functions/Croft/BF_CommonCroft_FodderDepot.data",
+    "id": "f2615fe9-5812-4b96-8678-9ae7c7c2791c",
+    "type": "PlaCAssetBuildingFunctionResourceDepot",
+    "scriptingId": "AGRI_BUILDING_FUNCTION_COMMON_CROFT_FODDER_DEPOT"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Name": {
+        "@": {
+          "value": "CROFT_FODDER_DEPOT_01A"
+        }
+      },
+      "NamePluralKey": {
+        "@": {
+          "value": ""
+        }
+      },
+      "Description": {
+        "@": {
+          "value": "CROFT_FODDER_DESC"
+        }
+      },
+      "HasMaximumInstance": {
+        "@": {
+          "value": false
+        }
+      },
+      "MaximumInstanceAllowed": {
+        "@": {
+          "value": 1
+        }
+      },
+      "UpkeepPerCapacity": {
+        "@": {
+          "type": "PlaCResourceCollection"
+        },
+        "Collection": {
+          "@": {}
+        }
+      },
+      "UpkeepPerCapacityMultiplier": {
+        "@": {
+          "value": 1.0
+        }
+      },
+      "GameRuleModifierList": {
+        "@": {}
+      },
+      "IsDescriptionOverride": {
+        "@": {
+          "value": true
+        }
+      },
+      "ShowNameInTags": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsDisplayable": {
+        "@": {
+          "value": true
+        }
+      },
+      "DescriptionOverrideKey": {
+        "@": {
+          "value": "CROFT_FODDER_DESC"
+        }
+      },
+      "DescriptionParameterList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "value": "CAPACITY"
+            }
+          }
+        ]
+      },
+      "OptionalDescriptionCustomTextParameter": {
+        "@": {
+          "value": ""
+        }
+      },
+      "Capacity": {
+        "@": {
+          "value": 20
+        }
+      },
+      "InputCapacity": {
+        "@": {
+          "value": 20
+        }
+      },
+      "CanBeUsedForInputInventory": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsPubliclyAvailableForConsumption": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsForConsumption": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsForProduction": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsClearingInputResourceOnEmpty": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsClearingOutputResourceOnEmpty": {
+        "@": {
+          "value": false
+        }
+      },
+      "ConsumptionDurationInSeconds": {
+        "@": {
+          "value": 1.0
+        }
+      },
+      "AssetResourceStockpileSettings": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "IsPrivate": {
+        "@": {
+          "value": false
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Name",
+      "value",
+      "NamePluralKey",
+      "Description",
+      "HasMaximumInstance",
+      "MaximumInstanceAllowed",
+      "UpkeepPerCapacity",
+      "type",
+      "Collection",
+      "UpkeepPerCapacityMultiplier",
+      "GameRuleModifierList",
+      "IsDescriptionOverride",
+      "ShowNameInTags",
+      "IsDisplayable",
+      "DescriptionOverrideKey",
+      "DescriptionParameterList",
+      "Item",
+      "OptionalDescriptionCustomTextParameter",
+      "Capacity",
+      "InputCapacity",
+      "CanBeUsedForInputInventory",
+      "IsPubliclyAvailableForConsumption",
+      "IsForConsumption",
+      "IsForProduction",
+      "IsClearingInputResourceOnEmpty",
+      "IsClearingOutputResourceOnEmpty",
+      "ConsumptionDurationInSeconds",
+      "AssetResourceStockpileSettings",
+      "IsPrivate"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Name",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "CROFT_FODDER_DEPOT_01A",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NamePluralKey",
+            "offset": 87,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 103
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Description",
+            "offset": 116,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "CROFT_FODDER_DESC",
+                "offset": 132
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HasMaximumInstance",
+            "offset": 162,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 178
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "MaximumInstanceAllowed",
+            "offset": 194,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 1,
+                "offset": 210
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "UpkeepPerCapacity",
+            "offset": 226,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCResourceCollection",
+                "offset": 242
+              }
+            ],
+            "children": [
+              {
+                "name": "Collection",
+                "offset": 277,
+                "attributes": [],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "UpkeepPerCapacityMultiplier",
+            "offset": 293,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 309
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "GameRuleModifierList",
+            "offset": 325,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "IsDescriptionOverride",
+            "offset": 341,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 357
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ShowNameInTags",
+            "offset": 373,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 389
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsDisplayable",
+            "offset": 405,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 421
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DescriptionOverrideKey",
+            "offset": 437,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "CROFT_FODDER_DESC",
+                "offset": 453
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DescriptionParameterList",
+            "offset": 483,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 499,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "CAPACITY",
+                    "offset": 515
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "OptionalDescriptionCustomTextParameter",
+            "offset": 536,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 552
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Capacity",
+            "offset": 565,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 20,
+                "offset": 581
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "InputCapacity",
+            "offset": 597,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 20,
+                "offset": 613
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "CanBeUsedForInputInventory",
+            "offset": 629,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 645
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsPubliclyAvailableForConsumption",
+            "offset": 661,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 677
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsForConsumption",
+            "offset": 693,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 709
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsForProduction",
+            "offset": 725,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 741
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsClearingInputResourceOnEmpty",
+            "offset": 757,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 773
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsClearingOutputResourceOnEmpty",
+            "offset": 789,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 805
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ConsumptionDurationInSeconds",
+            "offset": 821,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 837
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "AssetResourceStockpileSettings",
+            "offset": 853,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 869
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsPrivate",
+            "offset": 897,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 913
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 53,
+    "tag_counts": {
+      "0": 4,
+      "7": 7,
+      "6": 11,
+      "4": 2,
+      "8": 1
+    }
+  },
+  "references": [
+    {
+      "property": "/object/AssetResourceStockpileSettings/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    }
+  ]
+}

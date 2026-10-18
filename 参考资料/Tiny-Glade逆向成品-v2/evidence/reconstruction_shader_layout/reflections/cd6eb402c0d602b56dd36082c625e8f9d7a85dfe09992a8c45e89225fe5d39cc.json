@@ -1,0 +1,263 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_95" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "depth_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "refr_hit_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 8
+                },
+                {
+                    "name" : "refr_hit_radiance_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "refl_refr_radiance_out_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 24
+                }
+            ]
+        },
+        "_116" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_271" : {
+            "name" : "FrameCounter_natural",
+            "members" : [
+                {
+                    "name" : "index",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "utexture2D",
+            "name" : "refr_hit_tex",
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "texture2D",
+            "name" : "depth_tex",
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "refr_hit_radiance_tex",
+            "set" : 0,
+            "binding" : 3
+        }
+    ],
+    "images" : [
+        {
+            "type" : "image2D",
+            "name" : "refl_refr_radiance_out_tex",
+            "writeonly" : true,
+            "set" : 0,
+            "binding" : 4,
+            "format" : "r11f_g11f_b10f"
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_95",
+            "name" : "GlobalParams_natural",
+            "block_size" : 32,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_116",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 4,
+            "binding" : 0
+        },
+        {
+            "type" : "_271",
+            "name" : "FrameCounter_natural",
+            "block_size" : 4,
+            "set" : 2,
+            "binding" : 0
+        }
+    ]
+}

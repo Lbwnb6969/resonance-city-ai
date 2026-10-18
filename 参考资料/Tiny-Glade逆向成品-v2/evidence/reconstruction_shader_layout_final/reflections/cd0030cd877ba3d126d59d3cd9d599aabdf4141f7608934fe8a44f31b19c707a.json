@@ -1,0 +1,56 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_23" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "vertex_count",
+                    "type" : "int",
+                    "offset" : 0
+                },
+                {
+                    "name" : "line_length",
+                    "type" : "float",
+                    "offset" : 4
+                },
+                {
+                    "name" : "opacity",
+                    "type" : "float",
+                    "offset" : 8
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "float",
+            "name" : "vs_out.frag_t",
+            "location" : 1
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out.color",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main.color",
+            "location" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_23",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

@@ -1,0 +1,1383 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Unlockables/UNL_2_TurnipCommonCroft.data",
+  "absolute_offset": 447312190,
+  "length": 3122,
+  "sha256": "c7034acfd984f0589f35f0cf0f4aaf7b9a7f0bb11f49a7feb7e44dcf734fc507",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Unlockables/UNL_2_TurnipCommonCroft.data",
+    "id": "158ca3bc-fc47-46bc-8cfb-23da4f6271f0",
+    "type": "PlaCAssetUnlockableEdict",
+    "scriptingId": "AGRI_UNLOCKABLE_COMMON_CROFT_TURNIP"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Name": {
+        "@": {
+          "value": "UNLOCKABLE_TURNIP_COMMON_CROFT"
+        }
+      },
+      "Description": {
+        "@": {
+          "value": "UNLOCKABLE_TURNIP_COMMON_CROFT_DESC"
+        }
+      },
+      "OptionalNameParameter": {
+        "@": {
+          "value": ""
+        }
+      },
+      "BoughtText": {
+        "@": {
+          "value": ""
+        }
+      },
+      "DataCost": {
+        "@": {
+          "type": "PlaCDataUnlockableCost"
+        },
+        "DataInfluenceCostList": {
+          "@": {}
+        },
+        "ResourceCollection": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 50
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "InfluenceCap": {
+          "@": {
+            "value": 0
+          }
+        }
+      },
+      "PrerequisiteUnlockableList": {
+        "@": {}
+      },
+      "IsRecurrent": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsComingSoon": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsMajor": {
+        "@": {
+          "value": false
+        }
+      },
+      "DaysBeforeBuyingAgain": {
+        "@": {
+          "value": 0
+        }
+      },
+      "ActionList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockBuildingList"
+            },
+            "DebugComment": {
+              "@": {
+                "value": ""
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": false
+              }
+            },
+            "BuildingProgressData": {
+              "@": {
+                "type": "PlaCDataBuildingProgress"
+              },
+              "UnlockName": {
+                "@": {
+                  "value": ""
+                }
+              },
+              "AssetBuildingList": {
+                "@": {},
+                "Item": [
+                  {
+                    "@": {
+                      "value": "eb75373b-8e64-4a7a-b304-af74cfdc0f39"
+                    }
+                  },
+                  {
+                    "@": {
+                      "value": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b"
+                    }
+                  },
+                  {
+                    "@": {
+                      "value": "7a2ca1d7-18f0-4007-aef6-b1be9fbac66a"
+                    }
+                  }
+                ]
+              },
+              "AdditionalBuildingUnlockList": {
+                "@": {}
+              },
+              "AssetBuildingFunctionList": {
+                "@": {}
+              },
+              "DataEstateDecorationList": {
+                "@": {}
+              }
+            }
+          },
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockWorkplaceRecipe"
+            },
+            "DebugComment": {
+              "@": {
+                "value": ""
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": false
+              }
+            },
+            "AssetBuildingFunctionWorkplace": {
+              "@": {
+                "value": "637b4544-a544-4b48-a398-20721c9bb439"
+              }
+            },
+            "AssetWorkplaceRecipeToUnlockList": {
+              "@": {},
+              "Item": [
+                {
+                  "@": {
+                    "value": "7122ee90-ecfe-463f-b13c-b119848797fb"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockBuildingList"
+            },
+            "DebugComment": {
+              "@": {
+                "value": "Parts for BLD - Wall Wooden Fence.data"
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": false
+              }
+            },
+            "BuildingProgressData": {
+              "@": {
+                "type": "PlaCDataBuildingProgress"
+              },
+              "UnlockName": {
+                "@": {
+                  "value": ""
+                }
+              },
+              "AssetBuildingList": {
+                "@": {}
+              },
+              "AdditionalBuildingUnlockList": {
+                "@": {},
+                "Item": [
+                  {
+                    "@": {
+                      "type": "PlaCDataProgressUnlockBuildingPart"
+                    },
+                    "OwnerBuilding": {
+                      "@": {
+                        "value": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb"
+                      }
+                    },
+                    "AssetBuildingPartList": {
+                      "@": {},
+                      "Item": [
+                        {
+                          "@": {
+                            "value": "0095f768-0f0b-4f54-845f-a22eb0e9b34d"
+                          }
+                        },
+                        {
+                          "@": {
+                            "value": "4887b713-a445-475a-a8ac-584bd398abce"
+                          }
+                        },
+                        {
+                          "@": {
+                            "value": "2a281b68-7281-4458-8750-e12442a8e5f9"
+                          }
+                        },
+                        {
+                          "@": {
+                            "value": "719d6433-d67e-4243-8814-782ef2eb376a"
+                          }
+                        }
+                      ]
+                    },
+                    "SubBuildingList": {
+                      "@": {}
+                    }
+                  }
+                ]
+              },
+              "AssetBuildingFunctionList": {
+                "@": {}
+              },
+              "DataEstateDecorationList": {
+                "@": {}
+              }
+            }
+          },
+          {
+            "@": {
+              "type": "PlaCDataGameActionUnlockBuildingList"
+            },
+            "DebugComment": {
+              "@": {
+                "value": "BLD - Wall Wooden Fence.data"
+              }
+            },
+            "Delay": {
+              "@": {
+                "type": "null"
+              }
+            },
+            "IsHidden": {
+              "@": {
+                "value": true
+              }
+            },
+            "BuildingProgressData": {
+              "@": {
+                "type": "PlaCDataBuildingProgress"
+              },
+              "UnlockName": {
+                "@": {
+                  "value": ""
+                }
+              },
+              "AssetBuildingList": {
+                "@": {},
+                "Item": [
+                  {
+                    "@": {
+                      "value": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb"
+                    }
+                  }
+                ]
+              },
+              "AdditionalBuildingUnlockList": {
+                "@": {}
+              },
+              "AssetBuildingFunctionList": {
+                "@": {}
+              },
+              "DataEstateDecorationList": {
+                "@": {}
+              }
+            }
+          }
+        ]
+      },
+      "ExecuteOnceActionList": {
+        "@": {}
+      },
+      "IsAvailableInDemo": {
+        "@": {
+          "value": false
+        }
+      },
+      "UnlockableImage": {
+        "@": {
+          "value": "241a796f-8a86-4787-84b8-67f8aabc6a49"
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Name",
+      "value",
+      "Description",
+      "OptionalNameParameter",
+      "BoughtText",
+      "DataCost",
+      "type",
+      "DataInfluenceCostList",
+      "ResourceCollection",
+      "Collection",
+      "Item",
+      "Resource",
+      "Quantity",
+      "InfluenceCap",
+      "PrerequisiteUnlockableList",
+      "IsRecurrent",
+      "IsComingSoon",
+      "IsMajor",
+      "DaysBeforeBuyingAgain",
+      "ActionList",
+      "DebugComment",
+      "Delay",
+      "IsHidden",
+      "BuildingProgressData",
+      "UnlockName",
+      "AssetBuildingList",
+      "AdditionalBuildingUnlockList",
+      "AssetBuildingFunctionList",
+      "DataEstateDecorationList",
+      "AssetBuildingFunctionWorkplace",
+      "AssetWorkplaceRecipeToUnlockList",
+      "OwnerBuilding",
+      "AssetBuildingPartList",
+      "SubBuildingList",
+      "ExecuteOnceActionList",
+      "IsAvailableInDemo",
+      "UnlockableImage"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Name",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "UNLOCKABLE_TURNIP_COMMON_CROFT",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Description",
+            "offset": 95,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "UNLOCKABLE_TURNIP_COMMON_CROFT_DESC",
+                "offset": 111
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "OptionalNameParameter",
+            "offset": 159,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 175
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BoughtText",
+            "offset": 188,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 204
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DataCost",
+            "offset": 217,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataUnlockableCost",
+                "offset": 233
+              }
+            ],
+            "children": [
+              {
+                "name": "DataInfluenceCostList",
+                "offset": 268,
+                "attributes": [],
+                "children": []
+              },
+              {
+                "name": "ResourceCollection",
+                "offset": 284,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCResourceCollection",
+                    "offset": 300
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "Collection",
+                    "offset": 335,
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "Item",
+                        "offset": 351,
+                        "attributes": [
+                          {
+                            "name": "type",
+                            "tag": 7,
+                            "value": "PlaCDataResourceQuantityPair",
+                            "offset": 367
+                          }
+                        ],
+                        "children": [
+                          {
+                            "name": "Resource",
+                            "offset": 408,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+                                "offset": 424
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Quantity",
+                            "offset": 452,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 0,
+                                "value": 50,
+                                "offset": 468
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "InfluenceCap",
+                "offset": 484,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 0,
+                    "value": 0,
+                    "offset": 500
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "PrerequisiteUnlockableList",
+            "offset": 516,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "IsRecurrent",
+            "offset": 532,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 548
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsComingSoon",
+            "offset": 564,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 580
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsMajor",
+            "offset": 596,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 612
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DaysBeforeBuyingAgain",
+            "offset": 628,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 0,
+                "offset": 644
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ActionList",
+            "offset": 660,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 676,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockBuildingList",
+                    "offset": 692
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 741,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "",
+                        "offset": 757
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 770,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 786
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 803,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 819
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "BuildingProgressData",
+                    "offset": 835,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataBuildingProgress",
+                        "offset": 851
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "UnlockName",
+                        "offset": 888,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "",
+                            "offset": 904
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingList",
+                        "offset": 917,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Item",
+                            "offset": 933,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "eb75373b-8e64-4a7a-b304-af74cfdc0f39",
+                                "offset": 949
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Item",
+                            "offset": 977,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+                                "offset": 993
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "name": "Item",
+                            "offset": 1021,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "7a2ca1d7-18f0-4007-aef6-b1be9fbac66a",
+                                "offset": 1037
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "AdditionalBuildingUnlockList",
+                        "offset": 1065,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingFunctionList",
+                        "offset": 1081,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "DataEstateDecorationList",
+                        "offset": 1097,
+                        "attributes": [],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Item",
+                "offset": 1113,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockWorkplaceRecipe",
+                    "offset": 1129
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 1181,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "",
+                        "offset": 1197
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 1210,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 1226
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 1243,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 1259
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "AssetBuildingFunctionWorkplace",
+                    "offset": 1275,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 8,
+                        "value": "637b4544-a544-4b48-a398-20721c9bb439",
+                        "offset": 1291
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "AssetWorkplaceRecipeToUnlockList",
+                    "offset": 1319,
+                    "attributes": [],
+                    "children": [
+                      {
+                        "name": "Item",
+                        "offset": 1335,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 8,
+                            "value": "7122ee90-ecfe-463f-b13c-b119848797fb",
+                            "offset": 1351
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Item",
+                "offset": 1379,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockBuildingList",
+                    "offset": 1395
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 1444,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "Parts for BLD - Wall Wooden Fence.data",
+                        "offset": 1460
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 1511,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 1527
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 1544,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": false,
+                        "offset": 1560
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "BuildingProgressData",
+                    "offset": 1576,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataBuildingProgress",
+                        "offset": 1592
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "UnlockName",
+                        "offset": 1629,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "",
+                            "offset": 1645
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingList",
+                        "offset": 1658,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "AdditionalBuildingUnlockList",
+                        "offset": 1674,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Item",
+                            "offset": 1690,
+                            "attributes": [
+                              {
+                                "name": "type",
+                                "tag": 7,
+                                "value": "PlaCDataProgressUnlockBuildingPart",
+                                "offset": 1706
+                              }
+                            ],
+                            "children": [
+                              {
+                                "name": "OwnerBuilding",
+                                "offset": 1753,
+                                "attributes": [
+                                  {
+                                    "name": "value",
+                                    "tag": 8,
+                                    "value": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+                                    "offset": 1769
+                                  }
+                                ],
+                                "children": []
+                              },
+                              {
+                                "name": "AssetBuildingPartList",
+                                "offset": 1797,
+                                "attributes": [],
+                                "children": [
+                                  {
+                                    "name": "Item",
+                                    "offset": 1813,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "0095f768-0f0b-4f54-845f-a22eb0e9b34d",
+                                        "offset": 1829
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Item",
+                                    "offset": 1857,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "4887b713-a445-475a-a8ac-584bd398abce",
+                                        "offset": 1873
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Item",
+                                    "offset": 1901,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "2a281b68-7281-4458-8750-e12442a8e5f9",
+                                        "offset": 1917
+                                      }
+                                    ],
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "Item",
+                                    "offset": 1945,
+                                    "attributes": [
+                                      {
+                                        "name": "value",
+                                        "tag": 8,
+                                        "value": "719d6433-d67e-4243-8814-782ef2eb376a",
+                                        "offset": 1961
+                                      }
+                                    ],
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "SubBuildingList",
+                                "offset": 1989,
+                                "attributes": [],
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "AssetBuildingFunctionList",
+                        "offset": 2005,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "DataEstateDecorationList",
+                        "offset": 2021,
+                        "attributes": [],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Item",
+                "offset": 2037,
+                "attributes": [
+                  {
+                    "name": "type",
+                    "tag": 7,
+                    "value": "PlaCDataGameActionUnlockBuildingList",
+                    "offset": 2053
+                  }
+                ],
+                "children": [
+                  {
+                    "name": "DebugComment",
+                    "offset": 2102,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 7,
+                        "value": "BLD - Wall Wooden Fence.data",
+                        "offset": 2118
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "Delay",
+                    "offset": 2159,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "null",
+                        "offset": 2175
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "IsHidden",
+                    "offset": 2192,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 2208
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "BuildingProgressData",
+                    "offset": 2224,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataBuildingProgress",
+                        "offset": 2240
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "UnlockName",
+                        "offset": 2277,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "",
+                            "offset": 2293
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingList",
+                        "offset": 2306,
+                        "attributes": [],
+                        "children": [
+                          {
+                            "name": "Item",
+                            "offset": 2322,
+                            "attributes": [
+                              {
+                                "name": "value",
+                                "tag": 8,
+                                "value": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+                                "offset": 2338
+                              }
+                            ],
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "AdditionalBuildingUnlockList",
+                        "offset": 2366,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "AssetBuildingFunctionList",
+                        "offset": 2382,
+                        "attributes": [],
+                        "children": []
+                      },
+                      {
+                        "name": "DataEstateDecorationList",
+                        "offset": 2398,
+                        "attributes": [],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ExecuteOnceActionList",
+            "offset": 2414,
+            "attributes": [],
+            "children": []
+          },
+          {
+            "name": "IsAvailableInDemo",
+            "offset": 2430,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 2446
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "UnlockableImage",
+            "offset": 2462,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "241a796f-8a86-4787-84b8-67f8aabc6a49",
+                "offset": 2478
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 122,
+    "tag_counts": {
+      "0": 4,
+      "7": 26,
+      "8": 13,
+      "6": 8
+    }
+  },
+  "references": [
+    {
+      "property": "/object/DataCost/ResourceCollection/Collection/Item/Resource/@value",
+      "uuid": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Resources/GoldCoins.data",
+          "id": "c89df32a-a1c8-4ec4-9a0d-9813ff2598b7",
+          "type": "PlaCAssetResource",
+          "scriptingId": "GOLD_COINS | GOLD"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AssetBuildingList/Item/@value",
+      "uuid": "eb75373b-8e64-4a7a-b304-af74cfdc0f39",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Workplaces/VegetableFarm/AGR_TurnipFarm.data",
+          "id": "eb75373b-8e64-4a7a-b304-af74cfdc0f39",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "AGRI_BUILDING_TURNIP_FARM"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AssetBuildingList/Item/@value",
+      "uuid": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Workplaces/CommonCroft/AGR_CommonCroft.data",
+          "id": "abceb852-1eb1-4cd2-bdd1-1f25356b9c0b",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "AGRI_BUILDING_COMMON_CROFT"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AssetBuildingList/Item/@value",
+      "uuid": "7a2ca1d7-18f0-4007-aef6-b1be9fbac66a",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Buildings/Workplaces/Butcher/Butcher.data",
+          "id": "7a2ca1d7-18f0-4007-aef6-b1be9fbac66a",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "BUILDING_BUTCHERY"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/AssetBuildingFunctionWorkplace/@value",
+      "uuid": "637b4544-a544-4b48-a398-20721c9bb439",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Buildings/_Functions/BuildingFunction_ButcherPart.data",
+          "id": "637b4544-a544-4b48-a398-20721c9bb439",
+          "type": "PlaCAssetBuildingFunctionWorkplace",
+          "scriptingId": "BUILDING_FUNCTION_BUTCHER"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/AssetWorkplaceRecipeToUnlockList/Item/@value",
+      "uuid": "7122ee90-ecfe-463f-b13c-b119848797fb",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/_Functions/_Recipes/Unlockables/WorkplaceRecipe_BuildingFunction_Butcher_Chicken.data",
+          "id": "7122ee90-ecfe-463f-b13c-b119848797fb",
+          "type": "PlaCAssetWorkplaceRecipe",
+          "scriptingId": "AGRI_WORKPLACE_RECIPE_BUTCHER_MEAT_CHICKEN"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/OwnerBuilding/@value",
+      "uuid": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Buildings/Walls/Wall Configs/Wooden Fence/BLD - Wall Wooden Fence.data",
+          "id": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "BUILDING_VILLAGE_FENCE"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/AssetBuildingPartList/Item/@value",
+      "uuid": "0095f768-0f0b-4f54-845f-a22eb0e9b34d",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Walls/Wall Configs/CommonCroft_Wall/Wall CommonCroft.data",
+          "id": "0095f768-0f0b-4f54-845f-a22eb0e9b34d",
+          "type": "PlaCAssetBuildingPart",
+          "scriptingId": "AGRI_BUILDING_PART_VILLAGE_FENCE_CROFT_FENCE"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/AssetBuildingPartList/Item/@value",
+      "uuid": "4887b713-a445-475a-a8ac-584bd398abce",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Walls/Parts/AGR_CommonCroft_Wall/AGR_CommonCroft_Wall_End_01A_Part.data",
+          "id": "4887b713-a445-475a-a8ac-584bd398abce",
+          "type": "PlaCAssetBuildingPart",
+          "scriptingId": "AGRI_BUILDING_PART_CROFT_FENCE_END_LEFT_SIDED"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/AssetBuildingPartList/Item/@value",
+      "uuid": "2a281b68-7281-4458-8750-e12442a8e5f9",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Walls/Parts/AGR_CommonCroft_Wall/AGR_CommonCroft_Wall_End_02A_Part.data",
+          "id": "2a281b68-7281-4458-8750-e12442a8e5f9",
+          "type": "PlaCAssetBuildingPart",
+          "scriptingId": "AGRI_BUILDING_PART_CROFT_FENCE_END_RIGHT_SIDED"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AdditionalBuildingUnlockList/Item/AssetBuildingPartList/Item/@value",
+      "uuid": "719d6433-d67e-4243-8814-782ef2eb376a",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Buildings/Walls/Parts/AGR_CommonCroft_Wall/AGR_CommonCroft_Wall_Gate_01A_Part.data",
+          "id": "719d6433-d67e-4243-8814-782ef2eb376a",
+          "type": "PlaCAssetBuildingPart",
+          "scriptingId": "AGRI_BUILDING_PART_CROFT_FENCE_GATE"
+        }
+      ]
+    },
+    {
+      "property": "/object/ActionList/Item/BuildingProgressData/AssetBuildingList/Item/@value",
+      "uuid": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Buildings/Walls/Wall Configs/Wooden Fence/BLD - Wall Wooden Fence.data",
+          "id": "aff3c0a5-9bfd-4b58-ae67-ae7e754734cb",
+          "type": "PlaCAssetBuilding",
+          "scriptingId": "BUILDING_VILLAGE_FENCE"
+        }
+      ]
+    },
+    {
+      "property": "/object/UnlockableImage/@value",
+      "uuid": "241a796f-8a86-4787-84b8-67f8aabc6a49",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "GuiSettings/Icons/Book/Progression/Unlockables/Icon_Unlockable_TurnipCommonCroft.png",
+          "id": "241a796f-8a86-4787-84b8-67f8aabc6a49"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4058 @@
+{
+  "root": "C:\\Users\\Administrator\\Saved Games\\Tiny Glade",
+  "snapshot_count": 34,
+  "history_count": 9,
+  "errors": [],
+  "snapshots": [
+    {
+      "file": "cas-cache/70ec26b0fb1ffd271f888aab7ec9ab143e50a0950f715c6fb7bce84a0a734a0d/snapshots/722346066813074390.snapshot",
+      "bytes": 449507,
+      "sha256": "629bd2fea385cd775bdac87d77d18edeaee8f1b2d5c44bbfa11c657e9e241df9",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 3,
+        "Raster": 3,
+        "Roofs": 0,
+        "Terrain": 2,
+        "Trees": 31,
+        "WallColors": 6,
+        "Walls": 0
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 32932,
+          "payload_sha256": "6fc6ff3503e7a49219d24b221fe86d6836fe7605505aa92aac595a51f5193ee5",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 32948,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 33242,
+          "payload_bytes": 28909,
+          "payload_sha256": "5e932825f66b0d2ab52a93430ac2a5f3edec02d254443a2b30ae11b4cf9ba532",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "7625d5abc84b4fdbd406ff66ac783a7759331bcf4f8cced1ec7a2db2a55ebe98",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 62167,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 62461,
+          "payload_bytes": 387030,
+          "payload_sha256": "c85834f8e508aef02f2b3a8a338a71af714036e59ccef73532235a6dd8cc7a13",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "5d3bf2925bd9dc09f85a09c314998c0e8a2ed87f0a5db6f7aa9d27ceec6839b7",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/2351391c-6728-41ca-a310-91f0e145f848/snapshots/2548088566237603439.snapshot",
+      "bytes": 422663,
+      "sha256": "8d2ce8738907a89a6e41e5495365556e011c295e4533358f2360b04fc3b4e4dd",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 6,
+        "WallColors": 7,
+        "Walls": 4
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 28379,
+          "payload_sha256": "b4287d28b8f51f4afbf97b3dfb440be7ae05842f799ec407efaac31db3c3eeec",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 28395,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 28689,
+          "payload_bytes": 7677,
+          "payload_sha256": "2823184e03c7ba9718e696d268035e57c3adf76c4ab5562f14826fcbfe6ae041",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a5992ac7f537b3a296844bb392644b44be7faa518bbc24c62cbe9de3cba270b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 36382,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 36676,
+          "payload_bytes": 385971,
+          "payload_sha256": "a89c089c8948f85c02ac3c67eafd0df99c39843221bb4ea9f3e79b339a6a94b9",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "52ade353902a88056676f592c55586a603c289d12136f0c7b6eaf09fb95e67c8",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/2351391c-6728-41ca-a310-91f0e145f848/snapshots/6562168937870500139.snapshot",
+      "bytes": 422634,
+      "sha256": "cfd13399949b40c7cf23b7c5ab90534587b58fe0e9111317dac99ca0c29f2e7f",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 6,
+        "WallColors": 4,
+        "Walls": 4
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 28357,
+          "payload_sha256": "2cbae1d46e70114d9a3420ac91f132425d1b5ab47836451a2d7fd4196c253ffb",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 28373,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 28667,
+          "payload_bytes": 7677,
+          "payload_sha256": "2823184e03c7ba9718e696d268035e57c3adf76c4ab5562f14826fcbfe6ae041",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a5992ac7f537b3a296844bb392644b44be7faa518bbc24c62cbe9de3cba270b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 36360,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 36654,
+          "payload_bytes": 385964,
+          "payload_sha256": "d8c420637aeced8c065fb05de68497163edd7f87d027eed2581f8e9e7e7bfab6",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "939123050d0a04926a6cc1eafe2f49bf61278c01516224e85120f61430898a42",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/2351391c-6728-41ca-a310-91f0e145f848/snapshots/7996458416407797454.snapshot",
+      "bytes": 478499,
+      "sha256": "828c2a3d4a95f929691f76381bfc8d34d78882805770ae1aab06d5b808caf3f9",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 191,
+        "WallColors": 4,
+        "Walls": 4
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 68574,
+          "payload_sha256": "961fb3b70710e9b25229e1cab5316f0ec892eac0b2d515fe6b4d3ab82d30d35e",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 68590,
+          "payload_bytes": 15792,
+          "payload_sha256": "8eb9e53e01df52f4713a04c13a2b0490c628231e06eb49c6d5205d37b6a76942",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "4594b64ae8e0585e9328fc6d61e149bc29a3b062c30fc04da5f93cdf5dcd9256",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 84398,
+          "payload_bytes": 7677,
+          "payload_sha256": "2823184e03c7ba9718e696d268035e57c3adf76c4ab5562f14826fcbfe6ae041",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a5992ac7f537b3a296844bb392644b44be7faa518bbc24c62cbe9de3cba270b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 92091,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 92385,
+          "payload_bytes": 386098,
+          "payload_sha256": "a0e6f153a557929d29e841d71fe01d4b96277bf3e907e75d6f1b38b5fa7f6015",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "fe485f3c021cc45e3ab0621f939be39778cb772fc07a55b61013c8b0e30cc0fd",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/2351391c-6728-41ca-a310-91f0e145f848/snapshots/8208451200420490402.snapshot",
+      "bytes": 422390,
+      "sha256": "2e5edc8c1c1f6ef6d82aaf40a111cc6449130ba5f28e0583891f9cb708604f6d",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 6,
+        "WallColors": 4,
+        "Walls": 4
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 28442,
+          "payload_sha256": "40cad062b9d2c65cfab6ff0c0d8ceee6dd75f11de9aa87c85f70b14b37483605",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 28458,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 28752,
+          "payload_bytes": 7415,
+          "payload_sha256": "07fb05df8ceacccc9bbcf00917ccbeb24e9c717fe754cc316a2eaabfdc2120b9",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "25f6459fa50ef942a8c2e5f43ff517924ce119f93aedbdb1ac59020cc5b16a9c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 36183,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 36477,
+          "payload_bytes": 385897,
+          "payload_sha256": "adc5c96c3f1ceb8596a2a4a6e3598c0f875e5c2789e95765b90200f72de2e055",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "38b17629f7340235ba229f6df014918d47d27cf92eb5e6825061feb4ed4083c4",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/585e2a1e-a7fa-4768-9ffd-ac90f77a0df8/snapshots/16941193096156899331.snapshot",
+      "bytes": 440252,
+      "sha256": "482d23910a88f31e0d3bd81e5ce425942da081c6c24f6f8ffeb6323fe21455ec",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 3,
+        "Terrain": 2,
+        "Trees": 274,
+        "WallColors": 3,
+        "Walls": 7
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 77184,
+          "payload_sha256": "f5366442d9f1ba631790d260d7fc45850242ad12ec31c5880e69b98821c60eba",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 77200,
+          "payload_bytes": 1735,
+          "payload_sha256": "63a31fcf452c8e6daac208f361fa2e9bc18b3fb907af3b6b2fe132b83e493438",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "76b3c23c0d91aa825c521f9b786e9383b4c77a12a781b77779ddd956db495fb1",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 78951,
+          "payload_bytes": 571,
+          "payload_sha256": "069d0b88ca506ea77e53729f949c8457130d78aca5d1fbd6827823dca03aa0b8",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "1851bc8121ccde89bec93054773bdb5216f2a68947d0dd6f4b9ff367b8a81071",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 79538,
+          "payload_bytes": 1067,
+          "payload_sha256": "a4eed79c3d50e02dfaa7cb547e729b27b6896c80a240b44ec86f323b0c9cc824",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "518045d75d3c0dc87b76fd887a488bf992d7ede95ad6c8bf85e6970901adcb5b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 80621,
+          "payload_bytes": 359615,
+          "payload_sha256": "6677e0d9ba1880a82f30d5892dabcefc6ae293caab3707f5c808ea4f7fb7cd1f",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "f25e000fb6f93df055cda52b778e626193a989b8c8e5b20e41bd2ca3e4f42a15",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/585e2a1e-a7fa-4768-9ffd-ac90f77a0df8/snapshots/3281406785818202120.snapshot",
+      "bytes": 438158,
+      "sha256": "72db3b758b029a513618389b5f7667bb75445383801d939bed091ee702642759",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 2,
+        "Terrain": 2,
+        "Trees": 272,
+        "WallColors": 2,
+        "Walls": 6
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 75090,
+          "payload_sha256": "16f4282c133488b57d578bcb8e32e29c46fe1c0cf692a2ef04c147efba3f3c60",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 75106,
+          "payload_bytes": 1735,
+          "payload_sha256": "63a31fcf452c8e6daac208f361fa2e9bc18b3fb907af3b6b2fe132b83e493438",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "76b3c23c0d91aa825c521f9b786e9383b4c77a12a781b77779ddd956db495fb1",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 76857,
+          "payload_bytes": 571,
+          "payload_sha256": "069d0b88ca506ea77e53729f949c8457130d78aca5d1fbd6827823dca03aa0b8",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "1851bc8121ccde89bec93054773bdb5216f2a68947d0dd6f4b9ff367b8a81071",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 77444,
+          "payload_bytes": 1067,
+          "payload_sha256": "a4eed79c3d50e02dfaa7cb547e729b27b6896c80a240b44ec86f323b0c9cc824",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "518045d75d3c0dc87b76fd887a488bf992d7ede95ad6c8bf85e6970901adcb5b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 78527,
+          "payload_bytes": 359615,
+          "payload_sha256": "6677e0d9ba1880a82f30d5892dabcefc6ae293caab3707f5c808ea4f7fb7cd1f",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "f25e000fb6f93df055cda52b778e626193a989b8c8e5b20e41bd2ca3e4f42a15",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/5c36169d-eb3c-4db7-bb1e-e929663b01fa/snapshots/16491589277982377259.snapshot",
+      "bytes": 405891,
+      "sha256": "478104111bbf9c1ffc3f99f4f16666e6a24921748ac8e11d1508a80087a40490",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 160,
+        "WallColors": 39,
+        "Walls": 5
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 45516,
+          "payload_sha256": "35b93273cfce86423367b820cf99a30095ac30d249e73993fca7b0725ea5be7e",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 45532,
+          "payload_bytes": 1535,
+          "payload_sha256": "5f56a06897b636eb8ceebcaa7d8bf4c3abb96c0d4f64546fe46c46878eb34ccb",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "165db0c4888e5f54d1eadcfaf2253c5d65e99faf1ec44452dc2bf78d0b681cf7",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 47083,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 47377,
+          "payload_bytes": 523,
+          "payload_sha256": "2c21157dea8f95f522353cd1b54667cdc8788d6c9e304deb6d99fb1c7011e5d3",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "edf4e0bb2767c49b685333ecabfea31a30dc82aa92e9961eabad02e4ceaad537",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 47916,
+          "payload_bytes": 357959,
+          "payload_sha256": "6b0fe9d8542b99c7cf244c4aed5b2b6a884be171070875237266aee66eee5925",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "6176fd2c165c55efaf85e92069ca05a7969e22658a1ae3bec8048bf9aabddd08",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/5c36169d-eb3c-4db7-bb1e-e929663b01fa/snapshots/17801474208793810585.snapshot",
+      "bytes": 437739,
+      "sha256": "473a9d8103f38cce9b2357738370139a0947b09bf588cd55de9449d51d9403a2",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 11,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 150,
+        "WallColors": 46,
+        "Walls": 12
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 68139,
+          "payload_sha256": "24ec0d28a5cc0108b5fc3a23f298bbd0bbbf797f6fd594d691eb160dad049259",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 68155,
+          "payload_bytes": 8436,
+          "payload_sha256": "611e98716a7e6a59bf3a411b6fc833396782205a29a0d7b6688a76f796036122",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "1a9389806a1bc309282c28e37034eac6e1118741d3a10c76696d7d1931596389",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 76607,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 76901,
+          "payload_bytes": 523,
+          "payload_sha256": "2c21157dea8f95f522353cd1b54667cdc8788d6c9e304deb6d99fb1c7011e5d3",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "edf4e0bb2767c49b685333ecabfea31a30dc82aa92e9961eabad02e4ceaad537",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 77440,
+          "payload_bytes": 360283,
+          "payload_sha256": "e44513668ad88d8284f6cd900493b7d693f9d4575e675c0a90676905913a3a50",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "c123f1d06585d8c04f6671628f37a5f4f3e676cab1a531556b89ccdb51e64622",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/5c36169d-eb3c-4db7-bb1e-e929663b01fa/snapshots/4232358059215382354.snapshot",
+      "bytes": 405112,
+      "sha256": "49f67f5567a94a45bca59db41d137508fa7759fc6fa23520d9036a0f1279ff71",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 7,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 160,
+        "WallColors": 42,
+        "Walls": 8
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 51384,
+          "payload_sha256": "c7e1631aeded3c160df61c616e5140465fd7ba7f09fe609144f26c1b8d1d00d6",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 51400,
+          "payload_bytes": 1837,
+          "payload_sha256": "e1a7c43e462624e59c6cf9404ef8fa75e9839cf99a240f1ab525691af0de5f3d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "f352fe3094ee5101736cce80d9a92505f2e2f7cc44b54ff04407167f7eb8b27d",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 53253,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 53547,
+          "payload_bytes": 523,
+          "payload_sha256": "2c21157dea8f95f522353cd1b54667cdc8788d6c9e304deb6d99fb1c7011e5d3",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "edf4e0bb2767c49b685333ecabfea31a30dc82aa92e9961eabad02e4ceaad537",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 54086,
+          "payload_bytes": 351010,
+          "payload_sha256": "4b3c8711b96e7063f643a8445843c9a36802ce969cbd63a53c24cd83b2fca2b9",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "139ed1cf6e3b104d81a15f19039423b697bc79e958b3754d8d086db6defe51b5",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/821dedb3-98e7-48f6-b8c2-8cd651005d96/snapshots/15536194687838365837.snapshot",
+      "bytes": 461453,
+      "sha256": "1d3b81ae768d1a0bd0bb1e06d3452b2a489627b63d90df4a1390f0ef2559ad80",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 0,
+        "Terrain": 2,
+        "Trees": 219,
+        "WallColors": 4,
+        "Walls": 1
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 75503,
+          "payload_sha256": "d20bc421ba3369117be82a740ab1fb85d0d72d0bede42cf89742f70b2ea5d9b0",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 75519,
+          "payload_bytes": 1215,
+          "payload_sha256": "0d0961adc930ef29f853b8513904d24d18169aa536ba3c00234fbbe05508da29",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "ce1e5008587190c3821f8f0c022e0823ef9d41a9069bc4964d131ce8d025cc5c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 76750,
+          "payload_bytes": 11029,
+          "payload_sha256": "b24bcaaa51ea4ce6e2bcc2723d96ece9c707c69c8c1a2d6b7bcaf28da779607f",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "6547e46c2613986b584493f399d13a8d17334aadd494d24c90106483aac5f6b1",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 87795,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 88089,
+          "payload_bytes": 373348,
+          "payload_sha256": "fc132c2d7e1c2b8d6925c412652906d60b802d04806cb6b2b8a2ac82b7068f9c",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "0bffd4a90589d9acd8f1a40a1bc2f1287b3c04d60d9586ba90fa589b4ff91472",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/db962df6-22e6-434e-a71a-7a033a35137b/snapshots/15802484237907781557.snapshot",
+      "bytes": 424963,
+      "sha256": "22977782c00f0adec41a88598fc7fadd75706067cd317a093c1734c988867498",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 0,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 198,
+        "WallColors": 4,
+        "Walls": 0
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 45187,
+          "payload_sha256": "19e3cc3e31de5cf071cb474829fafb96436db5d749843452459418839fa5c668",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 45203,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 45497,
+          "payload_bytes": 4335,
+          "payload_sha256": "8aa610ec05c4f1f3e7902d6f9d32e698131a9beedd6f08d35817c488a7257e0b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "61b8ea82c7ae539e7d554561d76a361898f1de565d1e9eccdf45a3cd945d58e3",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 49848,
+          "payload_bytes": 881,
+          "payload_sha256": "7b43196cfa62d9e08c9ddbf10a14d0e8377d8079a1e0b2edae3fa689ca214146",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "3523b68545066b9eede3b4ed698d4265a31709d8b95caaed5eb6966ac7482bcc",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 50745,
+          "payload_bytes": 374202,
+          "payload_sha256": "765ab7a5f13535a3ae5f3958218266d9a51387fc32b0b99d30de3348f1f5e1e2",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "29899aba852791a5f276fe57ac43423999de2822ac7a1c1c5aff12c251c1db13",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/db962df6-22e6-434e-a71a-7a033a35137b/snapshots/17511137881858483350.snapshot",
+      "bytes": 386863,
+      "sha256": "04efeb40e36653eb78ca02ca8b63947e65465e10c2944ff657effea92c7859f0",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 0,
+        "Terrain": 2,
+        "Trees": 0,
+        "WallColors": 4,
+        "Walls": 0
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 3917,
+          "payload_sha256": "fb5e82a1447d5a5ade89103316dbc1c5a9795014dd0cd64e2efc5edc409f996b",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 3933,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 4227,
+          "payload_bytes": 4335,
+          "payload_sha256": "8aa610ec05c4f1f3e7902d6f9d32e698131a9beedd6f08d35817c488a7257e0b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "61b8ea82c7ae539e7d554561d76a361898f1de565d1e9eccdf45a3cd945d58e3",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 8578,
+          "payload_bytes": 881,
+          "payload_sha256": "7b43196cfa62d9e08c9ddbf10a14d0e8377d8079a1e0b2edae3fa689ca214146",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "3523b68545066b9eede3b4ed698d4265a31709d8b95caaed5eb6966ac7482bcc",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 9475,
+          "payload_bytes": 377372,
+          "payload_sha256": "3c360490c98d8c761f1e410e192f3655246a1f0c260f0f86f9b59dad4db49dfb",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "271e794074ccf100ceb2cfd73df8e858b2a791178dc7a566ebd869fdca67216d",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/10281816827652111209.snapshot",
+      "bytes": 505634,
+      "sha256": "2317b5a09d78057fc0014e05e2d0debe48e7aea7152bf42ffc2d915614c38d70",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 23,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 112,
+        "WallColors": 28,
+        "Walls": 32
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 111779,
+          "payload_sha256": "44a7337ef083f6dae3ff6669107c50cc57d687a72917ffee9a77a7b04c4cfcee",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 111795,
+          "payload_bytes": 10518,
+          "payload_sha256": "00db38c27c084f8c3a257418e71da2fa35064f0d0d21b2c3a1d758860929182d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "155450014870a47b94917cf9c99d0c63f9b2ad157cb6164df084f6e5e4dbe6b0",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 122329,
+          "payload_bytes": 1040,
+          "payload_sha256": "86acb6766c599ae64e37f3b9801592e2e3d08e6bbc643d6c96f031ad2f53c269",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "97773b8bf301287c0638c34ee59e28a76e6aaa874ccec1d4a946428e3675bf7c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 123385,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 124105,
+          "payload_bytes": 381513,
+          "payload_sha256": "ecb6c099e94630642693ac49360f936938708f87c4a187a60fc715a4ef7ed475",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "d0710a34de4b26abd4bcb89b9b74ab7bf8bf8437844b044d9cc705238ac15571",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/11440809515770128450.snapshot",
+      "bytes": 434277,
+      "sha256": "8442894cd63665a2b28aeefc52a5e51cdfa8fac696081c35b3fafc7d357281ce",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 9,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 251,
+        "WallColors": 9,
+        "Walls": 13
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 72434,
+          "payload_sha256": "0fb3186a18e4ec442c6ed08d433273864d94fa1b6ab02303f7aaf88f221c672a",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 72450,
+          "payload_bytes": 4570,
+          "payload_sha256": "936363734a28f14c759ca462426bd38e419fd2eef4df2769519b0862203ca45e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "faf9c63fc9768427f0f86cb2168921df23319627859b61758ee04312f09a70f0",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 77036,
+          "payload_bytes": 495,
+          "payload_sha256": "8eab23d68ab8a1ae2c2d4e17d7504d7b301a4d89a7bca4fbe3aa35b9f04050de",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "d9ad3fabde83bb682c46fc48a71c958e90335459221e4774712ec2e74f0f70cc",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 77547,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 78267,
+          "payload_bytes": 355994,
+          "payload_sha256": "1e0997d97c21689f757181fd6198db4432da64842f3008246058981dccb09c7a",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "42aaef780090383c4915e5e820a4fbb9fce3cf9cb84a5092ffa6d3edcf42ec77",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/11620572033345334727.snapshot",
+      "bytes": 365209,
+      "sha256": "5363ceeec3203d7297958968cc6dbfc047fb1b57e1c8ed10fc404493a22050dd",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 5,
+        "Terrain": 2,
+        "Trees": 0,
+        "WallColors": 5,
+        "Walls": 5
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 6336,
+          "payload_sha256": "d3ed1f25a59344db20af5c6099debf10c6c3ee30360bbdbe90a69a7c4c1a8639",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 6352,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 6646,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 6940,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 7234,
+          "payload_bytes": 357959,
+          "payload_sha256": "0e629beb7a7f130d864f39788296818131d8dc988be1c05730329639cea78417",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "da3e8b6414c450d2b4b2f568b3b49bc5ee5c839c75ee4466dddb4f4c22ab5c49",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/12482217594757751491.snapshot",
+      "bytes": 365209,
+      "sha256": "15a3223d8bfc00598349a1fdf53f4d42eab7c6aff851e3623eb74d4fcf10d810",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 5,
+        "Terrain": 2,
+        "Trees": 0,
+        "WallColors": 5,
+        "Walls": 5
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 6336,
+          "payload_sha256": "b89a4268ae0dfbe7ac993f8f216579ab72aafc0a8414f73bb6ff8c0e528c2709",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 6352,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 6646,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 6940,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 7234,
+          "payload_bytes": 357959,
+          "payload_sha256": "0e629beb7a7f130d864f39788296818131d8dc988be1c05730329639cea78417",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "da3e8b6414c450d2b4b2f568b3b49bc5ee5c839c75ee4466dddb4f4c22ab5c49",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/12726014014004444879.snapshot",
+      "bytes": 424529,
+      "sha256": "2b45248da9bea73fb8b721e48a8f70ad948516ec23545b338905a48540380ee4",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 8,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 262,
+        "WallColors": 8,
+        "Walls": 8
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 66665,
+          "payload_sha256": "6db13a8f5d1cfc5824ec2bbc283e8419267c87cb3de000f1520d57b13ed05199",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 66681,
+          "payload_bytes": 1205,
+          "payload_sha256": "10a58e8370f6e8b0ce6687dd33b589b7753b425f15fcf312d5b4513a7d3cf731",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "65e530b472da1ae434b25dbfde94317b66809614db8746e7c44fddea836b853b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 67902,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 68196,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 68916,
+          "payload_bytes": 355597,
+          "payload_sha256": "b309e4b462c9d01df785e6614d50d1417990dcaec2c37921c2bbb6be86df64a7",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "8d409561ce8831ae6d130b77ab6eaa378d914151de2cef5376ca02d19cd09e37",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/14481537526638130643.snapshot",
+      "bytes": 548172,
+      "sha256": "807529931b58384b38f689153392d0c9df41d04d44182ba21548f107b72f9994",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 39,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 101,
+        "WallColors": 48,
+        "Walls": 49
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 149964,
+          "payload_sha256": "cd88b567a2f88e1d2e2c2d4bfdfced8730059fcf536d24993739e8ea2ae9388e",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 149980,
+          "payload_bytes": 14322,
+          "payload_sha256": "07c94a0382067fe7e0d1cd3c9da04e7d0b707a6fac77de72b4a1c9c4322e583d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "b13d61ceb2fee378aa4f7147bab5a34367e44be453db085efc694de55cbaa5ca",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 164318,
+          "payload_bytes": 2058,
+          "payload_sha256": "c77a711422e39a1efe63add2eeed87a34b5813b5a26163b65fe88de03e828ea2",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "6e6a67a540c34654fa3419eb6d660aef65e8cb391945c95713cc7e5016504a8c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 166392,
+          "payload_bytes": 1727,
+          "payload_sha256": "b8bbf18c0526dabde9e9a0d9a248a17121ac29b22983b5e4cbfcc62c83f34f94",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "11899e5aa3999c9fb3904977171e4135113bda5a4d560dbb91b1b4e4aa77f642",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 168135,
+          "payload_bytes": 380021,
+          "payload_sha256": "252a9536ba2559cf02499bcd0175f9c0b0701bc79d5c0d3b7c4b41f964ccf189",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "0ce3361eff00b49e9fd6c0b1dd3f989c939713b9a85c2966c9d78a6db2501477",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/14992910781140483178.snapshot",
+      "bytes": 547435,
+      "sha256": "cd916ceedca214c7309dc5442f9a69ec6e864cde1db192ab65eb1815c6c10b46",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 39,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 101,
+        "WallColors": 47,
+        "Walls": 49
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 149956,
+          "payload_sha256": "e22e565edd53c20ad75b31d8da406f446fccc430ff996cfe6ef2993ec7967cfd",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 149972,
+          "payload_bytes": 14322,
+          "payload_sha256": "07c94a0382067fe7e0d1cd3c9da04e7d0b707a6fac77de72b4a1c9c4322e583d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "b13d61ceb2fee378aa4f7147bab5a34367e44be453db085efc694de55cbaa5ca",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 164310,
+          "payload_bytes": 1698,
+          "payload_sha256": "6f1965f30a528a834313d9ff4fb09b2b632e979951e2a110dd7ec3d639541577",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "c84132b375b50cddcfd36b28e03086fe60d859b346f99cca5b7adf46aeb2878c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 166024,
+          "payload_bytes": 1727,
+          "payload_sha256": "b8bbf18c0526dabde9e9a0d9a248a17121ac29b22983b5e4cbfcc62c83f34f94",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "11899e5aa3999c9fb3904977171e4135113bda5a4d560dbb91b1b4e4aa77f642",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 167767,
+          "payload_bytes": 379652,
+          "payload_sha256": "ca4ff6ee698416f2242ab761f52bd03657bdc7496d359d349f4b35f42f603e01",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "67cb01a8074ee219c432c0cce61f6996ec4281b96e3184317bbfd22bda8e66fe",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/15400699068779904188.snapshot",
+      "bytes": 444055,
+      "sha256": "576e5ef64e88bfb3792aeec06db13e89cd42b4541dbc23f3a6f3a7916614e1e0",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 17,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 143,
+        "WallColors": 19,
+        "Walls": 22
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 76827,
+          "payload_sha256": "ea92ee60f5efb38394bad1b663e62325381565b6f07e64ea25b326ce35c501db",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 76843,
+          "payload_bytes": 7376,
+          "payload_sha256": "2f746ad6aa8380a4e920ba82143dae111398559e4747e83d2a7f9e70efac01d9",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a3153cc8a2bd91ca517d39b59e54e916883cdaf062b47aef4a026a98e1a5ad7",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 84235,
+          "payload_bytes": 632,
+          "payload_sha256": "a60dcaef948a0660258c5fc3c617e66d8b36f17024883ce43dd3492d0411f981",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a82a04c7eae24e5dfc44660cc1d10999577d9e7c8acaa178a76ea9cc18bc9a2f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 84883,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 85603,
+          "payload_bytes": 358436,
+          "payload_sha256": "58ddf8e71f8e2a1cac1a74f90c373f8ebcbfbbef5b25b089eedfbf3f635de5ad",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "e494b45608305e52b23d6f94a8c36dc186953619957f5ed8687acf6ad99b25a8",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/15433578165346667038.snapshot",
+      "bytes": 546252,
+      "sha256": "f64c1a0edddb566fe49606bbb7f62108904aebdf3f53512f5b9a8663691aadba",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 38,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 101,
+        "WallColors": 46,
+        "Walls": 48
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 148773,
+          "payload_sha256": "bc8878b941e97880dc9bd9c9b1237a4f6dc2032bd2b28a0856f6d9044ed077b0",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 148789,
+          "payload_bytes": 14322,
+          "payload_sha256": "07c94a0382067fe7e0d1cd3c9da04e7d0b707a6fac77de72b4a1c9c4322e583d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "b13d61ceb2fee378aa4f7147bab5a34367e44be453db085efc694de55cbaa5ca",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 163127,
+          "payload_bytes": 1698,
+          "payload_sha256": "6f1965f30a528a834313d9ff4fb09b2b632e979951e2a110dd7ec3d639541577",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "c84132b375b50cddcfd36b28e03086fe60d859b346f99cca5b7adf46aeb2878c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 164841,
+          "payload_bytes": 1727,
+          "payload_sha256": "b8bbf18c0526dabde9e9a0d9a248a17121ac29b22983b5e4cbfcc62c83f34f94",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "11899e5aa3999c9fb3904977171e4135113bda5a4d560dbb91b1b4e4aa77f642",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 166584,
+          "payload_bytes": 379652,
+          "payload_sha256": "ca4ff6ee698416f2242ab761f52bd03657bdc7496d359d349f4b35f42f603e01",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "67cb01a8074ee219c432c0cce61f6996ec4281b96e3184317bbfd22bda8e66fe",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/16631507810288882851.snapshot",
+      "bytes": 445374,
+      "sha256": "8bf3552ac556a10c3b34341ac02bc9a29210b0581d728208666e32135ee1d1cc",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 18,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 142,
+        "WallColors": 20,
+        "Walls": 23
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 78146,
+          "payload_sha256": "6b276df71b0948ef892bcc714ca05b152afc5db648f04c8b6d0560972e696b96",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 78162,
+          "payload_bytes": 7376,
+          "payload_sha256": "2f746ad6aa8380a4e920ba82143dae111398559e4747e83d2a7f9e70efac01d9",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a3153cc8a2bd91ca517d39b59e54e916883cdaf062b47aef4a026a98e1a5ad7",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 85554,
+          "payload_bytes": 632,
+          "payload_sha256": "a60dcaef948a0660258c5fc3c617e66d8b36f17024883ce43dd3492d0411f981",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a82a04c7eae24e5dfc44660cc1d10999577d9e7c8acaa178a76ea9cc18bc9a2f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 86202,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 86922,
+          "payload_bytes": 358436,
+          "payload_sha256": "58ddf8e71f8e2a1cac1a74f90c373f8ebcbfbbef5b25b089eedfbf3f635de5ad",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "e494b45608305e52b23d6f94a8c36dc186953619957f5ed8687acf6ad99b25a8",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/16740872746853916805.snapshot",
+      "bytes": 501455,
+      "sha256": "e2c73955f0fd56c69559e2bd7a70ccd18bb217f5b32ebe2ae29f2a6a6d1f600d",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 21,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 112,
+        "WallColors": 25,
+        "Walls": 30
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 107562,
+          "payload_sha256": "2050ba8791f74bbea60703555f7ddb96abfd52290ba688d42108d2de219d0a59",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 107578,
+          "payload_bytes": 10556,
+          "payload_sha256": "294d7ef53461a408ce99223b3c420fb0a7e8118113f72cd4d399ba8ee376c7ec",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "7166264ea0675a03d8be4a08322fb7b104e0a05e13929c25e9cd6221a7b3bb2c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 118150,
+          "payload_bytes": 1040,
+          "payload_sha256": "86acb6766c599ae64e37f3b9801592e2e3d08e6bbc643d6c96f031ad2f53c269",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "97773b8bf301287c0638c34ee59e28a76e6aaa874ccec1d4a946428e3675bf7c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 119206,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 119926,
+          "payload_bytes": 381513,
+          "payload_sha256": "ecb6c099e94630642693ac49360f936938708f87c4a187a60fc715a4ef7ed475",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "d0710a34de4b26abd4bcb89b9b74ab7bf8bf8437844b044d9cc705238ac15571",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/3182354784437842814.snapshot",
+      "bytes": 424644,
+      "sha256": "91200293fc1b271bbad311425a28134821ee1a1c54300b0327d85c8445496eb4",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 6,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 269,
+        "WallColors": 6,
+        "Walls": 6
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 67206,
+          "payload_sha256": "e8a1c927286d9a1e80f4a2461b667d0448d825a4872a8feaf3ae447ea5ea6f2d",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 67222,
+          "payload_bytes": 1205,
+          "payload_sha256": "10a58e8370f6e8b0ce6687dd33b589b7753b425f15fcf312d5b4513a7d3cf731",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "65e530b472da1ae434b25dbfde94317b66809614db8746e7c44fddea836b853b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 68443,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 68737,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 69031,
+          "payload_bytes": 355597,
+          "payload_sha256": "b309e4b462c9d01df785e6614d50d1417990dcaec2c37921c2bbb6be86df64a7",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "8d409561ce8831ae6d130b77ab6eaa378d914151de2cef5376ca02d19cd09e37",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/5311484598502179540.snapshot",
+      "bytes": 449122,
+      "sha256": "d7b273cd523e7b89f228d7e8cbc00440390e4f526d6fb89a295214f247e5b300",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 12,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 251,
+        "WallColors": 12,
+        "Walls": 16
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 84540,
+          "payload_sha256": "c371c611f461e2baa7a06eaa49b722f399a67caa04de388afec10a82c5c2d8e7",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 84556,
+          "payload_bytes": 5116,
+          "payload_sha256": "89e2a0e5f3dbe4b51388a5f683d11ac46159601b7563c4eced0cf7bbfba76910",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8c11542f4e87d3660e5cc6a3538214cc55163c1996103745c771c05aa4a07c40",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 89688,
+          "payload_bytes": 495,
+          "payload_sha256": "8eab23d68ab8a1ae2c2d4e17d7504d7b301a4d89a7bca4fbe3aa35b9f04050de",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "d9ad3fabde83bb682c46fc48a71c958e90335459221e4774712ec2e74f0f70cc",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 90199,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 90919,
+          "payload_bytes": 358187,
+          "payload_sha256": "168842b5788f38b2b1f0fcc6fe932553659b9d6387f610e14d11a967db220174",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "37c8683b25b10dd3dc1a1df81c6af5dd61686c8dbf39a040308f65b0caa6a298",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/5725509312246959337.snapshot",
+      "bytes": 440523,
+      "sha256": "e762636dd53e784ae14a10e00573994af64e5f567f285a05a19f0aca439357ac",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 16,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 143,
+        "WallColors": 18,
+        "Walls": 21
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 73295,
+          "payload_sha256": "75fa14390d0c4bfbcc16f96b337c8a99a04d9921c13f812fa8bdbf70d404e632",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 73311,
+          "payload_bytes": 7376,
+          "payload_sha256": "2f746ad6aa8380a4e920ba82143dae111398559e4747e83d2a7f9e70efac01d9",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a3153cc8a2bd91ca517d39b59e54e916883cdaf062b47aef4a026a98e1a5ad7",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 80703,
+          "payload_bytes": 632,
+          "payload_sha256": "a60dcaef948a0660258c5fc3c617e66d8b36f17024883ce43dd3492d0411f981",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a82a04c7eae24e5dfc44660cc1d10999577d9e7c8acaa178a76ea9cc18bc9a2f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 81351,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 82071,
+          "payload_bytes": 358436,
+          "payload_sha256": "58ddf8e71f8e2a1cac1a74f90c373f8ebcbfbbef5b25b089eedfbf3f635de5ad",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "e494b45608305e52b23d6f94a8c36dc186953619957f5ed8687acf6ad99b25a8",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/6492791800097272684.snapshot",
+      "bytes": 453539,
+      "sha256": "a46dfc892895debfd7993a50914a949af77f4f3bfe623fe5facf8bc8b4089214",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 12,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 251,
+        "WallColors": 12,
+        "Walls": 16
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 88776,
+          "payload_sha256": "a1bd6589314b21a34318a86ff9e155027c7064eebdbbaf155b347d52753d11bb",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 88792,
+          "payload_bytes": 5297,
+          "payload_sha256": "bbaf8060dd3b5cd236b0e1855f2a143d8323dbce725668d93906a7bff65c6e7f",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "f5da05a8ab17f9033d52ca5af9ac896ae38975fabf37dee1bb54be0746671488",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 94105,
+          "payload_bytes": 495,
+          "payload_sha256": "8eab23d68ab8a1ae2c2d4e17d7504d7b301a4d89a7bca4fbe3aa35b9f04050de",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "d9ad3fabde83bb682c46fc48a71c958e90335459221e4774712ec2e74f0f70cc",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 94616,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 95336,
+          "payload_bytes": 358187,
+          "payload_sha256": "168842b5788f38b2b1f0fcc6fe932553659b9d6387f610e14d11a967db220174",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "37c8683b25b10dd3dc1a1df81c6af5dd61686c8dbf39a040308f65b0caa6a298",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/6613060168266871058.snapshot",
+      "bytes": 481935,
+      "sha256": "dbf727e29c483a0be377b2d8aa0528ae6cb5caefe9c36a654625b2164c75c0c3",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 18,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 132,
+        "WallColors": 20,
+        "Walls": 23
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 95072,
+          "payload_sha256": "0f788e500adbe3b19381af0cd1ee07487eca9cec8c4948b7d05f722e420254c9",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 95088,
+          "payload_bytes": 7376,
+          "payload_sha256": "2f746ad6aa8380a4e920ba82143dae111398559e4747e83d2a7f9e70efac01d9",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a3153cc8a2bd91ca517d39b59e54e916883cdaf062b47aef4a026a98e1a5ad7",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 102480,
+          "payload_bytes": 632,
+          "payload_sha256": "a60dcaef948a0660258c5fc3c617e66d8b36f17024883ce43dd3492d0411f981",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a82a04c7eae24e5dfc44660cc1d10999577d9e7c8acaa178a76ea9cc18bc9a2f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 103128,
+          "payload_bytes": 704,
+          "payload_sha256": "53f0557cbbb3024c121270b22496b08dfc31df8c59640485698a606e24a6483e",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "5a1a26907e6ae79b2976efbcde8f096c0478a5c9c103c591e9d34654271c852f",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 103848,
+          "payload_bytes": 378071,
+          "payload_sha256": "d5eb58174b7aabeb90fdf955ee16e98a55d6119f24a98782f9c3fbcaa009a7e8",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "10ebffdf96cce4064048fe8fa7e8d61d2f4dc091aa9a062c6cfb0952a1ece9ab",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/6937634456942104830.snapshot",
+      "bytes": 555838,
+      "sha256": "434710b250a52f33bf7f2116f0a34c2da6dd71c454c9e127e55c0eb41fd219ee",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 39,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 101,
+        "WallColors": 48,
+        "Walls": 49
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 160118,
+          "payload_sha256": "daf679503bb1562430992cccfaf29972a13b762b140d8f12aac20fde6318c043",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 160134,
+          "payload_bytes": 14322,
+          "payload_sha256": "07c94a0382067fe7e0d1cd3c9da04e7d0b707a6fac77de72b4a1c9c4322e583d",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "b13d61ceb2fee378aa4f7147bab5a34367e44be453db085efc694de55cbaa5ca",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 174472,
+          "payload_bytes": 2950,
+          "payload_sha256": "da968cdea1f48da28631685b54fb3a74f6765c9ee94ae3e9abc0e8157998747b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "f95ce0c07c165799698d14a4eb4b4b54103603e3b90798c69290e9a16b00648b",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 177438,
+          "payload_bytes": 1727,
+          "payload_sha256": "b8bbf18c0526dabde9e9a0d9a248a17121ac29b22983b5e4cbfcc62c83f34f94",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "11899e5aa3999c9fb3904977171e4135113bda5a4d560dbb91b1b4e4aa77f642",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 179181,
+          "payload_bytes": 376641,
+          "payload_sha256": "7142ca94da3f718ce12413a619f70d04b3707bcbf45349bd5473802323204a65",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "b9b7e2e02fcbd735fa86fdbe85b60e9e4907dceebbe226fbfa8f4ddb8d2cd49f",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/7723419614065761156.snapshot",
+      "bytes": 518444,
+      "sha256": "5dcb76bb32cd8a4a6c69d449af18fe7255181783340cc5454059e60836eb0a03",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 28,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 109,
+        "WallColors": 33,
+        "Walls": 37
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 123227,
+          "payload_sha256": "55bb951e44131035b1b2eab19f5891db5a9f047385bd33e6cb2d89bfb5682ab8",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 123243,
+          "payload_bytes": 11253,
+          "payload_sha256": "d91af67496606921ec92094506f730baaa0c530b27f434a6ae195702cb0128a7",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "25fcd788daf8f6e88131e135f4fd54866dbca8add41f1a3c169cf3dcb7eff2d9",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 134512,
+          "payload_bytes": 1040,
+          "payload_sha256": "86acb6766c599ae64e37f3b9801592e2e3d08e6bbc643d6c96f031ad2f53c269",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "97773b8bf301287c0638c34ee59e28a76e6aaa874ccec1d4a946428e3675bf7c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 135568,
+          "payload_bytes": 1331,
+          "payload_sha256": "2c3c6d8bca7b4d1854d009a9cf1b9dda149f0a4baf23e3446ce7ecd9cf9ec920",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "2baa8a69a1bd224a6fb269c57f9ea8f7d92de70fb33e7413dab751be204103f1",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 136915,
+          "payload_bytes": 381513,
+          "payload_sha256": "ecb6c099e94630642693ac49360f936938708f87c4a187a60fc715a4ef7ed475",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "d0710a34de4b26abd4bcb89b9b74ab7bf8bf8437844b044d9cc705238ac15571",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/snapshots/8170698080198982145.snapshot",
+      "bytes": 544726,
+      "sha256": "76c058936f5a9deff14c9a72232ff542591d725793b22b955d4d2328da5039bb",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 37,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 107,
+        "WallColors": 44,
+        "Walls": 46
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 148001,
+          "payload_sha256": "12b5ea09fb3a7a6316a70902e0ce18aa0ac2be43f0a021ab2aaed2e164a05ef7",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 148017,
+          "payload_bytes": 13568,
+          "payload_sha256": "9cfcc99291ed3fba1186dc757867e379c0d4fb9934db5d75572e527aa176fcda",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "612e7612802c6bf32a6bd29279357c9aad8212992b8124c7bfb6f29fd2d1e683",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 161601,
+          "payload_bytes": 1698,
+          "payload_sha256": "6f1965f30a528a834313d9ff4fb09b2b632e979951e2a110dd7ec3d639541577",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "c84132b375b50cddcfd36b28e03086fe60d859b346f99cca5b7adf46aeb2878c",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 163315,
+          "payload_bytes": 1727,
+          "payload_sha256": "b8bbf18c0526dabde9e9a0d9a248a17121ac29b22983b5e4cbfcc62c83f34f94",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "11899e5aa3999c9fb3904977171e4135113bda5a4d560dbb91b1b4e4aa77f642",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 165058,
+          "payload_bytes": 379652,
+          "payload_sha256": "ca4ff6ee698416f2242ab761f52bd03657bdc7496d359d349f4b35f42f603e01",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "67cb01a8074ee219c432c0cce61f6996ec4281b96e3184317bbfd22bda8e66fe",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/f620e628-a530-4109-a04d-a240e5466e71/snapshots/1218930383552365199.snapshot",
+      "bytes": 397500,
+      "sha256": "95b9069592c7fe13afbde1adabc5c67040b15b29736b541e63797fb958aa6a5d",
+      "version": 2,
+      "json_keys": [
+        "AutoClutter",
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "TerrainHeightRange",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "AutoClutter": 0,
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 5,
+        "Terrain": 2,
+        "TerrainHeightRange": 2,
+        "Trees": 158,
+        "WallColors": 5,
+        "Walls": 8
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 42615,
+          "payload_sha256": "aba54bfc8dfa9ccde6c5890718aaa9f1026ea4b9c492ddb5fefa0dd6f9939d30",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 42631,
+          "payload_bytes": 792,
+          "payload_sha256": "ef68bb1c3094c876893df89612ece2751a3f3b110d34f5e84479d305a4a1b424",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a985dc2a9f39173a44c30b3c77e13e94eb6caba0446debac0edb08529f42da4d",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 43439,
+          "payload_bytes": 2585,
+          "payload_sha256": "bf01c8cd0189f92ffee871e93a34f2ba315793dbebdfe369e2ba64859b28ed7f",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "080d14181d0fd7ef91ddf5a57d6cfd91e68077ad3afce573fbd382f475c184a6",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 46040,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 46334,
+          "payload_bytes": 351150,
+          "payload_sha256": "4227f44ee25592cbe4e384eaf299df78a947c461230ff0bc69edd8c03a1df63a",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "524145e150e418835bea1806f350e2b50c125368ef0e32302644b938880ea7d7",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    },
+    {
+      "file": "Steam/76561198277863427/saves/f620e628-a530-4109-a04d-a240e5466e71/snapshots/2579987166082203451.snapshot",
+      "bytes": 366748,
+      "sha256": "6ec4393c3cf5e05a54cfad3c2af655b8d181eef5b8a6e58fd17a5e6a80e7ca69",
+      "version": 2,
+      "json_keys": [
+        "Decorators",
+        "GateColors",
+        "HalftimberColors",
+        "Raster",
+        "Roofs",
+        "Terrain",
+        "Trees",
+        "Version",
+        "WallColors",
+        "Walls"
+      ],
+      "scene_counts": {
+        "Decorators": 1,
+        "GateColors": 0,
+        "HalftimberColors": 0,
+        "Raster": 3,
+        "Roofs": 4,
+        "Terrain": 2,
+        "Trees": 0,
+        "WallColors": 4,
+        "Walls": 4
+      },
+      "chunks": [
+        {
+          "magic_hex": "536e617073686f74",
+          "name": "Snapshot",
+          "logical_name": "Snapshot",
+          "offset": 0,
+          "payload_bytes": 6798,
+          "payload_sha256": "ad7dbf2e357ef8f5cc91ea5fc8dd3d9edfbac4ccc2ab116f24cfd56a640a43f4",
+          "decoded_bytes": null,
+          "decoded_sha256": null,
+          "decoded": true
+        },
+        {
+          "magic_hex": "5061746852617374",
+          "name": "PathRast",
+          "logical_name": "PathRaster",
+          "offset": 6814,
+          "payload_bytes": 792,
+          "payload_sha256": "ef68bb1c3094c876893df89612ece2751a3f3b110d34f5e84479d305a4a1b424",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "a985dc2a9f39173a44c30b3c77e13e94eb6caba0446debac0edb08529f42da4d",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5761746572526173",
+          "name": "WaterRas",
+          "logical_name": "WaterRaster",
+          "offset": 7622,
+          "payload_bytes": 2029,
+          "payload_sha256": "828c6f88842adaa1bb684306d1d26efc831391446d069cc9506409920d50b9e2",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "c80e1343f02c7d4a17d58c1d52ae0160208648e2fc6f9882ffa9e4b784f9647a",
+          "decoded": true
+        },
+        {
+          "magic_hex": "47617264656e5261",
+          "name": "GardenRa",
+          "logical_name": "GardenRaster",
+          "offset": 9667,
+          "payload_bytes": 278,
+          "payload_sha256": "48a5b63fc795f3b1baf0c398aac60bb1887d57008c0edede223db74d6126d37b",
+          "decoded_bytes": 262144,
+          "decoded_sha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+          "decoded": true
+        },
+        {
+          "magic_hex": "5465727261696e00",
+          "name": "Terrain",
+          "logical_name": "Terrain",
+          "offset": 9961,
+          "payload_bytes": 356771,
+          "payload_sha256": "7cf0070263c293bffa1ed6811a7d184d7acfe5fe96c004608701910e23582445",
+          "decoded_bytes": 524288,
+          "decoded_sha256": "852b3796aa84e2990e0a5b7ebdb06f703cc5d685c62f8bc74edc7c21b36db86a",
+          "decoded": true
+        }
+      ],
+      "byte_identical_roundtrip": true
+    }
+  ],
+  "histories": [
+    {
+      "file": "cas-cache/70ec26b0fb1ffd271f888aab7ec9ab143e50a0950f715c6fb7bce84a0a734a0d/history.json",
+      "bytes": 436726,
+      "sha256": "40c3d99412c71aa29427027da2c78391eb0062e78ab07b4e81797d2790d5562f",
+      "version": 23,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 95,
+      "history_start": 0,
+      "edit_chain_length": 96,
+      "snapshots": [
+        {
+          "chain_index": 94,
+          "snapshot_id": 14880132303202510185
+        },
+        {
+          "chain_index": 95,
+          "snapshot_id": 722346066813074390
+        }
+      ],
+      "missing_snapshot_references": [
+        14880132303202510185
+      ]
+    },
+    {
+      "file": "Steam/76561198277863427/backup-saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/history-backup-2025-06-06 13-00-24.json",
+      "bytes": 935682,
+      "sha256": "bfce5cff27e05d452b947855b4c25dae28c5e6d05ec15f514e406dcbb7042c2a",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 531,
+      "history_start": 0,
+      "edit_chain_length": 532,
+      "snapshots": [
+        {
+          "chain_index": 46,
+          "snapshot_id": 12482217594757751491
+        },
+        {
+          "chain_index": 51,
+          "snapshot_id": 11620572033345334727
+        },
+        {
+          "chain_index": 65,
+          "snapshot_id": 3182354784437842814
+        },
+        {
+          "chain_index": 88,
+          "snapshot_id": 12726014014004444879
+        },
+        {
+          "chain_index": 114,
+          "snapshot_id": 11440809515770128450
+        },
+        {
+          "chain_index": 134,
+          "snapshot_id": 5311484598502179540
+        },
+        {
+          "chain_index": 147,
+          "snapshot_id": 6492791800097272684
+        },
+        {
+          "chain_index": 201,
+          "snapshot_id": 5725509312246959337
+        },
+        {
+          "chain_index": 222,
+          "snapshot_id": 15400699068779904188
+        },
+        {
+          "chain_index": 227,
+          "snapshot_id": 16631507810288882851
+        },
+        {
+          "chain_index": 228,
+          "snapshot_id": 16631507810288882851
+        },
+        {
+          "chain_index": 250,
+          "snapshot_id": 6613060168266871058
+        },
+        {
+          "chain_index": 300,
+          "snapshot_id": 16740872746853916805
+        },
+        {
+          "chain_index": 318,
+          "snapshot_id": 10281816827652111209
+        },
+        {
+          "chain_index": 386,
+          "snapshot_id": 7723419614065761156
+        },
+        {
+          "chain_index": 492,
+          "snapshot_id": 8170698080198982145
+        },
+        {
+          "chain_index": 516,
+          "snapshot_id": 15433578165346667038
+        },
+        {
+          "chain_index": 523,
+          "snapshot_id": 14992910781140483178
+        },
+        {
+          "chain_index": 524,
+          "snapshot_id": 14481537526638130643
+        },
+        {
+          "chain_index": 531,
+          "snapshot_id": 6937634456942104830
+        }
+      ],
+      "missing_snapshot_references": [
+        12482217594757751491,
+        11620572033345334727,
+        3182354784437842814,
+        12726014014004444879,
+        11440809515770128450,
+        5311484598502179540,
+        6492791800097272684,
+        5725509312246959337,
+        15400699068779904188,
+        16631507810288882851,
+        16631507810288882851,
+        6613060168266871058,
+        16740872746853916805,
+        10281816827652111209,
+        7723419614065761156,
+        8170698080198982145,
+        15433578165346667038,
+        14992910781140483178,
+        14481537526638130643,
+        6937634456942104830
+      ]
+    },
+    {
+      "file": "Steam/76561198277863427/saves/2351391c-6728-41ca-a310-91f0e145f848/history.json",
+      "bytes": 442884,
+      "sha256": "89a9481deeaa82b3dd85c967429229e1146b136874efcd8489a5844938e008dd",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 68,
+      "history_start": 64,
+      "edit_chain_length": 69,
+      "snapshots": [
+        {
+          "chain_index": 60,
+          "snapshot_id": 8208451200420490402
+        },
+        {
+          "chain_index": 63,
+          "snapshot_id": 2548088566237603439
+        },
+        {
+          "chain_index": 64,
+          "snapshot_id": 6562168937870500139
+        },
+        {
+          "chain_index": 68,
+          "snapshot_id": 7996458416407797454
+        }
+      ],
+      "missing_snapshot_references": []
+    },
+    {
+      "file": "Steam/76561198277863427/saves/585e2a1e-a7fa-4768-9ffd-ac90f77a0df8/history.json",
+      "bytes": 140789,
+      "sha256": "896cb72c5bd2481e140849302d8bbc383c9008dc4d4a7081052542b9bd44a73f",
+      "version": 20,
+      "keys": [
+        "Camera",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 45,
+      "history_start": 0,
+      "edit_chain_length": 46,
+      "snapshots": [
+        {
+          "chain_index": 40,
+          "snapshot_id": 3281406785818202120
+        },
+        {
+          "chain_index": 45,
+          "snapshot_id": 16941193096156899331
+        }
+      ],
+      "missing_snapshot_references": []
+    },
+    {
+      "file": "Steam/76561198277863427/saves/5c36169d-eb3c-4db7-bb1e-e929663b01fa/history.json",
+      "bytes": 341117,
+      "sha256": "d107fdd37b6cea916c9a142e30d2536f8972bb38256118155be6835256aac096",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 187,
+      "history_start": 0,
+      "edit_chain_length": 188,
+      "snapshots": [
+        {
+          "chain_index": 0,
+          "snapshot_id": 16827078432637516673
+        },
+        {
+          "chain_index": 105,
+          "snapshot_id": 16491589277982377259
+        },
+        {
+          "chain_index": 129,
+          "snapshot_id": 4232358059215382354
+        },
+        {
+          "chain_index": 187,
+          "snapshot_id": 17801474208793810585
+        }
+      ],
+      "missing_snapshot_references": [
+        16827078432637516673
+      ]
+    },
+    {
+      "file": "Steam/76561198277863427/saves/821dedb3-98e7-48f6-b8c2-8cd651005d96/history.json",
+      "bytes": 1240671,
+      "sha256": "200c256adfe521fbe253756f9141df2c7eefbdcd9f1f120d3098229b6b98d78d",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 114,
+      "history_start": 0,
+      "edit_chain_length": 115,
+      "snapshots": [
+        {
+          "chain_index": 19,
+          "snapshot_id": 4038413283617636513
+        },
+        {
+          "chain_index": 44,
+          "snapshot_id": 8800610284093484661
+        },
+        {
+          "chain_index": 57,
+          "snapshot_id": 15148345985644650399
+        },
+        {
+          "chain_index": 80,
+          "snapshot_id": 5225051868118431607
+        },
+        {
+          "chain_index": 109,
+          "snapshot_id": 2520646058077993172
+        },
+        {
+          "chain_index": 114,
+          "snapshot_id": 15536194687838365837
+        }
+      ],
+      "missing_snapshot_references": [
+        4038413283617636513,
+        8800610284093484661,
+        15148345985644650399,
+        5225051868118431607,
+        2520646058077993172
+      ]
+    },
+    {
+      "file": "Steam/76561198277863427/saves/db962df6-22e6-434e-a71a-7a033a35137b/history.json",
+      "bytes": 174916,
+      "sha256": "2776d8521d12d895f54c21d08e9d69fe3a69d8c3ea7f989d8db80bb94c6060f0",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 71,
+      "history_start": 0,
+      "edit_chain_length": 72,
+      "snapshots": [
+        {
+          "chain_index": 60,
+          "snapshot_id": 6916972940480538457
+        },
+        {
+          "chain_index": 65,
+          "snapshot_id": 16048495088926015536
+        },
+        {
+          "chain_index": 68,
+          "snapshot_id": 11631254691121156584
+        },
+        {
+          "chain_index": 70,
+          "snapshot_id": 17511137881858483350
+        },
+        {
+          "chain_index": 71,
+          "snapshot_id": 15802484237907781557
+        }
+      ],
+      "missing_snapshot_references": [
+        6916972940480538457,
+        16048495088926015536,
+        11631254691121156584
+      ]
+    },
+    {
+      "file": "Steam/76561198277863427/saves/e18f48a2-9bb2-489c-9bcf-b9f3525adb45/history.json",
+      "bytes": 935682,
+      "sha256": "bfce5cff27e05d452b947855b4c25dae28c5e6d05ec15f514e406dcbb7042c2a",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 531,
+      "history_start": 0,
+      "edit_chain_length": 532,
+      "snapshots": [
+        {
+          "chain_index": 46,
+          "snapshot_id": 12482217594757751491
+        },
+        {
+          "chain_index": 51,
+          "snapshot_id": 11620572033345334727
+        },
+        {
+          "chain_index": 65,
+          "snapshot_id": 3182354784437842814
+        },
+        {
+          "chain_index": 88,
+          "snapshot_id": 12726014014004444879
+        },
+        {
+          "chain_index": 114,
+          "snapshot_id": 11440809515770128450
+        },
+        {
+          "chain_index": 134,
+          "snapshot_id": 5311484598502179540
+        },
+        {
+          "chain_index": 147,
+          "snapshot_id": 6492791800097272684
+        },
+        {
+          "chain_index": 201,
+          "snapshot_id": 5725509312246959337
+        },
+        {
+          "chain_index": 222,
+          "snapshot_id": 15400699068779904188
+        },
+        {
+          "chain_index": 227,
+          "snapshot_id": 16631507810288882851
+        },
+        {
+          "chain_index": 228,
+          "snapshot_id": 16631507810288882851
+        },
+        {
+          "chain_index": 250,
+          "snapshot_id": 6613060168266871058
+        },
+        {
+          "chain_index": 300,
+          "snapshot_id": 16740872746853916805
+        },
+        {
+          "chain_index": 318,
+          "snapshot_id": 10281816827652111209
+        },
+        {
+          "chain_index": 386,
+          "snapshot_id": 7723419614065761156
+        },
+        {
+          "chain_index": 492,
+          "snapshot_id": 8170698080198982145
+        },
+        {
+          "chain_index": 516,
+          "snapshot_id": 15433578165346667038
+        },
+        {
+          "chain_index": 523,
+          "snapshot_id": 14992910781140483178
+        },
+        {
+          "chain_index": 524,
+          "snapshot_id": 14481537526638130643
+        },
+        {
+          "chain_index": 531,
+          "snapshot_id": 6937634456942104830
+        }
+      ],
+      "missing_snapshot_references": []
+    },
+    {
+      "file": "Steam/76561198277863427/saves/f620e628-a530-4109-a04d-a240e5466e71/history.json",
+      "bytes": 127984,
+      "sha256": "641563d5abcf88d8b63c8086cbf53ba5c9db84be3f91a56cf1f8b1b78a85a02e",
+      "version": 24,
+      "keys": [
+        "Camera",
+        "Colors",
+        "History",
+        "Sheep",
+        "Time of day",
+        "Version"
+      ],
+      "history_fields": [
+        "chain_index",
+        "edit_chain",
+        "history_start",
+        "snapshots"
+      ],
+      "chain_index": 90,
+      "history_start": 0,
+      "edit_chain_length": 91,
+      "snapshots": [
+        {
+          "chain_index": 90,
+          "snapshot_id": 1218930383552365199
+        }
+      ],
+      "missing_snapshot_references": []
+    }
+  ],
+  "edit_variants": {
+    "Tree": 2483,
+    "Water": 202,
+    "Terrain": 149,
+    "WallNewSystem": 590,
+    "Roof": 254,
+    "Color": 35,
+    "Path": 165,
+    "Garden": 28,
+    "DecoratorV5": 331
+  },
+  "edit_operation_fields": {
+    "Tree.Place": 1735,
+    "Tree.Delete": 742,
+    "Water.blend_mode": 202,
+    "Water.brush_size": 202,
+    "Water.is_additive": 202,
+    "Water.points": 202,
+    "Terrain.NewTerrainStroke": 46,
+    "Terrain.EditTerrainStroke": 91,
+    "Roof.CreateRoof": 106,
+    "Color.Wall": 20,
+    "Roof.VisualEdit": 129,
+    "Roof.SwitchRoofRidgeDir": 8,
+    "Color.Roof": 15,
+    "Terrain.MoveTerrainStroke": 12,
+    "Path.blend_mode": 165,
+    "Path.brush_size": 165,
+    "Path.is_additive": 165,
+    "Path.points": 165,
+    "Garden.blend_mode": 28,
+    "Garden.brush_size": 28,
+    "Garden.is_additive": 28,
+    "Garden.points": 28,
+    "DecoratorV5.Place": 247,
+    "DecoratorV5.Change": 67,
+    "DecoratorV5.Remove": 17,
+    "Roof.ChangeFlatRoofRimStyle": 6,
+    "Tree.Move": 6,
+    "Roof.DeleteRoof": 5
+  },
+  "observed_schema_paths": {
+    "$.Camera.camera_rig_arm_length:float": 9,
+    "$.Camera.pitch_cache:float": 9,
+    "$.Camera.pitch_offset:float": 9,
+    "$.Camera.position_cache:list": 9,
+    "$.Camera.position_cache[]:float": 27,
+    "$.Camera.yaw_cache:float": 9,
+    "$.Camera.yaw_offset:float": 9,
+    "$.Camera:dict": 9,
+    "$.Colors.building:int": 8,
+    "$.Colors.building_wall_style:str": 8,
+    "$.Colors.fences:int": 8,
+    "$.Colors.flag:int": 8,
+    "$.Colors.flat_rim_style:str": 8,
+    "$.Colors.freeform_wall:int": 8,
+    "$.Colors.freehand_ty:str": 8,
+    "$.Colors.gates:int": 8,
+    "$.Colors.halftimber:int": 8,
+    "$.Colors.lantern_brightness:float": 7,
+    "$.Colors.lantern_light:int": 8,
+    "$.Colors.roof:int": 8,
+    "$.Colors.window_light:int": 8,
+    "$.Colors.windows:NoneType": 8,
+    "$.Colors:dict": 8,
+    "$.History.chain_index:int": 9,
+    "$.History.edit_chain:list": 9,
+    "$.History.edit_chain[].decorators.diffs:list": 338,
+    "$.History.edit_chain[].decorators.diffs[]:list": 338,
+    "$.History.edit_chain[].decorators.diffs[][].Wall:int": 262,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.allow_connection:bool": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.chimney_h_offset:float": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.clv:int": 308,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.color_id:int": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Roof.mesh_uv:list": 20,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Roof.mesh_uv[]:float": 40,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Roof:dict": 20,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Terrain.pos_xz:list": 76,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Terrain.pos_xz[]:float": 152,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Terrain.yaw_radians:float": 76,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Terrain:dict": 76,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.anchor_ws:list": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.anchor_ws[]:float": 678,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.corner:int": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.is_bottom_door:bool": 222,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.platform:int": 1,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.side:str": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor.wall_height_relative_y:float": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.anchor:dict": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.coord.x:float": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.coord.y:float": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall.coord:dict": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst.Wall:dict": 226,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.dst:dict": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.rank.x:int": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.rank:dict": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.seed:int": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.ty.Clutter.ty:str": 75,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.ty.Clutter:dict": 75,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.ty:dict": 75,
+    "$.History.edit_chain[].decorators.diffs[][].after.*.ty:str": 247,
+    "$.History.edit_chain[].decorators.diffs[][].after.*:dict": 322,
+    "$.History.edit_chain[].decorators.diffs[][].after:dict": 338,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.allow_connection:bool": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.chimney_h_offset:float": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.clv:int": 85,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.color_id:int": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Terrain.pos_xz:list": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Terrain.pos_xz[]:float": 70,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Terrain.yaw_radians:float": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Terrain:dict": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.anchor_ws:list": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.anchor_ws[]:float": 174,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.corner:int": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.is_bottom_door:bool": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.side:str": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor.wall_height_relative_y:float": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.anchor:dict": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.coord.x:float": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.coord.y:float": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall.coord:dict": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst.Wall:dict": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.dst:dict": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.rank.x:int": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.rank:dict": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.seed:int": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.ty.Clutter.ty:str": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.ty.Clutter:dict": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.ty:dict": 35,
+    "$.History.edit_chain[].decorators.diffs[][].before.*.ty:str": 58,
+    "$.History.edit_chain[].decorators.diffs[][].before.*:dict": 93,
+    "$.History.edit_chain[].decorators.diffs[][].before:dict": 338,
+    "$.History.edit_chain[].decorators.diffs[][]:dict": 600,
+    "$.History.edit_chain[].decorators.diffs[][]:str": 76,
+    "$.History.edit_chain[].decorators:dict": 338,
+    "$.History.edit_chain[].edits:list": 1741,
+    "$.History.edit_chain[].edits[].Color.Roof.from:int": 15,
+    "$.History.edit_chain[].edits[].Color.Roof.to:int": 15,
+    "$.History.edit_chain[].edits[].Color.Roof.wall_id:int": 15,
+    "$.History.edit_chain[].edits[].Color.Roof:dict": 15,
+    "$.History.edit_chain[].edits[].Color.Wall.from:int": 20,
+    "$.History.edit_chain[].edits[].Color.Wall.to:int": 20,
+    "$.History.edit_chain[].edits[].Color.Wall.wall_id:int": 20,
+    "$.History.edit_chain[].edits[].Color.Wall:dict": 20,
+    "$.History.edit_chain[].edits[].Color:dict": 35,
+    "$.History.edit_chain[].edits[].DecoratorV5.Change:dict": 67,
+    "$.History.edit_chain[].edits[].DecoratorV5.Place:dict": 247,
+    "$.History.edit_chain[].edits[].DecoratorV5.Remove:dict": 17,
+    "$.History.edit_chain[].edits[].DecoratorV5:dict": 331,
+    "$.History.edit_chain[].edits[].Garden.blend_mode.Add.opacity:float": 25,
+    "$.History.edit_chain[].edits[].Garden.blend_mode.Add:dict": 25,
+    "$.History.edit_chain[].edits[].Garden.blend_mode:dict": 25,
+    "$.History.edit_chain[].edits[].Garden.blend_mode:str": 3,
+    "$.History.edit_chain[].edits[].Garden.brush_size:float": 28,
+    "$.History.edit_chain[].edits[].Garden.is_additive:bool": 28,
+    "$.History.edit_chain[].edits[].Garden.points:list": 28,
+    "$.History.edit_chain[].edits[].Garden.points[]:list": 395,
+    "$.History.edit_chain[].edits[].Garden.points[][]:float": 1185,
+    "$.History.edit_chain[].edits[].Garden:dict": 28,
+    "$.History.edit_chain[].edits[].Path.blend_mode:str": 165,
+    "$.History.edit_chain[].edits[].Path.brush_size:float": 165,
+    "$.History.edit_chain[].edits[].Path.is_additive:bool": 165,
+    "$.History.edit_chain[].edits[].Path.points:list": 165,
+    "$.History.edit_chain[].edits[].Path.points[]:list": 20769,
+    "$.History.edit_chain[].edits[].Path.points[][]:float": 62307,
+    "$.History.edit_chain[].edits[].Path:dict": 165,
+    "$.History.edit_chain[].edits[].Roof.ChangeFlatRoofRimStyle.after:str": 6,
+    "$.History.edit_chain[].edits[].Roof.ChangeFlatRoofRimStyle.before:str": 6,
+    "$.History.edit_chain[].edits[].Roof.ChangeFlatRoofRimStyle.wall_index:int": 6,
+    "$.History.edit_chain[].edits[].Roof.ChangeFlatRoofRimStyle:dict": 6,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.color_id:int": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.eave_length_01:float": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.flat_rim_style:str": 103,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.height_01:float": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.profile_01:float": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.ridge_dir:str": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.ridge_length_01:float": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.tip_offset_01:list": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params.tip_offset_01[]:float": 212,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.params:dict": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof.wall_index:int": 106,
+    "$.History.edit_chain[].edits[].Roof.CreateRoof:dict": 106,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.color_id:int": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.eave_length_01:float": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.flat_rim_style:str": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.height_01:float": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.profile_01:float": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.ridge_dir:str": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.ridge_length_01:float": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.tip_offset_01:list": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params.tip_offset_01[]:float": 10,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.params:dict": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof.wall_index:int": 5,
+    "$.History.edit_chain[].edits[].Roof.DeleteRoof:dict": 5,
+    "$.History.edit_chain[].edits[].Roof.SwitchRoofRidgeDir.from:str": 8,
+    "$.History.edit_chain[].edits[].Roof.SwitchRoofRidgeDir.to:str": 8,
+    "$.History.edit_chain[].edits[].Roof.SwitchRoofRidgeDir.wall_index:int": 8,
+    "$.History.edit_chain[].edits[].Roof.SwitchRoofRidgeDir:dict": 8,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_eave:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_height:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_profile:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_ridge:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_tip_offset:list": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.new_tip_offset[]:float": 258,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_eave:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_height:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_profile:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_ridge:float": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_tip_offset:list": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.prev_tip_offset[]:float": 258,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit.wall_index:int": 129,
+    "$.History.edit_chain[].edits[].Roof.VisualEdit:dict": 129,
+    "$.History.edit_chain[].edits[].Roof:dict": 254,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke.index:int": 91,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke.new_falloff:float": 91,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke.new_height_ws:float": 91,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke.prev_falloff:float": 91,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke.prev_height_ws:float": 91,
+    "$.History.edit_chain[].edits[].Terrain.EditTerrainStroke:dict": 91,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.id:int": 12,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.move_vec:list": 12,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.move_vec[]:float": 24,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.original_stroke_pts:list": 12,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.original_stroke_pts[]:list": 574,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke.original_stroke_pts[][]:float": 1722,
+    "$.History.edit_chain[].edits[].Terrain.MoveTerrainStroke:dict": 12,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke.height_ws:float": 46,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke.index:int": 46,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke.stroke_pts:list": 46,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke.stroke_pts[]:list": 2683,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke.stroke_pts[][]:float": 8049,
+    "$.History.edit_chain[].edits[].Terrain.NewTerrainStroke:dict": 46,
+    "$.History.edit_chain[].edits[].Terrain:dict": 149,
+    "$.History.edit_chain[].edits[].Tree.Delete.index:int": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.id:int": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.is_preplaced:bool": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.position:list": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.position[]:float": 2226,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.prefab_name:str": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.rotation_degrees:float": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree.scale:float": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete.tree:dict": 742,
+    "$.History.edit_chain[].edits[].Tree.Delete:dict": 742,
+    "$.History.edit_chain[].edits[].Tree.Move.from:list": 6,
+    "$.History.edit_chain[].edits[].Tree.Move.from[]:float": 18,
+    "$.History.edit_chain[].edits[].Tree.Move.index:int": 6,
+    "$.History.edit_chain[].edits[].Tree.Move.to:list": 6,
+    "$.History.edit_chain[].edits[].Tree.Move.to[]:float": 18,
+    "$.History.edit_chain[].edits[].Tree.Move:dict": 6,
+    "$.History.edit_chain[].edits[].Tree.Place.index:int": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.id:int": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.is_preplaced:bool": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.position:list": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.position[]:float": 5205,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.prefab_name:str": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.rotation_degrees:float": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree.scale:float": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place.tree:dict": 1735,
+    "$.History.edit_chain[].edits[].Tree.Place:dict": 1735,
+    "$.History.edit_chain[].edits[].Tree:dict": 2483,
+    "$.History.edit_chain[].edits[].WallNewSystem:list": 590,
+    "$.History.edit_chain[].edits[].WallNewSystem[]:list": 814,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].AdjustHeight.after:float": 114,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].AdjustHeight.before:float": 114,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].AdjustHeight.wall_index:int": 114,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].AdjustHeight:dict": 114,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeArchHeight.after:float": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeArchHeight.before:float": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeArchHeight.wall_index:int": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeArchHeight:dict": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeElevation.after:float": 16,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeElevation.before:float": 16,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeElevation.wall_index:int": 16,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeElevation:dict": 16,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeStyle.after:str": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeStyle.before:str": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeStyle.wall_index:int": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].ChangeStyle:dict": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.arch_height:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.arch_ty:str": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.clutter_version:int": 137,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.length:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.points:list": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.points[]:list": 725,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.points[][]:float": 2175,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.points_u:list": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve.points_u[]:float": 725,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.curve:dict": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.elevation:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.freehand_ty:str": 153,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.height:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.is_enclosed:str": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.structure_ty:str": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after.style:str": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.after:dict": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.color_id:int": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.elevation:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.wall_height:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall.wall_index:int": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].CreateWall:dict": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.arch_height:float": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.arch_ty:str": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.clutter_version:int": 26,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.length:float": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.points:list": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.points[]:list": 390,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.points[][]:float": 1170,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.points_u:list": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve.points_u[]:float": 390,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.curve:dict": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.elevation:float": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.freehand_ty:str": 30,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.height:float": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.is_enclosed:str": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.structure_ty:str": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before.style:str": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.before:dict": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.color_id:int": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.wall_height:float": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall.wall_index:int": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].DeleteWall:dict": 34,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.length:float": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.points:list": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.points[]:list": 40,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.points[][]:float": 80,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.points_u:list": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after.points_u[]:float": 40,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.after:dict": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.length:float": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.points:list": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.points[]:list": 40,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.points[][]:float": 80,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.points_u:list": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before.points_u[]:float": 40,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.before:dict": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall.wall_index:int": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphFreehandWall:dict": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Circle.center:list": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Circle.center[]:float": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Circle.radius:float": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Circle:dict": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.center:list": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.center[]:float": 426,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.length:float": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.orientation:list": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.orientation[]:float": 426,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle.width:float": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after.Rectangle:dict": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.after:dict": 254,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Circle.center:list": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Circle.center[]:float": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Circle.radius:float": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Circle:dict": 41,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.center:list": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.center[]:float": 426,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.length:float": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.orientation:list": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.orientation[]:float": 426,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle.width:float": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before.Rectangle:dict": 213,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.before:dict": 254,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape.wall_index:int": 254,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].MorphPremadeShape:dict": 254,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.arch_height:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.arch_ty:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.clutter_version:int": 153,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.length:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.points:list": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.points[]:list": 2220,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.points[][]:float": 6660,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.points_u:list": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve.points_u[]:float": 2220,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.curve:dict": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.elevation:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.freehand_ty:str": 174,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.height:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Circle.center:list": 24,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Circle.center[]:float": 48,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Circle.radius:float": 24,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Circle:dict": 24,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.center:list": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.center[]:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.length:float": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.orientation:list": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.orientation[]:float": 164,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle.width:float": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params.Rectangle:dict": 82,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape.params:dict": 106,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed.PremadeShape:dict": 106,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed:dict": 106,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.is_enclosed:str": 84,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.structure_ty:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after.style:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.after:dict": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.arch_height:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.arch_ty:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.clutter_version:int": 153,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.length:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.points:list": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.points[]:list": 925,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.points[][]:float": 2775,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.points_u:list": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve.points_u[]:float": 925,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.curve:dict": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.elevation:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.freehand_ty:str": 174,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.height:float": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Circle.center:list": 4,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Circle.center[]:float": 8,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Circle.radius:float": 4,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Circle:dict": 4,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.center:list": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.center[]:float": 2,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.length:float": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.orientation:list": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.orientation[]:float": 2,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle.width:float": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params.Rectangle:dict": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape.params:dict": 5,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed.PremadeShape:dict": 5,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed:dict": 5,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.is_enclosed:str": 185,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.structure_ty:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before.style:str": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.before:dict": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ExpandFrom.end_t:float": 159,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ExpandFrom.start_t:float": 159,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ExpandFrom:dict": 159,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ShrinkTo.end_t:float": 30,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ShrinkTo.start_t:float": 30,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty.ShrinkTo:dict": 30,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty:dict": 189,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.operation_ty:str": 1,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged.wall_index:int": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][].WallChanged:dict": 190,
+    "$.History.edit_chain[].edits[].WallNewSystem[][]:dict": 789,
+    "$.History.edit_chain[].edits[].Water.blend_mode:str": 202,
+    "$.History.edit_chain[].edits[].Water.brush_size:float": 202,
+    "$.History.edit_chain[].edits[].Water.is_additive:bool": 202,
+    "$.History.edit_chain[].edits[].Water.points:list": 202,
+    "$.History.edit_chain[].edits[].Water.points[]:list": 34162,
+    "$.History.edit_chain[].edits[].Water.points[][]:float": 102486,
+    "$.History.edit_chain[].edits[].Water:dict": 202,
+    "$.History.edit_chain[].edits[]:dict": 4237,
+    "$.History.edit_chain[]:dict": 1741,
+    "$.History.history_start:int": 9,
+    "$.History.snapshots:list": 9,
+    "$.History.snapshots[].chain_index:int": 64,
+    "$.History.snapshots[].snapshot_id:int": 64,
+    "$.History.snapshots[]:dict": 64,
+    "$.History:dict": 9,
+    "$.Sheep.sheep:list": 9,
+    "$.Sheep.sheep[].goal:list": 27,
+    "$.Sheep.sheep[].goal[]:float": 81,
+    "$.Sheep.sheep[].move_state.Idle.timeout_s:float": 7,
+    "$.Sheep.sheep[].move_state.Idle:dict": 7,
+    "$.Sheep.sheep[].move_state.Walking.force_reach_goal:bool": 20,
+    "$.Sheep.sheep[].move_state.Walking.goal_change_timeout:float": 20,
+    "$.Sheep.sheep[].move_state.Walking.timeout_s:float": 20,
+    "$.Sheep.sheep[].move_state.Walking:dict": 20,
+    "$.Sheep.sheep[].move_state:dict": 27,
+    "$.Sheep.sheep[].position:list": 27,
+    "$.Sheep.sheep[].position[]:float": 81,
+    "$.Sheep.sheep[]:dict": 27,
+    "$.Sheep:dict": 9,
+    "$.Time of day.latitude_degrees:float": 9,
+    "$.Time of day.sun_xz_rotation:float": 9,
+    "$.Time of day.time_of_day:float": 9,
+    "$.Time of day:dict": 9,
+    "$.Version:int": 9,
+    "$:dict": 9
+  },
+  "limitations": [
+    "Only recorded saves establish coverage.",
+    "No game execution, replay, or semantic equivalence test.",
+    "Raster dimensions and terrain sample units need code corroboration.",
+    "Repack preserves compressed streams; it does not recompress edited scenes."
+  ]
+}

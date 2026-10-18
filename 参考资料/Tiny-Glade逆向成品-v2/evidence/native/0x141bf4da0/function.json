@@ -1,0 +1,1034 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 1804,
+    "record_offset": 104916,
+    "module": "country_core-75de4a05f1ed4a16.9pxpqp0vsgdxm47sl91wxnbih.1euy9uv.rcgu.o",
+    "name": "country_core::systems::save::snapshot::capture_game_snapshot_save_data",
+    "segment": 1,
+    "offset": 29310368,
+    "rva": 29314464,
+    "va": "0x141bf4da0",
+    "size": 6780,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "6bb8b3884ca2da90a1ce3dbfde59c4195f40313a9a964126bd302c42f4b6365f",
+  "code_bytes": 6780,
+  "decoded_bytes": 6780,
+  "instructions": 1567,
+  "calls_and_jumps": [
+    {
+      "address": "0x141bf4de2",
+      "kind": "call",
+      "target": "0x140e94b40",
+      "target_names": [
+        "puffin::are_scopes_on",
+        "_ZN6puffin13are_scopes_on17h49e6cae1819f67fcE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4e01",
+      "kind": "call",
+      "target": "0x141bf9f30",
+      "target_names": [
+        "core::str::impl$0::rfind<ref$<str$> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4e2b",
+      "kind": "call",
+      "target": "0x141bf9f30",
+      "target_names": [
+        "core::str::impl$0::rfind<ref$<str$> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4e81",
+      "kind": "jmp",
+      "target": "0x141bf4f39",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4ebb",
+      "kind": "jmp",
+      "target": "0x141bf4ecd",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4ec4",
+      "kind": "jmp",
+      "target": "0x141bf4ed5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4ef4",
+      "kind": "jmp",
+      "target": "0x141bf4f5c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4f34",
+      "kind": "jmp",
+      "target": "0x141bf50af",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4f63",
+      "kind": "call",
+      "target": "0x140e97000",
+      "target_names": [
+        "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL",
+        "_ZN6puffin14ThreadProfiler4call15THREAD_PROFILER29_$u7b$$u7b$constant$u7d$$u7d$28_$u7b$$u7b$closure$u7d$$u7d$51__RUST_STD_INTERNAL_VAL$u7b$$u7b$tls.shim$u7d$$u7d$17hb896c07f5bb16c09E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf4faf",
+      "kind": "call",
+      "target": "0x140e94f10",
+      "target_names": [
+        "puffin::ThreadProfiler::begin_scope",
+        "_ZN6puffin14ThreadProfiler11begin_scope17h984a0056a230450fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf50a2",
+      "kind": "call",
+      "target": "0x1415ee650",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h2272db09bbba4657E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData>,core::iter::adapters::map::Map<bevy_ecs::query::iter::QueryIter<tuple$<ref$<country_core::systems::prefab::PrefabInstanceData>,ref$<country_core::resources::prefab::PrefabInstance>,ref$<country_core::components::TreeComponent> >,tuple$<> >,country_core::systems::save::snapshot::capture_game_snapshot_save_data::closure_env$0> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5114",
+      "kind": "call",
+      "target": "0x1415f4780",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h52616324f3489db3E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,core::iter::adapters::map::Map<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,country_core::resources::walls::inner_walls::impl$1::all::closure_env$0>,country_core::systems::save::snapshot::capture_game_snapshot_save_data::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5182",
+      "kind": "call",
+      "target": "0x1415f3ae0",
+      "target_names": [
+        "alloc::vec::spec_from_iter::impl$0::from_iter<u64,core::iter::adapters::copied::Copied<std::collections::hash::set::Iter<u64> > >",
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h4dcaa139c8d1b15fE",
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17hade1078db56729e3E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf51cf",
+      "kind": "call",
+      "target": "0x1417cc1a0",
+      "target_names": [
+        "_ZN12country_core9resources6stairs12stairs_state11StairsState20iter_edges_and_stubs17hd7918151f1dbb992E",
+        "country_core::resources::stairs::stairs_state::StairsState::iter_edges_and_stubs<country_core::resources::stairs::stairs_state::impl$5::take_snapshot_impl::closure_env$0>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5205",
+      "kind": "call",
+      "target": "0x140a61530",
+      "target_names": [
+        "country_core::resources::stairs::stairs_state::StairsSnapshot::new",
+        "_ZN12country_core9resources6stairs12stairs_state14StairsSnapshot3new17hd721def0e959bacbE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf52ef",
+      "kind": "call",
+      "target": "0x1415f0750",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h2ed5f82629fb131aE",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<enum2$<country_core::resources::walls::decorator_storage::DecoratorStorageAddr>,country_core::resources::walls::decorator_storage::DecoratorAddrSnapshot>,core::iter::adapters::map::Map<core::iter::adapters::chain::Chain<core::iter::adapters::chain::Chain<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::walls::decorator_storage::Decorators>,country_core::resources::walls::decorator_storage::impl$17::iter::closure_env$0>,core::iter::adapters::map::Map<core::option::Iter<country_core::resources::walls::decorator_storage::Decorators>,country_core::resources::walls::decorator_storage::impl$17::iter::closure_env$1> >,core::iter::adapters::map::Map<core::option::Iter<country_core::resources::walls::decorator_storage::Decorators>,country_core::resources::walls::decorator_storage::impl$17::iter::closure_env$2> >,country_core::resources::walls::decorator_storage::impl$17::take_snapshot::closure_env$0> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5581",
+      "kind": "call",
+      "target": "0x1415f9830",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17h7e433778ab9cdae4E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<ref$<str$>,alloc::vec::Vec<u8,alloc::alloc::Global> >,core::iter::adapters::map::Map<core::array::iter::IntoIter<tuple$<ref$<str$>,ref$<slice2$<u8> > >,7>,country_core::systems::save::snapshot::capture_game_snapshot_save_data::closure_env$2> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf55f6",
+      "kind": "call",
+      "target": "0x1415fe2a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17ha939bed76db45a02E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$0>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5664",
+      "kind": "call",
+      "target": "0x1415fe2a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17ha939bed76db45a02E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$0>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf56d2",
+      "kind": "call",
+      "target": "0x1415fe2a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17ha939bed76db45a02E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$0>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5740",
+      "kind": "call",
+      "target": "0x1415fe2a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17ha939bed76db45a02E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$0>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf57ab",
+      "kind": "call",
+      "target": "0x1415fe2a0",
+      "target_names": [
+        "_ZN98_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter..SpecFromIter$LT$T$C$I$GT$$GT$9from_iter17ha939bed76db45a02E",
+        "alloc::vec::spec_from_iter::impl$0::from_iter<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<std::collections::hash::map::Iter<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$0>,country_core::resources::color_id::impl$0::iter_nondefault::closure_env$1> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf57ce",
+      "kind": "call",
+      "target": "0x140ca4980",
+      "target_names": [
+        "_ZN76_$LT$hashbrown..raw..RawTable$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17h9cca23c6fe45cd77E",
+        "hashbrown::raw::impl$13::clone<tuple$<country_core::resources::terrain_editing::TerrainStrokeId,country_core::resources::terrain_stroke::TerrainStroke>,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf582d",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf583a",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5854",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf588f",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf589c",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf58b6",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5929",
+      "kind": "call",
+      "target": "0x140ca4ce0",
+      "target_names": [
+        "_ZN76_$LT$hashbrown..raw..RawTable$LT$T$C$A$GT$$u20$as$u20$core..clone..Clone$GT$5clone17ha19e566ea6b72f69E",
+        "hashbrown::raw::impl$13::clone<tuple$<country_core::resources::stairs::stairs_state::StairGraphEdge,tuple$<> >,alloc::alloc::Global>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5b3d",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5b4c",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5b6d",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5b83",
+      "kind": "call",
+      "target": "0x140e97000",
+      "target_names": [
+        "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL",
+        "_ZN6puffin14ThreadProfiler4call15THREAD_PROFILER29_$u7b$$u7b$constant$u7d$$u7d$28_$u7b$$u7b$closure$u7d$$u7d$51__RUST_STD_INTERNAL_VAL$u7b$$u7b$tls.shim$u7d$$u7d$17hb896c07f5bb16c09E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5bb6",
+      "kind": "call",
+      "target": "0x140e95370",
+      "target_names": [
+        "puffin::ThreadProfiler::end_scope",
+        "_ZN6puffin14ThreadProfiler9end_scope17hf3dbf12c4ff8de6aE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c0c",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c12",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c21",
+      "kind": "call",
+      "target": "0x142dc7e11",
+      "target_names": [
+        "alloc::alloc::handle_alloc_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc5alloc18handle_alloc_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c27",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c38",
+      "kind": "call",
+      "target": "0x142d8ec20",
+      "target_names": [
+        "_ZN3std3sys12thread_local6native4lazy20Storage$LT$T$C$D$GT$16get_or_init_slow17hf3a1d33798cbd80aE",
+        "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c55",
+      "kind": "call",
+      "target": "0x142dc7890",
+      "target_names": [
+        "std::thread::local::panic_access_error",
+        "_RNvNtNtCs1aoCESei0z2_3std6thread5local18panic_access_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c5b",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c6e",
+      "kind": "call",
+      "target": "0x142dc8090",
+      "target_names": [
+        "core::cell::panic_already_borrowed",
+        "_RNvNtCs8icZUrvfcq9_4core4cell22panic_already_borrowed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c74",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5c85",
+      "kind": "call",
+      "target": "0x142d8ec20",
+      "target_names": [
+        "_ZN3std3sys12thread_local6native4lazy20Storage$LT$T$C$D$GT$16get_or_init_slow17hf3a1d33798cbd80aE",
+        "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5ca2",
+      "kind": "call",
+      "target": "0x142dc7890",
+      "target_names": [
+        "std::thread::local::panic_access_error",
+        "_RNvNtNtCs1aoCESei0z2_3std6thread5local18panic_access_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5ca8",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cbb",
+      "kind": "call",
+      "target": "0x142dc8090",
+      "target_names": [
+        "core::cell::panic_already_borrowed",
+        "_RNvNtCs8icZUrvfcq9_4core4cell22panic_already_borrowed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cc1",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cd5",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cdb",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cef",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5cf5",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5d1f",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5d25",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5d49",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5d4f",
+      "kind": "jmp",
+      "target": "0x141bf5d7c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5d76",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5e41",
+      "kind": "call",
+      "target": "0x1416fcb40",
+      "target_names": [
+        "_ZN3std6thread5local17LocalKey$LT$T$GT$4with17ha9e3988b6bdbbe26E",
+        "std::thread::local::LocalKey::with<core::cell::RefCell<puffin::ThreadProfiler>,puffin::impl$6::call::closure_env$0<tuple$<>,puffin::impl$10::drop::closure_env$0>,tuple$<> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5ebc",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5f3c",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5f48",
+      "kind": "call",
+      "target": "0x140977ab0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,alloc::alloc::Global> >",
+        "_ZN4core3ptr152drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..resources..walls..WallId$C$country_core..resources..walls..inner_wall_state..WallState$RP$$GT$$GT$17he6242d018f3aa55fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf5fb1",
+      "kind": "call",
+      "target": "0x14097f9b0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::resources::walls::decorator_storage::DecoratorStorageSnapshot>",
+        "_ZN4core3ptr96drop_in_place$LT$country_core..resources..walls..decorator_storage..DecoratorStorageSnapshot$GT$17haeeaadea1c0b6d55E",
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<enum2$<country_core::resources::walls::decorator_storage::DecoratorStorageAddr>,country_core::resources::walls::decorator_storage::DecoratorAddrSnapshot>,alloc::alloc::Global> >",
+        "_ZN4core3ptr198drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..resources..walls..decorator_storage..DecoratorStorageAddr$C$country_core..resources..walls..decorator_storage..DecoratorAddrSnapshot$RP$$GT$$GT$17h4e1bacdc1c1d251fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6011",
+      "kind": "call",
+      "target": "0x1404b8dd0",
+      "target_names": [
+        "core::ptr::drop_in_place<minidump_unwind::FunctionArgs>",
+        "_ZN4core3ptr50drop_in_place$LT$minidump_unwind..FunctionArgs$GT$17hd7aefa5c1773cb5bE",
+        "_ZN4core3ptr87drop_in_place$LT$alloc..vec..Vec$LT$$LP$$RF$str$C$alloc..vec..Vec$LT$u8$GT$$RP$$GT$$GT$17h602ac8bde55150f1E",
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<ref$<str$>,alloc::vec::Vec<u8,alloc::alloc::Global> >,alloc::alloc::Global> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf608a",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf610a",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf618a",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf620a",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6287",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf62e4",
+      "kind": "call",
+      "target": "0x1400da950",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h4be1ee441f870059E",
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h9a8c270217a28c2aE",
+        "core::ptr::drop_in_place<country_core::resources::terrain_editing::TerrainEditingData>",
+        "_ZN4core3ptr81drop_in_place$LT$country_core..resources..terrain_editing..TerrainEditingData$GT$17h6623e26e2b4e0c85E",
+        "bevy_ecs::component::info::ComponentDescriptor::drop_ptr<country_core::resources::terrain_editing::TerrainEditingData>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf635b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf63d9",
+      "kind": "call",
+      "target": "0x1409775a0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData>,alloc::alloc::Global> >",
+        "_ZN4core3ptr150drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..components..TreeStorageIndex$C$country_core..resources..history..tree_edit..TreeData$RP$$GT$$GT$17hd6b467ee2cafcaefE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6401",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6439",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6442",
+      "kind": "call",
+      "target": "0x1409775a0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData>,alloc::alloc::Global> >",
+        "_ZN4core3ptr150drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..components..TreeStorageIndex$C$country_core..resources..history..tree_edit..TreeData$RP$$GT$$GT$17hd6b467ee2cafcaefE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf645c",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf646b",
+      "kind": "jmp",
+      "target": "0x141bf6406",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf64a4",
+      "kind": "call",
+      "target": "0x140998380",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::systems::save::snapshot::SnapshotSaveData>",
+        "_ZN4core3ptr76drop_in_place$LT$country_core..systems..save..snapshot..SnapshotSaveData$GT$17h262d4d42f3495dc7E",
+        "_ZN4core3ptr76drop_in_place$LT$country_core..systems..save..snapshot..SnapshotSaveData$GT$17h2a16102780352fabE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6576",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf6623",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf66ba",
+      "kind": "call",
+      "target": "0x140977ab0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,alloc::alloc::Global> >",
+        "_ZN4core3ptr152drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..resources..walls..WallId$C$country_core..resources..walls..inner_wall_state..WallState$RP$$GT$$GT$17he6242d018f3aa55fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf675d",
+      "kind": "call",
+      "target": "0x1409775a0",
+      "target_names": [
+        "core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData>,alloc::alloc::Global> >",
+        "_ZN4core3ptr150drop_in_place$LT$alloc..vec..Vec$LT$$LP$country_core..components..TreeStorageIndex$C$country_core..resources..history..tree_edit..TreeData$RP$$GT$$GT$17hd6b467ee2cafcaefE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141bf67fc",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x141bf4e07",
+      "target": "0x14339ba7b",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a736e61",
+      "ascii_candidate": "country_core::systems::save::snapshot::capture_game_snapshot_save_data::f"
+    },
+    {
+      "address": "0x141bf4e4b",
+      "target": "0x14339ba7b",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a736e61",
+      "ascii_candidate": "country_core::systems::save::snapshot::capture_game_snapshot_save_data::f"
+    },
+    {
+      "address": "0x141bf4e55",
+      "target": "0x14339b938",
+      "operand_bytes": 8,
+      "bytes_hex": "617373657274696f6e206661696c65643a207265732e7374616972732e626163",
+      "ascii_candidate": "assertion failed: res.stairs.backup_accurate()"
+    },
+    {
+      "address": "0x141bf4e5c",
+      "target": "0x14339b908",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/snapshot.rsassertion failed: res.stairs.backup_accurate()"
+    },
+    {
+      "address": "0x141bf4eff",
+      "target": "0x143cb2c60",
+      "operand_bytes": 1,
+      "names": [
+        "_ZN12country_core7systems7backend23prepare_frame_constants28_DEV_SKIP_TREE_SERIALIZATION17h8a715a17b62bfe0dE"
+      ],
+      "bytes_hex": ""
+    },
+    {
+      "address": "0x141bf4f39",
+      "target": "0x14339b908",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/snapshot.rsassertion failed: res.stairs.backup_accurate()"
+    },
+    {
+      "address": "0x141bf4fd2",
+      "target": "0x143cb2c60",
+      "operand_bytes": 1,
+      "names": [
+        "_ZN12country_core7systems7backend23prepare_frame_constants28_DEV_SKIP_TREE_SERIALIZATION17h8a715a17b62bfe0dE"
+      ],
+      "bytes_hex": ""
+    },
+    {
+      "address": "0x141bf5457",
+      "target": "0x14301ea20",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.20.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "50617468526173746572436f62626c6573746f6e6531526173746572436f6262",
+      "ascii_candidate": "PathRasterCobblestone1RasterCobblestone2RasterCobblestone3RasterWaterRasterGardenRasterPlantExem"
+    },
+    {
+      "address": "0x141bf547e",
+      "target": "0x14301ea2a",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.21.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "436f62626c6573746f6e6531526173746572436f62626c6573746f6e65325261",
+      "ascii_candidate": "Cobblestone1RasterCobblestone2RasterCobblestone3RasterWaterRasterGardenRasterPlantExemplarRaster"
+    },
+    {
+      "address": "0x141bf54a5",
+      "target": "0x14301ea3c",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.22.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "436f62626c6573746f6e6532526173746572436f62626c6573746f6e65335261",
+      "ascii_candidate": "Cobblestone2RasterCobblestone3RasterWaterRasterGardenRasterPlantExemplarRastercrates/country-cor"
+    },
+    {
+      "address": "0x141bf54cc",
+      "target": "0x14301ea4e",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.23.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "436f62626c6573746f6e65335261737465725761746572526173746572476172",
+      "ascii_candidate": "Cobblestone3RasterWaterRasterGardenRasterPlantExemplarRastercrates/country-core/src/resources/wo"
+    },
+    {
+      "address": "0x141bf54f3",
+      "target": "0x14301ea60",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.24.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "576174657252617374657247617264656e526173746572506c616e744578656d",
+      "ascii_candidate": "WaterRasterGardenRasterPlantExemplarRastercrates/country-core/src/resources/world_raster_defs.rs"
+    },
+    {
+      "address": "0x141bf551a",
+      "target": "0x14301ea6b",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.25.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "47617264656e526173746572506c616e744578656d706c617252617374657263",
+      "ascii_candidate": "GardenRasterPlantExemplarRastercrates/country-core/src/resources/world_raster_defs.rs"
+    },
+    {
+      "address": "0x141bf5541",
+      "target": "0x14301ea77",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ebb1a30d28abe364d473a77f7ffdc617.26.llvm.3163648915233851836"
+      ],
+      "bytes_hex": "506c616e744578656d706c61725261737465726372617465732f636f756e7472",
+      "ascii_candidate": "PlantExemplarRastercrates/country-core/src/resources/world_raster_defs.rs"
+    },
+    {
+      "address": "0x141bf5bf9",
+      "target": "0x14339b938",
+      "operand_bytes": 8,
+      "bytes_hex": "617373657274696f6e206661696c65643a207265732e7374616972732e626163",
+      "ascii_candidate": "assertion failed: res.stairs.backup_accurate()"
+    },
+    {
+      "address": "0x141bf5c00",
+      "target": "0x14339b968",
+      "operand_bytes": 8,
+      "bytes_hex": "ffb539430100000030000000000000008b00000005000000204661696c656420"
+    },
+    {
+      "address": "0x141bf5c4e",
+      "target": "0x143326860",
+      "operand_bytes": 8,
+      "names": [
+        "anon.800c35aff250a6d1eb6dec7e71848fb0.55.llvm.11525248751178825729"
+      ],
+      "bytes_hex": "f0673243010000006e00000000000000df0100001900000030e0494001000000"
+    },
+    {
+      "address": "0x141bf5c67",
+      "target": "0x143326a50",
+      "operand_bytes": 8,
+      "names": [
+        "anon.800c35aff250a6d1eb6dec7e71848fb0.68.llvm.11525248751178825729"
+      ],
+      "bytes_hex": "f8693243010000005600000000000000ad0100002b0000006863324301000000"
+    },
+    {
+      "address": "0x141bf5c9b",
+      "target": "0x143326860",
+      "operand_bytes": 8,
+      "names": [
+        "anon.800c35aff250a6d1eb6dec7e71848fb0.55.llvm.11525248751178825729"
+      ],
+      "bytes_hex": "f0673243010000006e00000000000000df0100001900000030e0494001000000"
+    },
+    {
+      "address": "0x141bf5cb4",
+      "target": "0x143326a50",
+      "operand_bytes": 8,
+      "names": [
+        "anon.800c35aff250a6d1eb6dec7e71848fb0.68.llvm.11525248751178825729"
+      ],
+      "bytes_hex": "f8693243010000005600000000000000ad0100002b0000006863324301000000"
+    },
+    {
+      "address": "0x141bf5d01",
+      "target": "0x14339bb28",
+      "operand_bytes": 8,
+      "bytes_hex": "d0ba3943010000005600000000000000980200000e0000003a3a000000000000"
+    },
+    {
+      "address": "0x141bf5d0d",
+      "target": "0x14339b908",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f636f756e7472792d636f72652f7372632f73797374656d732f",
+      "ascii_candidate": "crates/country-core/src/systems/save/snapshot.rsassertion failed: res.stairs.backup_accurate()"
+    },
+    {
+      "address": "0x141bf5d2e",
+      "target": "0x14339bb48",
+      "operand_bytes": 8,
+      "bytes_hex": "d0ba39430100000056000000000000007402000022000000d0ba394301000000"
+    },
+    {
+      "address": "0x141bf5d3a",
+      "target": "0x14339ba7b",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a736e61",
+      "ascii_candidate": "country_core::systems::save::snapshot::capture_game_snapshot_save_data::f"
+    },
+    {
+      "address": "0x141bf5d58",
+      "target": "0x14339bb60",
+      "operand_bytes": 8,
+      "bytes_hex": "d0ba39430100000056000000000000007602000012000000696e7465726e616c"
+    },
+    {
+      "address": "0x141bf5d64",
+      "target": "0x14339ba7b",
+      "operand_bytes": 8,
+      "bytes_hex": "636f756e7472795f636f72653a3a73797374656d733a3a736176653a3a736e61",
+      "ascii_candidate": "country_core::systems::save::snapshot::capture_game_snapshot_save_data::f"
+    },
+    {
+      "address": "0x141bf5e33",
+      "target": "0x14339bac8",
+      "operand_bytes": 8,
+      "bytes_hex": "70d58f40010000002f686f6d652f68332f2e636172676f2f7265676973747279"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

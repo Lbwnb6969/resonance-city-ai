@@ -1,0 +1,451 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Extra.data",
+  "absolute_offset": 1521816,
+  "length": 1175,
+  "sha256": "bf6e6d552e0ceff07bec0d8fc02d9d6d5643de77ad7ca167d68b509562493943",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentNeeds/NeedFoodMonk_Extra.data",
+    "id": "0db949a3-5fb6-4431-90e6-8d2a2899f74c",
+    "type": "PlaCAssetAgentNeedTypeResource",
+    "scriptingId": "NEED_ADDITIONAL_FOOD_MONK"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "Icon": {
+        "@": {
+          "value": "47b03977-5dc0-4aa9-a2fa-71ea834867b3"
+        }
+      },
+      "NeedTypeName": {
+        "@": {
+          "value": "FOOD_MONASTIC"
+        }
+      },
+      "NeedTypeDescription": {
+        "@": {
+          "value": "FOOD_MONASTIC_DESC"
+        }
+      },
+      "FillDurationInSeconds": {
+        "@": {
+          "value": 630.0
+        }
+      },
+      "FillRate": {
+        "@": {
+          "value": 630.0
+        }
+      },
+      "GracePeriod": {
+        "@": {
+          "value": 180
+        }
+      },
+      "DaysBeforeReapplyingHappinessFactor": {
+        "@": {
+          "value": 30
+        }
+      },
+      "DelayAfterUnsuccessfulFill": {
+        "@": {
+          "value": 60.0
+        }
+      },
+      "IsUnique": {
+        "@": {
+          "value": false
+        }
+      },
+      "IsNeedFirstConsumptionBeforeLacking": {
+        "@": {
+          "value": true
+        }
+      },
+      "HappinessFactor": {
+        "@": {
+          "value": "9c0d03ce-6423-406c-bbbd-53525e9b568a"
+        }
+      },
+      "NeedTypeList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "value": "FOOD_MONASTIC"
+            }
+          }
+        ]
+      },
+      "RestrictToLocalProviders": {
+        "@": {
+          "value": true
+        }
+      },
+      "IsRequiringConsumeInteractiveLocation": {
+        "@": {
+          "value": false
+        }
+      },
+      "ResourceNeedActivityMessage": {
+        "@": {
+          "type": "PlaCDataResourceFetchingActivityMessage"
+        },
+        "ControlString": {
+          "@": {
+            "value": "FETCHING_RESOURCE_X_AT_Y"
+          }
+        },
+        "ActivityMessageParameters": {
+          "@": {},
+          "RESOURCE": {
+            "@": {
+              "value": true
+            }
+          },
+          "DEPOT": {
+            "@": {
+              "value": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "Icon",
+      "value",
+      "NeedTypeName",
+      "NeedTypeDescription",
+      "FillDurationInSeconds",
+      "FillRate",
+      "GracePeriod",
+      "DaysBeforeReapplyingHappinessFactor",
+      "DelayAfterUnsuccessfulFill",
+      "IsUnique",
+      "IsNeedFirstConsumptionBeforeLacking",
+      "HappinessFactor",
+      "NeedTypeList",
+      "Item",
+      "RestrictToLocalProviders",
+      "IsRequiringConsumeInteractiveLocation",
+      "ResourceNeedActivityMessage",
+      "type",
+      "ControlString",
+      "ActivityMessageParameters",
+      "RESOURCE",
+      "DEPOT"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "Icon",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "47b03977-5dc0-4aa9-a2fa-71ea834867b3",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeName",
+            "offset": 80,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "FOOD_MONASTIC",
+                "offset": 96
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeDescription",
+            "offset": 122,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "FOOD_MONASTIC_DESC",
+                "offset": 138
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "FillDurationInSeconds",
+            "offset": 169,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 630.0,
+                "offset": 185
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "FillRate",
+            "offset": 201,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 630.0,
+                "offset": 217
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "GracePeriod",
+            "offset": 233,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 180,
+                "offset": 249
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DaysBeforeReapplyingHappinessFactor",
+            "offset": 265,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 0,
+                "value": 30,
+                "offset": 281
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "DelayAfterUnsuccessfulFill",
+            "offset": 297,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 60.0,
+                "offset": 313
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsUnique",
+            "offset": 329,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 345
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsNeedFirstConsumptionBeforeLacking",
+            "offset": 361,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 377
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HappinessFactor",
+            "offset": 393,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "9c0d03ce-6423-406c-bbbd-53525e9b568a",
+                "offset": 409
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NeedTypeList",
+            "offset": 437,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 453,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "FOOD_MONASTIC",
+                    "offset": 469
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "RestrictToLocalProviders",
+            "offset": 495,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 511
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "IsRequiringConsumeInteractiveLocation",
+            "offset": 527,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 543
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "ResourceNeedActivityMessage",
+            "offset": 559,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCDataResourceFetchingActivityMessage",
+                "offset": 575
+              }
+            ],
+            "children": [
+              {
+                "name": "ControlString",
+                "offset": 627,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "FETCHING_RESOURCE_X_AT_Y",
+                    "offset": 643
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "ActivityMessageParameters",
+                "offset": 680,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "RESOURCE",
+                    "offset": 696,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 712
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "name": "DEPOT",
+                    "offset": 728,
+                    "attributes": [
+                      {
+                        "name": "value",
+                        "tag": 6,
+                        "value": true,
+                        "offset": 744
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "record_count": 40,
+    "tag_counts": {
+      "0": 3,
+      "8": 2,
+      "7": 5,
+      "4": 3,
+      "6": 6
+    }
+  },
+  "references": [
+    {
+      "property": "/object/Icon/@value",
+      "uuid": "47b03977-5dc0-4aa9-a2fa-71ea834867b3",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/GuiSettings/Shared Textures/Icons/Needs/Icon_Need_Food_16px.png",
+          "id": "47b03977-5dc0-4aa9-a2fa-71ea834867b3",
+          "scriptingId": "ICON_NEED_FOOD"
+        }
+      ]
+    },
+    {
+      "property": "/object/HappinessFactor/@value",
+      "uuid": "9c0d03ce-6423-406c-bbbd-53525e9b568a",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Agent/HappinessFactors/FoodFail.data",
+          "id": "9c0d03ce-6423-406c-bbbd-53525e9b568a",
+          "type": "PlaCAssetHappinessFactor",
+          "scriptingId": "HAPPINESS_FACTOR_LACK_FOOD"
+        }
+      ]
+    }
+  ]
+}

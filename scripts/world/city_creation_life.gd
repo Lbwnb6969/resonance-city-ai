@@ -181,6 +181,9 @@ func begin_budget_sync() -> bool:
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
 	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
+	var resident_stops:Dictionary={}
+	for resident:Dictionary in residents:resident_stops[str(resident.home_id)]=resident.stops.duplicate()
+	_budget_request.snapshot["resident_stops"]=resident_stops
 	_budget_started_usec = Time.get_ticks_usec()
 	if _budget_thread == null: _start_budget_worker()
 	return true
@@ -217,7 +220,11 @@ func poll_budget_sync(commit: bool = true) -> bool:
 
 func commit_budget_sync() -> bool:
 	if _budget_ready_network == null: return not budget_sync_pending()
-	if int(_budget_request.revision) != state.revision or _budget_request.signature != _signature():
+	# The joined worker already validated the full routing signature. Exact
+	# native value comparisons cover every captured geometry input here without
+	# reconstructing all held actors' remaining route bounds a second time.
+	var captured:Dictionary=_budget_request.snapshot
+	if int(_budget_request.revision) != state.revision or captured.houses!=state.houses or captured.roads!=state.roads or captured.waters!=state.waters or captured.districts!=state.districts or captured.terrain_strokes!=state.terrain_strokes:
 		begin_budget_sync()
 		return false
 	var started := Time.get_ticks_usec()
@@ -553,6 +560,8 @@ func _sync_people() -> void:
 	var roles_scan_ms := float(Time.get_ticks_usec()-started)/1000.0
 	var stops_pair_routes_ms := 0.0
 	var node_height_ms := 0.0
+	var height_hits:=0;var height_misses:=0
+	var stop_hits:=0;var stop_misses:=0
 	var resume_ms := 0.0
 	for home: String in homes:
 		var serial := next_residents.size()
@@ -560,7 +569,10 @@ func _sync_people() -> void:
 		var previous_stops: Array = resident.get("stops", [])
 		var stops: Array[String] = [home]
 		var stage_started := Time.get_ticks_usec()
-		if connected_houses.has(home):
+		if _network.prepared_home_stops.has(home):
+			stops.assign(_network.prepared_home_stops[home]);stop_hits+=1
+		elif connected_houses.has(home):
+			stop_misses+=1
 			_append_reachable(stops, home, shops, serial, previous_stops)
 			_append_reachable(stops, home, venues, serial, previous_stops)
 		stops_pair_routes_ms+=float(Time.get_ticks_usec()-stage_started)/1000.0
@@ -581,7 +593,11 @@ func _sync_people() -> void:
 			old_by_home.erase(home)
 			var node: Node3D = resident.node
 			stage_started=Time.get_ticks_usec()
-			node.position.y = state.street_height(Vector2(node.position.x,node.position.z))+0.10
+			var at:=Vector2(node.position.x,node.position.z)
+			if _network.prepared_street_heights.has(at):
+				node.position.y=float(_network.prepared_street_heights[at])+.10;height_hits+=1
+			else:
+				node.position.y=state.street_height(at)+.10;height_misses+=1
 			node_height_ms+=float(Time.get_ticks_usec()-stage_started)/1000.0
 			resident.stops = stops
 			stage_started=Time.get_ticks_usec()
@@ -601,7 +617,7 @@ func _sync_people() -> void:
 	residents = next_residents
 	var residents_ms := float(Time.get_ticks_usec()-started)/1000.0
 	budget_commit_stats = {"travel_sync_ms":travel_sync_ms,"travel_sites":travel.sites.size(),"residents_ms":residents_ms,
-		"roles_scan_ms":roles_scan_ms,"stops_pair_routes_ms":stops_pair_routes_ms,"node_height_ms":node_height_ms,"resume_ms":resume_ms,
+		"roles_scan_ms":roles_scan_ms,"stops_pair_routes_ms":stops_pair_routes_ms,"prepared_stop_hits":stop_hits,"prepared_stop_misses":stop_misses,"node_height_ms":node_height_ms,"prepared_height_hits":height_hits,"prepared_height_misses":height_misses,"resume_ms":resume_ms,
 		"residents_other_ms":residents_ms-roles_scan_ms-stops_pair_routes_ms-node_height_ms-resume_ms}
 	started = Time.get_ticks_usec()
 	cafe.sync()

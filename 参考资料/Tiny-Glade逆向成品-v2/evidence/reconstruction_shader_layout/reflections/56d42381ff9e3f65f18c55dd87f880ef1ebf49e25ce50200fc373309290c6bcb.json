@@ -1,0 +1,86 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_18" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "output_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "texels_per_meter",
+                    "type" : "float",
+                    "offset" : 8
+                }
+            ]
+        },
+        "_166" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "tint_texture",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_llr_iso",
+            "set" : 2,
+            "binding" : 6
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_166",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_18",
+            "name" : "GlobalParams_natural",
+            "block_size" : 12,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

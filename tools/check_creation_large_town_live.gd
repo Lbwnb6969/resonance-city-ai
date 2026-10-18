@@ -22,7 +22,7 @@ func _check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func _wait()->void:
 	var end:=Time.get_ticks_msec()+120000
-	while (demo.edit_pending() or demo._edit_ui_pending or (demo.town.budget_rebuild!=null and demo.town.budget_rebuild.retirement_pending())) and Time.get_ticks_msec()<end:await process_frame
+	while (demo.edit_pending() or demo._edit_ui_pending or demo.life._budget_delta>0. or (demo.town.budget_rebuild!=null and demo.town.budget_rebuild.retirement_pending())) and Time.get_ticks_msec()<end:await process_frame
 	await physics_frame;await process_frame
 func _capture(label:String)->void:
 	await process_frame;await RenderingServer.frame_post_draw
@@ -92,7 +92,12 @@ func _edit_large_city()->Dictionary:
 	var points:Array[Vector2]=[at];var began:=Time.get_ticks_usec();edit_frames.clear();_watch_edit=true;_last_edit_tick=began
 	var result:Dictionary=demo.state.add_terrain_stroke(points,"raise",1.,1.,2);demo._after_edit(result,"terrain")
 	var command_ms:float=(Time.get_ticks_usec()-began)/1000.
-	await _wait();_watch_edit=false
+	await _wait()
+	# Observe one complete periodic UI cycle after real held time has been
+	# repaid. Delayed simulation work belongs to the edit's measured tail.
+	var tail_until:=Time.get_ticks_msec()+600
+	while Time.get_ticks_msec()<tail_until:await process_frame
+	_watch_edit=false
 	var latency:float=(Time.get_ticks_usec()-began)/1000.;var budget:Dictionary=demo.edit_budget_report();var rendered:Dictionary=demo.town.budget_rebuild.stats
 	var after:float=demo.state.ground_height(at);var hit:Dictionary=demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(at.x,15,at.y),Vector3(at.x,-5,at.y),2))
 	_check(result.ok and after>before+.03 and not hit.is_empty() and absf(float(hit.position.y)-after)<.002,"actual three-hundred-house terrain edit visibly raises ground and publishes matching collision")
@@ -100,8 +105,9 @@ func _edit_large_city()->Dictionary:
 	var same_audio:=true
 	for key:String in audio:same_audio=same_audio and demo.music._players[key].stream.get_instance_id()==audio[key]
 	_check(same_audio and demo.state.houses.size()==300 and demo.life.residents.size()>=200,"large live edit preserves shared PCM and all actual houses and residents")
+	_check(demo.life.budget_commit_stats.prepared_height_hits==demo.life.residents.size() and demo.life.budget_commit_stats.prepared_stop_hits==demo.life.residents.size() and demo.life._budget_delta==0.,"all actual resident heights and itineraries publish from exact prepared data and every held simulation step is repaid")
 	var metrics:=_metrics(edit_frames)
 	_check(metrics.max_ms<=12. and command_ms<=12.,"actual three-hundred-house edit and complete cleanup stay within twelve milliseconds")
 	_check(float(budget.poll_max_ms)<=3.5 and float(rendered.get("max_frame_work_ms",0.))<=3.5,"three-hundred-house render publication and CPU retirement share the 3.5ms frame budget")
 	await _capture("10_large_city_actual_terrain_edit")
-	return {"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}
+	return {"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"habitats":demo.town.wildlife.habitat_stats.duplicate(),"catchup_remaining":demo.life._budget_delta,"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}

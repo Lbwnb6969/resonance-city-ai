@@ -1,0 +1,22 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "inputs" : [
+        {
+            "type" : "float",
+            "name" : "vs_out.frag_alpha",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main.color",
+            "location" : 0
+        }
+    ]
+}

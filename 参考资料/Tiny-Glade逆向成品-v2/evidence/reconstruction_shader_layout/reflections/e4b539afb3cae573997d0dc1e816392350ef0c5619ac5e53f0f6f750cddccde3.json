@@ -1,0 +1,100 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_10" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_9" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "thumbnail_tex",
+                    "type" : "_10",
+                    "offset" : 0
+                },
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 4
+                },
+                {
+                    "name" : "first_thumbnail_center",
+                    "type" : "vec2",
+                    "offset" : 12
+                },
+                {
+                    "name" : "thumbnail_size",
+                    "type" : "float",
+                    "offset" : 20
+                },
+                {
+                    "name" : "hover",
+                    "type" : "float",
+                    "offset" : 24
+                },
+                {
+                    "name" : "thumbnail_index",
+                    "type" : "uint",
+                    "offset" : 28
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec2",
+            "name" : "vs_out.uv",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main._color",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "resource_handles",
+            "array" : [
+                0
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc",
+            "set" : 2,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_9",
+            "name" : "GlobalParams_natural",
+            "block_size" : 32,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

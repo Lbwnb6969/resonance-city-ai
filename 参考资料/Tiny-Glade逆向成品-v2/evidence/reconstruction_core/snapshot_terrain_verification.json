@@ -1,0 +1,132 @@
+{
+  "snapshot_sha256": "76183baf62e07d26d45dd384ba4c4c56a7451ea97b0fde16488136fdba21861b",
+  "terrain_raw_sha256": "d0ad447a2324f47124845267ad1977536b3414a6cb6219237613aa7a6cbeeec4",
+  "range": [
+    -2.5,
+    24
+  ],
+  "checks": [
+    {
+      "xz": [
+        0,
+        0
+      ],
+      "mode": true,
+      "independent_height": 0.6670805215835571,
+      "original_height": 0.6670805215835571,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        -65,
+        -65
+      ],
+      "mode": true,
+      "independent_height": 0.00139617919921875,
+      "original_height": 0.00139617919921875,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        65,
+        65
+      ],
+      "mode": true,
+      "independent_height": 0.0009918212890625,
+      "original_height": 0.0009918212890625,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        0.5836,
+        -4.97027
+      ],
+      "mode": true,
+      "independent_height": 0.2831929922103882,
+      "original_height": 0.2831929922103882,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        64.99,
+        -64.99
+      ],
+      "mode": true,
+      "independent_height": 0.00301361083984375,
+      "original_height": 0.00301361083984375,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        -70,
+        80
+      ],
+      "mode": true,
+      "independent_height": 0.0026092529296875,
+      "original_height": 0.0026092529296875,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        0,
+        0
+      ],
+      "mode": false,
+      "independent_height": 0.6778972148895264,
+      "original_height": 0.6778972148895264,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        -65,
+        -65
+      ],
+      "mode": false,
+      "independent_height": 0.00139617919921875,
+      "original_height": 0.00139617919921875,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        65,
+        65
+      ],
+      "mode": false,
+      "independent_height": -0.0006256103515625,
+      "original_height": -0.0006256103515625,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        0.5836,
+        -4.97027
+      ],
+      "mode": false,
+      "independent_height": 0.29442065954208374,
+      "original_height": 0.29442065954208374,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        64.99,
+        -64.99
+      ],
+      "mode": false,
+      "independent_height": 0.0014775064773857594,
+      "original_height": 0.0014775064773857594,
+      "bit_exact": true
+    },
+    {
+      "xz": [
+        -70,
+        80
+      ],
+      "mode": false,
+      "independent_height": 0.0013959407806396484,
+      "original_height": 0.0013959407806396484,
+      "bit_exact": true
+    }
+  ],
+  "passed": true,
+  "limits": "Original sampler is supplied actual snapshot grid and explicit modes/range; original game load/mode selection not executed."
+}

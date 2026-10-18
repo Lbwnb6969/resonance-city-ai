@@ -1,0 +1,270 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+  "resource": "asset/Buildings/_Functions/WorkplaceRecipe/WorkplaceRecipe_BuildingFunction_Windmill Part.data",
+  "absolute_offset": 2241432028,
+  "length": 608,
+  "sha256": "14d2f243ec22b11384b213ce18f4ff94f385faf3d5c66e6136c79a1725f0808f",
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "ResourceListNeeded": {
+        "@": {
+          "type": "PlaCResourceCollection"
+        },
+        "Collection": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCDataResourceQuantityPair"
+              },
+              "Resource": {
+                "@": {
+                  "value": "d8008c2c-8a5f-46d4-bf51-581810804d8f"
+                }
+              },
+              "Quantity": {
+                "@": {
+                  "value": 4
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ResourceListProduced": {
+        "@": {
+          "type": "PlaCResourceCollection"
+        },
+        "Collection": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCDataResourceQuantityPair"
+              },
+              "Resource": {
+                "@": {
+                  "value": "ce07bea0-5650-4043-92e0-9867c558235b"
+                }
+              },
+              "Quantity": {
+                "@": {
+                  "value": 1
+                }
+              }
+            }
+          ]
+        }
+      },
+      "OptionalDescriptionKey": {
+        "@": {
+          "value": ""
+        }
+      }
+    }
+  },
+  "resolved_references": [
+    {
+      "property": "/object/ResourceListNeeded/Collection/Item/Resource/@value",
+      "uuid": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+      "target": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Resources/Food/Wheat.data",
+          "id": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+          "type": "PlaCAssetResource",
+          "scriptingId": "WHEAT"
+        }
+      ]
+    },
+    {
+      "property": "/object/ResourceListProduced/Collection/Item/Resource/@value",
+      "uuid": "ce07bea0-5650-4043-92e0-9867c558235b",
+      "target": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Resources/Food/Flour.data",
+          "id": "ce07bea0-5650-4043-92e0-9867c558235b",
+          "type": "PlaCAssetResource",
+          "scriptingId": "FLOUR"
+        }
+      ]
+    }
+  ],
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "ResourceListNeeded",
+      "type",
+      "Collection",
+      "Item",
+      "Resource",
+      "value",
+      "Quantity",
+      "ResourceListProduced",
+      "OptionalDescriptionKey"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "ResourceListNeeded",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCResourceCollection",
+                "offset": 52
+              }
+            ],
+            "children": [
+              {
+                "name": "Collection",
+                "offset": 87,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 103,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataResourceQuantityPair",
+                        "offset": 119
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "Resource",
+                        "offset": 160,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 8,
+                            "value": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+                            "offset": 176
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Quantity",
+                        "offset": 204,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 0,
+                            "value": 4,
+                            "offset": 220
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ResourceListProduced",
+            "offset": 236,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCResourceCollection",
+                "offset": 252
+              }
+            ],
+            "children": [
+              {
+                "name": "Collection",
+                "offset": 287,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 303,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCDataResourceQuantityPair",
+                        "offset": 319
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "Resource",
+                        "offset": 360,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 8,
+                            "value": "ce07bea0-5650-4043-92e0-9867c558235b",
+                            "offset": 376
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Quantity",
+                        "offset": 404,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 0,
+                            "value": 1,
+                            "offset": 420
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "OptionalDescriptionKey",
+            "offset": 436,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "",
+                "offset": 452
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 22,
+    "tag_counts": {
+      "0": 3,
+      "7": 5,
+      "8": 2
+    }
+  }
+}

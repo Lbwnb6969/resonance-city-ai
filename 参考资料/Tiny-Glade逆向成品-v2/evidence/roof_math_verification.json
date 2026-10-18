@@ -1,0 +1,497 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "authority": "controlled-instruction-emulation",
+  "emulator": "Unicorn 2.1.4",
+  "checks": 60,
+  "max_absolute_error": 9.523191568661105e-08,
+  "tolerance": 2e-06,
+  "passed": true,
+  "results": [
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.0,
+      "eave_01": 0.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.0,
+      "eave_01": 0.1,
+      "emulated_original": 0.07500000298023224,
+      "formula": 0.07500000111758709,
+      "absolute_error": 1.862645149230957e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.0,
+      "eave_01": 0.2,
+      "emulated_original": 0.15000000596046448,
+      "formula": 0.15000000223517418,
+      "absolute_error": 3.725290298461914e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.0,
+      "eave_01": 0.5,
+      "emulated_original": 0.375,
+      "formula": 0.375,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.0,
+      "eave_01": 1.0,
+      "emulated_original": 0.75,
+      "formula": 0.75,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.04,
+      "eave_01": 0.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.04,
+      "eave_01": 0.1,
+      "emulated_original": 0.09000000357627869,
+      "formula": 0.09000000117346645,
+      "absolute_error": 2.4028122408426e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.04,
+      "eave_01": 0.2,
+      "emulated_original": 0.18000000715255737,
+      "formula": 0.1800000023469329,
+      "absolute_error": 4.8056244816852e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.04,
+      "eave_01": 0.5,
+      "emulated_original": 0.45000001788139343,
+      "formula": 0.4499999991618097,
+      "absolute_error": 1.8719583716464427e-08
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.04,
+      "eave_01": 1.0,
+      "emulated_original": 0.9000000357627869,
+      "formula": 0.8999999983236194,
+      "absolute_error": 3.7439167432928855e-08
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.25,
+      "eave_01": 0.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.25,
+      "eave_01": 0.1,
+      "emulated_original": 0.11250000447034836,
+      "formula": 0.11250000167638063,
+      "absolute_error": 2.7939677238464355e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.25,
+      "eave_01": 0.2,
+      "emulated_original": 0.22500000894069672,
+      "formula": 0.22500000335276127,
+      "absolute_error": 5.587935447692871e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.25,
+      "eave_01": 0.5,
+      "emulated_original": 0.5625,
+      "formula": 0.5625,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.25,
+      "eave_01": 1.0,
+      "emulated_original": 1.125,
+      "formula": 1.125,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.5,
+      "eave_01": 0.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.5,
+      "eave_01": 0.1,
+      "emulated_original": 0.12803301215171814,
+      "formula": 0.12803301049683155,
+      "absolute_error": 1.6548865888754705e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.5,
+      "eave_01": 0.2,
+      "emulated_original": 0.2560660243034363,
+      "formula": 0.2560660209936631,
+      "absolute_error": 3.309773177750941e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.5,
+      "eave_01": 0.5,
+      "emulated_original": 0.6401650905609131,
+      "formula": 0.6401650429449552,
+      "absolute_error": 4.761595784330552e-08
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 0.5,
+      "eave_01": 1.0,
+      "emulated_original": 1.2803301811218262,
+      "formula": 1.2803300858899105,
+      "absolute_error": 9.523191568661105e-08
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 1.0,
+      "eave_01": 0.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 1.0,
+      "eave_01": 0.1,
+      "emulated_original": 0.15000000596046448,
+      "formula": 0.15000000223517418,
+      "absolute_error": 3.725290298461914e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 1.0,
+      "eave_01": 0.2,
+      "emulated_original": 0.30000001192092896,
+      "formula": 0.30000000447034836,
+      "absolute_error": 7.450580596923828e-09
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 1.0,
+      "eave_01": 0.5,
+      "emulated_original": 0.75,
+      "formula": 0.75,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b76870",
+      "height_01": 1.0,
+      "eave_01": 1.0,
+      "emulated_original": 1.5,
+      "formula": 1.5,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 0.5,
+      "height": 0.5,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 0.5,
+      "height": 1.0,
+      "emulated_original": 0.25925928354263306,
+      "formula": 0.25925925925925924,
+      "absolute_error": 2.4283373811773146e-08
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 0.5,
+      "height": 2.25,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 0.5,
+      "height": 5.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 0.5,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 1.0,
+      "height": 0.5,
+      "emulated_original": 0.25925928354263306,
+      "formula": 0.25925925925925924,
+      "absolute_error": 2.4283373811773146e-08
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 1.0,
+      "height": 1.0,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 1.0,
+      "height": 2.25,
+      "emulated_original": 0.5,
+      "formula": 0.5,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 1.0,
+      "height": 5.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 1.0,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 2.25,
+      "height": 0.5,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 2.25,
+      "height": 1.0,
+      "emulated_original": 0.5,
+      "formula": 0.5,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 2.25,
+      "height": 2.25,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 2.25,
+      "height": 5.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 2.25,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 3.0,
+      "height": 0.5,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 3.0,
+      "height": 1.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 3.0,
+      "height": 2.25,
+      "emulated_original": 0.0,
+      "formula": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 3.0,
+      "height": 5.0,
+      "emulated_original": 0.7138707041740417,
+      "formula": 0.7138706590209888,
+      "absolute_error": 4.5153052963264884e-08
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 3.0,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 5.0,
+      "height": 0.5,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 5.0,
+      "height": 1.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 5.0,
+      "height": 2.25,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 5.0,
+      "height": 5.0,
+      "emulated_original": 0.10626974701881409,
+      "formula": 0.10626974707892554,
+      "absolute_error": 6.011145747830682e-11
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 5.0,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 7.5,
+      "height": 0.5,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 7.5,
+      "height": 1.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 7.5,
+      "height": 2.25,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 7.5,
+      "height": 5.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 7.5,
+      "height": 15.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 15.0,
+      "height": 0.5,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 15.0,
+      "height": 1.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 15.0,
+      "height": 2.25,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 15.0,
+      "height": 5.0,
+      "emulated_original": 1.0,
+      "formula": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "routine": "0x140b770a0",
+      "width": 15.0,
+      "height": 15.0,
+      "emulated_original": 0.7407407760620117,
+      "formula": 0.7407407407407407,
+      "absolute_error": 3.532127101912863e-08
+    }
+  ],
+  "limitations": [
+    "Finite sampled inputs, not exhaustive floating-point proof.",
+    "No game process or full roof pipeline was executed.",
+    "The mathematical formulas use Python double precision; EXE uses SSE f32.",
+    "height/eave field meaning comes from matching function names and scene schema."
+  ]
+}

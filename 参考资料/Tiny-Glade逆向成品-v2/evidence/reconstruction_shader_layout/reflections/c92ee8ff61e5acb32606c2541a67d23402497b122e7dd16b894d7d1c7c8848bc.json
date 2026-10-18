@@ -1,0 +1,63 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_28" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "out_water_mask_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "is_add",
+                    "type" : "int",
+                    "offset" : 8
+                },
+                {
+                    "name" : "is_subtract",
+                    "type" : "int",
+                    "offset" : 12
+                },
+                {
+                    "name" : "cursor_position_ws",
+                    "type" : "vec3",
+                    "offset" : 16
+                }
+            ]
+        }
+    },
+    "images" : [
+        {
+            "type" : "image2D",
+            "name" : "out_water_mask",
+            "set" : 0,
+            "binding" : 1,
+            "format" : "rgba32f"
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_28",
+            "name" : "GlobalParams_natural",
+            "block_size" : 28,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

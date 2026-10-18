@@ -1,0 +1,24 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2DArray",
+            "name" : "window_colors.window_colors",
+            "set" : 18,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.llr",
+            "set" : 2,
+            "binding" : 1
+        }
+    ]
+}

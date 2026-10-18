@@ -1,0 +1,286 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 550,
+    "record_offset": 11900,
+    "module": "country_core-75de4a05f1ed4a16.95kb2qbpp1va5f6zdo150zb0y.1euy9uv.rcgu.o",
+    "name": "country_core::resources::world_raster::WorldRaster::new<512>",
+    "segment": 1,
+    "offset": 10972640,
+    "rva": 10976736,
+    "va": "0x140a77de0",
+    "size": 894,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "ee04a4ba789f4576a2d708b77ef2b6c39f5a3e368355f676dadf31b0e428416a",
+  "code_bytes": 894,
+  "decoded_bytes": 894,
+  "instructions": 248,
+  "calls_and_jumps": [
+    {
+      "address": "0x140a77e09",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e0e",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e1d",
+      "kind": "call",
+      "target": "0x1406abae0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc19___rust_alloc_zeroed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e2e",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e3d",
+      "kind": "call",
+      "target": "0x1406abae0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc19___rust_alloc_zeroed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e71",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77e80",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77edc",
+      "kind": "jmp",
+      "target": "0x140a77ea0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77eee",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77efd",
+      "kind": "call",
+      "target": "0x1406abae0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc19___rust_alloc_zeroed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77f44",
+      "kind": "call",
+      "target": "0x142e32780",
+      "target_names": [
+        "memset"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77fbf",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77fc5",
+      "kind": "jmp",
+      "target": "0x140a7802b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77fdd",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77fe3",
+      "kind": "jmp",
+      "target": "0x140a7802b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a77fff",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a78005",
+      "kind": "jmp",
+      "target": "0x140a7802b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a78025",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a7805b",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a780a0",
+      "kind": "call",
+      "target": "0x140a7a940",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::resources::world_raster::DirtyTilePublisher> >",
+        "_ZN4core3ptr78drop_in_place$LT$country_core..resources..world_raster..DirtyTilePublisher$GT$17h3f218e19aea4db76E.llvm.7484471921751905575"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a780b4",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a780fb",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a78157",
+      "kind": "call",
+      "target": "0x140a7a940",
+      "target_names": [
+        "core::ptr::drop_in_place<enum2$<country_core::resources::world_raster::DirtyTilePublisher> >",
+        "_ZN4core3ptr78drop_in_place$LT$country_core..resources..world_raster..DirtyTilePublisher$GT$17h3f218e19aea4db76E.llvm.7484471921751905575"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140a7815c",
+      "kind": "jmp",
+      "target": "0x140a78142",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140a77e96",
+      "target": "0x143041c50",
+      "operand_bytes": 16,
+      "names": [
+        "__xmm@07954dbb07954dbb07954dbb07954dbb"
+      ],
+      "bytes_hex": "bb4d9507bb4d9507bb4d9507bb4d950700008047246d696e203e206d61782c20"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

@@ -1,0 +1,40 @@
+// VA 0x140a89180, PDB extent 46 bytes
+// country_core::utils::debug_viz::DebugLine::color
+// PDB source attribution: /home/h3/code/pouncelight/country-slice-private/crates/country-core/src/utils/debug_viz.rs
+// Ghidra pseudocode; missing Rust signatures/types. Not standalone source or behavior verification.
+
+/* Matched PDB project procedure: country_core::utils::debug_viz::DebugLine::color
+   Source attribution:
+   /home/h3/code/pouncelight/country-slice-private/crates/country-core/src/utils/debug_viz.rs
+   Extent: 46 */
+
+void pdb_140a89180(undefined8 *param_1,undefined8 *param_2,undefined8 *param_3)
+
+{
+  undefined8 uVar1;
+  undefined8 uVar2;
+  undefined8 uVar3;
+  undefined8 uVar4;
+  undefined8 uVar5;
+  
+  uVar1 = *param_3;
+  uVar2 = param_3[1];
+  param_2[6] = uVar1;
+  param_2[7] = uVar2;
+  param_1[8] = param_2[8];
+  param_1[6] = uVar1;
+  param_1[7] = uVar2;
+  uVar1 = *param_2;
+  uVar2 = param_2[1];
+  uVar3 = param_2[2];
+  uVar4 = param_2[3];
+  uVar5 = param_2[5];
+  param_1[4] = param_2[4];
+  param_1[5] = uVar5;
+  param_1[2] = uVar3;
+  param_1[3] = uVar4;
+  *param_1 = uVar1;
+  param_1[1] = uVar2;
+  return;
+}
+

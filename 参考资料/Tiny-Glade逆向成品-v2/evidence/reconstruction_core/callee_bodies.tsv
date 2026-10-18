@@ -1,0 +1,188 @@
+0x140f3bda0	27	std::hash::random::impl$0::new::KEYS::constant$0::closure$1::__RUST_STD_INTERNAL_VAL
+0x140f5aed0	25	std::fs::impl$13::write
+0x1404b38e0	215	core::ptr::drop_in_place<std::io::error::Error>
+0x142d88fc0	159	anyhow::error::impl$1::from<std::io::error::Error>
+0x140614c10	412	country_core::systems::camera_rig::_::impl$0::serialize<serde_json::value::ser::Serializer>
+0x140235ce0	300	country_core::resources::time_of_day::_::impl$0::serialize<serde_json::value::ser::Serializer>
+0x140676fa0	332	country_core::resources::weather::_::impl$0::serialize<serde_json::value::ser::Serializer>
+0x142dc8170	88	core::result::unwrap_failed
+0x1403a8260	268	serde_json::value::to_value<ref$<enum2$<core::option::Option<ref$<country_core::resources::weather::PrecipitationSaveState> > > > >
+0x1403bdbc0	600	serde_json::value::ser::impl$8::serialize_field<alloc::vec::Vec<country_core::resources::critters::sheep::control::SheepSnapshot,alloc::alloc::Global> >
+0x140ddcdc0	209	serde_json::value::ser::impl$8::end
+0x14067dfa0	1020	country_core::resources::glade_color_customization::_::impl$0::serialize<serde_json::value::ser::Serializer>
+0x1403bc8c0	743	serde_core::ser::Serializer::collect_seq<serde_json::value::ser::Serializer,ref$<alloc::vec::Vec<country_core::systems::mode_manager::WallSelectionGroup,alloc::alloc::Global> > >
+0x1405f3530	1991	country_core::systems::save::save_game::write_json_sections<std::fs::File>
+0x1405f4920	2322	core::ptr::drop_in_place<array$<tuple$<country_core::systems::save::save_game::SaveFileSection,enum2$<serde_json::value::Value> >,10> >
+0x1403bcd40	775	serde_core::ser::Serializer::collect_seq<serde_json::value::ser::Serializer,ref$<slice2$<country_core::resources::history::ResolvedHistoryChainSnapshot> > >
+0x1405f4650	719	core::ptr::drop_in_place<array$<tuple$<country_core::systems::save::save_game::SaveFileSection,enum2$<serde_json::value::Value> >,3> >
+0x1403ee0d0	232	std::io::Write::write_all<std::fs::File>
+0x140f5aef0	82	std::fs::impl$14::stream_position
+0x142db0920	101	alloc::raw_vec::RawVec::grow_one<u64,alloc::alloc::Global>
+0x14007ee60	1	log::impl$17::log
+0x1403dc750	403	country_core::resources::history::_::impl$0::serialize<ref_mut$<serde_json::ser::Serializer<ref_mut$<alloc::vec::Vec<u8,alloc::alloc::Global> >,serde_json::ser::CompactFormatter> > >
+0x140f4fd10	46	std::sys::random::hashmap_random_keys
+0x142dc8420	200	core::slice::index::slice_index_fail
+0x1402ecfa0	381	core::ptr::drop_in_place<enum2$<serde_json::value::ser::SerializeMap> >
+0x142dc7e2a	26	alloc::raw_vec::handle_error
+0x1400dacf0	52	core::ptr::drop_in_place<egui::containers::popup::TooltipState>
+0x1405f4570	213	core::ptr::drop_in_place<tuple$<country_core::systems::save::save_game::SaveFileSection,enum2$<serde_json::value::Value> > >
+0x1404b4b10	153	core::ptr::drop_in_place<serde_json::error::Error>
+0x140b80f90	29	country_core::systems::save::save_game::SaveFileSection::json_key
+0x140f60760	475	alloc::fmt::format::format_inner
+0x140de0ce0	3294	serde_json::value::impl$1::fmt
+0x140b80f80	15	country_core::systems::save::save_game::SaveFileSection::padding_bytes
+0x140686380	451	alloc::slice::impl$0::repeat<u8>
+0x1403b1b30	445	hashbrown::map::HashMap::insert<country_core::systems::save::save_game::SaveFileSection,core::ops::range::Range<u64>,std::hash::random::RandomState,alloc::alloc::Global>
+0x140f55d10	670	std::fs::read_to_string::inner
+0x140f3f5b0	519	std::backtrace::Backtrace::capture
+0x142dea990	209	anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,std::io::error::Error> >
+0x14164f410	435	serde_json::de::from_str<enum2$<serde_json::value::Value> >
+0x142de9590	209	anyhow::Error::construct<anyhow::error::ContextError<ref$<str$>,serde_json::error::Error> >
+0x141c0c220	248	serde_json::value::index::impl$1::index_into
+0x1415e5d30	591	alloc::vec::impl$12::clone<enum2$<serde_json::value::Value>,alloc::alloc::Global>
+0x140f60be0	117	alloc::string::impl$6::clone
+0x14192d190	2333	alloc::collections::btree::map::impl$2::clone::clone_subtree<alloc::string::String,enum2$<serde_json::value::Value>,alloc::alloc::Global>
+0x1414fe290	509	serde_json::value::de::impl$4::deserialize_i32<serde_core::de::impls::impl$55::deserialize::PrimitiveVisitor>
+0x142dead00	159	anyhow::error::impl$1::from<serde_json::error::Error>
+0x142de92b0	172	anyhow::Error::msg<alloc::string::String>
+0x141500ba0	240	serde_json::value::de::impl$4::deserialize_struct<country_core::systems::camera_rig::_::impl$0::deserialize::__Visitor>
+0x14098ae50	1694	core::ptr::drop_in_place<slice2$<enum2$<serde_json::value::Value> > >
+0x1409a45e0	295	core::ptr::drop_in_place<serde_json::map::Map<alloc::string::String,enum2$<serde_json::value::Value> > >
+0x14192d030	217	serde_json::value::impl$5::clone
+0x1415020f0	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::time_of_day::_::impl$0::deserialize::__Visitor>
+0x1414fde70	402	serde_json::value::de::impl$4::deserialize_f32<serde_core::de::impls::impl$77::deserialize::PrimitiveVisitor>
+0x1400c9be0	113	log::__private_api::log<tuple$<>,log::__private_api::GlobalLogger>
+0x14192a7f0	752	core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::resources::weather::FogSaveState,country_core::systems::save::load_game::parse_saved_game_data::closure_env$0>
+0x14192a550	670	core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::resources::weather::PrecipitationSaveState,country_core::systems::save::load_game::parse_saved_game_data::closure_env$1>
+0x141500e70	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::critters::sheep::control::_::impl$0::deserialize::__Visitor>
+0x14192aae0	298	core::result::Result::inspect_err<country_core::resources::critters::sheep::control::SheepControlSnapshot,serde_json::error::Error,country_core::systems::save::load_game::parse_saved_game_data::closure_env$2>
+0x141501c70	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::glade_color_customization::_::impl$0::deserialize::__Visitor>
+0x14192a270	722	core::option::Option::and_then<ref$<enum2$<serde_json::value::Value> >,country_core::systems::mode_manager::WallSelectionGroups,country_core::systems::save::load_game::parse_saved_game_data::closure_env$3>
+0x1415032f0	256	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::history::_::impl$0::deserialize::__Visitor>
+0x141707d20	274	anyhow::context::impl$0::context<country_core::resources::history::History,serde_json::error::Error,ref$<str$> >
+0x1400dbc80	119	core::ptr::drop_in_place<country_core::systems::mode_manager::WallSelectionGroups>
+0x142de9270	49	anyhow::Error::msg<ref$<str$> >
+0x140f36c40	9	anyhow::error::impl$6::drop
+0x140a1ebf0	389	core::ptr::drop_in_place<enum2$<country_core::resources::history::wall_compound_edit::WallHistoryEdit> >
+0x140c79ae0	276	alloc::sync::Arc::clone_from_ref_in<country_core::resources::history::decorator_edit::DecoratorHistoryDiff,alloc::alloc::Global>
+0x140c7bbc0	155	alloc::sync::Arc::drop_slow<country_core::resources::history::decorator_edit::DecoratorHistoryDiff,alloc::alloc::Global>
+0x140cac7f0	333	hashbrown::raw::RawTable::clear<tuple$<enum2$<country_core::resources::walls::decorator_storage::DecoratorStorageAddr>,country_core::resources::history::decorator_edit::DecoratorStorageHistoryDiff>,alloc::alloc::Global>
+0x1415e1210	429	alloc::vec::Vec::retain<enum2$<country_core::resources::history::EditType>,alloc::alloc::Global,country_core::systems::save::load_game::parse_saved_game_data::closure_env$5>
+0x140f606e0	116	alloc::sync::arcinner_layout_for_value_layout
+0x14192ac10	480	core::result::Result::and_then<ref$<enum2$<serde_json::value::Value> >,anyhow::Error,country_core::resources::history::HistoryIdentity,country_core::systems::save::load_game::parse_saved_game_data::closure_env$7>
+0x1418c0450	286	country_core::systems::save::save_file_identity::derive_fallback_save_file_identity
+0x1415e9150	379	alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::MultiEdit,core::iter::adapters::cloned::Cloned<core::slice::iter::Iter<country_core::resources::history::MultiEdit> > >
+0x1415ed4a0	391	alloc::vec::spec_from_iter::impl$0::from_iter<country_core::resources::history::ResolvedHistoryChainSnapshot,core::iter::adapters::filter_map::FilterMap<core::slice::iter::Iter<country_core::resources::history::HistoryChainSnapshot>,country_core::resources::history::impl$1::serialize::closure_env$0<ref_mut$<serde_json::ser::Serializer<ref_mut$<alloc::vec::Vec<u8,alloc::alloc::Global> >,serde_json::ser::CompactFormatter> > > > >
+0x1415e7c60	299	alloc::vec::impl$12::clone<country_core::resources::critters::sheep::control::SheepSnapshot,alloc::alloc::Global>
+0x141920580	50	alloc::boxed::box_new_uninit
+0x140f3e010	5	std::path::Path::to_path_buf
+0x14098f1a0	404	core::ptr::drop_in_place<country_core::resources::history::History>
+0x140a7a6f0	197	core::ptr::drop_in_place<enum2$<serde_json::value::Value> >
+0x142dc83b0	24	core::panicking::panic
+0x140ae4eb0	340	country_core::resources::history::History::finish_potential_mutation
+0x142dc8150	31	core::option::unwrap_failed
+0x142dc7e11	25	alloc::alloc::handle_alloc_error
+0x140997820	67	core::ptr::drop_in_place<country_core::resources::history::HistoryMutationToken>
+0x14099e410	302	core::ptr::drop_in_place<country_core::resources::history::history_chain::HistoryEditChain>
+0x140994f20	583	core::ptr::drop_in_place<country_core::systems::save::save_game::GameSaveData>
+0x14192a200	105	core::ptr::drop_in_place<alloc::boxed::Box<country_core::systems::save::save_game::GameSaveData,alloc::alloc::Global> >
+0x140f4f620	231	std::sys::fs::metadata
+0x142d7e980	106	alloc::raw_vec::RawVec::grow_one<ref$<str$>,alloc::alloc::Global>
+0x140f332f0	48	log::__private_api::impl$2::log
+0x140b7e580	891	country_core::systems::save::load_completion_checker::mark_session_loading
+0x142d7e8a0	106	alloc::raw_vec::RawVec::grow_one<system_clutter::autoclutter::ClutterRegionId,alloc::alloc::Global>
+0x140928690	2161	alloc::collections::vec_deque::impl$20::extend<enum2$<country_core::meta_commander::MetaCommand>,alloc::alloc::Global,alloc::collections::vec_deque::VecDeque<enum2$<country_core::meta_commander::MetaCommand>,alloc::alloc::Global> >
+0x142d7e6e0	106	alloc::raw_vec::RawVec::grow_one<std::path::PathBuf,alloc::alloc::Global>
+0x140315620	33	alloc::sync::Arc::drop_slow<core::sync::atomic::AtomicBool,alloc::alloc::Global>
+0x140970d20	466	core::ptr::drop_in_place<alloc::vec::into_iter::IntoIter<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >
+0x141920a00	14101	country_core::systems::save::load_game::parse_saved_game_data
+0x140f3eaf0	278	std::path::Path::parent
+0x140f3e9e0	151	std::path::Path::_join
+0x140a937d0	364	country_core::resources::session::SessionId::save_folder_path
+0x140f3ddd0	234	std::path::Path::components
+0x141b03d50	469	core::iter::traits::iterator::Iterator::eq_by<core::iter::adapters::rev::Rev<std::path::Components>,core::iter::adapters::rev::Rev<std::path::Components>,core::iter::traits::iterator::Iterator::eq::closure_env$0<core::iter::adapters::rev::Rev<std::path::Components>,core::iter::adapters::rev::Rev<std::path::Components> > >
+0x140b7f050	875	country_core::systems::save::load_completion_checker::clear_session_loading_marker
+0x140eacc10	145	uuid::Uuid::new_v4
+0x141b1e240	720	paths::impl$0::tail
+0x140a43130	632	country_core::systems::backend::flush_screen_log::log_error_to_screen
+0x141618e00	343	bevy_ecs::system::commands::Commands::insert_resource<country_core::resources::session::NextSession>
+0x140a939a0	364	country_core::resources::session::SessionId::backup_folder_path
+0x140dee3a0	538	utils::file::date_time_string_for_filename
+0x140f46c40	1850	std::fs::DirBuilder::_create
+0x140f4f180	479	std::sys::fs::copy
+0x140a34510	508	country_core::systems::camera_rig::MainCamera::load_parameters
+0x140a34f80	801	country_core::systems::camera_rig::MainCamera::immediately_finish_interpolating
+0x140c7e590	404	alloc::vec::in_place_collect::from_iter_in_place<core::iter::adapters::map::Map<alloc::vec::into_iter::IntoIter<country_core::resources::history::ResolvedHistoryChainSnapshot,alloc::alloc::Global>,country_core::resources::history::HistoryChainSnapshot (*)(country_core::resources::history::ResolvedHistoryChainSnapshot)>,country_core::resources::history::HistoryChainSnapshot>
+0x141bf6820	13262	country_core::systems::save::snapshot::validate_and_load_closest_snapshot_data
+0x1403b05d0	373	hashbrown::map::HashMap::insert<u64,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global>
+0x140ca82b0	160	hashbrown::raw::RawIterRange::fold_impl<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,hashbrown::map::impl$44::fold::closure_env$0<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState,tuple$<>,std::collections::hash::map::impl$49::fold::closure_env$0<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState,tuple$<>,core::iter::adapters::copied::copy_fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,core::iter::adapters::map::map_fold::closure_env$0<country_core::resources::walls::WallId,tuple$<country_core::resources::walls::WallId,tuple$<> >,tuple$<>,hashbrown::set::impl$10::extend::closure_env$0<country_core::resources::walls::WallId,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> > >,core::iter::traits::iterator::Iterator::for_each::call::closure_env$0<tuple$<country_core::resources::walls::WallId,tuple$<> >,hashbrown::map::impl$82::extend::closure_env$0<country_core::resources::walls::WallId,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::map::Map<core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> >,hashbrown::set::impl$10::extend::closure_env$0<country_core::resources::walls::WallId,std::hash::random::RandomState,alloc::alloc::Global,core::iter::adapters::copied::Copied<std::collections::hash::map::Keys<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> > > > > > > > > >,tuple$<> >
+0x1415e5900	524	alloc::vec::impl$12::clone<country_core::systems::mode_manager::WallSelectionGroup,alloc::alloc::Global>
+0x140b43320	522	country_core::systems::mode_manager::WallSelectionGroups::retain_history_walls
+0x140ca8500	135	hashbrown::raw::RawIterRange::fold_impl<tuple$<country_core::resources::walls::WallId,tuple$<> >,hashbrown::map::impl$44::fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,usize,hashbrown::map::impl$58::fold::closure_env$0<country_core::resources::walls::WallId,tuple$<>,usize,core::iter::adapters::map::map_fold::closure_env$0<ref$<country_core::resources::walls::WallId>,usize,usize,usize (*)(ref$<country_core::resources::walls::WallId>),core::iter::traits::iterator::Iterator::max_by::fold::closure_env$0<usize,core::cmp::Ordering (*)(ref$<usize>,ref$<usize>)> > > >,usize>
+0x140f3c9d0	416	std::time::Instant::now
+0x140a34930	994	country_core::systems::camera_rig::MainCamera::store_parameters
+0x140f3cb70	67	std::time::Instant::elapsed
+0x142dc83d0	46	core::panicking::panic_fmt
+0x140a3cc40	3265	country_core::systems::save::save_backup_list::SaveBackupList::adopt_legacy_upgrade_backups
+0x140a3bf60	2963	country_core::systems::save::save_backup_list::SaveBackupList::new_from_session
+0x141a55160	419	std::sync::mpmc::Sender::send<enum2$<country_core::systems::save::save_game::AsyncSaveCmd> >
+0x141bf3100	7321	country_core::systems::save::snapshot::init_game_state_from_snapshot
+0x140ae4430	1315	country_core::resources::history::History::restart_from_snapshot
+0x142d974a0	1148	hashbrown::raw::RawTable::reserve_rehash<tuple$<u64,tuple$<> >,alloc::alloc::Global,hashbrown::map::make_hasher::closure_env$0<u64,tuple$<>,std::hash::random::RandomState> >
+0x140999730	1091	core::ptr::drop_in_place<country_core::systems::save::snapshot::LoadedSnapshotData>
+0x1418c22c0	31	core::ptr::drop_in_place<enum2$<country_core::resources::session::SessionOnLoadCmd> >
+0x140997950	168	core::ptr::drop_in_place<country_core::systems::save::load_game::ParsedGameData>
+0x140991cd0	258	core::ptr::drop_in_place<country_core::resources::session::NextSession>
+0x1409680a0	458	core::ptr::drop_in_place<alloc::vec::Vec<enum2$<country_core::systems::save::load_game::PostGameLoadCommand>,alloc::alloc::Global> >
+0x140994800	1811	core::ptr::drop_in_place<enum2$<country_core::systems::save::save_game::AsyncSaveCmd> >
+0x141929ff0	199	core::ptr::drop_in_place<enum2$<core::result::Result<country_core::systems::save::load_game::ParsedGameData,anyhow::Error> > >
+0x1400db1d0	48	hashbrown::raw::impl$18::drop<tuple$<usize,tuple$<> >,alloc::alloc::Global>
+0x140ae4d80	303	country_core::resources::history::History::closest_resolved_snapshot
+0x141b033a0	598	relative_path::RelativePath::to_path<ref$<std::path::Path> >
+0x140f4a2a0	36	std::fs::OpenOptions::_open
+0x142deaf00	159	anyhow::error::impl$1::from<std::io::error::Error>
+0x140cd10f0	67	memmap2::os::file_len
+0x141ab4bb0	663	memmap2::os::MmapInner::map
+0x1415e06e0	341	alloc::vec::Vec::retain<country_core::resources::history::HistoryChainSnapshot,alloc::alloc::Global,country_core::resources::history::impl$15::remove_snapshot_record::closure_env$0>
+0x140f3e020	798	std::path::Path::_starts_with
+0x140f4eda0	231	std::sys::fs::remove_file
+0x1406d0830	4	motomoto::Reader::new
+0x142565ca0	18	motomoto::Reader::iter
+0x142565b10	222	motomoto::impl$9::next
+0x14164c480	435	serde_json::de::from_slice<enum2$<serde_json::value::Value> >
+0x141ab4b30	127	memmap2::os::impl$1::drop
+0x1414ff0d0	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$19::deserialize::VecVisitor<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState> > >
+0x1414fe8b0	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$19::deserialize::VecVisitor<country_core::resources::roofs::roof_shape::Roof> >
+0x141500d80	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::walls::decorator_storage::_::impl$0::deserialize::__Visitor>
+0x14192dab0	81	alloc::collections::btree::map::impl$2::clone<alloc::string::String,enum2$<serde_json::value::Value>,alloc::alloc::Global>
+0x1414fe710	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$19::deserialize::VecVisitor<tuple$<country_core::resources::walls::WallId,country_core::resources::color_id::ColorId> > >
+0x141501150	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::terrain_editing::_::impl$0::deserialize::__Visitor>
+0x141707ff0	242	anyhow::context::impl$0::context<country_core::resources::terrain_editing::TerrainEditingData,serde_json::error::Error,ref$<str$> >
+0x141bfa7e0	197	serde_json::value::impl$5::clone
+0x1414fed90	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$19::deserialize::VecVisitor<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData> > >
+0x141707e40	226	anyhow::context::impl$0::context<country_core::resources::walls::decorator_storage::DecoratorStorageSnapshot,serde_json::error::Error,ref$<str$> >
+0x1414ff9d0	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$90::deserialize::SeqVisitor<u64,std::hash::random::RandomState> >
+0x141bfa350	338	core::result::Result::unwrap_or_default<country_core::resources::stairs::stairs_removed_supports::StairsRemovedSupports,serde_json::error::Error>
+0x141501340	240	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::stairs::stairs_state::_::impl$0::deserialize::__Visitor>
+0x1415034e0	224	serde_json::value::de::impl$4::deserialize_struct<country_core::resources::stairs::stairs_removed_supports::_::impl$0::deserialize::__Visitor>
+0x1403afce0	405	hashbrown::map::HashMap::insert<country_core::resources::stairs::stairs_state::StairGraphEdge,tuple$<>,std::hash::random::RandomState,alloc::alloc::Global>
+0x1414ff410	205	serde_json::value::de::impl$4::deserialize_seq<serde_core::de::impls::impl$19::deserialize::VecVisitor<alloc::string::String> >
+0x140af3980	432	core::iter::adapters::try_process<core::iter::adapters::map::Map<alloc::vec::into_iter::IntoIter<alloc::string::String,alloc::alloc::Global>,country_core::systems::save::snapshot::try_load_snapshot_data::closure_env$0>,tuple$<alloc::string::String,alloc::vec::Vec<u8,alloc::alloc::Global> >,enum2$<core::result::Result<enum2$<core::convert::Infallible>,anyhow::Error> >,core::result::impl$26::from_iter::closure_env$0<tuple$<alloc::string::String,alloc::vec::Vec<u8,alloc::alloc::Global> >,anyhow::Error,std::collections::hash::map::HashMap<alloc::string::String,alloc::vec::Vec<u8,alloc::alloc::Global>,std::hash::random::RandomState,alloc::alloc::Global>,core::iter::adapters::map::Map<alloc::vec::into_iter::IntoIter<alloc::string::String,alloc::alloc::Global>,country_core::systems::save::snapshot::try_load_snapshot_data::closure_env$0> >,std::collections::hash::map::HashMap<alloc::string::String,alloc::vec::Vec<u8,alloc::alloc::Global>,std::hash::random::RandomState,alloc::alloc::Global> >
+0x140905860	213	country_core::resources::world_raster_defs::AllWorldRasterWrite::ordered_names
+0x1415e37b0	395	alloc::vec::in_place_collect::impl$1::from_iter<tuple$<ref$<str$>,enum2$<core::option::Option<alloc::vec::Vec<u8,alloc::alloc::Global> > > >,core::iter::adapters::map::Map<alloc::vec::into_iter::IntoIter<ref$<str$>,alloc::alloc::Global>,country_core::systems::save::snapshot::try_load_snapshot_data::closure_env$1> >
+0x1416075d0	583	alloc::vec::spec_from_iter::impl$0::from_iter<ref$<alloc::string::String>,std::collections::hash::map::Keys<alloc::string::String,alloc::vec::Vec<u8,alloc::alloc::Global> > >
+0x140905b80	1555	country_core::resources::world_raster_defs::AllWorldRasterWrite::would_write_succeed
+0x1415e4290	264	alloc::vec::from_elem<country_core::systems::render_loop::compute_passes::grass2::Grass2ActiveInstanceSsbo>
+0x141bf9bf0	100	country_core::systems::save::snapshot::try_chunk
+0x140dbe940	38	flate2::mem::Decompress::new
+0x140b8dd00	234	std::io::Read::read_exact<flate2::deflate::bufread::DeflateDecoder<ref$<slice2$<u8> > > >
+0x141707f30	189	anyhow::context::impl$0::context<tuple$<>,std::io::error::Error,ref$<str$> >
+0x14096dd60	120	core::ptr::drop_in_place<alloc::vec::Vec<tuple$<ref$<str$>,enum2$<core::option::Option<alloc::vec::Vec<u8,alloc::alloc::Global> > > >,alloc::alloc::Global> >
+0x140264880	299	hashbrown::raw::RawTableInner::drop_inner_table<tuple$<alloc::string::String,alloc::string::String>,alloc::alloc::Global>
+0x1409775a0	111	core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::components::TreeStorageIndex,country_core::resources::history::tree_edit::TreeData>,alloc::alloc::Global> >
+0x1400da950	269	core::ptr::drop_in_place<country_core::resources::terrain_editing::TerrainEditingData>
+0x142565bf0	82	motomoto::tag_from_str
+0x1415e4550	338	alloc::vec::from_elem<array$<u8,4> >
+0x1414fdc20	86	serde_json::value::from_value<core::ops::range::Range<f32> >
+0x14097f9b0	119	core::ptr::drop_in_place<country_core::resources::walls::decorator_storage::DecoratorStorageSnapshot>
+0x140977ab0	143	core::ptr::drop_in_place<alloc::vec::Vec<tuple$<country_core::resources::walls::WallId,country_core::resources::walls::inner_wall_state::WallState>,alloc::alloc::Global> >

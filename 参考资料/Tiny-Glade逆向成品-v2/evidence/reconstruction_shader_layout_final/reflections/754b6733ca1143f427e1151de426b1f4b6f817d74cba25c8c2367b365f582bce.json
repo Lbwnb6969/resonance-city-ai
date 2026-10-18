@@ -1,0 +1,46 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_19" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "obj_position_radius",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "push_strength",
+                    "type" : "float",
+                    "offset" : 16
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec2",
+            "name" : "vs_out_frag_uv",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main_color",
+            "location" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_19",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

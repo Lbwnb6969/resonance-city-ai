@@ -31,6 +31,7 @@ func setup(parent: Node3D) -> void:
 	material.shader = CraftShader
 
 func progress(renderer) -> void:
+	if renderer.state.house_improvements.is_empty() and renderer.state.house_culture.is_empty() and renderer.state.house_clockwork.is_empty() and roots.is_empty() and culture_roots.is_empty() and mechanism_roots.is_empty():return
 	_culture(renderer)
 	_mechanisms(renderer)
 	var live := {}
@@ -267,9 +268,7 @@ func _placements(renderer, house: Dictionary, level: int) -> Dictionary:
 				if not renderer._clearance_at(Vector2(point.x,point.z),str(face.cell_id),0.13): clear = false
 				if renderer.state.water_clearance(Vector2(point.x,point.z)) <= 0.13: clear = false
 				if not renderer.EDITABLE_WORLD_RECT.grow(-0.13).has_point(Vector2(point.x,point.z)): clear = false
-				for other: Dictionary in renderer.state.houses:
-					for entry: Dictionary in renderer.state.house_entrances(str(other.id)):
-						if Vector2(point.x,point.z).distance_to(entry.clearance_at) < 0.95+0.13: clear = false
+				if not renderer.promenade.doors_clear(renderer.state,Vector2(point.x,point.z),0.95+0.13):clear=false
 			if clear:
 				result.pergola.append(frame)
 				break

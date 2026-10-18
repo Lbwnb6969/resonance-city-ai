@@ -467,14 +467,16 @@ func set_house_role(house_id: String, role: String) -> Dictionary:
 	return {"ok": true, "message": "建筑用途已更改"}
 
 
-func refresh_growth() -> Array[String]:
+func refresh_growth(prepared_rows:Array=[]) -> Array[String]:
 	var earned: Array[String] = []
+	var rows:Array=prepared_rows
 	while growth_memories.size()<Growth.CHAPTERS.size():
-		var rows := Growth.report(self)
+		if rows.is_empty():rows=Growth.report(self)
 		var row: Dictionary = rows[growth_memories.size()]
 		if not row.ready: break
 		growth_memories.append(str(row.id))
 		earned.append(str(row.id))
+		rows=[]
 	var new_era := Eras.refresh(self)
 	if not earned.is_empty() or new_era:
 		dirty = true
@@ -1026,7 +1028,7 @@ func preview_road(points: Array[Vector2],style: String = "path") -> Dictionary:
 			var wanted := style if style!="path" else ("promenade" if str(road.get("style","path")) in ["path","cobble"] else str(road.style))
 			var width := RoadUpgrade.width_for(wanted)
 			var check := _validate_road_site(road.points,width)
-			var no_op := str(road.get("style","path"))==wanted
+			var no_op := str(road.get("style","path"))==wanted and is_equal_approx(float(road.width),width)
 			check.merge({"points":original,"upgrade_road_id":upgrade_id,"style":wanted,"width":width,"upgraded":not no_op,"no_op":no_op,"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false})
 			if check.ok: check.message="这条%s已经铺好" % RoadUpgrade.NAMES[wanted] if no_op else "原位铺成%s，保留路口与门阶" % RoadUpgrade.NAMES[wanted]
 			return check
@@ -2136,11 +2138,17 @@ func _commit(before: Dictionary, label: String) -> void:
 	_redo.clear()
 
 
+var _house_indices:Dictionary={}
 func _house_index(id: String) -> int:
+	var index:int=_house_indices.get(id,-1)
+	# Validate against the actual array: restore, undo and fixture construction
+	# can replace or reorder houses without calling an index invalidator.
+	if index>=0 and index<houses.size() and houses[index].id==id:return index
+	_house_indices={}
 	for i in range(houses.size()):
-		if houses[i].id == id:
-			return i
-	return -1
+		var key:String=houses[i].id
+		if not _house_indices.has(key):_house_indices[key]=i
+	return int(_house_indices.get(id,-1))
 
 
 func _supported(cell: Dictionary, cells: Array) -> bool:

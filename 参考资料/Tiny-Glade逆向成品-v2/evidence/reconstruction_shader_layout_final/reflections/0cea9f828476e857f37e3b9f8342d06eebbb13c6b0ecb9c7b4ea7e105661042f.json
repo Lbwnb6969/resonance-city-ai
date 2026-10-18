@@ -1,0 +1,38 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "vs_out_frag_position_ws",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "uvec2",
+            "name" : "entryPointParam_ps_main_gbuffer",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "water_mask_tex",
+            "set" : 9,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_lnc_iso",
+            "set" : 0,
+            "binding" : 5
+        }
+    ]
+}

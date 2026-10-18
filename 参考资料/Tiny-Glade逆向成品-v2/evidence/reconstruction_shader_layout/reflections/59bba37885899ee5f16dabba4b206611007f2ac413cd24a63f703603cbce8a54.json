@@ -1,0 +1,22 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "vs_out.velocity_ws",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_ps_main.velocity",
+            "location" : 0
+        }
+    ]
+}

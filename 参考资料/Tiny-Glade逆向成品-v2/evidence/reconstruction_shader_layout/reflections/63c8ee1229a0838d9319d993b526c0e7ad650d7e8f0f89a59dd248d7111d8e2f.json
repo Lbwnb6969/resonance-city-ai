@@ -1,0 +1,87 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_59" : {
+            "name" : "FrameCounter_natural",
+            "members" : [
+                {
+                    "name" : "index",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_119" : {
+            "name" : "MaterialData_natural",
+            "members" : [
+                {
+                    "name" : "has_normal_map",
+                    "type" : "int",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec2",
+            "name" : "vs_out.frag_uv_alpha",
+            "location" : 4
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "material_data.alpha_map",
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data.albedo_map",
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data.leafy_greens",
+            "set" : 0,
+            "binding" : 4
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data.normal_map",
+            "set" : 0,
+            "binding" : 2
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.llr",
+            "set" : 2,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_59",
+            "name" : "FrameCounter_natural",
+            "block_size" : 4,
+            "set" : 3,
+            "binding" : 0
+        },
+        {
+            "type" : "_119",
+            "name" : "MaterialData_natural",
+            "block_size" : 4,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

@@ -1,0 +1,4346 @@
+[
+  {
+    "path": "audio/core.bnk",
+    "bytes": 69898769,
+    "sha256": "c498243db578bda71a1fc8fa0780cb0afbf78d72d72a44388f75a9054c1c8016",
+    "output": "loose/audio/core.bnk"
+  },
+  {
+    "path": "audio/core.pck",
+    "bytes": 459653765,
+    "sha256": "9e5b8344d002c6fffc48a75250b660c3129d8bf7062a0d399f50877595b72eb5",
+    "output": "loose/audio/core.pck"
+  },
+  {
+    "path": "audio/Init.bnk",
+    "bytes": 5319,
+    "sha256": "8462f52c4ca33c1c365ed709e84aec5fd1027eb73725ece0d38989d6a6a1d68a",
+    "output": "loose/audio/Init.bnk"
+  },
+  {
+    "path": "avcodec-61.dll",
+    "bytes": 13615616,
+    "sha256": "198c8ccfe69580b9b3f05b8129515d35aa3b802a3f4b62b072a2d0524a39c7bf",
+    "output": "loose/avcodec-61.dll"
+  },
+  {
+    "path": "avformat-61.dll",
+    "bytes": 2294272,
+    "sha256": "a519e7cec212cc658c8d2f9fa468ef78c185727b81d1069600f5c82164240546",
+    "output": "loose/avformat-61.dll"
+  },
+  {
+    "path": "avutil-59.dll",
+    "bytes": 1059328,
+    "sha256": "3db483a89b1eaf63338b54466d54c49eef1a8bb623704b6d8078a844aeae9e5b",
+    "output": "loose/avutil-59.dll"
+  },
+  {
+    "path": "CrashRpt1403.dll",
+    "bytes": 215552,
+    "sha256": "ccdddae3128a4cec3904dcbbdea0735f8cb0a91f24445cba98d0b3979eb3216d",
+    "output": "loose/CrashRpt1403.dll"
+  },
+  {
+    "path": "crashrpt_lang.ini",
+    "bytes": 8214,
+    "sha256": "763f0fe5af80055827fb2563af696bd1452c39be080720ab483d0ce6ac36ee92",
+    "output": "loose/crashrpt_lang.ini"
+  },
+  {
+    "path": "CrashSender1403.exe",
+    "bytes": 1155584,
+    "sha256": "a2efe963c9a0fd67867a2dcb44aaa9654a9928e9c977cca1dfeccaf235b37843",
+    "output": "loose/CrashSender1403.exe"
+  },
+  {
+    "path": "dlc/agriculture/audio.bnk",
+    "bytes": 6925742,
+    "sha256": "14038a4db31c87395df12fcfcf3c3d2993e4d8649016dd49a986178f1d0cf956",
+    "output": "loose/dlc/agriculture/audio.bnk"
+  },
+  {
+    "path": "dlc/agriculture/audio.pck",
+    "bytes": 172694765,
+    "sha256": "127425c47631b62dd6947bb257792a218a0f50fea8bc67eb8d62b4572199fe69",
+    "output": "loose/dlc/agriculture/audio.pck"
+  },
+  {
+    "path": "dlc/agriculture/localization/cs/dlc_agriculture_buildings.json",
+    "bytes": 115,
+    "sha256": "3e3c9ef40c35973a1624bfda0a7653d671e5314a7e308203a415304e7bca58af",
+    "output": "loose/dlc/agriculture/localization/cs/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/cs/dlc_agriculture_events.json",
+    "bytes": 175,
+    "sha256": "17757d15fbc79c14598485a19c74303c65c7443a5645432bd87a658482eed370",
+    "output": "loose/dlc/agriculture/localization/cs/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/cs/dlc_agriculture_general.json",
+    "bytes": 573,
+    "sha256": "8fbc93dfc6eb5986627d92e46b05e4c5124ece73cda32c8f85bb1568a0b7055f",
+    "output": "loose/dlc/agriculture/localization/cs/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/cs/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/cs/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/cs/dlc_agriculture_unlockables.json",
+    "bytes": 64,
+    "sha256": "ae8a7c8d06a4ca7d2f76a59a719e790e1cb52047537bf953e51c7e28f1aa367b",
+    "output": "loose/dlc/agriculture/localization/cs/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/de/dlc_agriculture_buildings.json",
+    "bytes": 9512,
+    "sha256": "87e9a976b88079b94ea8c5815004df5ec3312360220aaefee9e4c3997b694dff",
+    "output": "loose/dlc/agriculture/localization/de/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/de/dlc_agriculture_events.json",
+    "bytes": 12206,
+    "sha256": "d75c1ebc404992adc9a832942839e257e752361ab0384252856910b05f8f3188",
+    "output": "loose/dlc/agriculture/localization/de/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/de/dlc_agriculture_general.json",
+    "bytes": 26048,
+    "sha256": "310077dd7be0daeabfc7163db449a40b953b9a4ff7e1f45059fe5d924ea2bd8a",
+    "output": "loose/dlc/agriculture/localization/de/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/de/dlc_agriculture_help.json",
+    "bytes": 20050,
+    "sha256": "b72e2b7f54755fe1d4208285472ceb7594d9b1c51f72bb562dc8cab3e075f990",
+    "output": "loose/dlc/agriculture/localization/de/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/de/dlc_agriculture_unlockables.json",
+    "bytes": 5617,
+    "sha256": "6d4e78ab65ba9f040e432a9ccafe14b3e36b530aa447ee4f5ad59776249c450f",
+    "output": "loose/dlc/agriculture/localization/de/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/en/dlc_agriculture_buildings.json",
+    "bytes": 9113,
+    "sha256": "fc45755b28821f8f9a7ae3617fcd1c61e4f61bf80cbc1746e2696d32d42c4b5f",
+    "output": "loose/dlc/agriculture/localization/en/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/en/dlc_agriculture_events.json",
+    "bytes": 11302,
+    "sha256": "35cb5f5dec453d74e61454339cc95ddfd67e88d26a11ce164f6db7d93becc22c",
+    "output": "loose/dlc/agriculture/localization/en/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/en/dlc_agriculture_general.json",
+    "bytes": 26092,
+    "sha256": "e52b077ba428fbddc7a30a2a072e7980ab7d5f7a6136a6e3edbd882980d74f5c",
+    "output": "loose/dlc/agriculture/localization/en/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/en/dlc_agriculture_help.json",
+    "bytes": 18484,
+    "sha256": "bed9c09da4e85972df4913605da50c408afa4bcb17e0a708e92ee7399937f2bd",
+    "output": "loose/dlc/agriculture/localization/en/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/en/dlc_agriculture_unlockables.json",
+    "bytes": 5259,
+    "sha256": "d73597561ba4dce7c03e1ff2c579f94ba3d815845e32f4d019ef05fb0c19a357",
+    "output": "loose/dlc/agriculture/localization/en/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/es-ES/dlc_agriculture_buildings.json",
+    "bytes": 10174,
+    "sha256": "a997844ba1953b3c9a51a5c156296c802c7a9e0d45622ea9594883b7738d706d",
+    "output": "loose/dlc/agriculture/localization/es-ES/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/es-ES/dlc_agriculture_events.json",
+    "bytes": 12337,
+    "sha256": "2dc92775b758a5395a8bbbfcc206be842acad3b528da9eb369ab83a38f17a7f8",
+    "output": "loose/dlc/agriculture/localization/es-ES/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/es-ES/dlc_agriculture_general.json",
+    "bytes": 28517,
+    "sha256": "0dee3b182cf98507d658d52b2d320df590fa8368ed5bd90d25774d68b2a59110",
+    "output": "loose/dlc/agriculture/localization/es-ES/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/es-ES/dlc_agriculture_help.json",
+    "bytes": 21004,
+    "sha256": "cb148e08535af36aefa3942aae298a26676c16b0957f1202837eab14ff872ad5",
+    "output": "loose/dlc/agriculture/localization/es-ES/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/es-ES/dlc_agriculture_unlockables.json",
+    "bytes": 5845,
+    "sha256": "998668a37094acf7808bd4b36dbb4a56a248191bc83e78df83828fe12155cae4",
+    "output": "loose/dlc/agriculture/localization/es-ES/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/fr/dlc_agriculture_buildings.json",
+    "bytes": 10123,
+    "sha256": "914a0c58c96b7bf70e30d80cd615ece88a579b31bbe79493f8c22f843e4201bb",
+    "output": "loose/dlc/agriculture/localization/fr/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/fr/dlc_agriculture_events.json",
+    "bytes": 13033,
+    "sha256": "aaa07b2df42f0aa7abdd40bf1762e5a12e5ce42526e1ac49cd951b924e09c4c0",
+    "output": "loose/dlc/agriculture/localization/fr/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/fr/dlc_agriculture_general.json",
+    "bytes": 28711,
+    "sha256": "b137df3d85a76954d2404b190b434dcdba51a0e31728c63fd67f1bd5fa5d92a9",
+    "output": "loose/dlc/agriculture/localization/fr/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/fr/dlc_agriculture_help.json",
+    "bytes": 21956,
+    "sha256": "cd963e00d7fc3c99949dc4eda92b828bd190c984cd245a20da34551c6d4a2186",
+    "output": "loose/dlc/agriculture/localization/fr/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/fr/dlc_agriculture_unlockables.json",
+    "bytes": 6071,
+    "sha256": "15e4a30fdbb011c9879988967b3e998460d1dfda6251a4b60840d6631e6aadf8",
+    "output": "loose/dlc/agriculture/localization/fr/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/it/dlc_agriculture_buildings.json",
+    "bytes": 10382,
+    "sha256": "2a42c2403977c02af96c23f14495a17bb22b5c4ceea27ba3f8c52492896dede3",
+    "output": "loose/dlc/agriculture/localization/it/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/it/dlc_agriculture_events.json",
+    "bytes": 12144,
+    "sha256": "c620a6c11c1acf4e99ab50799a3f8856d44b8aa44df254715d6f578ddd1c79e3",
+    "output": "loose/dlc/agriculture/localization/it/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/it/dlc_agriculture_general.json",
+    "bytes": 28255,
+    "sha256": "eba8c6538a852223bd7a23fe3411ce186bd6e9f751299cdb98e1ecf966fc3c39",
+    "output": "loose/dlc/agriculture/localization/it/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/it/dlc_agriculture_help.json",
+    "bytes": 20711,
+    "sha256": "901983633aa340860e723b1c88f75e6a8ca9a28dcddba4e317b9e6b8ef66a547",
+    "output": "loose/dlc/agriculture/localization/it/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/it/dlc_agriculture_unlockables.json",
+    "bytes": 5642,
+    "sha256": "3f13ba4a3f44345b7e35be34d14d4b4e8f3107a56b2e765726a81fa13a391207",
+    "output": "loose/dlc/agriculture/localization/it/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ja/dlc_agriculture_buildings.json",
+    "bytes": 10088,
+    "sha256": "215059f339d7e9192e1e95398eaa1d9322f6b5d58183e7caf700be6586081f17",
+    "output": "loose/dlc/agriculture/localization/ja/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ja/dlc_agriculture_events.json",
+    "bytes": 13016,
+    "sha256": "5163a48b1450aa48eb039fec3683f01e82ddd0e052237aad69122f411bdab7bf",
+    "output": "loose/dlc/agriculture/localization/ja/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ja/dlc_agriculture_general.json",
+    "bytes": 27322,
+    "sha256": "ed155a600de268c6dc90db31bf395fbcc19a6e26fec09add8d0a168b6d847c2f",
+    "output": "loose/dlc/agriculture/localization/ja/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ja/dlc_agriculture_help.json",
+    "bytes": 21891,
+    "sha256": "6a2a86055c5a169c42789162f485ef6020b47d9213c57db8115aefdf69221838",
+    "output": "loose/dlc/agriculture/localization/ja/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ja/dlc_agriculture_unlockables.json",
+    "bytes": 5624,
+    "sha256": "12ab5801a3f3772e5614a98f38429ede6b47b936d9bae4fd3d6e437c4ca76ced",
+    "output": "loose/dlc/agriculture/localization/ja/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ko/dlc_agriculture_buildings.json",
+    "bytes": 9582,
+    "sha256": "7ae34551802cd72572144901cdbed25a0ff680c1586b5dad4c108bcbba418fca",
+    "output": "loose/dlc/agriculture/localization/ko/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ko/dlc_agriculture_events.json",
+    "bytes": 13823,
+    "sha256": "8c56405ccef5d6948ce35bb76750e166f10631f3f28f06aa58989fb8fa8e42ba",
+    "output": "loose/dlc/agriculture/localization/ko/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ko/dlc_agriculture_general.json",
+    "bytes": 11573,
+    "sha256": "0ab8176b25550943012a8eaac0ef1530d9693b25a1703c43598235df5dc49f39",
+    "output": "loose/dlc/agriculture/localization/ko/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ko/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/ko/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ko/dlc_agriculture_unlockables.json",
+    "bytes": 321,
+    "sha256": "df4c62ad68a41bfe892c28550290788cb8e5aba3d9adade8e681ee65ffb0ce4f",
+    "output": "loose/dlc/agriculture/localization/ko/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pl/dlc_agriculture_buildings.json",
+    "bytes": 78,
+    "sha256": "615ca4e18d704a157c6866a332cedaae9e3e7c3167d7aa01381aa89790594235",
+    "output": "loose/dlc/agriculture/localization/pl/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pl/dlc_agriculture_events.json",
+    "bytes": 177,
+    "sha256": "64548986a6abb2f3205ef8cac4bbff59e29b3cfe1d0c7278d59f31ad1ca5bbc8",
+    "output": "loose/dlc/agriculture/localization/pl/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pl/dlc_agriculture_general.json",
+    "bytes": 564,
+    "sha256": "c220bbe19d609d9052c531c01c6520c94a0b698d01da3af88055e9b438a7a8af",
+    "output": "loose/dlc/agriculture/localization/pl/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pl/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/pl/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pl/dlc_agriculture_unlockables.json",
+    "bytes": 64,
+    "sha256": "ae8a7c8d06a4ca7d2f76a59a719e790e1cb52047537bf953e51c7e28f1aa367b",
+    "output": "loose/dlc/agriculture/localization/pl/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pt-BR/dlc_agriculture_buildings.json",
+    "bytes": 10011,
+    "sha256": "af14bb32284596d6fe01cee9692b273dee8ac1bc5f06681c0cd5072a3d64779c",
+    "output": "loose/dlc/agriculture/localization/pt-BR/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pt-BR/dlc_agriculture_events.json",
+    "bytes": 12122,
+    "sha256": "aeb4033eac841d63afaef794edfb924c64b23aac49bc34a8efaf6c060b444b6f",
+    "output": "loose/dlc/agriculture/localization/pt-BR/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pt-BR/dlc_agriculture_general.json",
+    "bytes": 28047,
+    "sha256": "4beb5cfd3d4e7edb268d4291db6ba43a6dfb58821b383d418c5f8df8020b0305",
+    "output": "loose/dlc/agriculture/localization/pt-BR/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pt-BR/dlc_agriculture_help.json",
+    "bytes": 20780,
+    "sha256": "47a618b4a6049d139d0e3936ef96552b46141ed74e7ac1eb3e04a7385a0f2770",
+    "output": "loose/dlc/agriculture/localization/pt-BR/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/pt-BR/dlc_agriculture_unlockables.json",
+    "bytes": 5786,
+    "sha256": "1855cd73f3e73eb19a8cef8d0b4f7bd2f8830787a4760771e7e7ca4b897aaa7a",
+    "output": "loose/dlc/agriculture/localization/pt-BR/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ru/dlc_agriculture_buildings.json",
+    "bytes": 13357,
+    "sha256": "328b396e32280d6a99416bf407e4640a089af7ee031b9560018f742e777711b2",
+    "output": "loose/dlc/agriculture/localization/ru/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ru/dlc_agriculture_events.json",
+    "bytes": 16543,
+    "sha256": "2541adfd307142518ff2f86f7bf749b00bf16ec568ce8a19494b86df8f570bae",
+    "output": "loose/dlc/agriculture/localization/ru/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ru/dlc_agriculture_general.json",
+    "bytes": 35354,
+    "sha256": "1cb5197c6dd8642321dffeaea9184e35bfc0bd93526d3be8b04926125f514c12",
+    "output": "loose/dlc/agriculture/localization/ru/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ru/dlc_agriculture_help.json",
+    "bytes": 29576,
+    "sha256": "1a50f2a55855666734e5bde7e3f278c187666616bbefac396ef255db567abb65",
+    "output": "loose/dlc/agriculture/localization/ru/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/ru/dlc_agriculture_unlockables.json",
+    "bytes": 7543,
+    "sha256": "25042587f4857fa876f2ce4c6386078f43ea1365c89e11646060abb89774df5f",
+    "output": "loose/dlc/agriculture/localization/ru/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/sv-SE/dlc_agriculture_buildings.json",
+    "bytes": 9124,
+    "sha256": "e1df405ecba8429dad1b1dd2b848d9434a9ff99621b5564d4fb896b1c10f6d8a",
+    "output": "loose/dlc/agriculture/localization/sv-SE/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/sv-SE/dlc_agriculture_events.json",
+    "bytes": 11244,
+    "sha256": "09b6675c4b539be6a1ae8535f39e29b86f6d4fd99d117b972a57a5fe40c5a526",
+    "output": "loose/dlc/agriculture/localization/sv-SE/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/sv-SE/dlc_agriculture_general.json",
+    "bytes": 26464,
+    "sha256": "6f12f2e77e82814c15012f06b7ac7388357c95e747ad3acc014d52371ae7f175",
+    "output": "loose/dlc/agriculture/localization/sv-SE/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/sv-SE/dlc_agriculture_help.json",
+    "bytes": 18665,
+    "sha256": "f854c5bc2770bf1c4b73ec9db82f57b218286f05a29c5343f9c122d9a8ed264c",
+    "output": "loose/dlc/agriculture/localization/sv-SE/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/sv-SE/dlc_agriculture_unlockables.json",
+    "bytes": 5194,
+    "sha256": "1ad9c5da43e6872d8db7d3832e943cecb446fd71cdacf09aa95da61f9600360e",
+    "output": "loose/dlc/agriculture/localization/sv-SE/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/th/dlc_agriculture_buildings.json",
+    "bytes": 78,
+    "sha256": "615ca4e18d704a157c6866a332cedaae9e3e7c3167d7aa01381aa89790594235",
+    "output": "loose/dlc/agriculture/localization/th/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/th/dlc_agriculture_events.json",
+    "bytes": 201,
+    "sha256": "a007339cda179af468239fbbc7ddb98eee52de09e315fea3d6053ff316b5b2fd",
+    "output": "loose/dlc/agriculture/localization/th/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/th/dlc_agriculture_general.json",
+    "bytes": 664,
+    "sha256": "e15a1cd54de94a639800840b83eea8f9928e97b5f408667f045703aa6cb10178",
+    "output": "loose/dlc/agriculture/localization/th/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/th/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/th/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/th/dlc_agriculture_unlockables.json",
+    "bytes": 64,
+    "sha256": "ae8a7c8d06a4ca7d2f76a59a719e790e1cb52047537bf953e51c7e28f1aa367b",
+    "output": "loose/dlc/agriculture/localization/th/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/tr/dlc_agriculture_buildings.json",
+    "bytes": 10072,
+    "sha256": "7f7e2cf3232f28fb5c65be202c333a6f03794e501561358604dc30f9d43941e3",
+    "output": "loose/dlc/agriculture/localization/tr/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/tr/dlc_agriculture_events.json",
+    "bytes": 12371,
+    "sha256": "89c0ca64f5943483115b81ca8d5abe3c2b2cecc81ef7e1077bb273dc62ed49b2",
+    "output": "loose/dlc/agriculture/localization/tr/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/tr/dlc_agriculture_general.json",
+    "bytes": 27633,
+    "sha256": "d437473084f4f332006515afad6c894281bafd7e04cf97eb61926a52eaa77294",
+    "output": "loose/dlc/agriculture/localization/tr/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/tr/dlc_agriculture_help.json",
+    "bytes": 20944,
+    "sha256": "0cc46f4b8a9bcc3027e011a08c4c93fb77b02c646c39f01d863c15cb2f5845a2",
+    "output": "loose/dlc/agriculture/localization/tr/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/tr/dlc_agriculture_unlockables.json",
+    "bytes": 5728,
+    "sha256": "dc420dbf32fee85a71e8e4e1cffc6be120eb35b102f98e56b036b469fe1b29b4",
+    "output": "loose/dlc/agriculture/localization/tr/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/uk/dlc_agriculture_buildings.json",
+    "bytes": 1363,
+    "sha256": "b763d32ff931dca74b5246e84f7709832f18843b4594640adbe58c8262da9907",
+    "output": "loose/dlc/agriculture/localization/uk/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/uk/dlc_agriculture_events.json",
+    "bytes": 276,
+    "sha256": "19c084a865edc79d403d44a0676bf1303151c39cd6dd906862f542d628c580ff",
+    "output": "loose/dlc/agriculture/localization/uk/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/uk/dlc_agriculture_general.json",
+    "bytes": 2179,
+    "sha256": "3ff936c9ec2589ddf6fce09bbe2efcb6690e3c83f81566c4f3809b8b9705a448",
+    "output": "loose/dlc/agriculture/localization/uk/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/uk/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/uk/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/uk/dlc_agriculture_unlockables.json",
+    "bytes": 134,
+    "sha256": "7d431a88e21fd676e48289d4438226333abbfbf5089c707b2e49e0725d0154e3",
+    "output": "loose/dlc/agriculture/localization/uk/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/vi/dlc_agriculture_buildings.json",
+    "bytes": 78,
+    "sha256": "615ca4e18d704a157c6866a332cedaae9e3e7c3167d7aa01381aa89790594235",
+    "output": "loose/dlc/agriculture/localization/vi/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/vi/dlc_agriculture_events.json",
+    "bytes": 189,
+    "sha256": "3a45af4ca776fca9fa7a1f30b0dc7f975b1c450f0a63dbc2da32bec76b92b370",
+    "output": "loose/dlc/agriculture/localization/vi/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/vi/dlc_agriculture_general.json",
+    "bytes": 600,
+    "sha256": "3402dfa7e220430b399e0069a5c4e40efd0f3dc18376f91038a381d20736ddea",
+    "output": "loose/dlc/agriculture/localization/vi/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/vi/dlc_agriculture_help.json",
+    "bytes": 95,
+    "sha256": "ad8d82f0587a017e2139b5da67c05006548f237c334b6a637a5278671f92390e",
+    "output": "loose/dlc/agriculture/localization/vi/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/vi/dlc_agriculture_unlockables.json",
+    "bytes": 64,
+    "sha256": "ae8a7c8d06a4ca7d2f76a59a719e790e1cb52047537bf953e51c7e28f1aa367b",
+    "output": "loose/dlc/agriculture/localization/vi/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/zh-CN/dlc_agriculture_buildings.json",
+    "bytes": 8554,
+    "sha256": "dfb8d7b8b12633ebde40a9afb72a9ab86e4daa5673d77659c892449aa7834979",
+    "output": "loose/dlc/agriculture/localization/zh-CN/dlc_agriculture_buildings.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/zh-CN/dlc_agriculture_events.json",
+    "bytes": 10957,
+    "sha256": "b3f2864440cc329c1623d34e9727464e8a41622147a300de867c0644ec7142e5",
+    "output": "loose/dlc/agriculture/localization/zh-CN/dlc_agriculture_events.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/zh-CN/dlc_agriculture_general.json",
+    "bytes": 24267,
+    "sha256": "ac6be9f27a2300ef4ffba4a9dcb0b3ccccc3204284d15a14fba0bd96b7948832",
+    "output": "loose/dlc/agriculture/localization/zh-CN/dlc_agriculture_general.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/zh-CN/dlc_agriculture_help.json",
+    "bytes": 17226,
+    "sha256": "4b1b081d7f2ce7192826deb78a3def0b0b453773f0cd57283630e33981c0c94b",
+    "output": "loose/dlc/agriculture/localization/zh-CN/dlc_agriculture_help.json"
+  },
+  {
+    "path": "dlc/agriculture/localization/zh-CN/dlc_agriculture_unlockables.json",
+    "bytes": 4832,
+    "sha256": "cbe5c7ef1b53e13c076a3756af147e6c47e9b376c3f3f59ef6bb42f674554a06",
+    "output": "loose/dlc/agriculture/localization/zh-CN/dlc_agriculture_unlockables.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/cs/dlc_guivre_garden.json",
+    "bytes": 2312,
+    "sha256": "3e99df3748f1c2432a2dc6d5b5cadfb82dd1f0cc65fc1021341191662b6ce0a2",
+    "output": "loose/dlc/guivre_garden/localization/cs/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/de/dlc_guivre_garden.json",
+    "bytes": 2262,
+    "sha256": "91fff247d16d80caaf8869560ba758d5f3b8b1c3cb9d89cf4bc7cd8db627f94e",
+    "output": "loose/dlc/guivre_garden/localization/de/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/en/dlc_guivre_garden.json",
+    "bytes": 2124,
+    "sha256": "3105355fdbe284840562f6a675a99fecdcbe50a94a5e4094568fef869d66a1d3",
+    "output": "loose/dlc/guivre_garden/localization/en/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/es-ES/dlc_guivre_garden.json",
+    "bytes": 2428,
+    "sha256": "430164eda7d43cf4b9789918b10955038655e6ff61ca0a6c86e37d1d2ad4780a",
+    "output": "loose/dlc/guivre_garden/localization/es-ES/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/fr/dlc_guivre_garden.json",
+    "bytes": 2500,
+    "sha256": "97f237edc0bc3e6a2911d6b09dc297191243435134786bb17350f0d2a50ceaf8",
+    "output": "loose/dlc/guivre_garden/localization/fr/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/it/dlc_guivre_garden.json",
+    "bytes": 2399,
+    "sha256": "4f573cc3729ad173a8bb224741b258368f72a9d4554bed1fe8a3d61c811281f2",
+    "output": "loose/dlc/guivre_garden/localization/it/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/ja/dlc_guivre_garden.json",
+    "bytes": 2513,
+    "sha256": "af3480e777b9a4ef8a50276e34df6d80cbf06e87eb03e332f49aec6c87828777",
+    "output": "loose/dlc/guivre_garden/localization/ja/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/ko/dlc_guivre_garden.json",
+    "bytes": 2574,
+    "sha256": "3894a9e467da5e879a54743fdc79fac5cf534535684d7c193d13129d21548ee0",
+    "output": "loose/dlc/guivre_garden/localization/ko/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/pl/dlc_guivre_garden.json",
+    "bytes": 2327,
+    "sha256": "0a62a2c55e9b555b27245552144f87dcce481a1efcafe996fbe67f316bb9e8d7",
+    "output": "loose/dlc/guivre_garden/localization/pl/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/pt-BR/dlc_guivre_garden.json",
+    "bytes": 2317,
+    "sha256": "756034495984e817ff40138faeedc0be7c5c5470498d6e18d3e37a457a7cd374",
+    "output": "loose/dlc/guivre_garden/localization/pt-BR/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/ru/dlc_guivre_garden.json",
+    "bytes": 3201,
+    "sha256": "7d7e421021c74bfd2dde061af586a936c6f405e42b220f23346a2d466d8fd5d6",
+    "output": "loose/dlc/guivre_garden/localization/ru/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/sv-SE/dlc_guivre_garden.json",
+    "bytes": 2297,
+    "sha256": "64a2ca92545456f2e66fa9b9192c902e7bc8e9d1f54ec45a414c6c5120f945a5",
+    "output": "loose/dlc/guivre_garden/localization/sv-SE/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/th/dlc_guivre_garden.json",
+    "bytes": 3722,
+    "sha256": "96bd3c943ec8ebdf6bc17c8c25b1c56325328988742d0ed1aba77caed15b29f8",
+    "output": "loose/dlc/guivre_garden/localization/th/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/tr/dlc_guivre_garden.json",
+    "bytes": 2321,
+    "sha256": "3a1bd0f932b518269ba002da4d1032275f5b6726f64917b9dd05b7d83e3c8d87",
+    "output": "loose/dlc/guivre_garden/localization/tr/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/uk/dlc_guivre_garden.json",
+    "bytes": 3072,
+    "sha256": "b6965cdc555fa157fad3a4bd622e2ae5093aa8ba3fdf25a132652ed14106338a",
+    "output": "loose/dlc/guivre_garden/localization/uk/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/vi/dlc_guivre_garden.json",
+    "bytes": 2477,
+    "sha256": "40e67a9873f31e302f88b425d7ffbb74c434b68937f6771499fdd74e46bd6091",
+    "output": "loose/dlc/guivre_garden/localization/vi/dlc_guivre_garden.json"
+  },
+  {
+    "path": "dlc/guivre_garden/localization/zh-CN/dlc_guivre_garden.json",
+    "bytes": 1963,
+    "sha256": "fb186cc3e09fb8ab193371af537adf3962350e54dbfad2dc1dd0473e8e068272",
+    "output": "loose/dlc/guivre_garden/localization/zh-CN/dlc_guivre_garden.json"
+  },
+  {
+    "path": "foundation.exe",
+    "bytes": 70083072,
+    "sha256": "2c0a048bc1fa2791f58ea432b85cbd9b816af0efec6d6d1c0be6c12195da31af",
+    "output": "loose/foundation.exe"
+  },
+  {
+    "path": "libwinpthread-1.dll",
+    "bytes": 61343,
+    "sha256": "c6bf892e14e0ff834a626b4e243903e50d0f228cc826fdfd0b8c7ca1a4fbf921",
+    "output": "loose/libwinpthread-1.dll"
+  },
+  {
+    "path": "localization/charset-spaceless.txt",
+    "bytes": 10335,
+    "sha256": "c91e3cb77d3a8d3ea160efc2499565e9ab292a9db93217c2ce7d247049eff1d6",
+    "output": "loose/localization/charset-spaceless.txt"
+  },
+  {
+    "path": "localization/charset.txt",
+    "bytes": 4017,
+    "sha256": "3303021d31fe5af27c728e0a0d0509138f4df43f332fa1e3439b82e5c67a465e",
+    "output": "loose/localization/charset.txt"
+  },
+  {
+    "path": "localization/cs/achievements.json",
+    "bytes": 1352,
+    "sha256": "155d0a9c871ff83603aeadb7b32789b863155046cf22ccb9c8ae779cee10818d",
+    "output": "loose/localization/cs/achievements.json"
+  },
+  {
+    "path": "localization/cs/achievements.release.json",
+    "bytes": 8004,
+    "sha256": "2cb7fc4aa1a8ba87b152975aea720888d7e06e80c601f9e14ac14fe2ee91619b",
+    "output": "loose/localization/cs/achievements.release.json"
+  },
+  {
+    "path": "localization/cs/AchievementsVDF.vdf",
+    "bytes": 6634,
+    "sha256": "3e1edf956269d96bf5b9d7654cf504af5f7284993b6966c9937403c0cf76b73e",
+    "output": "loose/localization/cs/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/cs/agents.json",
+    "bytes": 7562,
+    "sha256": "dad3347e29118404d603c2b8a489ffc8f224f0b3b24ada311d36e28db2a55212",
+    "output": "loose/localization/cs/agents.json"
+  },
+  {
+    "path": "localization/cs/agents.release.json",
+    "bytes": 5763,
+    "sha256": "00f4c76de1123990d07e00d9aacf4c6b36e0b3b2eea274cd70086aa8ec211520",
+    "output": "loose/localization/cs/agents.release.json"
+  },
+  {
+    "path": "localization/cs/buildings.json",
+    "bytes": 37929,
+    "sha256": "e128d36b061327324470cbf8f2da1b82362eae9e6147e372e29835fecc5f1cdd",
+    "output": "loose/localization/cs/buildings.json"
+  },
+  {
+    "path": "localization/cs/buildings.release.json",
+    "bytes": 23177,
+    "sha256": "2b6ed4c80170521f8d89af3ddd006606abe23b00231c478f3653b9e934e87ae5",
+    "output": "loose/localization/cs/buildings.release.json"
+  },
+  {
+    "path": "localization/cs/compendium.json",
+    "bytes": 121,
+    "sha256": "3fbf40893c7487006f4c42bff5bc5b147b0385c0e851f023488b71e7142a5da8",
+    "output": "loose/localization/cs/compendium.json"
+  },
+  {
+    "path": "localization/cs/dlc_agriculture_achievements.json",
+    "bytes": 85,
+    "sha256": "2faf4b08d9a57d736339322ee1f90fc69ea3f6f499eed2e637d727cd6d43126b",
+    "output": "loose/localization/cs/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/cs/dlc_agriculture_search.json",
+    "bytes": 23,
+    "sha256": "9954d47943e815dba0f12c88bb55ceaaa1d9636223ad0d6ce70028185c1970a4",
+    "output": "loose/localization/cs/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/cs/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/cs/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/cs/events.json",
+    "bytes": 32765,
+    "sha256": "37ea830c19a7100bbce1555b5986c56d19398c78ca24fb4dc4368fa8449f66c0",
+    "output": "loose/localization/cs/events.json"
+  },
+  {
+    "path": "localization/cs/events.release.json",
+    "bytes": 167868,
+    "sha256": "7ac8ec09b4d3b81b4de04b57055b40ff894d3c55c5b3d423a60be89f18648e9a",
+    "output": "loose/localization/cs/events.release.json"
+  },
+  {
+    "path": "localization/cs/general.json",
+    "bytes": 101691,
+    "sha256": "484e0232a60cd74695e5c9e6c01672918ae8646aaf37361a5830834c40cef4bb",
+    "output": "loose/localization/cs/general.json"
+  },
+  {
+    "path": "localization/cs/general.release.json",
+    "bytes": 25855,
+    "sha256": "3c6598565e8c5155880de622d06e6bfffe02134e4b5fb72a0c6550660d463ddd",
+    "output": "loose/localization/cs/general.release.json"
+  },
+  {
+    "path": "localization/cs/help.json",
+    "bytes": 48035,
+    "sha256": "dbe1f93c40ee9b96c0f5969c7df289e38e3f99a7ad67aff4316dfabdbe0352bb",
+    "output": "loose/localization/cs/help.json"
+  },
+  {
+    "path": "localization/cs/help.release.json",
+    "bytes": 57484,
+    "sha256": "607eac46b9ee9c34b4f2f5f54ec9f29a5f5d16640cc6390e5c98108e89eeb044",
+    "output": "loose/localization/cs/help.release.json"
+  },
+  {
+    "path": "localization/cs/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/cs/ks_content.json"
+  },
+  {
+    "path": "localization/cs/languages.json",
+    "bytes": 396,
+    "sha256": "2073b9c7a28b54d7eff872459848ddefc3417e78224b3779255fb03dee400a41",
+    "output": "loose/localization/cs/languages.json"
+  },
+  {
+    "path": "localization/cs/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/cs/legal.json"
+  },
+  {
+    "path": "localization/cs/loading_tips.json",
+    "bytes": 2924,
+    "sha256": "e1ad61f8bf9bd562c8b2aa20cc29650bbdacc9f808b84360d4414ed1b9616567",
+    "output": "loose/localization/cs/loading_tips.json"
+  },
+  {
+    "path": "localization/cs/menu.json",
+    "bytes": 33272,
+    "sha256": "86dab395dd9ac89c4f3c3e80dd520028d266d6b66a14987ce2244a6fa8a7c888",
+    "output": "loose/localization/cs/menu.json"
+  },
+  {
+    "path": "localization/cs/military.json",
+    "bytes": 964,
+    "sha256": "bb7fed6ccb1bd3c96ca3929e59c038943df74c574e9ea6057cc24ff9567c3bd8",
+    "output": "loose/localization/cs/military.json"
+  },
+  {
+    "path": "localization/cs/military.release.json",
+    "bytes": 22042,
+    "sha256": "b66c8ba1a8fb18fef535ea2dcc2d11b2ff935f7891e0518a102576727b81a050",
+    "output": "loose/localization/cs/military.release.json"
+  },
+  {
+    "path": "localization/cs/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/cs/music.json"
+  },
+  {
+    "path": "localization/cs/rules.json",
+    "bytes": 11555,
+    "sha256": "b424ccd49755b955cc917c6c2c548af6bd333f719db09df082fb526b656e9ac6",
+    "output": "loose/localization/cs/rules.json"
+  },
+  {
+    "path": "localization/cs/rules.release.json",
+    "bytes": 4755,
+    "sha256": "59602ecf1abab866bd4d9b5afa1bb808bd7be7b62fb56ee431304862c62d321e",
+    "output": "loose/localization/cs/rules.release.json"
+  },
+  {
+    "path": "localization/cs/search.json",
+    "bytes": 206,
+    "sha256": "270548df2ea5dea4f43e5bd691ab0986feafb5ede99bf9fc5279812b551fda18",
+    "output": "loose/localization/cs/search.json"
+  },
+  {
+    "path": "localization/cs/tutorial.json",
+    "bytes": 1893,
+    "sha256": "340cefc0a16468d55eaa9bf7e4445a96f3d7b77c911f5cc03a24c4065da8133a",
+    "output": "loose/localization/cs/tutorial.json"
+  },
+  {
+    "path": "localization/cs/unlockables.json",
+    "bytes": 4410,
+    "sha256": "b014f88fd21f9369a7ec57790cd69171283616ed964c1e261a8d04a432094ad3",
+    "output": "loose/localization/cs/unlockables.json"
+  },
+  {
+    "path": "localization/cs/unlockables.release.json",
+    "bytes": 8392,
+    "sha256": "c9f5c857a7a42a9351f9912e750a1b2d546a03ed925de6c22cc2536b3eb19b1e",
+    "output": "loose/localization/cs/unlockables.release.json"
+  },
+  {
+    "path": "localization/cs/village_aspirations.json",
+    "bytes": 2458,
+    "sha256": "3666ef944099647ba29e6482d235b1527178b7f44f8436a685d778c1f7ed505b",
+    "output": "loose/localization/cs/village_aspirations.json"
+  },
+  {
+    "path": "localization/cs/village_aspirations.release.json",
+    "bytes": 1734,
+    "sha256": "6cf3311cc6b6858fc6a4d55ab988aef0827de4be1ffe5b25d3f3fae9515a85c8",
+    "output": "loose/localization/cs/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/cs/village_event.json",
+    "bytes": 205,
+    "sha256": "0f9fbbc4fe7d039c2965480c35600fdbe94eaeef386315d43adef0ebb7b9fa83",
+    "output": "loose/localization/cs/village_event.json"
+  },
+  {
+    "path": "localization/cs/whatsnew.json",
+    "bytes": 42336,
+    "sha256": "7ae6b715018d5707fa8387bf22e44259e3f1dab53731e42c11698536e920be28",
+    "output": "loose/localization/cs/whatsnew.json"
+  },
+  {
+    "path": "localization/de/achievements.json",
+    "bytes": 1620,
+    "sha256": "514a182b44253e68513ef068180d2e553a64607def1fdd942fd255c337de80cb",
+    "output": "loose/localization/de/achievements.json"
+  },
+  {
+    "path": "localization/de/achievements.release.json",
+    "bytes": 8219,
+    "sha256": "e1f14c4932e4de2f78213853a1986d6ce7131754b3b192d4e8787922c25908fa",
+    "output": "loose/localization/de/achievements.release.json"
+  },
+  {
+    "path": "localization/de/AchievementsVDF.vdf",
+    "bytes": 7437,
+    "sha256": "bb3ac8c066986dea49c17a33190480851ee34e56d24ef2cc6e1126c8d053132b",
+    "output": "loose/localization/de/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/de/agents.json",
+    "bytes": 7879,
+    "sha256": "c45ba4dad9fcf5eea2a35dd7f08bc05a6280c9b2f6c9889f4be51db77a211acb",
+    "output": "loose/localization/de/agents.json"
+  },
+  {
+    "path": "localization/de/agents.release.json",
+    "bytes": 6261,
+    "sha256": "8bf3b41c20406826f822b33bd3066fa51d009558ab7d117894a438bb09c65087",
+    "output": "loose/localization/de/agents.release.json"
+  },
+  {
+    "path": "localization/de/buildings.json",
+    "bytes": 39396,
+    "sha256": "c604e9a73f8cca768658c01d013aa15ef2b973428451d240edded1ec60adbb4a",
+    "output": "loose/localization/de/buildings.json"
+  },
+  {
+    "path": "localization/de/buildings.release.json",
+    "bytes": 23071,
+    "sha256": "1598806f8494b1b27ab1f6019ca9462455a213d90467717f7f20b529e1f82b09",
+    "output": "loose/localization/de/buildings.release.json"
+  },
+  {
+    "path": "localization/de/compendium.json",
+    "bytes": 1867,
+    "sha256": "8c2803434bbbb105a6fc0a68e2eadeb52d96aa120dd2d8cef08203d853d176fe",
+    "output": "loose/localization/de/compendium.json"
+  },
+  {
+    "path": "localization/de/dlc_agriculture_achievements.json",
+    "bytes": 1669,
+    "sha256": "ad4b2e58d2640de1767b766690f77c3c1704431e0d3b8a56215e81ddfb053ded",
+    "output": "loose/localization/de/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/de/dlc_agriculture_search.json",
+    "bytes": 449,
+    "sha256": "d4b8d1811ed8f51e874b838f2ba7a29a61b1de765232834474998d3860f40e92",
+    "output": "loose/localization/de/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/de/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/de/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/de/events.json",
+    "bytes": 34912,
+    "sha256": "a7e16cd3e2011a7fe2f2a271a465bbcabd7c59e5839240c063a2b5bb81cd0967",
+    "output": "loose/localization/de/events.json"
+  },
+  {
+    "path": "localization/de/events.release.json",
+    "bytes": 183323,
+    "sha256": "2442f831987fcb4957a766220fd78fec36978545c709f461cc16b0a5f88d0bb2",
+    "output": "loose/localization/de/events.release.json"
+  },
+  {
+    "path": "localization/de/general.json",
+    "bytes": 108268,
+    "sha256": "a557fd234602b56300095ae20da67e4dda0576963c19d4d0b071a59e9a87ca79",
+    "output": "loose/localization/de/general.json"
+  },
+  {
+    "path": "localization/de/general.release.json",
+    "bytes": 27485,
+    "sha256": "87f1a8f431d950600b7adfd5cf9e2949f6ad4b5672e10c04338bfce55a3a74d8",
+    "output": "loose/localization/de/general.release.json"
+  },
+  {
+    "path": "localization/de/help.json",
+    "bytes": 49329,
+    "sha256": "1f89770f19ed32a097261368b02e17bc55c8f5d828cc23827f8a251039ac9330",
+    "output": "loose/localization/de/help.json"
+  },
+  {
+    "path": "localization/de/help.release.json",
+    "bytes": 60770,
+    "sha256": "4804ba2e8aef1628dfb4e5ee796977bcf195c55586906c8649a490a076a2d848",
+    "output": "loose/localization/de/help.release.json"
+  },
+  {
+    "path": "localization/de/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/de/ks_content.json"
+  },
+  {
+    "path": "localization/de/languages.json",
+    "bytes": 394,
+    "sha256": "4946dfe928cfad03f6d958a8c20108cfdb6337f5ac445423f1992a7433f41d1f",
+    "output": "loose/localization/de/languages.json"
+  },
+  {
+    "path": "localization/de/legal.json",
+    "bytes": 931,
+    "sha256": "345d1e5bc69a8dccf7ab3e8ece2f309135236582425f460df49186960b964404",
+    "output": "loose/localization/de/legal.json"
+  },
+  {
+    "path": "localization/de/loading_tips.json",
+    "bytes": 3127,
+    "sha256": "d0abc9ba4a2255c3b6bd5536cd5b87b80bfeaaabfcedc66ad86ef4a867d08e0f",
+    "output": "loose/localization/de/loading_tips.json"
+  },
+  {
+    "path": "localization/de/menu.json",
+    "bytes": 37334,
+    "sha256": "3c91926f0f0c10b9437ac96d4b55315696d28f97d144670b846f8afe9da0c126",
+    "output": "loose/localization/de/menu.json"
+  },
+  {
+    "path": "localization/de/military.json",
+    "bytes": 973,
+    "sha256": "7db7b083591abbd6ffe7bd1c3ed983e03cd210e121b3fd4057c79f32b14fd514",
+    "output": "loose/localization/de/military.json"
+  },
+  {
+    "path": "localization/de/military.release.json",
+    "bytes": 23797,
+    "sha256": "f96b47de54ceaf38a1e1f41c20a901baca6d56b299d6db37886d31a1a5314750",
+    "output": "loose/localization/de/military.release.json"
+  },
+  {
+    "path": "localization/de/music.json",
+    "bytes": 412,
+    "sha256": "1cfe024a58346e006e5d39b98bbf17ee37c739fd8f7b2f03c2a91262e42cdbb1",
+    "output": "loose/localization/de/music.json"
+  },
+  {
+    "path": "localization/de/rules.json",
+    "bytes": 12867,
+    "sha256": "3be8e0c5c54d3c903b710d5b93860c431e5701290d944a69062de663ea7eea07",
+    "output": "loose/localization/de/rules.json"
+  },
+  {
+    "path": "localization/de/rules.release.json",
+    "bytes": 4815,
+    "sha256": "4b02758260c862ebea0c311c6d23e65da4b818c5bede97b181a6db44bc4aab47",
+    "output": "loose/localization/de/rules.release.json"
+  },
+  {
+    "path": "localization/de/search.json",
+    "bytes": 3498,
+    "sha256": "fbe6d9b4f3d72a226ce6074298a5e3baa35e2b06ff8338ec85efbdbfda1005df",
+    "output": "loose/localization/de/search.json"
+  },
+  {
+    "path": "localization/de/tutorial.json",
+    "bytes": 2002,
+    "sha256": "84624e36c0813c3fa56f529dd67c32d58bb8fb20c57be2562eb03b39c3e097a5",
+    "output": "loose/localization/de/tutorial.json"
+  },
+  {
+    "path": "localization/de/unlockables.json",
+    "bytes": 4852,
+    "sha256": "0a96ae00f495974b8bf18af730f43228713e5e18d212f0626034100dec665d8d",
+    "output": "loose/localization/de/unlockables.json"
+  },
+  {
+    "path": "localization/de/unlockables.release.json",
+    "bytes": 9158,
+    "sha256": "88023e4910de5c7faf5c26f4b5176ee1e97dc08139dab078fe3789455f21d824",
+    "output": "loose/localization/de/unlockables.release.json"
+  },
+  {
+    "path": "localization/de/village_aspirations.json",
+    "bytes": 2536,
+    "sha256": "9666561ecfaf1cb48aaa83ceb1ba4060f0ba8d76b39b23083983e9b72414372e",
+    "output": "loose/localization/de/village_aspirations.json"
+  },
+  {
+    "path": "localization/de/village_aspirations.release.json",
+    "bytes": 1778,
+    "sha256": "c5576de21aa6e0779912b3a588d583dd8ed8014f2bf417e0ca1afe1861ff310d",
+    "output": "loose/localization/de/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/de/village_event.json",
+    "bytes": 2305,
+    "sha256": "dfac1c92d53f5ca658fdba0b86ccd9508e31d7ce718759971cfbf0daf34d8921",
+    "output": "loose/localization/de/village_event.json"
+  },
+  {
+    "path": "localization/de/whatsnew.json",
+    "bytes": 44896,
+    "sha256": "ff186f877a279b410c7a3ed1a919be4a79a71803181775e2f96fc0c4f54f9559",
+    "output": "loose/localization/de/whatsnew.json"
+  },
+  {
+    "path": "localization/en/achievements.json",
+    "bytes": 1397,
+    "sha256": "406708ee3389f9402c7af5b7c1ab8a1e452b3563e543f28bd4b028e4a46eee54",
+    "output": "loose/localization/en/achievements.json"
+  },
+  {
+    "path": "localization/en/achievements.release.json",
+    "bytes": 7687,
+    "sha256": "82c807e0b4555b256d032b7cea5eddffd789c2826c9c9a76cfbbfd76bb2b5b3f",
+    "output": "loose/localization/en/achievements.release.json"
+  },
+  {
+    "path": "localization/en/AchievementsVDF.vdf",
+    "bytes": 6904,
+    "sha256": "0b90254aa0b26ca4b57c13969a94ba45ee92574ef8f359e8020fbc397fd8eac7",
+    "output": "loose/localization/en/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/en/agents.json",
+    "bytes": 7219,
+    "sha256": "8d55f3044da71dcc2b2de2c7a0c1c91014ca04abfe8c69f3a765cc60768e8367",
+    "output": "loose/localization/en/agents.json"
+  },
+  {
+    "path": "localization/en/agents.release.json",
+    "bytes": 5764,
+    "sha256": "bc6cb9a67e7a338bb1faed905317d58e31ab1aff9533cd84f09050d592b8d766",
+    "output": "loose/localization/en/agents.release.json"
+  },
+  {
+    "path": "localization/en/buildings.json",
+    "bytes": 37325,
+    "sha256": "20941c3f4332577efaac921e60cd6f5ce60688f6d3bc9a5bd467b6dfe95c5406",
+    "output": "loose/localization/en/buildings.json"
+  },
+  {
+    "path": "localization/en/buildings.release.json",
+    "bytes": 21358,
+    "sha256": "68ff7992b821828233ce8e677a71ad84e2886f3b2fad1028e4d42875107f420b",
+    "output": "loose/localization/en/buildings.release.json"
+  },
+  {
+    "path": "localization/en/compendium.json",
+    "bytes": 1715,
+    "sha256": "1c0279465bfd055e588fff430e0beebdea0b5a5d5c3780682269f8e4977b1261",
+    "output": "loose/localization/en/compendium.json"
+  },
+  {
+    "path": "localization/en/dlc_agriculture_achievements.json",
+    "bytes": 1624,
+    "sha256": "57f12ef647aee0d67815c26fb0ba588918db40ce4d7f7af8e5225b4fa4620eab",
+    "output": "loose/localization/en/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/en/dlc_agriculture_search.json",
+    "bytes": 447,
+    "sha256": "0f89bc5bfcc52c2b6666b022b6429314fcdeb1b568f3e65acba328f02619dbd6",
+    "output": "loose/localization/en/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/en/dlc_kickstarter_church.json",
+    "bytes": 761,
+    "sha256": "0124802f6b63d503536bdbf5350f1573bda9bfc213175a2dc486cbd4c1b68a2d",
+    "output": "loose/localization/en/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/en/events.json",
+    "bytes": 31941,
+    "sha256": "b706c5566412166b98ddb1fe74c3dbfed27c90c27360fc60ec5e2de2c43c7d7a",
+    "output": "loose/localization/en/events.json"
+  },
+  {
+    "path": "localization/en/events.release.json",
+    "bytes": 163697,
+    "sha256": "6bcac0da5ae16c67d9ae7442d349179452b35c654a275e92eec8d2210307fe7e",
+    "output": "loose/localization/en/events.release.json"
+  },
+  {
+    "path": "localization/en/general.json",
+    "bytes": 98935,
+    "sha256": "7d5789f42aa7cf2cb365c58912f97f31e0aa6afca95443ff6db01ceff1552a82",
+    "output": "loose/localization/en/general.json"
+  },
+  {
+    "path": "localization/en/general.release.json",
+    "bytes": 24914,
+    "sha256": "9e6b88d2526caac846420b13bffc2e3e0aa7bee92588069e97e7ee2b40e80832",
+    "output": "loose/localization/en/general.release.json"
+  },
+  {
+    "path": "localization/en/help.json",
+    "bytes": 46159,
+    "sha256": "da2569811816e53f2088f2fb84a772e50ba7b2ebd912d89cc33944b23a79aaa7",
+    "output": "loose/localization/en/help.json"
+  },
+  {
+    "path": "localization/en/help.release.json",
+    "bytes": 54611,
+    "sha256": "15e326aec70610e5c9d684db2c111ad5939a18e74621a6af6588950ec3b3b338",
+    "output": "loose/localization/en/help.release.json"
+  },
+  {
+    "path": "localization/en/ks_content.json",
+    "bytes": 4977,
+    "sha256": "af0686e8022d5aac82f1431fd28a7413e9291ba5906da14f39504873504874cd",
+    "output": "loose/localization/en/ks_content.json"
+  },
+  {
+    "path": "localization/en/languages.json",
+    "bytes": 358,
+    "sha256": "52e91cc86305f4ec807893ab0a1799db98ad1ae0cfc246e7589f22ef5e0734fa",
+    "output": "loose/localization/en/languages.json"
+  },
+  {
+    "path": "localization/en/legal.json",
+    "bytes": 886,
+    "sha256": "7169fef4096f16dd57a540862879ceb68f47a183f8e3c3fc696db7958feeb18c",
+    "output": "loose/localization/en/legal.json"
+  },
+  {
+    "path": "localization/en/loading_tips.json",
+    "bytes": 2749,
+    "sha256": "8be6d5f3bbd7547eba75411c1ea1af280aa6a7ac0e91f9491257d618f85418c4",
+    "output": "loose/localization/en/loading_tips.json"
+  },
+  {
+    "path": "localization/en/menu.json",
+    "bytes": 33928,
+    "sha256": "a8d2490d09581b5ae7df146e28ffdaddbb3ed4f34e402401b2fa033dbd587c8e",
+    "output": "loose/localization/en/menu.json"
+  },
+  {
+    "path": "localization/en/military.json",
+    "bytes": 968,
+    "sha256": "9781db3125c8136b579febf37a801960124e7bc02375ab75c8a3125f4175ec85",
+    "output": "loose/localization/en/military.json"
+  },
+  {
+    "path": "localization/en/military.release.json",
+    "bytes": 21480,
+    "sha256": "8c864a2fcc631b8f1f39dc378d324a21df9ade0ccbfb3c6344338d0ec3b333ee",
+    "output": "loose/localization/en/military.release.json"
+  },
+  {
+    "path": "localization/en/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/en/music.json"
+  },
+  {
+    "path": "localization/en/rules.json",
+    "bytes": 11692,
+    "sha256": "2294c641205c07a3b2b4a02c33f9d1eef422ab8958fa87ab4e524e2359b8ae2e",
+    "output": "loose/localization/en/rules.json"
+  },
+  {
+    "path": "localization/en/rules.release.json",
+    "bytes": 4490,
+    "sha256": "6786513cee2e75f8ea390960ac6c699a59b14c3c3ab9c5702d9f160eb677fbce",
+    "output": "loose/localization/en/rules.release.json"
+  },
+  {
+    "path": "localization/en/search.json",
+    "bytes": 3411,
+    "sha256": "ee2ac779c8fa7949073b17fe373de0a84d85344934b4471d32b138d859006342",
+    "output": "loose/localization/en/search.json"
+  },
+  {
+    "path": "localization/en/tutorial.json",
+    "bytes": 1704,
+    "sha256": "dbdfd2c2ff3c4c93578e6aa7a4a46724e194ab0a014a52a6ded661d8e4d76504",
+    "output": "loose/localization/en/tutorial.json"
+  },
+  {
+    "path": "localization/en/unlockables.json",
+    "bytes": 4431,
+    "sha256": "4f2e4f604ebe076ba1a0707b7af7b1e16f5e37b3cc27d1898129930338c12496",
+    "output": "loose/localization/en/unlockables.json"
+  },
+  {
+    "path": "localization/en/unlockables.release.json",
+    "bytes": 8226,
+    "sha256": "6cc9a2b12c75a373ddaae3dc425aa115a86bb4831075561bf88fa1494949ebcb",
+    "output": "loose/localization/en/unlockables.release.json"
+  },
+  {
+    "path": "localization/en/village_aspirations.json",
+    "bytes": 2367,
+    "sha256": "12c61211dc54fa18f7cf12ee5540d98398afefaa3f69f9ad702b72b9110b9f27",
+    "output": "loose/localization/en/village_aspirations.json"
+  },
+  {
+    "path": "localization/en/village_aspirations.release.json",
+    "bytes": 1662,
+    "sha256": "f6272b41eeaa7371f984aefa32da486c17ad99337785aa109d0d3462cbb720a5",
+    "output": "loose/localization/en/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/en/village_event.json",
+    "bytes": 2209,
+    "sha256": "cc1a9a61d1f671951dafd688117bd5d75291174496f4348135cdc2373810045a",
+    "output": "loose/localization/en/village_event.json"
+  },
+  {
+    "path": "localization/en/whatsnew.json",
+    "bytes": 39756,
+    "sha256": "ccb0e4082903b1575edc749a0c357145b355769b2d814863fc5cc58ed4796813",
+    "output": "loose/localization/en/whatsnew.json"
+  },
+  {
+    "path": "localization/es-ES/achievements.json",
+    "bytes": 1405,
+    "sha256": "533df4a52ad051e76ba591ff8d782d6d52540b6332834499c03f81acf089d34e",
+    "output": "loose/localization/es-ES/achievements.json"
+  },
+  {
+    "path": "localization/es-ES/achievements.release.json",
+    "bytes": 8454,
+    "sha256": "888aa57ae4446c2b2e7c1315080dc2a9cb2dde2082f4282ed2ef0d4a9d64132f",
+    "output": "loose/localization/es-ES/achievements.release.json"
+  },
+  {
+    "path": "localization/es-ES/AchievementsVDF.vdf",
+    "bytes": 7816,
+    "sha256": "a114b5b76bb3a2d675ffc5e78dad56b1cf2e7f5ef9a4469c6d6d37cc7442c1b5",
+    "output": "loose/localization/es-ES/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/es-ES/agents.json",
+    "bytes": 8122,
+    "sha256": "8b712b7988d63d7babcfbec4410282c1715ee11dc6c18129c2c8643afada6108",
+    "output": "loose/localization/es-ES/agents.json"
+  },
+  {
+    "path": "localization/es-ES/agents.release.json",
+    "bytes": 6348,
+    "sha256": "efe0d9a5224d7c5cc8c95b9cb28226d3d12fcc2075474db753e72e8b03005971",
+    "output": "loose/localization/es-ES/agents.release.json"
+  },
+  {
+    "path": "localization/es-ES/buildings.json",
+    "bytes": 41491,
+    "sha256": "79747b47e967bcb33357d7c5c641bcb9eef6c3fadeda1360419e7a56d715eb74",
+    "output": "loose/localization/es-ES/buildings.json"
+  },
+  {
+    "path": "localization/es-ES/buildings.release.json",
+    "bytes": 23627,
+    "sha256": "589b05b2341282af9813c646625a881e425aedf6c81d8b72c0ed4ee6d467ebb7",
+    "output": "loose/localization/es-ES/buildings.release.json"
+  },
+  {
+    "path": "localization/es-ES/compendium.json",
+    "bytes": 1830,
+    "sha256": "ce53b584d739c14874db65549ae3aaecebd9c8e7c69ca1b2932e6f710f52d16f",
+    "output": "loose/localization/es-ES/compendium.json"
+  },
+  {
+    "path": "localization/es-ES/dlc_agriculture_achievements.json",
+    "bytes": 1800,
+    "sha256": "c8fc5d0b2633bb08d46e235a53611343bc21c25b63a723ef7733d7257096ef9a",
+    "output": "loose/localization/es-ES/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/es-ES/dlc_agriculture_search.json",
+    "bytes": 450,
+    "sha256": "7fe6c896a3e7cd81d6a0c5f6f37dbaa565d754c87642a013564d769d98d06985",
+    "output": "loose/localization/es-ES/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/es-ES/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/es-ES/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/es-ES/events.json",
+    "bytes": 34914,
+    "sha256": "feb15dd46df516f50ec1d04de792b415d457ae2636e4915f0889af59c8036cb3",
+    "output": "loose/localization/es-ES/events.json"
+  },
+  {
+    "path": "localization/es-ES/events.release.json",
+    "bytes": 181025,
+    "sha256": "ab7fd629ae9d357d80b662c38c45c153a3b445c4e359056f02a66e53357b79a3",
+    "output": "loose/localization/es-ES/events.release.json"
+  },
+  {
+    "path": "localization/es-ES/general.json",
+    "bytes": 110209,
+    "sha256": "aa542075ef67d65497354a3a872b52338dc5f7ee0e474dab1942fccddb004750",
+    "output": "loose/localization/es-ES/general.json"
+  },
+  {
+    "path": "localization/es-ES/general.release.json",
+    "bytes": 27770,
+    "sha256": "b7bf506787305e52b2eca3ff99ae0ab76b0b2a29ff18da3a5910c93c55b0d607",
+    "output": "loose/localization/es-ES/general.release.json"
+  },
+  {
+    "path": "localization/es-ES/help.json",
+    "bytes": 51955,
+    "sha256": "2fb7405b0d9b12409a77317a85beff71557d276fce84bc0bc3d3c9c9de4ea83a",
+    "output": "loose/localization/es-ES/help.json"
+  },
+  {
+    "path": "localization/es-ES/help.release.json",
+    "bytes": 62220,
+    "sha256": "39e9589dfb1315e63fea92ff660db859111ad9a3eaec6965460dd4bce6ade040",
+    "output": "loose/localization/es-ES/help.release.json"
+  },
+  {
+    "path": "localization/es-ES/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/es-ES/ks_content.json"
+  },
+  {
+    "path": "localization/es-ES/languages.json",
+    "bytes": 369,
+    "sha256": "a8c7db6bea7132b4e04e83bd9ecbafb67731fab5e4bdc81a59f9795c61105b12",
+    "output": "loose/localization/es-ES/languages.json"
+  },
+  {
+    "path": "localization/es-ES/legal.json",
+    "bytes": 1193,
+    "sha256": "5146f80c1248948226209923def5281810c907063b467fb508023b35cb5c98f2",
+    "output": "loose/localization/es-ES/legal.json"
+  },
+  {
+    "path": "localization/es-ES/loading_tips.json",
+    "bytes": 3383,
+    "sha256": "52da19140042404ea5d00376923ce01dd1d5759440d02b6737d21aa18b093d1d",
+    "output": "loose/localization/es-ES/loading_tips.json"
+  },
+  {
+    "path": "localization/es-ES/menu.json",
+    "bytes": 39174,
+    "sha256": "5c7672cea7c4ae796de72910258785dc0cc7206aea2d168523e599895c71f7e1",
+    "output": "loose/localization/es-ES/menu.json"
+  },
+  {
+    "path": "localization/es-ES/military.json",
+    "bytes": 1094,
+    "sha256": "b459dfccdd0df2169c6ee4546dd4310a9f9461d9c5fa0ce29e3d702d26256345",
+    "output": "loose/localization/es-ES/military.json"
+  },
+  {
+    "path": "localization/es-ES/military.release.json",
+    "bytes": 24148,
+    "sha256": "4335a5decad1dff3187289db86656d19493b8103cd74d7aec0202f169ec22ac2",
+    "output": "loose/localization/es-ES/military.release.json"
+  },
+  {
+    "path": "localization/es-ES/music.json",
+    "bytes": 429,
+    "sha256": "1823c07b1b766d583e01d1cb0c467b0ce8748da50712d1d50435a92677f08db6",
+    "output": "loose/localization/es-ES/music.json"
+  },
+  {
+    "path": "localization/es-ES/rules.json",
+    "bytes": 13599,
+    "sha256": "b5fb67948ea76656e5c3ca4a0b6a19d799bed799b9611c04309f20f5ae014720",
+    "output": "loose/localization/es-ES/rules.json"
+  },
+  {
+    "path": "localization/es-ES/rules.release.json",
+    "bytes": 5196,
+    "sha256": "e257c5ed8e289e2ceaa2a6c4d72a07e0d0decebf5276faef5b42827990b06dea",
+    "output": "loose/localization/es-ES/rules.release.json"
+  },
+  {
+    "path": "localization/es-ES/search.json",
+    "bytes": 3524,
+    "sha256": "ccf2d7ba5f5e9e4b980e22c8dda4fb493b9b54c0e1097fb25feaf0a4725da2ed",
+    "output": "loose/localization/es-ES/search.json"
+  },
+  {
+    "path": "localization/es-ES/tutorial.json",
+    "bytes": 2005,
+    "sha256": "3ab612c2b97889108dc8c35ecea993ec16b4e505ad10ef1233097268e96376f1",
+    "output": "loose/localization/es-ES/tutorial.json"
+  },
+  {
+    "path": "localization/es-ES/unlockables.json",
+    "bytes": 5168,
+    "sha256": "a58ecf61eddd372c5d9405d80f5d422a5ea41e4666cbd63c4640249c8e40ae35",
+    "output": "loose/localization/es-ES/unlockables.json"
+  },
+  {
+    "path": "localization/es-ES/unlockables.release.json",
+    "bytes": 8994,
+    "sha256": "56a45c003158d303d52b0f11eb44c911e3ac462591bcd6bd639b742eaf8017ab",
+    "output": "loose/localization/es-ES/unlockables.release.json"
+  },
+  {
+    "path": "localization/es-ES/village_aspirations.json",
+    "bytes": 2650,
+    "sha256": "9ea004b41c377594349a6bd150ea10b06d647fe92ad16da964e49bdacb21c7e4",
+    "output": "loose/localization/es-ES/village_aspirations.json"
+  },
+  {
+    "path": "localization/es-ES/village_aspirations.release.json",
+    "bytes": 1880,
+    "sha256": "8e5c5e77d5adc6fc30a5f83ddbc626004dce8063461fb0fc8faf9b17be3d5cb9",
+    "output": "loose/localization/es-ES/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/es-ES/village_event.json",
+    "bytes": 2403,
+    "sha256": "a0deed4641f833d8b2f89c68af2ba9ac88359d950c0d226e8c03c7ebe3a3865b",
+    "output": "loose/localization/es-ES/village_event.json"
+  },
+  {
+    "path": "localization/es-ES/whatsnew.json",
+    "bytes": 48651,
+    "sha256": "cef4cb8a87204dcba65433459dcee688e80b7a8a98fd330003fba04df3c7b8d4",
+    "output": "loose/localization/es-ES/whatsnew.json"
+  },
+  {
+    "path": "localization/fr/achievements.json",
+    "bytes": 1538,
+    "sha256": "b9af71fe21feff37da348060b20509338e706b74a842cbc453af9617de2eab51",
+    "output": "loose/localization/fr/achievements.json"
+  },
+  {
+    "path": "localization/fr/achievements.release.json",
+    "bytes": 8381,
+    "sha256": "aafedc2b974bab1efd15605539c7f40991f14ed3874b9b8568f6439864ee9784",
+    "output": "loose/localization/fr/achievements.release.json"
+  },
+  {
+    "path": "localization/fr/AchievementsVDF.vdf",
+    "bytes": 7635,
+    "sha256": "22c8e29852d8cb2e8f65da32d0169a798a900e969f050954c185f768fd6e4aae",
+    "output": "loose/localization/fr/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/fr/agents.json",
+    "bytes": 7975,
+    "sha256": "b101ea5bc7616aa1336c5b515117b0a27c36b1dd0cd2cc57f893865563314389",
+    "output": "loose/localization/fr/agents.json"
+  },
+  {
+    "path": "localization/fr/agents.release.json",
+    "bytes": 6417,
+    "sha256": "882463de4b36f7d2e0523f178e7951b2c8407c2c1ce83cf3b0a55d3dc65dd58c",
+    "output": "loose/localization/fr/agents.release.json"
+  },
+  {
+    "path": "localization/fr/buildings.json",
+    "bytes": 41292,
+    "sha256": "b7e95886824452a57e4347f87e39fedb5e78c8c9e396b2095fb887a066c69007",
+    "output": "loose/localization/fr/buildings.json"
+  },
+  {
+    "path": "localization/fr/buildings.release.json",
+    "bytes": 23534,
+    "sha256": "74dd734e9abfcf95cf9d8ae8bc095ac4bc3f257c1add19f00a7ac1e3e9ccaa25",
+    "output": "loose/localization/fr/buildings.release.json"
+  },
+  {
+    "path": "localization/fr/compendium.json",
+    "bytes": 1882,
+    "sha256": "2562b587f5dea97ec790fa12643989c9f1691bd3fb40d1c53c16608bd107ccad",
+    "output": "loose/localization/fr/compendium.json"
+  },
+  {
+    "path": "localization/fr/dlc_agriculture_achievements.json",
+    "bytes": 1760,
+    "sha256": "6e83c03f73e913790f0de82350e3a4f9da3accf849b599ffaf1281961228fc3d",
+    "output": "loose/localization/fr/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/fr/dlc_agriculture_search.json",
+    "bytes": 445,
+    "sha256": "d78189e9cb76384aabf67653645bbda64f7149d306702a2672c4c021299fdc95",
+    "output": "loose/localization/fr/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/fr/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/fr/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/fr/events.json",
+    "bytes": 36873,
+    "sha256": "1008a37a9658ad230a2cc56801bea9a24a2195937116ec4504ba97dab5304b54",
+    "output": "loose/localization/fr/events.json"
+  },
+  {
+    "path": "localization/fr/events.release.json",
+    "bytes": 185877,
+    "sha256": "5f57fa1f18cc2722b4df6f0dc9fff49530a25e29ff47203ebc25c0cc12f34aff",
+    "output": "loose/localization/fr/events.release.json"
+  },
+  {
+    "path": "localization/fr/general.json",
+    "bytes": 111125,
+    "sha256": "7d3f55ab480e33f086c810f492843aec9c6e20bf2eb7bb5990bbf86b8ee6f486",
+    "output": "loose/localization/fr/general.json"
+  },
+  {
+    "path": "localization/fr/general.release.json",
+    "bytes": 27489,
+    "sha256": "6d2162efb224536ed3ad75ca4ed6e48d62f78dc78919ac092d37c2dd0fbb2909",
+    "output": "loose/localization/fr/general.release.json"
+  },
+  {
+    "path": "localization/fr/help.json",
+    "bytes": 52848,
+    "sha256": "fc91076bf9dff127ba6baa84a899f3ec58696e04b03c53a767c6f9721d5e960a",
+    "output": "loose/localization/fr/help.json"
+  },
+  {
+    "path": "localization/fr/help.release.json",
+    "bytes": 64494,
+    "sha256": "a07758c089cbaa010df1e0e6eddbda13b003a88f91d08e016390b2d74e60ab05",
+    "output": "loose/localization/fr/help.release.json"
+  },
+  {
+    "path": "localization/fr/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/fr/ks_content.json"
+  },
+  {
+    "path": "localization/fr/languages.json",
+    "bytes": 368,
+    "sha256": "8cf97584e3be98000b7d9c857683edf9d728746bdebc7aaca21e8e7945d76c62",
+    "output": "loose/localization/fr/languages.json"
+  },
+  {
+    "path": "localization/fr/legal.json",
+    "bytes": 1148,
+    "sha256": "8ac32a433693ba3785f2630e0871afd3801a5c277ef130cfb2b72001cc9d0174",
+    "output": "loose/localization/fr/legal.json"
+  },
+  {
+    "path": "localization/fr/loading_tips.json",
+    "bytes": 3420,
+    "sha256": "387a6236c5242ea643865ed82e98dc006deb5fa363cd145f91bfb7c750aa03e1",
+    "output": "loose/localization/fr/loading_tips.json"
+  },
+  {
+    "path": "localization/fr/menu.json",
+    "bytes": 38965,
+    "sha256": "35bafd5e30927ae57c50c1f32f98baa0eaeed8312f81edbaf4fa18d784f6fb09",
+    "output": "loose/localization/fr/menu.json"
+  },
+  {
+    "path": "localization/fr/military.json",
+    "bytes": 1036,
+    "sha256": "4cf5052c4f9016632d5b5eaf23cea365a5ae1aebe7122f9e3fcbde81922f3ad6",
+    "output": "loose/localization/fr/military.json"
+  },
+  {
+    "path": "localization/fr/military.release.json",
+    "bytes": 24458,
+    "sha256": "8a2346cfdb254e55b8cfd41b95b50745e01cb86844395aa7a34b094c0548e8f6",
+    "output": "loose/localization/fr/military.release.json"
+  },
+  {
+    "path": "localization/fr/music.json",
+    "bytes": 439,
+    "sha256": "0b688b00cea80e5ecf9b05c1dc4a42e5ee981803e5c7468862943d577fc4d6bb",
+    "output": "loose/localization/fr/music.json"
+  },
+  {
+    "path": "localization/fr/rules.json",
+    "bytes": 13348,
+    "sha256": "1cc090b91c57d4e55912707ad9e220bd77dfa8b69502b5e16f7b0f581debc14c",
+    "output": "loose/localization/fr/rules.json"
+  },
+  {
+    "path": "localization/fr/rules.release.json",
+    "bytes": 5249,
+    "sha256": "00e204f07cb19e3dfb7c9335323cfd5b2858a7626d6b8f7f1e658fa9f6167ee7",
+    "output": "loose/localization/fr/rules.release.json"
+  },
+  {
+    "path": "localization/fr/search.json",
+    "bytes": 3525,
+    "sha256": "a49244a6a4ebafca7924f5e1ae583b8839ae087926873fe3bb6e42e672f562fd",
+    "output": "loose/localization/fr/search.json"
+  },
+  {
+    "path": "localization/fr/tutorial.json",
+    "bytes": 1993,
+    "sha256": "1e1a25408518688b9c27c9c965826ded4200cd0b8741a433717a418c1e6c3df8",
+    "output": "loose/localization/fr/tutorial.json"
+  },
+  {
+    "path": "localization/fr/unlockables.json",
+    "bytes": 5157,
+    "sha256": "916dae5bda91cd044ea8df9a25f5b368f5d7881038cb831bca4df2d5b359889b",
+    "output": "loose/localization/fr/unlockables.json"
+  },
+  {
+    "path": "localization/fr/unlockables.release.json",
+    "bytes": 9715,
+    "sha256": "f4d82e6aa3695b52094b3d528192eeb27e60167f615bb72f38d7d1a3fac12fee",
+    "output": "loose/localization/fr/unlockables.release.json"
+  },
+  {
+    "path": "localization/fr/village_aspirations.json",
+    "bytes": 2818,
+    "sha256": "cdecf16bd2519bc781714be0231b99107820d7a6face6d1fe5747cd84fe43aae",
+    "output": "loose/localization/fr/village_aspirations.json"
+  },
+  {
+    "path": "localization/fr/village_aspirations.release.json",
+    "bytes": 1925,
+    "sha256": "f104852d340aa56620183663f86398098ffc8139f08156ffd82b3f2a6bc462d3",
+    "output": "loose/localization/fr/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/fr/village_event.json",
+    "bytes": 2538,
+    "sha256": "de955d47fe8b00d7991171ef35868c07a8c41c25a3737f45ae388315ddbe73dd",
+    "output": "loose/localization/fr/village_event.json"
+  },
+  {
+    "path": "localization/fr/whatsnew.json",
+    "bytes": 48241,
+    "sha256": "62cbfb9cf2f16408b035418f84355b573db0623888c5811c79fdf9d7bf339635",
+    "output": "loose/localization/fr/whatsnew.json"
+  },
+  {
+    "path": "localization/it/achievements.json",
+    "bytes": 1508,
+    "sha256": "ffe19ba8d85b48c0e0162870b633fa46c9d2a1353f6a014e68cb26e41b730aec",
+    "output": "loose/localization/it/achievements.json"
+  },
+  {
+    "path": "localization/it/achievements.release.json",
+    "bytes": 8278,
+    "sha256": "8ef3605ce3ae2cf6fdfda032c2ea024b9bbdc48aaa9d72f184ecf64c2eedc5bd",
+    "output": "loose/localization/it/achievements.release.json"
+  },
+  {
+    "path": "localization/it/AchievementsVDF.vdf",
+    "bytes": 7498,
+    "sha256": "a2795ab1bd94abbd59335d92942155484c405985b0eebce929bb5a29f87dddbc",
+    "output": "loose/localization/it/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/it/agents.json",
+    "bytes": 7967,
+    "sha256": "1e34cbac5caa934004ff4142464ddabfa7ae44c797b4fa95a24bd6fcccae0c3f",
+    "output": "loose/localization/it/agents.json"
+  },
+  {
+    "path": "localization/it/agents.release.json",
+    "bytes": 6222,
+    "sha256": "89f138307595092d6636b86604a030bb51a1eec57e0cf254ed2258458c31bfe4",
+    "output": "loose/localization/it/agents.release.json"
+  },
+  {
+    "path": "localization/it/buildings.json",
+    "bytes": 41915,
+    "sha256": "f83d3c0f02758d8d1fc336c5c8d811802bc9abf5b62e7c16628d7d1a15db21dc",
+    "output": "loose/localization/it/buildings.json"
+  },
+  {
+    "path": "localization/it/buildings.release.json",
+    "bytes": 23716,
+    "sha256": "1b15c959161cc2b8c7160a85efa2f2a49ad5fe7939af87bb494b222b305dfe35",
+    "output": "loose/localization/it/buildings.release.json"
+  },
+  {
+    "path": "localization/it/compendium.json",
+    "bytes": 1809,
+    "sha256": "472dcc3907afa54334e13b24ae021f13f533baf65d35b08c1d610ba2d203c0cf",
+    "output": "loose/localization/it/compendium.json"
+  },
+  {
+    "path": "localization/it/dlc_agriculture_achievements.json",
+    "bytes": 1751,
+    "sha256": "6b740340e753a6f0cb3ce8115f99ff79d389a9be36227409d5c4c9ac8a638ce4",
+    "output": "loose/localization/it/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/it/dlc_agriculture_search.json",
+    "bytes": 464,
+    "sha256": "d1a0cba87b656b5429c1e82edfcd707da9e587a5df15de5e65cc5feb2d5737fe",
+    "output": "loose/localization/it/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/it/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/it/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/it/events.json",
+    "bytes": 33918,
+    "sha256": "b9d4ab6ef8ef2fa0af08cb95deee7ceb1dd0ce0bda04dd93e70cba20c9e9e764",
+    "output": "loose/localization/it/events.json"
+  },
+  {
+    "path": "localization/it/events.release.json",
+    "bytes": 173907,
+    "sha256": "cdcd1401614e8f34863f2142a6444b4a166171fc64cfeea726c2b15dbf0311b4",
+    "output": "loose/localization/it/events.release.json"
+  },
+  {
+    "path": "localization/it/general.json",
+    "bytes": 107515,
+    "sha256": "654e52060941d6cc12ca3cabe646378ee14474d0b0d902ef4254fcea41bea6c9",
+    "output": "loose/localization/it/general.json"
+  },
+  {
+    "path": "localization/it/general.release.json",
+    "bytes": 26705,
+    "sha256": "9fe109b2ada0348d9d666fc2f06d7a63fe955275d2c7ba36a9ae5e5d520f826e",
+    "output": "loose/localization/it/general.release.json"
+  },
+  {
+    "path": "localization/it/help.json",
+    "bytes": 51111,
+    "sha256": "0fc400de0b9c6fdcc0ea6d39d8ef02e1d80179b9677a4a40ae38ad4549921039",
+    "output": "loose/localization/it/help.json"
+  },
+  {
+    "path": "localization/it/help.release.json",
+    "bytes": 60534,
+    "sha256": "13dfe03b30c542084772892952531624f96c22bd769d979d244f811374e83fba",
+    "output": "loose/localization/it/help.release.json"
+  },
+  {
+    "path": "localization/it/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/it/ks_content.json"
+  },
+  {
+    "path": "localization/it/languages.json",
+    "bytes": 366,
+    "sha256": "4c809fa7b8a3e0951ff28e9f2f0f53b62b74748161a390faeb35731b999e28d2",
+    "output": "loose/localization/it/languages.json"
+  },
+  {
+    "path": "localization/it/legal.json",
+    "bytes": 997,
+    "sha256": "3654df46c9ca144951599a6d1551dffe44d589d3b5c6be417dadd6d836d086c5",
+    "output": "loose/localization/it/legal.json"
+  },
+  {
+    "path": "localization/it/loading_tips.json",
+    "bytes": 3281,
+    "sha256": "992c258b8dfed92792d0edf3b191806632355cba0bc9114a756c89439c37cb75",
+    "output": "loose/localization/it/loading_tips.json"
+  },
+  {
+    "path": "localization/it/menu.json",
+    "bytes": 36953,
+    "sha256": "a1bfb0dd69bbd2601a3820252a04f53f4d3c5c28cdd4647d847ec95dfc432610",
+    "output": "loose/localization/it/menu.json"
+  },
+  {
+    "path": "localization/it/military.json",
+    "bytes": 1016,
+    "sha256": "321002b22c6f0e236124c654f50e5475474edb8422ad670c920cc863e7965754",
+    "output": "loose/localization/it/military.json"
+  },
+  {
+    "path": "localization/it/military.release.json",
+    "bytes": 23331,
+    "sha256": "9c06cc112490cb93dd2f885632a0262de86709ede2c7f5d2aa9e08ff6e4ba3fd",
+    "output": "loose/localization/it/military.release.json"
+  },
+  {
+    "path": "localization/it/music.json",
+    "bytes": 429,
+    "sha256": "5bd0daeea4f9734c699924463cf704e8715c32b800fb9034d4b06e7c93be534f",
+    "output": "loose/localization/it/music.json"
+  },
+  {
+    "path": "localization/it/rules.json",
+    "bytes": 12639,
+    "sha256": "3ad881328092802a80593745bba5f2f5c63354ce58161ae00ba114f3e2da4ff5",
+    "output": "loose/localization/it/rules.json"
+  },
+  {
+    "path": "localization/it/rules.release.json",
+    "bytes": 4925,
+    "sha256": "0c8323b908bf3c5a22c8700d6d5f3e9f9524726a97de8d41714cee09d7022e84",
+    "output": "loose/localization/it/rules.release.json"
+  },
+  {
+    "path": "localization/it/search.json",
+    "bytes": 3569,
+    "sha256": "4e52eb35533147babfa5366a1667de17ee16ba6c3bb57e0860c90ad1dd5e5773",
+    "output": "loose/localization/it/search.json"
+  },
+  {
+    "path": "localization/it/tutorial.json",
+    "bytes": 1843,
+    "sha256": "2ea6108870b705c79e607db54dbffa11cce7ae9ac4e45a8e716e667200d42eab",
+    "output": "loose/localization/it/tutorial.json"
+  },
+  {
+    "path": "localization/it/unlockables.json",
+    "bytes": 4643,
+    "sha256": "da0135bb6257db5d60894c593fb4925cf9dc86dee6fb691fa4a9272a3d1ba532",
+    "output": "loose/localization/it/unlockables.json"
+  },
+  {
+    "path": "localization/it/unlockables.release.json",
+    "bytes": 8909,
+    "sha256": "c0813e144d01630b87421f9535a7c38eb56dd57038f325c9052f50d53df130b5",
+    "output": "loose/localization/it/unlockables.release.json"
+  },
+  {
+    "path": "localization/it/village_aspirations.json",
+    "bytes": 2561,
+    "sha256": "381b502ecff5b6f60d455b33c6273c6a8590ca4f50857336297044dfb7df27dd",
+    "output": "loose/localization/it/village_aspirations.json"
+  },
+  {
+    "path": "localization/it/village_aspirations.release.json",
+    "bytes": 1785,
+    "sha256": "f1c8049a91d0b34ca9bfc02701d7c5eec7623b7e6137c89def96f3e809972f89",
+    "output": "loose/localization/it/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/it/village_event.json",
+    "bytes": 2341,
+    "sha256": "227b74325bc01345da062919f0f9478751f814e288ff8fda40359a6a499e2613",
+    "output": "loose/localization/it/village_event.json"
+  },
+  {
+    "path": "localization/it/whatsnew.json",
+    "bytes": 45139,
+    "sha256": "3bd9e5ca0658cb0224b3873fa06c81241bdc70584ae3d4edd572c46b658bba79",
+    "output": "loose/localization/it/whatsnew.json"
+  },
+  {
+    "path": "localization/ja/achievements.json",
+    "bytes": 1639,
+    "sha256": "6505ae51e1c1d9db61471b68c732e8899beea2fcf3bb352fc2ca0922b27ed09f",
+    "output": "loose/localization/ja/achievements.json"
+  },
+  {
+    "path": "localization/ja/achievements.release.json",
+    "bytes": 8395,
+    "sha256": "4fd27c3e6e9628b84453c138b5d65611b8688a05d33a4b4abdba37ba36666289",
+    "output": "loose/localization/ja/achievements.release.json"
+  },
+  {
+    "path": "localization/ja/AchievementsVDF.vdf",
+    "bytes": 7806,
+    "sha256": "a71f1bea0f17bdfc476b0fd6f3e99f6499d4b674bad48c81566abf88bd59127e",
+    "output": "loose/localization/ja/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/ja/agents.json",
+    "bytes": 8404,
+    "sha256": "135074c69877d3ca34575d6a2eaeb8fdd1be32c4525a68453d437425a109e6f0",
+    "output": "loose/localization/ja/agents.json"
+  },
+  {
+    "path": "localization/ja/agents.release.json",
+    "bytes": 6325,
+    "sha256": "3750f9efb672860478fe391c56bb2a3389a0af82af6ff125ff19581bd0576765",
+    "output": "loose/localization/ja/agents.release.json"
+  },
+  {
+    "path": "localization/ja/buildings.json",
+    "bytes": 41368,
+    "sha256": "d5cf8509928dc637b5e9737a03a5e03aa4c08db8867fa3972e3d86eba6b7e59d",
+    "output": "loose/localization/ja/buildings.json"
+  },
+  {
+    "path": "localization/ja/buildings.release.json",
+    "bytes": 23805,
+    "sha256": "63e34ba261c816c0f9c8fdb10b5af3a2280de930357f23454cd0b86d27c8cead",
+    "output": "loose/localization/ja/buildings.release.json"
+  },
+  {
+    "path": "localization/ja/compendium.json",
+    "bytes": 2009,
+    "sha256": "0dbf5fdb63c09c44ff7f13b843c2863253fe5467c1b0919391d91b71576781dc",
+    "output": "loose/localization/ja/compendium.json"
+  },
+  {
+    "path": "localization/ja/dlc_agriculture_achievements.json",
+    "bytes": 1774,
+    "sha256": "3a20035f2944ffbab162331251bf591a415a1622d3cda6033fe371dd282e7e50",
+    "output": "loose/localization/ja/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/ja/dlc_agriculture_search.json",
+    "bytes": 463,
+    "sha256": "3f71bdff05832b2f2d946072bfafe4f51d9f01374bdc0ac4ddf338aecfbbf78f",
+    "output": "loose/localization/ja/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/ja/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/ja/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/ja/events.json",
+    "bytes": 38100,
+    "sha256": "560bc454db51c319de56a2478fffc79d21f06ef8978552d854338a4eb4cb0713",
+    "output": "loose/localization/ja/events.json"
+  },
+  {
+    "path": "localization/ja/events.release.json",
+    "bytes": 194360,
+    "sha256": "f242d56aa738cd28f66c73ee6340ec27a89232d07252da79f0ef329fce2b4f0a",
+    "output": "loose/localization/ja/events.release.json"
+  },
+  {
+    "path": "localization/ja/general.json",
+    "bytes": 110136,
+    "sha256": "044eff0f408bf76fe05e193368178a1592742455aa1b17aeca5aaf9fc7ddc885",
+    "output": "loose/localization/ja/general.json"
+  },
+  {
+    "path": "localization/ja/general.release.json",
+    "bytes": 27260,
+    "sha256": "96471e5c80187a6039a05b9dd947f99244ac6fb43820a97ce5ec70c8e487c4f2",
+    "output": "loose/localization/ja/general.release.json"
+  },
+  {
+    "path": "localization/ja/help.json",
+    "bytes": 51285,
+    "sha256": "f0ff3db7ddf877474c3640aca71a9e68df19210fce5ef7f5571cd42b82474d51",
+    "output": "loose/localization/ja/help.json"
+  },
+  {
+    "path": "localization/ja/help.release.json",
+    "bytes": 61785,
+    "sha256": "8b83c0d7d2721980fd7dc65ef29c4259a37e1aa4decb3255af52493e3780eeb4",
+    "output": "loose/localization/ja/help.release.json"
+  },
+  {
+    "path": "localization/ja/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/ja/ks_content.json"
+  },
+  {
+    "path": "localization/ja/languages.json",
+    "bytes": 412,
+    "sha256": "1b36ba0e5ae19cacd98da6fd87534681ae856849123f9681686805bc8da6df3d",
+    "output": "loose/localization/ja/languages.json"
+  },
+  {
+    "path": "localization/ja/legal.json",
+    "bytes": 1090,
+    "sha256": "7f84f47001bc003533e94c9f5766dd515ac9377226824e0c0bd22f54f0b305ec",
+    "output": "loose/localization/ja/legal.json"
+  },
+  {
+    "path": "localization/ja/loading_tips.json",
+    "bytes": 3252,
+    "sha256": "119dc5d7d1520274cae54d48cdba1f139a49fe06d9cb9b04250b2c7032de9dcf",
+    "output": "loose/localization/ja/loading_tips.json"
+  },
+  {
+    "path": "localization/ja/menu.json",
+    "bytes": 40936,
+    "sha256": "1adb5396f17c31f8952503fc054083e1c353db8daa838c0a9f12e5a98ebd6571",
+    "output": "loose/localization/ja/menu.json"
+  },
+  {
+    "path": "localization/ja/military.json",
+    "bytes": 1012,
+    "sha256": "8267f83bc1ca7bde04dade9fc9dba65e8cdbb357d708517fc4b94f9e0b03c4ea",
+    "output": "loose/localization/ja/military.json"
+  },
+  {
+    "path": "localization/ja/military.release.json",
+    "bytes": 24981,
+    "sha256": "5f725607a4a451ce1457df83c00217c238b732fa92af9cbfcf7ca565b9f17d64",
+    "output": "loose/localization/ja/military.release.json"
+  },
+  {
+    "path": "localization/ja/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/ja/music.json"
+  },
+  {
+    "path": "localization/ja/rules.json",
+    "bytes": 12999,
+    "sha256": "e83bd925058050fc0b1afc628f2309758c11b46e8806d69539b39fa88ac707be",
+    "output": "loose/localization/ja/rules.json"
+  },
+  {
+    "path": "localization/ja/rules.release.json",
+    "bytes": 4979,
+    "sha256": "641c4c6b671b1c69cc75a5339f831d9bf3c6929a53c5151e0e435646a3eaaf0a",
+    "output": "loose/localization/ja/rules.release.json"
+  },
+  {
+    "path": "localization/ja/search.json",
+    "bytes": 3534,
+    "sha256": "5229815e63d7aabf6729d37a12f265c11726d9de4cc2e05bf18c8e4c808d0ca8",
+    "output": "loose/localization/ja/search.json"
+  },
+  {
+    "path": "localization/ja/tutorial.json",
+    "bytes": 1803,
+    "sha256": "f614d1539da7fba2cd3c7a9d6344a2c97acd801ff063d868213e20c4bba0f414",
+    "output": "loose/localization/ja/tutorial.json"
+  },
+  {
+    "path": "localization/ja/unlockables.json",
+    "bytes": 5204,
+    "sha256": "f66178294ce86b9eb89b2f69688892a0073375d9535308201d9a93fe47f96910",
+    "output": "loose/localization/ja/unlockables.json"
+  },
+  {
+    "path": "localization/ja/unlockables.release.json",
+    "bytes": 9313,
+    "sha256": "08b6e1a4efc34a659b185147567b2f0ad2e59bb7f8f054cbf3260218dfe2f219",
+    "output": "loose/localization/ja/unlockables.release.json"
+  },
+  {
+    "path": "localization/ja/village_aspirations.json",
+    "bytes": 2604,
+    "sha256": "26082fab2fdc4ba75da3972bab08d1b666cf2cae74efb283521dfa7cf07f12e1",
+    "output": "loose/localization/ja/village_aspirations.json"
+  },
+  {
+    "path": "localization/ja/village_aspirations.release.json",
+    "bytes": 1960,
+    "sha256": "88a40d1733bf70d201121b87e2977a312bf13851d97c945b50e76d1582e53d05",
+    "output": "loose/localization/ja/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/ja/village_event.json",
+    "bytes": 2394,
+    "sha256": "648eff3cea29399c35e138ae53771d13b2c23333583467da9424db32318d7645",
+    "output": "loose/localization/ja/village_event.json"
+  },
+  {
+    "path": "localization/ja/whatsnew.json",
+    "bytes": 48088,
+    "sha256": "ed5ed51b49d52544f55e784b284f648c95721fb76f876ef6287c6a274cd1d58c",
+    "output": "loose/localization/ja/whatsnew.json"
+  },
+  {
+    "path": "localization/ko/achievements.json",
+    "bytes": 1715,
+    "sha256": "de159ea8b8ed743131952944ed3e65a4eb65f8fdfe47df9586107be1ddaf2a16",
+    "output": "loose/localization/ko/achievements.json"
+  },
+  {
+    "path": "localization/ko/achievements.release.json",
+    "bytes": 8294,
+    "sha256": "d24538dd2246a39d2c287caaf2e630eedbfeec68a5313f18cd691f92b6e5de08",
+    "output": "loose/localization/ko/achievements.release.json"
+  },
+  {
+    "path": "localization/ko/AchievementsVDF.vdf",
+    "bytes": 7625,
+    "sha256": "f2db5d7dfc66a717bde45343bc361dda21edebff9b14f6bc3b0539e49afbb0f4",
+    "output": "loose/localization/ko/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/ko/agents.json",
+    "bytes": 8097,
+    "sha256": "92f2d6200717c5a36ef2af559da9ed3048735092c569c4def0c428f9a3f11223",
+    "output": "loose/localization/ko/agents.json"
+  },
+  {
+    "path": "localization/ko/agents.release.json",
+    "bytes": 6670,
+    "sha256": "8becfd29bc4fc9cd7a1d80b350d97a971986a4984c3e47b012290ef5d8fd35e7",
+    "output": "loose/localization/ko/agents.release.json"
+  },
+  {
+    "path": "localization/ko/buildings.json",
+    "bytes": 37834,
+    "sha256": "dd7f14d917dfb9c7bbb59c7a5074ba30dc0ef008bbbbab7f3ff3a816bf26ed57",
+    "output": "loose/localization/ko/buildings.json"
+  },
+  {
+    "path": "localization/ko/buildings.release.json",
+    "bytes": 23045,
+    "sha256": "5ae41e77dc9917d65c558f462f7052fc50f35928e52b7a7b23db9187a38542eb",
+    "output": "loose/localization/ko/buildings.release.json"
+  },
+  {
+    "path": "localization/ko/compendium.json",
+    "bytes": 120,
+    "sha256": "47cb9bdbd6a29d8bd49a13ec3d0406545d623e30e4a329ea37e83f45b1f48589",
+    "output": "loose/localization/ko/compendium.json"
+  },
+  {
+    "path": "localization/ko/dlc_agriculture_achievements.json",
+    "bytes": 1757,
+    "sha256": "b1c92bb5ed7371b7d68878cfd3c34d4b8a0c4e24a07a4bf4bdd4db46b5cad2da",
+    "output": "loose/localization/ko/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/ko/dlc_agriculture_search.json",
+    "bytes": 457,
+    "sha256": "e37ab4692fc1ff1a94349baed31b1d8a4e9fc83f47c91dbea8393f23869656fd",
+    "output": "loose/localization/ko/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/ko/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/ko/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/ko/events.json",
+    "bytes": 36539,
+    "sha256": "a0608f4498b3bdab91c86aad6f052fe7fcd12e913c6dcbc342aed36288971f46",
+    "output": "loose/localization/ko/events.json"
+  },
+  {
+    "path": "localization/ko/events.release.json",
+    "bytes": 192508,
+    "sha256": "c7c3df5530577f6aa829a4e22f07817ed89576ece524190baadc692f2a8361bd",
+    "output": "loose/localization/ko/events.release.json"
+  },
+  {
+    "path": "localization/ko/general.json",
+    "bytes": 106216,
+    "sha256": "1a5d0dc74ad09420d33402f8ec2ad715769c794018f4eb0466cbaaaac0f839f2",
+    "output": "loose/localization/ko/general.json"
+  },
+  {
+    "path": "localization/ko/general.release.json",
+    "bytes": 27615,
+    "sha256": "b796498effc8e2dc18b47cd5b8637ea7901652a95e448ee045f9f4b7e2c4dd1f",
+    "output": "loose/localization/ko/general.release.json"
+  },
+  {
+    "path": "localization/ko/help.json",
+    "bytes": 50789,
+    "sha256": "64c34f0ce1f9ba95c9c469696b5a9c23b7250012e74edd58f5e12c3f648dcff9",
+    "output": "loose/localization/ko/help.json"
+  },
+  {
+    "path": "localization/ko/help.release.json",
+    "bytes": 61050,
+    "sha256": "c5137bbfae63ef5bd1dd4c8264b60b1b089718aeb7f2ea2c113637ea960fd77d",
+    "output": "loose/localization/ko/help.release.json"
+  },
+  {
+    "path": "localization/ko/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/ko/ks_content.json"
+  },
+  {
+    "path": "localization/ko/languages.json",
+    "bytes": 397,
+    "sha256": "0a18bd1ddf739f08448e23cdaa45e327a10c2f8af072564567f2307ba24a34c0",
+    "output": "loose/localization/ko/languages.json"
+  },
+  {
+    "path": "localization/ko/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/ko/legal.json"
+  },
+  {
+    "path": "localization/ko/loading_tips.json",
+    "bytes": 3204,
+    "sha256": "a0ee2f35e4fb4aa12c08b42719b46c7993d5b3fd34566f74e848491b9556e000",
+    "output": "loose/localization/ko/loading_tips.json"
+  },
+  {
+    "path": "localization/ko/menu.json",
+    "bytes": 35132,
+    "sha256": "d8db23fe3aac197d556072a9206964f719ef4ca7386b55872b25811d73f14025",
+    "output": "loose/localization/ko/menu.json"
+  },
+  {
+    "path": "localization/ko/military.json",
+    "bytes": 1059,
+    "sha256": "9c74f43ccece124e07f2c4ea24ec050b470c9591e3060f005ee3c1c4b3d945aa",
+    "output": "loose/localization/ko/military.json"
+  },
+  {
+    "path": "localization/ko/military.release.json",
+    "bytes": 24371,
+    "sha256": "ea0d04b700c6f2d992cfb3be4d07c1179cfb501e27b956bbcabbd721366a7d9a",
+    "output": "loose/localization/ko/military.release.json"
+  },
+  {
+    "path": "localization/ko/music.json",
+    "bytes": 442,
+    "sha256": "b7cf79acf871a410a2f4d00279ec36f1a50e446eab0d694d14dcc891278acd2d",
+    "output": "loose/localization/ko/music.json"
+  },
+  {
+    "path": "localization/ko/rules.json",
+    "bytes": 12094,
+    "sha256": "be6963251576b2e2601b99e3e032fc463482d2e6e9dbb6fa9bd7b1b4eee5c3fb",
+    "output": "loose/localization/ko/rules.json"
+  },
+  {
+    "path": "localization/ko/rules.release.json",
+    "bytes": 4866,
+    "sha256": "a48187dee8d35860573d96e1646c7d312973e1d931c04d3d64a0d6bc04893bbc",
+    "output": "loose/localization/ko/rules.release.json"
+  },
+  {
+    "path": "localization/ko/search.json",
+    "bytes": 552,
+    "sha256": "dae98aed19df95c44b0db1deaf4f17d4d10d3ad6e9b0ee31602dad74ab01fbbe",
+    "output": "loose/localization/ko/search.json"
+  },
+  {
+    "path": "localization/ko/tutorial.json",
+    "bytes": 1882,
+    "sha256": "566140de107b9ec5f812f2a036ea34f91405e2d2787243c0459d6845ee6a0830",
+    "output": "loose/localization/ko/tutorial.json"
+  },
+  {
+    "path": "localization/ko/unlockables.json",
+    "bytes": 5008,
+    "sha256": "bbbd52334da032dd68969e474e23244cdb341729ff1d7c29c9e36b4d6433a9f6",
+    "output": "loose/localization/ko/unlockables.json"
+  },
+  {
+    "path": "localization/ko/unlockables.release.json",
+    "bytes": 9356,
+    "sha256": "fd32b69f2ba1066e0fea79f87b0156505cdba9222bbd04649ec040e9c3731d08",
+    "output": "loose/localization/ko/unlockables.release.json"
+  },
+  {
+    "path": "localization/ko/village_aspirations.json",
+    "bytes": 2612,
+    "sha256": "3b66b41fd637c6a27e54c7c5c470996bf0aafb3f483b5b46f582daa60c079308",
+    "output": "loose/localization/ko/village_aspirations.json"
+  },
+  {
+    "path": "localization/ko/village_aspirations.release.json",
+    "bytes": 1957,
+    "sha256": "f55589053161be740ce84e922ce7793fc87a34cb13dcadff48a9c9b7fb602695",
+    "output": "loose/localization/ko/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/ko/village_event.json",
+    "bytes": 2413,
+    "sha256": "70351a77fca0f1d036719dc6e0f8536d8cd5183a21352a507dc5245c7e51260b",
+    "output": "loose/localization/ko/village_event.json"
+  },
+  {
+    "path": "localization/ko/whatsnew.json",
+    "bytes": 43260,
+    "sha256": "2fd007ef749c95502e720f28750031065d34cc3aeadf83ce5e8608efa85a5edc",
+    "output": "loose/localization/ko/whatsnew.json"
+  },
+  {
+    "path": "localization/locales.txt",
+    "bytes": 294,
+    "sha256": "f81af436a73d6322632f2a2b0d3289124deaeea348583f2534f63ba3f7458503",
+    "output": "loose/localization/locales.txt"
+  },
+  {
+    "path": "localization/pl/achievements.json",
+    "bytes": 1082,
+    "sha256": "73cc3b20c7085456b878d9f740fc9cc0407466149dff267ad25c3d5a9ee82113",
+    "output": "loose/localization/pl/achievements.json"
+  },
+  {
+    "path": "localization/pl/achievements.release.json",
+    "bytes": 7838,
+    "sha256": "44e8ef93e3409b492f7f13c7c1a3c9e68aaef8b541a2f13f4356099f7df2508e",
+    "output": "loose/localization/pl/achievements.release.json"
+  },
+  {
+    "path": "localization/pl/AchievementsVDF.vdf",
+    "bytes": 6454,
+    "sha256": "a3963952f11c375e96f38e5f9ae1b76318000da913e79eb204da585fe085b14a",
+    "output": "loose/localization/pl/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/pl/agents.json",
+    "bytes": 7519,
+    "sha256": "a381e1fd1649183271da46302240ab8d8881002b78247ce61a43bbe091821e2b",
+    "output": "loose/localization/pl/agents.json"
+  },
+  {
+    "path": "localization/pl/agents.release.json",
+    "bytes": 5969,
+    "sha256": "90259149865f8fcdeb8f3e1061f051c8eaf66cf185a87715a27f445d20668b0c",
+    "output": "loose/localization/pl/agents.release.json"
+  },
+  {
+    "path": "localization/pl/buildings.json",
+    "bytes": 34198,
+    "sha256": "a90ea29b8304840ec93b801858cd2dc067a168b528004dc561884d6a8865dace",
+    "output": "loose/localization/pl/buildings.json"
+  },
+  {
+    "path": "localization/pl/buildings.release.json",
+    "bytes": 22158,
+    "sha256": "0011217dba65d39db983625127472a3c6f07ec8b1d43c9e79b42a0682bcc0536",
+    "output": "loose/localization/pl/buildings.release.json"
+  },
+  {
+    "path": "localization/pl/compendium.json",
+    "bytes": 123,
+    "sha256": "4d9c21627dab4cb21f66e1cfdd9356d10dc976c408ae457499f663528cd17923",
+    "output": "loose/localization/pl/compendium.json"
+  },
+  {
+    "path": "localization/pl/dlc_agriculture_achievements.json",
+    "bytes": 28,
+    "sha256": "1d82daff80b606318cd42c633c1028bb5db5987ea47e2d1da0a29a9e1d7c5a7b",
+    "output": "loose/localization/pl/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/pl/dlc_agriculture_search.json",
+    "bytes": 23,
+    "sha256": "9954d47943e815dba0f12c88bb55ceaaa1d9636223ad0d6ce70028185c1970a4",
+    "output": "loose/localization/pl/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/pl/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/pl/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/pl/events.json",
+    "bytes": 33654,
+    "sha256": "490c8922fe24347d45a969f946013dd2897fa59e4f023923b4dcd06aa85cad9c",
+    "output": "loose/localization/pl/events.json"
+  },
+  {
+    "path": "localization/pl/events.release.json",
+    "bytes": 172812,
+    "sha256": "3e79066d294a2d42a54b07d23b0bf0624ed67c349ed88c94158ba9edcb23e9da",
+    "output": "loose/localization/pl/events.release.json"
+  },
+  {
+    "path": "localization/pl/general.json",
+    "bytes": 99672,
+    "sha256": "9191cb4e89be278a605bac8ac5675de58e503b2e1a9fd10fcfff07f734f2042e",
+    "output": "loose/localization/pl/general.json"
+  },
+  {
+    "path": "localization/pl/general.release.json",
+    "bytes": 24948,
+    "sha256": "3f1d1f9e4d643a5fd51a5fee2f7f9764bbe6c31f040e36f19006c20b068dcf8b",
+    "output": "loose/localization/pl/general.release.json"
+  },
+  {
+    "path": "localization/pl/help.json",
+    "bytes": 44421,
+    "sha256": "a59326561bbd59cab39f55fea1414507569bf4b8c67f76dce99d02ef840bf40b",
+    "output": "loose/localization/pl/help.json"
+  },
+  {
+    "path": "localization/pl/help.release.json",
+    "bytes": 41297,
+    "sha256": "11c17b84066bb00757658802dfcd4fd06a7ff416fd35e87dff1da4afd622a98e",
+    "output": "loose/localization/pl/help.release.json"
+  },
+  {
+    "path": "localization/pl/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/pl/ks_content.json"
+  },
+  {
+    "path": "localization/pl/languages.json",
+    "bytes": 373,
+    "sha256": "b2d9ee29262d82a54a4855b7302ec10ae853c96be3c879c3f772bcdfbc1e7a27",
+    "output": "loose/localization/pl/languages.json"
+  },
+  {
+    "path": "localization/pl/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/pl/legal.json"
+  },
+  {
+    "path": "localization/pl/loading_tips.json",
+    "bytes": 1142,
+    "sha256": "469aa484355e53e0b4821964eca2822fe5aaf38bb1d46b4bd184a788a9b9eb35",
+    "output": "loose/localization/pl/loading_tips.json"
+  },
+  {
+    "path": "localization/pl/menu.json",
+    "bytes": 33655,
+    "sha256": "bbb7e4965f1dd3667f7507f96f4622457b512d5dba88b545c2878edff26450a2",
+    "output": "loose/localization/pl/menu.json"
+  },
+  {
+    "path": "localization/pl/military.json",
+    "bytes": 716,
+    "sha256": "def478ae459d0ec33961b76cb16c2c13f2541851cc24e1cb97d093ea2093d60e",
+    "output": "loose/localization/pl/military.json"
+  },
+  {
+    "path": "localization/pl/military.release.json",
+    "bytes": 22340,
+    "sha256": "cb3cf5f66911a46ced963630a1816726aea9fc626db6e45cd6ec0515dffa7ac9",
+    "output": "loose/localization/pl/military.release.json"
+  },
+  {
+    "path": "localization/pl/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/pl/music.json"
+  },
+  {
+    "path": "localization/pl/rules.json",
+    "bytes": 11113,
+    "sha256": "3569ef814319b4ea46c39fb49dc066f36ebfc4b9930d4a0e0386e79a1222cbea",
+    "output": "loose/localization/pl/rules.json"
+  },
+  {
+    "path": "localization/pl/rules.release.json",
+    "bytes": 4839,
+    "sha256": "e8699a2fa32d96594a58f0d91dc0e18931a2fd465506d0ae6edaf32d13f6b926",
+    "output": "loose/localization/pl/rules.release.json"
+  },
+  {
+    "path": "localization/pl/search.json",
+    "bytes": 206,
+    "sha256": "f97113869a17bd29735c76f3ddfcb65a3bb6fd305f41717ba0e8bcc1cd421f6d",
+    "output": "loose/localization/pl/search.json"
+  },
+  {
+    "path": "localization/pl/tutorial.json",
+    "bytes": 1402,
+    "sha256": "020fb4d3e6a339fc7a88590bfd834d2bf9e7f4ddc784e4a50329b1e2f205758f",
+    "output": "loose/localization/pl/tutorial.json"
+  },
+  {
+    "path": "localization/pl/unlockables.json",
+    "bytes": 4546,
+    "sha256": "af1a8768710481327eb25495529b277442e34e511e4a20e441edafcd0069d3ef",
+    "output": "loose/localization/pl/unlockables.json"
+  },
+  {
+    "path": "localization/pl/unlockables.release.json",
+    "bytes": 8006,
+    "sha256": "eaf5102d6188a09d7395267d537a377e40e433777cdd71cbe0955cd084797e83",
+    "output": "loose/localization/pl/unlockables.release.json"
+  },
+  {
+    "path": "localization/pl/village_aspirations.json",
+    "bytes": 2494,
+    "sha256": "b0ca533fff3ef6dc15b793a5de6f72762f12e9cd63fe73d46845a9ae26016dc1",
+    "output": "loose/localization/pl/village_aspirations.json"
+  },
+  {
+    "path": "localization/pl/village_aspirations.release.json",
+    "bytes": 1772,
+    "sha256": "2e7df6000d98164ac3717db3c9050ad436fe2fc5d880a00acd9a88bc4e506664",
+    "output": "loose/localization/pl/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/pl/village_event.json",
+    "bytes": 54,
+    "sha256": "4fcc978413ed6e6c4501bd2338b8e9cce60ad2d185ca1aeee859662fa2298c2e",
+    "output": "loose/localization/pl/village_event.json"
+  },
+  {
+    "path": "localization/pl/whatsnew.json",
+    "bytes": 42983,
+    "sha256": "4d276781e24d9f72611ac9497f354bc7cd7a680ed4b5e72d950afc7b9c9dde43",
+    "output": "loose/localization/pl/whatsnew.json"
+  },
+  {
+    "path": "localization/pt-BR/achievements.json",
+    "bytes": 1429,
+    "sha256": "bc782a0a1f3d2cf589e6d8515fbaf957ad314e398f07a5db8f87394bac53f01f",
+    "output": "loose/localization/pt-BR/achievements.json"
+  },
+  {
+    "path": "localization/pt-BR/achievements.release.json",
+    "bytes": 8194,
+    "sha256": "66613a425e2422c1fe13c7dfe816d0ad619c9b3f94c32ad5c615b48ca20dcc88",
+    "output": "loose/localization/pt-BR/achievements.release.json"
+  },
+  {
+    "path": "localization/pt-BR/AchievementsVDF.vdf",
+    "bytes": 7460,
+    "sha256": "9e7153a6715cbb6e55d061dafbb2c46fa43bf4b453e764a94e78fc3548b664b0",
+    "output": "loose/localization/pt-BR/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/pt-BR/agents.json",
+    "bytes": 7669,
+    "sha256": "7ad047b7aba11cbd97bb74513a4c97728e0011c267585791098c446d49d78251",
+    "output": "loose/localization/pt-BR/agents.json"
+  },
+  {
+    "path": "localization/pt-BR/agents.release.json",
+    "bytes": 6018,
+    "sha256": "ac3a775014fe9915d1dc6a5645069d7e41e6ab49e833a33607ac6d6db55f0316",
+    "output": "loose/localization/pt-BR/agents.release.json"
+  },
+  {
+    "path": "localization/pt-BR/buildings.json",
+    "bytes": 40712,
+    "sha256": "f31f3ca135663d1dc4a5a7807cb69f5eca350837d21eafe523de138b6d7b6e32",
+    "output": "loose/localization/pt-BR/buildings.json"
+  },
+  {
+    "path": "localization/pt-BR/buildings.release.json",
+    "bytes": 23246,
+    "sha256": "118a8305f0a6275dbada115642e39381f747e676e9e0b80da8c822b4e50d6745",
+    "output": "loose/localization/pt-BR/buildings.release.json"
+  },
+  {
+    "path": "localization/pt-BR/compendium.json",
+    "bytes": 1817,
+    "sha256": "34093de6d4409e15bceab345158267b83d5804c49ede80fcce3a340b3b4be2f0",
+    "output": "loose/localization/pt-BR/compendium.json"
+  },
+  {
+    "path": "localization/pt-BR/dlc_agriculture_achievements.json",
+    "bytes": 1733,
+    "sha256": "9b10e02b558217609502ffd0b0c4c80ae094dc50dd902095a7de22916e86a7c2",
+    "output": "loose/localization/pt-BR/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/pt-BR/dlc_agriculture_search.json",
+    "bytes": 447,
+    "sha256": "729bf72e9c19eae626bc39af57e52e0786085eee4cbe6e4aaabbc8c8a99404ab",
+    "output": "loose/localization/pt-BR/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/pt-BR/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/pt-BR/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/pt-BR/events.json",
+    "bytes": 33076,
+    "sha256": "7857db2c43526c07548cd53472a7892bd713ebcefd5c9ea00c15addda535d6af",
+    "output": "loose/localization/pt-BR/events.json"
+  },
+  {
+    "path": "localization/pt-BR/events.release.json",
+    "bytes": 171024,
+    "sha256": "60d08a87446d89389c6f0d72537029594a2b101dafb7cbdb3f2bab3aa05753f7",
+    "output": "loose/localization/pt-BR/events.release.json"
+  },
+  {
+    "path": "localization/pt-BR/general.json",
+    "bytes": 105690,
+    "sha256": "b0add9a3c439a3eb6f9b9b688f60ff69fd39fea93aecc557f0b7f95cbb09b69f",
+    "output": "loose/localization/pt-BR/general.json"
+  },
+  {
+    "path": "localization/pt-BR/general.release.json",
+    "bytes": 26473,
+    "sha256": "3be26853b362b91f6d6eec527049c60a66e9e520519c4bb28e5bb103ce531496",
+    "output": "loose/localization/pt-BR/general.release.json"
+  },
+  {
+    "path": "localization/pt-BR/help.json",
+    "bytes": 49808,
+    "sha256": "7f773dcc3c8302a8e088751b3b83c7351a3fc8d9bb56dba958bac9b24d6b1a4c",
+    "output": "loose/localization/pt-BR/help.json"
+  },
+  {
+    "path": "localization/pt-BR/help.release.json",
+    "bytes": 59943,
+    "sha256": "587236070c16f6feef48aa3b2b2daa5765b03e7080a7c1875fa6947df2e9f32a",
+    "output": "loose/localization/pt-BR/help.release.json"
+  },
+  {
+    "path": "localization/pt-BR/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/pt-BR/ks_content.json"
+  },
+  {
+    "path": "localization/pt-BR/languages.json",
+    "bytes": 368,
+    "sha256": "07d400a82bacf4ccf0341b42cd6695a38915ac02a27276248abddf244d3f63c9",
+    "output": "loose/localization/pt-BR/languages.json"
+  },
+  {
+    "path": "localization/pt-BR/legal.json",
+    "bytes": 995,
+    "sha256": "bc94f5d96cc19973426115eab0ed92e5a4d14ea28db5838e4c17a552ddb2d6d8",
+    "output": "loose/localization/pt-BR/legal.json"
+  },
+  {
+    "path": "localization/pt-BR/loading_tips.json",
+    "bytes": 3115,
+    "sha256": "c2f98a6c70e59998970d380db77b13e973698bf045346a700d59bfdbee771bf5",
+    "output": "loose/localization/pt-BR/loading_tips.json"
+  },
+  {
+    "path": "localization/pt-BR/menu.json",
+    "bytes": 36852,
+    "sha256": "c256fb5427b03c6dd62316f10299fbad2999eea347ce6ed97b87886e1eded3b7",
+    "output": "loose/localization/pt-BR/menu.json"
+  },
+  {
+    "path": "localization/pt-BR/military.json",
+    "bytes": 995,
+    "sha256": "f5dfcf3c87684327c034335c211947bdc808ba45fad3eea8c2a554a903d60a55",
+    "output": "loose/localization/pt-BR/military.json"
+  },
+  {
+    "path": "localization/pt-BR/military.release.json",
+    "bytes": 22805,
+    "sha256": "7e91b8cfe712c272651f81120709da65ec3e37b5838774923561655cc64a2cd3",
+    "output": "loose/localization/pt-BR/military.release.json"
+  },
+  {
+    "path": "localization/pt-BR/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/pt-BR/music.json"
+  },
+  {
+    "path": "localization/pt-BR/rules.json",
+    "bytes": 12567,
+    "sha256": "7ba8683c17c55bda03c7c914f8ed17d86bf63ad70cb1a80ccabf2fcbe99fae83",
+    "output": "loose/localization/pt-BR/rules.json"
+  },
+  {
+    "path": "localization/pt-BR/rules.release.json",
+    "bytes": 4923,
+    "sha256": "b3a74930439a203916f04e07b061ee094ee1b68f85af3ec162b57e9b33e2c67a",
+    "output": "loose/localization/pt-BR/rules.release.json"
+  },
+  {
+    "path": "localization/pt-BR/search.json",
+    "bytes": 3539,
+    "sha256": "3079d2cc5b5bb40a6dd1d2d3de8d23b6f409c985b52c2c7d676a1dcfdf0317de",
+    "output": "loose/localization/pt-BR/search.json"
+  },
+  {
+    "path": "localization/pt-BR/tutorial.json",
+    "bytes": 1925,
+    "sha256": "47140a571693522cdba0bd2debc252ddd0e00e279ebdb4a02f9f9a543d21cda8",
+    "output": "loose/localization/pt-BR/tutorial.json"
+  },
+  {
+    "path": "localization/pt-BR/unlockables.json",
+    "bytes": 4848,
+    "sha256": "1c78e25c5a7b90ad6e5d3ed46b8b0d90e6ca24fb011d327f70d0c67afc1710f0",
+    "output": "loose/localization/pt-BR/unlockables.json"
+  },
+  {
+    "path": "localization/pt-BR/unlockables.release.json",
+    "bytes": 8913,
+    "sha256": "ca9223407553c0d1401b81f89048f8883ed2255e342d910f8266b091a341efe6",
+    "output": "loose/localization/pt-BR/unlockables.release.json"
+  },
+  {
+    "path": "localization/pt-BR/village_aspirations.json",
+    "bytes": 2498,
+    "sha256": "599e06ea7ef2420428f2929d19b5fdb8517779c736c3e9fd32a29e0c6ec1ca8f",
+    "output": "loose/localization/pt-BR/village_aspirations.json"
+  },
+  {
+    "path": "localization/pt-BR/village_aspirations.release.json",
+    "bytes": 1815,
+    "sha256": "63cff361243ce3108c2d6cbade4b41e41e0ee8b349ca1585d1c9723a3515b848",
+    "output": "loose/localization/pt-BR/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/pt-BR/village_event.json",
+    "bytes": 2333,
+    "sha256": "7685a188373e0c929931da6135fa2d9c48bd6a27c2ada5be58bbc4e0e2fed451",
+    "output": "loose/localization/pt-BR/village_event.json"
+  },
+  {
+    "path": "localization/pt-BR/whatsnew.json",
+    "bytes": 44029,
+    "sha256": "3931f8a8e472c1260b5b947ec2b7cac29d16fb88d1437a7b7084936d881d4849",
+    "output": "loose/localization/pt-BR/whatsnew.json"
+  },
+  {
+    "path": "localization/ru/achievements.json",
+    "bytes": 1967,
+    "sha256": "16c6c7384e1ec187ec25264430dfd1b9e62853c0c4cea176e5c226206c15b4a7",
+    "output": "loose/localization/ru/achievements.json"
+  },
+  {
+    "path": "localization/ru/achievements.release.json",
+    "bytes": 10616,
+    "sha256": "cbe6a94c8f1cbc5314343532069821a215405d51a9ee5638e0754cc2f9164e81",
+    "output": "loose/localization/ru/achievements.release.json"
+  },
+  {
+    "path": "localization/ru/AchievementsVDF.vdf",
+    "bytes": 9783,
+    "sha256": "919a9656c9a7d4053c1338f3728adbf60a60b8bac1ff37bcad7c6d511a416035",
+    "output": "loose/localization/ru/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/ru/agents.json",
+    "bytes": 10480,
+    "sha256": "2f354f4e05e756c3b462afd923f8a84cc5bf056d6d9ae1ccfc775be56963ab84",
+    "output": "loose/localization/ru/agents.json"
+  },
+  {
+    "path": "localization/ru/agents.release.json",
+    "bytes": 8063,
+    "sha256": "754ebbb84919ac9c4a4a77d27ba82c1cdf41b4b5ea2acee940491b3504f80659",
+    "output": "loose/localization/ru/agents.release.json"
+  },
+  {
+    "path": "localization/ru/buildings.json",
+    "bytes": 54800,
+    "sha256": "a58a3c463c843b0839e45360864b6b5ccac1d599407dd57080d47424f6669329",
+    "output": "loose/localization/ru/buildings.json"
+  },
+  {
+    "path": "localization/ru/buildings.release.json",
+    "bytes": 31588,
+    "sha256": "5a90d225d0afd03740f5ca63622725d2a5ad08a88947623706281fbb9094609d",
+    "output": "loose/localization/ru/buildings.release.json"
+  },
+  {
+    "path": "localization/ru/compendium.json",
+    "bytes": 2314,
+    "sha256": "3adc68ea9107ad72286b397ab0ba7c8f57cb7e20a4709754d00921d35705fbc5",
+    "output": "loose/localization/ru/compendium.json"
+  },
+  {
+    "path": "localization/ru/dlc_agriculture_achievements.json",
+    "bytes": 2193,
+    "sha256": "5d91f06e675fe6af9e963235c423c167f78974e20b62cecd07a7943b3ffb61e7",
+    "output": "loose/localization/ru/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/ru/dlc_agriculture_search.json",
+    "bytes": 522,
+    "sha256": "ca45449f6a83dffb295aec6bc32bf46d8a4db71b6b72e774304d6af2fbd753f1",
+    "output": "loose/localization/ru/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/ru/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/ru/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/ru/events.json",
+    "bytes": 49113,
+    "sha256": "9d74c58845db7a258f2d468f2dc98d833187292d4c4fab1f96b3fe2f3e6cd823",
+    "output": "loose/localization/ru/events.json"
+  },
+  {
+    "path": "localization/ru/events.release.json",
+    "bytes": 244207,
+    "sha256": "3a6b6d0cb58b4a350a66b9c58c2dd4b3222f7d78fb9b997d9d07aff1e305208a",
+    "output": "loose/localization/ru/events.release.json"
+  },
+  {
+    "path": "localization/ru/general.json",
+    "bytes": 145346,
+    "sha256": "b9c85b201d54207f0abc4c1c23a9b2914a144de28b10899dd4cbf5f222d9b36b",
+    "output": "loose/localization/ru/general.json"
+  },
+  {
+    "path": "localization/ru/general.release.json",
+    "bytes": 35655,
+    "sha256": "c860bbd83eff9573882874b24a1ce1394b287b5cb3b4add944ba6e5ee6b06c8d",
+    "output": "loose/localization/ru/general.release.json"
+  },
+  {
+    "path": "localization/ru/help.json",
+    "bytes": 71665,
+    "sha256": "f1f61bc3d21dbbe83dbbca80ac9144b53cb1912f37686790b0e4d10d65c4bd6a",
+    "output": "loose/localization/ru/help.json"
+  },
+  {
+    "path": "localization/ru/help.release.json",
+    "bytes": 85795,
+    "sha256": "775859ad0ab62579c4f181a3ee812c669d2ddbf7732b95c6e49f23e0dd2cbed8",
+    "output": "loose/localization/ru/help.release.json"
+  },
+  {
+    "path": "localization/ru/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/ru/ks_content.json"
+  },
+  {
+    "path": "localization/ru/languages.json",
+    "bytes": 506,
+    "sha256": "790273973440181fbbb0c1a304f9b9f1fd5a8f1396948a876d528afaf0d954fe",
+    "output": "loose/localization/ru/languages.json"
+  },
+  {
+    "path": "localization/ru/legal.json",
+    "bytes": 1839,
+    "sha256": "d74cb250f92fc17b51825afdad4cb6c9155990ccc60f8b00f497456bba9bff5a",
+    "output": "loose/localization/ru/legal.json"
+  },
+  {
+    "path": "localization/ru/loading_tips.json",
+    "bytes": 4464,
+    "sha256": "913baf1821a0844156968f39a15d38d8d1e2f2f3082fabf2ed854563c99123cc",
+    "output": "loose/localization/ru/loading_tips.json"
+  },
+  {
+    "path": "localization/ru/menu.json",
+    "bytes": 50943,
+    "sha256": "7dfc37fe269ee3edcc94765093910295d777ef1af5e6d5a870f40d6c3adf3e79",
+    "output": "loose/localization/ru/menu.json"
+  },
+  {
+    "path": "localization/ru/military.json",
+    "bytes": 1320,
+    "sha256": "4ad57435f12a2a5b6b7d428d2f21e7fb43d80f3886baff3baa31c68cfe175d44",
+    "output": "loose/localization/ru/military.json"
+  },
+  {
+    "path": "localization/ru/military.release.json",
+    "bytes": 31312,
+    "sha256": "c12427e972964eac10c2d093ec823efe7e6bb6d90990c979bf26d3894f742854",
+    "output": "loose/localization/ru/military.release.json"
+  },
+  {
+    "path": "localization/ru/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/ru/music.json"
+  },
+  {
+    "path": "localization/ru/rules.json",
+    "bytes": 16504,
+    "sha256": "447a32db79ca35763e0f028c4a724f0808a6b6c9a8df51411a680405a0cc49d1",
+    "output": "loose/localization/ru/rules.json"
+  },
+  {
+    "path": "localization/ru/rules.release.json",
+    "bytes": 6154,
+    "sha256": "0c1999d02d0e31f09aa3a51b9662386c3b4774afbd8692a8e7f5140d458177bd",
+    "output": "loose/localization/ru/rules.release.json"
+  },
+  {
+    "path": "localization/ru/search.json",
+    "bytes": 4197,
+    "sha256": "12f1333c2146ced66ffbd388c1d8e749daba013e0fbe3e06963afa8943099d3a",
+    "output": "loose/localization/ru/search.json"
+  },
+  {
+    "path": "localization/ru/tutorial.json",
+    "bytes": 2359,
+    "sha256": "c5d114ff95a1ca98e35f838d9229a791e6abd3ce10d68a4bbbad388b4c988abc",
+    "output": "loose/localization/ru/tutorial.json"
+  },
+  {
+    "path": "localization/ru/unlockables.json",
+    "bytes": 6495,
+    "sha256": "2a26a518c149038cb78bbad6f96a56bfccf10bccdb5e570cdabf2840cf64a380",
+    "output": "loose/localization/ru/unlockables.json"
+  },
+  {
+    "path": "localization/ru/unlockables.release.json",
+    "bytes": 12008,
+    "sha256": "2851caa62d78c1c1c91198852f25e7e0ccb7dcb62e4c91c486424e94da557bcd",
+    "output": "loose/localization/ru/unlockables.release.json"
+  },
+  {
+    "path": "localization/ru/village_aspirations.json",
+    "bytes": 3512,
+    "sha256": "9151dc06fca9ef86d103235b2ec07dfd4172e24d2873fe356dbe4825969244e5",
+    "output": "loose/localization/ru/village_aspirations.json"
+  },
+  {
+    "path": "localization/ru/village_aspirations.release.json",
+    "bytes": 2629,
+    "sha256": "f9d6cddb5ac60e1c1575185fd5da540b8dd922f3fcc89ef4b8d49363be7b4167",
+    "output": "loose/localization/ru/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/ru/village_event.json",
+    "bytes": 3001,
+    "sha256": "49c134aa43f5cc81a5269b9e5d3445716cef6f89b2facea324f5266593d9a90b",
+    "output": "loose/localization/ru/village_event.json"
+  },
+  {
+    "path": "localization/ru/whatsnew.json",
+    "bytes": 68089,
+    "sha256": "cac76bce7c3ad1d1ece996c71ccb3d94f8299d94d09e27b847a55909cf3c1504",
+    "output": "loose/localization/ru/whatsnew.json"
+  },
+  {
+    "path": "localization/sv-SE/achievements.json",
+    "bytes": 1476,
+    "sha256": "ede19e9d9c90518643607384b72244b51486474a60c0fa0628038fc63e9b71e8",
+    "output": "loose/localization/sv-SE/achievements.json"
+  },
+  {
+    "path": "localization/sv-SE/achievements.release.json",
+    "bytes": 7963,
+    "sha256": "ebd5122cf67dc503c49ead64ab3d4107b505e30151e4d67715f394e570d1c462",
+    "output": "loose/localization/sv-SE/achievements.release.json"
+  },
+  {
+    "path": "localization/sv-SE/AchievementsVDF.vdf",
+    "bytes": 7145,
+    "sha256": "0f05c583e62488112a01ae5f4882ea191171fc76d7c11b0773cc1a96c4f570a6",
+    "output": "loose/localization/sv-SE/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/sv-SE/agents.json",
+    "bytes": 7483,
+    "sha256": "074480f2f3137114f8ff69ad414c4ab83acb2e0b6dbdcf02cd1da84fb9b43696",
+    "output": "loose/localization/sv-SE/agents.json"
+  },
+  {
+    "path": "localization/sv-SE/agents.release.json",
+    "bytes": 5879,
+    "sha256": "1d56a51f3b01efd94821f737bcd365b1ae97a2dfe104e191b29259adc452966d",
+    "output": "loose/localization/sv-SE/agents.release.json"
+  },
+  {
+    "path": "localization/sv-SE/buildings.json",
+    "bytes": 38224,
+    "sha256": "26eb344d68053bd51991c3686ec8c017eca17a3dc8df536c835cb6393c5a5b85",
+    "output": "loose/localization/sv-SE/buildings.json"
+  },
+  {
+    "path": "localization/sv-SE/buildings.release.json",
+    "bytes": 21658,
+    "sha256": "3cb2bc20377c86a24d67806e5670f5fa994d39fa7f93de766043bf310dc4534d",
+    "output": "loose/localization/sv-SE/buildings.release.json"
+  },
+  {
+    "path": "localization/sv-SE/compendium.json",
+    "bytes": 1738,
+    "sha256": "3805c8b7fcbda0f633f30fe2a2e4fe08df2ec81475c2d65fab5c05605ba97d3b",
+    "output": "loose/localization/sv-SE/compendium.json"
+  },
+  {
+    "path": "localization/sv-SE/dlc_agriculture_achievements.json",
+    "bytes": 1656,
+    "sha256": "6fa15d0eed01d46042c049060da2f4032d9515abc112d13d50f9ff18cf426e62",
+    "output": "loose/localization/sv-SE/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/sv-SE/dlc_agriculture_search.json",
+    "bytes": 441,
+    "sha256": "6bf700ec16646c1d5ef5109a82cfe83909cdefc95c4f7da71be536e34382beef",
+    "output": "loose/localization/sv-SE/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/sv-SE/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/sv-SE/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/sv-SE/events.json",
+    "bytes": 32867,
+    "sha256": "1d8b779bcddb9b5223eb931fe915a1077f777440ccb3b3b36f773e15d787ae67",
+    "output": "loose/localization/sv-SE/events.json"
+  },
+  {
+    "path": "localization/sv-SE/events.release.json",
+    "bytes": 171856,
+    "sha256": "d28eab079193ea5a7f65651aa68d30646063d7d971d04a4efd8456ef3fe8f2ef",
+    "output": "loose/localization/sv-SE/events.release.json"
+  },
+  {
+    "path": "localization/sv-SE/general.json",
+    "bytes": 102327,
+    "sha256": "42b20bd4a18a2f3a2bd5e80cbfa00370ba2ff841371ccbc584b03cb7cf90aab5",
+    "output": "loose/localization/sv-SE/general.json"
+  },
+  {
+    "path": "localization/sv-SE/general.release.json",
+    "bytes": 26239,
+    "sha256": "6a26ce8ca7395cf0897fcf2ae0ab35bb8e49a6280f5cbd82726fa4fe5ca17ca2",
+    "output": "loose/localization/sv-SE/general.release.json"
+  },
+  {
+    "path": "localization/sv-SE/help.json",
+    "bytes": 47436,
+    "sha256": "d92a31f050049b00917e6785ce01990063aead87d8e8063aa9a5ba9ca0100bd5",
+    "output": "loose/localization/sv-SE/help.json"
+  },
+  {
+    "path": "localization/sv-SE/help.release.json",
+    "bytes": 56522,
+    "sha256": "0410e225b5bd43da85dd23d2997cc1ec367277633eee43034049d1b3bb427e39",
+    "output": "loose/localization/sv-SE/help.release.json"
+  },
+  {
+    "path": "localization/sv-SE/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/sv-SE/ks_content.json"
+  },
+  {
+    "path": "localization/sv-SE/languages.json",
+    "bytes": 355,
+    "sha256": "80856d5447b4286e09f77cab13db08b44e46f4ce05fe138e552367969b65b07e",
+    "output": "loose/localization/sv-SE/languages.json"
+  },
+  {
+    "path": "localization/sv-SE/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/sv-SE/legal.json"
+  },
+  {
+    "path": "localization/sv-SE/loading_tips.json",
+    "bytes": 2816,
+    "sha256": "a133ac157384dfec88744b382f8a67e1ce4c1cd93d4f615d3078c9107cf1260d",
+    "output": "loose/localization/sv-SE/loading_tips.json"
+  },
+  {
+    "path": "localization/sv-SE/menu.json",
+    "bytes": 35627,
+    "sha256": "1c3e929c9833b3ac2a74074aca8bcd4777975b7372f53efcf8363e48c78581b9",
+    "output": "loose/localization/sv-SE/menu.json"
+  },
+  {
+    "path": "localization/sv-SE/military.json",
+    "bytes": 962,
+    "sha256": "18609e322a34328a81a4195a42913bde64d109aa8f30eeea9b9d562ce32a3cdf",
+    "output": "loose/localization/sv-SE/military.json"
+  },
+  {
+    "path": "localization/sv-SE/military.release.json",
+    "bytes": 22554,
+    "sha256": "bfa700ea581e8a84d9ae96725e6c89e3dcdd8b9bb4dbc106acbe345d99838a4f",
+    "output": "loose/localization/sv-SE/military.release.json"
+  },
+  {
+    "path": "localization/sv-SE/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/sv-SE/music.json"
+  },
+  {
+    "path": "localization/sv-SE/rules.json",
+    "bytes": 12154,
+    "sha256": "b27d7003b88a85c2bd3b1921ace3d59982e449b3acfb792000bfd8b3145c35b3",
+    "output": "loose/localization/sv-SE/rules.json"
+  },
+  {
+    "path": "localization/sv-SE/rules.release.json",
+    "bytes": 4676,
+    "sha256": "418c613cd08409887f5d586b971aff910ffb8d13d4a27dab6c4e6a7bf3996a43",
+    "output": "loose/localization/sv-SE/rules.release.json"
+  },
+  {
+    "path": "localization/sv-SE/search.json",
+    "bytes": 3394,
+    "sha256": "e480f342cffd366c3dd8e3895669b5c25ecb0b5a4600010eff73d392db2ff5e4",
+    "output": "loose/localization/sv-SE/search.json"
+  },
+  {
+    "path": "localization/sv-SE/tutorial.json",
+    "bytes": 1839,
+    "sha256": "1453ce611b61405cd7725134799b1f86fd4f00551e796ea3663f7542dd5a8b5d",
+    "output": "loose/localization/sv-SE/tutorial.json"
+  },
+  {
+    "path": "localization/sv-SE/unlockables.json",
+    "bytes": 4523,
+    "sha256": "c2bfe474c09ed971ae122160f9c0c3bee157b78e21979ebe33eb004a6de8cf90",
+    "output": "loose/localization/sv-SE/unlockables.json"
+  },
+  {
+    "path": "localization/sv-SE/unlockables.release.json",
+    "bytes": 8421,
+    "sha256": "879d88f81ac6e1b5f4f9ab2f8abd364e0f31d2be87146f40f2ac672679b5a9a4",
+    "output": "loose/localization/sv-SE/unlockables.release.json"
+  },
+  {
+    "path": "localization/sv-SE/village_aspirations.json",
+    "bytes": 2345,
+    "sha256": "45287b8660602c8bb8d8e5e70c782283224e875330165ad19067837a30225ff5",
+    "output": "loose/localization/sv-SE/village_aspirations.json"
+  },
+  {
+    "path": "localization/sv-SE/village_aspirations.release.json",
+    "bytes": 1680,
+    "sha256": "6b608fa09787c55e64e3a4c01df556584731e9efd2a9dca140f203fc59024498",
+    "output": "loose/localization/sv-SE/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/sv-SE/village_event.json",
+    "bytes": 2237,
+    "sha256": "8f49e40a71abc6634e7035a9dd289aae9051dfe628125dd7293009e3b17e3de6",
+    "output": "loose/localization/sv-SE/village_event.json"
+  },
+  {
+    "path": "localization/sv-SE/whatsnew.json",
+    "bytes": 17573,
+    "sha256": "760114472c321eca5221dc0dc6cc84cd2aa188d5bbbc46901cc4395012662f34",
+    "output": "loose/localization/sv-SE/whatsnew.json"
+  },
+  {
+    "path": "localization/th/achievements.json",
+    "bytes": 2253,
+    "sha256": "1d01d011a906f6655ef910bcf96b95bd29f885e91107596850282a4040901fe5",
+    "output": "loose/localization/th/achievements.json"
+  },
+  {
+    "path": "localization/th/achievements.release.json",
+    "bytes": 11713,
+    "sha256": "e9532eb7d8ef3012073ced14f60986125619ef40941d2cb88a762d12bb6125fc",
+    "output": "loose/localization/th/achievements.release.json"
+  },
+  {
+    "path": "localization/th/AchievementsVDF.vdf",
+    "bytes": 9591,
+    "sha256": "5918a36bc06940759b3cdb8de697a8c9db4b52d495580e288e9e9cdfc31c4517",
+    "output": "loose/localization/th/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/th/agents.json",
+    "bytes": 11312,
+    "sha256": "734df6ffb96d1df56b4e4b0d172cda6558f52af943bd0bf9e1b4325c658807b9",
+    "output": "loose/localization/th/agents.json"
+  },
+  {
+    "path": "localization/th/agents.release.json",
+    "bytes": 9281,
+    "sha256": "edc33cf9ea7badf498b014a91f240513962940283eeef1f57fa226b24ae65641",
+    "output": "loose/localization/th/agents.release.json"
+  },
+  {
+    "path": "localization/th/buildings.json",
+    "bytes": 58046,
+    "sha256": "160c7d903e7e85169f1a38487da63d4cc3b426278645396a2177c505cd14e2b0",
+    "output": "loose/localization/th/buildings.json"
+  },
+  {
+    "path": "localization/th/buildings.release.json",
+    "bytes": 36871,
+    "sha256": "87ed08bbf641daedc2f7452d6df4658bc79bc4448396ea5e08e461a4b8288af2",
+    "output": "loose/localization/th/buildings.release.json"
+  },
+  {
+    "path": "localization/th/compendium.json",
+    "bytes": 135,
+    "sha256": "45468db893dfb4dcc4fa7cf1bbed64b90d89ffcbb97a3ca5e5271c3ac392d1f7",
+    "output": "loose/localization/th/compendium.json"
+  },
+  {
+    "path": "localization/th/dlc_agriculture_achievements.json",
+    "bytes": 28,
+    "sha256": "1d82daff80b606318cd42c633c1028bb5db5987ea47e2d1da0a29a9e1d7c5a7b",
+    "output": "loose/localization/th/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/th/dlc_agriculture_search.json",
+    "bytes": 23,
+    "sha256": "9954d47943e815dba0f12c88bb55ceaaa1d9636223ad0d6ce70028185c1970a4",
+    "output": "loose/localization/th/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/th/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/th/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/th/events.json",
+    "bytes": 64081,
+    "sha256": "23e2236ff5325099474436cf72d2a6b7ab2393edf292e5b6f81c42fceebf5945",
+    "output": "loose/localization/th/events.json"
+  },
+  {
+    "path": "localization/th/events.release.json",
+    "bytes": 325574,
+    "sha256": "a8abdc406b793fe88a72a7fa9d9039c9f492dd1707e5543514c86ddc28ed77e7",
+    "output": "loose/localization/th/events.release.json"
+  },
+  {
+    "path": "localization/th/general.json",
+    "bytes": 172670,
+    "sha256": "f2a19d237a471c7072f145b1e47bc916d3b2006f1e8f11219cb3462217b46edd",
+    "output": "loose/localization/th/general.json"
+  },
+  {
+    "path": "localization/th/general.release.json",
+    "bytes": 40893,
+    "sha256": "ed8ac852c0ac43a7b80c7005b5b337daadb1722e1d315402b2ccb8a456a5d551",
+    "output": "loose/localization/th/general.release.json"
+  },
+  {
+    "path": "localization/th/help.json",
+    "bytes": 88628,
+    "sha256": "0bf84b46a06b862ee7fb20ec34d9b0ca65fb4424d7d8716cf4cd554948f8201e",
+    "output": "loose/localization/th/help.json"
+  },
+  {
+    "path": "localization/th/help.release.json",
+    "bytes": 107422,
+    "sha256": "e4daf8a0206b88f5ec21a211845a9d94db3cabdbd032904598daf8a0ab23e99d",
+    "output": "loose/localization/th/help.release.json"
+  },
+  {
+    "path": "localization/th/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/th/ks_content.json"
+  },
+  {
+    "path": "localization/th/languages.json",
+    "bytes": 505,
+    "sha256": "52cc0687bccb46ccb9e6751b0645d201bbe8b300bc7391a05fe97c3a4a15605e",
+    "output": "loose/localization/th/languages.json"
+  },
+  {
+    "path": "localization/th/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/th/legal.json"
+  },
+  {
+    "path": "localization/th/loading_tips.json",
+    "bytes": 5396,
+    "sha256": "2b1743c379d6203a8a975c86a0a0bcf1431176fc66cb6f38923702c76bd8a2db",
+    "output": "loose/localization/th/loading_tips.json"
+  },
+  {
+    "path": "localization/th/menu.json",
+    "bytes": 55773,
+    "sha256": "e1a2c2e90779f005fbace950689bb89f436fa7ba177e9421ffe0ae598cdeede7",
+    "output": "loose/localization/th/menu.json"
+  },
+  {
+    "path": "localization/th/military.json",
+    "bytes": 1748,
+    "sha256": "19968cb0ff9bb037053bbe8a1fdae815b0804eba40f4cced662e651a61feae43",
+    "output": "loose/localization/th/military.json"
+  },
+  {
+    "path": "localization/th/military.release.json",
+    "bytes": 43800,
+    "sha256": "80b97940344190a1ee6a5b3c9438ea27e54e973fc0471dfcac7406a1be8b9b38",
+    "output": "loose/localization/th/military.release.json"
+  },
+  {
+    "path": "localization/th/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/th/music.json"
+  },
+  {
+    "path": "localization/th/rules.json",
+    "bytes": 18605,
+    "sha256": "334c5e34cf4014c6425489f2d08c30a35d4e1204d5f42148ccf0986d96321e3c",
+    "output": "loose/localization/th/rules.json"
+  },
+  {
+    "path": "localization/th/rules.release.json",
+    "bytes": 7645,
+    "sha256": "836b27ee8dcd639537b9bd2986bdd67cfe57b25a5c2c28e98d707eb81f845ea5",
+    "output": "loose/localization/th/rules.release.json"
+  },
+  {
+    "path": "localization/th/search.json",
+    "bytes": 252,
+    "sha256": "4626a935a5ce193a44da7ab172be4dd8215a882552c491ebebe6f0d087ce176f",
+    "output": "loose/localization/th/search.json"
+  },
+  {
+    "path": "localization/th/tutorial.json",
+    "bytes": 2885,
+    "sha256": "02bd644c509846cc9ee44a57c3ecc1af1339160440971028ae909ec7d5f1c6a7",
+    "output": "loose/localization/th/tutorial.json"
+  },
+  {
+    "path": "localization/th/unlockables.json",
+    "bytes": 7947,
+    "sha256": "eeeb9ed06ea78c6744df564d534d5628f060462ca6c02167e13bf05f00be69dc",
+    "output": "loose/localization/th/unlockables.json"
+  },
+  {
+    "path": "localization/th/unlockables.release.json",
+    "bytes": 15539,
+    "sha256": "c9a4e303a7eefe0c3368316886e6542dc15fb426806f5a85933cf06a33147620",
+    "output": "loose/localization/th/unlockables.release.json"
+  },
+  {
+    "path": "localization/th/village_aspirations.json",
+    "bytes": 4296,
+    "sha256": "b1f92401be0c94d402581c2dd3cdb7efef649ffa1f800c109c74159f030d6a58",
+    "output": "loose/localization/th/village_aspirations.json"
+  },
+  {
+    "path": "localization/th/village_aspirations.release.json",
+    "bytes": 3816,
+    "sha256": "4888cba2599bb5a7658b98e73e7d6c6efc9acd3a08e39109585e189401c1d631",
+    "output": "loose/localization/th/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/th/village_event.json",
+    "bytes": 54,
+    "sha256": "4fcc978413ed6e6c4501bd2338b8e9cce60ad2d185ca1aeee859662fa2298c2e",
+    "output": "loose/localization/th/village_event.json"
+  },
+  {
+    "path": "localization/th/whatsnew.json",
+    "bytes": 21692,
+    "sha256": "4ff01cb6f5ef74937a759f31a747f6d2378e3757cc08e86b1346515c15cef85d",
+    "output": "loose/localization/th/whatsnew.json"
+  },
+  {
+    "path": "localization/tr/achievements.json",
+    "bytes": 1512,
+    "sha256": "b55bbd05162c30bd4fb8766a33266abbc8ee15fbbd11581160e30fa2989c7bd3",
+    "output": "loose/localization/tr/achievements.json"
+  },
+  {
+    "path": "localization/tr/achievements.release.json",
+    "bytes": 8089,
+    "sha256": "20538887832d91dbc0bf1df403c0b20d8cbe97a1df656a9ebf76c009856016c6",
+    "output": "loose/localization/tr/achievements.release.json"
+  },
+  {
+    "path": "localization/tr/AchievementsVDF.vdf",
+    "bytes": 7416,
+    "sha256": "29381ed80d785e3bee063549272ec5505400a845586abd040fc1abba40ecaa90",
+    "output": "loose/localization/tr/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/tr/agents.json",
+    "bytes": 7739,
+    "sha256": "066d7745c87f045b1d65a98943774b82471386dfa0f01486b3c70a8b8c3f681c",
+    "output": "loose/localization/tr/agents.json"
+  },
+  {
+    "path": "localization/tr/agents.release.json",
+    "bytes": 6102,
+    "sha256": "cdf5552646b2d4545b8d552665cd1b84ae8839dea48e8a69904d09ea6295044a",
+    "output": "loose/localization/tr/agents.release.json"
+  },
+  {
+    "path": "localization/tr/buildings.json",
+    "bytes": 39346,
+    "sha256": "1f5091a007fac0cbacb74410d1115a3f0c3ce3f45b5a996bd96010d4408af487",
+    "output": "loose/localization/tr/buildings.json"
+  },
+  {
+    "path": "localization/tr/buildings.release.json",
+    "bytes": 22319,
+    "sha256": "33e8bd958661e08b03a1eb812cd8c1f1e1bcdd6a33106ec3607dca4275cad4a4",
+    "output": "loose/localization/tr/buildings.release.json"
+  },
+  {
+    "path": "localization/tr/compendium.json",
+    "bytes": 1826,
+    "sha256": "0eebf1bea51c501937c1a989438d7de7691e7aefd3f8591f73ca3712dc8a802b",
+    "output": "loose/localization/tr/compendium.json"
+  },
+  {
+    "path": "localization/tr/dlc_agriculture_achievements.json",
+    "bytes": 1721,
+    "sha256": "e1ce33074755ed80ef405cdc579928ffe91bdbefee5f4c33cca8e7823164c2d5",
+    "output": "loose/localization/tr/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/tr/dlc_agriculture_search.json",
+    "bytes": 446,
+    "sha256": "15f90bd0319012d2a6e8e145cd399e55c03045b4074ef196dcf41859067ca991",
+    "output": "loose/localization/tr/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/tr/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/tr/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/tr/events.json",
+    "bytes": 33444,
+    "sha256": "a5f0e339439d53294baa857395fd34845638197761ab35437f7c32306e9260f3",
+    "output": "loose/localization/tr/events.json"
+  },
+  {
+    "path": "localization/tr/events.release.json",
+    "bytes": 172718,
+    "sha256": "3461a21c22f1486544260cb18e8dd769d4cc9752f3a2aca03c25f5e605dd2e92",
+    "output": "loose/localization/tr/events.release.json"
+  },
+  {
+    "path": "localization/tr/general.json",
+    "bytes": 103764,
+    "sha256": "ff9255dac329fbaa649b7a5443409f4a2eac652416c1007b7fc9e47cd0844eb7",
+    "output": "loose/localization/tr/general.json"
+  },
+  {
+    "path": "localization/tr/general.release.json",
+    "bytes": 26811,
+    "sha256": "0f13e4e2c18247dd159043b272350622e23e39a91b923112ae16cb20d5020eb2",
+    "output": "loose/localization/tr/general.release.json"
+  },
+  {
+    "path": "localization/tr/help.json",
+    "bytes": 49181,
+    "sha256": "9b0d9f3226b23d536dd1d39c0c866a7fa045b7ff32c0577d40c279f806cd715d",
+    "output": "loose/localization/tr/help.json"
+  },
+  {
+    "path": "localization/tr/help.release.json",
+    "bytes": 58603,
+    "sha256": "fa4d169d300bf462067b18115447926167478c5080396f264465a9973cbf5b99",
+    "output": "loose/localization/tr/help.release.json"
+  },
+  {
+    "path": "localization/tr/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/tr/ks_content.json"
+  },
+  {
+    "path": "localization/tr/languages.json",
+    "bytes": 376,
+    "sha256": "ee11840596cc3e32658fc91b1670038e48f347561c5fdbffaf748a7e59e0a903",
+    "output": "loose/localization/tr/languages.json"
+  },
+  {
+    "path": "localization/tr/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/tr/legal.json"
+  },
+  {
+    "path": "localization/tr/loading_tips.json",
+    "bytes": 3020,
+    "sha256": "ee5175e26dd46c534104906155219abb3482e1ab11b2eb05fd9bd1304d2b8702",
+    "output": "loose/localization/tr/loading_tips.json"
+  },
+  {
+    "path": "localization/tr/menu.json",
+    "bytes": 37446,
+    "sha256": "50b92074cf298243af2094af66101a9fb23384c57107b742bc3a7f03a4126bbf",
+    "output": "loose/localization/tr/menu.json"
+  },
+  {
+    "path": "localization/tr/military.json",
+    "bytes": 972,
+    "sha256": "33debca46c829183f606588a7817b94c64d2dafadd1d080ebe55d1221ab6e9b7",
+    "output": "loose/localization/tr/military.json"
+  },
+  {
+    "path": "localization/tr/military.release.json",
+    "bytes": 22862,
+    "sha256": "160065864655f059cd9f015b97362d9887a2123f8e14c993d9184fd04c0e3d56",
+    "output": "loose/localization/tr/military.release.json"
+  },
+  {
+    "path": "localization/tr/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/tr/music.json"
+  },
+  {
+    "path": "localization/tr/rules.json",
+    "bytes": 11979,
+    "sha256": "b935f146929b530ca08f3782a1836bc0d066c6f9bb62c55a32aa11a0f389fb51",
+    "output": "loose/localization/tr/rules.json"
+  },
+  {
+    "path": "localization/tr/rules.release.json",
+    "bytes": 4608,
+    "sha256": "f3dcae4149ab0954ebe528a43a512701aab7f2f3cd36018ca03ce0dbd9076e0c",
+    "output": "loose/localization/tr/rules.release.json"
+  },
+  {
+    "path": "localization/tr/search.json",
+    "bytes": 3491,
+    "sha256": "8c56e071c62882e17db7ad15e792f92d353bb6bc9e30f5f482ea28ebe09c5535",
+    "output": "loose/localization/tr/search.json"
+  },
+  {
+    "path": "localization/tr/tutorial.json",
+    "bytes": 2094,
+    "sha256": "e763df3653199e7c37ce2f01c656fd1fbe8024e501a4961bbb03ec00ffa9cb1a",
+    "output": "loose/localization/tr/tutorial.json"
+  },
+  {
+    "path": "localization/tr/unlockables.json",
+    "bytes": 4910,
+    "sha256": "dad5eccec93566deeeb8af2de30148f45cf2af1b0105f801a0e8b0aaa298a85f",
+    "output": "loose/localization/tr/unlockables.json"
+  },
+  {
+    "path": "localization/tr/unlockables.release.json",
+    "bytes": 8756,
+    "sha256": "cc8e00a81c04ee46df53f77dbed9d6006e35c08e52272a88665027f7534b9732",
+    "output": "loose/localization/tr/unlockables.release.json"
+  },
+  {
+    "path": "localization/tr/village_aspirations.json",
+    "bytes": 2529,
+    "sha256": "26fcb20449ac27689fcac16cc3c3ae2dd5fb4d39f3a12dbc5c87a3d75cd7f206",
+    "output": "loose/localization/tr/village_aspirations.json"
+  },
+  {
+    "path": "localization/tr/village_aspirations.release.json",
+    "bytes": 1706,
+    "sha256": "b09a91ccd1aba321c4fdc7c362079ea8a5e8503c7407e65f3eccc9bd73fdbaae",
+    "output": "loose/localization/tr/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/tr/village_event.json",
+    "bytes": 2339,
+    "sha256": "587d3a8f6bd954fb830b3f6e2dad56385b462e94ec4f8b23709a0bfb550de78f",
+    "output": "loose/localization/tr/village_event.json"
+  },
+  {
+    "path": "localization/tr/whatsnew.json",
+    "bytes": 43897,
+    "sha256": "804b9b0916ef7832b8e65bb98ff0373ccac8917bc572b6971cea997a4972b40e",
+    "output": "loose/localization/tr/whatsnew.json"
+  },
+  {
+    "path": "localization/uk/achievements.json",
+    "bytes": 2086,
+    "sha256": "42a5640d182bfb2922faa0f2b1d7c388f0591f6c4ca1584692203e153297e8d9",
+    "output": "loose/localization/uk/achievements.json"
+  },
+  {
+    "path": "localization/uk/achievements.release.json",
+    "bytes": 10392,
+    "sha256": "8831f8c8825a8ecce4e198a2745ee92638082bbc7baff3a9bd237a601cac5324",
+    "output": "loose/localization/uk/achievements.release.json"
+  },
+  {
+    "path": "localization/uk/AchievementsVDF.vdf",
+    "bytes": 8683,
+    "sha256": "062fa753d53d03863720636593a7062ecf56c965c3ef90c6c93235070067ef8c",
+    "output": "loose/localization/uk/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/uk/agents.json",
+    "bytes": 10099,
+    "sha256": "5e24bbc8eddfacf9fccca143043ea44c34461b7db4df347486d7617a85e47840",
+    "output": "loose/localization/uk/agents.json"
+  },
+  {
+    "path": "localization/uk/agents.release.json",
+    "bytes": 7641,
+    "sha256": "58b0265376c9d0b96094fb60a06fb37606b5837e6761329dd732ee141d3ba4a8",
+    "output": "loose/localization/uk/agents.release.json"
+  },
+  {
+    "path": "localization/uk/buildings.json",
+    "bytes": 50169,
+    "sha256": "d1fd84a3f10b436400588b01fe5a77d03f560349ee2f8f91db02bddef680b3c7",
+    "output": "loose/localization/uk/buildings.json"
+  },
+  {
+    "path": "localization/uk/buildings.release.json",
+    "bytes": 30491,
+    "sha256": "9d99fee5ff6dd7c2084aa47defb56c09211929c678e8fdd9fd9dce373e48fb5c",
+    "output": "loose/localization/uk/buildings.release.json"
+  },
+  {
+    "path": "localization/uk/compendium.json",
+    "bytes": 136,
+    "sha256": "683b698de4b3283c0a5adc16805c8063ab88e2b6e1c78fbe2259676e6711db18",
+    "output": "loose/localization/uk/compendium.json"
+  },
+  {
+    "path": "localization/uk/dlc_agriculture_achievements.json",
+    "bytes": 407,
+    "sha256": "8fe2144d7f3709b31c8b19381f98f3bfe2d0e5b04b9adee864af87c3b656c927",
+    "output": "loose/localization/uk/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/uk/dlc_agriculture_search.json",
+    "bytes": 79,
+    "sha256": "a9d5b002bcc2432e1728972c32210efadd7bca187883c6caaba48bc24d596094",
+    "output": "loose/localization/uk/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/uk/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/uk/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/uk/events.json",
+    "bytes": 47397,
+    "sha256": "797af13be2320c533c98cefab873fd304fa3f278055de7aff0aec63ddc9f5015",
+    "output": "loose/localization/uk/events.json"
+  },
+  {
+    "path": "localization/uk/events.release.json",
+    "bytes": 244429,
+    "sha256": "4c7f8edab8ff5ed792ef70240865001decafaa46e1a389e719bc3060d3cd9865",
+    "output": "loose/localization/uk/events.release.json"
+  },
+  {
+    "path": "localization/uk/general.json",
+    "bytes": 140536,
+    "sha256": "ca9dbf63c6915450df3c3f2676b0552913516c343e50e2618ff3969e894a3c10",
+    "output": "loose/localization/uk/general.json"
+  },
+  {
+    "path": "localization/uk/general.release.json",
+    "bytes": 34753,
+    "sha256": "89d040222e74ccf60cac8b8ce7d2b3e5aede146f410ce9243607989c01f857c4",
+    "output": "loose/localization/uk/general.release.json"
+  },
+  {
+    "path": "localization/uk/help.json",
+    "bytes": 70527,
+    "sha256": "09aece981afa560cc15166fe4ad62c5a343f31fbdf5be0f5afa1af9324579d27",
+    "output": "loose/localization/uk/help.json"
+  },
+  {
+    "path": "localization/uk/help.release.json",
+    "bytes": 84033,
+    "sha256": "9c330c73c3818cc00e38ab3ee5407af64fe45b9001d02f1068a3ac3e9f492089",
+    "output": "loose/localization/uk/help.release.json"
+  },
+  {
+    "path": "localization/uk/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/uk/ks_content.json"
+  },
+  {
+    "path": "localization/uk/languages.json",
+    "bytes": 491,
+    "sha256": "0e5d6e42ed0293266829e847a33918586c53a96442ed5c077a441a2e0c31625a",
+    "output": "loose/localization/uk/languages.json"
+  },
+  {
+    "path": "localization/uk/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/uk/legal.json"
+  },
+  {
+    "path": "localization/uk/loading_tips.json",
+    "bytes": 4363,
+    "sha256": "066e7cc6fe1c21a664a1529cab5456af967c92615980af5864e267ddfca400ba",
+    "output": "loose/localization/uk/loading_tips.json"
+  },
+  {
+    "path": "localization/uk/menu.json",
+    "bytes": 47712,
+    "sha256": "3b17ce83f6c8390deaf30c6a925355591b8196ba367ab447fd66798e2fd6aad0",
+    "output": "loose/localization/uk/menu.json"
+  },
+  {
+    "path": "localization/uk/military.json",
+    "bytes": 1373,
+    "sha256": "c258ec69bf9c5dec260a4508e7aa7b09daab3217aa2988d18354fc82b7a52f27",
+    "output": "loose/localization/uk/military.json"
+  },
+  {
+    "path": "localization/uk/military.release.json",
+    "bytes": 32650,
+    "sha256": "a116b1b18e15fcb37c42d4925884ba746c1e80ac4a93c56a4f2e903ba3e3b2a3",
+    "output": "loose/localization/uk/military.release.json"
+  },
+  {
+    "path": "localization/uk/music.json",
+    "bytes": 465,
+    "sha256": "14bbcab30ea07dcd1f9a2edcdacc203722c56a1a4d46e5c663dd810ff6af465c",
+    "output": "loose/localization/uk/music.json"
+  },
+  {
+    "path": "localization/uk/rules.json",
+    "bytes": 15754,
+    "sha256": "62774678bbfd401cfeb559572b97b3236af4e0e62bdf731b6f409c366d91b56c",
+    "output": "loose/localization/uk/rules.json"
+  },
+  {
+    "path": "localization/uk/rules.release.json",
+    "bytes": 6138,
+    "sha256": "b1983c28a1dcd03d200f75dffb640c97d28e80e89edbf3735dd0c7603892681c",
+    "output": "loose/localization/uk/rules.release.json"
+  },
+  {
+    "path": "localization/uk/search.json",
+    "bytes": 294,
+    "sha256": "58c877396a602d145795a0f6e61f4b9d5e886d8099cefd728541e47828f8556a",
+    "output": "loose/localization/uk/search.json"
+  },
+  {
+    "path": "localization/uk/tutorial.json",
+    "bytes": 2408,
+    "sha256": "df93f33b7e5a879dc98b62877e9ac27b1f1455803d7722497f0f78e63effe141",
+    "output": "loose/localization/uk/tutorial.json"
+  },
+  {
+    "path": "localization/uk/unlockables.json",
+    "bytes": 6024,
+    "sha256": "38ac9321eacbb0ba2e40adebbf873255f1d54a3870dda36040274f1f16aeb84a",
+    "output": "loose/localization/uk/unlockables.json"
+  },
+  {
+    "path": "localization/uk/unlockables.release.json",
+    "bytes": 11777,
+    "sha256": "695e2fc2a1427e9a8271b181c3beffc8a184aea109226ffbdd6a4ec643851df2",
+    "output": "loose/localization/uk/unlockables.release.json"
+  },
+  {
+    "path": "localization/uk/village_aspirations.json",
+    "bytes": 3421,
+    "sha256": "19c0d921603d3add31cff035bf453269b27a3b67105f7e77605bfdf024f5c5ac",
+    "output": "loose/localization/uk/village_aspirations.json"
+  },
+  {
+    "path": "localization/uk/village_aspirations.release.json",
+    "bytes": 2471,
+    "sha256": "fba4546874a5938442b0339b97b3a9105837f8ba72fc5c6912051bb9c4c0620a",
+    "output": "loose/localization/uk/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/uk/village_event.json",
+    "bytes": 54,
+    "sha256": "4fcc978413ed6e6c4501bd2338b8e9cce60ad2d185ca1aeee859662fa2298c2e",
+    "output": "loose/localization/uk/village_event.json"
+  },
+  {
+    "path": "localization/uk/whatsnew.json",
+    "bytes": 62126,
+    "sha256": "34979c972e2de8e5ea7a707a4bc2301ae1640af72c5f5404fb622dd7b6ed99be",
+    "output": "loose/localization/uk/whatsnew.json"
+  },
+  {
+    "path": "localization/vi/achievements.json",
+    "bytes": 1050,
+    "sha256": "f1ed90e3c8a61ea5014378a15e9f6f6e8f8481c946f22661ee6ac1d68cd6bb06",
+    "output": "loose/localization/vi/achievements.json"
+  },
+  {
+    "path": "localization/vi/achievements.release.json",
+    "bytes": 9172,
+    "sha256": "153c800a5f0cf2c7877d36a65a7b03389fcde560b4b919ba159453a39ae71ab0",
+    "output": "loose/localization/vi/achievements.release.json"
+  },
+  {
+    "path": "localization/vi/AchievementsVDF.vdf",
+    "bytes": 7555,
+    "sha256": "d6f540bb5040bd6851f6b7b4344ed1fe1d58731bc49e19377d131d527a9ced87",
+    "output": "loose/localization/vi/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/vi/agents.json",
+    "bytes": 8857,
+    "sha256": "ce761b547f5e4b751397307e1ca42f6f6facaa202101e164fcf5f22a599342e7",
+    "output": "loose/localization/vi/agents.json"
+  },
+  {
+    "path": "localization/vi/agents.release.json",
+    "bytes": 6909,
+    "sha256": "072ec6ffc353cd7a3fd3788d85f862b7ece3de2009719ef735055afc9bb3a9ed",
+    "output": "loose/localization/vi/agents.release.json"
+  },
+  {
+    "path": "localization/vi/buildings.json",
+    "bytes": 37904,
+    "sha256": "39b0858bec25c677abeb6246046251d3c51b38e718aa159d672d04242129c69e",
+    "output": "loose/localization/vi/buildings.json"
+  },
+  {
+    "path": "localization/vi/buildings.release.json",
+    "bytes": 24350,
+    "sha256": "65061fd887dc6716691109d0af07de7839f38790d0daed4e0239a1ad6ca14bb9",
+    "output": "loose/localization/vi/buildings.release.json"
+  },
+  {
+    "path": "localization/vi/compendium.json",
+    "bytes": 126,
+    "sha256": "a9ff4e701998a61e78c1ebe9c201ce70efae04e8a95529252095e0bc4a8fa9aa",
+    "output": "loose/localization/vi/compendium.json"
+  },
+  {
+    "path": "localization/vi/dlc_agriculture_achievements.json",
+    "bytes": 28,
+    "sha256": "1d82daff80b606318cd42c633c1028bb5db5987ea47e2d1da0a29a9e1d7c5a7b",
+    "output": "loose/localization/vi/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/vi/dlc_agriculture_search.json",
+    "bytes": 23,
+    "sha256": "9954d47943e815dba0f12c88bb55ceaaa1d9636223ad0d6ce70028185c1970a4",
+    "output": "loose/localization/vi/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/vi/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/vi/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/vi/events.json",
+    "bytes": 40407,
+    "sha256": "05d61c330adf5c1763d6f8a9cbb9e47dd99691014d12c6d6acc06e1339918d16",
+    "output": "loose/localization/vi/events.json"
+  },
+  {
+    "path": "localization/vi/events.release.json",
+    "bytes": 210802,
+    "sha256": "abfd47fed24cfb23c6ffa4529caaecaabba939a6158bc422f3beedb0e762a772",
+    "output": "loose/localization/vi/events.release.json"
+  },
+  {
+    "path": "localization/vi/general.json",
+    "bytes": 114122,
+    "sha256": "265ce7049527c0aaa76af3ef4796eea1f5d658312aaf25fa998bbddf52020a5b",
+    "output": "loose/localization/vi/general.json"
+  },
+  {
+    "path": "localization/vi/general.release.json",
+    "bytes": 29993,
+    "sha256": "f9a75f5930bf63372e38eefa3a83430e596928388d3e8506d99ea4ab4431551d",
+    "output": "loose/localization/vi/general.release.json"
+  },
+  {
+    "path": "localization/vi/help.json",
+    "bytes": 50456,
+    "sha256": "1f2e25d7fa5f6dff6b4ec16bb3847effd9ad080fede324e88374178dd71a9e64",
+    "output": "loose/localization/vi/help.json"
+  },
+  {
+    "path": "localization/vi/help.release.json",
+    "bytes": 45790,
+    "sha256": "dc27cbb89f01d8f234c46942d95ef2df7dbb7c0207938bca24febb8ab07eb582",
+    "output": "loose/localization/vi/help.release.json"
+  },
+  {
+    "path": "localization/vi/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/vi/ks_content.json"
+  },
+  {
+    "path": "localization/vi/languages.json",
+    "bytes": 425,
+    "sha256": "e218f58573a6c0c3c7964b1d6ed695338555423bf525d20fcb041f4a6f124b21",
+    "output": "loose/localization/vi/languages.json"
+  },
+  {
+    "path": "localization/vi/legal.json",
+    "bytes": 31,
+    "sha256": "ac14da1579e612171ee6bad0a9dd4c8058a8514ec8290c58955522cf29280a75",
+    "output": "loose/localization/vi/legal.json"
+  },
+  {
+    "path": "localization/vi/loading_tips.json",
+    "bytes": 594,
+    "sha256": "075f161dd398556e85dfedb18c1511137837e312c769e81d58af42e0f3c98ead",
+    "output": "loose/localization/vi/loading_tips.json"
+  },
+  {
+    "path": "localization/vi/menu.json",
+    "bytes": 35555,
+    "sha256": "20309dd7cbfefa7d3905c6e2b038530fa80ea9849c732f1e6f95edb8c6cdb770",
+    "output": "loose/localization/vi/menu.json"
+  },
+  {
+    "path": "localization/vi/military.json",
+    "bytes": 1123,
+    "sha256": "4f386aabb35558b522d61b492bb888f0efdb9d2fa776531e886651b5db49b7e0",
+    "output": "loose/localization/vi/military.json"
+  },
+  {
+    "path": "localization/vi/military.release.json",
+    "bytes": 27900,
+    "sha256": "0c5675af2fc59342c5984b8f01458bd4b8ba5e24afc4ed8b4b07f70aed4d4375",
+    "output": "loose/localization/vi/military.release.json"
+  },
+  {
+    "path": "localization/vi/music.json",
+    "bytes": 437,
+    "sha256": "19af0265567f6b833e15a9d5e7a56f35ef2eed8df168a99e01dd958cdb9742b8",
+    "output": "loose/localization/vi/music.json"
+  },
+  {
+    "path": "localization/vi/rules.json",
+    "bytes": 12748,
+    "sha256": "1c654af034c8491fd028be35258ed5f8b17bd04b2c33fea4396f770e2a1d0b27",
+    "output": "loose/localization/vi/rules.json"
+  },
+  {
+    "path": "localization/vi/rules.release.json",
+    "bytes": 5347,
+    "sha256": "adf20f3da5fb54347bc14b598b9db2f855a3160d0c075378f95c81961579ec7d",
+    "output": "loose/localization/vi/rules.release.json"
+  },
+  {
+    "path": "localization/vi/search.json",
+    "bytes": 230,
+    "sha256": "d7f1c133e16795cb3698c3750cddcbe09d2038a948f1b1fda687340350d7c070",
+    "output": "loose/localization/vi/search.json"
+  },
+  {
+    "path": "localization/vi/tutorial.json",
+    "bytes": 1588,
+    "sha256": "e6511c00271fd644b243067d1bc7cd20eec355cb7ea623f45072864770bd457e",
+    "output": "loose/localization/vi/tutorial.json"
+  },
+  {
+    "path": "localization/vi/unlockables.json",
+    "bytes": 5293,
+    "sha256": "102e77bb7578e6b050e5796bf7de88c105f2679192235efa2fe0ab4ec59f1512",
+    "output": "loose/localization/vi/unlockables.json"
+  },
+  {
+    "path": "localization/vi/unlockables.release.json",
+    "bytes": 9556,
+    "sha256": "fdccf0dc67d8f3343668a9a35e7a4f2f23834b29cb7d802495fdde7e17d537a4",
+    "output": "loose/localization/vi/unlockables.release.json"
+  },
+  {
+    "path": "localization/vi/village_aspirations.json",
+    "bytes": 2814,
+    "sha256": "f422c82b62616cd56f92c1a186a264d707677112ec32e287f47ae4df860e16c6",
+    "output": "loose/localization/vi/village_aspirations.json"
+  },
+  {
+    "path": "localization/vi/village_aspirations.release.json",
+    "bytes": 2170,
+    "sha256": "5afb5acc9c08525cecf16d8d2e1759c1b3a00227bc44c7a90cb0f82c70753a3c",
+    "output": "loose/localization/vi/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/vi/village_event.json",
+    "bytes": 54,
+    "sha256": "4fcc978413ed6e6c4501bd2338b8e9cce60ad2d185ca1aeee859662fa2298c2e",
+    "output": "loose/localization/vi/village_event.json"
+  },
+  {
+    "path": "localization/vi/whatsnew.json",
+    "bytes": 54936,
+    "sha256": "5fdcdf8a324a3704ed30a1bf4beee799167240046da88bb8a8a19486be9a832b",
+    "output": "loose/localization/vi/whatsnew.json"
+  },
+  {
+    "path": "localization/zh-CN/achievements.json",
+    "bytes": 1277,
+    "sha256": "0b05f58b2f117a6ceebe048669a4c4fccce747e5beb09e223bbd2be812025ff3",
+    "output": "loose/localization/zh-CN/achievements.json"
+  },
+  {
+    "path": "localization/zh-CN/achievements.release.json",
+    "bytes": 7290,
+    "sha256": "77c57117bbf018a24758a24f038687a37b0cae2a3386b5323d29637722d8a823",
+    "output": "loose/localization/zh-CN/achievements.release.json"
+  },
+  {
+    "path": "localization/zh-CN/AchievementsVDF.vdf",
+    "bytes": 6679,
+    "sha256": "32fa50841432a860eaf90dfd19ab97dc36c8d2bd208d635b27bfb13cf8004de2",
+    "output": "loose/localization/zh-CN/AchievementsVDF.vdf"
+  },
+  {
+    "path": "localization/zh-CN/agents.json",
+    "bytes": 6821,
+    "sha256": "0d080d073f92a6d41c2231332df420a569e1c58e7e0e3051167c9e7ebba859b8",
+    "output": "loose/localization/zh-CN/agents.json"
+  },
+  {
+    "path": "localization/zh-CN/agents.release.json",
+    "bytes": 5290,
+    "sha256": "2a4502c387d1ad416b7038225b554643aa2362173a6257fb62cf64fda1c8bf60",
+    "output": "loose/localization/zh-CN/agents.release.json"
+  },
+  {
+    "path": "localization/zh-CN/buildings.json",
+    "bytes": 35754,
+    "sha256": "70151a3b04e3b2a40abbbd4d892e8ced3740e08b7f47990f3590c3b4c4fc3ca5",
+    "output": "loose/localization/zh-CN/buildings.json"
+  },
+  {
+    "path": "localization/zh-CN/buildings.release.json",
+    "bytes": 20906,
+    "sha256": "a9e85a8615e4ab301a13a96fd3acc573312c9b1da60f89e037b09196b094eef6",
+    "output": "loose/localization/zh-CN/buildings.release.json"
+  },
+  {
+    "path": "localization/zh-CN/compendium.json",
+    "bytes": 1577,
+    "sha256": "cada4686239cba52a7be5d6f075e05ad33713006faff72587b896a9a4a129ef1",
+    "output": "loose/localization/zh-CN/compendium.json"
+  },
+  {
+    "path": "localization/zh-CN/dlc_agriculture_achievements.json",
+    "bytes": 1554,
+    "sha256": "6502497dd7aa89790e8460b9b7462fc53020da0cc60ba6a130d34f1d45371d0f",
+    "output": "loose/localization/zh-CN/dlc_agriculture_achievements.json"
+  },
+  {
+    "path": "localization/zh-CN/dlc_agriculture_search.json",
+    "bytes": 454,
+    "sha256": "f6a34a98b6d97bafcdc2c906f8b506ca12ce12262b3a8129080a796b716a29ba",
+    "output": "loose/localization/zh-CN/dlc_agriculture_search.json"
+  },
+  {
+    "path": "localization/zh-CN/dlc_kickstarter_church.json",
+    "bytes": 67,
+    "sha256": "6f629cf1354b959663215043afb565c1af6c254928a69ebf0c62bd4e3875d74d",
+    "output": "loose/localization/zh-CN/dlc_kickstarter_church.json"
+  },
+  {
+    "path": "localization/zh-CN/events.json",
+    "bytes": 29270,
+    "sha256": "75f33dbf54bd24d2fda4e91f1bcaa687fff8615aec7070a0b946db0a97398331",
+    "output": "loose/localization/zh-CN/events.json"
+  },
+  {
+    "path": "localization/zh-CN/events.release.json",
+    "bytes": 154060,
+    "sha256": "501d5d260c663e9775fde7e98e169b33432cf86322ad4a89db43d58a11093b68",
+    "output": "loose/localization/zh-CN/events.release.json"
+  },
+  {
+    "path": "localization/zh-CN/general.json",
+    "bytes": 93433,
+    "sha256": "1e001ed3e9ad59b0269aaac51e0b404e7ffe826034c2afeb7b495fc35ad72f22",
+    "output": "loose/localization/zh-CN/general.json"
+  },
+  {
+    "path": "localization/zh-CN/general.release.json",
+    "bytes": 23967,
+    "sha256": "418c9b7ec586c0973018dc5717ce1bcff0de0668cfdb71e2007a5d7df59d9a7d",
+    "output": "loose/localization/zh-CN/general.release.json"
+  },
+  {
+    "path": "localization/zh-CN/help.json",
+    "bytes": 42888,
+    "sha256": "67dc637d2b3db136a59f0c54c9b554d0d18f46ab6eca5a410c263930a1f1b710",
+    "output": "loose/localization/zh-CN/help.json"
+  },
+  {
+    "path": "localization/zh-CN/help.release.json",
+    "bytes": 52075,
+    "sha256": "606605d0d0ecedb3f4e675e603bdc09a66d96d476416b6ecb5b434e128d00f4f",
+    "output": "loose/localization/zh-CN/help.release.json"
+  },
+  {
+    "path": "localization/zh-CN/ks_content.json",
+    "bytes": 22,
+    "sha256": "5ca6ddd6002949a557124fcd17c207fb2e064c02cc1701e0237b80f291836f35",
+    "output": "loose/localization/zh-CN/ks_content.json"
+  },
+  {
+    "path": "localization/zh-CN/languages.json",
+    "bytes": 361,
+    "sha256": "14f9b034ed7a4abc633312b2218e1132163c3688cecc406b7ef021f2e1d79520",
+    "output": "loose/localization/zh-CN/languages.json"
+  },
+  {
+    "path": "localization/zh-CN/legal.json",
+    "bytes": 823,
+    "sha256": "6a8217f2f5d70550c9487a5b10c1346c535131152c1ecbe94b4fc10cde8c2cb8",
+    "output": "loose/localization/zh-CN/legal.json"
+  },
+  {
+    "path": "localization/zh-CN/loading_tips.json",
+    "bytes": 2743,
+    "sha256": "674e0d230d28c99f48f90a1a2676de712850230310120d654bd49b762b2a1c5a",
+    "output": "loose/localization/zh-CN/loading_tips.json"
+  },
+  {
+    "path": "localization/zh-CN/menu.json",
+    "bytes": 32785,
+    "sha256": "8dd3118b184dacfb7de4b0b8336616ccb3af6f3beb5495ca83a25954721b8673",
+    "output": "loose/localization/zh-CN/menu.json"
+  },
+  {
+    "path": "localization/zh-CN/military.json",
+    "bytes": 874,
+    "sha256": "42767e6bb15ae4a4c5ce25ba603ffc54502eb7b4f9d0084c6a407b19748b043f",
+    "output": "loose/localization/zh-CN/military.json"
+  },
+  {
+    "path": "localization/zh-CN/military.release.json",
+    "bytes": 19927,
+    "sha256": "5e19f67602f502b51c39b1d2805b5ca303374571cfe25c448c5fd217ce7089ec",
+    "output": "loose/localization/zh-CN/military.release.json"
+  },
+  {
+    "path": "localization/zh-CN/music.json",
+    "bytes": 412,
+    "sha256": "12addc6dfef916332e7b05fd56d6b8a3c9090173576dd5c18d6f49482ce0c328",
+    "output": "loose/localization/zh-CN/music.json"
+  },
+  {
+    "path": "localization/zh-CN/rules.json",
+    "bytes": 10793,
+    "sha256": "c6a206963723ea5df983241cb9cf7df6b2dafc237f6f71e91154ae36a033332f",
+    "output": "loose/localization/zh-CN/rules.json"
+  },
+  {
+    "path": "localization/zh-CN/rules.release.json",
+    "bytes": 4230,
+    "sha256": "d2d20b85bc23e10ed53092cbf36801eabef8de486898e59cfe90f5f23161c2fb",
+    "output": "loose/localization/zh-CN/rules.release.json"
+  },
+  {
+    "path": "localization/zh-CN/search.json",
+    "bytes": 3453,
+    "sha256": "d034a709d607ed2499e1d1592dc34c53885da56767fc0a9bdf4e4f51030d768e",
+    "output": "loose/localization/zh-CN/search.json"
+  },
+  {
+    "path": "localization/zh-CN/tutorial.json",
+    "bytes": 1711,
+    "sha256": "ca46b1f35c22fa13f5816d5c1fe44547e29b24bfe6f183259e2394261558f75b",
+    "output": "loose/localization/zh-CN/tutorial.json"
+  },
+  {
+    "path": "localization/zh-CN/unlockables.json",
+    "bytes": 4238,
+    "sha256": "6e10523559d7c3f7e6d790c942528d4de14fdb31e7ddf3ff3b6321fb1708297f",
+    "output": "loose/localization/zh-CN/unlockables.json"
+  },
+  {
+    "path": "localization/zh-CN/unlockables.release.json",
+    "bytes": 7252,
+    "sha256": "fd0fb394ed67deeaa3458aa80a340541761a0e73fd8cd2c1afea16cf406f55a8",
+    "output": "loose/localization/zh-CN/unlockables.release.json"
+  },
+  {
+    "path": "localization/zh-CN/village_aspirations.json",
+    "bytes": 2242,
+    "sha256": "f9ee2aa556882e2fe72467878bc36c8cdc2ec7eb9a9c2e09c3af81cb48e118af",
+    "output": "loose/localization/zh-CN/village_aspirations.json"
+  },
+  {
+    "path": "localization/zh-CN/village_aspirations.release.json",
+    "bytes": 1652,
+    "sha256": "07f2ff1beb2656383b3dd9118313ded6501da0a529f45fccd74bbf24e2a7d601",
+    "output": "loose/localization/zh-CN/village_aspirations.release.json"
+  },
+  {
+    "path": "localization/zh-CN/village_event.json",
+    "bytes": 2139,
+    "sha256": "13e4bc44d930279deb410460fd1306c3e262307986df26107ef5f83d11661068",
+    "output": "loose/localization/zh-CN/village_event.json"
+  },
+  {
+    "path": "localization/zh-CN/whatsnew.json",
+    "bytes": 37730,
+    "sha256": "a793c25107449a3bfd3e159a43479078a3e49bc71761f7a25a2fb64b053a4b40",
+    "output": "loose/localization/zh-CN/whatsnew.json"
+  },
+  {
+    "path": "mods/Example Mithril Factory.zip",
+    "bytes": 1574223,
+    "sha256": "fde229ab94498a8178f87a4b0887f2ee3c4a62d86d4a40a4f98f076e15f0be2f",
+    "output": "loose/mods/Example Mithril Factory.zip"
+  },
+  {
+    "path": "mods/Example Simple.zip",
+    "bytes": 1333981,
+    "sha256": "f7ea6184d5d8432ce49b20f0e02a74b86b2111d8c37ef5b872c2eaaa5b48a8c0",
+    "output": "loose/mods/Example Simple.zip"
+  },
+  {
+    "path": "mods/Example Taxation.zip",
+    "bytes": 4292,
+    "sha256": "3c2a1d022287a9d112a3c046e13950d4c126e5653b65e54a0a22f73869474ccd",
+    "output": "loose/mods/Example Taxation.zip"
+  },
+  {
+    "path": "mods/libs/socket/core.dll",
+    "bytes": 425472,
+    "sha256": "38e90f9bbb0b2949e29acb12392ca24dae13aad340995a5bbcc78826bc722344",
+    "output": "loose/mods/libs/socket/core.dll"
+  },
+  {
+    "path": "mods/README.txt",
+    "bytes": 75,
+    "sha256": "9003d8d5ac0b5156ddf1cbeae71f298357168d3cd4f8edee5e15514cdd60eb18",
+    "output": "loose/mods/README.txt"
+  },
+  {
+    "path": "mods/vs-code-snippets.json",
+    "bytes": 509084,
+    "sha256": "1064bd4ac09760c87aa807ded09880e8adab4f7cf2fe9ff7c71f10d3c270ae51",
+    "output": "loose/mods/vs-code-snippets.json"
+  },
+  {
+    "path": "steam_api64.dll",
+    "bytes": 319584,
+    "sha256": "670d654aa3255c5061cf0236a1cdbb2f5076cbd5ae44f613b6f4921558e83e2d",
+    "output": "loose/steam_api64.dll"
+  },
+  {
+    "path": "swresample-5.dll",
+    "bytes": 123392,
+    "sha256": "70c48e4d6640418008b88c1155e8e18e33e2e21ff0e338dcbf57fccb52a383d0",
+    "output": "loose/swresample-5.dll"
+  },
+  {
+    "path": "swscale-8.dll",
+    "bytes": 666112,
+    "sha256": "10b174b1203e28cd7912719155cf7c3ad72cf8f09073310d2630db4c85fb8635",
+    "output": "loose/swscale-8.dll"
+  },
+  {
+    "path": "third-party-legal-notices.txt",
+    "bytes": 78217,
+    "sha256": "a501837aa6d5dbe9943202a7740b98fd6abfcfb8aac024cf9edb47767ebbc252",
+    "output": "loose/third-party-legal-notices.txt"
+  },
+  {
+    "path": "zlib1.dll",
+    "bytes": 120814,
+    "sha256": "cb7ab3788d10940df874acd97b1821bbb5ee4a91f3eec11982bb5bf7a3c96443",
+    "output": "loose/zlib1.dll"
+  }
+]

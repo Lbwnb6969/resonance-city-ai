@@ -1,0 +1,169 @@
+// VA 0x1409fb290, PDB extent 623 bytes
+// country_core::shader::inc::world::impl$6::descriptors<shabriri_rt::api::EmptyProtocol>
+// PDB source attribution: /home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/build/country-core-f597ff5c52cc3ca5/out/shabriri.rs
+// Ghidra pseudocode; missing Rust signatures/types. Not standalone source or behavior verification.
+
+/* Matched PDB project procedure:
+   country_core::shader::inc::world::impl$6::descriptors<shabriri_rt::api::EmptyProtocol>
+   Source attribution:
+   /home/h3/code/pouncelight/country-slice-private/target/x86_64-pc-windows-msvc/release/build/country-core-f597ff5c52cc3ca5/out/shabriri.rs
+   Extent: 623 */
+
+undefined8 * pdb_1409fb290(undefined8 *param_1,char param_2,undefined8 param_3,undefined8 param_4)
+
+{
+  code *pcVar1;
+  byte *pbVar2;
+  byte *pbVar3;
+  byte *pbVar4;
+  undefined8 uVar5;
+  
+  pdb_14007ee60();
+  if (param_2 == '\0') {
+    pbVar2 = pub_1406abab0(0x30,8);
+    if (pbVar2 == (byte *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      pdb_142dc7e11(8,0x30);
+    }
+    pdb_14007ee60();
+    uVar5 = 1;
+    pbVar3 = pub_1406abab0(3,1);
+    if (pbVar3 != (byte *)0x0) {
+      pbVar3[2] = 0x78;
+      pbVar3[0] = 0x74;
+      pbVar3[1] = 0x65;
+      pbVar2[0] = 1;
+      pbVar2[1] = 0;
+      pbVar2[2] = 0;
+      pbVar2[3] = 0;
+      pbVar2[8] = 3;
+      pbVar2[9] = 0;
+      pbVar2[10] = 0;
+      pbVar2[0xb] = 0;
+      pbVar2[0xc] = 0;
+      pbVar2[0xd] = 0;
+      pbVar2[0xe] = 0;
+      pbVar2[0xf] = 0;
+      *(byte **)(pbVar2 + 0x10) = pbVar3;
+      pbVar2[0x18] = 3;
+      pbVar2[0x19] = 0;
+      pbVar2[0x1a] = 0;
+      pbVar2[0x1b] = 0;
+      pbVar2[0x1c] = 0;
+      pbVar2[0x1d] = 0;
+      pbVar2[0x1e] = 0;
+      pbVar2[0x1f] = 0;
+      pbVar2[0x20] = 0;
+      pbVar2[0x21] = 0;
+      pbVar2[0x22] = 0;
+      pbVar2[0x23] = 0;
+      pbVar2[0x24] = 1;
+      pbVar2[0x25] = 0;
+      pbVar2[0x26] = 0;
+      pbVar2[0x27] = 0;
+      pbVar2[0x28] = 4;
+LAB_1409fb3ed:
+      *param_1 = uVar5;
+      param_1[1] = pbVar2;
+      param_1[2] = uVar5;
+      return param_1;
+    }
+    pdb_142dc7e2a(1,3);
+  }
+  else {
+    pbVar2 = pub_1406abab0(0x60,8);
+    if (pbVar2 == (byte *)0x0) {
+                    /* WARNING: Subroutine does not return */
+      pdb_142dc7e11(8,0x60);
+    }
+    pdb_14007ee60();
+    pbVar3 = pub_1406abab0(8,1);
+    if (pbVar3 == (byte *)0x0) {
+      pdb_142dc7e2a(1,8);
+    }
+    else {
+      pbVar3[0] = 0x24;
+      pbVar3[1] = 0x67;
+      pbVar3[2] = 0x6c;
+      pbVar3[3] = 0x6f;
+      pbVar3[4] = 0x62;
+      pbVar3[5] = 0x61;
+      pbVar3[6] = 0x6c;
+      pbVar3[7] = 0x73;
+      pdb_14007ee60();
+      pbVar4 = pub_1406abab0(3,1);
+      if (pbVar4 != (byte *)0x0) {
+        pbVar4[2] = 0x78;
+        pbVar4[0] = 0x74;
+        pbVar4[1] = 0x65;
+        pbVar2[0] = 0;
+        pbVar2[1] = 0;
+        pbVar2[2] = 0;
+        pbVar2[3] = 0;
+        pbVar2[8] = 8;
+        pbVar2[9] = 0;
+        pbVar2[10] = 0;
+        pbVar2[0xb] = 0;
+        pbVar2[0xc] = 0;
+        pbVar2[0xd] = 0;
+        pbVar2[0xe] = 0;
+        pbVar2[0xf] = 0;
+        *(byte **)(pbVar2 + 0x10) = pbVar3;
+        pbVar2[0x18] = 8;
+        pbVar2[0x19] = 0;
+        pbVar2[0x1a] = 0;
+        pbVar2[0x1b] = 0;
+        pbVar2[0x1c] = 0;
+        pbVar2[0x1d] = 0;
+        pbVar2[0x1e] = 0;
+        pbVar2[0x1f] = 0;
+        pbVar2[0x20] = 0;
+        pbVar2[0x21] = 0;
+        pbVar2[0x22] = 0;
+        pbVar2[0x23] = 0;
+        pbVar2[0x24] = 1;
+        pbVar2[0x25] = 0;
+        pbVar2[0x26] = 0;
+        pbVar2[0x27] = 0;
+        pbVar2[0x28] = 1;
+        pbVar2[0x30] = 1;
+        pbVar2[0x31] = 0;
+        pbVar2[0x32] = 0;
+        pbVar2[0x33] = 0;
+        pbVar2[0x38] = 3;
+        pbVar2[0x39] = 0;
+        pbVar2[0x3a] = 0;
+        pbVar2[0x3b] = 0;
+        pbVar2[0x3c] = 0;
+        pbVar2[0x3d] = 0;
+        pbVar2[0x3e] = 0;
+        pbVar2[0x3f] = 0;
+        *(byte **)(pbVar2 + 0x40) = pbVar4;
+        pbVar2[0x48] = 3;
+        pbVar2[0x49] = 0;
+        pbVar2[0x4a] = 0;
+        pbVar2[0x4b] = 0;
+        pbVar2[0x4c] = 0;
+        pbVar2[0x4d] = 0;
+        pbVar2[0x4e] = 0;
+        pbVar2[0x4f] = 0;
+        pbVar2[0x50] = 0;
+        pbVar2[0x51] = 0;
+        pbVar2[0x52] = 0;
+        pbVar2[0x53] = 0;
+        pbVar2[0x54] = 1;
+        pbVar2[0x55] = 0;
+        pbVar2[0x56] = 0;
+        pbVar2[0x57] = 0;
+        pbVar2[0x58] = 4;
+        uVar5 = 2;
+        goto LAB_1409fb3ed;
+      }
+      pdb_142dc7e2a(1,3,param_3,param_4,pbVar3,pbVar2);
+    }
+  }
+                    /* WARNING: Does not return */
+  pcVar1 = (code *)invalidInstructionException();
+  (*pcVar1)();
+}
+

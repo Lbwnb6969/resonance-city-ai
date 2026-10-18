@@ -1,0 +1,587 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 597,
+    "record_offset": 15568,
+    "module": "country_core-75de4a05f1ed4a16.81eirdt0laqbnbd3z2qtzghgb.1euy9uv.rcgu.o",
+    "name": "country_core::resources::in_progress_curve::InProgressCurve::compute_final_curve",
+    "segment": 1,
+    "offset": 12498096,
+    "rva": 12502192,
+    "va": "0x140bec4b0",
+    "size": 2295,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "395de1e5082efd0983fa1b16f803e9d7e5d9caf99127eb3a049c89898ffcba09",
+  "code_bytes": 2295,
+  "decoded_bytes": 2295,
+  "instructions": 592,
+  "calls_and_jumps": [
+    {
+      "address": "0x140bec540",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec54d",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec56b",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec570",
+      "kind": "jmp",
+      "target": "0x140bec89e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec5b4",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec5ba",
+      "kind": "jmp",
+      "target": "0x140becc5b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec5d9",
+      "kind": "call",
+      "target": "0x140b41dc0",
+      "target_names": [
+        "utils::rdp::Rdp::new<glam::f32::vec2::Vec2>",
+        "_ZN5utils3rdp12Rdp$LT$T$GT$3new17hb24d49b065a48dd5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec5f4",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec610",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec64d",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec66d",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec672",
+      "kind": "jmp",
+      "target": "0x140bec75c",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec690",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec6a3",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec6d7",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec713",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec719",
+      "kind": "jmp",
+      "target": "0x140becc5b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec741",
+      "kind": "call",
+      "target": "0x140b41dc0",
+      "target_names": [
+        "utils::rdp::Rdp::new<glam::f32::vec2::Vec2>",
+        "_ZN5utils3rdp12Rdp$LT$T$GT$3new17hb24d49b065a48dd5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec757",
+      "kind": "call",
+      "target": "0x140b417e0",
+      "target_names": [
+        "utils::rdp::Rdp::stitch_with<glam::f32::vec2::Vec2>",
+        "_ZN5utils3rdp12Rdp$LT$T$GT$11stitch_with17h364aef1d2093ab26E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec78f",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec79d",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec7b0",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec7bd",
+      "kind": "jmp",
+      "target": "0x140bec7c6",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec7e4",
+      "kind": "call",
+      "target": "0x142e32760",
+      "target_names": [
+        "memcpy"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec7f7",
+      "kind": "call",
+      "target": "0x140080c90",
+      "target_names": [
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17h18eddd6514be63e0E",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17h7040a5328b0448bbE",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17hd4ab56741efef02aE",
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$19try_new_from_points17hfe4f00148eeff81dE",
+        "utils::curve::Curve::try_new_from_points<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec7fc",
+      "kind": "jmp",
+      "target": "0x140becb8b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec81f",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec832",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec870",
+      "kind": "jmp",
+      "target": "0x140bec9c0",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec88d",
+      "kind": "jmp",
+      "target": "0x140bec6df",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec8d1",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec8d7",
+      "kind": "jmp",
+      "target": "0x140becc5b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec8ec",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec8ff",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec939",
+      "kind": "jmp",
+      "target": "0x140becadf",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec943",
+      "kind": "jmp",
+      "target": "0x140bec95d",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec951",
+      "kind": "jmp",
+      "target": "0x140becb0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec961",
+      "kind": "jmp",
+      "target": "0x140bec9fb",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140bec96a",
+      "kind": "jmp",
+      "target": "0x140becb0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140beca52",
+      "kind": "call",
+      "target": "0x1419a9b00",
+      "target_names": [
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$15smooth_weighted17hcae0719ca6f9f2faE",
+        "utils::curve::Curve::smooth_weighted<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140beca95",
+      "kind": "jmp",
+      "target": "0x140bec5c1",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becb5b",
+      "kind": "call",
+      "target": "0x1419a9b00",
+      "target_names": [
+        "_ZN5utils5curve21Curve$LT$T$C$CSem$GT$15smooth_weighted17hcae0719ca6f9f2faE",
+        "utils::curve::Curve::smooth_weighted<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becbeb",
+      "kind": "call",
+      "target": "0x140b41dc0",
+      "target_names": [
+        "utils::rdp::Rdp::new<glam::f32::vec2::Vec2>",
+        "_ZN5utils3rdp12Rdp$LT$T$GT$3new17hb24d49b065a48dd5E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc06",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc22",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc2d",
+      "kind": "jmp",
+      "target": "0x140bec746",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc42",
+      "kind": "call",
+      "target": "0x142dc8420",
+      "target_names": [
+        "core::slice::index::slice_index_fail",
+        "_RNvNtNtCs8icZUrvfcq9_4core5slice5index16slice_index_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc55",
+      "kind": "call",
+      "target": "0x142dc8420",
+      "target_names": [
+        "core::slice::index::slice_index_fail",
+        "_RNvNtNtCs8icZUrvfcq9_4core5slice5index16slice_index_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becc65",
+      "kind": "call",
+      "target": "0x142dc7e2a",
+      "target_names": [
+        "alloc::raw_vec::handle_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc7raw_vec12handle_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becca9",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becd0a",
+      "kind": "call",
+      "target": "0x14049c2a0",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h941bb1debd3d732fE",
+        "core::ptr::drop_in_place<country_core::resources::walls::inner_wall_state::WallState>",
+        "core::ptr::drop_in_place<utils::curve::Curve<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D> >",
+        "core::ptr::drop_in_place<country_core::systems::wall::eraser::animate_wall_bulldoze::AnimateWallBulldozeCmd>",
+        "_ZN4core3ptr80drop_in_place$LT$country_core..resources..walls..inner_wall_state..WallState$GT$17h22ba4ee63922d7fbE",
+        "core::ptr::drop_in_place<system_wall_constructor::construct_elevation_supports::find_overlap_segments::OverhangSupportSegment>",
+        "core::ptr::drop_in_place<country_core::systems::wall::shapes::rectangle::signifier_edit_dims_line::signifier_edit_dims::closure_env$0>",
+        "_ZN4core3ptr103drop_in_place$LT$country_core..systems..wall..eraser..animate_wall_bulldoze..AnimateWallBulldozeCmd$GT$17h46e14859cd0070feE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becd0f",
+      "kind": "jmp",
+      "target": "0x140beccf5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becd57",
+      "kind": "call",
+      "target": "0x1406abac0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc14___rust_dealloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140becd90",
+      "kind": "call",
+      "target": "0x14049c2a0",
+      "target_names": [
+        "_ZN8bevy_ecs9component4info19ComponentDescriptor8drop_ptr17h941bb1debd3d732fE",
+        "core::ptr::drop_in_place<country_core::resources::walls::inner_wall_state::WallState>",
+        "core::ptr::drop_in_place<utils::curve::Curve<glam::f32::vec2::Vec2,utils::curve::CurveCoordSemantic2D> >",
+        "core::ptr::drop_in_place<country_core::systems::wall::eraser::animate_wall_bulldoze::AnimateWallBulldozeCmd>",
+        "_ZN4core3ptr80drop_in_place$LT$country_core..resources..walls..inner_wall_state..WallState$GT$17h22ba4ee63922d7fbE",
+        "core::ptr::drop_in_place<system_wall_constructor::construct_elevation_supports::find_overlap_segments::OverhangSupportSegment>",
+        "core::ptr::drop_in_place<country_core::systems::wall::shapes::rectangle::signifier_edit_dims_line::signifier_edit_dims::closure_env$0>",
+        "_ZN4core3ptr103drop_in_place$LT$country_core..systems..wall..eraser..animate_wall_bulldoze..AnimateWallBulldozeCmd$GT$17h46e14859cd0070feE"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140bec5ce",
+      "target": "0x142e3b1d8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3dcccccd"
+      ],
+      "bytes_hex": "cdcccc3d00ff7f47000080420000000030e04940010000001800000000000000"
+    },
+    {
+      "address": "0x140bec739",
+      "target": "0x142e3b1d8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3dcccccd"
+      ],
+      "bytes_hex": "cdcccc3d00ff7f47000080420000000030e04940010000001800000000000000"
+    },
+    {
+      "address": "0x140becbe3",
+      "target": "0x142e3b1d8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3dcccccd"
+      ],
+      "bytes_hex": "cdcccc3d00ff7f47000080420000000030e04940010000001800000000000000"
+    },
+    {
+      "address": "0x140becc32",
+      "target": "0x143065bd0",
+      "operand_bytes": 8,
+      "bytes_hex": "995b0643010000003600000000000000bf00000036000000995b064301000000"
+    },
+    {
+      "address": "0x140becc48",
+      "target": "0x143065be8",
+      "operand_bytes": 8,
+      "bytes_hex": "995b0643010000003600000000000000bd0000002b000000995b064301000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

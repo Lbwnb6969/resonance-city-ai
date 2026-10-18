@@ -1,0 +1,123 @@
+{
+  "source": "C:/Steam/steamapps/common/Tiny Glade/compiled-shaders",
+  "files": 303,
+  "source_bytes": 8437013,
+  "decoded": 303,
+  "roundtrip_verified": 303,
+  "container_failures": [],
+  "variants": 471,
+  "spirv_modules": 670,
+  "distinct_spirv_sha256": 563,
+  "spirv_instruction_count": 378762,
+  "spirv_failures": [],
+  "unknown_opcodes": {},
+  "models": {
+    "Vertex": 200,
+    "Fragment": 199,
+    "GLCompute": 271
+  },
+  "versions": {
+    "1.3": 670
+  },
+  "source_languages": {
+    "Slang": 670
+  },
+  "capability_modules": {
+    "Shader": 670,
+    "StorageImageExtendedFormats": 670,
+    "RuntimeDescriptorArray": 58,
+    "ShaderNonUniform": 58,
+    "SampledImageArrayNonUniformIndexing": 58,
+    "DrawParameters": 74,
+    "DemoteToHelperInvocation": 77,
+    "ImageQuery": 20,
+    "ImageGatherExtended": 24,
+    "GroupNonUniformQuad": 10,
+    "GroupNonUniformVote": 7,
+    "GroupNonUniform": 18,
+    "GroupNonUniformShuffle": 18,
+    "PhysicalStorageBufferAddresses": 47,
+    "GroupNonUniformArithmetic": 5,
+    "GroupNonUniformBallot": 1
+  },
+  "hardware_ray_capabilities_or_opcodes_present": false,
+  "validation": {
+    "stages_checked": 670,
+    "bindings_checked": 3647,
+    "issues": []
+  },
+  "groups": {
+    "clutter-icon-pipe": {
+      "files": 3,
+      "bytes": 31877,
+      "variants": 3,
+      "stages": 4
+    },
+    "country-core": {
+      "files": 259,
+      "bytes": 7676957,
+      "variants": 378,
+      "stages": 575
+    },
+    "rhapsody-core": {
+      "files": 11,
+      "bytes": 134200,
+      "variants": 49,
+      "stages": 50
+    },
+    "rhapsody-deferred": {
+      "files": 1,
+      "bytes": 6856,
+      "variants": 1,
+      "stages": 1
+    },
+    "rhapsody-dof": {
+      "files": 11,
+      "bytes": 243759,
+      "variants": 16,
+      "stages": 16
+    },
+    "rhapsody-gi": {
+      "files": 8,
+      "bytes": 94310,
+      "variants": 8,
+      "stages": 8
+    },
+    "rhapsody-post": {
+      "files": 2,
+      "bytes": 7666,
+      "variants": 2,
+      "stages": 2
+    },
+    "rhapsody-shadow": {
+      "files": 2,
+      "bytes": 26570,
+      "variants": 2,
+      "stages": 2
+    },
+    "rhapsody-taa": {
+      "files": 6,
+      "bytes": 214818,
+      "variants": 12,
+      "stages": 12
+    }
+  },
+  "grammar_sources": [
+    {
+      "path": "evidence/shader_spirv.core.grammar.json",
+      "sha256": "dd2a7c48d3131c9d0c78ad669ab4765048e6fd63e1fe277a0858f5458febdc68",
+      "source": "https://raw.githubusercontent.com/KhronosGroup/SPIRV-Headers/main/include/spirv/unified1/spirv.core.grammar.json"
+    },
+    {
+      "path": "evidence/shader_extinst.glsl.std.450.grammar.json",
+      "sha256": "5d72e48247569f9b77a17a849db624350abc9d26f7f72b153bbcf15c37238239",
+      "source": "https://raw.githubusercontent.com/KhronosGroup/SPIRV-Headers/main/include/spirv/unified1/extinst.glsl.std.450.grammar.json"
+    }
+  ],
+  "coverage_limits": [
+    "Static packaged shaders only; no runtime invocation observed.",
+    "No external spirv-as/spirv-val or GLSL decompiler used.",
+    "Numeric assembly preserves raw literal bits; external reassembly has not been validated.",
+    "Container matrix metadata semantics and module tags are retained as raw values pending CPU reader corroboration."
+  ]
+}

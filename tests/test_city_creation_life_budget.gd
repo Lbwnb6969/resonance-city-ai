@@ -1,8 +1,8 @@
 extends SceneTree
-## Compare worker preparation to the exact synchronous pre-budget owner.
+## Compare worker publication to the frozen pre-height-cache production owner.
 const State := preload("res://scripts/world/city_creation_state.gd")
 const Life := preload("res://scripts/world/city_creation_life.gd")
-const OLD := "res://废弃/分帧编辑_2026-10-15/city_creation_life.gd.txt"
+const OLD := "res://废弃/居民高度后台准备_前_2026-10-18_cc5e59b1/city_creation_life.gd.txt"
 const SOURCE := "res://备份/自发巡演前_20261015/额外道路输入实窗/城市作品快照.json"
 var failures: Array[String] = []
 var checks := 0

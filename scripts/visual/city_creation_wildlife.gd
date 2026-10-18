@@ -12,6 +12,8 @@ var bird_mat: ShaderMaterial
 var flutter_mat: ShaderMaterial
 var _perches: Array[Vector3] = []
 var _nectars: Array[Vector3] = []
+var _roof_habitats:Dictionary={}
+var habitat_stats:Dictionary={}
 var _birds: Array[Dictionary] = []
 var _flutters: Array[Dictionary] = []
 var _time := 0.0
@@ -151,46 +153,24 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 		return
 	_perches.clear()
 	_nectars.clear()
+	var next_habitats:Dictionary={};var rebuilt:=0;var reused:=0
 	for house: Dictionary in state.houses:
-		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
-		var base_y := float(house.get("base_y", 0.0))
-		var max_level := 0
-		var top_cell: Dictionary = house.cells[0]
-		for cell: Dictionary in house.cells:
-			if str(cell.kind)=="room" and int(cell.level) >= max_level:
-				max_level = int(cell.level)
-				top_cell = cell
-		var top_pos := Vector3(origin.x + float(top_cell.x) * 1.8, base_y + float(max_level + 1) * 1.7 + 0.52, origin.y + float(top_cell.z) * 1.8)
-		if renderer != null and renderer.house_roots.has(str(house.id)):
-			var root: Node3D = renderer.house_roots[str(house.id)]
-			var tower: Dictionary = root.get_meta("round_tower", {})
-			if not tower.is_empty():
-				top_pos = Vector3(tower.center.x, float(tower.eave_y) + 1.35*(1.0-pow(0.94/1.06,1.0/0.78))+0.04, tower.center.y + 0.94)
-			else:
-				var patches: Array = renderer.building_context.roof_patches(str(house.id))
-				if not patches.is_empty(): top_pos.y = renderer._joined_roof_height(patches,str(top_cell.id),Vector2(top_pos.x,top_pos.z))+0.04
-				for bell: Dictionary in root.get_meta("tower_cells",[]):
-					if str(bell.cell_id)==str(top_cell.id): top_pos=Vector3(bell.center.x,float(bell.top)+0.02,bell.center.y)
-			var glasshouse: Dictionary = root.get_meta("conservatory",{})
-			if not glasshouse.is_empty():
-				# The arched greenhouse is the real roof habitat. Put the bird on
-				# its spring line apex, while nectar remains beside the end door;
-				# the old top-cell perch could float inside the transparent roof.
-				var glass_center: Vector2 = glasshouse.center
-				top_pos=Vector3(glass_center.x,float(glasshouse.floor_y)+float(glasshouse.spring)+float(glasshouse.rise)+0.04,glass_center.y)
-				# Nectar lies beside the end entrance rather than inside the glass.
-				var bounds: Rect2 = glasshouse.bounds
-				var p: Vector2 = glasshouse.center
-				if str(glasshouse.axis)=="x": p.x=bounds.end.x+0.20
-				else: p.y=bounds.end.y+0.20
-				_nectars.append(Vector3(p.x,float(glasshouse.floor_y)+0.55,p.y))
-		_perches.append(top_pos)
+		var id:=str(house.id);var roof:Node3D=renderer.house_roots.get(id) if renderer!=null else null
+		var key:=hash([house.origin,house.cells,house.get("base_y",0.),roof.get_instance_id() if roof!=null else 0])
+		var habitat:Dictionary=_roof_habitats.get(id,{})
+		if habitat.get("key")!=key:
+			habitat=_roof_habitat(house,renderer,roof);habitat.key=key;rebuilt+=1
+		else:reused+=1
+		next_habitats[id]=habitat
+		if habitat.has("glass_nectar"):_nectars.append(habitat.glass_nectar)
+		_perches.append(habitat.perch)
 		if str(house.get("role", "")) in ["garden_cafe", "venue"] or state.house_harmony_tier(str(house.id)) > 0:
 			# Use the real exterior porch instead of placing insects inside rooms.
 			var entrances: Array = state.house_entrances(str(house.id))
 			if not entrances.is_empty():
 				var p: Vector2 = entrances[0].at
 				_nectars.append(Vector3(p.x, state.ground_height(p) + 0.65, p.y))
+	_roof_habitats=next_habitats;habitat_stats={"rebuilt":rebuilt,"reused":reused}
 	for water: Dictionary in state.waters:
 		if str(water.get("kind", "")) == "pond" and not water.points.is_empty():
 			var pt: Array = water.points[0]
@@ -244,6 +224,35 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 	var bounds := AABB(Vector3(-48, -5, -48), Vector3(96, 30, 96))
 	birds_mm.custom_aabb = bounds
 	flutter_mm.custom_aabb = bounds
+
+func _roof_habitat(house:Dictionary,renderer:Node3D,roof:Node3D)->Dictionary:
+	# Published house geometry is immutable. Terrain-only edits keep the same
+	# picking root, and do not change its physical roof or glasshouse habitat.
+	# Porch/shrub nectar heights are still resolved from current ground above.
+	var origin:=Vector2(float(house.origin[0]),float(house.origin[1]));var base_y:=float(house.get("base_y",0.))
+	var max_level:=0;var top_cell:Dictionary=house.cells[0]
+	for cell:Dictionary in house.cells:
+		if str(cell.kind)=="room" and int(cell.level)>=max_level:max_level=int(cell.level);top_cell=cell
+	var top_pos:=Vector3(origin.x+float(top_cell.x)*1.8,base_y+float(max_level+1)*1.7+.52,origin.y+float(top_cell.z)*1.8)
+	var habitat:Dictionary={}
+	if roof!=null:
+		var tower:Dictionary=roof.get_meta("round_tower",{})
+		if not tower.is_empty():
+			top_pos=Vector3(tower.center.x,float(tower.eave_y)+1.35*(1.0-pow(.94/1.06,1.0/.78))+.04,tower.center.y+.94)
+		else:
+			var patches:Array=renderer.building_context.roof_patches(str(house.id))
+			if not patches.is_empty():top_pos.y=renderer._joined_roof_height(patches,str(top_cell.id),Vector2(top_pos.x,top_pos.z))+.04
+			for bell:Dictionary in roof.get_meta("tower_cells",[]):
+				if str(bell.cell_id)==str(top_cell.id):top_pos=Vector3(bell.center.x,float(bell.top)+.02,bell.center.y)
+		var glasshouse:Dictionary=roof.get_meta("conservatory",{})
+		if not glasshouse.is_empty():
+			var center:Vector2=glasshouse.center;top_pos=Vector3(center.x,float(glasshouse.floor_y)+float(glasshouse.spring)+float(glasshouse.rise)+.04,center.y)
+			var bounds:Rect2=glasshouse.bounds;var p:Vector2=center
+			if str(glasshouse.axis)=="x":p.x=bounds.end.x+.20
+			else:p.y=bounds.end.y+.20
+			habitat.glass_nectar=Vector3(p.x,float(glasshouse.floor_y)+.55,p.y)
+	habitat.perch=top_pos
+	return habitat
 
 func uproot_near(at: Vector2, radius: float = 4.8) -> void:
 	if _perches.is_empty():

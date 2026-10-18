@@ -1,0 +1,28 @@
+{
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "pdb_sha256": "ca8b5f18fcf5a79e282db9af9178b6ec8cecb776ea41f68435b543079d34dcf2",
+  "image_base": "0x140000000",
+  "capstone_version": "5.0.7",
+  "procedure_records": 94072,
+  "unique_function_starts": 70804,
+  "extent_variant_function_starts": 0,
+  "requested_extent_bytes": 47767048,
+  "decoded_bytes": 47767048,
+  "instructions": 11382250,
+  "status_and_site_counts": {
+    "direct_jmp_sites": 12070,
+    "decoded": 70804,
+    "direct_call_sites": 509806,
+    "indirect_call_sites": 17982,
+    "indirect_jmp_sites": 9052
+  },
+  "direct_sites_resolved_to_indexed_function": 405992,
+  "elapsed_seconds": 17.04,
+  "limitations": [
+    "PDB extents are decoded linearly, including unreachable bytes and compiler padding.",
+    "No CFG reconstruction, target execution, RIP memory dereference, or indirect-call target resolution.",
+    "Same-VA symbol aliases share a function; largest supplied extent is chosen and all size variants retained.",
+    "Direct jumps are retained only when they target a different indexed function.",
+    "Each function status records skipped, capped, and incomplete decode coverage."
+  ]
+}

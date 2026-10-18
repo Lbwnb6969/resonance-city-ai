@@ -1,0 +1,424 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Biomes/Biome Terrain Layers/AGR_CommonCroft_01A_Layer.data",
+  "absolute_offset": 190152346,
+  "length": 881,
+  "sha256": "56311ac6aa139d42f36211ad3b81debbf37e4bda1440201a67de494c74a45b5c",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Biomes/Biome Terrain Layers/AGR_CommonCroft_01A_Layer.data",
+    "id": "579bc76b-d4bb-40fb-9618-0ac730680f6f",
+    "type": "PlaCAssetBiomeTerrainLayer"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "TerrainLayer": {
+        "@": {
+          "value": "6e144f6d-991c-4238-9332-1e7f89a65aca"
+        }
+      },
+      "PerlinNoise": {
+        "@": {
+          "type": "PlaCBiomePerlinNoise"
+        },
+        "ValueRange": {
+          "@": {
+            "x": 0.0,
+            "y": 1.0
+          }
+        },
+        "OctaveList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCBiomePerlinNoiseOctave"
+              },
+              "IsEnabled": {
+                "@": {
+                  "value": true
+                }
+              },
+              "Seed": {
+                "@": {
+                  "value": "C"
+                }
+              },
+              "PerlinOffset": {
+                "@": {
+                  "x": -28.0,
+                  "y": -28.0
+                }
+              },
+              "Frequency": {
+                "@": {
+                  "value": 0.11877720057964325
+                }
+              },
+              "AmplitudeMin": {
+                "@": {
+                  "value": 0.34343430399894714
+                }
+              },
+              "AmplitudeMax": {
+                "@": {
+                  "value": 1.343284010887146
+                }
+              }
+            },
+            {
+              "@": {
+                "type": "PlaCBiomePerlinNoiseOctave"
+              },
+              "IsEnabled": {
+                "@": {
+                  "value": true
+                }
+              },
+              "Seed": {
+                "@": {
+                  "value": "E"
+                }
+              },
+              "PerlinOffset": {
+                "@": {
+                  "x": -18.700000762939453,
+                  "y": -25.100000381469727
+                }
+              },
+              "Frequency": {
+                "@": {
+                  "value": 0.0933823511004448
+                }
+              },
+              "AmplitudeMin": {
+                "@": {
+                  "value": -1.3768839836120605
+                }
+              },
+              "AmplitudeMax": {
+                "@": {
+                  "value": 0.5929648876190186
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "TerrainLayer",
+      "value",
+      "PerlinNoise",
+      "type",
+      "ValueRange",
+      "x",
+      "y",
+      "OctaveList",
+      "Item",
+      "IsEnabled",
+      "Seed",
+      "PerlinOffset",
+      "Frequency",
+      "AmplitudeMin",
+      "AmplitudeMax"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "TerrainLayer",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "6e144f6d-991c-4238-9332-1e7f89a65aca",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "PerlinNoise",
+            "offset": 80,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "PlaCBiomePerlinNoise",
+                "offset": 96
+              }
+            ],
+            "children": [
+              {
+                "name": "ValueRange",
+                "offset": 129,
+                "attributes": [
+                  {
+                    "name": "x",
+                    "tag": 4,
+                    "value": 0.0,
+                    "offset": 145
+                  },
+                  {
+                    "name": "y",
+                    "tag": 4,
+                    "value": 1.0,
+                    "offset": 161
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "OctaveList",
+                "offset": 177,
+                "attributes": [],
+                "children": [
+                  {
+                    "name": "Item",
+                    "offset": 193,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCBiomePerlinNoiseOctave",
+                        "offset": 209
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "IsEnabled",
+                        "offset": 248,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 6,
+                            "value": true,
+                            "offset": 264
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Seed",
+                        "offset": 280,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "C",
+                            "offset": 296
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "PerlinOffset",
+                        "offset": 310,
+                        "attributes": [
+                          {
+                            "name": "x",
+                            "tag": 4,
+                            "value": -28.0,
+                            "offset": 326
+                          },
+                          {
+                            "name": "y",
+                            "tag": 4,
+                            "value": -28.0,
+                            "offset": 342
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Frequency",
+                        "offset": 358,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 0.11877720057964325,
+                            "offset": 374
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AmplitudeMin",
+                        "offset": 390,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 0.34343430399894714,
+                            "offset": 406
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AmplitudeMax",
+                        "offset": 422,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 1.343284010887146,
+                            "offset": 438
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Item",
+                    "offset": 454,
+                    "attributes": [
+                      {
+                        "name": "type",
+                        "tag": 7,
+                        "value": "PlaCBiomePerlinNoiseOctave",
+                        "offset": 470
+                      }
+                    ],
+                    "children": [
+                      {
+                        "name": "IsEnabled",
+                        "offset": 509,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 6,
+                            "value": true,
+                            "offset": 525
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Seed",
+                        "offset": 541,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 7,
+                            "value": "E",
+                            "offset": 557
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "PerlinOffset",
+                        "offset": 571,
+                        "attributes": [
+                          {
+                            "name": "x",
+                            "tag": 4,
+                            "value": -18.700000762939453,
+                            "offset": 587
+                          },
+                          {
+                            "name": "y",
+                            "tag": 4,
+                            "value": -25.100000381469727,
+                            "offset": 603
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "Frequency",
+                        "offset": 619,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 0.0933823511004448,
+                            "offset": 635
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AmplitudeMin",
+                        "offset": 651,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": -1.3768839836120605,
+                            "offset": 667
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "name": "AmplitudeMax",
+                        "offset": 683,
+                        "attributes": [
+                          {
+                            "name": "value",
+                            "tag": 4,
+                            "value": 0.5929648876190186,
+                            "offset": 699
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "record_count": 40,
+    "tag_counts": {
+      "0": 1,
+      "8": 1,
+      "7": 5,
+      "4": 12,
+      "6": 2
+    }
+  },
+  "references": [
+    {
+      "property": "/object/TerrainLayer/@value",
+      "uuid": "6e144f6d-991c-4238-9332-1e7f89a65aca",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Terrain/Terrain Layers/Layers/AgricultureDLC/AGR_CommonCroft_01A.data",
+          "id": "6e144f6d-991c-4238-9332-1e7f89a65aca",
+          "type": "GamCTerrainLayer"
+        }
+      ]
+    }
+  ]
+}

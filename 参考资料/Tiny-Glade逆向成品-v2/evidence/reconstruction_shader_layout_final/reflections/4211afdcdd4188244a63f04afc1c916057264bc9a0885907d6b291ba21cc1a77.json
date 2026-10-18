@@ -1,0 +1,65 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_12" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "output_tex_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "input_tex",
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_lnc",
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "images" : [
+        {
+            "type" : "image2D",
+            "name" : "output_tex",
+            "writeonly" : true,
+            "set" : 0,
+            "binding" : 2,
+            "format" : "rgba8"
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_12",
+            "name" : "GlobalParams_natural",
+            "block_size" : 8,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+  "snapshot": "C:\\Steam\\steamapps\\common\\Tiny Glade\\assets\\starting-builds\\full\\30-roof-deco-stairs\\snapshots\\12846152443121662562.snapshot",
+  "snapshot_sha256": "76183baf62e07d26d45dd384ba4c4c56a7451ea97b0fde16488136fdba21861b",
+  "roof_id": 4,
+  "input": {
+    "wall": {
+      "kind": "rectangle",
+      "width": 13.778027534484863,
+      "length": 10.587912559509277,
+      "radius": 2.0,
+      "pivot_x": 0.583616316318512,
+      "pivot_z": -4.97027063369751,
+      "axis_x": 0.9350754618644714,
+      "axis_z": -0.35444873571395874,
+      "yaw": 0.0
+    },
+    "profile_01": 1.0,
+    "height_01": 0.13637667894363403,
+    "ridge_length_01": 0.0,
+    "eave_length_01": 0.20000000298023224,
+    "ridge_direction": 1,
+    "tip_offset_x": 0.0,
+    "tip_offset_z": 0.0,
+    "pivot_y": 8.245980262756348
+  },
+  "exe_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "records": 912,
+  "original_sha256": "0865b22bf416a5b287a3b6eefc024a52d81c8e3477223e18ff2e8abcac9efc67",
+  "independent_sha256": "0865b22bf416a5b287a3b6eefc024a52d81c8e3477223e18ff2e8abcac9efc67",
+  "all_record_bytes_identical": true,
+  "emulated_instructions": 550965,
+  "math_substitutions": {
+    "powf": 19,
+    "roundf": 4,
+    "ceilf": 62,
+    "atanf": 752,
+    "sinf": 752,
+    "cosf": 752
+  },
+  "limits": [
+    "Original machine-code generation with host pure math/f16 substitutions, not recovered original source.",
+    "64-byte callback input records match RoofShingle_natural shader offsets; callback postprocessing not executed.",
+    "ECS registration, resource lookup, GPU physics and rendering do not execute."
+  ]
+}

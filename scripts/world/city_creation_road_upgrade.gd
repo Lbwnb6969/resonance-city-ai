@@ -7,7 +7,7 @@ const COVERAGE := 0.90
 const MIN_LENGTH_RATIO := 0.80
 const MAX_LENGTH_RATIO := 1.25
 const ALIGNMENT := 0.85
-const WIDTHS := {"path":1.25,"cobble":1.25,"promenade":1.75,"avenue":2.0,"tram":2.0}
+const WIDTHS := {"path":1.25,"cobble":1.25,"promenade":1.75,"avenue":2.10,"tram":2.10}
 const NAMES := {"path":"乡间小径","cobble":"乡间小径","promenade":"石板灯街","avenue":"林荫大道","tram":"叮当轨街"}
 
 static func width_for(style: String) -> float:

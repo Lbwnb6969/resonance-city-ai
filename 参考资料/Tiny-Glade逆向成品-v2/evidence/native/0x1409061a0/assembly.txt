@@ -1,0 +1,580 @@
+00000001409061a0  55                       push     rbp
+00000001409061a1  4157                     push     r15
+00000001409061a3  4156                     push     r14
+00000001409061a5  56                       push     rsi
+00000001409061a6  57                       push     rdi
+00000001409061a7  53                       push     rbx
+00000001409061a8  4883ec78                 sub      rsp, 0x78
+00000001409061ac  488d6c2470               lea      rbp, [rsp + 0x70]
+00000001409061b1  48c74500feffffff         mov      qword ptr [rbp], 0xfffffffffffffffe
+00000001409061b9  4c89c3                   mov      rbx, r8
+00000001409061bc  4889d7                   mov      rdi, rdx
+00000001409061bf  4889ce                   mov      rsi, rcx
+00000001409061c2  4989d6                   mov      r14, rdx
+00000001409061c5  4d85c0                   test     r8, r8
+00000001409061c8  740c                     je       0x1409061d6
+00000001409061ca  4c8d7728                 lea      r14, [rdi + 0x28]
+00000001409061ce  31c0                     xor      eax, eax
+00000001409061d0  483b4710                 cmp      rax, qword ptr [rdi + 0x10]
+00000001409061d4  7122                     jno      0x1409061f8
+00000001409061d6  8b461c                   mov      eax, dword ptr [rsi + 0x1c]
+00000001409061d9  488b4e10                 mov      rcx, qword ptr [rsi + 0x10]
+00000001409061dd  8901                     mov      dword ptr [rcx], eax
+00000001409061df  4c8b3e                   mov      r15, qword ptr [rsi]
+00000001409061e2  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+00000001409061e6  4d85c0                   test     r8, r8
+00000001409061e9  7437                     je       0x140906222
+00000001409061eb  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+00000001409061ef  31d2                     xor      edx, edx
+00000001409061f1  e88ac55202               call     0x142e32780 ; memset
+00000001409061f6  eb2a                     jmp      0x140906222
+00000001409061f8  8b461c                   mov      eax, dword ptr [rsi + 0x1c]
+00000001409061fb  488b4e10                 mov      rcx, qword ptr [rsi + 0x10]
+00000001409061ff  8901                     mov      dword ptr [rcx], eax
+0000000140906201  4c8b3e                   mov      r15, qword ptr [rsi]
+0000000140906204  4c8b4720                 mov      r8, qword ptr [rdi + 0x20]
+0000000140906208  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+000000014090620c  4939c0                   cmp      r8, rax
+000000014090620f  0f8560030000             jne      0x140906575
+0000000140906215  488b5718                 mov      rdx, qword ptr [rdi + 0x18]
+0000000140906219  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+000000014090621d  e83ec55202               call     0x142e32760 ; memcpy
+0000000140906222  488d049b                 lea      rax, [rbx + rbx*4]
+0000000140906226  488d3cc7                 lea      rdi, [rdi + rax*8]
+000000014090622a  498d8f98000000           lea      rcx, [r15 + 0x98]
+0000000140906231  41b800020000             mov      r8d, 0x200
+0000000140906237  b2ff                     mov      dl, 0xff
+0000000140906239  e842c55202               call     0x142e32780 ; memset
+000000014090623e  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+0000000140906246  4889fb                   mov      rbx, rdi
+0000000140906249  4939fe                   cmp      r14, rdi
+000000014090624c  740c                     je       0x14090625a
+000000014090624e  498d5e28                 lea      rbx, [r14 + 0x28]
+0000000140906252  31c0                     xor      eax, eax
+0000000140906254  493b4610                 cmp      rax, qword ptr [r14 + 0x10]
+0000000140906258  7123                     jno      0x14090627d
+000000014090625a  8b463c                   mov      eax, dword ptr [rsi + 0x3c]
+000000014090625d  488b4e30                 mov      rcx, qword ptr [rsi + 0x30]
+0000000140906261  8901                     mov      dword ptr [rcx], eax
+0000000140906263  4c8b7e20                 mov      r15, qword ptr [rsi + 0x20]
+0000000140906267  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+000000014090626b  4d85c0                   test     r8, r8
+000000014090626e  7438                     je       0x1409062a8
+0000000140906270  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+0000000140906274  31d2                     xor      edx, edx
+0000000140906276  e805c55202               call     0x142e32780 ; memset
+000000014090627b  eb2b                     jmp      0x1409062a8
+000000014090627d  8b463c                   mov      eax, dword ptr [rsi + 0x3c]
+0000000140906280  488b4e30                 mov      rcx, qword ptr [rsi + 0x30]
+0000000140906284  8901                     mov      dword ptr [rcx], eax
+0000000140906286  4c8b7e20                 mov      r15, qword ptr [rsi + 0x20]
+000000014090628a  4d8b4620                 mov      r8, qword ptr [r14 + 0x20]
+000000014090628e  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+0000000140906292  4939c0                   cmp      r8, rax
+0000000140906295  0f854b030000             jne      0x1409065e6
+000000014090629b  498b5618                 mov      rdx, qword ptr [r14 + 0x18]
+000000014090629f  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+00000001409062a3  e8b8c45202               call     0x142e32760 ; memcpy
+00000001409062a8  498d8f98000000           lea      rcx, [r15 + 0x98]
+00000001409062af  41b800020000             mov      r8d, 0x200
+00000001409062b5  b2ff                     mov      dl, 0xff
+00000001409062b7  e8c4c45202               call     0x142e32780 ; memset
+00000001409062bc  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+00000001409062c4  4989fe                   mov      r14, rdi
+00000001409062c7  4839fb                   cmp      rbx, rdi
+00000001409062ca  740c                     je       0x1409062d8
+00000001409062cc  4c8d7328                 lea      r14, [rbx + 0x28]
+00000001409062d0  31c0                     xor      eax, eax
+00000001409062d2  483b4310                 cmp      rax, qword ptr [rbx + 0x10]
+00000001409062d6  7123                     jno      0x1409062fb
+00000001409062d8  8b465c                   mov      eax, dword ptr [rsi + 0x5c]
+00000001409062db  488b4e50                 mov      rcx, qword ptr [rsi + 0x50]
+00000001409062df  8901                     mov      dword ptr [rcx], eax
+00000001409062e1  4c8b7e40                 mov      r15, qword ptr [rsi + 0x40]
+00000001409062e5  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+00000001409062e9  4d85c0                   test     r8, r8
+00000001409062ec  7438                     je       0x140906326
+00000001409062ee  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+00000001409062f2  31d2                     xor      edx, edx
+00000001409062f4  e887c45202               call     0x142e32780 ; memset
+00000001409062f9  eb2b                     jmp      0x140906326
+00000001409062fb  8b465c                   mov      eax, dword ptr [rsi + 0x5c]
+00000001409062fe  488b4e50                 mov      rcx, qword ptr [rsi + 0x50]
+0000000140906302  8901                     mov      dword ptr [rcx], eax
+0000000140906304  4c8b7e40                 mov      r15, qword ptr [rsi + 0x40]
+0000000140906308  4c8b4320                 mov      r8, qword ptr [rbx + 0x20]
+000000014090630c  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+0000000140906310  4939c0                   cmp      r8, rax
+0000000140906313  0f853e030000             jne      0x140906657
+0000000140906319  488b5318                 mov      rdx, qword ptr [rbx + 0x18]
+000000014090631d  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+0000000140906321  e83ac45202               call     0x142e32760 ; memcpy
+0000000140906326  498d8f98000000           lea      rcx, [r15 + 0x98]
+000000014090632d  41b800020000             mov      r8d, 0x200
+0000000140906333  b2ff                     mov      dl, 0xff
+0000000140906335  e846c45202               call     0x142e32780 ; memset
+000000014090633a  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+0000000140906342  4889fb                   mov      rbx, rdi
+0000000140906345  4939fe                   cmp      r14, rdi
+0000000140906348  740c                     je       0x140906356
+000000014090634a  498d5e28                 lea      rbx, [r14 + 0x28]
+000000014090634e  31c0                     xor      eax, eax
+0000000140906350  493b4610                 cmp      rax, qword ptr [r14 + 0x10]
+0000000140906354  7123                     jno      0x140906379
+0000000140906356  8b467c                   mov      eax, dword ptr [rsi + 0x7c]
+0000000140906359  488b4e70                 mov      rcx, qword ptr [rsi + 0x70]
+000000014090635d  8901                     mov      dword ptr [rcx], eax
+000000014090635f  4c8b7e60                 mov      r15, qword ptr [rsi + 0x60]
+0000000140906363  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+0000000140906367  4d85c0                   test     r8, r8
+000000014090636a  7438                     je       0x1409063a4
+000000014090636c  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+0000000140906370  31d2                     xor      edx, edx
+0000000140906372  e809c45202               call     0x142e32780 ; memset
+0000000140906377  eb2b                     jmp      0x1409063a4
+0000000140906379  8b467c                   mov      eax, dword ptr [rsi + 0x7c]
+000000014090637c  488b4e70                 mov      rcx, qword ptr [rsi + 0x70]
+0000000140906380  8901                     mov      dword ptr [rcx], eax
+0000000140906382  4c8b7e60                 mov      r15, qword ptr [rsi + 0x60]
+0000000140906386  4d8b4620                 mov      r8, qword ptr [r14 + 0x20]
+000000014090638a  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+000000014090638e  4939c0                   cmp      r8, rax
+0000000140906391  0f8531030000             jne      0x1409066c8
+0000000140906397  498b5618                 mov      rdx, qword ptr [r14 + 0x18]
+000000014090639b  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+000000014090639f  e8bcc35202               call     0x142e32760 ; memcpy
+00000001409063a4  498d8f98000000           lea      rcx, [r15 + 0x98]
+00000001409063ab  41b800020000             mov      r8d, 0x200
+00000001409063b1  b2ff                     mov      dl, 0xff
+00000001409063b3  e8c8c35202               call     0x142e32780 ; memset
+00000001409063b8  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+00000001409063c0  4839fb                   cmp      rbx, rdi
+00000001409063c3  7442                     je       0x140906407
+00000001409063c5  4c8d7328                 lea      r14, [rbx + 0x28]
+00000001409063c9  31c0                     xor      eax, eax
+00000001409063cb  483b4310                 cmp      rax, qword ptr [rbx + 0x10]
+00000001409063cf  7039                     jo       0x14090640a
+00000001409063d1  8b869c000000             mov      eax, dword ptr [rsi + 0x9c]
+00000001409063d7  488b8e90000000           mov      rcx, qword ptr [rsi + 0x90]
+00000001409063de  8901                     mov      dword ptr [rcx], eax
+00000001409063e0  4c8bbe80000000           mov      r15, qword ptr [rsi + 0x80]
+00000001409063e7  4c8b4320                 mov      r8, qword ptr [rbx + 0x20]
+00000001409063eb  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+00000001409063ef  4939c0                   cmp      r8, rax
+00000001409063f2  0f8541030000             jne      0x140906739
+00000001409063f8  488b5318                 mov      rdx, qword ptr [rbx + 0x18]
+00000001409063fc  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+0000000140906400  e85bc35202               call     0x142e32760 ; memcpy
+0000000140906405  eb2d                     jmp      0x140906434
+0000000140906407  4989de                   mov      r14, rbx
+000000014090640a  8b869c000000             mov      eax, dword ptr [rsi + 0x9c]
+0000000140906410  488b8e90000000           mov      rcx, qword ptr [rsi + 0x90]
+0000000140906417  8901                     mov      dword ptr [rcx], eax
+0000000140906419  4c8bbe80000000           mov      r15, qword ptr [rsi + 0x80]
+0000000140906420  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+0000000140906424  4d85c0                   test     r8, r8
+0000000140906427  740b                     je       0x140906434
+0000000140906429  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+000000014090642d  31d2                     xor      edx, edx
+000000014090642f  e84cc35202               call     0x142e32780 ; memset
+0000000140906434  498d8f98000000           lea      rcx, [r15 + 0x98]
+000000014090643b  41b800020000             mov      r8d, 0x200
+0000000140906441  b2ff                     mov      dl, 0xff
+0000000140906443  e838c35202               call     0x142e32780 ; memset
+0000000140906448  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+0000000140906450  4939fe                   cmp      r14, rdi
+0000000140906453  7442                     je       0x140906497
+0000000140906455  498d5e28                 lea      rbx, [r14 + 0x28]
+0000000140906459  31c0                     xor      eax, eax
+000000014090645b  493b4610                 cmp      rax, qword ptr [r14 + 0x10]
+000000014090645f  7039                     jo       0x14090649a
+0000000140906461  8b86bc000000             mov      eax, dword ptr [rsi + 0xbc]
+0000000140906467  488b8eb0000000           mov      rcx, qword ptr [rsi + 0xb0]
+000000014090646e  8901                     mov      dword ptr [rcx], eax
+0000000140906470  4c8bbea0000000           mov      r15, qword ptr [rsi + 0xa0]
+0000000140906477  4d8b4620                 mov      r8, qword ptr [r14 + 0x20]
+000000014090647b  498b4710                 mov      rax, qword ptr [r15 + 0x10]
+000000014090647f  4939c0                   cmp      r8, rax
+0000000140906482  0f8522030000             jne      0x1409067aa
+0000000140906488  498b5618                 mov      rdx, qword ptr [r14 + 0x18]
+000000014090648c  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+0000000140906490  e8cbc25202               call     0x142e32760 ; memcpy
+0000000140906495  eb2d                     jmp      0x1409064c4
+0000000140906497  4c89f3                   mov      rbx, r14
+000000014090649a  8b86bc000000             mov      eax, dword ptr [rsi + 0xbc]
+00000001409064a0  488b8eb0000000           mov      rcx, qword ptr [rsi + 0xb0]
+00000001409064a7  8901                     mov      dword ptr [rcx], eax
+00000001409064a9  4c8bbea0000000           mov      r15, qword ptr [rsi + 0xa0]
+00000001409064b0  4d8b4710                 mov      r8, qword ptr [r15 + 0x10]
+00000001409064b4  4d85c0                   test     r8, r8
+00000001409064b7  740b                     je       0x1409064c4
+00000001409064b9  498b4f08                 mov      rcx, qword ptr [r15 + 8]
+00000001409064bd  31d2                     xor      edx, edx
+00000001409064bf  e8bcc25202               call     0x142e32780 ; memset
+00000001409064c4  498d8f98000000           lea      rcx, [r15 + 0x98]
+00000001409064cb  41b800020000             mov      r8d, 0x200
+00000001409064d1  b2ff                     mov      dl, 0xff
+00000001409064d3  e8a8c25202               call     0x142e32780 ; memset
+00000001409064d8  41c6879902000001         mov      byte ptr [r15 + 0x299], 1
+00000001409064e0  4839fb                   cmp      rbx, rdi
+00000001409064e3  7408                     je       0x1409064ed
+00000001409064e5  31c0                     xor      eax, eax
+00000001409064e7  483b4310                 cmp      rax, qword ptr [rbx + 0x10]
+00000001409064eb  712c                     jno      0x140906519
+00000001409064ed  8b86dc000000             mov      eax, dword ptr [rsi + 0xdc]
+00000001409064f3  488b8ed0000000           mov      rcx, qword ptr [rsi + 0xd0]
+00000001409064fa  8901                     mov      dword ptr [rcx], eax
+00000001409064fc  488bb6c0000000           mov      rsi, qword ptr [rsi + 0xc0]
+0000000140906503  4c8b4610                 mov      r8, qword ptr [rsi + 0x10]
+0000000140906507  4d85c0                   test     r8, r8
+000000014090650a  7441                     je       0x14090654d
+000000014090650c  488b4e08                 mov      rcx, qword ptr [rsi + 8]
+0000000140906510  31d2                     xor      edx, edx
+0000000140906512  e869c25202               call     0x142e32780 ; memset
+0000000140906517  eb34                     jmp      0x14090654d
+0000000140906519  8b86dc000000             mov      eax, dword ptr [rsi + 0xdc]
+000000014090651f  488b8ed0000000           mov      rcx, qword ptr [rsi + 0xd0]
+0000000140906526  8901                     mov      dword ptr [rcx], eax
+0000000140906528  488bb6c0000000           mov      rsi, qword ptr [rsi + 0xc0]
+000000014090652f  4c8b4320                 mov      r8, qword ptr [rbx + 0x20]
+0000000140906533  488b4610                 mov      rax, qword ptr [rsi + 0x10]
+0000000140906537  4939c0                   cmp      r8, rax
+000000014090653a  0f85d8020000             jne      0x140906818
+0000000140906540  488b5318                 mov      rdx, qword ptr [rbx + 0x18]
+0000000140906544  488b4e08                 mov      rcx, qword ptr [rsi + 8]
+0000000140906548  e813c25202               call     0x142e32760 ; memcpy
+000000014090654d  488d8e98000000           lea      rcx, [rsi + 0x98]
+0000000140906554  41b800020000             mov      r8d, 0x200
+000000014090655a  b2ff                     mov      dl, 0xff
+000000014090655c  e81fc25202               call     0x142e32780 ; memset
+0000000140906561  c6869902000001           mov      byte ptr [rsi + 0x299], 1
+0000000140906568  4883c478                 add      rsp, 0x78
+000000014090656c  5b                       pop      rbx
+000000014090656d  5f                       pop      rdi
+000000014090656e  5e                       pop      rsi
+000000014090656f  415e                     pop      r14
+0000000140906571  415f                     pop      r15
+0000000140906573  5d                       pop      rbp
+0000000140906574  c3                       ret      
+0000000140906575  488945f8                 mov      qword ptr [rbp - 8], rax
+0000000140906579  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+000000014090657d  488d45f8                 lea      rax, [rbp - 8]
+0000000140906581  488945d0                 mov      qword ptr [rbp - 0x30], rax
+0000000140906585  488d05b4c46600           lea      rax, [rip + 0x66c4b4]
+000000014090658c  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140906590  488d4df0                 lea      rcx, [rbp - 0x10]
+0000000140906594  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+0000000140906598  488945e8                 mov      qword ptr [rbp - 0x18], rax
+000000014090659c  488d75b8                 lea      rsi, [rbp - 0x48]
+00000001409065a0  488d55d0                 lea      rdx, [rbp - 0x30]
+00000001409065a4  4889f1                   mov      rcx, rsi
+00000001409065a7  e8d40d1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+00000001409065ac  4889f1                   mov      rcx, rsi
+00000001409065af  e8fc2c4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+00000001409065b4  488945d0                 mov      qword ptr [rbp - 0x30], rax
+00000001409065b8  488d0509857102           lea      rax, [rip + 0x2718509]
+00000001409065bf  4889442420               mov      qword ptr [rsp + 0x20], rax
+00000001409065c4  488d0d05867102           lea      rcx, [rip + 0x2718605] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+00000001409065cb  4c8d0dde857102           lea      r9, [rip + 0x27185de]
+00000001409065d2  4c8d45d0                 lea      r8, [rbp - 0x30]
+00000001409065d6  ba2b000000               mov      edx, 0x2b
+00000001409065db  e8901b4c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+00000001409065e0  90                       nop      
+00000001409065e1  e99e020000               jmp      0x140906884
+00000001409065e6  488945f8                 mov      qword ptr [rbp - 8], rax
+00000001409065ea  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+00000001409065ee  488d45f8                 lea      rax, [rbp - 8]
+00000001409065f2  488945d0                 mov      qword ptr [rbp - 0x30], rax
+00000001409065f6  488d0543c46600           lea      rax, [rip + 0x66c443]
+00000001409065fd  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140906601  488d4df0                 lea      rcx, [rbp - 0x10]
+0000000140906605  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+0000000140906609  488945e8                 mov      qword ptr [rbp - 0x18], rax
+000000014090660d  488d75b8                 lea      rsi, [rbp - 0x48]
+0000000140906611  488d55d0                 lea      rdx, [rbp - 0x30]
+0000000140906615  4889f1                   mov      rcx, rsi
+0000000140906618  e8630d1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+000000014090661d  4889f1                   mov      rcx, rsi
+0000000140906620  e88b2c4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+0000000140906625  488945d0                 mov      qword ptr [rbp - 0x30], rax
+0000000140906629  488d0598847102           lea      rax, [rip + 0x2718498]
+0000000140906630  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140906635  488d0d94857102           lea      rcx, [rip + 0x2718594] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+000000014090663c  4c8d0d6d857102           lea      r9, [rip + 0x271856d]
+0000000140906643  4c8d45d0                 lea      r8, [rbp - 0x30]
+0000000140906647  ba2b000000               mov      edx, 0x2b
+000000014090664c  e81f1b4c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+0000000140906651  90                       nop      
+0000000140906652  e92d020000               jmp      0x140906884
+0000000140906657  488945f8                 mov      qword ptr [rbp - 8], rax
+000000014090665b  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+000000014090665f  488d45f8                 lea      rax, [rbp - 8]
+0000000140906663  488945d0                 mov      qword ptr [rbp - 0x30], rax
+0000000140906667  488d05d2c36600           lea      rax, [rip + 0x66c3d2]
+000000014090666e  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140906672  488d4df0                 lea      rcx, [rbp - 0x10]
+0000000140906676  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+000000014090667a  488945e8                 mov      qword ptr [rbp - 0x18], rax
+000000014090667e  488d75b8                 lea      rsi, [rbp - 0x48]
+0000000140906682  488d55d0                 lea      rdx, [rbp - 0x30]
+0000000140906686  4889f1                   mov      rcx, rsi
+0000000140906689  e8f20c1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+000000014090668e  4889f1                   mov      rcx, rsi
+0000000140906691  e81a2c4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+0000000140906696  488945d0                 mov      qword ptr [rbp - 0x30], rax
+000000014090669a  488d0527847102           lea      rax, [rip + 0x2718427]
+00000001409066a1  4889442420               mov      qword ptr [rsp + 0x20], rax
+00000001409066a6  488d0d23857102           lea      rcx, [rip + 0x2718523] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+00000001409066ad  4c8d0dfc847102           lea      r9, [rip + 0x27184fc]
+00000001409066b4  4c8d45d0                 lea      r8, [rbp - 0x30]
+00000001409066b8  ba2b000000               mov      edx, 0x2b
+00000001409066bd  e8ae1a4c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+00000001409066c2  90                       nop      
+00000001409066c3  e9bc010000               jmp      0x140906884
+00000001409066c8  488945f8                 mov      qword ptr [rbp - 8], rax
+00000001409066cc  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+00000001409066d0  488d45f8                 lea      rax, [rbp - 8]
+00000001409066d4  488945d0                 mov      qword ptr [rbp - 0x30], rax
+00000001409066d8  488d0561c36600           lea      rax, [rip + 0x66c361]
+00000001409066df  488945d8                 mov      qword ptr [rbp - 0x28], rax
+00000001409066e3  488d4df0                 lea      rcx, [rbp - 0x10]
+00000001409066e7  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+00000001409066eb  488945e8                 mov      qword ptr [rbp - 0x18], rax
+00000001409066ef  488d75b8                 lea      rsi, [rbp - 0x48]
+00000001409066f3  488d55d0                 lea      rdx, [rbp - 0x30]
+00000001409066f7  4889f1                   mov      rcx, rsi
+00000001409066fa  e8810c1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+00000001409066ff  4889f1                   mov      rcx, rsi
+0000000140906702  e8a92b4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+0000000140906707  488945d0                 mov      qword ptr [rbp - 0x30], rax
+000000014090670b  488d05b6837102           lea      rax, [rip + 0x27183b6]
+0000000140906712  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140906717  488d0db2847102           lea      rcx, [rip + 0x27184b2] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+000000014090671e  4c8d0d8b847102           lea      r9, [rip + 0x271848b]
+0000000140906725  4c8d45d0                 lea      r8, [rbp - 0x30]
+0000000140906729  ba2b000000               mov      edx, 0x2b
+000000014090672e  e83d1a4c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+0000000140906733  90                       nop      
+0000000140906734  e94b010000               jmp      0x140906884
+0000000140906739  488945f8                 mov      qword ptr [rbp - 8], rax
+000000014090673d  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+0000000140906741  488d45f8                 lea      rax, [rbp - 8]
+0000000140906745  488945d0                 mov      qword ptr [rbp - 0x30], rax
+0000000140906749  488d05f0c26600           lea      rax, [rip + 0x66c2f0]
+0000000140906750  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140906754  488d4df0                 lea      rcx, [rbp - 0x10]
+0000000140906758  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+000000014090675c  488945e8                 mov      qword ptr [rbp - 0x18], rax
+0000000140906760  488d75b8                 lea      rsi, [rbp - 0x48]
+0000000140906764  488d55d0                 lea      rdx, [rbp - 0x30]
+0000000140906768  4889f1                   mov      rcx, rsi
+000000014090676b  e8100c1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+0000000140906770  4889f1                   mov      rcx, rsi
+0000000140906773  e8382b4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+0000000140906778  488945d0                 mov      qword ptr [rbp - 0x30], rax
+000000014090677c  488d0545837102           lea      rax, [rip + 0x2718345]
+0000000140906783  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140906788  488d0d41847102           lea      rcx, [rip + 0x2718441] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+000000014090678f  4c8d0d1a847102           lea      r9, [rip + 0x271841a]
+0000000140906796  4c8d45d0                 lea      r8, [rbp - 0x30]
+000000014090679a  ba2b000000               mov      edx, 0x2b
+000000014090679f  e8cc194c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+00000001409067a4  90                       nop      
+00000001409067a5  e9da000000               jmp      0x140906884
+00000001409067aa  488945f8                 mov      qword ptr [rbp - 8], rax
+00000001409067ae  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+00000001409067b2  488d45f8                 lea      rax, [rbp - 8]
+00000001409067b6  488945d0                 mov      qword ptr [rbp - 0x30], rax
+00000001409067ba  488d057fc26600           lea      rax, [rip + 0x66c27f]
+00000001409067c1  488945d8                 mov      qword ptr [rbp - 0x28], rax
+00000001409067c5  488d4df0                 lea      rcx, [rbp - 0x10]
+00000001409067c9  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+00000001409067cd  488945e8                 mov      qword ptr [rbp - 0x18], rax
+00000001409067d1  488d75b8                 lea      rsi, [rbp - 0x48]
+00000001409067d5  488d55d0                 lea      rdx, [rbp - 0x30]
+00000001409067d9  4889f1                   mov      rcx, rsi
+00000001409067dc  e89f0b1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+00000001409067e1  4889f1                   mov      rcx, rsi
+00000001409067e4  e8c72a4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+00000001409067e9  488945d0                 mov      qword ptr [rbp - 0x30], rax
+00000001409067ed  488d05d4827102           lea      rax, [rip + 0x27182d4]
+00000001409067f4  4889442420               mov      qword ptr [rsp + 0x20], rax
+00000001409067f9  488d0dd0837102           lea      rcx, [rip + 0x27183d0] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+0000000140906800  4c8d0da9837102           lea      r9, [rip + 0x27183a9]
+0000000140906807  4c8d45d0                 lea      r8, [rbp - 0x30]
+000000014090680b  ba2b000000               mov      edx, 0x2b
+0000000140906810  e85b194c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+0000000140906815  90                       nop      
+0000000140906816  eb6c                     jmp      0x140906884
+0000000140906818  488945f8                 mov      qword ptr [rbp - 8], rax
+000000014090681c  4c8945f0                 mov      qword ptr [rbp - 0x10], r8
+0000000140906820  488d45f8                 lea      rax, [rbp - 8]
+0000000140906824  488945d0                 mov      qword ptr [rbp - 0x30], rax
+0000000140906828  488d0511c26600           lea      rax, [rip + 0x66c211]
+000000014090682f  488945d8                 mov      qword ptr [rbp - 0x28], rax
+0000000140906833  488d4df0                 lea      rcx, [rbp - 0x10]
+0000000140906837  48894de0                 mov      qword ptr [rbp - 0x20], rcx
+000000014090683b  488945e8                 mov      qword ptr [rbp - 0x18], rax
+000000014090683f  488d75b8                 lea      rsi, [rbp - 0x48]
+0000000140906843  488d55d0                 lea      rdx, [rbp - 0x30]
+0000000140906847  4889f1                   mov      rcx, rsi
+000000014090684a  e8310b1700               call     0x140a77380 ; alloc::fmt::format | _RNvNtCs1f2BdUxKfgg_5alloc3fmt6format.llvm.7484471921751905575
+000000014090684f  4889f1                   mov      rcx, rsi
+0000000140906852  e8592a4e02               call     0x142de92b0 ; anyhow::Error::msg<alloc::string::String> | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17hef7549dd510ac1d3E
+0000000140906857  488945d0                 mov      qword ptr [rbp - 0x30], rax
+000000014090685b  488d0566827102           lea      rax, [rip + 0x2718266]
+0000000140906862  4889442420               mov      qword ptr [rsp + 0x20], rax
+0000000140906867  488d0d62837102           lea      rcx, [rip + 0x2718362] ; 'called `Result::unwrap()` on an `Err` valueTex1dTex1dArrayTex2dTex2dArrayTex3d'
+000000014090686e  4c8d0d3b837102           lea      r9, [rip + 0x271833b]
+0000000140906875  4c8d45d0                 lea      r8, [rbp - 0x30]
+0000000140906879  ba2b000000               mov      edx, 0x2b
+000000014090687e  e8ed184c02               call     0x142dc8170 ; core::result::unwrap_failed | _RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed
+0000000140906883  90                       nop      
+0000000140906884  0f0b                     ud2      
+0000000140906886  662e0f1f840000000000     nop      word ptr cs:[rax + rax]
+0000000140906890  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140906895  55                       push     rbp
+0000000140906896  4157                     push     r15
+0000000140906898  4156                     push     r14
+000000014090689a  56                       push     rsi
+000000014090689b  57                       push     rdi
+000000014090689c  53                       push     rbx
+000000014090689d  4883ec28                 sub      rsp, 0x28
+00000001409068a1  488d6a70                 lea      rbp, [rdx + 0x70]
+00000001409068a5  488d4dd0                 lea      rcx, [rbp - 0x30]
+00000001409068a9  e892036300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+00000001409068ae  90                       nop      
+00000001409068af  4883c428                 add      rsp, 0x28
+00000001409068b3  5b                       pop      rbx
+00000001409068b4  5f                       pop      rdi
+00000001409068b5  5e                       pop      rsi
+00000001409068b6  415e                     pop      r14
+00000001409068b8  415f                     pop      r15
+00000001409068ba  5d                       pop      rbp
+00000001409068bb  c3                       ret      
+00000001409068bc  0f1f4000                 nop      dword ptr [rax]
+00000001409068c0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+00000001409068c5  55                       push     rbp
+00000001409068c6  4157                     push     r15
+00000001409068c8  4156                     push     r14
+00000001409068ca  56                       push     rsi
+00000001409068cb  57                       push     rdi
+00000001409068cc  53                       push     rbx
+00000001409068cd  4883ec28                 sub      rsp, 0x28
+00000001409068d1  488d6a70                 lea      rbp, [rdx + 0x70]
+00000001409068d5  488d4dd0                 lea      rcx, [rbp - 0x30]
+00000001409068d9  e862036300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+00000001409068de  90                       nop      
+00000001409068df  4883c428                 add      rsp, 0x28
+00000001409068e3  5b                       pop      rbx
+00000001409068e4  5f                       pop      rdi
+00000001409068e5  5e                       pop      rsi
+00000001409068e6  415e                     pop      r14
+00000001409068e8  415f                     pop      r15
+00000001409068ea  5d                       pop      rbp
+00000001409068eb  c3                       ret      
+00000001409068ec  0f1f4000                 nop      dword ptr [rax]
+00000001409068f0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+00000001409068f5  55                       push     rbp
+00000001409068f6  4157                     push     r15
+00000001409068f8  4156                     push     r14
+00000001409068fa  56                       push     rsi
+00000001409068fb  57                       push     rdi
+00000001409068fc  53                       push     rbx
+00000001409068fd  4883ec28                 sub      rsp, 0x28
+0000000140906901  488d6a70                 lea      rbp, [rdx + 0x70]
+0000000140906905  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000140906909  e832036300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+000000014090690e  90                       nop      
+000000014090690f  4883c428                 add      rsp, 0x28
+0000000140906913  5b                       pop      rbx
+0000000140906914  5f                       pop      rdi
+0000000140906915  5e                       pop      rsi
+0000000140906916  415e                     pop      r14
+0000000140906918  415f                     pop      r15
+000000014090691a  5d                       pop      rbp
+000000014090691b  c3                       ret      
+000000014090691c  0f1f4000                 nop      dword ptr [rax]
+0000000140906920  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140906925  55                       push     rbp
+0000000140906926  4157                     push     r15
+0000000140906928  4156                     push     r14
+000000014090692a  56                       push     rsi
+000000014090692b  57                       push     rdi
+000000014090692c  53                       push     rbx
+000000014090692d  4883ec28                 sub      rsp, 0x28
+0000000140906931  488d6a70                 lea      rbp, [rdx + 0x70]
+0000000140906935  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000140906939  e802036300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+000000014090693e  90                       nop      
+000000014090693f  4883c428                 add      rsp, 0x28
+0000000140906943  5b                       pop      rbx
+0000000140906944  5f                       pop      rdi
+0000000140906945  5e                       pop      rsi
+0000000140906946  415e                     pop      r14
+0000000140906948  415f                     pop      r15
+000000014090694a  5d                       pop      rbp
+000000014090694b  c3                       ret      
+000000014090694c  0f1f4000                 nop      dword ptr [rax]
+0000000140906950  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140906955  55                       push     rbp
+0000000140906956  4157                     push     r15
+0000000140906958  4156                     push     r14
+000000014090695a  56                       push     rsi
+000000014090695b  57                       push     rdi
+000000014090695c  53                       push     rbx
+000000014090695d  4883ec28                 sub      rsp, 0x28
+0000000140906961  488d6a70                 lea      rbp, [rdx + 0x70]
+0000000140906965  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000140906969  e8d2026300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+000000014090696e  90                       nop      
+000000014090696f  4883c428                 add      rsp, 0x28
+0000000140906973  5b                       pop      rbx
+0000000140906974  5f                       pop      rdi
+0000000140906975  5e                       pop      rsi
+0000000140906976  415e                     pop      r14
+0000000140906978  415f                     pop      r15
+000000014090697a  5d                       pop      rbp
+000000014090697b  c3                       ret      
+000000014090697c  0f1f4000                 nop      dword ptr [rax]
+0000000140906980  4889542410               mov      qword ptr [rsp + 0x10], rdx
+0000000140906985  55                       push     rbp
+0000000140906986  4157                     push     r15
+0000000140906988  4156                     push     r14
+000000014090698a  56                       push     rsi
+000000014090698b  57                       push     rdi
+000000014090698c  53                       push     rbx
+000000014090698d  4883ec28                 sub      rsp, 0x28
+0000000140906991  488d6a70                 lea      rbp, [rdx + 0x70]
+0000000140906995  488d4dd0                 lea      rcx, [rbp - 0x30]
+0000000140906999  e8a2026300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+000000014090699e  90                       nop      
+000000014090699f  4883c428                 add      rsp, 0x28
+00000001409069a3  5b                       pop      rbx
+00000001409069a4  5f                       pop      rdi
+00000001409069a5  5e                       pop      rsi
+00000001409069a6  415e                     pop      r14
+00000001409069a8  415f                     pop      r15
+00000001409069aa  5d                       pop      rbp
+00000001409069ab  c3                       ret      
+00000001409069ac  0f1f4000                 nop      dword ptr [rax]
+00000001409069b0  4889542410               mov      qword ptr [rsp + 0x10], rdx
+00000001409069b5  55                       push     rbp
+00000001409069b6  4157                     push     r15
+00000001409069b8  4156                     push     r14
+00000001409069ba  56                       push     rsi
+00000001409069bb  57                       push     rdi
+00000001409069bc  53                       push     rbx
+00000001409069bd  4883ec28                 sub      rsp, 0x28
+00000001409069c1  488d6a70                 lea      rbp, [rdx + 0x70]
+00000001409069c5  488d4dd0                 lea      rcx, [rbp - 0x30]
+00000001409069c9  e872026300               call     0x140f36c40 ; anyhow::error::impl$6::drop | _ZN6anyhow5error65_$LT$impl$u20$core..ops..drop..Drop$u20$for$u20$anyhow..Error$GT$4drop17hcaf7d0e6797700dfE
+00000001409069ce  90                       nop      
+00000001409069cf  4883c428                 add      rsp, 0x28
+00000001409069d3  5b                       pop      rbx
+00000001409069d4  5f                       pop      rdi
+00000001409069d5  5e                       pop      rsi
+00000001409069d6  415e                     pop      r14
+00000001409069d8  415f                     pop      r15
+00000001409069da  5d                       pop      rbp
+00000001409069db  c3                       ret      

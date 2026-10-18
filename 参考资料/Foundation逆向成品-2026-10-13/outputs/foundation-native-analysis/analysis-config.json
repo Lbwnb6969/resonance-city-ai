@@ -1,0 +1,64 @@
+{
+  "artifact": "D:\\steamtest\\steamapps\\common\\Foundation\\foundation.exe",
+  "sha256": "2c0a048bc1fa2791f58ea432b85cbd9b816af0efec6d6d1c0be6c12195da31af",
+  "evidence_origin": "Local focused Ghidra headless supplementary static analysis following the REA skill; these records are not issued REA Evidence IDs.",
+  "ghidra_version": "12.1.4 PUBLIC",
+  "java_version": "21.0.12.1+1",
+  "ghidra_root": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\work\\tools\\vendor\\ghidra-12.1.4\\ghidra_12.1.4_PUBLIC",
+  "jdk_root": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-12\\new-chat-2\\work\\tools\\vendor\\jdk-21\\jdk-21.0.12.1+1",
+  "headless_heap": "4G",
+  "autoanalysis": false,
+  "flags": [
+    "-noanalysis",
+    "-postScript",
+    "FocusedNative.java"
+  ],
+  "function_body_boundary": "PE .pdata RUNTIME_FUNCTION [begin,end), with Ghidra-decoded control flow instructions in this bounded region",
+  "references": "Decoded E8 rel32 direct call refs plus selected decoded RIP-relative LEA/MOV ASCII data refs; whole-program incoming refs and indirect call resolution remain incomplete.",
+  "decompiler_timeout_seconds_per_function": 45,
+  "runtime_execution": false,
+  "saved_project": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-13\\reverse-engineer-anything-c-users-administrator\\work\\native\\ghidra-project\\FoundationFocused.gpr",
+  "stages": [
+    {
+      "file": "focused-functions.json",
+      "seeds": 50,
+      "selected_functions": 208,
+      "completed_decompilations": 52
+    },
+    {
+      "file": "drill-functions.json",
+      "seeds": 37,
+      "selected_functions": 125,
+      "completed_decompilations": 38
+    },
+    {
+      "file": "package-drill-functions.json",
+      "seeds": 23,
+      "selected_functions": 50,
+      "completed_decompilations": 23
+    },
+    {
+      "file": "read8-functions.json",
+      "seeds": 3,
+      "selected_functions": 34,
+      "completed_decompilations": 3
+    }
+  ],
+  "unique_selected_function_entries": 303,
+  "unique_decompiled_functions": 109,
+  "unique_direct_call_references": 3417,
+  "unique_ascii_string_references": 458,
+  "verification": {
+    "input_hash_unchanged": true,
+    "all_requested_decompilations_completed": true,
+    "no_empty_pseudocode_or_assembly_files": true,
+    "pseudocode_assembly_one_to_one": true
+  },
+  "remaining_limits": [
+    "Decompiler output is not original source; original types and signatures remain partly unknown.",
+    "Diagnostic strings can originate from inlined functions; seed is a selection label, not an authoritative function name.",
+    "No runtime game/mod behavior was observed.",
+    "No full reconstruction of render/AI/economy or all functions.",
+    "Not all .data-xbin.meta payload types or compressed/v3 serializer branches validated against samples."
+  ]
+}

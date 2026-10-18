@@ -1,0 +1,612 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_38" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_51" : {
+            "name" : "PlacementData_natural",
+            "members" : [
+                {
+                    "name" : "position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "scale",
+                    "type" : "float",
+                    "offset" : 12
+                },
+                {
+                    "name" : "rotation_angle",
+                    "type" : "float",
+                    "offset" : 16
+                },
+                {
+                    "name" : "id",
+                    "type" : "int",
+                    "offset" : 20
+                },
+                {
+                    "name" : "custom0",
+                    "type" : "uint",
+                    "offset" : 24
+                },
+                {
+                    "name" : "custom1",
+                    "type" : "uint",
+                    "offset" : 28
+                },
+                {
+                    "name" : "anim_t_packed",
+                    "type" : "uint",
+                    "offset" : 32
+                },
+                {
+                    "name" : "bend_vector",
+                    "type" : "vec2",
+                    "offset" : 36
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "int",
+                    "offset" : 44
+                }
+            ]
+        },
+        "_54" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_51",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 48
+                }
+            ]
+        },
+        "_233" : {
+            "name" : "FrameConstants_natural",
+            "members" : [
+                {
+                    "name" : "sun_color",
+                    "type" : "vec4",
+                    "offset" : 0
+                },
+                {
+                    "name" : "sky_low_color",
+                    "type" : "vec4",
+                    "offset" : 16
+                },
+                {
+                    "name" : "sky_high_color",
+                    "type" : "vec4",
+                    "offset" : 32
+                },
+                {
+                    "name" : "fog_tint_thickness",
+                    "type" : "vec4",
+                    "offset" : 48
+                },
+                {
+                    "name" : "fake_light_color",
+                    "type" : "vec4",
+                    "offset" : 64
+                },
+                {
+                    "name" : "fake_light_dir",
+                    "type" : "vec4",
+                    "offset" : 80
+                },
+                {
+                    "name" : "fake_light2_color",
+                    "type" : "vec4",
+                    "offset" : 96
+                },
+                {
+                    "name" : "fake_light2_dir",
+                    "type" : "vec4",
+                    "offset" : 112
+                },
+                {
+                    "name" : "time_since_startup_secs",
+                    "type" : "float",
+                    "offset" : 128
+                },
+                {
+                    "name" : "delta_time_seconds",
+                    "type" : "float",
+                    "offset" : 132
+                },
+                {
+                    "name" : "ev_mult",
+                    "type" : "float",
+                    "offset" : 136
+                },
+                {
+                    "name" : "glade_theme_id",
+                    "type" : "uint",
+                    "offset" : 140
+                },
+                {
+                    "name" : "world_render_resolution",
+                    "type" : "uvec2",
+                    "offset" : 144
+                },
+                {
+                    "name" : "game_time_sec",
+                    "type" : "uint",
+                    "offset" : 152
+                },
+                {
+                    "name" : "game_time_frac",
+                    "type" : "float",
+                    "offset" : 156
+                },
+                {
+                    "name" : "editing_highlight_color",
+                    "type" : "vec3",
+                    "offset" : 160
+                },
+                {
+                    "name" : "time_of_day",
+                    "type" : "float",
+                    "offset" : 172
+                },
+                {
+                    "name" : "dir_to_sun",
+                    "type" : "vec3",
+                    "offset" : 176
+                },
+                {
+                    "name" : "camera_idx",
+                    "type" : "uint",
+                    "offset" : 188
+                },
+                {
+                    "name" : "dir_to_moon",
+                    "type" : "vec3",
+                    "offset" : 192
+                },
+                {
+                    "name" : "render_overrides",
+                    "type" : "uint",
+                    "offset" : 204
+                },
+                {
+                    "name" : "dir_to_primary_directional_light",
+                    "type" : "vec3",
+                    "offset" : 208
+                },
+                {
+                    "name" : "main_view_lod_scale",
+                    "type" : "float",
+                    "offset" : 220
+                },
+                {
+                    "name" : "main_view_eye_position",
+                    "type" : "vec4",
+                    "offset" : 224
+                },
+                {
+                    "name" : "fog_relative_extinction",
+                    "type" : "float",
+                    "offset" : 240
+                },
+                {
+                    "name" : "highlighted_transient_stair_edge_id",
+                    "type" : "uint",
+                    "offset" : 244
+                },
+                {
+                    "name" : "swapchain_dims",
+                    "type" : "uvec2",
+                    "offset" : 248
+                },
+                {
+                    "name" : "swapchain_aspect_ratio",
+                    "type" : "float",
+                    "offset" : 256
+                },
+                {
+                    "name" : "is_photomode",
+                    "type" : "uint",
+                    "offset" : 260
+                },
+                {
+                    "name" : "is_topdown_mode",
+                    "type" : "uint",
+                    "offset" : 264
+                },
+                {
+                    "name" : "is_firstperson_mode",
+                    "type" : "uint",
+                    "offset" : 268
+                },
+                {
+                    "name" : "brush_position",
+                    "type" : "vec3",
+                    "offset" : 272
+                },
+                {
+                    "name" : "eraser_size_multiplier",
+                    "type" : "float",
+                    "offset" : 284
+                },
+                {
+                    "name" : "roof_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 288
+                },
+                {
+                    "name" : "roof_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 292
+                },
+                {
+                    "name" : "wall_highlighted_slot_id",
+                    "type" : "uint",
+                    "offset" : 296
+                },
+                {
+                    "name" : "wall_highlight_mode",
+                    "type" : "uint",
+                    "offset" : 300
+                },
+                {
+                    "name" : "highlight_bricks_to_delete",
+                    "type" : "uint",
+                    "offset" : 304
+                },
+                {
+                    "name" : "wind_strength",
+                    "type" : "float",
+                    "offset" : 308
+                },
+                {
+                    "name" : "tree_canopy_cone_angle_mult",
+                    "type" : "float",
+                    "offset" : 312
+                },
+                {
+                    "name" : "tree_canopy_max_cone_cull_dist_range",
+                    "type" : "float",
+                    "offset" : 316
+                },
+                {
+                    "name" : "debug_tweakers",
+                    "type" : "vec4",
+                    "offset" : 320
+                },
+                {
+                    "name" : "ground_fog",
+                    "type" : "vec3",
+                    "offset" : 336
+                },
+                {
+                    "name" : "moonswap",
+                    "type" : "float",
+                    "offset" : 348
+                }
+            ]
+        },
+        "_533" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "float",
+            "name" : "age",
+            "location" : 6
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Position",
+            "location" : 0
+        },
+        {
+            "type" : "vec3",
+            "name" : "appear_pos",
+            "location" : 5
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Normal",
+            "location" : 2
+        },
+        {
+            "type" : "vec3",
+            "name" : "prim_center",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "prim_normals",
+            "location" : 4
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Color",
+            "location" : 1
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.frag_pos_ws_no_offset",
+            "location" : 0
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.frag_uv",
+            "location" : 1
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.frag_normal",
+            "location" : 2
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.frag_pos_ws",
+            "location" : 3
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main.frag_tree_id",
+            "location" : 4
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main.prim_seed",
+            "location" : 5
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main.see_thru_anim_t",
+            "location" : 6
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main.prim_center",
+            "location" : 7
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main.prim_should_have_flower",
+            "location" : 8
+        },
+        {
+            "type" : "uint",
+            "name" : "entryPointParam_vs_main.is_handplaced_flag",
+            "location" : 9
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main.flowery_noise",
+            "location" : 10
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.clip_zw",
+            "location" : 11
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main.scramble_amount",
+            "location" : 12
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_38",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 8,
+            "binding" : 0
+        },
+        {
+            "type" : "_54",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_233",
+            "name" : "FrameConstants_natural",
+            "block_size" : 352,
+            "set" : 4,
+            "binding" : 0
+        },
+        {
+            "type" : "_533",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 5,
+            "binding" : 0
+        }
+    ]
+}

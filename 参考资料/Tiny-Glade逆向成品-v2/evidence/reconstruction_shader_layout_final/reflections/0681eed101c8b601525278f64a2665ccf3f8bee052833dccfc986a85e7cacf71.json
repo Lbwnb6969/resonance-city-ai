@@ -1,0 +1,59 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_18" : {
+            "name" : "VisualTerrainHeightmap_natural",
+            "members" : [
+                {
+                    "name" : "visual_terrain_heightmap_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "vs_out.pos_ws",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_ps_main._color",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "visual_terrain_heightmap.visual_terrain_heightmap",
+            "set" : 6,
+            "binding" : 1
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers.lnc",
+            "set" : 2,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_18",
+            "name" : "VisualTerrainHeightmap_natural",
+            "block_size" : 8,
+            "set" : 6,
+            "binding" : 0
+        }
+    ]
+}

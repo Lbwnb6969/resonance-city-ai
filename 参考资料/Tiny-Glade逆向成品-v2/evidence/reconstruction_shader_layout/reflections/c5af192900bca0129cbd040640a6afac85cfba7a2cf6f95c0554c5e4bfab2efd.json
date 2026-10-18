@@ -1,0 +1,15 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.uv",
+            "location" : 0
+        }
+    ]
+}

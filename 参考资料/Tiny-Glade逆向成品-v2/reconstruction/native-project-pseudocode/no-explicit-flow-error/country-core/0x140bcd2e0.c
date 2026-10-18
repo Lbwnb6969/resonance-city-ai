@@ -1,0 +1,120 @@
+// VA 0x140bcd2e0, PDB extent 855 bytes
+// country_core::systems::wall::structure_outline::structure_outline::closure$1::closure$31
+// PDB source attribution: /home/h3/code/pouncelight/country-slice-private/crates/country-core/src/systems/wall/structure_outline.rs
+// Ghidra pseudocode; missing Rust signatures/types. Not standalone source or behavior verification.
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Matched PDB project procedure:
+   country_core::systems::wall::structure_outline::structure_outline::closure$1::closure$31
+   Source attribution:
+   /home/h3/code/pouncelight/country-slice-private/crates/country-core/src/systems/wall/structure_outline.rs
+   Extent: 855 */
+
+undefined8 *
+pdb_140bcd2e0(undefined8 *param_1,float *param_2,undefined8 param_3,undefined8 param_4,
+             undefined8 param_5)
+
+{
+  code *pcVar1;
+  undefined8 uVar2;
+  byte *pbVar3;
+  float fVar4;
+  undefined8 uStack_120;
+  undefined4 uStack_118;
+  undefined8 uStack_f8;
+  undefined8 uStack_f0;
+  byte *pbStack_e8;
+  undefined8 uStack_e0;
+  undefined4 uStack_c8;
+  undefined4 uStack_c4;
+  undefined4 uStack_c0;
+  undefined4 uStack_bc;
+  undefined4 uStack_b8;
+  undefined4 uStack_b0;
+  undefined4 uStack_a8;
+  float fStack_a4;
+  undefined4 uStack_a0;
+  float fStack_9c;
+  undefined4 uStack_98;
+  undefined2 uStack_90;
+  ulonglong uStack_8c;
+  undefined8 uStack_84;
+  undefined4 uStack_7c;
+  float fStack_78;
+  undefined2 uStack_74;
+  undefined1 uStack_72;
+  byte *pbStack_60;
+  byte *pbStack_58;
+  undefined8 uStack_50;
+  
+  uStack_50 = 0xfffffffffffffffe;
+  pdb_14007ee60();
+  pbStack_60 = pub_1406abab0(8,8);
+  if (pbStack_60 == (byte *)0x0) {
+                    /* WARNING: Subroutine does not return */
+    pdb_142dc7e11(8,8);
+  }
+  pdb_14007ee60();
+  pbStack_58 = pub_1406abab0(0x18,4);
+  if (pbStack_58 != (byte *)0x0) {
+    fVar4 = param_2[4];
+    pdb_140df4540(&uStack_120,param_2,fVar4);
+    pdb_140df4540(&uStack_f8,param_2 + 2,fVar4);
+    pbVar3 = pbStack_58;
+    *(undefined4 *)(pbStack_58 + 8) = uStack_118;
+    *(undefined8 *)pbStack_58 = uStack_120;
+    *(undefined8 *)(pbStack_58 + 0xc) = uStack_f8;
+    *(undefined4 *)(pbStack_58 + 0x14) = (undefined4)uStack_f0;
+    pdb_14007ee60();
+    pbStack_e8 = pub_1406abab0(0x18,4);
+    if (pbStack_e8 != (byte *)0x0) {
+      *(undefined8 *)(pbStack_e8 + 0x10) = *(undefined8 *)(pbVar3 + 0x10);
+      uVar2 = *(undefined8 *)(pbVar3 + 8);
+      *(undefined8 *)pbStack_e8 = *(undefined8 *)pbVar3;
+      *(undefined8 *)(pbStack_e8 + 8) = uVar2;
+      fStack_a4 = SQRT((param_2[1] - param_2[3]) * (param_2[1] - param_2[3]) +
+                       (*param_2 - param_2[2]) * (*param_2 - param_2[2])) * _DAT_142e3788c;
+      uStack_7c = 0;
+      fVar4 = 0.0;
+      if (0.0 <= param_2[5]) {
+        fVar4 = param_2[5];
+      }
+      uStack_84 = 0;
+      fStack_78 = _DAT_142e36f28;
+      if (fVar4 <= _DAT_142e36f28) {
+        fStack_78 = fVar4;
+      }
+      fStack_9c = param_2[6];
+      uStack_f8 = 0x8000000000000002;
+      uStack_f0 = 2;
+      uStack_e0 = 2;
+      uStack_c8 = _DAT_142e4e650;
+      uStack_c4 = _UNK_142e4e654;
+      uStack_c0 = _UNK_142e4e658;
+      uStack_bc = _UNK_142e4e65c;
+      uStack_b8 = 0;
+      uStack_b0 = 0;
+      uStack_a8 = 1;
+      uStack_a0 = 0;
+      uStack_98 = 1;
+      uStack_90 = 0x100;
+      uStack_8c = (ulonglong)(uint)_DAT_142e36f28;
+      uStack_74 = 0;
+      uStack_72 = 0;
+      pdb_1409bba50(&uStack_120,&uStack_f8,param_3,param_4,param_5);
+      *(undefined8 *)pbStack_60 = uStack_120;
+      *param_1 = 1;
+      param_1[1] = pbStack_60;
+      param_1[2] = 1;
+      pub_1406abac0(pbStack_58,0x18,4);
+      return param_1;
+    }
+    pdb_142dc7e2a(4,0x18);
+                    /* WARNING: Does not return */
+    pcVar1 = (code *)invalidInstructionException();
+    (*pcVar1)();
+  }
+                    /* WARNING: Subroutine does not return */
+  pdb_142dc7e11(4,0x18);
+}
+

@@ -1,0 +1,132 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                256,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_12" : {
+            "name" : "SpdConstants_natural",
+            "members" : [
+                {
+                    "name" : "mips",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "numWorkGroups",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "workGroupOffset",
+                    "type" : "uvec2",
+                    "offset" : 8
+                }
+            ]
+        },
+        "_654" : {
+            "name" : "_Array_natural_uint6",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "uint",
+                    "array" : [
+                        6
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_653" : {
+            "name" : "SpdGlobalAtomicBuffer_natural",
+            "members" : [
+                {
+                    "name" : "counter",
+                    "type" : "_654",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_658" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_653",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 24
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "imgSrc",
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "images" : [
+        {
+            "type" : "image2D",
+            "name" : "imgDst6",
+            "coherent" : true,
+            "set" : 0,
+            "binding" : 2,
+            "format" : "r11f_g11f_b10f"
+        },
+        {
+            "type" : "image2D",
+            "name" : "imgDst",
+            "array" : [
+                12
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 0,
+            "binding" : 1,
+            "format" : "r11f_g11f_b10f"
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_658",
+            "name" : "RWStructuredBuffer",
+            "coherent" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_12",
+            "name" : "spdConstants",
+            "push_constant" : true
+        }
+    ]
+}

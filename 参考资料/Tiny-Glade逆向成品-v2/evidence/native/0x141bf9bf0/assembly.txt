@@ -1,0 +1,30 @@
+0000000141bf9bf0  56                       push     rsi
+0000000141bf9bf1  4883ec20                 sub      rsp, 0x20
+0000000141bf9bf5  4889c8                   mov      rax, rcx
+0000000141bf9bf8  833a01                   cmp      dword ptr [rdx], 1
+0000000141bf9bfb  7541                     jne      0x141bf9c3e
+0000000141bf9bfd  4c8b4208                 mov      r8, qword ptr [rdx + 8]
+0000000141bf9c01  488b4a10                 mov      rcx, qword ptr [rdx + 0x10]
+0000000141bf9c05  4d85c0                   test     r8, r8
+0000000141bf9c08  7415                     je       0x141bf9c1f
+0000000141bf9c0a  488b5218                 mov      rdx, qword ptr [rdx + 0x18]
+0000000141bf9c0e  4c8900                   mov      qword ptr [rax], r8
+0000000141bf9c11  48894808                 mov      qword ptr [rax + 8], rcx
+0000000141bf9c15  48895010                 mov      qword ptr [rax + 0x10], rdx
+0000000141bf9c19  4883c420                 add      rsp, 0x20
+0000000141bf9c1d  5e                       pop      rsi
+0000000141bf9c1e  c3                       ret      
+0000000141bf9c1f  4889c6                   mov      rsi, rax
+0000000141bf9c22  e8d9121f01               call     0x142deaf00 ; anyhow::error::impl$1::from<std::io::error::Error> | _ZN6anyhow5error72_$LT$impl$u20$core..convert..From$LT$E$GT$$u20$for$u20$anyhow..Error$GT$4from17h85298611a6271438E
+0000000141bf9c27  4889c1                   mov      rcx, rax
+0000000141bf9c2a  4889f0                   mov      rax, rsi
+0000000141bf9c2d  48894e08                 mov      qword ptr [rsi + 8], rcx
+0000000141bf9c31  48c70600000000           mov      qword ptr [rsi], 0
+0000000141bf9c38  4883c420                 add      rsp, 0x20
+0000000141bf9c3c  5e                       pop      rsi
+0000000141bf9c3d  c3                       ret      
+0000000141bf9c3e  488d0d6c1d7a01           lea      rcx, [rip + 0x17a1d6c] ; 'No chunks left in iterator'
+0000000141bf9c45  ba1a000000               mov      edx, 0x1a
+0000000141bf9c4a  4889c6                   mov      rsi, rax
+0000000141bf9c4d  e81ef61e01               call     0x142de9270 ; anyhow::Error::msg<ref$<str$> > | _ZN6anyhow5error31_$LT$impl$u20$anyhow..Error$GT$3msg17h08b1a10efd3dad46E
+0000000141bf9c52  ebd3                     jmp      0x141bf9c27

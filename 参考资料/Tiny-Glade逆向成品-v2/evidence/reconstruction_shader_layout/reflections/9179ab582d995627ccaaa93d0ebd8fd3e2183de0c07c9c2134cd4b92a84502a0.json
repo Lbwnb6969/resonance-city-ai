@@ -1,0 +1,61 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_88" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "first_thumbnail_center",
+                    "type" : "vec2",
+                    "offset" : 8
+                },
+                {
+                    "name" : "thumbnail_size",
+                    "type" : "vec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "hover",
+                    "type" : "float",
+                    "offset" : 24
+                },
+                {
+                    "name" : "thumbnail_index",
+                    "type" : "uint",
+                    "offset" : 28
+                },
+                {
+                    "name" : "is_black_and_white",
+                    "type" : "uint",
+                    "offset" : 32
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.uv",
+            "location" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_88",
+            "name" : "GlobalParams_natural",
+            "block_size" : 36,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

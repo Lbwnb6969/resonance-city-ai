@@ -1,0 +1,74 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "types" : {
+        "_34" : {
+            "name" : "FrameCounter_natural",
+            "members" : [
+                {
+                    "name" : "index",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "uint",
+            "name" : "vs_out_flags",
+            "location" : 4
+        },
+        {
+            "type" : "uint",
+            "name" : "vs_out_color_id",
+            "location" : 5
+        },
+        {
+            "type" : "vec2",
+            "name" : "vs_out_frag_uv",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out_frag_normal_ws",
+            "location" : 1
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "uvec2",
+            "name" : "entryPointParam_ps_main_gbuffer",
+            "location" : 0
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2DArray",
+            "name" : "window_colors_window_colors",
+            "set" : 18,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_llr",
+            "set" : 2,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_34",
+            "name" : "FrameCounter_natural",
+            "block_size" : 4,
+            "set" : 3,
+            "binding" : 0
+        }
+    ]
+}

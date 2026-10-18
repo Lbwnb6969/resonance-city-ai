@@ -116,7 +116,7 @@ func _prepare_clearance(city:RefCounted)->void:
 			var at:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
 			_add_clearance({"kind":"wall","at":at},Rect2(at-Vector2.ONE*.9,Vector2.ONE*1.8).grow(.12))
 		for door:Dictionary in city.house_entrances(str(house.id)):
-			_add_clearance({"kind":"door","at":door.at,"radius":1.15},Rect2(door.at,Vector2.ZERO).grow(1.15))
+			_add_clearance({"kind":"door","at":door.at,"clearance_at":door.clearance_at,"radius":1.15},Rect2(door.at,Vector2.ZERO).grow(1.15))
 	for plant:Dictionary in city.plants:
 		if str(plant.kind) not in ["olive","cypress"]:continue
 		var at:=Vector2(plant.position[0],plant.position[1])
@@ -129,6 +129,21 @@ func _add_clearance(record:Dictionary,bounds:Rect2)->void:
 			var bin:=Vector2i(x,z)
 			if not _clearance_bins.has(bin):_clearance_bins[bin]=[]
 			_clearance_bins[bin].append(index)
+
+func adopt_clearance(source:RefCounted,city:RefCounted)->void:
+	# The joined renderer worker owns these completed, read-only obstacle
+	# records. Only their weak city owner changes at publication.
+	_clearance_revision=city.revision;_clearance_owner=weakref(city)
+	_clearance_records=source._clearance_records;_clearance_bins=source._clearance_bins
+
+func doors_clear(city:RefCounted,at:Vector2,reach:float)->bool:
+	_prepare_clearance(city)
+	for x in range(floori((at.x-reach)/CLEARANCE_BIN_SIZE),floori((at.x+reach)/CLEARANCE_BIN_SIZE)+1):
+		for z in range(floori((at.y-reach)/CLEARANCE_BIN_SIZE),floori((at.y+reach)/CLEARANCE_BIN_SIZE)+1):
+			for index:int in _clearance_bins.get(Vector2i(x,z),[]):
+				var row:Dictionary=_clearance_records[index]
+				if str(row.kind)=="door" and at.distance_to(row.clearance_at)<reach:return false
+	return true
 
 func _point(samples: Array,arc: float) -> Dictionary:
 	for i in range(samples.size()-1):

@@ -1,0 +1,43 @@
+0000000140b76fd0  4883ec48                 sub      rsp, 0x48
+0000000140b76fd4  0f297c2430               movaps   xmmword ptr [rsp + 0x30], xmm7
+0000000140b76fd9  0f29742420               movaps   xmmword ptr [rsp + 0x20], xmm6
+0000000140b76fde  833901                   cmp      dword ptr [rcx], 1
+0000000140b76fe1  7544                     jne      0x140b77027
+0000000140b76fe3  f30f104114               movss    xmm0, dword ptr [rcx + 0x14]
+0000000140b76fe8  f30f105118               movss    xmm2, dword ptr [rcx + 0x18]
+0000000140b76fed  0f28c8                   movaps   xmm1, xmm0
+0000000140b76ff0  f30fc2c803               cmpunordss xmm1, xmm0
+0000000140b76ff5  0f28d9                   movaps   xmm3, xmm1
+0000000140b76ff8  0f54da                   andps    xmm3, xmm2
+0000000140b76ffb  f30f5fd0                 maxss    xmm2, xmm0
+0000000140b76fff  0f55ca                   andnps   xmm1, xmm2
+0000000140b77002  0f56cb                   orps     xmm1, xmm3
+0000000140b77005  f30f580d83564c02         addss    xmm1, dword ptr [rip + 0x24c5683]
+0000000140b7700d  f30f5e0d83564c02         divss    xmm1, dword ptr [rip + 0x24c5683]
+0000000140b77015  f30f1035e3082c02         movss    xmm6, dword ptr [rip + 0x22c08e3]
+0000000140b7701d  f30f103d67082c02         movss    xmm7, dword ptr [rip + 0x22c0867]
+0000000140b77025  eb25                     jmp      0x140b7704c
+0000000140b77027  f30f10490c               movss    xmm1, dword ptr [rcx + 0xc]
+0000000140b7702c  f30f580d3c564c02         addss    xmm1, dword ptr [rip + 0x24c563c]
+0000000140b77034  f30f5e0d38564c02         divss    xmm1, dword ptr [rip + 0x24c5638]
+0000000140b7703c  f30f103534082c02         movss    xmm6, dword ptr [rip + 0x22c0834]
+0000000140b77044  f30f103d900a2c02         movss    xmm7, dword ptr [rip + 0x22c0a90]
+0000000140b7704c  488d0d2d534e02           lea      rcx, [rip + 0x24e532d]
+0000000140b77053  e8786c2700               call     0x140dedcd0 ; utils::easing_functions::EasingFunction::apply | _ZN5utils16easing_functions14EasingFunction5apply17h1e5ddcc1b1120194E
+0000000140b77058  f30f100dc8fe2b02         movss    xmm1, dword ptr [rip + 0x22bfec8]
+0000000140b77060  0f28d1                   movaps   xmm2, xmm1
+0000000140b77063  f30f5cd0                 subss    xmm2, xmm0
+0000000140b77067  f30f59d7                 mulss    xmm2, xmm7
+0000000140b7706b  f30f59f0                 mulss    xmm6, xmm0
+0000000140b7706f  f30f58f2                 addss    xmm6, xmm2
+0000000140b77073  f30f10055d0a2c02         movss    xmm0, dword ptr [rip + 0x22c0a5d]
+0000000140b7707b  f30f5ef0                 divss    xmm6, xmm0
+0000000140b7707f  0f57d2                   xorps    xmm2, xmm2
+0000000140b77082  f30f5fd6                 maxss    xmm2, xmm6
+0000000140b77086  f30f5dca                 minss    xmm1, xmm2
+0000000140b7708a  f30f59c8                 mulss    xmm1, xmm0
+0000000140b7708e  0f28c1                   movaps   xmm0, xmm1
+0000000140b77091  0f28742420               movaps   xmm6, xmmword ptr [rsp + 0x20]
+0000000140b77096  0f287c2430               movaps   xmm7, xmmword ptr [rsp + 0x30]
+0000000140b7709b  4883c448                 add      rsp, 0x48
+0000000140b7709f  c3                       ret      

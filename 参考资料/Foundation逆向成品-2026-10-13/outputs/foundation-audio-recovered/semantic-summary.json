@@ -1,0 +1,94 @@
+{
+  "banks": 3,
+  "hirc_objects": 5011,
+  "events": 432,
+  "event_media_paths": 2806,
+  "events_with_indexed_media": 365,
+  "sounds": 2653,
+  "sound_media_resolution_counts": {
+    "indexed media": 2308,
+    "zero/generated source": 345
+  },
+  "references": 24614,
+  "reference_resolution_counts": {
+    "zero/no target": 8751,
+    "HIRC object": 12498,
+    "SID definition in banks": 863,
+    "not defined in selected banks/media": 72,
+    "indexed media": 2413,
+    "inline layer identity": 17
+  },
+  "required_target_issues": 2,
+  "opaque_fields": 9,
+  "opaque_field_name_counts": {
+    "pParamBlock": 9
+  },
+  "parser_error_skip_elements": 0,
+  "all_field_count": 242663,
+  "hirc_class_counts": {
+    "CAkAudioDevice": 2,
+    "CAkBus": 38,
+    "CAkAuxBus": 14,
+    "CAkFxCustom": 365,
+    "CAkFxShareSet": 107,
+    "CAkAttenuation": 27,
+    "CAkLFOModulator": 2,
+    "CAkSound": 2653,
+    "CAkRanSeqCntr": 524,
+    "CAkSwitchCntr": 100,
+    "CAkActorMixer": 196,
+    "CAkLayerCntr": 34,
+    "CAkActionPlay": 394,
+    "CAkEvent": 432,
+    "CAkActionSetState": 17,
+    "CAkActionSeek": 23,
+    "CAkActionStop": 69,
+    "CAkActionPause": 6,
+    "CAkActionPlayEvent": 1,
+    "CAkActionSetGameParameter": 2,
+    "CAkActionResume": 5
+  },
+  "xml_sha256": "ac53f82acd2885412e4dfe675afb93c6c72da3b28de721cdf478a0fe7f239c37",
+  "bank_generator_language_values": [
+    {
+      "filename": "Init.bnk",
+      "path": "D:\\steamtest\\steamapps\\common\\Foundation\\audio",
+      "version": "150",
+      "dwLanguageID": 393239870
+    },
+    {
+      "filename": "core.bnk",
+      "path": "D:\\steamtest\\steamapps\\common\\Foundation\\audio",
+      "version": "150",
+      "dwLanguageID": 393239870
+    },
+    {
+      "filename": "audio.bnk",
+      "path": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture",
+      "version": "150",
+      "dwLanguageID": 393239870
+    }
+  ],
+  "notes": [
+    "SoundBank BKHD dwLanguageID is generator field; AKPK language table ID0 means sfx, not the same numeric domain.",
+    "Parser errors/skips=0 does not imply opaque plugin parameter fields were semantically decoded.",
+    "Names from wwiser default/companion inference are tagged; unknown names remain numeric IDs.",
+    "No game runtime execution or actual event playback was observed."
+  ],
+  "plugin_counts": {
+    "0x00B50007 [No Output]": 1,
+    "0x00AE0007 [System]": 1,
+    "0x00810003 [Wwise Meter]": 9,
+    "0x007F0003 [Wwise Convolution Reverb]": 106,
+    "0x006E0003 [Wwise Peak Limiter]": 2,
+    "0x006C0003 [Wwise Compressor]": 8,
+    "0x00870003 [Wwise Stereo Delay]": 2,
+    "0x00650002 [Wwise Silence]": 345
+  },
+  "effect_media_references": 105,
+  "plug_referenced_by_plugins": {
+    "0x007F0003 [Wwise Convolution Reverb]": 105
+  },
+  "inline_layer_count": 17,
+  "opaque_plugin_bytes": 188
+}

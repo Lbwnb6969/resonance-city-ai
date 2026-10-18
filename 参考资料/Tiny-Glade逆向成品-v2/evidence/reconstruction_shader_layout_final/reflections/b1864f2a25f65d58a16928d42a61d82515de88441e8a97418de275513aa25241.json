@@ -1,0 +1,147 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_53" : {
+            "name" : "VermeerStrokePacked_natural",
+            "members" : [
+                {
+                    "name" : "pos",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "color",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "size_rotation",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "appear_t",
+                    "type" : "float",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_56" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_53",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_219" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_218" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "max_strokes",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "brush_tex",
+                    "type" : "_219",
+                    "offset" : 4
+                },
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 8
+                },
+                {
+                    "name" : "progress_t",
+                    "type" : "float",
+                    "offset" : 16
+                },
+                {
+                    "name" : "photomode",
+                    "type" : "uint",
+                    "offset" : 20
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec4",
+            "name" : "entryPointParam_vs_main.tint",
+            "location" : 0
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main.uv",
+            "location" : 1
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main.appear_frac",
+            "location" : 2
+        },
+        {
+            "type" : "uint",
+            "name" : "entryPointParam_vs_main.stroke_idx",
+            "location" : 3
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "resource_handles",
+            "array" : [
+                0
+            ],
+            "array_size_is_literal" : [
+                true
+            ],
+            "set" : 1,
+            "binding" : 0
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_56",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_218",
+            "name" : "GlobalParams_natural",
+            "block_size" : 24,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

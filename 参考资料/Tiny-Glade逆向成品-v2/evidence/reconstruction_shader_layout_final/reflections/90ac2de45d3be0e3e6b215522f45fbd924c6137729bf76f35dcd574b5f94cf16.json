@@ -1,0 +1,475 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_21" : {
+            "name" : "_Array_natural_float12",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "float",
+                    "array" : [
+                        12
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_22" : {
+            "name" : "Affine3Packed_natural",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "_21",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_23" : {
+            "name" : "InstanceData_natural",
+            "members" : [
+                {
+                    "name" : "xform",
+                    "type" : "_22",
+                    "offset" : 0
+                },
+                {
+                    "name" : "wallspace_x_range_packed",
+                    "type" : "uint",
+                    "offset" : 48
+                },
+                {
+                    "name" : "seed",
+                    "type" : "uint",
+                    "offset" : 52
+                },
+                {
+                    "name" : "wall_slot_is_wooden_packed",
+                    "type" : "uint",
+                    "offset" : 56
+                },
+                {
+                    "name" : "mesh_size_x",
+                    "type" : "float",
+                    "offset" : 60
+                }
+            ]
+        },
+        "_25" : {
+            "name" : "material_data_nani_instance_data",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "_23",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 64
+                }
+            ]
+        },
+        "_30" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_1449" : {
+            "name" : "wall_identity_data_slot_wall_ids",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_1629" : {
+            "name" : "gl_PerVertex",
+            "members" : [
+                {
+                    "name" : "gl_Position",
+                    "type" : "vec4"
+                },
+                {
+                    "name" : "gl_PointSize",
+                    "type" : "float"
+                },
+                {
+                    "name" : "gl_ClipDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                },
+                {
+                    "name" : "gl_CullDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        },
+        "_1638" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_1681" : {
+            "name" : "wall_color_data_wall_color_ids",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_1698" : {
+            "name" : "_MatrixStorage_float3x3_ColMajornatural",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "vec3",
+                    "array" : [
+                        3
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        }
+    },
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Position",
+            "location" : 0
+        },
+        {
+            "type" : "vec2",
+            "name" : "Vertex_UV",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "Vertex_Normal",
+            "location" : 2
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "uint",
+            "name" : "entryPointParam_vs_main_instance_seed",
+            "location" : 0
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_vertex_normal_ws",
+            "location" : 1
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_vertex_position_ws",
+            "location" : 2
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_pos_ms",
+            "location" : 3
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_dir_ms",
+            "location" : 4
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main_squish_factor",
+            "location" : 5
+        },
+        {
+            "type" : "vec3",
+            "name" : "entryPointParam_vs_main_offset_from_instance_transform",
+            "location" : 6
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main_global_arch_height",
+            "location" : 7
+        },
+        {
+            "type" : "float",
+            "name" : "entryPointParam_vs_main_stone_foundation_clip_y",
+            "location" : 8
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_frag_wall_uv",
+            "location" : 9
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main_color_id",
+            "location" : 10
+        },
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_frag_position_ws_no_brick_depth_xz",
+            "location" : 11
+        },
+        {
+            "type" : "int",
+            "name" : "entryPointParam_vs_main_flags",
+            "location" : 12
+        },
+        {
+            "type" : "uint",
+            "name" : "entryPointParam_vs_main_instance_index",
+            "location" : 13
+        },
+        {
+            "type" : "_1698",
+            "name" : "entryPointParam_vs_main_normal_matrix",
+            "location" : 14
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_25",
+            "name" : "material_data_nani_instance_data",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_30",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 6,
+            "binding" : 0
+        },
+        {
+            "type" : "_1449",
+            "name" : "wall_identity_data_slot_wall_ids",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 21,
+            "binding" : 0
+        },
+        {
+            "type" : "_1681",
+            "name" : "wall_color_data_wall_color_ids",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 19,
+            "binding" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_1638",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 5,
+            "binding" : 0
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "material_data_branch_t",
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_branch_y",
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_branch_g",
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "texture2D",
+            "name" : "material_data_branch_e",
+            "set" : 0,
+            "binding" : 4
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_llr",
+            "set" : 1,
+            "binding" : 1
+        }
+    ]
+}

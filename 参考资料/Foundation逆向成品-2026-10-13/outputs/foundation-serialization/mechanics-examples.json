@@ -1,0 +1,2323 @@
+[
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Behaviors/Behavior Farmer Common Croft.bt",
+    "absolute_offset": 307798,
+    "length": 10037,
+    "sha256": "b1ab89450b7c9f6cc8f5afe301ca3cf0a71f2b79c16d368407e358467f944dcf",
+    "roots": {
+      "root": {
+        "@": {
+          "version": 1
+        },
+        "BehaviorTree": {
+          "@": {},
+          "VariableList": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "AgentData"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSContextDataAgent"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSContextDataAgent"
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "TransportData"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "568f6021-b249-4a6f-b79e-e0483c316b8f"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSContextResourceTransportData"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSContextResourceTransportData"
+                  },
+                  "ResourceTransportSetupOverride": {
+                    "@": {
+                      "value": "00000000-0000-0000-0000-000000000000"
+                    }
+                  },
+                  "DropoffDurationInSecs": {
+                    "@": {
+                      "value": 0.0
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "TransportActivityMessage"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "164b85ed-8bea-46f5-9591-f25693bd5029"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "GamSBehaviorTreeString"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "GamSBehaviorTreeString"
+                  },
+                  "String": {
+                    "@": {
+                      "value": "FETCHING_RESOURCE_X_AT_Y"
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "WorkTime"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "6af43939-507a-4076-a813-6052fa119df4"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "GamSBehaviorTreeLoopData"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "GamSBehaviorTreeLoopData"
+                  },
+                  "LoopCount": {
+                    "@": {
+                      "value": 0
+                    }
+                  },
+                  "Duration": {
+                    "@": {
+                      "value": 0.0
+                    }
+                  },
+                  "MaximumDuration": {
+                    "@": {
+                      "value": 3.4028230607370965e+38
+                    }
+                  },
+                  "IsInfinite": {
+                    "@": {
+                      "value": false
+                    }
+                  },
+                  "IsDuration": {
+                    "@": {
+                      "value": true
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "WORK IL"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "6eda39a1-3053-47b1-afff-83368d3e4a39"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSContextDataInteractiveLocationPurpose"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSContextDataInteractiveLocationPurpose"
+                  },
+                  "InteractiveLocationPurpose": {
+                    "@": {
+                      "value": "WORK"
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "IL Destination"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSContextDataLocation"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSContextDataLocation"
+                  },
+                  "CanNavigateOnGround": {
+                    "@": {
+                      "value": true
+                    }
+                  },
+                  "CanNavigateOnWater": {
+                    "@": {
+                      "value": false
+                    }
+                  },
+                  "GotoObjectPosition": {
+                    "@": {
+                      "value": false
+                    }
+                  },
+                  "IsSetOrientationOnDestination": {
+                    "@": {
+                      "value": true
+                    }
+                  },
+                  "OrientationOffset": {
+                    "@": {
+                      "value": 0.0
+                    }
+                  },
+                  "MinDistanceToDestination": {
+                    "@": {
+                      "value": 0.0
+                    }
+                  },
+                  "DestinationPosition": {
+                    "@": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0
+                    }
+                  },
+                  "DestinationObject": {
+                    "@": {
+                      "value": "00000000-0000-0000-0000-000000000000"
+                    }
+                  },
+                  "HasOffset": {
+                    "@": {
+                      "value": false
+                    }
+                  },
+                  "AlternativeDestinationList": {
+                    "@": {}
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "Work On Croft"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "c5d305cd-316f-44a5-99a6-e15596804941"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSWaitData"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSWaitData"
+                  },
+                  "TimeToWait": {
+                    "@": {
+                      "value": 15.0
+                    }
+                  },
+                  "Animation": {
+                    "@": {
+                      "value": "NONE"
+                    }
+                  },
+                  "SetIdleAfterWait": {
+                    "@": {
+                      "value": true
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamSBehaviorTreeVariableInfo"
+                },
+                "Name": {
+                  "@": {
+                    "value": "Activity Tending The Croft"
+                  }
+                },
+                "IsPublic": {
+                  "@": {
+                    "value": false
+                  }
+                },
+                "Id": {
+                  "@": {
+                    "value": "c7dfa9fd-55be-4f66-ad24-50951c8f566d"
+                  }
+                },
+                "TypeDefinition": {
+                  "@": {
+                    "value": "PlaSContextActivityType"
+                  }
+                },
+                "DefaultValue": {
+                  "@": {
+                    "type": "PlaSContextActivityType"
+                  },
+                  "ActivityMessage": {
+                    "@": {
+                      "value": "CROFT_ACTIVITY_TENDING"
+                    }
+                  },
+                  "ActivityType": {
+                    "@": {
+                      "value": "PRODUCTION"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "CompatibilityVariableIdList": {
+            "@": {}
+          }
+        },
+        "NodeGraph": {
+          "@": {
+            "rootNodeId": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+            "rootNodePosition": [
+              464,
+              -477
+            ]
+          },
+          "NodeList": {
+            "@": {},
+            "Node": [
+              {
+                "@": {
+                  "type": "GamCBehaviorTreeNodeCompositeSequencer",
+                  "id": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+                  "name": "Sequencer",
+                  "position": [
+                    192,
+                    -168
+                  ]
+                },
+                "SlotList": {
+                  "@": {}
+                }
+              },
+              {
+                "@": {
+                  "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+                  "id": "6bf65533-0196-4fa9-9e0d-28ab733bd239",
+                  "name": "",
+                  "position": [
+                    302,
+                    -7
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "AgentData",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportData",
+                        "value": "568f6021-b249-4a6f-b79e-e0483c316b8f"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportingFromActivityMessage",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportingToActivityMessage",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "6bf65533-0196-4fa9-9e0d-28ab733bd239"
+                    }
+                  },
+                  "BehaviorTree": {
+                    "@": {
+                      "value": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamCBehaviorTreeNodeDecoratorRepeatUntilFail",
+                  "id": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+                  "name": "Repeat until fail",
+                  "position": [
+                    -469,
+                    2
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Repeat Data",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Secondary Timer Constraint",
+                        "value": "6af43939-507a-4076-a813-6052fa119df4"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "0c5de5bc-521a-4186-ae99-9f34cc13f151"
+                    }
+                  },
+                  "FailsIfChildFails": {
+                    "@": {
+                      "value": false
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeCommonCroftFindResourceForDepot",
+                  "id": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80",
+                  "name": "",
+                  "position": [
+                    -113,
+                    -4
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Transport Data",
+                        "value": "568f6021-b249-4a6f-b79e-e0483c316b8f"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Transporting Agent Activity Message",
+                        "value": "164b85ed-8bea-46f5-9591-f25693bd5029"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80"
+                    }
+                  },
+                  "IsFindingResourceInternal": {
+                    "@": {
+                      "value": false
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeCommonCroftFindResourceForDepot",
+                  "id": "1cd82181-21cd-4d33-98e5-1ea16e198d42",
+                  "name": "",
+                  "position": [
+                    -708,
+                    305
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Transport Data",
+                        "value": "568f6021-b249-4a6f-b79e-e0483c316b8f"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Transporting Agent Activity Message",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "1cd82181-21cd-4d33-98e5-1ea16e198d42"
+                    }
+                  },
+                  "IsFindingResourceInternal": {
+                    "@": {
+                      "value": true
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+                  "id": "cae6efdf-4eac-44ca-9519-4b2d9c61c693",
+                  "name": "",
+                  "position": [
+                    -284,
+                    306
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "AgentData",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportData",
+                        "value": "568f6021-b249-4a6f-b79e-e0483c316b8f"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportingFromActivityMessage",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "TransportingToActivityMessage",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "cae6efdf-4eac-44ca-9519-4b2d9c61c693"
+                    }
+                  },
+                  "BehaviorTree": {
+                    "@": {
+                      "value": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6"
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "GamCBehaviorTreeNodeCompositeSequencer",
+                  "id": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+                  "name": "Sequencer",
+                  "position": [
+                    -404,
+                    137
+                  ]
+                },
+                "SlotList": {
+                  "@": {}
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeFindInteractiveLocationInBuilding",
+                  "id": "3274645f-923c-4770-9b88-a0ba43ba8153",
+                  "name": "",
+                  "position": [
+                    405,
+                    182
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Interactive Location Purpose",
+                        "value": "6eda39a1-3053-47b1-afff-83368d3e4a39"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Interactive Location Destination",
+                        "value": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Optional Building Destination",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Optional Out Has Found Location",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "3274645f-923c-4770-9b88-a0ba43ba8153"
+                    }
+                  },
+                  "IsFallbackOnBuildingPosition": {
+                    "@": {
+                      "value": false
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeGoTo",
+                  "id": "dc8e6d7a-7d7a-46be-8d95-ce6b78f83709",
+                  "name": "GoTo",
+                  "position": [
+                    1043,
+                    181
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Destination",
+                        "value": "e4ad6cdd-28f6-4077-ae34-770ee806ca4e"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Building Path Type",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Animation Data",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Walk Interactive Setup",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Animation Speed Multiplier",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "@": {
+                  "type": "GamCBehaviorTreeNodeCompositeSequencer",
+                  "id": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+                  "name": "Sequencer",
+                  "position": [
+                    861,
+                    27
+                  ]
+                },
+                "SlotList": {
+                  "@": {}
+                }
+              },
+              {
+                "@": {
+                  "type": "GamCBehaviorTreeNodeCompositeSelector",
+                  "id": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+                  "name": "Selector",
+                  "position": [
+                    420,
+                    -352
+                  ]
+                },
+                "SlotList": {
+                  "@": {}
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeWait",
+                  "id": "c88e3e2c-e498-4d97-8010-b88e0611f56b",
+                  "name": "Waiting",
+                  "position": [
+                    1404,
+                    181
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Time To Wait",
+                        "value": "c5d305cd-316f-44a5-99a6-e15596804941"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Optional Use Workstation Anim",
+                        "value": "00000000-0000-0000-0000-000000000000"
+                      }
+                    }
+                  ]
+                },
+                "Data": {
+                  "@": {},
+                  "Guid": {
+                    "@": {
+                      "value": "c88e3e2c-e498-4d97-8010-b88e0611f56b"
+                    }
+                  },
+                  "FailIfInteractiveLocationIsDisabled": {
+                    "@": {
+                      "value": false
+                    }
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCAgentNodeSetActivityMessage",
+                  "id": "460daa76-4eba-4ddd-9a75-19651c175bea",
+                  "name": "SetActivityMessage",
+                  "position": [
+                    768,
+                    178
+                  ]
+                },
+                "SlotList": {
+                  "@": {},
+                  "Slot": [
+                    {
+                      "@": {
+                        "name": "Agent Data",
+                        "value": "d795474a-b03b-4d4d-aea4-740f5ef8311c"
+                      }
+                    },
+                    {
+                      "@": {
+                        "name": "Activity Type Data",
+                        "value": "c7dfa9fd-55be-4f66-ad24-50951c8f566d"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "ConnectionList": {
+            "@": {},
+            "Connection": [
+              {
+                "@": {
+                  "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+                  "to": "0c5de5bc-521a-4186-ae99-9f34cc13f151"
+                }
+              },
+              {
+                "@": {
+                  "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+                  "to": "8c1829f5-aab0-49d1-ab6a-749af0ff8c80"
+                }
+              },
+              {
+                "@": {
+                  "from": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a",
+                  "to": "6bf65533-0196-4fa9-9e0d-28ab733bd239"
+                }
+              },
+              {
+                "@": {
+                  "from": "0c5de5bc-521a-4186-ae99-9f34cc13f151",
+                  "to": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae"
+                }
+              },
+              {
+                "@": {
+                  "from": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+                  "to": "1cd82181-21cd-4d33-98e5-1ea16e198d42"
+                }
+              },
+              {
+                "@": {
+                  "from": "f400a9b1-f55f-47b1-ba1b-90da9fbf52ae",
+                  "to": "cae6efdf-4eac-44ca-9519-4b2d9c61c693"
+                }
+              },
+              {
+                "@": {
+                  "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+                  "to": "3274645f-923c-4770-9b88-a0ba43ba8153"
+                }
+              },
+              {
+                "@": {
+                  "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+                  "to": "460daa76-4eba-4ddd-9a75-19651c175bea"
+                }
+              },
+              {
+                "@": {
+                  "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+                  "to": "dc8e6d7a-7d7a-46be-8d95-ce6b78f83709"
+                }
+              },
+              {
+                "@": {
+                  "from": "7d7b3713-57d6-4c54-a797-8f69e843c071",
+                  "to": "c88e3e2c-e498-4d97-8010-b88e0611f56b"
+                }
+              },
+              {
+                "@": {
+                  "from": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+                  "to": "ad7df3e5-74d8-4725-b9df-54b9b9a96b3a"
+                }
+              },
+              {
+                "@": {
+                  "from": "bc020212-fbdf-4d0c-b5c3-82abd9b2763b",
+                  "to": "7d7b3713-57d6-4c54-a797-8f69e843c071"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/root/NodeGraph/NodeList/Node/Data/BehaviorTree/@value",
+        "uuid": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+            "id": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+            "scriptingId": "BEHAVIOR_TRANSPORT"
+          }
+        ]
+      },
+      {
+        "property": "/root/NodeGraph/NodeList/Node/Data/BehaviorTree/@value",
+        "uuid": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Agent/Behaviors/Job/Behavior Transport.bt",
+            "id": "1c2a2ab5-c7a0-498e-ad58-9d4891002ee6",
+            "scriptingId": "BEHAVIOR_TRANSPORT"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Agent/Characters/Animals/Chicken/AnimalConfig_Chicken.data",
+    "absolute_offset": 358609,
+    "length": 1321,
+    "sha256": "0c7d73945eb333064c09e68486782c6142075ef7ed84553e8358d56dbcadeb03",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "AnimalNameKey": {
+          "@": {
+            "value": "CROFT_ANIMAL_CHICKEN_NAME_PLUR"
+          }
+        },
+        "Name": {
+          "@": {
+            "value": "Chicken"
+          }
+        },
+        "Icon": {
+          "@": {
+            "value": "0af36bc7-02dd-4900-9cbc-59d0bd317932"
+          }
+        },
+        "ModelPrefabList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "b63d31b9-9906-4318-98f9-3639f8f36d9c"
+              }
+            },
+            {
+              "@": {
+                "value": "551c2a92-5234-4c04-9023-2568a9084c33"
+              }
+            },
+            {
+              "@": {
+                "value": "af935328-2db1-46c8-adbc-634b080c8261"
+              }
+            }
+          ]
+        },
+        "ModelScale": {
+          "@": {
+            "type": "GamCProceduralFloat"
+          },
+          "Type": {
+            "@": {
+              "value": "RANDOM_RANGE"
+            }
+          },
+          "Value": {
+            "@": {
+              "value": 1.5
+            }
+          },
+          "Min": {
+            "@": {
+              "value": 1.2000000476837158
+            }
+          },
+          "Max": {
+            "@": {
+              "value": 1.600000023841858
+            }
+          },
+          "Curve": {
+            "@": {
+              "value": "EXPO_IN_OUT"
+            }
+          }
+        },
+        "MovableData": {
+          "@": {
+            "value": "14fc286e-77b5-4279-9c1c-4c1fa73fab25"
+          }
+        },
+        "AgentProfile": {
+          "@": {
+            "value": "a26746a2-317e-4930-8402-d7bdd31e401f"
+          }
+        },
+        "StateList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "b62834ea-e7a9-46ef-9a51-3ad8c5503758"
+              }
+            },
+            {
+              "@": {
+                "value": "cc91f105-c534-4abf-b493-6b8eac7c72f4"
+              }
+            },
+            {
+              "@": {
+                "value": "d791e032-8c0f-425f-a4c4-6f908efe1904"
+              }
+            },
+            {
+              "@": {
+                "value": "57cd3f42-4da8-41b4-81ed-5ad1a4b034c8"
+              }
+            },
+            {
+              "@": {
+                "value": "a29b1581-eb8a-44b4-ad91-5d9bd275caa7"
+              }
+            },
+            {
+              "@": {
+                "value": "a8ce6922-0fe0-4e33-ba0c-c6480c8e227b"
+              }
+            }
+          ]
+        },
+        "StartingSatietyValue": {
+          "@": {
+            "value": 0.20000000298023224
+          }
+        },
+        "SatietyCycleDurationInSeconds": {
+          "@": {
+            "value": 2000.0
+          }
+        },
+        "SatietyIncreaseOnConsumptionPerSecond": {
+          "@": {
+            "value": 0.009999999776482582
+          }
+        },
+        "StarvingCooldownInSeconds": {
+          "@": {
+            "value": 420.0
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/Icon/@value",
+        "uuid": "0af36bc7-02dd-4900-9cbc-59d0bd317932",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "GuiSettings/Icons/Resources/Icon_Resource_Chicken.png",
+            "id": "0af36bc7-02dd-4900-9cbc-59d0bd317932"
+          }
+        ]
+      },
+      {
+        "property": "/object/ModelPrefabList/Item/@value",
+        "uuid": "b63d31b9-9906-4318-98f9-3639f8f36d9c",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Prefab/CHR_AGR_Hen_01A.prefab",
+            "id": "b63d31b9-9906-4318-98f9-3639f8f36d9c"
+          }
+        ]
+      },
+      {
+        "property": "/object/ModelPrefabList/Item/@value",
+        "uuid": "551c2a92-5234-4c04-9023-2568a9084c33",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Prefab/CHR_AGR_Hen_01B.prefab",
+            "id": "551c2a92-5234-4c04-9023-2568a9084c33"
+          }
+        ]
+      },
+      {
+        "property": "/object/ModelPrefabList/Item/@value",
+        "uuid": "af935328-2db1-46c8-adbc-634b080c8261",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Prefab/CHR_AGR_Hen_01C.prefab",
+            "id": "af935328-2db1-46c8-adbc-634b080c8261"
+          }
+        ]
+      },
+      {
+        "property": "/object/MovableData/@value",
+        "uuid": "14fc286e-77b5-4279-9c1c-4c1fa73fab25",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalMovable_Chicken.data",
+            "id": "14fc286e-77b5-4279-9c1c-4c1fa73fab25",
+            "type": "PlaCAssetAnimalMovable"
+          }
+        ]
+      },
+      {
+        "property": "/object/AgentProfile/@value",
+        "uuid": "a26746a2-317e-4930-8402-d7bdd31e401f",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/AgentProfileAnimal.data",
+            "id": "a26746a2-317e-4930-8402-d7bdd31e401f",
+            "type": "PlaCAssetAgentProfile"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "b62834ea-e7a9-46ef-9a51-3ad8c5503758",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Feed.data",
+            "id": "b62834ea-e7a9-46ef-9a51-3ad8c5503758",
+            "type": "PlaCAssetAnimalStateFeed"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "cc91f105-c534-4abf-b493-6b8eac7c72f4",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Follow_Feeder.data",
+            "id": "cc91f105-c534-4abf-b493-6b8eac7c72f4",
+            "type": "PlaCAssetAnimalStateFollow"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "d791e032-8c0f-425f-a4c4-6f908efe1904",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Perch.data",
+            "id": "d791e032-8c0f-425f-a4c4-6f908efe1904",
+            "type": "PlaCAssetAnimalStateInteract"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "57cd3f42-4da8-41b4-81ed-5ad1a4b034c8",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Flee.data",
+            "id": "57cd3f42-4da8-41b4-81ed-5ad1a4b034c8",
+            "type": "PlaCAssetAnimalStateFlee"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "a29b1581-eb8a-44b4-ad91-5d9bd275caa7",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Rest.data",
+            "id": "a29b1581-eb8a-44b4-ad91-5d9bd275caa7",
+            "type": "PlaCAssetAnimalStateRest"
+          }
+        ]
+      },
+      {
+        "property": "/object/StateList/Item/@value",
+        "uuid": "a8ce6922-0fe0-4e33-ba0c-c6480c8e227b",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalState_Chicken_Explore.data",
+            "id": "a8ce6922-0fe0-4e33-ba0c-c6480c8e227b",
+            "type": "PlaCAssetAnimalStateExplore"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Buildings/_Functions/Croft/BF_CommonCroftPart_ChickenCoop.data",
+    "absolute_offset": 359546266,
+    "length": 3375,
+    "sha256": "ff0977bd9f2ec22f2b1c628cdb7e6586448e52c2abb14eb44bcaee4afe053883",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "Name": {
+          "@": {
+            "value": "CROFT_CHICKEN_COOP"
+          }
+        },
+        "NamePluralKey": {
+          "@": {
+            "value": ""
+          }
+        },
+        "Description": {
+          "@": {
+            "value": "CROFT_ANIMAL_PEN_DESC"
+          }
+        },
+        "HasMaximumInstance": {
+          "@": {
+            "value": false
+          }
+        },
+        "MaximumInstanceAllowed": {
+          "@": {
+            "value": 1
+          }
+        },
+        "UpkeepPerCapacity": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {}
+          }
+        },
+        "UpkeepPerCapacityMultiplier": {
+          "@": {
+            "value": 1.0
+          }
+        },
+        "GameRuleModifierList": {
+          "@": {}
+        },
+        "IsDescriptionOverride": {
+          "@": {
+            "value": true
+          }
+        },
+        "ShowNameInTags": {
+          "@": {
+            "value": false
+          }
+        },
+        "IsDisplayable": {
+          "@": {
+            "value": true
+          }
+        },
+        "AssetAnimalConfig": {
+          "@": {
+            "value": "6ca08494-010d-4019-9db5-0ae8e5a165e5"
+          }
+        },
+        "AnimalSpawningLocationObjectName": {
+          "@": {
+            "value": "Locator_Chicken"
+          }
+        },
+        "MaximumAnimalSpawnCount": {
+          "@": {
+            "value": 5
+          }
+        },
+        "CooldownBetweenAnimalSpawningInSeconds": {
+          "@": {
+            "value": 420.0
+          }
+        },
+        "CooldownBetweenAnimalFeedingInSeconds": {
+          "@": {
+            "value": 180.0
+          }
+        },
+        "WorkerFeedingDurationInSeconds": {
+          "@": {
+            "value": 15.0
+          }
+        },
+        "MinimumSatietyRequiredToSpawn": {
+          "@": {
+            "value": 0.5
+          }
+        },
+        "FeederCapacity": {
+          "@": {
+            "value": 3.0
+          }
+        },
+        "ChildrenProductivityBoostMultiplier": {
+          "@": {
+            "value": 0.20000000298023224
+          }
+        },
+        "MinimumAnimalSatietyBeforeIgnoringFeedingCooldown": {
+          "@": {
+            "value": 0.10000000149011612
+          }
+        },
+        "TotalFodderConsumptionPerDay": {
+          "@": {
+            "value": 0.30000001192092896
+          }
+        },
+        "ProductionCollectionCycleList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "type": "PlaCDataResourceCollectionProductionCycle"
+              },
+              "OutputCollection": {
+                "@": {
+                  "type": "PlaCResourceCollection"
+                },
+                "Collection": {
+                  "@": {},
+                  "Item": [
+                    {
+                      "@": {
+                        "type": "PlaCDataResourceQuantityPair"
+                      },
+                      "Resource": {
+                        "@": {
+                          "value": "21084b64-ffb5-4990-9ec4-cf32d39cbd87"
+                        }
+                      },
+                      "Quantity": {
+                        "@": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "Time": {
+                "@": {
+                  "type": "PlaCDataTimeSystem"
+                },
+                "Type": {
+                  "@": {
+                    "value": "SECONDS"
+                  }
+                },
+                "Time": {
+                  "@": {
+                    "value": 90.0
+                  }
+                }
+              }
+            },
+            {
+              "@": {
+                "type": "PlaCDataResourceCollectionProductionCycle"
+              },
+              "OutputCollection": {
+                "@": {
+                  "type": "PlaCResourceCollection"
+                },
+                "Collection": {
+                  "@": {},
+                  "Item": [
+                    {
+                      "@": {
+                        "type": "PlaCDataResourceQuantityPair"
+                      },
+                      "Resource": {
+                        "@": {
+                          "value": "22e3c2ee-b20b-4b27-8fe5-e1bc8a35675b"
+                        }
+                      },
+                      "Quantity": {
+                        "@": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "Time": {
+                "@": {
+                  "type": "PlaCDataTimeSystem"
+                },
+                "Type": {
+                  "@": {
+                    "value": "SECONDS"
+                  }
+                },
+                "Time": {
+                  "@": {
+                    "value": 160.0
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "ResourceTypeToExcludeInWorldGuiList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "FODDER"
+              }
+            }
+          ]
+        },
+        "FieldSizeMultiplier": {
+          "@": {
+            "value": 4.0
+          }
+        },
+        "FeederResourceTransportOverride": {
+          "@": {
+            "value": "5681e092-b91d-47d5-b9f4-245e6aa2e99a"
+          }
+        },
+        "ParentCount": {
+          "@": {
+            "type": "GamCProceduralInteger"
+          },
+          "Type": {
+            "@": {
+              "value": "CONSTANT"
+            }
+          },
+          "Value": {
+            "@": {
+              "value": 1
+            }
+          },
+          "Min": {
+            "@": {
+              "value": 0
+            }
+          },
+          "Max": {
+            "@": {
+              "value": 10
+            }
+          },
+          "Curve": {
+            "@": {
+              "value": "LINEAR"
+            }
+          }
+        },
+        "ChildConfig": {
+          "@": {
+            "value": "4a092a81-6edf-4e70-bf12-aced8440fe42"
+          }
+        },
+        "ChildPerParentCount": {
+          "@": {
+            "type": "GamCProceduralInteger"
+          },
+          "Type": {
+            "@": {
+              "value": "CONSTANT"
+            }
+          },
+          "Value": {
+            "@": {
+              "value": 5
+            }
+          },
+          "Min": {
+            "@": {
+              "value": 2
+            }
+          },
+          "Max": {
+            "@": {
+              "value": 3
+            }
+          },
+          "Curve": {
+            "@": {
+              "value": "LINEAR"
+            }
+          }
+        },
+        "ChildNeededBuildingPartList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "7709e308-11f7-4956-9e91-b63076a34d8a"
+              }
+            },
+            {
+              "@": {
+                "value": "5b62946c-eb29-4bf8-a0d4-d8adf2ef578e"
+              }
+            }
+          ]
+        },
+        "AssetUnlockableChildNeededBuildingPart": {
+          "@": {
+            "value": "1e3b767c-df42-4c98-9952-73af4fd6d4a4"
+          }
+        },
+        "ExtraAnimalConfig": {
+          "@": {
+            "value": "709f4b1d-2815-475f-9627-16096ecab6ab"
+          }
+        },
+        "SpawnExtraAnimalTotalAnimalThreshold": {
+          "@": {
+            "value": 3
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/AssetAnimalConfig/@value",
+        "uuid": "6ca08494-010d-4019-9db5-0ae8e5a165e5",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chicken/AnimalConfig_Chicken.data",
+            "id": "6ca08494-010d-4019-9db5-0ae8e5a165e5",
+            "type": "PlaCAssetAnimalCroftConfig",
+            "scriptingId": "AGRI_ANIMAL_CONFIG_CHICKEN"
+          }
+        ]
+      },
+      {
+        "property": "/object/ProductionCollectionCycleList/Item/OutputCollection/Collection/Item/Resource/@value",
+        "uuid": "21084b64-ffb5-4990-9ec4-cf32d39cbd87",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Resources/Food/Eggs.data",
+            "id": "21084b64-ffb5-4990-9ec4-cf32d39cbd87",
+            "type": "PlaCAssetResource",
+            "scriptingId": "AGRI_RESOURCE_EGGS"
+          }
+        ]
+      },
+      {
+        "property": "/object/ProductionCollectionCycleList/Item/OutputCollection/Collection/Item/Resource/@value",
+        "uuid": "22e3c2ee-b20b-4b27-8fe5-e1bc8a35675b",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Resources/Food/Chicken.data",
+            "id": "22e3c2ee-b20b-4b27-8fe5-e1bc8a35675b",
+            "type": "PlaCAssetResource",
+            "scriptingId": "AGRI_RESOURCE_CHICKEN"
+          }
+        ]
+      },
+      {
+        "property": "/object/FeederResourceTransportOverride/@value",
+        "uuid": "5681e092-b91d-47d5-b9f4-245e6aa2e99a",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/WorkstationSetup/WSTransportSetup_FeedFowl.data",
+            "id": "5681e092-b91d-47d5-b9f4-245e6aa2e99a",
+            "type": "PlaCAssetInteractiveLocationSetup"
+          }
+        ]
+      },
+      {
+        "property": "/object/ChildConfig/@value",
+        "uuid": "4a092a81-6edf-4e70-bf12-aced8440fe42",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Chick/AnimalConfig_Chick.data",
+            "id": "4a092a81-6edf-4e70-bf12-aced8440fe42",
+            "type": "PlaCAssetAnimalCroftConfig",
+            "scriptingId": "AGRI_ANIMAL_CONFIG_CHICK"
+          }
+        ]
+      },
+      {
+        "property": "/object/ChildNeededBuildingPartList/Item/@value",
+        "uuid": "7709e308-11f7-4956-9e91-b63076a34d8a",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Buildings/Workplaces/CommonCroft/Parts/AGR_CommonCroft_AnimalIL/AGR_CommonCroft_ChickenPerch_01A_Part.data",
+            "id": "7709e308-11f7-4956-9e91-b63076a34d8a",
+            "type": "PlaCAssetBuildingPart",
+            "scriptingId": "AGRI_BUILDING_PART_CROFT_CHICKEN_PERCH_LADDER"
+          }
+        ]
+      },
+      {
+        "property": "/object/ChildNeededBuildingPartList/Item/@value",
+        "uuid": "5b62946c-eb29-4bf8-a0d4-d8adf2ef578e",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Buildings/Workplaces/CommonCroft/Parts/AGR_CommonCroft_AnimalIL/AGR_CommonCroft_ChickenPerch_02A_Part.data",
+            "id": "5b62946c-eb29-4bf8-a0d4-d8adf2ef578e",
+            "type": "PlaCAssetBuildingPart",
+            "scriptingId": "AGRI_BUILDING_PART_CROFT_CHICKEN_PERCH_WHEELBARROW"
+          }
+        ]
+      },
+      {
+        "property": "/object/AssetUnlockableChildNeededBuildingPart/@value",
+        "uuid": "1e3b767c-df42-4c98-9952-73af4fd6d4a4",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Unlockables/Festival/UNL_1_CroftLocation.data",
+            "id": "1e3b767c-df42-4c98-9952-73af4fd6d4a4",
+            "type": "PlaCAssetUnlockableEdict",
+            "scriptingId": "AGRI_FESTIVAL_UNLOCKABLE_CROFT_01"
+          }
+        ]
+      },
+      {
+        "property": "/object/ExtraAnimalConfig/@value",
+        "uuid": "709f4b1d-2815-475f-9627-16096ecab6ab",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+            "resource": "Agent/Characters/Animals/Rooster/AnimalConfig_Rooster.data",
+            "id": "709f4b1d-2815-475f-9627-16096ecab6ab",
+            "type": "PlaCAssetAnimalCroftConfig",
+            "scriptingId": "AGRI_ANIMAL_CONFIG_ROOSTER"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentNeeds/NeedEntertainment_Basic.data",
+    "absolute_offset": 1513704,
+    "length": 1168,
+    "sha256": "868b3c0a66c92d1f0a372772dcf4fca12a8b3c66af8a57378f3bb67b5d451528",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "Icon": {
+          "@": {
+            "value": "46e67208-ed57-4cbc-ba2c-8a322814a75e"
+          }
+        },
+        "NeedTypeName": {
+          "@": {
+            "value": "ENTERTAINMENT"
+          }
+        },
+        "NeedTypeDescription": {
+          "@": {
+            "value": "ENTERTAINMENT_DESC"
+          }
+        },
+        "FillDurationInSeconds": {
+          "@": {
+            "value": 630.0
+          }
+        },
+        "FillRate": {
+          "@": {
+            "value": 630.0
+          }
+        },
+        "GracePeriod": {
+          "@": {
+            "value": 300
+          }
+        },
+        "DaysBeforeReapplyingHappinessFactor": {
+          "@": {
+            "value": 30
+          }
+        },
+        "DelayAfterUnsuccessfulFill": {
+          "@": {
+            "value": 60.0
+          }
+        },
+        "IsUnique": {
+          "@": {
+            "value": false
+          }
+        },
+        "IsNeedFirstConsumptionBeforeLacking": {
+          "@": {
+            "value": false
+          }
+        },
+        "HappinessFactor": {
+          "@": {
+            "value": "800f1e3d-528c-4d8d-ac63-f6135affd629"
+          }
+        },
+        "NeedTypeList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "TAVERN"
+              }
+            }
+          ]
+        },
+        "RestrictToLocalProviders": {
+          "@": {
+            "value": true
+          }
+        },
+        "IsRequiringConsumeInteractiveLocation": {
+          "@": {
+            "value": false
+          }
+        },
+        "ResourceNeedActivityMessage": {
+          "@": {
+            "type": "PlaCDataResourceFetchingActivityMessage"
+          },
+          "ControlString": {
+            "@": {
+              "value": "FETCHING_RESOURCE_X_AT_Y"
+            }
+          },
+          "ActivityMessageParameters": {
+            "@": {},
+            "RESOURCE": {
+              "@": {
+                "value": true
+              }
+            },
+            "DEPOT": {
+              "@": {
+                "value": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/Icon/@value",
+        "uuid": "46e67208-ed57-4cbc-ba2c-8a322814a75e",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/GuiSettings/Shared Textures/Icons/Needs/Icon_Need_Entertainment_16px.png",
+            "id": "46e67208-ed57-4cbc-ba2c-8a322814a75e",
+            "scriptingId": "ICON_NEED_ENTERTAINMENT"
+          }
+        ]
+      },
+      {
+        "property": "/object/HappinessFactor/@value",
+        "uuid": "800f1e3d-528c-4d8d-ac63-f6135affd629",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Agent/HappinessFactors/EntertainmentFail.data",
+            "id": "800f1e3d-528c-4d8d-ac63-f6135affd629",
+            "type": "PlaCAssetHappinessFactor",
+            "scriptingId": "HAPPINESS_FACTOR_LACK_ENTERTAINMENT"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Agent/AgentNeeds/NeedFoodBasic.data",
+    "absolute_offset": 1519129,
+    "length": 1148,
+    "sha256": "bb6bbb7520369d2ad71b7175d91d64319a41a74811dfc0de4d8713b9d6b3c621",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "Icon": {
+          "@": {
+            "value": "47b03977-5dc0-4aa9-a2fa-71ea834867b3"
+          }
+        },
+        "NeedTypeName": {
+          "@": {
+            "value": "FOOD"
+          }
+        },
+        "NeedTypeDescription": {
+          "@": {
+            "value": "FOOD_DESC"
+          }
+        },
+        "FillDurationInSeconds": {
+          "@": {
+            "value": 630.0
+          }
+        },
+        "FillRate": {
+          "@": {
+            "value": 630.0
+          }
+        },
+        "GracePeriod": {
+          "@": {
+            "value": 180
+          }
+        },
+        "DaysBeforeReapplyingHappinessFactor": {
+          "@": {
+            "value": 30
+          }
+        },
+        "DelayAfterUnsuccessfulFill": {
+          "@": {
+            "value": 60.0
+          }
+        },
+        "IsUnique": {
+          "@": {
+            "value": false
+          }
+        },
+        "IsNeedFirstConsumptionBeforeLacking": {
+          "@": {
+            "value": false
+          }
+        },
+        "HappinessFactor": {
+          "@": {
+            "value": "9c0d03ce-6423-406c-bbbd-53525e9b568a"
+          }
+        },
+        "NeedTypeList": {
+          "@": {},
+          "Item": [
+            {
+              "@": {
+                "value": "FOOD"
+              }
+            }
+          ]
+        },
+        "RestrictToLocalProviders": {
+          "@": {
+            "value": true
+          }
+        },
+        "IsRequiringConsumeInteractiveLocation": {
+          "@": {
+            "value": false
+          }
+        },
+        "ResourceNeedActivityMessage": {
+          "@": {
+            "type": "PlaCDataResourceFetchingActivityMessage"
+          },
+          "ControlString": {
+            "@": {
+              "value": "FETCHING_RESOURCE_X_AT_Y"
+            }
+          },
+          "ActivityMessageParameters": {
+            "@": {},
+            "RESOURCE": {
+              "@": {
+                "value": true
+              }
+            },
+            "DEPOT": {
+              "@": {
+                "value": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/Icon/@value",
+        "uuid": "47b03977-5dc0-4aa9-a2fa-71ea834867b3",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/GuiSettings/Shared Textures/Icons/Needs/Icon_Need_Food_16px.png",
+            "id": "47b03977-5dc0-4aa9-a2fa-71ea834867b3",
+            "scriptingId": "ICON_NEED_FOOD"
+          }
+        ]
+      },
+      {
+        "property": "/object/HappinessFactor/@value",
+        "uuid": "9c0d03ce-6423-406c-bbbd-53525e9b568a",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Agent/HappinessFactors/FoodFail.data",
+            "id": "9c0d03ce-6423-406c-bbbd-53525e9b568a",
+            "type": "PlaCAssetHappinessFactor",
+            "scriptingId": "HAPPINESS_FACTOR_LACK_FOOD"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Buildings/_Functions/WorkplaceRecipe/WorkplaceRecipe_BuildingFunction_BakeryPart.data",
+    "absolute_offset": 2241396309,
+    "length": 741,
+    "sha256": "3f4244fb09e371114e84ba0406710fade99383d48b9f40cf164fd2f98c7975bc",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "ResourceListNeeded": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "ce07bea0-5650-4043-92e0-9867c558235b"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 3
+                  }
+                }
+              },
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "e2190aa6-68ae-4955-9f76-be71cfb53932"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 1
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "ResourceListProduced": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "cfb2b53e-f104-479d-9bf5-2db3845ea865"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 5
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "OptionalDescriptionKey": {
+          "@": {
+            "value": ""
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/ResourceListNeeded/Collection/Item/Resource/@value",
+        "uuid": "ce07bea0-5650-4043-92e0-9867c558235b",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Flour.data",
+            "id": "ce07bea0-5650-4043-92e0-9867c558235b",
+            "type": "PlaCAssetResource",
+            "scriptingId": "FLOUR"
+          }
+        ]
+      },
+      {
+        "property": "/object/ResourceListNeeded/Collection/Item/Resource/@value",
+        "uuid": "e2190aa6-68ae-4955-9f76-be71cfb53932",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Water.data",
+            "id": "e2190aa6-68ae-4955-9f76-be71cfb53932",
+            "type": "PlaCAssetResource",
+            "scriptingId": "WATER"
+          }
+        ]
+      },
+      {
+        "property": "/object/ResourceListProduced/Collection/Item/Resource/@value",
+        "uuid": "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Bread.data",
+            "id": "cfb2b53e-f104-479d-9bf5-2db3845ea865",
+            "type": "PlaCAssetResource",
+            "scriptingId": "BREAD"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Buildings/_Functions/WorkplaceRecipe/WorkplaceRecipe_BuildingFunction_WheatFarmPart.data",
+    "absolute_offset": 2241431246,
+    "length": 608,
+    "sha256": "5be4cfe13c4493eeb2acf931775cf0d7f0adf65a59983d3936d0ee39a8b904fc",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "ResourceListNeeded": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "d8008c2c-8a5f-46d4-bf51-581810804d8f"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 1
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "ResourceListProduced": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "d8008c2c-8a5f-46d4-bf51-581810804d8f"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 1
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "OptionalDescriptionKey": {
+          "@": {
+            "value": ""
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/ResourceListNeeded/Collection/Item/Resource/@value",
+        "uuid": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Wheat.data",
+            "id": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+            "type": "PlaCAssetResource",
+            "scriptingId": "WHEAT"
+          }
+        ]
+      },
+      {
+        "property": "/object/ResourceListProduced/Collection/Item/Resource/@value",
+        "uuid": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Wheat.data",
+            "id": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+            "type": "PlaCAssetResource",
+            "scriptingId": "WHEAT"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+    "resource": "asset/Buildings/_Functions/WorkplaceRecipe/WorkplaceRecipe_BuildingFunction_Windmill Part.data",
+    "absolute_offset": 2241432028,
+    "length": 608,
+    "sha256": "14d2f243ec22b11384b213ce18f4ff94f385faf3d5c66e6136c79a1725f0808f",
+    "roots": {
+      "object": {
+        "@": {
+          "version": 1
+        },
+        "ResourceListNeeded": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "d8008c2c-8a5f-46d4-bf51-581810804d8f"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 4
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "ResourceListProduced": {
+          "@": {
+            "type": "PlaCResourceCollection"
+          },
+          "Collection": {
+            "@": {},
+            "Item": [
+              {
+                "@": {
+                  "type": "PlaCDataResourceQuantityPair"
+                },
+                "Resource": {
+                  "@": {
+                    "value": "ce07bea0-5650-4043-92e0-9867c558235b"
+                  }
+                },
+                "Quantity": {
+                  "@": {
+                    "value": 1
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "OptionalDescriptionKey": {
+          "@": {
+            "value": ""
+          }
+        }
+      }
+    },
+    "resolved_references": [
+      {
+        "property": "/object/ResourceListNeeded/Collection/Item/Resource/@value",
+        "uuid": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Wheat.data",
+            "id": "d8008c2c-8a5f-46d4-bf51-581810804d8f",
+            "type": "PlaCAssetResource",
+            "scriptingId": "WHEAT"
+          }
+        ]
+      },
+      {
+        "property": "/object/ResourceListProduced/Collection/Item/Resource/@value",
+        "uuid": "ce07bea0-5650-4043-92e0-9867c558235b",
+        "target": [
+          {
+            "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+            "resource": "asset/Resources/Food/Flour.data",
+            "id": "ce07bea0-5650-4043-92e0-9867c558235b",
+            "type": "PlaCAssetResource",
+            "scriptingId": "FLOUR"
+          }
+        ]
+      }
+    ]
+  }
+]

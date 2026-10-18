@@ -1,0 +1,103 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Buildings/Workplaces/CommonCroft/IL_Perch.data",
+  "absolute_offset": 291494541,
+  "length": 209,
+  "sha256": "a578b3d8250d505d4bb4708421edf76d8b2875e3117bafb6a4b6a5bd998f0d3e",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Buildings/Workplaces/CommonCroft/IL_Perch.data",
+    "id": "b52197e3-035c-4069-87e0-9ee8ddcfe2fd",
+    "type": "PlaCAssetInteractiveLocationSetup"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "PurposeList": {
+        "@": {},
+        "Item": [
+          {
+            "@": {
+              "value": "AGRI_ANIMAL_PERCH"
+            }
+          }
+        ]
+      },
+      "CharacterSetup": {
+        "@": {
+          "type": "null"
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "PurposeList",
+      "Item",
+      "value",
+      "CharacterSetup",
+      "type"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "PurposeList",
+            "offset": 36,
+            "attributes": [],
+            "children": [
+              {
+                "name": "Item",
+                "offset": 52,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 7,
+                    "value": "AGRI_ANIMAL_PERCH",
+                    "offset": 68
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "CharacterSetup",
+            "offset": 98,
+            "attributes": [
+              {
+                "name": "type",
+                "tag": 7,
+                "value": "null",
+                "offset": 114
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 7,
+    "tag_counts": {
+      "0": 1,
+      "7": 2
+    }
+  },
+  "references": []
+}

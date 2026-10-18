@@ -1,0 +1,27 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "frag"
+        }
+    ],
+    "inputs" : [
+        {
+            "type" : "vec3",
+            "name" : "vs_out_normal",
+            "location" : 1
+        },
+        {
+            "type" : "vec3",
+            "name" : "vs_out_color",
+            "location" : 0
+        }
+    ],
+    "outputs" : [
+        {
+            "type" : "uvec2",
+            "name" : "entryPointParam_ps_main_gbuffer",
+            "location" : 0
+        }
+    ]
+}

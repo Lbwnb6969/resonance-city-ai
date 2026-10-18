@@ -1,0 +1,313 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                32,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_71" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "world_subset",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "draw_list_index",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "list_draw_cmd_offset",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "list_merge_window_offset",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "list_merge_window_subtotal_offset",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_82" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_93" : {
+            "name" : "_Array_natural_vector<uint,4>34",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "uvec4",
+                    "array" : [
+                        34
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_92" : {
+            "name" : "DrawListMergeWindows_natural",
+            "members" : [
+                {
+                    "name" : "array",
+                    "type" : "_93",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_185" : {
+            "name" : "InstanceListOffset_natural",
+            "members" : [
+                {
+                    "name" : "array",
+                    "type" : "_93",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_248" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_259" : {
+            "name" : "MeshAtlasPartInfo_natural",
+            "members" : [
+                {
+                    "name" : "first_index",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "index_count",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "bounding_sphere_radius",
+                    "type" : "float",
+                    "offset" : 8
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "uint",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_257" : {
+            "name" : "_Array_natural_MeshAtlasPartInfo1024",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "_259",
+                    "array" : [
+                        1024
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16
+                }
+            ]
+        },
+        "_262" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_257",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 16384
+                }
+            ]
+        },
+        "_326" : {
+            "name" : "DrawIndexedIndirectCommand_natural",
+            "members" : [
+                {
+                    "name" : "index_count",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "instance_count",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "first_index",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "vertex_offset",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "first_instance",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_329" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_326",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 20
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_82",
+            "name" : "thread_count_buffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 4
+        },
+        {
+            "type" : "_82",
+            "name" : "merge_window_draw_cmd_counts",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 5
+        },
+        {
+            "type" : "_82",
+            "name" : "merge_window_draw_cmd_subtotals",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 6
+        },
+        {
+            "type" : "_82",
+            "name" : "sorted_instances_buffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "_248",
+            "name" : "instance_indirection_allocator_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 9
+        },
+        {
+            "type" : "_262",
+            "name" : "atlas_part_info",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_329",
+            "name" : "draw_list_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 7
+        },
+        {
+            "type" : "_248",
+            "name" : "instance_indirection_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 8
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_92",
+            "name" : "DrawListMergeWindows_natural",
+            "block_size" : 544,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_185",
+            "name" : "InstanceListOffset_natural",
+            "block_size" : 544,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_71",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

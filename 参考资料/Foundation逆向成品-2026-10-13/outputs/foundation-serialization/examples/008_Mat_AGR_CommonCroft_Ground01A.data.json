@@ -1,0 +1,492 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "Art/Materials/Mat_AGR_CommonCroft_Ground01A.data",
+  "absolute_offset": 62133231,
+  "length": 1083,
+  "sha256": "8b7a5fe67ea9165d0d3311148b3f9b9ba8109dd284f961453b391b989210ac67",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "Art/Materials/Mat_AGR_CommonCroft_Ground01A.data",
+    "id": "bdb51989-7648-45e6-bc8b-76a78d0e0765",
+    "type": "GenCMaterial"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "ShaderProgram": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "AlbedoColor": {
+        "@": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        }
+      },
+      "Metalness": {
+        "@": {
+          "value": 0.0
+        }
+      },
+      "Roughness": {
+        "@": {
+          "value": 1.0
+        }
+      },
+      "RenderMode": {
+        "@": {
+          "value": "DEFAULT"
+        }
+      },
+      "HasAlphaTest": {
+        "@": {
+          "value": false
+        }
+      },
+      "HasShadow": {
+        "@": {
+          "value": true
+        }
+      },
+      "BackFaceVisible": {
+        "@": {
+          "value": false
+        }
+      },
+      "HasDepthTest": {
+        "@": {
+          "value": true
+        }
+      },
+      "AlbedoTexture": {
+        "@": {
+          "value": "a4ba40e1-d6f6-4b7d-910f-af7d9c6cdaf4"
+        }
+      },
+      "MetalnessTexture": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "RoughnessTexture": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "SpecularTexture": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "NormalTexture": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "GlowTexture": {
+        "@": {
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "TransparencyOrder": {
+        "@": {
+          "value": 0
+        }
+      },
+      "StencilMask": {
+        "@": {},
+        "TERRAIN": {
+          "@": {
+            "value": false
+          }
+        },
+        "UI": {
+          "@": {
+            "value": false
+          }
+        }
+      },
+      "ParameterList": {
+        "@": {}
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "ShaderProgram",
+      "value",
+      "AlbedoColor",
+      "r",
+      "g",
+      "b",
+      "a",
+      "Metalness",
+      "Roughness",
+      "RenderMode",
+      "HasAlphaTest",
+      "HasShadow",
+      "BackFaceVisible",
+      "HasDepthTest",
+      "AlbedoTexture",
+      "MetalnessTexture",
+      "RoughnessTexture",
+      "SpecularTexture",
+      "NormalTexture",
+      "GlowTexture",
+      "TransparencyOrder",
+      "StencilMask",
+      "TERRAIN",
+      "UI",
+      "ParameterList"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "ShaderProgram",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 52
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "AlbedoColor",
+            "offset": 80,
+            "attributes": [
+              {
+                "name": "r",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 96
+              },
+              {
+                "name": "g",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 112
+              },
+              {
+                "name": "b",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 128
+              },
+              {
+                "name": "a",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 144
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Metalness",
+            "offset": 160,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 0.0,
+                "offset": 176
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "Roughness",
+            "offset": 192,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 4,
+                "value": 1.0,
+                "offset": 208
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "RenderMode",
+            "offset": 224,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 7,
+                "value": "DEFAULT",
+                "offset": 240
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HasAlphaTest",
+            "offset": 260,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 276
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HasShadow",
+            "offset": 292,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 308
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "BackFaceVisible",
+            "offset": 324,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": false,
+                "offset": 340
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "HasDepthTest",
+            "offset": 356,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 6,
+                "value": true,
+                "offset": 372
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "AlbedoTexture",
+            "offset": 388,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "a4ba40e1-d6f6-4b7d-910f-af7d9c6cdaf4",
+                "offset": 404
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "MetalnessTexture",
+            "offset": 432,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 448
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "RoughnessTexture",
+            "offset": 476,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 492
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "SpecularTexture",
+            "offset": 520,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 536
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "NormalTexture",
+            "offset": 564,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 580
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "GlowTexture",
+            "offset": 608,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "00000000-0000-0000-0000-000000000000",
+                "offset": 624
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "TransparencyOrder",
+            "offset": 652,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 2,
+                "value": 0,
+                "offset": 668
+              }
+            ],
+            "children": []
+          },
+          {
+            "name": "StencilMask",
+            "offset": 684,
+            "attributes": [],
+            "children": [
+              {
+                "name": "TERRAIN",
+                "offset": 700,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 6,
+                    "value": false,
+                    "offset": 716
+                  }
+                ],
+                "children": []
+              },
+              {
+                "name": "UI",
+                "offset": 732,
+                "attributes": [
+                  {
+                    "name": "value",
+                    "tag": 6,
+                    "value": false,
+                    "offset": 748
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "ParameterList",
+            "offset": 764,
+            "attributes": [],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 43,
+    "tag_counts": {
+      "0": 1,
+      "8": 7,
+      "4": 6,
+      "7": 1,
+      "6": 6,
+      "2": 1
+    }
+  },
+  "references": [
+    {
+      "property": "/object/ShaderProgram/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/AlbedoTexture/@value",
+      "uuid": "a4ba40e1-d6f6-4b7d-910f-af7d9c6cdaf4",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\game.package",
+          "resource": "asset/Art/Textures/ground/terrain layers/Agriculture DLC/AGR_CommonCroft_Ground01A.tif",
+          "id": "a4ba40e1-d6f6-4b7d-910f-af7d9c6cdaf4"
+        }
+      ]
+    },
+    {
+      "property": "/object/MetalnessTexture/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/RoughnessTexture/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/SpecularTexture/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/NormalTexture/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    },
+    {
+      "property": "/object/GlowTexture/@value",
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "status": "null",
+      "targets": []
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                8,
+                8,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_17" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "splat_depth_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_40" : {
+            "name" : "EntryPointParams_natural",
+            "members" : [
+                {
+                    "name" : "clear_value",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        }
+    },
+    "images" : [
+        {
+            "type" : "uimage2D",
+            "name" : "splat_depth",
+            "writeonly" : true,
+            "set" : 0,
+            "binding" : 1,
+            "format" : "r32ui"
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_17",
+            "name" : "GlobalParams_natural",
+            "block_size" : 8,
+            "set" : 0,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_40",
+            "name" : "entryPointParams",
+            "push_constant" : true
+        }
+    ]
+}

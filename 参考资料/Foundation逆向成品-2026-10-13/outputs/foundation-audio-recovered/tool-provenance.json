@@ -1,0 +1,62 @@
+{
+  "retrieved_date": "2026-10-13",
+  "wwiser": {
+    "source": "https://github.com/bnnm/wwiser",
+    "commit": "08e937b649bc7007c234bbd59e34a41d5eef3b38",
+    "download": "https://codeload.github.com/bnnm/wwiser/zip/08e937b649bc7007c234bbd59e34a41d5eef3b38",
+    "version": "v20260808"
+  },
+  "vgmstream": {
+    "source": "https://github.com/vgmstream/vgmstream",
+    "release": "r2117",
+    "download": "https://github.com/vgmstream/vgmstream/releases/download/r2117/vgmstream-win64.zip",
+    "asset_api": "https://api.github.com/repos/vgmstream/vgmstream/releases/assets/424616369",
+    "github_release_asset_sha256": "6c4a8a3813864fefed081bbd337dbc0ad93bf88e0b92f5db98d7ab258b22dc6c",
+    "downloaded_asset_digest_matches": true
+  },
+  "files": [
+    {
+      "path": "work\\full-audio\\vendor\\wwiser.zip",
+      "bytes": 322572,
+      "sha256": "b7642be96b4db792ba196bd3a445693239ca76fcac250f9cfe281657de64ab65"
+    },
+    {
+      "path": "work\\full-audio\\vendor\\vgmstream-win64.zip",
+      "bytes": 4468180,
+      "sha256": "6c4a8a3813864fefed081bbd337dbc0ad93bf88e0b92f5db98d7ab258b22dc6c"
+    },
+    {
+      "path": "work\\full-audio\\vendor\\vgmstream-win64\\vgmstream-cli.exe",
+      "bytes": 2876928,
+      "sha256": "29df08c557ada8269c92a6abfe3886ad2f65849b0b26ba78a0819b363bbc5b85"
+    },
+    {
+      "path": "work\\full-audio\\vendor\\wwiser\\wwiser-08e937b649bc7007c234bbd59e34a41d5eef3b38\\wwiser.py",
+      "bytes": 966,
+      "sha256": "17c56b7630f95018b64f14cce08e7aba12915685dcfff4c8215c42a91bdb2129"
+    },
+    {
+      "path": "work\\full-audio\\vendor\\wwiser\\wwiser-08e937b649bc7007c234bbd59e34a41d5eef3b38\\wwiser\\parser\\wparser.py",
+      "bytes": 136118,
+      "sha256": "64520fb36d6bb58b880fd6ef5ff8f2ecd909cbc7bdca54b7702f79c3ead35d57"
+    },
+    {
+      "path": "work\\full-audio\\vendor\\wwiser\\wwiser-08e937b649bc7007c234bbd59e34a41d5eef3b38\\wwiser\\parser\\wparser_plg.py",
+      "bytes": 19793,
+      "sha256": "0ccf1b21b8ef3676a58c1f7f47487347c78d82ec98086ac3aa35cf928c04439c"
+    }
+  ],
+  "actions": [
+    "Downloaded original-author wwiser Python source and vgmstream official prebuilt Windows CLI into work/full-audio/vendor only.",
+    "Executed Python static bank parser and CLI file decoder in shell; no game process was launched.",
+    "No system installation, GUI automation or audio playback performed."
+  ],
+  "limits": [
+    "Wwise SDK and game source code are not recovered by media decoding.",
+    "PLUG carrier bytes are preserved and linked to Convolution Reverb plugin maps; internal impulse payload layout remains opaque."
+  ],
+  "license_records": {
+    "vgmstream": "Bundled COPYING copied to tool-licenses/vgmstream-COPYING.txt",
+    "wwiser": "Pinned repository contains no top-level LICENSE or COPYING; no license invented, source retained only in work vendor directory."
+  }
+}

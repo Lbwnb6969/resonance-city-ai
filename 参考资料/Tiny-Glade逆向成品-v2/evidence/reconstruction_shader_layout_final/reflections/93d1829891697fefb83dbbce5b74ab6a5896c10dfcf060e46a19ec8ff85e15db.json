@@ -1,0 +1,243 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_24" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "draw_indirect_buffer_offset",
+                    "type" : "int",
+                    "offset" : 0
+                },
+                {
+                    "name" : "pebble_buffer_size",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "scatter_grid_dim",
+                    "type" : "int",
+                    "offset" : 8
+                }
+            ]
+        },
+        "_481" : {
+            "name" : "DrawIndexedIndirectCommand_natural",
+            "members" : [
+                {
+                    "name" : "count",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "instanceCount",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "firstIndex",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "vertexOffset",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "firstInstance",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_483" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "_481",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 20
+                }
+            ]
+        },
+        "_607" : {
+            "name" : "_Array_natural_float12",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "float",
+                    "array" : [
+                        12
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_608" : {
+            "name" : "Affine3Packed_natural",
+            "members" : [
+                {
+                    "name" : "data",
+                    "type" : "_607",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_610" : {
+            "name" : "pebble_placement_buffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "_608",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 48
+                }
+            ]
+        },
+        "_677" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_678" : {
+            "name" : "TerrainHeightmap_natural",
+            "members" : [
+                {
+                    "name" : "terrain_heightmap_dims",
+                    "type" : "uvec2",
+                    "offset" : 0
+                },
+                {
+                    "name" : "bg_terrain_heightmap",
+                    "type" : "_677",
+                    "offset" : 8
+                },
+                {
+                    "name" : "bg_terrain_fog_height",
+                    "type" : "_677",
+                    "offset" : 12
+                },
+                {
+                    "name" : "bg_terrain_height_bounds_ws",
+                    "type" : "vec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "bg_water_footprint_ws",
+                    "type" : "vec4",
+                    "offset" : 24
+                }
+            ]
+        }
+    },
+    "separate_images" : [
+        {
+            "type" : "texture2D",
+            "name" : "terrain_heightmap_terrain_heightmap",
+            "set" : 17,
+            "binding" : 1
+        },
+        {
+            "type" : "texture2D",
+            "name" : "paths_visual_tex",
+            "set" : 14,
+            "binding" : 0
+        },
+        {
+            "type" : "texture2D",
+            "name" : "rocky_terrain_tex",
+            "set" : 9,
+            "binding" : 0
+        },
+        {
+            "type" : "texture2D",
+            "name" : "water_mask_tex",
+            "set" : 10,
+            "binding" : 0
+        }
+    ],
+    "separate_samplers" : [
+        {
+            "type" : "sampler",
+            "name" : "samplers_lnc_iso",
+            "set" : 2,
+            "binding" : 5
+        },
+        {
+            "type" : "sampler",
+            "name" : "samplers_llb",
+            "set" : 2,
+            "binding" : 4
+        }
+    ],
+    "ssbos" : [
+        {
+            "type" : "_483",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_610",
+            "name" : "pebble_placement_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_24",
+            "name" : "GlobalParams_natural",
+            "block_size" : 12,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_678",
+            "name" : "TerrainHeightmap_natural",
+            "block_size" : 40,
+            "set" : 17,
+            "binding" : 0
+        }
+    ]
+}

@@ -27,6 +27,7 @@ const REMOVAL_HINT := "指向房屋，查看本次移除范围。\nShift 点击�
 var state := State.new()
 var town: Node3D
 var music: Node
+var _music_catalog_key:Variant=null
 var ambience: Node
 var life: Node3D
 var camera: Camera3D
@@ -625,7 +626,7 @@ func _setup_ui() -> void:
 	road_column.add_child(road_mode)
 	var styles := OptionButton.new()
 	styles.name="RoadStyle"
-	for label: String in ["乡间小径 · 重描铺成灯街","石板灯街 · 1.75m","林荫大道 · 2.0m","叮当轨街 · 2.0m"]: styles.add_item(label)
+	for label: String in ["乡间小径 · 重描铺成灯街","石板灯街 · 1.75m","林荫大道 · 2.10m","叮当轨街 · 2.10m"]: styles.add_item(label)
 	styles.item_selected.connect(func(index: int)->void:
 		_cancel_draft()
 		road_style=["path","promenade","avenue","tram"][index])
@@ -853,6 +854,17 @@ func _button(text_value: String, action: Callable) -> Button:
 	button.pressed.connect(action)
 	return button
 
+func _refresh_city_music()->void:
+	# Terrain/water edits affect spatial intent, but not the household timbre
+	# catalogue. Keep actual manual links/acoustic zones fresh without deriving
+	# every bell tower, district and arrangement again after an unrelated brush.
+	var key:=hash([state.get_instance_id(),state.houses,state.roads,state.districts,state.house_improvements,state.house_culture,state.house_clockwork,state.building_quality])
+	if key==_music_catalog_key and music._pluck_city==state:
+		music._refresh_acoustic()
+		return
+	_music_catalog_key=key
+	music.update_city(state)
+
 func _refresh_ui() -> void:
 	if _edit_pending:
 		hint.text="河湾正在落定新变化。\n可以移动视野或撤销。"
@@ -868,7 +880,7 @@ func _refresh_ui() -> void:
 				completed["terrace" if cell.kind == "terrace" else "raise" if int(cell.level) > 0 else "extend"] = true
 	for road: Dictionary in state.roads:
 		if str(road.get("source","seed")) == "player": completed["road"] = true
-	music.update_city(state)
+	_refresh_city_music()
 	info.text = "%d 座房屋  ·  %d 房间  ·  %d 露台" % [state.houses.size(), rooms, terraces]
 	if music.tower_count()>0: info.text += "  ·  %d 钟楼" % music.tower_count()
 	var courts: Array=state.courtyard_plans()
@@ -1791,7 +1803,9 @@ func _poll_edit_budget() -> void:
 	_finish_edit_publication(render,started)
 
 func _finish_edit_publication(render: Dictionary, started: int) -> void:
-	if town.budget_rebuild!=null:town.budget_rebuild.hold_retirement_this_frame()
+	if town.budget_rebuild!=null:
+		town.budget_rebuild.hold_retirement_this_frame()
+		if life.budget_sync_pending():town.budget_rebuild.retired_values.append(state._frontage_cache)
 	life.commit_budget_sync()
 	town.refresh_ecology()
 	town.touch.publish(town)
@@ -1973,7 +1987,7 @@ func _refresh_workshops() -> void:
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return
 	town.quality_visual.flash(town,events)
-	music.update_city(state)
+	_refresh_city_music()
 	for event: Dictionary in events: music.play_quality_upgrade(str(event.house_id),int(event.to))
 	if not events.is_empty():
 		var event: Dictionary=events[-1]
@@ -1983,15 +1997,15 @@ func _on_quality_changed(events: Array) -> void:
 func _on_craft_event(kind: String, shop_id: String, target_id: String, level: int) -> void:
 	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")
 	if kind=="mechanism_installed":
-		music.update_city(state)
+		_refresh_city_music()
 		_message("♫ 邻屋收到钟表匠送来的"+("发条八音盒" if level==1 else "报时风向标"))
 		_refresh_place()
 	if kind=="art_installed":
-		music.update_city(state)
+		_refresh_city_music()
 		_message("♫ 邻屋收到书院送来的"+("艺术挂毯" if level==1 else "彩绘玻璃窗"))
 		_refresh_place()
 	if kind=="installed":
-		music.update_city(state)
+		_refresh_city_music()
 		for house: Dictionary in state.houses:
 			if str(house.id)==target_id: _message("♫ %s 收到街坊送来的木饰 · 匠作%d阶" % [str(house.name),level])
 		_refresh_place()

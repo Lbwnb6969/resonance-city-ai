@@ -1,0 +1,50 @@
+0000000140b770a0  4883ec18                 sub      rsp, 0x18
+0000000140b770a4  0f293424                 movaps   xmmword ptr [rsp], xmm6
+0000000140b770a8  0f28d8                   movaps   xmm3, xmm0
+0000000140b770ab  f30f5ed9                 divss    xmm3, xmm1
+0000000140b770af  0f28e1                   movaps   xmm4, xmm1
+0000000140b770b2  f30f5ee0                 divss    xmm4, xmm0
+0000000140b770b6  0f28d3                   movaps   xmm2, xmm3
+0000000140b770b9  f30fc2d303               cmpunordss xmm2, xmm3
+0000000140b770be  0f28ea                   movaps   xmm5, xmm2
+0000000140b770c1  0f54ec                   andps    xmm5, xmm4
+0000000140b770c4  f30f5fe3                 maxss    xmm4, xmm3
+0000000140b770c8  0f55d4                   andnps   xmm2, xmm4
+0000000140b770cb  0f28d8                   movaps   xmm3, xmm0
+0000000140b770ce  f30fc2d803               cmpunordss xmm3, xmm0
+0000000140b770d3  0f28e3                   movaps   xmm4, xmm3
+0000000140b770d6  0f54e1                   andps    xmm4, xmm1
+0000000140b770d9  f30f5fc8                 maxss    xmm1, xmm0
+0000000140b770dd  0f55d9                   andnps   xmm3, xmm1
+0000000140b770e0  0f56dc                   orps     xmm3, xmm4
+0000000140b770e3  f30f581da5554c02         addss    xmm3, dword ptr [rip + 0x24c55a5]
+0000000140b770eb  f30f5e1da1554c02         divss    xmm3, dword ptr [rip + 0x24c55a1]
+0000000140b770f3  0f56d5                   orps     xmm2, xmm5
+0000000140b770f6  0f57c9                   xorps    xmm1, xmm1
+0000000140b770f9  0f57c0                   xorps    xmm0, xmm0
+0000000140b770fc  f30f5fc3                 maxss    xmm0, xmm3
+0000000140b77100  f30f101d20fe2b02         movss    xmm3, dword ptr [rip + 0x22bfe20]
+0000000140b77108  0f28e3                   movaps   xmm4, xmm3
+0000000140b7710b  f30f5de0                 minss    xmm4, xmm0
+0000000140b7710f  0f28ec                   movaps   xmm5, xmm4
+0000000140b77112  f30f59ec                 mulss    xmm5, xmm4
+0000000140b77116  f30f58e4                 addss    xmm4, xmm4
+0000000140b7711a  f30f10056a072c02         movss    xmm0, dword ptr [rip + 0x22c076a]
+0000000140b77122  0f28f0                   movaps   xmm6, xmm0
+0000000140b77125  f30f5cf4                 subss    xmm6, xmm4
+0000000140b77129  f30f59f5                 mulss    xmm6, xmm5
+0000000140b7712d  f30f102503072c02         movss    xmm4, dword ptr [rip + 0x22c0703]
+0000000140b77135  f30f59f4                 mulss    xmm6, xmm4
+0000000140b77139  f30f58f2                 addss    xmm6, xmm2
+0000000140b7713d  f30f5835bb9e3e02         addss    xmm6, dword ptr [rip + 0x23e9ebb]
+0000000140b77145  f30f5ef4                 divss    xmm6, xmm4
+0000000140b77149  f30f5fce                 maxss    xmm1, xmm6
+0000000140b7714d  f30f5dd9                 minss    xmm3, xmm1
+0000000140b77151  0f28cb                   movaps   xmm1, xmm3
+0000000140b77154  f30f59cb                 mulss    xmm1, xmm3
+0000000140b77158  f30f58db                 addss    xmm3, xmm3
+0000000140b7715c  f30f5cc3                 subss    xmm0, xmm3
+0000000140b77160  f30f59c1                 mulss    xmm0, xmm1
+0000000140b77164  0f283424                 movaps   xmm6, xmmword ptr [rsp]
+0000000140b77168  4883c418                 add      rsp, 0x18
+0000000140b7716c  c3                       ret      

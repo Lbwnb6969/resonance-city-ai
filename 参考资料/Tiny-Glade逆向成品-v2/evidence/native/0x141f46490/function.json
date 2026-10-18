@@ -1,0 +1,803 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 2471,
+    "record_offset": 268,
+    "module": "system_roof-838a4a2e2b945fd4.6z2pubxodab55pv1ue050h5ru.15eaz58.rcgu.o",
+    "name": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles",
+    "segment": 1,
+    "offset": 32789648,
+    "rva": 32793744,
+    "va": "0x141f46490",
+    "size": 2917,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "6ea408c50d21513043b604ede0202e6e25769e9eb81a4ae1154d664d46c195e8",
+  "code_bytes": 2917,
+  "decoded_bytes": 2917,
+  "instructions": 727,
+  "calls_and_jumps": [
+    {
+      "address": "0x141f464ca",
+      "kind": "call",
+      "target": "0x140e94b40",
+      "target_names": [
+        "puffin::are_scopes_on",
+        "_ZN6puffin13are_scopes_on17h49e6cae1819f67fcE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f464e1",
+      "kind": "call",
+      "target": "0x141f47000",
+      "target_names": [
+        "core::str::impl$0::rfind<ref$<str$> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46503",
+      "kind": "call",
+      "target": "0x141f47000",
+      "target_names": [
+        "core::str::impl$0::rfind<ref$<str$> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46561",
+      "kind": "jmp",
+      "target": "0x141f465dd",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f4659b",
+      "kind": "jmp",
+      "target": "0x141f465ad",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f465a4",
+      "kind": "jmp",
+      "target": "0x141f465b5",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f465d4",
+      "kind": "jmp",
+      "target": "0x141f46600",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f465d8",
+      "kind": "jmp",
+      "target": "0x141f4666e",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46600",
+      "kind": "call",
+      "target": "0x140e97000",
+      "target_names": [
+        "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL",
+        "_ZN6puffin14ThreadProfiler4call15THREAD_PROFILER29_$u7b$$u7b$constant$u7d$$u7d$28_$u7b$$u7b$closure$u7d$$u7d$51__RUST_STD_INTERNAL_VAL$u7b$$u7b$tls.shim$u7d$$u7d$17hb896c07f5bb16c09E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f4664b",
+      "kind": "call",
+      "target": "0x140e94f10",
+      "target_names": [
+        "puffin::ThreadProfiler::begin_scope",
+        "_ZN6puffin14ThreadProfiler11begin_scope17h984a0056a230450fE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46757",
+      "kind": "jmp",
+      "target": "0x141f4676b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f4677d",
+      "kind": "jmp",
+      "target": "0x141f467aa",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f467bf",
+      "kind": "call",
+      "target": "0x141f4aec0",
+      "target_names": [
+        "_ZN6frozen26FrozenMap$LT$K$C$V$C$S$GT$3get17h0247bd40ba92cb0bE",
+        "frozen::FrozenMap::get<country_core::asset_libraries::ssbo_library::SsboId,alloc::boxed::Box<country_core::asset_libraries::ssbo_library::BufferState,alloc::alloc::Global>,core::hash::BuildHasherDefault<nohash_hasher::NoHashHasher<country_core::asset_libraries::ssbo_library::SsboId> >,country_core::asset_libraries::ssbo_library::SsboId>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f467d5",
+      "kind": "call",
+      "operand": "qword ptr [rax + 0x18]",
+      "resolution": "unresolved-indirect"
+    },
+    {
+      "address": "0x141f46897",
+      "kind": "jmp",
+      "target": "0x141f468a3",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f468ec",
+      "kind": "call",
+      "target": "0x14007ee60",
+      "target_names": [
+        "log::impl$17::log",
+        "log::impl$17::flush",
+        "bytes::bytes::static_drop",
+        "ttf_parser::impl$15::close",
+        "fern::log_impl::impl$3::log",
+        "bevy_app::app::impl$3::build",
+        "rustls::key_log::impl$0::log",
+        "ttf_parser::impl$15::line_to"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f468fb",
+      "kind": "call",
+      "target": "0x1406abab0",
+      "target_names": [
+        "_RNvCsfLfy6EI15iL_7___rustc12___rust_alloc"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f4692b",
+      "kind": "jmp",
+      "target": "0x141f46932",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46987",
+      "kind": "call",
+      "target": "0x140fc8bd0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::resources::roof_tile_ssbo::RoofTileSsbo> >",
+        "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferAllocation<country_core::geometry::instanced_wall::BrickTransformSsbo> >",
+        "_ZN4core3ptr158drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferAllocation$LT$country_core..resources..roof_tile_ssbo..RoofTileSsbo$GT$$GT$17h692a0a9a831aac87E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f469e0",
+      "kind": "call",
+      "target": "0x140e9a150",
+      "target_names": [
+        "parking_lot_core::parking_lot::deadlock_impl::acquire_resource",
+        "_ZN16parking_lot_core11parking_lot13deadlock_impl16acquire_resource17h1b8ae63d729f2b3eE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46a06",
+      "kind": "jmp",
+      "target": "0x141f46a20",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46a65",
+      "kind": "call",
+      "target": "0x141f4a6c0",
+      "target_names": [
+        "_ZN12country_core6render22sparse_instance_buffer35SparseInstanceBufferWriter$LT$T$GT$5clear17h340e84e29fee3c09E",
+        "country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter::clear<country_core::resources::roof_tile_ssbo::RoofTileSsbo>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46a75",
+      "kind": "call",
+      "target": "0x140b77b50",
+      "target_names": [
+        "country_core::resources::roofs::roof_shape::Roof::is_flat",
+        "_ZN12country_core9resources5roofs10roof_shape4Roof7is_flat17h2e7aaeef594bd2a4E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46a95",
+      "kind": "call",
+      "target": "0x140b54f80",
+      "target_names": [
+        "country_core::resources::walls::public_walls::PublicWalls::get",
+        "_ZN12country_core9resources5walls12public_walls11PublicWalls3get17hba8f730dba42ddddE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46ac6",
+      "kind": "call",
+      "target": "0x140fc4ba0",
+      "target_names": [
+        "_ZN4core4hash11BuildHasher8hash_one17h14e35b4aee943f45E",
+        "_ZN4core4hash11BuildHasher8hash_one17h39a3623d77cf64b2E",
+        "_ZN4core4hash11BuildHasher8hash_one17h53c22df67cc95993E",
+        "_ZN4core4hash11BuildHasher8hash_one17h797f8b95a96aed6fE",
+        "_ZN4core4hash11BuildHasher8hash_one17h8c478a6ce73497aeE",
+        "_ZN4core4hash11BuildHasher8hash_one17hc9f54539f600f48fE",
+        "_ZN4core4hash11BuildHasher8hash_one17he5e17744a4d28995E",
+        "core::hash::BuildHasher::hash_one<std::hash::random::RandomState,ref$<bevy_ecs::entity::Entity> >"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46b59",
+      "kind": "jmp",
+      "target": "0x141f46aef",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46b6b",
+      "kind": "call",
+      "target": "0x140e9a350",
+      "target_names": [
+        "parking_lot_core::parking_lot::deadlock_impl::release_resource",
+        "_ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46b84",
+      "kind": "call",
+      "target": "0x142dbcef0",
+      "target_names": [
+        "parking_lot::raw_mutex::RawMutex::unlock_slow",
+        "_ZN11parking_lot9raw_mutex8RawMutex11unlock_slow17he218761cdae64038E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46b8a",
+      "kind": "jmp",
+      "target": "0x141f46760",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46bcd",
+      "kind": "call",
+      "target": "0x142812c70",
+      "target_names": [
+        "_ZN11system_roof5utils25assemble_rectangular_roof25assemble_rectangular_roof17hfd51a465fa9a3428E",
+        "system_roof::utils::assemble_rectangular_roof::assemble_rectangular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46bd3",
+      "kind": "jmp",
+      "target": "0x141f46c0b",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c05",
+      "kind": "call",
+      "target": "0x142816ba0",
+      "target_names": [
+        "_ZN11system_roof5utils22assemble_circular_roof22assemble_circular_roof17hf382c1c902702563E",
+        "system_roof::utils::assemble_circular_roof::assemble_circular_roof<system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::closure_env$1>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c16",
+      "kind": "call",
+      "target": "0x140e9a350",
+      "target_names": [
+        "parking_lot_core::parking_lot::deadlock_impl::release_resource",
+        "_ZN16parking_lot_core11parking_lot13deadlock_impl16release_resource17h60040800876df3aeE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c2f",
+      "kind": "call",
+      "target": "0x142dbcef0",
+      "target_names": [
+        "parking_lot::raw_mutex::RawMutex::unlock_slow",
+        "_ZN11parking_lot9raw_mutex8RawMutex11unlock_slow17he218761cdae64038E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c35",
+      "kind": "jmp",
+      "target": "0x141f46760",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c43",
+      "kind": "call",
+      "target": "0x142dbd1a0",
+      "target_names": [
+        "parking_lot::raw_mutex::RawMutex::lock_slow",
+        "_ZN11parking_lot9raw_mutex8RawMutex9lock_slow17hc2b746497e1a96a9E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c49",
+      "kind": "jmp",
+      "target": "0x141f469dd",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c58",
+      "kind": "call",
+      "target": "0x140e97000",
+      "target_names": [
+        "puffin::impl$6::call::THREAD_PROFILER::constant$0::closure$0::__RUST_STD_INTERNAL_VAL",
+        "_ZN6puffin14ThreadProfiler4call15THREAD_PROFILER29_$u7b$$u7b$constant$u7d$$u7d$28_$u7b$$u7b$closure$u7d$$u7d$51__RUST_STD_INTERNAL_VAL$u7b$$u7b$tls.shim$u7d$$u7d$17hb896c07f5bb16c09E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46c8a",
+      "kind": "call",
+      "target": "0x140e95370",
+      "target_names": [
+        "puffin::ThreadProfiler::end_scope",
+        "_ZN6puffin14ThreadProfiler9end_scope17hf3dbf12c4ff8de6aE"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46cdd",
+      "kind": "call",
+      "target": "0x142dc83d0",
+      "target_names": [
+        "core::panicking::panic_fmt",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking9panic_fmt"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46ce3",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46cef",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46cf5",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d01",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d07",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d13",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d19",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d28",
+      "kind": "call",
+      "target": "0x142dc7e11",
+      "target_names": [
+        "alloc::alloc::handle_alloc_error",
+        "_RNvNtCs1f2BdUxKfgg_5alloc5alloc18handle_alloc_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d2e",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d3a",
+      "kind": "call",
+      "target": "0x142dc8090",
+      "target_names": [
+        "core::cell::panic_already_borrowed",
+        "_RNvNtCs8icZUrvfcq9_4core4cell22panic_already_borrowed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d44",
+      "kind": "call",
+      "target": "0x142e293d0",
+      "target_names": [
+        "_ZN3std3sys12thread_local6native4lazy20Storage$LT$T$C$D$GT$16get_or_init_slow17h8a1929b1beac10d4E",
+        "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d52",
+      "kind": "jmp",
+      "target": "0x141f46d67",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d59",
+      "kind": "call",
+      "target": "0x142e293d0",
+      "target_names": [
+        "_ZN3std3sys12thread_local6native4lazy20Storage$LT$T$C$D$GT$16get_or_init_slow17h8a1929b1beac10d4E",
+        "std::sys::thread_local::native::lazy::Storage::get_or_init_slow<core::cell::RefCell<puffin::ThreadProfiler>,tuple$<>,core::cell::RefCell<puffin::ThreadProfiler> (*)()>"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d6e",
+      "kind": "call",
+      "target": "0x142dc7890",
+      "target_names": [
+        "std::thread::local::panic_access_error",
+        "_RNvNtNtCs1aoCESei0z2_3std6thread5local18panic_access_error"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46d83",
+      "kind": "jmp",
+      "target": "0x141f46d89",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46db4",
+      "kind": "call",
+      "target": "0x142dc8170",
+      "target_names": [
+        "core::result::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6result13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46dba",
+      "kind": "jmp",
+      "target": "0x141f46dc9",
+      "target_names": [],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46dc3",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46de9",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46e09",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46e2c",
+      "kind": "call",
+      "target": "0x142dc8070",
+      "target_names": [
+        "core::str::slice_error_fail",
+        "_RNvNtCs8icZUrvfcq9_4core3str16slice_error_fail"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46f66",
+      "kind": "call",
+      "target": "0x1404a99b0",
+      "target_names": [
+        "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter<country_core::resources::sparkle::SparkleSsbo> >",
+        "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter<country_core::resources::roof_tile_ssbo::RoofTileSsbo> >",
+        "core::ptr::drop_in_place<country_core::render::sparse_instance_buffer::SparseInstanceBufferWriter<country_core::geometry::instanced_wall::BrickTransformSsbo> >",
+        "_ZN4core3ptr146drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferWriter$LT$country_core..resources..sparkle..SparkleSsbo$GT$$GT$17h7f5796f5bd21da86E",
+        "_ZN4core3ptr146drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferWriter$LT$country_core..resources..sparkle..SparkleSsbo$GT$$GT$17he28a4a80f2d6c9bbE",
+        "_ZN4core3ptr154drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferWriter$LT$country_core..resources..roof_tile_ssbo..RoofTileSsbo$GT$$GT$17hfb451611f6d3b22fE",
+        "_ZN4core3ptr154drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferWriter$LT$country_core..resources..roof_tile_ssbo..RoofTileSsbo$GT$$GT$17hff80bda02ce5ea98E",
+        "_ZN4core3ptr159drop_in_place$LT$country_core..render..sparse_instance_buffer..SparseInstanceBufferWriter$LT$country_core..geometry..instanced_wall..BrickTransformSsbo$GT$$GT$17h0a37b3fded8d9247E"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x141f46fda",
+      "kind": "call",
+      "target": "0x142807ee0",
+      "target_names": [
+        "_ZN3std6thread5local17LocalKey$LT$T$GT$4with17h1b03882899cb48d3E",
+        "std::thread::local::LocalKey::with<core::cell::RefCell<puffin::ThreadProfiler>,puffin::impl$6::call::closure_env$0<tuple$<>,puffin::impl$10::drop::closure_env$0>,tuple$<> >"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x141f464e6",
+      "target": "0x143431bdb",
+      "operand_bytes": 8,
+      "bytes_hex": "73797374656d5f726f6f663a3a76697375616c3a3a617373656d626c655f726f",
+      "ascii_candidate": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::f"
+    },
+    {
+      "address": "0x141f46522",
+      "target": "0x143431bdb",
+      "operand_bytes": 8,
+      "bytes_hex": "73797374656d5f726f6f663a3a76697375616c3a3a617373656d626c655f726f",
+      "ascii_candidate": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::f"
+    },
+    {
+      "address": "0x141f46533",
+      "target": "0x143431acb",
+      "operand_bytes": 8,
+      "bytes_hex": "0000000000601a43430100000035000000000000001700000038000000601a43"
+    },
+    {
+      "address": "0x141f4653a",
+      "target": "0x143431a96",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f73797374656d732f726f6f662f7372632f76697375616c2f61",
+      "ascii_candidate": "crates/systems/roof/src/visual/assemble_roof_tiles.rs"
+    },
+    {
+      "address": "0x141f465dd",
+      "target": "0x143431a96",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f73797374656d732f726f6f662f7372632f76697375616c2f61",
+      "ascii_candidate": "crates/systems/roof/src/visual/assemble_roof_tiles.rs"
+    },
+    {
+      "address": "0x141f467b8",
+      "target": "0x143432200",
+      "operand_bytes": 8,
+      "names": [
+        "anon.ce0cd7b3be8b3833351aba404e7ea4e7.0.llvm.15682997294040226860"
+      ],
+      "bytes_hex": "9950700d5939d913e142ab0b2961163d2f686f6d652f68332f2e727573747570"
+    },
+    {
+      "address": "0x141f46a8e",
+      "target": "0x143431b18",
+      "operand_bytes": 8,
+      "bytes_hex": "601a4343010000003500000000000000280000002c000000d819434301000000"
+    },
+    {
+      "address": "0x141f46cb5",
+      "target": "0x1434297f8",
+      "operand_bytes": 8,
+      "names": [
+        "anon.eea8452798cb8bc002c44089bca9f232.1.llvm.3049672741588168895"
+      ],
+      "bytes_hex": "e0974243010000001400000000000000c0002f686f6d652f68332f2e72757374"
+    },
+    {
+      "address": "0x141f46cc0",
+      "target": "0x1402ed400",
+      "operand_bytes": 8,
+      "names": [
+        "core::fmt::impl$82::fmt<str$>",
+        "anyhow::wrapper::impl$3::fmt<ref$<str$> >",
+        "anyhow::wrapper::impl$1::fmt<ref$<str$> >",
+        "anyhow::context::impl$3::fmt<ref$<str$>,anyhow::Error>"
+      ],
+      "bytes_hex": "4989d0488b01488b51084889c1e92e5dc800cccccccccccccccccccccccccccc"
+    },
+    {
+      "address": "0x141f46ccb",
+      "target": "0x143429808",
+      "operand_bytes": 8,
+      "names": [
+        "anon.eea8452798cb8bc002c44089bca9f232.2.llvm.3049672741588168895"
+      ],
+      "bytes_hex": "c0002f686f6d652f68332f2e7275737475702f746f6f6c636861696e732f312e"
+    },
+    {
+      "address": "0x141f46cd2",
+      "target": "0x143429890",
+      "operand_bytes": 8,
+      "names": [
+        "anon.eea8452798cb8bc002c44089bca9f232.5.llvm.3049672741588168895"
+      ],
+      "bytes_hex": "0a9842430100000068000000000000008a0700000d0000000000000000000000"
+    },
+    {
+      "address": "0x141f46ce8",
+      "target": "0x143431b00",
+      "operand_bytes": 8,
+      "bytes_hex": "601a43430100000035000000000000001f00000039000000601a434301000000"
+    },
+    {
+      "address": "0x141f46cfa",
+      "target": "0x143432350",
+      "operand_bytes": 8,
+      "names": [
+        "anon.6b85e44f3a3275a3cc7944dabe976e8d.8.llvm.4916076209173947089"
+      ],
+      "bytes_hex": "98224343010000003800000000000000cc000000360000009822434301000000"
+    },
+    {
+      "address": "0x141f46d0c",
+      "target": "0x143432368",
+      "operand_bytes": 8,
+      "names": [
+        "anon.6b85e44f3a3275a3cc7944dabe976e8d.9.llvm.4916076209173947089"
+      ],
+      "bytes_hex": "98224343010000003800000000000000d500000051000000526f6f6654696c65"
+    },
+    {
+      "address": "0x141f46d33",
+      "target": "0x14359bf70",
+      "operand_bytes": 8,
+      "names": [
+        "anon.0ce52d3c5e4336203b484a9a5776ba30.3.llvm.2454302978691836909"
+      ],
+      "bytes_hex": "18bf5943010000005600000000000000ad0100002b0000000000000000000000"
+    },
+    {
+      "address": "0x141f46d67",
+      "target": "0x14359bf00",
+      "operand_bytes": 8,
+      "names": [
+        "anon.0ce52d3c5e4336203b484a9a5776ba30.1.llvm.2454302978691836909"
+      ],
+      "bytes_hex": "90be5943010000006e00000000000000df010000190000002f686f6d652f6833"
+    },
+    {
+      "address": "0x141f46d91",
+      "target": "0x143431ae8",
+      "operand_bytes": 8,
+      "bytes_hex": "601a4343010000003500000000000000190000003e000000601a434301000000"
+    },
+    {
+      "address": "0x141f46d9d",
+      "target": "0x143431bb0",
+      "operand_bytes": 8,
+      "bytes_hex": "63616c6c65642060526573756c743a3a756e77726170282960206f6e20616e20",
+      "ascii_candidate": "called `Result::unwrap()` on an `Err` valuesystem_roof::visual::assemble_roof_tiles::assemble_ro"
+    },
+    {
+      "address": "0x141f46da4",
+      "target": "0x143431b90",
+      "operand_bytes": 8,
+      "bytes_hex": "0000000000000000100000000000000008000000000000002074f44101000000"
+    },
+    {
+      "address": "0x141f46dbc",
+      "target": "0x143431ad0",
+      "operand_bytes": 8,
+      "bytes_hex": "601a43430100000035000000000000001700000038000000601a434301000000"
+    },
+    {
+      "address": "0x141f46dcb",
+      "target": "0x143431c80",
+      "operand_bytes": 8,
+      "bytes_hex": "281c4343010000005600000000000000980200000e0000003a3a000000000000"
+    },
+    {
+      "address": "0x141f46dd7",
+      "target": "0x143431a96",
+      "operand_bytes": 8,
+      "bytes_hex": "6372617465732f73797374656d732f726f6f662f7372632f76697375616c2f61",
+      "ascii_candidate": "crates/systems/roof/src/visual/assemble_roof_tiles.rs"
+    },
+    {
+      "address": "0x141f46dee",
+      "target": "0x143431ca0",
+      "operand_bytes": 8,
+      "bytes_hex": "281c43430100000056000000000000007402000022000000281c434301000000"
+    },
+    {
+      "address": "0x141f46dfa",
+      "target": "0x143431bdb",
+      "operand_bytes": 8,
+      "bytes_hex": "73797374656d5f726f6f663a3a76697375616c3a3a617373656d626c655f726f",
+      "ascii_candidate": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::f"
+    },
+    {
+      "address": "0x141f46e0e",
+      "target": "0x143431cb8",
+      "operand_bytes": 8,
+      "bytes_hex": "281c434301000000560000000000000076020000120000000000000000000000"
+    },
+    {
+      "address": "0x141f46e1a",
+      "target": "0x143431bdb",
+      "operand_bytes": 8,
+      "bytes_hex": "73797374656d5f726f6f663a3a76697375616c3a3a617373656d626c655f726f",
+      "ascii_candidate": "system_roof::visual::assemble_roof_tiles::assemble_roof_tiles::f"
+    },
+    {
+      "address": "0x141f46fcf",
+      "target": "0x143431c20",
+      "operand_bytes": 8,
+      "bytes_hex": "2097f241010000002f686f6d652f68332f2e636172676f2f7265676973747279"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

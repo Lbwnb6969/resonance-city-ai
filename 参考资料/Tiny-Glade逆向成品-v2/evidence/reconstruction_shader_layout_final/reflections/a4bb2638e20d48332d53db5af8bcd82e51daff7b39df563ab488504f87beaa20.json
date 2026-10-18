@@ -1,0 +1,126 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_56" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_102" : {
+            "name" : "Grass2SplatVisibleInstance_natural",
+            "members" : [
+                {
+                    "name" : "clump_mip",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "range_count",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "bounds_x",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "bounds_y",
+                    "type" : "uint",
+                    "offset" : 12
+                },
+                {
+                    "name" : "bounds_z",
+                    "type" : "uint",
+                    "offset" : 16
+                }
+            ]
+        },
+        "_104" : {
+            "name" : "bin_records",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "_102",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 20
+                }
+            ]
+        },
+        "_117" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "_member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_56",
+            "name" : "StructuredBuffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 0
+        },
+        {
+            "type" : "_104",
+            "name" : "bin_records",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 1
+        },
+        {
+            "type" : "_117",
+            "name" : "RWStructuredBuffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        }
+    ]
+}

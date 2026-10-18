@@ -1,0 +1,442 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "comp",
+            "workgroup_size" : [
+                64,
+                1,
+                1
+            ],
+            "workgroup_size_is_spec_constant_id" : [
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "types" : {
+        "_38" : {
+            "name" : "PushConstants_natural",
+            "members" : [
+                {
+                    "name" : "world_subset",
+                    "type" : "uint",
+                    "offset" : 0
+                },
+                {
+                    "name" : "first_instance",
+                    "type" : "uint",
+                    "offset" : 4
+                },
+                {
+                    "name" : "instance_count",
+                    "type" : "uint",
+                    "offset" : 8
+                },
+                {
+                    "name" : "draw_list_index_base",
+                    "type" : "uint",
+                    "offset" : 12
+                }
+            ]
+        },
+        "_61" : {
+            "name" : "RoofShingle_natural",
+            "members" : [
+                {
+                    "name" : "base_position",
+                    "type" : "vec3",
+                    "offset" : 0
+                },
+                {
+                    "name" : "current_height",
+                    "type" : "float",
+                    "offset" : 12
+                },
+                {
+                    "name" : "clipping_plane__",
+                    "type" : "uvec2",
+                    "offset" : 16
+                },
+                {
+                    "name" : "scale__t",
+                    "type" : "uvec2",
+                    "offset" : 24
+                },
+                {
+                    "name" : "rotation_quat__",
+                    "type" : "uvec2",
+                    "offset" : 32
+                },
+                {
+                    "name" : "wall_slot_id",
+                    "type" : "uint",
+                    "offset" : 40
+                },
+                {
+                    "name" : "velocity__rotation",
+                    "type" : "uint",
+                    "offset" : 44
+                },
+                {
+                    "name" : "animation_t",
+                    "type" : "float",
+                    "offset" : 48
+                },
+                {
+                    "name" : "seed",
+                    "type" : "int",
+                    "offset" : 52
+                },
+                {
+                    "name" : "is_circle",
+                    "type" : "int",
+                    "offset" : 56
+                },
+                {
+                    "name" : "is_main_roof_body",
+                    "type" : "int",
+                    "offset" : 60
+                }
+            ]
+        },
+        "_64" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_61",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 64
+                }
+            ]
+        },
+        "_175" : {
+            "name" : "ViewConstants_natural",
+            "members" : [
+                {
+                    "name" : "view_to_clip",
+                    "type" : "mat4",
+                    "offset" : 0,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_view",
+                    "type" : "mat4",
+                    "offset" : 64,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_sample",
+                    "type" : "mat4",
+                    "offset" : 128,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_to_view",
+                    "type" : "mat4",
+                    "offset" : 192,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_view",
+                    "type" : "mat4",
+                    "offset" : 256,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "view_to_world",
+                    "type" : "mat4",
+                    "offset" : 320,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "world_to_sample",
+                    "type" : "mat4",
+                    "offset" : 384,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "clip_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 448,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_clip",
+                    "type" : "mat4",
+                    "offset" : 512,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_clip",
+                    "type" : "mat4",
+                    "offset" : 576,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_clip_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 640,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_world_to_prev_view",
+                    "type" : "mat4",
+                    "offset" : 704,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "prev_view_to_prev_world",
+                    "type" : "mat4",
+                    "offset" : 768,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 832
+                },
+                {
+                    "name" : "sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 840
+                },
+                {
+                    "name" : "prev_sample_offset_pixels",
+                    "type" : "vec2",
+                    "offset" : 848
+                },
+                {
+                    "name" : "prev_sample_offset_clip",
+                    "type" : "vec2",
+                    "offset" : 856
+                },
+                {
+                    "name" : "pad0",
+                    "type" : "mat4",
+                    "offset" : 864,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad1",
+                    "type" : "mat4",
+                    "offset" : 928,
+                    "matrix_stride" : 16,
+                    "row_major" : true
+                },
+                {
+                    "name" : "pad2",
+                    "type" : "vec4",
+                    "offset" : 992
+                },
+                {
+                    "name" : "pad3",
+                    "type" : "float",
+                    "offset" : 1008
+                },
+                {
+                    "name" : "pad4",
+                    "type" : "float",
+                    "offset" : 1012
+                },
+                {
+                    "name" : "pad5",
+                    "type" : "float",
+                    "offset" : 1016
+                },
+                {
+                    "name" : "mip_bias",
+                    "type" : "float",
+                    "offset" : 1020
+                }
+            ]
+        },
+        "_464" : {
+            "name" : "NaniDrawListInfo_natural",
+            "members" : [
+                {
+                    "name" : "global_instance_offset",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_467" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_464",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_483" : {
+            "name" : "StructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_502" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "uint",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        },
+        "_538" : {
+            "name" : "GpuFilteredInstanceMeta_natural",
+            "members" : [
+                {
+                    "name" : "raw",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_541" : {
+            "name" : "RWStructuredBuffer",
+            "members" : [
+                {
+                    "name" : "__member0",
+                    "type" : "_538",
+                    "array" : [
+                        0
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ],
+                    "offset" : 0,
+                    "array_stride" : 4
+                }
+            ]
+        }
+    },
+    "ssbos" : [
+        {
+            "type" : "_64",
+            "name" : "instance_buffer",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 10
+        },
+        {
+            "type" : "_467",
+            "name" : "draw_list_info",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 8
+        },
+        {
+            "type" : "_483",
+            "name" : "prev_visibility_bitmask",
+            "readonly" : true,
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 6
+        },
+        {
+            "type" : "_502",
+            "name" : "next_visibility_bitmask",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 7
+        },
+        {
+            "type" : "_502",
+            "name" : "filtered_instance_allocator_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 3
+        },
+        {
+            "type" : "_502",
+            "name" : "filtered_instance_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 2
+        },
+        {
+            "type" : "_541",
+            "name" : "filtered_instance_meta_buffer",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 4
+        },
+        {
+            "type" : "_502",
+            "name" : "output_histogram",
+            "block_size" : 0,
+            "set" : 0,
+            "binding" : 5
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_175",
+            "name" : "ViewConstants_natural",
+            "block_size" : 1024,
+            "set" : 5,
+            "binding" : 0
+        }
+    ],
+    "push_constants" : [
+        {
+            "type" : "_38",
+            "name" : "push_constants",
+            "push_constant" : true
+        }
+    ]
+}

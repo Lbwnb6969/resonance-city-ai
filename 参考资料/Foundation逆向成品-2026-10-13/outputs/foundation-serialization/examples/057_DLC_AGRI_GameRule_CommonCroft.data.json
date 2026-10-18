@@ -1,0 +1,84 @@
+{
+  "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+  "resource": "GameRules/DLC_AGRI_GameRule_CommonCroft.data",
+  "absolute_offset": 360423016,
+  "length": 164,
+  "sha256": "93f4960c5b36e4704fe3dc0b0ea193b156c65d40a55a272a2c0037e4e2ec9ef9",
+  "evidence_kind": "local-package-bytes",
+  "metadata": {
+    "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+    "resource": "GameRules/DLC_AGRI_GameRule_CommonCroft.data",
+    "id": "5c5ebe7e-1f6d-4c0d-a2b9-8423355958a9",
+    "type": "PlaCAssetGameRuleCommonCroft"
+  },
+  "roots": {
+    "object": {
+      "@": {
+        "version": 1
+      },
+      "AssetNotificationSpawnBabyAnimalsFirstTime": {
+        "@": {
+          "value": "2c4de111-8b71-4188-a897-9448c08c417c"
+        }
+      }
+    }
+  },
+  "decoded_tree": {
+    "format_version": 2,
+    "dictionary": [
+      "object",
+      "version",
+      "AssetNotificationSpawnBabyAnimalsFirstTime",
+      "value"
+    ],
+    "tree": [
+      {
+        "name": "object",
+        "offset": 4,
+        "attributes": [
+          {
+            "name": "version",
+            "tag": 0,
+            "value": 1,
+            "offset": 20
+          }
+        ],
+        "children": [
+          {
+            "name": "AssetNotificationSpawnBabyAnimalsFirstTime",
+            "offset": 36,
+            "attributes": [
+              {
+                "name": "value",
+                "tag": 8,
+                "value": "2c4de111-8b71-4188-a897-9448c08c417c",
+                "offset": 52
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ],
+    "record_count": 4,
+    "tag_counts": {
+      "0": 1,
+      "8": 1
+    }
+  },
+  "references": [
+    {
+      "property": "/object/AssetNotificationSpawnBabyAnimalsFirstTime/@value",
+      "uuid": "2c4de111-8b71-4188-a897-9448c08c417c",
+      "status": "resolved_metadata",
+      "targets": [
+        {
+          "package": "D:\\steamtest\\steamapps\\common\\Foundation\\dlc\\agriculture\\content.package",
+          "resource": "Events/NTF_CommonCroft_SpawnChildrenFirstTime.data",
+          "id": "2c4de111-8b71-4188-a897-9448c08c417c",
+          "type": "PlaCAssetNotification"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+    "entryPoints" : [
+        {
+            "name" : "main",
+            "mode" : "vert"
+        }
+    ],
+    "types" : {
+        "_83" : {
+            "name" : "Tex2D_natural",
+            "members" : [
+                {
+                    "name" : "bindless_handle",
+                    "type" : "uint",
+                    "offset" : 0
+                }
+            ]
+        },
+        "_85" : {
+            "name" : "GlobalParams_natural",
+            "members" : [
+                {
+                    "name" : "thumbnail_tex",
+                    "type" : "_83",
+                    "offset" : 0
+                },
+                {
+                    "name" : "framebuffer_dims",
+                    "type" : "uvec2",
+                    "offset" : 4
+                },
+                {
+                    "name" : "first_thumbnail_center",
+                    "type" : "vec2",
+                    "offset" : 12
+                },
+                {
+                    "name" : "thumbnail_size",
+                    "type" : "float",
+                    "offset" : 20
+                },
+                {
+                    "name" : "hover",
+                    "type" : "float",
+                    "offset" : 24
+                },
+                {
+                    "name" : "thumbnail_index",
+                    "type" : "uint",
+                    "offset" : 28
+                }
+            ]
+        },
+        "_119" : {
+            "name" : "gl_PerVertex",
+            "members" : [
+                {
+                    "name" : "gl_Position",
+                    "type" : "vec4"
+                },
+                {
+                    "name" : "gl_PointSize",
+                    "type" : "float"
+                },
+                {
+                    "name" : "gl_ClipDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                },
+                {
+                    "name" : "gl_CullDistance",
+                    "type" : "float",
+                    "array" : [
+                        1
+                    ],
+                    "array_size_is_literal" : [
+                        true
+                    ]
+                }
+            ]
+        }
+    },
+    "outputs" : [
+        {
+            "type" : "vec2",
+            "name" : "entryPointParam_vs_main_uv",
+            "location" : 0
+        }
+    ],
+    "ubos" : [
+        {
+            "type" : "_85",
+            "name" : "GlobalParams_natural",
+            "block_size" : 32,
+            "set" : 0,
+            "binding" : 0
+        }
+    ]
+}

@@ -1,0 +1,96 @@
+{
+  "source_sha256": "4627ec9f9a8abe03dd30751f6a8e22868e0dfddf9f40029a1b848a3773495fe5",
+  "procedure": {
+    "kind": "0x1110",
+    "stream": 561,
+    "record_offset": 93128,
+    "module": "country_core-75de4a05f1ed4a16.6ozneiz8519ybpag6un4fa5bm.1euy9uv.rcgu.o",
+    "name": "country_core::resources::roofs::roof_ridge::inverse_ridge_01_param",
+    "segment": 1,
+    "offset": 11293056,
+    "rva": 11297152,
+    "va": "0x140ac6180",
+    "size": 119,
+    "type_index": "0x1001",
+    "flags": null
+  },
+  "bytes_sha256": "56b5381be79d2d8a211fb88f8f32675bfc0a93642b9e390d63e396b7b4800306",
+  "code_bytes": 119,
+  "decoded_bytes": 119,
+  "instructions": 28,
+  "calls_and_jumps": [
+    {
+      "address": "0x140ac61d9",
+      "kind": "call",
+      "target": "0x142dc8150",
+      "target_names": [
+        "core::option::unwrap_failed",
+        "_RNvNtCs8icZUrvfcq9_4core6option13unwrap_failed"
+      ],
+      "resolution": "direct-immediate"
+    },
+    {
+      "address": "0x140ac61f1",
+      "kind": "call",
+      "target": "0x142dc83b0",
+      "target_names": [
+        "core::panicking::panic",
+        "_RNvNtCs8icZUrvfcq9_4core9panicking5panic"
+      ],
+      "resolution": "direct-immediate"
+    }
+  ],
+  "rip_references": [
+    {
+      "address": "0x140ac618b",
+      "target": "0x142e3b1d8",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3dcccccd"
+      ],
+      "bytes_hex": "cdcccc3d00ff7f47000080420000000030e04940010000001800000000000000"
+    },
+    {
+      "address": "0x140ac6196",
+      "target": "0x142e42360",
+      "operand_bytes": 4,
+      "names": [
+        "__real@bdcccccd"
+      ],
+      "bytes_hex": "cdccccbd00000000000000000000000000003043000030450000000000000000"
+    },
+    {
+      "address": "0x140ac61b1",
+      "target": "0x142e36f28",
+      "operand_bytes": 4,
+      "names": [
+        "__real@3f800000"
+      ],
+      "bytes_hex": "0000803f0000005fffff7f5f000080bf000000bfffff7f7f0000003f0000003f"
+    },
+    {
+      "address": "0x140ac61d2",
+      "target": "0x14304c388",
+      "operand_bytes": 8,
+      "bytes_hex": "39c30443010000003500000000000000890000000a000000617373657274696f"
+    },
+    {
+      "address": "0x140ac61de",
+      "target": "0x14304c3a0",
+      "operand_bytes": 8,
+      "bytes_hex": "617373657274696f6e206661696c65643a2072696467655f706172616d2e6973",
+      "ascii_candidate": "assertion failed: ridge_param.is_finite()"
+    },
+    {
+      "address": "0x140ac61e5",
+      "target": "0x14304c3d0",
+      "operand_bytes": 8,
+      "bytes_hex": "39c304430100000035000000000000008c00000005000000b0ac044301000000"
+    }
+  ],
+  "limitations": [
+    "Linear decode of the PDB procedure byte extent, not a recovered CFG.",
+    "Named targets are matched-PDB identities, not execution observations.",
+    "Indirect calls, embedded data, and source-language field types stay unresolved."
+  ]
+}

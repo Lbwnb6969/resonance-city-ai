@@ -306,7 +306,7 @@ func _cluster_records(root: Dictionary, origin: Vector2) -> Array:
 					if Vector2(local.x/scale_value.x,local.y/scale_value.z).length_squared()<=1.0: samples.append(position+local.rotated(-angle))
 			for step in range(24): samples.append(position+Vector2(cos(step*TAU/24.0)*scale_value.x,sin(step*TAU/24.0)*scale_value.z).rotated(-angle))
 		result.append({"position":position,"seed":int(root.seed)+index,"part":"grass" if grass else "stone",
-			"transform":Transform3D(Basis(Vector3.UP,angle).scaled(scale_value),Vector3(position.x-origin.x,0,position.y-origin.y)),"tint":tint,"edge_points":samples,
+			"transform":Transform3D(Basis(Vector3.UP,angle)*Basis.from_scale(scale_value),Vector3(position.x-origin.x,0,position.y-origin.y)),"tint":tint,"edge_points":samples,
 			"cluster_id":str(root.cluster_id),"root_position":at,"cluster_role":"grass" if grass else ("main" if index==0 else "companion"),"cluster_index":index,"cluster_reach":CLUSTER_REACH})
 	return result
 

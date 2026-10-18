@@ -12,8 +12,9 @@ var layout_rebuilds := 0
 func copy_cache_from(source: RefCounted) -> void:
 	# Independent worker values, with no City weakrefs or cafe visibility graph.
 	_layout_signature = source._layout_signature
-	_house_pads = source._house_pads.duplicate(true)
-	_court_pads = source._court_pads.duplicate(true)
+	# _prepare_layout replaces both arrays, and build only reads their records.
+	_house_pads = source._house_pads
+	_court_pads = source._court_pads
 	layout_rebuilds = source.layout_rebuilds
 
 func build(city: RefCounted,road_profiles: Dictionary = {}) -> Array:

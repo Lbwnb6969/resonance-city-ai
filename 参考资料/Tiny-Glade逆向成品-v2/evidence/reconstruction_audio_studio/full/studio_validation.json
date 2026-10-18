@@ -1,0 +1,48 @@
+{
+  "banks": 37,
+  "descriptions_total": 604,
+  "listed_descriptions": 547,
+  "unlisted_descriptions": 57,
+  "all_unlisted_guid_lookups_succeeded": true,
+  "global_parameters": 61,
+  "event_parameter_occurrences": 1591,
+  "all_descriptions_instance_count_zero": true,
+  "all_bank_samples_unloaded": true,
+  "all_event_samples_unloaded": true,
+  "parameter_flags": {
+    "READONLY": 1083,
+    "GLOBAL": 995,
+    "AUTOMATIC": 88,
+    "DISCRETE": 15
+  },
+  "parameters_with_labels": 0,
+  "default_outside_range_count": 88,
+  "default_outside_range_types": {
+    "AUTOMATIC_DISTANCE": 87,
+    "AUTOMATIC_DIRECTION": 1
+  },
+  "out_of_range_default_bits": [
+    2139095039
+  ],
+  "snapshot_descriptions": 38,
+  "stream_descriptions": 122,
+  "three_d_descriptions": 270,
+  "user_properties": 0,
+  "guid_path_round_trip_calls": 742,
+  "parameter_index_id_crosschecks": 1763,
+  "raw_graph": {
+    "banks": 37,
+    "records": 40867,
+    "reference_edges": 127292,
+    "wave_records": 4807,
+    "fsb_samples": 4807,
+    "static_event_guids": 604,
+    "all_sdk_event_guids_in_static": true,
+    "sdk_listed_event_guids": 547,
+    "sdk_all_event_guids": 604,
+    "static_unlisted_event_guids": 57,
+    "wav_to_fsb_bijection": true,
+    "events_with_reachable_samples": 554
+  },
+  "passed": true
+}
