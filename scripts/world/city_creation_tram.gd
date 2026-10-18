@@ -9,6 +9,7 @@ const MIN_RIDE := 6.0
 var life: Node3D
 var cars: Array[Dictionary]=[]
 var tickets: Dictionary={}
+var _active_tickets: Dictionary={}
 var plan: Dictionary={"graph":{},"positions":{},"lines":[],"stations":[],"station_keys":{},"edges":[],"length":0.}
 var root: Node3D
 var night := false
@@ -45,7 +46,7 @@ func clear()->void:
 			var at: Vector3=resident.node.position
 			resident.node.position=Vector3(at.x,life.state.street_height(Vector2(at.x,at.z))+.10,at.z)
 			resident.node.get_child(0).position.y=0.
-	tickets.clear()
+	tickets.clear();_active_tickets.clear()
 	if root!=null:root.queue_free();root=null
 	cars.clear()
 	_depot_station="";_depot_id=""
@@ -56,6 +57,13 @@ func sync()->void:
 	var unlocked: bool=life.state.era_unlocks.has("clockwork")
 	if _revision==life.state.revision and _unlocked==unlocked:return
 	_revision=life.state.revision
+	# Negative trip decisions are cached until a new route. Only live waiting
+	# and onboard tickets need per-frame validation; prune removed homes here.
+	var homes: Dictionary={}
+	for house: Dictionary in life.state.houses:
+		if house.get("role","residential")=="residential":homes[str(house.id)]=true
+	for home: String in tickets.keys():
+		if not homes.has(home):_release_ticket(home,tickets[home])
 	var network_signature:=hash(life._network_signature)
 	if network_signature==_network_signature and unlocked==_unlocked:return
 	_network_signature=network_signature;_unlocked=unlocked
@@ -90,21 +98,24 @@ func set_night(value: bool)->void:
 	night=value
 	for car: Dictionary in cars:car.glass.emission_energy_multiplier=.70 if night else .10
 
+func _release_ticket(home: String,ticket: Dictionary)->void:
+	for car: Dictionary in cars:car.riders.erase(home)
+	var resident: Dictionary=ticket.resident
+	if ticket.state=="onboard" and is_instance_valid(resident.node):
+		var at: Vector3=resident.node.position
+		resident.node.position.y=life.state.street_height(Vector2(at.x,at.z))+.1
+	tickets.erase(home);_active_tickets.erase(home)
+
 func tick(delta: float)->void:
 	sync()
 	# Invitations, tea exits and editing can replace a route while a person is
 	# seated. Release that old ticket before a later stop can change its index.
-	for home: String in tickets.keys():
-		var ticket: Dictionary=tickets[home];var resident: Dictionary=ticket.resident
+	for home: String in _active_tickets.keys():
+		var ticket: Dictionary=_active_tickets[home];var resident: Dictionary=ticket.resident
 		if not is_instance_valid(resident.node):
-			for car: Dictionary in cars:car.riders.erase(home)
-			tickets.erase(home);continue
+			_release_ticket(home,ticket);continue
 		if ticket.route==resident.route:continue
-		for car: Dictionary in cars:car.riders.erase(home)
-		if ticket.state=="onboard":
-			var at: Vector3=resident.node.position
-			resident.node.position.y=life.state.street_height(Vector2(at.x,at.z))+.1
-		tickets.erase(home)
+		_release_ticket(home,ticket)
 	for car: Dictionary in cars:
 		var remaining:=delta
 		while remaining>.00001:
@@ -150,30 +161,27 @@ func _drop(car: Dictionary)->void:
 		resident.node.position=Vector3(plan.positions[ticket.exit])+Vector3(0,.1,0)
 		resident.index=int(ticket.exit_index)+1
 		resident.node.get_child(0).position.y=0.
-		car.riders.erase(home);ticket.state="completed";completed+=1
+		car.riders.erase(home);ticket.state="completed";_active_tickets.erase(home);completed+=1
 
 func intercept(resident: Dictionary,delta: float)->bool:
 	if cars.is_empty() or resident.paused or resident.wait>0. or not str(resident.dwell_id).is_empty():return false
 	var home:=str(resident.home_id)
 	var old: Dictionary=tickets.get(home,{})
 	if not old.is_empty() and old.route!=resident.route:
-		for car: Dictionary in cars:car.riders.erase(home)
-		if old.state=="onboard":
-			var at: Vector3=resident.node.position
-			resident.node.position.y=life.state.street_height(Vector2(at.x,at.z))+.1
-		tickets.erase(home);old={}
+		_release_ticket(home,old);old={}
 	if old.is_empty():
 		var trip:=_trip(resident)
 		trip.merge({"route":resident.route,"resident":resident})
 		tickets[home]=trip;old=trip
+		if trip.state=="approach":_active_tickets[home]=trip
 	if old.state in ["declined","completed"]:return false
 	if old.state=="onboard":return true
 	if int(resident.index)<int(old.board_index):return false
 	if resident.node.position.distance_to(Vector3(plan.positions[old.board])+Vector3(0,.1,0))>.20:
-		old.state="declined";return false
+		old.state="declined";_active_tickets.erase(home);return false
 	old.wait+=delta
 	if float(old.wait)>5.:
-		old.state="declined";return false
+		old.state="declined";_active_tickets.erase(home);return false
 	for car: Dictionary in cars:
 		if str(car.id)!=str(old.car_id) or str(car.key)!=str(old.board) or float(car.wait)<=0. or car.riders.size()>=CAPACITY:continue
 		var seats: Dictionary={}
@@ -238,7 +246,7 @@ func _forecast(car: Dictionary,board: String,exit: String,ready: float)->Diction
 func report()->Dictionary:
 	var vehicles: Array=[]
 	for car: Dictionary in cars:vehicles.append({"id":car.id,"position":car.node.position,"station":car.key,"waiting":car.wait,"distance":car.distance,"passengers":car.riders.duplicate()})
-	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed()}
+	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"active_tickets":_active_tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed()}
 
 func source_valid(car_id: String,station: String)->bool:
 	if not plan.station_keys.has(station):return false

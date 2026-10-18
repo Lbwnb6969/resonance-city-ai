@@ -9,8 +9,25 @@ var target:=Vector3.ZERO
 var watch_travel:=false
 var leg:=-1
 var yaw:=0.
+var deferred:=false
+var due_at:=0.
+var deferred_speed:=0.
+var _sampled_at:=0.
+var _clock: Node3D
 func _init(point:Vector3,heading:float)->void:start=point;target=point;yaw=heading
-func point()->Vector3:return start+direction*progress
+func point()->Vector3:
+	# Long hidden legs are sampled analytically on demand. The scene camera,
+	# checkpoints and edits all see today's position between scheduled updates.
+	var extra: float=maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed if deferred else 0.
+	return start+direction*minf(length,progress+extra)
+func defer(clock: Node3D,speed: float)->void:
+	if speed<=0. or watch_travel or length-progress<=speed*.25:return
+	_clock=clock;_sampled_at=float(clock.time);deferred_speed=speed
+	due_at=_sampled_at+.2;deferred=true
+func settle()->void:
+	if not deferred:return
+	progress=minf(length,progress+maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed)
+	deferred=false;_clock=null
 func advance(route:Array[Vector3],index:int,distance:float)->int:
 	if leg!=index or target!=route[index]:
 		start=point();progress=0.;target=route[index];leg=index

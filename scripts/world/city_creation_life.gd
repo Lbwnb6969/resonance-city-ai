@@ -3,6 +3,8 @@ extends Node3D
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
 const CitizenMotion=preload("res://scripts/world/city_creation_citizen_motion.gd")
+const CitizenSchedule=preload("res://scripts/world/city_creation_citizen_schedule.gd")
+var _citizen_schedule:=CitizenSchedule.new()
 const State=preload("res://scripts/world/city_creation_state.gd")
 var _published_surface:RefCounted
 var view_camera:Camera3D
@@ -13,7 +15,7 @@ var _quality_inputs:Variant=null
 var _quality_cursor:=-1
 var profile_tick:=false
 var tick_profile:Dictionary={}
-var citizen_lod_stats:Dictionary={"scalar":0,"visible":0,"publications":0}
+var citizen_lod_stats:Dictionary={"scalar":0,"visible":0,"publications":0,"scheduled_steps":0}
 const Bakery := preload("res://scripts/world/city_creation_bakery.gd")
 const Workshop := preload("res://scripts/world/city_creation_workshop.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
@@ -98,6 +100,10 @@ var _budget_started_usec := 0
 func flush_citizen(resident:Dictionary)->void:
 	var motion:RefCounted=resident.get("offscreen_motion")
 	if motion==null:return
+	_citizen_schedule.wake(resident)
+	if motion.deferred:
+		motion.settle()
+		resident.motion_advanced_at=time
 	var surface:RefCounted=_published_surface if _published_surface!=null and state.revision!=last_revision else state
 	var point:Vector3=motion.point();point.y=surface.street_height(Vector2(point.x,point.z))+.10
 	resident.node.position=point;resident.node.rotation.y=motion.yaw
@@ -326,6 +332,7 @@ func _process(delta: float) -> void:
 
 func _tick_life(delta: float) -> void:
 	var sampled:=Time.get_ticks_usec() if profile_tick else 0
+	if profile_tick:tick_profile.height=0;tick_profile.travel=0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if str(_concert.get("phase", "idle")) == "playing":
 		var until_completion := CONCERT_DURATION - float(_concert.elapsed)
@@ -344,7 +351,9 @@ func _tick_life(delta: float) -> void:
 		_refresh_quality(_quality_cursor,16);_quality_cursor+=16
 		if _quality_cursor>=state.houses.size():_quality_cursor=-1
 	if profile_tick:tick_profile.quality=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
+	var tram_started:=Time.get_ticks_usec() if profile_tick else 0
 	tram.tick(delta)
+	if profile_tick:tick_profile.tram=Time.get_ticks_usec()-tram_started
 	bakery.tick(delta)
 	workshop.tick(delta)
 	state.advance_resonance_afterglow(delta)
@@ -357,83 +366,11 @@ func _tick_life(delta: float) -> void:
 	var already_playing := str(_concert.get("phase", "idle")) == "playing"
 	if str(_concert.get("phase", "idle")) == "gathering": _refresh_resonance_membership()
 	if profile_tick:tick_profile.lod=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
-	for resident: Dictionary in residents:
-		if resident.has("cafe_visit"): continue
-		var walk_step: float=base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)
-		var motion:RefCounted=resident.get("offscreen_motion")
-		# A legal hidden leg needs only a scalar increment. At leg boundaries
-		# the normal route/state machine below still owns every transition.
-		if motion!=null and not has_trams and motion.leg==int(resident.index) and motion.progress+walk_step<motion.length:
-			var observe:bool=motion.watch_travel or (resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering")
-			var previous:Vector3=motion.point() if observe else Vector3.ZERO
-			motion.progress+=walk_step
-			if observe:
-				var point:Vector3=motion.point()
-				record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
-				if resident.has("daily_snapshot"):_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
-			continue
-		if has_trams:
-			if tram.tickets.get(str(resident.home_id),{}).get("state","") not in ["declined","completed"]:flush_citizen(resident)
-			if tram.intercept(resident,delta):continue
-			motion=resident.get("offscreen_motion")
-		if resident.paused: continue
-		if resident.has("daily_snapshot") and str(resident.dwell_id) == str(_concert.get("venue_id", "")):
-			continue
-		if resident.wait > 0.0:
-			resident.wait = maxf(0.0, float(resident.wait) - delta)
-			continue
-		if not str(resident.get("dwell_id", "")).is_empty():
-			# Foundation's Visit Building graph separates reaching, waiting and
-			# filling the need. An edit never counts as finishing that sequence.
-			var reached := str(resident.dwell_id)
-			var service := str(resident.service_pending)
-			# An empty shelf retains a completed visit until real bread arrives.
-			if service == "bakery" and not state.serve_bread(reached, str(resident.home_id)): continue
-			if service == "bakery" and purchase_callback.is_valid(): purchase_callback.call(reached,str(resident.home_id))
-			resident.dwell_id = ""
-			resident.service_pending = ""
-			if service == "venue":
-				state.record_life_event("gatherings")
-				if arrival_callback.is_valid(): arrival_callback.call("venue")
-			_read_progress()
-			if service == "bakery" and cafe.try_visit(resident, reached): continue
-			_depart(resident, reached)
-			if resident.paused: continue
-		var route: Array[Vector3] = resident.route
-		var index := int(resident.index)
-		if index >= route.size():
-			_arrive(resident)
-			continue
-		if motion!=null:
-			var old_leg:int=motion.leg
-			var previous:Vector3=motion.point()
-			resident.index=motion.advance(route,index,walk_step)
-			if old_leg!=motion.leg:motion.watch_travel=travel.has_sites_between(Vector2(previous.x,previous.z),Vector2(motion.target.x,motion.target.z))
-			var point:Vector3=motion.point()
-			record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
-			if resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering":_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
-			continue
-		var node: Node3D = resident.node
-		var point:=node.position
-		var previous_position := Vector2(point.x,point.z)
-		var target: Vector3 = route[index]
-		var remaining := point.distance_to(target)
-		if remaining < walk_step:
-			point = target
-			resident.index = index + 1
-		else:
-			var direction := (target - point).normalized()
-			point += direction * walk_step
-			node.rotation.y = atan2(direction.x, direction.z)
-		point.y = state.street_height(Vector2(point.x,point.z))+0.10
-		# Publish the complete transform once, after resolving the physical
-		# street height; no transient route-interpolated Y reaches the scene.
-		node.position=point
-		record_travel("resident/"+str(resident.home_id),previous_position,Vector2(point.x,point.z))
-		if resident.has("daily_snapshot") and str(_concert.get("phase", "idle")) == "gathering":
-			_wake_passed_houses(previous_position, Vector2(point.x,point.z))
-		var body: Node3D = node.get_child(0)
-		body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
+	for resident: Dictionary in _citizen_schedule.take(time):
+		_tick_citizen(resident,delta,base_walk_step,has_trams)
+		var motion: RefCounted=resident.get("offscreen_motion")
+		if motion!=null and motion.deferred:_citizen_schedule.sleep(resident,motion)
+		else:_citizen_schedule.retain(resident)
 	if profile_tick:tick_profile.citizens=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	cafe.tick(delta)
 	if already_playing and str(_concert.get("phase", "idle")) == "playing":
@@ -448,6 +385,107 @@ func _tick_life(delta: float) -> void:
 	# Old held time must never be spent inside that new twenty-four seconds.
 	if not _budget_catching_up: matinee.tick(delta)
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
+
+func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
+	if resident.has("cafe_visit"): return
+	if float(resident.get("motion_advanced_at",-1.))==time:return
+	var motion:RefCounted=resident.get("offscreen_motion")
+	if motion!=null and motion.deferred:
+		if time<motion.due_at:return
+		var speed: float=motion.deferred_speed
+		motion.settle()
+		if motion.progress>=motion.length:resident.index=int(resident.index)+1
+		else:motion.defer(self,speed)
+		citizen_lod_stats.scheduled_steps+=1
+		return
+	var walk_step: float=base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)
+	if has_trams:
+		var ticket: Dictionary=tram.tickets.get(str(resident.home_id),{})
+		var status: String=str(ticket.get("state",""))
+		# A decision belongs to this resident's current trip. A tram elsewhere
+		# must not force every declined/completed pedestrian back into scene
+		# transforms. New routes still get a fresh real boarding decision.
+		if (status!="declined" and status!="completed") or ticket.route!=resident.route:
+			flush_citizen(resident)
+			if tram.intercept(resident,delta):return
+			motion=resident.get("offscreen_motion")
+	# A legal hidden leg needs only a scalar increment. At leg boundaries
+	# the normal route/state machine below still owns every transition.
+	if motion!=null and motion.leg==int(resident.index) and motion.progress+walk_step<motion.length:
+		var observe:bool=motion.watch_travel or (resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering")
+		var previous:Vector3=motion.point() if observe else Vector3.ZERO
+		motion.progress+=walk_step
+		if observe:
+			var point:Vector3=motion.point()
+			record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+			if resident.has("daily_snapshot"):_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+		elif delta>0.:motion.defer(self,walk_step/delta)
+		return
+	if resident.paused: return
+	if resident.has("daily_snapshot") and str(resident.dwell_id) == str(_concert.get("venue_id", "")):
+		return
+	if resident.wait > 0.0:
+		resident.wait = maxf(0.0, float(resident.wait) - delta)
+		return
+	if not str(resident.get("dwell_id", "")).is_empty():
+		# Foundation's Visit Building graph separates reaching, waiting and
+		# filling the need. An edit never counts as finishing that sequence.
+		var reached := str(resident.dwell_id)
+		var service := str(resident.service_pending)
+		# An empty shelf retains a completed visit until real bread arrives.
+		if service == "bakery" and not state.serve_bread(reached, str(resident.home_id)): return
+		if service == "bakery" and purchase_callback.is_valid(): purchase_callback.call(reached,str(resident.home_id))
+		resident.dwell_id = ""
+		resident.service_pending = ""
+		if service == "venue":
+			state.record_life_event("gatherings")
+			if arrival_callback.is_valid(): arrival_callback.call("venue")
+		_read_progress()
+		if service == "bakery" and cafe.try_visit(resident, reached): return
+		_depart(resident, reached)
+		if resident.paused: return
+	var route: Array[Vector3] = resident.route
+	var index := int(resident.index)
+	if index >= route.size():
+		_arrive(resident)
+		return
+	if motion!=null:
+		var old_leg:int=motion.leg
+		var previous:Vector3=motion.point()
+		resident.index=motion.advance(route,index,walk_step)
+		if old_leg!=motion.leg:motion.watch_travel=travel.has_sites_between(Vector2(previous.x,previous.z),Vector2(motion.target.x,motion.target.z))
+		var point:Vector3=motion.point()
+		record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+		if resident.has("daily_snapshot") and str(_concert.get("phase","idle"))=="gathering":_wake_passed_houses(Vector2(previous.x,previous.z),Vector2(point.x,point.z))
+		elif delta>0.:motion.defer(self,walk_step/delta)
+		return
+	var node: Node3D = resident.node
+	var point:=node.position
+	var previous_position := Vector2(point.x,point.z)
+	var target: Vector3 = route[index]
+	var travel_leg:=Vector2i(index,travel.rebuilds)
+	if resident.get("travel_leg",Vector2i(-1,-1))!=travel_leg or resident.get("travel_route")!=route:
+		resident.travel_leg=travel_leg;resident.travel_route=route
+		resident.travel_watch=travel.has_sites_between(previous_position,Vector2(target.x,target.z))
+	var remaining := point.distance_to(target)
+	if remaining < walk_step:
+		point = target
+		resident.index = index + 1
+	else:
+		var direction := (target - point).normalized()
+		point += direction * walk_step
+		node.rotation.y = atan2(direction.x, direction.z)
+	var height_started:=Time.get_ticks_usec() if profile_tick else 0
+	point.y = state.street_height(Vector2(point.x,point.z))+0.10
+	if profile_tick:tick_profile.height+=Time.get_ticks_usec()-height_started
+	# Publish the complete transform once, after resolving the physical
+	# street height; no transient route-interpolated Y reaches the scene.
+	node.position=point
+	if bool(resident.travel_watch):record_travel("resident/"+str(resident.home_id),previous_position,Vector2(point.x,point.z))
+	if resident.has("daily_snapshot") and str(_concert.get("phase", "idle")) == "gathering":
+		_wake_passed_houses(previous_position, Vector2(point.x,point.z))
+	var body: Node3D = node.get_child(0)
+	body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
 
 func _signature() -> Array:
 	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state)]
@@ -611,11 +649,13 @@ func _sync_people() -> void:
 			else:
 				_resume(resident)
 			resume_ms+=float(Time.get_ticks_usec()-stage_started)/1000.0
+		resident.erase("travel_leg")
 		next_residents.append(resident)
 	for resident: Dictionary in old_by_home.values():
 		if resident.has("daily_snapshot"): concert_invalid = true
 		resident.node.queue_free()
 	residents = next_residents
+	_citizen_schedule.reset(residents)
 	var residents_ms := float(Time.get_ticks_usec()-started)/1000.0
 	budget_commit_stats = {"travel_sync_ms":travel_sync_ms,"travel_sites":travel.sites.size(),"residents_ms":residents_ms,
 		"roles_scan_ms":roles_scan_ms,"stops_pair_routes_ms":stops_pair_routes_ms,"prepared_stop_hits":stop_hits,"prepared_stop_misses":stop_misses,"node_height_ms":node_height_ms,"prepared_height_hits":height_hits,"prepared_height_misses":height_misses,"resume_ms":resume_ms,
@@ -644,6 +684,17 @@ func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
 	for worker: Dictionary in bakery.workers: workplaces[str(worker.bakery_id)]=str(worker.home_id)
 	for worker: Dictionary in workshop.workers: workplaces[str(worker.workshop_id)]=str(worker.home_id)
 	var changes: Array[Dictionary]=state.refresh_quality(connected_houses,workplaces,first,count)
+	if not changes.is_empty():
+		var homes: Dictionary={}
+		for change: Dictionary in changes:homes[str(change.house_id)]=true
+		for resident: Dictionary in residents:
+			var motion: RefCounted=resident.get("offscreen_motion")
+			if motion==null or not motion.deferred or not homes.has(str(resident.home_id)):continue
+			# A newly earned walking boost starts now, including on a sampled
+			# hidden leg. Settle the old speed before replacing its forecast.
+			motion.settle()
+			_citizen_schedule.wake(resident)
+			motion.defer(self,.83*float(state.signature_bonuses().walking)*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.))
 	if not changes.is_empty() and quality_callback.is_valid(): quality_callback.call(changes)
 	return changes
 
@@ -1126,6 +1177,7 @@ func restore_checkpoint(data: Dictionary) -> void:
 	workshop.restore(data.get("workshop_workers", []))
 	bakery.restore(data.get("bakery_workers", []))
 	workshop.sync()
+	_citizen_schedule.reset(residents)
 
 func _restore_paused_home(home: String, saved: Dictionary) -> bool:
 	if str(_roles.get(home, "")) != "residential" or str(saved.get("destination_id", "")) != home or not str(saved.get("dwell_id", "")).is_empty() or not str(saved.get("service_pending", "")).is_empty() or saved.has("daily_snapshot"): return false
@@ -1206,8 +1258,10 @@ func house_connected(id: String) -> bool:
 
 func record_travel(actor_id: String, from: Vector2, to: Vector2) -> void:
 	if _budget_hold or budget_sync_pending(): return
+	var started:=Time.get_ticks_usec() if profile_tick else 0
 	for event: Dictionary in travel.observe(actor_id,from,to,time):
 		if travel_callback.is_valid(): travel_callback.call(actor_id,str(event.kind),str(event.id),Vector2(event.at))
+	if profile_tick:tick_profile.travel+=Time.get_ticks_usec()-started
 
 func travel_source_valid(kind: String, source_id: String, at: Vector2) -> bool:
 	if _budget_hold or budget_sync_pending(): return false
