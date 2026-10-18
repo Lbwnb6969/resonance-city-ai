@@ -833,6 +833,7 @@ func animate_house_bounce(id: String, strength: float = 0.06) -> void:
 	touch.request(self,id,strength)
 
 func _process(delta: float) -> void:
+	if budget_rebuild!=null:budget_rebuild.retire_idle()
 	touch.update(delta)
 	if state!=null:SignatureVisual.animate(self,delta)
 

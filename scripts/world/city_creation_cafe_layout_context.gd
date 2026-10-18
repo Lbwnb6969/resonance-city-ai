@@ -9,6 +9,32 @@ const GUEST_RADIUS := 0.14
 var _cache: Dictionary = {}
 var _contexts: Dictionary = {}
 
+func snapshot_city(city:RefCounted)->Dictionary:
+	var key:=city.get_instance_id();var plans:Dictionary={};var prefix:=str(key)+":"
+	for plan_key:String in _cache:
+		if plan_key.begins_with(prefix):plans[plan_key.trim_prefix(prefix)]=_cache[plan_key].duplicate(true)
+	var context:Dictionary=_contexts.get(key,{}).duplicate(true);context.erase("owner")
+	return {"context":context,"plans":plans}
+
+func restore_city(data:Dictionary,city:RefCounted)->void:
+	var context:Dictionary=data.get("context",{})
+	if context.is_empty():return
+	context.owner=weakref(city);_contexts[city.get_instance_id()]=context
+	for id:String in data.get("plans",{}):_cache[str(city.get_instance_id())+":"+id]=data.plans[id]
+
+func rebind_city(source:RefCounted,target:RefCounted)->void:
+	# A joined worker transfers its private, geometry-identical visibility
+	# graphs to the live city. The records contain values and one weak owner.
+	var source_id:=source.get_instance_id();var target_id:=target.get_instance_id()
+	if _contexts.has(source_id):
+		var context:Dictionary=_contexts[source_id];_contexts.erase(source_id)
+		context.owner=weakref(target);_contexts[target_id]=context
+	var prefix:=str(source_id)+":"
+	for key:String in _cache.keys():
+		if not key.begins_with(prefix):continue
+		var record:Dictionary=_cache[key];_cache.erase(key)
+		_cache[str(target_id)+":"+key.trim_prefix(prefix)]=record
+
 func _context(city) -> Dictionary:
 	var geometry: Array = []
 	for row: Dictionary in city.houses: geometry.append([row.id,row.origin,row.cells,row.get("role",""),float(row.get("base_y",0.0))])

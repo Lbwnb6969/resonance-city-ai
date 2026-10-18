@@ -37,6 +37,7 @@ var hint: Label
 var toast: Label
 var quest: Label
 var tool_buttons: Array[Button] = []
+var _painted_tool:=-1
 var undo_button: Button
 var redo_button: Button
 var music_button: Button
@@ -875,10 +876,13 @@ func _refresh_ui() -> void:
 	quest.text = "今天，给河湾添一点变化\n%s 扩展一格房屋\n%s 做一处高低屋顶\n%s 留一片露台\n%s 拉一条路到门前" % [_check("extend"), _check("raise"), _check("terrace"), _check("road")]
 	if get_viewport().get_visible_rect().size.y<820:
 		quest.text="给河湾添一点变化\n%s拓房  %s加层  %s露台  %s接路" % [_check("extend"),_check("raise"),_check("terrace"),_check("road")]
-	for i in range(tool_buttons.size()):
-		for visual_state in ["normal", "hover", "pressed"]:
-			tool_buttons[i].add_theme_stylebox_override(visual_state, UI.button(visual_state, i == tool))
-		tool_buttons[i].add_theme_color_override("font_color", UI.PAPER if i == tool else UI.INK)
+	if _painted_tool!=tool:
+		var changed:Array=range(tool_buttons.size()) if _painted_tool<0 else [_painted_tool,tool]
+		for i:int in changed:
+			for visual_state in ["normal", "hover", "pressed"]:
+				tool_buttons[i].add_theme_stylebox_override(visual_state, UI.button(visual_state, i == tool))
+			tool_buttons[i].add_theme_color_override("font_color", UI.PAPER if i == tool else UI.INK)
+		_painted_tool=tool
 	hint.text = ["点墙扩房，点顶加层；拖动建一排。\n空地新房靠近邻屋自动贴齐。\nAlt 自由放置；Esc 取消。", "点墙伸出露台，点顶留出花园。\n按住拖动，松开建成整笔。\n系统补齐栏杆和支撑。", "按住左键，沿空地拉出小路。\n横跨两岸自动搭桥；Esc 取消。", "点单元移除，附属上层一并收回。\n可选整栋移除，或 Shift 点击。\n移除最后单元会收回这栋房屋。", "点击房屋，起名并选择用途。\n居民沿小路采购、聚会，再回家。", "按住左键画树群；Shift+左键擦除。\n树会避开房屋、道路和水岸。\nEsc 取消预览。", "拖出池塘或从已有水边引水。\n红色预影说明与房屋、道路冲突。\nShift 点击移除；Esc 取消。", "自由刷出街坊，给房屋共同的音乐风格。\n点击选区；Shift 点击移除；Esc 取消。\n平移视野，听街坊乐句自然交接。", TerrainBrush.HINT][tool]
 	if tool==0:
 		hint.text="点墙扩房、点顶加层；拖动建一排。\nAlt 自由放置 · Esc 取消。\n叠满三层，独立屋顶长出钟楼。\n围出宽敞内院，自动铺石留泉。"
@@ -1132,6 +1136,7 @@ func _process(delta: float) -> void:
 		if journal!=null: journal.refresh_palette()
 	if _edit_ui_pending and not _edit_pending:
 		_edit_ui_pending=false
+		if town.budget_rebuild!=null:town.budget_rebuild.hold_retirement_this_frame()
 		var ui_started:=Time.get_ticks_usec()
 		_refresh_ui()
 		_edit_report["ui_ms"]=(Time.get_ticks_usec()-ui_started)/1000.0
@@ -1705,6 +1710,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 			state._ground_revision=state.revision
 			state._raw_ground_revision=state.revision
 			state._courtyard_revision=state.revision
+			state._prosperity_revision=state.revision
 			life.last_revision=state.revision
 			_color_ui_pending=true
 			save_delay=3.0
@@ -1785,6 +1791,7 @@ func _poll_edit_budget() -> void:
 	_finish_edit_publication(render,started)
 
 func _finish_edit_publication(render: Dictionary, started: int) -> void:
+	if town.budget_rebuild!=null:town.budget_rebuild.hold_retirement_this_frame()
 	life.commit_budget_sync()
 	town.refresh_ecology()
 	town.touch.publish(town)

@@ -76,9 +76,9 @@ func _normal(at: Vector2) -> Vector3:
 	var dz := _vertex_height(at+Vector2(0,Terrain.STEP))-_vertex_height(at-Vector2(0,Terrain.STEP))
 	return Vector3(-dx,2.0*Terrain.STEP,-dz).normalized()
 
-func _build_block(bounds: Rect2, block: Vector2i) -> Node3D:
-	var root := Node3D.new()
-	root.name = "Terrain_%d_%d" % [block.x,block.y]
+func prepare_mesh(bounds:Rect2)->Dictionary:
+	# Values only: budget workers prepare the exact visible and collision
+	# buffers. No RenderingServer/PhysicsServer resource is created here.
 	var vertices := PackedVector3Array()
 	var normals := PackedVector3Array()
 	var indices := PackedInt32Array()
@@ -110,8 +110,19 @@ func _build_block(bounds: Rect2, block: Vector2i) -> Node3D:
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_INDEX] = indices
+	var faces:=PackedVector3Array();faces.resize(indices.size())
+	for index:int in indices.size():faces[index]=vertices[indices[index]]
+	# Mesh.create_trimesh_shape passes through this CPU triangle builder,
+	# including its vertex welding/precision. Preserve those exact old faces.
+	var triangles:=TriangleMesh.new();triangles.create_from_faces(faces)
+	return {"arrays":arrays,"faces":triangles.get_faces(),"triangles":indices.size()/3}
+
+func _build_block(bounds: Rect2, block: Vector2i, prepared:Dictionary={}) -> Node3D:
+	if prepared.is_empty():prepared=prepare_mesh(bounds)
+	var root := Node3D.new()
+	root.name = "Terrain_%d_%d" % [block.x,block.y]
 	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,prepared.arrays)
 	var instance := MeshInstance3D.new()
 	instance.name = "GroundMesh"
 	instance.mesh = mesh
@@ -122,10 +133,10 @@ func _build_block(bounds: Rect2, block: Vector2i) -> Node3D:
 	body.collision_layer = 2
 	body.set_meta("ground",true)
 	var shape := CollisionShape3D.new()
-	shape.shape = mesh.create_trimesh_shape()
+	var collision:=ConcavePolygonShape3D.new();collision.set_faces(prepared.faces);shape.shape=collision
 	body.add_child(shape)
 	root.add_child(body)
-	root.set_meta("triangles",indices.size()/3)
+	root.set_meta("triangles",prepared.triangles)
 	return root
 
 func _skirt(vertices: PackedVector3Array, normals: PackedVector3Array, indices: PackedInt32Array, a: int, b: int, normal: Vector3) -> void:

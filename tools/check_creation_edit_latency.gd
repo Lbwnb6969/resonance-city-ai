@@ -28,16 +28,21 @@ func _mouse(down:bool)->void:
 	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=demo.pointer;event.global_position=demo.pointer;event.pressed=down;root.push_input(event);await process_frame
 func _wait()->void:
 	var deadline:=Time.get_ticks_msec()+30000
-	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:await process_frame
+	while (demo.edit_pending() or demo._edit_ui_pending or (demo.town.budget_rebuild!=null and demo.town.budget_rebuild.retirement_pending())) and Time.get_ticks_msec()<deadline:await process_frame
 	await physics_frame;await process_frame
 func _begin()->int:
 	await process_frame
 	frame_times.clear();watching=true;return Time.get_ticks_usec()
 func _end(label:String,started:int,request_ms:float)->void:
 	await _wait();watching=false
+	_check(not demo.edit_pending() and not demo._edit_ui_pending and not demo.town.budget_rebuild.retirement_pending(),"publication and all retired CPU data finish within the measured frames: "+label)
 	var maximum:=0.0
 	for ms:float in frame_times:maximum=maxf(maximum,ms)
-	facts.operations.append({"label":label,"command_ms":request_ms,"publication_latency_ms":float(Time.get_ticks_usec()-started)/1000,"max_actual_frame_ms":maximum,"frames":frame_times.size(),"budget":demo.edit_budget_report()})
+	_check(maximum<=12.,"observed edit and cleanup frames stay within twelve milliseconds: "+label)
+	var budget:Dictionary=demo.edit_budget_report()
+	if budget.get("mode","")=="budget":
+		_check(float(budget.poll_max_ms)<=3.5 and float(budget.render.stats.max_poll_ms)<=3.5 and float(demo.town.budget_rebuild.stats.get("max_frame_work_ms",0.))<=3.5,"render simulation publication and CPU retirement respect the observed 3.5ms budget: "+label)
+	facts.operations.append({"label":label,"command_ms":request_ms,"publication_latency_ms":float(Time.get_ticks_usec()-started)/1000,"max_actual_frame_ms":maximum,"frames":frame_times.size(),"budget":demo.edit_budget_report(),"retirement":demo.town.budget_rebuild.stats.get("retirement_max_ms",0.),"max_frame_render_work_ms":demo.town.budget_rebuild.stats.get("max_frame_work_ms",0.)})
 func _audio()->Array:
 	var rows:Array=[]
 	for id:String in demo.music.STEMS:
@@ -158,7 +163,7 @@ func _near_road()->void:
 
 func _finish(personal:PackedByteArray,source:PackedByteArray,audio:Array,clock:float)->void:
 	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.ambience.players.size()==2 and demo.music._playback_clock()>clock and FileAccess.get_file_as_bytes(SAMPLE)==source and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all measured edits preserve original music ambience transport sample and personal save")
-	var report:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts,"measurement":"Each operation records actual frame maximum from request through publication; command for Window release includes its awaited frame, not just handler CPU."}
+	var report:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts,"measurement":"Each operation records actual frame maximum from request through publication and final CPU retirement; command for Window release includes its awaited frame, not just handler CPU."}
 	FileAccess.open(OUT+("/near.json" if "--near-only" in OS.get_cmdline_user_args() else "/live.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("EDIT_LATENCY_CHECK ",JSON.stringify(report))
 	demo.set_process(false);demo.life.set_process(false);demo.music.set_process(false);demo.ambience.set_process(false)
 	for p:AudioStreamPlayer in demo.music._players.values():p.stop()

@@ -1,6 +1,7 @@
 extends RefCounted
 ## Foundation-style visit: bought bread, walk, occupy a real seat, then finish.
 const Layout := preload("res://scripts/world/city_creation_cafe_layout.gd")
+var layout_api:RefCounted=Layout.create_context()
 const DURATION := 6.0
 const SPEED := 0.83
 const SEATED_BODY_Y := 0.28
@@ -21,7 +22,7 @@ func sync() -> void:
 	for house: Dictionary in life.state.houses:
 		if str(house.role) == "garden_cafe":
 			var id := str(house.id)
-			var plan: Dictionary = Layout.layout(life.state, id)
+			var plan: Dictionary = layout_api.layout(life.state, id)
 			if not plan.is_empty() and life.connected_houses.has(id):
 				var entry: Vector3 = life.positions[life.connected_houses[id]]
 				plan.street_entry = Vector2(entry.x, entry.z)
@@ -127,7 +128,7 @@ func _approach(point: Vector3, id: String, seat: int) -> Array[Vector3]:
 	var route: Array[Vector3] = life._route_from_position(point, str(life.connected_houses[id]))
 	if route.is_empty(): return empty
 	var door: Vector3 = life.positions[life.connected_houses[id]]
-	var local: Array[Vector2] = Layout.route(life.state, id, Vector2(door.x, door.z), layouts[id].seats[seat])
+	var local: Array[Vector2] = layout_api.route(life.state, id, Vector2(door.x, door.z), layouts[id].seats[seat])
 	if local.is_empty(): return empty
 	for at: Vector2 in local: route.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 	return route
@@ -140,7 +141,7 @@ func street_attachment(point: Vector3, finish: String) -> Array[Vector3]:
 		var continuation: Array[Vector3] = life._route(str(life.connected_houses[id]), finish)
 		if continuation.is_empty(): continue
 		var door: Vector3 = life.positions[life.connected_houses[id]]
-		var local: Array[Vector2] = Layout.route(life.state, str(id), planar, Vector2(door.x, door.z))
+		var local: Array[Vector2] = layout_api.route(life.state, str(id), planar, Vector2(door.x, door.z))
 		if local.is_empty(): continue
 		var result: Array[Vector3] = []
 		for at: Vector2 in local: result.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
@@ -216,7 +217,7 @@ func _walk(resident: Dictionary, delta: float) -> bool:
 func _set_exit(resident: Dictionary, id: String) -> void:
 	var point := Vector2(resident.node.position.x, resident.node.position.z)
 	var entry: Vector3 = life.positions[life.connected_houses[id]]
-	var local: Array[Vector2] = Layout.route(life.state, id, point, Vector2(entry.x, entry.z))
+	var local: Array[Vector2] = layout_api.route(life.state, id, point, Vector2(entry.x, entry.z))
 	var route: Array[Vector3] = []
 	for at: Vector2 in local: route.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 	resident.route = route
@@ -231,7 +232,7 @@ func _restore_daily(resident: Dictionary, exit_first: bool, canceled_plan: Dicti
 		prefix.assign(resident.route)
 	elif exit_first and not canceled_plan.is_empty() and canceled_plan.has("street_entry"):
 		var planar := Vector2(resident.node.position.x, resident.node.position.z)
-		var local: Array[Vector2] = Layout.route_with_plan(life.state, id, canceled_plan, planar, canceled_plan.street_entry)
+		var local: Array[Vector2] = layout_api.route_with_plan(life.state, id, canceled_plan, planar, canceled_plan.street_entry)
 		for at: Vector2 in local: prefix.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 	resident.erase("cafe_visit")
 	resident.node.get_child(0).position.y = 0.0
@@ -286,7 +287,7 @@ func restore(data: Dictionary) -> void:
 			else:
 				var target: Vector2 = layouts[id].seats[int(visit.seat)]
 				if str(visit.phase) == "seated" and Vector2(point.x, point.z).distance_to(target) > 0.15: valid = false
-				var local: Array[Vector2] = Layout.route(life.state, id, Vector2(point.x, point.z), Vector2(life.positions[life.connected_houses[id]].x, life.positions[life.connected_houses[id]].z))
+				var local: Array[Vector2] = layout_api.route(life.state, id, Vector2(point.x, point.z), Vector2(life.positions[life.connected_houses[id]].x, life.positions[life.connected_houses[id]].z))
 				for at: Vector2 in local: route.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 			if route.is_empty() or (visit.phase != "leaving" and not life.state.has_cafe_credit(str(home))) or not resident.stops.has(str(visit.return_id)): valid = false
 			candidates.append({"resident":resident,"entry":entry,"point":point,"route":route})

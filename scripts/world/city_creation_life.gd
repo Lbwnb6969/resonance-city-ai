@@ -3,6 +3,8 @@ extends Node3D
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
 const CitizenMotion=preload("res://scripts/world/city_creation_citizen_motion.gd")
+const State=preload("res://scripts/world/city_creation_state.gd")
+var _published_surface:RefCounted
 var view_camera:Camera3D
 var _visual_lod_cursor:=0
 var _lod_scalar_count:=0
@@ -96,11 +98,26 @@ var _budget_started_usec := 0
 func flush_citizen(resident:Dictionary)->void:
 	var motion:RefCounted=resident.get("offscreen_motion")
 	if motion==null:return
-	var point:Vector3=motion.point();point.y=state.street_height(Vector2(point.x,point.z))+.10
+	var surface:RefCounted=_published_surface if _published_surface!=null and state.revision!=last_revision else state
+	var point:Vector3=motion.point();point.y=surface.street_height(Vector2(point.x,point.z))+.10
 	resident.node.position=point;resident.node.rotation.y=motion.yaw
 	resident.node.get_child(0).visible=true
 	resident.erase("offscreen_motion")
 	citizen_lod_stats.publications+=1
+
+func _capture_published_surface()->void:
+	# Two read-only grid buffers and immutable road profiles freeze actual
+	# published heights. Flushing a hidden actor after an edit must not prepare
+	# the new live terrain on the main thread before the worker can start.
+	state.prepare_ground_height()
+	var frozen:=State.new();frozen.revision=state.revision
+	frozen.waters.assign(state.waters.duplicate(true))
+	frozen._ground_terrain.vertices=state._ground_terrain.vertices
+	frozen._ground_terrain.raw_vertices=state._ground_terrain.raw_vertices
+	frozen._road_heights.copy_cache_from(state._road_heights)
+	frozen._ground_revision=frozen.revision;frozen._raw_ground_revision=frozen.revision
+	frozen._street_markers=state.Roundabouts.all(state.roads);frozen._street_marker_revision=frozen.revision
+	_published_surface=frozen
 
 func flush_citizens()->void:
 	for resident:Dictionary in residents:flush_citizen(resident)
@@ -162,6 +179,8 @@ func begin_budget_sync() -> bool:
 	_budget_request = {"generation":_budget_generation,"revision":state.revision,"signature":signature,
 		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"districts":state.districts.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed,"road_height_cache":road_seed},
 		"prior":connected_houses.duplicate(),"actors":actors}
+	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
+	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
 	_budget_started_usec = Time.get_ticks_usec()
 	if _budget_thread == null: _start_budget_worker()
 	return true
@@ -208,6 +227,8 @@ func commit_budget_sync() -> bool:
 	# Publish after join so helpers do not repeat that work on the active State.
 	state._frontage_cache = _budget_ready_network.state._frontage_cache
 	_adopt_network(_budget_ready_network)
+	cafe.layout_api=_network.prepared_cafe_context
+	cafe.layout_api.rebind_city(_network.state,state)
 	var adopted_ms := float(Time.get_ticks_usec()-started)/1000.0
 	var travel_started := Time.get_ticks_usec()
 	var travel_changed: bool = travel.adopt_prepared(_budget_ready_network.prepared_travel)
@@ -599,6 +620,7 @@ func _sync_people() -> void:
 	started = Time.get_ticks_usec()
 	workshop.sync()
 	budget_commit_stats.workshop_ms = (Time.get_ticks_usec()-started)/1000.0
+	_capture_published_surface()
 
 func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
 	var workplaces := {}

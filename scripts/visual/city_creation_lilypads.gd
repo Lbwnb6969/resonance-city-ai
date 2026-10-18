@@ -24,6 +24,9 @@ var elapsed_ms := 0.0
 func setup(city: RefCounted) -> void:
 	state=city
 	name="PondLilypads"
+	# Two fixed, tiny meshes/materials belong to scene startup. The first pond
+	# must not decode JSON/textures inside a later 3.5ms installation task.
+	for part:String in ["leaf","flower"]:_mesh(part);_material(part)
 
 func rebuild() -> void:
 	var began := Time.get_ticks_usec()

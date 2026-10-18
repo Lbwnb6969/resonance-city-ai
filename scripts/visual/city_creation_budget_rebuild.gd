@@ -21,6 +21,58 @@ var _request_ms := 0.0
 var _max_step_ms := 0.0
 var _main_ms := 0.0
 var _published_snapshot: Dictionary = {}
+var retired_values:Array=[]
+var retired_contexts:Array[Node3D]=[]
+var _task_peak_ms:Dictionary={}
+var _task_max_units:Dictionary={}
+
+func _task_units(task:Array)->int:
+	if str(task[0])=="meadow":
+		var count:=0
+		for rows:Array in task[2].values():count+=rows.size()
+		return count
+	if str(task[0]) in ["shore","lilypads","vegetation"]:return task[2].size()
+	return 1
+var _work_frame:=-1
+var _frame_work_ms:=0.
+var _retirement_blocked_frame:=-1
+
+func hold_retirement_this_frame()->void:_retirement_blocked_frame=Engine.get_process_frames()
+
+func _account_work(ms:float)->void:
+	var frame:=Engine.get_process_frames()
+	if frame!=_work_frame:_work_frame=frame;_frame_work_ms=0.
+	_frame_work_ms+=ms
+	stats["max_frame_work_ms"]=maxf(float(stats.get("max_frame_work_ms",0.)),_frame_work_ms)
+
+func retirement_pending()->bool:return not retired_values.is_empty() or not retired_contexts.is_empty()
+
+func retire_idle()->void:
+	if not retirement_pending() or Engine.get_process_frames()==_retirement_blocked_frame:return
+	var remaining:=3.5-(_frame_work_ms if _work_frame==Engine.get_process_frames() else 0.)
+	var context_only:=retired_values.is_empty()
+	if remaining<(3. if context_only else 1.25):return
+	var available:=minf(.5,remaining)
+	if available<.1:return
+	var began:=Time.get_ticks_usec()
+	if context_only:_dispose_context(retired_contexts.pop_back())
+	else:
+		while not retired_values.is_empty() and float(Time.get_ticks_usec()-began)/1000.<available:retired_values.pop_back()
+	var elapsed:=float(Time.get_ticks_usec()-began)/1000.
+	_account_work(elapsed)
+	_main_ms+=elapsed;stats["main_ms"]=_main_ms
+	stats["retirement_total_ms"]=float(stats.get("retirement_total_ms",0.))+elapsed
+	stats["retirement_max_ms"]=maxf(float(stats.get("retirement_max_ms",0.)),elapsed)
+	stats["retirement_pending"]=retired_values.size()+retired_contexts.size()
+
+func _merge_value_cache(target:Dictionary,incoming:Dictionary)->void:
+	# The old block's records are no longer used by the published geometry.
+	# Keep their final references until bounded idle frames can release them,
+	# rather than freeing thousands of dictionaries inside the atomic commit.
+	for key:Variant in incoming:
+		var previous:Variant=target.get(key)
+		if (previous is Array or previous is Dictionary) and not is_same(previous,incoming[key]):retired_values.append(previous)
+	target.merge(incoming,true)
 
 func record_published(state:RefCounted)->void:
 	_published_snapshot=ChangeSet.snapshot(state)
@@ -90,7 +142,8 @@ func request(owner: Node3D) -> int:
 	_request_ms = float(Time.get_ticks_usec()-start)/1000.0
 	_main_ms = _request_ms
 	_max_step_ms = _request_ms
-	stats = {"generation":generation,"request_ms":_request_ms,"discarded":0,"change_labels":changes.labels.duplicate(),"change_counts":changes.counts.duplicate(),"change_bounds":changes.bounds.size()}
+	stats = {"generation":generation,"request_ms":_request_ms,"max_step_task":"request","discarded":0,"change_labels":changes.labels.duplicate(),"change_counts":changes.counts.duplicate(),"change_bounds":changes.bounds.size()}
+	_account_work(_request_ms)
 	_start_latest()
 	return generation
 
@@ -114,6 +167,7 @@ func _work(context: Node3D) -> Dictionary:
 	stage_start = Time.get_ticks_usec()
 	context.state.prepare_ground_height()
 	var terrain_blocks: Array = context.terrain_surface.prepare_blocks()
+	for change:Array in terrain_blocks:change.append(context.terrain_surface.prepare_mesh(change[1]))
 	stages.terrain = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	var building_signature := hash([context.state.houses,context.state.roads])
@@ -161,6 +215,10 @@ func _work(context: Node3D) -> Dictionary:
 	var courts: Dictionary = context.courtyards.prepare(context)
 	stages.services = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
+	for house:Dictionary in context.state.houses:
+		if str(house.get("role","")) in ["bakery","workshop","garden_cafe"]:context.state.site_blessing(str(house.id))
+	stages.site_blessings=float(Time.get_ticks_usec()-stage_start)/1000.
+	stage_start=Time.get_ticks_usec()
 	context.ground_contact_field.prepare(context.state)
 	stages.contact_field = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
@@ -291,7 +349,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	if owner.districts_visible: tasks.append(["districts"])
 	stats.worker_ms = result.worker_ms
 	stats.worker_stages = result.worker_stages
-	for change: Array in result.terrain_blocks: tasks.append(["terrain",change[0],change[1]])
+	for change: Array in result.terrain_blocks: tasks.append(["terrain",change[0],change[1],change[2]])
 	for house: Dictionary in result.houses:
 		tasks.append(["house",house])
 		tasks.append(["house_finish",house])
@@ -320,7 +378,7 @@ func _step(task: Array) -> void:
 		"districts": staging._rebuild_districts()
 		"terrain":
 			var block: Vector2i = task[1]
-			var root: Node3D = staging.terrain_surface._build_block(task[2],block)
+			var root: Node3D = staging.terrain_surface._build_block(task[2],block,task[3])
 			# Invisible staging alone does not suppress physics picking.
 			for body: StaticBody3D in root.find_children("*","StaticBody3D",true,false):
 				body.collision_layer = 0
@@ -418,10 +476,23 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 			_start_latest()
 		else: _begin_staging(owner,result)
 	while staging != null and task_index < tasks.size() and float(Time.get_ticks_usec()-start)/1000.0 < budget_ms:
+		var task_kind:=str(tasks[task_index][0])
+		var units:=_task_units(tasks[task_index])
+		var spent:=float(Time.get_ticks_usec()-start)/1000.
+		# Unknown/expensive task types start a fresh frame. Known tasks leave
+		# room for their measured high-water cost instead of starting at 3.49ms.
+		var scale:=maxf(1.,float(units)/float(_task_max_units.get(task_kind,maxi(1,units))))
+		var expected:=float(_task_peak_ms.get(task_kind,3.5))*scale*1.2+.08 if units>0 else .03
+		if spent>.08 and spent+expected>budget_ms-.08:break
 		var step_start := Time.get_ticks_usec()
 		_step(tasks[task_index])
+		var step_ms:=float(Time.get_ticks_usec()-step_start)/1000.
+		if units>0:
+			_task_peak_ms[task_kind]=maxf(float(_task_peak_ms.get(task_kind,0.)),step_ms)
+			_task_max_units[task_kind]=maxi(int(_task_max_units.get(task_kind,0)),units)
+		if step_ms>_max_step_ms:stats.max_step_task=str(tasks[task_index][0])
 		task_index += 1
-		_max_step_ms = maxf(_max_step_ms,float(Time.get_ticks_usec()-step_start)/1000.0)
+		_max_step_ms = maxf(_max_step_ms,step_ms)
 	var ready := staging != null and task_index == tasks.size()
 	var committed := false
 	stats["tasks_complete"] = task_index
@@ -429,9 +500,13 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 	if ready and allow_commit and int(staging.get_meta("generation"))==generation and float(Time.get_ticks_usec()-start)/1000.0 < 0.5:
 		var step_start := Time.get_ticks_usec()
 		_commit(owner)
-		_max_step_ms = maxf(_max_step_ms,float(Time.get_ticks_usec()-step_start)/1000.0)
+		var step_ms:=float(Time.get_ticks_usec()-step_start)/1000.
+		if step_ms>_max_step_ms:stats.max_step_task="commit"
+		_max_step_ms = maxf(_max_step_ms,step_ms)
 		committed = true
 	var work_ms := float(Time.get_ticks_usec()-start)/1000.0
+	stats["max_poll_ms"]=maxf(float(stats.get("max_poll_ms",0.)),work_ms)
+	_account_work(work_ms)
 	_main_ms += work_ms
 	stats["main_ms"] = _main_ms
 	stats["max_step_ms"] = _max_step_ms
@@ -450,6 +525,7 @@ func _replace(owner_roots: Dictionary, staged_roots: Dictionary, parent: Node3D,
 		owner_roots[key] = root
 
 func _commit(owner: Node3D) -> void:
+	hold_retirement_this_frame()
 	var stages := {}
 	var stage_start := Time.get_ticks_usec()
 	var result: Dictionary = staging.get_meta("result")
@@ -467,6 +543,8 @@ func _commit(owner: Node3D) -> void:
 	owner.state._courtyards=staging.state._courtyards
 	owner.state._courtyard_plans_cache=staging.state._courtyard_plans_cache
 	owner.state._courtyard_revision=owner.state.revision
+	owner.state._site_blessings=staging.state._site_blessings
+	owner.state._prosperity_revision=owner.state.revision
 	staging.era_road_field.texture=owner.era_road_field.texture
 	staging.era_road_field.upload()
 	owner.era_road_field=staging.era_road_field
@@ -592,8 +670,8 @@ func _commit(owner: Node3D) -> void:
 		owner.meadow._evict_plant_samples(owner.meadow.plant_candidates[id])
 		owner.meadow.plant_candidates.erase(id)
 		owner.meadow.plant_candidate_fingerprints.erase(id)
-	for field: String in MEADOW_FIELDS: owner.meadow.get(field).merge(staging.meadow.get(field),true)
-	for field: String in SHORE_FIELDS: owner.shore.get(field).merge(staging.shore.get(field),true)
+	for field: String in MEADOW_FIELDS:_merge_value_cache(owner.meadow.get(field),staging.meadow.get(field))
+	for field: String in SHORE_FIELDS:_merge_value_cache(owner.shore.get(field),staging.shore.get(field))
 	for id: String in owner.meadow.entrance_cache.keys():
 		if not live_houses.has(id): owner.meadow.entrance_cache.erase(id)
 	for id: String in owner.shore._entrance_cache.keys():
@@ -655,13 +733,15 @@ func _commit(owner: Node3D) -> void:
 	owner.rebuild_stats["change_counts"] = committed_changes.get("counts",{}).duplicate()
 	committed_generation = generation
 	_published_snapshot = ChangeSet.snapshot(owner.state)
-	_discard_staging()
+	_discard_staging(true)
 	stages.dispose_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stats.commit_stages = stages
 
-func _discard_staging() -> void:
+func _discard_staging(retire:bool=false) -> void:
 	if staging == null: return
-	_dispose_context(staging)
+	if retire:
+		staging.set_process(false);retired_contexts.append(staging)
+	else:_dispose_context(staging)
 	staging = null
 	tasks.clear()
 	task_index = 0
@@ -689,3 +769,6 @@ func close() -> void:
 		worker = null
 		_dispose_context(running)
 		running = null
+	retired_values.clear()
+	for context:Node3D in retired_contexts:_dispose_context(context)
+	retired_contexts.clear()

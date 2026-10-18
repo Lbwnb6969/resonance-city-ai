@@ -8,13 +8,21 @@ class FixtureInput extends Node:
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
-func _initialize()->void:_run.call_deferred()
+var edit_frames:Array[float]=[]
+var _watch_edit:=false
+var _last_edit_tick:=0
+func _initialize()->void:
+	process_frame.connect(_frame);_run.call_deferred()
+func _frame()->void:
+	var now:=Time.get_ticks_usec()
+	if _watch_edit and _last_edit_tick>0:edit_frames.append((now-_last_edit_tick)/1000.)
+	_last_edit_tick=now
 func _check(ok:bool,label:String)->void:
 	checks.append({"ok":ok,"label":label})
 	if not ok:failures.append(label);push_error(label)
 func _wait()->void:
 	var end:=Time.get_ticks_msec()+120000
-	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<end:await process_frame
+	while (demo.edit_pending() or demo._edit_ui_pending or (demo.town.budget_rebuild!=null and demo.town.budget_rebuild.retirement_pending())) and Time.get_ticks_msec()<end:await process_frame
 	await physics_frame;await process_frame
 func _capture(label:String)->void:
 	await process_frame;await RenderingServer.frame_post_draw
@@ -70,6 +78,30 @@ func _run()->void:
 	await _capture("02_active_large_city_near_view_and_scalar_citizens")
 	var cpu_metrics:=_metrics(cpu);var frames_metrics:=_metrics(frames)
 	_check(cpu_metrics.mean_ms<1.,"production life mean CPU remains below one millisecond with over two hundred actual simultaneous travellers")
+	var edit_metrics:Dictionary=await _edit_large_city()
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"production scale validation preserves personal saved city bytes")
-	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics}
+	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics,"edit":edit_metrics}
 	FileAccess.open(OUT+"/large_town_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("LARGE_TOWN_LIVE ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)
+
+func _edit_large_city()->Dictionary:
+	demo.focus=Vector3(-25,0,29);demo.zoom=14;demo._update_camera();demo.life.set_process(true)
+	await process_frame
+	var at:=Vector2(-25,29);var before:float=demo.state.ground_height(at);var network_id:int=demo.life._network.get_instance_id()
+	var audio:Dictionary={}
+	for key:String in demo.music._players:audio[key]=demo.music._players[key].stream.get_instance_id()
+	var points:Array[Vector2]=[at];var began:=Time.get_ticks_usec();edit_frames.clear();_watch_edit=true;_last_edit_tick=began
+	var result:Dictionary=demo.state.add_terrain_stroke(points,"raise",1.,1.,2);demo._after_edit(result,"terrain")
+	var command_ms:float=(Time.get_ticks_usec()-began)/1000.
+	await _wait();_watch_edit=false
+	var latency:float=(Time.get_ticks_usec()-began)/1000.;var budget:Dictionary=demo.edit_budget_report();var rendered:Dictionary=demo.town.budget_rebuild.stats
+	var after:float=demo.state.ground_height(at);var hit:Dictionary=demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(at.x,15,at.y),Vector3(at.x,-5,at.y),2))
+	_check(result.ok and after>before+.03 and not hit.is_empty() and absf(float(hit.position.y)-after)<.002,"actual three-hundred-house terrain edit visibly raises ground and publishes matching collision")
+	_check(not demo.edit_pending() and not demo._edit_ui_pending and not demo.town.budget_rebuild.retirement_pending() and demo.life._network.get_instance_id()!=network_id,"large-city edit finishes real route publication and every retired CPU record")
+	var same_audio:=true
+	for key:String in audio:same_audio=same_audio and demo.music._players[key].stream.get_instance_id()==audio[key]
+	_check(same_audio and demo.state.houses.size()==300 and demo.life.residents.size()>=200,"large live edit preserves shared PCM and all actual houses and residents")
+	var metrics:=_metrics(edit_frames)
+	_check(metrics.max_ms<=12. and command_ms<=12.,"actual three-hundred-house edit and complete cleanup stay within twelve milliseconds")
+	_check(float(budget.poll_max_ms)<=3.5 and float(rendered.get("max_frame_work_ms",0.))<=3.5,"three-hundred-house render publication and CPU retirement share the 3.5ms frame budget")
+	await _capture("10_large_city_actual_terrain_edit")
+	return {"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}

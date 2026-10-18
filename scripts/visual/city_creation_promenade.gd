@@ -11,6 +11,11 @@ var concert := false
 var _revision := -1
 var _cache: Dictionary = {}
 var bud_mesh: SphereMesh
+const CLEARANCE_BIN_SIZE:=4.
+var _clearance_revision:=-1
+var _clearance_owner:WeakRef
+var _clearance_records:Array[Dictionary]=[]
+var _clearance_bins:Dictionary={}
 
 func set_light(is_evening: bool,is_concert: bool) -> void:
 	if evening==is_evening and concert==is_concert: return
@@ -78,22 +83,52 @@ func prepare(renderer,road: Dictionary) -> Array:
 
 func _clear(city,road: Dictionary,at: Vector2,radius: float) -> bool:
 	if not city.WORLD_RECT.grow(-radius).has_point(at) or city.water_clearance(at)<radius+.45: return false
-	for other: Dictionary in city.roads:
-		if other.id==road.id: continue
-		for i in range(other.points.size()-1):
-			var a := Vector2(other.points[i][0],other.points[i][1]);var b := Vector2(other.points[i+1][0],other.points[i+1][1])
-			if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(other.width)*.5+radius+.7: return false
-	for house: Dictionary in city.houses:
-		for cell: Dictionary in house.cells:
-			if int(cell.level)!=0: continue
-			var center := Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
-			var delta := (at-center).abs()-Vector2.ONE*.9
-			if delta.max(Vector2.ZERO).length()<radius+.12: return false
-		for door: Dictionary in city.house_entrances(str(house.id)):
-			if at.distance_to(door.at)<radius+1.15: return false
-	for plant: Dictionary in city.plants:
-		if str(plant.kind) in ["olive","cypress"] and at.distance_to(Vector2(plant.position[0],plant.position[1]))<radius+.55: return false
+	_prepare_clearance(city)
+	var candidates:Dictionary={}
+	for x in range(floori((at.x-radius)/CLEARANCE_BIN_SIZE),floori((at.x+radius)/CLEARANCE_BIN_SIZE)+1):
+		for z in range(floori((at.y-radius)/CLEARANCE_BIN_SIZE),floori((at.y+radius)/CLEARANCE_BIN_SIZE)+1):
+			for index:int in _clearance_bins.get(Vector2i(x,z),[]):candidates[index]=true
+	for index:int in candidates:
+		var row:Dictionary=_clearance_records[index]
+		match str(row.kind):
+			"road":
+				if str(row.id)!=str(road.id) and at.distance_to(Geometry2D.get_closest_point_to_segment(at,row.a,row.b))<float(row.radius)+radius:return false
+			"wall":
+				var delta:Vector2=(at-Vector2(row.at)).abs()-Vector2.ONE*.9
+				if delta.max(Vector2.ZERO).length()<radius+.12:return false
+			_:
+				if at.distance_to(row.at)<radius+float(row.radius):return false
 	return true
+
+func _prepare_clearance(city:RefCounted)->void:
+	if _clearance_revision==city.revision and _clearance_owner!=null and _clearance_owner.get_ref()==city:return
+	_clearance_revision=city.revision;_clearance_owner=weakref(city)
+	_clearance_records=[];_clearance_bins={}
+	# Snapshot actual door records once, rather than asking every household
+	# for its complete frontage signature at every lamp and gateway sample.
+	for other:Dictionary in city.roads:
+		for i in range(other.points.size()-1):
+			var a:=Vector2(other.points[i][0],other.points[i][1]);var b:=Vector2(other.points[i+1][0],other.points[i+1][1]);var radius:=float(other.width)*.5+.7
+			_add_clearance({"kind":"road","id":str(other.id),"a":a,"b":b,"radius":radius},Rect2(a,Vector2.ZERO).expand(b).grow(radius))
+	for house:Dictionary in city.houses:
+		for cell:Dictionary in house.cells:
+			if int(cell.level)!=0:continue
+			var at:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
+			_add_clearance({"kind":"wall","at":at},Rect2(at-Vector2.ONE*.9,Vector2.ONE*1.8).grow(.12))
+		for door:Dictionary in city.house_entrances(str(house.id)):
+			_add_clearance({"kind":"door","at":door.at,"radius":1.15},Rect2(door.at,Vector2.ZERO).grow(1.15))
+	for plant:Dictionary in city.plants:
+		if str(plant.kind) not in ["olive","cypress"]:continue
+		var at:=Vector2(plant.position[0],plant.position[1])
+		_add_clearance({"kind":"plant","at":at,"radius":.55},Rect2(at,Vector2.ZERO).grow(.55))
+
+func _add_clearance(record:Dictionary,bounds:Rect2)->void:
+	var index:=_clearance_records.size();_clearance_records.append(record)
+	for x in range(floori(bounds.position.x/CLEARANCE_BIN_SIZE),floori(bounds.end.x/CLEARANCE_BIN_SIZE)+1):
+		for z in range(floori(bounds.position.y/CLEARANCE_BIN_SIZE),floori(bounds.end.y/CLEARANCE_BIN_SIZE)+1):
+			var bin:=Vector2i(x,z)
+			if not _clearance_bins.has(bin):_clearance_bins[bin]=[]
+			_clearance_bins[bin].append(index)
 
 func _point(samples: Array,arc: float) -> Dictionary:
 	for i in range(samples.size()-1):

@@ -51,3 +51,11 @@ Phase10入口：`city_creation_citizen_motion.gd`为运行时标量路段，Life
 远景入口：`city_creation_valley.gd`在96m原地板之外建立320m纯景观，河道延伸函数在原地板内恒等于State.river_x；10座Foundation远山共用一个MultiMesh，原模型来源和哈希在资源/自然参考/远山/README.md。无碰撞/导航/存档字段。CameraRig.orthographic_distance让最低0.3俯角下的前景射线仍从地面上方出发，相机far=400覆盖完整轮廓。
 
 路高轮廓：RoadHeights为每路记录原始地形局部签名、门口/交叉口/水系/时代/环岛约束；未变轮廓和查询记录发布后只读，新prepare替换容器。Life的隔离worker也继承已发布的路高种子；actual近路雕刻重算3/16路，完整重算oracle覆盖台阶、桥型、环岛和撤销。
+
+编辑发布：Cafe持有独立layout_api；Network后台预热实际茶座绕行，Context.snapshot_city只捕获纯值，完成后rebind_city交给活动State，居民恢复仍由原街路/茶座代码执行。BudgetRebuild预先计算几何site_blessings并随地形发布；动态库存、余韵与产量仍实时读取。工具栏只重绘切换的两项；TerrainProtection签名排除palette/name/finish，换色后不重算保护布局。
+
+地形分帧：TerrainSurface.prepare_mesh在worker准备完整顶点/法线/索引与TriangleMesh处理后的碰撞面；主线程_build_block只创建GPU/物理对象，默认仍兼容同步调用。不要直接把索引展开当旧碰撞面，Godot原Mesh.create_trimesh_shape经过TriangleMesh精度处理，现7项包数据检查要求精确相等。
+
+发布回收：BudgetRebuild保留被替换的旧草/岸块值，在Renderer空闲帧按余量释放，已提交临时上下文单独退休；发布/生活重接/界面刷新帧不叠加回收。任务成本按非空记录规模预测，空块不污染估计；睡莲两种固定素材在setup加载。stats.max_frame_work_ms统计同帧request+poll+retire，检查脚本直到全部CPU回收完成才结束计时，31项实窗验证28屋最高3.337ms/完整帧11.069ms。300屋编辑仍要单独验证。
+
+300屋编辑已实测：Life._published_surface保留实际发布的只读地表/路高，编辑启动flush不准备活动新地形；Promenade._prepare_clearance按真实门口/地面单元/路段/树建立4m空间索引，完整revision和owner失效；Network._service_routes独立保留后台已求出的家庭/服务路径，临时缓存清空不重算。300屋最新完整编辑峰值61.339ms、总延迟5.26秒，Life发布10.109ms，仍未通过3.5ms/12ms门槛；真实地面和拾取已抬高2m，个人档与PCM身份保持。下一步收口请求/提交/UI和路线准备成本。

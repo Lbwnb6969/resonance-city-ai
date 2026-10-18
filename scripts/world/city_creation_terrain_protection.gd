@@ -41,7 +41,9 @@ func build(city: RefCounted,road_profiles: Dictionary = {}) -> Array:
 func _prepare_layout(city: RefCounted) -> void:
 	# Layout depends on buildings, doors, roads and water, not sculpted height.
 	# Road beds still use this revision's newly computed profile in build().
-	var signature := hash([city.houses,city.roads,city.waters])
+	var geometry:Array=[]
+	for house:Dictionary in city.houses:geometry.append([house.id,house.origin,house.cells,house.get("role",""),house.get("base_y",0.)])
+	var signature := hash([geometry,city.roads,city.waters])
 	if signature==_layout_signature: return
 	var result: Array = []
 	for house: Dictionary in city.houses:

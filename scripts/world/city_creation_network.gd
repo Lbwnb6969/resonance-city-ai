@@ -5,6 +5,8 @@ const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
 const Passage := preload("res://scripts/world/city_creation_passage.gd")
 const State := preload("res://scripts/world/city_creation_state.gd")
 const Travel := preload("res://scripts/world/city_creation_travel.gd")
+const CafeLayout=preload("res://scripts/world/city_creation_cafe_layout_context.gd")
+var prepared_cafe_context:RefCounted=CafeLayout.new()
 const NETWORK_BIN_SIZE := 2.0
 const ROUTE_CACHE_LIMIT := 1024
 const ROUTE_SEARCH_LIMIT := 32
@@ -19,6 +21,7 @@ var _wall_bins: Dictionary = {}
 var _attachment_cache: Dictionary = {}
 var attachment_stats := {"queries":0,"cache_hits":0,"edge_projections":0,"wall_tests":0}
 var _route_cache: Dictionary = {}
+var _service_routes: Dictionary = {}
 var _route_cache_entries := 0
 var _route_searches: Dictionary = {}
 var prepared_positions: Dictionary = {}
@@ -45,6 +48,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	if snapshot.has("protection_cache"):
 		state._terrain_protection = snapshot.protection_cache
 	if snapshot.has("road_height_cache"):state._road_heights=snapshot.road_height_cache
+	prepared_cafe_context.restore_city(snapshot.get("cafe_context",{}),state)
 	connected_houses = prior
 	var stage_started := Time.get_ticks_usec()
 	_build_graph()
@@ -61,6 +65,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 		if connected_houses.has(house.id): service_ports[str(connected_houses[house.id])] = true
 	var origins: Dictionary = {}
 	var origin_points: Dictionary = {}
+	var cafe_routes:=0
 	for actor: Dictionary in actors:
 		var point: Vector3 = actor.point
 		var targets := services.duplicate()
@@ -87,17 +92,22 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 			var finish := str(connected_houses[id])
 			var route := _route_from_position(point,finish)
 			routes[finish] = route
-			if route.is_empty(): exterior[finish] = _exterior_route_from_position(point,finish)
+			if route.is_empty():
+				if _prepare_cafe_attachment(point,finish,snapshot.get("cafe_layouts",{})):cafe_routes+=1
+				else:exterior[finish] = _exterior_route_from_position(point,finish)
 		prepared_positions[pkey] = routes
 		if not exterior.is_empty(): prepared_exterior[pkey] = exterior
 	# Only actual service pairs support job selection and homecoming. Two
 	# unrelated homes never need an all-pairs route table during an edit.
 	prepare_stats["origins_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
+	prepare_stats["cafe_attachments"]=cafe_routes
 	stage_started = Time.get_ticks_usec()
 	for start: String in connected_houses.values():
 		for finish: String in connected_houses.values():
 			if start != finish and not service_ports.has(start) and not service_ports.has(finish): continue
-			_route(start,finish)
+			var route:=_route(start,finish)
+			if not _service_routes.has(start):_service_routes[start]={}
+			_service_routes[start][finish]=route
 	prepare_stats["pairs_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
 	var travel_started := Time.get_ticks_usec()
 	prepared_travel=Travel.new()
@@ -106,6 +116,19 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	prepare_stats["travel_ms"] = travel_prepare_ms
 	prepare_stats["total_ms"] = float(Time.get_ticks_usec()-started)/1000.0
 	return self
+
+func _prepare_cafe_attachment(point:Vector3,finish:String,layouts:Dictionary)->bool:
+	# Preserve Cafe.street_attachment's order and exact planar route. The
+	# joined context is adopted before residents resume; live heights are
+	# applied by the original cafe code after terrain publication.
+	var planar:=Vector2(point.x,point.z)
+	for id:String in layouts:
+		if layouts[id].is_empty() or planar.distance_to(layouts[id].center)>2.4 or not connected_houses.has(id):continue
+		var continuation:=_route(str(connected_houses[id]),finish)
+		if continuation.is_empty():continue
+		var door:Vector3=positions[connected_houses[id]]
+		if not prepared_cafe_context.route(state,id,planar,Vector2(door.x,door.z)).is_empty():return true
+	return false
 
 func _key(p: Vector2) -> String:
 	return "%d,%d" % [roundi(p.x*1000.0),roundi(p.y*1000.0)]
@@ -126,6 +149,7 @@ func _build_graph() -> void:
 	connected_houses.clear()
 	selected_entrances.clear()
 	_route_cache.clear()
+	_service_routes.clear()
 	_route_cache_entries = 0
 	_route_searches.clear()
 	prepared_positions.clear()
@@ -319,6 +343,14 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 		if route_counting: route_cache_stats.invalid+=1
 		return result
 	if component_of.get(start,"") != component_of.get(finish,""):
+		return result
+	# These exact home/service pairs were prepared for this graph. Keep them
+	# independently of the bounded cache of transient street attachments: a
+	# large town can need more than 1024 service pairs during publication.
+	var prepared:Dictionary=_service_routes.get(start,{})
+	if prepared.has(finish):
+		if route_counting:route_cache_stats.hits+=1
+		result.assign(prepared[finish])
 		return result
 	var destinations: Dictionary = _route_cache.get(start,{})
 	if destinations.has(finish):
