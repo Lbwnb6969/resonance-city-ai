@@ -1018,7 +1018,7 @@ func _segment_distance(a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> float:
 	return minf(minf(_distance_to_segment(a, c, d), _distance_to_segment(b, c, d)), minf(_distance_to_segment(c, a, b), _distance_to_segment(d, a, b)))
 
 
-func preview_road(points: Array[Vector2],style: String = "path") -> Dictionary:
+func preview_road(points: Array[Vector2],style: String = "path",assistance: String="snap") -> Dictionary:
 	if style not in ROAD_STYLES: return _fail("未知的道路样式")
 	for point: Vector2 in points:
 		if not is_finite(point.x) or not is_finite(point.y): return _fail("无效的道路位置")
@@ -1036,7 +1036,9 @@ func preview_road(points: Array[Vector2],style: String = "path") -> Dictionary:
 			if check.ok: check.message="这条%s已经铺好" % RoadUpgrade.NAMES[wanted] if no_op else "原位铺成%s，保留路口与门阶" % RoadUpgrade.NAMES[wanted]
 			return check
 	var width := RoadUpgrade.width_for(style)
-	var intent := RoadIntent.resolve(self,points,width)
+	# The held brush uses gradual attraction; its final displayed points already
+	# contain assistance and need only exact site validation when released.
+	var intent: Dictionary=RoadIntent.resolve(self,points,width,assistance=="soft") if assistance!="none" else {"points":points.duplicate(),"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false}
 	var resolved: Array[Vector2] = intent.points
 	var encoded: Array = []
 	var finite := true
@@ -1101,10 +1103,10 @@ func remove_road(road_id: String) -> Dictionary:
 		return {"ok":true,"message":"道路已移除","road_id":road_id}
 	return _fail("道路不存在")
 
-func add_road(points: Array[Vector2],style: String = "path") -> Dictionary:
+func add_road(points: Array[Vector2],style: String = "path",assistance: String="snap") -> Dictionary:
 	if points.size() < 2:
 		return _fail("道路需要两个以上的点")
-	var valid := preview_road(points,style)
+	var valid := preview_road(points,style,assistance)
 	if not valid.ok: return valid
 	if bool(valid.no_op):
 		return {"ok":true,"message":valid.message,"road_id":valid.upgrade_road_id,"upgrade_road_id":valid.upgrade_road_id,"width":valid.width,"style":valid.style,"upgraded":false,"no_op":true}
@@ -2316,14 +2318,19 @@ func _validate_road_site(points: Array, width: float, house_rows: Variant = null
 		return bridge_valid
 	var bridge: bool = bridge_valid.bridge
 	var length := 0.0
+	var bounds:=Rect2(Vector2(points[0][0],points[0][1]) if not points.is_empty() else Vector2.ZERO,Vector2.ZERO)
 	for point in points:
+		bounds=bounds.expand(Vector2(point[0],point[1]))
 		if not WORLD_RECT.has_point(Vector2(point[0], point[1])):
 			return _fail("道路超出了河湾范围")
 	for i in range(1, points.size()):
 		length += Vector2(points[i-1][0],points[i-1][1]).distance_to(Vector2(points[i][0],points[i][1]))
 	for house in scene_houses:
 		for cell in house.cells:
-			if int(cell.level)==0 and Frontage.road_cell_conflict(house,cell,points,width):
+			if int(cell.level)!=0:continue
+			var origin: Vector2=Frontage.center(house,cell)
+			if not bounds.intersects(Rect2(origin-Vector2.ONE*.9,Vector2.ONE*1.8).grow(width*.5),true):continue
+			if Frontage.road_cell_conflict(house,cell,points,width):
 				return _fail("道路需要正面接门，或从底层房间的相对两面完整穿过")
 	if length < 0.2:
 		return _fail("道路太短")

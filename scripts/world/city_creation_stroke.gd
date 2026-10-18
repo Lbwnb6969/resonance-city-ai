@@ -78,44 +78,51 @@ static func _fillets(points: Array[Vector2]) -> Dictionary:
 static func _with_fillets(points: Array[Vector2], tangents: Array[Vector2], fillets: Dictionary) -> Array[Vector2]:
 	var result: Array[Vector2] = [points[0]]
 	for segment in range(points.size() - 1):
-		var start: Vector2 = fillets[segment].exit if fillets.has(segment) else points[segment]
-		var end: Vector2 = fillets[segment + 1].entry if fillets.has(segment + 1) else points[segment + 1]
-		var length := start.distance_to(end)
-		var first_tangent: Vector2 = fillets[segment].outgoing * length * 0.75 if fillets.has(segment) else tangents[segment]
-		var last_tangent: Vector2 = fillets[segment + 1].incoming * length * 0.75 if fillets.has(segment + 1) else tangents[segment + 1]
-		# Avoid the old ordinary tangent spanning across a newly trimmed corner.
-		var original_length := points[segment].distance_to(points[segment + 1])
-		if not fillets.has(segment): first_tangent *= length / original_length
-		if not fillets.has(segment + 1): last_tangent *= length / original_length
-		var fine: Array[Vector2] = [start]
-		var steps := maxi(4,int(ceil(length / 0.04)))
-		for step in range(1,steps + 1):
-			var t := float(step) / steps
-			var t2 := t * t
-			var t3 := t2 * t
-			fine.append((2.0 * t3 - 3.0 * t2 + 1.0) * start + (t3 - 2.0 * t2 + t) * first_tangent + (-2.0 * t3 + 3.0 * t2) * end + (t3 - t2) * last_tangent)
-		var connector := _arc_sample(fine)
-		# Closed authored seams retain their shared Hermite tangent. Keep one
-		# fine sample at each side rather than measuring it with a .2m chord.
-		if points[0] == points[-1]:
-			if segment == 0 and connector.size() > 1 and fine[1].distance_to(start) < connector[1].distance_to(start): connector.insert(1,fine[1])
-			if segment == points.size() - 2 and connector.size() > 1 and fine[-2].distance_to(end) < connector[-2].distance_to(end): connector.insert(connector.size() - 1,fine[-2])
-		for point in connector: _append_unique(result,point)
-		if fillets.has(segment + 1):
-			var arc: Dictionary = fillets[segment + 1]
-			var radial: Vector2 = arc.entry - arc.center
-			# Sample directly on the circle, preserving radius. Never Hermite or
-			# chord-resample the arc afterward; only the connector is Hermite.
-			var arc_steps := maxi(2,int(ceil(absf(arc.turn) * arc.radius / SPACING)))
-			# Include the midpoint, which is the maximum inward deviation of a
-			# symmetric turn and makes left/right evidence independent of parity.
-			if arc_steps % 2 != 0: arc_steps += 1
-			for step in range(1,arc_steps):
-				_append_unique(result,arc.center + radial.rotated(arc.turn * float(step) / arc_steps))
-			_append_unique(result,arc.exit)
+		for point: Vector2 in segment_points(points,tangents,fillets,segment): _append_unique(result,point)
 	result[0] = points[0]
 	result[-1] = points[-1]
 	return result
+
+## One local span, also used by the live brush after its neighbours settle.
+static func segment_points(points: Array[Vector2],tangents: Array[Vector2],fillets: Dictionary,segment: int)->Array[Vector2]:
+	var start: Vector2 = fillets[segment].exit if fillets.has(segment) else points[segment]
+	var result: Array[Vector2] = [start]
+	var end: Vector2 = fillets[segment + 1].entry if fillets.has(segment + 1) else points[segment + 1]
+	var length := start.distance_to(end)
+	var first_tangent: Vector2 = fillets[segment].outgoing * length * 0.75 if fillets.has(segment) else tangents[segment]
+	var last_tangent: Vector2 = fillets[segment + 1].incoming * length * 0.75 if fillets.has(segment + 1) else tangents[segment + 1]
+	# Avoid the old ordinary tangent spanning across a newly trimmed corner.
+	var original_length := points[segment].distance_to(points[segment + 1])
+	if not fillets.has(segment): first_tangent *= length / original_length
+	if not fillets.has(segment + 1): last_tangent *= length / original_length
+	var fine: Array[Vector2] = [start]
+	var steps := maxi(4,int(ceil(length / 0.04)))
+	for step in range(1,steps + 1):
+		var t := float(step) / steps
+		var t2 := t * t
+		var t3 := t2 * t
+		fine.append((2.0 * t3 - 3.0 * t2 + 1.0) * start + (t3 - 2.0 * t2 + t) * first_tangent + (-2.0 * t3 + 3.0 * t2) * end + (t3 - t2) * last_tangent)
+	var connector := _arc_sample(fine)
+	# Closed authored seams retain their shared Hermite tangent. Keep one
+	# fine sample at each side rather than measuring it with a .2m chord.
+	if points[0] == points[-1]:
+		if segment == 0 and connector.size() > 1 and fine[1].distance_to(start) < connector[1].distance_to(start): connector.insert(1,fine[1])
+		if segment == points.size() - 2 and connector.size() > 1 and fine[-2].distance_to(end) < connector[-2].distance_to(end): connector.insert(connector.size() - 1,fine[-2])
+	for point in connector: _append_unique(result,point)
+	if fillets.has(segment + 1):
+		var arc: Dictionary = fillets[segment + 1]
+		var radial: Vector2 = arc.entry - arc.center
+		# Sample directly on the circle, preserving radius. Never Hermite or
+		# chord-resample the arc afterward; only the connector is Hermite.
+		var arc_steps := maxi(2,int(ceil(absf(arc.turn) * arc.radius / SPACING)))
+		# Include the midpoint, which is the maximum inward deviation of a
+		# symmetric turn and makes left/right evidence independent of parity.
+		if arc_steps % 2 != 0: arc_steps += 1
+		for step in range(1,arc_steps):
+			_append_unique(result,arc.center + radial.rotated(arc.turn * float(step) / arc_steps))
+		_append_unique(result,arc.exit)
+	return result
+
 
 static func _append_unique(points: Array[Vector2], point: Vector2) -> void:
 	if points[-1].distance_squared_to(point) > DUPLICATE_EPSILON_SQUARED: points.append(point)

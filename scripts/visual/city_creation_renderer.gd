@@ -101,6 +101,9 @@ var _ecology_key := 0
 var wildlife := Wildlife.new()
 var foliage := Foliage.new()
 var meadow: Node3D
+var road_draft_field=preload("res://scripts/visual/city_creation_road_draft_field.gd").new()
+var _preview_height_key: Array=[]
+var _preview_heights: Dictionary={}
 var ground_material: ShaderMaterial
 var terrain_surface: Node3D
 var background_trees: Array[Dictionary] = []
@@ -778,6 +781,7 @@ func try_update_house_colors(house_id: String) -> Dictionary:
 
 func clear_preview() -> void:
 	if preview == null: return
+	road_draft_field.clear(self)
 	_clear(preview)
 	for key in ["removal_house","removal_cells","removal_valid","stroke_cells","stroke_valid","stroke_roofs","porch_previews","passage_previews","stepping_previews","terrain_points","terrain_contours","terrain_core_radius"]:
 		if preview.has_meta(key): preview.remove_meta(key)
@@ -897,11 +901,14 @@ func show_vegetation_brush(at: Vector2, radius: float, erase: bool = false, poin
 	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	preview.add_child(instance)
 
-func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.25, bridge: bool = false) -> int:
+func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.25, bridge: bool = false,style: String="path") -> int:
 	clear_preview()
 	if preview == null or points.is_empty(): return 0
 	var color := Color("dfd5a8") if valid else Color("ef7862")
 	var samples := _road_samples(points)
+	if valid:
+		road_draft_field.update(self,points,width)
+		road_draft_field.material.set_shader_parameter("paved",style in ["promenade","avenue","tram"])
 	if samples.size() > 1:
 		var preview_started := Time.get_ticks_usec()
 		var extras: Array = []
@@ -911,7 +918,7 @@ func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.2
 		var profile_ms := float(Time.get_ticks_usec()-preview_started)/1000.0
 		# The continuous strip already follows the bridge height at 35 cm
 		# intervals. Only the small, dry extra bands require polygon triangles.
-		_road_ribbon(preview,samples,width,color,0.04)
+		_road_ribbon(preview,samples,width+.30 if valid else width,color,0.012 if valid else .04)
 		var vertices: Array[Vector3] = []
 		for polygon: PackedVector2Array in extras:
 			var indices := Geometry2D.triangulate_polygon(polygon)
@@ -934,11 +941,20 @@ func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.2
 		stepping_count = Stepping.preview(self,preview,runs,Color(0.46,0.68,0.66,0.72))
 	preview.set_meta("stepping_previews",stepping_count)
 	for point: Vector2 in [points[0],points[-1]]:
-		_cylinder(preview,width*.5,width*.5,0.02,Vector3(point.x,_street_height(point)+0.045,point.y),_material(color),24)
+		var radius:=width*.5+(.15 if valid else 0.)
+		_cylinder(preview,radius,radius,0.012,Vector3(point.x,_street_height(point)+0.013,point.y),road_draft_field.material if valid else _material(color),24)
 	var shown := {}
 	var arches := {}
 	if valid:
+		var stroke_bounds:=Rect2(points[0],Vector2.ZERO)
+		for at: Vector2 in points:stroke_bounds=stroke_bounds.expand(at)
+		stroke_bounds=stroke_bounds.grow(width*.5+1.7)
 		for house: Dictionary in state.houses:
+			var near_house:=false
+			for cell: Dictionary in house.cells:
+				if int(cell.level)!=0:continue
+				if stroke_bounds.has_point(Frontage.center(house,cell)):near_house=true;break
+			if not near_house:continue
 			for cell: Dictionary in house.cells:
 				var passage: Dictionary = Passage.for_cell(house,cell,points,width,"draft")
 				if not passage.is_empty():
@@ -2258,13 +2274,18 @@ func _road_offsets(samples: Array[Vector2], width: float) -> Array[Vector2]:
 	return result
 
 func _road_ribbon(parent: Node3D, samples: Array[Vector2], width: float, color: Color, lift: float = 0.0) -> void:
+	var key: Array=[state.get_instance_id(),state.revision]
+	if key!=_preview_height_key:_preview_heights.clear();_preview_height_key=key
+	var heights: Dictionary={}
+	for at: Vector2 in samples:heights[at]=_preview_heights[at] if _preview_heights.has(at) else _street_height(at)
+	_preview_heights=heights
 	var offsets := _road_offsets(samples,width)
 	var vertices: Array[Vector3] = []
 	for index in range(samples.size()-1):
 		var p := samples[index]
 		var q := samples[index+1]
-		var y0 := _street_height(p)+lift
-		var y1 := _street_height(q)+lift
+		var y0: float = heights[p]+lift
+		var y1: float = heights[q]+lift
 		var n0 := offsets[index]
 		var n1 := offsets[index+1]
 		var a := Vector3(p.x-n0.x,y0,p.y-n0.y)
@@ -2274,6 +2295,9 @@ func _road_ribbon(parent: Node3D, samples: Array[Vector2], width: float, color: 
 		vertices.append_array([a,b,c,a,c,d])
 	var ribbon := _triangles(parent,vertices,color)
 	if lift == 0.0: ribbon.material_override = _shared_road_material()
+	elif road_draft_field.material!=null and lift<.02:
+		ribbon.material_override=road_draft_field.material
+		ribbon.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 func _shared_road_material() -> ShaderMaterial:
 	if road_material == null:

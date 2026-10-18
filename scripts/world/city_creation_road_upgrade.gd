@@ -18,16 +18,18 @@ static func match_road(points: Array[Vector2],roads: Array) -> String:
 	for point: Vector2 in points: stroke.append([point.x,point.y])
 	var length := _length(stroke)
 	if length<0.2: return ""
+	var bounds:=_bounds(stroke).grow(MATCH_DISTANCE)
 	var best := ""
 	var best_error := INF
 	for road: Dictionary in roads:
 		var old_length := _length(road.points)
 		if old_length<0.2: continue
+		if not bounds.intersects(_bounds(road.points),true):continue
 		var ratio := length/old_length
 		if ratio<MIN_LENGTH_RATIO or ratio>MAX_LENGTH_RATIO: continue
-		var forward := _coverage(stroke,road.points)
+		var forward := _coverage(stroke,road.points,length)
 		if float(forward.fraction)<COVERAGE: continue
-		var reverse := _coverage(road.points,stroke)
+		var reverse := _coverage(road.points,stroke,old_length)
 		if float(reverse.fraction)<COVERAGE: continue
 		var error := float(forward.error)+float(reverse.error)
 		if error<best_error:
@@ -43,7 +45,12 @@ static func _length(points: Array) -> float:
 static func _point(row: Array) -> Vector2:
 	return Vector2(float(row[0]),float(row[1]))
 
-static func _coverage(source: Array,target: Array) -> Dictionary:
+static func _bounds(points: Array)->Rect2:
+	var bounds:=Rect2(_point(points[0]),Vector2.ZERO)
+	for point: Array in points:bounds=bounds.expand(_point(point))
+	return bounds
+
+static func _coverage(source: Array,target: Array,path_length: float) -> Dictionary:
 	var total := 0.0
 	var covered := 0.0
 	var error := 0.0
@@ -68,4 +75,7 @@ static func _coverage(source: Array,target: Array) -> Dictionary:
 			if nearest<=MATCH_DISTANCE:
 				covered+=weight
 				error+=nearest*weight
+			# Once even perfect remaining samples cannot reach 90%, the retrace
+			# is already disproved. Stop scanning unrelated long saved curves.
+			if total-covered>path_length*(1.0-COVERAGE)+.000001:return {"fraction":0.,"error":0.}
 	return {"fraction":covered/maxf(0.000001,total),"error":error/maxf(0.000001,covered)}

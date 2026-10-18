@@ -97,6 +97,7 @@ var road_roundabout := false
 var road_draft_straight := false
 var road_locked_segments := 0
 var road_last_pointer := Vector2.ZERO
+var road_gesture=preload("res://scripts/ui/city_creation_road_gesture.gd").new()
 var house_drawing := false
 var house_stroke := HouseStroke.new()
 var house_stroke_host := ""
@@ -1112,6 +1113,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						road_draft_straight = road_straight or event.alt_pressed or Input.is_key_pressed(KEY_ALT)
 						road_locked_segments = 0
 						road_points.clear()
+						road_gesture.clear()
 						_append_road_point()
 				elif tool == 5:
 					vegetation_drawing = true
@@ -1455,16 +1457,27 @@ func _finish_house_stroke() -> void:
 	house_stroke_result.clear()
 	house_stroke_key=""
 
-func _append_road_point() -> void:
+func _append_road_point(force: bool=false) -> void:
 	var p := _road_pointer_at()
-	if road_points.is_empty() or road_last_pointer.distance_to(p) > 0.25:
+	# The tail follows one screen pixel; fixed controls determine curve density.
+	var pixel: float=zoom/maxf(get_viewport().get_visible_rect().size.y,1.)
+	if road_points.is_empty() or (road_last_pointer.distance_to(p) > (0.00001 if force else pixel*.5)):
+		var brush_started:=Time.get_ticks_usec()
 		road_last_pointer = p
-		if road_draft_straight and road_points.size() >= 2: road_points[-1] = p
-		else: road_points.append(p)
-		road_preview = Stroke.polyline_points(road_points) if road_draft_straight else Stroke.road_points(road_points)
-		var check: Dictionary = state.preview_road(road_preview,road_style)
+		if road_draft_straight:
+			if road_points.size()>=2:road_points[-1]=p
+			else:road_points.append(p)
+			road_preview=Stroke.polyline_points(road_points)
+		else:
+			road_preview=road_gesture.move(p).duplicate()
+			road_points=road_gesture.controls.duplicate()
+			if road_points[-1]!=p:road_points.append(p)
+		var curve_done:=Time.get_ticks_usec()
+		var check: Dictionary = state.preview_road(road_preview,road_style,"soft")
 		road_preview.assign(check.points)
-		var porches: int = town.preview_road(road_preview,bool(check.ok),float(check.get("width",1.25)),bool(check.get("bridge",false)))
+		var check_done:=Time.get_ticks_usec()
+		var porches: int = town.preview_road(road_preview,bool(check.ok),float(check.get("width",1.25)),bool(check.get("bridge",false)),str(check.get("style",road_style)))
+		town.preview.set_meta("brush_timings",{"curve_ms":(curve_done-brush_started)/1000.,"validation_ms":(check_done-curve_done)/1000.,"paint_ms":(Time.get_ticks_usec()-check_done)/1000.,"mask_ms":town.road_draft_field.last_ms})
 		if road_draft_straight: town.preview_road_measure(road_preview,road_locked_segments)
 		var passages := int(town.preview.get_meta("passage_previews",0))
 		var stepping := int(town.preview.get_meta("stepping_previews",0))
@@ -1506,12 +1519,12 @@ func _road_pointer_at() -> Vector2:
 	return _ground_at(pointer)
 
 func _finish_road() -> void:
-	_append_road_point()
+	_append_road_point(true)
 	road_drawing = false
 	if road_points.size() < 2:
 		_cancel_draft()
 		return
-	var result: Dictionary = state.add_road(road_preview,road_style)
+	var result: Dictionary = state.add_road(road_preview,road_style,"none")
 	if result.ok: completed["road"] = true
 	if bool(result.get("no_op",false)):
 		_message(str(result.message))
@@ -1519,6 +1532,7 @@ func _finish_road() -> void:
 	else: _after_edit(result, "road")
 	road_points.clear()
 	road_preview.clear()
+	road_gesture.clear()
 	road_locked_segments = 0
 	road_draft_straight = false
 
@@ -1845,6 +1859,7 @@ func _cancel_draft() -> void:
 	road_drawing = false
 	road_points.clear()
 	road_preview.clear()
+	road_gesture.clear()
 	road_locked_segments = 0
 	road_draft_straight = false
 	vegetation_drawing = false

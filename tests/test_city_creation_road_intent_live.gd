@@ -31,7 +31,7 @@ func _check(ok: bool, label: String) -> void:
 func _button(point: Vector2, pressed: bool) -> void:
 	var event := InputEventMouseButton.new()
 	event.device = 92
-	event.position = demo.camera.unproject_position(Vector3(point.x, 0.0, point.y))
+	event.position = demo.camera.unproject_position(Vector3(point.x,demo.state.ground_height(point),point.y))
 	event.global_position = event.position
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.pressed = pressed
@@ -45,7 +45,7 @@ func _button(point: Vector2, pressed: bool) -> void:
 func _motion(point: Vector2) -> void:
 	var event := InputEventMouseMotion.new()
 	event.device = 92
-	event.position = demo.camera.unproject_position(Vector3(point.x, 0.0, point.y))
+	event.position = demo.camera.unproject_position(Vector3(point.x,demo.state.ground_height(point),point.y))
 	event.global_position = event.position
 	var started := Time.get_ticks_usec()
 	root.push_input(event)
@@ -126,7 +126,7 @@ func _run() -> void:
 		var player: Variant = demo.music._players.get(key)
 		if player != null and player.stream != null:
 			identities[key] = [player.get_instance_id(), player.stream.get_instance_id()]
-	_check(identities.size() == 9, "nine real PCM voices exist before gestures")
+	_check(identities.size() == demo.music.STEMS.size(), "current fixed long PCM voices exist before gestures")
 	var clock_before: float = demo.music._playback_clock()
 	var river_x := State.river_x(8.0)
 	var start := Vector2(river_x - 2.4, 8.0)
@@ -168,7 +168,7 @@ func _run() -> void:
 	var joint_end := Vector2(-11.55, -2.0)
 	await _draft(joint_start, joint_end)
 	var joint_expected: Array[Vector2] = demo.road_preview.duplicate()
-	_check(absf(joint_expected[-1].x + 11.0) < 0.0001 and absf(joint_expected[-1].y + 2.0) < 0.001, "actual pointer within 0.9m reaches the existing true road centerline")
+	_check(joint_expected[-1].x>joint_end.x and joint_expected[-1].x< -11.0 and absf(joint_expected[-1].y+2.0)<.001,"actual outer-zone pointer approaches the existing road continuously and already overlaps its footprint")
 	_check(joint_expected[0].distance_to(joint_start) < 0.001, "centerline assistance preserves far endpoint")
 	_button(joint_end, false)
 	await process_frame

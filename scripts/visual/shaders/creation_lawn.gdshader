@@ -2,6 +2,9 @@ shader_type spatial;
 render_mode cull_disabled, depth_draw_opaque, diffuse_burley, specular_disabled;
 uniform float detail = 1.0;
 uniform float meadow_time_override = -1.0;
+uniform sampler2D road_draft_field : filter_linear, repeat_disable;
+uniform bool road_draft_enabled = false;
+uniform vec4 road_draft_world_rect = vec4(-48.,-48.,96.,96.);
 varying vec3 world_at;
 varying vec3 blade_world_normal;
 varying float tip;
@@ -20,6 +23,10 @@ void vertex() {
 	clump_world_at = (MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xz;
 	species = clamp(INSTANCE_CUSTOM.a,0.0,1.0);
 	float edge_height = clamp(INSTANCE_CUSTOM.b,0.0,1.0);
+	if (road_draft_enabled) {
+		vec2 draft_uv=(world_at.xz-road_draft_world_rect.xy)/road_draft_world_rect.zw;
+		edge_height*=1.0-smoothstep(.08,.85,texture(road_draft_field,draft_uv).r);
+	}
 	// Derived meadow retreats from the same shore as the exposed sand. The
 	// authored plants, CPU clumps and terrain stay intact and undo unchanged.
 	if (bank_sand_enabled) { edge_height *= smoothstep(.22,.85,shore_distance(world_at.xz)); }

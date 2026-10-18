@@ -99,8 +99,9 @@ func _test_rejections() -> void:
 		stroke.assign(points)
 		var resolved := Intent.resolve(city, stroke)
 		_check(resolved.points == stroke and not resolved.anchored_start and not resolved.anchored_end, "water-start, half crossing, along-water or bank skim is not manufactured into a bridge")
-	city.waters = [{"id": "w1", "kind": "pond", "points": [[-16.3, 0.0]], "width": 2.4, "seed": 1, "source": "player"}]
-	var boundary: Array[Vector2] = [Vector2(-17.8, 0), Vector2(-14.8, 0)]
+	var edge: float=city.WORLD_RECT.position.x
+	city.waters = [{"id": "w1", "kind": "pond", "points": [[edge+1.7, 0.0]], "width": 2.4, "seed": 1, "source": "player"}]
+	var boundary: Array[Vector2] = [Vector2(edge+.2, 0), Vector2(edge+3.2, 0)]
 	_check(Intent.resolve(city, boundary).points == boundary, "dry bank outside world fails atomically, retaining original error")
 	city.waters.clear()
 	city.houses = [{"id": "h1", "origin": [-0.9, 0.0], "cells": [{"id": "c1", "x": 0, "z": 0, "level": 0, "kind": "room"}]}]

@@ -17,6 +17,7 @@ Phase 1～5 已按新版补差并复核。Phase 6 的14屋/真实茶聚/完成�
 ## 3. 当前关键入口
 
 - 海拔/坡路：`city_creation_terrain_protection.gd`、`city_creation_road_heights.gd`、`city_creation_highland.gd`、`city_creation_frontage.gd`、`city_creation_road_earthworks.gd`。新宽街 2.10m，旧 2.0m 作品保原宽；重刷才扩宽。
+- 拉路：`city_creation_road_gesture.gd` 固定旧曲段并维护活动末端，UI按像素跟手；`RoadIntent` 的soft模式渐进吸附，松手用none模式校验已显示点，避免二次吸附。`city_creation_road_draft_field.gd` 仅给草/预览材质提供临时4cm场，取消/正式发布时清除；旧存档和默认State道路API保持。
 - 时代/品质/地标：`city_creation_eras.gd`、`city_creation_quality.gd`、`city_creation_signatures.gd`。作品兼容 Schema 1～16；真实履约记录驱动解锁。
 - 大城：`city_creation_citizen_motion.gd`、`city_creation_detail_lod.gd`、`city_creation_tiled_field.gd`、`city_creation_budget_rebuild.gd`。已有300屋测试夹具，尚未成为可选旗舰示范存档。
 - 验证：Godot Compatibility，1440×900；选相关脚本一次CPU/一次实窗，GPU回读检查须运行OpenGL，不能用headless结果替代。不要跑九入口冷启动或整库哈希。

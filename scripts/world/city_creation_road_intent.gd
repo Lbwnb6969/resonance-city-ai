@@ -10,7 +10,7 @@ const MAX_ANCHOR := 1.4
 const DRY_MARGIN := 0.04
 
 
-static func resolve(city: RefCounted, points: Array[Vector2], width: float = 1.25) -> Dictionary:
+static func resolve(city: RefCounted, points: Array[Vector2], width: float = 1.25, soft_snap: bool=false) -> Dictionary:
 	var result := {"points": points.duplicate(), "anchored_start": false, "anchored_end": false,
 		"snapped_start": false, "snapped_end": false}
 	if points.size() < 2 or not is_finite(width) or width <= 0.0:
@@ -28,8 +28,8 @@ static func resolve(city: RefCounted, points: Array[Vector2], width: float = 1.2
 	if near_bank and _contains_water_core(city, points):
 		base[0] = _bank_anchor(city, points[0], points[0] - points[1], target)
 		base[-1] = _bank_anchor(city, points[-1], points[-1] - points[-2], target)
-	var starts := _snap_candidates(city, base[0], base[1], width)
-	var ends := _snap_candidates(city, base[-1], base[-2], width)
+	var starts := _snap_candidates(city, base[0], base[1], width,soft_snap)
+	var ends := _snap_candidates(city, base[-1], base[-2], width,soft_snap)
 	if base == points and starts.size() == 1 and ends.size() == 1:
 		return result
 	var base_check := _site_check(city, base, width)
@@ -125,7 +125,7 @@ static func _bank_anchor(city: RefCounted, point: Vector2, outward: Vector2, tar
 	return point
 
 
-static func _snap_candidates(city: RefCounted, point: Vector2, neighbor: Vector2, width: float) -> Array[Dictionary]:
+static func _snap_candidates(city: RefCounted, point: Vector2, neighbor: Vector2, width: float, soft_snap: bool=false) -> Array[Dictionary]:
 	var original := {"point": point, "changed": false, "distance": 0.0, "key": "~"}
 	var result: Array[Dictionary] = []
 	# Preserve an authored door approach / arch entrance instead of dragging it
@@ -143,13 +143,14 @@ static func _snap_candidates(city: RefCounted, point: Vector2, neighbor: Vector2
 			if distance > SNAP_RADIUS or not _endpoint_forward(closest, neighbor, point, neighbor): continue
 			# Do not undo a real dry abutment by snapping onto a bridge deck.
 			if float(city.water_clearance(point)) >= width * 0.5 + DRY_MARGIN and float(city.water_clearance(closest)) < width * 0.5 + DRY_MARGIN: continue
+			var target:=point.lerp(closest,1.0-smoothstep(.18,SNAP_RADIUS,distance)) if soft_snap else closest
 			var duplicate := false
 			for existing in result:
-				if closest.distance_squared_to(existing.point) < 0.00000001:
+				if target.distance_squared_to(existing.point) < 0.00000001:
 					duplicate = true
 					break
 			if not duplicate:
-				result.append({"point": closest, "changed": true, "distance": distance,
+				result.append({"point": target, "changed": target!=point, "distance": distance,
 					"key": "%s/%08d" % [str(road.id), index]})
 	result.append(original)
 	return result

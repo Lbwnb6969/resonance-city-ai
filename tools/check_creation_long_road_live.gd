@@ -12,6 +12,7 @@ var checks:=0
 var preview_ms: Array[float]=[]
 var junction_profile_ms: Array[float]=[]
 var junction_mesh_ms: Array[float]=[]
+var brush_timings: Dictionary={}
 
 func _initialize() -> void: _run.call_deferred()
 func _check(ok: bool,label: String) -> void:
@@ -63,6 +64,9 @@ func _draft(points: Array[Vector3]) -> void:
 		var started:=Time.get_ticks_usec()
 		demo._append_road_point()
 		preview_ms.append((Time.get_ticks_usec()-started)/1000.0)
+		for key: String in demo.town.preview.get_meta("brush_timings",{}):
+			if not brush_timings.has(key):brush_timings[key]=[]
+			brush_timings[key].append(float(demo.town.preview.get_meta("brush_timings")[key]))
 		junction_profile_ms.append(float(demo.town.preview.get_meta("junction_profile_ms",0.0)))
 		junction_mesh_ms.append(float(demo.town.preview.get_meta("junction_mesh_ms",0.0)))
 		await process_frame
@@ -146,6 +150,8 @@ func _run() -> void:
 	junction_mesh_ms.sort()
 	report["junction_profile_p95_ms"]=junction_profile_ms[int(junction_profile_ms.size()*0.95)]
 	report["junction_mesh_p95_ms"]=junction_mesh_ms[int(junction_mesh_ms.size()*0.95)]
+	for key: String in brush_timings:
+		brush_timings[key].sort();report[key+"_p95"]=brush_timings[key][int(brush_timings[key].size()*.95)]
 	var file:=FileAccess.open(output+"/report.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify(report,"\t",true,true))
 	file.close()
