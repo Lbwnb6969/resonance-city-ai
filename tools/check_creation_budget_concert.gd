@@ -2,7 +2,7 @@ extends SceneTree
 ## A real 24-second PCM performance must survive asynchronous street edits.
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const SOURCE="res://备份/自发巡演前_20261015/额外道路输入实窗/城市作品快照.json"
+const SOURCE="res://tools/fixtures/long_road_baseline.json"
 const OUTPUT="res://验证记录/分帧编辑_2026-10-15/concert"
 class FixtureInput extends Node:
 	func _input(event: InputEvent) -> void:

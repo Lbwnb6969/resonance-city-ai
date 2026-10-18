@@ -1,7 +1,0 @@
-[configuration]
-entry_symbol = "city_audio_init"
-compatibility_minimum = "4.5"
-reloadable = false
-
-[libraries]
-windows.x86_64 = "res://addons/city_audio/bin/city_audio.windows.template_release.x86_64.dll"

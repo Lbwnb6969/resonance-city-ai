@@ -1,9 +1,0 @@
-CityPadMixer keeps score selection, stable group IDs, phases and DNA state in the existing model; it renders selected pad groups in one native block. GDScript remains the reference implementation and the backend for platforms without this extension.
-
-Stereo accumulation is adapted from GDSiON SiOPMStream::write_from_vector at 00a3a6986cc248ee275cdb8ba2954816306759df; LICENSE-GDSiON retains both upstream notices. godot-cpp SDK is fixed to e83fd0904c13356ed1d4c3d09f8bb9132bdc6b77 (godot-4.5-stable); its license is in LICENSE-godot-cpp. No GDSiON driver, score, voice stealing or oscillator replaces the city's music rules.
-
-Windows x86_64 build: run tools/build_native_audio.ps1. Requires Git, Python and Visual Studio C++ Build Tools. The pinned SDK/build objects live under .git/原生构建/godot-cpp; SCons stays under .git/任务备份/round120. The playable DLL is tracked under addons/city_audio/bin. Binding generation resolves the SDK directory junction before recreating generated files; MSVC retains ASCII paths, and the library output directory is created before linking.
-
-The same DLL registers CityMaskUnion, an independent R8 maximum-coverage batch kernel. It preserves byte rounding, patch order and copy-on-write inputs; mature and reveal batches each copy their output once. CityShadowLayer keeps geometry/reveal/cache ownership and its script path. Validate shadows with tests/round126_native_shadows.gd and real-output round126_large_supply_live.gd (-- --script-shadow for the same-city script baseline); audio implementation remains CityPadMixer.
-
-The extension disables DLL hot reload. Godot's Windows editor reload copy uses a shared `~city_audio...dll` filename; another editor/export process can keep that copy locked. Ordinary loading uses the tracked DLL directly, so export and a running editor can coexist. Reopen the editor after rebuilding the native library.

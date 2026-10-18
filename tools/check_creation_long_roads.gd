@@ -1,7 +1,7 @@
 extends SceneTree
 ## Reconstruct exact original road IDs from the preserved player's prefix.
 const Scene=preload("res://scenes/city_creation.tscn")
-const SOURCE := "res://备份/自发巡演前_20261015/额外道路输入实窗/城市作品快照.json"
+const SOURCE := "res://tools/fixtures/long_road_baseline.json"
 const OUTPUT := "res://验证记录/长曲路性能_2026-10-15"
 var failures: Array[String]=[]
 

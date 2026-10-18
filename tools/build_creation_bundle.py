@@ -10,22 +10,10 @@ import zipfile
 
 from creation_bundle_audit import ROOT, audit, run, sha, source_audit
 
-NATIVE = Path('addons/city_audio/bin/city_audio.windows.template_release.x86_64.dll')
 PROBE = Path('tests/creation_bundle_probe.gd')
 TEXTURE_SUFFIXES = {'.png', '.svg', '.jpg', '.jpeg', '.webp', '.bmp', '.tga', '.exr', '.hdr'}
-SOURCE_SUFFIXES = TEXTURE_SUFFIXES | {
-    '.gd', '.gdshader', '.gdshaderinc', '.tscn', '.scn', '.tres', '.res',
-    '.json', '.import', '.uid', '.gdextension', '.wav', '.ogg', '.mp3', '.ttf', '.otf',
-    '.glb', '.gltf', '.obj', '.material',
-}
 LICENSE_INPUTS = {
     'Godot-MIT.txt': '资产/许可记录/Godot/LICENSE.txt',
-    'LICENSE-GDSiON': 'native/city_audio/LICENSE-GDSiON',
-    'LICENSE-godot-cpp': 'native/city_audio/LICENSE-godot-cpp',
-    'roads-CC0.txt': '资产/许可记录/CityKits/roads/License.txt',
-    'commercial-CC0.txt': '资产/许可记录/CityKits/commercial/License.txt',
-    'industrial-CC0.txt': '资产/许可记录/CityKits/industrial/License.txt',
-    'suburban-CC0.txt': '资产/许可记录/CityKits/suburban/License.txt',
     'TinyGlade草地纹理来源.md': '资源/自然参考/README.md',
     'Foundation悬钟来源.md': '资源/建筑参考/README.md',
     'Foundation庭院喷泉来源.md': '资源/建筑参考/庭院喷泉来源.md',
@@ -40,14 +28,11 @@ LICENSE_INPUTS = {
 def source_hashes():
     """Fingerprint authored runtime inputs, including original texture bytes."""
     paths = {
-        'project.godot', 'export_presets.cfg', 'icon.svg', NATIVE.as_posix(),
+        'project.godot', 'export_presets.cfg', 'icon.svg',
         PROBE.as_posix(), 'tools/build_creation_bundle.py', 'tools/creation_bundle_audit.py',
         '文档/Demo快速开始.md', *LICENSE_INPUTS.values(),
     }
-    for folder in ['scripts', 'scenes', '资源', '数据', 'addons/city_audio']:
-        for path in (ROOT / folder).rglob('*'):
-            if path.is_file() and path.suffix.lower() in SOURCE_SUFFIXES:
-                paths.add(path.relative_to(ROOT).as_posix())
+    paths.update(source_audit()['files'])
     return {path: sha(ROOT / path) for path in sorted(paths)}
 
 
@@ -71,7 +56,6 @@ def stage_runtime(destination):
     report = source_audit()
     destination.mkdir(parents=True, exist_ok=False)
     files = set(report['files']) | {'export_presets.cfg'}
-    files.update(path.relative_to(ROOT).as_posix() for path in (ROOT / 'addons/city_audio').rglob('*') if path.is_file())
     for name in sorted(files):
         source = ROOT / name
         target = destination / name
@@ -117,8 +101,7 @@ def copy_licenses(output, evidence):
     (licenses / '项目与资源说明.txt').write_text(
         '本包供本地研究与试玩，未上传或发布到外网。\n'
         '本项目实现的程序化建筑、交互和合成音乐与第三方资源分开记录。\n'
-        'Godot引擎使用MIT许可，原生音频及godot-cpp许可见本目录；'
-        'Kenney CityKits资源使用所附CC0许可。以上许可不覆盖整个游戏。\n'
+        'Godot引擎使用MIT许可，见本目录Godot-MIT.txt；本包所含参考资源各自来源另列。\n'
         '草地世界乘色纹理来自Tiny Glade原游戏资源，用于本地研究与试玩；'
         '它不是本作原创，也不标为CC0。准确资源名、SHA及适配方式见'
         'TinyGlade草地纹理来源.md。\n'
@@ -213,10 +196,6 @@ def build(engine, output, evidence):
         evidence / '导出.log', staging)
     check_engine_log(evidence / '导出.log')
     require_same_sources(sources)
-    # Resource-pack export does not copy external GDExtension DLLs.
-    native_target = runtime / NATIVE
-    native_target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(ROOT / NATIVE, native_target)
     audit_result = audit(pack, imported_root=staging)
     with zipfile.ZipFile(pack) as archive:
         packed_textures = {name: hashlib.sha256(archive.read(name)).hexdigest()
@@ -284,7 +263,6 @@ def build(engine, output, evidence):
         'texture_sources_sha256': {p: value for p, value in sources.items()
                                    if Path(p).suffix.lower() in TEXTURE_SUFFIXES},
         'packed_textures_sha256': packed_textures,
-        'native_audio_sha256': sources[NATIVE.as_posix()],
         'engine_version': result['engine'], 'engine_sha256': sha(packaged_engine),
         'pack_sha256': sha(pack), 'pack_size_bytes': pack.stat().st_size,
         'engine_size_bytes': packaged_engine.stat().st_size,
@@ -295,7 +273,7 @@ def build(engine, output, evidence):
     (evidence / '构建记录.json').write_text(
         json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     identity_keys = ['source_commit', 'source_identity_scope', 'source_files_sha256',
-                     'packed_textures_sha256', 'native_audio_sha256', 'engine_version',
+                     'packed_textures_sha256', 'engine_version',
                      'engine_sha256', 'pack_sha256', 'scope']
     (output / '构建身份.json').write_text(json.dumps(
         {key: record[key] for key in identity_keys}, ensure_ascii=False, indent=2) + '\n',

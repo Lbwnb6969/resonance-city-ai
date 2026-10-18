@@ -59,7 +59,6 @@ func _run() -> void:
 	var original_buses:=AudioServer.bus_count
 	_check(not root.has_node("MCPRuntimeServer"),"development server is excluded from the playable pack")
 	_check(not FileAccess.file_exists("res://tests/creation_bundle_probe.gd") and not FileAccess.file_exists("res://PROJECT.md"),"developer tests and project notes are excluded")
-	_check(ClassDB.class_exists("CityPadMixer") and ClassDB.class_exists("CityMaskUnion"),"packaged native extension loads outside the source checkout")
 	var scene_path: String = ProjectSettings.get_setting("application/run/main_scene")
 	_check(scene_path=="res://scenes/city_creation.tscn","pack starts the current free creation scene")
 	var packed: PackedScene = load(scene_path)

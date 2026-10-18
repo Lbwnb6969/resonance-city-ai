@@ -94,7 +94,7 @@ def audit(pack, imported_root=None):
         members = set(names)
         forbidden = [name for name in names if name.startswith(
             ('资产/', 'tests/', 'tools/', 'native/', '文档/', '参考资料/', '验证记录/', '废弃/', '备份/', '交付/', '.git/', '资源/测试/'))
-            or (name.startswith('addons/') and not name.startswith('addons/city_audio/'))]
+            or name.startswith('addons/')]
         if forbidden or len(names) != len(members) or archive.testzip():
             raise RuntimeError(f'Invalid creation resource archive: {forbidden}')
         missing = []
