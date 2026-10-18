@@ -49,7 +49,7 @@ func _run()->void:
 	_check(demo.life.cafe.layouts.has(palace.house_id) and not demo.life.cafe.layouts[palace.house_id].is_empty(),"actual palace owns connected outdoor tea furniture and walkable seat routes")
 	await _capture("08_botanical_palace_fountain_and_tea")
 	while demo.light_phase!=2:demo._toggle_light()
-	_check(float(demo.town.conservatory.clockwork_glass_material.get_shader_parameter("evening"))==1.,"palace glazing uses actual warm night material owner")
+	_check(float(demo.town.conservatory.palace_glass_material.get_shader_parameter("evening"))==1.,"palace glazing uses actual emerald night material owner")
 	await _capture("09_botanical_palace_warm_night")
 	demo.focus=Vector3(24,2,9.5);demo.zoom=16;demo._update_camera()
 	var depot_root:Node3D=demo.town.buildings.get_node(str(depot.house_id))

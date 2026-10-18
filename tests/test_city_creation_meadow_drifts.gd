@@ -58,7 +58,7 @@ func _run() -> void:
 	_expect(repeatable, "identical world input reproduces every candidate and property")
 	_expect(unique, "final block ownership has neither duplicated nor missing boundary roots")
 	_expect(finite, "world candidate transforms and species are finite")
-	_expect(count > 3000 and count < 8000, "sparse root population remains within existing density budget")
+	_expect(count > 10000 and count < 16000, "twenty-four blocks retain the saturated 0.52m two-to-three-child meadow density")
 	_expect(species_min < 0.15 and species_max > 0.85, "town includes broad-leaf and narrow-leaf stands")
 	_expect(height_min < 0.55 and height_max > 0.85, "actual transforms include short turf beneath tall stands")
 	var coherent := true
@@ -87,7 +87,7 @@ func _run() -> void:
 	_expect(continuous and patch_max - patch_min > 0.5, "nonperiodic world field is continuous with visible broad patch amplitude")
 	var mesh: Mesh = meadow._mesh("lawn")
 	_expect(mesh == meadow._mesh("grass"), "lawn and woodland fringe share the same cached mesh")
-	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 15, "one surface and fifteen triangles retain per-block draw budget")
+	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 35, "seven five-triangle leaves share one draw surface per meadow block")
 	var radius := 0.0
 	var geometry_finite := true
 	var normals_up := true
@@ -99,7 +99,7 @@ func _run() -> void:
 		geometry_finite = geometry_finite and vertex.is_finite() and normal.is_finite()
 		normals_up = normals_up and normal.is_normalized() and normal.y > 0.0
 	_expect(geometry_finite and normals_up, "shared geometry has finite vertices and continuous upward leaf normals")
-	_expect(radius * max_xz <= 0.15, "unmorphed geometry real maximum horizontal reach is below fifteen centimetres")
+	_expect(radius * max_xz <= 0.30, "bowl-shaped seven-leaf clumps retain a bounded thirty-centimetre horizontal reach")
 	var cached_species_zero := true
 	var record_species := false
 	var mask_channels := true

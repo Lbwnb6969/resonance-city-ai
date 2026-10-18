@@ -38,7 +38,7 @@ func _run()->void:
 	_check(QualityFixture.until(life,func():return int(city.life_progress.concerts)>concerts,700.),"actual audience and full performance finish with palace active")
 	_check(city.afterglow_remaining(venue)>179.,"actual completed concert gains the palace's one-hundred-eighty-second duration")
 	var saved:Dictionary=city.snapshot();var fresh:=State.new()
-	_check(saved.schema==15 and fresh.restore(JSON.parse_string(JSON.stringify(saved,"",true,true))).ok,"new landmark identities and earned long durations restore in schema fifteen")
+	_check(saved.schema==State.QUALITY_CONTEXT_SCHEMA and fresh.restore(JSON.parse_string(JSON.stringify(saved,"",true,true))).ok,"new landmark identities and earned long durations restore with current quality history schema")
 	var bad:Dictionary=saved.duplicate(true);bad.schema=14
 	_check(not fresh.restore(bad).ok,"older schema cannot smuggle new landmarks or extended afterglow")
 	var moved:Dictionary=city.place_signature("botanical_palace",Vector2(-31,0),palace.house_id)

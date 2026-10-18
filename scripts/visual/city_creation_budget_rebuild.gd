@@ -6,7 +6,7 @@ const State = preload("res://scripts/world/city_creation_state.gd")
 const ChangeSet = preload("res://scripts/world/city_creation_change_set.gd")
 const ROAD_FIELDS := ["road_join_signatures","road_geometry_cache","road_outline_fingerprints","road_segment_bins","road_outlines","road_water_signatures"]
 const VEGETATION_FIELDS := ["vegetation_block_fingerprints","vegetation_id_blocks","vegetation_fingerprints","vegetation_data_fingerprints","vegetation_visibility"]
-const MEADOW_FIELDS := ["block_counts","base_counts","base_records","base_candidates","base_accents","plant_candidates","plant_candidate_fingerprints","sample_bins","sample_obstacles","entrance_cache","base_fingerprints","fingerprints"]
+const MEADOW_FIELDS := ["block_counts","base_counts","base_records","base_candidates","base_accents","plant_candidates","plant_candidate_fingerprints","sample_bins","sample_obstacles","entrance_cache","base_fingerprints","fingerprints","palace_flower_counts"]
 const SHORE_FIELDS := ["fingerprints","counts","_layout_candidates","_water_candidates","_water_fingerprints","_entrance_cache"]
 var generation := 0
 var committed_generation := 0
@@ -129,7 +129,7 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	context.meadow.record_only = true
 	# Fingerprints preserve unchanged blocks. Only changed blocks regenerate
 	# their deterministic records, avoiding a large main-thread cache copy.
-	_copy_fields(owner.meadow,context.meadow,["fingerprints"])
+	_copy_fields(owner.meadow,context.meadow,["fingerprints","palace_centers"])
 	context.cafes.layout_api = context.cafes.Layout.create_context()
 	_copy_fields(owner.cafes,context.cafes,["fingerprints","placement_inputs"])
 	context.shore.state = city
@@ -314,6 +314,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	staging.promenade.concert = owner.promenade.concert
 	staging.conservatory.glass_material = owner.conservatory.ensure_material()
 	staging.conservatory.clockwork_glass_material = owner.conservatory.ensure_material(true)
+	staging.conservatory.palace_glass_material = owner.conservatory.ensure_palace_material()
 	staging.conservatory.evening = owner.conservatory.evening
 	staging.conservatory.response = owner.conservatory.response
 	staging.contact_material = owner.contact_material
@@ -687,6 +688,7 @@ func _commit(owner: Node3D) -> void:
 		owner.meadow.plant_candidates.erase(id)
 		owner.meadow.plant_candidate_fingerprints.erase(id)
 	for field: String in MEADOW_FIELDS:_merge_value_cache(owner.meadow.get(field),staging.meadow.get(field))
+	owner.meadow.palace_centers=staging.meadow.palace_centers.duplicate()
 	for field: String in SHORE_FIELDS:_merge_value_cache(owner.shore.get(field),staging.shore.get(field))
 	for id: String in owner.meadow.entrance_cache.keys():
 		if not live_houses.has(id): owner.meadow.entrance_cache.erase(id)

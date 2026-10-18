@@ -11,6 +11,7 @@ const WORLD_RECT := Bounds.WORLD_RECT
 const BASE_SPACING := 0.52
 const LAWN_SAMPLE_SCALE := 0.18
 const FRINGE_SAMPLE_SCALE := 0.25
+const PALACE_FLOWER_RADIUS := 8.0
 const GrassMask := preload("res://scripts/visual/city_creation_grass_mask.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
 const LawnShader = preload("res://scripts/visual/shaders/creation_lawn.gdshader")
@@ -42,6 +43,8 @@ var elapsed_ms := 0.0
 var detail := 1.0
 var water_field: Texture2DArray
 var stage_ms: Dictionary = {}
+var palace_centers: Array[Vector2]=[]
+var palace_flower_counts: Dictionary={}
 
 func setup(city_state: RefCounted) -> void:
 	state = city_state
@@ -62,7 +65,20 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 			plant_candidates.erase(id)
 			plant_candidate_fingerprints.erase(id)
 	var entrances := _entrances_by_house()
-	for block: Vector2i in dirty:
+	var centers: Array[Vector2]=[]
+	for house: Dictionary in state.houses:
+		if house.get("signature","")=="botanical_palace":centers.append(Vector2(house.origin[0],house.origin[1])+Vector2(0,1.8))
+	var candidates: Array[Vector2i]=dirty.duplicate()
+	if centers!=palace_centers:
+		# Moving/removing a palace invalidates both flower halos, including
+		# empty meadow blocks outside the building's ordinary edit bounds.
+		for center: Vector2 in centers+palace_centers:
+			for x in range(floori((center.x-PALACE_FLOWER_RADIUS)/BLOCK_SIZE),ceili((center.x+PALACE_FLOWER_RADIUS)/BLOCK_SIZE)):
+				for z in range(floori((center.y-PALACE_FLOWER_RADIUS)/BLOCK_SIZE),ceili((center.y+PALACE_FLOWER_RADIUS)/BLOCK_SIZE)):
+					var block:=Vector2i(x,z)
+					if WORLD_RECT.intersects(Rect2(Vector2(block)*BLOCK_SIZE,Vector2.ONE*BLOCK_SIZE)) and not candidates.has(block):candidates.append(block)
+	palace_centers=centers
+	for block: Vector2i in candidates:
 		var stage_started := Time.get_ticks_usec()
 		var members: Array = visible_by_block.get(block, [])
 		var obstacles := _local_obstacles(block, entrances)
@@ -73,7 +89,10 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 		# including the retained short lawn and its cached flower/grass accents.
 		var base_fingerprint := hash([obstacle_fingerprint,height_signature])
 		var rock_plants := Outcrops.plant_rows(state,block)
-		var fingerprint := hash([members,base_fingerprint,rock_plants])
+		var local_palaces: Array[Vector2]=[]
+		for center: Vector2 in centers:
+			if height_bounds.has_point(center) or center.distance_to(center.clamp(height_bounds.position,height_bounds.end))<=PALACE_FLOWER_RADIUS:local_palaces.append(center)
+		var fingerprint := hash([members,base_fingerprint,rock_plants,local_palaces])
 		stage_ms.fingerprint += float(Time.get_ticks_usec() - stage_started) / 1000.0
 		if fingerprints.get(block, -1) == fingerprint:
 			continue
@@ -127,6 +146,7 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 		stage_started = Time.get_ticks_usec()
 		for plant: Dictionary in members:
 			_add_plant_clumps(block, plant, batches, query_state)
+		palace_flower_counts[block]=_add_palace_flowers(block,batches.flower,query_state,local_palaces)
 		var rocks := Outcrops.records(state,block,query_state,rock_plants)
 		batches.boulder_a = rocks.boulder_a
 		batches.boulder_b = rocks.boulder_b
@@ -150,6 +170,32 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 			root.free()
 		last_changed += 1
 	elapsed_ms = float(Time.get_ticks_usec() - started) / 1000.0
+
+func _add_palace_flowers(block: Vector2i,flowers: Array,mask: GrassMask,centers: Array[Vector2])->int:
+	if centers.is_empty():return 0
+	var original_count:=flowers.size()
+	var origin:=Vector2(block)*BLOCK_SIZE
+	var palette: Array[Color]=[Color("f6f1de"),Color("f2c14e"),Color("b8a6d9")]
+	for index in range(original_count):
+		var record: Array=flowers[index]
+		var original: Transform3D=record[0]
+		var at:=origin+Vector2(original.origin.x,original.origin.z)
+		var nearby:=false
+		for center: Vector2 in centers:
+			if at.distance_squared_to(center)<=PALACE_FLOWER_RADIUS*PALACE_FLOWER_RADIUS:nearby=true;break
+		if not nearby:continue
+		var seed_value:=_lattice_hash(roundi(at.x*1000.),roundi(at.y*1000.))
+		var angle:=float(seed_value&65535)/65535.*TAU
+		var twin_at:=at
+		for attempt in range(8):
+			var candidate:=at+Vector2.from_angle(angle+attempt*TAU/8.)*.16
+			if _candidate_visible(block,candidate,mask,FRINGE_SAMPLE_SCALE) and state._ground_terrain.rockiness_at(candidate)<.35:
+				twin_at=candidate;break
+		var twin:=original
+		twin.basis=Basis(Vector3.UP,.7)*original.basis.scaled(Vector3.ONE*.94)
+		twin.origin=Vector3(twin_at.x-origin.x,state.ground_height(twin_at)+.014,twin_at.y-origin.y)
+		flowers.append([twin,palette[posmod(seed_value,3)],record[2]])
+	return flowers.size()-original_count
 
 func diagnostics() -> Dictionary:
 	var count := 0
@@ -198,9 +244,9 @@ func _add_short_meadow(block: Vector2i, records: Array, query_state: GrassMask, 
 		# never put morphology into the shared clearance cache.
 		custom.a = candidate.species
 		records.append([_grounded_transform(candidate.transform, at), candidate.tint, custom])
-		if candidate.accent and not accents.is_empty():
-			_append(accents.grass, block, at, Vector3(1.0, 0.90, 1.0), candidate.yaw, candidate.tint, -0.003, custom)
-			if candidate.flower and rockiness<0.35:
+		if not accents.is_empty():
+			if candidate.accent:_append(accents.grass, block, at, Vector3(1.0, 0.90, 1.0), candidate.yaw, candidate.tint, -0.003, custom)
+			if candidate.wildflower and rockiness<0.35:
 				_append(accents.flower, block, at, Vector3.ONE * 0.88,
 					candidate.yaw, candidate.flower_tint, -0.003)
 	return records.size() - first
@@ -275,6 +321,9 @@ func _build_base_candidates(block: Vector2i) -> Array:
 				var child_yaw := yaw + rng.randf_range(-0.14, 0.14)
 				var accent := child == 0 and patch > 0.62 and (bits & 255) < 22
 				var flower := (bits >> 8) % 3 != 0
+				# Flowers occupy open short meadow too; tall grass accents keep
+				# their denser-patch gate. One mother owns each tiny bloom trio.
+				var wildflower:=child==0 and patch>.40 and (bits&255)<22 and flower
 				if not WORLD_RECT.has_point(at): continue
 				if Vector2i(floori(at.x / BLOCK_SIZE), floori(at.y / BLOCK_SIZE)) != block: continue
 				var edge := minf(minf(at.x - WORLD_RECT.position.x, WORLD_RECT.end.x - at.x),
@@ -286,7 +335,7 @@ func _build_base_candidates(block: Vector2i) -> Array:
 					Vector3(at.x - origin.x, -0.003, at.y - origin.y))
 				records.append({"at": at, "scale": scale_value, "yaw": child_yaw, "transform": transform,
 					"tint": tint, "species": species, "mother": Vector2i(x, z), "child": child,
-					"accent": accent, "flower": flower, "flower_tint": flower_palette[posmod(_lattice_hash(floori(mother.x/4.5),floori(mother.y/4.5)),4)]})
+					"accent": accent, "flower": flower, "wildflower":wildflower, "flower_tint": flower_palette[posmod(_lattice_hash(floori(mother.x/4.5),floori(mother.y/4.5)),4)]})
 	return records
 
 func _lattice_hash(x: int, z: int) -> int:

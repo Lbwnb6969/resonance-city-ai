@@ -1,7 +1,7 @@
 extends RefCounted
 ## Later landmarks retain ordinary cells/roles while adding picked glass and clocks.
-const SIDES := 32
-const BANDS := 10
+const VAULT_SEGMENTS := 12
+const VAULT_BAYS := 6
 const Water=preload("res://scripts/visual/shaders/creation_palace_water.gdshader")
 
 static func palace(renderer,root: Node3D,house: Dictionary)->void:
@@ -9,24 +9,11 @@ static func palace(renderer,root: Node3D,house: Dictionary)->void:
 	var glass: Array[Vector3]=[]
 	var iron: Material=renderer._material(Color("34594d"),.7)
 	var cream: Material=renderer._material(Color("d8cba9"))
-	var group:=Node3D.new();group.name="CrystalBotanicalDome";root.add_child(group)
-	for side in range(SIDES):
-		var a:=TAU*side/SIDES;var b:=TAU*(side+1)/SIDES
-		for band in range(BANDS):
-			var p:=_dome(center,a,float(band)/BANDS);var q:=_dome(center,b,float(band)/BANDS)
-			var r:=_dome(center,b,float(band+1)/BANDS);var s:=_dome(center,a,float(band+1)/BANDS)
-			glass.append_array([p,r,q,p,s,r])
-			if side%2==0:_beam(renderer,group,p,s,.035,iron)
-			if band in [2,5,8]:_beam(renderer,group,p,q,.028,iron)
-		var p:=center+Vector3(cos(a)*2.35,0,sin(a)*2.35)
-		var q:=center+Vector3(cos(b)*2.35,0,sin(b)*2.35)
-		var door:=absf(wrapf((a+b)*.5+PI*.5,-PI,PI))<.17
-		if not door:glass.append_array([p,q+Vector3.UP*1.05,q,p,p+Vector3.UP*1.05,q+Vector3.UP*1.05])
-		if side%2==0:_beam(renderer,group,p,p+Vector3.UP*1.05,.055,iron)
-		_beam(renderer,group,p+Vector3.UP*1.05,q+Vector3.UP*1.05,.055,iron)
-		_beam(renderer,group,p,q,.085,cream)
+	var group:=Node3D.new();group.name="CrystalBotanicalVaults";root.add_child(group)
+	for nave in range(3):
+		_vault(renderer,group,glass,center+Vector3((nave-1)*1.54,0,0),3.15 if nave==1 else 2.72,iron,cream,nave==1,float(nave-1))
 	var mesh: MeshInstance3D=renderer._triangles(group,glass,Color.WHITE)
-	mesh.name="BotanicalDomeGlass";mesh.material_override=renderer.conservatory.ensure_material(true);mesh.set_meta("creation_live_visual",true);mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mesh.name="BotanicalVaultGlass";mesh.material_override=renderer.conservatory.ensure_palace_material();mesh.set_meta("creation_live_visual",true);mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# Allocate real roof triangles to their nearest original floor cell, so
 	# clicking the dome retains the usual house/cell editing identity.
 	var picks: Dictionary={};var cells: Dictionary={}
@@ -64,11 +51,41 @@ static func palace(renderer,root: Node3D,house: Dictionary)->void:
 			var heading:=TAU*leaf/5.+angle
 			var crown: MeshInstance3D=renderer._crown(group,at+Vector3(cos(heading)*.17,.48+float(leaf%2)*.10,sin(heading)*.17),Vector3(.15,.34,.10),Color("56876a") if i%2==0 else Color("80a566"));crown.rotation.z=sin(heading)*.4
 		for flower in range(3):renderer._crown(group,at+Vector3(sin(flower*2.1)*.16,.75+flower*.07,cos(flower*2.1)*.16),Vector3(.08,.055,.08),Color("d69eb6") if i%2==0 else Color("ebc68c"))
-	root.set_meta("botanical_palace",{"radius":2.35,"height":3.15,"glass_triangles":glass.size()/3,"pick_cells":picks.size(),"plant_beds":11,"fountain":true,"afterglow_seconds":180.})
+	root.set_meta("botanical_palace",{"radius":2.35,"height":3.15,"vaults":3,"vault_ridges":[[-1.54,2.72],[0.,3.15],[1.54,2.72]],"glass_triangles":glass.size()/3,"pick_cells":picks.size(),"plant_beds":11,"fountain":true,"afterglow_seconds":180.})
 
-static func _dome(center: Vector3,angle: float,t: float)->Vector3:
-	var radius:=2.35*cos(t*PI*.5)
-	return center+Vector3(cos(angle)*radius,1.05+2.10*sin(t*PI*.5),sin(angle)*radius)
+static func _vault_point(center: Vector3,angle: float,z: float,height: float)->Vector3:
+	return center+Vector3(cos(angle)*.77,1.05+(height-1.05)*sin(angle),z)
+
+static func _vault(renderer,group: Node3D,glass: Array[Vector3],center: Vector3,height: float,iron: Material,stone: Material,central: bool,outer_side: float)->void:
+	# Three connected Victorian barrel vaults share an open interior. The
+	# central entrance remains clear below its glazed arched fanlight.
+	for bay in range(VAULT_BAYS+1):
+		var z: float=lerpf(-2.25,2.25,float(bay)/VAULT_BAYS)
+		for side in range(VAULT_SEGMENTS):
+			var a:=PI*side/VAULT_SEGMENTS;var b:=PI*(side+1)/VAULT_SEGMENTS
+			var p:=_vault_point(center,a,z,height);var q:=_vault_point(center,b,z,height)
+			_beam(renderer,group,p,q,.034,iron)
+			if bay<VAULT_BAYS:
+				var next_z: float=lerpf(-2.25,2.25,float(bay+1)/VAULT_BAYS)
+				var r:=_vault_point(center,b,next_z,height);var t:=_vault_point(center,a,next_z,height)
+				glass.append_array([p,q,r,p,r,t])
+				if side%3==0:_beam(renderer,group,p,t,.027,iron)
+			if bay in [0,VAULT_BAYS]:
+				var door:=central and bay==0 and absf(((p+q)*.5).x-center.x)<.50
+				var low: float=1.72 if door else 0.
+				var foot_p:=Vector3(p.x,center.y+low,p.z);var foot_q:=Vector3(q.x,center.y+low,q.z)
+				glass.append_array([foot_p,p,q,foot_p,q,foot_q])
+				if side%3==0:_beam(renderer,group,foot_p,p,.042,iron)
+		for side: float in [-1.,1.]:
+			var foot:=center+Vector3(side*.77,0,z)
+			_beam(renderer,group,foot,foot+Vector3.UP*1.05,.05,iron)
+	for side: float in [-1.,1.]:
+		var foot:=center+Vector3(side*.77,0,-2.25);var finish:=foot+Vector3(0,0,4.5)
+		_beam(renderer,group,foot,finish,.075,stone)
+		_beam(renderer,group,foot+Vector3.UP*1.05,finish+Vector3.UP*1.05,.045,iron)
+		# Only exterior naves need a vertical glass side; shared walls stay open.
+		if side==outer_side:
+			glass.append_array([foot,finish+Vector3.UP*1.05,finish,foot,foot+Vector3.UP*1.05,finish+Vector3.UP*1.05])
 
 static func _beam(renderer,parent: Node3D,a: Vector3,b: Vector3,width: float,material: Material)->void:
 	var direction: Vector3=(b-a).normalized()

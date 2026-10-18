@@ -3,7 +3,7 @@ extends RefCounted
 const IDS := ["bell_keep","watermill","music_academy","botanical_palace","clockwork_depot","floating_amphitheater"]
 const NAMES := {"bell_keep":"古钟瞭望塔","watermill":"河湾大水车磨坊","music_academy":"文艺复兴圆顶音乐院","botanical_palace":"皇家植物玻璃宫","clockwork_depot":"中央钟表电车总站","floating_amphitheater":"河湾水上交响剧场"}
 const ROLES := {"bell_keep":"venue","watermill":"bakery","music_academy":"venue","botanical_palace":"garden_cafe","clockwork_depot":"clockmaker","floating_amphitheater":"symphony_hall"}
-const GOALS := {"bell_keep":"10座普通房屋与1座跨河桥 · 步速+15%、聚焦+3米","watermill":"累计出炉24份面包 · 每炉+1份、烘焙缩时20%","music_academy":"文艺复兴开启，两个街坊完成器乐问答 · 38米覆盖与全城接力","botanical_palace":"10桌真实茶聚与150株玩家植物 · 茶座/演出余韵180秒","clockwork_depot":"第三时代与30米宽街/轨街 · 接轨发车，车速+20%","floating_amphitheater":"第四时代与三章河湾手记 · 水岸四时代交响盛典"}
+const GOALS := {"bell_keep":"10座普通房屋与1座跨河桥 · 步速+15%、聚焦+3米","watermill":"累计出炉24份面包 · 每炉+1份、烘焙缩时20%","music_academy":"文艺复兴开启，两个街坊完成器乐问答 · 38米覆盖与全城接力","botanical_palace":"8桌真实茶聚与120株玩家植物 · 余韵180秒、周围双倍野花","clockwork_depot":"第三时代与30米宽街/轨街 · 接轨发车，车速+20%","floating_amphitheater":"第四时代与三章河湾手记 · 水岸四时代交响盛典"}
 
 static func planted_count(city: RefCounted)->int:
 	var count := 0
@@ -25,7 +25,7 @@ static func refresh(city: RefCounted) -> Array[String]:
 	for road: Dictionary in city.roads:
 		if road.get("bridge",false):bridges+=1
 	for row: Dictionary in city.bakery_supply.values():bread+=int(row.produced)
-	var met: Dictionary={"bell_keep":ordinary>=10 and bridges>0,"watermill":bread>=24,"music_academy":city.era_unlocks.has("renaissance") and not city.district_answers.is_empty(),"botanical_palace":int(city.life_progress.tea_parties)>=10 and planted_count(city)>=150,"clockwork_depot":city.era_unlocks.has("clockwork") and wide_street_metres(city)>=30.0,"floating_amphitheater":city.era_unlocks.has("modern_eco") and city.growth_memories.size()>=3}
+	var met: Dictionary={"bell_keep":ordinary>=10 and bridges>0,"watermill":bread>=24,"music_academy":city.era_unlocks.has("renaissance") and not city.district_answers.is_empty(),"botanical_palace":int(city.life_progress.tea_parties)>=8 and planted_count(city)>=120,"clockwork_depot":city.era_unlocks.has("clockwork") and wide_street_metres(city)>=30.0,"floating_amphitheater":city.era_unlocks.has("modern_eco") and city.growth_memories.size()>=3}
 	for id: String in IDS:
 		if met[id] and not city.signature_unlocks.has(id):city.signature_unlocks.append(id);earned.append(id)
 	city.signature_unlocks.sort_custom(func(a: String,b: String)->bool:return IDS.find(a)<IDS.find(b))
@@ -120,7 +120,7 @@ static func validate(city: RefCounted,data: Dictionary,issued: Dictionary) -> Di
 		pairs[key]=true
 	if "music_academy" in unlocks and (answers.is_empty() or not data.get("era_unlocks",[]).has("renaissance")):return city._fail("音乐院缺少文艺复兴问答里程碑")
 	if ("botanical_palace" in unlocks or "clockwork_depot" in unlocks) and int(data.schema)<city.CLOCKWORK_SCHEMA:return city._fail("新地标需要新存档版本")
-	if "botanical_palace" in unlocks and int(data.get("life_progress",{}).get("tea_parties",0))<10:return city._fail("植物宫缺少十桌茶聚记录")
+	if "botanical_palace" in unlocks and int(data.get("life_progress",{}).get("tea_parties",0))<8:return city._fail("植物宫缺少八桌茶聚记录")
 	if "clockwork_depot" in unlocks and not data.get("era_unlocks",[]).has("clockwork"):return city._fail("电车总站缺少第三时代里程碑")
 	if "floating_amphitheater" in unlocks and (int(data.schema)<city.MODERN_SCHEMA or not data.get("era_unlocks",[]).has("modern_eco") or data.get("growth_memories",[]).size()<3):return city._fail("水上剧场缺少第四时代与三章手记")
 	var placed:= {}
