@@ -137,6 +137,7 @@ func _pause(worker: Dictionary, phase: String) -> void:
 	worker.index = 0
 
 func _replan(worker: Dictionary) -> void:
+	life.worker_lod.flush(worker)
 	var phase := str(worker.resume_phase if worker.phase == "paused" else worker.phase)
 	var transit: Dictionary = life.state.workshop_status(str(worker.workshop_id)).transit
 	if not transit.is_empty() and str(transit.home_id) == str(worker.home_id):
@@ -247,6 +248,7 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 func tick(delta: float) -> void:
 	if life.profile_tick:life.tick_profile.workshop_site=0;life.tick_profile.workshop_produce=0;life.tick_profile.workshop_callback=0
 	for worker: Dictionary in workers:
+		if not life.worker_lod.before(worker,delta,MOVING):continue
 		var phase := str(worker.phase)
 		if phase == "paused": continue
 		if phase in MOVING:
@@ -258,7 +260,7 @@ func tick(delta: float) -> void:
 				_replan(worker)
 				continue
 			worker.elapsed = minf(INSTALL_DURATION, float(worker.elapsed) + delta)
-			if float(worker.elapsed) < INSTALL_DURATION: continue
+			if float(worker.elapsed) < INSTALL_DURATION-.000000001: continue
 			var target := str(worker.target_id)
 			var artist := str(life._roles.get(str(worker.workshop_id),"")) == "atelier"
 			var mechanic := str(life._roles.get(str(worker.workshop_id),""))=="clockmaker"
@@ -275,11 +277,12 @@ func tick(delta: float) -> void:
 			_replan(worker)
 		elif phase == "resting":
 			worker.elapsed = minf(REST_DURATION, float(worker.elapsed) + delta)
-			if float(worker.elapsed) < REST_DURATION: continue
+			if float(worker.elapsed) < REST_DURATION-.000000001: continue
 			worker.elapsed = 0.0
 			worker.deliveries = 0
 			worker.phase = "to_workshop"
 			_replan(worker)
+		life.worker_lod.after(worker,delta)
 
 func _craft(worker: Dictionary, delta: float) -> void:
 	var shop := str(worker.workshop_id)
@@ -357,7 +360,7 @@ func status(id: String) -> Dictionary:
 		if str(worker.workshop_id) != id: continue
 		result.worker_phase = str(worker.phase)
 		result.worker_home_id = str(worker.home_id)
-		result.elapsed = float(worker.elapsed)
+		result.elapsed = life.worker_lod.elapsed(worker)
 		result.deliveries = int(worker.deliveries)
 		result.target_id = str(worker.target_id)
 		var phase := str(worker.resume_phase if worker.phase == "paused" else worker.phase)
@@ -370,6 +373,7 @@ func status(id: String) -> Dictionary:
 func checkpoint() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for worker: Dictionary in workers:
+		life.worker_lod.flush(worker)
 		var node: Node3D = worker.node
 		result.append({"home_id":str(worker.home_id), "workshop_id":str(worker.workshop_id), "target_id":str(worker.target_id), "phase":str(worker.phase), "resume_phase":str(worker.resume_phase if worker.phase == "paused" else worker.phase), "elapsed":float(worker.elapsed), "deliveries":int(worker.deliveries), "position":[node.position.x,node.position.z], "yaw":node.rotation.y})
 	return result

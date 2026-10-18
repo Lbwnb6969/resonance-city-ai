@@ -20,9 +20,9 @@ func point()->Vector3:
 	# checkpoints and edits all see today's position between scheduled updates.
 	var extra: float=maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed if deferred else 0.
 	return start+direction*minf(length,progress+extra)
-func defer(clock: Node3D,speed: float)->void:
+func defer(clock: Node3D,speed: float,sample_time: float=NAN)->void:
 	if speed<=0. or progress>=length:return
-	_clock=clock;_sampled_at=float(clock.time);deferred_speed=speed
+	_clock=clock;_sampled_at=float(clock.time) if is_nan(sample_time) else sample_time;deferred_speed=speed
 	var remaining:=length-progress
 	if watch_travel:
 		var at:=start+direction*progress

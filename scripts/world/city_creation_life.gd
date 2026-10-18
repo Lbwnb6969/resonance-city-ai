@@ -8,6 +8,7 @@ var _citizen_schedule:=CitizenSchedule.new()
 const State=preload("res://scripts/world/city_creation_state.gd")
 var _published_surface:RefCounted
 var view_camera:Camera3D
+var worker_lod=preload("res://scripts/world/city_creation_worker_lod.gd").new(self)
 var _visual_lod_cursor:=0
 var _lod_scalar_count:=0
 var _lod_visible_count:=0
@@ -111,6 +112,12 @@ func flush_citizen(resident:Dictionary)->void:
 	resident.erase("offscreen_motion")
 	citizen_lod_stats.publications+=1
 
+func flush_workers()->void:
+	if bakery!=null:
+		for worker: Dictionary in bakery.workers:worker_lod.flush(worker)
+	if workshop!=null:
+		for worker: Dictionary in workshop.workers:worker_lod.flush(worker)
+
 func _capture_published_surface()->void:
 	# Two read-only grid buffers and immutable road profiles freeze actual
 	# published heights. Flushing a hidden actor after an edit must not prepare
@@ -157,6 +164,7 @@ func set_budget_hold(held: bool) -> void:
 
 func begin_budget_sync() -> bool:
 	flush_citizens()
+	flush_workers()
 	budget_prepare_ms=0.0
 	budget_commit_ms=0.0
 	var signature := _signature()
@@ -571,6 +579,7 @@ func _signature() -> Array:
 
 func _sync() -> void:
 	flush_citizens()
+	flush_workers()
 	cancel_budget_sync()
 	last_revision = state.revision
 	_read_progress()

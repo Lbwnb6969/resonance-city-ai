@@ -97,6 +97,7 @@ func _pause(worker: Dictionary, phase: String) -> void:
 	worker.index = 0
 
 func _replan(worker: Dictionary) -> void:
+	life.worker_lod.flush(worker)
 	var phase := str(worker.resume_phase if worker.phase == "paused" else worker.phase)
 	if not _connected(worker):
 		_pause(worker,phase)
@@ -123,6 +124,7 @@ func _replan(worker: Dictionary) -> void:
 
 func tick(delta: float) -> void:
 	for worker: Dictionary in workers:
+		if not life.worker_lod.before(worker,delta,["walking","returning"]):continue
 		var phase := str(worker.phase)
 		if phase == "paused": continue
 		if phase in ["walking","returning"]:
@@ -131,11 +133,12 @@ func tick(delta: float) -> void:
 			_bake(worker, delta)
 		elif phase == "resting":
 			worker.elapsed = minf(REST_DURATION,float(worker.elapsed)+delta)
-			if float(worker.elapsed) >= REST_DURATION:
+			if float(worker.elapsed) >= REST_DURATION-.000000001:
 				worker.elapsed = 0.0
 				worker.batches = 0
 				worker.phase = "walking"
 				_replan(worker)
+		life.worker_lod.after(worker,delta)
 
 func _bake(worker: Dictionary, delta: float) -> void:
 	var shop := str(worker.bakery_id)
@@ -202,7 +205,7 @@ func status(id: String) -> Dictionary:
 		if str(worker.bakery_id) != id: continue
 		result.worker_phase = str(worker.phase)
 		result.worker_home_id = str(worker.home_id)
-		result.elapsed = float(worker.elapsed)
+		result.elapsed = life.worker_lod.elapsed(worker)
 		result.duration = REST_DURATION if str(worker.resume_phase if worker.phase == "paused" else worker.phase) == "resting" else BAKE_DURATION
 		result.batches = int(worker.batches)
 		for house: Dictionary in life.state.houses:
@@ -213,6 +216,7 @@ func status(id: String) -> Dictionary:
 func checkpoint() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for worker: Dictionary in workers:
+		life.worker_lod.flush(worker)
 		var node: Node3D = worker.node
 		result.append({"home_id":str(worker.home_id),"bakery_id":str(worker.bakery_id),"position":[node.position.x,node.position.z],"yaw":node.rotation.y,"phase":str(worker.phase),"resume_phase":str(worker.resume_phase if worker.phase == "paused" else worker.phase),"elapsed":float(worker.elapsed),"batches":int(worker.batches)})
 	return result
