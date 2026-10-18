@@ -143,6 +143,7 @@ var _pluck_stream: AudioStreamWAV
 var _pluck_active: Dictionary = {}
 var _pluck_voices: Dictionary = {}
 var _pluck_serial := 0
+var _pluck_started_clock := 0.0
 var _pluck_last_usec := -1000000
 var _manual_city: RefCounted
 var _manual_revision := -1
@@ -226,6 +227,7 @@ func play_house(house_id: String) -> bool:
 	_pluck_player=selected
 	_pluck_stream=_edit_streams[plan.stream_key]
 	_pluck_active=plan
+	_pluck_started_clock=_playback_clock()
 	_pluck_serial+=1
 	_pluck_last_usec=now
 	play_effect_at(selected,_pluck_stream,plan.position)
@@ -241,21 +243,30 @@ func _prune_plucks() -> void:
 			continue
 		var plan: Dictionary = PitchPluck.plan(_pluck_city,str(voice.plan.house_id),_playback_clock())
 		var visible: bool=not acoustic.visible_test.is_valid() or not _house_music.has(str(voice.plan.house_id)) or bool(acoustic.visible_test.call(str(voice.plan.house_id)))
-		if muted or concert_active or not visible or plan.is_empty() or acoustic.point_weight(voice.plan.position)<=0.0 or plan.style!=voice.plan.style or plan.max_level!=voice.plan.max_level or plan.position!=voice.plan.position:
+		if muted or concert_active or not visible or not _same_pluck_source(plan,voice.plan) or acoustic.point_weight(voice.plan.position)<=0.0:
 			player.stop()
 			_pluck_voices.erase(id)
 
+func _same_pluck_source(current: Dictionary,started: Dictionary)->bool:
+	return not current.is_empty() and current.style==started.style and current.era_theme==started.era_theme and current.timbre==started.timbre and current.max_level==started.max_level and current.position==started.position
+
 func house_pluck_report() -> Dictionary:
 	var owned := _pluck_player!=null and _pluck_player.stream==_pluck_stream
-	var audible := owned and _pluck_player.playing and not muted and not concert_active and not _loading and not _pluck_active.is_empty()
-	if audible:
-		var current := PitchPluck.plan(_pluck_city,str(_pluck_active.house_id),_playback_clock())
-		audible=not current.is_empty() and current.style==_pluck_active.style and current.max_level==_pluck_active.max_level and current.position==_pluck_active.position
-	if not audible and owned and _pluck_player.playing: _pluck_player.stop()
-	var result := {"audible":audible,"house_id":"","position":Vector2.ZERO,"midi":0,"timbre":"","style":"","max_level":0,"elapsed":0.0,"duration":PitchPluck.DURATION,"serial":_pluck_serial}
-	if audible:
+	var clock:=_playback_clock()
+	var elapsed:=maxf(0.0,clock-_pluck_started_clock)
+	var active := owned and not muted and not concert_active and not _loading and not _pluck_active.is_empty() and elapsed<PitchPluck.GLOW_DURATION
+	if active:
+		var id: String=_pluck_active.house_id
+		var current := PitchPluck.plan(_pluck_city,id,clock)
+		active=_same_pluck_source(current,_pluck_active) and acoustic.point_weight(_pluck_active.position)>0.0 and (not _house_music.has(id) or not acoustic.visible_test.is_valid() or bool(acoustic.visible_test.call(id)))
+	if not active:
+		if owned and _pluck_player.playing: _pluck_player.stop()
+		_pluck_active.clear()
+	var audible := active and _pluck_player.playing
+	var result := {"audible":audible,"glowing":active,"house_id":"","position":Vector2.ZERO,"midi":0,"timbre":"","style":"","max_level":0,"elapsed":0.0,"duration":PitchPluck.DURATION,"glow_duration":PitchPluck.GLOW_DURATION,"serial":_pluck_serial}
+	if active:
 		result.merge(_pluck_active,true)
-		result.elapsed=_pluck_player.get_playback_position()
+		result.elapsed=elapsed
 	return result
 
 

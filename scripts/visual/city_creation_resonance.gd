@@ -203,8 +203,8 @@ func forget(id: String) -> void:
 
 func _apply_pluck(id: String,row: Dictionary,report: Dictionary) -> void:
 	var elapsed := float(report.get("elapsed",0.0))
-	var duration := float(report.get("duration",0.0))
-	var active := bool(report.get("audible",false)) and str(report.get("house_id",""))==id and is_finite(elapsed) and is_finite(duration) and duration>0.0 and elapsed>=0.0 and elapsed<duration
+	var duration := float(report.get("glow_duration",report.get("duration",0.0)))
+	var active := bool(report.get("glowing",report.get("audible",false))) and str(report.get("house_id",""))==id and is_finite(elapsed) and is_finite(duration) and duration>0.0 and elapsed>=0.0 and elapsed<duration
 	if not active and row.has("pluck_strength") and float(row.pluck_strength)==0.0: return
 	var progress := clampf(elapsed/maxf(duration,0.001),0.0,1.0) if active else 0.0
 	var strength := sin(PI*progress)*0.92 if active else 0.0

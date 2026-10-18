@@ -2,6 +2,7 @@ extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Pitch=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
+const EraFixture=preload("res://tools/fixtures/city_creation_modern_fixture.gd")
 const OUT="res://验证记录/房屋拨弦_2026-10-16"
 var demo
 var checks:Array=[]
@@ -52,6 +53,70 @@ func _export_audition()->void:
 	var output:=AudioStreamWAV.new();output.format=AudioStreamWAV.FORMAT_16_BITS;output.mix_rate=Pitch.RATE;output.data=bytes
 	_check(output.save_to_wav(OUT+"/五主题三层拨弦试听.wav")==OK,"production-bank fifteen-note audition WAV exports")
 	facts.audition={"keys":keys,"seconds":float(frames)/Pitch.RATE,"gain_db":-10,"scope":"Arranged production bank PCM, not a live UI recording."}
+func _era_checks()->void:
+	var city: RefCounted=EraFixture.earned_city()
+	var restored: Dictionary=demo.state.restore(JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)))
+	demo._after_edit(restored,"history");await _wait()
+	_check(restored.ok and demo.state.era_unlocks.size()==4 and demo.state.houses.size()>=50,"earned four-era fifty-house fixture loads through the production renderer")
+	var expected: Dictionary={"pastoral":"pluck","renaissance":"harpsichord","clockwork":"piano","modern_eco":"felt_piano"}
+	var era_reports: Array=[];var waveforms: Array[PackedByteArray]=[]
+	var h: Dictionary=demo.state.houses[demo.state._house_index("h1")]
+	var focus_at:=Vector3(float(h.origin[0]),float(h.get("base_y",0.0))+.8,float(h.origin[1]))
+	_camera(focus_at,12);await _key(KEY_5)
+	for era: String in expected:
+		demo._after_edit(demo.state.set_house_era("h1",era),"terrace");await _wait();await create_timer(.65).timeout
+		var before: Dictionary=demo.state.snapshot()
+		await _click(_house_point("h1"));await create_timer(.10).timeout
+		var report: Dictionary=demo.music.house_pluck_report()
+		_check(report.audible and report.glowing and report.get("era_theme","")==era and report.timbre==expected[era] and demo.state.snapshot()==before,"real purpose-tool selection plays the authored era without changing city: "+era)
+		if report.audible:
+			var stream: AudioStreamWAV=demo.music._edit_streams[report.stream_key]
+			if not waveforms.has(stream.data): waveforms.append(stream.data)
+			_check(is_equal_approx(stream.get_length(),.42),"actual selected PCM lasts .42 seconds: "+era)
+		era_reports.append(report)
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(OUT+"/时代拨弦_"+era+".png")
+	_check(waveforms.size()==4,"actual same-house selections use four distinct era PCM waveforms")
+	var deadline:=Time.get_ticks_msec()+1500
+	var tail: Dictionary=demo.music.house_pluck_report()
+	while tail.glowing and float(tail.elapsed)<.48 and Time.get_ticks_msec()<deadline:
+		await process_frame;tail=demo.music.house_pluck_report()
+	await process_frame
+	_check(not tail.audible and tail.glowing and float(tail.elapsed)>=.48 and float(demo.town.resonance.rigs.h1.get("pluck_strength",0))>0,"window ripple continues on the shared transport after the .42-second note has ended")
+	await create_timer(.2).timeout
+	_check(not demo.music.house_pluck_report().glowing and float(demo.town.resonance.rigs.h1.get("pluck_strength",0))==0,"the same window ripple finishes after .6 seconds")
+	await _click(_house_point("h1"));await create_timer(.08).timeout
+	var old_player: AudioStreamPlayer=demo.music._pluck_player
+	var changed: Dictionary=demo.state.set_house_era("h1","renaissance")
+	demo.music._prune_plucks()
+	var invalid: Dictionary=demo.music.house_pluck_report()
+	_check(changed.ok and not old_player.playing and not invalid.audible and not invalid.glowing,"era-only repaint immediately stops the old PCM and attribution before geometry publication")
+	var undone: Dictionary=demo.state.undo()
+	_check(undone.ok and not demo.music.house_pluck_report().glowing,"undo cannot revive a cancelled old note or window ripple")
+	demo._after_edit(undone,"history");await _wait();await create_timer(.65).timeout
+	await _click(_house_point("h1"));await create_timer(.08).timeout
+	_camera(Vector3(38,.7,38),12);await process_frame
+	_check(not demo.music.house_pluck_report().glowing,"leaving the view cancels the focused house's sound and ripple")
+	_camera(focus_at,12);await process_frame
+	facts.eras=era_reports;facts.tail=tail;facts.era_fixture_houses=demo.state.houses.size()
+func _export_era_audition()->void:
+	var timbres: Array[String]=["pluck","harpsichord","piano","felt_piano"]
+	var gap:=int(.60*Pitch.RATE);var samples:=PackedFloat32Array()
+	samples.resize(gap*19+int(Pitch.DURATION*Pitch.RATE))
+	var keys: Array[String]=[];var peak:=0.0
+	for era in range(4):
+		for floor_index in range(5):
+			var key:=Pitch.stream_key(timbres[era],Pitch.pitch(0,floor_index,0))
+			keys.append(key)
+			var data: PackedByteArray=demo.music._edit_streams[key].data
+			for frame in range(data.size()/2): samples[(era*5+floor_index)*gap+frame]=float(data.decode_s16(frame*2))/32768.0*db_to_linear(demo.music.SHORT_GAIN_DB)
+	var bytes:=PackedByteArray();bytes.resize(samples.size()*2)
+	for frame in range(samples.size()):
+		peak=maxf(peak,absf(samples[frame]))
+		bytes.encode_s16(frame*2,roundi(samples[frame]*32767.0))
+	var wav:=AudioStreamWAV.new();wav.format=AudioStreamWAV.FORMAT_16_BITS;wav.mix_rate=Pitch.RATE;wav.data=bytes
+	_check(peak>0.0 and peak<1.0 and wav.save_to_wav(OUT+"/四时代五层拨弦试听.wav")==OK,"four-era five-floor audition exports actual bank PCM at production short-voice gain")
+	facts.era_audition={"keys":keys,"seconds":float(samples.size())/Pitch.RATE,"peak":peak,"gain_db":demo.music.SHORT_GAIN_DB}
 func _run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var personal:PackedByteArray=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
@@ -72,16 +137,18 @@ func _run()->void:
 	await create_timer(.65).timeout
 	_camera(Vector3(12,.7,-5));await _key(KEY_1)
 	var old_count:int=demo.state.houses.size();var serial:int=demo.music.house_pluck_report().serial
-	await _click(demo.camera.unproject_position(Vector3(12,demo.state.ground_height(Vector2(12,-5)),-5)));await _wait()
+	await _click(demo.camera.unproject_position(Vector3(12,demo.state.ground_height(Vector2(12,-5)),-5)))
 	var built:Dictionary=demo.music.house_pluck_report();var id:String=str(built.get("house_id",""))
 	_check(demo.state.houses.size()==old_count+1 and built.audible and built.serial>serial and built.max_level==0,"actual house-stroke mouse release builds a new house and plays its ground-floor pitch")
 	facts.new_house=built
+	await _wait()
 	await create_timer(.7).timeout
 	if not id.is_empty():
-		await _click(_house_point(id));await _wait()
+		await _click(_house_point(id))
 		var raised:Dictionary=demo.music.house_pluck_report()
 		_check(raised.audible and raised.house_id==id and raised.max_level==1 and raised.serial>built.serial and raised.midi==Pitch.pitch(int(raised.bar),int(raised.band),posmod(id.hash(),2)),"actual roof click adds a floor and plays the real height-band quantized pitch")
 		facts.raised=raised
+		await _wait()
 	var timbres:Dictionary={};var digests:Array[String]=[];var theme_reports:Array=[]
 	for style:String in State.DISTRICT_STYLES:
 		await create_timer(.7).timeout
@@ -96,6 +163,7 @@ func _run()->void:
 	for digest:String in digests: unique[digest]=true
 	_check(timbres.size()==5 and digests.size()==5 and unique.size()==5,"five real district edits and Window house selections play five distinct original PCM timbres")
 	facts.themes=theme_reports
+	await _era_checks()
 	var mute_serial:int=demo.music.house_pluck_report().serial;demo.music.set_muted(true);await process_frame
 	await _click(_house_point("h1"));await process_frame
 	var muted:Dictionary=demo.music.house_pluck_report()
@@ -108,6 +176,7 @@ func _run()->void:
 	demo.ui_layer.visible=false;demo.town.clear_preview();await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/房屋层高拨弦.png")==OK,"actual house pluck scene image saved")
 	_export_audition()
+	_export_era_audition()
 	var wall:Array[float]=[];var draws:Array[float]=[];var previous:=Time.get_ticks_usec()
 	for ignored in range(120):
 		await process_frame
