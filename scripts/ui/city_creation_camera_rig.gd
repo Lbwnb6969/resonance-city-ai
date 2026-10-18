@@ -31,7 +31,7 @@ func toggle(demo: Node3D) -> void:
 
 func update(demo: Node3D, delta: float) -> void:
 	if not strolling: return
-	if demo.gallery.panel.visible or demo.journal.panel.visible or demo.ledger.visible(): return
+	if demo.gallery.panel.visible or demo.journal.panel.visible or demo.ledger.visible() or demo.guide.visible(): return
 	if demo.get_viewport().gui_get_focus_owner() is LineEdit: return
 	var axes := Vector2(
 		float(Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT))-float(Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT)),

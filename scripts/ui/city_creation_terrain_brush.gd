@@ -39,22 +39,26 @@ func setup(owner: Node3D, parent: Control) -> void:
 	mode_picker = OptionButton.new()
 	mode_picker.name = "TerrainMode"
 	mode_picker.focus_mode = Control.FOCUS_NONE
-	for label: String in ["抬高 · 草丘", "压低 · 洼地", "还原 · 原地貌", "露岩 · 草丘", "平顶 · 台地", "柔化 · 缓坡"]: mode_picker.add_item(label)
+	mode_picker.tooltip_text = "选择地形塑形方式：草丘、洼地、还原、露岩、平顶台地或柔化缓坡"
+	for label: String in ["抬高 · 草丘", "压低 · 洼地", "还原 · 原地貌", "露岩 · 草丘", "平顶 · 台地", "柔化 · 缓坡"]:
+		mode_picker.add_item(label)
 	mode_picker.item_selected.connect(func(index: int) -> void:
 		demo._cancel_draft()
 		mode = MODES[index]
-		natural_picker.disabled = mode in ["reset","smooth"]
-		if mode=="rock":
-			radius=2.0
+		natural_picker.disabled = mode in ["reset", "smooth"]
+		if mode == "rock":
+			radius = 2.0
 			radius_picker.select(0)
-		elif mode=="plateau":
-			radius=3.5
+		elif mode == "plateau":
+			radius = 3.5
 			radius_picker.select(1))
 	column.add_child(mode_picker)
 	radius_picker = OptionButton.new()
 	radius_picker.name = "TerrainRadius"
 	radius_picker.focus_mode = Control.FOCUS_NONE
-	for label: String in ["小笔刷 · 2 米", "中笔刷 · 3.5 米", "大笔刷 · 5 米"]: radius_picker.add_item(label)
+	radius_picker.tooltip_text = "选择地形笔刷影响半径（2米 / 3.5米 / 5米）"
+	for label: String in ["小笔刷 · 2 米", "中笔刷 · 3.5 米", "大笔刷 · 5 米"]:
+		radius_picker.add_item(label)
 	radius_picker.select(1)
 	radius_picker.item_selected.connect(func(index: int) -> void:
 		demo._cancel_draft()
@@ -63,6 +67,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 	natural_picker = CheckBox.new()
 	natural_picker.name = "NaturalContour"
 	natural_picker.text = "自然轮廓 · 草丘 / 石坡 / 台地"
+	natural_picker.tooltip_text = "启用双层有机噪声收放坡肩，关闭则画出规整圆丘与几何台地"
 	natural_picker.button_pressed = true
 	natural_picker.focus_mode = Control.FOCUS_NONE
 	natural_picker.toggled.connect(func(_enabled: bool) -> void: demo._cancel_draft())
@@ -71,7 +76,9 @@ func setup(owner: Node3D, parent: Control) -> void:
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.custom_minimum_size.x = 250
 	column.add_child(description)
-	column.add_child(demo._label("拖动时描出整笔范围，松手后塑形。\n外圈标最大范围，内圈标保证平顶。\n自然轮廓只改变范围内的坡肩。",13))
+	var note: Label = demo._label("拖动时描出整笔范围，松手后塑形。\n外圈标最大范围，内圈标保证平顶。\n自然轮廓只改变范围内的坡肩。", 13)
+	note.add_theme_color_override("font_color", UI.MUTED)
+	column.add_child(note)
 	panel.hide()
 
 
@@ -91,11 +98,11 @@ func _can_target() -> bool:
 func begin(shift_pressed: bool) -> void:
 	if not _can_target(): return
 	drawing = true
-	draft_mode = "lower" if shift_pressed else ("raise" if mode=="rock" else mode)
-	draft_strength = 1.0 if mode in ["rock","plateau"] and not shift_pressed else STRENGTH
-	draft_passes = 2 if mode in ["rock","plateau"] and not shift_pressed else 1
+	draft_mode = "lower" if shift_pressed else ("raise" if mode == "rock" else mode)
+	draft_strength = 1.0 if mode in ["rock", "plateau"] and not shift_pressed else STRENGTH
+	draft_passes = 2 if mode in ["rock", "plateau"] and not shift_pressed else 1
 	draft_radius = radius
-	draft_natural = natural_picker.button_pressed and draft_mode in ["raise","lower","plateau"]
+	draft_natural = natural_picker.button_pressed and draft_mode in ["raise", "lower", "plateau"]
 	points.clear()
 	append_point()
 
@@ -118,15 +125,15 @@ func hover() -> void:
 		return
 	var at: Vector2 = demo._ground_at(demo.pointer)
 	var single: Array[Vector2] = [at]
-	var hover_mode := "lower" if demo.removal_shift or Input.is_key_pressed(KEY_SHIFT) else ("raise" if mode=="rock" else mode)
-	_preview(single, radius, hover_mode, natural_picker.button_pressed and hover_mode in ["raise","lower","plateau"])
+	var hover_mode := "lower" if demo.removal_shift or Input.is_key_pressed(KEY_SHIFT) else ("raise" if mode == "rock" else mode)
+	_preview(single, radius, hover_mode, natural_picker.button_pressed and hover_mode in ["raise", "lower", "plateau"])
 
 
-func _preview(stroke: Array[Vector2], brush_radius: float, brush_mode: String,natural: bool=false) -> void:
-	var key := str(["terrain", stroke, brush_radius, brush_mode,natural])
+func _preview(stroke: Array[Vector2], brush_radius: float, brush_mode: String, natural: bool = false) -> void:
+	var key := str(["terrain", stroke, brush_radius, brush_mode, natural])
 	if demo.preview_key == key: return
 	demo.preview_key = key
-	demo.town.show_terrain_brush(stroke, brush_radius, brush_mode,natural)
+	demo.town.show_terrain_brush(stroke, brush_radius, brush_mode, natural)
 
 
 func finish() -> void:
@@ -144,7 +151,7 @@ func finish() -> void:
 	cancel()
 	demo.preview_key = ""
 	demo.town.clear_preview()
-	if not stroke.is_empty(): demo._after_edit(demo.state.add_terrain_stroke(stroke, stroke_mode, stroke_radius, stroke_strength,stroke_passes,stroke_natural), "terrain")
+	if not stroke.is_empty(): demo._after_edit(demo.state.add_terrain_stroke(stroke, stroke_mode, stroke_radius, stroke_strength, stroke_passes, stroke_natural), "terrain")
 
 
 func cancel() -> void:

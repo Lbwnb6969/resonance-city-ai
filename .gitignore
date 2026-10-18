@@ -46,3 +46,6 @@
 
 # Standalone test scripts load by res:// path; editor-generated UIDs are not inputs.
 /tests/*.gd.uid
+
+# Local UI reference checkout; adapted source lives in scripts/ui.
+/UI/

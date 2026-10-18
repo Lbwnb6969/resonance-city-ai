@@ -76,7 +76,7 @@ func _run()->void:
 	check(demo.guided_hint.is_empty() and not demo.hint.text.contains("两位"),"manual tool selection clears stale goal instructions")
 	# Presentation fixture only: progression itself is covered by real Life checks.
 	demo.state.growth_memories.assign(["dawn"]);demo.journal.refresh(false)
-	check(demo.journal.button.text.contains("街坊成歌"),"header advances to the next unfinished chapter")
+	check(demo.journal.button.tooltip_text.contains("街坊成歌"),"header advances to the next unfinished chapter")
 	root.size=Vector2i(1024,768)
 	for i in range(8): await process_frame
 	layout()
@@ -93,10 +93,10 @@ func _run()->void:
 	root.size=Vector2i(1440,900)
 	for i in range(5): await process_frame
 	demo.journal.open_panel();await process_frame;await capture("after_07_四章收录")
-	check(demo.journal.next_button.text=="星夜漫步" and demo.journal.button.text.contains("四章已收录"),"completed book offers playable epilogue")
+	check(demo.journal.next_button.text=="星夜漫步" and demo.journal.button.tooltip_text.contains("四章已收录"),"completed book offers playable epilogue")
 	await click(demo.journal.next_button)
 	check(demo.camera_rig.strolling and demo.light_phase==2,"epilogue button actually enters night stroll")
-	check(audio_ids()==audio and demo.music.get_child_count()==13,"guidance keeps the fixed audio pool")
+	check(audio_ids()==audio and demo.music._players.size()==12 and demo.music._effects.size()==4,"guidance keeps the fixed audio pool")
 	# Even a cleared personal city receives an actionable way back into life.
 	var ids:Array[String]=[]
 	for row:Dictionary in demo.state.houses: ids.append(str(row.id))

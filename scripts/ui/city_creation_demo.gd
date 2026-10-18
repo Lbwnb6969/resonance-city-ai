@@ -12,6 +12,8 @@ const Stroke = preload("res://scripts/world/city_creation_stroke.gd")
 const HouseStroke = preload("res://scripts/world/city_creation_house_stroke.gd")
 const Frontage = preload("res://scripts/world/city_creation_frontage.gd")
 const UI = preload("res://scripts/ui/valley_ui_theme.gd")
+const Copy = preload("res://scripts/ui/city_creation_copy.gd")
+const Guide = preload("res://scripts/ui/city_creation_guide_panel.gd")
 const Gallery = preload("res://scripts/ui/city_creation_gallery.gd")
 const TerrainBrush = preload("res://scripts/ui/city_creation_terrain_brush.gd")
 const Journal = preload("res://scripts/ui/city_creation_journal.gd")
@@ -22,9 +24,9 @@ const CameraRig = preload("res://scripts/ui/city_creation_camera_rig.gd")
 const SAVE_PATH := "user://city_creation_v1.json"
 const UNIT := 1.8
 const FLOOR := 1.7
-const TOOL_NAMES := ["房屋", "露台", "道路", "移除", "用途", "植被", "水岸", "街坊", "地形"]
+const TOOL_NAMES = Copy.TOOL_NAMES
 const DISTRICT_STYLES := ["warm", "deep", "weave", "market", "sylvan"]
-const DISTRICT_STYLE_NAMES := {"warm":"暖庭", "deep":"深流", "weave":"织机", "market":"市集长街", "sylvan":"林间静谧"}
+const DISTRICT_STYLE_NAMES = Copy.DISTRICT_STYLE_NAMES
 const REMOVAL_HINT := "指向房屋，查看本次移除范围。\nShift 点击可快速整栋移除。"
 var state := State.new()
 var town: Node3D
@@ -35,6 +37,7 @@ var life: Node3D
 var camera: Camera3D
 var sun: DirectionalLight3D
 var ui_layer: CanvasLayer
+var subtitle_label: Label
 var info: Label
 var hint: Label
 var toast: Label
@@ -44,10 +47,12 @@ var _painted_tool:=-1
 var undo_button: Button
 var redo_button: Button
 var music_button: Button
+var light_button: Button
 var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
 var journal: RefCounted
+var guide: RefCounted
 var collection_directory := "user://city_creation_works"
 var life_info: Label
 var place_panel: PanelContainer
@@ -267,10 +272,13 @@ func _ready() -> void:
 	signatures.setup(self,ui_layer.get_child(0))
 	ledger=Ledger.new()
 	ledger.setup(self,ui_layer.get_child(0))
+	guide=Guide.new()
+	guide.setup(self,ui_layer.get_child(0))
+	preload("res://scripts/ui/city_creation_paper_hud.gd").setup(self)
 	state.era_unlocked.connect(_on_era_unlocked,CONNECT_DEFERRED)
 	_refresh_ui()
-	_message("从一面墙开始。点墙扩房，点屋顶加层。")
-	if save_blocked: _message("作品读取失败，原文件已保留。当前河湾不会覆盖它。")
+	_message(Copy.OPENING_TOAST)
+	if save_blocked: _message(Copy.SAVE_BLOCKED_TOAST)
 	if "--courtyard-example" in OS.get_cmdline_user_args():
 		focus=Vector3(10.5,0.7,-8.5)
 		zoom=20.0
@@ -385,9 +393,13 @@ func _setup_ui() -> void:
 	root.theme.default_font_size = 16
 	ui_layer.add_child(root)
 	var header := _panel(root, Vector2(24, 24), Vector2(284, 0))
-	var title := _label("共鸣之城", 28)
+	header.name = "Column"
+	header.get_parent().name = "PaperHeader"
+	var title := _label(Copy.GAME_TITLE, 28)
 	header.add_child(title)
-	header.add_child(_label("河湾晨曲 · 留下你的街坊", 14))
+	subtitle_label = _label(Copy.GAME_SUBTITLE_DAY, 14)
+	subtitle_label.add_theme_color_override("font_color", UI.MUTED)
+	header.add_child(subtitle_label)
 	header.add_child(HSeparator.new())
 	quest = _label("", 15)
 	header.add_child(quest)
@@ -423,6 +435,7 @@ func _setup_ui() -> void:
 		var button := _button("%d  %s" % [index + 1, TOOL_NAMES[index]], func() -> void: select_tool(index))
 		button.name = "Tool%d" % index
 		button.custom_minimum_size = Vector2(80, 48)
+		button.tooltip_text = Copy.TOOL_TOOLTIPS[index]
 		row.add_child(button)
 		tool_buttons.append(button)
 	undo_button = _button("↶", func() -> void: _history(false))
@@ -442,14 +455,23 @@ func _setup_ui() -> void:
 	actions.offset_right = -24
 	var save := _button("保存", save_city)
 	save.name = "Save"
+	save.tooltip_text = "保存当前继续作品 · Ctrl+S"
 	actions.add_child(save)
 	music_button = _button("♫ 音乐", _toggle_music)
 	music_button.tooltip_text="平移或旋转镜头，听房屋从对应方向演奏。\n点击静音；街坊生活照常继续。"
 	actions.add_child(music_button)
-	actions.add_child(_button("☀ 光线", _toggle_light))
-	actions.add_child(_button("全景", home_camera))
-	actions.add_child(_button("漫步 · V", func(): camera_rig.toggle(self)))
-	actions.add_child(_button("明信片 · F12", func(): camera_rig.capture(self)))
+	light_button = _button("☀ 光线", _toggle_light)
+	light_button.tooltip_text = Copy.LIGHT_PHASE_TOOLTIPS[0]
+	actions.add_child(light_button)
+	var home_btn := _button("全景", home_camera)
+	home_btn.tooltip_text = "回到 80×80 米河湾全景俯瞰 · H"
+	actions.add_child(home_btn)
+	var stroll_btn := _button("漫步 · V", func(): camera_rig.toggle(self))
+	stroll_btn.tooltip_text = "进入第一人称街头透视视角，WASD/方向键沿街散步 · V"
+	actions.add_child(stroll_btn)
+	var postcard_btn := _button("明信片 · F12", func(): camera_rig.capture(self))
+	postcard_btn.tooltip_text = "拍下带纸框、作品名与日期的河湾明信片（保存至 user://postcards/）· F12"
+	actions.add_child(postcard_btn)
 	place_panel = PanelContainer.new()
 	place_panel.name = "Place"
 	place_panel.add_theme_stylebox_override("panel", UI.panel(16))
@@ -475,6 +497,7 @@ func _setup_ui() -> void:
 	place_column.add_child(_label("给这个地方一种生活", 17))
 	place_name = LineEdit.new()
 	place_name.placeholder_text = "街坊名字"
+	place_name.tooltip_text = "输入建筑名字后按 Enter 保存"
 	place_name.text_submitted.connect(func(value:String)->void:
 		_after_edit(state.set_house_name(selected_house, value), "room")
 		place_name.release_focus())
@@ -493,12 +516,13 @@ func _setup_ui() -> void:
 	house_style_picker.name="HouseStyle"
 	house_style_picker.focus_mode=Control.FOCUS_NONE
 	house_style_picker.tooltip_text="建筑样式与用途、配色分开选择；Ctrl+Z可恢复。"
-	for label: String in ["河湾 · 灰泥屋","木构 · 街屋","石砌 · 街屋","圆塔 · 望楼"]: house_style_picker.add_item(label)
+	for label: String in Copy.HOUSE_STYLE_LABELS: house_style_picker.add_item(label)
 	house_style_picker.item_selected.connect(func(index: int)->void:
 		_after_edit(state.set_house_style(selected_house,State.HOUSE_STYLES[index]),"room"))
 	place_column.add_child(house_style_picker)
 	house_era_picker=OptionButton.new(); house_era_picker.name="HouseEra"
 	house_era_picker.fit_to_longest_item=false;house_era_picker.clip_text=true
+	house_era_picker.tooltip_text="可跟随所属街坊的时代风貌，也可为单栋建筑单独指定已开启的时代"
 	house_era_picker.add_item("时代风貌 · 跟随街坊")
 	for era_name: String in State.Eras.NAMES: house_era_picker.add_item(era_name)
 	house_era_picker.item_selected.connect(func(index: int)->void:
@@ -508,8 +532,9 @@ func _setup_ui() -> void:
 	roles.columns = 2
 	place_column.add_child(roles)
 	for role: String in State.HOUSE_ROLES:
-		var button := _button({"residential":"居所", "bakery":"面包坊", "venue":"演奏庭", "workshop":"制琴坊", "garden_cafe":"花圃茶座", "atelier":"人文书院", "clockmaker":"钟表工坊", "symphony_hall":"交响音乐厅"}[role], func()->void: _after_edit(state.set_house_role(selected_house,role),"room"))
+		var button := _button(Copy.ROLE_BUTTON_LABELS[role], func()->void: _after_edit(state.set_house_role(selected_house,role),"room"))
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.tooltip_text = Copy.ROLE_TOOLTIPS[role]
 		roles.add_child(button)
 		role_buttons[role] = button
 	concert_button = _button("♫ 邀请街坊演出",_invite_concert)
@@ -594,6 +619,7 @@ func _setup_ui() -> void:
 	garden.add_child(_label("种一片自己的花园",18))
 	var species := OptionButton.new()
 	species.name = "Species"
+	species.tooltip_text = "选择树木与灌木种类；在制琴坊8米内种满3棵橄榄或柏树可获良木提速加持"
 	for label: String in ["橄榄树群", "地中海柏", "低矮灌木"]: species.add_item(label)
 	species.item_selected.connect(func(index:int)->void:
 		_cancel_draft()
@@ -601,6 +627,7 @@ func _setup_ui() -> void:
 	garden.add_child(species)
 	var radius := OptionButton.new()
 	radius.name = "BrushSize"
+	radius.tooltip_text = "选择植被笔刷散布半径"
 	for label: String in ["小笔刷 · 近庭", "中笔刷 · 树群", "大笔刷 · 林带"]: radius.add_item(label)
 	radius.select(1)
 	radius.item_selected.connect(func(index:int)->void:
@@ -623,6 +650,7 @@ func _setup_ui() -> void:
 	road_column.add_child(_label("顺着河湾画一条路",18))
 	var road_mode := OptionButton.new()
 	road_mode.name = "RoadMode"
+	road_mode.tooltip_text = "切换自由曲线或折线直拉模式 · R"
 	for label: String in ["自由曲线", "直拉 / 连续折线"]: road_mode.add_item(label)
 	road_mode.item_selected.connect(func(index:int)->void:
 		_cancel_draft()
@@ -630,13 +658,25 @@ func _setup_ui() -> void:
 	road_column.add_child(road_mode)
 	var styles := OptionButton.new()
 	styles.name="RoadStyle"
+	styles.tooltip_text = "直接铺设或沿旧路重描原位升级街道样式与宽度"
 	for label: String in ["乡间小径 · 重描铺成灯街","石板灯街 · 1.75m","林荫大道 · 2.10m","叮当轨街 · 2.10m"]: styles.add_item(label)
+	var promenade_toggle := CheckButton.new()
+	promenade_toggle.name = "RoadPromenade"
+	promenade_toggle.text = "石板宽街 · 暖灯花箱"
+	promenade_toggle.tooltip_text = "快速切换 1.75m 石板灯街，沿已有小路重描即可原位升级"
 	styles.item_selected.connect(func(index: int)->void:
 		_cancel_draft()
-		road_style=["path","promenade","avenue","tram"][index])
+		road_style=["path","promenade","avenue","tram"][index]
+		promenade_toggle.set_pressed_no_signal(road_style=="promenade"))
 	road_column.add_child(styles)
+	promenade_toggle.toggled.connect(func(pressed: bool)->void:
+		_cancel_draft()
+		road_style = "promenade" if pressed else "path"
+		styles.select(1 if pressed else 0))
+	road_column.add_child(promenade_toggle)
 	var plaza:=CheckButton.new()
 	plaza.name="RoadRoundabout";plaza.text="◎ 路口环岛广场"
+	plaza.tooltip_text="开启后点击道路交叉口，生成喷泉环岛（Shift+点击还原）"
 	plaza.toggled.connect(func(pressed: bool)->void:
 		_cancel_draft();road_roundabout=pressed)
 	road_column.add_child(plaza)
@@ -659,6 +699,7 @@ func _setup_ui() -> void:
 	water_column.add_child(_label("为河湾留一片水",18))
 	var water_mode := OptionButton.new()
 	water_mode.name = "WaterMode"
+	water_mode.tooltip_text = "在空地挖出睡莲池塘，或从已有河岸引出支流水渠"
 	for label: String in ["挖一片池塘", "从水边引出支流"]: water_mode.add_item(label)
 	water_mode.item_selected.connect(func(index:int)->void:
 		_cancel_draft()
@@ -666,6 +707,7 @@ func _setup_ui() -> void:
 	water_column.add_child(water_mode)
 	var water_size := OptionButton.new()
 	water_size.name = "WaterWidth"
+	water_size.tooltip_text = "选择水域宽度；小于 2.6 米的窄渠跨小路时会自动铺设青石汀步"
 	for label: String in ["窄岸 · 1.8米", "舒展 · 3.2米", "开阔 · 5米"]: water_size.add_item(label)
 	water_size.select(1)
 	water_size.item_selected.connect(func(index:int)->void:
@@ -691,6 +733,7 @@ func _setup_ui() -> void:
 	removal.add_child(_label("为河湾留出新的空间",18))
 	removal_mode = OptionButton.new()
 	removal_mode.name = "RemovalMode"
+	removal_mode.tooltip_text = "选择按单个房间模块移除，或整栋房屋一次移除"
 	removal_mode.add_item("移除单元")
 	removal_mode.add_item("整栋移除")
 	removal_mode.item_selected.connect(func(index:int)->void:
@@ -720,11 +763,12 @@ func _setup_ui() -> void:
 	hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	hint.custom_minimum_size.x=252
 	help.add_child(hint)
-	help.add_child(_label("滚轮缩放 · 右键转动 · 中键平移\nH 全景 · F 隐藏界面 · Ctrl+S 保存", 12))
+	var shortcut_footer := _label("滚轮缩放 · 右键转动 · 中键平移\nH 全景 · F 隐藏界面 · F1 手札", 12)
+	shortcut_footer.add_theme_color_override("font_color", UI.MUTED)
+	help.add_child(shortcut_footer)
 	toast = _label("", 16)
 	toast.add_theme_color_override("font_color", UI.PAPER)
-	var toast_style := UI.panel(12)
-	toast_style.bg_color = UI.GREEN
+	var toast_style := UI.toast_style(12)
 	toast.add_theme_stylebox_override("normal", toast_style)
 	toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(toast)
@@ -761,6 +805,7 @@ func _setup_district_panel(root: Control) -> void:
 	column.add_child(_label("画一片有自己声音的街坊", 18))
 	var size_picker := OptionButton.new()
 	size_picker.name = "DistrictWidth"
+	size_picker.tooltip_text = "选择划定音乐街坊的笔刷宽度"
 	for text_value: String in ["小庭 · 3.2米", "街坊 · 5.6米", "宽园 · 8.8米"]: size_picker.add_item(text_value)
 	size_picker.select(1)
 	size_picker.item_selected.connect(func(index: int) -> void:
@@ -770,12 +815,14 @@ func _setup_district_panel(root: Control) -> void:
 	district_name = LineEdit.new()
 	district_name.name = "DistrictName"
 	district_name.placeholder_text = "先画一片街坊，再为它命名"
+	district_name.tooltip_text = "输入音乐街坊名称并按 Enter 保存"
 	district_name.text_submitted.connect(func(value: String) -> void:
 		_after_edit(state.set_district_name(selected_district, value), "terrace")
 		district_name.release_focus())
 	column.add_child(district_name)
 	district_style_picker = OptionButton.new()
 	district_style_picker.name = "DistrictStyle"
+	district_style_picker.tooltip_text = "选择街坊的五种器乐主题（暖庭 / 深流 / 织机 / 市集长街 / 林间静谧）"
 	for key: String in DISTRICT_STYLES: district_style_picker.add_item(DISTRICT_STYLE_NAMES[key])
 	district_style_picker.item_selected.connect(func(index: int) -> void:
 		_cancel_draft()
@@ -785,6 +832,7 @@ func _setup_district_panel(root: Control) -> void:
 	column.add_child(district_style_picker)
 	district_era_picker=OptionButton.new(); district_era_picker.name="DistrictEra"
 	district_era_picker.fit_to_longest_item=false;district_era_picker.clip_text=true
+	district_era_picker.tooltip_text = "为当前街坊指定建筑与器乐时代风貌（老街坊默认保留原有风貌）"
 	for era_name: String in State.Eras.NAMES: district_era_picker.add_item(era_name)
 	district_era_picker.item_selected.connect(func(index: int)->void:
 		_after_edit(state.set_district_era(selected_district,State.Eras.IDS[index]),"room"))
@@ -871,7 +919,7 @@ func _refresh_city_music()->void:
 
 func _refresh_ui() -> void:
 	if _edit_pending:
-		hint.text="河湾正在落定新变化。\n可以移动视野或撤销。"
+		hint.text = Copy.EDIT_PENDING_HINT
 		return
 	var rooms := 0
 	var terraces := 0
@@ -885,6 +933,14 @@ func _refresh_ui() -> void:
 	for road: Dictionary in state.roads:
 		if str(road.get("source","seed")) == "player": completed["road"] = true
 	_refresh_city_music()
+	if subtitle_label != null:
+		subtitle_label.text = Copy.LIGHT_PHASE_SUBTITLES[clampi(light_phase, 0, 2)]
+	if light_button != null:
+		light_button.tooltip_text = Copy.LIGHT_PHASE_TOOLTIPS[clampi(light_phase, 0, 2)]
+	if undo_button != null:
+		undo_button.tooltip_text = ("撤销 · %s · Ctrl+Z" % str(state._undo[-1].label)) if not state._undo.is_empty() else "撤销 · Ctrl+Z"
+	if redo_button != null:
+		redo_button.tooltip_text = ("重做 · %s · Ctrl+Shift+Z" % str(state._redo[-1].label)) if not state._redo.is_empty() else "重做 · Ctrl+Shift+Z"
 	info.text = "%d 座房屋  ·  %d 房间  ·  %d 露台" % [state.houses.size(), rooms, terraces]
 	if music.tower_count()>0: info.text += "  ·  %d 钟楼" % music.tower_count()
 	var courts: Array=state.courtyard_plans()
@@ -899,17 +955,9 @@ func _refresh_ui() -> void:
 				tool_buttons[i].add_theme_stylebox_override(visual_state, UI.button(visual_state, i == tool))
 			tool_buttons[i].add_theme_color_override("font_color", UI.PAPER if i == tool else UI.INK)
 		_painted_tool=tool
-	hint.text = ["点墙扩房，点顶加层；拖动建一排。\n空地新房靠近邻屋自动贴齐。\nAlt 自由放置；Esc 取消。", "点墙伸出露台，点顶留出花园。\n按住拖动，松开建成整笔。\n系统补齐栏杆和支撑。", "按住左键，沿空地拉出小路。\n横跨两岸自动搭桥；Esc 取消。", "点单元移除，附属上层一并收回。\n可选整栋移除，或 Shift 点击。\n移除最后单元会收回这栋房屋。", "点击房屋，起名并选择用途。\n居民沿小路采购、聚会，再回家。", "按住左键画树群；Shift+左键擦除。\n树会避开房屋、道路和水岸。\nEsc 取消预览。", "拖出池塘或从已有水边引水。\n红色预影说明与房屋、道路冲突。\nShift 点击移除；Esc 取消。", "自由刷出街坊，给房屋共同的音乐风格。\n点击选区；Shift 点击移除；Esc 取消。\n平移视野，听街坊乐句自然交接。", TerrainBrush.HINT][tool]
-	if tool==0:
-		hint.text="点墙扩房、点顶加层；拖动建一排。\nAlt 自由放置 · Esc 取消。\n叠满三层，独立屋顶长出钟楼。\n围出宽敞内院，自动铺石留泉。"
-	if tool==1:
-		hint.text="点墙伸出露台，点顶留出花园。\n上层连出两格开阔露台，自动长出玻璃花房。\n拖动连建 · Esc 取消。"
-	if tool==2:
-		hint.text="拖出小路，或勾选石板宽街。\n沿原路再描一笔，就地铺成灯街。\n切到夕光，看街灯亮起。Esc 取消。"
-	if tool==4:
-		hint.text="点击房屋，弹一声街坊的乐器。\n层高改变音区，窗光随音向上闪烁。\n右侧可改名字、用途与样式。"
+	hint.text = Copy.TOOL_HINTS[tool]
 	if tool==7 and district_link_mode:
-		hint.text="从一片街坊拖到另一片，牵起共鸣。\n隔河也能对答，演出时共同亮窗。\nShift 拖动收回连线 · Esc 取消。"
+		hint.text = Copy.DISTRICT_LINK_HINT
 	if not guided_hint.is_empty(): hint.text=guided_hint
 	_refresh_place()
 	_refresh_district()
@@ -997,14 +1045,25 @@ func home_camera() -> void:
 	_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if guide!=null and guide.visible():
+		if event is InputEventKey and event.pressed and event.keycode in [KEY_ESCAPE,KEY_F1]:
+			guide.close_panel()
+			get_viewport().set_input_as_handled()
+		return
 	if ledger!=null and ledger.visible():
 		if event is InputEventKey and event.pressed and event.keycode in [KEY_ESCAPE,KEY_L]:
 			ledger.close_panel()
+			get_viewport().set_input_as_handled()
+		elif event is InputEventKey and event.pressed and event.keycode == KEY_F1 and guide != null:
+			guide.open_panel(1)
 			get_viewport().set_input_as_handled()
 		return
 	if journal!=null and journal.panel.visible:
 		if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 			journal.close_panel()
+			get_viewport().set_input_as_handled()
+		elif event is InputEventKey and event.pressed and event.keycode == KEY_F1 and guide != null:
+			guide.open_panel(0)
 			get_viewport().set_input_as_handled()
 		return
 	if gallery!=null and gallery.panel.visible:
@@ -1052,6 +1111,7 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_H: home_camera()
 		elif event.keycode == KEY_J: journal.open_panel()
 		elif event.keycode == KEY_L: ledger.open_panel()
+		elif event.keycode == KEY_F1 and guide != null: guide.open_panel()
 		elif event.keycode == KEY_P: select_tool(4)
 		elif event.keycode == KEY_V: camera_rig.toggle(self)
 		elif event.keycode == KEY_F12: camera_rig.capture(self)
@@ -1068,9 +1128,11 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if guide!=null and guide.visible(): return
 	if camera_rig.strolling:
 		if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT: orbiting=event.pressed
 		return
+	if guide!=null and guide.visible(): return
 	if ledger!=null and ledger.visible(): return
 	if journal!=null and journal.panel.visible: return
 	if gallery!=null and gallery.panel.visible: return
@@ -1097,7 +1159,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			MOUSE_BUTTON_MIDDLE: panning = true
 			MOUSE_BUTTON_LEFT:
 				if _edit_pending and tool!=2:
-					_message("小路正在接合，片刻后继续营建。")
+					_message(Copy.EDIT_PENDING_ROAD_TOAST)
 					return
 				if tool in [0,1]:
 					_update_hover()
@@ -1162,7 +1224,7 @@ func _process(delta: float) -> void:
 			_save_requested=false
 			save_city()
 	_poll_edit_budget()
-	if tool==4 and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_P)):
+	if tool==4 and not guide.visible() and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_P)):
 		var hit := _ray_hit(pointer)
 		var body: Object = hit.get("collider")
 		var id := str(body.get_meta("house_id", "")) if body!=null else ""
@@ -1663,7 +1725,9 @@ func _refresh_district() -> void:
 	var district := _selected_district_row()
 	district_era_picker.disabled= district.is_empty()
 	for i in range(State.Eras.IDS.size()): district_era_picker.set_item_disabled(i,State.Eras.IDS[i] not in state.era_unlocks)
-	district_era_picker.select(State.Eras.IDS.find(str(district.get("era_theme","pastoral"))))
+	var current_era := str(district.get("era_theme","pastoral"))
+	district_era_picker.select(State.Eras.IDS.find(current_era))
+	district_era_picker.tooltip_text = Copy.ERA_LORE.get(current_era, "为当前街坊指定建筑与器乐时代风貌")
 	if district.is_empty(): selected_district = ""
 	district_name.editable = not district.is_empty()
 	if district.is_empty():
@@ -1674,6 +1738,7 @@ func _refresh_district() -> void:
 		if not district_name.has_focus(): district_name.text = str(district.name)
 		district_style = str(district.style)
 		district_style_picker.select(DISTRICT_STYLES.find(district_style))
+		district_style_picker.tooltip_text = str(Copy.DISTRICT_STYLE_INSTRUMENTS.get(district_style, ""))
 		district_adaptive = bool(district.get("adaptive", false))
 		district_adaptive_button.set_pressed_no_signal(district_adaptive)
 		var members: Array = state.district_members(selected_district)
@@ -1686,8 +1751,8 @@ func _refresh_district() -> void:
 			if role == "residential":
 				for service: String in ["bakery", "venue", "garden_cafe"]:
 					if _district_home_has_service(str(house.id), service): reachable[service] = int(reachable[service]) + 1
-		district_description.text = "%d 房屋 · %d 居所 · %d 面包坊 · %d 演奏庭\n可达（含区外）· 面包 %d/%d · 演出 %d/%d" % [members.size(), int(counts.residential), int(counts.bakery), int(counts.venue), int(reachable.bakery), int(counts.residential), int(reachable.venue), int(counts.residential)]
-		district_description.tooltip_text = "可达服务包含街坊外的真实地点。"
+		district_description.text = "%d 房屋 · %d 居所 · %d 面包坊 · %d 演奏庭\n可沿路抵达 · 面包坊 %d / %d · 演奏庭 %d / %d" % [members.size(), int(counts.residential), int(counts.bakery), int(counts.venue), int(reachable.bakery), int(counts.residential), int(reachable.venue), int(counts.residential)]
+		district_description.tooltip_text = "可沿路抵达的服务包含街坊外的真实连通地点。"
 		if int(counts.symphony_hall)>0:district_description.text+="\n交响音乐厅 %d"%int(counts.symphony_hall)
 		if int(counts.workshop)>0 or int(counts.garden_cafe)>0:
 			district_description.text += "\n制琴坊 %d · 茶座 %d（可达 %d/%d）" % [int(counts.workshop),int(counts.garden_cafe),int(reachable.garden_cafe),int(counts.residential)]
@@ -1884,11 +1949,11 @@ func save_city() -> void:
 		return
 	if _edit_pending:
 		_save_requested=true
-		_message("小路接合完成后保存这座河湾。")
+		_message(Copy.SAVE_PENDING_TOAST)
 		return
 	_capture_journeys()
 	var result: Dictionary = state.save_city(SAVE_PATH)
-	_message("河湾已保存，下次从这里继续。" if result.ok else str(result.message))
+	_message(Copy.SAVE_SUCCESS_TOAST if result.ok else str(result.message))
 
 func _toggle_music() -> void:
 	music.set_muted(not music.muted)
@@ -1908,6 +1973,10 @@ func _toggle_light() -> void:
 	music.set_night(light_phase==2)
 	life.tram.set_night(light_phase==2)
 	if ambience != null: ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
+	if subtitle_label != null:
+		subtitle_label.text = Copy.LIGHT_PHASE_SUBTITLES[clampi(light_phase, 0, 2)]
+	if light_button != null:
+		light_button.tooltip_text = Copy.LIGHT_PHASE_TOOLTIPS[clampi(light_phase, 0, 2)]
 
 func _refresh_place() -> void:
 	if selected_house.is_empty() or place_name == null: return
@@ -1923,12 +1992,17 @@ func _refresh_place() -> void:
 		house_era_picker.disabled=house.has("signature")
 		for role_key: String in role_buttons:
 			role_buttons[role_key].disabled=(house.has("signature") and role_key!=role) or (role_key=="atelier" and not state.era_unlocks.has("renaissance")) or (role_key=="clockmaker" and not state.era_unlocks.has("clockwork")) or (role_key=="symphony_hall" and not state.era_unlocks.has("modern_eco"))
-		place_description.text = {"residential":"一处居所，让街坊有居民。", "bakery":"面包出炉，居民循路来采购。", "venue":"一处演奏庭，招呼街坊来小聚。", "workshop":"匠人制作风铃，沿路送到邻屋。", "garden_cafe":"买过面包的街坊，在花下围坐品茶。", "atelier":"画师到岗创作，将挂毯与彩窗沿路送装到邻屋。", "clockmaker":"钟表匠制作八音盒和风向标，沿路送到邻屋。", "symphony_hall":"四个时代的街坊，沿路来听全城交响盛典。"}[role]
+		place_description.text = str(Copy.ROLE_DESCRIPTIONS.get(role, ""))
 		if str(house.get("style","classic"))=="round_tower": place_description.text+="\n独立房柱长出圆塔，向上加层就成望楼。"
 		var tier: int=state.level_tier(str(house.id))
 		place_description.text+="\n♫ 品质 %d / 5 · %s"%[tier,State.Quality.NAMES[tier-1]]
+		place_description.tooltip_text = "Lv.%d %s · %s" % [tier, State.Quality.NAMES[tier-1], Copy.QUALITY_TIER_DETAILS[clampi(tier-1, 0, Copy.QUALITY_TIER_DETAILS.size()-1)]]
 		var improvement := int(state.improvement_level(str(house.id)))
 		if improvement>0: place_description.text += "\n♫ 匠作 %d / 3 · 邻屋送来的永久木饰" % improvement
+		var culture := int(state.culture_level(str(house.id)))
+		if culture>0: place_description.text += "\n♫ 丹青 %d / 2 · 书院送来的挂毯与彩窗" % culture
+		var clockwork := int(state.mechanism_level(str(house.id)))
+		if clockwork>0: place_description.text += "\n♫ 钟表 %d / 2 · 钟表匠送来的八音盒与风向标" % clockwork
 		place_description.text += "\n门前小路已接通。" if life.house_connected(selected_house) else "\n拉一条小路到门前，让居民能走来。"
 		_refresh_household()
 		concert_button.visible = role in ["venue","symphony_hall"]
@@ -2022,7 +2096,7 @@ func _on_quality_changed(events: Array) -> void:
 		_message("♫ 共鸣品质 %d / 5 · %s"%[int(event.to),State.Quality.NAMES[int(event.to)-1]])
 	_refresh_place();save_delay=3.0
 
-func _on_craft_event(kind: String, shop_id: String, target_id: String, level: int) -> void:
+func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
 	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")
 	if kind=="mechanism_installed":
 		_refresh_city_music()
