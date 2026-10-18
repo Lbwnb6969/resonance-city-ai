@@ -1,5 +1,6 @@
 extends RefCounted
 ## One actual question and one answer, sharing Music's existing short voices.
+const ReplyPCM=preload("res://scripts/audio/city_creation_reply_pcm.gd")
 const DURATION := 0.8
 const FOCUS_RADIUS := 14.0
 const BOUNDARY_WINDOW := 0.12
@@ -99,8 +100,8 @@ func _direction(pair: Dictionary, phrase: int) -> Dictionary:
 
 func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
 	if not _valid(event) or _foreground_busy(): return false
-	var style := str(event.to_style if answer else event.from_style)
-	var key := "reply_%s_%d" % [style,posmod(phrase,8)]
+	var plan: Dictionary=ReplyPCM.plan(event,phrase,answer)
+	var key: String=plan.stream_key
 	if not _owner._edit_streams.has(key): return false
 	for effect: AudioStreamPlayer in _owner._effects:
 		if effect.playing: continue
@@ -108,8 +109,9 @@ func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
 		_player=effect
 		_stream=_owner._edit_streams[key]
 		_active=event.duplicate(true)
+		_active.merge(plan,true)
 		_active.merge({"phase":"answer" if answer else "call","generation":1 if answer else 0,
-			"source_id":str(event.to_id if answer else event.from_id),"style":style,"phrase":phrase,"stream_key":key},true)
+			"source_id":str(event.to_id if answer else event.from_id),"phrase":phrase},true)
 		var source_id:=str(event.to_id if answer else event.from_id)
 		_owner.play_effect_at(effect,_stream,event.to_position if answer else event.from_position,_owner.acoustic.weight(source_id))
 		if answer: answers+=1
@@ -167,7 +169,7 @@ func report() -> Dictionary:
 		elif _player==null or not _player.playing: _clear_active()
 	var audible := not _active.is_empty()
 	var result := {"audible":audible,"phase":"","generation":0,"source_id":"","from_id":"","to_id":"",
-		"style":"","from_style":"","to_style":"","phrase":_last_phrase,"elapsed":0.0,"duration":DURATION,
+		"style":"","era_theme":"","timbre":"","from_style":"","to_style":"","phrase":_last_phrase,"elapsed":0.0,"duration":DURATION,
 		"enabled":enabled,"ready":ready,"pair_count":_pairs.size(),"calls":calls,"answers":answers,"skipped":skipped,
 		"stream_key":"","pending":not _pending.is_empty(),"manual":false,"manual_pairs":0}
 	for pair: Dictionary in _pairs.values():

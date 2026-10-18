@@ -1474,6 +1474,9 @@ func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi:
 			"harpsichord":
 				envelope=minf(t/.003,1.0)*exp(-t*5.0)*minf((duration-t)/.10,1.0)
 				tone=sin(phase)+.42*sin(phase*2.0)+.23*sin(phase*3.0)+.13*sin(phase*4.0)+.08*sin(phase*6.0)
+			"oboe":
+				envelope=minf(t/.065,1.0)*minf((duration-t)/.17,1.0)
+				tone=sin(phase+.014*sin(TAU*5.2*t))+.38*sin(phase*2.0)+.24*sin(phase*3.0)+.09*sin(phase*5.0)
 			"flute":
 				envelope=minf(t/0.055,1.0)*minf((duration-t)/0.12,1.0)
 				tone=sin(phase+0.018*sin(TAU*5.1*t))+0.09*sin(phase*2.0)+0.025*sin(phase*3.0)

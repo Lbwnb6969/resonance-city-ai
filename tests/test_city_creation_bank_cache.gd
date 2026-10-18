@@ -13,7 +13,7 @@ func _run()->void:
 	var bank:=Cache.load_bank()
 	_check(not bank.is_empty(),"saved production bank loads without synthesizing")
 	if bank.is_empty():quit(1);return
-	_check(bank.streams.size()==12 and bank.edits.size()==275,"all twelve long voices and the expanded eight-timbre short bank remain available")
+	_check(bank.streams.size()==12 and bank.edits.size()==307,"all twelve long voices, house plucks and thirty-two era reply samples remain available")
 	for key:String in Music.STEMS:
 		var wav:AudioStreamWAV=bank.streams[key]
 		_check(wav.data.size()==Music.FRAMES*2 and wav.mix_rate==Music.RATE and wav.format==AudioStreamWAV.FORMAT_16_BITS and not wav.stereo,"original uncompressed mono PCM shape: "+key)

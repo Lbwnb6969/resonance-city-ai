@@ -38,7 +38,7 @@ static func render(samples: PackedFloat32Array, key: String, chords: Array,
 					_emit(samples,events,add_note,start+.08+beat*BEAT_SECONDS,.52,note,.065,"harpsichord")
 				if bar>0:
 					_emit(samples,events,add_note,start+.30,1.25,int(melody[(bar-1)*2]),.043,"strings")
-					_emit(samples,events,add_note,start+1.80,1.05,int(melody[(bar-1)*2+1]),.035,"strings")
+					_emit(samples,events,add_note,start+1.80,1.05,int(melody[(bar-1)*2+1]),.035,"oboe")
 				_emit(samples,events,add_note,start+.06,2.65,int(chords[bar][0]),.022,"strings")
 			"wood_market":
 				# A short ascending reed answer, then two separated chord jumps.
