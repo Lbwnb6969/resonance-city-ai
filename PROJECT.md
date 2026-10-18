@@ -41,4 +41,4 @@ Godot 4.7.2 Compatibility，1440×900；主场景 `scenes/city_creation.tscn`，
 
 Git备份标签：`backup/pre-twelve-phase-20261018`。入口替换前原文及上传蓝图：`废弃/文档_旧体系归档_2026-10-17/十二阶段入口替换前_2026-10-18/`。
 
-GitHub与本地完整Git项目文件保持一致：`ai-sync/main`，同步工具 `tools/sync_github_main.py`；忽略目录留在本地，旧精简导出不再作为同步方式。
+GitHub仅同步已跟踪的文档、代码、必要参考和运行资源，main当前文件总量严格小于100MB；`ai-sync/main` 使用 `tools/sync_github_main.py` 核对完整跟踪树及体积。完整本地参考资料留在原位，批量导出/原始资产取消跟踪并忽略，不搬移或删除。

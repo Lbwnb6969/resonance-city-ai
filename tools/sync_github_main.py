@@ -15,6 +15,7 @@ OUT = ROOT / '验证记录' / 'GitHub完整同步'
 REMOTE = 'ai-sync'
 BRANCH = 'main'
 URL = 'https://github.com/Lbwnb6969/resonance-city-ai.git'
+MAX_MAIN_BYTES = 100_000_000
 
 
 def git(*args, data=None, check=True):
@@ -50,6 +51,23 @@ def files(ref):
     return result
 
 
+def tree_budget(ref):
+    """Budget the actual published blobs, excluding local ignored originals."""
+    sizes = []
+    for row in git('ls-tree', '-rzl', ref).stdout.split(b'\0'):
+        if row:
+            metadata, _ = row.split(b'\t', 1)
+            parts = metadata.split()
+            if parts[1] == b'blob':
+                sizes.append(int(parts[3]))
+    total = sum(sizes)
+    if total >= MAX_MAIN_BYTES:
+        raise RuntimeError(f'Main tree is {total:,} bytes; keep it below {MAX_MAIN_BYTES:,} bytes. '
+                           'Untrack bulky reference exports without moving local originals.')
+    return dict(published_bytes=total, limit_bytes=MAX_MAIN_BYTES,
+                largest_file_bytes=max(sizes, default=0))
+
+
 def backup(label, commit):
     day = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y%m%d')
     tag = f'backup/{label}-{day}-{commit[:8]}'
@@ -65,6 +83,7 @@ def prepare():
     clean()
     git('fetch', '--no-tags', REMOTE, BRANCH)
     source = value('rev-parse', 'HEAD')
+    budget = tree_budget(source)
     parent = value('rev-parse', 'FETCH_HEAD')
     tree = value('rev-parse', source + '^{tree}')
     current, previous = files(source), files(parent)
@@ -79,13 +98,13 @@ def prepare():
         commit = source
     else:
         message = ('Sync complete project and twelve-phase development blueprint\n\n'
-                   'Includes the complete tracked local tree and reference materials.\n'
+                   'Includes the tracked project tree and selected reference code/docs.\n'
                    f'Local development history preserved at {local_backup} ({source}).\n'
                    f'Previous GitHub main preserved at {remote_backup}.\n')
         commit = git('commit-tree', tree, '-p', parent, data=message.encode()).stdout.decode().strip()
     plan = dict(source=source, parent=parent, tree=tree, commit=commit,
                 local_backup=local_backup, remote_backup=remote_backup,
-                source_files=len(current), changes=changes,
+                source_files=len(current), changes=changes, **budget,
                 added_groups=dict(collections.Counter(p.split('/')[0] for p in changes['added'])))
     save('plan.json', plan)
     print(json.dumps({k: v for k, v in plan.items() if k != 'changes'}, ensure_ascii=False, indent=2))
@@ -101,6 +120,7 @@ def push():
         raise RuntimeError('Remote changed after preparation; fetch and reconcile first.')
     if value('rev-parse', plan['commit'] + '^{tree}') != plan['tree']:
         raise RuntimeError('Candidate tree differs from the local source.')
+    budget = tree_budget(plan['commit'])
     # A normal push also rejects concurrent non-fast-forward server updates.
     result = git('push', REMOTE, plan['commit'] + ':refs/heads/' + BRANCH)
     print(result.stderr.decode('utf-8', errors='replace'))
@@ -120,7 +140,7 @@ def push():
     proof = dict(ok=True, local_commit=value('rev-parse', 'HEAD'), remote_commit=observed,
                  local_tree=value('rev-parse', 'HEAD^{tree}'), remote_tree=remote_tree,
                  tracked_files=plan['source_files'], local_history_backup=plan['local_backup'],
-                 previous_remote_backup=plan['remote_backup'])
+                 previous_remote_backup=plan['remote_backup'], **budget)
     save('verification.json', proof)
     print(json.dumps(proof, ensure_ascii=False, indent=2))
 

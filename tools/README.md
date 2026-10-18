@@ -4,7 +4,7 @@
 
 | 工具 | 用途 |
 | --- | --- |
-| `sync_github_main.py` | `prepare`核对完整Git树差异，`push`同步GitHub main；本地归档不发布 |
+| `sync_github_main.py` | `prepare`核对跟踪树差异与<100MB体积，`push`同步GitHub main；本地完整参考原件不上传 |
 | `creation_bundle_audit.py` | 当前主场景的资源依赖闭包、三库来源记录与真实包资源审计；独立于旧P0打包器 |
 | `build_creation_bundle.py` | 仅用户明确要求时打本地试玩包；使用独立3D审计与隔离运行探针 |
 | `check_creation_edit_latency.gd` | 同一28屋样例的远岸、近路、改色编辑准备/提交帧时 |

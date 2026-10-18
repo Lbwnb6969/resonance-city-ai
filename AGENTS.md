@@ -22,5 +22,5 @@
    - 交付说明改动、验证命令/结果和剩余风险；不扩大当前任务范围，不按脚本行数强拆。
 
 5. **GitHub版本一致性**：
-   - 主仓库为 `https://github.com/Lbwnb6969/resonance-city-ai` 的 `main`（remote: `ai-sync`）。交付前提交本地改动，使用 `tools/sync_github_main.py prepare` / `push` 同步完整Git文件树并核对一致。
-   - 不再用精简导出或过滤参考资料替代同步；忽略目录及个人数据保留本地，不强推。原开发历史由本地备份标签保留。
+   - 主仓库为 `https://github.com/Lbwnb6969/resonance-city-ai` 的 `main`（remote: `ai-sync`）。交付前提交本地改动，使用 `tools/sync_github_main.py prepare` / `push` 同步已跟踪Git文件树并核对一致；main当前文件总量严格小于100,000,000字节。
+   - GitHub以文档、项目代码、必要算法参考和运行资源为主；大体积参考原件、批量导出和素材不跟踪。完整本地 `参考资料/` 留在原路径，不移动到废弃、不删除；仅取消Git跟踪并加入忽略规则。已跟踪的精简参考代码/报告继续正常同步，不生成另一套导出仓库。原开发历史由备份标签保留，不强推。
