@@ -16,6 +16,8 @@ const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.
 const ReplyPCM = preload("res://scripts/audio/city_creation_reply_pcm.gd")
 const Spatial = preload("res://scripts/audio/city_creation_spatial.gd")
 const PitchPluck = preload("res://scripts/audio/city_creation_pitch_pluck.gd")
+const CircularCanon=preload("res://scripts/audio/city_creation_circular_canon.gd")
+var canon:=CircularCanon.new()
 const ManualLinks = preload("res://scripts/world/city_creation_manual_links.gd")
 const BakeryCues = preload("res://scripts/audio/city_creation_bakery_cues.gd")
 const AcousticField = preload("res://scripts/audio/city_creation_acoustic_field.gd")
@@ -216,6 +218,7 @@ func play_house(house_id: String) -> bool:
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key): return false
 	if acoustic.point_weight(plan.position)<=0.0: return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id): return false
+	canon.clear()
 	var selected: AudioStreamPlayer
 	for effect: AudioStreamPlayer in _effects:
 		if not effect.playing: selected=effect;break
@@ -503,6 +506,7 @@ func restore_city_transport(view: Dictionary) -> void:
 	# Switching complete works reuses the fixed bank. Short cues belong to the
 	# previous city; a restored performance resumes its exact saved bar phase.
 	clear_travel()
+	canon.reset()
 	bakery_cues.reset()
 	reply.clear()
 	_travel_cooldowns.clear()
@@ -568,6 +572,13 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 		for house_id: String in acoustic.focus_ids:
 			if house_id!=str(source.get("source_id","")): chorus.append(house_id)
 	var lead := str(source.get("source_id", "")) if audible else ""
+	var circular: Dictionary=canon.report()
+	if not concert_active and not circular.members.is_empty():
+		# The ring's actual note owns its visual turn; the daily long backing
+		# does not light all its houses together or restart its angular sequence.
+		for id: String in circular.members:chorus.erase(id)
+		if lead in circular.members:lead=""
+		if circular.glowing:lead=str(circular.house_id);audible=true
 	var arcs: Array[Dictionary] = []
 	if audible and concert_active and lead != _concert_venue and not lead.is_empty():
 		arcs.append({"from_id":_concert_venue,"to_id":lead,"strength":1.0})
@@ -582,11 +593,12 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 		"phase":str(context.get("phase", "idle")),"wake_ids":context.get("wake_house_ids", []).duplicate(),
 		"afterglow":context.get("afterglow", {}).duplicate(true),"resonance_arcs":arcs,
 		"festival_ready_ids":context.get("festival_ready_ids",[]),"tower":tower_music_report(),"reply":reply.report(),
-		"manual_pairs":manual_reply_pairs().size(),"linked_chorus_ids":linked,"linked_finale_mix":_linked_mix.duplicate(true) if audible and concert_active and phrase==7 else {}}
+		"manual_pairs":manual_reply_pairs().size(),"linked_chorus_ids":linked,"linked_finale_mix":_linked_mix.duplicate(true) if audible and concert_active and phrase==7 else {},"canon":circular}
 
 
 func setup(state: RefCounted) -> void:
 	reply.setup(self)
+	canon.setup(self)
 	update_city(state)
 	bakery_cues.setup(self)
 	if not _players.is_empty():
@@ -616,6 +628,7 @@ func setup(state: RefCounted) -> void:
 
 func update_city(state: RefCounted) -> void:
 	_pluck_city=state
+	canon.sync(state)
 	_linked_key=null
 	var rooms := 0
 	var upper := 0
@@ -777,6 +790,7 @@ func set_muted(value: bool) -> void:
 	muted = value
 	if muted:
 		clear_travel()
+		canon.clear()
 		bakery_cues.clear()
 		reply.clear()
 		for player: AudioStreamPlayer in _players.values():
@@ -792,6 +806,7 @@ func set_muted(value: bool) -> void:
 
 func set_concert_active(active: bool) -> void:
 	concert_active = active
+	if active:canon.clear()
 	if active: bakery_cues.clear()
 	if active: _prune_plucks()
 
@@ -1026,6 +1041,7 @@ func play_effect_at(player: AudioStreamPlayer,stream: AudioStreamWAV,at: Vector2
 	# that preempt a previous spatial cue. Existing stream ownership stays real.
 	spatial.place_effect(player,at,remote)
 	player.volume_db=SHORT_GAIN_DB+linear_to_db(clampf(gain_weight,0.0,1.0))
+	player.set_meta("creation_voice_serial",int(player.get_meta("creation_voice_serial",0))+1)
 	player.stream=stream
 	player.play()
 
@@ -1122,6 +1138,7 @@ func _process(delta: float) -> void:
 		_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		bakery_cues.at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		_tram_at_clock()
+		canon.step(_playback_clock())
 	bakery_cues.report()
 	signature_music_report()
 	if not _travel_active.is_empty(): travel_music_report()

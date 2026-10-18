@@ -218,6 +218,8 @@ func _apply_pluck(id: String,row: Dictionary,report: Dictionary) -> void:
 
 func update(snapshot: Dictionary) -> void:
 	last_pluck = snapshot.get("pluck",{}).duplicate()
+	var circular: Dictionary=snapshot.get("canon",{})
+	if not bool(last_pluck.get("glowing",false)) and bool(circular.get("glowing",false)):last_pluck=circular.duplicate()
 	var reply: Dictionary=snapshot.get("reply",{})
 	var reply_audible:=bool(reply.get("audible",false))
 	var reply_source:=str(reply.get("source_id","")) if reply_audible else ""
