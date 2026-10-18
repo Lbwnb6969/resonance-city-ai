@@ -105,8 +105,8 @@ class ProfileDemo extends "res://scripts/ui/city_creation_demo.gd":
 
 class ProfileCraft extends "res://scripts/visual/city_creation_craft.gd":
 	var trace:RefCounted
-	func progress(renderer)->void:
-		var start:int=Time.get_ticks_usec();super.progress(renderer)
+	func progress(renderer,only: Array[String]=[])->void:
+		var start:int=Time.get_ticks_usec();super.progress(renderer,only)
 		if trace!=null: trace.timing("Craft.progress",start)
 	func supply(renderer,statuses:Dictionary)->void:
 		var start:int=Time.get_ticks_usec();super.supply(renderer,statuses)
@@ -189,7 +189,7 @@ func _run()->void:
 	if DisplayServer.get_name()=="headless" or demo.music.audio_report.is_empty(): await _finish({});return
 	var old=demo.town.craft
 	var replacement=ProfileCraft.new();replacement.trace=trace
-	for field:String in ["roots","fingerprints","placement_inputs","stock_roots","stock_fingerprints","meshes","material","layer","build_count"]: replacement.set(field,old.get(field))
+	for field:String in ["roots","fingerprints","placement_inputs","stock_roots","stock_fingerprints","stock_inputs","meshes","material","layer","build_count"]: replacement.set(field,old.get(field))
 	demo.town.craft=replacement
 	_check(replacement.layer==old.layer and replacement.material==old.material and replacement.roots==old.roots and replacement.stock_roots==old.stock_roots,"craft timing subclass retains original live nodes resources and public caches")
 	demo.selected_house="h7";demo.select_tool(0)

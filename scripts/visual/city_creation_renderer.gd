@@ -262,6 +262,8 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
+	_craft_view_geometry.clear()
+	craft.stock_inputs.clear()
 	cancel_budget_rebuild()
 	if state == null or buildings == null: return
 	var started := Time.get_ticks_usec()
@@ -494,9 +496,38 @@ func update_bakery_supply(statuses: Dictionary) -> void:
 
 var quality_visual: RefCounted=preload("res://scripts/visual/city_creation_quality_visual.gd").new()
 
+var _craft_view_geometry: Array=[]
+var _craft_view_traits: Array[Dictionary]=[]
+var _craft_view_quality: Dictionary={}
+
+func _changed_trait_houses(before: Dictionary,after: Dictionary,changed: Dictionary)->void:
+	for id: String in before:
+		if not after.has(id) or before[id]!=after[id]:changed[id]=true
+	for id: String in after:
+		if not before.has(id) or before[id]!=after[id]:changed[id]=true
+
 func update_craft_progress() -> void:
-	craft.progress(self)
-	if quality_visual.layer!=null: quality_visual.progress(self)
+	var geometry: Array=[state.get_instance_id(),state.revision]
+	var traits: Array[Dictionary]=[state.house_improvements,state.house_culture,state.house_clockwork]
+	if geometry!=_craft_view_geometry:
+		# Edits/load/undo can change any frontage or clearance. Stock changes
+		# cannot; only earned traits need geometry work between revisions.
+		craft.progress(self)
+		if quality_visual.layer!=null:quality_visual.progress(self)
+	else:
+		var changed: Dictionary={};var quality_changed: Dictionary={}
+		for index in range(traits.size()):
+			_changed_trait_houses(_craft_view_traits[index],traits[index],changed)
+			if index==0:_changed_trait_houses(_craft_view_traits[index],traits[index],quality_changed)
+		_changed_trait_houses(_craft_view_quality,state.building_quality,quality_changed)
+		if not changed.is_empty():
+			var ids: Array[String]=[];ids.assign(changed.keys());craft.progress(self,ids)
+		if quality_visual.layer!=null and not quality_changed.is_empty():
+			var ids: Array[String]=[];ids.assign(quality_changed.keys());quality_visual.progress(self,ids)
+	_craft_view_geometry=geometry
+	_craft_view_traits.clear()
+	for row: Dictionary in traits:_craft_view_traits.append(row.duplicate(true))
+	_craft_view_quality=state.building_quality.duplicate(true)
 
 func update_workshop_supply(statuses: Dictionary) -> void:
 	craft.supply(self,statuses)
@@ -815,6 +846,8 @@ func set_light_phase(phase: int) -> void:
 	water_material.set_shader_parameter("night",1.0 if phase==2 else 0.0)
 	if valley!=null:valley.set_light(phase)
 
+var ecology_stats: Dictionary={}
+
 func refresh_ecology() -> void:
 	if ecology_layer==null: return
 	var harmony: Array = []
@@ -828,10 +861,16 @@ func refresh_ecology() -> void:
 			var amount := float(state.house_harmony_tier(id))/3.0
 			resonance.rigs[id].harmony=amount
 			resonance.rigs[id].material.set_shader_parameter("harmony",amount)
+	var began:=Time.get_ticks_usec()
 	wildlife.refresh_habitats(self)
+	ecology_stats={"habitats_us":Time.get_ticks_usec()-began}
 	_clear(ecology_layer)
+	began=Time.get_ticks_usec()
 	ecology_layer.set_meta("bunting_count",Bunting.build_bunting(self,ecology_layer))
+	ecology_stats.bunting_us=Time.get_ticks_usec()-began
+	began=Time.get_ticks_usec()
 	ecology_layer.set_meta("harmony_flowerpots",HarmonyFlora.build(self,ecology_layer))
+	ecology_stats.flowers_us=Time.get_ticks_usec()-began
 	Bunting.set_light(ecology_layer,light_phase)
 
 func animate_house_bounce(id: String, strength: float = 0.06) -> void:

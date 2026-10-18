@@ -8,10 +8,8 @@ const MAX_SPAN := 5.80
 const SAG_RATIO := 0.085
 const FLAG_STEP := 0.34
 
-static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
+static func _anchors(renderer: Node3D) -> Array[Dictionary]:
 	var state = renderer.state
-	if state == null:
-		return 0
 	var anchors: Array[Dictionary] = []
 	for house: Dictionary in state.houses:
 		var hid := str(house.id)
@@ -40,6 +38,35 @@ static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
 					"color_b": palette[2],
 				})
 
+	return anchors
+
+static func _room_bins(state) -> Dictionary:
+	var bins: Dictionary={}
+	for house: Dictionary in state.houses:
+		for cell: Dictionary in house.cells:
+			if str(cell.kind)!="room":continue
+			var x:=float(house.origin[0])+float(cell.x)*1.8
+			var z:=float(house.origin[1])+float(cell.z)*1.8
+			var bottom:=float(house.get("base_y",0.0))+float(cell.level)*1.7
+			var row:=PackedFloat64Array([x,bottom,z])
+			var low:=Vector2i(floori((x-.91)/2.),floori((z-.91)/2.))
+			var high:=Vector2i(floori((x+.91)/2.),floori((z+.91)/2.))
+			for bx in range(low.x,high.x+1):
+				for bz in range(low.y,high.y+1):
+					var key:=Vector2i(bx,bz)
+					if not bins.has(key):bins[key]=[]
+					bins[key].append(row)
+	return bins
+
+static func _pairs(state,anchors: Array[Dictionary]) -> Array[Dictionary]:
+	var bins: Dictionary={}
+	for index in range(anchors.size()):
+		var at: Vector3=anchors[index].pos
+		var key:=Vector2i(floori(at.x/MAX_SPAN),floori(at.z/MAX_SPAN))
+		if not bins.has(key):bins[key]=[]
+		bins[key].append(index)
+	var rooms:=_room_bins(state)
+
 	var pairs: Array[Dictionary] = []
 	var used_anchors: Dictionary = {}
 	for i in range(anchors.size()):
@@ -48,7 +75,15 @@ static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
 		var a: Dictionary = anchors[i]
 		var best_j := -1
 		var best_dist := INF
-		for j in range(i + 1, anchors.size()):
+		var key:=Vector2i(floori(float(a.pos.x)/MAX_SPAN),floori(float(a.pos.z)/MAX_SPAN))
+		var candidates: Array[int]=[]
+		for x in range(key.x-1,key.x+2):
+			for z in range(key.y-1,key.y+2):
+				for j: int in bins.get(Vector2i(x,z),[]):
+					if j>i:candidates.append(j)
+		# The original greedy order and strict-distance ties choose the wire.
+		candidates.sort()
+		for j: int in candidates:
 			if used_anchors.has(j):
 				continue
 			var b: Dictionary = anchors[j]
@@ -68,7 +103,7 @@ static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
 				continue
 			if (-Vector2(b.normal)).dot(a.normal) < 0.50:
 				continue
-			if dist < best_dist and _span_clear(state, a.pos, b.pos):
+			if dist < best_dist and _span_clear(state, a.pos, b.pos,rooms):
 				best_dist = dist
 				best_j = j
 		if best_j >= 0:
@@ -77,6 +112,14 @@ static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
 			pairs.append({"a": a, "b": anchors[best_j], "length": best_dist})
 			if pairs.size() >= 24:
 				break
+
+	return pairs
+
+static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
+	var state = renderer.state
+	if state == null:
+		return 0
+	var pairs:=_pairs(state,_anchors(renderer))
 
 	if pairs.is_empty():
 		return 0
@@ -147,19 +190,15 @@ static func set_light(parent: Node3D, phase: int) -> void:
 	for node: MeshInstance3D in parent.find_children("BuntingLanterns", "MeshInstance3D", true, false):
 		node.material_override.set_shader_parameter("warmth", [0.0, 0.65, 1.25][phase])
 
-static func _span_clear(state, a: Vector3, b: Vector3) -> bool:
+static func _span_clear(state, a: Vector3, b: Vector3,room_bins: Variant=null) -> bool:
+	var rooms: Dictionary=_room_bins(state) if room_bins==null else room_bins
 	var sag := a.distance_to(b) * SAG_RATIO
 	for i in range(1, 16):
 		var t := float(i) / 16.0
 		var p := a.lerp(b, t) - Vector3.UP * (4.0 * sag * t * (1.0-t) + 0.22)
 		if p.y < state.ground_height(Vector2(p.x,p.z)) + 1.9: return false
-		for house: Dictionary in state.houses:
-			for cell: Dictionary in house.cells:
-				if str(cell.kind) != "room": continue
-				var x := float(house.origin[0]) + float(cell.x)*1.8
-				var z := float(house.origin[1]) + float(cell.z)*1.8
-				var bottom := float(house.get("base_y",0.0)) + float(cell.level)*1.7
-				if absf(p.x-x)<0.91 and absf(p.z-z)<0.91 and p.y>bottom-0.1 and p.y<bottom+2.35: return false
+		for row: PackedFloat64Array in rooms.get(Vector2i(floori(p.x/2.),floori(p.z/2.)),[]):
+			if absf(p.x-row[0])<0.91 and absf(p.z-row[2])<0.91 and p.y>row[1]-0.1 and p.y<row[1]+2.35:return false
 	return true
 
 static func _lantern(st: SurfaceTool, at: Vector3) -> void:

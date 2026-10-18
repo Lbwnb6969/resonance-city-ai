@@ -83,6 +83,7 @@ func _run()->void:
 	demo.life.profile_tick=false
 	facts.daily_frames=_metrics(wall);facts.daily_life_cpu=_metrics(cpu)
 	facts.position_queries=demo.life._position_cache_stats.duplicate(true)
+	facts.ecology=demo.town.ecology_stats.duplicate()
 	_check(float(facts.daily_frames.p95_ms)<12. and demo.life.current_population>=200,"actual flagship daily life supports over 200 inhabitants with sub-twelve-millisecond p95")
 	if "--daily-only" not in OS.get_cmdline_user_args():
 		var stage: String=""

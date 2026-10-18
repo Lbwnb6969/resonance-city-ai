@@ -18,6 +18,7 @@ var fingerprints: Dictionary = {}
 var placement_inputs: Dictionary = {}
 var stock_roots: Dictionary = {}
 var stock_fingerprints: Dictionary = {}
+var stock_inputs: Dictionary = {}
 var meshes: Dictionary = {}
 var material: ShaderMaterial
 var layer: Node3D
@@ -30,15 +31,23 @@ func setup(parent: Node3D) -> void:
 	material = ShaderMaterial.new()
 	material.shader = CraftShader
 
-func progress(renderer) -> void:
+func _houses(renderer,only: Array[String])->Array:
+	if only.is_empty():return renderer.state.houses
+	var result: Array=[]
+	for id: String in only:
+		var index: int=renderer.state._house_index(id)
+		if index>=0:result.append(renderer.state.houses[index])
+	return result
+
+func progress(renderer,only: Array[String]=[]) -> void:
 	if renderer.state.house_improvements.is_empty() and renderer.state.house_culture.is_empty() and renderer.state.house_clockwork.is_empty() and roots.is_empty() and culture_roots.is_empty() and mechanism_roots.is_empty():return
-	_culture(renderer)
-	_mechanisms(renderer)
+	_culture(renderer,only)
+	_mechanisms(renderer,only)
 	var live := {}
 	var footprints: Array = []
 	for house: Dictionary in renderer.state.houses: footprints.append([house.id,house.origin,house.cells,house.get("base_y",0.0),house.get("style","classic")])
 	var geometry_signature := hash([footprints,renderer.state.roads,renderer.state.waters])
-	for house: Dictionary in renderer.state.houses:
+	for house: Dictionary in _houses(renderer,only):
 		var id := str(house.id)
 		var level := int(renderer.state.improvement_level(id))
 		if level == 0: continue
@@ -63,14 +72,14 @@ func progress(renderer) -> void:
 		roots[id] = root
 		fingerprints[id] = fingerprint
 		build_count += 1
-	for id: String in roots.keys():
+	for id: String in (roots.keys() if only.is_empty() else only):
 		if not live.has(id):
 			_remove(id,roots,fingerprints)
 			placement_inputs.erase(id)
 
-func _mechanisms(renderer)->void:
+func _mechanisms(renderer,only: Array[String]=[])->void:
 	var live: Dictionary={}
-	for house: Dictionary in renderer.state.houses:
+	for house: Dictionary in _houses(renderer,only):
 		var id:=str(house.id);var level: int=renderer.state.mechanism_level(id)
 		if level==0:continue
 		live[id]=true
@@ -109,12 +118,12 @@ func _mechanisms(renderer)->void:
 		renderer._merge_meshes(root)
 		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		mechanism_roots[id]=root;mechanism_fingerprints[id]=signature
-	for id: String in mechanism_roots.keys():
+	for id: String in (mechanism_roots.keys() if only.is_empty() else only):
 		if not live.has(id):_remove(id,mechanism_roots,mechanism_fingerprints)
 
-func _culture(renderer) -> void:
+func _culture(renderer,only: Array[String]=[]) -> void:
 	var live := {}
-	for house: Dictionary in renderer.state.houses:
+	for house: Dictionary in _houses(renderer,only):
 		var id := str(house.id); var level: int = renderer.state.culture_level(id)
 		if level == 0: continue
 		live[id]=true
@@ -152,7 +161,7 @@ func _culture(renderer) -> void:
 		renderer._merge_meshes(root)
 		DetailLod.bind_tree(root,DetailLod.GALLERY)
 		culture_roots[id]=root; culture_fingerprints[id]=signature
-	for id: String in culture_roots.keys():
+	for id: String in (culture_roots.keys() if only.is_empty() else only):
 		if not live.has(id): _remove(id,culture_roots,culture_fingerprints)
 
 func supply(renderer, statuses: Dictionary) -> void:
@@ -162,6 +171,11 @@ func supply(renderer, statuses: Dictionary) -> void:
 		if str(house.get("role","")) != "workshop" or not statuses.has(id): continue
 		live[id] = true
 		var count := mini(6,int(statuses[id].get("stock",0)))
+		var input: Array=[renderer.state.get_instance_id(),renderer.state.revision,count]
+		if stock_inputs.get(id,[])==input:
+			stock_roots[id].set_meta("stock",int(statuses[id].get("stock",0)))
+			continue
+		stock_inputs[id]=input
 		var entry: Dictionary = renderer._primary_entrance(house)
 		var records: Array = []
 		if not entry.is_empty() and not bool(entry.get("passage",false)):
@@ -185,7 +199,9 @@ func supply(renderer, statuses: Dictionary) -> void:
 		stock_roots[id] = root
 		stock_fingerprints[id] = fingerprint
 	for id: String in stock_roots.keys():
-		if not live.has(id): _remove(id,stock_roots,stock_fingerprints)
+		if not live.has(id):
+			_remove(id,stock_roots,stock_fingerprints)
+			stock_inputs.erase(id)
 
 func diagnostics() -> Dictionary:
 	var levels := {}

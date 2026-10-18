@@ -245,6 +245,7 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 	return _recipient_cache[shop]
 
 func tick(delta: float) -> void:
+	if life.profile_tick:life.tick_profile.workshop_site=0;life.tick_profile.workshop_produce=0;life.tick_profile.workshop_callback=0
 	for worker: Dictionary in workers:
 		var phase := str(worker.phase)
 		if phase == "paused": continue
@@ -292,8 +293,10 @@ func _craft(worker: Dictionary, delta: float) -> void:
 		worker.phase = "to_target"
 		_replan(worker)
 		return
+	var began:=Time.get_ticks_usec() if life.profile_tick else 0
 	var bonus_remaining: float = life.state.afterglow_remaining(shop)
 	var site_speed: float = life.state.site_production_multiplier(shop)
+	if life.profile_tick:life.tick_profile.workshop_site+=Time.get_ticks_usec()-began
 	var used := 0.0
 	while used < delta:
 		supply = life.state.workshop_status(shop)
@@ -306,9 +309,15 @@ func _craft(worker: Dictionary, delta: float) -> void:
 		worker.elapsed = minf(CRAFT_DURATION, float(worker.elapsed) + step * speed)
 		used += step
 		if float(worker.elapsed) < CRAFT_DURATION - 0.000001: continue
-		if not life.state.produce_craft(shop, batch): return
+		began=Time.get_ticks_usec() if life.profile_tick else 0
+		var produced: bool=life.state.produce_craft(shop,batch)
+		if life.profile_tick:life.tick_profile.workshop_produce+=Time.get_ticks_usec()-began
+		if not produced:return
 		worker.elapsed = 0.0
-		if life.craft_callback.is_valid(): life.craft_callback.call("crafted", shop, "", batch)
+		if life.craft_callback.is_valid():
+			began=Time.get_ticks_usec() if life.profile_tick else 0
+			life.craft_callback.call("crafted", shop, "", batch)
+			if life.profile_tick:life.tick_profile.workshop_callback+=Time.get_ticks_usec()-began
 		# A fresh object is picked up on the next tick, at the actual shop.
 		if not _recipient(worker).is_empty(): return
 
