@@ -626,6 +626,25 @@ func setup(state: RefCounted) -> void:
 	_worker.start(_load_bank)
 
 
+func update_quality(state: RefCounted,events: Array) -> void:
+	var ids: Array[String]=[]
+	for event: Dictionary in events:ids.append(str(event.house_id))
+	update_house_traits(state,ids)
+
+func update_house_traits(state: RefCounted,ids: Array[String]) -> void:
+	if _pluck_city!=state:
+		update_city(state)
+		return
+	# A service award changes household traits, not street geometry, tower
+	# membership, district arrangements or the synchronized PCM transport.
+	for id: String in ids:
+		if not _house_music.has(id):continue
+		_house_music[id].level_tier=state.level_tier(id)
+		_house_music[id].improvement=state.improvement_level(id)
+		_house_music[id].culture=state.culture_level(id)
+		_house_music[id].mechanisms=state.mechanism_level(id)
+	_refresh_acoustic()
+
 func update_city(state: RefCounted) -> void:
 	_pluck_city=state
 	canon.sync(state)

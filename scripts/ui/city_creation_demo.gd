@@ -906,16 +906,23 @@ func _button(text_value: String, action: Callable) -> Button:
 	button.pressed.connect(action)
 	return button
 
+func _music_catalog_signature()->int:
+	return hash([state.get_instance_id(),state.houses,state.roads,state.districts,state.house_improvements,state.house_culture,state.house_clockwork,state.building_quality])
+
 func _refresh_city_music()->void:
 	# Terrain/water edits affect spatial intent, but not the household timbre
 	# catalogue. Keep actual manual links/acoustic zones fresh without deriving
 	# every bell tower, district and arrangement again after an unrelated brush.
-	var key:=hash([state.get_instance_id(),state.houses,state.roads,state.districts,state.house_improvements,state.house_culture,state.house_clockwork,state.building_quality])
+	var key:=_music_catalog_signature()
 	if key==_music_catalog_key and music._pluck_city==state:
 		music._refresh_acoustic()
 		return
 	_music_catalog_key=key
 	music.update_city(state)
+
+func _refresh_house_music_traits(ids: Array[String])->void:
+	music.update_house_traits(state,ids)
+	_music_catalog_key=_music_catalog_signature()
 
 func _refresh_ui() -> void:
 	if _edit_pending:
@@ -2089,7 +2096,8 @@ func _on_era_unlocked(era: String)->void:
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return
 	town.quality_visual.flash(town,events)
-	_refresh_city_music()
+	music.update_quality(state,events)
+	_music_catalog_key=_music_catalog_signature()
 	for event: Dictionary in events: music.play_quality_upgrade(str(event.house_id),int(event.to))
 	if not events.is_empty():
 		var event: Dictionary=events[-1]
@@ -2099,15 +2107,15 @@ func _on_quality_changed(events: Array) -> void:
 func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
 	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")
 	if kind=="mechanism_installed":
-		_refresh_city_music()
+		_refresh_house_music_traits([target_id])
 		_message("♫ 邻屋收到钟表匠送来的"+("发条八音盒" if level==1 else "报时风向标"))
 		_refresh_place()
 	if kind=="art_installed":
-		_refresh_city_music()
+		_refresh_house_music_traits([target_id])
 		_message("♫ 邻屋收到书院送来的"+("艺术挂毯" if level==1 else "彩绘玻璃窗"))
 		_refresh_place()
 	if kind=="installed":
-		_refresh_city_music()
+		_refresh_house_music_traits([target_id])
 		for house: Dictionary in state.houses:
 			if str(house.id)==target_id: _message("♫ %s 收到街坊送来的木饰 · 匠作%d阶" % [str(house.name),level])
 		_refresh_place()

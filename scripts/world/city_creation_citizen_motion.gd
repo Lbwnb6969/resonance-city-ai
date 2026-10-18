@@ -21,12 +21,15 @@ func point()->Vector3:
 	var extra: float=maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed if deferred else 0.
 	return start+direction*minf(length,progress+extra)
 func defer(clock: Node3D,speed: float)->void:
-	if speed<=0. or watch_travel or progress>=length:return
+	if speed<=0. or progress>=length:return
 	_clock=clock;_sampled_at=float(clock.time);deferred_speed=speed
-	# No sensor or state transition exists inside this straight leg. Visibility,
-	# speed changes, invitations and edits wake it explicitly; otherwise its
-	# first meaningful deadline is the next corner, rather than a periodic poll.
-	due_at=_sampled_at+(length-progress)/speed;deferred=true
+	var remaining:=length-progress
+	if watch_travel:
+		var at:=start+direction*progress
+		remaining*=clock.travel.next_boundary_fraction(Vector2(at.x,at.z),Vector2(target.x,target.z))
+	# Visibility, speed changes, invitations and edits can wake it earlier.
+	# A bridge/arch needs its next side threshold, otherwise only the corner.
+	due_at=_sampled_at+remaining/speed;deferred=true
 func settle()->void:
 	if not deferred:return
 	progress=minf(length,progress+maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed)

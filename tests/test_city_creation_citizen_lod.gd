@@ -46,11 +46,19 @@ func _run()->void:
 	var full_crossings:Array=[];var lod_crossings:Array=[]
 	full.travel_callback=func(_actor:String,kind:String,_source:String,_point:Vector2)->void:full_crossings.append(kind)
 	lod.travel_callback=func(_actor:String,kind:String,_source:String,_point:Vector2)->void:lod_crossings.append(kind)
-	var river_gap:=0.
+	var river_gap:=0.;var sensor_sleeps:=0;var returned_at_crossing:=false
 	for i in range(1600):
 		full._process(.05);lod._process(.05)
 		var a:Vector3=full.citizen_position(full.residents[0]);var b:Vector3=lod.citizen_position(lod.residents[0])
 		river_gap=maxf(river_gap,Vector2(a.x,a.z).distance_to(Vector2(b.x,b.z)))
+		var motion: RefCounted=lod.residents[0].get("offscreen_motion")
+		if motion!=null and motion.deferred and motion.watch_travel:
+			sensor_sleeps+=1
+			if not returned_at_crossing:
+				for site: Dictionary in lod.travel.sites.values():
+					if absf((Vector2(b.x,b.z)-Vector2(site.at)).dot(site.axis))<.03:
+						camera.position=b+Vector3(0,12,8);camera.look_at(b);returned_at_crossing=true
+	_check(sensor_sleeps>0 and returned_at_crossing,"a hidden bridge leg sleeps between side thresholds and returns to view during its unfinished crossing")
 	_check(not full_crossings.is_empty() and full_crossings==lod_crossings,"hidden scalar legs retain every actual authored bridge crossing cue")
 	_check(river_gap<.015 and river.life_progress==hidden.life_progress,"raised bridge approaches preserve real arrival and bread completion while hidden")
 	print("CITIZEN_LOD ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures,"river_gap":river_gap,"river_progress":river.life_progress,"hidden_progress":hidden.life_progress,"max_position_gap":max_gap,"purchases":city.life_progress.purchases}));quit(0 if failures.is_empty() else 1)

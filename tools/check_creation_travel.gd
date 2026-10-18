@@ -19,6 +19,12 @@ func _check(ok: bool, message: String) -> void:
 func _run() -> void:
 	var sensor := Travel.new()
 	sensor._add_site("test","arch","h1","r1",Vector2.ZERO,Vector2.RIGHT,0.5)
+	var start:=Vector2(-1,0);var end:=Vector2(1,0)
+	var first:=start.lerp(end,sensor.next_boundary_fraction(start,end))
+	var second:=first.lerp(end,sensor.next_boundary_fraction(first,end))
+	_check(first.x<-.06 and second.x>.06 and sensor.observe("deadline",start,first,0).is_empty() and sensor.observe("deadline",first,second,.2).size()==1,"two scheduled side thresholds retain one real crossing")
+	_check(is_equal_approx(sensor.next_boundary_fraction(Vector2(-1,.51),Vector2(1,.51)),1.) and is_equal_approx(sensor.next_boundary_fraction(Vector2(-.2,-1),Vector2(-.2,1)),1.),"outside-width and parallel legs sleep to the corner")
+	_check(sensor.next_boundary_fraction(end,start)<1.,"reverse travel receives a real side deadline")
 	_check(sensor.observe("r",Vector2(-1,0),Vector2(1,0),0).size()==1,"actual center crossing")
 	_check(sensor.observe("r",Vector2(1,0),Vector2(-1,0),1).is_empty(),"reverse inside six seconds leaves silence")
 	_check(sensor.observe("r",Vector2(-1,0),Vector2(1,0),6).size()==1,"real reverse after cooldown")

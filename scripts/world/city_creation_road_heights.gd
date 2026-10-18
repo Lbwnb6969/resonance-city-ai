@@ -11,6 +11,7 @@ const SteppingPlan := preload("res://scripts/world/city_creation_stepping_plan.g
 const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 var profiles: Dictionary = {}
 var _bins: Dictionary = {}
+var _flat_bins: Dictionary = {}
 var _signature: Variant = null
 var _input_signatures:Dictionary={}
 var stats:Dictionary={}
@@ -21,6 +22,7 @@ func copy_cache_from(source: RefCounted) -> void:
 	# only _build() creates new sample records, so workers may share old values.
 	profiles = source.profiles
 	_bins = source._bins
+	_flat_bins = source._flat_bins
 	_input_signatures=source._input_signatures
 	_signature = source._signature
 
@@ -31,7 +33,7 @@ func prepare(city: RefCounted) -> void:
 	if signature==_signature:stats={"rebuilt":0,"reused":profiles.size()};return
 	_signature = signature
 	var previous:=profiles;var previous_inputs:=_input_signatures
-	profiles={};_bins={};_input_signatures={};stats={"rebuilt":0,"reused":0}
+	profiles={};_bins={};_flat_bins={};_input_signatures={};stats={"rebuilt":0,"reused":0}
 	var doors: Array = []
 	for house: Dictionary in city.houses:
 		for entry: Dictionary in city.house_entrances(str(house.id)):
@@ -60,6 +62,29 @@ func prepare(city: RefCounted) -> void:
 					var key := Vector2i(x,z)
 					if not _bins.has(key): _bins[key] = []
 					_bins[key].append(record)
+
+	_build_flat_bins()
+
+func _build_flat_bins() -> void:
+	# A bin whose every possible road hit has the same height needs only a
+	# coverage check. Slopes, bridges with changing Y, stairs and stepping
+	# stones keep the original nearest-segment solver below.
+	for key: Vector2i in _bins:
+		var y:=NAN;var uniform:=true;var covers: Array[Dictionary]=[]
+		for row: Dictionary in _bins[key]:
+			var profile: Dictionary=profiles[row.road]
+			var first: float=profile.samples[int(row.index)].y
+			var last: float=profile.samples[int(row.index)+1].y
+			if first!=last or (not is_nan(y) and first!=y) or not profile.treads.is_empty() or not profile.stepping_runs.is_empty():uniform=false;break
+			y=first
+			var a: Vector2=row.a;var b: Vector2=row.b
+			var axis:=0 if a.y==b.y else 1 if a.x==b.x else -1
+			if not covers.is_empty():
+				var previous: Dictionary=covers[-1]
+				if axis>=0 and previous.axis==axis and previous.road==row.road and int(previous.index)+1==int(row.index) and Vector2(previous.b)==a and (Vector2(previous.b)-Vector2(previous.a)).dot(b-a)>0.:
+					previous.b=b;previous.index=row.index;continue
+			covers.append({"a":a,"b":b,"radius2":float(row.radius)*float(row.radius),"axis":axis,"road":row.road,"index":row.index})
+		if uniform and not covers.is_empty():_flat_bins[key]={"y":y,"covers":covers}
 
 func _junctions(city: RefCounted) -> Dictionary:
 	var result: Dictionary = {}
@@ -274,10 +299,16 @@ func _offset(samples: Array,index: int,width: float) -> Vector2:
 	return miter*(width*0.5/maxf(0.5,miter.dot(second)))
 
 func height_at(at: Vector2,fallback: float) -> float:
+	var key:=Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
+	var flat: Variant=_flat_bins.get(key)
+	if flat!=null:
+		for cover: Dictionary in flat.covers:
+			var point:=Geometry2D.get_closest_point_to_segment(at,cover.a,cover.b)
+			# Keep boundary rounding and nearest-road ties on the original path.
+			if at.distance_squared_to(point)<float(cover.radius2)-.000001:return float(flat.y)
 	var nearest := INF
 	var best:Dictionary={}
 	var closest:=Vector2.ZERO
-	var key := Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
 	for row: Dictionary in _bins.get(key,[]):
 		var point := Geometry2D.get_closest_point_to_segment(at,row.a,row.b)
 		var gap := at.distance_squared_to(point)

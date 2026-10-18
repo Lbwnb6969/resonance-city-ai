@@ -40,6 +40,8 @@ func _identity()->Array:
 	return result
 func _run()->void:
 	if "--native-routes" in OS.get_cmdline_user_args():OUT="res://验证记录/原生寻路_2026-10-18"
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--out-dir="):OUT=argument.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var path: String="res://数据/四库共鸣交响大城样例.json";var source:=FileAccess.get_file_as_bytes(path)
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()

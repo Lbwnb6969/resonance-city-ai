@@ -135,6 +135,27 @@ func has_sites_between(from:Vector2,to:Vector2)->bool:
 			if _bins.has(Vector2i(x,z)):return true
 	return false
 
+func next_boundary_fraction(from: Vector2,to: Vector2) -> float:
+	var low:=Vector2i((from.min(to)/BIN).floor());var high:=Vector2i((from.max(to)/BIN).floor())
+	var candidates: Dictionary={}
+	for x in range(low.x,high.x+1):
+		for z in range(low.y,high.y+1):
+			for id: String in _bins.get(Vector2i(x,z),[]):candidates[id]=true
+	var next:=1.;var delta:=to-from
+	for id: String in candidates:
+		var site: Dictionary=sites[id];var axis: Vector2=site.axis
+		var start: float=(from-Vector2(site.at)).dot(axis);var change:=delta.dot(axis)
+		if absf(change)<.00000001:continue
+		var cross_ratio: float=-start/change
+		var crossing:=from+delta*cross_ratio
+		if absf((crossing-Vector2(site.at)).cross(axis))>float(site.half_width):continue
+		# Observe just beyond each side threshold. The original observer still
+		# owns side tracking, crossing validation, cooldown and exact-once cues.
+		for side: float in [-SIDE_MARGIN-.00001,SIDE_MARGIN+.00001]:
+			var ratio: float=(side-start)/change
+			if ratio>.0000001 and ratio<next:next=ratio
+	return next
+
 func observe(actor: String, from: Vector2, to: Vector2, clock_sec: float) -> Array[Dictionary]:
 	var events: Array[Dictionary] = []
 	if from.distance_squared_to(to)<0.0000000001: return events

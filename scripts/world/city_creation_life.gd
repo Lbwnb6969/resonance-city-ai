@@ -99,11 +99,13 @@ func flush_citizen(resident:Dictionary)->void:
 	var motion:RefCounted=resident.get("offscreen_motion")
 	if motion==null:return
 	_citizen_schedule.wake(resident)
+	var before: Vector3=motion.start+motion.direction*motion.progress
 	if motion.deferred:
 		motion.settle()
 		resident.motion_advanced_at=time
 	var surface:RefCounted=_published_surface if _published_surface!=null and state.revision!=last_revision else state
 	var point:Vector3=motion.point();point.y=surface.street_height(Vector2(point.x,point.z))+.10
+	if motion.watch_travel:record_travel("resident/"+str(resident.home_id),Vector2(before.x,before.z),Vector2(point.x,point.z))
 	resident.node.position=point;resident.node.rotation.y=motion.yaw
 	resident.node.get_child(0).visible=true
 	resident.erase("offscreen_motion")
@@ -330,7 +332,7 @@ func _process(delta: float) -> void:
 
 func _tick_life(delta: float) -> void:
 	var sampled:=Time.get_ticks_usec() if profile_tick else 0
-	if profile_tick:tick_profile.height=0;tick_profile.travel=0;tick_profile.cafe_attempts=0
+	if profile_tick:tick_profile.height=0;tick_profile.travel=0;tick_profile.cafe_attempts=0;tick_profile.quality_rules=0;tick_profile.quality_callback=0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if str(_concert.get("phase", "idle")) == "playing":
 		var until_completion := CONCERT_DURATION - float(_concert.elapsed)
@@ -352,8 +354,11 @@ func _tick_life(delta: float) -> void:
 	var tram_started:=Time.get_ticks_usec() if profile_tick else 0
 	tram.tick(delta)
 	if profile_tick:tick_profile.tram=Time.get_ticks_usec()-tram_started
+	var work_started:=Time.get_ticks_usec() if profile_tick else 0
 	bakery.tick(delta)
+	if profile_tick:tick_profile.bakery=Time.get_ticks_usec()-work_started;work_started=Time.get_ticks_usec()
 	workshop.tick(delta)
+	if profile_tick:tick_profile.workshop=Time.get_ticks_usec()-work_started
 	state.advance_resonance_afterglow(delta)
 	state.advance_matinee_rest(delta)
 	time += delta
@@ -391,7 +396,11 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 	if motion!=null and motion.deferred:
 		if time<motion.due_at:return
 		var speed: float=motion.deferred_speed
+		var previous: Vector3=motion.start+motion.direction*motion.progress
 		motion.settle()
+		if motion.watch_travel:
+			var point: Vector3=motion.point()
+			record_travel("resident/"+str(resident.home_id),Vector2(previous.x,previous.z),Vector2(point.x,point.z))
 		if motion.progress>=motion.length:resident.index=int(resident.index)+1
 		else:motion.defer(self,speed)
 		citizen_lod_stats.scheduled_steps+=1
@@ -684,7 +693,9 @@ func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
 	var workplaces := {}
 	for worker: Dictionary in bakery.workers: workplaces[str(worker.bakery_id)]=str(worker.home_id)
 	for worker: Dictionary in workshop.workers: workplaces[str(worker.workshop_id)]=str(worker.home_id)
+	var rules_started:=Time.get_ticks_usec() if profile_tick else 0
 	var changes: Array[Dictionary]=state.refresh_quality(connected_houses,workplaces,first,count)
+	if profile_tick:tick_profile.quality_rules+=Time.get_ticks_usec()-rules_started
 	if not changes.is_empty():
 		var homes: Dictionary={}
 		for change: Dictionary in changes:homes[str(change.house_id)]=true
@@ -696,7 +707,10 @@ func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
 			motion.settle()
 			_citizen_schedule.wake(resident)
 			motion.defer(self,.83*float(state.signature_bonuses().walking)*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.))
-	if not changes.is_empty() and quality_callback.is_valid(): quality_callback.call(changes)
+	if not changes.is_empty() and quality_callback.is_valid():
+		var callback_started:=Time.get_ticks_usec() if profile_tick else 0
+		quality_callback.call(changes)
+		if profile_tick:tick_profile.quality_callback+=Time.get_ticks_usec()-callback_started
 	return changes
 
 func bakery_status(id: String) -> Dictionary:
