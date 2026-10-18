@@ -49,3 +49,8 @@
 
 # Local UI reference checkout; adapted source lives in scripts/ui.
 /UI/
+
+# Rebuildable local PCM bank and generated standalone tool UIDs.
+/资源/音乐/城市同步声部库.res
+/tools/*.gd.uid
+/tools/audit_city_references.py

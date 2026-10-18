@@ -49,4 +49,4 @@ Godot 4.7.2 Compatibility，1440×900；主场景 `scenes/city_creation.tscn`，
 
 Git备份标签：`backup/pre-twelve-phase-20261018`。入口替换前原文及上传蓝图：`废弃/文档_旧体系归档_2026-10-17/十二阶段入口替换前_2026-10-18/`。
 
-GitHub仅同步已跟踪的文档、代码、必要参考和运行资源，main当前文件总量严格小于100MB；`ai-sync/main` 使用 `tools/sync_github_main.py` 核对完整跟踪树及体积。完整本地参考资料留在原位，批量导出/原始资产取消跟踪并忽略，不搬移或删除。
+GitHub仅同步已跟踪的文档、代码、必要参考和运行资源，main当前文件总量严格小于100MB；`ai-sync/main` 使用 `tools/sync_github_main.py` 核对完整跟踪树及体积。完整本地参考资料留在原位；通用研究源码包、批量后端着色器/IL/大表、可重建PCM银行及工具UID仅取消跟踪并忽略，不搬移或删除。核心测试约.73MB继续纳管，截图/日志/ZIP不上传。首次克隆的银行生成方式见根README。

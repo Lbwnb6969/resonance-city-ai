@@ -11,4 +11,4 @@
 
 Compatibility中 `OUTPUT_IS_SRGB=true`，本作显式转到线性计算后转回工作空间；`source_color` hint仍保留。实际GL色块测试覆盖恒定均值保持亮度和两组有色输入，与独立Color线性计算一致。Forward+路径未实窗验证。原每card颜色/法线palette与完整Grass2渲染器未移植。
 
-此纹理是原游戏资源，不标为CC0或本作原创。精简GitHub库按用户要求剔除PNG，只保源码、此出处说明和验证文字。
+此纹理是原游戏资源，不标为CC0或本作原创。当前Godot运行需要这张PNG，GitHub保留精选运行资源及此出处说明；完整原游戏资源包与批量导出仅在本地。
