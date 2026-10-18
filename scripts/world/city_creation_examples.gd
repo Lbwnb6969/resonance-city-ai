@@ -4,6 +4,7 @@ extends RefCounted
 const State := preload("res://scripts/world/city_creation_state.gd")
 const COVER_DIRECTORY := "res://资源/界面/示范河湾/"
 const CATALOG := [
+	{"id":"example_flagship","file":"四库共鸣交响大城样例.json","title":"四库共鸣交响大城","summary":"127座建筑、四时代街区与六座地标，沿电车与石阶巡游两岸。","focus":[0.0,1.2,2.0],"zoom":88.0,"pitch":0.86,"yaw":0.34},
 	{"id":"example_creation","file":"创作河湾样例.json","title":"创作河湾","summary":"从小屋与街道开始，接着画出自己的河湾。","focus":[-3.0,0.7,0.0],"zoom":25.0,"pitch":0.64},
 	{"id":"example_highland","file":"高地河湾样例.json","title":"高地小城","summary":"沿石阶登上高庭，在台地上继续建房。","focus":[-13.0,1.0,-0.5],"zoom":20.0,"pitch":0.80},
 	{"id":"example_promenade","file":"灯街河湾样例.json","title":"暮色灯街","summary":"石板宽街、暖光灯盏与路旁花箱。","focus":[-6.0,0.7,0.0],"zoom":24.0,"pitch":0.80,"evening":true},

@@ -48,7 +48,11 @@ func _run() -> void:
 	city.redo()
 	_check(city.houses[2].auto_matinee, "redo restores the same venue setting")
 	var life := _life(city)
+	life._network.route_counting=true
+	var route_counts: Dictionary=life._network.route_cache_stats.duplicate()
 	_check(life.matinee_status("h3").ready == 0, "zero true tea visits means zero inspiration")
+	_check(life._network.route_cache_stats==route_counts,"matinee reachability uses published components without solving any home-to-venue route")
+	life._network.route_counting=false
 	_check(_until(life, func(): return str(life.cafe_status("h4").phase) == "tea"), "actual worker bakes, two residents buy bread and walk to tea")
 	_check(int(city.life_progress.purchases) >= 2 and int(city.life_progress.tea_parties) == 0 and life.concert_status().phase == "idle", "purchase and tea arrival alone cannot start a concert")
 	_advance(life, 5.5)

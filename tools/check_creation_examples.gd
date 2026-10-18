@@ -37,7 +37,7 @@ func _capture(label:String)->void:
 func _run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var catalog=load("res://scripts/world/city_creation_examples.gd")
-	var entries:Array=catalog.entries();var original_sources:Dictionary={};var valid:=entries.size()==17;var covers:=true
+	var entries:Array=catalog.entries();var original_sources:Dictionary={};var valid:=entries.size()==catalog.CATALOG.size();var covers:=true
 	var source_bytes:Dictionary={}
 	for row:Dictionary in catalog.CATALOG:
 		var path:String="res://数据/"+str(row.file)
@@ -48,8 +48,8 @@ func _run()->void:
 		if chosen.ok:original_sources[entry.id]=var_to_bytes(chosen.world)
 		var cover:Image=Image.load_from_file(entry.cover_path) if not str(entry.cover_path).is_empty() else null
 		covers=covers and cover!=null and cover.get_size()==Vector2i(480,300)
-	_check(valid,"all seventeen shipped examples pass actual strict State restoration")
-	_check(covers,"all seventeen actual example covers decode at480x300")
+	_check(valid,"all shipped examples pass actual strict State restoration")
+	_check(covers,"all actual example covers decode at480x300")
 	var personal:PackedByteArray=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库_"+str(Time.get_ticks_usec());root.add_child(demo)
@@ -90,7 +90,7 @@ func _run()->void:
 	var unchanged:=true
 	for id:String in original_sources:unchanged=unchanged and var_to_bytes(catalog.read(id).world)==original_sources[id]
 	for path:String in source_bytes:unchanged=unchanged and FileAccess.get_file_as_bytes(path)==source_bytes[path]
-	_check(unchanged,"viewing and opening examples leaves all seventeen source worlds unchanged")
+	_check(unchanged,"viewing and opening examples leaves all source worlds unchanged")
 	var wall:Array[float]=[];var draws:Array[float]=[];var previous:=Time.get_ticks_usec()
 	for ignored in range(120):
 		await process_frame

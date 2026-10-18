@@ -18,9 +18,12 @@ func _refresh() -> void:
 	for house: Dictionary in life.state.houses:
 		if house.role not in ["venue","symphony_hall"] or not life.connected_houses.has(house.id): continue
 		var homes: Array[String] = []
+		var venue_component: String=life._network.component_of[str(life.connected_houses[house.id])]
 		for resident: Dictionary in life.residents:
 			var home := str(resident.home_id)
-			if life.connected_houses.has(home) and not life._route(str(life.connected_houses[home]), str(life.connected_houses[house.id])).is_empty(): homes.append(home)
+			# Connectivity is already exact in the published street graph. Do
+			# not solve every home/venue path just to answer this yes/no question.
+			if life.connected_houses.has(home) and life._network.component_of[str(life.connected_houses[home])]==venue_component:homes.append(home)
 		_reachable[house.id] = homes
 
 func _tea_busy() -> bool:

@@ -21,9 +21,12 @@ func point()->Vector3:
 	var extra: float=maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed if deferred else 0.
 	return start+direction*minf(length,progress+extra)
 func defer(clock: Node3D,speed: float)->void:
-	if speed<=0. or watch_travel or length-progress<=speed*.25:return
+	if speed<=0. or watch_travel or progress>=length:return
 	_clock=clock;_sampled_at=float(clock.time);deferred_speed=speed
-	due_at=_sampled_at+.2;deferred=true
+	# Wake at the actual corner when it is nearer than the regular sample.
+	# A short hidden doorstep leg need not spend its last quarter-second in
+	# the full per-frame state machine.
+	due_at=_sampled_at+minf(.2,(length-progress)/speed);deferred=true
 func settle()->void:
 	if not deferred:return
 	progress=minf(length,progress+maxf(0.,float(_clock.time)-_sampled_at)*deferred_speed)
