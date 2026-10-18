@@ -107,17 +107,18 @@ func clear()->void:
 
 func reset()->void:clear();_last_beat=-1
 
-func step(clock: float)->void:
+func step(clock: float,offset_sec:float=0.)->void:
 	report()
-	var beat:=floori(maxf(0.,clock)/BEAT_SECONDS)
+	if clock<offset_sec:return
+	var beat:=floori(maxf(0.,clock-offset_sec)/BEAT_SECONDS)
 	if beat==_last_beat:return
 	_last_beat=beat
 	var group:=_selected()
 	if group.is_empty():return
 	# Entering mid-beat or recovering a long frame leaves a rest. Do not burst
 	# old notes or reset the sequence to the beginning of a bar or a camera view.
-	if clock-beat*BEAT_SECONDS>BOUNDARY_WINDOW or _owner.house_pluck_report().get("glowing",false):skipped+=1;return
-	var planned:=slot(group,clock)
+	if clock-offset_sec-beat*BEAT_SECONDS>BOUNDARY_WINDOW or _owner.house_pluck_report().get("glowing",false):skipped+=1;return
+	var planned:=slot(group,clock-offset_sec);planned.start_clock+=offset_sec
 	var id: String=planned.house_id
 	if _owner.acoustic.focus_weight(id)<=0.:skipped+=1;return
 	var plan:=Pitch.plan(_city,id,clock)

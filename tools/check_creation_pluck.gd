@@ -21,6 +21,8 @@ func _click(at:Vector2)->void:
 	await _motion(at)
 	for down:bool in [true,false]:
 		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=at;event.global_position=at;event.pressed=down;root.push_input(event);await process_frame
+	var deadline:=Time.get_ticks_msec()+400
+	while demo.music.attention.report().arp_pending>0 and Time.get_ticks_msec()<deadline:await process_frame
 func _wait()->void:
 	var deadline:=Time.get_ticks_msec()+15000
 	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:await process_frame

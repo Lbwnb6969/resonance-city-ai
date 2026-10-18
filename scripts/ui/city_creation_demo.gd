@@ -1216,6 +1216,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					_commit_click()
 
 func _process(delta: float) -> void:
+	music.attention.dragging=house_drawing or road_drawing or vegetation_drawing or water_drawing or district_drawing or district_link_drawing or (terrain_brush!=null and terrain_brush.drawing)
+	music.attention_strolling=camera_rig.strolling
 	camera_rig.update(self, delta)
 	if gallery!=null and gallery.busy: return
 	if _color_ui_pending and not _edit_pending:
@@ -1796,6 +1798,7 @@ func _district_home_has_service(home_id: String, role: String) -> bool:
 func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, pluck_house: String="") -> void:
 	_message(str(result.message))
 	if not result.ok or bool(result.get("no_op",false)): return
+	if music!=null:music.attention.notify_sculpt_action(music._playback_clock())
 	var started := Time.get_ticks_usec()
 	var colors: Array=result.get("appearance_house_ids",[]).duplicate()
 	if result.has("appearance_house_id"): colors.append(str(result.appearance_house_id))

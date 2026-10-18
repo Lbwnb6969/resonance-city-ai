@@ -73,6 +73,8 @@ func _run()->void:
 	var emitting:=false
 	for effect: CPUParticles3D in demo.town.quality_visual.particles:
 		if effect.emitting:emitting=true
+	var cue_deadline:=Time.get_ticks_msec()+3400
+	while demo.music.attention.report().events_pending>0 and Time.get_ticks_msec()<cue_deadline:await process_frame
 	var harp:=false
 	for player: AudioStreamPlayer in demo.music._effects:
 		for bar in range(8):

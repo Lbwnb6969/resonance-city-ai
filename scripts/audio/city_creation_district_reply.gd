@@ -99,7 +99,7 @@ func _direction(pair: Dictionary, phrase: int) -> Dictionary:
 		"from_position":Vector2(pair[a+"_position"]),"to_position":Vector2(pair[b+"_position"]),"call_phrase":phrase}
 
 func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
-	if not _valid(event) or _foreground_busy(): return false
+	if not _valid(event): return false
 	var plan: Dictionary=ReplyPCM.plan(event,phrase,answer)
 	var key: String=plan.stream_key
 	if not _owner._edit_streams.has(key): return false
@@ -128,7 +128,7 @@ func _observe_finished() -> void:
 		_owner.record_completed_district_answer(str(_active.from_district),str(_active.to_district),str(_active.from_era),str(_active.to_era))
 	_clear_active()
 
-func at_phrase(absolute_phrase: int) -> void:
+func at_phrase(absolute_phrase: int,offset_sec:float=0.) -> void:
 	_observe_finished()
 	# Mark every observed phrase, including startup halfway through a bar.
 	# A later call in that same phrase must never manufacture a downbeat.
@@ -137,7 +137,7 @@ func at_phrase(absolute_phrase: int) -> void:
 	if not _pending.is_empty() and not _valid(_pending): clear()
 	if not _active.is_empty() and not _valid(_active): clear()
 	if _owner==null: return
-	var on_boundary := fposmod(float(_owner._playback_clock()),3.0)<=BOUNDARY_WINDOW
+	var on_boundary := absf(fposmod(float(_owner._playback_clock()),3.0)-offset_sec)<=BOUNDARY_WINDOW
 	if not _pending.is_empty():
 		var pending := _pending
 		_pending={}

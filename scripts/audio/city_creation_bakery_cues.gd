@@ -11,6 +11,8 @@ var _stream: AudioStreamWAV
 var _last_phrase := -1
 var cues := 0
 var skipped := 0
+var coalesced:=0
+var _group_last:Dictionary={}
 
 func setup(music: Node) -> void:
 	_owner=music
@@ -19,6 +21,7 @@ func setup(music: Node) -> void:
 func reset() -> void:
 	clear()
 	_seen.clear()
+	_group_last.clear()
 	if _owner==null or _owner._pluck_city==null: return
 	for house: Dictionary in _owner._pluck_city.houses:
 		var id := str(house.id)
@@ -58,20 +61,24 @@ func queue(kind: String,shop_id: String,home_id: String="") -> bool:
 	if shop.is_empty(): return false
 	var event := {"kind":kind,"source_id":shop_id,"home_id":home_id,"counter":count,"position":shop.position,"queued_at":_owner._playback_clock()}
 	if not _valid(event): skipped+=1;return false
+	var region:=str(shop.get("district_id",""))
+	if region.is_empty():region=shop_id
+	event.region_id=region
+	if _owner._playback_clock()-float(_group_last.get(region,-INF))<6.:coalesced+=1;return true
 	# One pending phrase for the entire city. A purchase takes precedence over
 	# production; simultaneous batches/people never create an audible backlog.
-	if not _pending.is_empty() and str(_pending.kind)=="purchased" and kind=="baked": skipped+=1;return false
+	if not _pending.is_empty() and str(_pending.kind)=="purchased" and kind=="baked":coalesced+=1;return true
 	_pending=event
 	return true
 
-func at_phrase(phrase: int) -> void:
+func at_phrase(phrase: int,offset_sec:float=0.) -> void:
 	if phrase==_last_phrase: return
 	_last_phrase=phrase
 	if _pending.is_empty(): return
 	var event := _pending;_pending={}
-	if not _valid(event) or _owner._playback_clock()-float(event.queued_at)>3.1 or fposmod(_owner._playback_clock(),3.0)>.12: skipped+=1;return
-	# Existing downbeat cues run first. No voice stealing and no deferred retry.
-	if _owner.cafe_music_report().audible or _owner.travel_music_report().audible or _owner.tower_music_report().audible or _owner.reply.report().audible or _owner.house_pluck_report().audible: skipped+=1;return
+	if not _valid(event) or _owner._playback_clock()-float(event.queued_at)>3.1 or absf(fposmod(_owner._playback_clock(),3.0)-offset_sec)>.12: skipped+=1;return
+	# Independent micro-slots fit the bounded pool; an earlier cafe or bell
+	# no longer discards this real production reward.
 	var key := "bakery_%s_%d" % [event.kind,posmod(phrase,8)]
 	if not _owner._edit_streams.has(key): skipped+=1;return
 	for player: AudioStreamPlayer in _owner._effects:
@@ -80,6 +87,7 @@ func at_phrase(phrase: int) -> void:
 		_active=event.duplicate();_active.phrase=phrase;_active.stream_key=key
 		_owner.play_effect_at(player,_stream,event.position,_owner.acoustic.focus_weight(str(event.source_id))*(1.0-smoothstep(18.0,32.0,_owner.acoustic.zoom)))
 		cues+=1
+		_group_last[str(event.get("region_id",event.source_id))]=_owner._playback_clock()
 		return
 	skipped+=1
 
@@ -87,7 +95,7 @@ func report() -> Dictionary:
 	if not _pending.is_empty() and not _valid(_pending): _pending.clear()
 	var audible := _player!=null and _player.playing and _player.stream==_stream and not _active.is_empty() and _valid(_active)
 	if not audible and _player!=null and _player.stream==_stream and _player.playing: _player.stop()
-	var result := {"audible":audible,"pending":_pending.duplicate(),"cues":cues,"skipped":skipped,"source_id":"","home_id":"","kind":"","duration":DURATION,"elapsed":0.0,"phrase":-1}
+	var result := {"audible":audible,"pending":_pending.duplicate(),"cues":cues,"skipped":skipped,"coalesced":coalesced,"source_id":"","home_id":"","kind":"","duration":DURATION,"elapsed":0.0,"phrase":-1}
 	if audible: result.merge(_active,true);result.elapsed=_player.get_playback_position()
 	return result
 

@@ -30,6 +30,7 @@ func setup(owner: Node, theme_players: Array, concert_player: AudioStreamPlayer,
 	for index in range(effects.size()):
 		var player: AudioStreamPlayer = effects[index]
 		var short_bus := _make_bus(prefix+"Short%d" % index,player.bus)
+		short_bus.filter.cutoff_hz=1600.
 		_effect_panners[player.get_instance_id()]=short_bus.effect
 		_effect_sources[player.get_instance_id()]=Vector2.INF
 		_effect_players[player.get_instance_id()]=player

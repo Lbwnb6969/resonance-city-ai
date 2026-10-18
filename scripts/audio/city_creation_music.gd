@@ -5,6 +5,7 @@ extends Node
 ## without adding a voice for every house or restarting the musical clock.
 const RATE := 22050
 const SHORT_GAIN_DB := -12.0
+const ATTENTION_HEADROOM_DB:=-2.0
 const SECONDS := 24.0
 const FRAMES := 529200
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
@@ -21,6 +22,9 @@ var canon:=CircularCanon.new()
 const ManualLinks = preload("res://scripts/world/city_creation_manual_links.gd")
 const BakeryCues = preload("res://scripts/audio/city_creation_bakery_cues.gd")
 const AcousticField = preload("res://scripts/audio/city_creation_acoustic_field.gd")
+const AttentionMixer=preload("res://scripts/audio/city_creation_attention_mixer.gd")
+var attention:=AttentionMixer.new()
+var attention_strolling:=false
 var acoustic:=AcousticField.new()
 var _acoustic_timer:=0.0
 var _signature_phrase := -1
@@ -100,13 +104,13 @@ func _tram_at_clock()->void:
 	if _tram_pending.is_empty():return
 	var event := _tram_pending
 	var clock := _playback_clock()
-	if muted or clock-float(event.at)>1.2 or (tram_source_gate.is_valid() and not tram_source_gate.call(event.car_id,event.station)):
+	if muted or clock-float(event.at)>3.2 or (tram_source_gate.is_valid() and not tram_source_gate.call(event.car_id,event.station)):
 		_tram_pending={};return
-	if clock<ceilf(float(event.at)/.375)*.375:return
 	var phrase := posmod(int(floor(clock/3.)),8)
 	var kind := "tram_chime_%d"%phrase
 	var weight := acoustic.point_weight(event.position)
-	var remote := weight<=0.
+	if weight<=0.:_tram_pending={};return
+	var remote := false
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing:continue
 		play_effect_at(effect,_edit_streams[kind],event.position,.25 if remote else weight,remote)
@@ -212,27 +216,34 @@ func _refresh_harmony_gains() -> void:
 
 func play_house(house_id: String) -> bool:
 	if muted or concert_active or _loading or _pluck_city==null: return false
-	var now := Time.get_ticks_usec()
-	if now-_pluck_last_usec<80000: return false
 	var plan := PitchPluck.plan(_pluck_city,house_id,_playback_clock())
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key): return false
 	if acoustic.point_weight(plan.position)<=0.0: return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id): return false
 	canon.clear()
+	return attention.enqueue_pluck_arpeggio(plan,_playback_clock())
+
+func _play_queued_house(queued: Dictionary)->bool:
+	if muted or concert_active or _loading:return false
+	var house_id:=str(queued.house_id)
+	var plan:=PitchPluck.plan(_pluck_city,house_id,_playback_clock())
+	if plan.is_empty() or not _edit_streams.has(plan.stream_key) or acoustic.point_weight(plan.position)<=0.:return false
+	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id):return false
 	var selected: AudioStreamPlayer
 	for effect: AudioStreamPlayer in _effects:
 		if not effect.playing: selected=effect;break
 	if selected==null and _pluck_player!=null and _pluck_player.stream==_pluck_stream:
 		selected=_pluck_player
-	if selected==null: return false
-	# Only our own previous cue can be recycled. A cafe, tower, crossing or
-	# construction sound which took that player keeps its ownership intact.
+	if selected==null and not _effects.is_empty():selected=_effects[0]
+	if selected==null:return false
+	# Player input owns the foreground. Existing cue owners observe a stolen
+	# voice and cancel their attribution instead of completing a phantom reply.
 	_pluck_player=selected
 	_pluck_stream=_edit_streams[plan.stream_key]
 	_pluck_active=plan
 	_pluck_started_clock=_playback_clock()
 	_pluck_serial+=1
-	_pluck_last_usec=now
+	_pluck_last_usec=Time.get_ticks_usec()
 	play_effect_at(selected,_pluck_stream,plan.position)
 	_pluck_voices[selected.get_instance_id()]={"player":selected,"stream":_pluck_stream,"plan":plan}
 	return true
@@ -326,7 +337,6 @@ func _tower_at_phrase(phrase: int) -> void:
 				if _tower_eligible(member): candidates.append(member)
 	else:
 		if phrase%2!=0: return
-		if reply.reserves_tower_gap(phrase): return
 		for id: String in _daily_houses:
 			if _tower_eligible(id): candidates.append(id)
 	# A single remote bell may mark the 24-second cycle. Ordinary distant
@@ -334,7 +344,7 @@ func _tower_at_phrase(phrase: int) -> void:
 	if candidates.is_empty() and posmod(phrase,8)==0:
 		for id: String in _daily_houses:
 			if _nearest_tower(id)!=Vector2.INF: candidates.append(id)
-	if candidates.is_empty() or bool(cafe_music_report().audible) or bool(travel_music_report().audible): return
+	if candidates.is_empty(): return
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
 		_tower_source=candidates[posmod(int(phrase/2),candidates.size())]
@@ -417,7 +427,6 @@ func _travel_at_phrase(phrase: int) -> void:
 	if not _travel_eligible(event) or _playback_clock()-float(event.queued_at)>3.1 or _travel_cooldowns.has(str(event.source_id)): return
 	# Tea and performances keep the foreground. Construction can preempt a
 	# flourish through the existing pool, while travel never steals a voice.
-	if bool(cafe_music_report().audible): return
 	var key := "travel_%s_%d" % [event.kind,posmod(phrase,8)]
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
@@ -506,6 +515,7 @@ func restore_city_transport(view: Dictionary) -> void:
 	# Switching complete works reuses the fixed bank. Short cues belong to the
 	# previous city; a restored performance resumes its exact saved bar phase.
 	clear_travel()
+	attention.clear()
 	canon.reset()
 	bakery_cues.reset()
 	reply.clear()
@@ -579,6 +589,8 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 		for id: String in circular.members:chorus.erase(id)
 		if lead in circular.members:lead=""
 		if circular.glowing:lead=str(circular.house_id);audible=true
+	if attention.current_mode==AttentionMixer.Mode.SCULPTING and not concert_active:
+		lead="";chorus.clear();ambient.clear();linked.clear()
 	var arcs: Array[Dictionary] = []
 	if audible and concert_active and lead != _concert_venue and not lead.is_empty():
 		arcs.append({"from_id":_concert_venue,"to_id":lead,"strength":1.0})
@@ -808,6 +820,7 @@ func set_muted(value: bool) -> void:
 		return
 	muted = value
 	if muted:
+		attention.clear()
 		clear_travel()
 		canon.clear()
 		bakery_cues.clear()
@@ -824,6 +837,7 @@ func set_muted(value: bool) -> void:
 
 
 func set_concert_active(active: bool) -> void:
+	if active and not concert_active:attention.clear()
 	concert_active = active
 	if active:canon.clear()
 	if active: bakery_cues.clear()
@@ -979,6 +993,8 @@ func music_report() -> Dictionary:
 
 
 func play_edit(kind: String) -> void:
+	if kind in ["road","terrain","house","terrace","remove"]:attention.notify_sculpt_action(_playback_clock())
+	elif not attention.allows("daily"):return
 	if kind=="terrain": kind="road"
 	if muted or not _edit_streams.has(kind):
 		return
@@ -1046,6 +1062,14 @@ func signature_music_report() -> Array[Dictionary]:
 
 func play_quality_upgrade(house_id: String, tier: int) -> bool:
 	if muted or _loading or not _house_music.has(house_id):return false
+	# Ordinary distant upgrades are silent. Major milestones remain a soft
+	# directional landmark through the existing filtered short bus.
+	if acoustic.focus_weight(house_id)<=0. and tier<4:return false
+	return attention.schedule_event("quality_upgrade",{"source_id":house_id,"tier":tier},_playback_clock(),6.)
+
+func _play_quality_cue(house_id:String,tier:int)->bool:
+	if muted or _loading or not _house_music.has(house_id) or int(_house_music[house_id].level_tier)<tier:return false
+	if acoustic.focus_weight(house_id)<=0. and tier<4:return false
 	var key: String="quality_upgrade_%d"%posmod(floori(_playback_clock()/3.0),8)
 	if not _edit_streams.has(key):return false
 	for effect: AudioStreamPlayer in _effects:
@@ -1054,6 +1078,23 @@ func play_quality_upgrade(house_id: String, tier: int) -> bool:
 		play_effect_at(effect,_edit_streams[key],_house_music[house_id].position,weight if weight>0.0 else .25,weight<=0.0)
 		return true
 	return false
+
+func _attention_trigger(category:String,payload:Dictionary)->bool:
+	if category=="pluck_arp":return _play_queued_house(payload)
+	if category=="quality_upgrade":return _play_quality_cue(str(payload.source_id),int(payload.tier))
+	var phrase:int=payload.phrase
+	match category:
+		"tower_bell":_tower_at_phrase(phrase)
+		"waterwheel":
+			if phrase%2==0:_signature_at_phrase(phrase)
+		"cafe_flute":_cafe_at_phrase(phrase)
+		"bakery_cue":bakery_cues.at_phrase(phrase,1.125)
+		"district_reply":reply.at_phrase(phrase,1.5)
+		"tram_chime":_tram_at_clock()
+		"travel_crossing":_travel_at_phrase(phrase)
+		"quality_flourish":
+			if phrase%2==1:_signature_at_phrase(phrase)
+	return true
 
 func play_effect_at(player: AudioStreamPlayer,stream: AudioStreamWAV,at: Vector2=Vector2.INF,gain_weight: float=1.0,remote: bool=false) -> void:
 	# Every use of a pooled voice sets its position, including centered edits
@@ -1118,6 +1159,7 @@ func renaissance_music_report() -> Dictionary:
 	return {"unlocked":atelier,"source_id":source,"weight":weight,"track":"renaissance_fugue"}
 
 func _process(delta: float) -> void:
+	attention.evaluate_mode(acoustic.zoom,concert_active,attention_strolling,delta,_playback_clock())
 	_acoustic_timer-=delta
 	if _acoustic_timer<=0.0:
 		_acoustic_timer=.25
@@ -1150,14 +1192,12 @@ func _process(delta: float) -> void:
 		_concert_previous_position = position
 		_advance_daily_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 		_advance_concert_arrangement()
-		_cafe_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		_travel_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		reply.at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		bakery_cues.at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		_tram_at_clock()
-		canon.step(_playback_clock())
+		attention.step(_playback_clock(),_attention_trigger)
+		if concert_active:
+			_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+			_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+		if attention.allows("canon"):canon.step(_playback_clock(),.375)
+		else:canon.clear()
 	bakery_cues.report()
 	signature_music_report()
 	if not _travel_active.is_empty(): travel_music_report()
@@ -1175,7 +1215,9 @@ func _process(delta: float) -> void:
 		if muted or weight<=0.0:
 			_players[key].volume_linear = 0.0
 			continue
-		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)
+		# Reserve the overview lift in every ordinary mix. At +2 dB the
+		# long stems only return to the already verified PCM peak envelope.
+		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)+attention.backing_duck_db+ATTENTION_HEADROOM_DB
 		if not is_finite(_players[key].volume_db): _players[key].volume_db=-60.0
 		_players[key].volume_db = lerpf(_players[key].volume_db, target, 1.0 - exp(-delta * 2.8))
 

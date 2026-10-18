@@ -107,6 +107,8 @@ func _run()->void:
 	demo.music.set_muted(false);r=await _cue()
 	_check(not r.is_empty() and r.house_id==r.members[posmod(int(r.beat),5)],"unmute resumes the current global turn without replaying a queue")
 	var manual_ok: bool=demo.music.play_house(str(fixture.court_ids[0]));await process_frame;await process_frame
+	var pluck_deadline:=Time.get_ticks_msec()+350
+	while demo.music.attention.report().arp_pending>0 and Time.get_ticks_msec()<pluck_deadline:await process_frame
 	_check(manual_ok and not demo.music.canon.report().glowing and demo.music.house_pluck_report().glowing,"manual house pluck preempts automatic canon and owns its window")
 	await create_timer(.65).timeout;r=await _cue()
 	if not r.is_empty():
