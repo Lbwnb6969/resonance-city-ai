@@ -16,26 +16,17 @@ func _phase(life: Node3D,worker: Dictionary,phase: String)->bool:
 		life._process(.1)
 	return false
 static func fixture()->RefCounted:
-	var city:=State.new(); city.initialize()
-	# First chapter is awarded from the same real ledgers as the journal.
-	city.roads[0].bridge=true
-	city.produce_bread("h2",1); city.record_concert_completion("h4"); city.refresh_growth()
-	var original: Array[Dictionary]=city.houses.duplicate(true)
-	city.houses.clear()
-	for i in range(4):
-		var house: Dictionary=original[[0,1,3,2][i]].duplicate(true)
-		house.origin=[-14.0+i*4.0,-2.0]; house.role="residential"
-		house.cells=[house.cells[0].duplicate(true)]
-		house.cells[0].x=0;house.cells[0].z=0;house.cells[0].level=0
-		city.houses.append(house)
-	city.roads.assign([{"id":"r1","points":[[-16.0,0.0],[-1.0,0.0]],"width":1.75,"style":"promenade","bridge":false,"source":"seed"}])
-	city.plants.clear();city.set_house_role("h2","atelier");city.revision+=1
+	# Frozen pre-milestone Schema13 work from be445610. These earned rights
+	# remain valid; fresh-town unlocking is checked independently.
+	var city:=State.new()
+	var restored: Dictionary=city.restore(JSON.parse_string(FileAccess.get_file_as_string("res://tools/fixtures/legacy_renaissance_schema13.json")))
+	assert(restored.ok)
 	return city
 func _run()->void:
 	var old:=State.new(); old.initialize()
 	_check(old.era_unlocks==["pastoral"] and not old.set_house_role("h2","atelier").ok,"new town starts with pastoral rights and locked atelier")
 	var city:=fixture()
-	_check(city.era_unlocks==["pastoral","renaissance"] and city.houses[1].role=="atelier","first earned chapter opens renaissance and sixth role")
+	_check(city.era_unlocks==["pastoral","renaissance"] and city.houses[1].role=="atelier","legacy earned renaissance rights and sixth role survive stricter new-town milestones")
 	var points: Array[Vector2]=[Vector2(-14,-2)]
 	var district: Dictionary=city.add_district(points,5.6,"market")
 	var id:=str(district.district_id)

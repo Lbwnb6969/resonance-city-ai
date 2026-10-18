@@ -1,5 +1,6 @@
 class_name CityCreationState
 extends RefCounted
+signal era_unlocked(era: String)
 
 ## Authoritative, immediate state for the independent city creation slice.
 const Serializer = preload("res://scripts/world/city_creation_serializer.gd")
@@ -269,6 +270,7 @@ func add_house_stroke(position: Vector2, cells: Array) -> Dictionary:
 	_next_house_id = house_number + 1
 	_high_watermark.house = house_number
 	_issue_stroke_cells(result.added_cells)
+	Eras.refresh(self)
 	_commit(before, "连续新建房屋")
 	return result
 
@@ -434,6 +436,7 @@ func add_house(position: Vector2) -> Dictionary:
 	_next_cell_id = cell_number + 1
 	_high_watermark.house = house_number
 	_high_watermark.cell = cell_number
+	Eras.refresh(self)
 	_commit(before, "新建房屋")
 	return {"ok": true, "message": "新房屋已建成", "house_id": house.id,"base_y":house.base_y}
 
@@ -454,7 +457,7 @@ func set_house_role(house_id: String, role: String) -> Dictionary:
 	if houses[index].has("signature") and role!=Signatures.ROLES[str(houses[index].signature)]:return _fail("地标保持专属用途")
 	if role not in HOUSE_ROLES:
 		return _fail("未知的建筑用途")
-	if role == "atelier" and not era_unlocks.has("renaissance"): return _fail("完成晨光初聚，开启文艺复兴书院")
+	if role == "atelier" and not era_unlocks.has("renaissance"): return _fail("建成14座房屋，完成茶聚与跨区问答，开启文艺复兴书院")
 	if role=="clockmaker" and not era_unlocks.has("clockwork"):return _fail("28屋与两时代街坊开启钟表工坊")
 	if role=="symphony_hall" and not era_unlocks.has("modern_eco"):return _fail("50屋与三时代共鸣开启交响音乐厅")
 	if houses[index].role == role:
@@ -1499,6 +1502,7 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 	cafe_progress[cafe_id] = {"groups":int(row.groups) + 1,"visits":int(row.visits) + homes.size()}
 	life_progress.tea_parties = int(life_progress.tea_parties) + 1
 	life_progress.tea_visits = int(life_progress.tea_visits) + homes.size()
+	Eras.refresh(self)
 	var glow_ids := homes.duplicate()
 	glow_ids.append(cafe_id)
 	var extension := cafe_afterglow_extension(cafe_id)

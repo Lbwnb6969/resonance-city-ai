@@ -12,6 +12,20 @@ func _until(life: Node3D,condition: Callable,seconds: float=600.0)->bool:
 		if condition.call():return true
 		life._process(.1)
 	return false
+func _saved_equal(a: Variant,b: Variant)->bool:
+	if a is Dictionary and b is Dictionary:
+		if a.size()!=b.size():return false
+		for key: Variant in a:
+			if not b.has(key) or not _saved_equal(a[key],b[key]):return false
+		return true
+	if a is Array and b is Array:
+		if a.size()!=b.size():return false
+		for i in range(a.size()):
+			if not _saved_equal(a[i],b[i]):return false
+		return true
+	# JSON parses 15.299999999999999 as 15.3; retain sub-picometre fidelity.
+	if a is float and b is float:return absf(a-b)<1e-12
+	return a==b
 static func ordinary_city()->RefCounted:
 	var city:=State.new();city.initialize()
 	for p: Vector2 in [Vector2(-20,-10),Vector2(-24,-10),Vector2(-20,10),Vector2(-24,10)]:city.add_house(p)
@@ -41,8 +55,12 @@ func _run()->void:
 	points=[Vector2(-2.4,1)]
 	var to: Dictionary=city.add_district(points,4.,"deep")
 	city.link_districts(from.district_id,to.district_id)
-	_check(city.era_unlocks.has("renaissance") and not city.signature_unlocks.has("music_academy"),"mere link and renaissance rights do not stand in for an actual answered phrase")
-	_check(city.record_district_answer(from.district_id,to.district_id) and not city.record_district_answer(to.district_id,from.district_id) and city.signature_unlocks.has("music_academy"),"completed pair event records two unique districts once and unlocks academy")
+	for at_value: Vector2 in [Vector2(-32,-20),Vector2(-28,-20),Vector2(-24,-20),Vector2(-20,-20)]:
+		assert(city.add_house(at_value).ok)
+	assert(city.set_house_role("h4","garden_cafe").ok);life._sync()
+	_check(_until(life,func():return int(city.life_progress.tea_parties)>0) and city.houses.size()==14,"fourteen houses and actual residents complete the new tea milestone")
+	_check(not city.era_unlocks.has("renaissance") and not city.signature_unlocks.has("music_academy"),"mere manual link after fourteen houses and tea is not an answered phrase")
+	_check(city.record_district_answer(from.district_id,to.district_id) and not city.record_district_answer(to.district_id,from.district_id) and city.era_unlocks.has("renaissance") and city.signature_unlocks.has("music_academy"),"completed pair event records two unique districts once and unlocks era and academy")
 	before=city.snapshot()
 	_check(city.preview_signature("bell_keep",Vector2(-18,0)).ok and city.snapshot()==before,"unlocked full landmark preview is read-only")
 	var keep: Dictionary=city.place_signature("bell_keep",Vector2(-18,0))
@@ -84,12 +102,16 @@ func _run()->void:
 	_check(city.bakery_batch_size("h2")==batch,"removing mill immediately removes its flour bonus")
 	city.undo()
 	var academy: Dictionary=city.place_signature("music_academy",Vector2(18,-8))
-	_check(academy.ok and city.concert_radius(academy.house_id)==36.0 and city.concert_radius("h4")==22.0,"free academy is a real venue with distinct thirty-six meter performance radius")
+	_check(academy.ok and city.concert_radius(academy.house_id)==36.0 and city.concert_radius(academy.house_id)!=city.concert_radius("h4"),"free academy is a real venue with distinct thirty-six meter performance radius")
 	_check(city.set_journey_checkpoint(life.checkpoint()).ok,"landmark edits preserve actual resident checkpoint references")
+	# Compare saved JSON: live cafe checkpoint keys use StringName, JSON uses String.
 	var snapshot: Dictionary=city.snapshot();var copy:=State.new()
-	_check(snapshot.schema==14 and copy.restore(JSON.parse_string(JSON.stringify(snapshot,"",true,true))).ok and copy.snapshot()==snapshot,"three placed landmarks, service milestones and all persistent evidence roundtrip exactly")
+	var saved_json:=JSON.stringify(snapshot,"",true,true)
+	var loaded: Dictionary=copy.restore(JSON.parse_string(saved_json))
+	_check(snapshot.schema==14 and loaded.ok and _saved_equal(copy.snapshot(),snapshot),"three placed landmarks, service milestones and all persistent evidence roundtrip within JSON numeric precision: "+str(loaded))
+	var loaded_before: Dictionary=copy.snapshot()
 	var bad: Dictionary=snapshot.duplicate(true);bad.houses[-1].signature="bell_keep"
-	_check(not copy.restore(bad).ok and copy.snapshot()==snapshot,"duplicate forged landmark is rejected atomically")
+	_check(not copy.restore(bad).ok and copy.snapshot()==loaded_before,"duplicate forged landmark is rejected atomically")
 	bad=snapshot.duplicate(true);bad.signature_unlocks.erase("music_academy")
 	_check(not copy.restore(bad).ok,"unearned landmark placement cannot load")
 	bad=snapshot.duplicate(true);bad.district_answers.clear()

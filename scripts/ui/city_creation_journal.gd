@@ -139,7 +139,7 @@ func refresh(notify: bool=true) -> void:
 		refresh_palette()
 		if notify:
 			var id: String=earned[-1]
-			demo._message("手记添了一章 · "+str(Growth.FINISHES[id].name)+"已可选"+(" · 文艺复兴风貌与书院已开启" if id=="dawn" else ""))
+			demo._message("手记添了一章 · "+str(Growth.FINISHES[id].name)+"已可选")
 			demo.music.play_edit("terrace")
 	# Completed goals keep showing target/target while production continues;
 	# do not rebuild a browsing player's cards for each additional loaf.

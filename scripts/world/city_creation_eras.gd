@@ -3,6 +3,7 @@ extends RefCounted
 const IDS := ["pastoral", "renaissance", "clockwork", "modern_eco"]
 const NAMES := ["田园木石河湾", "文艺复兴人文长街", "蒸汽钟表与浪漫花房", "现代生态交响城"]
 const AVAILABLE_COUNT := 4
+const RENAISSANCE_HOUSES := 14
 
 static func for_house(city: RefCounted, house: Dictionary) -> String:
 	var signature:=str(house.get("signature",""))
@@ -16,8 +17,9 @@ static func for_house(city: RefCounted, house: Dictionary) -> String:
 
 static func refresh(city: RefCounted) -> bool:
 	var changed := false
-	if city.era_unlocks.size() == 1 and city.growth_memories.has("dawn"):
+	if city.era_unlocks.size()==1 and city.houses.size()>=RENAISSANCE_HOUSES and int(city.life_progress.tea_parties)>0 and not city.district_answers.is_empty():
 		city.era_unlocks.append("renaissance")
+		city.era_unlocked.emit("renaissance")
 		changed=true
 	if city.era_unlocks.size()==2 and city.houses.size()>=28:
 		var occupied := {}
@@ -27,9 +29,11 @@ static func refresh(city: RefCounted) -> bool:
 			if not district.is_empty(): occupied[str(district.get("era_theme","pastoral"))]=true
 		if occupied.size()>=2:
 			city.era_unlocks.append("clockwork")
+			city.era_unlocked.emit("clockwork")
 			changed=true
 	if city.era_unlocks.size()==3 and city.houses.size()>=50 and three_era_resonance(city.era_answers):
 		city.era_unlocks.append("modern_eco");changed=true
+		city.era_unlocked.emit("modern_eco")
 	return changed
 
 static func three_era_resonance(rows: Array)->bool:
@@ -72,7 +76,8 @@ static func validate_answers(city:RefCounted,data:Dictionary,issued:Dictionary)-
 
 static func journal(city: RefCounted) -> String:
 	var lines: PackedStringArray = []
-	var goals := ["自由建造与街坊生活", "完成晨光初聚：桥、面包与首次演出", "28屋 · 两种时代街坊", "50屋 · 贯通三时代共鸣"]
+	var renaissance_goal: String="房屋 %d/14 · 茶聚 %d/1 · 跨区问答 %d/1" % [mini(city.houses.size(),RENAISSANCE_HOUSES),mini(int(city.life_progress.tea_parties),1),mini(city.district_answers.size(),1)]
+	var goals := ["自由建造与街坊生活", renaissance_goal, "28屋 · 两种时代街坊", "50屋 · 贯通三时代共鸣"]
 	for i in range(IDS.size()):
 		lines.append(("✓ " if city.era_unlocks.has(IDS[i]) else "○ ") + "时代 %s · " % [i+1] + NAMES[i] + (" · 已开启" if city.era_unlocks.has(IDS[i]) else " · " + goals[i]))
 	return "\n".join(lines)

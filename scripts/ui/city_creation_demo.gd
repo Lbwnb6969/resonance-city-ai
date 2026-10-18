@@ -1,5 +1,7 @@
 class_name CityCreationDemo
 extends Node3D
+const RenderCapture=preload("res://scripts/ui/city_creation_render_capture.gd")
+var render_capture_directory: String="user://render_diagnostics"
 ## The editable town and its clock are independent of the legacy audio simulation.
 const State = preload("res://scripts/world/city_creation_state.gd")
 const TownRenderer = preload("res://scripts/visual/city_creation_renderer.gd")
@@ -264,6 +266,7 @@ func _ready() -> void:
 	signatures.setup(self,ui_layer.get_child(0))
 	ledger=Ledger.new()
 	ledger.setup(self,ui_layer.get_child(0))
+	state.era_unlocked.connect(_on_era_unlocked,CONNECT_DEFERRED)
 	_refresh_ui()
 	_message("从一面墙开始。点墙扩房，点屋顶加层。")
 	if save_blocked: _message("作品读取失败，原文件已保留。当前河湾不会覆盖它。")
@@ -1051,6 +1054,7 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_P: select_tool(4)
 		elif event.keycode == KEY_V: camera_rig.toggle(self)
 		elif event.keycode == KEY_F12: camera_rig.capture(self)
+		elif event.keycode == KEY_F10: RenderCapture.capture(self,render_capture_directory)
 		elif event.keycode == KEY_F: ui_layer.visible = not ui_layer.visible
 		elif event.keycode == KEY_ESCAPE: _cancel_draft()
 		elif event.keycode == KEY_R and tool == 2:
@@ -1983,6 +1987,15 @@ func _refresh_workshops() -> void:
 	workshop_progress.max_value=float(selected.duration)
 	workshop_progress.value=float(selected.elapsed)
 	workshop_button.text="暂停制作" if bool(selected.open) else "继续制作"
+
+func _on_era_unlocked(era: String)->void:
+	var index: int=State.Eras.IDS.find(era)
+	_message("♫ "+State.Eras.NAMES[index]+"已开启 · 旧街坊风貌保留，可为新街坊选择新时代。")
+	music.play_edit("terrace")
+	if not edit_pending():
+		_refresh_place();_refresh_district()
+		journal.refresh(false)
+	save_delay=3.0
 
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return

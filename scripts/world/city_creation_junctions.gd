@@ -226,7 +226,11 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 		var junctions: Array=[]
 		var keys: Array=joints.get(id,{}).keys()
 		keys.sort_custom(func(a: Vector2i,b: Vector2i) -> bool: return a.x<b.x or (a.x==b.x and a.y<b.y))
-		for key: Vector2i in keys: junctions.append(joints[id][key])
+		for key: Vector2i in keys:
+			var joint: Vector2=joints[id][key]
+			# Two terminal arms form a bend, not an intersection mouth. Widening
+			# their separate caps leaves fins at every corner of a split loop.
+			if not _terminal_bend(joint,segments,segment_bins,first_new if reuse_fixed else -1):junctions.append(joint)
 		stats.junctions+=junctions.size()
 		var local_houses: Array=[]
 		var local_doors: Array=[]
@@ -292,6 +296,30 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 	for id: String in _geometry_cache.keys():
 		if not roads.has(id): _geometry_cache.erase(id)
 	stats["build_ms"]=float(Time.get_ticks_usec()-build_started)/1000.0
+
+func _terminal_bend(at: Vector2,segments: Array[Dictionary],bins: Dictionary,additional_start: int=-1)->bool:
+	var arms: Array[Vector2]=[]
+	var radius: float=-1.0
+	var candidates: Array=bins.get(Vector2i(floori(at.x/BIN),floori(at.y/BIN)),[]).duplicate()
+	# Preview keeps the fixed topology's bins immutable; include its new draft.
+	if additional_start>=0:
+		for index in range(additional_start,segments.size()):
+			if segments[index].bounds.grow(float(segments[index].radius)).has_point(at):candidates.append(index)
+	for index: int in candidates:
+		var segment: Dictionary=segments[index]
+		var nearest:=Geometry2D.get_closest_point_to_segment(at,segment.a,segment.b)
+		if nearest.distance_to(at)>.002:continue
+		var a: Vector2=segment.a-at;var b: Vector2=segment.b-at
+		if minf(a.length(),b.length())>.002:return false
+		if radius>=0.0 and absf(radius-float(segment.radius))>.001:return false
+		radius=float(segment.radius)
+		var direction: Vector2=(a if a.length_squared()>b.length_squared() else b).normalized()
+		var duplicate:=false
+		for arm: Vector2 in arms:
+			if arm.dot(direction)>.9999:duplicate=true;break
+		if not duplicate:arms.append(direction)
+		if arms.size()>2:return false
+	return arms.size()==2
 
 func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Array,core: Array,houses: Array,doors: Array,foreign: Array[Dictionary]) -> Array[PackedVector2Array]:
 	var result: Array[PackedVector2Array]=[]

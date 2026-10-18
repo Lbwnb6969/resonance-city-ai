@@ -1,0 +1,180 @@
+{
+	"bakery_supply": {
+		"h2": {
+			"produced": 1,
+			"served": 0,
+			"stock": 1
+		}
+	},
+	"cafe_credits": {},
+	"cafe_progress": {},
+	"districts": [],
+	"era_unlocks": [
+		"pastoral",
+		"renaissance"
+	],
+	"growth_memories": [
+		"dawn"
+	],
+	"high_watermark": {
+		"cell": 11,
+		"district": 0,
+		"house": 6,
+		"plant": 32,
+		"road": 6,
+		"water": 0
+	},
+	"house_culture": {},
+	"house_improvements": {},
+	"houses": [
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c1",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h1",
+			"name": "石榴巷1号",
+			"origin": [
+				-14.0,
+				-2.0
+			],
+			"palette": 0,
+			"role": "residential",
+			"seed": 81000,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c3",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h2",
+			"name": "石榴巷2号",
+			"origin": [
+				-10.0,
+				-2.0
+			],
+			"palette": 1,
+			"role": "atelier",
+			"seed": 81977,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c7",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h4",
+			"name": "石榴巷4号",
+			"origin": [
+				-6.0,
+				-2.0
+			],
+			"palette": 3,
+			"role": "residential",
+			"seed": 83931,
+			"workshop_open": true
+		},
+		{
+			"auto_matinee": false,
+			"bakery_open": true,
+			"cells": [
+				{
+					"id": "c5",
+					"kind": "room",
+					"level": 0,
+					"source": "seed",
+					"x": 0,
+					"z": 0
+				}
+			],
+			"id": "h3",
+			"name": "石榴巷3号",
+			"origin": [
+				-2.0,
+				-2.0
+			],
+			"palette": 2,
+			"role": "residential",
+			"seed": 82954,
+			"workshop_open": true
+		}
+	],
+	"journey_checkpoint": {},
+	"life_progress": {
+		"auto_concerts": 0,
+		"concerts": 1,
+		"gatherings": 0,
+		"purchases": 0,
+		"tea_parties": 0,
+		"tea_visits": 0
+	},
+	"matinee_cooldown": 0.0,
+	"matinee_credits": {},
+	"matinee_last_venue": "",
+	"matinee_pending": {},
+	"matinee_progress": {},
+	"next_cell_id": 12,
+	"next_district_id": 1,
+	"next_house_id": 7,
+	"next_plant_id": 33,
+	"next_road_id": 7,
+	"next_water_id": 1,
+	"plants": [],
+	"resonance_afterglow": {},
+	"revision": 2,
+	"roads": [
+		{
+			"bridge": false,
+			"id": "r1",
+			"points": [
+				[
+					-16.0,
+					0.0
+				],
+				[
+					-1.0,
+					0.0
+				]
+			],
+			"source": "seed",
+			"style": "promenade",
+			"width": 1.75
+		}
+	],
+	"schema": 13,
+	"terrain_strokes": [],
+	"venue_commissions": {
+		"h4": {
+			"delivered": 0,
+			"requested": 1,
+			"used": 0
+		}
+	},
+	"waters": [],
+	"workshop_supply": {}
+}

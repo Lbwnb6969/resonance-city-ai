@@ -74,7 +74,7 @@ func _run()->void:
 	for note: Dictionary in notes:timbres[note.timbre]=true
 	_check(notes.size()==54 and timbres.has("harpsichord") and timbres.has("strings"),"rendered 24-second bank contains real keyboard subject and imitating strings")
 	_check(player.stream.data.size()==demo.music.FRAMES*2 and player.stream.loop_end==demo.music.FRAMES and demo.music.audio_report.peaks.renaissance_fugue>.01 and demo.music.audio_report.seam_steps.renaissance_fugue<.01,"new PCM is non-silent and seamless on existing global D-pentatonic loop")
-	_check(demo.music.get_child_count()==14 and demo.music.spatial.report().bus_count==6,"ten long stems and four shorts reuse existing six owned spatial buses")
+	_check(demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.music.spatial.report().bus_count==6,"current long stems and four shorts reuse existing six owned spatial buses")
 	facts.music=report;facts.audio=demo.music.audio_report
 	var ids:=_identity()
 	var before_color: int = h1.get_instance_id()

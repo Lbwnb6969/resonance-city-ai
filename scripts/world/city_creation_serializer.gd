@@ -217,7 +217,6 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if (data.has("building_quality") or data.has("house_concerts") or data.has("signature_unlocks") or data.has("district_answers")) and data.schema < city.QUALITY_SCHEMA: return city._fail("品质作品需要新存档版本")
 	if data.has("house_clockwork") and data.schema<city.CLOCKWORK_SCHEMA:return city._fail("钟表工艺需要新存档版本")
 	var memories: Variant = data.get("growth_memories", [])
-	if unlocks.size()>1 and (not memories is Array or not memories.has("dawn")): return city._fail("文艺复兴尚未达成第一篇章")
 	if not memories is Array or memories.size()>Growth.CHAPTERS.size(): return city._fail("城市成长手记结构无效")
 	for index in range(memories.size()):
 		if not memories[index] is String or memories[index]!=Growth.CHAPTERS[index]: return city._fail("城市成长手记章节顺序无效")
@@ -388,6 +387,11 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if not era_check.ok:return era_check
 	var signature_check: Dictionary=city.Signatures.validate(city,data,issued)
 	if not signature_check.ok:return signature_check
+	# Old chapter-earned rights remain valid. New rights use the conserved tea
+	# and answer ledgers; issued IDs retain history after construction undo.
+	if unlocks.size()>1 and not memories.has("dawn"):
+		if int(issued.house)<city.Eras.RENAISSANCE_HOUSES or int(progress.get("tea_parties",0))<1 or data.get("district_answers",[]).is_empty():
+			return city._fail("文艺复兴尚未达成解锁里程碑")
 	var grand_check:Dictionary=city.GrandFestival.validate(city,data)
 	if not grand_check.ok:return grand_check
 	for road in data.roads:

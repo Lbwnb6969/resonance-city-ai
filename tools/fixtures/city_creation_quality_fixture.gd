@@ -20,7 +20,6 @@ static func build(tree: SceneTree)->Dictionary:
 	city.refresh_growth()
 	city.set_house_role("h4","garden_cafe")
 	var atelier: Dictionary=city.add_house(Vector2(-15,0))
-	city.set_house_role(atelier.house_id,"atelier")
 	var points: Array[Vector2]=[Vector2(-15,1.55),Vector2(-11,1.55)]
 	city.add_road(points)
 	var venues: Array[String]=[]
@@ -28,8 +27,16 @@ static func build(tree: SceneTree)->Dictionary:
 		var added: Dictionary=city.add_house(p);city.set_house_role(added.house_id,"venue");venues.append(str(added.house_id))
 		points=[Vector2(p.x,p.y+1.55),Vector2(-11,p.y+1.55)];city.add_road(points)
 	points=[Vector2(-11,-9),Vector2(-11,9)];city.add_road(points,"promenade")
+	assert(city.add_house(Vector2(-32,-20)).ok)
 	life._sync()
 	facts.tea=until(life,func():return int(city.matinee_credits.get("h1",{}).get("earned",0))>0)
+	var a: Dictionary=city.add_district([Vector2(-8,-6)] as Array[Vector2],3.6,"warm")
+	var b: Dictionary=city.add_district([Vector2(-7,6)] as Array[Vector2],3.6,"deep")
+	assert(a.ok and b.ok and city.link_districts(a.district_id,b.district_id).ok)
+	# The fixture supplies the completed music event; live PCM is checked separately.
+	assert(city.record_district_answer(a.district_id,b.district_id))
+	assert(city.set_house_role(atelier.house_id,"atelier").ok)
+	life._sync()
 	facts.culture=until(life,func():return city.culture_level("h1")>0)
 	life._refresh_quality();facts.before_relay_tier=city.level_tier("h1")
 	facts.relay_invite=life.start_relay(venues[0]).ok
