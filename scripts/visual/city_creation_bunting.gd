@@ -58,14 +58,20 @@ static func _room_bins(state) -> Dictionary:
 					bins[key].append(row)
 	return bins
 
-static func _pairs(state,anchors: Array[Dictionary]) -> Array[Dictionary]:
-	var bins: Dictionary={}
-	for index in range(anchors.size()):
-		var at: Vector3=anchors[index].pos
-		var key:=Vector2i(floori(at.x/MAX_SPAN),floori(at.z/MAX_SPAN))
-		if not bins.has(key):bins[key]=[]
-		bins[key].append(index)
-	var rooms:=_room_bins(state)
+static func _pairs(state,anchors: Array[Dictionary],layout_context: Variant=null) -> Array[Dictionary]:
+	# Caller retains a context only while anchor geometry and terrain agree.
+	# Festive flags can change independently without repeating span samples.
+	var context: Dictionary={} if layout_context==null else layout_context
+	if not context.has("bins"):
+		var bins: Dictionary={}
+		for index in range(anchors.size()):
+			var at: Vector3=anchors[index].pos
+			var key:=Vector2i(floori(at.x/MAX_SPAN),floori(at.z/MAX_SPAN))
+			if not bins.has(key):bins[key]=[]
+			bins[key].append(index)
+		context.bins=bins;context.rooms=_room_bins(state);context.spans={}
+	var bins: Dictionary=context.bins
+	var rooms: Dictionary=context.rooms
 
 	var pairs: Array[Dictionary] = []
 	var used_anchors: Dictionary = {}
@@ -103,9 +109,10 @@ static func _pairs(state,anchors: Array[Dictionary]) -> Array[Dictionary]:
 				continue
 			if (-Vector2(b.normal)).dot(a.normal) < 0.50:
 				continue
-			if dist < best_dist and _span_clear(state, a.pos, b.pos,rooms):
-				best_dist = dist
-				best_j = j
+			if dist<best_dist:
+				var span:=Vector2i(i,j)
+				if not context.spans.has(span):context.spans[span]=_span_clear(state,a.pos,b.pos,rooms)
+				if context.spans[span]:best_dist=dist;best_j=j
 		if best_j >= 0:
 			used_anchors[i] = true
 			used_anchors[best_j] = true
@@ -119,8 +126,9 @@ static func build_bunting(renderer: Node3D, parent: Node3D) -> int:
 	var state = renderer.state
 	if state == null:
 		return 0
-	var pairs:=_pairs(state,_anchors(renderer))
+	return build_pairs(renderer,parent,_pairs(state,_anchors(renderer)))
 
+static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary])->int:
 	if pairs.is_empty():
 		return 0
 

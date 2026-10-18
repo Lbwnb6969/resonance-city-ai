@@ -97,7 +97,7 @@ var shore := Shore.new()
 var lilypads := Lilypads.new()
 var touch := Touch.new()
 var light_phase := 0
-var _ecology_key := 0
+var ecology=preload("res://scripts/visual/city_creation_ecology.gd").new()
 var wildlife := Wildlife.new()
 var foliage := Foliage.new()
 var meadow: Node3D
@@ -850,29 +850,9 @@ func set_light_phase(phase: int) -> void:
 var ecology_stats: Dictionary={}
 
 func refresh_ecology() -> void:
-	if ecology_layer==null: return
-	var harmony: Array = []
-	for house: Dictionary in state.houses: harmony.append(state.house_harmony_tier(str(house.id)))
-	var key := hash([state.houses,state.plants,state.waters,state.terrain_strokes,state.house_improvements,harmony])
-	if key==_ecology_key: return
-	_ecology_key=key
-	for house: Dictionary in state.houses:
-		var id := str(house.id)
-		if resonance.rigs.has(id):
-			var amount := float(state.house_harmony_tier(id))/3.0
-			resonance.rigs[id].harmony=amount
-			resonance.rigs[id].material.set_shader_parameter("harmony",amount)
-	var began:=Time.get_ticks_usec()
-	wildlife.refresh_habitats(self)
-	ecology_stats={"habitats_us":Time.get_ticks_usec()-began}
-	_clear(ecology_layer)
-	began=Time.get_ticks_usec()
-	ecology_layer.set_meta("bunting_count",Bunting.build_bunting(self,ecology_layer))
-	ecology_stats.bunting_us=Time.get_ticks_usec()-began
-	began=Time.get_ticks_usec()
-	ecology_layer.set_meta("harmony_flowerpots",HarmonyFlora.build(self,ecology_layer))
-	ecology_stats.flowers_us=Time.get_ticks_usec()-began
-	Bunting.set_light(ecology_layer,light_phase)
+	if ecology_layer==null:return
+	ecology.refresh(self)
+	ecology_stats=ecology.stats
 
 func animate_house_bounce(id: String, strength: float = 0.06) -> void:
 	touch.request(self,id,strength)

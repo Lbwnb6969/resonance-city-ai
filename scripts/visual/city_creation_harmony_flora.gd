@@ -1,7 +1,7 @@
 extends RefCounted
 ## Real household needs add a small exterior flowerpot, without changing the
 ## authored city, doorway clearance, collision or natural-world height field.
-static func build(renderer: Node3D, parent: Node3D) -> int:
+static func build(renderer: Node3D, parent: Node3D,records: Variant=null) -> int:
 	var pots: Array[Transform3D] = []
 	var flowers: Array[Transform3D] = []
 	var colors: Array[Color] = []
@@ -9,20 +9,14 @@ static func build(renderer: Node3D, parent: Node3D) -> int:
 	for house: Dictionary in renderer.state.houses:
 		var tier: int = renderer.state.house_harmony_tier(str(house.id))
 		if tier<1 or str(house.role)!="residential": continue
-		var entrances: Array = renderer.state.house_entrances(str(house.id))
-		if entrances.is_empty(): continue
-		var e: Dictionary = entrances[0]
-		var normal := Vector2(e.side)
-		var tangent := Vector2(normal.y,-normal.x)
-		var at: Vector2 = e.wall_at + normal*0.22 + tangent*0.73
-		var clear := true
-		for road: Dictionary in renderer.state.roads:
-			for i in range(road.points.size()-1):
-				var a := Vector2(road.points[i][0],road.points[i][1])
-				var b := Vector2(road.points[i+1][0],road.points[i+1][1])
-				if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(road.width)*0.5+0.14: clear=false
-		if not clear: continue
-		var base: float = renderer.state.ground_height(at)
+		var id:=str(house.id)
+		var placement: Dictionary
+		if records!=null and records.has(id):placement=records[id]
+		else:
+			placement=_placement(renderer,house)
+			if records!=null:records[id]=placement
+		if placement.is_empty():continue
+		var at: Vector2=placement.at;var base: float=placement.base
 		pots.append(Transform3D(Basis.IDENTITY,Vector3(at.x,base+0.085,at.y)))
 		flowers.append(Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*(0.85+float(tier)*0.10)),Vector3(at.x,base+0.16,at.y)))
 		colors.append(palette[posmod(hash(house.id),4)])
@@ -34,6 +28,23 @@ static func build(renderer: Node3D, parent: Node3D) -> int:
 	_batch(parent,"HarmonyPots",pot,material,pots,[])
 	_batch(parent,"HarmonyFlowers",renderer.meadow._mesh("flower"),renderer.meadow._material("flower"),flowers,colors)
 	return pots.size()
+
+static func _placement(renderer: Node3D,house: Dictionary)->Dictionary:
+	var entrances: Array = renderer.state.house_entrances(str(house.id))
+	if entrances.is_empty(): return {}
+	var e: Dictionary = entrances[0]
+	var normal := Vector2(e.side)
+	var tangent := Vector2(normal.y,-normal.x)
+	var at: Vector2 = e.wall_at + normal*0.22 + tangent*0.73
+	var clear := true
+	for road: Dictionary in renderer.state.roads:
+		for i in range(road.points.size()-1):
+			var a := Vector2(road.points[i][0],road.points[i][1])
+			var b := Vector2(road.points[i+1][0],road.points[i+1][1])
+			if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(road.width)*0.5+0.14: clear=false
+	if not clear: return {}
+	var base: float = renderer.state.ground_height(at)
+	return {"at":at,"base":base}
 
 static func _batch(parent: Node3D, name_value: String, mesh: Mesh, material: Material, transforms: Array[Transform3D], colors: Array[Color]) -> void:
 	var mm := MultiMesh.new()

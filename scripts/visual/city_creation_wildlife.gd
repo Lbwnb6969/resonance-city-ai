@@ -13,6 +13,8 @@ var flutter_mat: ShaderMaterial
 var _perches: Array[Vector3] = []
 var _nectars: Array[Vector3] = []
 var _roof_habitats:Dictionary={}
+var _porch_habitats: Dictionary={}
+var _porch_geometry: Variant=null
 var habitat_stats:Dictionary={}
 var _birds: Array[Dictionary] = []
 var _flutters: Array[Dictionary] = []
@@ -151,6 +153,8 @@ void fragment() {
 func refresh_habitats(renderer: Node3D = null) -> void:
 	if state == null:
 		return
+	var geometry:=hash([state.houses,state.roads,state.waters,state.districts,state.terrain_strokes])
+	if _porch_geometry!=geometry:_porch_habitats.clear();_porch_geometry=geometry
 	_perches.clear()
 	_nectars.clear()
 	var next_habitats:Dictionary={};var rebuilt:=0;var reused:=0
@@ -166,10 +170,14 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 		_perches.append(habitat.perch)
 		if str(house.get("role", "")) in ["garden_cafe", "venue"] or state.house_harmony_tier(str(house.id)) > 0:
 			# Use the real exterior porch instead of placing insects inside rooms.
-			var entrances: Array = state.house_entrances(str(house.id))
-			if not entrances.is_empty():
-				var p: Vector2 = entrances[0].at
-				_nectars.append(Vector3(p.x, state.ground_height(p) + 0.65, p.y))
+			if not _porch_habitats.has(id):
+				var entrances: Array=state.house_entrances(id)
+				var points: Array[Vector3]=[]
+				if not entrances.is_empty():
+					var p: Vector2=entrances[0].at
+					points.append(Vector3(p.x,state.ground_height(p)+.65,p.y))
+				_porch_habitats[id]=points
+			_nectars.append_array(_porch_habitats[id])
 	_roof_habitats=next_habitats;habitat_stats={"rebuilt":rebuilt,"reused":reused}
 	for water: Dictionary in state.waters:
 		if str(water.get("kind", "")) == "pond" and not water.points.is_empty():
