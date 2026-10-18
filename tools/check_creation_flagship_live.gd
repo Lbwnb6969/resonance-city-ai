@@ -2,7 +2,7 @@ extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Examples=preload("res://scripts/world/city_creation_examples.gd")
-const OUT="res://验证记录/旗舰示范城_2026-10-18"
+var OUT="res://验证记录/旗舰示范城_2026-10-18"
 var demo
 var checks: Array=[]
 var failures: Array[String]=[]
@@ -39,6 +39,7 @@ func _identity()->Array:
 	for player: AudioStreamPlayer in demo.music._effects:result.append(player.get_instance_id())
 	return result
 func _run()->void:
+	if "--native-routes" in OS.get_cmdline_user_args():OUT="res://验证记录/原生寻路_2026-10-18"
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var path: String="res://数据/四库共鸣交响大城样例.json";var source:=FileAccess.get_file_as_bytes(path)
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
@@ -58,7 +59,8 @@ func _run()->void:
 	demo.ui_layer.visible=false;_light(0);_camera(Vector3(0,1.2,2),88.,.86)
 	await _capture("01_四时代白昼全城")
 	var cover: Image=root.get_texture().get_image();cover.resize(480,300,Image.INTERPOLATE_LANCZOS)
-	_check(cover.save_png("res://资源/界面/示范河湾/example_flagship.png")==OK,"first official card gets an actual 480x300 rendered cover")
+	if "--native-routes" not in OS.get_cmdline_user_args():
+		_check(cover.save_png("res://资源/界面/示范河湾/example_flagship.png")==OK,"first official card gets an actual 480x300 rendered cover")
 	var tours: Array=[
 		["02_苔阶高地与毛石台基",Vector3(-25,2,-27),27.,.72,.4],
 		["03_圣音书院与喷泉内院",Vector3(-25,1,25),29.,.78,.25],
@@ -78,6 +80,7 @@ func _run()->void:
 		if cpu[-1]>4.:facts.slow_daily_ticks.append({"frame":i,"cpu_ms":cpu[-1],"stages_us":demo.life.tick_profile.duplicate(true)})
 	demo.life.profile_tick=false
 	facts.daily_frames=_metrics(wall);facts.daily_life_cpu=_metrics(cpu)
+	facts.position_queries=demo.life._position_cache_stats.duplicate(true)
 	_check(float(facts.daily_frames.p95_ms)<12. and demo.life.current_population>=200,"actual flagship daily life supports over 200 inhabitants with sub-twelve-millisecond p95")
 	if "--daily-only" not in OS.get_cmdline_user_args():
 		var stage: String=""
@@ -118,5 +121,5 @@ func _run()->void:
 	_check(_identity()==identity and demo.music._effects.size()==4,"flagship loading touring and symphony preserve the original fixed music players and bank")
 	_check(FileAccess.get_file_as_bytes(path)==source and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"the full real tour preserves both shipped source and personal save bytes")
 	var report: Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts}
-	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("FLAGSHIP_LIVE ",JSON.stringify({"ok":report.ok,"count":checks.size(),"failures":failures,"facts":facts}))
+	FileAccess.open(OUT+("/daily_live.json" if "--daily-only" in OS.get_cmdline_user_args() else "/live.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("FLAGSHIP_LIVE ",JSON.stringify({"ok":report.ok,"count":checks.size(),"failures":failures,"facts":facts}))
 	demo.set_process(false);demo.music.set_process(false);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

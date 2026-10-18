@@ -136,6 +136,20 @@ func route(city, id: String, from: Vector2, to: Vector2) -> Array[Vector2]:
 	if plan.is_empty(): return []
 	return _route(city,_house(city,id),plan,from,to,_other_plans(city,id))
 
+func warm_seats(city, entries: Dictionary) -> void:
+	if entries.is_empty():return
+	var context:=_context(city)
+	if context.get("seat_entries")==entries:return
+	# All neighboring furniture must exist before warming. The actual street
+	# port can differ from the facade's provisional entrance used by layout().
+	for id: String in entries:
+		var plan:=layout(city,id)
+		if plan.is_empty():continue
+		for seat: Vector2 in plan.seats:
+			route(city,id,entries[id],seat)
+			route(city,id,seat,entries[id])
+	context.seat_entries=entries.duplicate()
+
 func route_with_plan(city, id: String, plan: Dictionary, from: Vector2, to: Vector2) -> Array[Vector2]:
 	# Cancellation keeps the former furniture detour and actual saved entrance,
 	# while current buildings and water still determine whether a leg is dry.

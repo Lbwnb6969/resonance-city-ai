@@ -77,10 +77,8 @@ var _network_signature: Array = []
 var _roles: Dictionary = {}
 var _route_cache: Dictionary = {}
 var _route_cache_entries := 0
-var _route_searches: Dictionary = {}
 const NETWORK_BIN_SIZE := 2.0
 const ROUTE_CACHE_LIMIT := 1024
-const ROUTE_SEARCH_LIMIT := 32
 var _network: RefCounted = Network.new()
 var _budget_thread: Thread
 var _budget_request: Dictionary = {}
@@ -332,7 +330,7 @@ func _process(delta: float) -> void:
 
 func _tick_life(delta: float) -> void:
 	var sampled:=Time.get_ticks_usec() if profile_tick else 0
-	if profile_tick:tick_profile.height=0;tick_profile.travel=0
+	if profile_tick:tick_profile.height=0;tick_profile.travel=0;tick_profile.cafe_attempts=0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if str(_concert.get("phase", "idle")) == "playing":
 		var until_completion := CONCERT_DURATION - float(_concert.elapsed)
@@ -441,7 +439,10 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 			state.record_life_event("gatherings")
 			if arrival_callback.is_valid(): arrival_callback.call("venue")
 		_read_progress()
-		if service == "bakery" and cafe.try_visit(resident, reached): return
+		var visit_started:=Time.get_ticks_usec() if profile_tick else 0
+		var visiting: bool=service=="bakery" and cafe.try_visit(resident,reached)
+		if profile_tick:tick_profile.cafe_attempts+=Time.get_ticks_usec()-visit_started
+		if visiting:return
 		_depart(resident, reached)
 		if resident.paused: return
 	var route: Array[Vector3] = resident.route
@@ -840,7 +841,10 @@ func _arrive(resident: Dictionary) -> void:
 
 func _depart(resident: Dictionary, reached: String) -> void:
 	# Retry unspent invitations at real daily trip boundaries, never per frame.
-	if str(_roles.get(reached, "")) != "bakery" and cafe.try_visit(resident, reached): return
+	var visit_started:=Time.get_ticks_usec() if profile_tick else 0
+	var visiting: bool=str(_roles.get(reached,""))!="bakery" and cafe.try_visit(resident,reached)
+	if profile_tick:tick_profile.cafe_attempts+=Time.get_ticks_usec()-visit_started
+	if visiting:return
 	var stops: Array[String] = resident.stops
 	var next := (stops.find(reached)+1) % stops.size()
 	resident.destination_id = stops[next]
@@ -1298,7 +1302,6 @@ func _adopt_network(network: RefCounted) -> void:
 	connected_houses = network.connected_houses
 	selected_entrances = network.selected_entrances
 	_route_cache = network._route_cache
-	_route_searches = network._route_searches
 	_route_cache_entries = network._route_cache_entries
 
 func _route(start: String, finish: String) -> Array[Vector3]:
@@ -1307,7 +1310,6 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 	_network.positions = positions
 	var route: Array[Vector3] = _network._route(start,finish)
 	_route_cache = _network._route_cache
-	_route_searches = _network._route_searches
 	_route_cache_entries = _network._route_cache_entries
 	return route
 

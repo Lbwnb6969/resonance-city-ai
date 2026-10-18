@@ -9,7 +9,7 @@ const CafeLayout=preload("res://scripts/world/city_creation_cafe_layout_context.
 var prepared_cafe_context:RefCounted=CafeLayout.new()
 const NETWORK_BIN_SIZE := 2.0
 const ROUTE_CACHE_LIMIT := 1024
-const ROUTE_SEARCH_LIMIT := 32
+const RouteSolver = preload("res://scripts/world/city_creation_route_solver.gd")
 var state: RefCounted
 var graph: Dictionary = {}
 var positions: Dictionary = {}
@@ -23,7 +23,7 @@ var attachment_stats := {"queries":0,"cache_hits":0,"edge_projections":0,"wall_t
 var _route_cache: Dictionary = {}
 var _service_routes: Dictionary = {}
 var _route_cache_entries := 0
-var _route_searches: Dictionary = {}
+var _route_solver := RouteSolver.new()
 var prepared_positions: Dictionary = {}
 var prepared_street_heights:Dictionary={}
 var prepared_home_stops:Dictionary={}
@@ -56,6 +56,14 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	_build_graph()
 	prepare_stats["graph_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
 	prepare_stats["terrain_changed_vertices"] = int(state._ground_terrain.stats.get("raw_changed_vertices",0))
+	stage_started=Time.get_ticks_usec()
+	var cafe_entries: Dictionary={}
+	for house: Dictionary in state.houses:
+		if str(house.get("role",""))!="garden_cafe" or not connected_houses.has(house.id):continue
+		var at: Vector3=positions[connected_houses[house.id]]
+		cafe_entries[str(house.id)]=Vector2(at.x,at.z)
+	prepared_cafe_context.warm_seats(state,cafe_entries)
+	prepare_stats["cafe_seats_ms"]=(Time.get_ticks_usec()-stage_started)/1000.
 	stage_started = Time.get_ticks_usec()
 	# Warm only source queries needed by live actors and every surviving door.
 	# Attachment depends on the planar origin and component, never its old Y.
@@ -188,7 +196,6 @@ func _build_graph() -> void:
 	_route_cache.clear()
 	_service_routes.clear()
 	_route_cache_entries = 0
-	_route_searches.clear()
 	prepared_positions.clear()
 	prepared_street_heights.clear()
 	prepared_home_stops.clear()
@@ -345,6 +352,8 @@ func _build_graph() -> void:
 	_build_attachment_index()
 
 func _build_attachment_index() -> void:
+	_route_solver.build(graph,positions)
+	_route_cache.clear();_route_cache_entries=0;_service_routes.clear()
 	# Preserve graph edge order so equal-distance attachment ties retain their
 	# original route choice. Each segment is indexed across its full extent.
 	_edge_bins.clear()
@@ -397,39 +406,11 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 		result.assign(destinations[finish])
 		return result
 	if route_counting: route_cache_stats.misses+=1
-	# Resume the original sorted-queue Dijkstra from its last requested stop.
-	# This keeps its exact tie order, unlike replacing it with a new A*/heap
-	# ordering. Nearby attachment endpoints reuse already settled prefixes.
-	if not _route_searches.has(start):
-		if _route_searches.size() >= ROUTE_SEARCH_LIMIT: _route_searches.erase(_route_searches.keys()[0])
-		var initial_queue: Array[String] = [start]
-		_route_searches[start] = {"distances":{start:0.0},"previous":{},"queue":initial_queue,"visited":{},"pending":""}
-	var search: Dictionary = _route_searches[start]
-	var distances: Dictionary = search.distances
-	var previous: Dictionary = search.previous
-	var queue: Array[String] = search.queue
-	var visited: Dictionary = search.visited
-	# An early destination was marked settled before the original break;
-	# expand its neighbors only when a later query needs the search to continue.
-	if not visited.has(finish) and not str(search.pending).is_empty():
-		var pending: String = search.pending
-		search.pending = ""
-		_expand_route_node(pending,distances,previous,queue)
-	while not visited.has(finish) and not queue.is_empty():
-		_sort_route_queue(queue,distances)
-		var current: String = queue.pop_front()
-		if visited.has(current): continue
-		visited[current] = true
-		if current == finish:
-			search.pending = current
-			break
-		_expand_route_node(current,distances,previous,queue)
-	if not visited.has(finish): return result
-	var current := finish
-	result.push_front(positions[current]+Vector3(0,0.10,0))
-	while current != start:
-		current = str(previous[current])
-		result.push_front(positions[current]+Vector3(0,0.10,0))
+	# Native priority queue; edge costs still come from this exact graph.
+	# Replanning can choose another equal-length legal street. Existing walking
+	# routes and saved positions remain owned by Life's journey state machine.
+	for id: int in _route_solver.get_id_path(_route_solver.ids[start],_route_solver.ids[finish]):
+		result.append(positions[_route_solver.keys[id]]+Vector3(0,0.10,0))
 	if _route_cache_entries >= ROUTE_CACHE_LIMIT:
 		_route_cache.clear()
 		_route_cache_entries = 0
@@ -438,32 +419,6 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 	_route_cache[start] = destinations
 	_route_cache_entries += 1
 	return result
-
-func _expand_route_node(current: String,distances: Dictionary,previous: Dictionary,queue: Array[String]) -> void:
-	for neighbor: String in graph[current]:
-		var distance := float(distances[current])+float(graph[current][neighbor])
-		if distance < float(distances.get(neighbor,INF)):
-			distances[neighbor] = distance
-			previous[neighbor] = current
-			queue.append(neighbor)
-
-func _sort_route_queue(queue: Array[String],distances: Dictionary) -> void:
-	# Native float sorting avoids a GDScript callback for every comparison.
-	# Equal costs belonging to different nodes retain the original sort path,
-	# including its tie permutation. Repeated entries of one node are identical.
-	var costs: Array[float] = []
-	costs.resize(queue.size())
-	var by_cost: Dictionary = {}
-	for index in range(queue.size()):
-		var node: String = queue[index]
-		var cost := float(distances[node])
-		if by_cost.has(cost) and str(by_cost[cost]) != node:
-			queue.sort_custom(func(a:String,b:String)->bool: return float(distances[a])<float(distances[b]))
-			return
-		by_cost[cost]=node
-		costs[index]=cost
-	costs.sort()
-	for index in range(queue.size()): queue[index]=by_cost[costs[index]]
 
 func _attachments_for_planar(planar: Vector2) -> Dictionary:
 	attachment_stats.queries += 1

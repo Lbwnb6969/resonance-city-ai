@@ -155,7 +155,7 @@ func _route_component_case() -> void:
 	# This synthetic graph also owns its component and attachment caches.
 	life._network.graph=life.graph;life._network.positions=life.positions
 	life._network.component_of={"a":"a","b":"a","c":"c","d":"c"}
-	life._network._route_cache.clear();life._network._route_searches.clear()
+	life._network._route_cache.clear()
 	life._network._build_attachment_index()
 	_check(not life._route_from_position(Vector3(2,.155,.3), "b").is_empty(), "nearest disconnected edge does not suppress a truly reachable local component")
 	_check(life._route_from_position(Vector3(2,.155,2), "b").is_empty(), "route cannot jump from a far road across open ground")

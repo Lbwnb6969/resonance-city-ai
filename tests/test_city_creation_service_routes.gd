@@ -13,7 +13,7 @@ func _run()->void:
 	var pairs:=0;var exact:=true;var immutable:=true
 	# Discard every transient path and search. Publication still requires all
 	# legal household/service pairs, not just the last 1024 route requests.
-	network._route_cache.clear();network._route_cache_entries=0;network._route_searches.clear();network.route_counting=true
+	network._route_cache.clear();network._route_cache_entries=0;network.route_counting=true
 	var actual:Array=[]
 	for start:String in network._service_routes:
 		for finish:String in network._service_routes[start]:
@@ -22,12 +22,12 @@ func _run()->void:
 			actual.append([start,finish,route.duplicate()]);route.push_front(Vector3(99,99,99))
 			immutable=immutable and network._route(start,finish)==network._service_routes[start][finish]
 	_check(pairs>1024,"real three-hundred-house service table exceeds the transient cache limit")
-	_check(exact and network.route_cache_stats.misses==0,"every prepared service pair survives transient cache eviction without main-thread Dijkstra")
+	_check(exact and network.route_cache_stats.misses==0,"every prepared service pair survives transient cache eviction without main-thread searches")
 	_check(immutable,"returned route arrays cannot mutate prepared service paths")
-	# Independently rerun the original Dijkstra with all prepared paths absent.
+	# Re-query every native shortest path with all prepared paths absent.
 	network._service_routes.clear();network.route_counting=false
 	for row:Array in actual:exact=exact and network._route(row[0],row[1])==row[2]
-	_check(exact,"all pinned routes exactly match fresh original sorted-queue shortest paths including tie order")
+	_check(exact,"all pinned routes match fresh native shortest paths")
 	var empty:Dictionary=city.snapshot();empty.roads=[];network.prepare(empty,{},actors)
 	_check(network._service_routes.is_empty() and network.connected_houses.is_empty(),"removing the real street graph invalidates every prepared service route")
 	print("SERVICE_ROUTES ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"pairs":pairs,"failures":failures}));quit(0 if failures.is_empty() else 1)

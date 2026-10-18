@@ -147,7 +147,9 @@ func _run() -> void:
 	var cold := Network.new()
 	cold.prepare(city.snapshot(),network.connected_houses.duplicate(),actors)
 	_check(seeded.state._ground_terrain.raw_vertices==cold.state._ground_terrain.raw_vertices,"incremental and cold raw terrain are identical")
-	_check(seeded.state._ground_terrain.vertices==terrain_seed.vertices and cold.state._ground_terrain.vertices.is_empty(),"navigation worker does not rebuild or publish protected terrain")
+	# Actor poses now require the protected street solver in both workers.
+	# Their private fields and sampled heights must match a fresh full build.
+	_check(seeded.state._ground_terrain.vertices==cold.state._ground_terrain.vertices and seeded.prepared_street_heights==cold.prepared_street_heights,"isolated incremental and cold workers publish identical protected actor heights")
 	_check(seeded.positions==cold.positions and seeded.connected_houses==cold.connected_houses,"incremental terrain preserves road heights and doors")
 	_check(int(seeded.prepare_stats.terrain_changed_vertices)>0 and int(cold.prepare_stats.terrain_changed_vertices)>int(seeded.prepare_stats.terrain_changed_vertices),"navigation worker measures local raw terrain work without rebuilding the protected field")
 	print("NETWORK_TERRAIN_SEED_RESULT ",JSON.stringify({"seeded":seeded.prepare_stats,"cold":cold.prepare_stats}))

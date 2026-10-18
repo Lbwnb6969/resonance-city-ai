@@ -1,6 +1,7 @@
 extends SceneTree
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Context=preload("res://scripts/world/city_creation_cafe_layout_context.gd")
+const Network=preload("res://scripts/world/city_creation_network.gd")
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:_run.call_deferred()
@@ -19,8 +20,13 @@ func _run()->void:
 	var live:=Context.new();var original:Dictionary=city.snapshot();var plan:Dictionary=live.layout(city,"h3")
 	_check(not plan.is_empty(),"real first cafe has legal furniture")
 	if plan.is_empty():quit(1);return
+	var entries: Dictionary={"h3":plan.entrance}
+	live.warm_seats(city,entries)
+	var warmed:=var_to_bytes(live.snapshot_city(city))
 	var paths:Array=[]
 	for seat:Vector2 in plan.seats:paths.append(live.route(city,"h3",plan.entrance,seat));paths.append(live.route(city,"h3",seat,plan.entrance))
+	live.warm_seats(city,entries)
+	_check(var_to_bytes(live.snapshot_city(city))==warmed,"all three actual seat approaches and exits are already cached; repeated publication does not rebuild them")
 	var snapshot:=live.snapshot_city(city);var before:=var_to_bytes(snapshot)
 	_check(_pure(snapshot),"worker capture contains values without Nodes, Callables or weak owner objects")
 	var copy:=State.new();_check(copy.restore(original).ok,"worker city restores identical authored input")
@@ -42,4 +48,21 @@ func _run()->void:
 	_check(city.set_house_role("h4","residential").ok,"actual neighboring furniture is removed by role edit")
 	cold=Context.new()
 	_check(worker.route(city,"h3",point,plan.entrance)==cold.route(city,"h3",point,plan.entrance) and worker.snapshot_city(city).context.signature!=rebound.context.signature,"changed furniture invalidates the captured geometry and matches cold routing")
+	var network:=Network.new();var thread:=Thread.new();var actors: Array[Dictionary]=[]
+	thread.start(network.prepare.bind(original,{},actors))
+	while thread.is_alive():await process_frame
+	thread.wait_to_finish()
+	var published:=State.new();_check(published.restore(original).ok,"worker publication has the same real cafe geometry")
+	var prepared_context: RefCounted=network.prepared_cafe_context
+	prepared_context.rebind_city(network.state,published)
+	var ready:=var_to_bytes(prepared_context.snapshot_city(published));var prepared_context_routes:=0
+	for id: String in network.connected_houses:
+		if published.houses[published._house_index(id)].role!="garden_cafe":continue
+		var port: Vector3=network.positions[network.connected_houses[id]]
+		var layout: Dictionary=prepared_context.layout(published,id)
+		if layout.is_empty():continue
+		for seat: Vector2 in layout.seats:
+			prepared_context.route(published,id,Vector2(port.x,port.z),seat)
+			prepared_context.route(published,id,seat,Vector2(port.x,port.z));prepared_context_routes+=2
+	_check(prepared_context_routes>=6 and var_to_bytes(prepared_context.snapshot_city(published))==ready,"actual background Network preparation warms real street-port seat approaches and exits before adopting the live city")
 	print("CAFE_PREPARED_CONTEXT ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

@@ -27,6 +27,10 @@ func sync() -> void:
 				var entry: Vector3 = life.positions[life.connected_houses[id]]
 				plan.street_entry = Vector2(entry.x, entry.z)
 			layouts[id] = plan
+	var entries: Dictionary={}
+	for id: String in layouts:
+		if not layouts[id].is_empty() and layouts[id].has("street_entry"):entries[id]=layouts[id].street_entry
+	layout_api.warm_seats(life.state,entries)
 	for id in groups.keys():
 		if not layouts.has(id) or layouts[id].is_empty() or previous.get(id, {}) != layouts[id] or not life.connected_houses.has(id):
 			_cancel(str(id), previous.get(id, {}))
