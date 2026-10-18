@@ -9,15 +9,17 @@ var zones: Dictionary={}
 var focus_ids: Array[String]=[]
 var linked_ids: Array[String]=[]
 var radius:=18.75
+var radius_bonus:=0.0
 var mode:="district"
 var revision:=0
 
 func set_view(at: Vector2,view_zoom: float,in_view: Callable=Callable(),point_in_view: Callable=Callable())->void:
 	focus=at;zoom=view_zoom;visible_test=in_view;point_visible_test=point_in_view
-	radius=clampf(.75*zoom,12.0,28.0)
+	radius=clampf(.75*zoom,12.0,28.0)+radius_bonus
 	mode="detail" if zoom<=18 else ("district" if zoom<=32 else "city")
 
 func evaluate(houses: Dictionary,pairs: Array,event_ids: Array=[])->void:
+	radius=clampf(.75*zoom,12.0,28.0)+radius_bonus
 	zones.clear();focus_ids.clear();linked_ids.clear()
 	for id: String in houses:
 		var house: Dictionary=houses[id]

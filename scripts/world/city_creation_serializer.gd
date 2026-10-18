@@ -58,6 +58,12 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		result.house_clockwork=city.house_clockwork.duplicate()
 	if not city.era_answers.is_empty() or city.era_unlocks.has("modern_eco"):
 		result.schema=city.MODERN_SCHEMA;result.era_answers=city.era_answers.duplicate(true)
+	for row: Dictionary in city.building_quality.values():
+		if row.has("prestige"):result.schema=city.QUALITY_CONTEXT_SCHEMA;break
+	for duration: float in city.resonance_afterglow.values():
+		if duration>180.0:result.schema=city.QUALITY_CONTEXT_SCHEMA;break
+	for house: Dictionary in city.houses:
+		if house.get("signature","")=="watermill" and house.cells.size()==8:result.schema=city.QUALITY_CONTEXT_SCHEMA;break
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -207,7 +213,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档生活进展无效")
 	var journeys: Dictionary = city._validate_journey_checkpoint(data.get("journey_checkpoint",{}), data.get("houses"), progress)
 	if not journeys.ok: return journeys
-	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.MODERN_SCHEMA:
+	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.QUALITY_CONTEXT_SCHEMA:
 		return city._fail("不支持的城市存档版本")
 	var unlocks: Variant = data.get("era_unlocks", ["pastoral"])
 	if not unlocks is Array or unlocks.is_empty() or unlocks.size() > city.Eras.AVAILABLE_COUNT: return city._fail("时代解锁结构无效")
@@ -358,7 +364,10 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		var glow_ids := {}
 		if not city._valid_id(house_id, "h", glow_ids) or int(house_id.substr(1)) > int(issued.house) or not existing_houses.has(house_id):
 			return city._fail("城市存档共鸣余韵房屋无效")
-		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > (180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0):
+		var maximum: float=180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0
+		var quality: Variant=data.get("building_quality",{}).get(house_id,{}) if data.get("building_quality",{}) is Dictionary else {}
+		if int(data.schema)>=city.QUALITY_CONTEXT_SCHEMA and quality is Dictionary and city._is_integer(quality.get("level_tier")) and quality.level_tier==5:maximum*=2.
+		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > maximum:
 			return city._fail("城市存档共鸣余韵时间无效")
 	var cafe_check: Dictionary = city._validate_cafe_progress(data, issued)
 	if not cafe_check.ok: return cafe_check

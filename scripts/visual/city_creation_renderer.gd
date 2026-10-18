@@ -809,6 +809,7 @@ func set_light_phase(phase: int) -> void:
 	set_evening(phase>=1)
 	wildlife.set_night(phase==2)
 	resonance.night = phase==2
+	resonance.dusk = phase==1
 	Bunting.set_light(ecology_layer,phase)
 	water_material.set_shader_parameter("evening",1.0 if phase==1 else 0.0)
 	water_material.set_shader_parameter("night",1.0 if phase==2 else 0.0)

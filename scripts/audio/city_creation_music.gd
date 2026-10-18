@@ -677,6 +677,7 @@ func set_listener_frame(at: Vector2,right: Vector2,view_zoom: float=-1.0,in_view
 	set_listener_focus(at)
 
 func _refresh_acoustic()->void:
+	acoustic.radius_bonus=float(_pluck_city.signature_bonuses().focus_radius) if _pluck_city!=null else 0.0
 	var pairs: Array=reply._pairs.values()
 	pairs.append_array(manual_reply_pairs())
 	var events: Array=[]

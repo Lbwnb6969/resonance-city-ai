@@ -1,6 +1,6 @@
 extends RefCounted
 ## Five permanent quality tiers, earned from this household's actual services.
-const NAMES := ["初筑小屋","安居暖舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
+const NAMES := ["初筑暖舍","安居花舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
 
 static func services(data: Dictionary, id: String, source: String) -> Dictionary:
 	var food: Dictionary=data.get("cafe_credits",{}).get(source,{})
@@ -14,12 +14,20 @@ static func services(data: Dictionary, id: String, source: String) -> Dictionary
 		"relay":int(concert.get("relays",0))>0 or int(own_concert.get("relays",0))>0,
 		"culture":int(data.get("house_culture",{}).get(id,0))>0 or int(data.get("house_culture",{}).get(source,0))>0 or int(data.get("house_clockwork",{}).get(id,0))>0 or int(data.get("house_clockwork",{}).get(source,0))>0}
 
-static func eligible(flags: Dictionary, street: bool, amenity: bool) -> int:
+static func eligible(flags: Dictionary, street: bool, amenity: bool, prestige: bool=false) -> int:
 	if not street or not flags.food: return 1
 	if not flags.craft and not flags.concert: return 2
-	if not flags.tea or not amenity: return 3
-	if not flags.relay or not flags.culture: return 4
+	if not (flags.tea or flags.culture) or not amenity: return 3
+	if not flags.relay or not prestige: return 4
 	return 5
+
+static func prestige(city: RefCounted, house: Dictionary) -> bool:
+	var district: String=str(city.district_for_house(str(house.id)).get("id",""))
+	if district.is_empty():return false
+	for other: Dictionary in city.houses:
+		if not other.has("signature") and city.house_era(other)=="pastoral" and str(other.role) not in ["atelier","clockmaker","symphony_hall"]:continue
+		if str(city.district_for_house(str(other.id)).get("id",""))==district:return true
+	return false
 
 static func data(city: RefCounted) -> Dictionary:
 	return {"cafe_credits":city.cafe_credits,"matinee_credits":city.matinee_credits,"bakery_supply":city.bakery_supply,
@@ -52,13 +60,18 @@ static func refresh(city: RefCounted, connected: Dictionary, workplaces: Diction
 		var flags:=services(ledger,id,source)
 		var street: bool=bool(current.street) or connected.has(id)
 		var has_amenity: bool=bool(current.amenity)
-		if not has_amenity and flags.tea:
+		if not has_amenity and (flags.tea or flags.culture):
 			if not city._quality_amenities.has(id): city._quality_amenities[id]=amenity(city,house)
 			has_amenity=bool(city._quality_amenities[id])
-		var tier:=eligible(flags,street,has_amenity)
+		var has_prestige: bool=bool(current.get("prestige",false))
+		if flags.relay and not has_prestige:
+			var key: String="prestige:"+id
+			if not city._quality_amenities.has(key):city._quality_amenities[key]=prestige(city,house)
+			has_prestige=bool(city._quality_amenities[key])
+		var tier:=eligible(flags,street,has_amenity,has_prestige)
 		# A worker changing jobs cannot erase an earlier household's contribution.
 		if tier<=int(current.level_tier): continue
-		city.building_quality[id]={"level_tier":tier,"source_id":source,"street":street,"amenity":has_amenity}
+		city.building_quality[id]={"level_tier":tier,"source_id":source,"street":street,"amenity":has_amenity,"prestige":has_prestige}
 		city.dirty=true;city.life_progress_dirty=true
 		result.append({"house_id":id,"from":int(current.level_tier),"to":tier})
 	return result
@@ -75,8 +88,12 @@ static func validate(city: RefCounted, snapshot: Dictionary, issued: Dictionary)
 	for id in quality:
 		var ids: Dictionary={};var row: Variant=quality[id]
 		if not city._valid_id(id,"h",ids) or int(id.substr(1))>int(issued.house): return city._fail("品质房屋身份无效")
-		if not row is Dictionary or row.size()!=4 or not city._is_integer(row.get("level_tier")) or row.level_tier<2 or row.level_tier>5: return city._fail("建筑品质等级无效")
+		if not row is Dictionary or row.size() not in [4,5] or not city._is_integer(row.get("level_tier")) or row.level_tier<2 or row.level_tier>5: return city._fail("建筑品质等级无效")
+		if row.size()==5 and (not row.get("prestige") is bool or int(snapshot.schema)<city.QUALITY_CONTEXT_SCHEMA):return city._fail("建筑品质街坊履历无效")
 		var source_ids: Dictionary={}
 		if not city._valid_id(row.get("source_id"),"h",source_ids) or int(row.source_id.substr(1))>int(issued.house) or not row.get("street") is bool or not row.get("amenity") is bool: return city._fail("建筑品质来源无效")
-		if int(row.level_tier)>eligible(services(snapshot,id,row.source_id),row.street,row.amenity): return city._fail("建筑品质缺少真实服务记录")
+		var flags:=services(snapshot,id,row.source_id)
+		# Four-field rows preserve already earned pre-17 household rights.
+		var earned: bool=bool(row.prestige) if row.has("prestige") else bool(flags.culture and flags.tea)
+		if int(row.level_tier)>eligible(flags,row.street,row.amenity,earned): return city._fail("建筑品质缺少真实服务记录")
 	return {"ok":true}

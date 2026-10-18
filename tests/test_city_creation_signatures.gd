@@ -45,7 +45,7 @@ func _run()->void:
 	city=ordinary_city();city.Signatures.refresh(city)
 	_check(city.signature_unlocks==["bell_keep"] and city.houses.size()==10,"ten actual ordinary houses and authored bridge unlock the bell keep")
 	var life:=Life.new();root.add_child(life);life.set_process(false);life.setup(city)
-	_check(_until(life,func():return int(city.bakery_status("h2").produced)>=30),"real attended bakery and actual purchases reach thirty-loaf milestone")
+	_check(_until(life,func():return int(city.bakery_status("h2").produced)>=24),"real attended bakery and actual purchases reach twenty-four-loaf milestone")
 	life._refresh_quality()
 	_check(city.signature_unlocks.has("watermill") and not city.signature_unlocks.has("music_academy"),"bread milestone unlocks mill without inventing academy question-and-answer")
 	_check(life.invite_concert("h4").ok and _until(life,func():return int(city.life_progress.concerts)>0),"physical audience and completed performance earn the first journal chapter")
@@ -73,7 +73,7 @@ func _run()->void:
 	var start: Vector3=walker.node.position
 	life._process(.1)
 	var boosted: float=Vector2(walker.node.position.x,walker.node.position.z).distance_to(Vector2(start.x,start.z))
-	_check(is_equal_approx(boosted,.083*1.15),"placed bell keep changes actual resident displacement by exactly fifteen percent")
+	_check(is_equal_approx(boosted,.083*city.walking_multiplier(str(walker.home_id))),"placed bell keep stacks fifteen percent with actual earned household movement")
 	_check(not city.place_signature("bell_keep",Vector2(-26,0)).ok and not city.add_cell(keep.house_id,0,0,4).ok and not city.set_house_role(keep.house_id,"bakery").ok,"duplicate landmark, partial growth and role conversion are rejected")
 	var cell_ids: Array=[]
 	for cell: Dictionary in city.houses[-1].cells:cell_ids.append(cell.id)
@@ -90,7 +90,7 @@ func _run()->void:
 	walking_route=[walker.node.position+Vector3(0,0,2)];walker.route=walking_route
 	start=walker.node.position;life._process(.1)
 	var ordinary: float=Vector2(walker.node.position.x,walker.node.position.z).distance_to(Vector2(start.x,start.z))
-	_check(is_equal_approx(ordinary,.083),"recycling the keep restores actual resident movement to base speed")
+	_check(is_equal_approx(ordinary,.083*city.walking_multiplier(str(walker.home_id))),"recycling the keep removes its bonus and preserves earned household movement")
 	city.undo()
 	_check(city._house_index(keep.house_id)>=0 and city.signature_bonuses().walking==1.15,"undo recycle restores landmark and real buff")
 	var at:=mill_site(city)
@@ -102,13 +102,13 @@ func _run()->void:
 	_check(city.bakery_batch_size("h2")==batch,"removing mill immediately removes its flour bonus")
 	city.undo()
 	var academy: Dictionary=city.place_signature("music_academy",Vector2(18,-8))
-	_check(academy.ok and city.concert_radius(academy.house_id)==36.0 and city.concert_radius(academy.house_id)!=city.concert_radius("h4"),"free academy is a real venue with distinct thirty-six meter performance radius")
+	_check(academy.ok and city.concert_radius(academy.house_id)==38.0 and city.concert_radius(academy.house_id)!=city.concert_radius("h4"),"free academy is a real venue with distinct thirty-eight meter performance radius")
 	_check(city.set_journey_checkpoint(life.checkpoint()).ok,"landmark edits preserve actual resident checkpoint references")
 	# Compare saved JSON: live cafe checkpoint keys use StringName, JSON uses String.
 	var snapshot: Dictionary=city.snapshot();var copy:=State.new()
 	var saved_json:=JSON.stringify(snapshot,"",true,true)
 	var loaded: Dictionary=copy.restore(JSON.parse_string(saved_json))
-	_check(snapshot.schema==14 and loaded.ok and _saved_equal(copy.snapshot(),snapshot),"three placed landmarks, service milestones and all persistent evidence roundtrip within JSON numeric precision: "+str(loaded))
+	_check(snapshot.schema==17 and loaded.ok and _saved_equal(copy.snapshot(),snapshot),"three placed landmarks, service milestones and all persistent evidence roundtrip within JSON numeric precision: "+str(loaded))
 	var loaded_before: Dictionary=copy.snapshot()
 	var bad: Dictionary=snapshot.duplicate(true);bad.houses[-1].signature="bell_keep"
 	_check(not copy.restore(bad).ok and copy.snapshot()==loaded_before,"duplicate forged landmark is rejected atomically")

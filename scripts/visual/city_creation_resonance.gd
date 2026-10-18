@@ -9,6 +9,7 @@ const UNIT := 1.8
 const FLOOR := 1.7
 var rigs: Dictionary = {}
 var night := false
+var dusk := false
 var arc_mesh: ArrayMesh
 var wave: MeshInstance3D
 var wave_material: ShaderMaterial
@@ -188,7 +189,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	arc.visible = false
 	arc.custom_aabb = AABB(Vector3(-22,-1,-19),Vector3(44,21,38))
 	root.add_child(arc)
-	var row := {"root":root,"pivot":pivot,"mesh":rig,"material":material,"arc":arc,"arc_material":arc_material,"anchor":Vector3(center.x,top+0.10,center.z),"base_y":center.y,"height":maxf(FLOOR,top-center.y),"weight":0.0,"afterglow":0.0,"inhabited":str(house.get("role",""))=="residential"}
+	var row := {"root":root,"pivot":pivot,"mesh":rig,"material":material,"arc":arc,"arc_material":arc_material,"anchor":Vector3(center.x,top+0.10,center.z),"base_y":center.y,"height":maxf(FLOOR,top-center.y),"weight":0.0,"afterglow":0.0,"level_tier":renderer.state.level_tier(id),"inhabited":str(house.get("role",""))=="residential"}
 	material.set_shader_parameter("pluck_base_y",center.y)
 	material.set_shader_parameter("pluck_height",float(row.height))
 	rigs[id] = row
@@ -259,7 +260,7 @@ func update(snapshot: Dictionary) -> void:
 		var glow := clampf(float(afterglow.get(id,0.0))/4.0,0.0,1.0)
 		var ready := festival_ready.has(id)
 		var material: ShaderMaterial = row.material
-		var night_glow := 0.35 if night else 0.0
+		var night_glow: float=(0.35 if night else .14 if dusk else 0.0)*(1.28 if int(row.get("level_tier",1))>=2 else 1.0)
 		material.set_shader_parameter("night_glow",night_glow)
 		material.set_shader_parameter("clock_sec",clock)
 		material.set_shader_parameter("beat_pulse",pulse)

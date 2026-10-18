@@ -12,13 +12,13 @@
 
 按 [主蓝图](文档/code_artifact.md) 第十章与 [PROJECT](PROJECT.md) 看板顺序施工。旧十阶段只作历史编号：旧 1→新1，旧2→新2+3，旧3→新4，旧4→新5，旧5→新6，旧6→新7，旧7→新8，旧8→新9，旧9→新10，旧10→新11+12。不要重做四时代与六地标主体。
 
-Phase 1～6 已按新版补差并复核。Phase 6 两岸同湾、画师送装、真实木拨弦/羽管键琴对答与存档记录通过28项实窗，p95 5.631ms；赋格已补双簧管。当前 Phase 7：磨坊24面包门槛/烘焙缩时20%、音乐院38m、钟塔声场+3m与1～5级品质条件。随后对齐 Phase 9/10，补 Phase 11 环形轮唱，最后完成 Phase 12 旗舰大城及性能收口。具体差距与验证在 PROJECT 和本地 `验证记录/十二阶段对齐_2026-10-18/`。
+Phase 1～8 已完成（Phase 8沿用已验收的水生态）。Phase 7补齐品质经营增益、双层磨坊24份面包门槛/烘焙耗时×0.8、音乐院38m与自动接力、钟塔聚焦+3m；27项新版CPU及36项实窗通过，18屋p95 5.725ms。当前 Phase 9：总站40→30m街道门槛与真实派车；之后对齐 Phase 10植物宫8桌/120株及双倍野花，补 Phase 11 环形轮唱，最后完成 Phase 12旗舰大城及性能收口。具体差距与验证在 PROJECT 和本地 `验证记录/十二阶段对齐_2026-10-18/`。
 
 ## 3. 当前关键入口
 
 - 海拔/坡路：`city_creation_terrain_protection.gd`、`city_creation_road_heights.gd`、`city_creation_highland.gd`、`city_creation_frontage.gd`、`city_creation_road_earthworks.gd`。新宽街 2.10m，旧 2.0m 作品保原宽；重刷才扩宽。
 - 拉路：`city_creation_road_gesture.gd` 固定旧曲段并维护活动末端，UI按像素跟手；`RoadIntent` 的soft模式渐进吸附，松手用none模式校验已显示点，避免二次吸附。`city_creation_road_draft_field.gd` 仅给草/预览材质提供临时4cm场，取消/正式发布时清除；旧存档和默认State道路API保持。
-- 时代/品质/地标：`city_creation_eras.gd`、`city_creation_quality.gd`、`city_creation_signatures.gd`。作品兼容 Schema 1～16；真实履约记录驱动解锁。
+- 时代/品质/地标：`city_creation_eras.gd`、`city_creation_quality.gd`、`city_creation_signatures.gd`。作品兼容 Schema 1～17；新品质履历保存prestige，旧四字段等级和单层磨坊继续有效。Lv.2步速与钟塔增益相乘；Lv.5余韵按房屋翻倍。
 - 大城：`city_creation_citizen_motion.gd`、`city_creation_detail_lod.gd`、`city_creation_tiled_field.gd`、`city_creation_budget_rebuild.gd`。已有300屋测试夹具，尚未成为可选旗舰示范存档。
 - 验证：Godot Compatibility，1440×900；选相关脚本一次CPU/一次实窗，GPU回读检查须运行OpenGL，不能用headless结果替代。不要跑九入口冷启动或整库哈希。
 - 画面缺陷：两个同宽道路终端按普通转弯衔接，三角闭环角部不再额外扩口；T/X路口保留。巨大彩色面仍开放；用户记得起点为几屋小河湾，优先从小样例复现。F10保存截图/城镇/相机/生活现场到 `user://render_diagnostics/`，不覆盖个人存档。

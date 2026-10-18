@@ -1,7 +1,6 @@
 extends SceneTree
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Renderer=preload("res://scripts/visual/city_creation_renderer.gd")
-const OLD="res://废弃/居民高度后台准备_前_2026-10-18_cc5e59b1/"
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:_run.call_deferred()
@@ -19,22 +18,16 @@ func _values(parent:Node)->Array:
 		row.append(_values(child));result.append(row)
 	return result
 func _run()->void:
-	var quality_script:=GDScript.new();quality_script.source_code=FileAccess.get_file_as_string(OLD+"city_creation_quality_visual.gd.txt")
-	var craft_script:=GDScript.new();craft_script.source_code=FileAccess.get_file_as_string(OLD+"city_creation_craft.gd.txt")
-	_check(quality_script.reload()==OK and craft_script.reload()==OK,"independent frozen quality and exhaustive craft-placement sources compile")
-	var renderer_script:=GDScript.new();renderer_script.source_code=FileAccess.get_file_as_string("res://scripts/visual/city_creation_renderer.gd").replace("class_name CityCreationRenderer","").replace("var craft := Craft.new()","var craft:RefCounted=Craft.new()")
-	_check(renderer_script.reload()==OK,"isolated comparison renderer allows both independently compiled craft implementations")
-	var city:=State.new();city.initialize();var renderer:Node3D=renderer_script.new();root.add_child(renderer);renderer.setup(city);renderer.set_process(false);renderer.wildlife.set_process(false)
-	var old:RefCounted=quality_script.new();old.setup(renderer)
-	var original_craft:RefCounted=craft_script.new();original_craft.setup(renderer);var current_craft:RefCounted=renderer.craft
+	var city:=State.new();city.initialize();var renderer:=Renderer.new();root.add_child(renderer);renderer.setup(city);renderer.set_process(false);renderer.wildlife.set_process(false)
 	# Visual-only tier fixtures exercise every production renderer branch;
 	# earned-service and save legality are covered by the real Quality/Life tests.
 	for tier in range(2,6):
 		city.building_quality.h1={"level_tier":tier,"source_id":"h1","street":true,"amenity":true}
 		renderer.quality_visual.flash(renderer,[{"house_id":"h1","from":tier-1,"to":tier}])
-		renderer.craft=original_craft;old.progress(renderer);renderer.craft=current_craft
-		_check(_values(renderer.quality_visual.roots.h1)==_values(old.roots.h1),"tier %d keeps exact original surfaces, normals, transforms and complete decor"%tier)
-		_check(renderer.quality_visual.roots.h1.get_meta("features")==old.roots.h1.get_meta("features"),"tier %d retains every original visible feature"%tier)
+		var features: Array=renderer.quality_visual.roots.h1.get_meta("features")
+		_check(features.has("welcome_stones") and features.has("door_flowerpot") and features.has("warm_porch_lamp"),"tier %d retains actual welcome apron, pot and lamp"%tier)
+		_check(features.has("flowerbox_shutters")==bool(tier>=3) and features.has("bronze_chime")==bool(tier>=3),"tier %d gates window boxes and chimes at third level"%tier)
+		_check(features.has("golden_weather_vane")==bool(tier==5) and features.has("painted_rose_window")==bool(tier==5),"tier %d gates permanent gold vane and rose glazing at fifth level"%tier)
 	city.building_quality.h3={"level_tier":2,"source_id":"h3","street":true,"amenity":false};renderer.quality_visual.progress(renderer)
 	var unrelated:int=renderer.quality_visual.roots.h3.get_instance_id();var unrelated_values:=_values(renderer.quality_visual.roots.h3)
 	city.building_quality.h1.level_tier=4;renderer.quality_visual.flash(renderer,[{"house_id":"h1","from":3,"to":4}])

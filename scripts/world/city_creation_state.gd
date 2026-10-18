@@ -22,6 +22,7 @@ const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
 const CLOCKWORK_SCHEMA := 15
 const MODERN_SCHEMA := 16
+const QUALITY_CONTEXT_SCHEMA := 17
 const Signatures := preload("res://scripts/world/city_creation_signatures.gd")
 const AmphitheaterPlan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
@@ -649,10 +650,10 @@ func record_district_answer(from_id: String,to_id: String,from_era: String="",to
 
 func signature_bonuses() -> Dictionary:
 	if _signature_bonuses_revision!=revision:
-		_signature_bonuses_revision=revision;_signature_bonuses={"walking":1.0,"bread_batch":0,"watermill_id":"","palace_id":"","depot_id":"","afterglow_seconds":0.0,"tram_speed":1.0}
+		_signature_bonuses_revision=revision;_signature_bonuses={"walking":1.0,"focus_radius":0.0,"bread_batch":0,"baking_speed":1.0,"watermill_id":"","palace_id":"","depot_id":"","afterglow_seconds":0.0,"tram_speed":1.0}
 		for house: Dictionary in houses:
-			if house.get("signature","")=="bell_keep":_signature_bonuses.walking=1.15
-			if house.get("signature","")=="watermill":_signature_bonuses.bread_batch=1;_signature_bonuses.watermill_id=str(house.id)
+			if house.get("signature","")=="bell_keep":_signature_bonuses.walking=1.15;_signature_bonuses.focus_radius=3.0
+			if house.get("signature","")=="watermill":_signature_bonuses.bread_batch=1;_signature_bonuses.baking_speed=1.25;_signature_bonuses.watermill_id=str(house.id)
 			if house.get("signature","")=="botanical_palace":_signature_bonuses.palace_id=str(house.id);_signature_bonuses.afterglow_seconds=180.0
 			if house.get("signature","")=="clockwork_depot":_signature_bonuses.depot_id=str(house.id);_signature_bonuses.tram_speed=1.2
 	return _signature_bonuses
@@ -660,7 +661,10 @@ func signature_bonuses() -> Dictionary:
 func concert_radius(venue_id: String) -> float:
 	var index:=_house_index(venue_id)
 	if index>=0 and houses[index].get("role","")=="symphony_hall":return 120.0
-	return 36.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0
+	return 38.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0
+
+func walking_multiplier(home_id: String) -> float:
+	return float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)
 
 func level_tier(house_id: String) -> int:
 	return int(building_quality.get(house_id,{}).get("level_tier",1))
@@ -1330,7 +1334,9 @@ func site_blessing(house_id: String) -> Dictionary:
 
 
 func site_production_multiplier(house_id: String) -> float:
-	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)
+	var index:=_house_index(house_id)
+	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
+	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill
 
 
 func house_harmony(house_id: String) -> Dictionary:
@@ -1349,11 +1355,16 @@ func cafe_afterglow_extension(house_id: String) -> float:
 	return float(site_blessing(house_id).get("afterglow_extension", 30.0))
 
 
-func grant_resonance_afterglow(house_ids: Array, duration: float = 60.0) -> void:
+func afterglow_limit(house_id: String) -> float:
+	return (180.0 if not signature_bonuses().palace_id.is_empty() else 120.0)*(2.0 if level_tier(house_id)>=5 else 1.0)
+
+func grant_resonance_afterglow(house_ids: Array, duration: float = 60.0, elapsed: float=0.0) -> void:
 	if duration <= 0.0: return
 	for house_id in house_ids:
 		if _house_index(str(house_id)) >= 0:
-			resonance_afterglow[str(house_id)] = maxf(afterglow_remaining(str(house_id)), clampf(duration, 0.0, 180.0 if not signature_bonuses().palace_id.is_empty() else 120.0))
+			var id:=str(house_id)
+			var earned: float=duration*(2.0 if level_tier(id)>=5 else 1.0)-elapsed
+			if earned>0.0:resonance_afterglow[id] = maxf(afterglow_remaining(id), clampf(earned, 0.0, afterglow_limit(id)))
 	if not house_ids.is_empty():
 		life_progress_dirty = true
 		dirty = true
@@ -1511,7 +1522,7 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 	if not signature_bonuses().palace_id.is_empty():grant_resonance_afterglow(glow_ids,180.0)
 	for id in glow_ids:
 		var remaining := afterglow_remaining(str(id))
-		if remaining > 0.0: resonance_afterglow[str(id)] = maxf(remaining,minf(180.0 if not signature_bonuses().palace_id.is_empty() else 120.0, remaining + extension))
+		if remaining > 0.0: resonance_afterglow[str(id)] = maxf(remaining,minf(afterglow_limit(str(id)), remaining + extension*(2.0 if level_tier(str(id))>=5 else 1.0)))
 	life_progress_dirty = true
 	dirty = true
 	return true

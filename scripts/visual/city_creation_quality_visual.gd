@@ -1,7 +1,7 @@
 extends RefCounted
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Quality decor has independent ownership: no road, terrain or house rebuild.
-const NAMES := ["初筑小屋","安居暖舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
+const NAMES := ["初筑暖舍","安居花舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
 var layer: Node3D
 var roots: Dictionary={}
 var fingerprints: Dictionary={}
@@ -30,6 +30,7 @@ func progress(renderer,only:Array[String]=[])->void:
 			if index>=0:houses.append(renderer.state.houses[index])
 	for house: Dictionary in houses:
 		var id:=str(house.id);var tier: int=renderer.state.level_tier(id)
+		if renderer.resonance.rigs.has(id):renderer.resonance.rigs[id].level_tier=tier
 		if tier<2:continue
 		live[id]=true
 		var signature:=hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house),tier,renderer.state.improvement_level(id)])
@@ -43,11 +44,21 @@ func progress(renderer,only:Array[String]=[])->void:
 			var frame:=Node3D.new();root.add_child(frame)
 			frame.position=renderer._entrance_point(entry,Vector3(0,0,.38));frame.rotation.y=atan2(float(entry.side.x),float(entry.side.y))
 			var at:=Vector2(frame.position.x,frame.position.z);frame.position.y=renderer.state.street_height(at)+.012
-			for i in range(5):
-				var x: float=-.34+i*.17
-				renderer._cylinder(frame,.10,.10,.035,Vector3(x,0,.035*sin(i*2.0)),renderer._material(Color("d6c5a1")),7)
-			features.append("welcome_stones")
-		if renderer.state.improvement_level(id)<2:
+			var stone: Material=renderer._material(Color("d6c5a1"))
+			for ring in range(2):
+				for i in range(5+ring*2):
+					var angle: float=PI*float(i)/float(4+ring*2)
+					var radius: float=.17+ring*.17
+					renderer._cylinder(frame,.078,.078,.035,Vector3(cos(angle)*radius,0,sin(angle)*radius),stone,7)
+			var pot: Material=renderer._material(Color("b87955"))
+			renderer._cylinder(frame,.13,.095,.22,Vector3(.55,.11,0),pot,9)
+			renderer._cylinder(frame,.15,.15,.045,Vector3(.55,.23,0),pot,9)
+			for i in range(3):renderer._crown(frame,Vector3(.50+i*.05,.29+.025*sin(i*2.),0),Vector3(.07,.06,.07),Color("b6c77b"))
+			var glow: StandardMaterial3D=renderer._material(Color("f1d494")).duplicate()
+			glow.emission_enabled=true;glow.emission=Color("e6b76d");glow.emission_energy_multiplier=.25
+			renderer._box(frame,Vector3(.12,.19,.12),Vector3(-.5,1.2,-.35),glow)
+			features.append_array(["welcome_stones","door_flowerpot","warm_porch_lamp"])
+		if tier>=3 and renderer.state.improvement_level(id)<2:
 			renderer.craft._static_batch(root,{"planter":records.planter,"plaque":records.plaque})
 			features.append("flowerbox_shutters")
 			var iron: Material=renderer._material(Color("45584f"))

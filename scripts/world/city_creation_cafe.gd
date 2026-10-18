@@ -202,12 +202,13 @@ func _walk(resident: Dictionary, delta: float) -> bool:
 	var node: Node3D = resident.node
 	var before := Vector2(node.position.x,node.position.z)
 	var target: Vector3 = route[index]
-	if node.position.distance_to(target) < delta * SPEED * life.state.signature_bonuses().walking:
+	var step: float=delta*SPEED*life.state.walking_multiplier(str(resident.home_id))
+	if node.position.distance_to(target) < step:
 		node.position = target
 		resident.index = index + 1
 	else:
 		var direction := (target - node.position).normalized()
-		node.position += direction * delta * SPEED * life.state.signature_bonuses().walking
+		node.position += direction * step
 		node.rotation.y = atan2(direction.x, direction.z)
 	node.position.y = life.state.street_height(Vector2(node.position.x, node.position.z)) + 0.10
 	life.record_travel("resident/"+str(resident.home_id),before,Vector2(node.position.x,node.position.z))

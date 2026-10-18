@@ -57,7 +57,7 @@ static func _academy(renderer,root: Node3D,house: Dictionary)->void:
 		for line in range(5):renderer._box(root,Vector3(.56,.012,.018),at+Vector3(x,2.99+line*.045,-.09),gold)
 		for i in range(3):
 			renderer._cylinder(root,.035,.035,.035,at+Vector3(x-.16+i*.16,3.02+i*.045,-.105),gold,8).rotation.x=PI*.5
-	root.set_meta("academy",{"radius":36.0,"ensemble":"string_quartet","free_placement":true})
+	root.set_meta("academy",{"radius":renderer.state.concert_radius(str(house.id)),"ensemble":"string_quartet","free_placement":true})
 
 static func animate(renderer,delta: float)->void:
 	var id: String=renderer.state.signature_bonuses().get("watermill_id","")

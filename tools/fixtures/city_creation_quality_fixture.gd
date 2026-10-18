@@ -35,6 +35,7 @@ static func build(tree: SceneTree)->Dictionary:
 	assert(a.ok and b.ok and city.link_districts(a.district_id,b.district_id).ok)
 	# The fixture supplies the completed music event; live PCM is checked separately.
 	assert(city.record_district_answer(a.district_id,b.district_id))
+	assert(city.set_district_era(a.district_id,"renaissance").ok)
 	assert(city.set_house_role(atelier.house_id,"atelier").ok)
 	life._sync()
 	facts.culture=until(life,func():return city.culture_level("h1")>0)

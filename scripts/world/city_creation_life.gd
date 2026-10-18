@@ -353,12 +353,13 @@ func _tick_life(delta: float) -> void:
 	if profile_tick:tick_profile.production=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	_update_citizen_lod(delta)
 	var has_trams:bool=not tram.cars.is_empty()
-	var walk_step:=delta*.83*float(state.signature_bonuses().walking)
+	var base_walk_step:=delta*.83*float(state.signature_bonuses().walking)
 	var already_playing := str(_concert.get("phase", "idle")) == "playing"
 	if str(_concert.get("phase", "idle")) == "gathering": _refresh_resonance_membership()
 	if profile_tick:tick_profile.lod=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	for resident: Dictionary in residents:
 		if resident.has("cafe_visit"): continue
+		var walk_step: float=base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)
 		var motion:RefCounted=resident.get("offscreen_motion")
 		# A legal hidden leg needs only a scalar increment. At leg boundaries
 		# the normal route/state machine below still owns every transition.
@@ -829,12 +830,13 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 		return {"ok":false,"message":"先为音乐屋接上一条能走到的路。"}
 	var candidates: Array[Dictionary] = []
 	var routes: Array = []
+	var venue_house: Dictionary=state.houses[state._house_index(venue_id)]
+	var venue_at:=Vector2(float(venue_house.origin[0]),float(venue_house.origin[1]))
+	var coverage: float=state.concert_radius(venue_id)
 	for resident: Dictionary in residents:
 		if resident.paused or (automatic and resident.has("cafe_visit")): continue
-		if state.concert_radius(venue_id)>22.0:
-			var house: Dictionary=state.houses[state._house_index(venue_id)]
-			var home: Dictionary=state.houses[state._house_index(str(resident.home_id))]
-			if Vector2(float(home.origin[0]),float(home.origin[1])).distance_to(Vector2(float(house.origin[0]),float(house.origin[1])))>state.concert_radius(venue_id):continue
+		var home: Dictionary=state.houses[state._house_index(str(resident.home_id))]
+		if Vector2(float(home.origin[0]),float(home.origin[1])).distance_to(venue_at)>coverage:continue
 		var route := _route_from_position(resident.node.position, str(connected_houses[venue_id]))
 		if route.is_empty(): continue
 		candidates.append(resident)
@@ -860,6 +862,9 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 	_concert = {"phase":"gathering","venue_id":venue_id,"participants":participants,"elapsed":0.0,"duration":CONCERT_DURATION}
 	_concert.source = "auto" if automatic else "manual"
 	if automatic: _concert.sponsors = sponsors
+	if not automatic and _relay.is_empty() and state.houses[state._house_index(venue_id)].get("signature","")=="music_academy":
+		var venues:=ConcertRelay.candidates(self,venue_id)
+		if venues.size()>1:_relay={"venues":venues,"index":0,"concerts_before":int(state.life_progress.concerts)}
 	_wake_house_ids.clear()
 	_refresh_resonance_membership()
 	if automatic and concert_callback.is_valid(): concert_callback.call("invited", venue_id)
@@ -985,8 +990,9 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 			if not district.is_empty(): districts[str(district.id)]=true
 		var venue_district: Dictionary=state.district_for_house(venue)
 		if not venue_district.is_empty(): districts[str(venue_district.id)]=true
-		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1)
-		state.grant_resonance_afterglow(_chorus_house_ids, maxf(0.0, duration - completion_remainder))
+		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1 or bool(_concert.get("grand_festival",false)))
+		_refresh_quality()
+		state.grant_resonance_afterglow(_chorus_house_ids, duration, completion_remainder)
 	var next_venue := ""
 	if completed and not _relay.is_empty() and ConcertRelay.remaining_reachable(self,_relay):
 		_relay.index=int(_relay.index)+1

@@ -41,7 +41,7 @@ func _run()->void:
 	city.roads.clear();city.revision+=1;city.refresh_quality({})
 	_check(city.level_tier("h1")==4,"removing street after achievement does not demote earned quality")
 	var snap: Dictionary=city.snapshot();var restored:=State.new()
-	_check(snap.schema==14 and restored.restore(JSON.parse_string(JSON.stringify(snap,"",true,true))).ok and restored.snapshot()==snap,"quality-four historic evidence restores exactly after roads are removed")
+	_check(snap.schema==17 and restored.restore(JSON.parse_string(JSON.stringify(snap,"",true,true))).ok and restored.snapshot()==snap,"quality-four historic evidence restores exactly after roads are removed")
 	var bad: Dictionary=snap.duplicate(true);bad.building_quality.h1.level_tier=5
 	var before: Dictionary=restored.snapshot()
 	_check(not restored.restore(bad).ok and restored.snapshot()==before,"quality five cannot be forged without actual concert relay and cultural delivery")
