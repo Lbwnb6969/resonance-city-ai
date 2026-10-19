@@ -22,6 +22,7 @@ var _attachment_cache: Dictionary = {}
 var attachment_stats := {"queries":0,"cache_hits":0,"edge_projections":0,"wall_tests":0}
 var _route_cache: Dictionary = {}
 var _service_routes: Dictionary = {}
+var _service_lengths: Dictionary = {}
 var _route_cache_entries := 0
 var _route_solver := RouteSolver.new()
 var prepared_positions: Dictionary = {}
@@ -118,6 +119,8 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 			var route:=_route(start,finish)
 			if not _service_routes.has(start):_service_routes[start]={}
 			_service_routes[start][finish]=route
+			if not _service_lengths.has(start):_service_lengths[start]={}
+			_service_lengths[start][finish]=_length(route)
 	prepare_stats["pairs_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
 	stage_started=Time.get_ticks_usec()
 	_prepare_home_stops(snapshot.get("resident_stops",{}))
@@ -195,6 +198,7 @@ func _build_graph() -> void:
 	selected_entrances.clear()
 	_route_cache.clear()
 	_service_routes.clear()
+	_service_lengths.clear()
 	_route_cache_entries = 0
 	prepared_positions.clear()
 	prepared_street_heights.clear()
@@ -353,7 +357,7 @@ func _build_graph() -> void:
 
 func _build_attachment_index() -> void:
 	_route_solver.build(graph,positions)
-	_route_cache.clear();_route_cache_entries=0;_service_routes.clear()
+	_route_cache.clear();_route_cache_entries=0;_service_routes.clear();_service_lengths.clear()
 	# Preserve graph edge order so equal-distance attachment ties retain their
 	# original route choice. Each segment is indexed across its full extent.
 	_edge_bins.clear()
@@ -419,6 +423,17 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 	_route_cache[start] = destinations
 	_route_cache_entries += 1
 	return result
+
+func _length(route:Array[Vector3])->float:
+	if route.is_empty():return INF
+	var distance:=0.
+	for i in range(1,route.size()):distance+=route[i-1].distance_to(route[i])
+	return distance
+
+func route_length(start:String,finish:String)->float:
+	if not graph.has(start) or not graph.has(finish) or component_of.get(start,"")!=component_of.get(finish,""):return INF
+	if _service_routes.get(start,{}).has(finish):return float(_service_lengths[start][finish])
+	return _length(_route(start,finish))
 
 func _attachments_for_planar(planar: Vector2) -> Dictionary:
 	attachment_stats.queries += 1

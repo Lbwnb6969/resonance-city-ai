@@ -143,7 +143,7 @@ func _approach(point: Vector3, id: String, seat: int) -> Array[Vector3]:
 	var route: Array[Vector3] = life._route_from_position(point, str(life.connected_houses[id]))
 	if route.is_empty(): return empty
 	var door: Vector3 = life.positions[life.connected_houses[id]]
-	var local: Array[Vector2] = layout_api.route(life.state, id, Vector2(door.x, door.z), layouts[id].seats[seat])
+	var local: Array[Vector2] = layout_api.seat_route(life.state, id, Vector2(door.x, door.z), layouts[id].seats[seat])
 	if local.is_empty(): return empty
 	for at: Vector2 in local: route.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 	return route
@@ -156,7 +156,7 @@ func street_attachment(point: Vector3, finish: String) -> Array[Vector3]:
 		var continuation: Array[Vector3] = life._route(str(life.connected_houses[id]), finish)
 		if continuation.is_empty(): continue
 		var door: Vector3 = life.positions[life.connected_houses[id]]
-		var local: Array[Vector2] = layout_api.route(life.state, str(id), planar, Vector2(door.x, door.z))
+		var local: Array[Vector2] = layout_api.seat_route(life.state, str(id), planar, Vector2(door.x, door.z))
 		if local.is_empty(): continue
 		var result: Array[Vector3] = []
 		for at: Vector2 in local: result.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
@@ -234,7 +234,7 @@ func _walk(resident: Dictionary, delta: float) -> bool:
 func _set_exit(resident: Dictionary, id: String) -> void:
 	var point := Vector2(resident.node.position.x, resident.node.position.z)
 	var entry: Vector3 = life.positions[life.connected_houses[id]]
-	var local: Array[Vector2] = layout_api.route(life.state, id, point, Vector2(entry.x, entry.z))
+	var local: Array[Vector2] = layout_api.seat_route(life.state, id, point, Vector2(entry.x, entry.z))
 	var route: Array[Vector3] = []
 	for at: Vector2 in local: route.append(Vector3(at.x, life.state.street_height(at) + 0.10, at.y))
 	resident.route = route

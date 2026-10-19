@@ -20,6 +20,7 @@ func restore_city(data:Dictionary,city:RefCounted)->void:
 	var context:Dictionary=data.get("context",{})
 	if context.is_empty():return
 	context.owner=weakref(city);_contexts[city.get_instance_id()]=context
+	context.seat_revision=city.revision
 	for id:String in data.get("plans",{}):_cache[str(city.get_instance_id())+":"+id]=data.plans[id]
 
 func rebind_city(source:RefCounted,target:RefCounted)->void:
@@ -29,6 +30,7 @@ func rebind_city(source:RefCounted,target:RefCounted)->void:
 	if _contexts.has(source_id):
 		var context:Dictionary=_contexts[source_id];_contexts.erase(source_id)
 		context.owner=weakref(target);_contexts[target_id]=context
+		context.seat_revision=target.revision
 	var prefix:=str(source_id)+":"
 	for key:String in _cache.keys():
 		if not key.begins_with(prefix):continue
@@ -139,16 +141,32 @@ func route(city, id: String, from: Vector2, to: Vector2) -> Array[Vector2]:
 func warm_seats(city, entries: Dictionary) -> void:
 	if entries.is_empty():return
 	var context:=_context(city)
+	context.seat_revision=city.revision
 	if context.get("seat_entries")==entries:return
+	context.seat_paths={}
 	# All neighboring furniture must exist before warming. The actual street
 	# port can differ from the facade's provisional entrance used by layout().
 	for id: String in entries:
 		var plan:=layout(city,id)
 		if plan.is_empty():continue
+		var paths:Dictionary={}
 		for seat: Vector2 in plan.seats:
-			route(city,id,entries[id],seat)
-			route(city,id,seat,entries[id])
+			var entry:Vector2=entries[id]
+			paths[Vector4(entry.x,entry.y,seat.x,seat.y)]=route(city,id,entry,seat)
+			paths[Vector4(seat.x,seat.y,entry.x,entry.y)]=route(city,id,seat,entry)
+		context.seat_paths[id]=paths
 	context.seat_entries=entries.duplicate()
+
+func seat_route(city,id:String,from:Vector2,to:Vector2)->Array[Vector2]:
+	# Warmed by Network before publication. Only exact current-revision street
+	# port/seat pairs bypass the full geometry validation; free origins use it.
+	var context:Dictionary=_contexts.get(city.get_instance_id(),{})
+	if context.get("seat_revision",-1)==city.revision:
+		var paths:Dictionary=context.get("seat_paths",{}).get(id,{})
+		var key:=Vector4(from.x,from.y,to.x,to.y)
+		if paths.has(key):
+			var result:Array[Vector2]=[];result.assign(paths[key]);return result
+	return route(city,id,from,to)
 
 func route_with_plan(city, id: String, plan: Dictionary, from: Vector2, to: Vector2) -> Array[Vector2]:
 	# Cancellation keeps the former furniture detour and actual saved entrance,

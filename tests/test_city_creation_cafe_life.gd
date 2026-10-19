@@ -163,8 +163,8 @@ func _run() -> void:
 	# Exact cap and ledger invariants are independent of visual frame timing.
 	var cap_city := State.new()
 	cap_city._apply_snapshot(tea_data)
-	for id in ["h4", tea_homes[0]]: cap_city.resonance_afterglow[id] = 115.0
-	_check(cap_city.complete_tea("h4", tea_homes) and cap_city.afterglow_remaining("h4") == 120.0, "earned extensions cap at one hundred twenty seconds")
+	for id in ["h4", tea_homes[0]]: cap_city.resonance_afterglow[id] = 235.0
+	_check(cap_city.complete_tea("h4", tea_homes) and cap_city.afterglow_remaining("h4") == 240.0, "earned extensions cap at the expanded two-hundred-forty-second bound")
 	_check(cap_city._validate_snapshot(cap_city.snapshot()).ok, "extended afterglow serializes under expanded schema bound")
 	var repurpose_city := State.new()
 	repurpose_city._apply_snapshot(tea_data)

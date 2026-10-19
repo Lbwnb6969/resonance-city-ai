@@ -2,6 +2,11 @@ extends SceneTree
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Context=preload("res://scripts/world/city_creation_cafe_layout_context.gd")
 const Network=preload("res://scripts/world/city_creation_network.gd")
+class CountingContext:
+	extends "res://scripts/world/city_creation_cafe_layout_context.gd"
+	var context_queries:=0
+	func _context(city)->Dictionary:
+		context_queries+=1;return super._context(city)
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:_run.call_deferred()
@@ -17,7 +22,7 @@ func _pure(value:Variant)->bool:
 	return true
 func _run()->void:
 	var city:=State.new();city.initialize();_check(city.set_house_role("h3","garden_cafe").ok and city.set_house_role("h4","garden_cafe").ok,"two actual cafes have authored geometry")
-	var live:=Context.new();var original:Dictionary=city.snapshot();var plan:Dictionary=live.layout(city,"h3")
+	var live:=CountingContext.new();var original:Dictionary=city.snapshot();var plan:Dictionary=live.layout(city,"h3")
 	_check(not plan.is_empty(),"real first cafe has legal furniture")
 	if plan.is_empty():quit(1);return
 	var entries: Dictionary={"h3":plan.entrance}
@@ -27,16 +32,24 @@ func _run()->void:
 	for seat:Vector2 in plan.seats:paths.append(live.route(city,"h3",plan.entrance,seat));paths.append(live.route(city,"h3",seat,plan.entrance))
 	live.warm_seats(city,entries)
 	_check(var_to_bytes(live.snapshot_city(city))==warmed,"all three actual seat approaches and exits are already cached; repeated publication does not rebuild them")
+	live.context_queries=0;var fast_exact:=true;var path_index:=0
+	for seat:Vector2 in plan.seats:
+		fast_exact=fast_exact and live.seat_route(city,"h3",plan.entrance,seat)==paths[path_index];path_index+=1
+		fast_exact=fast_exact and live.seat_route(city,"h3",seat,plan.entrance)==paths[path_index];path_index+=1
+	_check(fast_exact and live.context_queries==0,"all six published seat legs match the original route without revalidating city geometry")
+	var detached:Array[Vector2]=live.seat_route(city,"h3",plan.entrance,plan.seats[0]);detached.push_front(Vector2(99,99))
+	_check(live.seat_route(city,"h3",plan.entrance,plan.seats[0])==paths[0],"a caller cannot mutate the prepared seat path")
 	var snapshot:=live.snapshot_city(city);var before:=var_to_bytes(snapshot)
 	_check(_pure(snapshot),"worker capture contains values without Nodes, Callables or weak owner objects")
 	var copy:=State.new();_check(copy.restore(original).ok,"worker city restores identical authored input")
 	var worker:=Context.new();worker.restore_city(snapshot,copy);var index:=0;var exact:=true
 	for seat:Vector2 in plan.seats:
-		exact=exact and worker.route(copy,"h3",plan.entrance,seat)==paths[index];index+=1
-		exact=exact and worker.route(copy,"h3",seat,plan.entrance)==paths[index];index+=1
+		exact=exact and worker.seat_route(copy,"h3",plan.entrance,seat)==paths[index];index+=1
+		exact=exact and worker.seat_route(copy,"h3",seat,plan.entrance)==paths[index];index+=1
 	_check(exact,"all seat approaches and exits survive the private worker capture exactly")
 	var point:Vector2=Vector2(plan.entrance).lerp(Vector2(plan.seats[0]),.37)
 	var prepared:Array[Vector2]=worker.route(copy,"h3",point,plan.entrance)
+	_check(worker.seat_route(copy,"h3",point,plan.entrance)==prepared,"a free origin uses the original visibility solver instead of a nearby seat route")
 	_check(var_to_bytes(live.snapshot_city(city))==before,"a new worker route never mutates the live visibility graph or route cache")
 	worker.rebind_city(copy,city)
 	_check(not worker._contexts.has(copy.get_instance_id()) and worker._contexts[city.get_instance_id()].owner.get_ref()==city,"joined context adopts the live weak owner and removes the snapshot owner")
@@ -47,6 +60,7 @@ func _run()->void:
 	_check(worker.route(city,"h3",point,plan.entrance)==cold.route(city,"h3",point,plan.entrance),"cached planar paths remain exact after terrain-only edits")
 	_check(city.set_house_role("h4","residential").ok,"actual neighboring furniture is removed by role edit")
 	cold=Context.new()
+	_check(worker.seat_route(city,"h3",plan.entrance,plan.seats[0])==cold.route(city,"h3",plan.entrance,plan.seats[0]),"a furniture edit invalidates prepared seat metadata before route validation")
 	_check(worker.route(city,"h3",point,plan.entrance)==cold.route(city,"h3",point,plan.entrance) and worker.snapshot_city(city).context.signature!=rebound.context.signature,"changed furniture invalidates the captured geometry and matches cold routing")
 	var network:=Network.new();var thread:=Thread.new();var actors: Array[Dictionary]=[]
 	thread.start(network.prepare.bind(original,{},actors))
@@ -62,7 +76,7 @@ func _run()->void:
 		var layout: Dictionary=prepared_context.layout(published,id)
 		if layout.is_empty():continue
 		for seat: Vector2 in layout.seats:
-			prepared_context.route(published,id,Vector2(port.x,port.z),seat)
-			prepared_context.route(published,id,seat,Vector2(port.x,port.z));prepared_context_routes+=2
+			prepared_context.seat_route(published,id,Vector2(port.x,port.z),seat)
+			prepared_context.seat_route(published,id,seat,Vector2(port.x,port.z));prepared_context_routes+=2
 	_check(prepared_context_routes>=6 and var_to_bytes(prepared_context.snapshot_city(published))==ready,"actual background Network preparation warms real street-port seat approaches and exits before adopting the live city")
 	print("CAFE_PREPARED_CONTEXT ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

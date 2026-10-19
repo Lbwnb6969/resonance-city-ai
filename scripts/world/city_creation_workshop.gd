@@ -55,9 +55,8 @@ func sync() -> void:
 		var length := INF
 		for candidate: String in ids:
 			if str(life._roles[candidate]) != "residential" or homes.has(candidate): continue
-			var route := _between(candidate, shop)
-			if route.is_empty(): continue
-			var distance := _length(route)
+			var distance:=_between_length(candidate,shop)
+			if is_inf(distance):continue
 			if distance < length - 0.00001:
 				home = candidate
 				length = distance
@@ -117,6 +116,10 @@ func _length(route: Array[Vector3]) -> float:
 	var result := 0.0
 	for index in range(1, route.size()): result += route[index - 1].distance_to(route[index])
 	return result
+
+func _between_length(from:String,to:String)->float:
+	if not life.connected_houses.has(from) or not life.connected_houses.has(to):return INF
+	return life._route_length(str(life.connected_houses[from]),str(life.connected_houses[to]))
 
 func _target(id: String) -> Vector3:
 	return life.positions[life.connected_houses[id]] + Vector3(0, 0.10, 0)
@@ -207,9 +210,8 @@ func _recipient_order(worker: Dictionary) -> Dictionary:
 		# anywhere on this connected street network, including the 80m canvas.
 		var upgrade: bool = level + int(reserved.get(id, 0)) < 3 and (origin.distance_to(_target(id)) <= life.state.craft_radius(shop) or life.state.shares_chord(shop,id,"chrono_counterpoint") or life.tram.direct(shop,id))
 		if not upgrade and not pending: continue
-		var route := _between(shop, id)
-		if route.is_empty(): continue
-		var length := _length(route)
+		var length:=_between_length(shop,id)
+		if is_inf(length):continue
 		if pending and length<festival_length-0.00001:
 			festival=id
 			festival_length=length
@@ -238,9 +240,8 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 		var level: int = life.state.mechanism_level(id) if kind=="musicbox" else life.state.culture_level(id)
 		if level + int(reserved.get(id,0)) >= 2:continue
 		if _target(shop).distance_to(_target(id)) > life.state.craft_radius(shop) and not life.state.shares_chord(shop,id,"chrono_counterpoint") and not life.tram.direct(shop,id):continue
-		var route := _between(shop,id)
-		if route.is_empty(): continue
-		var distance := _length(route)
+		var distance:=_between_length(shop,id)
+		if is_inf(distance):continue
 		if level < best_level or (level == best_level and distance < best_length):
 			best = id; best_level = level; best_length = distance
 	_recipient_cache[shop] = {"signature":signature,"target":best,"kind":kind}
@@ -248,8 +249,14 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 
 func tick(delta: float) -> void:
 	if life.profile_tick:life.tick_profile.workshop_site=0;life.tick_profile.workshop_produce=0;life.tick_profile.workshop_callback=0
+	if life.profile_tick:life.tick_profile.workshop_slow_jobs=[]
 	for worker: Dictionary in workers:
-		if not life.worker_lod.before(worker,delta,MOVING):continue
+		var began:=Time.get_ticks_usec() if life.profile_tick else 0
+		var advance:bool=life.worker_lod.before(worker,delta,MOVING)
+		var lod_us:=Time.get_ticks_usec()-began if life.profile_tick else 0
+		if not advance:
+			if life.profile_tick and lod_us>1500:life.tick_profile.workshop_slow_jobs.append({"shop":worker.workshop_id,"phase":worker.phase,"total_us":lod_us,"lod_us":lod_us})
+			continue
 		var phase := str(worker.phase)
 		if phase == "paused": continue
 		if phase in MOVING:
@@ -284,6 +291,7 @@ func tick(delta: float) -> void:
 			worker.phase = "to_workshop"
 			_replan(worker)
 		life.worker_lod.after(worker,delta)
+		if life.profile_tick and Time.get_ticks_usec()-began>1500:life.tick_profile.workshop_slow_jobs.append({"shop":worker.workshop_id,"phase":phase,"total_us":Time.get_ticks_usec()-began,"lod_us":lod_us})
 
 func _craft(worker: Dictionary, delta: float) -> void:
 	var shop := str(worker.workshop_id)

@@ -1384,6 +1384,10 @@ func _route(start: String, finish: String) -> Array[Vector3]:
 	_route_cache_entries = _network._route_cache_entries
 	return route
 
+func _route_length(start:String,finish:String)->float:
+	_network.graph=graph;_network.positions=positions
+	return _network.route_length(start,finish)
+
 func _person(index: int) -> Node3D:
 	var root := Node3D.new()
 	var body := Node3D.new()
