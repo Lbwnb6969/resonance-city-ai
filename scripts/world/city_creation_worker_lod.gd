@@ -7,9 +7,16 @@ var stats: Dictionary={"movement_sleeps":0,"work_sleeps":0,"movement_steps":0,"w
 func _init(owner: Node3D)->void:life=owner
 func position(worker: Dictionary)->Vector3:
 	var motion: RefCounted=worker.get("worker_motion")
-	return motion.point() if motion!=null else worker.node.position
+	if motion==null:return worker.node.position
+	var point:Vector3=motion.point()
+	var surface:RefCounted=life._published_surface if life._published_surface!=null and life.state.revision!=life.last_revision else life.state
+	point.y=surface.street_height(Vector2(point.x,point.z))+.10
+	return point
 func _visible(worker: Dictionary)->bool:
-	return life.view_camera==null or life.view_camera.is_position_in_frustum(position(worker)+Vector3.UP*.35)
+	if life.view_camera==null:return true
+	var motion:RefCounted=worker.get("worker_motion")
+	var point:Vector3=motion.point() if motion!=null else worker.node.position
+	return life.view_camera.is_position_in_frustum(point+Vector3.UP*.35)
 func _actor(worker: Dictionary)->String:
 	return ("baker/" if worker.has("bakery_id") else "artisan/")+str(worker.home_id)
 func _observe(worker: Dictionary,motion: RefCounted,before: Vector3)->void:
@@ -47,7 +54,7 @@ func _inputs(worker: Dictionary,phase: String)->int:
 	var shop:=str(worker.bakery_id if worker.has("bakery_id") else worker.workshop_id)
 	if phase=="baking":return hash([city.revision,city.bakery_supply.get(shop,{}),city.level_tier(shop)])
 	if phase=="crafting":return hash([city.revision,city.workshop_supply,city.venue_commissions,city.house_improvements,city.house_culture,city.house_clockwork,city.level_tier(shop)])
-	if phase=="installing":return hash([city.revision,city.workshop_supply.get(shop,{})])
+	if phase=="installing":return hash([city.revision,city.workshop_supply.get(shop,{}),city.level_tier(str(worker.target_id))])
 	return int(city.revision)
 func before(worker: Dictionary,delta: float,moving: Array)->bool:
 	if _visible(worker):flush(worker);return true
@@ -58,6 +65,7 @@ func before(worker: Dictionary,delta: float,moving: Array)->bool:
 		var route: Array[Vector3]=[];route.assign(worker.route)
 		if int(worker.index)>=route.size():flush(worker);return true
 		var speed: float=.83*life.state.walking_multiplier(str(worker.home_id))
+		if worker.has("workshop_id"):speed=.83*life.state.artisan_walking_multiplier(str(worker.home_id),str(worker.workshop_id),str(worker.target_id),phase)
 		var motion: RefCounted=worker.get("worker_motion")
 		if motion==null:
 			motion=Motion.new(worker.node.position,worker.node.rotation.y);worker.worker_motion=motion
@@ -89,7 +97,7 @@ func after(worker: Dictionary,delta: float)->void:
 	var production:=phase in ["baking","crafting"]
 	var shop:=str(worker.bakery_id if worker.has("bakery_id") else worker.workshop_id)
 	var duration:=4. if phase=="resting" else 2. if phase=="installing" else 6. if phase=="baking" else 8.
-	var speed: float=city.site_production_multiplier(shop) if production else 1.
+	var speed: float=city.site_production_multiplier(shop) if production else city.installation_multiplier(shop,str(worker.target_id)) if phase=="installing" else 1.
 	var active:=true
 	if production:
 		var supply: Dictionary=city.bakery_status(shop) if phase=="baking" else city.workshop_status(shop)

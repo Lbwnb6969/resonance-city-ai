@@ -205,7 +205,7 @@ func _recipient_order(worker: Dictionary) -> Dictionary:
 		var pending: bool = str(life._roles[id])=="venue" and bool(life.state.festival_status(id).pending) and not festival_reserved.has(id)
 		# Daily improvements stay local; a real festival order can be carried
 		# anywhere on this connected street network, including the 80m canvas.
-		var upgrade: bool = level + int(reserved.get(id, 0)) < 3 and origin.distance_to(_target(id)) <= RANGE
+		var upgrade: bool = level + int(reserved.get(id, 0)) < 3 and (origin.distance_to(_target(id)) <= RANGE or life.state.shares_chord(shop,id,"chrono_counterpoint"))
 		if not upgrade and not pending: continue
 		var route := _between(shop, id)
 		if route.is_empty(): continue
@@ -236,7 +236,8 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 	for id: String in ids:
 		if life._roles[id] != "residential" or not life.connected_houses.has(id): continue
 		var level: int = life.state.mechanism_level(id) if kind=="musicbox" else life.state.culture_level(id)
-		if level + int(reserved.get(id,0)) >= 2 or _target(shop).distance_to(_target(id)) > RANGE: continue
+		if level + int(reserved.get(id,0)) >= 2:continue
+		if _target(shop).distance_to(_target(id)) > RANGE and not life.state.shares_chord(shop,id,"chrono_counterpoint"):continue
 		var route := _between(shop,id)
 		if route.is_empty(): continue
 		var distance := _length(route)
@@ -259,7 +260,7 @@ func tick(delta: float) -> void:
 			if not _cargo(worker):
 				_replan(worker)
 				continue
-			worker.elapsed = minf(INSTALL_DURATION, float(worker.elapsed) + delta)
+			worker.elapsed = minf(INSTALL_DURATION, float(worker.elapsed) + delta*life.state.installation_multiplier(str(worker.workshop_id),str(worker.target_id)))
 			if float(worker.elapsed) < INSTALL_DURATION-.000000001: continue
 			var target := str(worker.target_id)
 			var artist := str(life._roles.get(str(worker.workshop_id),"")) == "atelier"
@@ -339,12 +340,13 @@ func _walk(worker: Dictionary, delta: float) -> void:
 	var node: Node3D = worker.node
 	var before := Vector2(node.position.x,node.position.z)
 	var direction: Vector3 = route[index] - node.position
-	var step: float=delta*.83*life.state.walking_multiplier(str(worker.home_id))
-	if direction.length() <= step:
+	var distance:=Vector2(direction.x,direction.z).length()
+	var step: float=delta*.83*life.state.artisan_walking_multiplier(str(worker.home_id),str(worker.workshop_id),str(worker.target_id),str(worker.phase))
+	if distance <= step:
 		node.position = route[index]
 		worker.index = index + 1
 	else:
-		node.position += direction.normalized() * step
+		node.position += direction/distance * step
 		node.rotation.y = atan2(direction.x, direction.z)
 	node.position.y = life.state.street_height(Vector2(node.position.x, node.position.z)) + 0.10
 	life.record_travel("artisan/"+str(worker.home_id),before,Vector2(node.position.x,node.position.z))

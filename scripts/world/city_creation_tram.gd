@@ -135,15 +135,30 @@ func tick(delta: float)->void:
 				car.node.rotation.y=atan2(direction.x,direction.z)
 				var at: Vector3=car.node.position
 				car.node.position.y=life.state.street_height(Vector2(at.x,at.z))
+				_charge_waltz(car,Vector2(at.x,at.z),Vector2(position.x,position.z))
 			car.distance+=consumed*velocity;remaining-=consumed
 			if distance-consumed*velocity>.00001:break
 			car.node.position=target;car.key=key;car.wait=DWELL if plan.station_keys.has(key) else 0.
 			car.cursor=1 if int(car.cursor)>=tour.size()-1 else int(car.cursor)+1
+			if int(car.cursor)==1:car.synergy_charged={}
 			_drop(car)
 			if plan.station_keys.has(key):
 				arrivals+=1
 				if life.tram_callback.is_valid():life.tram_callback.call(str(car.id),key,Vector2(target.x,target.z))
 		_seat(car)
+
+func _charge_waltz(car:Dictionary,at:Vector2,from:Vector2=Vector2.INF)->void:
+	var did:=str(life.state.district_at(at).get("id",""))
+	var changed:=did!=str(car.get("synergy_district",""))
+	if changed:car.synergy_charged={}
+	var previous:Vector2=car.get("synergy_at",from if from.is_finite() else at)
+	if not changed and car.has("synergy_at") and previous.distance_to(at)<1.:return
+	car.synergy_district=did;car.synergy_at=at
+	if not car.has("synergy_charged"):car.synergy_charged={}
+	var houses:Array[String]=[]
+	for id:String in life.state.tram_synergy_houses(at,previous):
+		if not car.synergy_charged.has(id):houses.append(id);car.synergy_charged[id]=true
+	if not houses.is_empty():life.state.grant_resonance_afterglow(houses,30.)
 
 func _seat(car: Dictionary)->void:
 	for home: String in car.riders:

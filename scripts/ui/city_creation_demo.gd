@@ -883,6 +883,7 @@ func _setup_district_panel(root: Control) -> void:
 		_refresh_ui())
 	column.add_child(district_link_button)
 	district_description = _label("", 14)
+	district_description.mouse_filter=Control.MOUSE_FILTER_PASS
 	district_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	district_description.custom_minimum_size.x = 270
 	column.add_child(district_description)
@@ -968,6 +969,7 @@ func _refresh_ui() -> void:
 		quest.text="给河湾添一点变化\n%s拓房  %s加层  %s露台  %s接路" % [_check("extend"),_check("raise"),_check("terrace"),_check("road")]
 	var planning:Dictionary=state.synergy_buffs()
 	if float(planning.expansion_multiplier)>1.:quest.text+="\n♫ "+str(planning.label)
+	for chord:String in planning.active_chords:quest.text+="\n♫ "+str(State.SynergyBuffs.CHORD_NAMES[chord])
 	if _painted_tool!=tool:
 		var changed:Array=range(tool_buttons.size()) if _painted_tool<0 else [_painted_tool,tool]
 		for i:int in changed:
@@ -1778,6 +1780,11 @@ func _refresh_district() -> void:
 		var planning:Dictionary=state.synergy_buffs();var voice:Dictionary=planning.districts.get(selected_district,{})
 		district_description.text+="\n♫ 声部%d栋 · 理想8～16栋\n%s"%[int(voice.get("count",0)),"主题纯净 · 生产+25%" if voice.get("pure",false) else "同一时代编制，可获生产+25%"]
 		district_description.text+="\n"+str(planning.label)
+		for chord:String in State.SynergyBuffs.CHORD_NAMES:
+			for scope:Dictionary in planning.chord_scopes.values():
+				if selected_district in scope.district_ids and chord in scope.chords:
+					district_description.text+="\n♫ "+str(State.SynergyBuffs.CHORD_NAMES[chord])
+					district_description.tooltip_text+="\n\n"+str(State.SynergyBuffs.CHORD_DETAILS[chord]);break
 		if int(counts.symphony_hall)>0:district_description.text+="\n交响音乐厅 %d"%int(counts.symphony_hall)
 		if int(counts.workshop)>0 or int(counts.garden_cafe)>0:
 			district_description.text += "\n制琴坊 %d · 茶座 %d（可达 %d/%d）" % [int(counts.workshop),int(counts.garden_cafe),int(reachable.garden_cafe),int(counts.residential)]
@@ -2139,8 +2146,9 @@ func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: i
 		_refresh_place()
 	if kind=="installed":
 		_refresh_house_music_traits([target_id])
+		var glass:=state.has_chord(target_id,"renaissance_fugue") and state.culture_level(target_id)>0
 		for house: Dictionary in state.houses:
-			if str(house.id)==target_id: _message("♫ %s 收到街坊送来的木饰 · 匠作%d阶" % [str(house.name),level])
+			if str(house.id)==target_id: _message("♫ %s 收到街坊送来的木饰%s · 匠作%d阶" % [str(house.name),"与彩绘玻璃窗" if glass else "",level])
 		_refresh_place()
 	elif kind=="festival":
 		for house: Dictionary in state.houses:

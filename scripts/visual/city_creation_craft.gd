@@ -127,11 +127,15 @@ func _culture(renderer,only: Array[String]=[]) -> void:
 		var id := str(house.id); var level: int = renderer.state.culture_level(id)
 		if level == 0: continue
 		live[id]=true
-		var signature := hash([house.origin,house.cells,house.get("base_y",0.0),level,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house)])
+		# Woodwork provides the frame for the first cultural glass gift. Both
+		# earned ledgers persist it after a district or musical link is removed.
+		var display_level:=maxi(level,2 if renderer.state.improvement_level(id)>0 else 1)
+		var signature := hash([house.origin,house.cells,house.get("base_y",0.0),level,display_level,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house)])
 		if culture_fingerprints.get(id,-1)==signature: continue
 		_remove(id,culture_roots,culture_fingerprints)
 		var root := Node3D.new(); root.name="DeliveredArt_"+id; layer.add_child(root)
 		root.set_meta("culture_level",level)
+		root.set_meta("art_display_level",display_level)
 		var placed := false
 		var entries: Array = renderer.state.house_entrances(id)
 		var arcades: Array = renderer.ArcadePlan.for_house(renderer.state,house)
@@ -156,7 +160,7 @@ func _culture(renderer,only: Array[String]=[]) -> void:
 				var face := Node3D.new(); root.add_child(face)
 				face.position=renderer._cell_position(house,cell)+Vector3(side.x*radius,int(cell.level)*1.7,side.y*radius)
 				face.rotation.y=atan2(float(side.x),float(side.y))
-				renderer.Renaissance.art(renderer,face,level); placed=true; break
+				renderer.Renaissance.art(renderer,face,display_level); placed=true; break
 			if placed: break
 		renderer._merge_meshes(root)
 		DetailLod.bind_tree(root,DetailLod.GALLERY)

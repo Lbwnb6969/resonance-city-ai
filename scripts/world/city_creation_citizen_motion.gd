@@ -37,7 +37,9 @@ func settle()->void:
 func advance(route:Array[Vector3],index:int,distance:float)->int:
 	if leg!=index or target!=route[index]:
 		start=point();progress=0.;target=route[index];leg=index
-		var delta:=target-start;length=delta.length();direction=delta/length if length>0. else Vector3.ZERO
+		# Speed advances along the street's planar path. The shared surface
+		# supplies Y at observation/publication, including individual treads.
+		var delta:=target-start;length=Vector2(delta.x,delta.z).length();direction=delta/length if length>0. else Vector3.ZERO
 		if length>0.:yaw=atan2(direction.x,direction.z)
 	progress=minf(length,progress+distance)
 	return index+1 if progress>=length else index

@@ -1,9 +1,15 @@
 class_name CityCreationCopy
 extends RefCounted
+const Synergy=preload("res://scripts/world/city_creation_synergy_buffs.gd")
 ## Centralized in-game copy, poetic narrative, tooltips, and minimalist status formatting
 ## for 《共鸣之城》(Resonance City).
 
 const GAME_TITLE := "共鸣之城"
+
+static func chord_guide()->String:
+	var lines:PackedStringArray=[]
+	for chord:String in Synergy.CHORD_NAMES:lines.append("  - "+str(Synergy.CHORD_NAMES[chord])+"："+str(Synergy.CHORD_DETAILS[chord]))
+	return "\n".join(lines)
 const GAME_SUBTITLE_DAY := "河湾晨曲 · 留下你的街坊"
 const GAME_SUBTITLE_DUSK := "暖金夕照 · 街灯与晚风渐起"
 const GAME_SUBTITLE_NIGHT := "星夜灯火 · 万家暖窗共鸣"
@@ -188,6 +194,10 @@ static func guide_tab_text(tab_index: int) -> String:
 				"• 六座免费里程碑地标名胜（左上角「地标名胜」）",
 				"  达成里程碑后可免费选址放置、随时移动或回收：",
 				"  古钟瞭望塔（10屋+跨河桥）· 河湾大水车磨坊（出炉24份面包）· 文艺复兴圆顶音乐院（第二时代+跨区问答）· 皇家植物玻璃宫（8桌茶聚+120株植物）· 中央钟表电车总站（第三时代+30米宽街/轨街）· 河湾水上交响剧场（第四时代+三章手记）。",
+				"",
+				"• 声学和弦 · 组合一片有默契的街坊",
+				"  配方在同一街坊或一对直接共鸣连线的街坊内生效。三片街坊串联不会把远处的建筑或池塘合并计算。",
+				chord_guide(),
 			])
 		2:
 			return "\n".join([

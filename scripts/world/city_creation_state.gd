@@ -668,7 +668,7 @@ func concert_radius(venue_id: String) -> float:
 	return 38.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0
 
 func walking_multiplier(home_id: String) -> float:
-	return float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)
+	return float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)*float(planning_bonus(home_id).get("walking_mult",1.))
 
 func level_tier(house_id: String) -> int:
 	return int(building_quality.get(house_id,{}).get("level_tier",1))
@@ -1353,6 +1353,52 @@ func planning_bonus(house_id:String)->Dictionary:
 	return synergy_buffs().houses.get(house_id,{})
 
 
+func has_chord(house_id:String,chord:String)->bool:
+	return planning_bonus(house_id).get("chord_scopes",{}).has(chord)
+
+
+func shares_chord(first:String,second:String,chord:String)->bool:
+	return chord_together([first,second],chord)
+
+
+func chord_together(house_ids:Array,chord:String)->bool:
+	var scopes:Array=planning_bonus(str(house_ids[0])).get("chord_scopes",{}).get(chord,[])
+	for scope:String in scopes:
+		var shared:=true
+		for id:String in house_ids:
+			if scope not in planning_bonus(id).get("chord_scopes",{}).get(chord,[]):shared=false;break
+		if shared:return true
+	return false
+
+
+func installation_multiplier(shop_id:String,target_id:String)->float:
+	var index:=_house_index(shop_id)
+	if index<0 or str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return 1.
+	return 1.5 if has_chord(target_id,"pastoral_triad") else 1.
+
+
+func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
+	return walking_multiplier(home_id)*(installation_multiplier(shop_id,target_id) if phase=="to_target" else 1.)
+
+
+func tram_synergy_houses(at:Vector2,from:Vector2=Vector2.INF)->Array[String]:
+	if not from.is_finite():from=at
+	var result:Array[String]=[];var buffs:=synergy_buffs();var scopes:Array[String]=[]
+	for key:String in buffs.chord_scopes:
+		var scope:Dictionary=buffs.chord_scopes[key]
+		if "clockwork_waltz" not in scope.chords:continue
+		for district:Dictionary in districts:
+			if str(district.id) in scope.district_ids and SynergyBuffs._touches([[from.x,from.y],[at.x,at.y]],0.,district):scopes.append(key);break
+	if scopes.is_empty():return result
+	for house:Dictionary in houses:
+		var point:=Vector2(float(house.origin[0]),float(house.origin[1]))
+		if point.distance_to(Geometry2D.get_closest_point_to_segment(point,from,at))>10.:continue
+		var active:Array=buffs.houses[str(house.id)].chord_scopes.get("clockwork_waltz",[])
+		for key:String in scopes:
+			if key in active:result.append(str(house.id));break
+	return result
+
+
 func house_harmony(house_id: String) -> Dictionary:
 	return Prosperity.house_harmony(self, house_id)
 
@@ -1679,6 +1725,16 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 		house_clockwork[target_id]=mechanism_level(target_id)+1
 	else:
 		house_improvements[target_id] = improvement_level(target_id) + 1
+		# A real wood delivery can carry an academy gift. Preserve existing
+		# art reservations and record the extra crafted-and-installed object.
+		if shares_chord(shop_id,target_id,"renaissance_fugue") and houses[_house_index(target_id)].role=="residential":
+			var reserved:=0
+			for row:Dictionary in workshop_supply.values():
+				if row.transit.get("kind","")=="art" and row.transit.get("target_id","")==target_id:reserved+=1
+			if culture_level(target_id)+reserved<2:
+				house_culture[target_id]=culture_level(target_id)+1
+				workshop_supply[shop_id].produced=int(workshop_supply[shop_id].produced)+1
+				workshop_supply[shop_id].delivered=int(workshop_supply[shop_id].delivered)+1
 	_craft_changed()
 	return true
 

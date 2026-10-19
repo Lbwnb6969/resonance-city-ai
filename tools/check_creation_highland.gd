@@ -78,7 +78,9 @@ func _identity()->Array:
 	var result:Array=[]
 	for id:String in demo.music.STEMS:
 		var player:AudioStreamPlayer=demo.music._players[id]
-		result.append([id,player.get_instance_id(),player.stream.get_instance_id()])
+		# Daily score variants intentionally exchange the current WAV. The
+		# original bank and the fixed native player pool retain their identity.
+		result.append([id,player.get_instance_id(),demo.music._original_streams[id].get_instance_id()])
 	for player:AudioStreamPlayer in demo.music._effects: result.append(player.get_instance_id())
 	return result
 func _capture(label:String)->void:

@@ -90,8 +90,10 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 	var selected_seat := -1
 	var selected_route: Array[Vector3] = []
 	var best := INF
+	var pastoral:bool=not reached.is_empty() and life.state.shares_chord(str(resident.home_id),reached,"pastoral_triad")
 	for id in layouts:
 		if layouts[id].is_empty() or not life.connected_houses.has(id): continue
+		if pastoral and not life.state.chord_together([str(resident.home_id),reached,str(id)],"pastoral_triad"):continue
 		var group: Dictionary = groups.get(id, {"phase":"waiting","participants":[]})
 		if group.phase != "waiting" or group.participants.size() >= 3: continue
 		var occupied := {}
@@ -104,7 +106,8 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 		if route.is_empty(): continue
 		var length := 0.0
 		for index in range(1, route.size()): length += route[index - 1].distance_to(route[index])
-		if length > 32.0 or length >= best: continue
+		if length >= best:continue
+		if length > 32.0 and not pastoral and not life.state.shares_chord(str(resident.home_id),str(id),"chrono_counterpoint"):continue
 		best = length
 		selected = str(id)
 		selected_seat = seat
@@ -125,6 +128,13 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 	if not groups.has(selected): groups[selected] = {"cafe_id":selected,"phase":"waiting","elapsed":0.0,"participants":[]}
 	groups[selected].participants.append(str(resident.home_id))
 	return true
+
+func can_wait_after_bread(resident:Dictionary,bakery:String)->bool:
+	if not life._concert.is_empty() or resident.has("daily_snapshot"):return false
+	for id:String in layouts:
+		if layouts[id].is_empty() or not life.connected_houses.has(id):continue
+		if life.state.chord_together([str(resident.home_id),bakery,id],"pastoral_triad") and not _approach(resident.node.position,id,0).is_empty():return true
+	return false
 
 func _approach(point: Vector3, id: String, seat: int) -> Array[Vector3]:
 	var empty: Array[Vector3] = []

@@ -22,6 +22,7 @@ static func eligible(flags: Dictionary, street: bool, amenity: bool, prestige: b
 	return 5
 
 static func prestige(city: RefCounted, house: Dictionary) -> bool:
+	if city.has_chord(str(house.id),"chrono_counterpoint"):return true
 	var district: String=str(city.district_for_house(str(house.id)).get("id",""))
 	if district.is_empty():return false
 	for other: Dictionary in city.houses:
@@ -35,6 +36,7 @@ static func data(city: RefCounted) -> Dictionary:
 		"house_culture":city.house_culture,"house_clockwork":city.house_clockwork,"house_concerts":city.house_concerts}
 
 static func amenity(city: RefCounted, house: Dictionary) -> bool:
+	if city.has_chord(str(house.id),"renaissance_fugue"):return true
 	var at:=Vector2(float(house.origin[0]),float(house.origin[1]))
 	var district: Dictionary=city.district_for_house(str(house.id))
 	for road: Dictionary in city.roads:

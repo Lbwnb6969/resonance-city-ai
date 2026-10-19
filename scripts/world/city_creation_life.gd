@@ -14,6 +14,7 @@ var _lod_scalar_count:=0
 var _lod_visible_count:=0
 var _quality_inputs:Variant=null
 var _quality_cursor:=-1
+var _planning_walking_pending:=true
 var profile_tick:=false
 var tick_profile:Dictionary={}
 var citizen_lod_stats:Dictionary={"scalar":0,"visible":0,"publications":0,"scheduled_steps":0}
@@ -137,14 +138,21 @@ func flush_citizens()->void:
 
 func citizen_position(resident:Dictionary)->Vector3:
 	var motion:RefCounted=resident.get("offscreen_motion")
-	return motion.point() if motion!=null else resident.node.position
+	if motion==null:return resident.node.position
+	var point:Vector3=motion.point()
+	var surface:RefCounted=_published_surface if _published_surface!=null and state.revision!=last_revision else state
+	point.y=surface.street_height(Vector2(point.x,point.z))+.10
+	return point
 
 func _update_citizen_lod(delta:float)->void:
 	if _visual_lod_cursor==0:_lod_scalar_count=0;_lod_visible_count=0
 	var end:=mini(residents.size(),_visual_lod_cursor+16)
 	for index in range(_visual_lod_cursor,end):
 		var resident:Dictionary=residents[index]
-		var point:=citizen_position(resident)
+		# Frustum selection only needs the cheap route envelope. Exact sampled
+		# tread height is resolved by citizen_position/flush at observation.
+		var motion:RefCounted=resident.get("offscreen_motion")
+		var point:Vector3=motion.point() if motion!=null else resident.node.position
 		var visible:=view_camera==null or view_camera.is_position_in_frustum(point+Vector3.UP*.35)
 		var ticket:Dictionary=tram.tickets.get(str(resident.home_id),{})
 		var scalar:bool=not visible and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and ticket.get("state","")!="onboard"
@@ -163,6 +171,7 @@ func set_budget_hold(held: bool) -> void:
 		_process(0.0)
 
 func begin_budget_sync() -> bool:
+	_planning_walking_pending=true
 	flush_citizens()
 	flush_workers()
 	budget_prepare_ms=0.0
@@ -342,6 +351,10 @@ func _tick_life(delta: float) -> void:
 	var sampled:=Time.get_ticks_usec() if profile_tick else 0
 	if profile_tick:tick_profile.height=0;tick_profile.travel=0;tick_profile.cafe_attempts=0;tick_profile.quality_rules=0;tick_profile.quality_callback=0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
+	if _planning_walking_pending:
+		var bonuses:Dictionary=state.synergy_buffs().houses
+		for resident:Dictionary in residents:resident.planning_walking_mult=float(bonuses.get(str(resident.home_id),{}).get("walking_mult",1.))
+		_planning_walking_pending=false
 	if str(_concert.get("phase", "idle")) == "playing":
 		var until_completion := CONCERT_DURATION - float(_concert.elapsed)
 		if until_completion > 0.0 and delta > until_completion:
@@ -413,7 +426,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 		else:motion.defer(self,speed)
 		citizen_lod_stats.scheduled_steps+=1
 		return
-	var walk_step: float=base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)
+	var walk_step: float=base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)*float(resident.get("planning_walking_mult",1.))
 	if has_trams:
 		var ticket: Dictionary=tram.tickets.get(str(resident.home_id),{})
 		var status: String=str(ticket.get("state",""))
@@ -457,7 +470,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 			if arrival_callback.is_valid(): arrival_callback.call("venue")
 		_read_progress()
 		var visit_started:=Time.get_ticks_usec() if profile_tick else 0
-		var visiting: bool=service=="bakery" and cafe.try_visit(resident,reached)
+		var visiting: bool=service=="bakery" and not state.shares_chord(str(resident.home_id),reached,"pastoral_triad") and cafe.try_visit(resident,reached)
 		if profile_tick:tick_profile.cafe_attempts+=Time.get_ticks_usec()-visit_started
 		if visiting:return
 		_depart(resident, reached)
@@ -485,12 +498,12 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 	if resident.get("travel_leg",Vector2i(-1,-1))!=travel_leg or resident.get("travel_route")!=route:
 		resident.travel_leg=travel_leg;resident.travel_route=route
 		resident.travel_watch=travel.has_sites_between(previous_position,Vector2(target.x,target.z))
-	var remaining := point.distance_to(target)
-	if remaining < walk_step:
+	var remaining := Vector2(point.x,point.z).distance_to(Vector2(target.x,target.z))
+	if remaining <= walk_step:
 		point = target
 		resident.index = index + 1
 	else:
-		var direction := (target - point).normalized()
+		var direction := (target - point)/remaining
 		point += direction * walk_step
 		node.rotation.y = atan2(direction.x, direction.z)
 	var height_started:=Time.get_ticks_usec() if profile_tick else 0
@@ -578,6 +591,7 @@ func _signature() -> Array:
 	return result
 
 func _sync() -> void:
+	_planning_walking_pending=true
 	flush_citizens()
 	flush_workers()
 	cancel_budget_sync()
@@ -715,7 +729,7 @@ func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:
 			# hidden leg. Settle the old speed before replacing its forecast.
 			motion.settle()
 			_citizen_schedule.wake(resident)
-			motion.defer(self,.83*float(state.signature_bonuses().walking)*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.))
+			motion.defer(self,.83*state.walking_multiplier(str(resident.home_id)))
 	if not changes.is_empty() and quality_callback.is_valid():
 		var callback_started:=Time.get_ticks_usec() if profile_tick else 0
 		quality_callback.call(changes)
@@ -863,6 +877,13 @@ func _arrive(resident: Dictionary) -> void:
 	resident.wait = 5.0 if role == "venue" else 3.0
 
 func _depart(resident: Dictionary, reached: String) -> void:
+	if str(_roles.get(reached,""))=="bakery" and state.shares_chord(str(resident.home_id),reached,"pastoral_triad") and state.has_cafe_credit(str(resident.home_id)):
+		if cafe.try_visit(resident,reached):return
+		if cafe.can_wait_after_bread(resident,reached):
+			# Bread is already paid for. Reuse an ordinary saved doorstep dwell
+			# with no pending service so retries cannot buy another loaf.
+			resident.destination_id=reached;resident.dwell_id=reached;resident.service_pending="";resident.wait=1.
+			return
 	# Retry unspent invitations at real daily trip boundaries, never per frame.
 	var visit_started:=Time.get_ticks_usec() if profile_tick else 0
 	var visiting: bool=str(_roles.get(reached,""))!="bakery" and cafe.try_visit(resident,reached)
@@ -1246,8 +1267,10 @@ func _restore_resident(resident: Dictionary, saved: Dictionary, concert: bool) -
 	var service := str(saved.get("service_pending", ""))
 	if not dwell.is_empty():
 		var target: Vector3 = positions[connected_houses[destination]]+Vector3(0,0.10,0)
-		if dwell != destination or point.distance_to(target) > 0.15 or service != ("concert" if concert else str(_roles.get(destination, ""))): return false
-		if wait > (0.0 if concert else 5.0 if service == "venue" else 3.0): return false
+		var tea_wait:bool=not concert and service.is_empty() and str(_roles.get(destination,""))=="bakery" and state.has_cafe_credit(str(resident.home_id)) and state.shares_chord(str(resident.home_id),destination,"pastoral_triad")
+		if dwell != destination or point.distance_to(target) > 0.15: return false
+		if not tea_wait and service != ("concert" if concert else str(_roles.get(destination, ""))): return false
+		if wait > (1.0 if tea_wait else 0.0 if concert else 5.0 if service == "venue" else 3.0): return false
 	elif not service.is_empty(): return false
 	resident.node.position = point
 	resident.node.rotation.y = yaw
