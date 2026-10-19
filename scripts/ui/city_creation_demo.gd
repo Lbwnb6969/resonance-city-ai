@@ -799,9 +799,20 @@ func _setup_district_panel(root: Control) -> void:
 	district_panel.offset_left = -330
 	district_panel.offset_right = -24
 	district_panel.offset_top = 84
+	var scroll:=ScrollContainer.new()
+	scroll.name="DistrictScroll"
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	district_panel.add_child(scroll)
 	var column := VBoxContainer.new()
+	column.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation", 6)
-	district_panel.add_child(column)
+	scroll.add_child(column)
+	var resize_drawer:=func()->void:
+		scroll.custom_minimum_size.y=maxf(260.,get_viewport().get_visible_rect().size.y-228.)
+		district_panel.offset_left=-330.;district_panel.offset_right=-24.
+		district_panel.size.y=0.
+	get_viewport().size_changed.connect(resize_drawer)
+	resize_drawer.call()
 	column.add_child(_label("画一片有自己声音的街坊", 18))
 	var size_picker := OptionButton.new()
 	size_picker.name = "DistrictWidth"
@@ -955,6 +966,8 @@ func _refresh_ui() -> void:
 	quest.text = "今天，给河湾添一点变化\n%s 扩展一格房屋\n%s 做一处高低屋顶\n%s 留一片露台\n%s 拉一条路到门前" % [_check("extend"), _check("raise"), _check("terrace"), _check("road")]
 	if get_viewport().get_visible_rect().size.y<820:
 		quest.text="给河湾添一点变化\n%s拓房  %s加层  %s露台  %s接路" % [_check("extend"),_check("raise"),_check("terrace"),_check("road")]
+	var planning:Dictionary=state.synergy_buffs()
+	if float(planning.expansion_multiplier)>1.:quest.text+="\n♫ "+str(planning.label)
 	if _painted_tool!=tool:
 		var changed:Array=range(tool_buttons.size()) if _painted_tool<0 else [_painted_tool,tool]
 		for i:int in changed:
@@ -1762,6 +1775,9 @@ func _refresh_district() -> void:
 					if _district_home_has_service(str(house.id), service): reachable[service] = int(reachable[service]) + 1
 		district_description.text = "%d 房屋 · %d 居所 · %d 面包坊 · %d 演奏庭\n可沿路抵达 · 面包坊 %d / %d · 演奏庭 %d / %d" % [members.size(), int(counts.residential), int(counts.bakery), int(counts.venue), int(reachable.bakery), int(counts.residential), int(reachable.venue), int(counts.residential)]
 		district_description.tooltip_text = "可沿路抵达的服务包含街坊外的真实连通地点。"
+		var planning:Dictionary=state.synergy_buffs();var voice:Dictionary=planning.districts.get(selected_district,{})
+		district_description.text+="\n♫ 声部%d栋 · 理想8～16栋\n%s"%[int(voice.get("count",0)),"主题纯净 · 生产+25%" if voice.get("pure",false) else "同一时代编制，可获生产+25%"]
+		district_description.text+="\n"+str(planning.label)
 		if int(counts.symphony_hall)>0:district_description.text+="\n交响音乐厅 %d"%int(counts.symphony_hall)
 		if int(counts.workshop)>0 or int(counts.garden_cafe)>0:
 			district_description.text += "\n制琴坊 %d · 茶座 %d（可达 %d/%d）" % [int(counts.workshop),int(counts.garden_cafe),int(reachable.garden_cafe),int(counts.residential)]

@@ -231,6 +231,8 @@ func _work(context: Node3D) -> Dictionary:
 	for house:Dictionary in context.state.houses:
 		if str(house.get("role","")) in ["bakery","workshop","garden_cafe"]:context.state.site_blessing(str(house.id))
 	stages.site_blessings=float(Time.get_ticks_usec()-stage_start)/1000.
+	stage_start=Time.get_ticks_usec();context.state.synergy_buffs()
+	stages.planning_bonuses=float(Time.get_ticks_usec()-stage_start)/1000.
 	stage_start=Time.get_ticks_usec()
 	context.ground_contact_field.prepare(context.state)
 	stages.contact_field = float(Time.get_ticks_usec()-stage_start)/1000.0
@@ -562,6 +564,8 @@ func _commit(owner: Node3D) -> void:
 	owner.state._courtyard_revision=owner.state.revision
 	owner.state._site_blessings=staging.state._site_blessings
 	owner.state._prosperity_revision=owner.state.revision
+	owner.state._synergy_buffs=staging.state._synergy_buffs
+	owner.state._synergy_revision=owner.state.revision
 	staging.era_road_field.texture=owner.era_road_field.texture
 	staging.era_road_field.upload()
 	owner.era_road_field=staging.era_road_field

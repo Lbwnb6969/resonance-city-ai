@@ -134,6 +134,7 @@ func refresh() -> void:
 	lines.append("工作成员：面包坊 %d 人    ·    工坊 / 书院 / 钟表 %d 人" % [demo.life.bakery.workers.size(), demo.life.workshop.workers.size()])
 	var harmony: Dictionary = demo.state.city_harmony_summary()
 	lines.append("居所共鸣 %.1f / 3 阶    ·    百鸟和鸣 %d 户" % [float(harmony.average_tier), int(harmony.tier_counts[3])])
+	lines.append(str(demo.state.synergy_buffs().label))
 	lines.append("\n【各家的日常】")
 	rows.clear()
 	for house: Dictionary in demo.state.houses:
@@ -152,6 +153,8 @@ func refresh() -> void:
 		var connected: bool = demo.life.house_connected(id)
 		lines.append("\n%s · %s（Lv.%d %s）" % [title, role_name, tier, tier_name])
 		lines.append("门前已有道路；经营还需与居所步行相通" if connected else "门前尚未接路")
+		var planning:Dictionary=demo.state.planning_bonus(id)
+		if not str(planning.get("label","")).is_empty():lines.append(str(planning.label))
 		var status: Dictionary = {}
 		match role:
 			"bakery":
@@ -168,7 +171,8 @@ func refresh() -> void:
 				lines.append("在库 %d / %d    ·    已制成 %d    ·    已送达 %d" % [int(status.stock), int(status.capacity), int(status.produced), int(status.delivered)])
 				lines.append("%s    ·    %s    ·    工作成员 %d 人" % ["开门营业" if bool(status.open) else "暂停营业", "有一份%s正在运送" % item_label if not transit.is_empty() else "当前没有运送中的物件", int(workshop_members.get(id, 0))])
 				lines.append(business_activity(role, status))
-				lines.append(str(demo.state.site_blessing(id).label))
+				var site:Dictionary=demo.state.site_blessing(id)
+				if site.has("label"):lines.append(str(site.label))
 				lines.append("到岗制作 %.2f 秒 · 普通%s送往22米内邻屋，节庆订单沿路送达" % [8.0 / float(demo.state.production_multiplier(id)), item_label])
 			"venue", "symphony_hall":
 				status = demo.state.festival_status(id)

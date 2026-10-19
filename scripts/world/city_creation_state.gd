@@ -17,6 +17,7 @@ const RoadHeights := preload("res://scripts/world/city_creation_road_heights.gd"
 const Growth := preload("res://scripts/world/city_creation_growth.gd")
 const Courtyards := preload("res://scripts/world/city_creation_courtyards.gd")
 const Prosperity := preload("res://scripts/world/city_creation_prosperity.gd")
+const SynergyBuffs := preload("res://scripts/world/city_creation_synergy_buffs.gd")
 const Eras := preload("res://scripts/world/city_creation_eras.gd")
 const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
@@ -72,6 +73,8 @@ var _courtyard_revision := -1
 var _courtyard_plans_cache: Array = []
 var _prosperity_revision := -1
 var _site_blessings: Dictionary = {}
+var _synergy_revision := -1
+var _synergy_buffs:Dictionary={}
 var _growth_geometry_revision := -1
 var _growth_geometry_cache: Dictionary = {}
 var districts: Array[Dictionary] = []
@@ -119,6 +122,7 @@ var _redo: Array[Dictionary] = []
 
 func initialize() -> void:
 	_prosperity_revision = -1
+	_synergy_revision=-1
 	_growth_geometry_revision = -1
 	_street_marker_revision=-1
 	_ground_revision = -1
@@ -1336,7 +1340,17 @@ func site_blessing(house_id: String) -> Dictionary:
 func site_production_multiplier(house_id: String) -> float:
 	var index:=_house_index(house_id)
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
-	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill
+	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))
+
+
+func synergy_buffs()->Dictionary:
+	if _synergy_revision!=revision:
+		_synergy_buffs=SynergyBuffs.evaluate(self);_synergy_revision=revision
+	return _synergy_buffs
+
+
+func planning_bonus(house_id:String)->Dictionary:
+	return synergy_buffs().houses.get(house_id,{})
 
 
 func house_harmony(house_id: String) -> Dictionary:
@@ -2234,6 +2248,7 @@ func _pair_overlaps(first: Dictionary, second: Dictionary) -> bool:
 
 
 func _apply_snapshot(data: Dictionary, preserve_issued_ids: bool = false) -> void:
+	_synergy_revision=-1
 	_quality_geometry_revision=-1
 	_signature_bonuses_revision=-1
 	_prosperity_revision = -1

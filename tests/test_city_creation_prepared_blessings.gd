@@ -21,6 +21,7 @@ func _run()->void:
 	for house:Dictionary in city.houses:
 		if str(house.role) in ["bakery","workshop","garden_cafe"]:city.site_blessing(str(house.id))
 	var before:=var_to_bytes(city._site_blessings)
+	var planning_before:=var_to_bytes(city.synergy_buffs())
 	var points:Array[Vector2]=[Vector2(-12,-16),Vector2(-10,-17),Vector2(-7,-16)]
 	_check(city.add_vegetation_stroke(points,"olive",1.4).ok,"actual trees are planted near the workshop")
 	var authored:Dictionary=city.snapshot();renderer.request_budget_rebuild();var report:Dictionary=await _wait(renderer,false)
@@ -29,10 +30,13 @@ func _run()->void:
 	for house:Dictionary in cold.houses:
 		if str(house.role) in ["bakery","workshop","garden_cafe"]:expected[str(house.id)]=cold.site_blessing(str(house.id))
 	_check(staged.state._site_blessings==expected,"private worker computes every exact forest water and cafe blessing")
+	_check(staged.state.synergy_buffs()==cold.synergy_buffs(),"private worker computes the same planning bonuses as an independent edited city")
 	_check(int(expected.h2.get("trees",0))>int(city._site_blessings.h2.get("trees",0)),"new visible trees really change the workshop forest count")
 	renderer.cancel_budget_rebuild();_check(var_to_bytes(city._site_blessings)==before,"cancel discards unpublished blessings")
+	_check(var_to_bytes(city._synergy_buffs)==planning_before,"cancel retains unpublished planning bonuses outside the live city")
 	renderer.request_budget_rebuild();report=await _wait(renderer,true)
 	_check(report.get("committed",false) and city._site_blessings==expected and city._prosperity_revision==city.revision,"geometry and its cached site bonuses publish in one commit")
+	_check(city._synergy_revision==city.revision and city._synergy_buffs==cold.synergy_buffs(),"authored geometry and planning bonuses publish together")
 	_check(city.snapshot()==authored,"derived preparation does not produce stock or change authored progression")
 	var after:=var_to_bytes(city._site_blessings)
 	for id:String in expected:_check(city.site_blessing(id)==expected[id],"live status uses prepared exact bonus "+id)
