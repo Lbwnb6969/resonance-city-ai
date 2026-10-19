@@ -17,6 +17,9 @@ func _capture(label:String)->void:
 	facts.append({"label":label,"pure_primary_pixels":saturated});print("FAULT_PROBE ",JSON.stringify(facts[-1]))
 func _run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--capture="):
+			await _captured(arg.trim_prefix("--capture="));return
 	var scene:=Theater.build(self);var city:RefCounted=scene.city;scene.life.free();var placed:=Theater.place_connected(city);assert(placed.ok)
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/isolated";root.add_child(demo);demo.life.set_process(false)
@@ -52,4 +55,59 @@ func _run()->void:
 				layer.hide();await _capture("isolate_"+str(layer.name));layer.show()
 			break
 	var file:=FileAccess.open(OUT+"/probe.json",FileAccess.WRITE);file.store_string(JSON.stringify(facts,"\t",true,true));file.close()
+	demo.queue_free();await process_frame;quit()
+
+func _captured(path:String)->void:
+	var data:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
+	root.size=Vector2i(1440,900);Engine.max_fps=120;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/isolated";root.add_child(demo);demo.life.set_process(false)
+	var restored:Dictionary=demo.state.restore(data.world);assert(restored.ok);demo._after_edit(restored,"history")
+	var end:=Time.get_ticks_msec()+90000
+	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<end:await process_frame
+	demo.life.set_process(false)
+	demo.focus=Vector3(data.view.focus[0],data.view.focus[1],data.view.focus[2]);demo.zoom=data.view.zoom;demo.yaw=data.view.yaw;demo.pitch=data.view.pitch;demo._update_camera()
+	while demo.light_phase!=int(data.view.light_phase):demo._toggle_light()
+	if "--interactive" in OS.get_cmdline_user_args():
+		demo.life.restore_checkpoint(data.life_checkpoint);demo.life.set_process(true)
+		var until:=Time.get_ticks_msec()+120000
+		while Time.get_ticks_msec()<until:
+			for frame in range(24):await process_frame
+			await RenderingServer.frame_post_draw
+			if demo.RenderCapture.primary_pixels(root.get_texture().get_image())>20:
+				if demo.has_meta("render_capture_busy"):
+					while demo.has_meta("render_capture_busy"):await process_frame
+				else:await demo.RenderCapture.capture(demo,demo.render_capture_directory)
+				break
+		demo.queue_free();await process_frame;quit();return
+	for i in range(60):await process_frame
+	await _capture("captured_baseline")
+	demo.life.restore_checkpoint(data.life_checkpoint)
+	demo.life.set_process(true)
+	demo.select_tool(0)
+	for i in range(240):
+		demo.yaw=float(data.view.yaw)+sin(float(i)*.025)*.65
+		demo.pitch=.30+float(i%10)*.008;demo.zoom=float(data.view.zoom);demo._update_camera()
+		demo.pointer=Vector2(360.+float(i%50)*12.,340.+sin(float(i)*.1)*140.)
+		demo._update_hover()
+		for frame in range(2):await process_frame
+		if i%12==0:
+			await _capture("captured_hover_"+str(i))
+			if int(facts[-1].pure_primary_pixels)>10:
+				await demo.RenderCapture.capture(demo,demo.render_capture_directory)
+				break
+	for i in range(30):
+		demo.yaw=float(data.view.yaw)+sin(float(i)*.7)*.65
+		demo.pitch=.20+float(i%5)*.05;demo.zoom=13.+float(i%4)*3.;demo._update_camera()
+		for frame in range(12):await process_frame
+		await _capture("captured_motion_"+str(i))
+		if int(facts[-1].pure_primary_pixels)>10:break
+	demo.life.set_process(false);demo.set_process(false);demo.town.wildlife.set_process(false)
+	for node:CPUParticles3D in demo.find_children("*","CPUParticles3D",true,false):node.hide()
+	await _capture("captured_no_particles")
+	for layer:Node3D in demo.town.get_children():
+		if not layer.visible:continue
+		layer.hide();await _capture("captured_hide_"+str(layer.name));layer.show()
+	for layer:Node in demo.life.get_children():
+		if layer is Node3D and layer.visible:layer.hide();await _capture("captured_hide_life_"+str(layer.name));layer.show()
+	var file:=FileAccess.open(OUT+"/captured_probe.json",FileAccess.WRITE);file.store_string(JSON.stringify(facts,"\t",true,true));file.close()
 	demo.queue_free();await process_frame;quit()

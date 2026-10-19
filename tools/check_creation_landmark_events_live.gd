@@ -59,6 +59,10 @@ func _finale()->void:
 		demo.life._process(.05);await process_frame
 	_check(demo.life.concert_status().phase=="playing","actual audience reaches the theater and starts at the music gate")
 	if demo.life.concert_status().phase!="playing":return
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--fault-view="):
+			var data:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(arg.trim_prefix("--fault-view=")))
+			demo.focus=Vector3(data.view.focus[0],data.view.focus[1],data.view.focus[2]);demo.zoom=data.view.zoom;demo.yaw=data.view.yaw;demo.pitch=data.view.pitch;demo._update_camera()
 	demo.state.building_quality.clear();demo.life._quality_cursor=-1;demo.life._quality_timer=100.;demo.life._quality_inputs=hash([demo.state.revision,demo.state.Quality.data(demo.state)])
 	for house:Dictionary in demo.state.houses:demo.state.grant_resonance_afterglow([str(house.id)],40.)
 	var before:=int(demo.state.life_progress.concerts);var frames:Array[float]=[]
@@ -75,10 +79,11 @@ func _finale()->void:
 		if float(row.material.get_shader_parameter("finale_glow"))>.9:lit+=1
 	_check(lit>16,"actual house materials display the global golden afterglow")
 	await _capture("03_festival_completion_gold")
-	if "--fault-probe" in OS.get_cmdline_user_args():
+	if "--fault-probe" in OS.get_cmdline_user_args() or Array(OS.get_cmdline_user_args()).any(func(arg:String)->bool:return arg.begins_with("--fault-view=")):
 		demo.life.set_process(false)
+		demo.set_process(false);demo.town.wildlife.set_process(false)
 		await _fault_probe()
-		demo.life.set_process(true)
+		demo.life.set_process(true);demo.set_process(true);demo.town.wildlife.set_process(true)
 	deadline=Time.get_ticks_msec()+3000
 	while Time.get_ticks_msec()<deadline:await process_frame
 	await _capture("04_river_wave_propagation")
@@ -103,7 +108,7 @@ func _fault_probe()->void:
 	await _primary_pixels("baseline")
 	for node:CPUParticles3D in demo.find_children("*","CPUParticles3D",true,false):node.hide()
 	await _primary_pixels("no_particles")
-	var layers:Array=[demo.town.quality_visual.layer,demo.town.craft.layer,demo.town.house_music_layer,demo.town.ecology_layer,demo.town.meadow,demo.town.buildings]
+	var layers:Array=demo.town.get_children()+[demo.life]
 	for layer:Node3D in layers:
 		layer.hide();await _primary_pixels(str(layer.name));layer.show()
 func _run()->void:
