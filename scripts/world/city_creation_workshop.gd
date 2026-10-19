@@ -205,7 +205,7 @@ func _recipient_order(worker: Dictionary) -> Dictionary:
 		var pending: bool = str(life._roles[id])=="venue" and bool(life.state.festival_status(id).pending) and not festival_reserved.has(id)
 		# Daily improvements stay local; a real festival order can be carried
 		# anywhere on this connected street network, including the 80m canvas.
-		var upgrade: bool = level + int(reserved.get(id, 0)) < 3 and (origin.distance_to(_target(id)) <= life.state.service_radius(RANGE) or life.state.shares_chord(shop,id,"chrono_counterpoint") or life.tram.direct(shop,id))
+		var upgrade: bool = level + int(reserved.get(id, 0)) < 3 and (origin.distance_to(_target(id)) <= life.state.craft_radius(shop) or life.state.shares_chord(shop,id,"chrono_counterpoint") or life.tram.direct(shop,id))
 		if not upgrade and not pending: continue
 		var route := _between(shop, id)
 		if route.is_empty(): continue
@@ -237,7 +237,7 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 		if life._roles[id] != "residential" or not life.connected_houses.has(id): continue
 		var level: int = life.state.mechanism_level(id) if kind=="musicbox" else life.state.culture_level(id)
 		if level + int(reserved.get(id,0)) >= 2:continue
-		if _target(shop).distance_to(_target(id)) > life.state.service_radius(RANGE) and not life.state.shares_chord(shop,id,"chrono_counterpoint") and not life.tram.direct(shop,id):continue
+		if _target(shop).distance_to(_target(id)) > life.state.craft_radius(shop) and not life.state.shares_chord(shop,id,"chrono_counterpoint") and not life.tram.direct(shop,id):continue
 		var route := _between(shop,id)
 		if route.is_empty(): continue
 		var distance := _length(route)

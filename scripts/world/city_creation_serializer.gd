@@ -71,11 +71,15 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		result.schema=city.PLANNING_SCHEMA;result.regional_trips=city.regional_trips.duplicate(true)
 	if not city.regional_replies.is_empty():
 		result.schema=city.PLANNING_SCHEMA;result.regional_replies=city.regional_replies.duplicate(true)
+	var former_limit:=180. if not city.signature_bonuses().palace_id.is_empty() else 120.
+	for id:String in city.resonance_afterglow:
+		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
 	# Editing history restores geometry; completed daily visits remain history.
 	if not preserve_issued_ids:
+		city._special_sites.clear();city._special_site_key.clear()
 		city.signature_unlocks.assign(data.get("signature_unlocks",[]))
 		city.district_answers.assign(data.get("district_answers",[]))
 		city.era_answers.assign(data.get("era_answers",[]))
@@ -380,6 +384,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if not city._valid_id(house_id, "h", glow_ids) or int(house_id.substr(1)) > int(issued.house) or not existing_houses.has(house_id):
 			return city._fail("城市存档共鸣余韵房屋无效")
 		var maximum: float=180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0
+		if int(data.schema)>=city.PLANNING_SCHEMA:maximum*=2.
 		var quality: Variant=data.get("building_quality",{}).get(house_id,{}) if data.get("building_quality",{}) is Dictionary else {}
 		if int(data.schema)>=city.QUALITY_CONTEXT_SCHEMA and quality is Dictionary and city._is_integer(quality.get("level_tier")) and quality.level_tier==5:maximum*=2.
 		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > maximum:

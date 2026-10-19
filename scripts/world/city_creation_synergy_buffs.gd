@@ -2,6 +2,7 @@ extends RefCounted
 const Arcade=preload("res://scripts/world/city_creation_arcade_plan.gd")
 const Conservatory=preload("res://scripts/world/city_creation_conservatory_plan.gd")
 const Towers=preload("res://scripts/world/city_creation_towers.gd")
+const Sites=preload("res://scripts/world/city_creation_site_specialization.gd")
 const CHORD_NAMES:={"pastoral_triad":"晨光田园三和弦","highland_fifth":"高地钟楼五度共鸣","renaissance_fugue":"文艺复兴赋格四重奏","clockwork_waltz":"蒸汽花房圆舞曲","chrono_counterpoint":"跨河古今交响对位"}
 const CHORD_DETAILS:={
 	"pastoral_triad":"面包坊＋茶座＋喷泉内院或池塘。采购后直赴茶座，满席时在面包坊等候；区内制琴制作、初阶木饰送装提速50%。",
@@ -43,7 +44,8 @@ static func evaluate(city:RefCounted)->Dictionary:
 			seen[next]=true;identities[str(districts[next].identity)]=true;queue.append_array(graph[next])
 		connected_identities=maxi(connected_identities,identities.size())
 	var expansion:=1.0+.12*clampi(connected_identities-1,0,5)
-	var chords:=_chords(city,districts,members)
+	var sites:=Sites.evaluate(city)
+	var chords:=_chords(city,districts,members,sites)
 	for house:Dictionary in city.houses:
 		var id:=str(house.id);var did:String=members[id];var labels:PackedStringArray=[]
 		var purity:=1.25 if districts.has(did) and districts[did].pure else 1.0
@@ -63,7 +65,9 @@ static func evaluate(city:RefCounted)->Dictionary:
 		var early_craft:=scopes.has("pastoral_triad") and str(house.role)=="workshop"
 		for chord:String in CHORD_NAMES:
 			if scopes.has(chord):labels.append("♫ "+str(CHORD_NAMES[chord]))
-		houses[id]={"district_id":did,"purity_mult":purity,"water_power_mult":water_power,"production_mult":expansion*purity*water_power*(2. if clockwork else 1.)*(1.5 if early_craft else 1.),"chord_scopes":scopes,"walking_mult":1.25 if scopes.has("highland_fifth") else 1.,"delivery_mult":delivery,"batch_mult":batch,"natural":natural,"cafe_duration_mult":.6 if natural else 1.,"label":" · ".join(labels)}
+		var walking:float=(1.25 if scopes.has("highland_fifth") else 1.)*(1.1 if sites.lookout_districts.has(did) else 1.)
+		if sites.lookout_districts.has(did):labels.append("制高点钟楼 · 通勤步速+10%")
+		houses[id]={"district_id":did,"purity_mult":purity,"water_power_mult":water_power,"production_mult":expansion*purity*water_power*(2. if clockwork else 1.)*(1.5 if early_craft else 1.),"chord_scopes":scopes,"walking_mult":walking,"delivery_mult":delivery,"batch_mult":batch,"natural":natural,"cafe_duration_mult":.6 if natural else 1.,"site":sites.houses[id],"label":" · ".join(labels)}
 	return {"districts":districts,"houses":houses,"chord_scopes":chords.scopes,"active_chords":chords.active,"active_district_count":graph.size(),"connected_identities":connected_identities,"expansion_multiplier":expansion,"label":"跨区共鸣 · %d种相连声部 · 全城生产提速%d%%"%[connected_identities,roundi((expansion-1.)*100.)] if expansion>1. else "异风格街坊住入邻里，再连起共鸣音弧，可获跨区生产加成"}
 
 static func _near(house:Dictionary,landmarks:Array[Dictionary],radius:float)->bool:
@@ -74,7 +78,7 @@ static func _near(house:Dictionary,landmarks:Array[Dictionary],radius:float)->bo
 		if at.distance_to(center)<=radius:return true
 	return false
 
-static func _chords(city:RefCounted,districts:Dictionary,members:Dictionary)->Dictionary:
+static func _chords(city:RefCounted,districts:Dictionary,members:Dictionary,sites:Dictionary={})->Dictionary:
 	if districts.is_empty():return {"houses":{},"scopes":{},"active":[]}
 	var features:Dictionary={};var catalog:Dictionary={};var high:=0;var artist:=false;var clockmaker:=false
 	for did:String in districts:features[did]={"roles":{},"houses":[],"high":0,"tower":false,"arcades":0,"glass":0,"fountain":false,"stairs":false,"tram":false,"roundabout":false,"banks":{}}
@@ -82,7 +86,7 @@ static func _chords(city:RefCounted,districts:Dictionary,members:Dictionary)->Di
 		catalog[str(house.id)]=house
 		if float(house.get("base_y",0.))>=1.2:high+=1
 		artist=artist or str(house.role)=="atelier";clockmaker=clockmaker or str(house.role)=="clockmaker"
-	var towers:Dictionary=Towers.derive(city.houses,city.roads) if high>=4 else {}
+	var towers:Dictionary=sites.towers if sites.has("towers") else (Towers.derive(city.houses,city.roads) if high>=4 else {})
 	for id:String in members:
 		var did:String=members[id]
 		if not features.has(did):continue
@@ -92,7 +96,9 @@ static func _chords(city:RefCounted,districts:Dictionary,members:Dictionary)->Di
 		if float(house.get("base_y",0.))>=1.2:row.high+=1
 		if house.get("signature","")=="bell_keep" or not towers.get(id,[]).is_empty():row.tower=true
 		if city.house_era(house)!="modern_eco":
-			if artist and not Arcade.for_house(city,house).is_empty():row.arcades+=1
+			if artist:
+				var arcade:Array=sites.arcades[id] if sites.has("arcades") and sites.arcades.has(id) else Arcade.for_house(city,house)
+				if not arcade.is_empty():row.arcades+=1
 			if clockmaker and not Conservatory.for_house(city,house).is_empty():row.glass+=1
 	for court:Dictionary in city.courtyard_plans():
 		if court.get("fountain",{}).is_empty():continue

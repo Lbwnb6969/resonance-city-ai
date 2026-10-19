@@ -31,7 +31,9 @@ static func prepare(city:RefCounted,network:RefCounted)->Dictionary:
 			if int(votes[id].get(region,0))>best:best=int(votes[id][region]);nodes[id].region=region
 	var links:Dictionary={}
 	for link:Dictionary in city.musical_links:links[str(link.from)+":"+str(link.to)]=true
-	return {"nodes":nodes,"links":links}
+	var house_components:Dictionary={}
+	for id:String in network.connected_houses:house_components[id]=network.component_of[str(network.connected_houses[id])]
+	return {"nodes":nodes,"links":links,"house_components":house_components}
 
 static func _region(city:RefCounted,house:Dictionary,tree_bins:Dictionary)->String:
 	if float(house.get("base_y",0.))>=1.2:return "highland"

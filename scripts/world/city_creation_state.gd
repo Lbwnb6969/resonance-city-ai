@@ -75,6 +75,8 @@ var _courtyard_revision := -1
 var _courtyard_plans_cache: Array = []
 var _prosperity_revision := -1
 var _site_blessings: Dictionary = {}
+var _special_site_key:Array=[]
+var _special_sites:Dictionary={}
 var _synergy_revision := -1
 var _synergy_buffs:Dictionary={}
 var _growth_geometry_revision := -1
@@ -135,6 +137,7 @@ var _redo: Array[Dictionary] = []
 
 func initialize() -> void:
 	_prosperity_revision = -1
+	_special_sites.clear();_special_site_key.clear()
 	_synergy_revision=-1
 	_growth_geometry_revision = -1
 	_street_marker_revision=-1
@@ -696,8 +699,32 @@ func signature_bonuses() -> Dictionary:
 
 func concert_radius(venue_id: String) -> float:
 	var index:=_house_index(venue_id)
-	if index>=0 and houses[index].get("role","")=="symphony_hall":return service_radius(120.)
+	if index>=0 and houses[index].get("role","")=="symphony_hall":return service_radius(32. if special_site(venue_id).get("hall_ecology",false) else 22.)
+	if special_site(venue_id).get("venue_echo",false):return service_radius(28.)
 	return service_radius(38.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0)
+
+func special_site(house_id:String)->Dictionary:
+	var key:Array=[revision,_region_network_revision]
+	if key!=_special_site_key:_special_sites.clear();_special_site_key=key
+	if not _special_sites.has(house_id):
+		var row:Dictionary=planning_bonus(house_id).get("site",{}).duplicate()
+		var peers:Array=[];var connections:Dictionary=_region_network.get("house_components",{}) if _region_network_revision==revision else {}
+		if connections.has(house_id):
+			for id:String in row.get("arcade_neighbors",[]):
+				if connections.get(id,"")==connections[house_id]:peers.append(id)
+		row.arcade_street=peers.size()>=2
+		if row.arcade_street:row.label="连拱长廊街 · 两座实际连拱邻屋沿路相通 · 送装提速40%"
+		_special_sites[house_id]=row
+	return _special_sites[house_id]
+
+func craft_radius(shop_id:String)->float:
+	return service_radius(30. if special_site(shop_id).get("clock_hub",false) else 22.)
+
+func clockwork_speed_zones()->Array[Dictionary]:
+	var zones:Array[Dictionary]=[]
+	for house:Dictionary in houses:
+		if str(house.role)=="clockmaker" and special_site(str(house.id)).get("clock_hub",false):zones.append({"origin":Vector2(house.origin[0],house.origin[1]),"district_id":str(district_for_house(str(house.id)).get("id",""))})
+	return zones
 
 func _invalidate_regional_echo()->void:
 	_regional_echo.clear();_echo_epoch+=1;_quality_geometry_revision=-1
@@ -1438,13 +1465,13 @@ func chord_together(house_ids:Array,chord:String)->bool:
 func installation_multiplier(shop_id:String,target_id:String)->float:
 	var index:=_house_index(shop_id)
 	if index<0:return 1.
-	var delivery:=float(planning_bonus(shop_id).get("delivery_mult",1.))
+	var delivery:=float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
 	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery
 	return delivery*(1.5 if has_chord(target_id,"pastoral_triad") else 1.)
 
 
 func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
-	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else (float(planning_bonus(shop_id).get("delivery_mult",1.)) if phase=="returning" else 1.)
+	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else (float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.) if phase=="returning" else 1.)
 	return walking_multiplier(home_id)*delivery
 
 
@@ -1483,7 +1510,16 @@ func cafe_afterglow_extension(house_id: String) -> float:
 
 
 func afterglow_limit(house_id: String) -> float:
-	return (180.0 if not signature_bonuses().palace_id.is_empty() else 120.0)*(2.0 if level_tier(house_id)>=5 else 1.0)
+	return (360.0 if not signature_bonuses().palace_id.is_empty() else 240.0)*(2.0 if level_tier(house_id)>=5 else 1.0)
+
+func grant_concert_afterglow(venue_id:String,members:Array,duration:float,elapsed:float=0.)->void:
+	if not special_site(venue_id).get("hall_ecology",false):grant_resonance_afterglow(members,duration,elapsed);return
+	var homes:Array[String]=[];var others:Array[String]=[]
+	for id:String in members:
+		var index:=_house_index(id)
+		if index>=0 and str(houses[index].role)=="residential":homes.append(id)
+		else:others.append(id)
+	grant_resonance_afterglow(homes,duration*2.,elapsed);grant_resonance_afterglow(others,duration,elapsed)
 
 func grant_resonance_afterglow(house_ids: Array, duration: float = 60.0, elapsed: float=0.0) -> void:
 	if duration <= 0.0: return
@@ -1522,7 +1558,7 @@ func bakery_batch_size(house_id: String) -> int:
 	for cell in houses[index].cells:
 		if cell.kind == "room":
 			rooms += 1
-	return maxi(1, rooms) + int(site_blessing(house_id).get("bonus_batch", 0)) + int(signature_bonuses().bread_batch)
+	return maxi(1, rooms)*2 + int(site_blessing(house_id).get("bonus_batch", 0)) + int(signature_bonuses().bread_batch)
 
 
 func bakery_status(house_id: String) -> Dictionary:
@@ -1637,7 +1673,7 @@ func complete_matinee(venue_id: String, sponsors: Array) -> bool:
 
 func rest_after_concert(venue_id: String) -> void:
 	matinee_pending.clear()
-	matinee_cooldown = 60.0
+	matinee_cooldown = 45. if special_site(venue_id).get("venue_echo",false) else 60.
 	matinee_last_venue = venue_id
 	_touch_matinee()
 

@@ -26,6 +26,23 @@ var _corridor_keys:Dictionary={}
 var _corridor_houses:Dictionary={}
 var _direct_pairs:Dictionary={}
 var corridor_prepare_ms:=0.
+var _clock_speed_edges:Dictionary={}
+
+func _segment_speed(a:String,b:String)->float:
+	return speed()*float(_clock_speed_edges.get(a+":"+b,1.))
+
+func _prepare_clock_speed()->void:
+	_clock_speed_edges.clear()
+	var zones:Array=life.state.clockwork_speed_zones()
+	if zones.is_empty():return
+	for a:String in plan.graph:
+		for b:String in plan.graph[a]:
+			if a>=b:continue
+			var mid:Vector3=(Vector3(plan.positions[a])+Vector3(plan.positions[b]))*.5;var point:=Vector2(mid.x,mid.z)
+			var did:=str(life.state.district_at(point).get("id",""))
+			for zone:Dictionary in zones:
+				if (not str(zone.district_id).is_empty() and str(zone.district_id)==did) or (str(zone.district_id).is_empty() and point.distance_to(zone.origin)<=8.):
+					_clock_speed_edges[a+":"+b]=1.15;_clock_speed_edges[b+":"+a]=1.15;break
 
 func capacity(car:Dictionary)->int:
 	return CAPACITY*4 if not _depot_station.is_empty() and _depot_station in car.line.tour else CAPACITY
@@ -107,6 +124,7 @@ func clear()->void:
 	_depot_station="";_depot_id=""
 	_corridor_keys.clear();_corridor_houses.clear();_direct_pairs.clear()
 	corridor_prepare_ms=0.
+	_clock_speed_edges.clear()
 	_revision=-1
 	_network_signature=null;_rail_signature=null
 
@@ -122,18 +140,19 @@ func sync()->void:
 	for home: String in tickets.keys():
 		if not homes.has(home):_release_ticket(home,tickets[home])
 	var network_signature:=hash(life._network_signature)
-	if network_signature==_network_signature and unlocked==_unlocked:return
+	if network_signature==_network_signature and unlocked==_unlocked:_prepare_clock_speed();return
 	_network_signature=network_signature;_unlocked=unlocked
 	var next := Plan.from_network(life.state,life._network) if unlocked else {"graph":{},"positions":{},"lines":[],"stations":[],"station_keys":{},"edges":[],"length":0.}
 	var depot_id: String=life.state.signature_bonuses().depot_id
 	var dispatch:=_dispatch_station(next,depot_id)
 	var signature:=hash([next.graph,next.positions,next.lines,next.station_keys,dispatch,depot_id])
-	if signature==_rail_signature:plan=next;return
+	if signature==_rail_signature:plan=next;_prepare_clock_speed();return
 	clear()
 	_revision=life.state.revision;_network_signature=network_signature;_rail_signature=signature;_unlocked=unlocked
 	plan=next
 	_depot_station=dispatch;_depot_id=depot_id if not dispatch.is_empty() else ""
 	_build_corridor()
+	_prepare_clock_speed()
 	if plan.lines.is_empty():return
 	root=Node3D.new();root.name="MusicalTramNetwork";life.add_child(root)
 	var lines: Array=plan.lines.duplicate(true)
@@ -186,7 +205,7 @@ func tick(delta: float)->void:
 			var target: Vector3=plan.positions[key]
 			var position: Vector3=car.node.position
 			var distance:=Vector2(position.x,position.z).distance_to(Vector2(target.x,target.z))
-			var velocity:=speed()
+			var velocity:=_segment_speed(str(car.key),key)
 			var consumed:=minf(remaining,distance/velocity)
 			if distance>.00001:
 				var direction: Vector3=(target-position).normalized()
@@ -300,14 +319,15 @@ func _trip(resident: Dictionary)->Dictionary:
 	var board:=str(span.board);var exit:=str(span.exit);var approach:=float(span.approach)
 	var express:=direct(str(resident.home_id),str(resident.destination_id))
 	approach+=resident.node.position.distance_to(Vector3(route[int(resident.index)]))
-	var ready:=approach/(.83*float(life.state.signature_bonuses().walking))
+	var walking:=.83*float(life.state.walking_multiplier(str(resident.home_id)))
+	var ready:=approach/walking
 	var best:=INF;var vehicle:=""
 	for car: Dictionary in cars:
 		var forecast:=_forecast(car,board,exit,ready)
 		if forecast.is_empty():continue
 		var time: float=forecast.exit_time
 		if float(forecast.board_time)-ready>5.:continue
-		if not express and time-ready>=distance/(.83*float(life.state.signature_bonuses().walking))-.5:continue
+		if not express and time-ready>=distance/walking-.5:continue
 		if time<best:best=time;vehicle=str(car.id)
 	if vehicle.is_empty():return {"state":"declined"}
 	var origin:=Vector3(route[0]);var from_district:=str(life.state.district_at(Vector2(origin.x,origin.z)).get("id",""))
@@ -318,21 +338,23 @@ func _forecast(car: Dictionary,board: String,exit: String,ready: float)->Diction
 	var time: float=car.wait
 	var boarded_at:=0. if str(car.key)==board and float(car.wait)>0. and ready<=.05 else -1.
 	var previous: Vector3=car.node.position
+	var previous_key:=str(car.key)
 	for step in range(tour.size()*2):
 		var index:=1+posmod(int(car.cursor)-1+step,tour.size()-1)
 		var key: String=tour[index]
 		var point: Vector3=plan.positions[key]
-		time+=Vector2(previous.x,previous.z).distance_to(Vector2(point.x,point.z))/speed()
+		time+=Vector2(previous.x,previous.z).distance_to(Vector2(point.x,point.z))/_segment_speed(previous_key,key)
 		if key==board and boarded_at<0. and time>=ready:boarded_at=time
 		elif key==exit and boarded_at>=0.:return {"board_time":boarded_at,"exit_time":time}
 		if plan.station_keys.has(key):time+=DWELL
 		previous=point
+		previous_key=key
 	return {}
 
 func report()->Dictionary:
 	var vehicles: Array=[]
-	for car: Dictionary in cars:vehicles.append({"id":car.id,"position":car.node.position,"station":car.key,"waiting":car.wait,"distance":car.distance,"passengers":car.riders.duplicate(),"capacity":capacity(car)})
-	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"active_tickets":_active_tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed(),"corridor_houses":_corridor_houses.keys(),"corridor_prepare_ms":corridor_prepare_ms}
+	for car: Dictionary in cars:vehicles.append({"id":car.id,"position":car.node.position,"station":car.key,"waiting":car.wait,"distance":car.distance,"passengers":car.riders.duplicate(),"capacity":capacity(car),"speed":_segment_speed(str(car.key),str(car.line.tour[int(car.cursor)]))})
+	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"active_tickets":_active_tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed(),"corridor_houses":_corridor_houses.keys(),"corridor_prepare_ms":corridor_prepare_ms,"clockwork_edges":_clock_speed_edges.size()/2}
 
 func source_valid(car_id: String,station: String)->bool:
 	if not plan.station_keys.has(station):return false

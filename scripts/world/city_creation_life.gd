@@ -1104,7 +1104,7 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 		var venue_district: Dictionary=state.district_for_house(venue)
 		if not venue_district.is_empty(): districts[str(venue_district.id)]=true
 		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1 or bool(_concert.get("grand_festival",false)))
-		state.grant_resonance_afterglow(_chorus_house_ids, duration, completion_remainder)
+		state.grant_concert_afterglow(venue,_chorus_house_ids, duration, completion_remainder)
 		var grand:bool=bool(_concert.get("grand_festival",false)) and state.houses[state._house_index(venue)].get("signature","")=="floating_amphitheater"
 		var checked:Array[String]=[]
 		if grand:
@@ -1112,7 +1112,7 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 				if state.afterglow_remaining(str(house.id))>0. and state.level_tier(str(house.id))<5:checked.append(str(house.id))
 		var changes:=_refresh_quality()
 		for change:Dictionary in changes:
-			if int(change.to)==5 and str(change.house_id) in _chorus_house_ids:state.grant_resonance_afterglow([str(change.house_id)],duration,completion_remainder)
+			if int(change.to)==5 and str(change.house_id) in _chorus_house_ids:state.grant_concert_afterglow(venue,[str(change.house_id)],duration,completion_remainder)
 		if grand:
 			var house:Dictionary=state.houses[state._house_index(venue)];var plan:Dictionary=state.AmphitheaterPlan.for_house(state,house)
 			_finale={"venue_id":venue,"origin":plan.stage,"started_at":time-completion_remainder,"checked_house_ids":checked,"changes":changes,"finale":true,"active":true,"audible":true}

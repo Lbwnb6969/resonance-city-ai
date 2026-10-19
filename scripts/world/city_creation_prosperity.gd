@@ -97,7 +97,7 @@ static func cafe_blessing(state: RefCounted, cafe_id: String) -> Dictionary:
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
 		var active := false
 		for road: Dictionary in state.roads:
-			if str(road.get("style", "path")) != "promenade": continue
+			if str(road.get("style", "path")) not in ["promenade","avenue"] or float(road.width)<1.75: continue
 			if float(state._water_stroke_distance(origin, road.points)) < float(road.width) * 0.5 + 3.0:
 				active = true
 				break

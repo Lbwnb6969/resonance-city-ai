@@ -1847,6 +1847,8 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 			state._raw_ground_revision=state.revision
 			state._courtyard_revision=state.revision
 			state._prosperity_revision=state.revision
+			state._synergy_revision=state.revision
+			state._special_site_key=[state.revision,state.revision]
 			state._region_visibility_revision=state.revision
 			state._region_network_revision=state.revision
 			state._regional_echo_revision=state.revision
@@ -2048,6 +2050,8 @@ func _refresh_place() -> void:
 		var clockwork := int(state.mechanism_level(str(house.id)))
 		if clockwork>0: place_description.text += "\n♫ 钟表 %d / 2 · 钟表匠送来的八音盒与风向标" % clockwork
 		place_description.text += "\n门前小路已接通。" if life.house_connected(selected_house) else "\n拉一条小路到门前，让居民能走来。"
+		var site:Dictionary=state.special_site(selected_house)
+		if not str(site.get("label","")).is_empty():place_description.text+="\n"+str(site.label).strip_edges()
 		if life.tram.corridor_house(selected_house):place_description.text+="\n轨街黄金走廊 · 轨交直达"
 		_refresh_household()
 		concert_button.visible = role in ["venue","symphony_hall"]

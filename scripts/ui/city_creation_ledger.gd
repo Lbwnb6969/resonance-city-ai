@@ -159,6 +159,8 @@ func refresh() -> void:
 		var planning:Dictionary=demo.state.planning_bonus(id)
 		if not str(planning.get("label","")).is_empty():lines.append(str(planning.label))
 		if demo.life.tram.corridor_house(id):lines.append("轨街黄金走廊 · 轨交直达，可沿连通轨街跨区服务")
+		var specialization:Dictionary=demo.state.special_site(id)
+		if not str(specialization.get("label","")).is_empty():lines.append(str(specialization.label).strip_edges())
 		var status: Dictionary = {}
 		match role:
 			"bakery":
