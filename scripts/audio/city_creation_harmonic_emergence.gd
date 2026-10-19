@@ -59,10 +59,11 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 	var preferred:=3 if night else (1 if elevation>=.5 else (2 if lead=="renaissance_fugue" or water/maxf(.001,total)>.65 else 0))
 	return {"targets":targets,"lead_track":lead,"secondary_track":second,"source_id":str(representatives.get(lead,"")),"weights":weights,"source_ids":representatives,"variant":variant,"preferred_mode":preferred,"dna":dna,"visible_houses":shapes.size(),"average_tier":average,"elevation":elevation,"silhouette":silhouette,"rings":ring_count,"districts":districts.size(),"richness":richness}
 
-func advance(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool)->Dictionary:
+func advance(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool,minimum_variant:int=0)->Dictionary:
 	if phrase==absolute_phrase:return score
 	phrase=absolute_phrase
 	score=evaluate(houses,acoustic,rings,absolute_phrase,night)
+	score.variant=maxi(int(score.variant),clampi(minimum_variant,0,2));score.regional_variant=minimum_variant
 	var cycle:=int(absolute_phrase/8)
 	if last_cycle>=0 and cycle!=last_cycle:mode=Palette.next_mode(mode,int(score.preferred_mode),int(score.dna),cycle)
 	last_cycle=cycle;score.harmony_mode=mode;score.harmony_name=Palette.NAMES[mode]

@@ -53,8 +53,8 @@ func _inputs(worker: Dictionary,phase: String)->int:
 	var city: RefCounted=life.state
 	var shop:=str(worker.bakery_id if worker.has("bakery_id") else worker.workshop_id)
 	if phase=="baking":return hash([city.revision,city.bakery_supply.get(shop,{}),city.level_tier(shop)])
-	if phase=="crafting":return hash([city.revision,city.workshop_supply,city.venue_commissions,city.house_improvements,city.house_culture,city.house_clockwork,city.level_tier(shop)])
-	if phase=="installing":return hash([city.revision,city.workshop_supply.get(shop,{}),city.level_tier(str(worker.target_id))])
+	if phase=="crafting":return hash([city.revision,city._echo_epoch,city.workshop_supply,city.venue_commissions,city.house_improvements,city.house_culture,city.house_clockwork,city.level_tier(shop)])
+	if phase=="installing":return hash([city.revision,city._echo_epoch,city.workshop_supply.get(shop,{}),city.level_tier(str(worker.target_id))])
 	return int(city.revision)
 func before(worker: Dictionary,delta: float,moving: Array)->bool:
 	if _visible(worker):flush(worker);return true

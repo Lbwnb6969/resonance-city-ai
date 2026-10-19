@@ -22,6 +22,7 @@ static func eligible(flags: Dictionary, street: bool, amenity: bool, prestige: b
 	return 5
 
 static func prestige(city: RefCounted, house: Dictionary) -> bool:
+	if bool(city.regional_echo().prestige):return true
 	if city.has_chord(str(house.id),"chrono_counterpoint"):return true
 	var district: String=str(city.district_for_house(str(house.id)).get("id",""))
 	if district.is_empty():return false
@@ -33,7 +34,7 @@ static func prestige(city: RefCounted, house: Dictionary) -> bool:
 static func data(city: RefCounted) -> Dictionary:
 	return {"cafe_credits":city.cafe_credits,"matinee_credits":city.matinee_credits,"bakery_supply":city.bakery_supply,
 		"cafe_progress":city.cafe_progress,"house_improvements":city.house_improvements,"workshop_supply":city.workshop_supply,
-		"house_culture":city.house_culture,"house_clockwork":city.house_clockwork,"house_concerts":city.house_concerts}
+		"house_culture":city.house_culture,"house_clockwork":city.house_clockwork,"house_concerts":city.house_concerts,"echo_epoch":city._echo_epoch}
 
 static func amenity(city: RefCounted, house: Dictionary) -> bool:
 	if bool(city.planning_bonus(str(house.id)).get("natural",false)):return true

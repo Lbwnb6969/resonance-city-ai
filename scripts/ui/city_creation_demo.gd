@@ -1281,6 +1281,9 @@ func _process(delta: float) -> void:
 	if life_ui_timer < 0.0 and not _edit_pending:
 		life_ui_timer = 0.5
 		life_info.text = life.summary()
+		if has_meta("regional_echo_badge"):
+			var echo:Dictionary=state.regional_echo();var badge:Label=get_meta("regional_echo_badge")
+			badge.text="♫ "+str(echo.label);badge.visible=int(echo.tier)>=2
 		_refresh_concert()
 		_refresh_district()
 		_refresh_bakeries()
@@ -1783,6 +1786,8 @@ func _refresh_district() -> void:
 		var planning:Dictionary=state.synergy_buffs();var voice:Dictionary=planning.districts.get(selected_district,{})
 		district_description.text+="\n♫ 声部%d栋 · 理想8～16栋\n%s"%[int(voice.get("count",0)),"主题纯净 · 生产+25%" if voice.get("pure",false) else "同一时代编制，可获生产+25%"]
 		district_description.text+="\n"+str(planning.label)
+		var echo:Dictionary=state.regional_echo();district_description.text+="\n"+str(echo.label)
+		if echo.nodes.has(selected_district):district_description.tooltip_text+="\n地形声区 · "+str(State.RegionalEcho.REGIONS[echo.nodes[selected_district].region])
 		for chord:String in State.SynergyBuffs.CHORD_NAMES:
 			for scope:Dictionary in planning.chord_scopes.values():
 				if selected_district in scope.district_ids and chord in scope.chords:
@@ -1842,6 +1847,9 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 			state._raw_ground_revision=state.revision
 			state._courtyard_revision=state.revision
 			state._prosperity_revision=state.revision
+			state._region_visibility_revision=state.revision
+			state._region_network_revision=state.revision
+			state._regional_echo_revision=state.revision
 			life.last_revision=state.revision
 			_color_ui_pending=true
 			save_delay=3.0

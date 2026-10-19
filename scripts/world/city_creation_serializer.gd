@@ -67,6 +67,10 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if not city.landmark_bread.is_empty():
 		result.schema=city.PLANNING_SCHEMA
 		result.landmark_bread=city.landmark_bread.duplicate(true)
+	if not city.regional_trips.is_empty():
+		result.schema=city.PLANNING_SCHEMA;result.regional_trips=city.regional_trips.duplicate(true)
+	if not city.regional_replies.is_empty():
+		result.schema=city.PLANNING_SCHEMA;result.regional_replies=city.regional_replies.duplicate(true)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -75,6 +79,10 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		city.signature_unlocks.assign(data.get("signature_unlocks",[]))
 		city.district_answers.assign(data.get("district_answers",[]))
 		city.era_answers.assign(data.get("era_answers",[]))
+		city.regional_trips.assign(data.get("regional_trips",[]))
+		city.regional_replies.assign(data.get("regional_replies",[]))
+		city._region_network.clear();city._region_network_revision=-1;city._invalidate_regional_echo()
+		city._region_plant_visibility={};city._region_visibility_revision=-1
 		city.building_quality=data.get("building_quality",{}).duplicate(true)
 		for row in city.building_quality.values(): row.level_tier=int(row.level_tier)
 		city.house_concerts=data.get("house_concerts",{}).duplicate(true)
@@ -378,6 +386,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档共鸣余韵时间无效")
 	var landmark_check:Dictionary=city.SaveValidation._validate_landmark_bread(data,int(issued.house))
 	if not landmark_check.ok:return landmark_check
+	var trips_check:Dictionary=city.SaveValidation._validate_regional_trips(data,int(issued.get("district",0)))
+	if not trips_check.ok:return trips_check
 	var cafe_check: Dictionary = city._validate_cafe_progress(data, issued)
 	if not cafe_check.ok: return cafe_check
 	var matinee_check: Dictionary = city._validate_matinee(data, issued)

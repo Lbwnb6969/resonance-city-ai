@@ -18,6 +18,7 @@ const Growth := preload("res://scripts/world/city_creation_growth.gd")
 const Courtyards := preload("res://scripts/world/city_creation_courtyards.gd")
 const Prosperity := preload("res://scripts/world/city_creation_prosperity.gd")
 const SynergyBuffs := preload("res://scripts/world/city_creation_synergy_buffs.gd")
+const RegionalEcho := preload("res://scripts/world/city_creation_regional_echo.gd")
 const Eras := preload("res://scripts/world/city_creation_eras.gd")
 const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
@@ -89,6 +90,16 @@ var house_clockwork: Dictionary = {}
 var signature_unlocks: Array[String]=[]
 var district_answers: Array[Dictionary]=[]
 var era_answers: Array[Dictionary]=[]
+var regional_trips:Array[Dictionary]=[]
+var regional_replies:Array[Dictionary]=[]
+var _region_network:Dictionary={}
+var _region_network_revision:=-1
+var _regional_echo:Dictionary={}
+var _regional_echo_revision:=-1
+var _echo_epoch:=0
+var regional_prepare_ms:=0.
+var _region_plant_visibility:Dictionary={}
+var _region_visibility_revision:=-1
 var _signature_bonuses_revision := -1
 var _signature_bonuses: Dictionary={}
 var building_quality: Dictionary = {}
@@ -136,6 +147,8 @@ func initialize() -> void:
 	house_culture.clear()
 	house_clockwork.clear()
 	signature_unlocks.clear();district_answers.clear();era_answers.clear();_signature_bonuses_revision=-1
+	regional_trips.clear();regional_replies.clear();_region_network.clear();_region_network_revision=-1;_regional_echo.clear();_echo_epoch+=1
+	_region_plant_visibility={};_region_visibility_revision=-1
 	building_quality.clear()
 	house_concerts.clear()
 	_quality_amenities.clear()
@@ -653,11 +666,13 @@ func record_district_answer(from_id: String,to_id: String,from_era: String="",to
 		evidence.to_era=to_era if pair.to==to_id else from_era
 		if evidence not in era_answers:era_answers.append(evidence);changed=true
 	if not changed:return false
+	_invalidate_regional_echo()
 	Eras.refresh(self);Signatures.refresh(self);_craft_changed();return true
 
 func reward_completed_district_reply(from_id:String,to_id:String,from_era:String="",to_era:String="")->Dictionary:
 	if from_id==to_id or _district_index(from_id)<0 or _district_index(to_id)<0:return {}
 	record_district_answer(from_id,to_id,from_era,to_era)
+	_record_regional_exchange(from_id,to_id,regional_replies)
 	var durations:Dictionary={from_id:30.,to_id:30.};var recipients:Array[String]=[]
 	for house:Dictionary in houses:
 		if house.get("signature","")!="music_academy":continue
@@ -681,8 +696,39 @@ func signature_bonuses() -> Dictionary:
 
 func concert_radius(venue_id: String) -> float:
 	var index:=_house_index(venue_id)
-	if index>=0 and houses[index].get("role","")=="symphony_hall":return 120.0
-	return 38.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0
+	if index>=0 and houses[index].get("role","")=="symphony_hall":return service_radius(120.)
+	return service_radius(38.0 if index>=0 and houses[index].get("signature","")=="music_academy" else 22.0)
+
+func _invalidate_regional_echo()->void:
+	_regional_echo.clear();_echo_epoch+=1;_quality_geometry_revision=-1
+
+func prepare_regional_echo(network:RefCounted)->void:
+	var started:=Time.get_ticks_usec()
+	_region_network=RegionalEcho.prepare(self,network);_region_network_revision=revision;_invalidate_regional_echo()
+	regional_prepare_ms=float(Time.get_ticks_usec()-started)/1000.
+
+func regional_echo()->Dictionary:
+	if _regional_echo.is_empty() or _regional_echo_revision!=revision:
+		_regional_echo=RegionalEcho.evaluate(_region_network if _region_network_revision==revision else {},regional_replies,regional_trips);_regional_echo_revision=revision
+	return _regional_echo
+
+func service_radius(base:float)->float:
+	return base*float(regional_echo().range_mult)
+
+func record_completed_tram_commute(home_id:String,target_id:String,from_district:String="")->bool:
+	var a:=from_district if not from_district.is_empty() else str(district_for_house(home_id).get("id",""));var b:=str(district_for_house(target_id).get("id",""))
+	if a.is_empty() or b.is_empty() or a==b:return false
+	return _record_regional_exchange(a,b,regional_trips)
+
+func _record_regional_exchange(a:String,b:String,ledger:Array[Dictionary])->bool:
+	if _region_network_revision!=revision:return false
+	var nodes:Dictionary=_region_network.get("nodes",{})
+	if not nodes.has(a) or not nodes.has(b):return false
+	var pair:=_canonical_musical_link(a,b)
+	pair.from_voice=nodes[pair.from].identity;pair.to_voice=nodes[pair.to].identity
+	pair.from_region=nodes[pair.from].region;pair.to_region=nodes[pair.to].region
+	if pair in ledger:return false
+	ledger.append(pair);_invalidate_regional_echo();_craft_changed();return true
 
 func walking_multiplier(home_id: String) -> float:
 	return float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)*float(planning_bonus(home_id).get("walking_mult",1.))
@@ -1357,7 +1403,8 @@ func site_blessing(house_id: String) -> Dictionary:
 func site_production_multiplier(house_id: String) -> float:
 	var index:=_house_index(house_id)
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
-	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))
+	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
+	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
 
 
 func synergy_buffs()->Dictionary:
@@ -1781,6 +1828,8 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 				house_culture[target_id]=culture_level(target_id)+1
 				workshop_supply[shop_id].produced=int(workshop_supply[shop_id].produced)+1
 				workshop_supply[shop_id].delivered=int(workshop_supply[shop_id].delivered)+1
+	var gift:=float(regional_echo().delivery_glow)
+	if gift>0.:grant_resonance_afterglow([target_id],gift)
 	_craft_changed()
 	return true
 

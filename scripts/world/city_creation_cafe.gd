@@ -108,7 +108,7 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 		var length := 0.0
 		for index in range(1, route.size()): length += route[index - 1].distance_to(route[index])
 		if length >= best:continue
-		if length > 32.0 and not pastoral and not life.state.shares_chord(str(resident.home_id),str(id),"chrono_counterpoint") and not life.tram.direct(str(resident.home_id),str(id)):continue
+		if length > life.state.service_radius(32.) and not pastoral and not life.state.shares_chord(str(resident.home_id),str(id),"chrono_counterpoint") and not life.tram.direct(str(resident.home_id),str(id)):continue
 		best = length
 		selected = str(id)
 		selected_seat = seat

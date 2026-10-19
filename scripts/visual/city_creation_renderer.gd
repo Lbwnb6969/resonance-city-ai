@@ -624,6 +624,7 @@ func _rebuild_vegetation(shared_masks: Dictionary = {}, forced_blocks: Array[Vec
 	vegetation_fingerprints = next_fingerprints
 	vegetation_data_fingerprints = next_data
 	vegetation_visibility = next_visibility
+	state._region_plant_visibility=vegetation_visibility;state._region_visibility_revision=state.revision
 	vegetation_id_blocks = next_id_blocks
 	rebuild_stats["vegetation_blocks_changed"] = dirty_blocks.size()
 	var total := 0

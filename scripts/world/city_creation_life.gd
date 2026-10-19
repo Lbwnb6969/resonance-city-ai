@@ -169,6 +169,7 @@ func _update_citizen_lod(delta:float)->void:
 
 func set_budget_hold(held: bool) -> void:
 	_budget_hold = held
+	if not held and not budget_sync_pending() and state._region_network_revision!=state.revision:state.prepare_regional_echo(_network)
 	if not held and not budget_sync_pending() and _budget_delta > 0.0:
 		_process(0.0)
 
@@ -183,6 +184,7 @@ func begin_budget_sync() -> bool:
 		cancel_budget_sync()
 		last_revision = state.revision
 		_read_progress()
+		if not _budget_hold:state.prepare_regional_echo(_network)
 		return false
 	_budget_generation += 1
 	_budget_ready_network = null
@@ -602,7 +604,8 @@ func _sync() -> void:
 	_read_progress()
 	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:_end_concert(false)
 	var signature := _signature()
-	if signature == _network_signature: return
+	if signature == _network_signature:
+		state.prepare_regional_echo(_network);return
 	_network_signature = signature
 	_build_graph()
 	_sync_people()
@@ -1370,6 +1373,7 @@ func _adopt_network(network: RefCounted) -> void:
 	selected_entrances = network.selected_entrances
 	_route_cache = network._route_cache
 	_route_cache_entries = network._route_cache_entries
+	state.prepare_regional_echo(network)
 
 func _route(start: String, finish: String) -> Array[Vector3]:
 	# Test tools may assign graph/positions directly; they are still authoritative.

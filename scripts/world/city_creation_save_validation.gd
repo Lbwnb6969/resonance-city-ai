@@ -22,6 +22,27 @@ static func _is_integer(value: Variant) -> bool:
 static func _fail(message: String) -> Dictionary:
 	return {"ok": false, "message": message}
 
+static func _validate_regional_trips(data:Dictionary,issued:int)->Dictionary:
+	for field:String in ["regional_trips","regional_replies"]:
+		if data.has(field) and int(data.schema)<18:return _fail("跨区交流履历需要新版存档")
+		var rows:Variant=data.get(field,[])
+		if not rows is Array:return _fail("跨区交流履历结构无效")
+		var seen:Array=[]
+		for row:Variant in rows:
+			if not row is Dictionary or row.size()!=6:return _fail("跨区交流履历字段无效")
+			for side:String in ["from","to"]:
+				if not _valid_id(row.get(side),"d",{}) or int(str(row[side]).substr(1))>issued:return _fail("跨区交流街坊身份无效")
+				var voice:Variant=row.get(side+"_voice")
+				if not voice is String:return _fail("跨区交流声部身份无效")
+				var parts:PackedStringArray=voice.split(":")
+				if parts.size()!=2 or parts[0] not in data.get("era_unlocks",["pastoral"]) or parts[1] not in ["warm","deep","weave","market","sylvan"]:return _fail("跨区交流声部身份无效")
+				if row.get(side+"_region") not in ["west","east","highland","garden"]:return _fail("跨区交流地形身份无效")
+			if int(str(row.from).substr(1))>=int(str(row.to).substr(1)) or row in seen:return _fail("跨区交流履历重复或未规范排序")
+			if field=="regional_replies" and {"from":row.from,"to":row.to} not in data.get("district_answers",[]):return _fail("区域复调缺少真实完成的街坊问答")
+			seen.append(row)
+	return {"ok":true}
+
+
 static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dictionary:
 	var supply: Variant = data.get("workshop_supply", {})
 	var improvements: Variant = data.get("house_improvements", {})

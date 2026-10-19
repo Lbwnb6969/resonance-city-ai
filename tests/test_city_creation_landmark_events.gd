@@ -113,5 +113,5 @@ func _run()->void:
 	var flagship:=State.new();_check(flagship.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))).ok,"actual 127-house flagship still restores")
 	var large:=_life(flagship);var report:Dictionary=large.tram.report()
 	_check(not str(report.depot_id).is_empty() and not report.corridor_houses.is_empty(),"actual flagship depot publishes its current rail corridor")
-	print("FLAGSHIP_CORRIDOR ",JSON.stringify({"houses":flagship.houses.size(),"corridor_houses":report.corridor_houses.size(),"corridor_prepare_ms":report.corridor_prepare_ms}));large.free()
+	print("FLAGSHIP_CORRIDOR ",JSON.stringify({"houses":flagship.houses.size(),"corridor_houses":report.corridor_houses.size(),"corridor_prepare_ms":report.corridor_prepare_ms,"regional_prepare_ms":flagship.regional_prepare_ms}));large.free()
 	print("LANDMARK_EVENTS ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

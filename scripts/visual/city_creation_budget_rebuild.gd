@@ -684,6 +684,7 @@ func _commit(owner: Node3D) -> void:
 			staging.road_fingerprints.erase(id)
 			staging.road_water_signatures.erase(id)
 	for field: String in ROAD_FIELDS+VEGETATION_FIELDS+["house_fingerprints","road_fingerprints","road_layout_signature","vegetation_obstacle_signature"]: owner.set(field,staging.get(field))
+	owner.state._region_plant_visibility=owner.vegetation_visibility;owner.state._region_visibility_revision=owner.state.revision
 	var live_plants := {}
 	for plant: Dictionary in staging.state.plants: live_plants[str(plant.id)] = true
 	for id: String in owner.meadow.plant_candidates.keys():

@@ -238,6 +238,7 @@ func _drop(car: Dictionary)->void:
 		resident.node.get_child(0).position.y=0.
 		resident.node.get_child(0).visible=true
 		car.riders.erase(home);ticket.state="completed";_active_tickets.erase(home);completed+=1
+		life.state.record_completed_tram_commute(str(resident.home_id),str(resident.destination_id),str(ticket.get("from_district","")))
 
 func intercept(resident: Dictionary,delta: float)->bool:
 	if cars.is_empty() or resident.paused or resident.wait>0. or not str(resident.dwell_id).is_empty():return false
@@ -309,7 +310,8 @@ func _trip(resident: Dictionary)->Dictionary:
 		if not express and time-ready>=distance/(.83*float(life.state.signature_bonuses().walking))-.5:continue
 		if time<best:best=time;vehicle=str(car.id)
 	if vehicle.is_empty():return {"state":"declined"}
-	return {"state":"approach","car_id":vehicle,"board":board,"exit":exit,"board_index":first,"exit_index":last,"wait":0.,"distance":distance}
+	var origin:=Vector3(route[0]);var from_district:=str(life.state.district_at(Vector2(origin.x,origin.z)).get("id",""))
+	return {"state":"approach","car_id":vehicle,"board":board,"exit":exit,"board_index":first,"exit_index":last,"wait":0.,"distance":distance,"from_district":from_district}
 
 func _forecast(car: Dictionary,board: String,exit: String,ready: float)->Dictionary:
 	var tour: Array=car.line.tour

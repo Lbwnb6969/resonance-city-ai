@@ -36,6 +36,8 @@ static func setup(demo: Node3D) -> void:
 	details.add_theme_constant_override("separation", 8)
 	header.add_child(details)
 	demo.quest.reparent(details)
+	var echo:=Label.new();echo.name="RegionalEchoBadge";echo.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;echo.add_theme_font_size_override("font_size",12);details.add_child(echo);echo.hide()
+	demo.set_meta("regional_echo_badge",echo)
 	demo.life_info.reparent(details)
 	details.hide()
 	toggle.toggled.connect(func(expanded: bool) -> void:

@@ -770,7 +770,7 @@ func _focused_houses() -> Array[String]:
 func _advance_daily_phrase(phrase: int) -> void:
 	if phrase == _daily_phrase: return
 	_daily_phrase = phrase
-	emergence.advance(_house_music,acoustic,canon.groups,phrase,night)
+	emergence.advance(_house_music,acoustic,canon.groups,phrase,night,int(_pluck_city.regional_echo().variant) if _pluck_city!=null else 0)
 	_phrase_improvements.clear()
 	for id: String in _house_music: _phrase_improvements[id]=int(_house_music[id].improvement)
 	var houses := _focused_houses()
