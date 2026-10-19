@@ -121,7 +121,7 @@ func step(clock: float,offset_sec:float=0.)->void:
 	var planned:=slot(group,clock-offset_sec);planned.start_clock+=offset_sec
 	var id: String=planned.house_id
 	if _owner.acoustic.focus_weight(id)<=0.:skipped+=1;return
-	var plan:=Pitch.plan(_city,id,clock)
+	var plan:=Pitch.plan(_city,id,clock,_owner.harmony_mode())
 	if plan.is_empty() or not _owner._edit_streams.has(plan.stream_key):return
 	var selected: AudioStreamPlayer
 	for effect: AudioStreamPlayer in _owner._effects:

@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/音乐涌现_2026-10-19"
+var OUT="res://验证记录/音乐涌现_2026-10-19"
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -29,6 +29,8 @@ func _capture(name:String)->void:
 	await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/"+name+".png")==OK,"actual GL image saved: "+name)
 func _run()->void:
+	for argument:String in OS.get_cmdline_user_args():
+		if argument.begins_with("--out-dir="):OUT=argument.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	var source:=FileAccess.get_file_as_bytes("res://数据/四库共鸣交响大城样例.json")
@@ -57,7 +59,7 @@ func _run()->void:
 		row.phase_error=absf(fposmod(player.get_playback_position()-fposmod(float(row.clock),24.)+12.,24.)-12.)
 		facts.tours.append(row)
 		_check(score.lead_track==tour[2] and score.targets[tour[2]]==-10.5 and row.source.audible and row.source.track==tour[2],"camera selects the actual audible era lead within the next phrase: "+tour[0])
-		_check(player.volume_db>-20. and row.clock>before+3. and str(row.active_variation).begins_with(tour[2]+"/"),"real PCM joins current transport phase at foreground gain: "+tour[0])
+		_check(player.volume_db>-20. and row.clock>before+3. and str(row.active_variation).contains(tour[2]+"/"),"real PCM joins current transport phase at foreground gain: "+tour[0])
 		_check(row.phase_error<.075,"the native variation playback phase error stays below seventy-five milliseconds: "+tour[0])
 		await _capture("时代主奏_"+str(tour[0]))
 	# Observe two different actual phrase textures, without ticking/rewinding
@@ -67,6 +69,29 @@ func _run()->void:
 		await _frames(3.1);variants[demo.music._variation_active.get("modern_symphony","")]=true
 	_check(variants.size()>=2 and demo.music._playback_clock()>first_clock+12.,"a prosperous real district changes baked texture over uninterrupted phrases")
 	facts.observed_variations=variants.keys()
+	if "--palette-tour" in OS.get_cmdline_user_args():
+		facts.palettes=[]
+		for choice:Array in [[1,Vector3(-25,2,-27),false],[2,Vector3(-25,1,25),false],[3,Vector3(23,1,28),true]]:
+			_camera(choice[1]);demo.music.set_night(choice[2])
+			if choice[2]:
+				while demo.light_phase!=2:demo._toggle_light()
+			var until:=Time.get_ticks_msec()+100000
+			while int(demo.music.emergence.score.get("harmony_mode",-1))!=choice[0] and Time.get_ticks_msec()<until:await _frames(.2)
+			await _frames(.3)
+			var mode:int=demo.music.harmony_mode()
+			var score:Dictionary=demo.music.emergence.score.duplicate(true)
+			var beds:=true
+			for bed:String in ["foundation","air","terrace"]:beds=beds and demo.music._variation_active.get(bed,"")=="%d/%s"%[choice[0],bed]
+			_check(mode==choice[0] and beds,"real loop boundaries select the requested landscape/night harmony and all three actual beds: "+str(choice[0]))
+			var source_id:String=str(score.get("source_id",""))
+			var before_note:int=demo.music._pluck_serial
+			_check(demo.music.play_house(source_id),"visible house accepts a real quantized note in palette "+str(choice[0]))
+			await _frames(.23)
+			var pluck:Dictionary=demo.music.house_pluck_report()
+			var expected:Dictionary=demo.music.PitchPluck.plan(demo.state,source_id,demo.music._playback_clock(),mode)
+			_check(demo.music._pluck_serial>before_note and pluck.audible and pluck.midi==expected.midi,"actual pooled pluck uses the active palette pitch: "+str(choice[0]))
+			facts.palettes.append({"score":score,"clock":demo.music._playback_clock(),"pluck":pluck})
+			await _capture("和声色彩_"+str(choice[0]))
 	# A bank stream swap never replaces the clock node or short pool. A
 	# restored performance must still resume all original long WAVs in phase.
 	demo.set_process(false)

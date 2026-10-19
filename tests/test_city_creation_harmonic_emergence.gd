@@ -54,7 +54,7 @@ func _run()->void:
 	var bank:=Cache.load_bank()
 	_check(not bank.is_empty(),"the baked production bank matches all current synthesis and scoring sources")
 	if not bank.is_empty():
-		_check(bank.variations.size()==24,"eight actual era/style leads each have three baked textures")
+		_check(bank.variations.size()==96,"four harmonic colors each retain eight era/style leads and three baked textures")
 		for track:String in Score.LEADS:
 			var distinct:Array[PackedByteArray]=[]
 			var exact:=true;var seam:=true;var bounded:=true
@@ -69,7 +69,7 @@ func _run()->void:
 				var samples:=PackedFloat32Array();samples.resize(66150)
 				for note:Dictionary in bank.report.variation_notes[key]:
 					if float(note.start)>=3.:continue
-					music._add_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,false)
+					music._add_harmony_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,false)
 				exact=exact and music._pcm_stream(samples,false).data==pcm.slice(0,132300)
 			_check(distinct.size()==3 and bounded,"three distinct audible normalized twenty-four-second waves: "+track)
 			_check(exact and seam,"independent first-phrase synthesis matches and all eight switching seams are silent: "+track)

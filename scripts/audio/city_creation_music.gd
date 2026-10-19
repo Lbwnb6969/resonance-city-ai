@@ -32,6 +32,12 @@ var _original_streams:Dictionary={}
 var _variation_pending:Dictionary={}
 var _variation_active:Dictionary={}
 var _variation_changed_usec:=0
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
+var _harmony_streams:Dictionary={}
+var _base_edit_streams:Dictionary={}
+var _harmony_view:Array=[]
+
+func harmony_mode()->int:return -1 if concert_active else int(emergence.score.get("harmony_mode",0))
 var acoustic:=AcousticField.new()
 var _acoustic_timer:=0.0
 var _signature_phrase := -1
@@ -223,7 +229,7 @@ func _refresh_harmony_gains() -> void:
 
 func play_house(house_id: String) -> bool:
 	if muted or concert_active or _loading or _pluck_city==null: return false
-	var plan := PitchPluck.plan(_pluck_city,house_id,_playback_clock())
+	var plan := PitchPluck.plan(_pluck_city,house_id,_playback_clock(),harmony_mode())
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key): return false
 	if acoustic.point_weight(plan.position)<=0.0: return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id): return false
@@ -233,7 +239,7 @@ func play_house(house_id: String) -> bool:
 func _play_queued_house(queued: Dictionary)->bool:
 	if muted or concert_active or _loading:return false
 	var house_id:=str(queued.house_id)
-	var plan:=PitchPluck.plan(_pluck_city,house_id,_playback_clock())
+	var plan:=PitchPluck.plan(_pluck_city,house_id,_playback_clock(),harmony_mode())
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key) or acoustic.point_weight(plan.position)<=0.:return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id):return false
 	var selected: AudioStreamPlayer
@@ -788,8 +794,23 @@ func _advance_daily_phrase(phrase: int) -> void:
 func _update_variations(_delta:float)->void:
 	if _variation_streams.is_empty():return
 	var now:=Time.get_ticks_usec()
-	for key:String in HarmonicEmergence.LEADS:
-		var id:String="original" if concert_active else "%s/%d"%[key,int(emergence.score.get("variant",0))]
+	var mode:=maxi(0,harmony_mode())
+	var bar:=posmod(floori(_playback_clock()/3.),8)
+	var view:Array=[harmony_mode(),bar]
+	if view!=_harmony_view:
+		_harmony_view=view;_edit_streams=_base_edit_streams.duplicate()
+		if not concert_active:
+			for id:String in _harmony_streams:
+				var prefix:String="%d/"%mode
+				if not id.begins_with(prefix):continue
+				var key:String=id.trim_prefix(prefix)
+				if not key.contains("/"):_edit_streams[key]=_harmony_streams[id]
+			for kind:String in ["room","terrace","road","erase","history","concert","arrival","bakery","craft","installed","tea"]:_edit_streams[kind]=_harmony_streams["%d/edit/%s/%d"%[mode,kind,bar]]
+	for key:String in HarmonicEmergence.LEADS+["foundation","air","terrace"]:
+		var id:String="original"
+		if not concert_active:
+			id="%s/%d"%[key,int(emergence.score.get("variant",0))] if key in HarmonicEmergence.LEADS else "%d/%s"%[mode,key]
+			if mode>0 and key in HarmonicEmergence.LEADS:id="%d/"%mode+id
 		if _variation_active.get(key,"")==id:
 			_variation_pending.erase(key);continue
 		if not _variation_pending.has(key) or _variation_pending[key].id!=id:
@@ -799,7 +820,7 @@ func _update_variations(_delta:float)->void:
 		# transport never changes; the new loop joins its current sample phase.
 		var player:AudioStreamPlayer=_players[key]
 		player.volume_db=-60.
-		player.stream=_original_streams[key] if id=="original" else _variation_streams[id]
+		player.stream=_original_streams[key] if id=="original" else (_variation_streams[id] if key in HarmonicEmergence.LEADS else _harmony_streams[id])
 		player.play(fposmod(_playback_clock(),SECONDS))
 		_variation_active[key]=id;_variation_pending.erase(key);_variation_changed_usec=now
 
@@ -1218,7 +1239,11 @@ func _process(delta: float) -> void:
 		_worker = null
 		_loading = false
 		audio_report = bank.report
-		_edit_streams = bank.edits
+		_base_edit_streams=bank.edits.duplicate()
+		_edit_streams = _base_edit_streams
+		_harmony_streams=bank.harmony
+		for key:String in _harmony_streams:
+			if key.begins_with("house_pluck_"):_base_edit_streams[key]=_harmony_streams[key]
 		_original_streams=bank.streams
 		_variation_streams=bank.get("variations",{})
 		# These play commands run in one frame before the next audio mix. All
@@ -1289,6 +1314,7 @@ func _exit_tree() -> void:
 	_worker = null
 	_edit_streams.clear()
 	_variation_streams.clear();_original_streams.clear()
+	_harmony_streams.clear();_base_edit_streams.clear()
 
 
 func _load_bank()->Dictionary:
@@ -1550,20 +1576,25 @@ func _render_bank() -> Dictionary:
 	# cap, any one output is bounded by 1.65 times the old absolute bound.
 	# Apply it even to centered beds for a conservative whole-pool bound.
 	report.mix_peaks["absolute_stereo_with_four_short_voices"] = report.mix_peaks.absolute_with_four_edit_voices*(1.0+Spatial.PAN_LIMIT)
-	var variations:Dictionary=ThemePCM.render_variations(_add_note,_pcm_stream,chords,HarmonicEmergence.LEADS)
-	report["variation_notes"]=variations.notes;report["variation_peaks"]=variations.peaks;report["variation_pcm_bytes"]=variations.bytes
+	var harmony:Dictionary=Palette.render(_add_harmony_note,_pcm_stream,ThemePCM,HarmonicEmergence.LEADS,edits,PitchPluck,ReplyPCM)
+	report["harmony_notes"]=harmony.notes;report["harmony_peaks"]=harmony.peaks
+	report["variation_notes"]=harmony.variation_notes;report["variation_peaks"]=harmony.variation_peaks;report["variation_pcm_bytes"]=harmony.variations.size()*FRAMES*2
 	# Daily allocation admits one lead and at most 45% of one companion.
 	# Crossfades and attention gain stay within those linear maxima.
-	var daily_bound:float=float(report.peaks.foundation)*db_to_linear(-12.)+ThemePCM.VARIATION_PEAK*db_to_linear(-10.5)*1.45+float(report.peaks.air)*db_to_linear(-13.5)+float(report.peaks.terrace)*db_to_linear(-22.)
-	var varied_bound:float=(daily_bound+effect_peak*db_to_linear(SHORT_GAIN_DB)*4.)*(1.+Spatial.PAN_LIMIT)
+	var daily_bound:float=.18*(db_to_linear(-12.)+db_to_linear(-10.5)*1.45+db_to_linear(-13.5)+db_to_linear(-22.))
+	var short_bound:float=maxf(effect_peak,.18)
+	var varied_bound:float=(daily_bound+short_bound*db_to_linear(SHORT_GAIN_DB)*4.)*(1.+Spatial.PAN_LIMIT)
 	report.mix_peaks["emergent_stereo_bound"]=varied_bound
 	report.mix_peaks.absolute_stereo_with_four_short_voices=maxf(report.mix_peaks.absolute_stereo_with_four_short_voices,varied_bound)
 	report.synthesis_ms=float(Time.get_ticks_usec()-synthesis_started)/1000.
-	return {"streams": streams, "edits": edits, "variations":variations.streams,"report": report}
+	return {"streams": streams, "edits": edits, "variations":harmony.variations,"harmony":harmony.streams,"report": report}
 
 
-func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi: int, gain: float, timbre: String, wrap: bool) -> void:
-	midi = ThemePCM.quantize(midi)
+func _add_harmony_note(samples:PackedFloat32Array,start:float,duration:float,midi:int,gain:float,timbre:String,wrap:bool)->void:
+	_add_note(samples,start,duration,midi,gain,timbre,wrap,false)
+
+func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi: int, gain: float, timbre: String, wrap: bool,quantize_note:bool=true) -> void:
+	if quantize_note:midi = ThemePCM.quantize(midi)
 	var frequency := 440.0 * pow(2.0, float(midi - 69) / 12.0)
 	var phase_step := TAU * frequency / RATE
 	var count := int(duration * RATE)

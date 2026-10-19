@@ -1,6 +1,7 @@
 extends RefCounted
 ## Authored era/district and real phrase determine one immediately playable note.
 const ScalePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 const RATE := 22050
 const DURATION := 0.42
 const GLOW_DURATION := 0.60
@@ -8,7 +9,7 @@ const CHORDS := [[50,57,62],[47,54,59],[45,52,57],[50,57,64],[50,57,62],[47,54,6
 const TIMBRES := {"warm":"pluck","deep":"harp","weave":"marimba","market":"accordion","sylvan":"flute"}
 const ERA_TIMBRES := {"renaissance":"harpsichord","clockwork":"piano","modern_eco":"felt_piano"}
 
-static func plan(city: RefCounted, hid: String, clock_sec: float) -> Dictionary:
+static func plan(city: RefCounted, hid: String, clock_sec: float,mode:int=-1) -> Dictionary:
 	for house: Dictionary in city.houses:
 		if str(house.id)!=hid: continue
 		var maximum := 0
@@ -17,7 +18,7 @@ static func plan(city: RefCounted, hid: String, clock_sec: float) -> Dictionary:
 		var style := str(district.get("style","warm"))
 		var bar := posmod(int(floor(clock_sec/3.0)),8)
 		var variant := posmod(hash(hid),2)
-		var midi := pitch(bar,mini(maximum,4),variant)
+		var midi := pitch(bar,mini(maximum,4),variant) if mode<0 else Palette.pitch(mode,bar,mini(maximum,4),variant)
 		var era: String=city.house_era(house)
 		var timbre := str(ERA_TIMBRES.get(era,TIMBRES[style]))
 		return {"house_id":hid,"style":style,"era_theme":era,"max_level":maximum,"midi":midi,"timbre":timbre,

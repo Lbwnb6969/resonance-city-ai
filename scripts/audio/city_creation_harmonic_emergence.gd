@@ -7,6 +7,9 @@ const LEADS:=["wood","wood_deep","wood_weave","wood_market","wood_sylvan","renai
 const TIMBRES:={"wood":"wood","wood_deep":"air","wood_weave":"pluck","wood_market":"accordion","wood_sylvan":"flute","renaissance_fugue":"harpsichord","clockwork_waltz":"piano","modern_symphony":"felt_piano"}
 var score:Dictionary={}
 var phrase:=-1
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
+var mode:=0
+var last_cycle:=-1
 
 static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool)->Dictionary:
 	var weights:Dictionary={};var representatives:Dictionary={};var nearest:Dictionary={}
@@ -60,6 +63,9 @@ func advance(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:i
 	if phrase==absolute_phrase:return score
 	phrase=absolute_phrase
 	score=evaluate(houses,acoustic,rings,absolute_phrase,night)
+	var cycle:=int(absolute_phrase/8)
+	if last_cycle>=0 and cycle!=last_cycle:mode=Palette.next_mode(mode,int(score.preferred_mode),int(score.dna),cycle)
+	last_cycle=cycle;score.harmony_mode=mode;score.harmony_name=Palette.NAMES[mode]
 	return score
 
-func reset()->void:score.clear();phrase=-1
+func reset()->void:score.clear();phrase=-1;mode=0;last_cycle=-1

@@ -7,10 +7,11 @@ const PITCH_CLASSES := [2, 4, 6, 9, 11]
 # Nearest D / E / F# / A / B; equal-distance ties take the lower note.
 const PENTATONIC_OFFSETS := [-1, 1, 0, -1, 0, -1, 0, -1, 1, 0, -1, 0]
 const VARIATION_PEAK:=.18
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 
 ## Phrase-local motifs are baked once. Every bar has a short silent seam so
 ## a native WAV seek can change its texture without cutting an audible tail.
-static func render_variations(add_note:Callable,make_stream:Callable,chords:Array,leads:Array)->Dictionary:
+static func render_variations(add_note:Callable,make_stream:Callable,chords:Array,leads:Array,mode:int=-1)->Dictionary:
 	var streams:Dictionary={};var notes:Dictionary={};var peaks:Dictionary={};var bytes:=0
 	var timbres:Dictionary={"wood":"wood","wood_deep":"air","wood_weave":"pluck","wood_market":"accordion","wood_sylvan":"flute","renaissance_fugue":"harpsichord","clockwork_waltz":"piano","modern_symphony":"felt_piano"}
 	for key:String in leads:
@@ -24,12 +25,13 @@ static func render_variations(add_note:Callable,make_stream:Callable,chords:Arra
 				for i in range(starts.size()):
 					var degree:int=[0,2,1,2,0,1,2][posmod(i+bar,7)]
 					var midi:int=int(chords[bar][degree])+12+(12 if variant==2 and i%3==2 else 0)
+					if mode>=0:midi=Palette.quantize(midi,mode,bar)
 					var duration:float=minf(.95 if variant==0 else .48,2.88-float(starts[i]))
-					_emit(samples,events,add_note,bar*3.+float(starts[i]),duration,midi,.068 if variant==0 else .052,timbres[key])
+					_emit(samples,events,add_note,bar*3.+float(starts[i]),duration,midi,.068 if variant==0 else .052,timbres[key],mode<0)
 				if variant>=1 and key in ["renaissance_fugue","modern_symphony"]:
-					_emit(samples,events,add_note,bar*3.+.38,1.60,int(chords[bar][0])+12,.022,"oboe" if key=="renaissance_fugue" else "warm_pad")
+					_emit(samples,events,add_note,bar*3.+.38,1.60,int(chords[bar][0])+12,.022,"oboe" if key=="renaissance_fugue" else "warm_pad",mode<0)
 				if variant==2:
-					_emit(samples,events,add_note,bar*3.+1.34,1.30,int(chords[bar][1])+12,.022,"strings" if key=="renaissance_fugue" else "harp")
+					_emit(samples,events,add_note,bar*3.+1.34,1.30,int(chords[bar][1])+12,.022,"strings" if key=="renaissance_fugue" else "harp",mode<0)
 			var peak:=0.
 			for value:float in samples:peak=maxf(peak,absf(value))
 			var normalize:float=minf(1.,VARIATION_PEAK/maxf(.000001,peak))
@@ -99,8 +101,8 @@ static func render(samples: PackedFloat32Array, key: String, chords: Array,
 
 static func _emit(samples: PackedFloat32Array, events: Array[Dictionary],
 		add_note: Callable, start: float, duration: float, midi: int,
-		gain: float, timbre: String) -> void:
-	var event := {"start": start, "duration": duration, "midi": quantize(midi),
+		gain: float, timbre: String,quantize_note:bool=true) -> void:
+	var event := {"start": start, "duration": duration, "midi": quantize(midi) if quantize_note else midi,
 		"gain": gain, "timbre": timbre}
 	add_note.call(samples, event.start, event.duration, event.midi,
 		event.gain, event.timbre, true)
