@@ -110,6 +110,7 @@ func _run() -> void:
 		var records := helper.records(row)
 		all_records += records.size()
 		_full_footprint(helper, row, records)
+	_worker_copy(helper,city)
 	var parent := Node3D.new()
 	root.add_child(parent)
 	var build_info := helper.build(parent, road, parent)
@@ -139,3 +140,30 @@ func _run() -> void:
 	parent.queue_free()
 	await process_frame
 	quit(0 if failures.is_empty() else 1)
+
+func _cache_bytes(helper:RefCounted)->PackedByteArray:
+	var values:Array=[]
+	for field:String in Pebbles.CACHE_FIELDS:values.append(helper.get(field))
+	return var_to_bytes(values)
+
+func _worker_copy(published:RefCounted,city:RefCounted)->void:
+	var before:=_cache_bytes(published)
+	var worker_city:=State.new();_expect(worker_city.restore(city.snapshot()).ok,"isolated worker receives the actual authored city")
+	var copied:=Pebbles.new();copied.copy_cache_from(published);copied.prepare(worker_city)
+	for row:Dictionary in worker_city.roads:
+		_expect(is_same(copied.records(row),published.records(row)),"unchanged worker reuses the exact immutable survivor records")
+	_expect(copied.meshes.is_empty() and copied.material==null and copied.batches.is_empty() and copied.city==worker_city,"worker seed carries no GPU resources or live city")
+	for kind:String in ["room","terrain","road","undo"]:
+		var result:Dictionary
+		if kind=="room":result=worker_city.add_house(Vector2(-12.6,7))
+		elif kind=="terrain":
+			var points:Array[Vector2]=[Vector2(-11,7)];result=worker_city.add_terrain_stroke(points,"raise",2.5,.2)
+		elif kind=="road":
+			var points:Array[Vector2]=[Vector2(-16,7),Vector2(-11,7)];result=worker_city.add_road(points)
+		else:result=worker_city.undo()
+		_expect(result.ok,"worker "+kind+" changes real geometry")
+		copied.prepare(worker_city)
+		var fresh:=Pebbles.new();fresh.prepare(worker_city)
+		for row:Dictionary in worker_city.roads:
+			_expect(copied.records(row)==fresh.records(row),"cached "+kind+" matches full fresh scatter including height and masking")
+		_expect(before==_cache_bytes(published),"worker "+kind+" never changes published cache containers or records")

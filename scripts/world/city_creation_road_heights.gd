@@ -34,8 +34,7 @@ func copy_cache_from(source: RefCounted) -> void:
 	_signature = source._signature
 
 func prepare(city: RefCounted) -> void:
-	var houses: Array = []
-	for house: Dictionary in city.houses: houses.append([house.id,house.origin,house.cells,float(house.get("base_y",0.0))])
+	var houses:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(city.houses)
 	var signature := hash([city._ground_terrain.raw_generation,city.roads,houses,Bridges.era_signature(city)])
 	if signature==_signature:stats={"rebuilt":0,"reused":profiles.size()};return
 	_signature = signature

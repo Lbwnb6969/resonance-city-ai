@@ -111,6 +111,7 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city._courtyards.copy_cache_from(owner.state._courtyards)
 	context.courtyards.copy_cache_from(owner.courtyards)
 	context.building_context.copy_cache_from(owner.building_context)
+	context.path_pebbles.copy_cache_from(owner.path_pebbles)
 	context.ground_contact_field.copy_cpu_from(owner.ground_contact_field)
 	context.water_field.copy_cpu_from(owner.water_field,city)
 	context.era_road_field.copy_cpu_from(owner.era_road_field)
@@ -183,25 +184,34 @@ func _work(context: Node3D) -> Dictionary:
 	for change:Array in terrain_blocks:change.append(context.terrain_surface.prepare_mesh(change[1]))
 	stages.terrain = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
+	var structure_start:=stage_start
 	var building_signature := hash([context.state.houses,context.state.roads])
 	if labels.has("houses") or labels.has("roads"):
 		context.building_input_signature = -1 if context.building_input_signature != building_signature else context.building_input_signature
 	if context.building_input_signature != building_signature:
 		context.building_context.prepare(context.state.houses,context.state.roads)
 		context.building_input_signature = building_signature
+	stages.building_context=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
 	var signature: int = context._road_layout_key()
 	if signature != context.road_layout_signature:
 		context.road_layout_signature = signature
 		context.road_join_signatures.clear()
 		context._prepare_road_layout()
+	stages.road_layout=float(Time.get_ticks_usec()-structure_start)/1000.
+	var pebble_start:=Time.get_ticks_usec()
 	context.path_pebbles.prepare(context.state)
+	stages.pebble_layout=float(Time.get_ticks_usec()-pebble_start)/1000.
+	var pebble_records_usec:=0
+	structure_start=Time.get_ticks_usec()
 	context.promenade._prepare_clearance(context.state)
+	stages.street_clearance=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
 	var houses: Array = []
 	var roads: Array = []
 	for house: Dictionary in context.state.houses:
 		var fingerprint: int = context._house_fingerprint(house)
 		if context.house_fingerprints.get(str(house.id),-1) != fingerprint: houses.append(house)
 		context.house_fingerprints[str(house.id)] = fingerprint
+	stages.house_fingerprints=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
 	var road_data := {}
 	var pebbles := {}
 	for road: Dictionary in context.state.roads:
@@ -210,7 +220,11 @@ func _work(context: Node3D) -> Dictionary:
 			roads.append(road)
 			road_data[str(road.id)] = context._prepare_road_data(road)
 		context.road_fingerprints[str(road.id)] = fingerprint
+		pebble_start=Time.get_ticks_usec()
 		pebbles[str(road.id)] = context.path_pebbles.signature(road)
+		pebble_records_usec+=Time.get_ticks_usec()-pebble_start
+	stages.pebble_records=float(pebble_records_usec)/1000.
+	stages.road_geometry=float(Time.get_ticks_usec()-structure_start)/1000.
 	stages.structures_and_roads = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	var masks := {}
@@ -713,7 +727,7 @@ func _commit(owner: Node3D) -> void:
 	owner.shore.last_changed = staging.shore.last_changed
 	owner.shore.elapsed_ms = staging.shore.elapsed_ms
 	owner.shore._geometry = staging.shore._geometry
-	for field:String in ["_geometry","_record_cache","_layout_cache","footprints","doors","segments"]:
+	for field:String in owner.path_pebbles.CACHE_FIELDS:
 		var prior:Variant=owner.path_pebbles.get(field);var incoming:Variant=staging.path_pebbles.get(field)
 		if not is_same(prior,incoming):retired_values.append(prior)
 		owner.path_pebbles.set(field,incoming)

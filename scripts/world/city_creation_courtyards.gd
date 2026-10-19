@@ -27,9 +27,7 @@ func copy_cache_from(source: RefCounted) -> void:
 
 
 func plans(city: RefCounted) -> Array[Dictionary]:
-	var geometry: Array = []
-	for house: Dictionary in city.houses:
-		geometry.append([house.id,house.origin,house.cells,house.get("role",""),house.get("base_y",0.0)])
+	var geometry:Array=Frontage.ground_geometry(city.houses,true)
 	var signature := hash([geometry,city.roads,city.waters])
 	var plant_signature := hash(city.plants)
 	if _signature != signature:

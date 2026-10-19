@@ -44,8 +44,7 @@ func rebind_city(source:RefCounted,target:RefCounted)->void:
 
 func _context(city) -> Dictionary:
 	stats.context_queries+=1
-	var geometry: Array = []
-	for row: Dictionary in city.houses: geometry.append([row.id,row.origin,row.cells,row.get("role",""),float(row.get("base_y",0.0))])
+	var geometry:Array=Frontage.ground_geometry(city.houses)
 	var signature := hash([geometry,city.roads,city.waters])
 	var key: int = city.get_instance_id()
 	if _contexts.has(key) and _contexts[key].signature==signature:

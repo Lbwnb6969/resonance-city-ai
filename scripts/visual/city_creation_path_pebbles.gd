@@ -6,6 +6,7 @@ const State := preload("res://scripts/world/city_creation_state.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
 const BLOCK_SIZE := 8.0
 const VARIANTS := 3
+const CACHE_FIELDS := ["_geometry","_record_cache","_layout_cache","footprints","doors","segments","_junction_bins"]
 var city: RefCounted
 var footprints: Array[Rect2] = []
 var doors: Array[Vector2] = []
@@ -18,6 +19,12 @@ var _geometry: Array = []
 var _layout_cache: Dictionary = {}
 var _record_cache: Dictionary = {}
 var _junction_bins: Dictionary = {}
+
+func copy_cache_from(source:RefCounted)->void:
+	# Prepared records contain only immutable values. Give the worker private
+	# top-level containers: prepare() clears them when any input changes.
+	# GPU meshes, materials, batches and the live City are never copied.
+	for field:String in CACHE_FIELDS:set(field,source.get(field).duplicate())
 
 func prepare(city_state: RefCounted) -> void:
 	city = city_state

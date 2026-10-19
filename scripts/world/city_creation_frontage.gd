@@ -6,6 +6,27 @@ const CONTACT := 0.55
 const HALF_DOOR := 0.35
 const Passage := preload("res://scripts/world/city_creation_passage.gd")
 
+static func ground_geometry(houses:Array,include_overhangs:bool=false)->Array:
+	# Ground planners read footprints, door identities, use and base elevation.
+	# Upper rooms/roofs never change those inputs. Preserve authored order and
+	# complete ground-cell records so identity or kind changes still invalidate.
+	var geometry:Array=[]
+	for house:Dictionary in houses:
+		var cells:Array=[]
+		var ground:Dictionary={}
+		for cell:Dictionary in house.cells:
+			if int(cell.level)==0:cells.append(cell);ground[Vector2i(cell.x,cell.z)]=true
+		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.))]
+		if include_overhangs:
+			# Courtyard paving/fountains also avoid elevated terrace footprints.
+			# Repeated floors over an existing footprint add no new obstruction.
+			var extra:Dictionary={}
+			for cell:Dictionary in house.cells:
+				if not ground.has(Vector2i(cell.x,cell.z)):extra[str(int(cell.x))+":"+str(int(cell.z))]=true
+			var overhangs:Array=extra.keys();overhangs.sort();row.append(overhangs)
+		geometry.append(row)
+	return geometry
+
 static func porch_plan(city: RefCounted,house: Dictionary,entry: Dictionary) -> Dictionary:
 	var at: Vector2=entry.wall_at+Vector2(entry.side)*0.78
 	var base := float(house.get("base_y",0.0))
