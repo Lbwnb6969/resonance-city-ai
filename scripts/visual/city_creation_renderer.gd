@@ -526,7 +526,10 @@ func update_craft_progress() -> void:
 		if not changed.is_empty():
 			var ids: Array[String]=[];ids.assign(changed.keys());craft.progress(self,ids)
 		if quality_visual.layer!=null and not quality_changed.is_empty():
-			var ids: Array[String]=[];ids.assign(quality_changed.keys());quality_visual.progress(self,ids)
+			var ids: Array[String]=[]
+			for id:String in quality_changed:
+				if not quality_visual.pending_events.has(id):ids.append(id)
+			if not ids.is_empty():quality_visual.progress(self,ids)
 	_craft_view_geometry=geometry
 	_craft_view_traits.clear()
 	for row: Dictionary in traits:_craft_view_traits.append(row.duplicate(true))

@@ -1248,6 +1248,7 @@ func _process(delta: float) -> void:
 			_save_requested=false
 			save_city()
 	_poll_edit_budget()
+	if not _edit_pending:town.quality_visual.poll(town)
 	if tool==4 and not guide.visible() and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_P)):
 		var hit := _ray_hit(pointer)
 		var body: Object = hit.get("collider")
@@ -2140,8 +2141,8 @@ func _on_era_unlocked(era: String)->void:
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return
 	var began:=Time.get_ticks_usec() if life.profile_tick else 0
-	town.quality_visual.flash(town,events)
-	if life.profile_tick:life.tick_profile.quality_visual_us=Time.get_ticks_usec()-began;life.tick_profile.quality_geometry=town.quality_visual.build_stats.duplicate(true);began=Time.get_ticks_usec()
+	town.quality_visual.schedule_flash(town,events)
+	if life.profile_tick:life.tick_profile.quality_enqueue_us=Time.get_ticks_usec()-began;life.tick_profile.quality_queued=events.size();began=Time.get_ticks_usec()
 	music.update_quality(state,events)
 	_music_catalog_key=_music_catalog_signature()
 	for event: Dictionary in events: music.play_quality_upgrade(str(event.house_id),int(event.to))

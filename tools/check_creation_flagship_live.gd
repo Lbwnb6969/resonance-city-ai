@@ -93,6 +93,10 @@ func _run()->void:
 	facts.ecology=demo.town.ecology_stats.duplicate()
 	facts.purchases_after=int(demo.state.life_progress.purchases)
 	facts.worker_lod=demo.life.worker_lod.stats.duplicate()
+	facts.quality_publication=demo.town.quality_visual.queue_stats.duplicate()
+	facts.quality_publication.pending=demo.town.quality_visual.pending_events.size()
+	if "--check-quality-queue" in OS.get_cmdline_user_args():
+		_check(int(facts.quality_publication.queued)>0 and facts.quality_publication.queued==facts.quality_publication.rendered and int(facts.quality_publication.pending)==0,"actual earned upgrades publish their complete decorations through the frame queue")
 	if "--check-palette-views" in OS.get_cmdline_user_args():
 		var layout:Dictionary=demo.town.craft.layouts.h61;var entries:Array=demo.town.house_entrances("h61")
 		var index:int=demo.state._house_index("h61");var color:int=posmod(int(demo.state.houses[index].palette)+1,4)

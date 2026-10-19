@@ -67,6 +67,8 @@ func _captured(path:String)->void:
 	demo.life.set_process(false)
 	demo.focus=Vector3(data.view.focus[0],data.view.focus[1],data.view.focus[2]);demo.zoom=data.view.zoom;demo.yaw=data.view.yaw;demo.pitch=data.view.pitch;demo._update_camera()
 	while demo.light_phase!=int(data.view.light_phase):demo._toggle_light()
+	if "--resource-churn" in OS.get_cmdline_user_args():
+		await _resource_churn();return
 	if "--interactive" in OS.get_cmdline_user_args():
 		demo.life.restore_checkpoint(data.life_checkpoint);demo.life.set_process(true)
 		var until:=Time.get_ticks_msec()+120000
@@ -110,4 +112,36 @@ func _captured(path:String)->void:
 	for layer:Node in demo.life.get_children():
 		if layer is Node3D and layer.visible:layer.hide();await _capture("captured_hide_life_"+str(layer.name));layer.show()
 	var file:=FileAccess.open(OUT+"/captured_probe.json",FileAccess.WRITE);file.store_string(JSON.stringify(facts,"\t",true,true));file.close()
+	demo.queue_free();await process_frame;quit()
+
+func _resource_churn()->void:
+	# Preserve the isolated captured city while exercising GPU upload/release
+	# history, which a single snapshot reload cannot reproduce.
+	demo.life.set_process(false);demo.music.set_muted(true)
+	var rows:Array=[];var found:=false;var maximum:=0
+	var deadline:=Time.get_ticks_msec()+90000
+	for i in range(160):
+		if Time.get_ticks_msec()>deadline:break
+		var house:Dictionary=demo.state.houses[i%demo.state.houses.size()]
+		var id:=str(house.id)
+		demo._after_edit(demo.state.set_house_palette(id,posmod(int(house.get("palette",0))+1,4)),"history")
+		while demo.edit_pending() or demo._edit_ui_pending:await process_frame
+		demo.town.quality_visual.fingerprints.erase(id)
+		demo.town.craft.fingerprints.erase(id);demo.town.craft.culture_fingerprints.erase(id);demo.town.craft.mechanism_fingerprints.erase(id)
+		var only:Array[String]=[id]
+		demo.town.quality_visual.progress(demo.town,only);demo.town.craft.progress(demo.town,only)
+		if i%32==31:demo.town.rebuild()
+		if i%12==0:demo._toggle_light()
+		demo.yaw=float(i)*.19;demo.pitch=.20+float(i%20)*.01;demo.zoom=13.+float(i%6)*3.;demo._update_camera()
+		demo.select_tool(i%3);demo.pointer=Vector2(350.+float(i%50)*13.,330.+sin(float(i)*.1)*140.);demo._update_hover()
+		for frame in range(2):await process_frame
+		await RenderingServer.frame_post_draw
+		var image:Image=root.get_texture().get_image();var primary:int=demo.RenderCapture.primary_pixels(image)
+		maximum=maxi(maximum,primary);rows.append({"step":i,"primary_pixels":primary,"edit_mode":demo.edit_budget_report().get("mode",""),"yaw":demo.yaw,"pitch":demo.pitch})
+		if i%32==0:image.save_png(OUT+"/churn_"+str(i)+".png")
+		if primary>20:
+			found=true;await demo.RenderCapture.capture(demo,OUT+"/churn_fault");break
+	var report:Dictionary={"fault_reproduced":found,"iterations":rows.size(),"maximum_primary_pixels":maximum,"steps":rows}
+	var file:=FileAccess.open(OUT+"/churn_probe.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t",true,true));file.close()
+	print("RESOURCE_CHURN ",JSON.stringify({"fault_reproduced":found,"iterations":rows.size(),"maximum_primary_pixels":maximum}))
 	demo.queue_free();await process_frame;quit()

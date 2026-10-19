@@ -121,4 +121,42 @@ func _run()->void:
 	var house: Dictionary=city.houses[0]
 	_check(renderer.quality_visual._geometry_signature(renderer,house)==hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(city,house)]),"undo rebuild refreshes cached original frontage and arcade geometry")
 	_check(renderer.craft.facades.size()==city.houses.size() and renderer.craft.facades[str(house.id)].frontage==renderer._frontage_signature(house),"undo rebuild retires old facades and prepares the restored door and art/clock geometry")
+	# A burst changes gameplay immediately; only its derived meshes are queued.
+	var events:Array=[];var ids:Array[String]=[]
+	for index in range(mini(6,city.houses.size())):
+		var id:=str(city.houses[index].id);ids.append(id)
+		city.building_quality[id]={"level_tier":2,"source_id":id,"street":true,"amenity":true}
+	renderer.quality_visual.progress(renderer)
+	for id:String in ids:
+		city.building_quality[id].level_tier=3;events.append({"house_id":id,"from":2,"to":3})
+	var particles_before:int=renderer.quality_visual.next_particle
+	renderer.quality_visual.schedule_flash(renderer,events)
+	city.building_quality[ids[0]].level_tier=4
+	renderer.quality_visual.schedule_flash(renderer,[{"house_id":ids[0],"from":3,"to":4}])
+	_check(renderer.quality_visual.pending_events.size()==ids.size(),"repeated awards coalesce the same household without duplicating queued meshes")
+	var saved:Dictionary=city.snapshot();var count_before:int=renderer.quality_visual.build_count
+	renderer.update_craft_progress()
+	_check(renderer.quality_visual.build_count==count_before and renderer.quality_visual.pending_events.size()==ids.size(),"ordinary workshop polling cannot synchronously rebuild an outstanding upgrade burst")
+	for ignored in range(ids.size()):
+		var before:Dictionary={}
+		for id:String in ids:before[id]=renderer.quality_visual.roots[id].get_instance_id()
+		renderer.quality_visual.poll(renderer)
+		var changed:=0
+		for id:String in ids:
+			if before[id]!=renderer.quality_visual.roots[id].get_instance_id():changed+=1
+		_check(changed==1,"each publication step replaces exactly one upgraded household")
+	_check(renderer.quality_visual.pending_events.is_empty() and city.snapshot()==saved,"draining visual work changes no save data or already-earned reward")
+	_check(renderer.quality_visual.next_particle-particles_before==4,"a queued burst preserves the original four-celebration limit")
+	var exact:=true
+	reference.progress(renderer,ids)
+	for id:String in ids:exact=exact and _same_meshes(renderer.quality_visual.roots[id],reference.roots[id])
+	_check(exact,"all queued decorations match the original synchronous meshes including a coalesced later tier")
+	renderer.quality_visual.schedule_flash(renderer,events);renderer.rebuild()
+	_check(renderer.quality_visual.pending_events.is_empty(),"full rebuild supersedes old queued celebrations with current saved quality geometry")
+	renderer.quality_visual.schedule_flash(renderer,events)
+	var other_city:=State.new();other_city.initialize();renderer.state=other_city
+	var before_switch:int=renderer.quality_visual.build_count
+	renderer.quality_visual.poll(renderer)
+	_check(renderer.quality_visual.pending_events.is_empty() and renderer.quality_visual.build_count==before_switch,"queued old-town upgrades cannot publish into another city with matching house IDs")
+	renderer.state=city
 	renderer.free();print("TARGETED_QUALITY_VISUAL ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

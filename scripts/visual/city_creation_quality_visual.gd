@@ -12,6 +12,33 @@ var build_stats: Dictionary={}
 var geometry_inputs: Dictionary={}
 var geometry_signatures: Dictionary={}
 var welcome_batches:Array[Dictionary]=[]
+var pending_events:Dictionary={}
+var pending_city:=0
+var queue_stats:Dictionary={"queued":0,"rendered":0,"last_poll_us":0,"max_poll_us":0}
+
+func schedule_flash(renderer,events:Array)->void:
+	var city_id:int=renderer.state.get_instance_id()
+	if pending_city!=city_id:pending_events.clear();pending_city=city_id
+	for i in range(events.size()):
+		var event:Dictionary=events[i];var id:=str(event.house_id)
+		var celebrate:bool=i<4 or bool(pending_events.get(id,{}).get("celebrate",false))
+		if not pending_events.has(id):queue_stats.queued+=1
+		pending_events[id]={"event":event.duplicate(),"celebrate":celebrate}
+
+func poll(renderer)->void:
+	queue_stats.last_poll_us=0
+	if pending_events.is_empty():return
+	if pending_city!=renderer.state.get_instance_id():pending_events.clear();return
+	# One household is the indivisible render unit. Awards and walking boosts
+	# already exist in State; only the derived decoration is delayed a frame.
+	var id:String=pending_events.keys()[0];var row:Dictionary=pending_events[id]
+	pending_events.erase(id)
+	var began:=Time.get_ticks_usec()
+	if bool(row.celebrate):flash(renderer,[row.event])
+	else:
+		var only:Array[String]=[id];progress(renderer,only)
+	queue_stats.rendered+=1;queue_stats.last_poll_us=Time.get_ticks_usec()-began
+	queue_stats.max_poll_us=maxi(int(queue_stats.max_poll_us),int(queue_stats.last_poll_us))
 
 func prepare_geometry(renderer,house: Dictionary,frontage: Array,arcades: Array)->void:
 	var id:=str(house.id)
@@ -84,6 +111,7 @@ func _welcome(_renderer,frame:Node3D)->void:
 		var instance:=MeshInstance3D.new();instance.mesh=batch.mesh;instance.material_override=batch.material;frame.add_child(instance)
 
 func progress(renderer,only:Array[String]=[])->void:
+	if only.is_empty():pending_events.clear()
 	if renderer.state.building_quality.is_empty() and roots.is_empty():return
 	build_stats={"signature_us":0,"placement_us":0,"geometry_us":0,"merge_us":0,"houses":[]}
 	var live: Dictionary={}
@@ -187,6 +215,7 @@ func flash(renderer, events: Array)->void:
 	var changed:Array[String]=[]
 	for event:Dictionary in events:
 		var id:=str(event.house_id)
+		pending_events.erase(id)
 		if not changed.has(id):changed.append(id)
 	progress(renderer,changed)
 	for event: Dictionary in events.slice(0,4):
