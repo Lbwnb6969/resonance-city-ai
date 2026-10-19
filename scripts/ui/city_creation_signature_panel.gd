@@ -5,6 +5,7 @@ var demo: Node3D
 var panel: PanelContainer
 var button: Button
 var buttons: Dictionary = {}
+var _button_primary: Dictionary = {}
 var labels: Dictionary = {}
 var actions: HBoxContainer
 var placing: String = ""
@@ -13,6 +14,7 @@ var preview_key: Array = []
 
 func setup(owner: Node3D, parent: Control) -> void:
 	demo = owner
+	_button_primary.clear()
 	button = demo._button("地标名胜 · 免费营建", open_panel)
 	button.name = "SignatureBuildings"
 	button.tooltip_text = "达成城市与音乐里程碑后，可免费营建六座独占地标名胜（每座限一处，可随时移位或回收）"
@@ -90,14 +92,17 @@ func refresh() -> void:
 		var is_placed: bool = placed.has(id)
 		buttons[id].disabled = not earned or is_placed
 		buttons[id].text = "已在河湾 · 可选中移动" if is_placed else "免费选址" if earned else "里程碑尚未达成"
-		if earned and not is_placed:
-			UI.primary(buttons[id])
-		else:
-			for state_name: String in ["normal", "hover", "pressed", "disabled", "focus"]:
-				buttons[id].add_theme_stylebox_override(state_name, UI.button(state_name, false))
-			for color_key: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-				buttons[id].add_theme_color_override(color_key, UI.INK)
-			buttons[id].add_theme_color_override("font_disabled_color", Color("9b9f8c"))
+		var primary:bool=earned and not is_placed
+		if _button_primary.get(id)!=primary:
+			_button_primary[id]=primary
+			if primary:
+				UI.primary(buttons[id])
+			else:
+				for state_name: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+					buttons[id].add_theme_stylebox_override(state_name, UI.button(state_name, false))
+				for color_key: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+					buttons[id].add_theme_color_override(color_key, UI.INK)
+				buttons[id].add_theme_color_override("font_disabled_color", Color("9b9f8c"))
 		labels[id].text = demo.state.Signatures.GOALS[id]+("\n"+str(demo.state.Signatures.LOCAL_EFFECTS[id]) if demo.state.Signatures.LOCAL_EFFECTS.has(id) else "")
 	var selected: Dictionary = demo.town._house_record(demo.selected_house)
 	actions.visible = selected.has("signature")
