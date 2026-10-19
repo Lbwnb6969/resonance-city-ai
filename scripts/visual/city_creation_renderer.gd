@@ -262,7 +262,7 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
-	_entrance_views.clear();_entrance_view_key=[]
+	_entrance_views.clear();_passage_views.clear();_entrance_view_key=[]
 	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
@@ -736,9 +736,9 @@ func _shared_tree_material(part: String) -> Material:
 
 func _frontage_signature(house: Dictionary) -> Array:
 	var result: Array = []
-	for entrance: Dictionary in state.house_entrances(str(house.id)):
+	for entrance: Dictionary in house_entrances(str(house.id)):
 		result.append([entrance.cell_id,entrance.side,entrance.active,entrance.get("passage",false),entrance.get("wall_at",Vector2.ZERO),Frontage.porch_plan(state,house,entrance) if entrance.active else {}])
-	result.append(state.house_passages(str(house.id)))
+	result.append(house_passages(str(house.id)))
 	var role := str(house.get("role","residential"))
 	if role == "residential": return result
 	var entrance := _primary_entrance(house)
@@ -764,14 +764,23 @@ func _frontage_signature(house: Dictionary) -> Array:
 	return result
 
 var _entrance_views:Dictionary={}
+var _passage_views:Dictionary={}
 var _entrance_view_key:Array=[]
 func house_entrances(house_id:String)->Array:
 	# Renderer consumers read these records only. State's authoring API keeps
 	# its detached-copy contract; view caches belong to this published revision.
 	var key:Array=[state.get_instance_id(),state.revision]
-	if key!=_entrance_view_key:_entrance_views.clear();_entrance_view_key=key
-	if not _entrance_views.has(house_id):_entrance_views[house_id]=state.house_entrances(house_id)
+	if key!=_entrance_view_key:_entrance_views.clear();_passage_views.clear();_entrance_view_key=key
+	if not _entrance_views.has(house_id):
+		_entrance_views[house_id]=state.house_entrances(house_id)
+		# That call validates both entrances and passages together. Keep the
+		# detached visual views from this same record without rescanning State.
+		_passage_views[house_id]=state._frontage_cache.get(house_id,{}).get("passages",[]).duplicate(true)
 	return _entrance_views[house_id]
+
+func house_passages(house_id:String)->Array:
+	house_entrances(house_id)
+	return _passage_views[house_id]
 
 func retain_geometry_views()->void:
 	# A successful palette-only publication preserves every entrance and
@@ -1422,8 +1431,8 @@ func _house(house: Dictionary) -> Node3D:
 	elif era=="modern_eco":walls=_material(palette[0])
 	var trim := _material(Color("f1e5cc"))
 	var cells: Array = house["cells"]
-	var entrances: Array = state.house_entrances(str(house.id))
-	var passages: Array = state.house_passages(str(house.id))
+	var entrances: Array = house_entrances(str(house.id))
+	var passages: Array = house_passages(str(house.id))
 	root.set_meta("entrances",entrances.duplicate(true))
 	root.set_meta("passages",passages.duplicate(true))
 	var tower_ids: Dictionary = {}

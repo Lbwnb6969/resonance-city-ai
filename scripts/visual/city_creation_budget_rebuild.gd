@@ -749,6 +749,7 @@ func _commit(owner: Node3D) -> void:
 		owner.districts_fingerprint = staging.districts_fingerprint
 	owner.quality_visual.adopt_geometry(staging.quality_visual,owner)
 	owner._entrance_views=staging._entrance_views.duplicate()
+	owner._passage_views=staging._passage_views.duplicate()
 	owner._entrance_view_key=[owner.state.get_instance_id(),owner.state.revision]
 	owner.craft.adopt_layouts(staging.craft,owner)
 	owner.update_craft_progress()

@@ -30,10 +30,10 @@ var facades:Dictionary={}
 func prepare_layout(renderer,house:Dictionary,frontages:Variant=null,arcades:Variant=null)->void:
 	var id:=str(house.id);var key:Array=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
 	if layout_inputs.get(id,[])==key:return
-	layouts[id]=_placements(renderer,house,3);layout_inputs[id]=key
 	facades[id]={"frontage":renderer._frontage_signature(house) if frontages==null else frontages,
 		"arcades":renderer.ArcadePlan.for_house(renderer.state,house) if arcades==null else arcades,
-		"entries":renderer.house_entrances(id),"passages":renderer.state.house_passages(id)}
+		"entries":renderer.house_entrances(id),"passages":renderer.house_passages(id)}
+	layouts[id]=_placements(renderer,house,3,facades[id]);layout_inputs[id]=key
 
 func placements(renderer,house:Dictionary,level:int)->Dictionary:
 	prepare_layout(renderer,house)
@@ -256,12 +256,12 @@ func _remove(id: String, rows: Dictionary, signatures: Dictionary) -> void:
 	rows.erase(id)
 	signatures.erase(id)
 
-func _placements(renderer, house: Dictionary, level: int) -> Dictionary:
+func _placements(renderer, house: Dictionary, level: int, prepared:Variant=null) -> Dictionary:
 	var result := {"chime":[],"plaque":[],"planter":[],"pergola":[]}
 	var round_plan: Dictionary=renderer.RoundTowerPlan.for_house(house,renderer.state.houses,renderer.state.roads)
-	var arcade_faces: Array=renderer.ArcadePlan.for_house(renderer.state,house)
-	var passages: Array = renderer.state.house_passages(str(house.id))
-	var entries: Array = renderer.state.house_entrances(str(house.id))
+	var arcade_faces: Array=renderer.ArcadePlan.for_house(renderer.state,house) if prepared==null else prepared.arcades
+	var passages: Array = renderer.state.house_passages(str(house.id)) if prepared==null else prepared.passages
+	var entries: Array = renderer.state.house_entrances(str(house.id)) if prepared==null else prepared.entries
 	var faces: Array = []
 	for cell: Dictionary in house.cells:
 		if str(cell.kind) != "room": continue

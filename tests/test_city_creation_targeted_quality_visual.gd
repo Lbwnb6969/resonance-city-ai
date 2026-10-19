@@ -63,9 +63,11 @@ func _run()->void:
 		for level in range(1,4):layouts_match=layouts_match and renderer.craft.placements(renderer,house,level)==renderer.craft._placements(renderer,house,level)
 	_check(layouts_match,"prepared craft layouts for every house and level match independent original face and clearance selection")
 	var cached_layout:Dictionary=renderer.craft.layouts.h1;var cached_entrances:Array=renderer.house_entrances("h1")
+	var cached_passages:Array=renderer.house_passages("h1")
 	_check(city.set_house_palette("h1",2).ok,"actual palette edit changes only the published appearance revision")
 	renderer.retain_geometry_views()
 	_check(is_same(cached_layout,renderer.craft.layouts.h1) and is_same(cached_entrances,renderer.house_entrances("h1")) and renderer.craft.placements(renderer,city.houses[0],3)==renderer.craft._placements(renderer,city.houses[0],3),"palette publication reuses identical prepared layout and doorway records and matches a cold layout")
+	_check(is_same(cached_passages,renderer.house_passages("h1")) and cached_passages==city.house_passages("h1"),"palette publication retains the same exact prepared passage view")
 	for turn in range(4):
 		var baked:=Node3D.new();var direct:=Node3D.new();renderer.add_child(baked);renderer.add_child(direct)
 		for pair:Array in [[baked,renderer.quality_visual],[direct,reference]]:
@@ -113,7 +115,7 @@ func _run()->void:
 		var cold:=hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(city,house)])
 		same=same and prepared==cold and renderer.quality_visual.geometry_inputs[id][0]==city.get_instance_id()
 		var facade:Dictionary=renderer.craft.facades[id]
-		same=same and facade.frontage==renderer._frontage_signature(house) and facade.arcades==renderer.ArcadePlan.for_house(city,house) and facade.entries==city.house_entrances(id) and facade.passages==city.house_passages(id)
+		same=same and facade.frontage==renderer._frontage_signature(house) and facade.arcades==renderer.ArcadePlan.for_house(city,house) and facade.entries==city.house_entrances(id) and facade.passages==city.house_passages(id) and renderer.house_passages(id)==city.house_passages(id)
 		for level in range(1,4):same=same and renderer.craft.placements(renderer,house,level)==renderer.craft._placements(renderer,house,level)
 	_check(same,"worker geometry cache rebinds original city identity and matches independently recomputed inputs")
 	_check(city.undo().ok,"real road edit can be undone")

@@ -55,8 +55,8 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	var lanterns := 0
 	var arch_lanterns: Array = []
 	var top := 0.0
-	var passages: Array = renderer.state.house_passages(id)
-	var entrances: Array = renderer.state.house_entrances(id)
+	var passages: Array = renderer.house_passages(id)
+	var entrances: Array = renderer.house_entrances(id)
 	var round_tower: Dictionary = root.get_meta("round_tower",{})
 	for cell: Dictionary in house.cells:
 		var at: Vector3 = renderer._cell_position(house,cell)
