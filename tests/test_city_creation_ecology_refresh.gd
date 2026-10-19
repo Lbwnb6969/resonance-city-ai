@@ -57,7 +57,9 @@ func _run()->void:
 	check(town.ecology.stats.habitat_updates==int(counts.habitat_updates)+1 and town.ecology.stats.flora_updates==int(counts.flora_updates)+1 and town.ecology.stats.bunting_queries==counts.bunting_queries,"first food credit changes nectar/flowerpots but never queries or rebuilds unrelated festive wires")
 	_parity(town,"food")
 	check(city.serve_bread("h2","h3") and city.complete_tea("h5",["h1","h3"]),"real food credits settle a two-household tea party exactly once")
+	var anchor_view:Array=town.ecology.wire_context.anchors
 	town.refresh_ecology();_parity(town,"tea")
+	check(is_same(anchor_view,town.ecology.wire_context.anchors),"tea eligibility updates flags on the same published anchor geometry")
 	var flora_id: int=town.ecology_layer.get_instance_id();counts=town.ecology.stats.duplicate()
 	check(city.produce_craft("h6",1) and city.reserve_craft("h6","h3","h1") and city.complete_craft("h6","h3","h1"),"actual conserved woodwork delivery earns third harmony point")
 	town.refresh_ecology()
@@ -66,6 +68,7 @@ func _run()->void:
 	city.grant_resonance_afterglow(["h6"],1.);town.refresh_ecology();city.advance_resonance_afterglow(2.);town.refresh_ecology();_parity(town,"expired glow")
 	check(city.add_road([Vector2(-25,12),Vector2(-20,12)]).ok,"real west-bank road edit invalidates geometry")
 	town.rebuild();_parity(town,"road edit")
+	check(not is_same(anchor_view,town.ecology.wire_context.anchors),"street geometry changes retire the old shared anchor records")
 	check(city.undo().ok,"road edit undo succeeds");town.rebuild();_parity(town,"undo")
 	check(city.add_terrain_stroke([Vector2(-22,-7)],"raise",3.5,.4).ok,"actual terrain brush changes protected ground")
 	town.rebuild();_parity(town,"terrain")
@@ -76,6 +79,8 @@ func _run()->void:
 	check(city.undo().ok,"removed upstairs anchor can be restored by undo")
 	town.rebuild();_parity(town,"restored anchor")
 	check(int(town.ecology_layer.get_meta("bunting_count"))==wires_before,"anchor undo restores the exact original festive wire count")
+	check(city.set_house_palette("h2",2).ok,"actual palette edit changes the flag colors")
+	town.rebuild();_parity(town,"palette")
 	town.set_light_phase(2)
 	var night_ok:=true
 	for lamp: MeshInstance3D in town.ecology_layer.find_children("BuntingLanterns","MeshInstance3D",true,false):night_ok=night_ok and is_equal_approx(float(lamp.material_override.get_shader_parameter("warmth")),1.25)

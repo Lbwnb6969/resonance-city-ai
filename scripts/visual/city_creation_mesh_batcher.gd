@@ -127,8 +127,8 @@ func _colored_source(source: Mesh,index: int,color: Color,stats: Dictionary) -> 
 	var colored := ArrayMesh.new()
 	colored.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	stats.cache_misses+=1
-	# Generated ArrayMeshes are short-lived and have little reuse; reserve
-	# the bounded cache for stable primitive dimensions, segments and colors.
+	# Generated ArrayMeshes stay uncached. Explicitly immutable shared prefabs
+	# use this same bounded cache alongside stable primitive dimensions.
 	if not key.is_empty():
 		while source_cache.size()>=CACHE_LIMIT:
 			var oldest: Array = _cache_order.pop_front()
@@ -138,6 +138,8 @@ func _colored_source(source: Mesh,index: int,color: Color,stats: Dictionary) -> 
 	return colored
 
 func _source_key(source: Mesh,index: int,color: Color) -> Array:
+	if source is ArrayMesh and bool(source.get_meta("creation_immutable_prefab",false)):
+		return ["prefab",source,index,color]
 	var key: Array = []
 	if source is BoxMesh:
 		key = ["box",source.size,source.subdivide_width,source.subdivide_height,source.subdivide_depth]

@@ -71,6 +71,7 @@ func _run()->void:
 		for pair:Array in [[baked,renderer.quality_visual],[direct,reference]]:
 			var frame:=Node3D.new();pair[0].add_child(frame);frame.position=Vector3(-13.7,2.4,5.3);frame.rotation.y=turn*PI*.5
 			pair[1]._welcome(renderer,frame);renderer._merge_meshes(pair[0])
+		if turn>0:_check(int(baked.get_meta("material_batching").cache_hits)>=3,"shared welcome prefab reuses all three plain-color source batches after warming at quarter-turn %d"%turn)
 		_check(_same_meshes(baked,direct),"raised entrance at quarter-turn %d retains the original transformed triangles and material batches"%turn)
 		baked.free();direct.free()
 	# Visual-only tier fixtures exercise every production renderer branch;

@@ -73,7 +73,10 @@ func _prepare_welcome(renderer)->void:
 			groups[id]={"surface":surface,"material":material}
 		groups[id].surface.append_from(instance.mesh,0,frame.global_transform.affine_inverse()*instance.global_transform)
 	welcome_batches.clear()
-	for group:Dictionary in groups.values():welcome_batches.append({"mesh":group.surface.commit(),"material":group.material})
+	for group:Dictionary in groups.values():
+		var mesh:ArrayMesh=group.surface.commit()
+		mesh.set_meta("creation_immutable_prefab",true)
+		welcome_batches.append({"mesh":mesh,"material":group.material})
 	layer.remove_child(frame);frame.queue_free()
 
 func _welcome(_renderer,frame:Node3D)->void:

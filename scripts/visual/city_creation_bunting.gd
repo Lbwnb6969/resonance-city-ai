@@ -131,11 +131,16 @@ static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary]
 	var root := Node3D.new()
 	root.name = "StreetBunting"
 	parent.add_child(root)
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# Allocate the complete unindexed ribbon once. Filling position slots and
+	# the three flag normals/colors avoids per-vertex SurfaceTool state calls.
+	var vertex_count:=0
+	for pair:Dictionary in pairs:vertex_count+=maxi(4,ceili(float(pair.length)/FLAG_STEP))*9
+	var vertices:=PackedVector3Array();vertices.resize(vertex_count)
+	var normals:=PackedVector3Array();normals.resize(vertex_count);normals.fill(Vector3.UP)
+	var colors:=PackedColorArray();colors.resize(vertex_count);colors.fill(Color("4a4036"))
+	var offset:=0
 	var lanterns := SurfaceTool.new()
 	lanterns.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var rope_col := Color("4a4036")
 	var lantern_box:=BoxMesh.new();lantern_box.size=Vector3(.075,.10,.075)
 	for pair: Dictionary in pairs:
 		var p0: Vector3 = pair.a.pos
@@ -151,10 +156,8 @@ static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary]
 			var c0 := p0.lerp(p1, t0) - Vector3.UP * (4.0 * sag * t0 * (1.0 - t0))
 			var c1 := p0.lerp(p1, t1) - Vector3.UP * (4.0 * sag * t1 * (1.0 - t1))
 			# Thin rope ribbon
-			for v: Vector3 in [c0 - side_vec, c1 - side_vec, c1 + side_vec, c0 - side_vec, c1 + side_vec, c0 + side_vec]:
-				st.set_color(rope_col)
-				st.set_normal(Vector3.UP)
-				st.add_vertex(v)
+			vertices[offset]=c0-side_vec;vertices[offset+1]=c1-side_vec;vertices[offset+2]=c1+side_vec
+			vertices[offset+3]=c0-side_vec;vertices[offset+4]=c1+side_vec;vertices[offset+5]=c0+side_vec
 			# Triangular pennant flag (Townscaper FlagMesh 805ae0.c)
 			var mid := (c0 + c1) * 0.5
 			var f_left := c0.lerp(c1, 0.18)
@@ -162,15 +165,17 @@ static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary]
 			var f_tip := mid - Vector3.UP * 0.19
 			var flag_col: Color = pair.a.color_a if s % 2 == 0 else pair.b.color_b
 			var n := (f_right - f_left).cross(f_tip - f_left).normalized()
-			for v: Vector3 in [f_left, f_right, f_tip]:
-				st.set_color(flag_col)
-				st.set_normal(n)
-				st.add_vertex(v)
+			vertices[offset+6]=f_left;vertices[offset+7]=f_right;vertices[offset+8]=f_tip
+			for i in range(offset+6,offset+9):normals[i]=n;colors[i]=flag_col
+			offset+=9
 			if s % 3 == 1:
 				_lantern(lanterns, mid - Vector3.UP * 0.08,lantern_box)
 	var mesh_inst := MeshInstance3D.new()
 	mesh_inst.name = "BuntingFlags"
-	mesh_inst.mesh = st.commit()
+	var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors
+	var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	mesh_inst.mesh = mesh
 	var mat := StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
 	mat.vertex_color_is_srgb = true
