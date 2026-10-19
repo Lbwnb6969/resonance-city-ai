@@ -5,6 +5,7 @@ const SAMPLE_STEP := 0.35
 const MAX_GRADE := 0.22
 const STEP_HEIGHT := 0.12
 const BIN_SIZE := 2.0
+const QUERY_BIN_SIZE := .5
 const Bridges := preload("res://scripts/world/city_creation_bridge_plan.gd")
 const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
 const SteppingPlan := preload("res://scripts/world/city_creation_stepping_plan.gd")
@@ -12,6 +13,9 @@ const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 var profiles: Dictionary = {}
 var _bins: Dictionary = {}
 var _flat_bins: Dictionary = {}
+var _query_bins: Dictionary = {}
+var _constant_bins: Dictionary = {}
+var _query_inputs: Dictionary = {}
 var _signature: Variant = null
 var _input_signatures:Dictionary={}
 var stats:Dictionary={}
@@ -23,6 +27,9 @@ func copy_cache_from(source: RefCounted) -> void:
 	profiles = source.profiles
 	_bins = source._bins
 	_flat_bins = source._flat_bins
+	_query_bins = source._query_bins
+	_constant_bins = source._constant_bins
+	_query_inputs = source._query_inputs
 	_input_signatures=source._input_signatures
 	_signature = source._signature
 
@@ -33,7 +40,8 @@ func prepare(city: RefCounted) -> void:
 	if signature==_signature:stats={"rebuilt":0,"reused":profiles.size()};return
 	_signature = signature
 	var previous:=profiles;var previous_inputs:=_input_signatures
-	profiles={};_bins={};_flat_bins={};_input_signatures={};stats={"rebuilt":0,"reused":0}
+	var old_queries:=_query_bins;var old_constants:=_constant_bins;var old_query_inputs:=_query_inputs
+	profiles={};_bins={};_flat_bins={};_query_bins={};_constant_bins={};_query_inputs={};_input_signatures={};stats={"rebuilt":0,"reused":0}
 	var doors: Array = []
 	for house: Dictionary in city.houses:
 		for entry: Dictionary in city.house_entrances(str(house.id)):
@@ -57,6 +65,14 @@ func prepare(city: RefCounted) -> void:
 			var radius := float(road.width)*0.5+0.05
 			var bounds := Rect2(a,Vector2.ZERO).expand(b).grow(radius)
 			var record := {"road":str(road.id),"index":i,"a":a,"b":b,"radius":radius}
+			# Arc position stays inside this one sample span. Keep original
+			# stepping-before-tread order, including both endpoint tolerances.
+			record.stepping_runs=[];record.treads=[]
+			var s0:float=samples[i].distance;var s1:float=samples[i+1].distance
+			for stepping:Dictionary in profile.stepping_runs:
+				if float(stepping.end)>=s0-.00001 and float(stepping.start)<=s1+.00001:record.stepping_runs.append(stepping)
+			for tread:Dictionary in profile.treads:
+				if float(tread.s1)>=s0-.000001 and float(tread.s0)<=s1+.000001:record.treads.append(tread)
 			for z in range(floori(bounds.position.y/BIN_SIZE),floori(bounds.end.y/BIN_SIZE)+1):
 				for x in range(floori(bounds.position.x/BIN_SIZE),floori(bounds.end.x/BIN_SIZE)+1):
 					var key := Vector2i(x,z)
@@ -64,6 +80,56 @@ func prepare(city: RefCounted) -> void:
 					_bins[key].append(record)
 
 	_build_flat_bins()
+	var query_started:=Time.get_ticks_usec()
+	_build_query_bins(old_queries,old_constants,old_query_inputs)
+	stats.query_index_ms=float(Time.get_ticks_usec()-query_started)/1000.
+	stats.query_tiles=_query_bins.size();stats.constant_tiles=_constant_bins.size()
+
+func _build_query_bins(previous:Dictionary,constants:Dictionary,inputs:Dictionary)->void:
+	# Retain candidate order and the exact nearest-segment/tread solver. Smaller
+	# read-only tiles remove unrelated strip samples before a walker queries.
+	stats.query_reused=0;stats.query_rebuilt=0
+	for key:Vector2i in _bins:
+		var signature:=hash([_bins[key],_flat_bins.get(key,{})]);_query_inputs[key]=signature
+		if inputs.has(key) and inputs[key]==signature:
+			for z in range(4):
+				for x in range(4):
+					var small:=key*4+Vector2i(x,z)
+					if previous.has(small):_query_bins[small]=previous[small]
+					if constants.has(small):_constant_bins[small]=constants[small]
+			stats.query_reused+=1;continue
+		stats.query_rebuilt+=1
+		for z in range(4):
+			for x in range(4):
+				var small:=key*4+Vector2i(x,z);var low:=Vector2(small)*QUERY_BIN_SIZE
+				var high:=low+Vector2.ONE*QUERY_BIN_SIZE;var rows:Array=[]
+				for row:Dictionary in _bins[key]:
+					var a:Vector2=row.a;var b:Vector2=row.b;var radius:float=row.radius
+					if maxf(a.x,b.x)+radius<low.x or minf(a.x,b.x)-radius>high.x or maxf(a.y,b.y)+radius<low.y or minf(a.y,b.y)-radius>high.y:continue
+					rows.append(row)
+				if rows.is_empty():continue
+				# Squared distance to a segment is convex, so its maximum on
+				# this tile is bounded by the four corners. Any segment farther
+				# than the best such bound cannot win anywhere in the tile.
+				var upper:=INF;var corners:Array[Vector2]=[low,Vector2(high.x,low.y),high,Vector2(low.x,high.y)]
+				for row:Dictionary in rows:
+					var farthest:=0.
+					for corner:Vector2 in corners:farthest=maxf(farthest,corner.distance_squared_to(Geometry2D.get_closest_point_to_segment(corner,row.a,row.b)))
+					if farthest<=float(row.radius)*float(row.radius):upper=minf(upper,farthest)
+				var nearest_rows:Array=[]
+				for row:Dictionary in rows:
+					var a:Vector2=row.a;var b:Vector2=row.b
+					var dx:=maxf(0.,maxf(minf(a.x,b.x)-high.x,low.x-maxf(a.x,b.x)))
+					var dz:=maxf(0.,maxf(minf(a.y,b.y)-high.y,low.y-maxf(a.y,b.y)))
+					if dx*dx+dz*dz<=upper+.000001:nearest_rows.append(row)
+				_query_bins[small]=nearest_rows
+				var flat:Variant=_flat_bins.get(key)
+				if flat==null:continue
+				for cover:Dictionary in flat.covers:
+					var contains:=true
+					for corner:Vector2 in [low,Vector2(high.x,low.y),high,Vector2(low.x,high.y)]:
+						if corner.distance_squared_to(Geometry2D.get_closest_point_to_segment(corner,cover.a,cover.b))>=float(cover.radius2)-.000001:contains=false;break
+					if contains:_constant_bins[small]=float(flat.y);break
 
 func _build_flat_bins() -> void:
 	# A bin whose every possible road hit has the same height needs only a
@@ -299,6 +365,8 @@ func _offset(samples: Array,index: int,width: float) -> Vector2:
 	return miter*(width*0.5/maxf(0.5,miter.dot(second)))
 
 func height_at(at: Vector2,fallback: float) -> float:
+	var small:=Vector2i(floori(at.x/QUERY_BIN_SIZE),floori(at.y/QUERY_BIN_SIZE))
+	if _constant_bins.has(small):return float(_constant_bins[small])
 	var key:=Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
 	var flat: Variant=_flat_bins.get(key)
 	if flat!=null:
@@ -309,7 +377,7 @@ func height_at(at: Vector2,fallback: float) -> float:
 	var nearest := INF
 	var best:Dictionary={}
 	var closest:=Vector2.ZERO
-	for row: Dictionary in _bins.get(key,[]):
+	for row: Dictionary in _query_bins.get(small,[]):
 		var point := Geometry2D.get_closest_point_to_segment(at,row.a,row.b)
 		var gap := at.distance_squared_to(point)
 		if gap>float(row.radius)*float(row.radius) or gap>=nearest: continue
@@ -321,8 +389,8 @@ func height_at(at: Vector2,fallback: float) -> float:
 	var delta:Vector2=best.b-best.a
 	var ratio:=clampf((closest-Vector2(best.a)).dot(delta)/delta.length_squared(),0.,1.)
 	var arc:=lerpf(float(a.distance),float(b.distance),ratio)
-	for stepping: Dictionary in selected.get("stepping_runs",[]):
+	for stepping: Dictionary in best.stepping_runs:
 		if arc>=float(stepping.start)-0.00001 and arc<=float(stepping.end)+0.00001: return SteppingPlan.crossing_height(stepping,arc)
-	for tread: Dictionary in selected.get("treads",[]):
+	for tread: Dictionary in best.treads:
 		if arc>=float(tread.s0)-0.000001 and arc<=float(tread.s1)+0.000001: return float(tread.y)
 	return lerpf(float(a.y),float(b.y),ratio)

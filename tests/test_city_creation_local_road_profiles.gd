@@ -15,7 +15,7 @@ func _compare(city:RefCounted,full:RefCounted,label:String)->void:
 	# recomputed. This detects omissions in the incremental invalidation key.
 	full._road_heights=Roads.new();full._ground_revision=-1
 	city.prepare_ground_height();full.prepare_ground_height()
-	_check(city._road_heights.profiles==full._road_heights.profiles and city._road_heights._bins==full._road_heights._bins,"all exact profiles/treads/bridges/query bins match full recomputation: "+label)
+	_check(city._road_heights.profiles==full._road_heights.profiles and city._road_heights._bins==full._road_heights._bins and city._road_heights._query_bins==full._road_heights._query_bins and city._road_heights._constant_bins==full._road_heights._constant_bins,"all exact profiles/treads/bridges/coarse and fine query bins match full recomputation: "+label)
 	samples.append({"label":label,"stats":city._road_heights.stats.duplicate()})
 func _run()->void:
 	var city:=State.new();var full:=State.new();var source:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://数据/经营河湾样例.json"))

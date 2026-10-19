@@ -2,7 +2,7 @@ extends SceneTree
 ## Public-State CPU contracts and optional bounded production GL/real arrivals.
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Scene=preload("res://scenes/city_creation.tscn")
-const OUT="res://验证记录/高地城建_2026-10-16"
+var OUT="res://验证记录/高地城建_2026-10-16"
 const ORIGIN=Vector2(-15,0)
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -157,6 +157,8 @@ func _live(city,built:Dictionary)->void:
 	for player:AudioStreamPlayer in demo.music._effects: player.stop()
 	await create_timer(.15).timeout;demo.queue_free();await process_frame;await create_timer(.15).timeout
 func _run()->void:
+	for argument:String in OS.get_cmdline_user_args():
+		if argument.begins_with("--out-dir="):OUT=argument.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var city:=State.new();var built:Dictionary=_cpu(city)
 	if "--live" in OS.get_cmdline_user_args() and failures.is_empty(): await _live(city,built)

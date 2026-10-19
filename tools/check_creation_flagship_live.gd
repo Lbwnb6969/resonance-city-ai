@@ -7,6 +7,7 @@ var demo
 var checks: Array=[]
 var failures: Array[String]=[]
 var facts: Dictionary={}
+var daily_frame_count:=600
 func _initialize()->void:_run.call_deferred()
 func _check(ok: bool,label: String)->void:
 	checks.append({"ok":ok,"label":label})
@@ -42,6 +43,7 @@ func _run()->void:
 	if "--native-routes" in OS.get_cmdline_user_args():OUT="res://验证记录/原生寻路_2026-10-18"
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--out-dir="):OUT=argument.trim_prefix("--out-dir=")
+		if argument.begins_with("--daily-frames="):daily_frame_count=argument.trim_prefix("--daily-frames=").to_int()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var path: String="res://数据/四库共鸣交响大城样例.json";var source:=FileAccess.get_file_as_bytes(path)
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
@@ -79,10 +81,10 @@ func _run()->void:
 	demo.town.ecology.stats.max_refresh_us=0
 	facts.ecology_before=demo.town.ecology_stats.duplicate()
 	facts.purchases_before=int(demo.state.life_progress.purchases)
-	for i in range(600):
+	for i in range(daily_frame_count):
 		await process_frame;var now:=Time.get_ticks_usec();var began:=Time.get_ticks_usec()
 		demo.life._process((now-last)/1000000.);cpu.append((Time.get_ticks_usec()-began)/1000.);wall.append((now-last)/1000.);last=now
-		for stage:String in ["quality","tram","bakery","workshop","production","lod","citizens","tail","height"]:facts.daily_stage_mean_us[stage]=float(facts.daily_stage_mean_us.get(stage,0.))+float(demo.life.tick_profile.get(stage,0))/600.
+		for stage:String in ["quality","tram","bakery","workshop","production","lod","citizens","tail","height"]:facts.daily_stage_mean_us[stage]=float(facts.daily_stage_mean_us.get(stage,0.))+float(demo.life.tick_profile.get(stage,0))/daily_frame_count
 		if int(demo.life.tick_profile.get("quality_callback",0))>0:facts.quality_callbacks.append(demo.life.tick_profile.duplicate(true))
 		if cpu[-1]>4.:facts.slow_daily_ticks.append({"frame":i,"cpu_ms":cpu[-1],"stages_us":demo.life.tick_profile.duplicate(true)})
 	demo.life.profile_tick=false

@@ -50,6 +50,15 @@ func _run()->void:
 				queries.append_array([at,at+Vector2(.000001,-.000001),at+Vector2(.14,.07)])
 				if i+1<profile.samples.size():queries.append(at.lerp(Vector2(profile.samples[i+1].xz),.43))
 		queries.append_array([Vector2(-40,-40),Vector2(40,40),Vector2.ZERO])
+		# Query both sides of the new half-metre boundaries, and the edge of
+		# each road capsule. A fine index must keep all original tie candidates.
+		for key:Vector2i in heights._query_bins:
+			var low:=Vector2(key)*.5
+			queries.append_array([low,low+Vector2(.000001,-.000001),low+Vector2(-.000001,.000001),low+Vector2(.25,.25)])
+		for profile:Dictionary in heights.profiles.values():
+			for i in range(profile.samples.size()-1):
+				var a:Vector2=profile.samples[i].xz;var b:Vector2=profile.samples[i+1].xz;var side:Vector2=(b-a).orthogonal().normalized()
+				for extra:float in [-.000001,0.,.000001]:queries.append(a.lerp(b,.5)+side*(float(profile.width)*.5+.05+extra))
 		var max_gap:=0.;var mismatches: Array=[]
 		for at: Vector2 in queries:
 			var actual: float=heights.height_at(at,-999.);var expected:=original_height(at,original,heights.profiles)
@@ -61,9 +70,38 @@ func _run()->void:
 		var old_us:=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 		for at: Vector2 in queries:heights.height_at(at,-999.)
 		var new_us:=Time.get_ticks_usec()-began
+		var previous_us:=0
+		for argument:String in OS.get_cmdline_user_args():
+			if not argument.begins_with("--baseline-height="):continue
+			var previous:RefCounted=load(argument.trim_prefix("--baseline-height=")).new();previous.copy_cache_from(heights)
+			var same:=true
+			for at:Vector2 in queries:same=same and absf(previous.height_at(at,-999.)-heights.height_at(at,-999.))<=.000001
+			check(same,"previous published solver agrees at every sampled boundary: "+name)
+			began=Time.get_ticks_usec()
+			for at:Vector2 in queries:previous.height_at(at,-999.)
+			previous_us=Time.get_ticks_usec()-began
 		var old_records:=0;var new_records:=0
 		for rows: Array in original.values():old_records+=rows.size()
 		for rows: Array in heights._bins.values():new_records+=rows.size()
 		check(new_records==old_records,"original candidate index retained for "+name)
-		samples.append({"name":name,"queries":queries.size(),"max_gap":max_gap,"original_us":old_us,"current_us":new_us,"old_records":old_records,"new_records":new_records,"flat_bins":heights._flat_bins.size()})
+		var fine_records:=0
+		for rows:Array in heights._query_bins.values():fine_records+=rows.size()
+		samples.append({"name":name,"queries":queries.size(),"max_gap":max_gap,"original_us":old_us,"previous_us":previous_us,"current_us":new_us,"old_records":old_records,"new_records":new_records,"flat_bins":heights._flat_bins.size(),"query_bins":heights._query_bins.size(),"constant_bins":heights._constant_bins.size(),"fine_records":fine_records,"prepare_stats":heights.stats.duplicate()})
+		var frozen:=Roads.new();frozen.copy_cache_from(heights)
+		var old:PackedFloat64Array=[]
+		for at:Vector2 in queries:old.append(frozen.height_at(at,-999.))
+		var road:Dictionary=city.remove_road(str(city.roads[0].id))
+		check(road.ok,"real road removal for fine index invalidation: "+name);city.prepare_ground_height()
+		var same:=true
+		for i in range(queries.size()):same=same and frozen.height_at(queries[i],-999.)==old[i]
+		check(same,"published fine index remains immutable while a new road index is prepared: "+name)
+		check(city.undo().ok,"actual road edit undoes: "+name);city.prepare_ground_height()
+		heights=city._road_heights
+		var restored:=true;var undo_mismatch:Array=[]
+		for i in range(queries.size()):
+			var value:float=heights.height_at(queries[i],-999.)
+			if absf(value-old[i])>.000001:
+				restored=false
+				if undo_mismatch.size()<3:undo_mismatch.append([queries[i],old[i],value])
+		check(restored,"undo restores all original fine-cell boundary heights: "+name+str(undo_mismatch))
 	print("ROAD_HEIGHT_QUERIES ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"samples":samples,"failures":failures}));quit(0 if failures.is_empty() else 1)
