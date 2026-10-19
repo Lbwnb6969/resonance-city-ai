@@ -58,6 +58,10 @@ func copy_cache_from(source: RefCounted) -> void:
 	_cache = source._cache.duplicate()
 	_geometry_cache = source._geometry_cache.duplicate()
 	_topology_cache = source._topology_cache.duplicate()
+	_input = source._input.duplicate()
+	_extras = source._extras.duplicate()
+	_signatures = source._signatures.duplicate()
+	_bins = source._bins.duplicate()
 
 func additions(road_id: String) -> Array[PackedVector2Array]:
 	var result: Array[PackedVector2Array] = []

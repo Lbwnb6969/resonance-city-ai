@@ -98,6 +98,9 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city.terrain_strokes.assign(snapshot.terrain)
 	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","era_unlocks","revision"])
 	context.state = city
+	# Frontage records are immutable. A changed signature replaces its entry;
+	# the worker owns the map and never writes the published city's records.
+	city._frontage_cache = owner.state._frontage_cache.duplicate()
 	city._ground_terrain.copy_cache_from(owner.state._ground_terrain)
 	city._ground_revision = owner.state._ground_revision
 	city._raw_ground_revision = owner.state._raw_ground_revision

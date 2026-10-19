@@ -27,8 +27,7 @@ func setup(parent: Node3D) -> void:
 func prepare(renderer) -> Dictionary:
 	var live := {}
 	var changes := {}
-	var geometry: Array = []
-	for house: Dictionary in renderer.state.houses: geometry.append([house.id,house.origin,house.cells,house.get("role",""),float(house.get("base_y",0.0))])
+	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(renderer.state.houses)
 	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters])
 	for house: Dictionary in renderer.state.houses:
 		if str(house.get("role",""))!="garden_cafe": continue

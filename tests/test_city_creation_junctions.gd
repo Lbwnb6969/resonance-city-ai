@@ -47,7 +47,7 @@ func _initialize() -> void:
 	var worker:=Junctions.new()
 	worker.copy_cache_from(context)
 	worker.prepare(city)
-	_check(worker.stats.cache_hits==2 and worker.signature("r1")==signature_a,"background context reuses immutable cached polygons")
+	_check(not worker.stats.has("graph_ms") and worker.stats.regenerated==0 and worker.signature("r1")==signature_a and worker.additions("r2")==context.additions("r2") and worker.at(Vector2(.7,.7))==context.at(Vector2(.7,.7)),"background context reuses the complete prepared mouths and query bins without rebuilding their graph")
 	# True T and a width-connected terminal use the unchanged Network rule.
 	city.roads=[_road("r1",[Vector2(-3,0),Vector2(3,0)]),_road("r2",[Vector2(0,0),Vector2(0,3)])]
 	context.prepare(city)
