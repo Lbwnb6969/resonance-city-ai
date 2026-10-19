@@ -7,6 +7,7 @@ const SPEED := 0.83
 const SEATED_BODY_Y := 0.28
 var life: Node3D
 var layouts: Dictionary = {}
+var _status_parameters: Dictionary = {}
 var groups: Dictionary = {}
 var sync_stats:Dictionary={}
 
@@ -16,11 +17,13 @@ func _init(owner: Node3D) -> void:
 func clear() -> void:
 	groups.clear()
 	layouts.clear()
+	_status_parameters.clear()
 
 func sync() -> void:
 	var began:=Time.get_ticks_usec()
 	var previous := layouts.duplicate(true)
 	layouts.clear()
+	_status_parameters.clear()
 	for house: Dictionary in life.state.houses:
 		if str(house.role) == "garden_cafe":
 			var id := str(house.id)
@@ -29,6 +32,9 @@ func sync() -> void:
 				var entry: Vector3 = life.positions[life.connected_houses[id]]
 				plan.street_entry = Vector2(entry.x, entry.z)
 			layouts[id] = plan
+			# Status describes the published seats and routes. During an edit,
+			# reading it must not rebuild the new city's planning on the UI thread.
+			_prepare_status_parameters(id)
 	sync_stats={"layouts_us":Time.get_ticks_usec()-began}
 	began=Time.get_ticks_usec()
 	var entries: Dictionary={}
@@ -56,10 +62,17 @@ func sync() -> void:
 		if not valid: _cancel(str(id))
 	sync_stats.groups_us=Time.get_ticks_usec()-began
 
+func _prepare_status_parameters(id:String)->void:
+	_status_parameters[id]={"revision":life.state.revision,"time_scale":float(life.state.planning_bonus(id).get("cafe_duration_mult",1.)),"afterglow_extension":life.state.cafe_afterglow_extension(id)}
+
 func status(id: String) -> Dictionary:
 	var ledger: Dictionary = life.state.cafe_progress.get(id, {})
-	var time_scale:=float(life.state.planning_bonus(id).get("cafe_duration_mult",1.))
-	var result := {"phase":"closed","arrived":0,"invited":0,"elapsed":0.0,"duration":DURATION*time_scale,"groups":int(ledger.get("groups", 0)),"visits":int(ledger.get("visits", 0)),"afterglow_extension":life.state.cafe_afterglow_extension(id),"participants":[],"seated_count":0,"seated_seats":[]}
+	# A revision with unchanged routes can skip sync(). Refresh once released,
+	# while a held edit continues to describe the already published generation.
+	if not life._budget_hold and not life.budget_sync_pending() and int(_status_parameters.get(id,{}).get("revision",-1))!=life.state.revision:_prepare_status_parameters(id)
+	var parameters:Dictionary=_status_parameters.get(id,{})
+	var time_scale:=float(parameters.get("time_scale",1.))
+	var result := {"phase":"closed","arrived":0,"invited":0,"elapsed":0.0,"duration":DURATION*time_scale,"groups":int(ledger.get("groups", 0)),"visits":int(ledger.get("visits", 0)),"afterglow_extension":float(parameters.get("afterglow_extension",30.)),"participants":[],"seated_count":0,"seated_seats":[]}
 	if not layouts.has(id): return result
 	if not life.connected_houses.has(id):
 		result.phase = "disconnected"
