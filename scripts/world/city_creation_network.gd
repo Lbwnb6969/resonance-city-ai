@@ -61,6 +61,10 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	var cafe_entries: Dictionary={}
 	for house: Dictionary in state.houses:
 		if str(house.get("role",""))!="garden_cafe" or not connected_houses.has(house.id):continue
+		# Cafe.sync publishes street entries only for legal furniture layouts.
+		# Including a no-space cafe here would make that unchanged live set
+		# appear different and repeat every seat route inside the commit.
+		if prepared_cafe_context.layout(state,str(house.id)).is_empty():continue
 		var at: Vector3=positions[connected_houses[house.id]]
 		cafe_entries[str(house.id)]=Vector2(at.x,at.z)
 	prepared_cafe_context.warm_seats(state,cafe_entries)

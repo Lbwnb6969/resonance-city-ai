@@ -33,6 +33,11 @@ func _run()->void:
 	live.warm_seats(city,entries)
 	_check(var_to_bytes(live.snapshot_city(city))==warmed,"all three actual seat approaches and exits are already cached; repeated publication does not rebuild them")
 	live.context_queries=0;var fast_exact:=true;var path_index:=0
+	var layout_copy:Dictionary=live.prepared_layout(city,"h3")
+	live.warm_seats(city,entries)
+	_check(layout_copy==plan and live.context_queries==0,"published layout and repeated seat warming use validated metadata without city-wide geometry queries")
+	layout_copy.seats[0]=Vector2(99,99)
+	_check(live.prepared_layout(city,"h3")==plan,"published furniture layout remains detached from caller mutations")
 	for seat:Vector2 in plan.seats:
 		fast_exact=fast_exact and live.seat_route(city,"h3",plan.entrance,seat)==paths[path_index];path_index+=1
 		fast_exact=fast_exact and live.seat_route(city,"h3",seat,plan.entrance)==paths[path_index];path_index+=1
@@ -70,13 +75,36 @@ func _run()->void:
 	var prepared_context: RefCounted=network.prepared_cafe_context
 	prepared_context.rebind_city(network.state,published)
 	var ready:=var_to_bytes(prepared_context.snapshot_city(published));var prepared_context_routes:=0
+	var published_entries:Dictionary={}
 	for id: String in network.connected_houses:
 		if published.houses[published._house_index(id)].role!="garden_cafe":continue
 		var port: Vector3=network.positions[network.connected_houses[id]]
-		var layout: Dictionary=prepared_context.layout(published,id)
+		var layout: Dictionary=prepared_context.prepared_layout(published,id)
 		if layout.is_empty():continue
+		published_entries[id]=Vector2(port.x,port.z)
 		for seat: Vector2 in layout.seats:
 			prepared_context.seat_route(published,id,Vector2(port.x,port.z),seat)
 			prepared_context.seat_route(published,id,seat,Vector2(port.x,port.z));prepared_context_routes+=2
 	_check(prepared_context_routes>=6 and var_to_bytes(prepared_context.snapshot_city(published))==ready,"actual background Network preparation warms real street-port seat approaches and exits before adopting the live city")
+	var queries:int=prepared_context.stats.context_queries
+	prepared_context.warm_seats(published,published_entries)
+	_check(prepared_context.stats.context_queries==queries and var_to_bytes(prepared_context.snapshot_city(published))==ready,"actual published legal-cafe entry set exactly matches background warming without repeating any visibility query")
+	var changed:Dictionary=original.duplicate(true);changed.houses[0].origin[0]+=.25
+	changed.cafe_context=snapshot.duplicate(true)
+	var next_network:=Network.new();next_network.prepare(changed,{},actors)
+	var independent:=Context.new();var valid:=true
+	for id:String in next_network.connected_houses:
+		if next_network.state.houses[next_network.state._house_index(id)].role!="garden_cafe":continue
+		valid=valid and next_network.prepared_cafe_context.prepared_layout(next_network.state,id)==independent.layout(next_network.state,id)
+	_check(valid and next_network.prepared_cafe_context._contexts[next_network.state.get_instance_id()].signature==independent._contexts[next_network.state.get_instance_id()].signature,"a copied old context is revalidated against edited worker geometry before publication")
+	var flagship:=State.new();_check(flagship.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))).ok,"real flagship restores for no-space cafe publication regression")
+	var flagship_network:=Network.new();flagship_network.prepare(flagship.snapshot(),{},actors)
+	var flagship_context:RefCounted=flagship_network.prepared_cafe_context;flagship_context.rebind_city(flagship_network.state,flagship)
+	var legal:Dictionary={};var no_space:=0
+	for house:Dictionary in flagship.houses:
+		if house.role!="garden_cafe" or not flagship_network.connected_houses.has(house.id):continue
+		if flagship_context.prepared_layout(flagship,str(house.id)).is_empty():no_space+=1;continue
+		var at:Vector3=flagship_network.positions[flagship_network.connected_houses[house.id]];legal[str(house.id)]=Vector2(at.x,at.z)
+	queries=flagship_context.stats.context_queries;flagship_context.warm_seats(flagship,legal)
+	_check(no_space>0 and not legal.is_empty() and flagship_context.stats.context_queries==queries,"real flagship excludes connected no-space cafes from both entry sets and reuses every valid seat route")
 	print("CAFE_PREPARED_CONTEXT ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

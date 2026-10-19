@@ -8,6 +8,7 @@ const CHAIR_RADIUS := 0.29
 const GUEST_RADIUS := 0.14
 var _cache: Dictionary = {}
 var _contexts: Dictionary = {}
+var stats:Dictionary={"layout_hits":0,"layout_misses":0,"warm_hits":0,"warm_misses":0,"context_queries":0}
 
 func snapshot_city(city:RefCounted)->Dictionary:
 	var key:=city.get_instance_id();var plans:Dictionary={};var prefix:=str(key)+":"
@@ -21,6 +22,9 @@ func restore_city(data:Dictionary,city:RefCounted)->void:
 	if context.is_empty():return
 	context.owner=weakref(city);_contexts[city.get_instance_id()]=context
 	context.seat_revision=city.revision
+	# A captured context can seed preparation for changed geometry. It has
+	# not yet been validated against that new worker city's authored rows.
+	context.validated_revision=-1
 	for id:String in data.get("plans",{}):_cache[str(city.get_instance_id())+":"+id]=data.plans[id]
 
 func rebind_city(source:RefCounted,target:RefCounted)->void:
@@ -31,6 +35,7 @@ func rebind_city(source:RefCounted,target:RefCounted)->void:
 		var context:Dictionary=_contexts[source_id];_contexts.erase(source_id)
 		context.owner=weakref(target);_contexts[target_id]=context
 		context.seat_revision=target.revision
+		context.validated_revision=target.revision
 	var prefix:=str(source_id)+":"
 	for key:String in _cache.keys():
 		if not key.begins_with(prefix):continue
@@ -38,11 +43,14 @@ func rebind_city(source:RefCounted,target:RefCounted)->void:
 		_cache[str(target_id)+":"+key.trim_prefix(prefix)]=record
 
 func _context(city) -> Dictionary:
+	stats.context_queries+=1
 	var geometry: Array = []
 	for row: Dictionary in city.houses: geometry.append([row.id,row.origin,row.cells,row.get("role",""),float(row.get("base_y",0.0))])
 	var signature := hash([geometry,city.roads,city.waters])
 	var key: int = city.get_instance_id()
-	if _contexts.has(key) and _contexts[key].signature==signature: return _contexts[key]
+	if _contexts.has(key) and _contexts[key].signature==signature:
+		_contexts[key].validated_revision=city.revision
+		return _contexts[key]
 	for old_id: int in _contexts.keys():
 		if _contexts[old_id].owner.get_ref()!=null: continue
 		_contexts.erase(old_id)
@@ -50,7 +58,7 @@ func _context(city) -> Dictionary:
 			if plan_key.begins_with(str(old_id)+":"): _cache.erase(plan_key)
 	# A single current geometry snapshot owns all derived routing data. Progress,
 	# names and tea status never retain old visibility graphs or invalidate it.
-	var context := {"owner":weakref(city),"signature":signature,"footprints":[],"obstacles":[],"corners":{},"entries":[],"roads":[],"graphs":{}}
+	var context := {"owner":weakref(city),"signature":signature,"validated_revision":city.revision,"footprints":[],"obstacles":[],"corners":{},"entries":[],"roads":[],"graphs":{}}
 	for row: Dictionary in city.houses:
 		var corners: Array[Vector2] = []
 		for cell: Dictionary in row.cells:
@@ -119,6 +127,17 @@ func layout(city, id: String) -> Dictionary:
 	_cache[key] = {"signature":signature,"value":result.duplicate(true)}
 	return result
 
+func prepared_layout(city,id:String)->Dictionary:
+	# Network warms every cafe before its geometry-validated publication.
+	# Keep layout() as the full authoring validator for cold or edited cities.
+	var context:Dictionary=_contexts.get(city.get_instance_id(),{})
+	if context.get("seat_revision",-1)==city.revision and context.get("validated_revision",-1)==city.revision:
+		var record:Dictionary=_cache.get(str(city.get_instance_id())+":"+id,{})
+		if not record.is_empty() and record.signature==context.signature:
+			stats.layout_hits+=1;return record.value.duplicate(true)
+	stats.layout_misses+=1
+	return layout(city,id)
+
 func clear(city, at: Vector2, radius: float) -> bool:
 	return _clear(city,_context(city),at,radius)
 
@@ -140,6 +159,10 @@ func route(city, id: String, from: Vector2, to: Vector2) -> Array[Vector2]:
 
 func warm_seats(city, entries: Dictionary) -> void:
 	if entries.is_empty():return
+	var prepared:Dictionary=_contexts.get(city.get_instance_id(),{})
+	if prepared.get("seat_revision",-1)==city.revision and prepared.get("validated_revision",-1)==city.revision and prepared.get("seat_entries") == entries:
+		stats.warm_hits+=1;return
+	stats.warm_misses+=1
 	var context:=_context(city)
 	context.seat_revision=city.revision
 	if context.get("seat_entries")==entries:return

@@ -8,6 +8,7 @@ const SEATED_BODY_Y := 0.28
 var life: Node3D
 var layouts: Dictionary = {}
 var groups: Dictionary = {}
+var sync_stats:Dictionary={}
 
 func _init(owner: Node3D) -> void:
 	life = owner
@@ -17,20 +18,24 @@ func clear() -> void:
 	layouts.clear()
 
 func sync() -> void:
+	var began:=Time.get_ticks_usec()
 	var previous := layouts.duplicate(true)
 	layouts.clear()
 	for house: Dictionary in life.state.houses:
 		if str(house.role) == "garden_cafe":
 			var id := str(house.id)
-			var plan: Dictionary = layout_api.layout(life.state, id)
+			var plan: Dictionary = layout_api.prepared_layout(life.state, id)
 			if not plan.is_empty() and life.connected_houses.has(id):
 				var entry: Vector3 = life.positions[life.connected_houses[id]]
 				plan.street_entry = Vector2(entry.x, entry.z)
 			layouts[id] = plan
+	sync_stats={"layouts_us":Time.get_ticks_usec()-began}
+	began=Time.get_ticks_usec()
 	var entries: Dictionary={}
 	for id: String in layouts:
 		if not layouts[id].is_empty() and layouts[id].has("street_entry"):entries[id]=layouts[id].street_entry
 	layout_api.warm_seats(life.state,entries)
+	sync_stats.warm_us=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 	for id in groups.keys():
 		if not layouts.has(id) or layouts[id].is_empty() or previous.get(id, {}) != layouts[id] or not life.connected_houses.has(id):
 			_cancel(str(id), previous.get(id, {}))
@@ -49,6 +54,7 @@ func sync() -> void:
 					resident.route = route
 					resident.index = 0
 		if not valid: _cancel(str(id))
+	sync_stats.groups_us=Time.get_ticks_usec()-began
 
 func status(id: String) -> Dictionary:
 	var ledger: Dictionary = life.state.cafe_progress.get(id, {})
