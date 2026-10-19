@@ -1265,11 +1265,14 @@ func _process(delta: float) -> void:
 		cafe_snapshot[id].music_audible=bool(cafe_music.audible) and str(cafe_music.source_id)==id
 	if not _edit_pending: town.update_cafes(cafe_snapshot)
 	resonance_snapshot = music.resonance_state(concert_view)
+	var finale:Dictionary=life.finale_view()
+	resonance_snapshot["finale_glow"]=float(finale.get("strength",0.))
 	resonance_snapshot["pluck"]=music.house_pluck_report()
 	ambience.set_muted(music.muted)
 	ambience.set_foreground(bool(resonance_snapshot.get("concert_active",false)) or bool(resonance_snapshot.pluck.get("audible",false)) or bool(resonance_snapshot.get("canon",{}).get("audible",false)) or bool(music.tram_music_report().audible))
 	town.update_city_resonance_visuals(resonance_snapshot)
 	var grand:Dictionary=music.grand_festival_report()
+	if not bool(grand.active) and not finale.is_empty():grand=finale
 	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
 	town.update_travel_music(music.travel_music_report())
 	frame_samples.append(delta*1000.0)
@@ -2037,6 +2040,7 @@ func _refresh_place() -> void:
 		var clockwork := int(state.mechanism_level(str(house.id)))
 		if clockwork>0: place_description.text += "\n♫ 钟表 %d / 2 · 钟表匠送来的八音盒与风向标" % clockwork
 		place_description.text += "\n门前小路已接通。" if life.house_connected(selected_house) else "\n拉一条小路到门前，让居民能走来。"
+		if life.tram.corridor_house(selected_house):place_description.text+="\n轨街黄金走廊 · 轨交直达"
 		_refresh_household()
 		concert_button.visible = role in ["venue","symphony_hall"]
 		_refresh_bakeries()
@@ -2244,6 +2248,7 @@ func _on_concert_event(event: String, venue_id: String) -> void:
 	for house: Dictionary in state.houses:
 		if house.id == venue_id: name_value = str(house.name)
 	_message({"invited":"街坊在茶座聊起新曲，自发相约前往 %s。","started":"街坊到齐了，%s 与整条街共同奏响。","finished":"%s 的演出落幕，暖灯余韵留在街坊，面包师愉快劳作。","cancelled":"%s 的演出已结束，街坊继续自己的日常。"}[event] % name_value)
+	if event=="finished" and not life.finale_view().is_empty():_message("盛典落幕 · 金色声浪向河湾展开 · %d栋房屋晋升"%life.finale_view().changes.size())
 	life_info.text = life.summary()
 	_capture_journeys()
 	save_delay = 3.0

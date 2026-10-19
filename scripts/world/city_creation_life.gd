@@ -67,6 +67,7 @@ var travel_callback: Callable
 var tram_callback: Callable
 const CONCERT_DURATION := 24.0
 var _concert: Dictionary = {}
+var _finale:Dictionary={}
 var _relay: Dictionary = {}
 var _resonance_signature: Array = []
 var _chorus_house_ids: Array[String] = []
@@ -161,6 +162,7 @@ func _update_citizen_lod(delta:float)->void:
 			resident.node.get_child(0).visible=false;_lod_scalar_count+=1
 		else:
 			flush_citizen(resident);_lod_visible_count+=1
+			if ticket.get("state","")=="onboard":resident.node.get_child(0).visible=int(ticket.seat)<Tram.CAPACITY
 	_visual_lod_cursor=end
 	if end>=residents.size():
 		_visual_lod_cursor=0;citizen_lod_stats.scalar=_lod_scalar_count;citizen_lod_stats.visible=_lod_visible_count
@@ -310,6 +312,7 @@ func setup(city: RefCounted) -> void:
 		_network_signature.clear()
 		last_revision = -1
 		_concert.clear()
+		_finale.clear()
 		_relay.clear()
 		_resonance_signature.clear()
 		_wake_house_ids.clear()
@@ -935,7 +938,7 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 	for resident: Dictionary in residents:
 		if resident.paused or (automatic and resident.has("cafe_visit")): continue
 		var home: Dictionary=state.houses[state._house_index(str(resident.home_id))]
-		if Vector2(float(home.origin[0]),float(home.origin[1])).distance_to(venue_at)>coverage:continue
+		if Vector2(float(home.origin[0]),float(home.origin[1])).distance_to(venue_at)>coverage and not tram.direct(str(home.id),venue_id):continue
 		var route := _route_from_position(resident.node.position, str(connected_houses[venue_id]))
 		if route.is_empty(): continue
 		candidates.append(resident)
@@ -1042,6 +1045,14 @@ func concert_view() -> Dictionary:
 	if _concert.get("grand_festival",false):result.grand_festival=true;result.era_cast=_concert.era_cast.duplicate()
 	return result
 
+func finale_view()->Dictionary:
+	if _finale.is_empty():return {}
+	var elapsed:=maxf(0.,time-float(_finale.started_at))
+	if elapsed>=12.:return {}
+	var result:=_finale.duplicate(true)
+	result.elapsed=elapsed;result.strength=1.-smoothstep(9.,12.,elapsed)
+	return result
+
 func matinee_status(venue_id: String) -> Dictionary:
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	return matinee.status(venue_id)
@@ -1090,8 +1101,18 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 		var venue_district: Dictionary=state.district_for_house(venue)
 		if not venue_district.is_empty(): districts[str(venue_district.id)]=true
 		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1 or bool(_concert.get("grand_festival",false)))
-		_refresh_quality()
 		state.grant_resonance_afterglow(_chorus_house_ids, duration, completion_remainder)
+		var grand:bool=bool(_concert.get("grand_festival",false)) and state.houses[state._house_index(venue)].get("signature","")=="floating_amphitheater"
+		var checked:Array[String]=[]
+		if grand:
+			for house:Dictionary in state.houses:
+				if state.afterglow_remaining(str(house.id))>0. and state.level_tier(str(house.id))<5:checked.append(str(house.id))
+		var changes:=_refresh_quality()
+		for change:Dictionary in changes:
+			if int(change.to)==5 and str(change.house_id) in _chorus_house_ids:state.grant_resonance_afterglow([str(change.house_id)],duration,completion_remainder)
+		if grand:
+			var house:Dictionary=state.houses[state._house_index(venue)];var plan:Dictionary=state.AmphitheaterPlan.for_house(state,house)
+			_finale={"venue_id":venue,"origin":plan.stage,"started_at":time-completion_remainder,"checked_house_ids":checked,"changes":changes,"finale":true,"active":true,"audible":true}
 	var next_venue := ""
 	if completed and not _relay.is_empty() and ConcertRelay.remaining_reachable(self,_relay):
 		_relay.index=int(_relay.index)+1

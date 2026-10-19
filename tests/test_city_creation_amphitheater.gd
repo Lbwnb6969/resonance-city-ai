@@ -7,6 +7,18 @@ func _initialize()->void:_run.call_deferred()
 func _check(ok:bool,label:String)->void:
 	checks+=1
 	if not ok:failures.append(label);push_error(label)
+func _saved_equal(a:Variant,b:Variant)->bool:
+	if a is Dictionary and b is Dictionary:
+		if a.size()!=b.size():return false
+		for key in a:
+			if not b.has(key) or not _saved_equal(a[key],b[key]):return false
+		return true
+	if a is Array and b is Array:
+		if a.size()!=b.size():return false
+		for i in range(a.size()):
+			if not _saved_equal(a[i],b[i]):return false
+		return true
+	return absf(a-b)<1e-12 if a is float and b is float else a==b
 func _run()->void:
 	var scene:=Fixture.build(self);var city:RefCounted=scene.city;var life:Node3D=scene.life
 	_check(scene.facts.festival_crafted and scene.facts.festival_used and city.growth_memories.size()>=3 and city.era_unlocks.has("modern_eco") and city.signature_unlocks.has("floating_amphitheater"),"actual attended craft delivery prepared concert and three completed journal chapters unlock final signature after modern era")
@@ -28,7 +40,7 @@ func _run()->void:
 	for plant:Dictionary in hidden_plants:clear=clear and not city.vegetation_visible(plant)
 	_check(clear and city.plants==plants,"existing seed and player plants are hidden beneath true stage and stands without deleting any authored intent")
 	var saved:Dictionary=city.snapshot();var fresh:=State.new();var restored:Dictionary=fresh.restore(JSON.parse_string(JSON.stringify(saved,"",true,true)))
-	_check(restored.ok and fresh.snapshot()==saved,"schema sixteen restores final signature original cells and true shoreline stage exactly")
+	_check(restored.ok and _saved_equal(fresh.snapshot(),saved),"current schema restores final signature cells and shoreline within JSON float precision")
 	if not restored.ok:print("RESTORE_ERROR ",restored)
 	var former:Dictionary=house.duplicate(true)
 	_check(city.remove_house(placed.house_id).ok and city.undo().ok and city.houses[city._house_index(placed.house_id)]==former,"whole theater recycling and undo preserve all original room IDs and architecture")

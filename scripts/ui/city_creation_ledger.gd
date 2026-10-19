@@ -135,6 +135,8 @@ func refresh() -> void:
 	var harmony: Dictionary = demo.state.city_harmony_summary()
 	lines.append("居所共鸣 %.1f / 3 阶    ·    百鸟和鸣 %d 户" % [float(harmony.average_tier), int(harmony.tier_counts[3])])
 	lines.append(str(demo.state.synergy_buffs().label))
+	var tram:Dictionary=demo.life.tram.report()
+	if not str(tram.depot_id).is_empty():lines.append("总站黄金走廊：沿连通轨街跨区直达，本站线路每车24席。")
 	lines.append("\n【各家的日常】")
 	rows.clear()
 	for house: Dictionary in demo.state.houses:
@@ -155,6 +157,7 @@ func refresh() -> void:
 		lines.append("门前已有道路；经营还需与居所步行相通" if connected else "门前尚未接路")
 		var planning:Dictionary=demo.state.planning_bonus(id)
 		if not str(planning.get("label","")).is_empty():lines.append(str(planning.label))
+		if demo.life.tram.corridor_house(id):lines.append("轨街黄金走廊 · 轨交直达，可沿连通轨街跨区服务")
 		var status: Dictionary = {}
 		match role:
 			"bakery":

@@ -10,18 +10,21 @@ func update(event:Dictionary,network:RefCounted,rails:Dictionary,port:String)->v
 	var active:bool=event.get("audible",false)
 	if not active and not report.active:return
 	var origin:=Vector2.ZERO
+	var finale:=bool(event.get("finale",false))
 	var id:String=event.get("venue_id","")
 	var index:int=owner.state._house_index(id)
-	if index>=0:
+	if finale:origin=event.origin
+	elif index>=0:
 		var house:Dictionary=owner.state.houses[index];var plan:Dictionary=owner.state.AmphitheaterPlan.for_house(owner.state,house)
 		origin=plan.stage if not plan.is_empty() else Vector2(house.origin[0],house.origin[1])
 	for target:ShaderMaterial in [owner.water_material,material]:
 		if target==null:continue
 		target.set_shader_parameter("festival_origin",origin);target.set_shader_parameter("festival_time",float(event.get("elapsed",0.)));target.set_shader_parameter("festival_strength",1. if active else 0.)
+		target.set_shader_parameter("festival_finale",1. if finale and active else 0.)
 	if node!=null:node.visible=active
 	report.active=active
 	if not active:return
-	var next:Array=[owner.state.revision,network.get_instance_id(),id,origin]
+	var next:Array=[owner.state.revision,network.get_instance_id(),id,origin,finale]
 	if next==key:return
 	key=next
 	if node!=null:node.queue_free();node=null
@@ -43,8 +46,9 @@ func update(event:Dictionary,network:RefCounted,rails:Dictionary,port:String)->v
 		var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 		if material==null:material=ShaderMaterial.new();material.shader=WaveShader
 		material.set_shader_parameter("festival_strength",1.);material.set_shader_parameter("festival_time",float(event.elapsed))
+		material.set_shader_parameter("festival_finale",1. if finale else 0.)
 		node=MeshInstance3D.new();node.name="ActualRailFestivalWaves";node.mesh=mesh;node.material_override=material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;owner.house_music_layer.add_child(node)
-	report={"active":true,"rail_edges":count,"maximum_distance":max_distance,"origin":origin,"distance_source":"actual_street_graph"}
+	report={"active":true,"finale":finale,"rail_edges":count,"maximum_distance":max_distance,"origin":origin,"distance_source":"actual_street_graph"}
 static func _distances(graph:Dictionary,source:String)->Dictionary:
 	if not graph.has(source):return {}
 	var result:Dictionary={source:0.};var queue:Array=[source];var done:Dictionary={}

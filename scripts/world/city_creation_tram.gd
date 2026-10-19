@@ -22,6 +22,60 @@ var _rail_signature: Variant=null
 var _unlocked := false
 var _depot_station := ""
 var _depot_id := ""
+var _corridor_keys:Dictionary={}
+var _corridor_houses:Dictionary={}
+var _direct_pairs:Dictionary={}
+var corridor_prepare_ms:=0.
+
+func capacity(car:Dictionary)->int:
+	return CAPACITY*4 if not _depot_station.is_empty() and _depot_station in car.line.tour else CAPACITY
+
+func corridor_house(id:String)->bool:
+	return _corridor_houses.has(id)
+
+func direct(first:String,second:String)->bool:
+	if not (_corridor_houses.has(first) or _corridor_houses.has(second)):return false
+	if not life.connected_houses.has(first) or not life.connected_houses.has(second):return false
+	var facility:=false
+	for id:String in [first,second]:
+		var index:int=life.state._house_index(id)
+		if _corridor_houses.has(id) and index>=0 and str(life.state.houses[index].role)!="residential":facility=true
+	if not facility:return false
+	var key:=first+":"+second
+	if _direct_pairs.has(key):return bool(_direct_pairs[key])
+	var route:Array=life._route(str(life.connected_houses[first]),str(life.connected_houses[second]))
+	var span:=_rail_span(route,0)
+	var valid:=not span.is_empty() and float(span.distance)>=MIN_RIDE and _corridor_keys.has(str(span.board)) and _corridor_keys.has(str(span.exit))
+	_direct_pairs[key]=valid;_direct_pairs[second+":"+first]=valid
+	return valid
+
+func _build_corridor()->void:
+	if _depot_station.is_empty():return
+	if not plan.lines.any(func(line:Dictionary)->bool:return _depot_station in line.tour):return
+	var started:=Time.get_ticks_usec()
+	var queue:Array=[_depot_station]
+	while not queue.is_empty():
+		var key:String=queue.pop_back()
+		if _corridor_keys.has(key):continue
+		_corridor_keys[key]=true;queue.append_array(plan.graph.get(key,{}).keys())
+	var bins:Dictionary={}
+	for edge:Dictionary in plan.edges:
+		if not _corridor_keys.has(life._network._key(Vector2(edge.a.x,edge.a.z))):continue
+		var a:=Vector2(edge.a.x,edge.a.z);var b:=Vector2(edge.b.x,edge.b.z)
+		var low:Vector2=a.min(b)-Vector2.ONE*6.;var high:Vector2=a.max(b)+Vector2.ONE*6.
+		for x in range(floori(low.x/8.),floori(high.x/8.)+1):
+			for z in range(floori(low.y/8.),floori(high.y/8.)+1):
+				var bucket:=Vector2i(x,z)
+				if not bins.has(bucket):bins[bucket]=[]
+				bins[bucket].append([a,b])
+	var component:String=life._network.component_of[str(life.connected_houses[_depot_id])]
+	for house:Dictionary in life.state.houses:
+		var id:=str(house.id)
+		if not life.connected_houses.has(id) or life._network.component_of[str(life.connected_houses[id])]!=component:continue
+		var point:=Vector2(float(house.origin[0]),float(house.origin[1]))
+		for edge:Array in bins.get(Vector2i(floori(point.x/8.),floori(point.y/8.)),[]):
+			if point.distance_to(Geometry2D.get_closest_point_to_segment(point,edge[0],edge[1]))<=6.:_corridor_houses[id]=true;break
+	corridor_prepare_ms=float(Time.get_ticks_usec()-started)/1000.
 
 func speed()->float:
 	return SPEED*float(life.state.signature_bonuses().tram_speed) if not _depot_station.is_empty() else SPEED
@@ -46,10 +100,13 @@ func clear()->void:
 			var at: Vector3=resident.node.position
 			resident.node.position=Vector3(at.x,life.state.street_height(Vector2(at.x,at.z))+.10,at.z)
 			resident.node.get_child(0).position.y=0.
+			resident.node.get_child(0).visible=true
 	tickets.clear();_active_tickets.clear()
 	if root!=null:root.queue_free();root=null
 	cars.clear()
 	_depot_station="";_depot_id=""
+	_corridor_keys.clear();_corridor_houses.clear();_direct_pairs.clear()
+	corridor_prepare_ms=0.
 	_revision=-1
 	_network_signature=null;_rail_signature=null
 
@@ -76,6 +133,7 @@ func sync()->void:
 	_revision=life.state.revision;_network_signature=network_signature;_rail_signature=signature;_unlocked=unlocked
 	plan=next
 	_depot_station=dispatch;_depot_id=depot_id if not dispatch.is_empty() else ""
+	_build_corridor()
 	if plan.lines.is_empty():return
 	root=Node3D.new();root.name="MusicalTramNetwork";life.add_child(root)
 	var lines: Array=plan.lines.duplicate(true)
@@ -104,6 +162,7 @@ func _release_ticket(home: String,ticket: Dictionary)->void:
 	if ticket.state=="onboard" and is_instance_valid(resident.node):
 		var at: Vector3=resident.node.position
 		resident.node.position.y=life.state.street_height(Vector2(at.x,at.z))+.1
+		resident.node.get_child(0).visible=true
 	tickets.erase(home);_active_tickets.erase(home)
 
 func tick(delta: float)->void:
@@ -163,10 +222,11 @@ func _charge_waltz(car:Dictionary,at:Vector2,from:Vector2=Vector2.INF)->void:
 func _seat(car: Dictionary)->void:
 	for home: String in car.riders:
 		var ticket: Dictionary=tickets[home];var resident: Dictionary=ticket.resident
-		var seat: int=ticket.seat
+		var seat: int=int(ticket.seat)%CAPACITY
 		resident.node.position=car.node.transform*Vector3(-.29 if seat%2==0 else .29,.49,(seat/2-1)*.43)
 		resident.node.rotation.y=car.node.rotation.y+(-PI*.5 if seat%2==0 else PI*.5)
 		resident.node.get_child(0).position.y=0.
+		resident.node.get_child(0).visible=int(ticket.seat)<CAPACITY
 
 func _drop(car: Dictionary)->void:
 	for home: String in car.riders.duplicate():
@@ -176,6 +236,7 @@ func _drop(car: Dictionary)->void:
 		resident.node.position=Vector3(plan.positions[ticket.exit])+Vector3(0,.1,0)
 		resident.index=int(ticket.exit_index)+1
 		resident.node.get_child(0).position.y=0.
+		resident.node.get_child(0).visible=true
 		car.riders.erase(home);ticket.state="completed";_active_tickets.erase(home);completed+=1
 
 func intercept(resident: Dictionary,delta: float)->bool:
@@ -198,7 +259,7 @@ func intercept(resident: Dictionary,delta: float)->bool:
 	if float(old.wait)>5.:
 		old.state="declined";_active_tickets.erase(home);return false
 	for car: Dictionary in cars:
-		if str(car.id)!=str(old.car_id) or str(car.key)!=str(old.board) or float(car.wait)<=0. or car.riders.size()>=CAPACITY:continue
+		if str(car.id)!=str(old.car_id) or str(car.key)!=str(old.board) or float(car.wait)<=0. or car.riders.size()>=capacity(car):continue
 		var seats: Dictionary={}
 		for id: String in car.riders:seats[int(tickets[id].seat)]=true
 		var seat:=0
@@ -207,13 +268,12 @@ func intercept(resident: Dictionary,delta: float)->bool:
 		_seat(car);return true
 	return true
 
-func _trip(resident: Dictionary)->Dictionary:
-	var route: Array=resident.route
+func _rail_span(route:Array,start:int)->Dictionary:
 	var first := -1;var last := -1;var distance:=0.;var approach:=0.
 	var exit_index := -1;var exit_distance := 0.
-	for index in range(maxi(0,int(resident.index)),route.size()):
+	for index in range(maxi(0,start),route.size()):
 		var point: Vector3=route[index]
-		if first<0 and index>int(resident.index):approach+=Vector3(route[index-1]).distance_to(point)
+		if first<0 and index>start:approach+=Vector3(route[index-1]).distance_to(point)
 		var key: String=life._network._key(Vector2(point.x,point.z))
 		if not plan.graph.has(key):
 			if first>=0:break
@@ -227,9 +287,17 @@ func _trip(resident: Dictionary)->Dictionary:
 		distance+=float(plan.graph[prior][key]);last=index
 		if plan.station_keys.has(key):exit_index=index;exit_distance=distance
 	last=exit_index;distance=exit_distance
-	if first<0 or last<=first or distance<MIN_RIDE:return {"state":"declined"}
+	if first<0 or last<=first:return {}
 	var from: Vector3=route[first];var to: Vector3=route[last]
 	var board: String=life._network._key(Vector2(from.x,from.z));var exit: String=life._network._key(Vector2(to.x,to.z))
+	return {"board":board,"exit":exit,"first":first,"last":last,"distance":distance,"approach":approach}
+
+func _trip(resident: Dictionary)->Dictionary:
+	var route:Array=resident.route;var span:=_rail_span(route,int(resident.index))
+	if span.is_empty() or float(span.distance)<MIN_RIDE:return {"state":"declined"}
+	var first:=int(span.first);var last:=int(span.last);var distance:=float(span.distance)
+	var board:=str(span.board);var exit:=str(span.exit);var approach:=float(span.approach)
+	var express:=direct(str(resident.home_id),str(resident.destination_id))
 	approach+=resident.node.position.distance_to(Vector3(route[int(resident.index)]))
 	var ready:=approach/(.83*float(life.state.signature_bonuses().walking))
 	var best:=INF;var vehicle:=""
@@ -237,7 +305,8 @@ func _trip(resident: Dictionary)->Dictionary:
 		var forecast:=_forecast(car,board,exit,ready)
 		if forecast.is_empty():continue
 		var time: float=forecast.exit_time
-		if float(forecast.board_time)-ready>5. or time-ready>=distance/(.83*float(life.state.signature_bonuses().walking))-.5:continue
+		if float(forecast.board_time)-ready>5.:continue
+		if not express and time-ready>=distance/(.83*float(life.state.signature_bonuses().walking))-.5:continue
 		if time<best:best=time;vehicle=str(car.id)
 	if vehicle.is_empty():return {"state":"declined"}
 	return {"state":"approach","car_id":vehicle,"board":board,"exit":exit,"board_index":first,"exit_index":last,"wait":0.,"distance":distance}
@@ -260,8 +329,8 @@ func _forecast(car: Dictionary,board: String,exit: String,ready: float)->Diction
 
 func report()->Dictionary:
 	var vehicles: Array=[]
-	for car: Dictionary in cars:vehicles.append({"id":car.id,"position":car.node.position,"station":car.key,"waiting":car.wait,"distance":car.distance,"passengers":car.riders.duplicate()})
-	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"active_tickets":_active_tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed()}
+	for car: Dictionary in cars:vehicles.append({"id":car.id,"position":car.node.position,"station":car.key,"waiting":car.wait,"distance":car.distance,"passengers":car.riders.duplicate(),"capacity":capacity(car)})
+	return {"unlocked":_unlocked,"cars":vehicles,"stations":plan.stations.size(),"track_metres":plan.length,"boarded":boarded,"completed":completed,"arrivals":arrivals,"tickets":tickets.size(),"active_tickets":_active_tickets.size(),"depot_id":_depot_id,"dispatch_station":_depot_station,"speed":speed(),"corridor_houses":_corridor_houses.keys(),"corridor_prepare_ms":corridor_prepare_ms}
 
 func source_valid(car_id: String,station: String)->bool:
 	if not plan.station_keys.has(station):return false

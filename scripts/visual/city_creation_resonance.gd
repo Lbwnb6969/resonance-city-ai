@@ -269,6 +269,7 @@ func update(snapshot: Dictionary) -> void:
 		material.set_shader_parameter("response",weight)
 		material.set_shader_parameter("lead",lead)
 		material.set_shader_parameter("afterglow",glow)
+		material.set_shader_parameter("finale_glow",float(snapshot.get("finale_glow",0.)))
 		material.set_shader_parameter("festival_ready",1.0 if ready else 0.0)
 		_apply_pluck(id,row,last_pluck)
 		row.mesh.visible = weight > 0.0 or glow > 0.0 or ready or float(row.pluck_strength)>0.0 or night_glow>0.0 or float(row.get("harmony",0.0))>0.0

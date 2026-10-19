@@ -1073,7 +1073,7 @@ func bakery_music_report() -> Dictionary:
 	return bakery_cues.report()
 
 func record_completed_district_answer(from_id: String,to_id: String,from_era:String="",to_era:String="") -> void:
-	if _pluck_city!=null:_pluck_city.record_district_answer(from_id,to_id,from_era,to_era)
+	if _pluck_city!=null:_pluck_city.reward_completed_district_reply(from_id,to_id,from_era,to_era)
 
 func _signature_at_phrase(phrase: int) -> void:
 	if phrase==_signature_phrase:return

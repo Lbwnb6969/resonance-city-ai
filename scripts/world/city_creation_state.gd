@@ -655,6 +655,20 @@ func record_district_answer(from_id: String,to_id: String,from_era: String="",to
 	if not changed:return false
 	Eras.refresh(self);Signatures.refresh(self);_craft_changed();return true
 
+func reward_completed_district_reply(from_id:String,to_id:String,from_era:String="",to_era:String="")->Dictionary:
+	if from_id==to_id or _district_index(from_id)<0 or _district_index(to_id)<0:return {}
+	record_district_answer(from_id,to_id,from_era,to_era)
+	var durations:Dictionary={from_id:30.,to_id:30.};var recipients:Array[String]=[]
+	for house:Dictionary in houses:
+		if house.get("signature","")!="music_academy":continue
+		var did:=str(district_for_house(str(house.id)).get("id",""))
+		if durations.has(did):durations[did]=60.
+	for house:Dictionary in houses:
+		var id:=str(house.id);var did:=str(district_for_house(id).get("id",""))
+		if not durations.has(did):continue
+		grant_resonance_afterglow([id],float(durations[did]));recipients.append(id)
+	return {"durations":durations,"house_ids":recipients}
+
 func signature_bonuses() -> Dictionary:
 	if _signature_bonuses_revision!=revision:
 		_signature_bonuses_revision=revision;_signature_bonuses={"walking":1.0,"focus_radius":0.0,"bread_batch":0,"baking_speed":1.0,"watermill_id":"","palace_id":"","depot_id":"","afterglow_seconds":0.0,"tram_speed":1.0}

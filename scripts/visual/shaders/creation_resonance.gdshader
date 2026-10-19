@@ -7,6 +7,7 @@ uniform float beat_pulse : hint_range(0.0, 1.0) = 0.0;
 uniform float response : hint_range(0.0, 1.0) = 0.0;
 uniform float lead : hint_range(0.0, 1.0) = 0.0;
 uniform float afterglow : hint_range(0.0, 1.0) = 0.0;
+uniform float finale_glow : hint_range(0.0, 1.0) = 0.0;
 uniform float festival_ready : hint_range(0.0, 1.0) = 0.0;
 uniform float house_phase = 0.0;
 uniform float pluck_strength : hint_range(0.0, 1.0) = 0.0;
@@ -72,6 +73,10 @@ void fragment() {
 	if (part < 1.5 && night_glow>0.0) {
 		ALBEDO *= 0.25;
 		EMISSION += vec3(1.0,0.60,0.22)*night_glow*2.4;
+	}
+	if (part<1.5 && afterglow>0.0) {
+		EMISSION+=vec3(1.0,0.73,0.27)*finale_glow*0.65;
+		opacity=max(opacity,finale_glow*0.6);
 	}
 	ROUGHNESS = 1.0;
 	ALPHA = clamp(opacity, 0.0, 1.0);
