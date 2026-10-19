@@ -11,6 +11,7 @@ var build_count:=0
 var build_stats: Dictionary={}
 var geometry_inputs: Dictionary={}
 var geometry_signatures: Dictionary={}
+var welcome_batches:Array[Dictionary]=[]
 
 func prepare_geometry(renderer,house: Dictionary,frontage: Array,arcades: Array)->void:
 	var id:=str(house.id)
@@ -35,6 +36,7 @@ func adopt_geometry(source: RefCounted,renderer)->void:
 
 func setup(renderer: Node3D)->void:
 	layer=Node3D.new();layer.name="BuildingQuality";renderer.add_child(layer)
+	_prepare_welcome(renderer)
 	var material:=StandardMaterial3D.new();material.albedo_color=Color("f4cc6b");material.emission_enabled=true;material.emission=Color("edb857");material.emission_energy_multiplier=.45
 	var mesh:=SphereMesh.new();mesh.radius=.025;mesh.height=.05;mesh.radial_segments=6;mesh.rings=3
 	for i in range(4):
@@ -42,6 +44,41 @@ func setup(renderer: Node3D)->void:
 		effect.amount=18;effect.lifetime=1.15;effect.one_shot=true;effect.explosiveness=.9;effect.emitting=false
 		effect.direction=Vector3.UP;effect.spread=42;effect.initial_velocity_min=.7;effect.initial_velocity_max=1.5;effect.gravity=Vector3(0,-.35,0)
 		DetailLod.bind(effect,DetailLod.SMOKE);effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
+
+func _draw_welcome(renderer,frame:Node3D)->void:
+	var stone: Material=renderer._material(Color("d6c5a1"))
+	for ring in range(2):
+		for i in range(5+ring*2):
+			var angle: float=PI*float(i)/float(4+ring*2)
+			var radius: float=.17+ring*.17
+			renderer._cylinder(frame,.078,.078,.035,Vector3(cos(angle)*radius,0,sin(angle)*radius),stone,7)
+	var pot: Material=renderer._material(Color("b87955"))
+	renderer._cylinder(frame,.13,.095,.22,Vector3(.55,.11,0),pot,9)
+	renderer._cylinder(frame,.15,.15,.045,Vector3(.55,.23,0),pot,9)
+	for i in range(3):renderer._crown(frame,Vector3(.50+i*.05,.29+.025*sin(i*2.),0),Vector3(.07,.06,.07),Color("b6c77b"))
+	var glow: StandardMaterial3D=renderer._material(Color("f1d494")).duplicate()
+	glow.emission_enabled=true;glow.emission=Color("e6b76d");glow.emission_energy_multiplier=.25
+	renderer._box(frame,Vector3(.12,.19,.12),Vector3(-.5,1.2,-.35),glow)
+
+func _prepare_welcome(renderer)->void:
+	# Bake invariant primitive transforms once, grouped by original material.
+	# Keep these meshes uncolored: the normal house merger still owns vertex
+	# colors and combines them with the rest of each house in the same batches.
+	var frame:=Node3D.new();layer.add_child(frame);_draw_welcome(renderer,frame)
+	var groups:Dictionary={}
+	for instance:MeshInstance3D in frame.find_children("*","MeshInstance3D",true,false):
+		var material:Material=instance.material_override;var id:=material.get_instance_id()
+		if not groups.has(id):
+			var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			groups[id]={"surface":surface,"material":material}
+		groups[id].surface.append_from(instance.mesh,0,frame.global_transform.affine_inverse()*instance.global_transform)
+	welcome_batches.clear()
+	for group:Dictionary in groups.values():welcome_batches.append({"mesh":group.surface.commit(),"material":group.material})
+	layer.remove_child(frame);frame.queue_free()
+
+func _welcome(_renderer,frame:Node3D)->void:
+	for batch:Dictionary in welcome_batches:
+		var instance:=MeshInstance3D.new();instance.mesh=batch.mesh;instance.material_override=batch.material;frame.add_child(instance)
 
 func progress(renderer,only:Array[String]=[])->void:
 	if renderer.state.building_quality.is_empty() and roots.is_empty():return
@@ -77,19 +114,7 @@ func progress(renderer,only:Array[String]=[])->void:
 			var frame:=Node3D.new();root.add_child(frame)
 			frame.position=renderer._entrance_point(entry,Vector3(0,0,.38));frame.rotation.y=atan2(float(entry.side.x),float(entry.side.y))
 			var at:=Vector2(frame.position.x,frame.position.z);frame.position.y=renderer.state.street_height(at)+.012
-			var stone: Material=renderer._material(Color("d6c5a1"))
-			for ring in range(2):
-				for i in range(5+ring*2):
-					var angle: float=PI*float(i)/float(4+ring*2)
-					var radius: float=.17+ring*.17
-					renderer._cylinder(frame,.078,.078,.035,Vector3(cos(angle)*radius,0,sin(angle)*radius),stone,7)
-			var pot: Material=renderer._material(Color("b87955"))
-			renderer._cylinder(frame,.13,.095,.22,Vector3(.55,.11,0),pot,9)
-			renderer._cylinder(frame,.15,.15,.045,Vector3(.55,.23,0),pot,9)
-			for i in range(3):renderer._crown(frame,Vector3(.50+i*.05,.29+.025*sin(i*2.),0),Vector3(.07,.06,.07),Color("b6c77b"))
-			var glow: StandardMaterial3D=renderer._material(Color("f1d494")).duplicate()
-			glow.emission_enabled=true;glow.emission=Color("e6b76d");glow.emission_energy_multiplier=.25
-			renderer._box(frame,Vector3(.12,.19,.12),Vector3(-.5,1.2,-.35),glow)
+			_welcome(renderer,frame)
 			features.append_array(["welcome_stones","door_flowerpot","warm_porch_lamp"])
 		if tier>=3 and renderer.state.improvement_level(id)<2:
 			renderer.craft._static_batch(root,{"planter":records.planter,"plaque":records.plaque})

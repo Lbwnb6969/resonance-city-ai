@@ -75,13 +75,14 @@ func _run()->void:
 	_camera(Vector3(27,1,-18),25.,.7,.3);await _capture("09_夜色植物宫与总站")
 	_light(0);_camera(Vector3(-25,2,-27),23.,.75,.3)
 	var wall: Array[float]=[];var cpu: Array[float]=[];var last:=Time.get_ticks_usec()
-	facts.slow_daily_ticks=[];facts.quality_callbacks=[];demo.life.profile_tick=true
+	facts.slow_daily_ticks=[];facts.quality_callbacks=[];facts.daily_stage_mean_us={};demo.life.profile_tick=true
 	demo.town.ecology.stats.max_refresh_us=0
 	facts.ecology_before=demo.town.ecology_stats.duplicate()
 	facts.purchases_before=int(demo.state.life_progress.purchases)
 	for i in range(600):
 		await process_frame;var now:=Time.get_ticks_usec();var began:=Time.get_ticks_usec()
 		demo.life._process((now-last)/1000000.);cpu.append((Time.get_ticks_usec()-began)/1000.);wall.append((now-last)/1000.);last=now
+		for stage:String in ["quality","tram","bakery","workshop","production","lod","citizens","tail","height"]:facts.daily_stage_mean_us[stage]=float(facts.daily_stage_mean_us.get(stage,0.))+float(demo.life.tick_profile.get(stage,0))/600.
 		if int(demo.life.tick_profile.get("quality_callback",0))>0:facts.quality_callbacks.append(demo.life.tick_profile.duplicate(true))
 		if cpu[-1]>4.:facts.slow_daily_ticks.append({"frame":i,"cpu_ms":cpu[-1],"stages_us":demo.life.tick_profile.duplicate(true)})
 	demo.life.profile_tick=false
@@ -90,6 +91,7 @@ func _run()->void:
 	facts.ecology=demo.town.ecology_stats.duplicate()
 	facts.purchases_after=int(demo.state.life_progress.purchases)
 	facts.worker_lod=demo.life.worker_lod.stats.duplicate()
+	await _capture("10_实际经营与品质刷新")
 	_check(float(facts.daily_frames.p95_ms)<12. and demo.life.current_population>=200,"actual flagship daily life supports over 200 inhabitants with sub-twelve-millisecond p95")
 	if "--daily-only" not in OS.get_cmdline_user_args():
 		var stage: String=""

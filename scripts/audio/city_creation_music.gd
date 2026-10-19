@@ -669,7 +669,8 @@ func update_house_traits(state: RefCounted,ids: Array[String]) -> void:
 		_house_music[id].improvement=state.improvement_level(id)
 		_house_music[id].culture=state.culture_level(id)
 		_house_music[id].mechanisms=state.mechanism_level(id)
-	_refresh_acoustic()
+	# These traits do not change source positions, districts, view or event
+	# membership. The existing acoustic groups remain valid for the new tier.
 
 func update_city(state: RefCounted) -> void:
 	_pluck_city=state

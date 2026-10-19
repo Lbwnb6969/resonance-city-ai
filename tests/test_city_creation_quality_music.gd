@@ -10,6 +10,8 @@ func check(ok: bool,label: String)->void:
 func _run()->void:
 	var city:=State.new();check(city.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))).ok,"actual flagship restores")
 	var fast:=Music.new();var full:=Music.new();fast.update_city(city);full.update_city(city)
+	fast.set_listener_frame(Vector2(-25,-27),Vector2.RIGHT,23.);full.set_listener_frame(Vector2(-25,-27),Vector2.RIGHT,23.)
+	var grouping_revision:=int(fast.acoustic.revision)
 	var groups: Array=fast.canon.groups.duplicate(true);var origins: Dictionary={}
 	for house: Dictionary in city.houses:
 		var era: String=city.house_era(house)
@@ -26,6 +28,8 @@ func _run()->void:
 		began=Time.get_ticks_usec();full.update_city(city);full_us+=Time.get_ticks_usec()-began
 		exact=exact and fast._house_music==full._house_music and fast._targets==full._targets and fast._daily_houses==full._daily_houses and fast._tower_count==full._tower_count
 	check(exact and origins.size()==4,"all four eras and tiers 2-5 match the full production music catalog exactly")
+	check(fast.acoustic.zones==full.acoustic.zones and fast.acoustic.focus_ids==full.acoustic.focus_ids and fast.acoustic.linked_ids==full.acoustic.linked_ids,"quality-only catalog changes retain the exact four-zone weights and membership of a full refresh")
+	check(fast.acoustic.revision==grouping_revision,"service rewards do not repeat unchanged geometric grouping")
 	check(fast.canon.groups==groups,"quality changes preserve the current geometric canon rings")
 	for id: String in origins.values():
 		city.house_improvements[id]=2;city.house_culture[id]=1;city.house_clockwork[id]=1
