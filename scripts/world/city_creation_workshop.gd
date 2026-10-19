@@ -12,6 +12,7 @@ var workers: Array[Dictionary] = []
 var refund_orphans := false
 var _chime_material: StandardMaterial3D
 var _recipient_cache := {}
+var _job_profile:Dictionary={}
 
 func _init(owner_life: Node3D) -> void:
 	life = owner_life
@@ -140,6 +141,7 @@ func _pause(worker: Dictionary, phase: String) -> void:
 	worker.index = 0
 
 func _replan(worker: Dictionary) -> void:
+	var began:=Time.get_ticks_usec() if life.profile_tick else 0
 	life.worker_lod.flush(worker)
 	var phase := str(worker.resume_phase if worker.phase == "paused" else worker.phase)
 	var transit: Dictionary = life.state.workshop_status(str(worker.workshop_id)).transit
@@ -167,6 +169,7 @@ func _replan(worker: Dictionary) -> void:
 		phase = {"crafting":"to_workshop", "installing":"to_target", "resting":"to_home"}[phase]
 		worker.elapsed = 0.0
 	var route: Array[Vector3] = life._route_from_position(worker.node.position, str(life.connected_houses[destination]))
+	if life.profile_tick:_job_profile.replan_us=Time.get_ticks_usec()-began
 	if route.is_empty():
 		_pause(worker, phase)
 		return
@@ -234,12 +237,19 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 	for row: Dictionary in life.state.workshop_supply.values():
 		if row.transit.get("kind","") == kind: reserved[row.transit.target_id] = int(reserved.get(row.transit.target_id,0))+1
 	var best := ""; var best_level := 3; var best_length := INF
+	var origin:=_target(shop);var radius:float=life.state.craft_radius(shop)
 	var ids: Array = life._roles.keys(); ids.sort()
 	for id: String in ids:
 		if life._roles[id] != "residential" or not life.connected_houses.has(id): continue
 		var level: int = life.state.mechanism_level(id) if kind=="musicbox" else life.state.culture_level(id)
 		if level + int(reserved.get(id,0)) >= 2:continue
-		if _target(shop).distance_to(_target(id)) > life.state.craft_radius(shop) and not life.state.shares_chord(shop,id,"chrono_counterpoint") and not life.tram.direct(shop,id):continue
+		if level>best_level:continue
+		var direct_distance:=origin.distance_to(_target(id))
+		# The full three-dimensional route cannot beat this straight distance.
+		# Leave equal cases to the original strict comparison and lexical order;
+		# do not trigger cold path searches just to reject distant candidates.
+		if level==best_level and direct_distance>best_length+.00001:continue
+		if direct_distance > radius and not life.state.shares_chord(shop,id,"chrono_counterpoint") and not life.tram.direct(shop,id):continue
 		var distance:=_between_length(shop,id)
 		if is_inf(distance):continue
 		if level < best_level or (level == best_level and distance < best_length):
@@ -251,6 +261,7 @@ func tick(delta: float) -> void:
 	if life.profile_tick:life.tick_profile.workshop_site=0;life.tick_profile.workshop_produce=0;life.tick_profile.workshop_callback=0
 	if life.profile_tick:life.tick_profile.workshop_slow_jobs=[]
 	for worker: Dictionary in workers:
+		if life.profile_tick:_job_profile={}
 		var began:=Time.get_ticks_usec() if life.profile_tick else 0
 		var advance:bool=life.worker_lod.before(worker,delta,MOVING)
 		var lod_us:=Time.get_ticks_usec()-began if life.profile_tick else 0
@@ -273,12 +284,18 @@ func tick(delta: float) -> void:
 			var artist := str(life._roles.get(str(worker.workshop_id),"")) == "atelier"
 			var mechanic := str(life._roles.get(str(worker.workshop_id),""))=="clockmaker"
 			var festival := str(life.state.workshop_status(str(worker.workshop_id)).transit.get("kind","upgrade"))=="festival"
-			if not life.state.complete_craft(str(worker.workshop_id), str(worker.home_id), target):
+			var stage_started:=Time.get_ticks_usec() if life.profile_tick else 0
+			var completed:bool=life.state.complete_craft(str(worker.workshop_id), str(worker.home_id), target)
+			if life.profile_tick:_job_profile.complete_us=Time.get_ticks_usec()-stage_started
+			if not completed:
 				_replan(worker)
 				continue
 			worker.carry.visible = false
 			worker.deliveries = int(worker.deliveries) + 1
-			if life.craft_callback.is_valid(): life.craft_callback.call("mechanism_installed" if mechanic else "art_installed" if artist else "festival" if festival else "installed", str(worker.workshop_id), target, life.state.mechanism_level(target) if mechanic else life.state.culture_level(target) if artist else life.state.improvement_level(target))
+			if life.craft_callback.is_valid():
+				stage_started=Time.get_ticks_usec() if life.profile_tick else 0
+				life.craft_callback.call("mechanism_installed" if mechanic else "art_installed" if artist else "festival" if festival else "installed", str(worker.workshop_id), target, life.state.mechanism_level(target) if mechanic else life.state.culture_level(target) if artist else life.state.improvement_level(target))
+				if life.profile_tick:_job_profile.install_callback_us=Time.get_ticks_usec()-stage_started
 			worker.target_id = ""
 			worker.elapsed = 0.0
 			worker.phase = "to_home" if int(worker.deliveries) >= SHIFT_DELIVERIES else "returning"
@@ -291,12 +308,14 @@ func tick(delta: float) -> void:
 			worker.phase = "to_workshop"
 			_replan(worker)
 		life.worker_lod.after(worker,delta)
-		if life.profile_tick and Time.get_ticks_usec()-began>1500:life.tick_profile.workshop_slow_jobs.append({"shop":worker.workshop_id,"phase":phase,"total_us":Time.get_ticks_usec()-began,"lod_us":lod_us})
+		if life.profile_tick and Time.get_ticks_usec()-began>1500:life.tick_profile.workshop_slow_jobs.append({"shop":worker.workshop_id,"phase":phase,"total_us":Time.get_ticks_usec()-began,"lod_us":lod_us,"detail":_job_profile.duplicate()})
 
 func _craft(worker: Dictionary, delta: float) -> void:
 	var shop := str(worker.workshop_id)
 	var supply: Dictionary = life.state.workshop_status(shop)
+	var order_started:=Time.get_ticks_usec() if life.profile_tick else 0
 	var order := _recipient_order(worker) if int(supply.stock) > 0 else {"target":"","kind":"upgrade"}
+	if life.profile_tick:_job_profile.order_us=Time.get_ticks_usec()-order_started
 	var target := str(order.target)
 	if not target.is_empty() and life.state.reserve_craft(shop, str(worker.home_id), target,str(order.kind)):
 		worker.target_id = target
@@ -331,7 +350,10 @@ func _craft(worker: Dictionary, delta: float) -> void:
 			life.craft_callback.call("crafted", shop, "", batch)
 			if life.profile_tick:life.tick_profile.workshop_callback+=Time.get_ticks_usec()-began
 		# A fresh object is picked up on the next tick, at the actual shop.
-		if not _recipient(worker).is_empty(): return
+		began=Time.get_ticks_usec() if life.profile_tick else 0
+		var recipient:=_recipient(worker)
+		if life.profile_tick:_job_profile.fresh_order_us=Time.get_ticks_usec()-began
+		if not recipient.is_empty():return
 
 func _walk(worker: Dictionary, delta: float) -> void:
 	var route: Array = worker.route

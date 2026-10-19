@@ -25,11 +25,15 @@ var layer: Node3D
 var build_count := 0
 var layouts:Dictionary={}
 var layout_inputs:Dictionary={}
+var facades:Dictionary={}
 
-func prepare_layout(renderer,house:Dictionary)->void:
+func prepare_layout(renderer,house:Dictionary,frontages:Variant=null,arcades:Variant=null)->void:
 	var id:=str(house.id);var key:Array=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
 	if layout_inputs.get(id,[])==key:return
 	layouts[id]=_placements(renderer,house,3);layout_inputs[id]=key
+	facades[id]={"frontage":renderer._frontage_signature(house) if frontages==null else frontages,
+		"arcades":renderer.ArcadePlan.for_house(renderer.state,house) if arcades==null else arcades,
+		"entries":renderer.house_entrances(id),"passages":renderer.state.house_passages(id)}
 
 func placements(renderer,house:Dictionary,level:int)->Dictionary:
 	prepare_layout(renderer,house)
@@ -37,11 +41,12 @@ func placements(renderer,house:Dictionary,level:int)->Dictionary:
 	return {"chime":row.chime,"plaque":row.plaque if level>=2 else [],"planter":row.planter if level>=2 else [],"pergola":row.pergola if level>=3 else []}
 
 func adopt_layouts(source:RefCounted,renderer)->void:
-	layouts.clear();layout_inputs.clear()
+	layouts.clear();layout_inputs.clear();facades.clear()
 	for house:Dictionary in renderer.state.houses:
 		var id:=str(house.id)
 		if not source.layouts.has(id):continue
 		layouts[id]=source.layouts[id];layout_inputs[id]=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
+		facades[id]=source.facades[id]
 
 func setup(parent: Node3D) -> void:
 	layer = Node3D.new()
@@ -102,12 +107,14 @@ func _mechanisms(renderer,only: Array[String]=[])->void:
 		var id:=str(house.id);var level: int=renderer.state.mechanism_level(id)
 		if level==0:continue
 		live[id]=true
-		var signature:=hash([house.origin,house.cells,house.get("base_y",0.),level,renderer.state.house_era(house),renderer._frontage_signature(house)])
+		prepare_layout(renderer,house)
+		var facade:Dictionary=facades[id]
+		var signature:=hash([house.origin,house.cells,house.get("base_y",0.),level,renderer.state.house_era(house),facade.frontage])
 		if mechanism_fingerprints.get(id,-1)==signature:continue
 		_remove(id,mechanism_roots,mechanism_fingerprints)
 		var root:=Node3D.new();root.name="DeliveredClockwork_"+id;layer.add_child(root);root.set_meta("mechanism_level",level)
 		var wood: Material=renderer._material(Color("997147"));var brass: Material=renderer._material(Color("c8aa63"))
-		var entries: Array=renderer.state.house_entrances(id)
+		var entries: Array=facade.entries
 		var chosen: Dictionary={};var side:=Vector2i.ZERO
 		var cells: Array=house.cells.duplicate();cells.sort_custom(func(a:Dictionary,b:Dictionary)->bool:return int(a.level)>int(b.level))
 		for cell: Dictionary in cells:
@@ -149,15 +156,17 @@ func _culture(renderer,only: Array[String]=[]) -> void:
 		# Woodwork provides the frame for the first cultural glass gift. Both
 		# earned ledgers persist it after a district or musical link is removed.
 		var display_level:=maxi(level,2 if renderer.state.improvement_level(id)>0 else 1)
-		var signature := hash([house.origin,house.cells,house.get("base_y",0.0),level,display_level,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(renderer.state,house)])
+		prepare_layout(renderer,house)
+		var facade:Dictionary=facades[id]
+		var signature := hash([house.origin,house.cells,house.get("base_y",0.0),level,display_level,facade.frontage,facade.arcades])
 		if culture_fingerprints.get(id,-1)==signature: continue
 		_remove(id,culture_roots,culture_fingerprints)
 		var root := Node3D.new(); root.name="DeliveredArt_"+id; layer.add_child(root)
 		root.set_meta("culture_level",level)
 		root.set_meta("art_display_level",display_level)
 		var placed := false
-		var entries: Array = renderer.state.house_entrances(id)
-		var arcades: Array = renderer.ArcadePlan.for_house(renderer.state,house)
+		var entries: Array = facade.entries
+		var arcades: Array = facade.arcades
 		var cells: Array = house.cells.duplicate()
 		cells.sort_custom(func(a: Dictionary,b: Dictionary)->bool: return int(a.level)>int(b.level))
 		for cell: Dictionary in cells:
@@ -168,7 +177,7 @@ func _culture(renderer,only: Array[String]=[]) -> void:
 				for entry: Dictionary in entries:
 					if entry.cell_id==cell.id and entry.side==side and int(cell.level)==0: door=true
 				if door: continue
-				var cuts: Array = renderer.state.house_passages(id)
+				var cuts: Array = facade.passages
 				var cut := false
 				for opening: Dictionary in cuts:
 					if opening.cell_id==cell.id: cut=true

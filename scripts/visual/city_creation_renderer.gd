@@ -263,7 +263,7 @@ func _exit_tree() -> void:
 
 func rebuild() -> void:
 	_entrance_views.clear();_entrance_view_key=[]
-	craft.layouts.clear();craft.layout_inputs.clear()
+	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
 	quality_visual.geometry_inputs.clear();quality_visual.geometry_signatures.clear()
@@ -1608,7 +1608,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var arcades:=ArcadePlan.for_house(state,house)
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
-	craft.prepare_layout(self,house)
+	craft.prepare_layout(self,house,frontages,arcades)
 	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 
 

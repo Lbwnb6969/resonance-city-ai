@@ -111,10 +111,13 @@ func _run()->void:
 		var prepared: int=renderer.quality_visual._geometry_signature(renderer,house)
 		var cold:=hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(city,house)])
 		same=same and prepared==cold and renderer.quality_visual.geometry_inputs[id][0]==city.get_instance_id()
+		var facade:Dictionary=renderer.craft.facades[id]
+		same=same and facade.frontage==renderer._frontage_signature(house) and facade.arcades==renderer.ArcadePlan.for_house(city,house) and facade.entries==city.house_entrances(id) and facade.passages==city.house_passages(id)
 		for level in range(1,4):same=same and renderer.craft.placements(renderer,house,level)==renderer.craft._placements(renderer,house,level)
 	_check(same,"worker geometry cache rebinds original city identity and matches independently recomputed inputs")
 	_check(city.undo().ok,"real road edit can be undone")
 	renderer.rebuild()
 	var house: Dictionary=city.houses[0]
 	_check(renderer.quality_visual._geometry_signature(renderer,house)==hash([house,renderer._frontage_signature(house),renderer.ArcadePlan.for_house(city,house)]),"undo rebuild refreshes cached original frontage and arcade geometry")
+	_check(renderer.craft.facades.size()==city.houses.size() and renderer.craft.facades[str(house.id)].frontage==renderer._frontage_signature(house),"undo rebuild retires old facades and prepares the restored door and art/clock geometry")
 	renderer.free();print("TARGETED_QUALITY_VISUAL ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

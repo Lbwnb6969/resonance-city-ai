@@ -48,7 +48,7 @@ func _run()->void:
 			shops[str(house.role)]=str(house.id);statuses[str(house.id)]=city.workshop_status(str(house.id))
 		elif str(house.role)=="residential":
 			if home.is_empty():home=house.id
-			if not targets.has(city.house_era(house)) and city.improvement_level(house.id)<3 and city.culture_level(house.id)<2 and city.mechanism_level(house.id)<2:targets[city.house_era(house)]=str(house.id)
+			if not targets.has(city.house_era(house)) and city.improvement_level(house.id)<3 and city.culture_level(house.id)==0 and city.mechanism_level(house.id)<2:targets[city.house_era(house)]=str(house.id)
 	for shop: String in shops.values():city.return_craft(shop)
 	town.update_workshop_supply(statuses);town.frontage_queries=0
 	var started:=Time.get_ticks_usec()
@@ -63,7 +63,9 @@ func _run()->void:
 			if int(city.workshop_status(shop).stock)==0:city.produce_craft(shop,1)
 			var before:=_identities(town)
 			check(city.reserve_craft(shop,home,target,kind) and city.complete_craft(shop,home,target),"real conserved "+kind+" installation in "+era)
+			town.frontage_queries=0
 			town.update_craft_progress()
+			check(town.frontage_queries==0,"delivered "+kind+" in "+era+" reuses published facade and art/clock mount geometry")
 			var after:=_identities(town);var untouched:=true
 			for key: String in before:
 				if key.ends_with("_"+target):continue
