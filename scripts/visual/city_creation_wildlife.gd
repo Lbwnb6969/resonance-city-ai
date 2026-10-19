@@ -171,7 +171,7 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 		if str(house.get("role", "")) in ["garden_cafe", "venue"] or state.house_harmony_tier(str(house.id)) > 0:
 			# Use the real exterior porch instead of placing insects inside rooms.
 			if not _porch_habitats.has(id):
-				var entrances: Array=state.house_entrances(id)
+				var entrances: Array=renderer.house_entrances(id) if renderer!=null else state.house_entrances(id)
 				var points: Array[Vector3]=[]
 				if not entrances.is_empty():
 					var p: Vector2=entrances[0].at

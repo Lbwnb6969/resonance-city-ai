@@ -73,42 +73,38 @@ static func _pairs(state,anchors: Array[Dictionary],layout_context: Variant=null
 	var bins: Dictionary=context.bins
 	var rooms: Dictionary=context.rooms
 
+	if not context.has("candidates"):
+		# Geometry-only tests retain the original ordered neighbours. Service
+		# flags and the greedy used-anchor set remain live on every evaluation.
+		context.candidates={}
+		for i in range(anchors.size()):
+			var a:Dictionary=anchors[i];var key:=Vector2i(floori(float(a.pos.x)/MAX_SPAN),floori(float(a.pos.z)/MAX_SPAN))
+			var nearby:Array[int]=[];var allowed:Array=[]
+			for x in range(key.x-1,key.x+2):
+				for z in range(key.y-1,key.y+2):
+					for j:int in bins.get(Vector2i(x,z),[]):
+						if j>i:nearby.append(j)
+			nearby.sort()
+			for j:int in nearby:
+				var b:Dictionary=anchors[j]
+				if str(a.house_id)==str(b.house_id) or absf(float(a.pos.y)-float(b.pos.y))>1.25:continue
+				var delta:=Vector2(b.pos.x-a.pos.x,b.pos.z-a.pos.z);var dist:=delta.length()
+				if dist<MIN_SPAN or dist>MAX_SPAN:continue
+				var direction:=delta/dist
+				if direction.dot(a.normal)<.30 or (-direction).dot(b.normal)<.30 or (-Vector2(b.normal)).dot(a.normal)<.50:continue
+				allowed.append({"index":j,"length":dist})
+			context.candidates[i]=allowed
 	var pairs: Array[Dictionary] = []
 	var used_anchors: Dictionary = {}
 	for i in range(anchors.size()):
-		if used_anchors.has(i):
-			continue
-		var a: Dictionary = anchors[i]
-		var best_j := -1
-		var best_dist := INF
-		var key:=Vector2i(floori(float(a.pos.x)/MAX_SPAN),floori(float(a.pos.z)/MAX_SPAN))
-		var candidates: Array[int]=[]
-		for x in range(key.x-1,key.x+2):
-			for z in range(key.y-1,key.y+2):
-				for j: int in bins.get(Vector2i(x,z),[]):
-					if j>i:candidates.append(j)
-		# The original greedy order and strict-distance ties choose the wire.
-		candidates.sort()
-		for j: int in candidates:
-			if used_anchors.has(j):
-				continue
-			var b: Dictionary = anchors[j]
-			if str(a.house_id) == str(b.house_id):
-				continue
-			if not (bool(a.festive) or bool(b.festive)):
-				continue
-			if absf(float(a.pos.y) - float(b.pos.y)) > 1.25:
-				continue
-			var delta_xz := Vector2(b.pos.x - a.pos.x, b.pos.z - a.pos.z)
-			var dist := delta_xz.length()
-			if dist < MIN_SPAN or dist > MAX_SPAN:
-				continue
-			var dir := delta_xz / dist
-			# Exact Townscaper PropWireAnchor directional thresholds (758e50.c)
-			if dir.dot(a.normal) < 0.30 or (-dir).dot(b.normal) < 0.30:
-				continue
-			if (-Vector2(b.normal)).dot(a.normal) < 0.50:
-				continue
+		if used_anchors.has(i):continue
+		var a:Dictionary=anchors[i];var best_j:=-1;var best_dist:=INF
+		for candidate:Dictionary in context.candidates[i]:
+			var j:int=candidate.index
+			if used_anchors.has(j):continue
+			var b:Dictionary=anchors[j]
+			if not (bool(a.festive) or bool(b.festive)):continue
+			var dist:float=candidate.length
 			if dist<best_dist:
 				var span:=Vector2i(i,j)
 				if not context.spans.has(span):context.spans[span]=_span_clear(state,a.pos,b.pos,rooms)
@@ -140,6 +136,7 @@ static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary]
 	var lanterns := SurfaceTool.new()
 	lanterns.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var rope_col := Color("4a4036")
+	var lantern_box:=BoxMesh.new();lantern_box.size=Vector3(.075,.10,.075)
 	for pair: Dictionary in pairs:
 		var p0: Vector3 = pair.a.pos
 		var p1: Vector3 = pair.b.pos
@@ -170,7 +167,7 @@ static func build_pairs(renderer: Node3D,parent: Node3D,pairs: Array[Dictionary]
 				st.set_normal(n)
 				st.add_vertex(v)
 			if s % 3 == 1:
-				_lantern(lanterns, mid - Vector3.UP * 0.08)
+				_lantern(lanterns, mid - Vector3.UP * 0.08,lantern_box)
 	var mesh_inst := MeshInstance3D.new()
 	mesh_inst.name = "BuntingFlags"
 	mesh_inst.mesh = st.commit()
@@ -209,7 +206,5 @@ static func _span_clear(state, a: Vector3, b: Vector3,room_bins: Variant=null) -
 			if absf(p.x-row[0])<0.91 and absf(p.z-row[2])<0.91 and p.y>row[1]-0.1 and p.y<row[1]+2.35:return false
 	return true
 
-static func _lantern(st: SurfaceTool, at: Vector3) -> void:
-	var mesh := BoxMesh.new()
-	mesh.size = Vector3(0.075, 0.10, 0.075)
+static func _lantern(st: SurfaceTool, at: Vector3,mesh:Mesh) -> void:
 	st.append_from(mesh, 0, Transform3D(Basis.IDENTITY, at))

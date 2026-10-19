@@ -20,6 +20,7 @@ func refresh(renderer: Node3D)->void:
 	var began:=Time.get_ticks_usec()
 	var city: RefCounted=renderer.state;var parent: Node3D=renderer.ecology_layer
 	var geometry:=hash([city.houses,city.roads,city.waters,city.districts,city.terrain_strokes])
+	var geometry_changed:bool=geometry_key!=geometry
 	if geometry_key!=geometry:
 		geometry_key=geometry;habitat_key=null;bunting_key=null;flora_key=null
 		wire_context.clear();flora_records.clear()
@@ -59,4 +60,5 @@ func refresh(renderer: Node3D)->void:
 		parent.set_meta("harmony_flowerpots",Flora.build(renderer,parent,flora_records))
 		stats.flora_updates+=1;stats.flowers_us=Time.get_ticks_usec()-step
 	stats.refreshes+=1;stats.last_refresh_us=Time.get_ticks_usec()-began
+	if int(stats.last_refresh_us)>int(stats.max_refresh_us):stats.peak={"total_us":stats.last_refresh_us,"habitats_us":stats.habitats_us,"bunting_us":stats.bunting_us,"flowers_us":stats.flowers_us,"bunting_count":parent.get_meta("bunting_count",0),"flowerpots":parent.get_meta("harmony_flowerpots",0),"geometry_changed":geometry_changed,"habitats":renderer.wildlife.habitat_stats.duplicate(),"porches":renderer.wildlife._porch_habitats.size(),"flower_records":flora_records.size()}
 	stats.max_refresh_us=maxi(int(stats.max_refresh_us),int(stats.last_refresh_us))

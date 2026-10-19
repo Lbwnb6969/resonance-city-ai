@@ -1853,6 +1853,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 			state._region_network_revision=state.revision
 			state._regional_echo_revision=state.revision
 			life.last_revision=state.revision
+			town.retain_geometry_views()
 			_color_ui_pending=true
 			save_delay=3.0
 			music.play_edit(kind)

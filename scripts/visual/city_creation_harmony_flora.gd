@@ -30,19 +30,19 @@ static func build(renderer: Node3D, parent: Node3D,records: Variant=null) -> int
 	return pots.size()
 
 static func _placement(renderer: Node3D,house: Dictionary)->Dictionary:
-	var entrances: Array = renderer.state.house_entrances(str(house.id))
+	var entrances: Array = renderer.house_entrances(str(house.id))
 	if entrances.is_empty(): return {}
 	var e: Dictionary = entrances[0]
 	var normal := Vector2(e.side)
 	var tangent := Vector2(normal.y,-normal.x)
 	var at: Vector2 = e.wall_at + normal*0.22 + tangent*0.73
-	var clear := true
-	for road: Dictionary in renderer.state.roads:
-		for i in range(road.points.size()-1):
-			var a := Vector2(road.points[i][0],road.points[i][1])
-			var b := Vector2(road.points[i+1][0],road.points[i+1][1])
-			if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(road.width)*0.5+0.14: clear=false
-	if not clear: return {}
+	# Published road bins include width/2+.07; inspecting neighbours covers
+	# the additional .07m pot margin without scanning every street point.
+	var bin:=Vector2i(floori(at.x/renderer.ROAD_BIN_SIZE),floori(at.y/renderer.ROAD_BIN_SIZE))
+	for x in range(-1,2):
+		for z in range(-1,2):
+			for segment:Dictionary in renderer.road_segment_bins.get(bin+Vector2i(x,z),[]):
+				if at.distance_to(Geometry2D.get_closest_point_to_segment(at,segment.a,segment.b))<float(segment.width)*.5+.14:return {}
 	var base: float = renderer.state.ground_height(at)
 	return {"at":at,"base":base}
 

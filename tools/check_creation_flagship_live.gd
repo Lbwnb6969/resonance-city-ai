@@ -93,6 +93,12 @@ func _run()->void:
 	facts.ecology=demo.town.ecology_stats.duplicate()
 	facts.purchases_after=int(demo.state.life_progress.purchases)
 	facts.worker_lod=demo.life.worker_lod.stats.duplicate()
+	if "--check-palette-views" in OS.get_cmdline_user_args():
+		var layout:Dictionary=demo.town.craft.layouts.h61;var entries:Array=demo.town.house_entrances("h61")
+		var index:int=demo.state._house_index("h61");var color:int=posmod(int(demo.state.houses[index].palette)+1,4)
+		demo._after_edit(demo.state.set_house_palette("h61",color),"history")
+		_check(demo.edit_budget_report().mode=="colors" and not demo.edit_pending() and is_same(layout,demo.town.craft.layouts.h61) and is_same(entries,demo.town.house_entrances("h61")),"actual palette fast publication retains prepared craft and entrance geometry")
+		facts.palette_publication=demo.edit_budget_report()
 	await _capture("10_实际经营与品质刷新")
 	_check(float(facts.daily_frames.p95_ms)<12. and demo.life.current_population>=200,"actual flagship daily life supports over 200 inhabitants with sub-twelve-millisecond p95")
 	if "--daily-only" not in OS.get_cmdline_user_args():

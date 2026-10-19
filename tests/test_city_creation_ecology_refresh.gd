@@ -5,6 +5,8 @@ const Bunting=preload("res://scripts/visual/city_creation_bunting.gd")
 const Flora=preload("res://scripts/visual/city_creation_harmony_flora.gd")
 var checks:=0
 var failures: Array[String]=[]
+var reference_bunting:Script=Bunting
+var reference_flora:Script=Flora
 func _initialize()->void:_run.call_deferred()
 func check(ok: bool,label: String)->void:
 	checks+=1
@@ -25,20 +27,24 @@ func _node_ids(parent: Node)->Dictionary:
 	return result
 func _parity(town,label: String)->void:
 	var cold:=Node3D.new();root.add_child(cold)
-	var wires:=Bunting.build_bunting(town,cold);var pots:=Flora.build(town,cold)
+	var wires:int=reference_bunting.build_bunting(town,cold);var pots:int=reference_flora.build(town,cold)
 	check(wires==int(town.ecology_layer.get_meta("bunting_count")) and pots==int(town.ecology_layer.get_meta("harmony_flowerpots")) and _view(cold)==_view(town.ecology_layer),"original complete ecology meshes and counts agree: "+label)
 	var cached: Array[Dictionary]=Bunting._pairs(town.state,Bunting._anchors(town),town.ecology.wire_context)
-	check(cached==Bunting._pairs(town.state,Bunting._anchors(town)),"cached span decisions preserve exact greedy pairs: "+label)
+	check(cached==reference_bunting._pairs(town.state,Bunting._anchors(town)),"cached geometry candidates and spans preserve the original greedy pairs: "+label)
 	var records_ok:=true
 	for house: Dictionary in town.state.houses:
 		var id:=str(house.id)
-		if town.ecology.flora_records.has(id):records_ok=records_ok and town.ecology.flora_records[id]==Flora._placement(town,house)
+		if town.ecology.flora_records.has(id):records_ok=records_ok and town.ecology.flora_records[id]==reference_flora._placement(town,house)
+		records_ok=records_ok and town.house_entrances(id)==town.state.house_entrances(id)
 	check(records_ok,"cached flowerpot coordinates and road clearance match cold layout: "+label)
 	var nectar: Array=town.wildlife._nectars.duplicate();var perches: Array=town.wildlife._perches.duplicate()
 	town.wildlife._porch_habitats.clear();town.wildlife.refresh_habitats(town)
 	check(nectar==town.wildlife._nectars and perches==town.wildlife._perches,"cached wildlife perches/porch nectar agree with full refresh: "+label)
 	cold.free()
 func _run()->void:
+	for argument:String in OS.get_cmdline_user_args():
+		if argument.begins_with("--baseline-bunting="):reference_bunting=load(argument.trim_prefix("--baseline-bunting="))
+		if argument.begins_with("--baseline-flora="):reference_flora=load(argument.trim_prefix("--baseline-flora="))
 	var city:=State.new();city.initialize()
 	check(city.set_house_role("h5","garden_cafe").ok and city.set_house_role("h6","workshop").ok,"actual role edits create cafe and workshop")
 	var town:=Renderer.new();root.add_child(town);town.setup(city);town.set_process(false);town.wildlife.set_process(false)
@@ -75,4 +81,18 @@ func _run()->void:
 	for lamp: MeshInstance3D in town.ecology_layer.find_children("BuntingLanterns","MeshInstance3D",true,false):night_ok=night_ok and is_equal_approx(float(lamp.material_override.get_shader_parameter("warmth")),1.25)
 	check(night_ok and town.wildlife._night,"independently retained wires still follow real night warmth and firefly mode")
 	check(town.ecology_layer.get_instance_id()==flora_id,"all updates retain the public ecology layer")
-	var report: Dictionary=town.ecology.stats.duplicate();town.free();print("ECOLOGY_REFRESH ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"stats":report,"failures":failures}));quit(0 if failures.is_empty() else 1)
+	var report: Dictionary=town.ecology.stats.duplicate();town.free()
+	var large:=State.new();check(large.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))).ok,"actual flagship city restores for dense greedy tie comparison")
+	town=Renderer.new();root.add_child(town);town.setup(large);town.set_process(false);town.wildlife.set_process(false)
+	var anchors:Array[Dictionary]=Bunting._anchors(town);var context:Dictionary={}
+	var placements_ok:=true
+	for house:Dictionary in large.houses:placements_ok=placements_ok and Flora._placement(town,house)==reference_flora._placement(town,house)
+	check(placements_ok,"flagship flowerpot positions and strict road clearances match the original full street scan")
+	for turn in range(4):
+		for i in range(anchors.size()):anchors[i].festive=posmod(i+turn,4)==0 if turn<3 else true
+		var actual:Array=Bunting._pairs(large,anchors,context);var expected:Array=reference_bunting._pairs(large,anchors)
+		check(actual==expected,"dense flagship greedy ordering and equal-distance ties match original across eligibility changes "+str(turn))
+		var old_root:=Node3D.new();var new_root:=Node3D.new();root.add_child(old_root);root.add_child(new_root)
+		reference_bunting.build_pairs(town,old_root,expected);Bunting.build_pairs(town,new_root,actual)
+		check(_view(old_root)==_view(new_root),"all flag rope and lantern triangles retain exact original geometry "+str(turn));old_root.free();new_root.free()
+	town.free();print("ECOLOGY_REFRESH ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"stats":report,"failures":failures}));quit(0 if failures.is_empty() else 1)

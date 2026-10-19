@@ -262,6 +262,8 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
+	_entrance_views.clear();_entrance_view_key=[]
+	craft.layouts.clear();craft.layout_inputs.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
 	quality_visual.geometry_inputs.clear();quality_visual.geometry_signatures.clear()
@@ -758,8 +760,27 @@ func _frontage_signature(house: Dictionary) -> Array:
 		result.append(_clearance_at(Vector2(point.x,point.z),str(entrance.cell_id),radii[index]))
 	return result
 
+var _entrance_views:Dictionary={}
+var _entrance_view_key:Array=[]
+func house_entrances(house_id:String)->Array:
+	# Renderer consumers read these records only. State's authoring API keeps
+	# its detached-copy contract; view caches belong to this published revision.
+	var key:Array=[state.get_instance_id(),state.revision]
+	if key!=_entrance_view_key:_entrance_views.clear();_entrance_view_key=key
+	if not _entrance_views.has(house_id):_entrance_views[house_id]=state.house_entrances(house_id)
+	return _entrance_views[house_id]
+
+func retain_geometry_views()->void:
+	# A successful palette-only publication preserves every entrance and
+	# clearance decision. Rebind the input revision without resampling streets.
+	_entrance_view_key=[state.get_instance_id(),state.revision]
+	for house:Dictionary in state.houses:
+		var id:=str(house.id);var key:Array=[state.get_instance_id(),state.revision,hash(house)]
+		if craft.layouts.has(id):craft.layout_inputs[id]=key
+		if quality_visual.geometry_inputs.has(id):quality_visual.geometry_inputs[id]=key
+
 func _primary_entrance(house: Dictionary) -> Dictionary:
-	var entrances: Array = state.house_entrances(str(house.id))
+	var entrances: Array = house_entrances(str(house.id))
 	if str(house.get("role","residential")) == "workshop":
 		var usable: Dictionary = {}
 		for entrance: Dictionary in entrances:
@@ -1587,6 +1608,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var arcades:=ArcadePlan.for_house(state,house)
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
+	craft.prepare_layout(self,house)
 	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 
 
@@ -2410,7 +2432,7 @@ func _prepare_road_layout() -> void:
 		var radius := float(road.width)*0.5+0.07
 		for segment: Dictionary in geometry.segments:
 			var bounds: Rect2 = segment.bounds.grow(radius)
-			var record := {"id":road.id,"a":segment.a,"b":segment.b,"radius":radius}
+			var record := {"id":road.id,"a":segment.a,"b":segment.b,"radius":radius,"width":float(road.width)}
 			for z in range(floori(bounds.position.y/ROAD_BIN_SIZE),floori(bounds.end.y/ROAD_BIN_SIZE)+1):
 				for x in range(floori(bounds.position.x/ROAD_BIN_SIZE),floori(bounds.end.x/ROAD_BIN_SIZE)+1):
 					var bin := Vector2i(x,z)

@@ -23,6 +23,25 @@ var meshes: Dictionary = {}
 var material: ShaderMaterial
 var layer: Node3D
 var build_count := 0
+var layouts:Dictionary={}
+var layout_inputs:Dictionary={}
+
+func prepare_layout(renderer,house:Dictionary)->void:
+	var id:=str(house.id);var key:Array=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
+	if layout_inputs.get(id,[])==key:return
+	layouts[id]=_placements(renderer,house,3);layout_inputs[id]=key
+
+func placements(renderer,house:Dictionary,level:int)->Dictionary:
+	prepare_layout(renderer,house)
+	var row:Dictionary=layouts[str(house.id)]
+	return {"chime":row.chime,"plaque":row.plaque if level>=2 else [],"planter":row.planter if level>=2 else [],"pergola":row.pergola if level>=3 else []}
+
+func adopt_layouts(source:RefCounted,renderer)->void:
+	layouts.clear();layout_inputs.clear()
+	for house:Dictionary in renderer.state.houses:
+		var id:=str(house.id)
+		if not source.layouts.has(id):continue
+		layouts[id]=source.layouts[id];layout_inputs[id]=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
 
 func setup(parent: Node3D) -> void:
 	layer = Node3D.new()
@@ -55,7 +74,7 @@ func progress(renderer,only: Array[String]=[]) -> void:
 		var input_signature := hash([geometry_signature,level])
 		if placement_inputs.get(id,-1) == input_signature: continue
 		placement_inputs[id] = input_signature
-		var records := _placements(renderer,house,level)
+		var records := placements(renderer,house,level)
 		var fingerprint := hash([level,records])
 		if fingerprints.get(id,-1) == fingerprint: continue
 		_remove(id,roots,fingerprints)

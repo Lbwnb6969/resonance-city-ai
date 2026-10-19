@@ -107,7 +107,7 @@ func progress(renderer,only:Array[String]=[])->void:
 		# The welcome apron/pot/lamp use only the entrance. Third-level window
 		# boxes and fourth-level galleries need the delivered-craft layout.
 		if (tier>=3 and renderer.state.improvement_level(id)<2) or (tier>=4 and renderer.state.improvement_level(id)<3):
-			records=renderer.craft._placements(renderer,house,3 if tier>=4 else 2)
+			records=renderer.craft.placements(renderer,house,3 if tier>=4 else 2)
 		build_stats.placement_us+=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 		var features: Array[String]=[]
 		if not entry.is_empty():
