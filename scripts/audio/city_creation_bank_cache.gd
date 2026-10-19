@@ -1,7 +1,7 @@
 extends RefCounted
 const Stamp=preload("res://scripts/audio/city_creation_bank_stamp.gd")
 const PATH:="res://资源/音乐/城市同步声部库.res"
-const SOURCES:=["res://scripts/audio/city_creation_music.gd","res://scripts/audio/city_creation_theme_pcm.gd","res://scripts/audio/city_creation_reply_pcm.gd","res://scripts/audio/city_creation_pitch_pluck.gd","res://scripts/audio/city_creation_bakery_cues.gd","res://scripts/audio/city_creation_spatial.gd"]
+const SOURCES:=["res://scripts/audio/city_creation_music.gd","res://scripts/audio/city_creation_theme_pcm.gd","res://scripts/audio/city_creation_harmonic_emergence.gd","res://scripts/audio/city_creation_reply_pcm.gd","res://scripts/audio/city_creation_pitch_pluck.gd","res://scripts/audio/city_creation_bakery_cues.gd","res://scripts/audio/city_creation_spatial.gd"]
 static func source_signature()->String:
 	var parts:=PackedStringArray()
 	# Git checks out LF; existing Windows workspaces can still contain CRLF.
@@ -17,4 +17,4 @@ static func load_bank()->Dictionary:
 	if resource.get_meta("signature","")!=expected:return {}
 	var bank:Dictionary=resource.get_meta("bank")
 	var report:Dictionary=bank.report.duplicate(true);report.bank_source="precompiled";report.bank_load_ms=float(Time.get_ticks_usec()-started)/1000.
-	return {"streams":bank.streams,"edits":bank.edits,"report":report}
+	return {"streams":bank.streams,"edits":bank.edits,"variations":bank.variations,"report":report}

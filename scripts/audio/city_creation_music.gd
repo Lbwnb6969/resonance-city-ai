@@ -25,6 +25,13 @@ const AcousticField = preload("res://scripts/audio/city_creation_acoustic_field.
 const AttentionMixer=preload("res://scripts/audio/city_creation_attention_mixer.gd")
 var attention:=AttentionMixer.new()
 var attention_strolling:=false
+const HarmonicEmergence=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
+var emergence:=HarmonicEmergence.new()
+var _variation_streams:Dictionary={}
+var _original_streams:Dictionary={}
+var _variation_pending:Dictionary={}
+var _variation_active:Dictionary={}
+var _variation_changed_usec:=0
 var acoustic:=AcousticField.new()
 var _acoustic_timer:=0.0
 var _signature_phrase := -1
@@ -516,6 +523,7 @@ func restore_city_transport(view: Dictionary) -> void:
 	# previous city; a restored performance resumes its exact saved bar phase.
 	clear_travel()
 	attention.clear()
+	emergence.reset();_variation_pending.clear()
 	canon.reset()
 	bakery_cues.reset()
 	reply.clear()
@@ -684,13 +692,18 @@ func update_city(state: RefCounted) -> void:
 			positions.append(Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8))
 		_house_music[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":str(district.get("style","warm")),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
+		var row:Dictionary=_house_music[str(house.id)]
+		row.rooms=0;row.upper_rooms=0;row.max_level=0
+		row.water_distance=state.water_clearance(row.position)
 		for cell: Dictionary in house.cells:
 			if cell.kind == "terrace":
 				terraces += 1
 			else:
 				rooms += 1
+				row.rooms+=1;row.max_level=maxi(int(row.max_level),int(cell.level))
 				if int(cell.level) > 0:
 					upper += 1
+					row.upper_rooms+=1
 	for group: Dictionary in groups.values():
 		var arrangement: Dictionary=Arrangement.compose(group.houses,group.style,group.adaptive)
 		for house: Dictionary in group.houses: _house_music[str(house.id)]["mix"]=arrangement
@@ -751,6 +764,7 @@ func _focused_houses() -> Array[String]:
 func _advance_daily_phrase(phrase: int) -> void:
 	if phrase == _daily_phrase: return
 	_daily_phrase = phrase
+	emergence.advance(_house_music,acoustic,canon.groups,phrase,night)
 	_phrase_improvements.clear()
 	for id: String in _house_music: _phrase_improvements[id]=int(_house_music[id].improvement)
 	var houses := _focused_houses()
@@ -758,6 +772,9 @@ func _advance_daily_phrase(phrase: int) -> void:
 	var source: Dictionary = _house_music.get(_daily_source_id,{})
 	_daily_district_id = str(source.get("district_id",""))
 	_daily_style = str(source.get("style","warm"))
+	if not concert_active and not str(emergence.score.get("source_id","")).is_empty():
+		_daily_source_id=str(emergence.score.source_id)
+		source=_house_music[_daily_source_id];_daily_district_id=str(source.district_id);_daily_style=str(source.style)
 	_daily_improvement = int(source.get("improvement",0))
 	_daily_arrangement = source.get("mix",DEFAULT_ARRANGEMENT).duplicate(true)
 	if acoustic.mode=="city" and not acoustic.focus_ids.is_empty():
@@ -767,6 +784,24 @@ func _advance_daily_phrase(phrase: int) -> void:
 			weights[style]=float(weights.get(style,0.0))+weight;total+=weight
 		for style: String in weights: weights[style]/=total
 		_daily_arrangement.weights=weights
+
+func _update_variations(_delta:float)->void:
+	if _variation_streams.is_empty():return
+	var now:=Time.get_ticks_usec()
+	for key:String in HarmonicEmergence.LEADS:
+		var id:String="original" if concert_active else "%s/%d"%[key,int(emergence.score.get("variant",0))]
+		if _variation_active.get(key,"")==id:
+			_variation_pending.erase(key);continue
+		if not _variation_pending.has(key) or _variation_pending[key].id!=id:
+			_variation_pending[key]={"id":id,"started":now};continue
+		if now-int(_variation_pending[key].started)<40000:continue
+		# Native WAV players support seek and restore. The shared concert
+		# transport never changes; the new loop joins its current sample phase.
+		var player:AudioStreamPlayer=_players[key]
+		player.volume_db=-60.
+		player.stream=_original_streams[key] if id=="original" else _variation_streams[id]
+		player.play(fposmod(_playback_clock(),SECONDS))
+		_variation_active[key]=id;_variation_pending.erase(key);_variation_changed_usec=now
 
 func _mix_label(arrangement: Dictionary) -> String:
 	var label: String=STYLE_NAMES[str(arrangement.base_style)]
@@ -903,6 +938,7 @@ func active_source() -> Dictionary:
 
 func target_gain_db(key: String, during_concert: bool) -> float:
 	if _grand_active():return GrandFestival.gain(key,_concert_phrase())
+	if not concert_active and not emergence.score.is_empty():return float(emergence.score.targets.get(key,-60.))
 	if key=="modern_symphony":return -24.0 if during_concert else -21.0
 	if key=="clockwork_waltz":return -24.0 if during_concert else -21.0
 	if key=="renaissance_fugue": return -23.0 if during_concert else -19.0
@@ -949,9 +985,11 @@ func concert_gain_for_phrase(key: String, phrase: int) -> float:
 func daily_source() -> Dictionary:
 	var result := {"source_id":_daily_source_id,"district_id":_daily_district_id,"style":_daily_style,"role":"daily","audible":false,
 		"timbre":{"warm":"wood","deep":"air","weave":"pluck","market":"accordion","sylvan":"flute"}[_daily_style],"improvement":_daily_improvement,"mix":_daily_arrangement}
-	if not _house_music.has(_daily_source_id) or not _players.has(STYLE_TRACKS[_daily_style]): return result
-	var player: AudioStreamPlayer = _players[STYLE_TRACKS[_daily_style]]
-	var phrase := clampi(int(player.get_playback_position()/3.0),0,7)
+	var track:String=str(emergence.score.get("lead_track",STYLE_TRACKS[_daily_style]))
+	if not _house_music.has(_daily_source_id) or not _players.has(track): return result
+	var player: AudioStreamPlayer = _players[track]
+	result.track=track;result.timbre=HarmonicEmergence.TIMBRES.get(track,result.timbre)
+	var phrase := posmod(floori(_playback_clock()/3.),8)
 	result["phrase"] = phrase
 	result.audible = not concert_active and not muted and player.playing and player.volume_db > -38.0 and acoustic.focus_weight(_daily_source_id)>0.0
 	return result
@@ -975,6 +1013,8 @@ func music_report() -> Dictionary:
 	result["district_music"] = district_music_report()
 	result["resonance"] = resonance_state()
 	result["transport_clock"] = _playback_clock()
+	result["emergence"]=emergence.score.duplicate(true)
+	result["variations"]=_variation_active.duplicate()
 	result["concert_clock_origin"] = _concert_clock_origin
 	result["cafe"] = cafe_music_report()
 	result["travel"] = travel_music_report()
@@ -1121,6 +1161,11 @@ func grand_festival_report()->Dictionary:
 
 func _long_acoustic_weight(key: String)->float:
 	if _grand_active():return .25 if _remote_concert() else acoustic.focus_weight(str(_source_for_phrase(_concert_phrase()).source_id))
+	if not concert_active:
+		if key in HarmonicEmergence.LEADS:
+			var id:String=str(emergence.score.get("source_ids",{}).get(key,""))
+			return acoustic.focus_weight(id)
+		return acoustic.focus_weight(_daily_source_id)
 	if key=="modern_symphony":return modern_music_report().weight
 	if key=="clockwork_waltz":return clockwork_music_report().weight
 	if key=="renaissance_fugue": return renaissance_music_report().weight
@@ -1174,11 +1219,15 @@ func _process(delta: float) -> void:
 		_loading = false
 		audio_report = bank.report
 		_edit_streams = bank.edits
+		_original_streams=bank.streams
+		_variation_streams=bank.get("variations",{})
 		# These play commands run in one frame before the next audio mix. All
 		# streams have exactly the same length and sample rate.
 		var restored_elapsed := float(_concert_view.get("elapsed", 0.0)) if str(_concert_view.get("phase", "idle")) == "playing" else 0.0
 		for key in STEMS:
-			_players[key].stream = bank.streams[key]
+			var id:String="%s/0"%key
+			_players[key].stream = _variation_streams[id] if not concert_active and _variation_streams.has(id) else bank.streams[key]
+			if key in HarmonicEmergence.LEADS:_variation_active[key]=id if not concert_active else "original"
 			_players[key].play(restored_elapsed)
 		_clock_previous = restored_elapsed
 		_concert_clock_origin = 0.0
@@ -1191,6 +1240,7 @@ func _process(delta: float) -> void:
 			_concert_loop += 1
 		_concert_previous_position = position
 		_advance_daily_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+		_update_variations(delta)
 		_advance_concert_arrangement()
 		attention.step(_playback_clock(),_attention_trigger)
 		if concert_active:
@@ -1219,7 +1269,10 @@ func _process(delta: float) -> void:
 		# long stems only return to the already verified PCM peak envelope.
 		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)+attention.backing_duck_db+ATTENTION_HEADROOM_DB
 		if not is_finite(_players[key].volume_db): _players[key].volume_db=-60.0
-		_players[key].volume_db = lerpf(_players[key].volume_db, target, 1.0 - exp(-delta * 2.8))
+		var fading:bool=_variation_pending.has(key)
+		if fading:target=-60.
+		var recovering:bool=Time.get_ticks_usec()-_variation_changed_usec<140000
+		_players[key].volume_db = lerpf(_players[key].volume_db, target, 1.0 - exp(-delta * (120. if fading else (60. if recovering else 2.8))))
 
 
 func _exit_tree() -> void:
@@ -1235,6 +1288,7 @@ func _exit_tree() -> void:
 		_loading = false
 	_worker = null
 	_edit_streams.clear()
+	_variation_streams.clear();_original_streams.clear()
 
 
 func _load_bank()->Dictionary:
@@ -1496,8 +1550,16 @@ func _render_bank() -> Dictionary:
 	# cap, any one output is bounded by 1.65 times the old absolute bound.
 	# Apply it even to centered beds for a conservative whole-pool bound.
 	report.mix_peaks["absolute_stereo_with_four_short_voices"] = report.mix_peaks.absolute_with_four_edit_voices*(1.0+Spatial.PAN_LIMIT)
+	var variations:Dictionary=ThemePCM.render_variations(_add_note,_pcm_stream,chords,HarmonicEmergence.LEADS)
+	report["variation_notes"]=variations.notes;report["variation_peaks"]=variations.peaks;report["variation_pcm_bytes"]=variations.bytes
+	# Daily allocation admits one lead and at most 45% of one companion.
+	# Crossfades and attention gain stay within those linear maxima.
+	var daily_bound:float=float(report.peaks.foundation)*db_to_linear(-12.)+ThemePCM.VARIATION_PEAK*db_to_linear(-10.5)*1.45+float(report.peaks.air)*db_to_linear(-13.5)+float(report.peaks.terrace)*db_to_linear(-22.)
+	var varied_bound:float=(daily_bound+effect_peak*db_to_linear(SHORT_GAIN_DB)*4.)*(1.+Spatial.PAN_LIMIT)
+	report.mix_peaks["emergent_stereo_bound"]=varied_bound
+	report.mix_peaks.absolute_stereo_with_four_short_voices=maxf(report.mix_peaks.absolute_stereo_with_four_short_voices,varied_bound)
 	report.synthesis_ms=float(Time.get_ticks_usec()-synthesis_started)/1000.
-	return {"streams": streams, "edits": edits, "report": report}
+	return {"streams": streams, "edits": edits, "variations":variations.streams,"report": report}
 
 
 func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi: int, gain: float, timbre: String, wrap: bool) -> void:

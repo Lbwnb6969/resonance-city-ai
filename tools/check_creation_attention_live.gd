@@ -57,7 +57,7 @@ func _run()->void:
 	demo.music.set_cafe_view({"h3":{"phase":"tea","arrived":2}})
 	for key:String in demo.music._edit_streams:keys[demo.music._edit_streams[key].get_instance_id()]=key
 	var identities:Array=[]
-	for player:AudioStreamPlayer in demo.music._players.values():identities.append([player.get_instance_id(),player.stream.get_instance_id()])
+	for key:String in demo.music.STEMS:identities.append([demo.music._players[key].get_instance_id(),demo.music._original_streams[key].get_instance_id()])
 	for player:AudioStreamPlayer in demo.music._effects:identities.append(player.get_instance_id())
 	var site:Dictionary={};var distance:=INF
 	for row:Dictionary in demo.life.travel.sites.values():
@@ -90,7 +90,8 @@ func _run()->void:
 	_check(demo.music.queue_bakery_cue("baked","h2") and demo.music.bakery_cues.coalesced==merged+1 and demo.music.bakery_cues.report().pending.is_empty(),"another real counter transition in the same district coalesces during the six-second sound window")
 	recorder.set_recording_active(false);var wave:=recorder.get_recording();var peak:=0.
 	if wave!=null:
-		for i in range(0,wave.data.size()-1,2):peak=maxf(peak,absf(wave.data.decode_s16(i)/32768.))
+		var pcm:PackedByteArray=wave.data
+		for i in range(0,pcm.size()-1,2):peak=maxf(peak,absf(pcm.decode_s16(i)/32768.))
 		_check(wave.save_to_wav(OUT+"/实际微拍混音.wav")==OK and peak>.0001 and peak<.99,"actual Master recording is audible and unclipped")
 	else:_check(false,"actual Master recorder returns audio")
 	facts.recorded_peak=peak
@@ -120,9 +121,9 @@ func _run()->void:
 	_check(demo.music.attention.report().arp_pending==0 and demo.music.attention.report().events_pending==0,"mute clears pending house and city notes immediately")
 	demo.music.set_muted(false);demo.music.restore_city_transport({"phase":"idle"})
 	var after:Array=[]
-	for player:AudioStreamPlayer in demo.music._players.values():after.append([player.get_instance_id(),player.stream.get_instance_id()])
+	for key:String in demo.music.STEMS:after.append([demo.music._players[key].get_instance_id(),demo.music._original_streams[key].get_instance_id()])
 	for player:AudioStreamPlayer in demo.music._effects:after.append(player.get_instance_id())
-	_check(after==identities and demo.music._players.size()==12 and demo.music._effects.size()==4 and demo.music.spatial.report().bus_count==6,"fixed 12 long players, 4 short players, bank streams and 6 buses retain identity")
+	_check(after==identities and demo.music._players.size()==12 and demo.music._effects.size()==4 and demo.music.spatial.report().bus_count==6,"fixed 12 long players, 4 short players, original bank resources and 6 buses retain identity while baked textures can change")
 	var filters:=true
 	for row:Dictionary in demo.music.spatial._filters.values():filters=filters and is_equal_approx(row.filter.cutoff_hz,1600.)
 	_check(filters,"remote milestone routing uses 1600 Hz filtering without adding buses")

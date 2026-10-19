@@ -35,7 +35,7 @@ func _metrics(values: Array[float])->Dictionary:
 	return {"count":values.size(),"mean_ms":total/values.size(),"p95_ms":values[int(values.size()*.95)],"max_ms":values[-1]}
 func _identity()->Array:
 	var result: Array=[]
-	for player: AudioStreamPlayer in demo.music._players.values():result.append([player.get_instance_id(),player.stream.get_instance_id()])
+	for key:String in demo.music.STEMS:result.append([demo.music._players[key].get_instance_id(),demo.music._original_streams[key].get_instance_id()])
 	for player: AudioStreamPlayer in demo.music._effects:result.append(player.get_instance_id())
 	return result
 func _run()->void:

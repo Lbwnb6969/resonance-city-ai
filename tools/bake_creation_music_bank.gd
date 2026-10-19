@@ -19,7 +19,7 @@ func _run()->void:
 	# previous bank is archived or the replacement becomes visible to players.
 	var restored:Dictionary=ResourceLoader.load(temporary,"",ResourceLoader.CACHE_MODE_IGNORE).get_meta("bank")
 	var compared:=0
-	for group:String in ["streams","edits"]:
+	for group:String in ["streams","edits","variations"]:
 		if restored[group].keys()!=bank[group].keys():push_error("PCM bank keys changed during save");music.free();quit(1);return
 		for key:String in bank[group]:
 			var expected:AudioStreamWAV=bank[group][key];var actual:AudioStreamWAV=restored[group][key]
@@ -39,4 +39,5 @@ func _run()->void:
 	var bytes:=0
 	for stream:AudioStreamWAV in bank.streams.values():bytes+=stream.data.size()
 	for stream:AudioStreamWAV in bank.edits.values():bytes+=stream.data.size()
-	print("MUSIC_BANK_BAKED ",JSON.stringify({"signature":signature,"long_streams":bank.streams.size(),"short_streams":bank.edits.size(),"exact_round_trips":compared,"pcm_bytes":bytes,"file_bytes":FileAccess.get_file_as_bytes(Cache.PATH).size(),"elapsed_ms":float(Time.get_ticks_usec()-started)/1000.}));music.free();quit(0)
+	for stream:AudioStreamWAV in bank.variations.values():bytes+=stream.data.size()
+	print("MUSIC_BANK_BAKED ",JSON.stringify({"signature":signature,"long_streams":bank.streams.size(),"short_streams":bank.edits.size(),"variation_streams":bank.variations.size(),"exact_round_trips":compared,"pcm_bytes":bytes,"file_bytes":FileAccess.get_file_as_bytes(Cache.PATH).size(),"elapsed_ms":float(Time.get_ticks_usec()-started)/1000.}));music.free();quit(0)
