@@ -100,6 +100,42 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 		if int(festival_reserved[venue_id]) > int(row.get("requested", 0)) - int(row.get("delivered", 0)): return _fail("城市存档节庆委托重复预订")
 	return {"ok":true}
 
+static func _validate_landmark_bread(data:Dictionary,issued_house:int)->Dictionary:
+	var ledger:Variant=data.get("landmark_bread",{})
+	if not ledger is Dictionary:return _fail("磨坊赠粮台账无效")
+	if data.has("landmark_bread") and int(data.schema)<18:return _fail("磨坊赠粮需要新存档版本")
+	if not ledger.is_empty() and "watermill" not in data.get("signature_unlocks",[]):return _fail("磨坊赠粮缺少地标解锁")
+	var supply:Variant=data.get("bakery_supply",{})
+	if not supply is Dictionary:return _fail("城市存档面包供给结构无效")
+	var homes:Dictionary={};var sources:Dictionary={}
+	for house:Dictionary in data.houses:sources[str(house.id)]=house
+	for source in ledger:
+		var ids:Dictionary={}
+		if not _valid_id(source,"h",ids) or int(source.substr(1))>issued_house:return _fail("赠粮磨坊身份无效")
+		if sources.has(source) and sources[source].get("signature","")!="watermill":return _fail("赠粮来源不是水车磨坊")
+		var row:Variant=ledger[source]
+		if not row is Dictionary or row.size()!=2 or not _is_integer(row.get("batches")) or row.batches<1 or not row.get("gifts") is Dictionary:return _fail("磨坊炉次记录无效")
+		var bread:Variant=supply.get(source,{})
+		if not bread is Dictionary or not _is_integer(bread.get("produced")) or not _is_integer(bread.get("served")) or row.batches>bread.produced:return _fail("赠粮缺少真实出炉记录")
+		var gifts:=0
+		for home in row.gifts:
+			var seen:Dictionary={}
+			if not _valid_id(home,"h",seen) or int(home.substr(1))>issued_house or home==source or not _is_integer(row.gifts[home]) or row.gifts[home]<1:return _fail("收粮住户记录无效")
+			gifts+=int(row.gifts[home]);homes[home]=int(homes.get(home,0))+int(row.gifts[home])
+		if gifts>2*floori(float(row.batches)/3.) or gifts>bread.served:return _fail("赠粮超过炉次或实际库存支出")
+	var credits:Variant=data.get("cafe_credits",{})
+	if not credits is Dictionary:return _fail("收粮资格台账无效")
+	for home:String in homes:
+		var row:Variant=credits.get(home,{})
+		if not row is Dictionary or not _is_integer(row.get("earned")) or homes[home]>row.earned:return _fail("赠粮与住户收粮记录不一致")
+	return {"ok":true}
+
+static func _gift_count(data:Dictionary)->int:
+	var total:=0
+	for row:Dictionary in data.get("landmark_bread",{}).values():
+		for count in row.gifts.values():total+=int(count)
+	return total
+
 static func _validate_cafe_progress(data: Dictionary, issued: Dictionary) -> Dictionary:
 	var credits: Variant = data.get("cafe_credits", {})
 	var progress: Variant = data.get("cafe_progress", {})
@@ -126,7 +162,7 @@ static func _validate_cafe_progress(data: Dictionary, issued: Dictionary) -> Dic
 		groups += int(row.groups)
 		visits += int(row.visits)
 	var life: Dictionary = data.get("life_progress", {})
-	if spent != int(life.get("tea_visits", 0)) or visits != spent or groups != int(life.get("tea_parties", 0)) or earned > int(life.get("purchases", 0)): return _fail("茶座采购与聚会台账不守恒")
+	if spent != int(life.get("tea_visits", 0)) or visits != spent or groups != int(life.get("tea_parties", 0)) or earned > int(life.get("purchases", 0))+_gift_count(data): return _fail("茶座采购与聚会台账不守恒")
 	return {"ok":true}
 
 static func _validate_matinee(data: Dictionary, issued: Dictionary) -> Dictionary:

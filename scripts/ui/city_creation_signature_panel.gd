@@ -98,7 +98,7 @@ func refresh() -> void:
 			for color_key: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
 				buttons[id].add_theme_color_override(color_key, UI.INK)
 			buttons[id].add_theme_color_override("font_disabled_color", Color("9b9f8c"))
-		labels[id].text = demo.state.Signatures.GOALS[id]
+		labels[id].text = demo.state.Signatures.GOALS[id]+("\n"+str(demo.state.Signatures.LOCAL_EFFECTS[id]) if demo.state.Signatures.LOCAL_EFFECTS.has(id) else "")
 	var selected: Dictionary = demo.town._house_record(demo.selected_house)
 	actions.visible = selected.has("signature")
 

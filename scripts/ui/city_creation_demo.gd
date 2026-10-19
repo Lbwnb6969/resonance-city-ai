@@ -2065,7 +2065,8 @@ func _refresh_bakeries() -> void:
 	bakery_progress.visible = not selected.is_empty()
 	bakery_button.visible = not selected.is_empty()
 	if selected.is_empty(): return
-	bakery_info.text = "柜台面包 %d / %d · 每炉 %d份\n累计出炉 %d份 · 街坊买走 %d份" % [int(selected.stock),int(selected.capacity),int(selected.batch_size),int(selected.produced),int(selected.served)]
+	bakery_info.text = "柜台面包 %d / %d · 每炉 %d份\n累计出炉 %d份 · 街坊买走 %d份" % [int(selected.stock),int(selected.capacity),int(selected.batch_size),int(selected.produced),int(selected.served)-int(selected.gifted)]
+	if int(selected.gifted)>0:bakery_info.text+=" · 赠粮 %d份"%int(selected.gifted)
 	var phase := str(selected.worker_phase)
 	var activity: String = {"walking":"正在沿路来开炉","baking":"正在揉面、烘焙","returning":"正在沿路回家","resting":"正在家里小歇","paused":"等小路重新接通","unassigned":"接通一处居所，让街坊来当面包师"}.get(phase,"等街坊来开炉")
 	if not bool(selected.open): activity = "炉火小歇，柜台面包仍能买走"

@@ -38,12 +38,13 @@ static func workshop_blessing(state: RefCounted, workshop_id: String) -> Diction
 				var pt := Vector2(float(plant.position[0]), float(plant.position[1]))
 				if pt.distance_to(origin) <= 8.0 and bool(state.vegetation_visible(plant)):
 					trees += 1
-		var active := trees >= 3
+		var palace:=bool(state.planning_bonus(workshop_id).get("natural",false))
+		var active := trees >= 3 or palace
 		return {
 			"blessed": active,
 			"trees": trees,
 			"speed_multiplier": 1.35 if active else 1.0,
-			"label": "🌲 良木林间加持（%d棵树）· 制琴提速35%%" % trees if active else "周围种满3棵橄榄或柏树可获良木加持（当前%d/3）" % trees,
+			"label": "翡翠花海良木加持 · 制琴提速35%" if palace else ("🌲 良木林间加持（%d棵树）· 制琴提速35%%" % trees if active else "周围种满3棵橄榄或柏树可获良木加持（当前%d/3）" % trees),
 		}
 	return {"blessed": false, "speed_multiplier": 1.0, "label": ""}
 

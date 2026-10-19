@@ -9,9 +9,9 @@ func _initialize() -> void:
 	var city := State.new()
 	city.initialize()
 	_check(city.bakery_supply.is_empty(), "new town starts without invented stock")
-	_check(city.bakery_capacity("h2") == 12 and city.bakery_batch_size("h2") == 2, "all actual rooms including upper floors provide capacity and batch")
+	_check(city.bakery_capacity("h2") == 12 and city.bakery_batch_size("h2") == 3, "actual rooms provide capacity and near-water blessing adds one loaf per batch")
 	_check(city.bakery_capacity("h1") == 0 and city.bakery_batch_size("missing") == 0, "non bakery and missing house have no production")
-	_check(city.bakery_status("h2") == {"stock":0,"produced":0,"served":0,"capacity":12,"batch_size":2,"open":true} and city.bakery_supply.is_empty(), "read only query never invents supply rows")
+	_check(city.bakery_status("h2") == {"stock":0,"produced":0,"served":0,"gifted":0,"capacity":12,"batch_size":3,"open":true} and city.bakery_supply.is_empty(), "read only query never invents stock or gift rows")
 	_check(not city.serve_bread("h2") and city.life_progress.purchases == 0 and not city.dirty, "empty bakery cannot complete purchase or dirty state")
 	_check(not city.produce_bread("h2", 0) and not city.produce_bread("h2", -1) and not city.produce_bread("h2", 13), "nonpositive and overflow batches rejected")
 	_check(not city.produce_bread("h1", 1) and not city.produce_bread("missing", 1), "wrong role cannot create bread")
@@ -134,7 +134,7 @@ func _test_workers() -> void:
 		var bad := checkpoint.duplicate(true)
 		bad.bakery_workers[0].erase(field)
 		cases.append(bad)
-	for patch in [{"home_id":"h999"},{"bakery_id":"h999"},{"position":[-21,0]},{"position":[INF,0]},{"yaw":NAN},{"phase":"finished"},{"resume_phase":"paused"},{"resume_phase":"walking"},{"elapsed":-1},{"elapsed":6.1},{"elapsed":"2"},{"batches":-1},{"batches":4},{"batches":1.5},{"extra":true},{"phase":"walking","resume_phase":"walking","elapsed":0.1},{"phase":"resting","resume_phase":"resting","elapsed":4.1},{"phase":"paused","resume_phase":"returning","elapsed":1}]:
+	for patch in [{"home_id":"h999"},{"bakery_id":"h999"},{"position":[State.WORLD_RECT.position.x-2.01,0]},{"position":[INF,0]},{"yaw":NAN},{"phase":"finished"},{"resume_phase":"paused"},{"resume_phase":"walking"},{"elapsed":-1},{"elapsed":6.1},{"elapsed":"2"},{"batches":-1},{"batches":4},{"batches":1.5},{"extra":true},{"phase":"walking","resume_phase":"walking","elapsed":0.1},{"phase":"resting","resume_phase":"resting","elapsed":4.1},{"phase":"paused","resume_phase":"returning","elapsed":1}]:
 		var bad := checkpoint.duplicate(true)
 		bad.bakery_workers[0].merge(patch, true)
 		cases.append(bad)

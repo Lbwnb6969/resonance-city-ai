@@ -159,7 +159,8 @@ func refresh() -> void:
 		match role:
 			"bakery":
 				status = demo.life.bakery_status(id)
-				lines.append("柜台 %d / %d    ·    已出炉 %d    ·    已售出 %d" % [int(status.stock), int(status.capacity), int(status.produced), int(status.served)])
+				lines.append("柜台 %d / %d    ·    已出炉 %d    ·    已售出 %d" % [int(status.stock), int(status.capacity), int(status.produced), int(status.served)-int(status.gifted)])
+				if demo.state.landmark_bread.has(id):lines.append("水车已开 %d 炉 · 赠粮 %d 份"%[int(demo.state.landmark_bread[id].batches),int(status.gifted)])
 				lines.append("%s    ·    工作成员 %d 人" % ["开门营业" if bool(status.open) else "暂停营业", int(bakery_members.get(id, 0))])
 				lines.append(business_activity("bakery", status))
 				lines.append(str(demo.state.site_blessing(id).label))

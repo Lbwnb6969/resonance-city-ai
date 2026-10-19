@@ -227,12 +227,12 @@ func _work(context: Node3D) -> Dictionary:
 	var cafes: Dictionary = context.cafes.prepare(context)
 	var courts: Dictionary = context.courtyards.prepare(context)
 	stages.services = float(Time.get_ticks_usec()-stage_start)/1000.0
+	stage_start=Time.get_ticks_usec();context.state.synergy_buffs()
+	stages.planning_bonuses=float(Time.get_ticks_usec()-stage_start)/1000.
 	stage_start = Time.get_ticks_usec()
 	for house:Dictionary in context.state.houses:
 		if str(house.get("role","")) in ["bakery","workshop","garden_cafe"]:context.state.site_blessing(str(house.id))
 	stages.site_blessings=float(Time.get_ticks_usec()-stage_start)/1000.
-	stage_start=Time.get_ticks_usec();context.state.synergy_buffs()
-	stages.planning_bonuses=float(Time.get_ticks_usec()-stage_start)/1000.
 	stage_start=Time.get_ticks_usec()
 	context.ground_contact_field.prepare(context.state)
 	stages.contact_field = float(Time.get_ticks_usec()-stage_start)/1000.0

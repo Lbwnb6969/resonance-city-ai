@@ -85,11 +85,11 @@ func _run()->void:
 			var transform: Transform3D=flowers[i][0]
 			var at:=Vector2(block)*8.+Vector2(transform.origin.x,transform.origin.z)
 			if i<original:
-				if at.distance_to(center)<=8.:expected+=1
+				if at.distance_to(center)<=14.:expected+=1
 				else:unboosted+=1
 			else:valid=valid and mask.visible(at,.25) and absf(transform.origin.y-city.ground_height(at)-.014)<.001
 		extras+=extra
-	_check(extras>0 and extras==expected and unboosted>0,"every existing flower cluster inside eight metres receives exactly one companion while distant flowers retain their count")
+	_check(extras>0 and extras==expected and unboosted>0,"every existing flower cluster inside fourteen metres receives exactly one companion while distant flowers retain their count")
 	_check(valid,"all added flowers clear current house road and water masks and follow actual ground height")
 	var fingerprint: Dictionary=meadow.fingerprints.duplicate();meadow.rebuild({},blocks)
 	_check(meadow.last_changed==0 and meadow.fingerprints==fingerprint,"unchanged palace does not rebuild or reshuffle meadow blocks")
@@ -134,7 +134,7 @@ func _run()->void:
 		var now:=Time.get_ticks_usec();frames.append(float(now-previous)/1000.);previous=now
 	frames.sort();facts.live={"base_flowers":baseline,"palace_flowers":actual,"extra":boosted,"p95_ms":frames[170],"max_ms":frames[-1]}
 	var moved: Dictionary=demo.state.place_signature("botanical_palace",Vector2(-31,18),built.house_id);demo._after_edit(moved,"house");await _wait()
-	_check(moved.ok and demo.town.meadow.palace_centers==[Vector2(-31,19.8)] and demo.town.meadow.palace_flower_counts.get(Vector2i(-3,0),-1)==0,"budgeted palace movement retires old halo and publishes flowers at the new position")
+	_check(moved.ok and demo.town.meadow.palace_centers==[Vector2(-31,19.8)] and demo.town.meadow.palace_flower_counts.get(Vector2i(-2,0),-1)==0,"budgeted palace movement retires old halo and publishes flowers at the new position")
 	_camera(Vector2(-31,19.8));await _capture("04_moved_palace_flower_halo")
 	demo._after_edit(demo.state.undo(),"history");await _wait()
 	_check(_extras(demo.town.meadow)==boosted and _flowers(demo.town.meadow)==actual,"real construction undo restores exact original flower count")

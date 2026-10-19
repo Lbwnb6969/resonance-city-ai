@@ -64,6 +64,9 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		if duration>180.0:result.schema=city.QUALITY_CONTEXT_SCHEMA;break
 	for house: Dictionary in city.houses:
 		if house.get("signature","")=="watermill" and house.cells.size()==8:result.schema=city.QUALITY_CONTEXT_SCHEMA;break
+	if not city.landmark_bread.is_empty():
+		result.schema=city.PLANNING_SCHEMA
+		result.landmark_bread=city.landmark_bread.duplicate(true)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -104,6 +107,10 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 			row.groups = int(row.groups)
 			row.visits = int(row.visits)
 		city.bakery_supply = data.get("bakery_supply", {}).duplicate(true)
+		city.landmark_bread=data.get("landmark_bread",{}).duplicate(true)
+		for row:Dictionary in city.landmark_bread.values():
+			row.batches=int(row.batches)
+			for id:String in row.gifts:row.gifts[id]=int(row.gifts[id])
 		city.workshop_supply = data.get("workshop_supply", {}).duplicate(true)
 		city.house_improvements = data.get("house_improvements", {}).duplicate()
 		city.venue_commissions = data.get("venue_commissions", {}).duplicate(true)
@@ -213,7 +220,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档生活进展无效")
 	var journeys: Dictionary = city._validate_journey_checkpoint(data.get("journey_checkpoint",{}), data.get("houses"), progress)
 	if not journeys.ok: return journeys
-	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.QUALITY_CONTEXT_SCHEMA:
+	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.PLANNING_SCHEMA:
 		return city._fail("不支持的城市存档版本")
 	var unlocks: Variant = data.get("era_unlocks", ["pastoral"])
 	if not unlocks is Array or unlocks.is_empty() or unlocks.size() > city.Eras.AVAILABLE_COUNT: return city._fail("时代解锁结构无效")
@@ -369,6 +376,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if int(data.schema)>=city.QUALITY_CONTEXT_SCHEMA and quality is Dictionary and city._is_integer(quality.get("level_tier")) and quality.level_tier==5:maximum*=2.
 		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > maximum:
 			return city._fail("城市存档共鸣余韵时间无效")
+	var landmark_check:Dictionary=city.SaveValidation._validate_landmark_bread(data,int(issued.house))
+	if not landmark_check.ok:return landmark_check
 	var cafe_check: Dictionary = city._validate_cafe_progress(data, issued)
 	if not cafe_check.ok: return cafe_check
 	var matinee_check: Dictionary = city._validate_matinee(data, issued)

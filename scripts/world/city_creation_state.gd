@@ -24,6 +24,7 @@ const QUALITY_SCHEMA := 14
 const CLOCKWORK_SCHEMA := 15
 const MODERN_SCHEMA := 16
 const QUALITY_CONTEXT_SCHEMA := 17
+const PLANNING_SCHEMA := 18
 const Signatures := preload("res://scripts/world/city_creation_signatures.gd")
 const AmphitheaterPlan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
@@ -103,6 +104,7 @@ var matinee_pending: Dictionary = {}
 var matinee_cooldown := 0.0
 var matinee_last_venue := ""
 var bakery_supply: Dictionary = {}
+var landmark_bread: Dictionary = {}
 var workshop_supply: Dictionary = {}
 var house_improvements: Dictionary = {}
 var venue_commissions: Dictionary = {}
@@ -147,6 +149,7 @@ func initialize() -> void:
 	matinee_cooldown = 0.0
 	matinee_last_venue = ""
 	bakery_supply.clear()
+	landmark_bread.clear()
 	workshop_supply.clear()
 	house_improvements.clear()
 	venue_commissions.clear()
@@ -1373,12 +1376,15 @@ func chord_together(house_ids:Array,chord:String)->bool:
 
 func installation_multiplier(shop_id:String,target_id:String)->float:
 	var index:=_house_index(shop_id)
-	if index<0 or str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return 1.
-	return 1.5 if has_chord(target_id,"pastoral_triad") else 1.
+	if index<0:return 1.
+	var delivery:=float(planning_bonus(shop_id).get("delivery_mult",1.))
+	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery
+	return delivery*(1.5 if has_chord(target_id,"pastoral_triad") else 1.)
 
 
 func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
-	return walking_multiplier(home_id)*(installation_multiplier(shop_id,target_id) if phase=="to_target" else 1.)
+	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else (float(planning_bonus(shop_id).get("delivery_mult",1.)) if phase=="returning" else 1.)
+	return walking_multiplier(home_id)*delivery
 
 
 func tram_synergy_houses(at:Vector2,from:Vector2=Vector2.INF)->Array[String]:
@@ -1462,7 +1468,9 @@ func bakery_status(house_id: String) -> Dictionary:
 	var row: Dictionary = bakery_supply.get(house_id, {})
 	var index := _house_index(house_id)
 	var opened: bool = index >= 0 and houses[index].role == "bakery" and houses[index].get("bakery_open", true)
-	return {"stock":int(row.get("stock", 0)), "produced":int(row.get("produced", 0)), "served":int(row.get("served", 0)), "capacity":bakery_capacity(house_id), "batch_size":bakery_batch_size(house_id), "open":opened}
+	var gifted:=0
+	for count in landmark_bread.get(house_id,{}).get("gifts",{}).values():gifted+=int(count)
+	return {"stock":int(row.get("stock", 0)), "produced":int(row.get("produced", 0)), "served":int(row.get("served", 0)), "gifted":gifted,"capacity":bakery_capacity(house_id), "batch_size":bakery_batch_size(house_id), "open":opened}
 
 
 func set_bakery_open(house_id: String, opened: bool) -> Dictionary:
@@ -1483,9 +1491,33 @@ func produce_bread(house_id: String, quantity: int) -> bool:
 	if capacity == 0 or not current.open or quantity <= 0 or quantity > capacity - int(current.stock):
 		return false
 	bakery_supply[house_id] = {"stock":int(current.stock) + quantity, "produced":int(current.produced) + quantity, "served":int(current.served)}
+	var index:=_house_index(house_id)
+	if houses[index].get("signature","")=="watermill" and quantity==int(current.batch_size):_mill_batch(house_id)
 	life_progress_dirty = true
 	dirty = true
 	return true
+
+
+func _mill_batch(house_id:String)->void:
+	var row:Dictionary=landmark_bread.get(house_id,{"batches":0,"gifts":{}})
+	row.batches=int(row.batches)+1;landmark_bread[house_id]=row
+	if int(row.batches)%3!=0:return
+	var candidates:Array[Dictionary]=[]
+	for house:Dictionary in houses:
+		if str(house.role)=="residential" and not has_cafe_credit(str(house.id)):candidates.append(house)
+	var salt:=house_id+":"+str(row.batches)
+	candidates.sort_custom(func(a:Dictionary,b:Dictionary)->bool:
+		var hungry_a:=int(cafe_credits.get(str(a.id),{}).get("earned",0))==0
+		var hungry_b:=int(cafe_credits.get(str(b.id),{}).get("earned",0))==0
+		if hungry_a!=hungry_b:return hungry_a
+		var first:=hash(salt+":"+str(a.id));var second:=hash(salt+":"+str(b.id))
+		return first<second if first!=second else str(a.id)<str(b.id))
+	for i in range(mini(2,candidates.size())):
+		if int(bakery_supply[house_id].stock)<=0:break
+		var id:=str(candidates[i].id);var credit:Dictionary=cafe_credits.get(id,{"earned":0,"spent":0})
+		bakery_supply[house_id].stock-=1;bakery_supply[house_id].served+=1
+		cafe_credits[id]={"earned":int(credit.earned)+1,"spent":int(credit.spent)}
+		row.gifts[id]=int(row.gifts.get(id,0))+1
 
 
 func serve_bread(house_id: String, home_id: String = "") -> bool:
@@ -1594,7 +1626,7 @@ func workshop_batch_size(house_id: String) -> int:
 	var rooms := 0
 	for cell in houses[index].cells:
 		if cell.kind == "room": rooms += 1
-	return maxi(1, rooms)
+	return maxi(1, rooms)*int(planning_bonus(house_id).get("batch_mult",1))
 
 
 func workshop_capacity(house_id: String) -> int:

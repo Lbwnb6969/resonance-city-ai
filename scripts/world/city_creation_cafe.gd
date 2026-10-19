@@ -52,7 +52,8 @@ func sync() -> void:
 
 func status(id: String) -> Dictionary:
 	var ledger: Dictionary = life.state.cafe_progress.get(id, {})
-	var result := {"phase":"closed","arrived":0,"invited":0,"elapsed":0.0,"duration":DURATION,"groups":int(ledger.get("groups", 0)),"visits":int(ledger.get("visits", 0)),"afterglow_extension":life.state.cafe_afterglow_extension(id),"participants":[],"seated_count":0,"seated_seats":[]}
+	var time_scale:=float(life.state.planning_bonus(id).get("cafe_duration_mult",1.))
+	var result := {"phase":"closed","arrived":0,"invited":0,"elapsed":0.0,"duration":DURATION*time_scale,"groups":int(ledger.get("groups", 0)),"visits":int(ledger.get("visits", 0)),"afterglow_extension":life.state.cafe_afterglow_extension(id),"participants":[],"seated_count":0,"seated_seats":[]}
 	if not layouts.has(id): return result
 	if not life.connected_houses.has(id):
 		result.phase = "disconnected"
@@ -62,7 +63,7 @@ func status(id: String) -> Dictionary:
 	var group: Dictionary = groups[id]
 	result.participants = group.participants.duplicate()
 	result.invited = group.participants.size()
-	result.elapsed = float(group.elapsed)
+	result.elapsed = float(group.elapsed)*time_scale
 	for home in group.participants:
 		var resident := _resident(str(home))
 		if not resident.is_empty() and resident.has("cafe_visit") and str(resident.cafe_visit.phase) == "seated":
@@ -189,7 +190,8 @@ func tick(delta: float) -> void:
 			groups.erase(id)
 			continue
 		if was_tea:
-			group.elapsed = minf(DURATION, float(group.elapsed) + delta)
+			# Keep the existing normalized 0..6 saved progress; only real time changes.
+			group.elapsed = minf(DURATION, float(group.elapsed) + delta/float(life.state.planning_bonus(str(id)).get("cafe_duration_mult",1.)))
 			if float(group.elapsed) >= DURATION:
 				var homes: Array = group.participants.duplicate()
 				if life.state.complete_tea(str(id), homes):

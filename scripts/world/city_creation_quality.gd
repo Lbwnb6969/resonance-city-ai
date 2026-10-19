@@ -36,6 +36,7 @@ static func data(city: RefCounted) -> Dictionary:
 		"house_culture":city.house_culture,"house_clockwork":city.house_clockwork,"house_concerts":city.house_concerts}
 
 static func amenity(city: RefCounted, house: Dictionary) -> bool:
+	if bool(city.planning_bonus(str(house.id)).get("natural",false)):return true
 	if city.has_chord(str(house.id),"renaissance_fugue"):return true
 	var at:=Vector2(float(house.origin[0]),float(house.origin[1]))
 	var district: Dictionary=city.district_for_house(str(house.id))
