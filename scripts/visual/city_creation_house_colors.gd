@@ -38,9 +38,14 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 		elif renderer.state.house_era(house)=="clockwork":base=renderer.Clockwork.palette(base)
 		elif renderer.state.house_era(house)=="modern_eco":base=renderer.Modern.palette(base)
 		palettes.append(_colors(base))
+	var packed: Array[PackedInt64Array]=[]
+	for colors: Array in palettes:
+		var values:=PackedInt64Array()
+		for color:Color in colors:values.append(color.to_abgr32())
+		packed.append(values)
 	var current: int = _index(house)
 	var lookup := {}
-	for index in range(palettes[current].size()): lookup[palettes[current][index].to_html()] = index
+	for index in range(palettes[current].size()): lookup[palettes[current][index].to_abgr32()] = index
 	var buffers: Array = []
 	var material_rows: Array = []
 	var style_rows: Array = []
@@ -51,7 +56,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 		if node.mesh == null: continue
 		var material: Material = node.material_override
 		if material is StandardMaterial3D:
-			var recipe: int = lookup.get(material.albedo_color.to_html(),-1)
+			var recipe: int = lookup.get(material.albedo_color.to_abgr32(),-1)
 			if recipe >= 0 and not material.vertex_color_use_as_albedo:
 				var owned := material.duplicate() as StandardMaterial3D
 				node.material_override = owned
@@ -59,7 +64,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 		elif material is ShaderMaterial and material.shader in [renderer.JoinedRoofShader,renderer.Clockwork.Brick]:
 			var parameter := "brick_color" if material.shader==renderer.Clockwork.Brick else "roof_color"
 			var roof_color: Color = material.get_shader_parameter(parameter)
-			var recipe: int = lookup.get(roof_color.to_html(),-1)
+			var recipe: int = lookup.get(roof_color.to_abgr32(),-1)
 			if recipe >= 0:
 				var owned := material.duplicate() as ShaderMaterial
 				node.material_override = owned
@@ -76,7 +81,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 			vertex_recipes.resize(count)
 			var changes := 0
 			for vertex in range(count):
-				vertex_recipes[vertex] = int(lookup.get(original[vertex].to_html(),-1))
+				vertex_recipes[vertex] = int(lookup.get(original[vertex].to_abgr32(),-1))
 				if vertex_recipes[vertex] >= 0: changes += 1
 			if changes == 0: continue
 			var raw: Dictionary = RenderingServer.mesh_get_surface(mesh.get_rid(),surface)
@@ -90,7 +95,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 				if index != current:
 					for vertex in range(count):
 						var recipe: int = vertex_recipes[vertex]
-						if recipe >= 0: bytes.encode_u32(offset+vertex*stride,palettes[index][recipe].to_abgr32())
+						if recipe >= 0: bytes.encode_u32(offset+vertex*stride,packed[index][recipe])
 				variants.append(bytes)
 				total_bytes += bytes.size()
 			buffers.append({"mesh":mesh,"surface":surface,"variants":variants})
@@ -104,7 +109,7 @@ static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
 		if not node.has_meta("style_details"): continue
 		var parts: Array = node.get_meta("style_details")
 		var recipes := PackedInt32Array()
-		for part: Dictionary in parts: recipes.append(int(lookup.get(part.color.to_html(),-1)))
+		for part: Dictionary in parts: recipes.append(int(lookup.get(part.color.to_abgr32(),-1)))
 		style_rows.append({"node":node,"parts":parts,"recipes":recipes})
 	var prepare_ms := float(Time.get_ticks_usec()-started)/1000.0
 	root.set_meta("house_color_cache",{"authoring":_authoring(house),"buffers":buffers,"materials":material_rows,

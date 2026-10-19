@@ -27,10 +27,14 @@ func _edit(kind:String)->void:
 	if not result.ok:return
 	demo._after_edit(result,"history" if kind=="palette" else kind)
 	var input_ms:float=(Time.get_ticks_usec()-began)/1000.
-	var frames:Array[float]=[];var last:=Time.get_ticks_usec();var deadline:=Time.get_ticks_msec()+90000
+	var frames:Array[float]=[];var slow:Array=[];var last:=Time.get_ticks_usec();var deadline:=Time.get_ticks_msec()+90000
 	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:
 		await process_frame
 		var now:=Time.get_ticks_usec();frames.append((now-last)/1000.);last=now
+		if frames[-1]>20.:
+			var budget=demo.town.budget_rebuild
+			slow.append({"ms":frames[-1],"frame":Engine.get_process_frames(),"engine_process_ms":Performance.get_monitor(Performance.TIME_PROCESS)*1000.,"physics_ms":Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS)*1000.,
+				"budget_work_ms":budget._frame_work_ms,"budget_frame":budget._work_frame,"step":budget.stats.get("last_step",{}).duplicate(),"poll":budget.stats.get("last_poll",{}).duplicate(),"retirement":budget.stats.get("last_retirement",{}).duplicate()})
 	_check(not demo.edit_pending(),"actual "+kind+" completes its current revision")
 	for ignored in range(8):await process_frame
 	frames.sort()
@@ -38,7 +42,7 @@ func _edit(kind:String)->void:
 	var life_published:bool=float(report.get("life_commit_ms",0.))>0.
 	var row:Dictionary={"kind":kind,"author_ms":author_ms,"input_ms":input_ms,"report":report,
 		"cafe_sync":demo.life.cafe.sync_stats.duplicate() if life_published else {},"cafe_context":demo.life.cafe.layout_api.stats.duplicate() if life_published else {},
-		"life_commit":demo.life.budget_commit_stats.duplicate(true) if life_published else {},"frame_count":frames.size(),
+		"life_commit":demo.life.budget_commit_stats.duplicate(true) if life_published else {},"frame_count":frames.size(),"slow_frames":slow,
 		"within_four_ms":maxf(input_ms,maxf(float(report.get("poll_max_ms",0.)),float(report.get("ui_ms",0.))))<4.,
 		"max_frame_ms":frames[-1] if not frames.is_empty() else 0.,"p95_frame_ms":frames[int(frames.size()*.95)] if not frames.is_empty() else 0.}
 	edits.append(row)

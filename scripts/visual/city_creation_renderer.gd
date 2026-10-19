@@ -808,13 +808,16 @@ func _entrance_point(entrance: Dictionary, local: Vector3) -> Vector3:
 			if str(cell.id)==str(entrance.cell_id): base_y=float(house.get("base_y",0.0))
 	return Vector3(at.x+float(side.y)*local.x+float(side.x)*local.z,local.y+base_y,at.y-float(side.x)*local.x+float(side.y)*local.z)
 
-func _merge_meshes(parent: Node3D) -> void:
+func _merge_meshes(parent: Node3D,prepare_colors:bool=true) -> void:
 	# Keep ownership, collision and resonance pivots local to each house.
 	if parent.has_meta("palette_colors"):
 		var house := _house_record(str(parent.name))
 		parent.set_meta("creation_wall_base_y",float(house.get("base_y",0.0)))
 		parent.set_meta("creation_wall_story_height",FLOOR)
 	parent.set_meta("material_batching",mesh_batcher.merge(parent))
+	if prepare_colors:_prepare_house_colors(parent)
+
+func _prepare_house_colors(parent:Node3D)->void:
 	if parent.has_meta("palette_colors"):
 		var house := _house_record(str(parent.name))
 		if not house.is_empty():

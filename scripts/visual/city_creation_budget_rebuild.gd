@@ -62,6 +62,7 @@ func retire_idle()->void:
 	else:
 		while not retired_values.is_empty() and float(Time.get_ticks_usec()-began)/1000.<available:retired_values.pop_back()
 	var elapsed:=float(Time.get_ticks_usec()-began)/1000.
+	stats.last_retirement={"frame":Engine.get_process_frames(),"ms":elapsed,"kind":"context_or_solver" if context_only else "value"}
 	_account_work(elapsed)
 	_main_ms+=elapsed;stats["main_ms"]=_main_ms
 	stats["retirement_total_ms"]=float(stats.get("retirement_total_ms",0.))+elapsed
@@ -368,7 +369,9 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	for change: Array in result.terrain_blocks: tasks.append(["terrain",change[0],change[1],change[2]])
 	for house: Dictionary in result.houses:
 		tasks.append(["house",house])
-		tasks.append(["house_finish",house])
+		tasks.append(["house_merge",house])
+		tasks.append(["house_colors",house])
+		tasks.append(["house_resonance",house])
 	for id: String in result.cafes.changes: tasks.append(["cafe",id,result.cafes.changes[id],result.cafes.live])
 	for id: String in result.courtyards.changes: tasks.append(["courtyard",id,result.courtyards.changes[id],result.courtyards.live])
 	for road: Dictionary in result.roads: tasks.append(["road",road,result.road_data[str(road.id)]])
@@ -410,10 +413,13 @@ func _step(task: Array) -> void:
 				body.collision_layer = 0
 				body.collision_mask = 0
 			staging.house_roots[str(house.id)] = root
-		"house_finish":
+		"house_merge":
+			staging._merge_meshes(staging.house_roots[str(task[1].id)],false)
+		"house_colors":
+			staging._prepare_house_colors(staging.house_roots[str(task[1].id)])
+		"house_resonance":
 			var house: Dictionary = task[1]
 			var root: Node3D = staging.house_roots[str(house.id)]
-			staging._merge_meshes(root)
 			staging.resonance.build(staging,house,root)
 		"cafe":
 			staging.cafes.install(staging,{"changes":{task[1]:task[2]},"live":task[3]})
@@ -503,6 +509,7 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 		var step_start := Time.get_ticks_usec()
 		_step(tasks[task_index])
 		var step_ms:=float(Time.get_ticks_usec()-step_start)/1000.
+		stats.last_step={"frame":Engine.get_process_frames(),"kind":task_kind,"ms":step_ms,"units":units}
 		if units>0:
 			_task_peak_ms[task_kind]=maxf(float(_task_peak_ms.get(task_kind,0.)),step_ms)
 			_task_max_units[task_kind]=maxi(int(_task_max_units.get(task_kind,0)),units)
@@ -521,6 +528,7 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 		_max_step_ms = maxf(_max_step_ms,step_ms)
 		committed = true
 	var work_ms := float(Time.get_ticks_usec()-start)/1000.0
+	stats.last_poll={"frame":Engine.get_process_frames(),"ms":work_ms}
 	stats["max_poll_ms"]=maxf(float(stats.get("max_poll_ms",0.)),work_ms)
 	_account_work(work_ms)
 	_main_ms += work_ms
