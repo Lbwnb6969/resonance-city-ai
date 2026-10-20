@@ -5,7 +5,7 @@
 ## 当前优先级
 
 1. Stage I：彩色大面仍未定位。读取现有F10城市/相机/截图，验证MultiMesh、道路退化点、纹理上传三条假设；鸟蝶初始化7个零矩阵提前可见已修，16项CPU/1000帧巡游有限数据检查通过；根因仍需异常现场节点/网格证据。正常截图不等于修复。个人文件只读，复现用隔离副本。
-2. 音乐目录已改随几何后台准备，校验临水/品质等全部输入，发布时保留播放器/拍钟。27项CPU/14项127屋实窗与原版目录对照通过；门前布局和日记摘要也已随结构复用，20项CPU/58项品质与16项旗舰实窗通过；UI降至3.861/2.921ms，全链仍超4ms。继续发布尾帧、单屋品质显示与300屋真实经营性能。
+2. 音乐目录/轮唱、日记与门前布局已随结构准备/复用，保留PCM拍钟和即时库存。建筑材质合批改按源网格/输出批次分步，完成后才发布；草地索引缓存复用，旧纯CPU快照/记录由cpu_retirement后台释放，节点/GPU只在主线程销毁。16项分帧/取消/道路失效、6项释放线程、58项品质CPU及19项127屋实窗通过；12栋四时代/六地标完整网格与原版一致。合批峰值1.882ms，主线程回收最高.978ms；整体编辑仍超4ms，继续单屋建造与Life/原子发布、单屋品质和300屋经营性能。
 3. 毛石基再埋22cm/14cm贴地透明裙已通过19项CPU与30项实窗（7屋p95 5.582ms），末层负/零厚度也已修；时代边界双侧灌木/暖界石也已通过32项CPU与30项实窗（p95 5.585ms），真种植/改风貌/撤销与跨城缓存正确。桥头1.25m纹理渐变/支撑板相交修正与柔暖全局光影也已通过9项CPU/12项实窗；细节见PROJECT。接续破面、编辑尾帧、品质显示和300屋Life。Stage I验收后推进IV/V去表单空间UI（II/III沿用已验收实现）。三档性格/刮奏/心愿/巡游/四时、策略增补、六种子/乐章铭牌依VI～IX；X完整收口。
 
 ## 代码定位
@@ -16,7 +16,7 @@
 | 真值/历史 | scripts/world/city_creation_state.gd、serializer、change_set；可选Schema18已有，未来19兼容1～18 |
 | 拉路/坡路 | road_gesture/road_intent/stroke，road_heights/road_earthworks/terrain_protection/frontage/junctions；新宽街2.10m旧2m保持 |
 | 生活/调度 | city_creation_life、citizen_schedule、citizen_motion、worker_lod、network、bakery/workshop/cafe、tram、quality |
-| 后台/发布 | scripts/visual/city_creation_budget_rebuild.gd；私有快照/缓存容器，CPU线程准备，GPU和节点只在主线程分帧发布 |
+| 后台/发布 | scripts/visual/city_creation_budget_rebuild.gd；私有快照/缓存容器，CPU线程准备、cpu_retirement回收纯值，GPU和节点只在主线程分帧发布 |
 | 画面 | renderer/meadow/foliage/shore/path_pebbles/highland/era_streets/quality_visual；水场/接触场与shaders/ |
 | 音乐 | scripts/audio/city_creation_music.gd、music_catalog、attention_mixer、harmonic_emergence/palette、circular_canon、spatial/acoustic_field |
 | 经营加成 | synergy_buffs/signatures/special_sites/region_network/prosperity；真实完成事件，别另起一套状态机 |

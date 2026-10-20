@@ -3,10 +3,11 @@ extends RefCounted
 ## nodes are created only by poll(), on the main thread, in a hidden staging
 ## hierarchy. A superseded job never writes a visible root or geometry cache.
 const State = preload("res://scripts/world/city_creation_state.gd")
+const CPURetirement = preload("res://scripts/visual/city_creation_cpu_retirement.gd")
 const ChangeSet = preload("res://scripts/world/city_creation_change_set.gd")
 const ROAD_FIELDS := ["road_join_signatures","road_geometry_cache","road_outline_fingerprints","road_segment_bins","road_outlines","road_water_signatures"]
 const VEGETATION_FIELDS := ["vegetation_block_fingerprints","vegetation_id_blocks","vegetation_fingerprints","vegetation_data_fingerprints","vegetation_visibility"]
-const MEADOW_FIELDS := ["block_counts","base_counts","base_records","base_candidates","base_accents","plant_candidates","plant_candidate_fingerprints","sample_bins","sample_obstacles","entrance_cache","base_fingerprints","fingerprints","palace_flower_counts"]
+const MEADOW_FIELDS := ["block_counts","base_counts","base_records","base_candidates","base_accents","plant_candidates","plant_candidate_fingerprints","query_masks","query_fingerprints","sample_bins","sample_obstacles","entrance_cache","base_fingerprints","fingerprints","palace_flower_counts"]
 const SHORE_FIELDS := ["fingerprints","counts","_layout_candidates","_water_candidates","_water_fingerprints","_entrance_cache"]
 var generation := 0
 var committed_generation := 0
@@ -21,6 +22,7 @@ var _request_ms := 0.0
 var _max_step_ms := 0.0
 var _main_ms := 0.0
 var _published_snapshot: Dictionary = {}
+var _cpu_retirement:=CPURetirement.new()
 var retired_values:Array=[]
 var retired_solvers:Array[RefCounted]=[]
 var retired_contexts:Array[Node3D]=[]
@@ -46,36 +48,39 @@ func _account_work(ms:float)->void:
 	_frame_work_ms+=ms
 	stats["max_frame_work_ms"]=maxf(float(stats.get("max_frame_work_ms",0.)),_frame_work_ms)
 
-func retirement_pending()->bool:return not retired_values.is_empty() or not retired_contexts.is_empty() or not retired_solvers.is_empty()
+func retirement_pending()->bool:
+	return _cpu_retirement.pending() or not retired_values.is_empty() or not retired_contexts.is_empty() or not retired_solvers.is_empty()
 
 func retire_idle()->void:
 	if not retirement_pending() or Engine.get_process_frames()==_retirement_blocked_frame:return
 	var remaining:=3.5-(_frame_work_ms if _work_frame==Engine.get_process_frames() else 0.)
-	var context_only:=retired_values.is_empty()
-	if remaining<(3. if context_only else 1.25):return
-	var available:=minf(.5,remaining)
-	if available<.1:return
+	if remaining<1.25:return
 	var began:=Time.get_ticks_usec()
-	if context_only:
-		if not retired_solvers.is_empty():retired_solvers.pop_back()
-		else:_dispose_context(retired_contexts.pop_back())
-	else:
-		while not retired_values.is_empty() and float(Time.get_ticks_usec()-began)/1000.<available:retired_values.pop_back()
+	var disposed:=false
+	if not retired_contexts.is_empty() and remaining>=3.0:
+		_dispose_context(retired_contexts.pop_back());disposed=true
+	# These queues contain only obsolete immutable CPU records and solvers.
+	# Node/GPU destruction above remains on the main thread; recursive value
+	# destruction happens on the reclaimer's private bound array.
+	_cpu_retirement.enqueue(retired_values);retired_values=[]
+	_cpu_retirement.enqueue(retired_solvers);retired_solvers=[]
+	_cpu_retirement.pump()
 	var elapsed:=float(Time.get_ticks_usec()-began)/1000.
-	stats.last_retirement={"frame":Engine.get_process_frames(),"ms":elapsed,"kind":"context_or_solver" if context_only else "value"}
+	stats.last_retirement={"frame":Engine.get_process_frames(),"ms":elapsed,"kind":"context" if disposed else "cpu_handoff"}
 	_account_work(elapsed)
 	_main_ms+=elapsed;stats["main_ms"]=_main_ms
 	stats["retirement_total_ms"]=float(stats.get("retirement_total_ms",0.))+elapsed
 	stats["retirement_max_ms"]=maxf(float(stats.get("retirement_max_ms",0.)),elapsed)
-	stats["retirement_pending"]=retired_values.size()+retired_contexts.size()+retired_solvers.size()
+	stats["retirement_pending"]=retired_contexts.size()+_cpu_retirement.pending_count()
+	stats["retirement_worker"]=_cpu_retirement.stats.duplicate()
 
 func _merge_value_cache(target:Dictionary,incoming:Dictionary)->void:
 	# The old block's records are no longer used by the published geometry.
-	# Keep their final references until bounded idle frames can release them,
-	# rather than freeing thousands of dictionaries inside the atomic commit.
+	# Keep their final references until the CPU reclaimer owns them, rather
+	# than freeing thousands of immutable records inside the atomic commit.
 	for key:Variant in incoming:
 		var previous:Variant=target.get(key)
-		if (previous is Array or previous is Dictionary) and not is_same(previous,incoming[key]):retired_values.append(previous)
+		if (previous is Array or previous is Dictionary or (previous is RefCounted and not previous is Resource)) and not is_same(previous,incoming[key]):retired_values.append(previous)
 	target.merge(incoming,true)
 
 func record_published(state:RefCounted)->void:
@@ -132,6 +137,11 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	context.meadow = owner.Meadow.new()
 	context.meadow.state = city
 	context.meadow.record_only = true
+	# GrassMask is immutable after setup and contains no city/node/resource.
+	# Reuse published planar indices through private outer maps; a changed
+	# obstacle signature creates a replacement mask rather than editing one.
+	context.meadow.query_masks=owner.meadow.query_masks.duplicate()
+	context.meadow.query_fingerprints=owner.meadow.query_fingerprints.duplicate()
 	# Fingerprints preserve unchanged blocks. Only changed blocks regenerate
 	# their deterministic records, avoiding a large main-thread cache copy.
 	_copy_fields(owner.meadow,context.meadow,["fingerprints","palace_centers"])
@@ -410,7 +420,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	for block: Vector2i in staging.shore.prepared_blocks: tasks.append(["shore",block,staging.shore.prepared_blocks[block]])
 	for block: Vector2i in staging.lilypads.prepared_blocks: tasks.append(["lilypads",block,staging.lilypads.prepared_blocks[block]])
 
-func _step(task: Array) -> void:
+func _step(task: Array) -> bool:
 	match str(task[0]):
 		"water_surface":
 			var node: MeshInstance3D = staging._triangles(staging.water_layer,task[2],Color.WHITE)
@@ -437,7 +447,7 @@ func _step(task: Array) -> void:
 				body.collision_mask = 0
 			staging.house_roots[str(house.id)] = root
 		"house_merge":
-			staging._merge_meshes(staging.house_roots[str(task[1].id)],false)
+			return staging._merge_meshes(staging.house_roots[str(task[1].id)],false,0.55)
 		"house_colors":
 			staging._prepare_house_colors(staging.house_roots[str(task[1].id)])
 		"house_resonance":
@@ -470,7 +480,7 @@ func _step(task: Array) -> void:
 		"meadow":
 			var count := 0
 			for records: Array in task[2].values(): count += records.size()
-			if count == 0: return
+			if count == 0: return true
 			var root := Node3D.new()
 			var block: Vector2i = task[1]
 			root.name = "Meadow_%d_%d" % [block.x,block.y]
@@ -480,7 +490,7 @@ func _step(task: Array) -> void:
 			staging.meadow.add_child(root)
 			staging.meadow.blocks[block] = root
 		"shore":
-			if task[2].is_empty(): return
+			if task[2].is_empty(): return true
 			var root := Node3D.new()
 			var block: Vector2i = task[1]
 			root.name = "Shore_%d_%d" % [block.x,block.y]
@@ -495,7 +505,7 @@ func _step(task: Array) -> void:
 			staging.shore.blocks[block] = root
 
 		"lilypads":
-			if task[2].is_empty(): return
+			if task[2].is_empty(): return true
 			var root := Node3D.new()
 			var block: Vector2i = task[1]
 			root.name = "Pond_%d_%d" % [block.x,block.y]
@@ -508,6 +518,7 @@ func _step(task: Array) -> void:
 				staging.lilypads._make_batch(root,part,rows)
 			staging.lilypads.add_child(root)
 			staging.lilypads.blocks[block] = root
+	return true
 
 func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 	var start := Time.get_ticks_usec()
@@ -530,14 +541,14 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 		var expected:=float(_task_peak_ms.get(task_kind,3.5))*scale*1.2+.08 if units>0 else .03
 		if spent>.08 and spent+expected>budget_ms-.08:break
 		var step_start := Time.get_ticks_usec()
-		_step(tasks[task_index])
+		var task_complete := _step(tasks[task_index])
 		var step_ms:=float(Time.get_ticks_usec()-step_start)/1000.
 		stats.last_step={"frame":Engine.get_process_frames(),"kind":task_kind,"ms":step_ms,"units":units}
 		if units>0:
 			_task_peak_ms[task_kind]=maxf(float(_task_peak_ms.get(task_kind,0.)),step_ms)
 			_task_max_units[task_kind]=maxi(int(_task_max_units.get(task_kind,0)),units)
 		if step_ms>_max_step_ms:stats.max_step_task=str(tasks[task_index][0])
-		task_index += 1
+		if task_complete: task_index += 1
 		_max_step_ms = maxf(_max_step_ms,step_ms)
 	var ready := staging != null and task_index == tasks.size()
 	var committed := false
@@ -811,6 +822,17 @@ func _discard_staging(retire:bool=false) -> void:
 
 func _dispose_context(context: Node3D) -> void:
 	if context == null: return
+	# Keep the private snapshot alive past Node/GPU disposal. Its pure CPU
+	# solvers otherwise recursively free inside the last component's destructor.
+	if context.state!=null:retired_values.append(context.state)
+	# Worker results and upload records are also value-only. The native meshes
+	# already own their installed buffers; these are preparation-side copies.
+	for key:String in ["snapshot","changes","result"]:
+		if context.has_meta(key):retired_values.append(context.get_meta(key))
+	for component:Node3D in [context.meadow,context.shore,context.lilypads]:
+		if component!=null:retired_values.append(component.prepared_blocks)
+	if context.shore!=null:retired_values.append(context.shore._query_masks)
+	retired_values.append(context.highland._plans);retired_values.append(context.highland._blockers)
 	if context.meadow != null and context.meadow.get_parent() == null: context.meadow.free()
 	if context.shore != null and context.shore.get_parent() == null: context.shore.free()
 	if context.lilypads != null and context.lilypads.get_parent() == null: context.lilypads.free()
@@ -832,7 +854,8 @@ func close() -> void:
 		worker = null
 		_dispose_context(running)
 		running = null
-	retired_values.clear()
-	retired_solvers.clear()
 	for context:Node3D in retired_contexts:_dispose_context(context)
 	retired_contexts.clear()
+	_cpu_retirement.enqueue(retired_values);retired_values=[]
+	_cpu_retirement.enqueue(retired_solvers);retired_solvers=[]
+	_cpu_retirement.close()

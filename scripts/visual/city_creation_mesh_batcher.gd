@@ -9,70 +9,120 @@ var materials: Dictionary = {}
 var _cache_order: Array = []
 var _wall_shaders: Dictionary = {}
 
+var pending_merges: Dictionary = {}
+
 func merge(parent: Node3D) -> Dictionary:
+	var job := _begin(parent)
+	while not _advance(job,1000000.0): pass
+	return job.stats
+
+func merge_budgeted(parent: Node3D, budget_ms: float) -> bool:
+	var key := parent.get_instance_id()
+	if not pending_merges.has(key): pending_merges[key] = _begin(parent)
+	var job: Dictionary = pending_merges[key]
+	if not _advance(job,budget_ms): return false
+	parent.set_meta("material_batching",job.stats)
+	pending_merges.erase(key)
+	return true
+
+func _begin(parent: Node3D) -> Dictionary:
 	var started := Time.get_ticks_usec()
 	var stats := {"source_instances":0,"source_surfaces":0,"colored_surfaces":0,"fallback_surfaces":0,"skipped_instances":0,"output_batches":0,"color_batches":0,"cache_hits":0,"cache_misses":0,"cache_size":0,"elapsed_ms":0.0}
-	var batches: Dictionary = {}
-	var profiles: Dictionary = {}
-	var inverse := parent.global_transform.affine_inverse()
-	var wall_base_y := float(parent.get_meta("creation_wall_base_y", 0.0))
-	var wall_story_height := float(parent.get_meta("creation_wall_story_height", 1.7))
-	for instance: MeshInstance3D in parent.find_children("*","MeshInstance3D",true,false):
-		var source: Mesh = instance.mesh
-		var material: Material = instance.material_override
-		if source==null or material==null or not instance.visible or instance.skin!=null or _live_visual(instance,parent):
-			stats.skipped_instances+=1
-			continue
-		if source.get_surface_count()==0:
-			stats.skipped_instances+=1
-			continue
-		var material_id := material.get_instance_id()
-		if not profiles.has(material_id):
-			var wall_profile := WallMaterial.profile(material,wall_base_y,wall_story_height)
-			profiles[material_id] = wall_profile if not wall_profile.is_empty() else _solid_profile(material)
-		var profile: Array = profiles[material_id]
-		var overlay: Material = instance.material_overlay
-		var state: Array = [instance.cast_shadow,instance.layers,instance.gi_mode,instance.ignore_occlusion_culling,0 if overlay==null else overlay.get_instance_id(),instance.visibility_range_begin,instance.visibility_range_end,instance.visibility_range_begin_margin,instance.visibility_range_end_margin,instance.visibility_range_fade_mode]
-		var transform: Transform3D = inverse*instance.global_transform
-		for index in range(source.get_surface_count()):
-			var colored: ArrayMesh
-			if not profile.is_empty(): colored = _colored_source(source,index,(material as StandardMaterial3D).albedo_color,stats)
-			var key: Array = ["solid",profile,state] if colored!=null else ["material",material_id,state]
-			if not batches.has(key):
-				var surface := SurfaceTool.new()
-				surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-				var final_material: Material = _vertex_material(material as StandardMaterial3D,profile) if colored!=null else material
-				batches[key] = {"surface":surface,"material":final_material,"overlay":overlay,"state":state,"margin":instance.extra_cull_margin}
-				if colored!=null: stats.color_batches+=1
-			var batch: Dictionary = batches[key]
-			batch.margin = maxf(float(batch.margin),instance.extra_cull_margin)
-			# append_from performs the existing C++ vertex/normal/UV/index
-			# transformation. Only COLOR differs in an eligible copied source.
-			batch.surface.append_from(colored if colored!=null else source,0 if colored!=null else index,transform)
-			stats.source_surfaces+=1
-			if colored!=null: stats.colored_surfaces+=1
-			else: stats.fallback_surfaces+=1
-		stats.source_instances+=1
-		instance.get_parent().remove_child(instance)
-		instance.queue_free()
-	for batch: Dictionary in batches.values():
-		var instance := MeshInstance3D.new()
-		instance.name = "CreationMaterialBatch"
-		instance.mesh = batch.surface.commit(null,Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE if parent.has_meta("palette_colors") else 0)
-		instance.material_override = batch.material
-		instance.material_overlay = batch.overlay
-		instance.cast_shadow = int(batch.state[0])
-		instance.layers = int(batch.state[1])
-		instance.gi_mode = int(batch.state[2])
-		instance.ignore_occlusion_culling = bool(batch.state[3])
-		instance.visibility_range_begin=float(batch.state[5]);instance.visibility_range_end=float(batch.state[6])
-		instance.visibility_range_begin_margin=float(batch.state[7]);instance.visibility_range_end_margin=float(batch.state[8]);instance.visibility_range_fade_mode=int(batch.state[9])
-		instance.extra_cull_margin = float(batch.margin)
-		parent.add_child(instance)
-	stats.output_batches = batches.size()
-	stats.cache_size = source_cache.size()
+	var job := {"parent":parent,"sources":parent.find_children("*","MeshInstance3D",true,false),"source_index":0,
+		"batches":{},"profiles":{},"inverse":parent.global_transform.affine_inverse(),
+		"wall_base_y":float(parent.get_meta("creation_wall_base_y",0.0)),
+		"wall_story_height":float(parent.get_meta("creation_wall_story_height",1.7)),
+		"outputs":[],"output_index":0,"output_started":false,"complete":false,"stats":stats,"steps":0}
 	stats.elapsed_ms = float(Time.get_ticks_usec()-started)/1000.0
-	return stats
+	return job
+
+func _advance(job: Dictionary, budget_ms: float) -> bool:
+	var started := Time.get_ticks_usec()
+	job.steps += 1
+	# A source mesh append or one final material batch is the indivisible unit.
+	# All partial meshes stay below the hidden staging root until publication.
+	var units := 0
+	while units==0 or float(Time.get_ticks_usec()-started)/1000.0 < budget_ms:
+		if int(job.source_index)<job.sources.size():
+			_append_instance(job,job.sources[int(job.source_index)])
+			job.source_index += 1
+		elif not bool(job.output_started):
+			job.outputs = job.batches.values()
+			job.output_started = true
+		elif int(job.output_index)<job.outputs.size():
+			_install_batch(job,job.outputs[int(job.output_index)])
+			job.output_index += 1
+		else:
+			job.complete = true
+			break
+		units += 1
+	job.stats.elapsed_ms += float(Time.get_ticks_usec()-started)/1000.0
+	job.stats.output_batches = job.batches.size()
+	job.stats.cache_size = source_cache.size()
+	job.stats.steps = job.steps
+	return bool(job.complete)
+
+func _append_instance(job: Dictionary, instance: MeshInstance3D) -> void:
+	var parent: Node3D = job.parent
+	var stats: Dictionary = job.stats
+	var batches: Dictionary = job.batches
+	var profiles: Dictionary = job.profiles
+	var inverse: Transform3D = job.inverse
+	var wall_base_y: float = job.wall_base_y
+	var wall_story_height: float = job.wall_story_height
+	var source: Mesh = instance.mesh
+	var material: Material = instance.material_override
+	if source==null or material==null or not instance.visible or instance.skin!=null or _live_visual(instance,parent):
+		stats.skipped_instances+=1
+		return
+	if source.get_surface_count()==0:
+		stats.skipped_instances+=1
+		return
+	var material_id := material.get_instance_id()
+	if not profiles.has(material_id):
+		var wall_profile := WallMaterial.profile(material,wall_base_y,wall_story_height)
+		profiles[material_id] = wall_profile if not wall_profile.is_empty() else _solid_profile(material)
+	var profile: Array = profiles[material_id]
+	var overlay: Material = instance.material_overlay
+	var state: Array = [instance.cast_shadow,instance.layers,instance.gi_mode,instance.ignore_occlusion_culling,0 if overlay==null else overlay.get_instance_id(),instance.visibility_range_begin,instance.visibility_range_end,instance.visibility_range_begin_margin,instance.visibility_range_end_margin,instance.visibility_range_fade_mode]
+	var transform: Transform3D = inverse*instance.global_transform
+	for index in range(source.get_surface_count()):
+		var colored: ArrayMesh
+		if not profile.is_empty(): colored = _colored_source(source,index,(material as StandardMaterial3D).albedo_color,stats)
+		var key: Array = ["solid",profile,state] if colored!=null else ["material",material_id,state]
+		if not batches.has(key):
+			var surface := SurfaceTool.new()
+			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			var final_material: Material = _vertex_material(material as StandardMaterial3D,profile) if colored!=null else material
+			batches[key] = {"surface":surface,"material":final_material,"overlay":overlay,"state":state,"margin":instance.extra_cull_margin}
+			if colored!=null: stats.color_batches+=1
+		var batch: Dictionary = batches[key]
+		batch.margin = maxf(float(batch.margin),instance.extra_cull_margin)
+		# append_from performs the existing C++ vertex/normal/UV/index
+		# transformation. Only COLOR differs in an eligible copied source.
+		batch.surface.append_from(colored if colored!=null else source,0 if colored!=null else index,transform)
+		stats.source_surfaces+=1
+		if colored!=null: stats.colored_surfaces+=1
+		else: stats.fallback_surfaces+=1
+	stats.source_instances+=1
+	instance.get_parent().remove_child(instance)
+	instance.queue_free()
+
+func _install_batch(job: Dictionary, batch: Dictionary) -> void:
+	var parent: Node3D = job.parent
+	var instance := MeshInstance3D.new()
+	instance.name = "CreationMaterialBatch"
+	instance.mesh = batch.surface.commit(null,Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE if parent.has_meta("palette_colors") else 0)
+	instance.material_override = batch.material
+	instance.material_overlay = batch.overlay
+	instance.cast_shadow = int(batch.state[0])
+	instance.layers = int(batch.state[1])
+	instance.gi_mode = int(batch.state[2])
+	instance.ignore_occlusion_culling = bool(batch.state[3])
+	instance.visibility_range_begin=float(batch.state[5]);instance.visibility_range_end=float(batch.state[6])
+	instance.visibility_range_begin_margin=float(batch.state[7]);instance.visibility_range_end_margin=float(batch.state[8]);instance.visibility_range_fade_mode=int(batch.state[9])
+	instance.extra_cull_margin = float(batch.margin)
+	parent.add_child(instance)
 
 func _solid_profile(material: Material) -> Array:
 	if not material is StandardMaterial3D or not bool(material.get_meta("creation_solid",false)): return []
