@@ -14,13 +14,13 @@ func _run()->void:
 	var acoustic:=Acoustic.new();acoustic.set_view(Vector2.ZERO,20.)
 	var houses:Dictionary={}
 	for era:String in Score.ERA_TRACKS:
-		var row:Dictionary={"era_theme":era,"position":Vector2.ZERO,"style":"warm","level_tier":1,"base_y":0.,"rooms":2,"upper_rooms":0,"district_id":era}
+		var row:Dictionary={"era_theme":era,"position":Vector2.ZERO,"style":"warm","level_tier":1,"base_y":0.,"rooms":2,"upper_rooms":0,"district_id":era,"cluster_size":5}
 		houses={"home":row};acoustic.evaluate(houses,[])
 		var score:=Score.evaluate(houses,acoustic,[],0,false)
-		_check(score.lead_track==Score.ERA_TRACKS[era] and score.targets[score.lead_track]==-10.5,"the visible era becomes the actual -10.5 dB lead: "+era)
+		_check(score.lead_track==Score.ERA_TRACKS[era] and score.targets[score.lead_track]==-13.5,"the visible era becomes the actual shared -13.5 dB lead: "+era)
 		_check(score.variant==0 and score.average_tier==1.,"simple low-level geometry begins with the sparse motif: "+era)
 	houses={}
-	for i in range(5):houses[str(i)]={"era_theme":"pastoral","style":Score.STYLE_TRACKS.keys()[i],"position":Vector2(i*1.,0),"rooms":1,"upper_rooms":0,"level_tier":1}
+	for i in range(5):houses[str(i)]={"era_theme":"pastoral","style":Score.STYLE_TRACKS.keys()[i],"position":Vector2(i*1.,0),"rooms":1,"upper_rooms":0,"level_tier":1,"cluster_size":5}
 	acoustic.evaluate(houses,[]);var score:=Score.evaluate(houses,acoustic,[],0,false)
 	var active:Array=[]
 	for track:String in Score.LEADS:
@@ -30,12 +30,12 @@ func _run()->void:
 	var reversed:Dictionary={}
 	for id:String in ["4","3","2","1","0"]:reversed[id]=houses[id]
 	_check(Score.evaluate(reversed,acoustic,[],8,false)==Score.evaluate(houses,acoustic,[],8,false),"dictionary order does not change the city score or deterministic DNA")
-	var rich:Dictionary={"r":{"position":Vector2.ZERO,"era_theme":"renaissance","style":"warm","level_tier":5,"base_y":2.,"rooms":8,"upper_rooms":6,"max_level":3,"water_distance":1.,"towers":1}}
+	var rich:Dictionary={"r":{"position":Vector2.ZERO,"era_theme":"renaissance","style":"warm","level_tier":5,"base_y":2.,"rooms":8,"upper_rooms":6,"max_level":3,"water_distance":1.,"towers":1,"cluster_size":5}}
 	acoustic.evaluate(rich,[]);var rings:Array=[{"center":Vector2.ZERO}]
 	var variants:Dictionary={}
 	for phrase in range(16):
 		var r:=Score.evaluate(rich,acoustic,rings,phrase,false);variants[r.variant]=true
-		_check(r.elevation==1. and r.rings==1 and r.targets.air>-14. and r.average_tier==5.,"real highland, enclosure and quality fields reach the orchestration inputs: phrase "+str(phrase))
+		_check(r.elevation==1. and r.rings==1 and r.targets.air>-23.1 and r.average_tier==5.,"real highland, enclosure and quality fields reach the orchestration inputs: phrase "+str(phrase))
 	_check(variants.has(2) and variants.has(1),"a prosperous highland alternates ornate and lighter phrases instead of repeating one texture")
 	var a:Array=[];var b:Array=[]
 	for i in range(8):a.append(Score.evaluate(rich,acoustic,rings,i,false).variant);b.append(Score.evaluate(rich,acoustic,rings,i+8,false).variant)

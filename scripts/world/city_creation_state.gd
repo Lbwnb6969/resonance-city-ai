@@ -26,6 +26,8 @@ const CLOCKWORK_SCHEMA := 15
 const MODERN_SCHEMA := 16
 const QUALITY_CONTEXT_SCHEMA := 17
 const PLANNING_SCHEMA := 18
+const PERSONALIZATION_SCHEMA := 19
+const GardenSpecies=preload("res://scripts/world/city_creation_garden_species.gd")
 const Signatures := preload("res://scripts/world/city_creation_signatures.gd")
 const AmphitheaterPlan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
@@ -522,13 +524,28 @@ func set_house_palette(house_id: String, palette: int) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")
 	if palette<0 or palette>3: return _fail("请选择现有的四种房屋配色")
-	if int(houses[index].palette)==palette and not houses[index].has("finish"):
+	if int(houses[index].palette)==palette and not houses[index].has("finish") and not houses[index].has("custom_colors"):
 		return {"ok":true,"message":"房屋配色未变","no_op":true}
 	var before := snapshot()
 	houses[index].palette = palette
 	houses[index].erase("finish")
+	houses[index].erase("custom_colors")
 	_commit(before,"更改房屋配色")
 	return {"ok":true,"message":"房屋已换上配色","appearance_house_id":house_id}
+
+
+func set_house_colors(house_id:String,wall:Color,roof:Color)->Dictionary:
+	var index:=_house_index(house_id)
+	if index<0:return _fail("房屋不存在")
+	for value:float in [wall.r,wall.g,wall.b,roof.r,roof.g,roof.b]:
+		if not is_finite(value):return _fail("配色数值无效")
+	var colors:Dictionary={"wall":wall.clamp().to_html(false),"roof":roof.clamp().to_html(false)}
+	if houses[index].get("custom_colors",{})==colors:return {"ok":true,"no_op":true,"message":"房屋配色未变"}
+	var before:=snapshot()
+	houses[index].custom_colors=colors
+	houses[index].erase("finish")
+	_commit(before,"自选房屋配色")
+	return {"ok":true,"message":"已换上自选配色","appearance_house_id":house_id}
 
 
 func set_house_style(house_id: String, style: String) -> Dictionary:
@@ -564,6 +581,7 @@ func set_house_finish(house_id: String, finish: String) -> Dictionary:
 	if houses[index].get("finish", "")==finish: return {"ok":true,"message":"房屋饰色未变","no_op":true}
 	var before := snapshot()
 	houses[index].finish = finish
+	houses[index].erase("custom_colors")
 	_commit(before,"换上成长饰色")
 	return {"ok":true,"message":"已换上"+str(Growth.FINISHES[finish].name),"appearance_house_id":house_id}
 
@@ -1128,8 +1146,9 @@ func _segment_distance(a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> float:
 	return minf(minf(_distance_to_segment(a, c, d), _distance_to_segment(b, c, d)), minf(_distance_to_segment(c, a, b), _distance_to_segment(d, a, b)))
 
 
-func preview_road(points: Array[Vector2],style: String = "path",assistance: String="snap") -> Dictionary:
+func preview_road(points: Array[Vector2],style: String = "path",assistance: String="snap",requested_width:float=0.) -> Dictionary:
 	if style not in ROAD_STYLES: return _fail("未知的道路样式")
+	if not is_finite(requested_width) or (requested_width!=0. and requested_width not in RoadUpgrade.sizes_for(style)):return _fail("道路宽度无效")
 	for point: Vector2 in points:
 		if not is_finite(point.x) or not is_finite(point.y): return _fail("无效的道路位置")
 	var upgrade_id := RoadUpgrade.match_road(points,roads)
@@ -1139,13 +1158,13 @@ func preview_road(points: Array[Vector2],style: String = "path",assistance: Stri
 			var original: Array[Vector2] = []
 			for row: Array in road.points: original.append(Vector2(float(row[0]),float(row[1])))
 			var wanted := style if style!="path" else ("promenade" if str(road.get("style","path")) in ["path","cobble"] else str(road.style))
-			var width := RoadUpgrade.width_for(wanted)
+			var width := requested_width if requested_width>0. else RoadUpgrade.width_for(wanted)
 			var check := _validate_road_site(road.points,width)
 			var no_op := str(road.get("style","path"))==wanted and is_equal_approx(float(road.width),width)
 			check.merge({"points":original,"upgrade_road_id":upgrade_id,"style":wanted,"width":width,"upgraded":not no_op,"no_op":no_op,"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false})
 			if check.ok: check.message="这条%s已经铺好" % RoadUpgrade.NAMES[wanted] if no_op else "原位铺成%s，保留路口与门阶" % RoadUpgrade.NAMES[wanted]
 			return check
-	var width := RoadUpgrade.width_for(style)
+	var width := requested_width if requested_width>0. else RoadUpgrade.width_for(style)
 	# The held brush uses gradual attraction; its final displayed points already
 	# contain assistance and need only exact site validation when released.
 	var intent: Dictionary=RoadIntent.resolve(self,points,width,assistance=="soft") if assistance!="none" else {"points":points.duplicate(),"anchored_start":false,"anchored_end":false,"snapped_start":false,"snapped_end":false}
@@ -1213,10 +1232,10 @@ func remove_road(road_id: String) -> Dictionary:
 		return {"ok":true,"message":"道路已移除","road_id":road_id}
 	return _fail("道路不存在")
 
-func add_road(points: Array[Vector2],style: String = "path",assistance: String="snap") -> Dictionary:
+func add_road(points: Array[Vector2],style: String = "path",assistance: String="snap",requested_width:float=0.) -> Dictionary:
 	if points.size() < 2:
 		return _fail("道路需要两个以上的点")
-	var valid := preview_road(points,style,assistance)
+	var valid := preview_road(points,style,assistance,requested_width)
 	if not valid.ok: return valid
 	if bool(valid.no_op):
 		return {"ok":true,"message":valid.message,"road_id":valid.upgrade_road_id,"upgrade_road_id":valid.upgrade_road_id,"width":valid.width,"style":valid.style,"upgraded":false,"no_op":true}
@@ -1227,6 +1246,8 @@ func add_road(points: Array[Vector2],style: String = "path",assistance: String="
 			var road: Dictionary = roads[index].duplicate(true)
 			road.style = valid.style
 			road.width = valid.width
+			if requested_width>0.:road.sized=true
+			else:road.erase("sized")
 			road.bridge = bool(valid.bridge)
 			roads[index] = road
 			_commit(before,"升级"+str(RoadUpgrade.NAMES[valid.style]))
@@ -1246,6 +1267,7 @@ func add_road(points: Array[Vector2],style: String = "path",assistance: String="
 	var road_number := maxi(_next_road_id, int(_high_watermark.road) + 1)
 	var road := {"id": "r%d" % road_number, "points": encoded, "width":float(valid.width), "bridge": valid.bridge, "source": "player"}
 	if style!="path": road.style = style
+	if requested_width>0.:road.sized=true
 	roads.append(road)
 	_next_road_id = road_number + 1
 	_high_watermark.road = road_number
@@ -1297,6 +1319,17 @@ func add_vegetation_stroke(points: Array[Vector2], kind: String, radius: float =
 	for plant in accepted:
 		ids.append(plant.id)
 	return {"ok": true, "message": "已种下 %d 株植被" % accepted.size(), "plant_ids": ids, "added_count": accepted.size(), "seed": stroke_seed}
+
+
+func place_plant(position:Vector2,kind:String,scale_value:float=1.0)->Dictionary:
+	if kind not in GardenSpecies.IDS or not is_finite(scale_value) or scale_value<.4 or scale_value>2.:return _fail("请选择植物和尺寸")
+	var number:=maxi(_next_plant_id,int(_high_watermark.get("plant",0))+1)
+	var plant:=_make_plant("p%d"%number,position,kind,scale_value,261014+number*977,"player")
+	if not _plant_geometry_compatible(plant,[],true):return _fail("这里没有可种植的空间")
+	var before:=snapshot()
+	plants.append(plant);_next_plant_id=number+1;_high_watermark.plant=number
+	_commit(before,"摆放植物")
+	return {"ok":true,"message":"已种下"+str(GardenSpecies.NAMES[GardenSpecies.IDS.find(kind)]),"plant_ids":[plant.id],"added_count":1}
 
 
 func erase_vegetation_stroke(points: Array[Vector2], radius: float) -> Dictionary:
@@ -1362,8 +1395,8 @@ func _appearance_delta(target: Dictionary) -> Array[String]:
 	for index in range(houses.size()):
 		var current: Dictionary=houses[index].duplicate()
 		var chosen: Dictionary=target.houses[index].duplicate()
-		var different: bool=current.get("palette",0)!=chosen.get("palette",0) or current.get("finish","")!=chosen.get("finish","")
-		for field: String in ["palette","finish"]:
+		var different: bool=current.get("palette",0)!=chosen.get("palette",0) or current.get("finish","")!=chosen.get("finish","") or current.get("custom_colors",{})!=chosen.get("custom_colors",{})
+		for field: String in ["palette","finish","custom_colors"]:
 			current.erase(field);chosen.erase(field)
 		if current!=chosen: return []
 		if different: changed.append(str(current.id))
@@ -1375,6 +1408,8 @@ func _apply_appearance(target: Dictionary, ids: Array[String]) -> void:
 		houses[index].palette=target.houses[index].get("palette",0)
 		if target.houses[index].has("finish"): houses[index].finish=target.houses[index].finish
 		else: houses[index].erase("finish")
+		if target.houses[index].has("custom_colors"):houses[index].custom_colors=target.houses[index].custom_colors.duplicate()
+		else:houses[index].erase("custom_colors")
 
 
 func snapshot() -> Dictionary:
@@ -2219,7 +2254,7 @@ func _make_plant(id: String, position: Vector2, kind: String, scale_value: float
 
 
 func _validate_vegetation_stroke(points: Array[Vector2], kind: String, radius: float) -> Dictionary:
-	if points.is_empty() or kind not in ["olive", "cypress", "shrub"] or not is_finite(radius) or radius <= 0.0 or radius > 8.0:
+	if points.is_empty() or kind not in GardenSpecies.IDS or not is_finite(radius) or radius <= 0.0 or radius > 8.0:
 		return _fail("无效的植被笔画")
 	for point in points:
 		if not is_finite(point.x) or not is_finite(point.y) or not WORLD_RECT.has_point(point):
@@ -2275,7 +2310,7 @@ func _plant_scale(kind: String, rng: RandomNumberGenerator) -> float:
 func _valid_plant_fields(plant: Dictionary) -> bool:
 	if not plant.get("id", "") is String or not plant.get("id", "").begins_with("p"):
 		return false
-	if not _valid_point(plant.get("position")) or plant.get("kind") not in ["olive", "cypress", "shrub"]:
+	if not _valid_point(plant.get("position")) or plant.get("kind") not in GardenSpecies.IDS:
 		return false
 	if not _is_number(plant.get("scale")) or float(plant.scale) <= 0.0 or not _is_integer(plant.get("seed")):
 		return false
@@ -2287,7 +2322,7 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 		return false
 	var position := Vector2(float(plant.position[0]), float(plant.position[1]))
 	var scale_value := float(plant.scale)
-	var clearance := 0.42 * scale_value if plant.kind == "shrub" else 0.72 * scale_value
+	var clearance := GardenSpecies.clearance(str(plant.kind),scale_value)
 	if not WORLD_RECT.has_point(position):
 		return false
 	if water_clearance(position) <= clearance:
@@ -2319,7 +2354,7 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 		if not _valid_point(other.get("position")):
 			continue
 		var other_position := Vector2(float(other.position[0]), float(other.position[1]))
-		var other_clearance := 0.42 * float(other.get("scale", 1.0)) if other.get("kind", "olive") == "shrub" else 0.72 * float(other.get("scale", 1.0))
+		var other_clearance := GardenSpecies.clearance(str(other.get("kind","olive")),float(other.get("scale",1.0)))
 		if position.distance_to(other_position) < clearance + other_clearance + 0.18:
 			return false
 	return true

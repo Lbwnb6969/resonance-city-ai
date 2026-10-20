@@ -10,6 +10,11 @@ static func stroke(canvas:CanvasItem,points:Array,center:Vector2,radius:float,co
 
 static func draw_icon(canvas:CanvasItem,kind:String,center:Vector2,radius:float,color:Color,accent:Color=Color("c4a568"))->void:
 	match kind:
+		"palette":
+			canvas.draw_arc(center,.67*radius,.3,TAU-.3,28,color,1.7,true)
+			for i:int in range(4):
+				var phase:float=-.6+float(i)*1.1
+				canvas.draw_circle(center+Vector2.from_angle(phase)*radius*.4,radius*.13,accent)
 		"straight","rails":
 			for x:float in [-.38,.38]:stroke(canvas,[Vector2(x,-.72),Vector2(x,.72)],center,radius,color)
 			for y:float in [-.48,0.,.48]:stroke(canvas,[Vector2(-.60 if kind=="rails" else -.06,y),Vector2(.60 if kind=="rails" else .06,y)],center,radius,accent,1.3)

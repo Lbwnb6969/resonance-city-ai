@@ -8,7 +8,9 @@ var _plan: Dictionary={}
 static func signature(city: RefCounted,road: Dictionary)->Array:
 	if str(road.get("style","path"))!="tram":return []
 	var houses: Array=[]
-	for house: Dictionary in city.houses:houses.append([house.id,house.origin,house.cells,house.get("base_y",0.)])
+	for house: Dictionary in city.houses:
+		var id:=str(house.id)
+		houses.append([id,city.house_entrances(id),city.house_passages(id)])
 	return [city.roads,houses]
 
 func prepare(renderer,road: Dictionary)->Dictionary:

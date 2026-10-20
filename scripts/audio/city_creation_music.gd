@@ -28,6 +28,9 @@ var attention:=AttentionMixer.new()
 var attention_strolling:=false
 const HarmonicEmergence=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 var emergence:=HarmonicEmergence.new()
+var choir_mode:=true
+var _life_activity:Dictionary={}
+var _life_orchestration:Dictionary={}
 var _variation_streams:Dictionary={}
 var _original_streams:Dictionary={}
 var _variation_pending:Dictionary={}
@@ -37,6 +40,34 @@ const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 var _harmony_streams:Dictionary={}
 var _base_edit_streams:Dictionary={}
 var _harmony_view:Array=[]
+
+func record_life_activity(kind:String,source_id:String="",at:Vector2=Vector2.INF)->bool:
+	if muted or _loading or concert_active:return false
+	var row:Dictionary=_house_music.get(source_id,{})
+	if row.is_empty() and at.is_finite():
+		var distance:=INF
+		for id:String in acoustic.focus_ids:
+			var d:float=at.distance_squared_to(_house_music[id].position)
+			if d<distance:distance=d;source_id=id;row=_house_music[id]
+	if row.is_empty() or int(row.get("cluster_size",1))<3 or acoustic.focus_weight(source_id)<=0.:return false
+	var family:String="air" if kind in ["tea","arrival","bridge","arch","stepping"] else "terrace" if kind in ["craft","installed","art_installed","mechanism_installed","tram"] else "foundation"
+	_life_activity[str(row.get("cluster_id",source_id))+"/"+family]={"source_id":source_id,"family":family,"until":_playback_clock()+12.}
+	return true
+
+func _apply_life_orchestration()->void:
+	_life_orchestration.clear()
+	var clock:=_playback_clock()
+	for key:String in _life_activity.keys():
+		var event:Dictionary=_life_activity[key];var id:=str(event.source_id)
+		if clock>float(event.until) or not _house_music.has(id) or acoustic.focus_weight(id)<=0. or int(_house_music[id].get("cluster_size",1))<3:
+			_life_activity.erase(key);continue
+		_life_orchestration[str(event.family)]=true
+	for id:String in _cafe_view:
+		if _cafe_eligible(id) and int(_house_music[id].get("cluster_size",1))>=3:_life_orchestration.air=true
+	if int(emergence.score.get("eligible_houses",0))<1:return
+	for family:String in _life_orchestration:
+		var floor_db:float={"foundation":-13.,"air":-20.,"terrace":-25.}[family]
+		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
 
 func harmony_mode()->int:return -1 if concert_active else int(emergence.score.get("harmony_mode",0))
 var acoustic:=AcousticField.new()
@@ -111,6 +142,8 @@ func clear_tram_cues()->void:
 	_tram_pending.clear();_tram_active.clear();_tram_player=null;_tram_last=-10.
 
 func queue_tram_chime(car_id: String,station: String,at: Vector2)->void:
+	if choir_mode:
+		record_life_activity("tram",station,at);return
 	if muted or _loading or _playback_clock()-_tram_last<2.5:return
 	_tram_pending={"car_id":car_id,"station":station,"position":at,"at":_playback_clock()}
 
@@ -376,6 +409,8 @@ func _travel_eligible(event: Dictionary) -> bool:
 
 
 func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2) -> void:
+	if choir_mode:
+		record_life_activity(kind,source_id,at);return
 	var event := {"actor_id":actor_id,"kind":kind,"source_id":source_id,"position":at,"queued_at":_playback_clock()}
 	if kind not in ["bridge","arch","stepping"] or not _travel_eligible(event): return
 	var clock := _playback_clock()
@@ -678,6 +713,7 @@ func update_city(state: RefCounted, prepared:Dictionary={}) -> void:
 	# household traits, then detach mutable playback metadata from that seed.
 	var data:Dictionary=prepared if not prepared.is_empty() and prepared.signature==Catalog.signature(state) else Catalog.prepare(state)
 	_pluck_city=state
+	_life_activity.clear();_life_orchestration.clear()
 	canon.sync(state,data.canon)
 	_linked_key=null
 	_house_music.clear();_house_music.merge(data.houses.duplicate(true))
@@ -735,6 +771,7 @@ func _advance_daily_phrase(phrase: int) -> void:
 	if phrase == _daily_phrase: return
 	_daily_phrase = phrase
 	emergence.advance(_house_music,acoustic,canon.groups,phrase,night,int(_pluck_city.regional_echo().variant) if _pluck_city!=null else 0)
+	_apply_life_orchestration()
 	_phrase_improvements.clear()
 	for id: String in _house_music: _phrase_improvements[id]=int(_house_music[id].improvement)
 	var houses := _focused_houses()
@@ -841,6 +878,7 @@ func set_muted(value: bool) -> void:
 	muted = value
 	if muted:
 		attention.clear()
+		_life_activity.clear();_life_orchestration.clear()
 		clear_travel()
 		canon.clear()
 		bakery_cues.clear()
@@ -999,6 +1037,7 @@ func music_report() -> Dictionary:
 	result["resonance"] = resonance_state()
 	result["transport_clock"] = _playback_clock()
 	result["emergence"]=emergence.score.duplicate(true)
+	result["life_orchestration"]=_life_orchestration.duplicate()
 	result["variations"]=_variation_active.duplicate()
 	result["concert_clock_origin"] = _concert_clock_origin
 	result["cafe"] = cafe_music_report()
@@ -1031,7 +1070,7 @@ func play_edit(kind: String) -> void:
 	play_effect_at(selected,_edit_streams[kind])
 
 func queue_bakery_cue(kind: String,shop_id: String,home_id: String="") -> bool:
-	return bakery_cues.queue(kind,shop_id,home_id)
+	return record_life_activity(kind,shop_id) if choir_mode else bakery_cues.queue(kind,shop_id,home_id)
 
 func bakery_music_report() -> Dictionary:
 	return bakery_cues.report()
@@ -1108,6 +1147,7 @@ func _attention_trigger(category:String,payload:Dictionary)->bool:
 	if category=="pluck_arp":return _play_queued_house(payload)
 	if category=="quality_upgrade":return _play_quality_cue(str(payload.source_id),int(payload.tier))
 	var phrase:int=payload.phrase
+	if choir_mode and not concert_active:return true
 	match category:
 		"tower_bell":_tower_at_phrase(phrase)
 		"waterwheel":
@@ -1235,7 +1275,7 @@ func _process(delta: float) -> void:
 		if concert_active:
 			_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 			_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		if attention.allows("canon"):canon.step(_playback_clock(),.375)
+		if not choir_mode and attention.allows("canon"):canon.step(_playback_clock(),.375)
 		else:canon.clear()
 	bakery_cues.report()
 	signature_music_report()

@@ -9,6 +9,7 @@ const Bounds := preload("res://scripts/world/city_creation_bounds.gd")
 const EDITABLE_WORLD_RECT := Bounds.WORLD_RECT
 const VEGETATION_BLOCK_SIZE := 8.0
 const Foliage = preload("res://scripts/visual/city_creation_foliage.gd")
+const Classical=preload("res://scripts/visual/city_creation_classical.gd")
 const Meadow = preload("res://scripts/visual/city_creation_meadow.gd")
 const GroundShader = preload("res://scripts/visual/shaders/creation_ground.gdshader")
 const CliffSurface = preload("res://资源/自然参考/层理岩壁.png")
@@ -175,6 +176,10 @@ var vegetation_brush_mesh: ArrayMesh
 var vegetation_brush_materials: Dictionary = {}
 var water_material: ShaderMaterial
 var house_fingerprints: Dictionary = {}
+var house_geometry_cache:Dictionary={}
+var _house_dependency_revision:=-1
+var _house_dependency_global:=0
+var _house_dependency_bounds:Dictionary={}
 var house_roots: Dictionary = {}
 var road_fingerprints: Dictionary = {}
 var road_roots: Dictionary = {}
@@ -263,6 +268,7 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
+	_house_dependency_revision=-1
 	_entrance_views.clear();_passage_views.clear();_frontage_views.clear();_entrance_view_key=[];music_catalog={}
 	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
@@ -840,12 +846,13 @@ func _merge_meshes(parent: Node3D,prepare_colors:bool=true,budget_ms:float=0.0) 
 	if prepare_colors:_prepare_house_colors(parent)
 	return true
 
-func _prepare_house_colors(parent:Node3D)->void:
+func _prepare_house_colors(parent:Node3D,budget_ms:float=0.)->bool:
 	if parent.has_meta("palette_colors"):
 		var house := _house_record(str(parent.name))
 		if not house.is_empty():
 			parent.set_meta("color_geometry_fingerprint",_house_geometry_fingerprint(house))
-			HouseColors.prepare(self,parent,house)
+			return HouseColors.prepare(self,parent,house,budget_ms)
+	return true
 
 
 ## Caller has established that this transaction changes only palette/finish.
@@ -857,7 +864,7 @@ func try_update_house_colors(house_id: String) -> Dictionary:
 	var root: Node3D = house_roots[house_id]
 	if house.is_empty() or not HouseColors.apply(self,root,house):
 		return {"ok":false,"applied":false,"message":"建筑需要常规更新"}
-	house_fingerprints[house_id] = hash([int(root.get_meta("color_geometry_fingerprint")),house.get("palette",0),house.get("finish","")])
+	house_fingerprints[house_id] = hash([int(root.get_meta("color_geometry_fingerprint")),house.get("palette",0),house.get("finish",""),house.get("custom_colors",{})])
 	var result := {"ok":true,"applied":true,"house_id":house_id,"elapsed_ms":float(Time.get_ticks_usec()-started)/1000.0,"message":"房屋配色已更新"}
 	root.set_meta("color_update",result)
 	return result
@@ -1427,9 +1434,8 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 	if building_context.signature(str(house.id)).is_empty():building_context.prepare(state.houses,state.roads)
 	var era:String=state.house_era(house)
 	if era not in ["clockwork","modern_eco"] and not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():return {"round":true}
-	var palette:Array=PALETTES[posmod(int(house.get("palette",0)),PALETTES.size())]
-	if house.has("finish"):palette=FINISH_PALETTES[str(house.finish)]
-	var domes:Array=RenaissancePlan.for_house(state,house);var dome_cells:Dictionary={}
+	var palette:Array=HouseColors.base_palette(self,house)
+	var domes:Array=RenaissancePlan.for_house(state,house) if house.has("signature") else [];var dome_cells:Dictionary={}
 	for plan:Dictionary in domes:
 		for id:String in plan.cell_ids:dome_cells[id]=true
 	if era=="renaissance":palette=Renaissance.palette(palette)
@@ -1448,7 +1454,7 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 	var doors:Dictionary={}
 	for entrance:Dictionary in entrances:doors[[entrance.cell_id,entrance.side]]=entrance
 	var structural:=_structural_joined(house)
-	return {"round":false,"palette":palette,"era":era,"style":str(house.get("style","classic")),
+	return {"round":false,"palette":palette,"era":era,"style":"timber" if era=="renaissance" and not house.has("signature") and house.get("style","classic")=="classic" else str(house.get("style","classic")),
 		"domes":domes,"dome_cells":dome_cells,"canopy":canopy,"flower_plan":flower_plan,"arcade_faces":arcade_faces,
 		"entrances":entrances,"passages":passages,"tower_ids":tower_ids,"doors":doors,"primary":_primary_entrance(house),
 		"structural_joined":structural,"joined":building_context.joined(str(house.id)) or house.cells.size()>1 or structural}
@@ -1719,7 +1725,8 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		wall.set_meta("entrance",entrance.duplicate(true))
 	if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette)
 	else:_facade(wall,palette,door,int(house.get("seed",0))+x*17+z*31+level*7,active,wall_width)
-	if era == "renaissance": Renaissance.facade(self,wall,door,level>0)
+	if era=="pastoral" and style!="timber":Classical.facade(self,wall,door,palette)
+	elif era == "renaissance" and house.has("signature"): Renaissance.facade(self,wall,door,level>0)
 	elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
 	if wall_width>=UNIT-.01 and era!="modern_eco": HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
 	if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
@@ -1781,10 +1788,30 @@ func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
 		root.set_meta("chimneys",[p+roof.position+Vector3(0.4,y+FLOOR+0.99,-0.45)])
 
 func _house_fingerprint(house: Dictionary) -> int:
-	return hash([_house_geometry_fingerprint(house),house.get("palette",0),house.get("finish","")])
+	return hash([_house_geometry_fingerprint(house),house.get("palette",0),house.get("finish",""),house.get("custom_colors",{})])
 
 
 func _house_geometry_fingerprint(house: Dictionary) -> int:
+	if _house_dependency_revision!=state.revision:
+		_house_dependency_revision=state.revision
+		_house_dependency_global=hash([state.roads,state.waters,state.districts,state.era_unlocks])
+		_house_dependency_bounds={}
+		for row:Dictionary in state.houses:
+			var at:=Vector2(row.origin[0],row.origin[1]);var bounds:=Rect2(at,Vector2.ZERO)
+			for cell:Dictionary in row.cells:bounds=bounds.expand(at+Vector2(cell.x,cell.z)*UNIT)
+			_house_dependency_bounds[str(row.id)]=bounds.grow(UNIT*.5)
+	var id:=str(house.id);var nearby:Array=[]
+	var influence:Rect2=_house_dependency_bounds[id].grow(10.)
+	for row:Dictionary in state.houses:
+		if influence.intersects(_house_dependency_bounds[str(row.id)],true):nearby.append(row)
+	var dependency:int=hash([house,nearby,_house_dependency_global,state.house_era(house),building_context.signature(id),state._ground_terrain.region_signature(influence)])
+	var cached:Dictionary=house_geometry_cache.get(id,{})
+	if cached.get("dependency") == dependency and craft.layouts.has(id) and quality_visual.geometry_signatures.has(id):
+		_frontage_signature(house)
+		house_passages(id)
+		craft.layout_inputs[id]=[state.get_instance_id(),state.revision,hash(house)]
+		quality_visual.geometry_inputs[id]=[state.get_instance_id(),state.revision,hash(house)]
+		return int(cached.fingerprint)
 	var footings: Array = []
 	for cell: Dictionary in house.cells:
 		if int(cell.level)==0: footings.append(Highland.footing(self,house,cell))
@@ -1792,7 +1819,9 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
 	craft.prepare_layout(self,house,frontages,arcades)
-	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	house_geometry_cache[id]={"dependency":dependency,"fingerprint":fingerprint}
+	return fingerprint
 
 
 func _style_wall_material(style: String,base: Color) -> StandardMaterial3D:

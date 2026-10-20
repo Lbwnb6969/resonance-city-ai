@@ -21,6 +21,8 @@ func parts(kind: String, variant: int) -> Dictionary:
 	match kind:
 		"olive": _olive(leaves, wood, rng, variant)
 		"cypress": _cypress(leaves, wood, rng, variant)
+		"golden_tree":_golden(leaves,wood,rng,variant)
+		"pink_flower","white_flower","yellow_flower":_flowers(leaves,wood,rng,variant,kind)
 		_: _shrub(leaves, rng, variant)
 	var result := {"canopy":_mesh(leaves)}
 	if not wood.vertices.is_empty(): result["trunk"] = _mesh(wood)
@@ -124,6 +126,34 @@ func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, 
 			_branch(wood,Vector3(bend.x,center.y - 0.16,bend.z),center,0.022 - t * 0.010,0.009)
 	_lobe(leaves, Vector3(bend.x * 2,3.24,bend.z * 2), Vector3(0.115,0.27,0.10), rng, "cypress",3.5)
 
+func _golden(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int)->void:
+	var fork:=Vector3(.08*(variant-1),1.65,.03)
+	_branch(wood,Vector3.ZERO,fork,.12,.055)
+	# A spreading deciduous crown, with open branches beneath layered gold.
+	for arm:int in range(6):
+		var angle:float=arm*TAU/6.+variant*.43
+		var end:=fork+Vector3(cos(angle)*.64,.42+rng.randf()*.4,sin(angle)*.64)
+		_branch(wood,fork,end,.045,.016)
+		_lobe(leaves,end+Vector3(0,.28,0),Vector3(.59,.48,.52),rng,"golden",3.1)
+	_lobe(leaves,fork+Vector3(0,1.05,0),Vector3(.65,.55,.62),rng,"golden",3.1)
+
+func _flowers(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int,kind:String)->void:
+	var petal:Color={"pink_flower":Color("ef9db3"),"white_flower":Color("fff5dc"),"yellow_flower":Color("efc44f")}[kind]
+	for stem:int in range(7):
+		var angle:float=stem*2.39996+variant*.6
+		var at:=Vector3(cos(angle),0,sin(angle))*(.09+float(stem)*.038)
+		var top:=at+Vector3(0,.24+rng.randf()*.24,0)
+		_branch(wood,at,top,.014,.008)
+		_lobe(leaves,at+Vector3(.025,.12,0),Vector3(.12,.055,.06),rng,"shrub",.55)
+		for petal_index:int in range(5):
+			var phase:float=petal_index*TAU/5.
+			var before:int=leaves.colors.size()
+			_lobe(leaves,top+Vector3(cos(phase)*.065,0,sin(phase)*.065),Vector3(.070,.035,.055),rng,"shrub",.55)
+			for i:int in range(before,leaves.colors.size()):leaves.colors[i]=Color(petal.lightened(rng.randf()*.08),1.)
+		var before:int=leaves.colors.size()
+		_lobe(leaves,top+Vector3(0,.02,0),Vector3(.032,.025,.032),rng,"shrub",.55)
+		for i:int in range(before,leaves.colors.size()):leaves.colors[i]=Color("c58a31")
+
 func _shrub(leaves: Dictionary, rng: RandomNumberGenerator, variant: int) -> void:
 	for lobe in range(6):
 		var angle := lobe * TAU / 6.0 + variant * 0.53
@@ -171,6 +201,8 @@ func _leaf_vertex(data: Dictionary, position: Vector3, normal: Vector3, kind: St
 	if kind == "cypress":
 		low = Color("3f6450")
 		high = Color("81a17b")
+	elif kind == "golden":
+		low=Color("b77b31");high=Color("e4bf52")
 	elif kind == "shrub":
 		low = Color("57703f")
 		high = Color("a1b86c")

@@ -11,14 +11,30 @@ static func _palette(renderer,index: int) -> Array:
 
 
 static func _index(house: Dictionary) -> int:
+	if house.has("custom_colors"):return 8
 	return 4+FINISHES.find(str(house.finish)) if house.has("finish") else posmod(int(house.get("palette",0)),4)
 
 
 static func _authoring(house: Dictionary) -> Dictionary:
 	var record := house.duplicate(true)
-	for field in ["palette","finish","name","bakery_open","workshop_open","auto_matinee"]: record.erase(field)
+	for field in ["palette","finish","name","bakery_open","workshop_open","auto_matinee","custom_colors"]: record.erase(field)
 	return record
 
+
+static func base_palette(renderer,house:Dictionary)->Array:
+	var base:Array=renderer.PALETTES[posmod(int(house.get("palette",0)),renderer.PALETTES.size())]
+	if house.has("finish"):base=renderer.FINISH_PALETTES[str(house.finish)]
+	if house.has("custom_colors"):
+		var colors:Dictionary=house.custom_colors
+		base=[Color.from_string(colors.wall,Color.WHITE),Color.from_string(colors.roof,Color("b85c3e")),base[2]]
+	return base
+
+static func era_palette(renderer,house:Dictionary,base:Array)->Array:
+	match renderer.state.house_era(house):
+		"renaissance":return renderer.Renaissance.palette(base)
+		"clockwork":return renderer.Clockwork.palette(base)
+		"modern_eco":return renderer.Modern.palette(base)
+	return base
 
 static func _colors(p: Array) -> Array[Color]:
 	var stone := Styles.wall_color("stone",p[0])
@@ -29,94 +45,96 @@ static func _colors(p: Array) -> Array[Color]:
 		p[0].lerp(Color("c9c5ae"),0.72),p[0].lerp(Color.WHITE,0.60),tower,tower.darkened(0.18)]
 
 
-static func prepare(renderer,root: Node3D,house: Dictionary) -> void:
-	var started := Time.get_ticks_usec()
-	var palettes: Array = []
-	for index in range(4+FINISHES.size()):
-		var base := _palette(renderer,index)
-		if renderer.state.house_era(house)=="renaissance": base=renderer.Renaissance.palette(base)
-		elif renderer.state.house_era(house)=="clockwork":base=renderer.Clockwork.palette(base)
-		elif renderer.state.house_era(house)=="modern_eco":base=renderer.Modern.palette(base)
-		palettes.append(_colors(base))
-	var packed: Array[PackedInt64Array]=[]
-	for colors: Array in palettes:
-		var values:=PackedInt64Array()
-		for color:Color in colors:values.append(color.to_abgr32())
-		packed.append(values)
-	var current: int = _index(house)
-	var lookup := {}
-	for index in range(palettes[current].size()): lookup[palettes[current][index].to_abgr32()] = index
-	var buffers: Array = []
-	var material_rows: Array = []
-	var style_rows: Array = []
-	var total_bytes := 0
-	var upload_bytes := 0
-	var warmup_us := 0
-	for node: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
-		if node.mesh == null: continue
-		var material: Material = node.material_override
-		if material is StandardMaterial3D:
-			var recipe: int = lookup.get(material.albedo_color.to_abgr32(),-1)
-			if recipe >= 0 and not material.vertex_color_use_as_albedo:
-				var owned := material.duplicate() as StandardMaterial3D
-				node.material_override = owned
-				material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":false})
-		elif material is ShaderMaterial and material.shader in [renderer.JoinedRoofShader,renderer.Clockwork.Brick]:
-			var parameter := "brick_color" if material.shader==renderer.Clockwork.Brick else "roof_color"
-			var roof_color: Color = material.get_shader_parameter(parameter)
-			var recipe: int = lookup.get(roof_color.to_abgr32(),-1)
-			if recipe >= 0:
-				var owned := material.duplicate() as ShaderMaterial
-				node.material_override = owned
-				material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":true,"parameter":parameter})
-		if not node.mesh is ArrayMesh: continue
-		for surface in range(node.mesh.get_surface_count()):
-			var mesh := node.mesh as ArrayMesh
-			var format := mesh.surface_get_format(surface)
-			if not (format & Mesh.ARRAY_FORMAT_COLOR): continue
-			var arrays: Array = mesh.surface_get_arrays(surface)
-			var original: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
-			var count := original.size()
-			var vertex_recipes := PackedInt32Array()
-			vertex_recipes.resize(count)
-			var changes := 0
-			for vertex in range(count):
-				vertex_recipes[vertex] = int(lookup.get(original[vertex].to_abgr32(),-1))
-				if vertex_recipes[vertex] >= 0: changes += 1
-			if changes == 0: continue
-			var raw: Dictionary = RenderingServer.mesh_get_surface(mesh.get_rid(),surface)
-			var source: PackedByteArray = raw.attribute_data
-			var stride := RenderingServer.mesh_surface_get_format_attribute_stride(format,count)
-			var offset := RenderingServer.mesh_surface_get_format_offset(format,count,Mesh.ARRAY_COLOR)
-			var variants: Array[PackedByteArray] = []
-			for index in range(palettes.size()):
-				var bytes := source.duplicate()
-				# Keep the installed finish byte-exact, including all original UVs.
-				if index != current:
-					for vertex in range(count):
-						var recipe: int = vertex_recipes[vertex]
-						if recipe >= 0: bytes.encode_u32(offset+vertex*stride,packed[index][recipe])
-				variants.append(bytes)
-				total_bytes += bytes.size()
-			buffers.append({"mesh":mesh,"surface":surface,"variants":variants})
-			# Pay Compatibility's first attribute-update setup during installation,
-			# before the first player recolor. This changes no rendered byte.
-			var warmup_start := Time.get_ticks_usec()
-			mesh.surface_update_attribute_region(surface,0,variants[current])
-			warmup_us += Time.get_ticks_usec()-warmup_start
-			upload_bytes += source.size()
-	for node: Node in root.find_children("*","Node",true,false):
-		if not node.has_meta("style_details"): continue
-		var parts: Array = node.get_meta("style_details")
-		var recipes := PackedInt32Array()
-		for part: Dictionary in parts: recipes.append(int(lookup.get(part.color.to_abgr32(),-1)))
-		style_rows.append({"node":node,"parts":parts,"recipes":recipes})
-	var prepare_ms := float(Time.get_ticks_usec()-started)/1000.0
-	root.set_meta("house_color_cache",{"authoring":_authoring(house),"buffers":buffers,"materials":material_rows,
-		"style_rows":style_rows,"palettes":palettes,"index":current,"bytes":total_bytes,
-		"prepare_ms":prepare_ms,"warmup_ms":float(warmup_us)/1000.0,"upload_bytes":upload_bytes})
-	root.set_meta("house_color_prepare",{"prepare_ms":prepare_ms,"warmup_ms":float(warmup_us)/1000.0,
-		"bytes":total_bytes,"upload_bytes":upload_bytes,"surfaces":buffers.size(),"variants":palettes.size()})
+static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->bool:
+	var started:=Time.get_ticks_usec()
+	var job:Dictionary
+	if root.has_meta("house_color_pending"):
+		job=root.get_meta("house_color_pending")
+	else:
+		var palettes: Array = []
+		for index in range(4+FINISHES.size()):
+			var base := era_palette(renderer,house,_palette(renderer,index))
+			palettes.append(_colors(base))
+		palettes.append(_colors(era_palette(renderer,house,base_palette(renderer,house))))
+		var current: int = _index(house)
+		var lookup := {}
+		for index in range(palettes[current].size()): lookup[palettes[current][index].to_abgr32()] = index
+		var buffers: Array = []
+		var material_rows: Array = []
+		var style_rows: Array = []
+		job={"palettes":palettes,"current":current,"lookup":lookup,"buffers":buffers,"materials":material_rows,
+			"style_rows":style_rows,"bytes":0,"elapsed_us":0,"nodes":root.find_children("*","MeshInstance3D",true,false),"cursor":0}
+		root.set_meta("house_color_pending",job)
+	while job.cursor<job.nodes.size():
+		_prepare_mesh(renderer,job.nodes[job.cursor],job)
+		job.cursor+=1
+		if budget_ms>0. and float(Time.get_ticks_usec()-started)/1000.>=budget_ms and job.cursor<job.nodes.size():
+			job.elapsed_us+=Time.get_ticks_usec()-started
+			return false
+	for node:Node in root.find_children("*","Node",true,false):
+		if not node.has_meta("style_details"):continue
+		var parts:Array=node.get_meta("style_details");var recipes:=PackedInt32Array()
+		for part:Dictionary in parts:recipes.append(int(job.lookup.get(part.color.to_abgr32(),-1)))
+		job.style_rows.append({"node":node,"parts":parts,"recipes":recipes})
+	job.elapsed_us+=Time.get_ticks_usec()-started
+	var elapsed:float=float(job.elapsed_us)/1000.
+	root.set_meta("house_color_cache",{"authoring":_authoring(house),"buffers":job.buffers,"materials":job.materials,
+		"style_rows":job.style_rows,"palettes":job.palettes,"index":job.current,"bytes":job.bytes,
+		"custom_colors":house.get("custom_colors",{}).duplicate(),"prepare_ms":elapsed,"warmup_ms":0.,"upload_bytes":0})
+	root.set_meta("house_color_prepare",{"prepare_ms":elapsed,"warmup_ms":0.,"bytes":job.bytes,"upload_bytes":0,"surfaces":job.buffers.size(),"variants":job.palettes.size()})
+	root.remove_meta("house_color_pending")
+	return true
+
+static func _prepare_mesh(renderer,node:MeshInstance3D,job:Dictionary)->void:
+	var lookup:Dictionary=job.lookup
+	var current:int=job.current
+	var palettes:Array=job.palettes
+	var buffers:Array=job.buffers
+	var material_rows:Array=job.materials
+	if node.mesh == null:return
+	var material: Material = node.material_override
+	if material is StandardMaterial3D:
+		var recipe: int = lookup.get(material.albedo_color.to_abgr32(),-1)
+		if recipe >= 0 and not material.vertex_color_use_as_albedo:
+			var owned := material.duplicate() as StandardMaterial3D
+			node.material_override = owned
+			material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":false})
+	elif material is ShaderMaterial and material.shader in [renderer.JoinedRoofShader,renderer.Clockwork.Brick]:
+		var parameter := "brick_color" if material.shader==renderer.Clockwork.Brick else "roof_color"
+		var roof_color: Color = material.get_shader_parameter(parameter)
+		var recipe: int = lookup.get(roof_color.to_abgr32(),-1)
+		if recipe >= 0:
+			var owned := material.duplicate() as ShaderMaterial
+			node.material_override = owned
+			material_rows.append({"node":node,"material":owned,"recipe":recipe,"shader":true,"parameter":parameter})
+	if not node.mesh is ArrayMesh:return
+	for surface in range(node.mesh.get_surface_count()):
+		var mesh := node.mesh as ArrayMesh
+		var format := mesh.surface_get_format(surface)
+		if not (format & Mesh.ARRAY_FORMAT_COLOR): continue
+		var arrays: Array = mesh.surface_get_arrays(surface)
+		var original: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+		var count := original.size()
+		var vertex_recipes := PackedInt32Array()
+		vertex_recipes.resize(count)
+		var changes := 0
+		for vertex in range(count):
+			vertex_recipes[vertex] = int(lookup.get(original[vertex].to_abgr32(),-1))
+			if vertex_recipes[vertex] >= 0: changes += 1
+		if changes == 0: continue
+		var raw: Dictionary = RenderingServer.mesh_get_surface(mesh.get_rid(),surface)
+		var source: PackedByteArray = raw.attribute_data
+		var stride := RenderingServer.mesh_surface_get_format_attribute_stride(format,count)
+		var offset := RenderingServer.mesh_surface_get_format_offset(format,count,Mesh.ARRAY_COLOR)
+		var variants: Array[PackedByteArray] = []
+		# Only the installed palette needs bytes now. Other variants are
+		# populated on demand, avoiding eight full copies on every module edit.
+		for index in range(palettes.size()):
+			variants.append(source if index==current else PackedByteArray())
+		job.bytes+=source.size()
+		buffers.append({"mesh":mesh,"surface":surface,"variants":variants,"source":source,
+			"recipes":vertex_recipes,"stride":stride,"offset":offset})
+
 
 
 static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
@@ -124,10 +142,20 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 	var cache: Dictionary = root.get_meta("house_color_cache")
 	if cache.authoring != _authoring(house) or str(root.get_meta("era_theme","pastoral")) != renderer.state.house_era(house): return false
 	var index: int = _index(house)
-	if index == int(cache.index): return true
+	if house.has("custom_colors") and cache.get("custom_colors",{})!=house.custom_colors:
+		cache.palettes[8]=_colors(era_palette(renderer,house,base_palette(renderer,house)))
+		for buffer:Dictionary in cache.buffers:buffer.variants[8]=PackedByteArray()
+		cache.custom_colors=house.custom_colors.duplicate()
+	elif index == int(cache.index): return true
 	var colors: Array = cache.palettes[index]
 	for buffer: Dictionary in cache.buffers:
 		var mesh: ArrayMesh = buffer.mesh
+		if buffer.variants[index].is_empty():
+			var bytes:PackedByteArray=buffer.source.duplicate()
+			for vertex:int in range(buffer.recipes.size()):
+				var recipe:int=buffer.recipes[vertex]
+				if recipe>=0:bytes.encode_u32(int(buffer.offset)+vertex*int(buffer.stride),colors[recipe].to_abgr32())
+			buffer.variants[index]=bytes
 		mesh.surface_update_attribute_region(int(buffer.surface),0,buffer.variants[index])
 	for row: Dictionary in cache.materials:
 		if row.shader: row.material.set_shader_parameter(str(row.get("parameter","roof_color")),colors[int(row.recipe)])
@@ -138,9 +166,6 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 			if recipe >= 0: row.parts[part].color = colors[recipe]
 		row.node.set_meta("style_details",row.parts)
 	cache.index = index
-	var base := _palette(renderer,index)
-	if renderer.state.house_era(house)=="renaissance": base=renderer.Renaissance.palette(base)
-	elif renderer.state.house_era(house)=="clockwork":base=renderer.Clockwork.palette(base)
-	elif renderer.state.house_era(house)=="modern_eco":base=renderer.Modern.palette(base)
+	var base:=era_palette(renderer,house,base_palette(renderer,house))
 	root.set_meta("palette_colors",base.duplicate())
 	return true

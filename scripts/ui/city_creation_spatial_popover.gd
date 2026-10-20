@@ -21,6 +21,10 @@ var style_button:Button
 var era_button:Button
 var temperament_button:Button
 var concert_button:Button
+var expand_button:Button
+var color_panel:VBoxContainer
+var wall_picker:ColorPickerButton
+var roof_picker:ColorPickerButton
 var role_buttons:Dictionary={}
 var swatches:Array[Button]=[]
 var target_house_id:=""
@@ -56,9 +60,19 @@ func setup(owner,ui_root:Control)->void:
 		var hover:=style.duplicate();hover.border_color=UI.GOLD;hover.set_border_width_all(3)
 		swatch.add_theme_stylebox_override("hover",hover)
 		swatch.pressed.connect(_set_palette.bind(index));swatch_box.add_child(swatch);swatches.append(swatch)
+	expand_button=_seal(finish_row,"palette","更多",_toggle_colors);expand_button.custom_minimum_size=Vector2(48,42)
+	color_panel=VBoxContainer.new();color_panel.name="ExpandedPalette";column.add_child(color_panel)
+	var color_row:=HBoxContainer.new();color_row.add_theme_constant_override("separation",8);color_panel.add_child(color_row)
+	var wall_label:=Label.new();wall_label.text="墙面";color_row.add_child(wall_label)
+	wall_picker=ColorPickerButton.new();wall_picker.name="WallColor";wall_picker.custom_minimum_size=Vector2(64,34);wall_picker.edit_alpha=false;color_row.add_child(wall_picker)
+	var roof_label:=Label.new();roof_label.text="屋顶";color_row.add_child(roof_label)
+	roof_picker=ColorPickerButton.new();roof_picker.name="RoofColor";roof_picker.custom_minimum_size=Vector2(64,34);roof_picker.edit_alpha=false;color_row.add_child(roof_picker)
+	var apply:=Button.new();apply.text="换上配色";apply.name="ApplyColors";apply.pressed.connect(_apply_colors);color_row.add_child(apply)
+	color_panel.hide()
 	var roles:=GridContainer.new();roles.name="RoofCompassRoles";roles.columns=4
 	roles.add_theme_constant_override("h_separation",4);roles.add_theme_constant_override("v_separation",4);column.add_child(roles)
 	for role:String in ROLE_LABELS:
+		if role in ["venue","symphony_hall"]:continue
 		var role_button:=_seal(roles,str(ROLE_GLYPHS[role]),str(ROLE_LABELS[role]),_set_role.bind(role))
 		role_button.name="Role_"+role;role_button.custom_minimum_size=Vector2(88,46)
 		role_buttons[role]=role_button
@@ -67,6 +81,7 @@ func setup(owner,ui_root:Control)->void:
 	status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;status.add_theme_font_size_override("font_size",12)
 	status.add_theme_color_override("font_color",UI.MUTED);summary.add_child(status)
 	var actions:=HBoxContainer.new();actions.add_theme_constant_override("separation",5);column.add_child(actions)
+	var extend:=_seal(actions,"house","加建",_extend_house);extend.name="ExtendHouse";extend.custom_minimum_size=Vector2(76,42)
 	temperament_button=_seal(actions,"music","律动",_cycle_temperament);temperament_button.custom_minimum_size=Vector2(76,42)
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
 	card.hide()
@@ -78,7 +93,7 @@ func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
 
 func open_for_house(house_id:String)->void:
 	if target_house_id!=house_id:
-		target_house_id=house_id;name_field.release_focus()
+		target_house_id=house_id;name_field.release_focus();color_panel.hide()
 		card.scale=Vector2.ONE*.88;card.modulate.a=0.;card.show()
 		if _tween!=null and _tween.is_valid():_tween.kill()
 		_tween=card.create_tween().set_parallel(true)
@@ -91,7 +106,7 @@ func close()->void:
 
 func refresh()->void:
 	if target_house_id.is_empty() or not is_instance_valid(demo):return
-	if demo.tool!=4 or not demo.ui_layer.visible:
+	if demo.tool not in [0,4] or not demo.ui_layer.visible:
 		card.hide();return
 	var house:Dictionary=demo.town._house_record(target_house_id)
 	if house.is_empty():close();return
@@ -112,18 +127,18 @@ func refresh()->void:
 	var palette:=int(house.get("palette",0))
 	for index:int in range(swatches.size()):
 		var style:=swatches[index].get_theme_stylebox("normal") as StyleBoxFlat
-		style.border_color=UI.GOLD if index==palette else UI.PAPER
-		style.set_border_width_all(3 if index==palette else 2)
+		style.border_color=UI.GOLD if index==palette and not house.has("custom_colors") else UI.PAPER
+		style.set_border_width_all(3 if index==palette and not house.has("custom_colors") else 2)
 	var temperament:=str(house.get("temperament","andante"))
 	temperament_button.caption={"andante":"温润","allegro":"轻快","largo":"深邃"}.get(temperament,"温润")
 	temperament_button.queue_redraw()
 	var role:=str(house.get("role","residential"))
-	concert_button.visible=role in ["venue","symphony_hall"]
+	concert_button.visible=str(house.get("signature","")) in ["music_academy","floating_amphitheater","bell_keep"]
 	status.text=str(demo.HouseholdFeedback.describe(demo.state,demo.life,target_house_id)).replace("\n"," · ")
 	_update_anchor(house)
 
 func follow()->void:
-	if target_house_id.is_empty() or demo.tool!=4 or not demo.ui_layer.visible:return
+	if target_house_id.is_empty() or demo.tool not in [0,4] or not demo.ui_layer.visible:return
 	var house:Dictionary=demo.town._house_record(target_house_id)
 	if house.is_empty():close();return
 	card.show();_update_anchor(house)
@@ -141,6 +156,22 @@ func _update_anchor(house:Dictionary)->void:
 	var target:=Vector2(clampf(projected.x-size.x*.5,12.,maxf(12.,viewport.x-size.x-12.)),clampf(y,62.,maxf(62.,viewport.y-size.y-112.)))
 	card.position=target if _last_position==Vector2.ZERO else _last_position.lerp(target,.35)
 	_last_position=card.position
+
+func _toggle_colors()->void:
+	color_panel.visible=not color_panel.visible
+	if color_panel.visible:
+		var house:Dictionary=demo.town._house_record(target_house_id)
+		var colors:Array=demo.town.HouseColors.base_palette(demo.town,house)
+		wall_picker.color=colors[0];roof_picker.color=colors[1]
+	card.reset_size()
+
+func _apply_colors()->void:
+	var result:Dictionary=demo.state.set_house_colors(target_house_id,wall_picker.color,roof_picker.color)
+	demo._after_edit(result,"terrace",false);refresh()
+
+func _extend_house()->void:
+	demo.house_module_mode=true;close();demo.preview_key="";demo._update_hover()
+	demo._message("点击屋顶加层、侧墙扩建；拖动可连续加建。Esc 返回选房。")
 
 func _set_role(role:String)->void:
 	var result:Dictionary=demo.state.set_house_role(target_house_id,role)

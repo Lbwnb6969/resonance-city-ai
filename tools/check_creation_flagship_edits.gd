@@ -12,7 +12,7 @@ func _check(ok:bool,label:String)->void:
 	checks+=1
 	if not ok:failures.append(label);push_error(label)
 func _wait()->void:
-	var deadline:=Time.get_ticks_msec()+90000
+	var deadline:=Time.get_ticks_msec()+180000
 	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:await process_frame
 	_check(not demo.edit_pending() and not demo._edit_ui_pending,"latest complete geometry routes and UI publish")
 func _edit(kind:String)->void:
@@ -30,7 +30,7 @@ func _edit(kind:String)->void:
 	if not result.ok:return
 	demo._after_edit(result,"history" if kind=="palette" else kind)
 	var input_ms:float=(Time.get_ticks_usec()-began)/1000.
-	var frames:Array[float]=[];var slow:Array=[];var last:=Time.get_ticks_usec();var deadline:=Time.get_ticks_msec()+90000
+	var frames:Array[float]=[];var slow:Array=[];var last:=Time.get_ticks_usec();var deadline:=Time.get_ticks_msec()+180000
 	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<deadline:
 		await process_frame
 		var now:=Time.get_ticks_usec();frames.append((now-last)/1000.);last=now

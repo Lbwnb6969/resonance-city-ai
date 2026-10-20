@@ -8,12 +8,14 @@ const SHRUB_SCALE:=Vector3(.65,.70,.65)
 var _owner:WeakRef
 var _revision:=-1
 var _cache:Dictionary={}
+var _cache_signatures:Dictionary={}
 var water_material:ShaderMaterial
 func prepare(renderer,road:Dictionary)->Dictionary:
-	if _revision!=renderer.state.revision or _owner==null or _owner.get_ref()!=renderer.state:
-		_revision=renderer.state.revision;_owner=weakref(renderer.state);_cache.clear()
-	if _cache.has(str(road.id)):return _cache[str(road.id)]
 	var city:RefCounted=renderer.state;var profile:Dictionary=city.road_profile(road);var samples:Array=profile.samples
+	renderer.promenade._prepare_clearance(city)
+	var input:int=hash([road,profile.signature,city.districts,city.plants,renderer.promenade._clearance_signature,city._junctions.signature(str(road.id))])
+	if _cache_signatures.get(str(road.id))==input and _cache.has(str(road.id)):return _cache[str(road.id)]
+	_cache_signatures[str(road.id)]=input
 	var data:Dictionary={"notes":[],"water":[],"gateways":[],"gardens":[]}
 	for i in range(1,samples.size()):
 		var from:String=_era(city,samples[i-1].xz);var to:String=_era(city,samples[i].xz)

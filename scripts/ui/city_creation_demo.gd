@@ -102,6 +102,7 @@ var road_drawing := false
 var road_points: Array[Vector2] = []
 var road_preview: Array[Vector2] = []
 var road_straight := false
+var road_size := -1
 var road_style := "path"
 var road_roundabout := false
 var road_draft_straight := false
@@ -124,6 +125,8 @@ var vegetation_erasing := false
 var vegetation_points: Array[Vector2] = []
 var vegetation_radius := 1.4
 var vegetation_kind := "olive"
+var vegetation_single := true
+var house_module_mode := false
 var vegetation_panel: PanelContainer
 var water_panel: PanelContainer
 var water_status: Label
@@ -361,7 +364,7 @@ func _setup_life() -> void:
 	add_child(life)
 	life.setup(state)
 	life.view_camera=camera
-	life.arrival_callback = func(kind: String) -> void: music.play_edit("arrival" if kind=="concert" else "terrace")
+	life.arrival_callback = func(_kind: String) -> void: music.record_life_activity("arrival","",Vector2(focus.x,focus.z))
 	life.concert_callback = _on_concert_event
 	life.production_callback = func(house_id:String,_quantity:int)->void: music.queue_bakery_cue("baked",house_id)
 	life.purchase_callback = func(shop_id:String,home_id:String)->void: music.queue_bakery_cue("purchased",shop_id,home_id)
@@ -627,11 +630,15 @@ func _setup_ui() -> void:
 	var species := OptionButton.new()
 	species.name = "Species"
 	species.tooltip_text = "选择树木与灌木种类；在制琴坊8米内种满3棵橄榄或柏树可获良木提速加持"
-	for label: String in ["橄榄树群", "地中海柏", "低矮灌木"]: species.add_item(label)
+	for label: String in State.GardenSpecies.NAMES: species.add_item(label)
 	species.item_selected.connect(func(index:int)->void:
 		_cancel_draft()
-		vegetation_kind = ["olive","cypress","shrub"][index])
+		vegetation_kind = State.GardenSpecies.IDS[index])
 	garden.add_child(species)
+	var planting:=OptionButton.new();planting.name="PlantingMode"
+	planting.add_item("单株 · 精确摆放");planting.add_item("成片 · 随笔种植")
+	planting.item_selected.connect(func(index:int)->void:_cancel_draft();vegetation_single=index==0)
+	garden.add_child(planting)
 	var radius := OptionButton.new()
 	radius.name = "BrushSize"
 	radius.tooltip_text = "选择植被笔刷散布半径"
@@ -663,6 +670,10 @@ func _setup_ui() -> void:
 		_cancel_draft()
 		road_straight = index == 1)
 	road_column.add_child(road_mode)
+	var sizes:=OptionButton.new();sizes.name="RoadSize"
+	for label:String in ["原尺寸","窄路","标准","宽路"]:sizes.add_item(label)
+	sizes.item_selected.connect(func(index:int)->void:_cancel_draft();road_size=index-1)
+	road_column.add_child(sizes)
 	var styles := OptionButton.new()
 	styles.name="RoadStyle"
 	styles.tooltip_text = "直接铺设或沿旧路重描原位升级街道样式与宽度"
@@ -1012,6 +1023,7 @@ func select_tool(index: int) -> void:
 	_cancel_draft()
 	place_panel.visible = false
 	if spatial_popover!=null:spatial_popover.close()
+	house_module_mode=false
 	vegetation_panel.visible = tool == 5
 	water_panel.visible = tool == 6
 	road_panel.visible = tool == 2
@@ -1155,8 +1167,8 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F: ui_layer.visible = not ui_layer.visible
 		elif event.keycode == KEY_ESCAPE:
 			if spatial_popover!=null and not spatial_popover.target_house_id.is_empty():
-				spatial_popover.close();selected_house=""
-			else:_cancel_draft()
+				spatial_popover.close();selected_house="";house_module_mode=false
+			else:_cancel_draft();house_module_mode=false;preview_key=""
 		elif event.keycode == KEY_R and tool == 2:
 			_cancel_draft()
 			road_straight = not road_straight
@@ -1198,12 +1210,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				else: orbiting = true
 			MOUSE_BUTTON_MIDDLE: panning = true
 			MOUSE_BUTTON_LEFT:
-				if _edit_pending and tool!=2:
+				if _edit_pending and tool not in [0,1,2]:
 					_message(Copy.EDIT_PENDING_ROAD_TOAST)
 					return
 				if tool in [0,1]:
 					_update_hover()
-					_begin_house_stroke()
+					if candidate.has("select"):_commit_click()
+					else:_begin_house_stroke()
 				elif tool == 2:
 					if road_roundabout:
 						_after_edit(state.remove_roundabout(_ground_at(pointer)) if event.shift_pressed else state.add_roundabout(_ground_at(pointer)),"road")
@@ -1341,11 +1354,11 @@ func _process(delta: float) -> void:
 		elif water_drawing: _append_water_point()
 		elif district_link_drawing: _preview_district_link()
 		elif district_drawing: _append_district_point()
-		elif _edit_pending: pass
+		elif _edit_pending and tool not in [0,1]: pass
 		elif not ui_layer.visible:
 			town.clear_preview()
 			preview_key = ""
-		elif get_viewport().gui_get_hovered_control() == null and not _edit_pending: _update_hover()
+		elif get_viewport().gui_get_hovered_control() == null and (not _edit_pending or tool in [0,1]): _update_hover()
 		else:
 			town.clear_preview()
 			preview_key = ""
@@ -1429,11 +1442,11 @@ func _update_hover() -> void:
 		return
 	if tool == 5:
 		var ground := _ground_at(pointer)
-		var brush_key := str([ground,vegetation_radius,Input.is_key_pressed(KEY_SHIFT)])
+		var brush_key := str([ground,vegetation_kind,vegetation_single,vegetation_radius,Input.is_key_pressed(KEY_SHIFT)])
 		if preview_key == brush_key: return
 		preview_key = brush_key
 		if town.has_method("show_vegetation_brush"):
-			town.show_vegetation_brush(ground, vegetation_radius, Input.is_key_pressed(KEY_SHIFT))
+			town.show_vegetation_brush(ground, .22 if vegetation_single else vegetation_radius, Input.is_key_pressed(KEY_SHIFT))
 		return
 	var body: Object = hovered.get("collider")
 	if body != null and body.has_meta("house_id"):
@@ -1441,7 +1454,7 @@ func _update_hover() -> void:
 		var cell_id := str(body.get_meta("cell_id"))
 		var cell := _find_cell(house_id, cell_id)
 		if cell.is_empty(): return
-		if tool == 4:
+		if tool == 4 or (tool==0 and not house_module_mode):
 			candidate = {"select":house_id}
 		elif tool == 3:
 			var whole := remove_whole or removal_shift
@@ -1519,6 +1532,7 @@ func _commit_click() -> void:
 	_after_edit(result, action_kind,true,str(result.get("house_id","")) if action_kind in ["room","terrace"] else "")
 
 func _begin_house_stroke() -> void:
+	if spatial_popover!=null:spatial_popover.close()
 	var first: Dictionary
 	if candidate.has("cell"):
 		first=candidate.cell
@@ -1574,6 +1588,9 @@ func _finish_house_stroke() -> void:
 	house_stroke_result.clear()
 	house_stroke_key=""
 
+func _selected_road_width()->float:
+	return 0. if road_size<0 else float(State.RoadUpgrade.sizes_for(road_style)[road_size])
+
 func _append_road_point(force: bool=false) -> void:
 	var p := _road_pointer_at()
 	# The tail follows one screen pixel; fixed controls determine curve density.
@@ -1590,7 +1607,7 @@ func _append_road_point(force: bool=false) -> void:
 			road_points=road_gesture.controls.duplicate()
 			if road_points[-1]!=p:road_points.append(p)
 		var curve_done:=Time.get_ticks_usec()
-		var check: Dictionary = state.preview_road(road_preview,road_style,"soft")
+		var check: Dictionary = state.preview_road(road_preview,road_style,"soft",_selected_road_width())
 		road_preview.assign(check.points)
 		var check_done:=Time.get_ticks_usec()
 		var porches: int = town.preview_road(road_preview,bool(check.ok),float(check.get("width",1.25)),bool(check.get("bridge",false)),str(check.get("style",road_style)))
@@ -1641,7 +1658,7 @@ func _finish_road() -> void:
 	if road_points.size() < 2:
 		_cancel_draft()
 		return
-	var result: Dictionary = state.add_road(road_preview,road_style,"none")
+	var result: Dictionary = state.add_road(road_preview,road_style,"none",_selected_road_width())
 	if result.ok: completed["road"] = true
 	if bool(result.get("no_op",false)):
 		_message(str(result.message))
@@ -1669,7 +1686,7 @@ func _finish_vegetation() -> void:
 	if vegetation_erasing:
 		result = state.erase_vegetation_stroke(vegetation_points, vegetation_radius)
 	else:
-		result = state.add_vegetation_stroke(vegetation_points, vegetation_kind, vegetation_radius)
+		result = state.place_plant(vegetation_points[-1],vegetation_kind) if vegetation_single else state.add_vegetation_stroke(vegetation_points, vegetation_kind, vegetation_radius)
 	_after_edit(result, "erase" if vegetation_erasing else "terrace")
 	vegetation_points.clear()
 
@@ -2181,7 +2198,7 @@ func _on_quality_changed(events: Array) -> void:
 	if life.profile_tick:life.tick_profile.quality_ui_us=Time.get_ticks_usec()-began
 
 func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
-	music.play_edit("installed" if kind in ["installed","festival","art_installed","mechanism_installed"] else "craft")
+	music.record_life_activity(kind,_shop_id)
 	if kind=="mechanism_installed":
 		_refresh_house_music_traits([target_id])
 		_message("♫ 邻屋收到钟表匠送来的"+("发条八音盒" if level==1 else "报时风向标"))
@@ -2228,7 +2245,7 @@ func _refresh_cafes() -> void:
 	cafe_progress.value=float(selected.elapsed)
 
 func _on_cafe_event(_cafe_id: String, homes: Array) -> void:
-	music.play_edit("tea")
+	music.record_life_activity("tea",_cafe_id)
 	_message("☕ %d位街坊在花下喝完一盏茶。" % homes.size())
 	_refresh_cafes()
 	save_delay=3.0

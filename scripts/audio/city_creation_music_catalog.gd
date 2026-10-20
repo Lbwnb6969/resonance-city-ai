@@ -1,5 +1,6 @@
 extends RefCounted
 ## Pure copied city values become a catalogue; playback remains on Music.
+const Choir=preload("res://scripts/audio/city_creation_cluster_choir.gd")
 const Towers=preload("res://scripts/world/city_creation_towers.gd")
 const Arrangement=preload("res://scripts/audio/city_creation_arrangement.gd")
 const Canon=preload("res://scripts/audio/city_creation_circular_canon.gd")
@@ -14,12 +15,13 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	var upper := 0
 	var terraces := 0
 	var houses: Array = state.get("houses")
+	var clusters:Dictionary=Choir.derive(houses)
 	var groups: Dictionary = {}
 	var towers: Dictionary = Towers.derive(houses,state.roads) if prepared_towers==null else prepared_towers
 	for house: Dictionary in houses:
 		daily.append(str(house.id))
 		var district: Dictionary = state.district_for_house(str(house.id))
-		var district_id:=str(district.get("id",""))
+		var district_id:=str(district.get("id",clusters[str(house.id)].id))
 		if not groups.has(district_id): groups[district_id]={"houses":[],"style":str(district.get("style","warm")),"adaptive":bool(district.get("adaptive",false))}
 		groups[district_id].houses.append(house)
 		var count: int = towers.get(str(house.id),[]).size()
@@ -31,6 +33,8 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		records[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":str(district.get("style","warm")),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
 		var row:Dictionary=records[str(house.id)]
+		row.cluster_id=clusters[str(house.id)].id;row.cluster_size=clusters[str(house.id)].size
+		row.cluster_members=clusters[str(house.id)].members
 		row.rooms=0;row.upper_rooms=0;row.max_level=0
 		row.water_distance=state.water_clearance(row.position)
 		for cell: Dictionary in house.cells:

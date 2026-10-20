@@ -99,7 +99,7 @@ func _run() -> void:
 	var encoded: Dictionary = JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true))
 	_check(restored.restore(encoded).ok and restored.roads==city.roads,"JSON roundtrip passes unchanged save validator with exact real bridge points")
 	# Ready hidden work and cancellation must not leak meshes or uploaded masks.
-	var visible_texture: Texture2D = town.ground_contact_field.texture
+	var visible_texture: Texture2DArray = town.ground_contact_field.texture
 	var visible_root: int = town.road_roots[ids[0]].get_instance_id()
 	town.request_budget_rebuild()
 	var report: Dictionary = await _poll(town,false)

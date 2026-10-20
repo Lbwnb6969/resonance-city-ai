@@ -6,8 +6,8 @@ const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 const DIAMETER:=46.0
 const GAP:=6
 const OPTION_ICONS:Dictionary={
-	"RoadMode":["road","straight"],"RoadStyle":["road","lamp","vegetation","rails"],
-	"RemovalMode":["erase","house"],"Species":["vegetation","cypress","shrub"],
+	"RoadMode":["road","straight"],"RoadSize":["road","brush_small","brush_medium","brush_large"],"RoadStyle":["road","lamp","vegetation","rails"],
+	"RemovalMode":["erase","house"],"Species":["vegetation","cypress","shrub","vegetation","garden_cafe","garden_cafe","garden_cafe"],"PlantingMode":["brush_small","brush_large"],
 	"BrushSize":["brush_small","brush_medium","brush_large"],"WaterMode":["pond","water"],
 	"WaterWidth":["brush_small","brush_medium","brush_large"],"DistrictWidth":["brush_small","brush_medium","brush_large"],
 	"DistrictStyle":["sundial_day","water","workshop","bakery","vegetation"],
@@ -16,11 +16,11 @@ const OPTION_ICONS:Dictionary={
 	"TerrainRadius":["brush_small","brush_medium","brush_large"]
 }
 const TOOL_GROUPS:Dictionary={
-	2:[["RoadMode","road",["曲线","折线"]],["RoadStyle","road",["小径","灯街","林荫","轨街"]],["RoadRoundabout","district",["环岛"]]],
+	2:[["RoadMode","road",["曲线","直线"]],["RoadStyle","road",["小径","灯街","林荫","轨街"]],["RoadSize","road",["原宽","窄路","标准","宽路"]],["RoadRoundabout","district",["环岛"]]],
 	3:[["RemovalMode","erase",["单元","整栋"]]],
-	5:[["Species","vegetation",["橄榄","柏树","灌木"]],["BrushSize","vegetation",["小笔","中笔","大笔"]]],
+	5:[["PlantingMode","vegetation",["单株","成片"]],["Species","vegetation",["橄榄","柏树","灌木","金叶","粉花","白花","黄花"]],["BrushSize","vegetation",["小笔","中笔","大笔"]]],
 	6:[["WaterMode","water",["池塘","支渠"]],["WaterWidth","water",["1.8m","3.2m","5m"]]],
-	7:[["DistrictWidth","district",["小庭","街坊","宽园"]],["DistrictStyle","district",["暖庭","深流","织机","市集","林间"]],["DistrictEra","district",["田园","文艺","蒸汽","现代"]],["DistrictAdaptive","district",["随用途"]],["DistrictReply","audition",["对答"]],["DistrictLinkMode","district",["连街坊"]]],
+	7:[["DistrictWidth","district",["小庭","街坊","宽园"]],["DistrictStyle","district",["暖庭","深流","织机","市集","林间"]],["DistrictEra","district",["古典","中世","工业","现代"]],["DistrictAdaptive","district",["随用途"]],["DistrictReply","audition",["对答"]],["DistrictLinkMode","district",["连街坊"]]],
 	8:[["TerrainMode","terrain",["草丘","洼地","还原","露岩","台地","柔坡"]],["TerrainRadius","terrain",["2m","3.5m","5m"]],["NaturalContour","vegetation",["自然"]]]
 }
 var demo
@@ -52,6 +52,7 @@ func _setup(owner:Node,parent_control:Control)->void:
 		var button:Button=demo.tool_buttons[i]
 		button.set_script(Seal);button.configure(Icons.TOOL_KINDS[i],48.)
 		button.caption=demo.TOOL_NAMES[i];button.key_label=str(i+1)
+		if i==4:button.hide()
 	for button:Button in [demo.undo_button,demo.redo_button]:
 		button.set_script(Seal);button.configure("undo" if button==demo.undo_button else "redo",32.)
 	var legacy:=Control.new();legacy.name="LegacyToolOptions";legacy.hide();legacy.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -147,6 +148,11 @@ func _sync()->void:
 			button.active=toggle.button_pressed
 			button.disabled=toggle.disabled
 		button.modulate.a=.38 if button.disabled else 1.
+		if str(binding.source.name)=="RoadSize":
+			var index:int=int(binding.index)
+			var width:float=demo.State.RoadUpgrade.width_for(demo.road_style) if index==0 else demo.State.RoadUpgrade.sizes_for(demo.road_style)[index-1]
+			button.caption=("原 " if index==0 else "")+str(width)+"m"
+			button.tooltip_text="道路宽度 · "+str(width)+"米"
 		button.queue_redraw()
 
 func _position_popup()->void:

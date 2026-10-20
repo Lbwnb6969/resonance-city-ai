@@ -127,7 +127,25 @@ func _build_block(bounds: Rect2, block: Vector2i, prepared:Dictionary={}) -> Nod
 	instance.name = "GroundMesh"
 	instance.mesh = mesh
 	instance.material_override = material
+	# Flat ground must receive city shadows without shadowing its own coplanar
+	# triangles. Compatibility exposes that self-shadow as diagonal bands at
+	# street height. Steep faces retain a separate, exact silhouette caster.
+	instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(instance)
+	var source_vertices:PackedVector3Array=prepared.arrays[Mesh.ARRAY_VERTEX]
+	var source_indices:PackedInt32Array=prepared.arrays[Mesh.ARRAY_INDEX]
+	var shadow_indices:=PackedInt32Array()
+	for index:int in range(0,source_indices.size(),3):
+		var a:int=source_indices[index];var b:int=source_indices[index+1];var c:int=source_indices[index+2]
+		var normal:Vector3=(source_vertices[c]-source_vertices[a]).cross(source_vertices[b]-source_vertices[a]).normalized()
+		if normal.y<.72:shadow_indices.append_array(PackedInt32Array([a,b,c]))
+	if not shadow_indices.is_empty():
+		var shadow_arrays:Array=[];shadow_arrays.resize(Mesh.ARRAY_MAX)
+		shadow_arrays[Mesh.ARRAY_VERTEX]=source_vertices;shadow_arrays[Mesh.ARRAY_INDEX]=shadow_indices
+		var shadow_mesh:=ArrayMesh.new();shadow_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,shadow_arrays)
+		var caster:=MeshInstance3D.new();caster.name="CliffShadow";caster.mesh=shadow_mesh
+		caster.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		root.add_child(caster)
 	var body := StaticBody3D.new()
 	body.name = "GroundPick"
 	body.collision_layer = 2

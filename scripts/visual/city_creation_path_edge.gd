@@ -24,12 +24,12 @@ func prepare(renderer: Node3D, road: Dictionary, extra_cuts: Array = []) -> Dict
 			cuts.append({"contours":contours,"bounds":bounds})
 			neighbors.append(contours)
 	var vertices: Array[Vector3] = []
+	var edge_segments:Array=_exposed_segments(neighbors)
 	var rings:Array=[]
-	for contour: PackedVector2Array in outlines:
-		# Boolean offset rings handle concave/short edges and closed islands.
-		# The old independent miter quads folded across sharp junction corners.
-		var hole:=Geometry2D.is_polygon_clockwise(contour)
-		var positive:=contour.duplicate()
+	# Offset the connected exposed boundary rather than each stroke's cap.
+	for contour:PackedVector2Array in _boundary_contours(edge_segments):
+		var hole:bool=Geometry2D.is_polygon_clockwise(contour)
+		var positive:PackedVector2Array=contour.duplicate()
 		if hole:positive.reverse()
 		var inset:Array=Geometry2D.offset_polygon(positive,WIDTH if hole else -WIDTH,Geometry2D.JOIN_ROUND)
 		rings.append([contour]+inset)
@@ -38,7 +38,6 @@ func prepare(renderer: Node3D, road: Dictionary, extra_cuts: Array = []) -> Dict
 	vertices=renderer._water_scanline_union(rings,0,exclusions,outlines)
 	if bool(road.get("bridge",false)): vertices = renderer._subdivide_road(vertices)
 	if vertices.is_empty(): return {"arrays":[],"stats":{"triangles":0,"vertices":0}}
-	var edge_segments:Array=_exposed_segments(neighbors)
 	var samples: Array[Vector2] = renderer._road_geometry(road).samples
 	var center_segments: Array = []
 	for index in range(samples.size()-1): center_segments.append([samples[index],samples[index+1]])
@@ -125,6 +124,30 @@ func _exposed_segments(groups:Array)->Array:
 						if other!=own and _inside(middle,groups[other]):hidden=true;break
 					if not hidden:result.append([a+delta*breaks[part-1],a+delta*breaks[part]])
 	return result
+
+func _boundary_contours(segments:Array)->Array:
+	var starts:Dictionary={};var used:Dictionary={};var result:Array=[]
+	for i:int in range(segments.size()):
+		var key:Vector2i=_key(segments[i][0])
+		if not starts.has(key):starts[key]=[]
+		starts[key].append(i)
+	for first:int in range(segments.size()):
+		if used.has(first):continue
+		var contour:=PackedVector2Array();var current:int=first
+		var initial:Vector2i=_key(segments[first][0]);var closed:=false
+		while not used.has(current):
+			used[current]=true;contour.append(segments[current][0])
+			var finish:Vector2i=_key(segments[current][1])
+			if finish==initial:closed=true;break
+			var next:=-1
+			for candidate:int in starts.get(finish,[]):
+				if not used.has(candidate):next=candidate;break
+			if next<0:break
+			current=next
+		if closed and contour.size()>=3:result.append(contour)
+	return result
+
+func _key(at:Vector2)->Vector2i:return Vector2i(roundi(at.x*10000.),roundi(at.y*10000.))
 
 func _bins(segments: Array, margin: float) -> Dictionary:
 	var bins := {}

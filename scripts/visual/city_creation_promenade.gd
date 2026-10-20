@@ -10,6 +10,8 @@ var evening := false
 var concert := false
 var _revision := -1
 var _cache: Dictionary = {}
+var _cache_signatures:Dictionary={}
+var _clearance_signature:=0
 var bud_mesh: SphereMesh
 const CLEARANCE_BIN_SIZE:=4.
 var _clearance_revision:=-1
@@ -36,9 +38,11 @@ func road_material() -> ShaderMaterial:
 func prepare(renderer,road: Dictionary) -> Array:
 	var style:=str(road.get("style","path"))
 	if style not in ["promenade","avenue","tram"]: return []
-	if _revision!=renderer.state.revision: _cache.clear();_revision=renderer.state.revision
-	if _cache.has(str(road.id)): return _cache[str(road.id)]
 	var profile: Dictionary = renderer.state.road_profile(road)
+	_prepare_clearance(renderer.state)
+	var input:int=hash([road,profile.signature,_clearance_signature])
+	if _cache_signatures.get(str(road.id))==input and _cache.has(str(road.id)):return _cache[str(road.id)]
+	_cache_signatures[str(road.id)]=input
 	var samples: Array = profile.samples
 	var length: float = samples[-1].distance
 	var records: Array = []
@@ -118,9 +122,11 @@ func _prepare_clearance(city:RefCounted)->void:
 		for door:Dictionary in city.house_entrances(str(house.id)):
 			_add_clearance({"kind":"door","at":door.at,"clearance_at":door.clearance_at,"radius":1.15},Rect2(door.at,Vector2.ZERO).grow(1.15))
 	for plant:Dictionary in city.plants:
-		if str(plant.kind) not in ["olive","cypress"]:continue
+		if str(plant.kind) not in ["olive","cypress","golden_tree"]:continue
 		var at:=Vector2(plant.position[0],plant.position[1])
 		_add_clearance({"kind":"plant","at":at,"radius":.55},Rect2(at,Vector2.ZERO).grow(.55))
+
+	_clearance_signature=hash([_clearance_records,city.waters,city.roads,city._ground_terrain.vertices])
 
 func _add_clearance(record:Dictionary,bounds:Rect2)->void:
 	var index:=_clearance_records.size();_clearance_records.append(record)
@@ -135,6 +141,8 @@ func adopt_clearance(source:RefCounted,city:RefCounted)->void:
 	# records. Only their weak city owner changes at publication.
 	_clearance_revision=city.revision;_clearance_owner=weakref(city)
 	_clearance_records=source._clearance_records;_clearance_bins=source._clearance_bins
+	_clearance_signature=source._clearance_signature
+	_cache=source._cache;_cache_signatures=source._cache_signatures
 
 func doors_clear(city:RefCounted,at:Vector2,reach:float)->bool:
 	_prepare_clearance(city)

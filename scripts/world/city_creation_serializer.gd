@@ -74,6 +74,12 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	var former_limit:=180. if not city.signature_bonuses().palace_id.is_empty() else 120.
 	for id:String in city.resonance_afterglow:
 		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
+	for house:Dictionary in city.houses:
+		if house.has("custom_colors"):result.schema=city.PERSONALIZATION_SCHEMA;break
+	for road:Dictionary in city.roads:
+		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
+	for plant:Dictionary in city.plants:
+		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -232,7 +238,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档生活进展无效")
 	var journeys: Dictionary = city._validate_journey_checkpoint(data.get("journey_checkpoint",{}), data.get("houses"), progress)
 	if not journeys.ok: return journeys
-	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.PLANNING_SCHEMA:
+	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.PERSONALIZATION_SCHEMA:
 		return city._fail("不支持的城市存档版本")
 	var unlocks: Variant = data.get("era_unlocks", ["pastoral"])
 	if not unlocks is Array or unlocks.is_empty() or unlocks.size() > city.Eras.AVAILABLE_COUNT: return city._fail("时代解锁结构无效")
@@ -352,6 +358,11 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if house.get("role","")=="symphony_hall" and (data.schema<city.MODERN_SCHEMA or not unlocks.has("modern_eco")):return city._fail("交响音乐厅尚未开启")
 		if house.has("era_theme") and house.era_theme not in unlocks: return city._fail("房屋时代尚未开启")
 		if house.has("signature") and data.schema<city.QUALITY_SCHEMA:return city._fail("地标需要新存档版本")
+		if house.has("custom_colors"):
+			var colors:Variant=house.custom_colors
+			if data.schema<city.PERSONALIZATION_SCHEMA or not colors is Dictionary or colors.size()!=2:return city._fail("自选配色格式无效")
+			for part:String in ["wall","roof"]:
+				if not colors.get(part) is String or colors[part].length()!=6 or not colors[part].is_valid_hex_number(false):return city._fail("自选配色颜色无效")
 		if not house.get("auto_matinee", false) is bool: return city._fail("自动巡演开关无效")
 		if not house.get("workshop_open", true) is bool:
 			return city._fail("城市存档工坊开关无效")
@@ -443,7 +454,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			var style_width: float=city.RoadUpgrade.width_for(road.style)
 			# Earlier authored avenues and tram streets retain their exact footprint.
 			var legacy_width: bool=road.style in ["avenue","tram"] and city._is_number(road.get("width")) and is_equal_approx(float(road.width),2.0)
-			if not city._is_number(road.get("width")) or (absf(float(road.width)-style_width)>0.00001 and not legacy_width): return city._fail("城市存档道路样式与宽度不符")
+			if not city._is_number(road.get("width")) or (absf(float(road.width)-style_width)>0.00001 and not legacy_width and not (data.schema>=city.PERSONALIZATION_SCHEMA and road.get("sized",false)==true and road.width in city.RoadUpgrade.sizes_for(str(road.style)))): return city._fail("城市存档道路样式与宽度不符")
+		if road.has("sized") and (data.schema<city.PERSONALIZATION_SCHEMA or not road.sized is bool or not road.sized or road.get("width") not in city.RoadUpgrade.sizes_for(str(road.get("style","path")))):return city._fail("道路尺寸无效")
 		max_road = maxi(max_road, int(road.id.substr(1)))
 		if not road.get("points") is Array or road.points.size() < 2 or not city._is_number(road.get("width")) or road.width <= 0:
 			return city._fail("城市存档道路字段无效")
@@ -463,8 +475,9 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			max_plant = maxi(max_plant, int(str(plant.id).substr(1)))
 			if not city._valid_point(plant.get("position")) or not WORLD_RECT.has_point(Vector2(float(plant.position[0]), float(plant.position[1]))):
 				return city._fail("城市存档植被位置无效")
-			if plant.get("kind") not in ["olive", "cypress", "shrub"] or not city._is_number(plant.get("scale")) or float(plant.scale) <= 0.0 or float(plant.scale) > 8.0 or not city._is_integer(plant.get("seed")):
+			if plant.get("kind") not in city.GardenSpecies.IDS or not city._is_number(plant.get("scale")) or float(plant.scale) <= 0.0 or float(plant.scale) > 8.0 or not city._is_integer(plant.get("seed")):
 				return city._fail("城市存档植被字段无效")
+			if plant.kind not in ["olive","cypress","shrub"] and data.schema<city.PERSONALIZATION_SCHEMA:return city._fail("新植物需要新版存档")
 			if plant.get("source", "seed") not in ["seed", "player"]:
 				return city._fail("城市存档植被来源无效")
 			# Authored plants may be submerged by a later player stroke and

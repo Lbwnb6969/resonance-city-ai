@@ -4,18 +4,19 @@
 
 ## 当前优先级
 
-2026-10-20用户修订：性能以实际操作顺畅为准。120 FPS及固定帧时、Life/音频CPU数值均为参考，不再卡测试、阶段验收或后续开发；只针对明显卡顿、音频断续或性能回退继续优化，体验顺畅后优先画面、衔接、音乐与玩法。
+2026-10-20用户修订：性能以实际操作顺畅为准，不以120FPS或固定耗时卡验收；保留实测，处理明显卡顿和音频断续。
 
-1. Stage I：彩色大面仍未定位。读取现有F10城市/相机/截图，验证MultiMesh、道路退化点、纹理上传三条假设；鸟蝶初始化7个零矩阵提前可见已修，16项CPU/1000帧巡游有限数据检查通过；根因仍需异常现场节点/网格证据。正常截图不等于修复。个人文件只读，复现用隔离副本。
-2. 音乐目录/轮唱、日记与门前布局已随结构准备/复用。房屋按基座/立面/屋顶/地标分步，house_assembly持主线程任务；空间规划/孟莎CPU网格/现代连廊规划随后台准备，植物宫按拱跨/喷泉/花床生成。合批分帧、草地索引复用与cpu_retirement纯值回收保持，节点/GPU只在主线程。49项新生成/取消/后台纯值检查、58项品质及19项127屋实窗通过；17栋四时代/六地标/连廊/圆塔完整数据与原版一致。生成切片最高3.938ms，道路安装12.197ms、Life地形发布13.079ms作为排查记录；已有分步生成与到期调度保留，后续按实际卡顿决定优化范围。
-3. 毛石基再埋22cm/14cm贴地透明裙已通过19项CPU与30项实窗（7屋p95 5.582ms），末层负/零厚度也已修；时代边界双侧灌木/暖界石也已通过32项CPU与30项实窗（p95 5.585ms），真种植/改风貌/撤销与跨城缓存正确。桥头1.25m纹理渐变/支撑板相交修正与柔暖全局光影也已通过9项CPU/12项实窗；细节见PROJECT。接续破面与可见衔接问题；Stage IV常驻HUD已验收，接续V建筑罗盘与二级工具圆章（II/III沿用已验收实现）。三档性格/刮奏/心愿/巡游/四时、策略增补、六种子/乐章铭牌依VI～IX；X完整收口。
+1. 本次已接续点屋用途/扩展色盘/显式加建、七种植物精确摆放、四道路的曲线/直线和宽度、自然聚落与生活伴奏、古典→中世纪→工业→现代风貌。实际状态和验证入口见PROJECT；新稿取舍写入总纲。旧存档1～18兼容，新颜色/植物/道路尺寸按需Schema19，个人作品不写。
+2. Stage I继续：低视角斜条纹已证明为平地自投影并修复（平地收影、陡壁独立投影）；巨大绿色/彩色破面尚未定位。保留F10城市/相机/截图与自动隔层诊断，正常截图不能证明修复。复杂曲路仍有局部尖角/压边缺段，继续精修小径、桥头、坡路等可见连接。
+3. 加建已减少配色准备/无关道路重造，127屋加层发布3.858s→1.293s；19项实窗、18项全屋冷计算对照及49项组装检查通过。仍有发布等待，继续按实际体验收口；地形编辑6.267s尚未优化。生成/取消/后台纯值与既有到期调度保留，GPU和节点只在主线程分帧发布。
+4. 不重做Stage IV、旧II/III与Phase1～11。Stage V点屋/色盘已落地，后续完整入口回归；VI三性格/刮奏、VII心愿/巡游/四时、VIII策略、IX种子/铭牌、X完整验收按总纲继续，不提前全勾选。
 
 ## 代码定位
 
 | 系统 | 入口与关键点 |
 |---|---|
 | 主场景/UI | scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；paper_hud负责迁移，score_ribbon/sundial_hud/whisper_keycaps/seal_button/tactile_dock；copy/guide/journal/gallery/signatures保持原功能 |
-| 真值/历史 | scripts/world/city_creation_state.gd、serializer、change_set；可选Schema18已有，未来19兼容1～18 |
+| 真值/历史 | scripts/world/city_creation_state.gd、serializer、change_set；可选Schema19已用于自选色/新植物/道路尺寸，兼容1～18 |
 | 拉路/坡路 | road_gesture/road_intent/stroke，road_heights/road_earthworks/terrain_protection/frontage/junctions；新宽街2.10m旧2m保持 |
 | 生活/调度 | city_creation_life、citizen_schedule、citizen_motion、worker_lod、network、bakery/workshop/cafe、tram、quality |
 | 后台/发布 | scripts/visual/city_creation_budget_rebuild.gd；私有快照/缓存容器，CPU线程准备、cpu_retirement回收纯值，GPU和节点只在主线程分帧发布 |
@@ -40,3 +41,5 @@
 Stage IV：44px乐谱条、四圆章和紧凑九工具坞已接入；常驻HUD留白1440为92.45%、1024为88.73%。77项实窗/20项界面数据与17个真实手记目标引导通过，个人档不变。Stage V六类工具圆章与屋顶锚定罗盘已接入；名称、用途、风貌、配色和律动均走原事务。两分辨率136项工具圆章、40项罗盘交互/保存/撤销通过，后续补演出等完整入口回归。
 
 2026-10-20试玩棋盘圆斑已定位并修复：tiled_field把create_from_images放进assert，正式导出移除调用导致两张场纹理为0层；创建现独立执行。旧代码正式EXE精确复现截图，修订2正式EXE两场各64×66×66，GPU回读与CPU逐字节一致，昼夕夜近远景截图正常。build_creation_playtest.py导出后自动执行这一正式版验收；不能用编辑器加载PCK替代。另加0.75m SSAO接触遮蔽与级联阴影混合；此前巨大彩色多边形仍单独排查。新版试玩为交付/共鸣之城试玩_2026-10-20_修订2/共鸣之城.exe。
+
+本轮实际入口：tests/test_city_creation_personalization.gd、test_city_creation_house_dependency_cache.gd；tools/check_creation_personalization_live.gd、check_creation_road_modes_live.gd、check_creation_cluster_choir_live.gd与check_creation_low_view_live.gd。交付源码已变更，旧修订2 EXE没有这些新功能；用户未要求则不重新打包。

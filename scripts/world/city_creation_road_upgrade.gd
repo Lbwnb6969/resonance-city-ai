@@ -79,3 +79,9 @@ static func _coverage(source: Array,target: Array,path_length: float) -> Diction
 			# is already disproved. Stop scanning unrelated long saved curves.
 			if total-covered>path_length*(1.0-COVERAGE)+.000001:return {"fraction":0.,"error":0.}
 	return {"fraction":covered/maxf(0.000001,total),"error":error/maxf(0.000001,covered)}
+
+static func sizes_for(style:String)->Array:
+	if style=="path":return [.8,1.25,1.8]
+	if style=="cobble":return [1.25,1.6,2.1]
+	if style=="tram":return [2.1,2.6,3.2]
+	return [1.6,2.1,3.2]

@@ -13,11 +13,14 @@ var last_cycle:=-1
 
 static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool)->Dictionary:
 	var weights:Dictionary={};var representatives:Dictionary={};var nearest:Dictionary={}
-	var total:=0.;var height:=0.;var quality:=0.;var water:=0.;var upper:=0.;var rooms:=0.;var shapes:Array=[];var districts:Dictionary={}
+	var eligible:=0;var largest:=0;var total:=0.;var height:=0.;var quality:=0.;var water:=0.;var upper:=0.;var rooms:=0.;var shapes:Array=[];var districts:Dictionary={}
 	for id:String in houses:
 		var w:float=acoustic.focus_weight(id)
 		if w<=0.:continue
 		var row:Dictionary=houses[id];var era:=str(row.get("era_theme","pastoral"))
+		var size:int=int(row.get("cluster_size",1))
+		if size<3:continue
+		eligible+=1;largest=maxi(largest,size)
 		var track:String=STYLE_TRACKS.get(str(row.get("style","warm")),"wood") if era=="pastoral" else ERA_TRACKS.get(era,"wood")
 		weights[track]=float(weights.get(track,0.))+w
 		if w>float(nearest.get(track,0.)):
@@ -32,7 +35,7 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 	ranked.sort_custom(func(a:String,b:String)->bool:return a<b if is_equal_approx(weights[a],weights[b]) else weights[a]>weights[b])
 	var lead:String="" if ranked.is_empty() else ranked[0]
 	var second:String="" if ranked.size()<2 else ranked[1]
-	var targets:Dictionary={"foundation":-12.,"air":-60.,"terrace":-60.,"concert":-60.}
+	var targets:Dictionary={"foundation":-16. if eligible>0 else -60.,"air":-60.,"terrace":-60.,"concert":-60.}
 	for track:String in LEADS:targets[track]=-60.
 	var ring_count:=0
 	for ring:Dictionary in rings:
@@ -40,10 +43,10 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 	var average:float=quality/maxf(.001,total);var elevation:float=height/maxf(.001,total)
 	var silhouette:float=upper/maxf(1.,rooms)
 	if not lead.is_empty():
-		targets[lead]=-10.5
-		if not second.is_empty():targets[second]=-10.5+linear_to_db(minf(.45,float(weights[second])/float(weights[lead])))
-		targets.air=lerpf(-24.,-13.5,clampf(elevation*.7+silhouette*.6,0.,1.))
-		targets.terrace=lerpf(-27.,-22.,clampf((average-1.)/4.+water/maxf(.001,total)*.25,0.,1.))
+		targets[lead]=-13.5 if largest>=5 else -24.
+		if largest>=5 and not second.is_empty():targets[second]=-18.+linear_to_db(minf(.45,float(weights[second])/float(weights[lead])))
+		targets.air=lerpf(-60.,-23.,clampf(elevation*.7+silhouette*.6,0.,1.))
+		targets.terrace=lerpf(-60.,-28.,clampf((average-1.)/4.+water/maxf(.001,total)*.25,0.,1.))
 	shapes.sort_custom(func(a:Array,b:Array)->bool:return str(a[0])<str(b[0]))
 	var dna:=hash([shapes,ring_count])
 	var richness:float=clampf((average-1.)*.23+silhouette*.45+minf(2.,ring_count)*.15+elevation*.2,0.,1.)
@@ -57,7 +60,7 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 	if variant>0 and turn==0:variant-=1
 	elif variant==1 and richness>.4 and turn==2 and posmod(hash([dna,cycle]),3)==0:variant=2
 	var preferred:=3 if night else (1 if elevation>=.5 else (2 if lead=="renaissance_fugue" or water/maxf(.001,total)>.65 else 0))
-	return {"targets":targets,"lead_track":lead,"secondary_track":second,"source_id":str(representatives.get(lead,"")),"weights":weights,"source_ids":representatives,"variant":variant,"preferred_mode":preferred,"dna":dna,"visible_houses":shapes.size(),"average_tier":average,"elevation":elevation,"silhouette":silhouette,"rings":ring_count,"districts":districts.size(),"richness":richness}
+	return {"targets":targets,"lead_track":lead,"secondary_track":second,"source_id":str(representatives.get(lead,"")),"weights":weights,"source_ids":representatives,"variant":variant,"preferred_mode":preferred,"dna":dna,"visible_houses":shapes.size(),"eligible_houses":eligible,"largest_cluster":largest,"average_tier":average,"elevation":elevation,"silhouette":silhouette,"rings":ring_count,"districts":districts.size(),"richness":richness}
 
 func advance(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool,minimum_variant:int=0)->Dictionary:
 	if phrase==absolute_phrase:return score

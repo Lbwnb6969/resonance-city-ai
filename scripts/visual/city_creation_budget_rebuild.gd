@@ -119,7 +119,15 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city._courtyards.copy_cache_from(owner.state._courtyards)
 	context.courtyards.copy_cache_from(owner.courtyards)
 	context.building_context.copy_cache_from(owner.building_context)
+	context.house_geometry_cache=owner.house_geometry_cache.duplicate()
+	context.craft.adopt_layouts(owner.craft,context)
+	context.quality_visual.adopt_geometry(owner.quality_visual,context)
 	context.path_pebbles.copy_cache_from(owner.path_pebbles)
+	# Decoration records are immutable values. Retain them across revisions
+	# until their measured road/ground/plant/district inputs actually change.
+	for field:String in ["_cache","_cache_signatures"]:
+		context.promenade.set(field,Dictionary(owner.promenade.get(field)).duplicate())
+		context.era_streets.set(field,Dictionary(owner.era_streets.get(field)).duplicate())
 	context.ground_contact_field.copy_cpu_from(owner.ground_contact_field)
 	context.water_field.copy_cpu_from(owner.water_field,city)
 	context.era_road_field.copy_cpu_from(owner.era_road_field)
@@ -456,7 +464,7 @@ func _step(task: Array) -> bool:
 		"house_merge":
 			return staging._merge_meshes(staging.house_roots[str(task[1].id)],false,0.55)
 		"house_colors":
-			staging._prepare_house_colors(staging.house_roots[str(task[1].id)])
+			return staging._prepare_house_colors(staging.house_roots[str(task[1].id)],.55)
 		"house_resonance":
 			var house: Dictionary = task[1]
 			var root: Node3D = staging.house_roots[str(house.id)]
@@ -764,6 +772,8 @@ func _commit(owner: Node3D) -> void:
 	owner.path_pebbles.apply_view_detail()
 	owner.path_pebbles.city = owner.state
 	owner.promenade.adopt_clearance(staging.promenade,owner.state)
+	owner.era_streets._cache=staging.era_streets._cache
+	owner.era_streets._cache_signatures=staging.era_streets._cache_signatures
 	stages.caches_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	# A newer held brush may already be on screen while this older committed
@@ -774,6 +784,7 @@ func _commit(owner: Node3D) -> void:
 		for child: Node in staging.districts_layer.get_children(): child.reparent(owner.districts_layer,false)
 		owner.districts_fingerprint = staging.districts_fingerprint
 	owner.quality_visual.adopt_geometry(staging.quality_visual,owner)
+	owner.house_geometry_cache=staging.house_geometry_cache
 	owner._entrance_views=staging._entrance_views.duplicate()
 	owner._passage_views=staging._passage_views.duplicate()
 	owner._frontage_views=staging._frontage_views.duplicate()

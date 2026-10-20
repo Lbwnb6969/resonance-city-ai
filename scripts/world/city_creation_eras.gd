@@ -1,7 +1,7 @@
 extends RefCounted
 ## Earned era rights survive editing history; district and individual choices do not.
 const IDS := ["pastoral", "renaissance", "clockwork", "modern_eco"]
-const NAMES := ["田园木石河湾", "文艺复兴人文长街", "蒸汽钟表与浪漫花房", "现代生态交响城"]
+const NAMES := ["古典希腊罗马河湾", "中世纪木石长街", "工业革命与蒸汽花房", "现代生态交响城"]
 const AVAILABLE_COUNT := 4
 const RENAISSANCE_HOUSES := 14
 

@@ -137,6 +137,14 @@ func step(clock: float,offset_sec:float=0.)->void:
 
 func report()->Dictionary:
 	var group:=_selected()
+	if _owner!=null and _owner.choir_mode:
+		var clock:float=_owner._playback_clock()
+		var source:Dictionary=_owner.daily_source()
+		var selected:Dictionary=slot(group,clock) if not group.is_empty() else {}
+		var id:String=str(selected.get("house_id",""))
+		var glowing:bool=bool(source.get("audible",false)) and not id.is_empty() and _owner.acoustic.focus_weight(id)>0. and fposmod(clock,BEAT_SECONDS)<Pitch.GLOW_DURATION
+		return {"audible":false,"glowing":glowing,"house_id":id,"members":group.get("members",[]),"center":group.get("center",Vector2.ZERO),"ring_id":group.get("id",""),"clock_sec":clock,"elapsed":fposmod(clock,BEAT_SECONDS),"duration":0.,"glow_duration":Pitch.GLOW_DURATION,"cues":cues,"serial":floori(clock/BEAT_SECONDS),"beat_seconds":BEAT_SECONDS,"mode":"shared_stem"}
+
 	var clock: float=_owner._playback_clock() if _owner!=null else 0.
 	var elapsed: float=maxf(0.,clock-float(_active.get("start_clock",0.)))
 	var valid:=_owns() and not group.is_empty() and not _active.is_empty() and elapsed<Pitch.GLOW_DURATION
