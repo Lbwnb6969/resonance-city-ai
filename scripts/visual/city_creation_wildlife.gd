@@ -210,7 +210,6 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 			_birds[i].target = target
 			_birds[i].mode = "flying"
 			_birds[i].timer = 3.0
-	birds_mm.multimesh.visible_instance_count = _birds.size()
 
 	var target_flutters := clampi(_nectars.size() * 2, 0, MAX_FLUTTER)
 	var palette := [Color("f7d969"), Color("f5efe0"), Color("e89ca5"), Color("9ec4e8")]
@@ -227,6 +226,11 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 		_flutters.resize(target_flutters)
 	for i in range(_flutters.size()):
 		_flutters[i].anchor = _nectars[i % _nectars.size()]
+	# Publish the complete transforms/colours/custom data before exposing a
+	# newly allocated slot, including when the scene has not processed yet.
+	for i in range(_birds.size()):_write_bird(i,0.0 if str(_birds[i].mode)=="perched" else 1.0)
+	_write_flutters()
+	birds_mm.multimesh.visible_instance_count = _birds.size()
 	flutter_mm.multimesh.visible_instance_count = _flutters.size()
 	# Shader wings and flight paths extend beyond each tiny source mesh.
 	var bounds := AABB(Vector3(-48, -5, -48), Vector3(96, 30, 96))
@@ -302,11 +306,17 @@ func _process(delta: float) -> void:
 				b.pos = Vector3(b.pos) + step
 				if Vector2(step.x, step.z).length() > 0.001:
 					b.yaw = atan2(step.x, step.z)
-		var basis := Basis(Vector3.UP, float(b.yaw))
-		birds_mm.multimesh.set_instance_transform(i, Transform3D(basis, b.pos))
-		birds_mm.multimesh.set_instance_color(i, b.color)
-		birds_mm.multimesh.set_instance_custom_data(i, Color(flap, float(b.phase), 0.0, 0.0))
+		_write_bird(i,flap)
+	_write_flutters()
 
+func _write_bird(i:int,flap:float)->void:
+	var b:Dictionary=_birds[i]
+	var basis := Basis(Vector3.UP, float(b.yaw))
+	birds_mm.multimesh.set_instance_transform(i, Transform3D(basis, b.pos))
+	birds_mm.multimesh.set_instance_color(i, b.color)
+	birds_mm.multimesh.set_instance_custom_data(i, Color(flap, float(b.phase), 0.0, 0.0))
+
+func _write_flutters()->void:
 	for i in range(_flutters.size()):
 		var f: Dictionary = _flutters[i]
 		var ph := float(f.phase) + _time * 1.4
