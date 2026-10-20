@@ -2536,12 +2536,19 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 	# Height-aware streets require intermediate vertices even on dry land.
 	if bool(road.get("bridge",false)) or bool(profile.get("elevated",false)): vertices = _subdivide_road(vertices)
 	var heights: Dictionary = {}
+	var paving: Dictionary = {}
+	var paving_uv: Dictionary = {}
+	var bridge_spans: Array[Vector2] = Bridges.paving_spans(profile)
+	var stone_spans: Array[Vector2] = Bridges.paving_spans(profile,true)
 	var height_started := Time.get_ticks_usec()
 	# Every surface vertex is inside the exact round-ended road footprint.
 	# Its nearest centre segment lies within half-width plus the dry flare; retain
 	# source segment order in metre bins so equal-distance ties stay identical.
 	var center_segments: Array = []
-	for index in range(samples.size()-1): center_segments.append([samples[index],samples[index+1]])
+	var center_arc := 0.0
+	for index in range(samples.size()-1):
+		center_segments.append([samples[index],samples[index+1],center_arc])
+		center_arc += samples[index].distance_to(samples[index+1])
 	var height_bins: Dictionary = path_edge._bins(center_segments,width*0.5+Junctions.EXTRA+0.002)
 	for index in range(vertices.size()):
 		var at := Vector2(vertices[index].x,vertices[index].z)
@@ -2550,21 +2557,34 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 			continue
 		var nearest := samples[0]
 		var distance := INF
+		var arc := 0.0
+		var across := 0.0
 		var bin := Vector2i(floori(at.x),floori(at.y))
 		for segment: Array in height_bins.get(bin,center_segments):
 			var candidate := Geometry2D.get_closest_point_to_segment(at,segment[0],segment[1])
 			if at.distance_squared_to(candidate) < distance:
 				distance = at.distance_squared_to(candidate)
 				nearest = candidate
+				arc = float(segment[2])+Vector2(segment[0]).distance_to(candidate)
+				var tangent: Vector2=(Vector2(segment[1])-Vector2(segment[0])).normalized()
+				across=(at-candidate).dot(Vector2(-tangent.y,tangent.x))
 		vertices[index].y = _street_height(nearest)
 		heights[at] = vertices[index].y
+		paving[at] = Vector2(Bridges.paving_weight(arc,bridge_spans),Bridges.paving_weight(arc,stone_spans))
+		paving_uv[at] = Vector2(arc,across)
 	rebuild_stats["road_heights_ms"] = float(rebuild_stats.get("road_heights_ms",0.0))+float(Time.get_ticks_usec()-height_started)/1000.0
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for index in range(0,vertices.size(),3):
-		surface.add_vertex(vertices[index])
-		surface.add_vertex(vertices[index+2])
-		surface.add_vertex(vertices[index+1])
+		for vertex_index: int in [index,index+2,index+1]:
+			var vertex := vertices[vertex_index]
+			# Red blends the wet deck, green selects architectural stone. Timber
+			# follows arc/across UVs; stone keeps world phase through bridgeheads.
+			var at:=Vector2(vertex.x,vertex.z)
+			var weight:Vector2=paving[at]
+			surface.set_color(Color(weight.x,weight.y,0,1))
+			surface.set_uv(paving_uv[at])
+			surface.add_vertex(vertex)
 	surface.generate_normals()
 	surface.index()
 	var arrays := surface.commit_to_arrays() if not vertices.is_empty() else []
@@ -2597,7 +2617,9 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 			_append_road_descriptor(curbs,Vector3(0.065,0.065,a.distance_to(b)+0.003),Vector3(center.x,y+0.48,center.y),Color("d5ccb0"),Vector3(-atan2(y1-y0,a.distance_to(b)),atan2(b.x-a.x,b.y-a.y),0))
 			if over_water and index%3 == 0: _append_road_descriptor(curbs,Vector3(0.08,0.52,0.08),Vector3(center.x,y+0.25,center.y),Color("c8ba99"))
 		if over_water:
-			_append_road_descriptor(curbs,Vector3(width+0.06,0.08,p.distance_to(q)*0.96),Vector3((p.x+q.x)*0.5,y-0.025,(p.y+q.y)*0.5),Color("b5a17e"),Vector3(0,atan2(q.x-p.x,q.y-p.y),0))
+			# The old top at mean road height +15mm covered/intersected paving.
+			# Support both ramp ends below the authoritative walking surface.
+			_append_road_descriptor(curbs,Vector3(width+0.06,0.08,p.distance_to(q)*0.96),Vector3((p.x+q.x)*0.5,minf(y0,y1)-0.052,(p.y+q.y)*0.5),Color("b5a17e"),Vector3(0,atan2(q.x-p.x,q.y-p.y),0))
 	rebuild_stats["road_curbs_ms"] = float(rebuild_stats.get("road_curbs_ms",0.0))+float(Time.get_ticks_usec()-curb_started)/1000.0
 	var edge_started := Time.get_ticks_usec()
 	var is_promenade := str(road.get("style","path")) in ["promenade","avenue","tram"]

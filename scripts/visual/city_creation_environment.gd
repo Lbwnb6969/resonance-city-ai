@@ -20,7 +20,12 @@ func setup(parent: Node3D) -> void:
 	world.environment = environment
 	parent.add_child(world)
 	sun = DirectionalLight3D.new()
-	sun.shadow_opacity = 0.68
+	# Two cascades keep near facade detail without drawing the whole town
+	# into four maps. Normal bias is calibrated against our 1.7m stories.
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+	sun.directional_shadow_split_1 = 0.30
+	sun.shadow_normal_bias = 1.50
+	sun.shadow_opacity = 0.74
 	sun.shadow_blur = 1.4
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 85.0
@@ -29,18 +34,18 @@ func setup(parent: Node3D) -> void:
 	apply(0)
 
 func apply(phase: int) -> void:
-	# Measured in the Compatibility viewport: exposure 1.08 with the new sky
-	# and 1.15 sun clips cream walls and paths. Preserve the stronger warm
-	# lighting but lower daylight exposure; night keeps its own moonlit range.
+	# Measured with real cream facades in the Compatibility viewport. Keep
+	# daylight below clipping so plaster grain and cornices survive the sun.
+	# Warm direct light and cooler sky fill retain readable shaded facades.
 	var row: Array = [
-		["78a8c8","efe3cc","d8e2dc","fff1d0",1.15,0.65,0.68,Vector3(-46,-34,0),"f2ead8"],
-		["5d7ea6","f0bfa0","b9a698","ffb878",0.82,0.48,0.78,Vector3(-22,-48,0),"e1d5c8"],
+		["78a8c8","efe3cc","d8e2dc","fff1dc",0.95,0.52,0.64,Vector3(-46,-34,0),"f2ead8"],
+		["5d7ea6","f0bfa0","b9a698","ffc18e",0.78,0.46,0.76,Vector3(-22,-48,0),"e1d5c8"],
 		["182738","2c4257","1e2f40","6b82a8",0.28,0.34,1.08,Vector3(-38,25,0),"a6b9d3"]
 	][phase]
 	sky_material.sky_top_color = Color(row[0])
 	sky_material.sky_horizon_color = Color(row[1])
 	sky_material.ground_horizon_color = Color(row[1]).darkened(0.12)
-	sky_material.ground_bottom_color = Color("70825e").darkened(0.45 if phase==2 else 0.0)
+	sky_material.ground_bottom_color = Color("858876").darkened(0.45 if phase==2 else 0.0)
 	environment.background_color = Color(row[2])
 	environment.ambient_light_color = Color(row[8])
 	environment.ambient_light_energy = row[5]

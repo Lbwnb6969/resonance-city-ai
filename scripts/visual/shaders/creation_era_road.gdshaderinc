@@ -12,7 +12,9 @@ vec3 era_road_color(vec2 at,vec3 original,float paving){
 	vec4 w=road_era_weights(at);
 	vec2 grid=vec2(at.x/.46+mod(floor(at.y/.29),2.0)*.5,at.y/.29);
 	vec2 seam=min(fract(grid),1.0-fract(grid));
-	float face=smoothstep(.015,.045,min(seam.x,seam.y));
+	float joint=min(seam.x,seam.y);
+	float aa=max(fwidth(joint),.0005);
+	float face=smoothstep(.015-aa,.045+aa,joint);
 	float grain=fract(sin(dot(floor(grid),vec2(73.1,153.7)))*35129.43);
 	vec3 ren=mix(vec3(.48,.46,.38),mix(vec3(.69,.65,.54),vec3(.79,.74,.62),grain),face);
 	vec3 clock=mix(vec3(.40,.42,.39),mix(vec3(.57,.60,.56),vec3(.68,.68,.60),grain),face);

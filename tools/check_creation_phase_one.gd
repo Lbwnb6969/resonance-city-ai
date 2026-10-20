@@ -122,8 +122,8 @@ func _run()->void:
 	_carpet_checks()
 	var env: Environment=demo.environment_rig.environment
 	if not baseline:
-		_check(env.tonemap_mode==Environment.TONE_MAPPER_FILMIC and is_equal_approx(env.tonemap_white,1.85) and is_equal_approx(env.tonemap_exposure,.68),"day uses Filmic with measured highlight-preserving exposure")
-		_check(env.ambient_light_source==Environment.AMBIENT_SOURCE_SKY and is_equal_approx(env.ambient_light_energy,.65) and is_equal_approx(demo.sun.light_energy,1.15),"warm day combines sky hemisphere and stronger directional sunlight")
+		_check(env.tonemap_mode==Environment.TONE_MAPPER_FILMIC and is_equal_approx(env.tonemap_white,1.85) and is_equal_approx(env.tonemap_exposure,.64),"day uses Filmic with measured highlight-preserving exposure")
+		_check(env.ambient_light_source==Environment.AMBIENT_SOURCE_SKY and is_equal_approx(env.ambient_light_energy,.52) and is_equal_approx(demo.sun.light_energy,.95),"warm day combines sky hemisphere and stronger directional sunlight")
 	await _view("01_日间近景",Vector3(-8,.7,2),14,.82)
 	await _view("02_日间中景",Vector3(-3,.7,0),25,.72)
 	demo._toggle_light();await _view("03_夕光中景",Vector3(-3,.7,0),25,.72)

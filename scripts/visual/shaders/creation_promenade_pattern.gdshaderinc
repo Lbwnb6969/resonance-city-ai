@@ -10,6 +10,9 @@ vec3 promenade_color(vec2 at) {
 	float variation=stone_hash(floor(grid));
 	vec3 stone=mix(vec3(.57,.55,.47),vec3(.72,.68,.56),variation);
 	float grain=stone_hash(floor(at*150.0));
-	stone*=.97+.045*grain;
+	// Sub-pixel grains average out instead of sparkling during camera turns.
+	float footprint=max(length(dFdx(at)),length(dFdy(at)));
+	float detail=1.0-smoothstep(.003,.012,footprint);
+	stone*=mix(.9925,.97+.045*grain,detail);
 	return mix(vec3(.40,.40,.35),stone,face);
 }

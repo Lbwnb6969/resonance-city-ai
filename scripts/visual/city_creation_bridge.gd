@@ -71,6 +71,31 @@ static func prepare(profile: Dictionary) -> Dictionary:
 				_prism(data.lamps,run,arc-.075,arc+.075,across-.075,across+.075,y+.88,y+.88,y+1.02,y+1.02)
 	return data
 
+# Arc-space material data follows the same wet intervals as the walking
+# profile, including simple pastoral bridges without an architectural run.
+static func paving_spans(profile: Dictionary, architecture_only: bool = false) -> Array[Vector2]:
+	var spans: Array[Vector2] = []
+	if architecture_only:
+		for run: Dictionary in profile.get("bridge_runs",[]): spans.append(Vector2(run.start,run.end))
+		return spans
+	var start := -1.0
+	var last := 0.0
+	for sample: Dictionary in profile.get("samples", []):
+		if bool(sample.bridge):
+			if start < 0.0: start = float(sample.distance)
+			last = float(sample.distance)
+		elif start >= 0.0:
+			spans.append(Vector2(start,last)); start = -1.0
+	if start >= 0.0: spans.append(Vector2(start,last))
+	return spans
+
+static func paving_weight(arc: float, spans: Array[Vector2]) -> float:
+	var weight := 0.0
+	for span: Vector2 in spans:
+		var gap := maxf(0.0,maxf(span.x-arc,arc-span.y))
+		weight = maxf(weight,1.0-smoothstep(0.0,1.25,gap))
+	return weight
+
 static func _vertex(run: Dictionary,arc: float,across: float,y: float) -> Vector3:
 	var point := Plan._point(run.samples,arc)
 	var at: Vector2=point.at+Vector2(-point.tangent.y,point.tangent.x)*across
