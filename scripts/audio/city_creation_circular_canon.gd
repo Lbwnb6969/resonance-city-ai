@@ -81,8 +81,8 @@ static func slot(group: Dictionary,clock: float)->Dictionary:
 	return {"beat":beat,"slot":index,"house_id":str(group.members[index]),"start_clock":beat*BEAT_SECONDS}
 
 func setup(music: Node)->void:_owner=music
-func sync(city: RefCounted)->void:
-	_city=city;groups=derive(city)
+func sync(city: RefCounted,prepared_groups:Variant=null)->void:
+	_city=city;groups.assign(derive(city) if prepared_groups==null else prepared_groups.duplicate(true))
 	if _owner!=null:report()
 
 func _selected()->Dictionary:

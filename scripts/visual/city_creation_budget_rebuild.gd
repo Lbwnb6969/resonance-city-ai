@@ -96,7 +96,7 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city.houses.assign(snapshot.houses);city.roads.assign(snapshot.roads)
 	city.plants.assign(snapshot.plants);city.waters.assign(snapshot.waters)
 	city.terrain_strokes.assign(snapshot.terrain)
-	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","era_unlocks","revision"])
+	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","building_quality","era_unlocks","revision"])
 	context.state = city
 	# Frontage records are immutable. A changed signature replaces its entry;
 	# the worker owns the map and never writes the published city's records.
@@ -254,12 +254,15 @@ func _work(context: Node3D) -> Dictionary:
 	stage_start=Time.get_ticks_usec()
 	context.ground_contact_field.prepare(context.state)
 	stages.contact_field = float(Time.get_ticks_usec()-stage_start)/1000.0
+	stage_start=Time.get_ticks_usec()
+	var music_catalog:Dictionary=preload("res://scripts/audio/city_creation_music_catalog.gd").prepare(context.state,context.building_context.tower_cells_by_house)
+	stages.music_catalog=float(Time.get_ticks_usec()-stage_start)/1000.
 	stage_start = Time.get_ticks_usec()
 	var background_heights: Array = []
 	for tree: Dictionary in context.background_trees: background_heights.append(context.state._ground_terrain.height_at(tree.at))
 	var background_changed: bool = hash(background_heights)!=context.background_height_signature
 	stages.background = float(Time.get_ticks_usec()-stage_start)/1000.0
-	return {"houses":houses,"roads":roads,"road_data":road_data,"pebbles":pebbles,"cafes":cafes,"courtyards":courts,"terrain_blocks":terrain_blocks,"water":water,"background_changed":background_changed,"worker_ms":float(Time.get_ticks_usec()-start)/1000.0,"worker_stages":stages}
+	return {"houses":houses,"roads":roads,"road_data":road_data,"pebbles":pebbles,"cafes":cafes,"courtyards":courts,"terrain_blocks":terrain_blocks,"water":water,"background_changed":background_changed,"music_catalog":music_catalog,"worker_ms":float(Time.get_ticks_usec()-start)/1000.0,"worker_stages":stages}
 
 func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Array, roads: Array, waters: Array) -> Array[Vector2i]:
 	var result: Dictionary = {}
@@ -750,6 +753,7 @@ func _commit(owner: Node3D) -> void:
 	owner.quality_visual.adopt_geometry(staging.quality_visual,owner)
 	owner._entrance_views=staging._entrance_views.duplicate()
 	owner._passage_views=staging._passage_views.duplicate()
+	owner.music_catalog=result.music_catalog
 	owner._entrance_view_key=[owner.state.get_instance_id(),owner.state.revision]
 	owner.craft.adopt_layouts(staging.craft,owner)
 	owner.update_craft_progress()

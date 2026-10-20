@@ -8,6 +8,7 @@ const SHORT_GAIN_DB := -12.0
 const ATTENTION_HEADROOM_DB:=-2.0
 const SECONDS := 24.0
 const FRAMES := 529200
+const Catalog=preload("res://scripts/audio/city_creation_music_catalog.gd")
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const ThemePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
 const BankCache=preload("res://scripts/audio/city_creation_bank_cache.gd")
@@ -672,55 +673,17 @@ func update_house_traits(state: RefCounted,ids: Array[String]) -> void:
 	# These traits do not change source positions, districts, view or event
 	# membership. The existing acoustic groups remain valid for the new tier.
 
-func update_city(state: RefCounted) -> void:
+func update_city(state: RefCounted, prepared:Dictionary={}) -> void:
+	# A queued generation carries only values. Validate all live geometry and
+	# household traits, then detach mutable playback metadata from that seed.
+	var data:Dictionary=prepared if not prepared.is_empty() and prepared.signature==Catalog.signature(state) else Catalog.prepare(state)
 	_pluck_city=state
-	canon.sync(state)
+	canon.sync(state,data.canon)
 	_linked_key=null
-	var rooms := 0
-	var upper := 0
-	var terraces := 0
-	var houses: Array = state.get("houses")
-	var groups: Dictionary = {}
-	var towers: Dictionary = Towers.derive(houses,state.roads)
-	_tower_count=0
-	_daily_houses.clear()
-	_house_music.clear()
-	for house: Dictionary in houses:
-		_daily_houses.append(str(house.id))
-		var district: Dictionary = state.district_for_house(str(house.id))
-		var district_id:=str(district.get("id",""))
-		if not groups.has(district_id): groups[district_id]={"houses":[],"style":str(district.get("style","warm")),"adaptive":bool(district.get("adaptive",false))}
-		groups[district_id].houses.append(house)
-		var count: int = towers.get(str(house.id),[]).size()
-		if house.get("signature","")=="bell_keep":count=maxi(1,count)
-		_tower_count+=count
-		var positions: Array[Vector2] = []
-		for cell: Dictionary in towers.get(str(house.id),[]):
-			positions.append(Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8))
-		_house_music[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
-			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":str(district.get("style","warm")),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
-		var row:Dictionary=_house_music[str(house.id)]
-		row.rooms=0;row.upper_rooms=0;row.max_level=0
-		row.water_distance=state.water_clearance(row.position)
-		for cell: Dictionary in house.cells:
-			if cell.kind == "terrace":
-				terraces += 1
-			else:
-				rooms += 1
-				row.rooms+=1;row.max_level=maxi(int(row.max_level),int(cell.level))
-				if int(cell.level) > 0:
-					upper += 1
-					row.upper_rooms+=1
-	for group: Dictionary in groups.values():
-		var arrangement: Dictionary=Arrangement.compose(group.houses,group.style,group.adaptive)
-		for house: Dictionary in group.houses: _house_music[str(house.id)]["mix"]=arrangement
-	# Even the starting six houses have the full musical phrase. Building adds
-	# gentle color rather than requiring construction to unlock sound.
-	_targets.foundation = -10.0
-	_targets.wood = lerpf(-14.0, -10.0, clampf(float(rooms) / 30.0, 0.0, 1.0))
-	_targets.air = lerpf(-21.0, -13.0, clampf(float(upper) / 10.0, 0.0, 1.0))
-	_targets.terrace = lerpf(-26.0, -15.0, clampf(float(terraces) / 8.0, 0.0, 1.0))
-	_daily_houses.sort()
+	_house_music.clear();_house_music.merge(data.houses.duplicate(true))
+	_daily_houses.assign(data.daily)
+	_targets.merge(data.targets,true)
+	_tower_count=int(data.tower_count)
 	# Removing a source clears its attribution immediately; the audible tail
 	# still fades normally, and a real replacement enters at the next phrase.
 	if not _house_music.has(_daily_source_id):

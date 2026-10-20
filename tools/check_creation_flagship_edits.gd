@@ -63,6 +63,9 @@ func _run()->void:
 	var current:Array=[]
 	for key:String in demo.music.STEMS:current.append(demo.music._players[key].get_instance_id())
 	_check(players==current,"edits retain original live music player identities")
+	var expected:Dictionary=demo.music.Catalog.prepare(demo.state)
+	_check(demo.town.music_catalog==expected,"published worker catalogue includes current authored geometry and household traits")
+	_check(demo.music._house_music==expected.houses and demo.music.canon.groups==expected.canon,"actual live playback adopts current worker household and ring values")
 	_check(demo.town.buildings.get_child_count()==127 and demo.life.last_revision==demo.state.revision,"current rendered houses and Life routes share the latest revision")
 	await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(output+"/edited.png")==OK,"actual edited flagship image saves")

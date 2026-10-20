@@ -919,18 +919,18 @@ func _button(text_value: String, action: Callable) -> Button:
 	return button
 
 func _music_catalog_signature()->int:
-	return hash([state.get_instance_id(),state.houses,state.roads,state.districts,state.house_improvements,state.house_culture,state.house_clockwork,state.building_quality])
+	return hash([state.get_instance_id(),Music.Catalog.signature(state)])
 
 func _refresh_city_music()->void:
-	# Terrain/water edits affect spatial intent, but not the household timbre
-	# catalogue. Keep actual manual links/acoustic zones fresh without deriving
+	# Free-ground edits affect spatial intent, but not household timbres.
+	# Water changes also invalidate source proximity. Keep links/zones fresh without deriving
 	# every bell tower, district and arrangement again after an unrelated brush.
 	var key:=_music_catalog_signature()
 	if key==_music_catalog_key and music._pluck_city==state:
 		music._refresh_acoustic()
 		return
 	_music_catalog_key=key
-	music.update_city(state)
+	music.update_city(state,town.music_catalog if town!=null else {})
 
 func _refresh_house_music_traits(ids: Array[String])->void:
 	music.update_house_traits(state,ids)

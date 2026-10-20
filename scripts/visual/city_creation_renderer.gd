@@ -262,7 +262,7 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
-	_entrance_views.clear();_passage_views.clear();_entrance_view_key=[]
+	_entrance_views.clear();_passage_views.clear();_entrance_view_key=[];music_catalog={}
 	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
@@ -764,6 +764,7 @@ func _frontage_signature(house: Dictionary) -> Array:
 	return result
 
 var _entrance_views:Dictionary={}
+var music_catalog:Dictionary={}
 var _passage_views:Dictionary={}
 var _entrance_view_key:Array=[]
 func house_entrances(house_id:String)->Array:
