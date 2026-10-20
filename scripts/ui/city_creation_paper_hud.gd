@@ -29,7 +29,7 @@ static func setup(demo:Node3D)->void:
 	demo.sundial_hud=Sundial.new();demo.sundial_hud.setup(demo,parent)
 	var help_panel:Control=demo.hint.get_parent().get_parent()
 	demo.whisper_keycaps=Whisper.new();demo.whisper_keycaps.setup(demo,parent)
-	Dock.setup(demo,parent)
+	demo.tactile_dock=Dock.setup(demo,parent)
 	parent.remove_child(help_panel);help_panel.queue_free()
 	parent.remove_child(old_header);old_header.queue_free()
 	# Modal papers stay above the living ribbon and circular controls.

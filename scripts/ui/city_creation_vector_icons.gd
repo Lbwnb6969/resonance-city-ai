@@ -10,6 +10,32 @@ static func stroke(canvas:CanvasItem,points:Array,center:Vector2,radius:float,co
 
 static func draw_icon(canvas:CanvasItem,kind:String,center:Vector2,radius:float,color:Color,accent:Color=Color("c4a568"))->void:
 	match kind:
+		"straight","rails":
+			for x:float in [-.38,.38]:stroke(canvas,[Vector2(x,-.72),Vector2(x,.72)],center,radius,color)
+			for y:float in [-.48,0.,.48]:stroke(canvas,[Vector2(-.60 if kind=="rails" else -.06,y),Vector2(.60 if kind=="rails" else .06,y)],center,radius,accent,1.3)
+		"lamp":
+			stroke(canvas,[Vector2(0,.72),Vector2(0,-.15),Vector2(-.36,-.15),Vector2(-.28,-.68),Vector2(.28,-.68),Vector2(.36,-.15),Vector2(0,-.15)],center,radius,color)
+			canvas.draw_circle(center+Vector2(0,-.42)*radius,.13*radius,accent)
+			stroke(canvas,[Vector2(-.26,.72),Vector2(.26,.72)],center,radius,color)
+		"cypress":
+			stroke(canvas,[Vector2(0,.75),Vector2(0,.35)],center,radius,color)
+			stroke(canvas,[Vector2(0,-.80),Vector2(-.35,.42),Vector2(.35,.42),Vector2(0,-.80)],center,radius,accent)
+		"shrub":
+			for p:Vector2 in [Vector2(-.4,.1),Vector2(0,-.20),Vector2(.4,.1)]:canvas.draw_circle(center+p*radius,.32*radius,color)
+			stroke(canvas,[Vector2(-.50,.48),Vector2(.50,.48)],center,radius,accent)
+		"brush_small","brush_medium","brush_large","pond":
+			var fraction:float=.28 if kind=="brush_small" else .46 if kind=="brush_medium" else .66
+			canvas.draw_arc(center,fraction*radius,0.,TAU,32,color,1.7,true)
+			if kind=="pond":stroke(canvas,[Vector2(-.30,0),Vector2(0,.12),Vector2(.30,0)],center,radius,accent)
+			else:canvas.draw_circle(center,.08*radius,accent)
+		"raise","lower":
+			var direction:float=-1. if kind=="raise" else 1.
+			stroke(canvas,[Vector2(-.68,.70),Vector2(.68,.70)],center,radius,color)
+			stroke(canvas,[Vector2(0,-.65*direction),Vector2(0,.55*direction)],center,radius,color)
+			stroke(canvas,[Vector2(-.30,.18*direction),Vector2(0,.55*direction),Vector2(.30,.18*direction)],center,radius,accent)
+		"plateau":
+			stroke(canvas,[Vector2(-.82,.62),Vector2(-.40,-.30),Vector2(.40,-.30),Vector2(.82,.62)],center,radius,color)
+			stroke(canvas,[Vector2(-.40,-.30),Vector2(.40,-.30)],center,radius,accent,2.4)
 		"undo","redo":
 			var sign_value:float=-1. if kind=="undo" else 1.
 			canvas.draw_arc(center,.57*radius,-PI*.75,PI*.48,28,color,1.7,true)

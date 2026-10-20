@@ -73,8 +73,9 @@ func _live()->void:
 	while (demo.music.audio_report.is_empty() or not demo.ambience.report().ready) and Time.get_ticks_msec()<deadline:await process_frame
 	var audio:Array=_audio();var clock:float=demo.music._playback_clock()
 	demo.focus=Vector3(.5,.7,-1.5);demo.zoom=27;demo.pitch=.85;demo.yaw=.62;demo._update_camera();await _key(KEY_8)
-	var mode:CheckButton=demo.find_child("DistrictLinkMode",true,false)
-	_check(mode!=null and mode.visible,"real tool eight exposes manual district-link gesture mode")
+	await create_timer(.28).timeout
+	var mode:Button=demo.tactile_dock.button_for("DistrictLinkMode")
+	_check(mode!=null and mode.is_visible_in_tree(),"real tool eight exposes manual district-link seal")
 	if mode!=null:
 		var point:Vector2=mode.get_global_rect().get_center();await _motion(point);await _mouse(point,true);await _mouse(point,false)
 		var a:Vector2=demo.camera.unproject_position(Vector3(-5,0,-2));var b:Vector2=demo.camera.unproject_position(Vector3(9,0,3))

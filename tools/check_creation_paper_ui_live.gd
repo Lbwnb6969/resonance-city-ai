@@ -92,18 +92,56 @@ func _run() -> void:
 	for index in range(9):
 		await click(demo.tool_buttons[index].get_global_rect().get_center())
 		check(demo.tool==index,"actual dock selects tool "+str(index+1))
-	demo.select_tool(2);await process_frame;await image("02_道路抽屉")
-	var selector: OptionButton=demo.road_panel.find_child("RoadStyle",true,false)
-	var promenade: CheckButton=demo.road_panel.find_child("RoadPromenade",true,false)
-	await click(promenade.get_global_rect().get_center())
-	check(demo.road_style=="promenade" and selector.selected==1,"paper street shortcut updates production style selector")
+	demo.select_tool(2);await process_frame;await image("02_道路气泡")
+	var legacy:Control=demo.ui_layer.get_node("Root/LegacyToolOptions")
+	var bubbles:Control=demo.ui_layer.get_node("Root/ToolBubbles")
+	check(bubbles.visible and not legacy.is_visible_in_tree() and not demo.road_panel.is_visible_in_tree(),"tool options move from visible right drawers into contextual bubbles")
+	var promenade_button:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source==demo.road_panel.find_child("RoadStyle",true,false) and int(binding.index)==1:promenade_button=binding.button
+	check(promenade_button!=null and demo.tactile_dock.bindings.size()==7,"road mode, four street finishes and roundabout have contextual seals")
+	if promenade_button!=null:await click(promenade_button.get_global_rect().get_center())
+	check(demo.road_style=="promenade" and demo.road_panel.find_child("RoadStyle",true,false).selected==1 and promenade_button.active,"road seal changes the original road style state and highlights its selection")
+	for item:Array in [[3,2],[5,6],[6,5],[7,15],[8,10]]:
+		demo.select_tool(int(item[0]));await process_frame
+		check(bubbles.visible and demo.tactile_dock.bindings.size()==int(item[1]),"tool "+str(int(item[0])+1)+" exposes its existing options as contextual seals")
+	demo.select_tool(5);await process_frame
+	var cypress:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source.name=="Species" and int(binding.index)==1:cypress=binding.button
+	if cypress!=null:await click(cypress.get_global_rect().get_center())
+	check(demo.vegetation_kind=="cypress","vegetation seal routes through the existing species change callback")
+	demo.select_tool(6);await process_frame
+	var channel:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source.name=="WaterMode" and int(binding.index)==1:channel=binding.button
+	if channel!=null:await click(channel.get_global_rect().get_center())
+	check(demo.water_kind=="channel","water seal routes through the existing water mode callback")
+	demo.select_tool(3);await process_frame
+	var whole_building:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source.name=="RemovalMode" and int(binding.index)==1:whole_building=binding.button
+	if whole_building!=null:await click(whole_building.get_global_rect().get_center())
+	check(demo.remove_whole,"removal seal updates the original whole-building mode")
+	demo.select_tool(8);await process_frame
+	var rocky:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source.name=="TerrainMode" and int(binding.index)==3:rocky=binding.button
+	if rocky!=null:await click(rocky.get_global_rect().get_center())
+	check(demo.terrain_brush.mode=="rock" and demo.terrain_brush.radius==2.0,"terrain seal routes through the original mode and radius coupling")
+	demo.select_tool(7);await process_frame
+	var deep_music:Button
+	for binding:Dictionary in demo.tactile_dock.bindings:
+		if binding.type=="option" and binding.source.name=="DistrictStyle" and int(binding.index)==1:deep_music=binding.button
+	if deep_music!=null:await click(deep_music.get_global_rect().get_center())
+	check(demo.district_style=="deep","district seal updates its original musical style selection")
 	await key(KEY_F1);check(demo.guide.visible(),"F1 opens imported guide")
 	for index in range(4):
 		await click(demo.guide.tabs.global_position+demo.guide.tabs.get_tab_rect(index).get_center())
 		check(demo.guide.tabs.current_tab==index and demo.guide.body.text==demo.Copy.guide_tab_text(index),"actual guide tab "+str(index))
 	await image("03_营造乐理手札")
 	await key(KEY_1);await click(Vector2(40,650))
-	check(demo.tool==2 and demo.state.snapshot()==original and demo.state._undo.size()==undo,"modal blocks building keys and clicks without changing city history")
+	check(demo.tool==7 and demo.state.snapshot()==original and demo.state._undo.size()==undo,"modal blocks building keys and clicks without changing city history")
 	await key(KEY_ESCAPE);check(not demo.guide.visible(),"Escape closes guide")
 	await key(KEY_J);await process_frame;await click(demo.journal.guide_button.get_global_rect().get_center())
 	check(demo.guide.visible() and not demo.journal.panel.visible and demo.guide.tabs.current_tab==0,"journal opens gesture guide and closes its own modal")

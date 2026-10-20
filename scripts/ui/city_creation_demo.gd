@@ -54,6 +54,7 @@ var whisper_keycaps:Control
 var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
+var tactile_dock: RefCounted
 var journal: RefCounted
 var guide: RefCounted
 var collection_directory := "user://city_creation_works"
@@ -786,8 +787,8 @@ func _setup_ui() -> void:
 		var width:=clampf(root.size.x-664.0,260.0,520.0)
 		toast.offset_left=-width*0.5
 		toast.offset_right=width*0.5
-		toast.offset_top=-112.0-maxf(46.0,toast.get_combined_minimum_size().y)
-		toast.offset_bottom=-112.0
+		toast.offset_top=-138.0-maxf(46.0,toast.get_combined_minimum_size().y)
+		toast.offset_bottom=-138.0
 	toast.minimum_size_changed.connect(fit_toast)
 	root.resized.connect(fit_toast)
 	root.resized.connect(func()->void: _refresh_ui.call_deferred())
@@ -996,6 +997,7 @@ func _refresh_ui() -> void:
 	if journal!=null: journal.refresh()
 	if signatures!=null:signatures.refresh()
 	if score_ribbon!=null:score_ribbon.refresh()
+	if tactile_dock!=null:tactile_dock.refresh()
 
 func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
@@ -1152,6 +1154,7 @@ func _input(event: InputEvent) -> void:
 			road_straight = not road_straight
 			var mode: OptionButton = road_panel.find_child("RoadMode",true,false)
 			mode.select(1 if road_straight else 0)
+			if tactile_dock!=null:tactile_dock.refresh()
 		elif event.keycode == KEY_SPACE and road_drawing and road_draft_straight: _lock_road_segment()
 		else: return
 		get_viewport().set_input_as_handled()
@@ -1294,6 +1297,7 @@ func _process(delta: float) -> void:
 			badge.text="♫ "+str(echo.label);badge.visible=int(echo.tier)>=2
 		_refresh_concert()
 		_refresh_district()
+		if tactile_dock!=null:tactile_dock.refresh()
 		_refresh_bakeries()
 		_refresh_workshops()
 		_refresh_cafes()
@@ -1825,6 +1829,7 @@ func _refresh_district() -> void:
 	elif bool(reply.enabled) and int(reply.pair_count)>0:
 		district_music_status.text+="\n%d 对相邻街坊 · 等下一短句" % int(reply.pair_count)
 	if bool(report.pending): district_music_status.text += "\n" + str(report.get("pending_label", DISTRICT_STYLE_NAMES[str(report.pending_style)])) + " · 等待下一乐句"
+	district_name.tooltip_text="街坊名称 · 按 Enter 保存\n"+district_description.text+"\n"+district_music_status.text
 
 func _district_home_has_service(home_id: String, role: String) -> bool:
 	if not life.house_connected(home_id): return false

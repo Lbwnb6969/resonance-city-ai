@@ -116,9 +116,9 @@ func _idle_controls(call: Dictionary) -> void:
 	_check(demo.music.muted and not muted.pending and not muted.audible,"actual mute button leaves no active or pending reply (idle control scope)")
 	await _click(demo.music_button)
 	_check(not demo.music.muted and int(demo.music.reply.report().calls)==int(prior.calls),"actual unmute does not replay the completed old question")
-	await _click(demo.district_reply_button)
+	await _click(demo.tactile_dock.button_for("DistrictReply"))
 	_check(not demo.music.reply.enabled and not demo.music.reply.report().pending and not demo.music.reply.report().audible,"actual CheckButton disables and clears reply state (idle control scope)")
-	await _click(demo.district_reply_button)
+	await _click(demo.tactile_dock.button_for("DistrictReply"))
 	_check(demo.music.reply.enabled and int(demo.music.reply.report().calls)==int(prior.calls),"actual CheckButton reenable waits for a future real boundary")
 	demo.focus=Vector3(40,0.7,40);demo._update_camera();await process_frame
 	_check(not demo.music.reply._pair_valid(demo.life.district_reply_pairs()[0]) and not demo.music.reply.report().pending,"real listener focus outside fourteen metres makes actual linked pair ineligible")
@@ -224,7 +224,8 @@ func _run() -> void:
 	rigs=_rig_ids()
 	demo.selected_district="d1";demo.focus=Vector3(-5,0.7,-1);demo.zoom=24;demo.pitch=0.78;demo._update_camera()
 	await _key(KEY_8)
-	_check(demo.tool==7 and demo.district_panel.visible and demo.district_reply_button.is_visible_in_tree(),"actual key eight opens live district reply CheckButton")
+	await create_timer(.28).timeout
+	_check(demo.tool==7 and not demo.district_panel.is_visible_in_tree() and demo.tactile_dock.button_for("DistrictReply").is_visible_in_tree(),"actual key eight opens live district reply seal")
 	await process_frame;await process_frame
 	var pairs: Array = demo.life.district_reply_pairs()
 	_check(not pairs.is_empty() and bool(demo.music.reply.report().ready),"real published Network derives eligible cross-district pair")
@@ -269,10 +270,10 @@ func _run() -> void:
 		await _key(KEY_Z,true);await _wait()
 	root.size=Vector2i(1024,768)
 	for ignored in range(4): await process_frame
-	var panel: Rect2 = demo.district_panel.get_global_rect()
+	var panel: Rect2 = demo.tactile_dock.bubble_rows.get_global_rect()
 	var toolbar: Control = demo.ui_layer.get_child(0).find_child("Toolbar",true,false)
-	_check(panel.position.x>=0 and panel.end.x<=1024 and panel.end.y<toolbar.get_global_rect().position.y and demo.district_reply_button.get_global_rect().end.y<panel.end.y,"1024 viewport keeps actual district tool and reply checkbox above toolbar")
-	facts.panel_1024={"panel":panel,"checkbox":demo.district_reply_button.get_global_rect(),"toolbar":toolbar.get_global_rect()}
+	_check(panel.position.x>=0 and panel.end.x<=1024 and panel.end.y<toolbar.get_global_rect().position.y and panel.encloses(demo.tactile_dock.button_for("DistrictReply").get_global_rect()),"1024 viewport keeps actual district reply seal above toolbar")
+	facts.panel_1024={"panel":panel,"seal":demo.tactile_dock.button_for("DistrictReply").get_global_rect(),"toolbar":toolbar.get_global_rect()}
 	await _capture("03_1024街坊连奏面板")
 	root.size=Vector2i(1440,900);await process_frame
 	await demo.gallery.save_work("街坊对答夹具")
