@@ -351,7 +351,10 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 		var a:=points[index-1]
 		var b:=points[index]
 		var direction: Vector2=(b-a).normalized()
-		var normal:=Vector2(-direction.y,direction.x)
+		# The widened mouth is one continuous ribbon. Independent segment
+		# normals left a triangular slot at every hand-drawn sample on a curve.
+		var offset_a:=_corner_offset(points,index-1)
+		var offset_b:=_corner_offset(points,index)
 		var length:=a.distance_to(b)
 		var ranges: Array[Vector2]=[]
 		var nearby:= {}
@@ -384,14 +387,17 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 			var finish:=a+direction*unique[sample]
 			if start.distance_to(finish)>STEP*1.1: continue
 			for side: float in [-1.0,1.0]:
-				var n:=normal*side
+				var n0:=offset_a.lerp(offset_b,unique[sample-1]/length)*side
+				var n1:=offset_a.lerp(offset_b,unique[sample]/length)*side
 				var amount_started:=Time.get_ticks_usec()
-				var extra_a:=_amount(city,start,n,radius,local_junctions,houses,doors,foreign)
-				var extra_b:=_amount(city,finish,n,radius,local_junctions,houses,doors,foreign)
+				var extra_a:=_amount(city,start,n0.normalized(),radius*n0.length(),local_junctions,houses,doors,foreign)
+				var extra_b:=_amount(city,finish,n1.normalized(),radius*n1.length(),local_junctions,houses,doors,foreign)
 				amount_usec+=Time.get_ticks_usec()-amount_started
 				if maxf(extra_a,extra_b)<0.002: continue
 				var clip_started:=Time.get_ticks_usec()
-				var polygon:=PackedVector2Array([start+n*radius,finish+n*radius,finish+n*(radius+extra_b),start+n*(radius+extra_a)])
+				var base_a:=start+n0*radius
+				var base_b:=finish+n1*radius
+				var polygon:=PackedVector2Array([base_a,base_b,base_b+n1.normalized()*extra_b,base_a+n0.normalized()*extra_a])
 				if Geometry2D.is_polygon_clockwise(polygon): polygon.reverse()
 				var pieces: Array=[polygon]
 				# Remove actual core, not a bounding box: loops and islands stay
@@ -428,6 +434,16 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 	stats["merge_ms"]=float(Time.get_ticks_usec()-merge_started)/1000.0
 	stats["shape_ms"]=float(Time.get_ticks_usec()-shape_started)/1000.0
 	return merged
+
+func _corner_offset(points:Array[Vector2],index:int)->Vector2:
+	var incoming:Vector2=(points[index]-points[maxi(0,index-1)]).normalized()
+	var outgoing:Vector2=(points[mini(points.size()-1,index+1)]-points[index]).normalized()
+	if incoming==Vector2.ZERO:incoming=outgoing
+	if outgoing==Vector2.ZERO:outgoing=incoming
+	var normal:=Vector2(-outgoing.y,outgoing.x)
+	var miter:=Vector2(-(incoming+outgoing).y,(incoming+outgoing).x).normalized()
+	if miter==Vector2.ZERO:return normal
+	return miter/maxf(.5,miter.dot(normal))
 
 func _merge_simple(polygons: Array[PackedVector2Array]) -> Array[PackedVector2Array]:
 	# Positive union only. If a pair creates an island boundary or disconnected

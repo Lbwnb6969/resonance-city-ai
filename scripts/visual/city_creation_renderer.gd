@@ -2252,7 +2252,7 @@ func _append_water_triangle(vertices: Array[Vector3], a: Vector2, b: Vector2, c:
 	else:
 		vertices.append_array([Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Vector3(c.x, height, c.y)])
 
-func _water_scanline_union(groups: Array, height: float, subtract: Array = []) -> Array[Vector3]:
+func _water_scanline_union(groups: Array, height: float, subtract: Array = [], clip_to: Array = []) -> Array[Vector3]:
 	# Exact trapezoids between contour vertices, not a terrain grid. Each contour
 	# group uses even/odd fill; union its intervals with all other stroke groups.
 	# Holes, self-returning channels and water inside an island remain truthful.
@@ -2261,7 +2261,9 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = []) -
 	var active_by_group: Array = []
 	var cursors: Array[int] = []
 	var levels: Array[float] = []
-	for group: Array in groups+subtract:
+	var inputs:Array=groups+subtract
+	if not clip_to.is_empty():inputs.append(clip_to)
+	for group: Array in inputs:
 		var edges: Array = []
 		for contour: PackedVector2Array in group:
 			for index in range(contour.size()):
@@ -2297,6 +2299,7 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = []) -
 		var middle := (y0 + y1) * 0.5
 		var intervals: Array = []
 		var excluded: Array = []
+		var clipping: Array = []
 		for group_index in range(edges_by_group.size()):
 			# Enter/leave edges once as the scanline advances. Original serial
 			# order is retained for coincident crossings, so emitted trapezoids
@@ -2319,6 +2322,7 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = []) -
 			crossings.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
 			for pair in range(0, crossings.size() - 1, 2):
 				if group_index < groups.size(): intervals.append([crossings[pair], crossings[pair + 1]])
+				elif not clip_to.is_empty() and group_index==inputs.size()-1:clipping.append([crossings[pair],crossings[pair+1]])
 				else: excluded.append([crossings[pair], crossings[pair + 1]])
 		intervals.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0][0]) < float(b[0][0]))
 		var joined: Array = []
@@ -2336,6 +2340,14 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = []) -
 				if float(cut[0][0]) > float(interval[0][0]): remaining.append([interval[0],cut[0]])
 				if float(cut[1][0]) < float(interval[1][0]): remaining.append([cut[1],interval[1]])
 			joined = remaining
+		if not clip_to.is_empty():
+			var clipped:Array=[]
+			for interval:Array in joined:
+				for mask:Array in clipping:
+					var left:Array=interval[0] if float(interval[0][0])>float(mask[0][0]) else mask[0]
+					var right:Array=interval[1] if float(interval[1][0])<float(mask[1][0]) else mask[1]
+					if float(left[0])<float(right[0]):clipped.append([left,right])
+			joined=clipped
 		for interval: Array in joined:
 			var a := Vector2(float(interval[0][1]), y0)
 			var b := Vector2(float(interval[1][1]), y0)
