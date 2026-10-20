@@ -55,6 +55,7 @@ var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
 var tactile_dock: RefCounted
+var spatial_popover: RefCounted
 var journal: RefCounted
 var guide: RefCounted
 var collection_directory := "user://city_creation_works"
@@ -351,6 +352,8 @@ func _ready() -> void:
 		zoom=22.0
 		pitch=0.80
 	_update_camera()
+	if "--verify-playtest" in OS.get_cmdline_user_args() and not persistence:
+		RenderCapture.verify_playtest.call_deferred(self)
 
 func _setup_life() -> void:
 	life = Life.new()
@@ -998,6 +1001,7 @@ func _refresh_ui() -> void:
 	if signatures!=null:signatures.refresh()
 	if score_ribbon!=null:score_ribbon.refresh()
 	if tactile_dock!=null:tactile_dock.refresh()
+	if spatial_popover!=null:spatial_popover.refresh()
 
 func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
@@ -1006,7 +1010,8 @@ func select_tool(index: int) -> void:
 	guided_hint=""
 	tool = index
 	_cancel_draft()
-	place_panel.visible = tool == 4 and not selected_house.is_empty()
+	place_panel.visible = false
+	if spatial_popover!=null:spatial_popover.close()
 	vegetation_panel.visible = tool == 5
 	water_panel.visible = tool == 6
 	road_panel.visible = tool == 2
@@ -1148,7 +1153,10 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F12: camera_rig.capture(self)
 		elif event.keycode == KEY_F10: RenderCapture.capture(self,render_capture_directory)
 		elif event.keycode == KEY_F: ui_layer.visible = not ui_layer.visible
-		elif event.keycode == KEY_ESCAPE: _cancel_draft()
+		elif event.keycode == KEY_ESCAPE:
+			if spatial_popover!=null and not spatial_popover.target_house_id.is_empty():
+				spatial_popover.close();selected_house=""
+			else:_cancel_draft()
 		elif event.keycode == KEY_R and tool == 2:
 			_cancel_draft()
 			road_straight = not road_straight
@@ -1244,6 +1252,7 @@ func _process(delta: float) -> void:
 	music.attention.dragging=house_drawing or road_drawing or vegetation_drawing or water_drawing or district_drawing or district_link_drawing or (terrain_brush!=null and terrain_brush.drawing)
 	music.attention_strolling=camera_rig.strolling
 	camera_rig.update(self, delta)
+	if spatial_popover!=null:spatial_popover.follow()
 	if gallery!=null and gallery.busy: return
 	if _color_ui_pending and not _edit_pending:
 		_color_ui_pending=false
@@ -1480,15 +1489,19 @@ func _find_cell(house_id: String, cell_id: String) -> Dictionary:
 	return {}
 
 func _commit_click() -> void:
-	if candidate.is_empty(): return
+	if candidate.is_empty():
+		if tool==4 and spatial_popover!=null:spatial_popover.close()
+		return
 	if candidate.has("signature"):
 		signatures.commit();return
 	if candidate.has("select"):
 		selected_house = str(candidate.select)
-		place_panel.visible = true
+		place_panel.visible = false
+		if spatial_popover!=null:spatial_popover.open_for_house(selected_house)
 		_refresh_place()
 		_strum_house(selected_house)
 		return
+	if tool==4 and spatial_popover!=null:spatial_popover.close()
 	var result: Dictionary
 	var action_kind := "room"
 	if candidate.has("erase"):

@@ -1,4 +1,63 @@
 extends RefCounted
+## Exercise the actual release binary; editor execution keeps assert side effects.
+static func verify_playtest(demo:Node3D)->void:
+	var args:=OS.get_cmdline_user_args()
+	var index:=args.find("--verify-playtest")
+	if index+1>=args.size():demo.get_tree().quit(2);return
+	var directory:=args[index+1]
+	DirAccess.make_dir_recursive_absolute(directory)
+	var failures:Array[String]=[];var fields:Dictionary={}
+	for name:String in ["water_field","ground_contact_field"]:
+		var field:RefCounted=demo.town.get(name)
+		var texture:Texture2DArray=field.texture
+		var layers:int=texture.get_layers()
+		var exact:=layers==64 and texture.get_width()==66 and texture.get_height()==66
+		if exact:
+			if name=="water_field":exact=(await _read_float_field(demo,texture)).get_data()==field.image.get_data()
+			else:
+				for layer in range(layers):exact=exact and texture.get_layer_data(layer).get_data()==field.tiled.images[layer].get_data()
+		if not exact:failures.append(name+" GPU upload differs from prepared tiles")
+		fields[name]={"layers":layers,"width":texture.get_width(),"exact":exact}
+	demo.life.set_process(false);demo.toast.hide();demo.toast_time=0.
+	for phase in range(3):
+		while demo.light_phase!=phase:demo._toggle_light()
+		for scale:float in [25.,76.]:
+			demo.zoom=scale;demo.focus=Vector3(-3,.7,0);demo.pitch=.85;demo.yaw=.62;demo._update_camera()
+			for frame in range(12):await demo.get_tree().process_frame
+			var shot:Image=await _frame(demo)
+			shot.save_png(directory+"/phase%d_zoom%d.png"%[phase,int(scale)])
+	var report:Dictionary={"ok":failures.is_empty(),"debug_build":OS.is_debug_build(),"fields":fields,"failures":failures,"renderer":RenderingServer.get_current_rendering_method()}
+	var file:=FileAccess.open(directory+"/release_check.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(report,"\t"));file.close()
+	print("PLAYTEST_RELEASE_CHECK ",JSON.stringify(report))
+	demo.get_tree().quit(0 if failures.is_empty() else 1)
+
+static func _read_float_field(demo:Node3D,texture:Texture2DArray)->Image:
+	# GL's public layered RF readback normalizes values. Preserve float bits in
+	# two opaque RGBA8 rows, matching the existing tiled-field GPU regression.
+	var viewport:=SubViewport.new();viewport.size=Vector2i(512,1024);viewport.disable_3d=true
+	viewport.render_target_update_mode=SubViewport.UPDATE_ONCE;demo.add_child(viewport)
+	var shader:=Shader.new();shader.code="""shader_type canvas_item;
+render_mode unshaded,blend_disabled;
+uniform sampler2DArray actual_field:filter_nearest,repeat_disable;
+void fragment(){
+ ivec2 output_pixel=ivec2(floor(UV*vec2(512.,1024.)));
+ bool high=output_pixel.y>=512;
+ ivec2 pixel=ivec2(output_pixel.x,output_pixel.y%512);
+ ivec2 tile=pixel/64;
+ uint bits=floatBitsToUint(texelFetch(actual_field,ivec3(pixel-tile*64+ivec2(1),tile.y*8+tile.x),0).r);
+ uvec3 encoded=high?uvec3(bits>>24u,0u,0u):uvec3(bits&255u,(bits>>8u)&255u,(bits>>16u)&255u);
+ COLOR=vec4(vec3(encoded)/255.,1.);
+}"""
+	var material:=ShaderMaterial.new();material.shader=shader;material.set_shader_parameter("actual_field",texture)
+	var rect:=ColorRect.new();rect.size=Vector2(512,1024);rect.material=material;viewport.add_child(rect)
+	await demo.get_tree().process_frame;await RenderingServer.frame_post_draw
+	var encoded:=viewport.get_texture().get_image().get_data();var bytes:=PackedByteArray();bytes.resize(512*512*4)
+	for pixel in range(512*512):
+		var offset:=pixel*4;bytes[offset]=encoded[offset];bytes[offset+1]=encoded[offset+1];bytes[offset+2]=encoded[offset+2];bytes[offset+3]=encoded[offset+512*512*4]
+	viewport.queue_free()
+	return Image.create_from_data(512,512,false,Image.FORMAT_RF,bytes)
+
 ## Capture an intermittent visual fault together with its reproducible town/view.
 static func capture(demo: Node3D,directory: String)->void:
 	if demo.has_meta("render_capture_busy"):return

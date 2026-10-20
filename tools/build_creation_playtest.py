@@ -108,6 +108,15 @@ def main():
     pack = executable.with_suffix('.pck')
     if not executable.is_file() or not pack.is_file():
         raise RuntimeError('Godot did not produce the standalone executable and PCK')
+    # Editor/debug runs retain assert expressions that release exports strip.
+    # Launch the shipped template and verify its actual GPU fields and views.
+    verification = evidence / 'release_runtime'
+    run([executable, '--audio-driver', 'Dummy', '--log-file', evidence / 'runtime.log',
+         '--', '--isolated-session', '--verify-playtest', verification], output,
+        evidence / 'release_check.log')
+    release_report = json.loads((verification / 'release_check.json').read_text('utf-8'))
+    if not release_report['ok'] or release_report['debug_build']:
+        raise RuntimeError('The actual release runtime did not pass GPU verification')
     print(json.dumps({'executable': str(executable), 'pck': str(pack),
                       'runtime_files': len(report['files']),
                       'runtime_scripts': report['runtime_scripts'],

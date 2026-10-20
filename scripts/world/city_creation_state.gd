@@ -544,6 +544,18 @@ func set_house_style(house_id: String, style: String) -> Dictionary:
 	return {"ok":true,"message":"已换为"+{"classic":"河湾灰泥屋","timber":"木构街屋","stone":"石砌街屋","round_tower":"圆塔望楼"}[style]}
 
 
+func set_house_temperament(house_id:String,temperament:String)->Dictionary:
+	var index:=_house_index(house_id)
+	if index<0:return _fail("房屋不存在")
+	if temperament not in ["allegro","andante","largo"]:return _fail("未知的建筑律动")
+	if str(houses[index].get("temperament","andante"))==temperament:return {"ok":true,"message":"建筑律动未变","no_op":true}
+	var before:=snapshot()
+	if temperament=="andante":houses[index].erase("temperament")
+	else:houses[index].temperament=temperament
+	_commit(before,"更改建筑律动")
+	return {"ok":true,"message":"建筑律动已调整"}
+
+
 func set_house_finish(house_id: String, finish: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")

@@ -1,0 +1,190 @@
+extends RefCounted
+
+const UI=preload("res://scripts/ui/valley_ui_theme.gd")
+const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
+const ROLE_LABELS:Dictionary={
+	"residential":"居所","bakery":"面包","workshop":"制琴","garden_cafe":"茶座",
+	"venue":"演奏","atelier":"书院","clockmaker":"钟表","symphony_hall":"交响"
+}
+const ROLE_GLYPHS:Dictionary={"residential":"house","bakery":"bakery","workshop":"workshop",
+	"garden_cafe":"garden_cafe","venue":"venue","atelier":"atelier","clockmaker":"clockmaker","symphony_hall":"symphony_hall"}
+const PALETTE_COLORS:Array[Color]=[Color("#b85c3e"),Color("#347e88"),Color("#c3a65c"),Color("#63865b")]
+
+var demo
+var root:Control
+var overlay:Control
+var card:PanelContainer
+var name_field:LineEdit
+var tier:Label
+var status:Label
+var style_button:Button
+var era_button:Button
+var temperament_button:Button
+var concert_button:Button
+var role_buttons:Dictionary={}
+var swatches:Array[Button]=[]
+var target_house_id:=""
+var _tween:Tween
+var _last_position:=Vector2.ZERO
+
+func setup(owner,ui_root:Control)->void:
+	demo=owner;root=ui_root
+	overlay=Control.new();overlay.name="SpatialBuildingPopover"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter=Control.MOUSE_FILTER_IGNORE;root.add_child(overlay)
+	card=PanelContainer.new();card.name="RoofCompass"
+	var panel_style:=UI.panel(14);panel_style.bg_color=Color(UI.PAPER,.97);panel_style.border_color=UI.GOLD
+	panel_style.set_border_width_all(1);panel_style.set_corner_radius_all(12)
+	card.add_theme_stylebox_override("panel",panel_style);card.custom_minimum_size=Vector2(388,0)
+	card.mouse_filter=Control.MOUSE_FILTER_STOP;overlay.add_child(card)
+	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",5);card.add_child(column)
+	var heading:=HBoxContainer.new();heading.add_theme_constant_override("separation",7);column.add_child(heading)
+	name_field=LineEdit.new();name_field.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	name_field.placeholder_text="为这栋房子命名";name_field.tooltip_text="输入名字后按 Enter 保存"
+	name_field.text_submitted.connect(_rename_house);heading.add_child(name_field)
+	tier=Label.new();tier.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+	tier.add_theme_color_override("font_color",UI.GREEN);heading.add_child(tier)
+	var finish_row:=HBoxContainer.new();finish_row.add_theme_constant_override("separation",4);column.add_child(finish_row)
+	style_button=_seal(finish_row,"house","风貌",_cycle_style);style_button.custom_minimum_size=Vector2(76,42)
+	era_button=_seal(finish_row,"district","时代",_cycle_era);era_button.custom_minimum_size=Vector2(76,42)
+	var swatch_box:=HBoxContainer.new();swatch_box.add_theme_constant_override("separation",5);finish_row.add_child(swatch_box)
+	for index:int in range(PALETTE_COLORS.size()):
+		var swatch:=Button.new();swatch.name="Palette_%d"%index;swatch.custom_minimum_size=Vector2(32,32)
+		swatch.tooltip_text="选择建筑配色 %d"%(index+1);swatch.focus_mode=Control.FOCUS_NONE
+		var style:=StyleBoxFlat.new();style.bg_color=PALETTE_COLORS[index];style.set_corner_radius_all(16)
+		style.border_color=UI.PAPER;style.set_border_width_all(2);swatch.add_theme_stylebox_override("normal",style)
+		var hover:=style.duplicate();hover.border_color=UI.GOLD;hover.set_border_width_all(3)
+		swatch.add_theme_stylebox_override("hover",hover)
+		swatch.pressed.connect(_set_palette.bind(index));swatch_box.add_child(swatch);swatches.append(swatch)
+	var roles:=GridContainer.new();roles.name="RoofCompassRoles";roles.columns=4
+	roles.add_theme_constant_override("h_separation",4);roles.add_theme_constant_override("v_separation",4);column.add_child(roles)
+	for role:String in ROLE_LABELS:
+		var role_button:=_seal(roles,str(ROLE_GLYPHS[role]),str(ROLE_LABELS[role]),_set_role.bind(role))
+		role_button.name="Role_"+role;role_button.custom_minimum_size=Vector2(88,46)
+		role_buttons[role]=role_button
+	var summary:=HBoxContainer.new();summary.add_theme_constant_override("separation",5);column.add_child(summary)
+	status=Label.new();status.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;status.add_theme_font_size_override("font_size",12)
+	status.add_theme_color_override("font_color",UI.MUTED);summary.add_child(status)
+	var actions:=HBoxContainer.new();actions.add_theme_constant_override("separation",5);column.add_child(actions)
+	temperament_button=_seal(actions,"music","律动",_cycle_temperament);temperament_button.custom_minimum_size=Vector2(76,42)
+	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
+	card.hide()
+
+func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
+	var button:=Button.new();button.set_script(Seal);button.configure(glyph,42.)
+	button.caption=caption;button.tooltip_text=caption;button.pressed.connect(action);parent.add_child(button)
+	return button
+
+func open_for_house(house_id:String)->void:
+	if target_house_id!=house_id:
+		target_house_id=house_id;name_field.release_focus()
+		card.scale=Vector2.ONE*.88;card.modulate.a=0.;card.show()
+		if _tween!=null and _tween.is_valid():_tween.kill()
+		_tween=card.create_tween().set_parallel(true)
+		_tween.tween_property(card,"scale",Vector2.ONE,.20).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		_tween.tween_property(card,"modulate:a",1.,.14)
+	refresh()
+
+func close()->void:
+	target_house_id="";card.hide();name_field.release_focus()
+
+func refresh()->void:
+	if target_house_id.is_empty() or not is_instance_valid(demo):return
+	if demo.tool!=4 or not demo.ui_layer.visible:
+		card.hide();return
+	var house:Dictionary=demo.town._house_record(target_house_id)
+	if house.is_empty():close();return
+	card.show()
+	if not name_field.has_focus():name_field.text=str(house.get("name","河湾小屋"))
+	var level:int=demo.state.level_tier(target_house_id)
+	tier.text="★ %d"%level;tier.tooltip_text="品质等级 %d / 5"%level
+	for role:String in role_buttons:
+		var button:Button=role_buttons[role]
+		button.active=str(house.get("role","residential"))==role
+		button.disabled=(house.has("signature") and role!=str(house.get("role",""))) or (role=="atelier" and not demo.state.era_unlocks.has("renaissance")) or (role=="clockmaker" and not demo.state.era_unlocks.has("clockwork")) or (role=="symphony_hall" and not demo.state.era_unlocks.has("modern_eco"))
+		button.modulate.a=.42 if button.disabled else 1.;button.queue_redraw()
+	var style_key:=str(house.get("style","classic"));var style_index:int=demo.State.HOUSE_STYLES.find(style_key)
+	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
+	style_button.disabled=house.has("signature");style_button.queue_redraw()
+	var era:=str(house.get("era_theme","district"));era_button.caption="时代 · "+_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
+	era_button.disabled=house.has("signature");era_button.queue_redraw()
+	var palette:=int(house.get("palette",0))
+	for index:int in range(swatches.size()):
+		var style:=swatches[index].get_theme_stylebox("normal") as StyleBoxFlat
+		style.border_color=UI.GOLD if index==palette else UI.PAPER
+		style.set_border_width_all(3 if index==palette else 2)
+	var temperament:=str(house.get("temperament","andante"))
+	temperament_button.caption={"andante":"温润","allegro":"轻快","largo":"深邃"}.get(temperament,"温润")
+	temperament_button.queue_redraw()
+	var role:=str(house.get("role","residential"))
+	concert_button.visible=role in ["venue","symphony_hall"]
+	status.text=str(demo.HouseholdFeedback.describe(demo.state,demo.life,target_house_id)).replace("\n"," · ")
+	_update_anchor(house)
+
+func follow()->void:
+	if target_house_id.is_empty() or demo.tool!=4 or not demo.ui_layer.visible:return
+	var house:Dictionary=demo.town._house_record(target_house_id)
+	if house.is_empty():close();return
+	card.show();_update_anchor(house)
+
+func _update_anchor(house:Dictionary)->void:
+	var highest:=0
+	for cell:Dictionary in house.get("cells",[]):highest=maxi(highest,int(cell.get("level",0)))
+	var world:=Vector3(float(house.origin[0]),float(house.get("base_y",0.))+float(highest+1)*demo.FLOOR+1.2,float(house.origin[1]))
+	if demo.camera.is_position_behind(world):card.hide();return
+	var projected:Vector2=demo.camera.unproject_position(world);var size:Vector2=card.get_combined_minimum_size()
+	card.size=size
+	var viewport:=overlay.get_viewport_rect().size
+	var y:float=projected.y-size.y-14.
+	if y<66.:y=projected.y+22.
+	var target:=Vector2(clampf(projected.x-size.x*.5,12.,maxf(12.,viewport.x-size.x-12.)),clampf(y,62.,maxf(62.,viewport.y-size.y-112.)))
+	card.position=target if _last_position==Vector2.ZERO else _last_position.lerp(target,.35)
+	_last_position=card.position
+
+func _set_role(role:String)->void:
+	var result:Dictionary=demo.state.set_house_role(target_house_id,role)
+	demo._after_edit(result,"room",true,target_house_id)
+	refresh()
+
+func _cycle_style()->void:
+	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty() or house.has("signature"):return
+	var styles:Array=demo.State.HOUSE_STYLES;var start:int=styles.find(str(house.get("style","classic")))
+	for offset:int in range(1,styles.size()+1):
+		var next:String=str(styles[posmod(start+offset,styles.size())])
+		var result:Dictionary=demo.state.set_house_style(target_house_id,next)
+		if bool(result.get("ok",false)) and not bool(result.get("no_op",false)):
+			demo._after_edit(result,"room",true,target_house_id);break
+	refresh()
+
+func _set_palette(index:int)->void:
+	var result:Dictionary=demo.state.set_house_palette(target_house_id,index)
+	demo._after_edit(result,"terrace",false);refresh()
+
+func _cycle_era()->void:
+	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty() or house.has("signature"):return
+	var choices:Array[String]=["district"]
+	for era:String in demo.State.Eras.IDS:
+		if demo.state.era_unlocks.has(era):choices.append(era)
+	var current:=str(house.get("era_theme","district"));var result:Dictionary=demo.state.set_house_era(target_house_id,choices[posmod(choices.find(current)+1,choices.size())])
+	demo._after_edit(result,"room",true,target_house_id);refresh()
+
+func _cycle_temperament()->void:
+	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty():return
+	var modes:Array[String]=["andante","allegro","largo"]
+	var next:String=modes[posmod(modes.find(str(house.get("temperament","andante")))+1,modes.size())]
+	var result:Dictionary=demo.state.set_house_temperament(target_house_id,next)
+	var ids:Array[String]=[target_house_id]
+	demo._after_edit(result,"room",false,target_house_id);demo._refresh_house_music_traits(ids);refresh()
+
+func _rename_house(value:String)->void:
+	var result:Dictionary=demo.state.set_house_name(target_house_id,value)
+	demo._after_edit(result,"room",false);name_field.release_focus();refresh()
+
+func _invite()->void:
+	demo._invite_concert()
+
+func _era_name(era:String)->String:
+	if era=="district":return "街坊"
+	var index:int=demo.State.Eras.IDS.find(era)
+	return str(demo.State.Eras.NAMES[index]) if index>=0 else "街坊"

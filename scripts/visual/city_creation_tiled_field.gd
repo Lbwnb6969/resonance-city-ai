@@ -52,7 +52,11 @@ func _tile(source:Image,origin:Vector2i)->Image:
 func upload(create_new:bool=false)->void:
 	var start:=Time.get_ticks_usec();var count:=0
 	if texture==null or create_new:
-		texture=Texture2DArray.new();assert(texture.create_from_images(images)==OK);count=images.size()
+		texture=Texture2DArray.new()
+		# Release exports remove assert expressions, including their side effects.
+		var result:=texture.create_from_images(images)
+		assert(result==OK)
+		count=images.size()
 	else:
 		for layer:int in _pending:texture.update_layer(images[layer],layer);count+=1
 	_pending.clear()

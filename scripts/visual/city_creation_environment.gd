@@ -15,6 +15,14 @@ func setup(parent: Node3D) -> void:
 	environment.sky = sky
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_sky_contribution = 0.65
+	# Short-range screen-space contact grounds eaves, stairs and tree roots;
+	# broad sunlight and sky remain independent, as in TG's terrain light bake.
+	environment.ssao_enabled = true
+	environment.ssao_radius = 0.75
+	environment.ssao_intensity = 1.1
+	environment.ssao_power = 1.25
+	environment.ssao_detail = 0.5
+	environment.ssao_light_affect = 0.10
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	environment.tonemap_white = 1.85
 	world.environment = environment
@@ -24,6 +32,7 @@ func setup(parent: Node3D) -> void:
 	# into four maps. Normal bias is calibrated against our 1.7m stories.
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
 	sun.directional_shadow_split_1 = 0.30
+	sun.directional_shadow_blend_splits = true
 	sun.shadow_normal_bias = 1.50
 	sun.shadow_opacity = 0.74
 	sun.shadow_blur = 1.4

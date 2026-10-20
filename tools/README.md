@@ -8,6 +8,8 @@
 | `creation_bundle_audit.py` | 当前主场景的资源依赖闭包、三库来源记录与真实包资源审计；独立于旧P0打包器 |
 | `bake_creation_music_bank.gd` | 从GDScript合成可重建PCM缓存；GitHub不存二进制缓存，导出或银行缓存验证前先运行 |
 | `build_creation_bundle.py` | 仅用户明确要求时打本地试玩包；使用独立3D审计与隔离运行探针 |
+| `build_creation_playtest.py` | 用户要求Windows试玩时导出；自动运行实际release EXE，核对两张GPU距离场及昼夕夜近远景，不以编辑器加载PCK代替 |
+| `check_creation_spatial_popover_live.gd` | 屋顶罗盘两分辨率真实控件、相机跟随、保存及撤销验证 |
 | `check_creation_edit_latency.gd` | 同一28屋样例的远岸、近路、改色编辑准备/提交帧时 |
 | `check_creation_v3_experience.gd` | 本轮v3实窗光影、生命生态、触感、刮奏和漫步验证 |
 | `extract_creation_ambience.py` | Foundation溪流适配资源的定向提取，输出不覆盖现存原件 |
