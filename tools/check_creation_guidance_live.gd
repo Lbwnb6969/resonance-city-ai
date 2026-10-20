@@ -2,7 +2,7 @@ extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const Guidance=preload("res://scripts/ui/city_creation_guidance.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/成长引导_2026-10-16"
+const OUT="res://验证记录/乐谱界面_2026-10-20/guidance"
 var demo
 var failures:Array[String]=[]
 var facts:Dictionary={}
@@ -31,8 +31,8 @@ func layout()->void:
 	var screen:=Rect2(Vector2.ZERO,Vector2(root.size))
 	for node:Control in demo.ui_layer.get_node("Root/Actions").get_children():
 		check(screen.encloses(node.get_global_rect()),"action visible: "+node.text)
-	var header:Control=demo.gallery_button.get_parent().get_parent()
-	var help:Control=demo.hint.get_parent().get_parent()
+	var header:Control=demo.score_ribbon
+	var help:Control=demo.whisper_keycaps
 	check(not header.get_global_rect().intersects(help.get_global_rect()),"header and instructions do not overlap")
 	check(screen.encloses(help.get_global_rect()),"instructions remain within window")
 func audio_ids()->Array:
@@ -82,7 +82,7 @@ func _run()->void:
 	layout()
 	demo._message("明信片已保存：C:/Users/Administrator/AppData/Roaming/Godot/app_userdata/共鸣之城/postcards/我的河湾_2026-10-16.png")
 	for i in range(3): await process_frame
-	var help:Control=demo.hint.get_parent().get_parent()
+	var help:Control=demo.whisper_keycaps
 	var toolbar:Control=demo.ui_layer.get_node("Root/Toolbar")
 	check(not demo.toast.get_global_rect().intersects(help.get_global_rect()) and not demo.toast.get_global_rect().intersects(toolbar.get_global_rect()),"long postcard toast stays clear of instructions and tools")
 	await capture("after_06_小窗口")

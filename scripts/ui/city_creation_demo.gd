@@ -48,6 +48,9 @@ var undo_button: Button
 var redo_button: Button
 var music_button: Button
 var light_button: Button
+var score_ribbon:Control
+var sundial_hud:Control
+var whisper_keycaps:Control
 var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
@@ -973,9 +976,12 @@ func _refresh_ui() -> void:
 	if _painted_tool!=tool:
 		var changed:Array=range(tool_buttons.size()) if _painted_tool<0 else [_painted_tool,tool]
 		for i:int in changed:
-			for visual_state in ["normal", "hover", "pressed"]:
-				tool_buttons[i].add_theme_stylebox_override(visual_state, UI.button(visual_state, i == tool))
-			tool_buttons[i].add_theme_color_override("font_color", UI.PAPER if i == tool else UI.INK)
+			if tool_buttons[i].get_meta("vector_seal",false):
+				tool_buttons[i].active=i==tool;tool_buttons[i].queue_redraw()
+			else:
+				for visual_state in ["normal", "hover", "pressed"]:
+					tool_buttons[i].add_theme_stylebox_override(visual_state, UI.button(visual_state, i == tool))
+				tool_buttons[i].add_theme_color_override("font_color", UI.PAPER if i == tool else UI.INK)
 		_painted_tool=tool
 	hint.text = Copy.TOOL_HINTS[tool]
 	if tool==7 and district_link_mode:
@@ -989,6 +995,7 @@ func _refresh_ui() -> void:
 	_refresh_concert()
 	if journal!=null: journal.refresh()
 	if signatures!=null:signatures.refresh()
+	if score_ribbon!=null:score_ribbon.refresh()
 
 func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
@@ -1830,6 +1837,7 @@ func _district_home_has_service(home_id: String, role: String) -> bool:
 func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, pluck_house: String="") -> void:
 	_message(str(result.message))
 	if not result.ok or bool(result.get("no_op",false)): return
+	if whisper_keycaps!=null and kind!="history":whisper_keycaps.record_action(tool)
 	if music!=null:music.attention.notify_sculpt_action(music._playback_clock())
 	var started := Time.get_ticks_usec()
 	var colors: Array=result.get("appearance_house_ids",[]).duplicate()
@@ -2001,12 +2009,13 @@ func save_city() -> void:
 		return
 	_capture_journeys()
 	var result: Dictionary = state.save_city(SAVE_PATH)
+	if result.ok and sundial_hud!=null:sundial_hud.saved()
 	_message(Copy.SAVE_SUCCESS_TOAST if result.ok else str(result.message))
 
 func _toggle_music() -> void:
 	music.set_muted(not music.muted)
 	ambience.set_muted(music.muted)
-	music_button.text = "♫ 静音" if music.muted else "♫ 音乐"
+	if not music_button.get_meta("vector_seal",false):music_button.text = "♫ 静音" if music.muted else "♫ 音乐"
 
 func _strum_house(id: String) -> bool:
 	if not music.play_house(id): return false

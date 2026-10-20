@@ -4,6 +4,7 @@ var strolling := false
 var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
+var postcard_directory := "user://postcards"
 
 static func orthographic_distance(zoom:float,pitch:float)->float:
 	# At the lowest supported pitch the bottom viewport ray must still start
@@ -65,7 +66,7 @@ func capture(demo: Node3D) -> void:
 	frame.size = demo.get_viewport().get_visible_rect().size
 	await RenderingServer.frame_post_draw
 	var image: Image = demo.get_viewport().get_texture().get_image()
-	var directory := "user://postcards"
+	var directory := postcard_directory
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(directory))
 	var stamp := Time.get_datetime_string_from_system().replace(":","-")
 	var path := directory+"/河湾_"+stamp+"_"+str(Time.get_ticks_msec())+".png"
@@ -75,7 +76,7 @@ func capture(demo: Node3D) -> void:
 	postcard_busy = false
 	if result == OK:
 		last_postcard = ProjectSettings.globalize_path(path)
-		demo._message("明信片已保存："+last_postcard)
+		demo._message(demo.Copy.POSTCARD_SAVED_TOAST)
 	else: demo._message("明信片保存失败："+error_string(result))
 
 class PostcardFrame extends Control:

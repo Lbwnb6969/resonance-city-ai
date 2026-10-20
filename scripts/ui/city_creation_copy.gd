@@ -20,6 +20,7 @@ const EDIT_PENDING_HINT := "河湾正在落定新变化。\n可以移动视野�
 const EDIT_PENDING_ROAD_TOAST := "小路正在接合，片刻后继续营建。"
 const SAVE_PENDING_TOAST := "小路接合完成后保存这座河湾。"
 const SAVE_SUCCESS_TOAST := "河湾已保存，下次从这里继续。"
+const POSTCARD_SAVED_TOAST := "明信片已保存。悬停相机圆章可查看位置。"
 
 const LIGHT_PHASE_LABELS := ["☀ 光线", "🌇 夕照", "🌙 星夜"]
 const LIGHT_PHASE_SUBTITLES := [

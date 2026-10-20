@@ -425,9 +425,9 @@ func _run() -> void:
 	demo.select_tool(0)
 	for ignored in range(4): await process_frame
 	var toolbar: Control = demo.ui_layer.get_child(0).find_child("Toolbar",true,false)
-	var help: Control = demo.hint.get_parent().get_parent()
+	var help: Control = demo.whisper_keycaps
 	_check(_in_window(toolbar) and _in_window(demo.info) and _in_window(demo.hint) and _in_window(help),"1024 window keeps actual toolbar courtyard count and expanded help inside viewport")
-	_check(help.get_global_rect().end.y<=toolbar.get_global_rect().position.y and demo.hint.text.contains("围出宽敞内院"),"actual courtyard help fits above toolbar without overlap")
+	_check(help.get_global_rect().position.y>=toolbar.get_global_rect().end.y and demo.hint.text.contains("围出宽敞内院"),"actual courtyard whisper fits below toolbar without overlap")
 	facts.layout_1024={"toolbar":toolbar.get_global_rect(),"info":demo.info.get_global_rect(),"help":help.get_global_rect(),"hint":demo.hint.get_global_rect()}
 	await _capture("05_1024庭院说明与信息边界")
 	root.size=Vector2i(1440,900)

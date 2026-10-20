@@ -8,13 +8,13 @@
 
 1. Stage I：彩色大面仍未定位。读取现有F10城市/相机/截图，验证MultiMesh、道路退化点、纹理上传三条假设；鸟蝶初始化7个零矩阵提前可见已修，16项CPU/1000帧巡游有限数据检查通过；根因仍需异常现场节点/网格证据。正常截图不等于修复。个人文件只读，复现用隔离副本。
 2. 音乐目录/轮唱、日记与门前布局已随结构准备/复用。房屋按基座/立面/屋顶/地标分步，house_assembly持主线程任务；空间规划/孟莎CPU网格/现代连廊规划随后台准备，植物宫按拱跨/喷泉/花床生成。合批分帧、草地索引复用与cpu_retirement纯值回收保持，节点/GPU只在主线程。49项新生成/取消/后台纯值检查、58项品质及19项127屋实窗通过；17栋四时代/六地标/连廊/圆塔完整数据与原版一致。生成切片最高3.938ms，道路安装12.197ms、Life地形发布13.079ms作为排查记录；已有分步生成与到期调度保留，后续按实际卡顿决定优化范围。
-3. 毛石基再埋22cm/14cm贴地透明裙已通过19项CPU与30项实窗（7屋p95 5.582ms），末层负/零厚度也已修；时代边界双侧灌木/暖界石也已通过32项CPU与30项实窗（p95 5.585ms），真种植/改风貌/撤销与跨城缓存正确。桥头1.25m纹理渐变/支撑板相交修正与柔暖全局光影也已通过9项CPU/12项实窗；细节见PROJECT。接续破面与可见衔接问题；按体验推进IV/V去表单空间UI（II/III沿用已验收实现）。三档性格/刮奏/心愿/巡游/四时、策略增补、六种子/乐章铭牌依VI～IX；X完整收口。
+3. 毛石基再埋22cm/14cm贴地透明裙已通过19项CPU与30项实窗（7屋p95 5.582ms），末层负/零厚度也已修；时代边界双侧灌木/暖界石也已通过32项CPU与30项实窗（p95 5.585ms），真种植/改风貌/撤销与跨城缓存正确。桥头1.25m纹理渐变/支撑板相交修正与柔暖全局光影也已通过9项CPU/12项实窗；细节见PROJECT。接续破面与可见衔接问题；Stage IV常驻HUD已验收，接续V建筑罗盘与二级工具圆章（II/III沿用已验收实现）。三档性格/刮奏/心愿/巡游/四时、策略增补、六种子/乐章铭牌依VI～IX；X完整收口。
 
 ## 代码定位
 
 | 系统 | 入口与关键点 |
 |---|---|
-| 主场景/UI | scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；旧paper_hud、copy文案、guide_panel、journal/gallery/signatures |
+| 主场景/UI | scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；paper_hud负责迁移，score_ribbon/sundial_hud/whisper_keycaps/seal_button/tactile_dock；copy/guide/journal/gallery/signatures保持原功能 |
 | 真值/历史 | scripts/world/city_creation_state.gd、serializer、change_set；可选Schema18已有，未来19兼容1～18 |
 | 拉路/坡路 | road_gesture/road_intent/stroke，road_heights/road_earthworks/terrain_protection/frontage/junctions；新宽街2.10m旧2m保持 |
 | 生活/调度 | city_creation_life、citizen_schedule、citizen_motion、worker_lod、network、bakery/workshop/cafe、tram、quality |
@@ -37,4 +37,4 @@
 
 交付前提交，运行`python tools/sync_github_main.py prepare`、阅读验证记录/GitHub完整同步/plan.json再push；主remote ai-sync/main、普通快进，跟踪树<100,000,000字节。Windows TLS用环境Git配置http.sslBackend=schannel/http.version=HTTP/1.1。只显式add本轮新文件，忽略散落自动UID/截图与参考原件。
 
-性能纪律修订：26个验证脚本语法通过。本地音库与源码签名不一致，改前/改后缓存测试均在相同两项失败；需要音频实窗验证时先更新本地音库。
+Stage IV：44px乐谱条、四圆章和紧凑九工具坞已接入；常驻HUD留白1440为92.45%、1024为88.73%。77项实窗/20项界面数据与17个真实手记目标引导通过，个人档不变；旧音库已在本地归档并重烘焙，337项缓存检查通过。证据在本地验证记录/乐谱界面_2026-10-20/。右侧表单仍由Stage V替换，勿凭常驻HUD验收勾V或渲染破面。

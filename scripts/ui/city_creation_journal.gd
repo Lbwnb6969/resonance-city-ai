@@ -164,7 +164,7 @@ func refresh(notify: bool = true) -> void:
 				_next_goal = goal
 				break
 		break
-	button.text = "河湾手记 · J" if button.get_meta("compact", false) else "河湾手记 · " + next_title
+	if not button.get_meta("vector_seal",false):button.text = "河湾手记 · J" if button.get_meta("compact", false) else "河湾手记 · " + next_title
 	button.tooltip_text = "已收录%d / %d章 · %s · J" % [stage, rows.size(), next_title]
 	next_label.text = "下一件事 · " + str(_next_goal.label) if not _next_goal.is_empty() else "四页手记已写成，河湾还可以继续生长。"
 	next_button.text = Guidance.caption(_next_goal) if not _next_goal.is_empty() else "星夜漫步"

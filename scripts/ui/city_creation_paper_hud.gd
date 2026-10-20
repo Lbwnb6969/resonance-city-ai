@@ -1,47 +1,36 @@
 extends RefCounted
-## Arrange the imported paper controls without changing their gameplay owners.
-const UI = preload("res://scripts/ui/valley_ui_theme.gd")
+## Migrate the existing gameplay-owned controls into the spatial HUD.
+const Ribbon=preload("res://scripts/ui/city_creation_score_ribbon.gd")
+const Sundial=preload("res://scripts/ui/city_creation_sundial_hud.gd")
+const Whisper=preload("res://scripts/ui/city_creation_whisper_keycaps.gd")
+const Dock=preload("res://scripts/ui/city_creation_tactile_dock.gd")
 
-static func setup(demo: Node3D) -> void:
-	var header: VBoxContainer = demo.gallery_button.get_parent()
-	var shortcuts := GridContainer.new()
-	shortcuts.name = "PaperShortcuts"
-	shortcuts.columns = 2
-	shortcuts.add_theme_constant_override("h_separation", 6)
-	shortcuts.add_theme_constant_override("v_separation", 6)
-	header.add_child(shortcuts)
-	var audition: Button = header.get_node("HouseAudition")
-	var guide: Button = demo._button("手札 · F1", func() -> void: demo.guide.open_panel())
-	guide.name = "OpenGuide"
-	guide.tooltip_text = "营造手势、生活进化、声学与时代、快捷键 · F1"
-	header.add_child(guide)
-	var buttons: Array[Button] = [demo.gallery_button, audition, demo.journal.button, demo.signatures.button, demo.ledger.button, guide]
-	var captions := ["作品 · Ctrl+O", "♫ 试听 · P", "河湾手记 · J", "地标名胜", "生活账本 · L", "手札 · F1"]
-	for i in range(buttons.size()):
-		var button := buttons[i]
-		button.reparent(shortcuts)
-		button.text = captions[i]
-		button.add_theme_font_size_override("font_size", 13)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.custom_minimum_size.y = 34
-	demo.journal.button.set_meta("compact", true)
-	var toggle: Button = demo._button("营造小目标  ▸", func() -> void: pass)
-	toggle.name = "ToggleCityDetails"
-	toggle.toggle_mode = true
-	toggle.add_theme_font_size_override("font_size", 13)
-	UI.subtle(toggle)
-	header.add_child(toggle)
-	var details := VBoxContainer.new()
-	details.name = "CityDetails"
-	details.add_theme_constant_override("separation", 8)
-	header.add_child(details)
-	demo.quest.reparent(details)
-	var echo:=Label.new();echo.name="RegionalEchoBadge";echo.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;echo.add_theme_font_size_override("font_size",12);details.add_child(echo);echo.hide()
-	demo.set_meta("regional_echo_badge",echo)
-	demo.life_info.reparent(details)
-	details.hide()
-	toggle.toggled.connect(func(expanded: bool) -> void:
-		details.visible = expanded
-		toggle.text = "收起营造小目标  ▾" if expanded else "营造小目标  ▸"
-		# Containers otherwise retain their former height after folding.
-		header.get_parent().set_deferred("size", Vector2.ZERO))
+static func setup(demo:Node3D)->void:
+	var parent:Control=demo.ui_layer.get_child(0)
+	var old_header:Control=parent.get_node("PaperHeader")
+	var audition:Button=old_header.find_child("HouseAudition",true,false)
+	# Goals and accounts stay in the real journal, not over the city.
+	var details:=VBoxContainer.new();details.name="CityDetails"
+	details.add_theme_constant_override("separation",8)
+	demo.journal.cards.add_child(details);demo.journal.cards.move_child(details,0)
+	details.add_child(demo._label("河湾近况",17))
+	demo.quest.reparent(details);demo.life_info.reparent(details)
+	var echo:=Label.new();echo.name="RegionalEchoBadge";echo.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	echo.add_theme_font_size_override("font_size",12);details.add_child(echo);echo.hide();demo.set_meta("regional_echo_badge",echo)
+	var links:=HBoxContainer.new();links.name="JournalCityLinks";links.add_theme_constant_override("separation",8);details.add_child(links)
+	for button:Button in [demo.signatures.button,demo.ledger.button,audition]:
+		button.reparent(links);button.add_theme_font_size_override("font_size",12)
+		button.text="地标名胜" if button==demo.signatures.button else "生活账本 · L" if button==demo.ledger.button else "点房试听 · P"
+		button.pressed.connect(demo.journal.close_panel)
+	demo.score_ribbon=Ribbon.new();demo.score_ribbon.setup(demo,parent)
+	demo.journal.button.set_meta("compact",true)
+	# Hidden proxies retain public callbacks; Ctrl+S and H remain unchanged.
+	var old_actions:Control=parent.get_node("Actions");old_actions.name="LegacyActions";old_actions.hide()
+	demo.sundial_hud=Sundial.new();demo.sundial_hud.setup(demo,parent)
+	var help_panel:Control=demo.hint.get_parent().get_parent()
+	demo.whisper_keycaps=Whisper.new();demo.whisper_keycaps.setup(demo,parent)
+	Dock.setup(demo,parent)
+	parent.remove_child(help_panel);help_panel.queue_free()
+	parent.remove_child(old_header);old_header.queue_free()
+	# Modal papers stay above the living ribbon and circular controls.
+	for panel:Control in [demo.gallery.panel,demo.journal.panel,demo.ledger.panel,demo.guide.panel]:parent.move_child(panel,parent.get_child_count()-1)
