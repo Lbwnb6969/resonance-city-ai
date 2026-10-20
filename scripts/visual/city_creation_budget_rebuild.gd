@@ -225,6 +225,20 @@ func _work(context: Node3D) -> Dictionary:
 		if context.house_fingerprints.get(str(house.id),-1) != fingerprint: houses.append(house)
 		context.house_fingerprints[str(house.id)] = fingerprint
 	stages.house_fingerprints=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
+	var house_plans:Dictionary={}
+	for house:Dictionary in houses:house_plans[str(house.id)]=context._prepare_house_assembly(house)
+	context.set_meta("house_assembly_plans",house_plans)
+	stages.house_plans=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
+	var clockwork_roofs:Dictionary={}
+	for house:Dictionary in houses:
+		if context.state.house_era(house)=="clockwork":clockwork_roofs[str(house.id)]=context.Clockwork.prepare(context.state,house)
+	context.set_meta("clockwork_roofs",clockwork_roofs)
+	stages.clockwork_roofs=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
+	var modern_parts:Dictionary={}
+	for house:Dictionary in houses:
+		if context.state.house_era(house)=="modern_eco":modern_parts[str(house.id)]=context.Modern.prepare(context.state,house)
+	context.set_meta("modern_parts",modern_parts)
+	stages.modern_parts=float(Time.get_ticks_usec()-structure_start)/1000.;structure_start=Time.get_ticks_usec()
 	var road_data := {}
 	var pebbles := {}
 	for road: Dictionary in context.state.roads:
@@ -438,14 +452,7 @@ func _step(task: Array) -> bool:
 			staging.terrain_surface.add_child(root)
 			staging.terrain_surface.blocks[block] = root
 		"house":
-			var house: Dictionary = task[1]
-			var root: Node3D = staging._house(house)
-			for body: StaticBody3D in root.find_children("*","StaticBody3D",true,false):
-				body.set_meta("pending_collision_layer",body.collision_layer)
-				body.set_meta("pending_collision_mask",body.collision_mask)
-				body.collision_layer = 0
-				body.collision_mask = 0
-			staging.house_roots[str(house.id)] = root
+			return staging._house_budgeted(task[1],0.55)
 		"house_merge":
 			return staging._merge_meshes(staging.house_roots[str(task[1].id)],false,0.55)
 		"house_colors":
@@ -827,7 +834,7 @@ func _dispose_context(context: Node3D) -> void:
 	if context.state!=null:retired_values.append(context.state)
 	# Worker results and upload records are also value-only. The native meshes
 	# already own their installed buffers; these are preparation-side copies.
-	for key:String in ["snapshot","changes","result"]:
+	for key:String in ["snapshot","changes","result","clockwork_roofs","modern_parts","house_assembly_plans"]:
 		if context.has_meta(key):retired_values.append(context.get_meta(key))
 	for component:Node3D in [context.meadow,context.shore,context.lilypads]:
 		if component!=null:retired_values.append(component.prepared_blocks)

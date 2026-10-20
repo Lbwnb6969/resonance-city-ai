@@ -4,14 +4,41 @@ const VAULT_SEGMENTS := 12
 const VAULT_BAYS := 6
 const Water=preload("res://scripts/visual/shaders/creation_palace_water.gdshader")
 
-static func palace(renderer,root: Node3D,house: Dictionary)->void:
+static func palace(renderer,root:Node3D,house:Dictionary)->void:
+	var job:=begin_palace(renderer,root,house)
+	while not step_palace(renderer,root,house,job):pass
+
+static func begin_palace(renderer,root:Node3D,house:Dictionary)->Dictionary:
 	var center:=Vector3(float(house.origin[0]),float(house.get("base_y",0.))+.19,float(house.origin[1])+1.8)
-	var glass: Array[Vector3]=[]
-	var iron: Material=renderer._material(Color("34594d"),.7)
-	var cream: Material=renderer._material(Color("d8cba9"))
+	var iron:Material=renderer._material(Color("34594d"),.7)
+	var cream:Material=renderer._material(Color("d8cba9"))
 	var group:=Node3D.new();group.name="CrystalBotanicalVaults";root.add_child(group)
-	for nave in range(3):
-		_vault(renderer,group,glass,center+Vector3((nave-1)*1.54,0,0),3.15 if nave==1 else 2.72,iron,cream,nave==1,float(nave-1))
+	var glass:Array[Vector3]=[]
+	return {"center":center,"group":group,"glass":glass,"iron":iron,"cream":cream,"nave":0,"bay":0,"phase":0,"flower":0,"pick_cells":0}
+
+static func step_palace(renderer,root:Node3D,house:Dictionary,job:Dictionary)->bool:
+	match int(job.phase):
+		0:
+			var nave:=int(job.nave)
+			var center:Vector3=job.center+Vector3((nave-1)*1.54,0,0)
+			if int(job.bay)<=VAULT_BAYS:
+				_vault_bay(renderer,job.group,job.glass,center,3.15 if nave==1 else 2.72,job.iron,nave==1,int(job.bay));job.bay+=1
+			else:
+				_vault_edges(renderer,job.group,job.glass,center,job.iron,job.cream,float(nave-1));job.nave+=1;job.bay=0
+				if job.nave==3:job.phase=1
+		1:
+			job.pick_cells=_palace_glass(renderer,job.group,house,job.glass);job.phase=2
+		2:
+			_palace_fountain(renderer,job.group,job.center,job.cream);job.soil=renderer._material(Color("986d4a"));job.phase=3
+		3:
+			_palace_flowerbed(renderer,job.group,job.center,job.soil,int(job.flower));job.flower+=1
+			if job.flower==12:job.phase=4
+		4:
+			root.set_meta("botanical_palace",{"radius":2.35,"height":3.15,"vaults":3,"vault_ridges":[[-1.54,2.72],[0.,3.15],[1.54,2.72]],"glass_triangles":job.glass.size()/3,"pick_cells":job.pick_cells,"plant_beds":11,"fountain":true,"afterglow_seconds":180.})
+			return true
+	return false
+
+static func _palace_glass(renderer,group:Node3D,house:Dictionary,glass:Array[Vector3])->int:
 	var mesh: MeshInstance3D=renderer._triangles(group,glass,Color.WHITE)
 	mesh.name="BotanicalVaultGlass";mesh.material_override=renderer.conservatory.ensure_palace_material();mesh.set_meta("creation_live_visual",true);mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# Allocate real roof triangles to their nearest original floor cell, so
@@ -32,6 +59,9 @@ static func palace(renderer,root: Node3D,house: Dictionary)->void:
 		var body:=StaticBody3D.new();body.name="PalaceGlassPick_"+key;body.set_meta("house_id",str(house.id));body.set_meta("cell_id",key);body.set_meta("cell",cells[key].duplicate(true))
 		var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(picks[key])
 		var collider:=CollisionShape3D.new();collider.shape=shape;body.add_child(collider);group.add_child(body)
+	return picks.size()
+
+static func _palace_fountain(renderer,group:Node3D,center:Vector3,cream:Material)->void:
 	var stone: Material=renderer._material(Color("c7b693"))
 	renderer._cylinder(group,.69,.72,.14,center+Vector3.UP*.07,stone,24)
 	for i in range(24):
@@ -41,44 +71,42 @@ static func palace(renderer,root: Node3D,house: Dictionary)->void:
 	renderer._cylinder(group,.12,.10,.62,center+Vector3.UP*.38,stone,12)
 	renderer._cylinder(group,.26,.31,.09,center+Vector3.UP*.73,cream,20)
 	renderer._cylinder(group,.023,.018,.30,center+Vector3.UP*.91,material,8)
-	var soil: Material=renderer._material(Color("986d4a"))
-	for i in range(12):
-		var angle:=TAU*i/12
-		if absf(wrapf(angle+PI*.5,-PI,PI))<.3:continue
-		var at:=center+Vector3(cos(angle)*1.80,0,sin(angle)*1.80)
-		renderer._cylinder(group,.20,.26,.29,at+Vector3.UP*.145,soil,10)
-		for leaf in range(5):
-			var heading:=TAU*leaf/5.+angle
-			var crown: MeshInstance3D=renderer._crown(group,at+Vector3(cos(heading)*.17,.48+float(leaf%2)*.10,sin(heading)*.17),Vector3(.15,.34,.10),Color("56876a") if i%2==0 else Color("80a566"));crown.rotation.z=sin(heading)*.4
-		for flower in range(3):renderer._crown(group,at+Vector3(sin(flower*2.1)*.16,.75+flower*.07,cos(flower*2.1)*.16),Vector3(.08,.055,.08),Color("d69eb6") if i%2==0 else Color("ebc68c"))
-	root.set_meta("botanical_palace",{"radius":2.35,"height":3.15,"vaults":3,"vault_ridges":[[-1.54,2.72],[0.,3.15],[1.54,2.72]],"glass_triangles":glass.size()/3,"pick_cells":picks.size(),"plant_beds":11,"fountain":true,"afterglow_seconds":180.})
+
+static func _palace_flowerbed(renderer,group:Node3D,center:Vector3,soil:Material,i:int)->void:
+	var angle:=TAU*i/12
+	if absf(wrapf(angle+PI*.5,-PI,PI))<.3:return
+	var at:=center+Vector3(cos(angle)*1.80,0,sin(angle)*1.80)
+	renderer._cylinder(group,.20,.26,.29,at+Vector3.UP*.145,soil,10)
+	for leaf in range(5):
+		var heading:=TAU*leaf/5.+angle
+		var crown: MeshInstance3D=renderer._crown(group,at+Vector3(cos(heading)*.17,.48+float(leaf%2)*.10,sin(heading)*.17),Vector3(.15,.34,.10),Color("56876a") if i%2==0 else Color("80a566"));crown.rotation.z=sin(heading)*.4
+	for flower in range(3):renderer._crown(group,at+Vector3(sin(flower*2.1)*.16,.75+flower*.07,cos(flower*2.1)*.16),Vector3(.08,.055,.08),Color("d69eb6") if i%2==0 else Color("ebc68c"))
 
 static func _vault_point(center: Vector3,angle: float,z: float,height: float)->Vector3:
 	return center+Vector3(cos(angle)*.77,1.05+(height-1.05)*sin(angle),z)
 
-static func _vault(renderer,group: Node3D,glass: Array[Vector3],center: Vector3,height: float,iron: Material,stone: Material,central: bool,outer_side: float)->void:
-	# Three connected Victorian barrel vaults share an open interior. The
-	# central entrance remains clear below its glazed arched fanlight.
-	for bay in range(VAULT_BAYS+1):
-		var z: float=lerpf(-2.25,2.25,float(bay)/VAULT_BAYS)
-		for side in range(VAULT_SEGMENTS):
-			var a:=PI*side/VAULT_SEGMENTS;var b:=PI*(side+1)/VAULT_SEGMENTS
-			var p:=_vault_point(center,a,z,height);var q:=_vault_point(center,b,z,height)
-			_beam(renderer,group,p,q,.034,iron)
-			if bay<VAULT_BAYS:
-				var next_z: float=lerpf(-2.25,2.25,float(bay+1)/VAULT_BAYS)
-				var r:=_vault_point(center,b,next_z,height);var t:=_vault_point(center,a,next_z,height)
-				glass.append_array([p,q,r,p,r,t])
-				if side%3==0:_beam(renderer,group,p,t,.027,iron)
-			if bay in [0,VAULT_BAYS]:
-				var door:=central and bay==0 and absf(((p+q)*.5).x-center.x)<.50
-				var low: float=1.72 if door else 0.
-				var foot_p:=Vector3(p.x,center.y+low,p.z);var foot_q:=Vector3(q.x,center.y+low,q.z)
-				glass.append_array([foot_p,p,q,foot_p,q,foot_q])
-				if side%3==0:_beam(renderer,group,foot_p,p,.042,iron)
-		for side: float in [-1.,1.]:
-			var foot:=center+Vector3(side*.77,0,z)
-			_beam(renderer,group,foot,foot+Vector3.UP*1.05,.05,iron)
+static func _vault_bay(renderer,group:Node3D,glass:Array[Vector3],center:Vector3,height:float,iron:Material,central:bool,bay:int)->void:
+	var z: float=lerpf(-2.25,2.25,float(bay)/VAULT_BAYS)
+	for side in range(VAULT_SEGMENTS):
+		var a:=PI*side/VAULT_SEGMENTS;var b:=PI*(side+1)/VAULT_SEGMENTS
+		var p:=_vault_point(center,a,z,height);var q:=_vault_point(center,b,z,height)
+		_beam(renderer,group,p,q,.034,iron)
+		if bay<VAULT_BAYS:
+			var next_z: float=lerpf(-2.25,2.25,float(bay+1)/VAULT_BAYS)
+			var r:=_vault_point(center,b,next_z,height);var t:=_vault_point(center,a,next_z,height)
+			glass.append_array([p,q,r,p,r,t])
+			if side%3==0:_beam(renderer,group,p,t,.027,iron)
+		if bay in [0,VAULT_BAYS]:
+			var door:=central and bay==0 and absf(((p+q)*.5).x-center.x)<.50
+			var low: float=1.72 if door else 0.
+			var foot_p:=Vector3(p.x,center.y+low,p.z);var foot_q:=Vector3(q.x,center.y+low,q.z)
+			glass.append_array([foot_p,p,q,foot_p,q,foot_q])
+			if side%3==0:_beam(renderer,group,foot_p,p,.042,iron)
+	for side: float in [-1.,1.]:
+		var foot:=center+Vector3(side*.77,0,z)
+		_beam(renderer,group,foot,foot+Vector3.UP*1.05,.05,iron)
+
+static func _vault_edges(renderer,group:Node3D,glass:Array[Vector3],center:Vector3,iron:Material,stone:Material,outer_side:float)->void:
 	for side: float in [-1.,1.]:
 		var foot:=center+Vector3(side*.77,0,-2.25);var finish:=foot+Vector3(0,0,4.5)
 		_beam(renderer,group,foot,finish,.075,stone)

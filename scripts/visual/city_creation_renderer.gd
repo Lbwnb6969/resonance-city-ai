@@ -1404,227 +1404,381 @@ const Renaissance = preload("res://scripts/visual/city_creation_renaissance.gd")
 const Clockwork = preload("res://scripts/visual/city_creation_clockwork.gd")
 const Modern = preload("res://scripts/visual/city_creation_modern.gd")
 
+const HouseAssembly=preload("res://scripts/visual/city_creation_house_assembly.gd")
+var house_assemblies:Dictionary={}
+
 func _house(house: Dictionary) -> Node3D:
-	# Focused geometry fixtures also call this entry without setup/rebuild.
-	if building_context.signature(str(house.id)).is_empty(): building_context.prepare(state.houses,state.roads)
-	if state.house_era(house) not in ["clockwork","modern_eco"] and not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():
-		var round_root: Node3D=RoundTower.build(self,house)
-		buildings.add_child(round_root)
-		RoundTower.finish(self,round_root,house)
-		return round_root
-	var root := Node3D.new()
-	root.name = str(house["id"])
-	buildings.add_child(root)
-	var palette: Array = PALETTES[posmod(int(house.get("palette",0)),PALETTES.size())]
-	if house.has("finish"): palette=FINISH_PALETTES[str(house.finish)]
-	root.set_meta("palette_colors",palette.duplicate())
-	var era: String = state.house_era(house)
-	var domes: Array = RenaissancePlan.for_house(state,house)
-	var dome_cells := {}
-	for plan: Dictionary in domes:
-		for id: String in plan.cell_ids: dome_cells[id]=true
-	root.set_meta("dome_cells",dome_cells)
-	root.set_meta("era_theme",era)
-	if era == "renaissance": palette=Renaissance.palette(palette)
+	var job:=_begin_house_assembly(house,false)
+	while not _advance_house_assembly(job,1000000.0):pass
+	return job.root
+
+func _house_budgeted(house:Dictionary,budget_ms:float)->bool:
+	var id:=str(house.id)
+	if not house_assemblies.has(id):house_assemblies[id]=_begin_house_assembly(house,true)
+	var job:HouseAssembly=house_assemblies[id]
+	var complete:=_advance_house_assembly(job,budget_ms)
+	if job.root!=null:house_roots[id]=job.root
+	if complete:house_assemblies.erase(id)
+	return complete
+
+func _prepare_house_assembly(house:Dictionary)->Dictionary:
+	# Values only: the budget worker resolves topology and architectural plans
+	# before any main-thread mesh, material, node or physics allocation.
+	if building_context.signature(str(house.id)).is_empty():building_context.prepare(state.houses,state.roads)
+	var era:String=state.house_era(house)
+	if era not in ["clockwork","modern_eco"] and not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():return {"round":true}
+	var palette:Array=PALETTES[posmod(int(house.get("palette",0)),PALETTES.size())]
+	if house.has("finish"):palette=FINISH_PALETTES[str(house.finish)]
+	var domes:Array=RenaissancePlan.for_house(state,house);var dome_cells:Dictionary={}
+	for plan:Dictionary in domes:
+		for id:String in plan.cell_ids:dome_cells[id]=true
+	if era=="renaissance":palette=Renaissance.palette(palette)
 	elif era=="clockwork":palette=Clockwork.palette(palette)
 	elif era=="modern_eco":palette=Modern.palette(palette)
-	root.set_meta("palette_colors",palette.duplicate())
-	var style := str(house.get("style","classic"))
-	root.set_meta("house_style",style)
-	var canopy: Dictionary=TerraceCanopy.choose(state.houses,house)
-	var flower_plan: Dictionary=ConservatoryPlan.for_house(state,house)
-	var arcade_faces: Array=ArcadePlan.for_house(state,house)
-	if era=="modern_eco":canopy={};flower_plan={};arcade_faces=[]
-	root.set_meta("arcade_faces",arcade_faces)
-	var arcades: Array=[]
-	root.set_meta("arcades",arcades)
-	if not flower_plan.is_empty(): canopy={}
-	root.set_meta("terrace_canopy",canopy)
-	var walls: Material = _style_wall_material(style,palette[0])
-	if era=="clockwork":walls=Clockwork.wall_material(self,palette[0])
-	elif era=="modern_eco":walls=_material(palette[0])
-	var trim := _material(Color("f1e5cc"))
-	var cells: Array = house["cells"]
-	var entrances: Array = house_entrances(str(house.id))
-	var passages: Array = house_passages(str(house.id))
-	root.set_meta("entrances",entrances.duplicate(true))
-	root.set_meta("passages",passages.duplicate(true))
-	var tower_ids: Dictionary = {}
-	var tower_info: Array = []
-	for tower: Dictionary in building_context.tower_cells(str(house.id)): tower_ids[str(tower.id)] = true
+	var canopy:Dictionary={};var flower_plan:Dictionary={};var arcade_faces:Array=[]
+	if era!="modern_eco":
+		canopy=TerraceCanopy.choose(state.houses,house)
+		flower_plan=ConservatoryPlan.for_house(state,house)
+		arcade_faces=ArcadePlan.for_house(state,house)
+	if not flower_plan.is_empty():canopy={}
+	var entrances:Array=house_entrances(str(house.id));var passages:Array=house_passages(str(house.id))
+	var tower_ids:Dictionary={}
+	for tower:Dictionary in building_context.tower_cells(str(house.id)):tower_ids[str(tower.id)]=true
 	if house.get("signature","")=="bell_keep":tower_ids[str(house.cells[-1].id)]=true
-	root.set_meta("tower_cells",tower_info)
-	var doors := {}
-	for entrance: Dictionary in entrances:
-		doors[[entrance.cell_id,entrance.side]] = entrance
-	var primary := _primary_entrance(house)
-	var role_prop_added := false
-	var joined: bool = building_context.joined(str(house.id)) or house.cells.size()>1 or _structural_joined(house)
-	root.set_meta("structural_joined",_structural_joined(house))
-	root.set_meta("joined_roof",joined)
-	for cell: Dictionary in cells:
-		var p := _cell_position(house,cell)
-		var level := int(cell["level"])
-		var y := level*FLOOR
-		var x := int(cell["x"])
-		var z := int(cell["z"])
-		var terrace := str(cell["kind"]) == "terrace"
-		var retreats: Dictionary={}
-		var core := Rect2(-UNIT*.5,-UNIT*.5,UNIT,UNIT)
-		for face: Dictionary in arcade_faces:
-			if str(face.cell_id)!=str(cell.id): continue
-			var side: Vector2i=face.side
-			var amount:=float(face.retreat)
-			retreats[side]=amount
-			if side.x<0: core.position.x+=amount; core.size.x-=amount
-			if side.x>0: core.size.x-=amount
-			if side.y<0: core.position.y+=amount; core.size.y-=amount
-			if side.y>0: core.size.y-=amount
-		var cuts: Array = []
-		if level == 0:
-			for passage: Dictionary in passages:
-				if str(passage.cell_id) == str(cell.id): cuts.append(passage)
-		var node := Node3D.new()
-		node.name = str(cell["id"])
-		node.position = p
-		root.add_child(node)
-		if level == 0 and cuts.is_empty(): _foundation_contact(node)
-		var body := StaticBody3D.new()
-		body.set_meta("house_id",str(house["id"]))
-		body.set_meta("cell_id",str(cell["id"]))
-		body.set_meta("cell",cell.duplicate(true))
-		node.add_child(body)
-		# Rooms stay on their saved horizontal datum; the plinth reaches the
-		# unprotected slope even when the interior terrain has been levelled.
-		var footing_bottom := Highland.footing(self,house,cell) if level==0 else y
-		var footing_pieces: Array = Architecture.floor_pieces(cuts) if not cuts.is_empty() else [Rect2(-UNIT*0.5,-UNIT*0.5,UNIT,UNIT)]
-		if cuts.is_empty():
-			var top := y+(0.18 if terrace else FLOOR)
-			_cell_box_shape(body,Vector3(core.size.x,top-footing_bottom,core.size.y),Vector3(core.get_center().x,(top+footing_bottom)*0.5,core.get_center().y))
-			_box(node,Vector3(UNIT,y+0.15-footing_bottom,UNIT),Vector3(0,(y+0.15+footing_bottom)*0.5,0),_material(Color("c7b995")))
-			if not retreats.is_empty():
-				_cell_box_shape(body,Vector3(UNIT,y+.15-footing_bottom,UNIT),Vector3(0,(y+.15+footing_bottom)*.5,0))
-				_box(node,Vector3(UNIT,.10,UNIT),Vector3(0,FLOOR-.05,0),walls)
-				_cell_box_shape(body,Vector3(UNIT,.10,UNIT),Vector3(0,FLOOR-.05,0))
-		else:
-			# Raised foundations remain only underneath the structural piers.
-			for piece: Rect2 in Architecture.floor_pieces(cuts):
-				var size_value := Vector3(piece.size.x,0.15-footing_bottom,piece.size.y)
-				var at := Vector3(piece.get_center().x,(0.15+footing_bottom)*0.5,piece.get_center().y)
-				_box(node,size_value,at,_material(Color("c7b995")))
-				_cell_box_shape(body,size_value,at)
-			# The overhead slab provides real roof picking above the hollow room.
-			_box(node,Vector3(UNIT,0.10,UNIT),Vector3(0,FLOOR-0.05,0),walls)
-			_cell_box_shape(body,Vector3(UNIT,0.10,UNIT),Vector3(0,FLOOR-0.05,0))
-		if level==0 and float(house.get("base_y",0.0))>0.05:
-			Highland.build_plinth(self,node,house,cell,footing_bottom,footing_pieces)
-		if terrace:
-			if house.get("signature","")=="floating_amphitheater":continue
-			elif era=="modern_eco":Modern.terrace(self,node,cell,cells,y,palette)
-			else:_terrace(node,cell,cells,y,palette,house)
-			if str(canopy.get("cell_id",""))==str(cell.id): TerraceCanopy.build(self,node,body,y+.19,palette)
-			continue
-		for direction: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
-			var neighbor := _neighbor_cell(house,cell,direction)
-			if not neighbor.is_empty() and str(neighbor["kind"]) == "room": continue
-			var wall := Node3D.new()
-			wall.position = Vector3(direction.x*UNIT*0.5,y,direction.y*UNIT*0.5)
-			wall.rotation.y = atan2(float(direction.x),float(direction.y))
-			node.add_child(wall)
-			if retreats.has(direction):
-				var outer := Node3D.new()
-				outer.name="Arcade_%d_%d" % [direction.x,direction.y]
-				outer.transform=wall.transform
-				node.add_child(outer)
-				var report: Dictionary=Arcade.build(self,outer,body,palette)
-				report["cell_id"]=str(cell.id)
-				report["side"]=direction
-				arcades.append(report)
-				wall.position-=Vector3(direction.x,0,direction.y)*float(retreats[direction])
-				wall.set_meta("arcade_recess",float(retreats[direction]))
-			# Side walls end at the recessed wall, so adjoining galleries remain
-			# open across room seams instead of retaining a full-width end wall.
-			var wall_width:=UNIT
-			var wall_center:=Vector3.ZERO
-			if not retreats.is_empty():
-				wall_width=core.size.y if direction.x!=0 else core.size.x
-				# Keep doors on their original tangent axis. Only structural wall
-				# meshes shift sideways when a second arcade cuts a corner.
-				var tangent_offset:=Vector3(0,0,core.get_center().y) if direction.x!=0 else Vector3(core.get_center().x,0,0)
-				wall_center=wall.basis.inverse()*tangent_offset
-			var opening := Architecture.wall_opening(cuts,direction)
-			if not opening.is_empty():
-				wall.name = "Passage_%d_%d" % [direction.x,direction.y]
-				Architecture.build_wall(self,wall,body,opening,palette[0],Color("e4d4b2"))
-				wall.set_meta("house_style",style)
-				if style=="stone": _stone_arch_surface(wall.get_node("ArchWallSurface"),walls)
-				else: wall.get_node("ArchWallSurface").material_override=walls
-				_box(wall,Vector3(UNIT+0.07,0.11,0.20),Vector3(0,FLOOR-0.06,0.02),trim)
-				continue
-			if era!="modern_eco":_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
-			if not cuts.is_empty() or not retreats.is_empty():
-				_cell_box_shape(body,Vector3(wall_width,FLOOR,0.13),wall.transform*(wall_center+Vector3(0,FLOOR*0.5,0)),wall.rotation.y)
-			_box(wall,Vector3(wall_width+0.04,0.12,0.20),wall_center+Vector3(0,0.12,0.02),_material(Color("c7b797")))
-			_box(wall,Vector3(wall_width+0.07,0.11,0.20),wall_center+Vector3(0,FLOOR-0.06,0.02),trim)
-			var entrance: Dictionary = doors.get([str(cell.id),direction],{}) if level == 0 else {}
-			var door := not entrance.is_empty()
-			var active := door and bool(entrance.active)
-			var principal: bool = door and not primary.is_empty() and primary.cell_id == str(cell.id) and primary.side == direction
-			if door:
-				wall.name = "Entrance_%d_%d" % [direction.x,direction.y]
-				wall.set_meta("entrance",entrance.duplicate(true))
-			if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette)
-			else:_facade(wall,palette,door,int(house.get("seed",0))+x*17+z*31+level*7,active,wall_width)
-			if era == "renaissance": Renaissance.facade(self,wall,door,level>0)
-			elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
-			if wall_width>=UNIT-.01 and era!="modern_eco": HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
-			if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
-			if principal and not role_prop_added:
-				_role_frontage(wall,str(house.get("role","residential")))
-				role_prop_added = true
-		if not _neighbor_cell(house,cell,Vector2i.ZERO,1).is_empty():
-			_box(node,Vector3(UNIT+0.06,0.1,UNIT+0.06),Vector3(0,y+FLOOR,0),trim)
-			continue
-		if dome_cells.has(str(cell.id)):
-			_box(node,Vector3(UNIT,.12,UNIT),Vector3(0,y+FLOOR-.04,0),trim)
-			continue
-		if era in ["clockwork","modern_eco"]:continue
-		if tower_ids.has(str(cell.id)):
-			tower_info.append(Tower.build(self,root,body,house,cell,palette))
-			continue
-		if joined: continue
-		# One gable across each exposed room run: no interior eaves or roof valley.
-		var left := _at(cells,x-1,z,level)
-		if not left.is_empty() and str(left["kind"]) == "room" and _at(cells,x-1,z,level+1).is_empty(): continue
-		var span := 1
-		while true:
-			var next := _at(cells,x+span,z,level)
-			if next.is_empty() or str(next["kind"]) != "room" or not _at(cells,x+span,z,level+1).is_empty(): break
-			span += 1
-		var roof := Node3D.new()
-		roof.position.x = float(span-1)*UNIT*0.5
-		node.add_child(roof)
-		var front_open := false
-		var back_open := false
-		for column in range(span):
-			var front := _at(cells,x+column,z-1,level)
-			var back := _at(cells,x+column,z+1,level)
-			front_open = front_open or front.is_empty() or str(front.get("kind","")) != "room" or not _at(cells,x+column,z-1,level+1).is_empty()
-			back_open = back_open or back.is_empty() or str(back.get("kind","")) != "room" or not _at(cells,x+column,z+1,level+1).is_empty()
-		var bakery:=str(house.get("role","residential"))=="bakery"
-		_roof(roof,y+FLOOR,palette[1],int(house.get("seed",0))+x*13+z*19,span,front_open,back_open,bakery)
-		if bakery:
-			root.set_meta("chimneys",[p+roof.position+Vector3(0.4,y+FLOOR+0.99,-0.45)])
-	if era=="clockwork":Clockwork.build(self,root,house)
-	elif era=="modern_eco":Modern.build(self,root,house,palette)
-	elif joined: _joined_roofs(root,house,palette)
-	Renaissance.build(self,root,house,domes)
-	if not flower_plan.is_empty(): conservatory.build(self,root,house,flower_plan)
-	root.set_meta("tower_cells",tower_info)
-	SignatureVisual.decorate(self,root,house)
-	var chimney_points: Array=root.get_meta("chimneys",[])
-	if str(house.get("role","residential"))=="bakery" and not chimney_points.is_empty(): bakery_smoke.build(root,chimney_points[0])
-	return root
+	var doors:Dictionary={}
+	for entrance:Dictionary in entrances:doors[[entrance.cell_id,entrance.side]]=entrance
+	var structural:=_structural_joined(house)
+	return {"round":false,"palette":palette,"era":era,"style":str(house.get("style","classic")),
+		"domes":domes,"dome_cells":dome_cells,"canopy":canopy,"flower_plan":flower_plan,"arcade_faces":arcade_faces,
+		"entrances":entrances,"passages":passages,"tower_ids":tower_ids,"doors":doors,"primary":_primary_entrance(house),
+		"structural_joined":structural,"joined":building_context.joined(str(house.id)) or house.cells.size()>1 or structural}
+
+func _begin_house_assembly(house:Dictionary,hidden:bool)->HouseAssembly:
+	var began:=Time.get_ticks_usec()
+	var job:=HouseAssembly.new();job.house=house;job.hidden=hidden
+	var prepared:Dictionary=get_meta("house_assembly_plans",{})
+	var plan:Dictionary=prepared[str(house.id)] if prepared.has(str(house.id)) else _prepare_house_assembly(house)
+	if bool(plan.round):
+		job.stage=HouseAssembly.Stage.ROUND_BODY
+	else:
+		var root:=Node3D.new();root.name=str(house.id);buildings.add_child(root);job.root=root
+		for key:String in ["palette","era","style","domes","dome_cells","canopy","flower_plan","arcade_faces","passages","tower_ids","doors","primary","joined"]:job.set(key,plan[key])
+		job.cells=house.cells
+		root.set_meta("palette_colors",job.palette.duplicate());root.set_meta("dome_cells",job.dome_cells)
+		root.set_meta("era_theme",job.era);root.set_meta("house_style",job.style)
+		root.set_meta("arcade_faces",job.arcade_faces);root.set_meta("arcades",job.arcades)
+		root.set_meta("terrace_canopy",job.canopy)
+		job.walls=_style_wall_material(job.style,job.palette[0])
+		if job.era=="clockwork":job.walls=Clockwork.wall_material(self,job.palette[0])
+		elif job.era=="modern_eco":job.walls=_material(job.palette[0])
+		job.trim=_material(Color("f1e5cc"))
+		root.set_meta("entrances",plan.entrances.duplicate(true));root.set_meta("passages",job.passages.duplicate(true))
+		root.set_meta("tower_cells",job.tower_info);root.set_meta("structural_joined",plan.structural_joined);root.set_meta("joined_roof",job.joined)
+		if job.era=="clockwork":
+			var roofs:Dictionary=get_meta("clockwork_roofs",{})
+			job.clockwork_roofs=roofs[str(house.id)] if roofs.has(str(house.id)) else Clockwork.prepare(state,house)
+		elif job.era=="modern_eco":
+			var parts:Dictionary=get_meta("modern_parts",{})
+			job.modern_parts=parts[str(house.id)] if parts.has(str(house.id)) else Modern.prepare(state,house)
+	var ms:=float(Time.get_ticks_usec()-began)/1000.
+	job.stats.cpu_ms=ms;job.stats.peak_ms=ms;job.stats.part_peaks.plan=ms
+	return job
+
+func _hold_house_body(body:StaticBody3D)->void:
+	if body.has_meta("pending_collision_layer"):return
+	body.set_meta("pending_collision_layer",body.collision_layer)
+	body.set_meta("pending_collision_mask",body.collision_mask)
+	body.collision_layer=0;body.collision_mask=0
+
+func _advance_house_assembly(job:HouseAssembly,budget_ms:float)->bool:
+	var began:=Time.get_ticks_usec();var units:=0
+	while job.stage!=HouseAssembly.Stage.DONE and (units==0 or float(Time.get_ticks_usec()-began)/1000.<budget_ms):
+		var stage:=job.stage;var start:=Time.get_ticks_usec()
+		_house_assembly_unit(job)
+		# Era/landmark builders can add their own picking bodies. Suppress them
+		# before yielding; regular cell bodies are disabled at creation.
+		if job.hidden and stage in [HouseAssembly.Stage.ROUND_BODY,HouseAssembly.Stage.ERA_ROOF,HouseAssembly.Stage.DOMES,HouseAssembly.Stage.CONSERVATORY,HouseAssembly.Stage.SIGNATURE]:
+			for body:StaticBody3D in job.root.find_children("*","StaticBody3D",true,false):_hold_house_body(body)
+		var ms:=float(Time.get_ticks_usec()-start)/1000.
+		job.stats.units+=1;job.stats.cpu_ms+=ms;job.stats.peak_ms=maxf(float(job.stats.peak_ms),ms)
+		var label:String=HouseAssembly.LABELS[stage]
+		job.stats.part_peaks[label]=maxf(float(job.stats.part_peaks.get(label,0.)),ms)
+		units+=1
+	if job.stage!=HouseAssembly.Stage.DONE:return false
+	job.root.set_meta("house_assembly",job.stats)
+	return true
+
+func _house_assembly_unit(job:HouseAssembly)->void:
+	match job.stage:
+		HouseAssembly.Stage.ROUND_BODY:
+			job.root=RoundTower.build(self,job.house);buildings.add_child(job.root)
+			job.stage=HouseAssembly.Stage.ROUND_FINISH
+		HouseAssembly.Stage.ROUND_FINISH:
+			RoundTower.finish(self,job.root,job.house);job.stage=HouseAssembly.Stage.DONE
+		HouseAssembly.Stage.CELL_BASE:
+			if job.cell_index==job.cells.size():job.stage=HouseAssembly.Stage.ERA_ROOF;return
+			job.current=_house_cell_base(job,job.cells[job.cell_index]);job.wall_index=0
+			if job.current.terrace:job.cell_index+=1
+			else:job.stage=HouseAssembly.Stage.CELL_WALL
+		HouseAssembly.Stage.CELL_WALL:
+			_house_cell_wall(job,job.current,HouseAssembly.DIRECTIONS[job.wall_index]);job.wall_index+=1
+			if job.wall_index==4:job.stage=HouseAssembly.Stage.CELL_ROOF
+		HouseAssembly.Stage.CELL_ROOF:
+			_house_cell_roof(job,job.current);job.current=null;job.cell_index+=1;job.stage=HouseAssembly.Stage.CELL_BASE
+		HouseAssembly.Stage.ERA_ROOF:
+			if job.era=="clockwork":
+				if job.clockwork_index<job.clockwork_roofs.size():
+					var data:Dictionary=job.clockwork_roofs[job.clockwork_index]
+					Clockwork.install(self,job.root,job.house,data);job.clockwork_records.append(data.metadata);job.clockwork_index+=1
+					return
+				job.root.set_meta("clockwork_mansards",job.clockwork_records)
+			elif job.era=="modern_eco":
+				var roofs:Array=job.modern_parts.roofs;var bridges:Array=job.modern_parts.bridges
+				if job.modern_index<roofs.size():
+					job.modern_records.append(Modern.roof(self,job.root,job.house,job.palette,roofs[job.modern_index]));job.modern_index+=1
+					return
+				if job.modern_index==roofs.size():job.root.set_meta("modern_roofs",job.modern_records)
+				if job.modern_index<roofs.size()+bridges.size():
+					Modern._bridge(self,job.root,job.house,bridges[job.modern_index-roofs.size()],job.palette);job.modern_index+=1
+					return
+				job.root.set_meta("skybridges",bridges)
+			elif job.joined:_joined_roofs(job.root,job.house,job.palette)
+			job.stage=HouseAssembly.Stage.DOMES
+		HouseAssembly.Stage.DOMES:
+			Renaissance.build(self,job.root,job.house,job.domes);job.stage=HouseAssembly.Stage.CONSERVATORY
+		HouseAssembly.Stage.CONSERVATORY:
+			if not job.flower_plan.is_empty():conservatory.build(self,job.root,job.house,job.flower_plan)
+			job.stage=HouseAssembly.Stage.SIGNATURE
+		HouseAssembly.Stage.SIGNATURE:
+			job.root.set_meta("tower_cells",job.tower_info)
+			if str(job.house.get("signature",""))=="botanical_palace":
+				job.root.set_meta("signature","botanical_palace")
+				if job.palace.is_empty():job.palace=SignatureVisual.ClockworkLandmarks.begin_palace(self,job.root,job.house)
+				if not SignatureVisual.ClockworkLandmarks.step_palace(self,job.root,job.house,job.palace):return
+			else:SignatureVisual.decorate(self,job.root,job.house)
+			job.stage=HouseAssembly.Stage.SMOKE
+		HouseAssembly.Stage.SMOKE:
+			var points:Array=job.root.get_meta("chimneys",[])
+			if str(job.house.get("role","residential"))=="bakery" and not points.is_empty():bakery_smoke.build(job.root,points[0])
+			job.stage=HouseAssembly.Stage.DONE
+
+func _house_cell_base(job:HouseAssembly,cell:Dictionary)->HouseAssembly.Cell:
+	var house:Dictionary=job.house
+	var root:Node3D=job.root
+	var arcade_faces:Array=job.arcade_faces
+	var passages:Array=job.passages
+	var era:String=job.era
+	var palette:Array=job.palette
+	var cells:Array=job.cells
+	var canopy:Dictionary=job.canopy
+	var walls:Material=job.walls
+	var p := _cell_position(house,cell)
+	var level := int(cell["level"])
+	var y := level*FLOOR
+	var x := int(cell["x"])
+	var z := int(cell["z"])
+	var terrace := str(cell["kind"]) == "terrace"
+	var retreats: Dictionary={}
+	var core := Rect2(-UNIT*.5,-UNIT*.5,UNIT,UNIT)
+	for face: Dictionary in arcade_faces:
+		if str(face.cell_id)!=str(cell.id): continue
+		var side: Vector2i=face.side
+		var amount:=float(face.retreat)
+		retreats[side]=amount
+		if side.x<0: core.position.x+=amount; core.size.x-=amount
+		if side.x>0: core.size.x-=amount
+		if side.y<0: core.position.y+=amount; core.size.y-=amount
+		if side.y>0: core.size.y-=amount
+	var cuts: Array = []
+	if level == 0:
+		for passage: Dictionary in passages:
+			if str(passage.cell_id) == str(cell.id): cuts.append(passage)
+	var node := Node3D.new()
+	node.name = str(cell["id"])
+	node.position = p
+	root.add_child(node)
+	if level == 0 and cuts.is_empty(): _foundation_contact(node)
+	var body := StaticBody3D.new()
+	if job.hidden:_hold_house_body(body)
+	body.set_meta("house_id",str(house["id"]))
+	body.set_meta("cell_id",str(cell["id"]))
+	body.set_meta("cell",cell.duplicate(true))
+	node.add_child(body)
+	# Rooms stay on their saved horizontal datum; the plinth reaches the
+	# unprotected slope even when the interior terrain has been levelled.
+	var footing_bottom := Highland.footing(self,house,cell) if level==0 else y
+	var footing_pieces: Array = Architecture.floor_pieces(cuts) if not cuts.is_empty() else [Rect2(-UNIT*0.5,-UNIT*0.5,UNIT,UNIT)]
+	if cuts.is_empty():
+		var top := y+(0.18 if terrace else FLOOR)
+		_cell_box_shape(body,Vector3(core.size.x,top-footing_bottom,core.size.y),Vector3(core.get_center().x,(top+footing_bottom)*0.5,core.get_center().y))
+		_box(node,Vector3(UNIT,y+0.15-footing_bottom,UNIT),Vector3(0,(y+0.15+footing_bottom)*0.5,0),_material(Color("c7b995")))
+		if not retreats.is_empty():
+			_cell_box_shape(body,Vector3(UNIT,y+.15-footing_bottom,UNIT),Vector3(0,(y+.15+footing_bottom)*.5,0))
+			_box(node,Vector3(UNIT,.10,UNIT),Vector3(0,FLOOR-.05,0),walls)
+			_cell_box_shape(body,Vector3(UNIT,.10,UNIT),Vector3(0,FLOOR-.05,0))
+	else:
+		# Raised foundations remain only underneath the structural piers.
+		for piece: Rect2 in Architecture.floor_pieces(cuts):
+			var size_value := Vector3(piece.size.x,0.15-footing_bottom,piece.size.y)
+			var at := Vector3(piece.get_center().x,(0.15+footing_bottom)*0.5,piece.get_center().y)
+			_box(node,size_value,at,_material(Color("c7b995")))
+			_cell_box_shape(body,size_value,at)
+		# The overhead slab provides real roof picking above the hollow room.
+		_box(node,Vector3(UNIT,0.10,UNIT),Vector3(0,FLOOR-0.05,0),walls)
+		_cell_box_shape(body,Vector3(UNIT,0.10,UNIT),Vector3(0,FLOOR-0.05,0))
+	if level==0 and float(house.get("base_y",0.0))>0.05:
+		Highland.build_plinth(self,node,house,cell,footing_bottom,footing_pieces)
+	var frame:=HouseAssembly.Cell.new()
+	frame.cell=cell
+	frame.p=p
+	frame.level=level
+	frame.y=y
+	frame.x=x
+	frame.z=z
+	frame.terrace=terrace
+	frame.retreats=retreats
+	frame.core=core
+	frame.cuts=cuts
+	frame.node=node
+	frame.body=body
+	if terrace:
+		if house.get("signature","")=="floating_amphitheater":return frame
+		elif era=="modern_eco":Modern.terrace(self,node,cell,cells,y,palette)
+		else:_terrace(node,cell,cells,y,palette,house)
+		if str(canopy.get("cell_id",""))==str(cell.id): TerraceCanopy.build(self,node,body,y+.19,palette)
+		return frame
+	return frame
+
+func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vector2i)->void:
+	var house:Dictionary=job.house
+	var palette:Array=job.palette
+	var era:String=job.era
+	var style:String=job.style
+	var doors:Dictionary=job.doors
+	var primary:Dictionary=job.primary
+	var arcades:Array=job.arcades
+	var walls:Material=job.walls
+	var trim:Material=job.trim
+	var cell:Dictionary=frame.cell
+	var x:int=frame.x
+	var z:int=frame.z
+	var level:int=frame.level
+	var y:float=frame.y
+	var node:Node3D=frame.node
+	var body:StaticBody3D=frame.body
+	var retreats:Dictionary=frame.retreats
+	var core:Rect2=frame.core
+	var cuts:Array=frame.cuts
+	var neighbor := _neighbor_cell(house,cell,direction)
+	if not neighbor.is_empty() and str(neighbor["kind"]) == "room": return
+	var wall := Node3D.new()
+	wall.position = Vector3(direction.x*UNIT*0.5,y,direction.y*UNIT*0.5)
+	wall.rotation.y = atan2(float(direction.x),float(direction.y))
+	node.add_child(wall)
+	if retreats.has(direction):
+		var outer := Node3D.new()
+		outer.name="Arcade_%d_%d" % [direction.x,direction.y]
+		outer.transform=wall.transform
+		node.add_child(outer)
+		var report: Dictionary=Arcade.build(self,outer,body,palette)
+		report["cell_id"]=str(cell.id)
+		report["side"]=direction
+		arcades.append(report)
+		wall.position-=Vector3(direction.x,0,direction.y)*float(retreats[direction])
+		wall.set_meta("arcade_recess",float(retreats[direction]))
+	# Side walls end at the recessed wall, so adjoining galleries remain
+	# open across room seams instead of retaining a full-width end wall.
+	var wall_width:=UNIT
+	var wall_center:=Vector3.ZERO
+	if not retreats.is_empty():
+		wall_width=core.size.y if direction.x!=0 else core.size.x
+		# Keep doors on their original tangent axis. Only structural wall
+		# meshes shift sideways when a second arcade cuts a corner.
+		var tangent_offset:=Vector3(0,0,core.get_center().y) if direction.x!=0 else Vector3(core.get_center().x,0,0)
+		wall_center=wall.basis.inverse()*tangent_offset
+	var opening := Architecture.wall_opening(cuts,direction)
+	if not opening.is_empty():
+		wall.name = "Passage_%d_%d" % [direction.x,direction.y]
+		Architecture.build_wall(self,wall,body,opening,palette[0],Color("e4d4b2"))
+		wall.set_meta("house_style",style)
+		if style=="stone": _stone_arch_surface(wall.get_node("ArchWallSurface"),walls)
+		else: wall.get_node("ArchWallSurface").material_override=walls
+		_box(wall,Vector3(UNIT+0.07,0.11,0.20),Vector3(0,FLOOR-0.06,0.02),trim)
+		return
+	if era!="modern_eco":_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
+	if not cuts.is_empty() or not retreats.is_empty():
+		_cell_box_shape(body,Vector3(wall_width,FLOOR,0.13),wall.transform*(wall_center+Vector3(0,FLOOR*0.5,0)),wall.rotation.y)
+	_box(wall,Vector3(wall_width+0.04,0.12,0.20),wall_center+Vector3(0,0.12,0.02),_material(Color("c7b797")))
+	_box(wall,Vector3(wall_width+0.07,0.11,0.20),wall_center+Vector3(0,FLOOR-0.06,0.02),trim)
+	var entrance: Dictionary = doors.get([str(cell.id),direction],{}) if level == 0 else {}
+	var door := not entrance.is_empty()
+	var active := door and bool(entrance.active)
+	var principal: bool = door and not primary.is_empty() and primary.cell_id == str(cell.id) and primary.side == direction
+	if door:
+		wall.name = "Entrance_%d_%d" % [direction.x,direction.y]
+		wall.set_meta("entrance",entrance.duplicate(true))
+	if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette)
+	else:_facade(wall,palette,door,int(house.get("seed",0))+x*17+z*31+level*7,active,wall_width)
+	if era == "renaissance": Renaissance.facade(self,wall,door,level>0)
+	elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
+	if wall_width>=UNIT-.01 and era!="modern_eco": HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
+	if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
+	if principal and not job.role_prop_added:
+		_role_frontage(wall,str(house.get("role","residential")))
+		job.role_prop_added = true
+
+func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
+	var house:Dictionary=job.house
+	var root:Node3D=job.root
+	var cells:Array=job.cells
+	var palette:Array=job.palette
+	var era:String=job.era
+	var dome_cells:Dictionary=job.dome_cells
+	var tower_ids:Dictionary=job.tower_ids
+	var tower_info:Array=job.tower_info
+	var joined:bool=job.joined
+	var trim:Material=job.trim
+	var cell:Dictionary=frame.cell
+	var node:Node3D=frame.node
+	var body:StaticBody3D=frame.body
+	var p:Vector3=frame.p
+	var level:int=frame.level
+	var x:int=frame.x
+	var z:int=frame.z
+	var y:float=frame.y
+	if not _neighbor_cell(house,cell,Vector2i.ZERO,1).is_empty():
+		_box(node,Vector3(UNIT+0.06,0.1,UNIT+0.06),Vector3(0,y+FLOOR,0),trim)
+		return
+	if dome_cells.has(str(cell.id)):
+		_box(node,Vector3(UNIT,.12,UNIT),Vector3(0,y+FLOOR-.04,0),trim)
+		return
+	if era in ["clockwork","modern_eco"]:return
+	if tower_ids.has(str(cell.id)):
+		tower_info.append(Tower.build(self,root,body,house,cell,palette))
+		return
+	if joined: return
+	# One gable across each exposed room run: no interior eaves or roof valley.
+	var left := _at(cells,x-1,z,level)
+	if not left.is_empty() and str(left["kind"]) == "room" and _at(cells,x-1,z,level+1).is_empty(): return
+	var span := 1
+	while true:
+		var next := _at(cells,x+span,z,level)
+		if next.is_empty() or str(next["kind"]) != "room" or not _at(cells,x+span,z,level+1).is_empty(): break
+		span += 1
+	var roof := Node3D.new()
+	roof.position.x = float(span-1)*UNIT*0.5
+	node.add_child(roof)
+	var front_open := false
+	var back_open := false
+	for column in range(span):
+		var front := _at(cells,x+column,z-1,level)
+		var back := _at(cells,x+column,z+1,level)
+		front_open = front_open or front.is_empty() or str(front.get("kind","")) != "room" or not _at(cells,x+column,z-1,level+1).is_empty()
+		back_open = back_open or back.is_empty() or str(back.get("kind","")) != "room" or not _at(cells,x+column,z+1,level+1).is_empty()
+	var bakery:=str(house.get("role","residential"))=="bakery"
+	_roof(roof,y+FLOOR,palette[1],int(house.get("seed",0))+x*13+z*19,span,front_open,back_open,bakery)
+	if bakery:
+		root.set_meta("chimneys",[p+roof.position+Vector3(0.4,y+FLOOR+0.99,-0.45)])
 
 func _house_fingerprint(house: Dictionary) -> int:
 	return hash([_house_geometry_fingerprint(house),house.get("palette",0),house.get("finish","")])

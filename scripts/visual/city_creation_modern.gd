@@ -26,7 +26,7 @@ static func terrace(renderer,node:Node3D,cell:Dictionary,cells:Array,y:float,p:A
 		if occupied:continue
 		var rail:MeshInstance3D=renderer._box(node,Vector3(.035,.54,1.9) if side.x!=0 else Vector3(1.9,.54,.035),Vector3(side.x*.99,y+.50,side.y*.99),renderer._material(Color.WHITE))
 		rail.material_override=renderer.conservatory.ensure_material();rail.set_meta("creation_live_visual",true)
-static func build(renderer,root:Node3D,house:Dictionary,p:Array)->void:
+static func prepare(city:RefCounted,house:Dictionary)->Dictionary:
 	var roofs:Array=[]
 	for cell:Dictionary in house.cells:
 		if cell.kind!="room":continue
@@ -34,24 +34,31 @@ static func build(renderer,root:Node3D,house:Dictionary,p:Array)->void:
 		for other:Dictionary in house.cells:
 			if int(other.x)==int(cell.x) and int(other.z)==int(cell.z) and int(other.level)>int(cell.level):covered=true;break
 		if covered:continue
-		var node:Node3D=root.get_node(str(cell.id));var y:float=(int(cell.level)+1)*1.7
-		_slab(renderer,node,Vector3(0,y+.03,0),Vector2(2.22,2.22),.16,p[0])
-		_slab(renderer,node,Vector3(0,y+.13,0),Vector2(1.68,1.68),.06,Color("70975f"))
-		var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));node.add_child(body)
-		renderer._cell_box_shape(body,Vector3(2.20,.16,2.20),Vector3(0,y+.03,0))
-		for i in range(5):
-			var x:=sin(float(i)*2.4)*.58;var z:=cos(float(i)*2.4)*.58
-			renderer._box(node,Vector3(.22,.14,.24),Vector3(x,y+.24,z),renderer._material(Color("b59c79")))
-			renderer._crown(node,Vector3(x,y+.43,z),Vector3(.20,.22,.20),Color("5e875c"))
-			for blade in range(5):
-				var a:=float(blade)*TAU/5.;var center:=Vector3(x+cos(a)*.17,y+.18,z+sin(a)*.17)
-				renderer._triangles(node,[center+Vector3(-.035,0,0),center+Vector3(0,.14,0),center+Vector3(.035,0,0)],Color("91af72"))
-		roofs.append({"cell_id":str(cell.id),"roof_y":float(house.get("base_y",0.))+y+.16,"cantilever":.21,"lawn":true})
-		if house.role=="bakery":root.set_meta("chimneys",[node.position+Vector3(.60,y+.48,-.60)])
+		roofs.append(cell)
+	return {"roofs":roofs,"bridges":Plan.for_house(city,house)}
+
+static func roof(renderer,root:Node3D,house:Dictionary,p:Array,cell:Dictionary)->Dictionary:
+	var node:Node3D=root.get_node(str(cell.id));var y:float=(int(cell.level)+1)*1.7
+	_slab(renderer,node,Vector3(0,y+.03,0),Vector2(2.22,2.22),.16,p[0])
+	_slab(renderer,node,Vector3(0,y+.13,0),Vector2(1.68,1.68),.06,Color("70975f"))
+	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));node.add_child(body)
+	renderer._cell_box_shape(body,Vector3(2.20,.16,2.20),Vector3(0,y+.03,0))
+	for i in range(5):
+		var x:=sin(float(i)*2.4)*.58;var z:=cos(float(i)*2.4)*.58
+		renderer._box(node,Vector3(.22,.14,.24),Vector3(x,y+.24,z),renderer._material(Color("b59c79")))
+		renderer._crown(node,Vector3(x,y+.43,z),Vector3(.20,.22,.20),Color("5e875c"))
+		for blade in range(5):
+			var a:=float(blade)*TAU/5.;var center:=Vector3(x+cos(a)*.17,y+.18,z+sin(a)*.17)
+			renderer._triangles(node,[center+Vector3(-.035,0,0),center+Vector3(0,.14,0),center+Vector3(.035,0,0)],Color("91af72"))
+	if house.role=="bakery":root.set_meta("chimneys",[node.position+Vector3(.60,y+.48,-.60)])
+	return {"cell_id":str(cell.id),"roof_y":float(house.get("base_y",0.))+y+.16,"cantilever":.21,"lawn":true}
+
+static func build(renderer,root:Node3D,house:Dictionary,p:Array)->void:
+	var parts:=prepare(renderer.state,house);var roofs:Array=[]
+	for cell:Dictionary in parts.roofs:roofs.append(roof(renderer,root,house,p,cell))
 	root.set_meta("modern_roofs",roofs)
-	var bridges:=Plan.for_house(renderer.state,house)
-	for bridge:Dictionary in bridges:_bridge(renderer,root,house,bridge,p)
-	root.set_meta("skybridges",bridges)
+	for bridge:Dictionary in parts.bridges:_bridge(renderer,root,house,bridge,p)
+	root.set_meta("skybridges",parts.bridges)
 static func _slab(renderer,parent:Node3D,at:Vector3,size:Vector2,height:float,color:Color)->void:
 	var ring:Array[Vector2]=[];var r:=.18
 	for corner:int in range(4):

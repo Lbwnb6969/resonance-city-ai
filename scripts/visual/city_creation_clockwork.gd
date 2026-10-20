@@ -51,8 +51,8 @@ static func adjacency_signature(city: RefCounted,house: Dictionary)->Array:
 				result.append([other.id,city.house_era(other),other.cells]);break
 	return result
 
-static func build(renderer,root: Node3D,house: Dictionary)->void:
-	var rows := _tops(renderer.state)
+static func prepare(city: RefCounted,house: Dictionary)->Array:
+	var rows := _tops(city)
 	var boundaries: Array=[]
 	for row: Dictionary in rows:
 		for side: Vector2 in [Vector2.RIGHT,Vector2.LEFT,Vector2.UP,Vector2.DOWN]:
@@ -89,15 +89,35 @@ static func build(renderer,root: Node3D,house: Dictionary)->void:
 						distance=minf(distance,at.distance_to(Geometry2D.get_closest_point_to_segment(at,edge.a,edge.b)))
 					points.append(Vector3(at.x,float(row.base)+roof_height(distance),at.y))
 				faces.append_array([points[0],points[2],points[1],points[0],points[3],points[2]])
-		var mesh: MeshInstance3D=renderer._triangles(root,faces,Color("45585c"));mesh.name="ClockworkMansard_"+str(row.cell.id)
-		var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(row.cell.id));body.set_meta("cell",row.cell.duplicate(true))
-		var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(mesh.mesh.get_faces())
-		var collision:=CollisionShape3D.new();collision.shape=shape;body.add_child(collision);root.add_child(body)
-		records.append({"cell_id":str(row.cell.id),"bounds":rect,"base":row.base,"crease_distance":.28,"triangles":faces.size()/3})
-		var copper: Material=renderer._material(Color("b3975e"),.7)
-		for side: Vector2 in [Vector2.UP,Vector2.DOWN]:
-			var at:=center+side*.68
-			renderer._box(root,Vector3(.47,.46,.12),Vector3(at.x,float(row.base)+.63,at.y),renderer._material(Color("ddcba7")))
-			renderer._box(root,Vector3(.30,.30,.135),Vector3(at.x,float(row.base)+.66,at.y+side.y*.065),renderer._material(Color("718c82"),.25))
-			renderer._box(root,Vector3(.55,.06,.22),Vector3(at.x,float(row.base)+.90,at.y),copper)
+		var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+		for index in range(0,faces.size(),3):
+			surface.add_vertex(faces[index]);surface.add_vertex(faces[index+2]);surface.add_vertex(faces[index+1])
+		surface.generate_normals();surface.index()
+		var arrays:=surface.commit_to_arrays()
+		var collision_faces:=PackedVector3Array()
+		for index:int in arrays[Mesh.ARRAY_INDEX]:collision_faces.append(arrays[Mesh.ARRAY_VERTEX][index])
+		var metadata:Dictionary={"cell_id":str(row.cell.id),"bounds":rect,"base":row.base,"crease_distance":.28,"triangles":faces.size()/3}
+		records.append({"arrays":arrays,"collision":collision_faces,"cell":row.cell,"center":row.center,"base":row.base,"metadata":metadata})
+	return records
+
+static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void:
+	var row:Dictionary=data
+	var center:Vector2=data.center
+	var array_mesh:=ArrayMesh.new();array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
+	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=renderer._material(Color("45585c"))
+	mesh.material_override.cull_mode=BaseMaterial3D.CULL_DISABLED;root.add_child(mesh);mesh.name="ClockworkMansard_"+str(row.cell.id)
+	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(row.cell.id));body.set_meta("cell",row.cell.duplicate(true))
+	var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(data.collision)
+	var collision:=CollisionShape3D.new();collision.shape=shape;body.add_child(collision);root.add_child(body)
+	var copper: Material=renderer._material(Color("b3975e"),.7)
+	for side: Vector2 in [Vector2.UP,Vector2.DOWN]:
+		var at:=center+side*.68
+		renderer._box(root,Vector3(.47,.46,.12),Vector3(at.x,float(row.base)+.63,at.y),renderer._material(Color("ddcba7")))
+		renderer._box(root,Vector3(.30,.30,.135),Vector3(at.x,float(row.base)+.66,at.y+side.y*.065),renderer._material(Color("718c82"),.25))
+		renderer._box(root,Vector3(.55,.06,.22),Vector3(at.x,float(row.base)+.90,at.y),copper)
+
+static func build(renderer,root:Node3D,house:Dictionary)->void:
+	var records:Array=[]
+	for data:Dictionary in prepare(renderer.state,house):
+		install(renderer,root,house,data);records.append(data.metadata)
 	root.set_meta("clockwork_mansards",records)

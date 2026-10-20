@@ -18,7 +18,7 @@ func _wait()->void:
 func _edit(kind:String)->void:
 	var published:Dictionary={}
 	for id:String in demo.town.house_roots:published[id]=demo.town.house_roots[id].get_instance_id()
-	var merge_observations:=0;var atomic:=true
+	var merge_observations:=0;var assembly_observations:=0;var atomic:=true
 	var began:=Time.get_ticks_usec();var result:Dictionary
 	if kind=="palette":result=demo.state.set_house_palette("h61",posmod(int(demo.town._house_record("h61").palette)+1,4))
 	elif kind=="terrain":
@@ -35,8 +35,9 @@ func _edit(kind:String)->void:
 		await process_frame
 		var now:=Time.get_ticks_usec();frames.append((now-last)/1000.);last=now
 		var staged:Node3D=demo.town.budget_rebuild.staging
-		if staged!=null and not staged.mesh_batcher.pending_merges.is_empty():
-			merge_observations+=1
+		if staged!=null and (not staged.mesh_batcher.pending_merges.is_empty() or not staged.house_assemblies.is_empty()):
+			if not staged.mesh_batcher.pending_merges.is_empty():merge_observations+=1
+			if not staged.house_assemblies.is_empty():assembly_observations+=1
 			for id:String in staged.house_roots:
 				if published.has(id):atomic=atomic and demo.town.house_roots[id].get_instance_id()==int(published[id])
 				atomic=atomic and not staged.house_roots[id].is_visible_in_tree()
@@ -46,14 +47,14 @@ func _edit(kind:String)->void:
 			slow.append({"ms":frames[-1],"frame":Engine.get_process_frames(),"engine_process_ms":Performance.get_monitor(Performance.TIME_PROCESS)*1000.,"physics_ms":Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS)*1000.,
 				"budget_work_ms":budget._frame_work_ms,"budget_frame":budget._work_frame,"step":budget.stats.get("last_step",{}).duplicate(),"poll":budget.stats.get("last_poll",{}).duplicate(),"retirement":budget.stats.get("last_retirement",{}).duplicate()})
 	_check(not demo.edit_pending(),"actual "+kind+" completes its current revision")
-	if kind=="house":_check(merge_observations>0 and atomic,"unfinished material batches preserve original visible houses and picking until the complete revision publishes")
+	if kind=="house":_check(merge_observations>0 and assembly_observations>0 and atomic,"unfinished geometry and material batches preserve original visible houses and picking until the complete revision publishes")
 	for ignored in range(8):await process_frame
 	frames.sort()
 	var report:Dictionary=demo.edit_budget_report()
 	var life_published:bool=float(report.get("life_commit_ms",0.))>0.
 	var row:Dictionary={"kind":kind,"author_ms":author_ms,"input_ms":input_ms,"report":report,
 		"cafe_sync":demo.life.cafe.sync_stats.duplicate() if life_published else {},"cafe_context":demo.life.cafe.layout_api.stats.duplicate() if life_published else {},
-		"life_commit":demo.life.budget_commit_stats.duplicate(true) if life_published else {},"merge_observations":merge_observations,"atomic":atomic,"task_peak_ms":demo.town.budget_rebuild._task_peak_ms.duplicate(),"retirement_main_peak_ms":demo.town.budget_rebuild.stats.get("retirement_max_ms",0.),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate(),"frame_count":frames.size(),"slow_frames":slow,
+		"life_commit":demo.life.budget_commit_stats.duplicate(true) if life_published else {},"merge_observations":merge_observations,"assembly_observations":assembly_observations,"house_assembly":demo.town.house_roots["h61"].get_meta("house_assembly",{}).duplicate(true),"atomic":atomic,"task_peak_ms":demo.town.budget_rebuild._task_peak_ms.duplicate(),"retirement_main_peak_ms":demo.town.budget_rebuild.stats.get("retirement_max_ms",0.),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate(),"frame_count":frames.size(),"slow_frames":slow,
 		"within_four_ms":maxf(input_ms,maxf(float(report.get("poll_max_ms",0.)),float(report.get("ui_ms",0.))))<4.,
 		"max_frame_ms":frames[-1] if not frames.is_empty() else 0.,"p95_frame_ms":frames[int(frames.size()*.95)] if not frames.is_empty() else 0.}
 	edits.append(row)
@@ -93,6 +94,8 @@ func _run()->void:
 	_check(source==FileAccess.get_file_as_bytes("res://数据/四库共鸣交响大城样例.json") and personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"source example and personal save bytes remain unchanged")
 	var within_budget:=true
 	for edit:Dictionary in edits:within_budget=within_budget and bool(edit.within_four_ms)
-	var report:Dictionary={"ok":failures.is_empty(),"within_four_ms":within_budget,"checks":checks,"failures":failures,"edits":edits,"retirement_final":demo.town.budget_rebuild.stats.duplicate(),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate()}
+	var assembly_parts:Dictionary={}
+	for id:String in demo.town.house_roots:assembly_parts[id]=demo.town.house_roots[id].get_meta("house_assembly",{}).duplicate(true)
+	var report:Dictionary={"house_assemblies":assembly_parts,"ok":failures.is_empty(),"within_four_ms":within_budget,"checks":checks,"failures":failures,"edits":edits,"retirement_final":demo.town.budget_rebuild.stats.duplicate(),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate()}
 	var file:=FileAccess.open(output+"/report.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t",true,true));file.close()
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
