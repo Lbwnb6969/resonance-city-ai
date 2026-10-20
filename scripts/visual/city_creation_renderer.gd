@@ -39,6 +39,7 @@ const Tower = preload("res://scripts/visual/city_creation_tower.gd")
 const RoundTower = preload("res://scripts/visual/city_creation_round_tower.gd")
 const RoundTowerPlan = preload("res://scripts/world/city_creation_round_tower_plan.gd")
 const Highland = preload("res://scripts/visual/city_creation_highland.gd")
+var highland:=Highland.new()
 const RoadStairs = preload("res://scripts/visual/city_creation_road_stairs.gd")
 const Bridges = preload("res://scripts/visual/city_creation_bridge.gd")
 const TramTracks = preload("res://scripts/visual/city_creation_tram_tracks.gd")
@@ -1625,7 +1626,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
 	craft.prepare_layout(self,house,frontages,arcades)
-	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	return hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 
 
 func _style_wall_material(style: String,base: Color) -> StandardMaterial3D:
