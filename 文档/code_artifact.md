@@ -71,7 +71,7 @@
 
 ### 1.2 当前项目现状深度体检：距离“好玩、耐玩、精致的完整游戏”还有哪四大断层？
 
-通过全面审查当前仓库（含 PROJECT.md、scripts/ui/、scripts/world/、scripts/visual/、scripts/audio/），当前项目的 3D 几何底座与大城性能已经非常扎实（80×80m 画布、四时代建筑、六大地标、有轨电车、300屋 Life 均值 0.78ms 均已就绪），但仍存在以下 四大关键断层：
+通过全面审查当前仓库（含 PROJECT.md、scripts/ui/、scripts/world/、scripts/visual/、scripts/audio/），当前项目已具备 80×80m 画布、四时代建筑、六大地标、有轨电车和视野外分档经营调度；已有大城耗时样本作为运行参考，不设性能达标线。当前仍存在以下四大品质与玩法断层：
 
 断层维度
 
