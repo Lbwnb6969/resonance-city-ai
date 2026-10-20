@@ -14,39 +14,27 @@ const FINISHES := {
 
 
 static func report(state) -> Array[Dictionary]:
-	var bridges := 0
-	for road: Dictionary in state.roads:
-		if bool(road.get("bridge", false)): bridges += 1
-	var styles := {}
-	for house: Dictionary in state.houses:
-		var district: Dictionary = state.district_for_house(str(house.id))
-		if not district.is_empty(): styles[str(district.style)] = true
-	var towers := 0
-	var tower_home := ""
-	var derived: Dictionary = Towers.derive(state.houses)
-	for house: Dictionary in state.houses:
-		var count: int = derived[str(house.id)].size()
-		towers += count
-		if count>0 and tower_home.is_empty(): tower_home = str(house.id)
-	var home := _home(state, "residential")
-	var venue := _home(state, "venue")
+	var geometry:Dictionary=state.growth_geometry_summary()
+	var bridges:int=geometry.bridges;var styles:int=geometry.styles
+	var towers:int=geometry.towers;var tower_home:String=geometry.tower_home
+	var homes:Dictionary=geometry.homes
+	var home:String=homes.get("residential","");var venue:String=homes.get("venue","")
 	var rows: Array[Dictionary] = []
 	rows.append(_chapter(state,"dawn","晨光初聚",[
 		_goal("连起一座跨水的桥",bridges,1,2,"","bridge"),
-		_goal("烤出第一份面包",_sum(state.bakery_supply,"produced"),1,4,_home(state,"bakery"),"bread"),
+		_goal("烤出第一份面包",_sum(state.bakery_supply,"produced"),1,4,homes.get("bakery",""),"bread"),
 		_goal("完成一场街坊演出",int(state.life_progress.concerts),1,4,venue,"concert")]))
 	rows.append(_chapter(state,"tide","街坊成歌",[
 		_goal("记下晨光初聚",1 if "dawn" in state.growth_memories else 0,1,0,home,"chapter:dawn"),
 		_goal("留下九座房屋",state.houses.size(),9,0,home,"houses"),
-		_goal("完成一次花下茶聚",int(state.life_progress.tea_parties),1,4,_home(state,"garden_cafe"),"tea"),
-		_goal("送装一件制琴坊木饰",_sum(state.workshop_supply,"delivered"),1,4,_home(state,"workshop"),"craft"),
-		_goal("让两种街坊声音都有住户",styles.size(),2,7,home,"districts")]))
+		_goal("完成一次花下茶聚",int(state.life_progress.tea_parties),1,4,homes.get("garden_cafe",""),"tea"),
+		_goal("送装一件制琴坊木饰",_sum(state.workshop_supply,"delivered"),1,4,homes.get("workshop",""),"craft"),
+		_goal("让两种街坊声音都有住户",styles,2,7,home,"districts")]))
 	rows.append(_chapter(state,"festival","河湾交响城",[
 		_goal("记下街坊成歌",1 if "tide" in state.growth_memories else 0,1,0,home,"chapter:tide"),
 		_goal("留下二十六座房屋",state.houses.size(),26,0,home,"houses"),
 		_goal("长出一座独立钟楼",towers,1,0,tower_home if not tower_home.is_empty() else home,"tower"),
 		_goal("在成功演出中用上一份节庆布置",_sum(state.venue_commissions,"used"),1,4,venue,"festival")]))
-	var geometry: Dictionary = state.growth_geometry_summary()
 	var high_home: String = geometry.high_home
 	var landmark_home: String = geometry.landmark_home
 	rows.append(_chapter(state,"nocturne","星夜百鸟与立体交响",[
@@ -59,6 +47,19 @@ static func report(state) -> Array[Dictionary]:
 
 
 static func geometry_summary(state) -> Dictionary:
+	var bridges:=0;var styles:Dictionary={};var homes:Dictionary={};var towers:=0;var tower_home:=""
+	for road:Dictionary in state.roads:
+		if bool(road.get("bridge",false)):bridges+=1
+	# Journal crowns historically use the no-road derivation. Keep this
+	# semantic distinct from the rendered bell catalogue's road-aware plan.
+	var derived:Dictionary=Towers.derive(state.houses)
+	for house:Dictionary in state.houses:
+		var district:Dictionary=state.district_for_house(str(house.id))
+		if not district.is_empty():styles[str(district.style)]=true
+		var role:=str(house.role)
+		if not homes.has(role):homes[role]=str(house.id)
+		var count:int=derived[str(house.id)].size();towers+=count
+		if count>0 and tower_home.is_empty():tower_home=str(house.id)
 	var high_home := ""
 	var landmark_home := ""
 	for house: Dictionary in state.houses:
@@ -70,7 +71,7 @@ static func geometry_summary(state) -> Dictionary:
 		if str(road.get("style","path"))=="promenade" or not Stepping.for_road(state,road).is_empty():
 			scenic_route = true
 			break
-	return {"high_home":high_home,"landmark_home":landmark_home,"scenic_route":scenic_route}
+	return {"high_home":high_home,"landmark_home":landmark_home,"scenic_route":scenic_route,"bridges":bridges,"styles":styles.size(),"homes":homes,"towers":towers,"tower_home":tower_home}
 
 
 static func _landmark(state, house: Dictionary) -> bool:

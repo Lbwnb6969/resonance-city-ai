@@ -263,7 +263,7 @@ func _exit_tree() -> void:
 	if budget_rebuild != null: budget_rebuild.close()
 
 func rebuild() -> void:
-	_entrance_views.clear();_passage_views.clear();_entrance_view_key=[];music_catalog={}
+	_entrance_views.clear();_passage_views.clear();_frontage_views.clear();_entrance_view_key=[];music_catalog={}
 	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
@@ -736,6 +736,14 @@ func _shared_tree_material(part: String) -> Material:
 	return foliage.material("trunk" if part.ends_with(":trunk") else "canopy")
 
 func _frontage_signature(house: Dictionary) -> Array:
+	# All consumers read immutable records for this published geometry. A
+	# bread count or quality change cannot alter doorway/bench clearance.
+	house_entrances(str(house.id))
+	var id:=str(house.id)
+	if not _frontage_views.has(id):_frontage_views[id]=_derive_frontage_signature(house)
+	return _frontage_views[id]
+
+func _derive_frontage_signature(house:Dictionary)->Array:
 	var result: Array = []
 	for entrance: Dictionary in house_entrances(str(house.id)):
 		result.append([entrance.cell_id,entrance.side,entrance.active,entrance.get("passage",false),entrance.get("wall_at",Vector2.ZERO),Frontage.porch_plan(state,house,entrance) if entrance.active else {}])
@@ -764,6 +772,7 @@ func _frontage_signature(house: Dictionary) -> Array:
 		result.append(_clearance_at(Vector2(point.x,point.z),str(entrance.cell_id),radii[index]))
 	return result
 
+var _frontage_views:Dictionary={}
 var _entrance_views:Dictionary={}
 var music_catalog:Dictionary={}
 var _passage_views:Dictionary={}
@@ -772,7 +781,7 @@ func house_entrances(house_id:String)->Array:
 	# Renderer consumers read these records only. State's authoring API keeps
 	# its detached-copy contract; view caches belong to this published revision.
 	var key:Array=[state.get_instance_id(),state.revision]
-	if key!=_entrance_view_key:_entrance_views.clear();_passage_views.clear();_entrance_view_key=key
+	if key!=_entrance_view_key:_entrance_views.clear();_passage_views.clear();_frontage_views.clear();_entrance_view_key=key
 	if not _entrance_views.has(house_id):
 		_entrance_views[house_id]=state.house_entrances(house_id)
 		# That call validates both entrances and passages together. Keep the

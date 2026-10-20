@@ -255,6 +255,9 @@ func _work(context: Node3D) -> Dictionary:
 	context.ground_contact_field.prepare(context.state)
 	stages.contact_field = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start=Time.get_ticks_usec()
+	context.state.growth_geometry_summary()
+	stages.growth_geometry=float(Time.get_ticks_usec()-stage_start)/1000.
+	stage_start=Time.get_ticks_usec()
 	var music_catalog:Dictionary=preload("res://scripts/audio/city_creation_music_catalog.gd").prepare(context.state,context.building_context.tower_cells_by_house)
 	stages.music_catalog=float(Time.get_ticks_usec()-stage_start)/1000.
 	stage_start = Time.get_ticks_usec()
@@ -594,6 +597,8 @@ func _commit(owner: Node3D) -> void:
 	owner.state._prosperity_revision=owner.state.revision
 	owner.state._synergy_buffs=staging.state._synergy_buffs
 	owner.state._synergy_revision=owner.state.revision
+	owner.state._growth_geometry_cache=staging.state._growth_geometry_cache
+	owner.state._growth_geometry_revision=owner.state.revision
 	staging.era_road_field.texture=owner.era_road_field.texture
 	staging.era_road_field.upload()
 	owner.era_road_field=staging.era_road_field
@@ -753,6 +758,7 @@ func _commit(owner: Node3D) -> void:
 	owner.quality_visual.adopt_geometry(staging.quality_visual,owner)
 	owner._entrance_views=staging._entrance_views.duplicate()
 	owner._passage_views=staging._passage_views.duplicate()
+	owner._frontage_views=staging._frontage_views.duplicate()
 	owner.music_catalog=result.music_catalog
 	owner._entrance_view_key=[owner.state.get_instance_id(),owner.state.revision]
 	owner.craft.adopt_layouts(staging.craft,owner)
