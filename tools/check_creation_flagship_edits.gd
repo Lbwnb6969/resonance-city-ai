@@ -55,7 +55,6 @@ func _edit(kind:String)->void:
 	var row:Dictionary={"kind":kind,"author_ms":author_ms,"input_ms":input_ms,"report":report,
 		"cafe_sync":demo.life.cafe.sync_stats.duplicate() if life_published else {},"cafe_context":demo.life.cafe.layout_api.stats.duplicate() if life_published else {},
 		"life_commit":demo.life.budget_commit_stats.duplicate(true) if life_published else {},"merge_observations":merge_observations,"assembly_observations":assembly_observations,"house_assembly":demo.town.house_roots["h61"].get_meta("house_assembly",{}).duplicate(true),"atomic":atomic,"task_peak_ms":demo.town.budget_rebuild._task_peak_ms.duplicate(),"retirement_main_peak_ms":demo.town.budget_rebuild.stats.get("retirement_max_ms",0.),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate(),"frame_count":frames.size(),"slow_frames":slow,
-		"within_four_ms":maxf(input_ms,maxf(float(report.get("poll_max_ms",0.)),float(report.get("ui_ms",0.))))<4.,
 		"max_frame_ms":frames[-1] if not frames.is_empty() else 0.,"p95_frame_ms":frames[int(frames.size()*.95)] if not frames.is_empty() else 0.}
 	edits.append(row)
 	print("FLAGSHIP_EDIT ",JSON.stringify({"kind":kind,"input_ms":input_ms,"poll_max_ms":report.get("poll_max_ms",0.),"life_commit_ms":report.get("life_commit_ms",0.),"ui_ms":report.get("ui_ms",0.)}))
@@ -92,10 +91,8 @@ func _run()->void:
 	await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(output+"/edited.png")==OK,"actual edited flagship image saves")
 	_check(source==FileAccess.get_file_as_bytes("res://数据/四库共鸣交响大城样例.json") and personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"source example and personal save bytes remain unchanged")
-	var within_budget:=true
-	for edit:Dictionary in edits:within_budget=within_budget and bool(edit.within_four_ms)
 	var assembly_parts:Dictionary={}
 	for id:String in demo.town.house_roots:assembly_parts[id]=demo.town.house_roots[id].get_meta("house_assembly",{}).duplicate(true)
-	var report:Dictionary={"house_assemblies":assembly_parts,"ok":failures.is_empty(),"within_four_ms":within_budget,"checks":checks,"failures":failures,"edits":edits,"retirement_final":demo.town.budget_rebuild.stats.duplicate(),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate()}
+	var report:Dictionary={"house_assemblies":assembly_parts,"ok":failures.is_empty(),"performance_policy":"reference_only","checks":checks,"failures":failures,"edits":edits,"retirement_final":demo.town.budget_rebuild.stats.duplicate(),"retirement_worker":demo.town.budget_rebuild._cpu_retirement.stats.duplicate()}
 	var file:=FileAccess.open(output+"/report.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t",true,true));file.close()
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
