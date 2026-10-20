@@ -2,14 +2,19 @@ extends RefCounted
 ## Era decorations are compiled from the same road arc, height and district map.
 const BridgePlan=preload("res://scripts/world/city_creation_bridge_plan.gd")
 const WaterShader=preload("res://scripts/visual/shaders/creation_palace_water.gdshader")
+const SHRUB_RADIUS:=.48
+const STONE_RADIUS:=.25
+const SHRUB_SCALE:=Vector3(.65,.70,.65)
+var _owner:WeakRef
 var _revision:=-1
 var _cache:Dictionary={}
 var water_material:ShaderMaterial
 func prepare(renderer,road:Dictionary)->Dictionary:
-	if _revision!=renderer.state.revision:_revision=renderer.state.revision;_cache.clear()
+	if _revision!=renderer.state.revision or _owner==null or _owner.get_ref()!=renderer.state:
+		_revision=renderer.state.revision;_owner=weakref(renderer.state);_cache.clear()
 	if _cache.has(str(road.id)):return _cache[str(road.id)]
 	var city:RefCounted=renderer.state;var profile:Dictionary=city.road_profile(road);var samples:Array=profile.samples
-	var data:Dictionary={"notes":[],"water":[],"gateways":[]}
+	var data:Dictionary={"notes":[],"water":[],"gateways":[],"gardens":[]}
 	for i in range(1,samples.size()):
 		var from:String=_era(city,samples[i-1].xz);var to:String=_era(city,samples[i].xz)
 		if from==to:continue
@@ -53,8 +58,65 @@ func prepare(renderer,road:Dictionary)->Dictionary:
 							if not renderer.promenade._clear(city,road,basin+point.tangent*offset,.16):clear=false
 						if clear:data.water.append({"at":basin,"y":city.ground_height(basin)+.02,"yaw":atan2(point.tangent.x,point.tangent.y),"arc":arc})
 			arc+=3.2;serial+=1
+	var furniture:Array=renderer.promenade.prepare(renderer,road) if not data.gateways.is_empty() else []
+	for gateway:Dictionary in data.gateways:
+		if gateway.kind=="bridge_lamps":continue
+		for side:float in [-1.,1.]:
+			var garden:=_boundary_garden(renderer,road,gateway,side,data,furniture)
+			if not garden.is_empty():data.gardens.append(garden)
 	_cache[str(road.id)]=data
 	return data
+func _boundary_garden(renderer,road:Dictionary,gateway:Dictionary,side:float,data:Dictionary,furniture:Array)->Dictionary:
+	var city:RefCounted=renderer.state;var stones:Array=[]
+	# Pick each footprint independently: existing avenue trees/flower boxes
+	# often occupy opposite longitudinal positions on the two verges.
+	for outward:float in [.55,.85]:
+		for along:float in [-.4,.4,-1.,1.]:
+			var at:Vector2=gateway.at+gateway.normal*side*(float(road.width)*.5+outward)+gateway.tangent*along*side
+			if not _boundary_clear(renderer,road,at,STONE_RADIUS,data,furniture):continue
+			var floor:=_seat(city,at,STONE_RADIUS)
+			if floor.y-floor.x<=.14:stones.append({"at":at,"y":floor.x-.025})
+	for outward:float in [1.,1.5]:
+		for along:float in [.8,-.8,.35,-.35]:
+			var shrub:Vector2=gateway.at+gateway.normal*side*(float(road.width)*.5+outward)+gateway.tangent*along*side
+			if not _boundary_clear(renderer,road,shrub,SHRUB_RADIUS,data,furniture):continue
+			var floor:=_seat(city,shrub,SHRUB_RADIUS)
+			if floor.y-floor.x>.12:continue
+			for stone:Dictionary in stones:
+				if shrub.distance_to(stone.at)<SHRUB_RADIUS+STONE_RADIUS+.05:continue
+				return {"shrub":shrub,"shrub_y":floor.x-.015,"stone":stone.at,"stone_y":stone.y,"side":side,
+					"yaw":atan2(gateway.tangent.x,gateway.tangent.y),"arc":gateway.arc,"from":gateway.from,"to":gateway.to,
+					"variant":posmod(hash([gateway.from,gateway.to,side]),3)}
+	return {}
+
+func _boundary_clear(renderer,road:Dictionary,at:Vector2,radius:float,data:Dictionary,furniture:Array)->bool:
+	var city:RefCounted=renderer.state
+	if not renderer.promenade._clear(city,road,at,radius):return false
+	# The promenade helper excludes its own road. A curved street's other
+	# limb still owns its full lane, and authored shrubs keep their footprint.
+	for i in range(1,road.points.size()):
+		var a:=Vector2(road.points[i-1][0],road.points[i-1][1]);var b:=Vector2(road.points[i][0],road.points[i][1])
+		if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(road.width)*.5+radius+.03:return false
+	if not city.road_junctions().at(at).is_empty():return false
+	for plant:Dictionary in city.plants:
+		if str(plant.kind)=="shrub" and at.distance_to(Vector2(plant.position[0],plant.position[1]))<radius+.65*float(plant.scale)+.04:return false
+	for row:Dictionary in furniture:
+		if str(row.kind)=="rail":continue
+		var reach:float=.38 if row.kind=="flower" else .22 if row.kind=="tree" else .18
+		if at.distance_to(row.at)<radius+reach+.04:return false
+	for row:Dictionary in data.water:
+		var tangent:=Vector2(sin(float(row.yaw)),cos(float(row.yaw)))
+		if at.distance_to(Geometry2D.get_closest_point_to_segment(at,row.at-tangent*.825,row.at+tangent*.825))<radius+.16+.03:return false
+	for row:Dictionary in data.gardens:
+		if at.distance_to(row.shrub)<radius+SHRUB_RADIUS+.05 or at.distance_to(row.stone)<radius+STONE_RADIUS+.05:return false
+	return true
+
+static func _seat(city:RefCounted,at:Vector2,radius:float)->Vector2:
+	var low:float=city.ground_height(at);var high:=low
+	for offset:Vector2 in [Vector2(radius,0),Vector2(-radius,0),Vector2(0,radius),Vector2(0,-radius)]:
+		var height:float=city.ground_height(at+offset);low=minf(low,height);high=maxf(high,height)
+	return Vector2(low,high)
+
 static func _era(city:RefCounted,at:Vector2)->String:return str(city.district_at(at).get("era_theme","pastoral"))
 func install(renderer,parent:Node3D,data:Dictionary)->void:
 	if data.notes.is_empty() and data.water.is_empty() and data.gateways.is_empty():return
@@ -86,6 +148,18 @@ func install(renderer,parent:Node3D,data:Dictionary)->void:
 				var a:=at+basis*Vector3(cos(t)*side,2.10+sin(t)*.62,0);var b:=at+basis*Vector3(cos(u)*side,2.10+sin(u)*.62,0)
 				var delta:Vector3=b-a;var along:=delta.normalized();var right:=Vector3.FORWARD.cross(along).normalized();var frame:=Basis(right,along,right.cross(along))
 				renderer._append_road_box(batches,Vector3(.11,delta.length()+.009,.16),(a+b)*.5,white,frame.get_euler())
+	for row:Dictionary in data.get("gardens",[]):
+		var at:=Vector3(row.stone.x,row.stone_y,row.stone.y);var basis:=Basis(Vector3.UP,float(row.yaw))
+		var stone:Material=renderer.Highland.masonry_material(renderer,Color("c7b896"))
+		_box(renderer,batches,at,basis,Vector3(.34,.25,.28),Vector3(0,.125,0),stone)
+		_box(renderer,batches,at,basis,Vector3(.38,.055,.32),Vector3(0,.2675,0),renderer._material(Color("e1d3b2")))
+		_box(renderer,batches,at,basis,Vector3(.012,.07,.16),Vector3(float(row.side)*.176,.16,0),glow)
+		var leaves:Mesh=renderer.foliage.parts("shrub",int(row.variant)).canopy
+		var material:Material=renderer.foliage.material("canopy");var key:=material.get_instance_id()
+		if not batches.has(key):
+			var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			batches[key]={"surface":surface,"material":material}
+		batches[key].surface.append_from(leaves,0,Transform3D(basis.scaled(SHRUB_SCALE),Vector3(row.shrub.x,row.shrub_y,row.shrub.y)))
 	for batch:Dictionary in batches.values():
 		var mesh:=MeshInstance3D.new();mesh.mesh=batch.surface.commit();mesh.material_override=batch.material;root.add_child(mesh)
 func _box(renderer,batches:Dictionary,at:Vector3,basis:Basis,size:Vector3,offset:Vector3,material:Material)->void:
