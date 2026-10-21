@@ -124,7 +124,7 @@ func _mask(block: Vector2i, shared_masks: Dictionary, signature: int = -1) -> Gr
 	if _query_fingerprints.get(block, -1) == signature: mask = _query_masks[block]
 	else:
 		mask = GrassMask.new()
-		mask.setup(state, block)
+		mask.setup(state, block, _current_entrances)
 		_query_masks[block] = mask
 		_query_fingerprints[block] = signature
 	shared_masks[block] = mask

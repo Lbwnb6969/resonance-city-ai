@@ -583,6 +583,7 @@ func _rebuild_vegetation(shared_masks: Dictionary = {}, forced_blocks: Array[Vec
 	var next_visibility: Dictionary = {}
 	var next_id_blocks: Dictionary = {}
 	var dirty_blocks: Dictionary = {}
+	var entrances: Dictionary = meadow._entrances_by_house()
 	for block: Vector2i in forced_blocks: dirty_blocks[block] = true
 	for plant: Dictionary in plants:
 		var id := str(plant.get("id", ""))
@@ -594,7 +595,7 @@ func _rebuild_vegetation(shared_masks: Dictionary = {}, forced_blocks: Array[Vec
 		var data_fingerprint := hash([plant.position,plant.kind,plant.scale,plant.seed])
 		var visible := bool(vegetation_visibility.get(id,false))
 		if obstacles_changed or vegetation_data_fingerprints.get(id,-1) != data_fingerprint:
-			visible = inside and _vegetation_visible(plant)
+			visible = inside and _vegetation_visible(plant,entrances)
 		next_data[id] = data_fingerprint
 		next_visibility[id] = visible
 		var fingerprint := hash([data_fingerprint,visible,block if inside else "outside",state.ground_height(position)])
@@ -634,7 +635,7 @@ func _rebuild_vegetation(shared_masks: Dictionary = {}, forced_blocks: Array[Vec
 			if not meadow_candidates.has(block): meadow_candidates.append(block)
 		for block: Vector2i in meadow.blocks:
 			if not meadow_candidates.has(block): meadow_candidates.append(block)
-	meadow.rebuild(next_by_block,meadow_candidates,shared_masks)
+	meadow.rebuild(next_by_block,meadow_candidates,shared_masks,entrances)
 	vegetation_fingerprints = next_fingerprints
 	vegetation_data_fingerprints = next_data
 	vegetation_visibility = next_visibility
@@ -666,9 +667,9 @@ func _plant_position(plant: Dictionary) -> Vector2:
 	return Vector2.ZERO
 
 
-func _vegetation_visible(plant: Dictionary) -> bool:
+func _vegetation_visible(plant: Dictionary, entrances: Dictionary = {}) -> bool:
 	if state != null and state.has_method("vegetation_visible"):
-		return bool(state.call("vegetation_visible", plant))
+		return bool(state.call("vegetation_visible", plant, entrances))
 	return true
 
 

@@ -31,7 +31,7 @@ var _bounds := Rect2()
 var _bins: Array[Bin] = []
 var _stats: Dictionary = {}
 
-func setup(state: RefCounted, block: Vector2i) -> void:
+func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = {}) -> void:
 	var started := Time.get_ticks_usec()
 	_origin = Vector2(block) * BLOCK_SIZE
 	_bounds = Rect2(_origin, Vector2.ONE * BLOCK_SIZE)
@@ -56,7 +56,8 @@ func setup(state: RefCounted, block: Vector2i) -> void:
 				_bins[index].footprints.append(footprint)
 			for index: int in _indices(footprint.grow(EDGE_DISTANCE)):
 				_bins[index].edge_footprints.append(footprint)
-		var entrances: Array = state.house_entrances(str(house.id)) if house.has("id") else Frontage.entrances(house, state.get("roads"))
+		var key := str(house.get("id",str(house.origin)))
+		var entrances: Array = entrances_by_house[key] if entrances_by_house.has(key) else state.house_entrances(str(house.id)) if house.has("id") else Frontage.entrances(house, state.get("roads"))
 		for entrance: Dictionary in entrances:
 			var radius := 0.95 + MAX_CLEARANCE
 			var door: Vector2 = entrance.clearance_at

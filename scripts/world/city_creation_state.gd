@@ -1500,10 +1500,10 @@ func erase_vegetation_stroke(points: Array[Vector2], radius: float) -> Dictionar
 ## Visibility is intentionally derived. A house or road built after planting
 ## can hide an instance, while the plant record remains available to undo and
 ## deterministic replay.
-func vegetation_visible(plant: Dictionary) -> bool:
+func vegetation_visible(plant: Dictionary, entrances_by_house: Dictionary = {}) -> bool:
 	if not _valid_plant_fields(plant):
 		return false
-	return _plant_geometry_compatible(plant, [])
+	return _plant_geometry_compatible(plant, [], false, entrances_by_house)
 
 
 func undo() -> Dictionary:
@@ -2530,7 +2530,7 @@ func _valid_plant_fields(plant: Dictionary) -> bool:
 	return plant.get("source", "seed") in ["seed", "player"]
 
 
-func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existing: bool = false) -> bool:
+func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existing: bool = false, entrances_by_house: Dictionary = {}) -> bool:
 	if not _valid_plant_fields(plant):
 		return false
 	var position := Vector2(float(plant.position[0]), float(plant.position[1]))
@@ -2549,7 +2549,10 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 			var footprint := Rect2(center - Vector2.ONE * CELL_UNIT * 0.5, Vector2.ONE * CELL_UNIT).grow(clearance)
 			if footprint.has_point(position):
 				return false
-		for entrance: Dictionary in house_entrances(str(house.id)):
+		# A render pass already resolves these immutable entrances once. Reusing
+		# them avoids rebuilding every road/blocker signature for every plant.
+		var entrances: Array = entrances_by_house[str(house.id)] if entrances_by_house.has(str(house.id)) else house_entrances(str(house.id))
+		for entrance: Dictionary in entrances:
 			if position.distance_to(entrance.clearance_at) <= 0.95+clearance: return false
 	for road in roads:
 		for index in range(1, road.points.size()):

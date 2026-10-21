@@ -50,7 +50,7 @@ func setup(city_state: RefCounted) -> void:
 	state = city_state
 	name = "MeadowBlocks"
 
-func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks: Dictionary = {}) -> void:
+func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks: Dictionary = {}, entrances_by_house: Dictionary = {}) -> void:
 	var started := Time.get_ticks_usec()
 	state.prepare_ground_height()
 	last_changed = 0
@@ -64,7 +64,7 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 			_evict_plant_samples(plant_candidates[id])
 			plant_candidates.erase(id)
 			plant_candidate_fingerprints.erase(id)
-	var entrances := _entrances_by_house()
+	var entrances := _entrances_by_house() if entrances_by_house.is_empty() else entrances_by_house
 	var centers: Array[Vector2]=[]
 	for house: Dictionary in state.houses:
 		if house.get("signature","")=="botanical_palace":centers.append(Vector2(house.origin[0],house.origin[1])+Vector2(0,1.8))
@@ -125,7 +125,7 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 			query_state = query_masks[block]
 		else:
 			query_state = GrassMask.new()
-			query_state.setup(state,block)
+			query_state.setup(state,block,entrances)
 		query_masks[block] = query_state
 		query_fingerprints[block] = obstacle_fingerprint
 		shared_masks[block] = query_state
