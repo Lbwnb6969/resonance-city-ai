@@ -21,12 +21,12 @@ var _flutters: Array[Dictionary] = []
 var _time := 0.0
 var _night := false
 
-func setup(city_state: RefCounted) -> void:
+func setup(city_state: RefCounted, defer_habitats:bool=false) -> void:
 	state = city_state
 	name = "ValleyWildlife"
 	_init_birds_multimesh()
 	_init_flutter_multimesh()
-	refresh_habitats()
+	if not defer_habitats:refresh_habitats()
 
 func set_night(is_night: bool) -> void:
 	if _night == is_night:

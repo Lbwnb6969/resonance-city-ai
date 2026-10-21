@@ -188,12 +188,14 @@ var road_roots: Dictionary = {}
 var road_water_signatures: Dictionary = {}
 var rebuild_stats := {"houses_changed":0,"roads_changed":0,"houses_removed":0,"roads_removed":0,"vegetation_blocks_changed":0,"vegetation_instances":0,"elapsed_ms":0.0}
 
-func setup(city_state: RefCounted) -> void:
+func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
 	state = city_state
-	era_road_field.prepare(state);era_road_field.upload()
-	water_field.setup(state)
-	ground_contact_field.prepare(state)
-	ground_contact_field.upload()
+	if not defer_rebuild:
+		era_road_field.prepare(state);era_road_field.upload()
+		water_field.setup(state)
+		ground_contact_field.prepare(state)
+		ground_contact_field.upload()
+	else:water_field._state=state
 	landscape = Node3D.new()
 	landscape.name = "RiverGarden"
 	add_child(landscape)
@@ -220,7 +222,7 @@ func setup(city_state: RefCounted) -> void:
 	lilypads.setup(state)
 	wildlife.name = "ValleyWildlife"
 	add_child(wildlife)
-	wildlife.setup(state)
+	wildlife.setup(state,defer_rebuild)
 	ecology_layer = Node3D.new()
 	ecology_layer.name = "StreetEcology"
 	add_child(ecology_layer)
@@ -247,8 +249,9 @@ func setup(city_state: RefCounted) -> void:
 	bread_layer = Node3D.new()
 	bread_layer.name = "BakeryCounterSupply"
 	add_child(bread_layer)
-	_build_landscape()
-	rebuild()
+	_build_landscape(defer_rebuild)
+	if not defer_rebuild:rebuild()
+	else:_water_surface_material()
 
 func _clear(node: Node3D) -> void:
 	for child in node.get_children():
@@ -2450,7 +2453,7 @@ func _water_components(groups: Array) -> Array:
 		bounds.append(box)
 	return components
 
-func _build_landscape() -> void:
+func _build_landscape(defer_rebuild:bool=false) -> void:
 	ground_material = ShaderMaterial.new()
 	ground_material.shader = GroundShader
 	ShorePalette.configure(ground_material)
@@ -2460,7 +2463,7 @@ func _build_landscape() -> void:
 	ground_material.set_shader_parameter("cliff_height_blend_enabled",true)
 	terrain_surface = TerrainSurface.new()
 	add_child(terrain_surface)
-	terrain_surface.setup(state,ground_material)
+	terrain_surface.setup(state,ground_material,defer_rebuild)
 	valley=Valley.new();add_child(valley);valley.build()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 261014
@@ -2487,7 +2490,7 @@ func _build_landscape() -> void:
 			if _editable_world_rect().has_point(p):
 				continue
 			background_trees.append({"at":p,"scale":scale_value,"cypress":i%3==0})
-	_rebuild_background_trees()
+	if not defer_rebuild:_rebuild_background_trees()
 
 func _rebuild_background_trees() -> void:
 	var heights := []

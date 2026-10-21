@@ -307,7 +307,7 @@ func _exit_tree() -> void:
 		_budget_thread = null
 		_budget_worker = null
 
-func setup(city: RefCounted) -> void:
+func setup(city: RefCounted, defer_sync:bool=false) -> void:
 	cancel_budget_sync()
 	var fresh := state != city
 	if state != city:
@@ -335,12 +335,15 @@ func setup(city: RefCounted) -> void:
 		cafe = Cafe.new(self)
 		matinee = Matinee.new(self)
 	_read_progress()
+	if defer_sync:return
 	_sync()
-	if fresh:
-		var saved: Variant = state.get("journey_checkpoint")
-		if saved is Dictionary: restore_checkpoint(saved)
-		workshop.refund_orphans = true
-		workshop.sync()
+	if fresh:finish_initial_setup()
+
+func finish_initial_setup()->void:
+	var saved:Variant=state.get("journey_checkpoint")
+	if saved is Dictionary:restore_checkpoint(saved)
+	workshop.refund_orphans=true
+	workshop.sync()
 
 func _read_progress() -> void:
 	purchases = int(state.life_progress.purchases)

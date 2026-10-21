@@ -364,6 +364,20 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	staging.visible = false
 	staging.record_only = false
 	owner.add_child(staging)
+	# A cold work creates its first texture arrays only after CPU preparation.
+	# Each array belongs to the hidden new town; the previous work stays intact.
+	if owner.water_field.texture==null:
+		staging.water_field.upload()
+		owner.water_field.texture=staging.water_field.texture
+		owner.meadow.set_water_field(owner.water_field.texture)
+		owner.ground_material.set_shader_parameter("water_field",owner.water_field.texture)
+		owner._water_surface_material().set_shader_parameter("water_field",owner.water_field.texture)
+	if owner.ground_contact_field.texture==null:
+		staging.ground_contact_field.upload()
+		owner.ground_contact_field.texture=staging.ground_contact_field.texture
+	if owner.era_road_field.texture==null:
+		staging.era_road_field.upload()
+		owner.era_road_field.texture=staging.era_road_field.texture
 	staging.materials = owner.materials
 	staging.mesh_batcher = owner.mesh_batcher
 	staging.bakery_smoke = owner.bakery_smoke

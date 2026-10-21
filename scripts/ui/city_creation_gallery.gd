@@ -3,6 +3,8 @@ extends RefCounted
 ## current town; the new scene keeps original IDs, rather than importing rooms.
 const Archive=preload("res://scripts/world/city_creation_acoustic_archive.gd")
 const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
+const CityLoad=preload("res://scripts/ui/city_creation_city_load.gd")
+var load_stats:Dictionary={}
 var archive:=Archive.new()
 var preview_id:=""
 var _preview_life_processing:=false
@@ -126,10 +128,16 @@ func open_biome(id:String)->void:
 	await _open_chosen(chosen)
 
 func _open_chosen(chosen: Dictionary) -> void:
-	stop_preview()
+	if busy or demo.edit_pending():return
 	if not chosen.ok:
 		panel.set_status(str(chosen.message))
 		return
+	var city:RefCounted=demo.State.new()
+	var restored:Dictionary=city.restore(chosen.world)
+	if not restored.ok:
+		panel.set_status(str(restored.message));return
+	city.apply_archive_unlocks(archive.awards)
+	stop_preview()
 	_set_busy(true)
 	panel.set_status("先留住当前河湾，再打开作品……")
 	var kept: Dictionary=await _capture(current_title,"before_open")
@@ -138,9 +146,12 @@ func _open_chosen(chosen: Dictionary) -> void:
 		_set_busy(false)
 		return
 	last_auto_id=str(kept.id)
-	var city: RefCounted=demo.State.new()
-	city.restore(chosen.world)
-	city.apply_archive_unlocks(archive.awards)
+	demo.life.set_process(false)
+	demo._cancel_draft()
+	panel.show()
+	var loading:=CityLoad.new()
+	await loading.prepare(demo,city,panel.set_status)
+	load_stats=loading.stats
 	# A different work can reuse h1/c1. Fresh life/geometry contexts prevent
 	# residents or pending render caches from leaking between those identities.
 	demo.remove_child(demo.life)
@@ -151,14 +162,14 @@ func _open_chosen(chosen: Dictionary) -> void:
 	# Selecting a work changes what "continue my bay" should reopen even if
 	# every resident is paused and the player makes no further construction.
 	city.dirty=true
-	demo.town=demo.TownRenderer.new()
+	demo.town=loading.town
 	demo.town.name="Town"
-	demo.add_child(demo.town)
-	demo.town.setup(city)
+	demo.town.show()
+	demo.town.set_process(true)
 	demo.town.show_districts(demo.tool==7)
-	demo._setup_life()
+	demo._setup_life(loading.life)
 	demo.life.set_process(false)
-	demo.music.update_city(city)
+	demo.music.update_city(city,demo.town.music_catalog)
 	# Reuse the four environmental voices and PCM bank, but sample the new
 	# city's water/trees. setup retargets its cache without restarting audio.
 	demo.ambience.setup(city)
@@ -184,9 +195,8 @@ func _open_chosen(chosen: Dictionary) -> void:
 	while demo.light_phase!=wanted_phase: demo._toggle_light()
 	demo._update_camera()
 	demo._refresh_ui()
-	# The next frame's delta includes synchronous disk/scene reconstruction.
-	# Keep the newly loaded actors paused through that frame; their saved
-	# work and performance must not advance by the city-switch loading time.
+	# Keep restored actors paused through the publication frame. Saved work
+	# and performance time must not advance by any loading/publication delay.
 	await RenderingServer.frame_post_draw
 	demo.music.restore_city_transport(demo.life.concert_view())
 	demo.life.set_process(true)

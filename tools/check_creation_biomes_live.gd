@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
-const OUT="res://验证记录/声学地貌_2026-10-21"
+var output="res://验证记录/声学地貌_2026-10-21"
 var demo
 var checks:=0
 var failures:Array[String]=[]
@@ -20,11 +20,13 @@ func click(button:Control)->void:
 	await settle()
 func shot(name:String)->void:
 	demo.toast.hide();demo.toast_time=0.;await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(OUT+"/"+name+".png")
+	root.get_texture().get_image().save_png(output+"/"+name+".png")
 func run()->void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	for argument:String in OS.get_cmdline_user_args():
+		if argument.begins_with("--out-dir="):output=argument.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	root.size=Vector2i(1440,900);Engine.max_fps=120
-	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/隔离作品";root.add_child(demo)
+	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=output+"/隔离作品";root.add_child(demo)
 	demo.life.set_process(false);await settle()
 	for at:Vector2 in [Vector2(-7,-5.4),Vector2(-10.6,-5.4),Vector2(-14.2,-5.4)]:
 		demo._after_edit(demo.state.add_house(at),"room",false);await settle()
@@ -78,10 +80,10 @@ func run()->void:
 	for player:AudioStreamPlayer in demo.ambience.players.values():after_nature.append(player.get_instance_id())
 	check(music_ids==after_music and nature_ids==after_nature and after_music.size()==12 and demo.music._effects.size()==4 and after_nature.size()==2 and demo.music._playback_clock()>clock,"new maps reuse fixed voices and the continuous music transport")
 	var original_id:int=demo.state.get_instance_id();var library_directory:String=demo.gallery.library.directory
-	var blocked_path:String=OUT+"/不可作为文件夹.txt";FileAccess.open(blocked_path,FileAccess.WRITE).store_string("isolated backup failure fixture")
+	var blocked_path:String=output+"/不可作为文件夹.txt";FileAccess.open(blocked_path,FileAccess.WRITE).store_string("isolated backup failure fixture")
 	demo.gallery.library.directory=blocked_path;await demo.gallery.open_biome("sunny_banks")
 	check(demo.state.get_instance_id()==original_id and not demo.gallery.busy,"failed automatic backup leaves the live city intact")
 	demo.gallery.library.directory=library_directory
 	var result:={"checks":checks,"failures":failures,"ok":failures.is_empty(),"switch_ms":timings}
-	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));print("BIOMES_LIVE ",JSON.stringify(result))
+	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));print("BIOMES_LIVE ",JSON.stringify(result))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

@@ -371,11 +371,13 @@ func _ready() -> void:
 	if "--verify-playtest" in OS.get_cmdline_user_args() and not persistence:
 		RenderCapture.verify_playtest.call_deferred(self)
 
-func _setup_life() -> void:
-	life = Life.new()
+func _setup_life(prepared:Node3D=null) -> void:
+	life = Life.new() if prepared==null else prepared
 	life.name = "StreetLife"
-	add_child(life)
-	life.setup(state)
+	if prepared==null:
+		add_child(life)
+		life.setup(state)
+	else:life.show()
 	life.view_camera=camera
 	life.arrival_callback = func(_kind: String) -> void: music.record_life_activity("arrival","",Vector2(focus.x,focus.z))
 	life.concert_callback = _on_concert_event
@@ -1108,6 +1110,7 @@ func home_camera() -> void:
 	_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if gallery!=null and gallery.busy:return
 	if guide!=null and guide.visible():
 		if event is InputEventKey and event.pressed and event.keycode in [KEY_ESCAPE,KEY_F1]:
 			guide.close_panel()
@@ -1197,6 +1200,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if gallery!=null and gallery.busy:return
 	if guide!=null and guide.visible(): return
 	if camera_rig.strolling:
 		if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT: orbiting=event.pressed

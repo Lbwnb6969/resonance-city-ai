@@ -9,11 +9,11 @@ var blocks: Dictionary = {}
 var fingerprints: Dictionary = {}
 var stats := {"changed":0,"triangles":0,"elapsed_ms":0.0}
 
-func setup(city_state: RefCounted, ground_material: ShaderMaterial) -> void:
+func setup(city_state: RefCounted, ground_material: ShaderMaterial, defer_rebuild:bool=false) -> void:
 	state = city_state
 	material = ground_material
 	name = "TerrainSurface"
-	rebuild()
+	if not defer_rebuild:rebuild()
 
 func rebuild() -> void:
 	var started := Time.get_ticks_usec()
