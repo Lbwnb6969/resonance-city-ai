@@ -4,35 +4,53 @@ var last_key:=""
 var last_at:=-10.
 var pulse:Dictionary={}
 var age:=0.
+var _state_id:=0
+var key_flash:MeshInstance3D
 
 func hover(demo,at:Vector2)->bool:
 	var kind:="";var key:="";var origin:=at
 	if demo.state.water_clearance(at)<-.12:
 		kind="water";key="water/"+str((at/1.2).floor())
 	else:
-		var distance:=1.4*1.4
-		for plant:Dictionary in demo.state.plants:
-			if plant.kind not in ["olive","cypress","golden_tree"]:continue
-			var p:=Vector2(plant.position[0],plant.position[1]);var gap:=p.distance_squared_to(at)
-			if gap<distance:distance=gap;origin=p;kind="tree";key=str(plant.id)
+		var stair:Dictionary=demo.life.travel.point_stair(at)
+		if not stair.is_empty():kind="stair";key=str(stair.id);origin=stair.at
+		else:
+			var distance:=1.4*1.4
+			for plant:Dictionary in demo.state.plants:
+				if plant.kind not in ["olive","cypress","golden_tree"]:continue
+				var p:=Vector2(plant.position[0],plant.position[1]);var gap:=p.distance_squared_to(at)
+				if gap<distance:distance=gap;origin=p;kind="tree";key=str(plant.id)
 	if kind.is_empty():last_key="";return false
 	var clock:float=demo.music._playback_clock()
 	if key==last_key or clock-last_at<.25:return false
 	if demo.music.muted or demo.music.concert_active or demo.music._loading:return false
 	last_key=key;last_at=clock
+	if kind=="stair":return queue_stair(demo.music,key,origin,true)
 	var plan:Dictionary={"house_id":"world/"+key,"stream_key":"tea" if kind=="water" else "arrival","position":origin,"world_kind":kind}
 	return demo.music.attention.enqueue_pluck_arpeggio(plan,clock)
 
+static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)->bool:
+	if music.muted or music.concert_active or music._loading or not is_instance_valid(music.life_source):return false
+	if music.acoustic.mode=="city" or music.acoustic.point_weight(at)<=0.:return false
+	var stair:Dictionary=music.life_source.travel.site(source)
+	if stair.get("kind","")!="stair" or not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",source,at):return false
+	var plan:={"house_id":"world/"+source,"stream_key":"stair_key_%d"%int(stair.rank),"position":at,"world_kind":"stair","source_id":source,"rank":int(stair.rank)}
+	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
+
 static func play_note(music,plan:Dictionary)->bool:
 	if music.muted or music.concert_active or not music._edit_streams.has(plan.stream_key) or music.acoustic.point_weight(plan.position)<=0.:return false
+	if plan.world_kind=="stair" and (not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",plan.source_id,plan.position)):return false
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break
 	music.play_effect_at(player,music._edit_streams[plan.stream_key],plan.position,.75)
-	music.set_meta("world_pluck",{"kind":plan.world_kind,"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial")})
+	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial")})
 	return true
 
 func update(demo,delta:float)->void:
+	if is_instance_valid(key_flash):key_flash.hide()
+	if _state_id!=demo.state.get_instance_id():
+		_state_id=demo.state.get_instance_id();pulse.clear();last_key="";demo.music.set_meta("world_pluck",{})
 	var event:Dictionary=demo.music.get_meta("world_pluck",{})
 	if not event.is_empty() and event.get("clock",-1.)!=pulse.get("clock",-2.):pulse=event.duplicate();age=0.
 	age+=delta
@@ -46,3 +64,16 @@ func update(demo,delta:float)->void:
 			if material is ShaderMaterial:
 				material.set_shader_parameter("touch_at",pulse.at)
 				material.set_shader_parameter("touch_time",age)
+	elif pulse.kind=="stair" and age<.65:
+		var stair:Dictionary=demo.life.travel.site(str(pulse.get("source_id","")))
+		if stair.is_empty():return
+		if not is_instance_valid(key_flash):
+			key_flash=MeshInstance3D.new();key_flash.name="StairKeyTouch";key_flash.mesh=BoxMesh.new()
+			key_flash.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
+			key_flash.material_override=material;demo.add_child(key_flash)
+		key_flash.mesh.size=Vector3(float(stair.width)*.82,.012,maxf(.06,minf(.4,float(stair.depth)*.8)))
+		key_flash.position=Vector3(pulse.at.x,float(stair.height)+.018,pulse.at.y)
+		key_flash.rotation.y=atan2(stair.axis.x,stair.axis.y)
+		key_flash.material_override.albedo_color=Color(1.,.83,.39,exp(-age*6.))
+		key_flash.show()

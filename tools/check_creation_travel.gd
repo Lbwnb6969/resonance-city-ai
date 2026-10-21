@@ -107,7 +107,7 @@ func _run() -> void:
 			life.add_child(node)
 			node.position=Vector3(at.x-axis.x*0.2,city.street_height(at)+0.1,at.y-axis.y*0.2)
 			var route: Array[Vector3] = [Vector3(at.x+axis.x*0.2,city.street_height(at)+0.1,at.y+axis.y*0.2)]
-			var actor := {"node":node,"home_id":"test_"+role,"route":route,"index":0,"phase":0.0}
+			var actor := {"node":node,"home_id":"h1","bakery_id":"h2","workshop_id":"h4","target_id":"h3","route":route,"index":0,"phase":"to_target"}
 			before=observed.size()
 			if role=="baker": life.bakery._walk(actor,1.0)
 			elif role=="artisan": life.workshop._walk(actor,1.0)

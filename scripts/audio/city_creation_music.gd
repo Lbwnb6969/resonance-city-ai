@@ -44,6 +44,7 @@ const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 var _harmony_streams:Dictionary={}
 var _base_edit_streams:Dictionary={}
 var _harmony_view:Array=[]
+var _biome_mode:=-1
 
 func record_life_activity(kind:String,source_id:String="",at:Vector2=Vector2.INF)->bool:
 	if muted or _loading or concert_active:return false
@@ -82,7 +83,8 @@ func _apply_life_orchestration()->void:
 		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
 	if is_instance_valid(life_source):life_source.state.Microclimate.music(emergence.score.targets,life_source.state.microclimate)
 
-func harmony_mode()->int:return -1 if concert_active else int(emergence.score.get("harmony_mode",0))
+func harmony_mode()->int:
+	return _biome_mode if _biome_mode>=0 else (-1 if concert_active else int(emergence.score.get("harmony_mode",0)))
 var acoustic:=AcousticField.new()
 var _acoustic_timer:=0.0
 var _signature_phrase := -1
@@ -423,6 +425,8 @@ func _travel_eligible(event: Dictionary) -> bool:
 
 
 func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2) -> void:
+	if kind=="stair":
+		WorldToys.queue_stair(self,source_id,at);return
 	if choir_mode:
 		record_life_activity(kind,source_id,at);return
 	var event := {"actor_id":actor_id,"kind":kind,"source_id":source_id,"position":at,"queued_at":_playback_clock()}
@@ -731,6 +735,7 @@ func update_city(state: RefCounted, prepared:Dictionary={}) -> void:
 	# household traits, then detach mutable playback metadata from that seed.
 	var data:Dictionary=prepared if not prepared.is_empty() and prepared.signature==Catalog.signature(state) else Catalog.prepare(state)
 	_pluck_city=state
+	_biome_mode=-1 if state.biome_seed.is_empty() else int(Palette.BIOME_MODES[int(state.Biomes.profile(state.biome_seed).voice)])
 	_life_activity.clear();_life_orchestration.clear()
 	canon.sync(state,data.canon)
 	_linked_key=null
@@ -789,6 +794,8 @@ func _advance_daily_phrase(phrase: int) -> void:
 	if phrase == _daily_phrase: return
 	_daily_phrase = phrase
 	emergence.advance(_house_music,acoustic,canon.groups,phrase,night,int(_pluck_city.regional_echo().variant) if _pluck_city!=null else 0)
+	if _biome_mode>=0:
+		emergence.score.harmony_mode=_biome_mode;emergence.score.harmony_name=Palette.NAMES[_biome_mode]
 	_apply_life_orchestration()
 	_phrase_improvements.clear()
 	for id: String in _house_music: _phrase_improvements[id]=int(_house_music[id].improvement)
@@ -814,21 +821,27 @@ func _update_variations(_delta:float)->void:
 	if _variation_streams.is_empty():return
 	var now:=Time.get_ticks_usec()
 	var mode:=maxi(0,harmony_mode())
-	var bar:=posmod(floori(_playback_clock()/3.),8)
-	var view:Array=[harmony_mode(),bar]
+	var clock:=_playback_clock()
+	var bar:=posmod(floori(clock/3.),8)
+	var seeded:=_biome_mode>=0
+	var view:Array=[harmony_mode(),bar,concert_active]
 	if view!=_harmony_view:
 		_harmony_view=view;_edit_streams=_base_edit_streams.duplicate()
-		if not concert_active:
+		if not concert_active or seeded:
 			for id:String in _harmony_streams:
 				var prefix:String="%d/"%mode
 				if not id.begins_with(prefix):continue
 				var key:String=id.trim_prefix(prefix)
 				if not key.contains("/"):_edit_streams[key]=_harmony_streams[id]
 			for kind:String in ["room","terrace","road","erase","history","concert","arrival","bakery","craft","installed","tea"]:_edit_streams[kind]=_harmony_streams["%d/edit/%s/%d"%[mode,kind,bar]]
-	for key:String in HarmonicEmergence.LEADS+["foundation","air","terrace"]:
+	var keys:Array=HarmonicEmergence.LEADS+["foundation","air","terrace"]
+	if seeded or _variation_active.has("concert"):keys.append("concert")
+	for key:String in keys:
 		var id:String="original"
-		if not concert_active:
-			id="%s/%d"%[key,int(emergence.score.get("variant",0))] if key in HarmonicEmergence.LEADS else "%d/%s"%[mode,key]
+		if key=="concert":
+			if seeded:id="%d/concert"%mode
+		elif not concert_active or seeded:
+			id="%s/%d"%[key,2 if concert_active else int(emergence.score.get("variant",0))] if key in HarmonicEmergence.LEADS else "%d/%s"%[mode,key]
 			if mode>0 and key in HarmonicEmergence.LEADS:id="%d/"%mode+id
 		if _variation_active.get(key,"")==id:
 			_variation_pending.erase(key);continue
@@ -840,7 +853,7 @@ func _update_variations(_delta:float)->void:
 		var player:AudioStreamPlayer=_players[key]
 		player.volume_db=-60.
 		player.stream=_original_streams[key] if id=="original" else (_variation_streams[id] if key in HarmonicEmergence.LEADS else _harmony_streams[id])
-		player.play(fposmod(_playback_clock(),SECONDS))
+		player.play(fposmod(clock,SECONDS))
 		_variation_active[key]=id;_variation_pending.erase(key);_variation_changed_usec=now
 
 func _mix_label(arrangement: Dictionary) -> String:
@@ -1077,8 +1090,9 @@ func music_report() -> Dictionary:
 
 
 func play_edit(kind: String) -> void:
-	if kind in ["road","terrain","house","terrace","remove"]:attention.notify_sculpt_action(_playback_clock())
-	elif not attention.allows("daily"):return
+	# Every caller is a direct player edit or invitation. Quiet daily cues
+	# have their own queue; sculpting must retain its foreground feedback.
+	if kind in ["room","road","terrain","house","terrace","erase","remove"]:attention.notify_sculpt_action(_playback_clock())
 	if kind=="terrain": kind="road"
 	if muted or not _edit_streams.has(kind):
 		return
@@ -1606,6 +1620,7 @@ func _render_bank() -> Dictionary:
 	# Apply it even to centered beds for a conservative whole-pool bound.
 	report.mix_peaks["absolute_stereo_with_four_short_voices"] = report.mix_peaks.absolute_with_four_edit_voices*(1.0+Spatial.PAN_LIMIT)
 	var harmony:Dictionary=Palette.render(_add_harmony_note,_pcm_stream,ThemePCM,HarmonicEmergence.LEADS,edits,PitchPluck,ReplyPCM)
+	report["harmony_names"]=Palette.NAMES;report["biome_modes"]=Palette.BIOME_MODES
 	report["harmony_notes"]=harmony.notes;report["harmony_peaks"]=harmony.peaks
 	report["variation_notes"]=harmony.variation_notes;report["variation_peaks"]=harmony.variation_peaks;report["variation_pcm_bytes"]=harmony.variations.size()*FRAMES*2
 	# Daily allocation admits one lead and at most 45% of one companion.
@@ -1614,7 +1629,14 @@ func _render_bank() -> Dictionary:
 	var short_bound:float=maxf(effect_peak,.18)
 	var varied_bound:float=(daily_bound+short_bound*db_to_linear(SHORT_GAIN_DB)*4.)*(1.+Spatial.PAN_LIMIT)
 	report.mix_peaks["emergent_stereo_bound"]=varied_bound
-	report.mix_peaks.absolute_stereo_with_four_short_voices=maxf(report.mix_peaks.absolute_stereo_with_four_short_voices,varied_bound)
+	var stage_bound:=0.
+	for key:String in STEMS:
+		var maximum:float=FINALE_GAINS[key]
+		for phrase in range(8):maximum=maxf(maximum,GrandFestival.gain(key,phrase))
+		stage_bound+=.18*db_to_linear(maximum)
+	stage_bound=(stage_bound+short_bound*db_to_linear(SHORT_GAIN_DB)*4.)*(1.+Spatial.PAN_LIMIT)
+	report.mix_peaks["biome_stage_stereo_bound"]=stage_bound
+	report.mix_peaks.absolute_stereo_with_four_short_voices=maxf(report.mix_peaks.absolute_stereo_with_four_short_voices,maxf(varied_bound,stage_bound))
 	report.synthesis_ms=float(Time.get_ticks_usec()-synthesis_started)/1000.
 	return {"streams": streams, "edits": edits, "variations":harmony.variations,"harmony":harmony.streams,"report": report}
 

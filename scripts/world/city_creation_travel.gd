@@ -5,6 +5,7 @@ const WET_SAMPLE := 0.15
 const SIDE_MARGIN := 0.06
 const COOLDOWN := 6.0
 const Stepping = preload("res://scripts/world/city_creation_stepping_plan.gd")
+const StairKeys=preload("res://scripts/world/city_creation_stair_keys.gd")
 var sites: Dictionary = {}
 var rebuilds := 0
 var _signature: Array = []
@@ -27,6 +28,7 @@ func adopt_prepared(source: RefCounted) -> bool:
 
 func sync(city: RefCounted) -> void:
 	var signature: Array = []
+	signature.append(city.biome_seed.duplicate())
 	signature.append(city.terrain_strokes.duplicate(true))
 	for road: Dictionary in city.roads:
 		signature.append([str(road.id),road.points.duplicate(true),float(road.width),str(road.get("style","path"))])
@@ -44,6 +46,10 @@ func sync(city: RefCounted) -> void:
 	_bins.clear()
 	clear_observations()
 	for road: Dictionary in city.roads:
+		if StairKeys.enabled(city):
+			for key:Dictionary in StairKeys.layout(road,city.road_profile(road)).sites:
+				_add_site(key.id,"stair",str(road.id),str(road.id),key.at,key.axis,key.width*.5-.08)
+				sites[key.id].merge({"height":key.height,"depth":key.depth,"rank":key.rank,"width":key.width})
 		var stepping: Array = Stepping.for_road(city,road)
 		_bridge_sites(city,road,stepping)
 		for run: Dictionary in stepping:
@@ -61,6 +67,14 @@ func sync(city: RefCounted) -> void:
 
 func site(id: String) -> Dictionary:
 	return sites.get(id,{})
+
+func point_stair(at:Vector2)->Dictionary:
+	for id:String in _bins.get(Vector2i(floori(at.x/BIN),floori(at.y/BIN)),[]):
+		var row:Dictionary=sites[id]
+		if row.kind!="stair":continue
+		var delta:Vector2=at-Vector2(row.at)
+		if absf(delta.dot(row.axis))<=float(row.depth) and absf(delta.cross(row.axis))<=float(row.half_width):return row
+	return {}
 
 func _add_site(id: String, kind: String, owner: String, road: String, at: Vector2, axis: Vector2, half_width: float) -> void:
 	if half_width<=0.0: return

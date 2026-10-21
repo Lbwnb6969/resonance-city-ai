@@ -1,4 +1,5 @@
 extends RefCounted
+const StairKeys=preload("res://scripts/world/city_creation_stair_keys.gd")
 ## This game's .12m treads/.22 grade follow Phase 2 design, not recovered TG
 ## constants. TG's sampled support/tangent approach informs the layout only.
 
@@ -8,6 +9,9 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 	var rails: Array = []
 	var width := float(road.width)
 	var count := 0
+	var key_light:Array[Vector3]=[];var key_dark:Array[Vector3]=[]
+	var keys:Dictionary=StairKeys.layout(road,profile) if StairKeys.enabled(renderer.state) else {}
+	var mode:int=0 if keys.is_empty() else StairKeys.Palette.BIOME_MODES[int(renderer.state.Biomes.profile(renderer.state.biome_seed).voice)]
 	for tread: Dictionary in profile.treads:
 		var a: Vector2 = tread.a
 		var b: Vector2 = tread.b
@@ -33,6 +37,10 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 			var indices := Geometry2D.triangulate_polygon(piece)
 			for index in range(0,indices.size(),3):
 				renderer._append_water_triangle(faces,piece[indices[index]],piece[indices[index+1]],piece[indices[index+2]],y)
+				if not keys.is_empty():
+					var rank:int=keys.ranks.get("%d/%d"%[int(tread.run),int(tread.step)],0)
+					var dark:bool=posmod(StairKeys.Palette.stair_pitch(mode,rank),12) in [1,3,6,8,10]
+					renderer._append_water_triangle(key_dark if dark else key_light,piece[indices[index]],piece[indices[index+1]],piece[indices[index+2]],y+.006)
 			for index in range(piece.size()):
 				var p: Vector2 = piece[index]
 				var q: Vector2 = piece[(index+1)%piece.size()]
@@ -47,7 +55,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 			var yaw := atan2(q.x-p.x,q.y-p.y)
 			rails.append([Vector3(0.12,0.32,p.distance_to(q)+0.012),center,Color("b6b199"),Vector3(0,yaw,0)])
 			rails.append([Vector3(0.16,0.055,p.distance_to(q)+0.012),center+Vector3.UP*0.16,Color("d5cbb1"),Vector3(0,yaw,0)])
-	return {"cuts":cuts,"faces":faces,"rails":rails,"count":count}
+	return {"cuts":cuts,"faces":faces,"rails":rails,"count":count,"key_light":key_light,"key_dark":key_dark}
 
 static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -> void:
 	if data.faces.is_empty(): return
@@ -56,6 +64,11 @@ static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -
 	parent.add_child(root)
 	var surface: MeshInstance3D = renderer._triangles(root,data.faces,Color("c4bda5"))
 	surface.name="StoneTreads"
+	for kind:String in ["key_light","key_dark"]:
+		var vertices:Array[Vector3]=data.get(kind,[])
+		if not vertices.is_empty():
+			var keys:MeshInstance3D=renderer._triangles(root,vertices,Color("eee6cf") if kind=="key_light" else Color("4a5353"))
+			keys.name="PianoIvory" if kind=="key_light" else "PianoBasalt"
 	var body := StaticBody3D.new()
 	body.name="StairGroundPick"
 	body.collision_layer=2

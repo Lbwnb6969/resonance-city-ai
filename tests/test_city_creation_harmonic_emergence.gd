@@ -4,6 +4,7 @@ const Acoustic=preload("res://scripts/audio/city_creation_acoustic_field.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Music=preload("res://scripts/audio/city_creation_music.gd")
 const Cache=preload("res://scripts/audio/city_creation_bank_cache.gd")
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:_run.call_deferred()
@@ -54,7 +55,7 @@ func _run()->void:
 	var bank:=Cache.load_bank()
 	_check(not bank.is_empty(),"the baked production bank matches all current synthesis and scoring sources")
 	if not bank.is_empty():
-		_check(bank.variations.size()==96,"four harmonic colors each retain eight era/style leads and three baked textures")
+		_check(bank.variations.size()==Palette.NAMES.size()*Score.LEADS.size()*3,"legacy colors and biome keys each retain eight era/style leads and three baked textures")
 		for track:String in Score.LEADS:
 			var distinct:Array[PackedByteArray]=[]
 			var exact:=true;var seam:=true;var bounded:=true

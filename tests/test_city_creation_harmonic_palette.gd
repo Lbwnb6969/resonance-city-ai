@@ -44,7 +44,7 @@ func _run()->void:
 func _bank()->void:
 	var bank:=Cache.load_bank();_check(not bank.is_empty(),"all current sources load the baked four-color bank")
 	if bank.is_empty():return
-	_check(bank.variations.size()==96,"all four colors contain eight instruments times three actual variations")
+	_check(bank.variations.size()==Palette.NAMES.size()*8*3,"all legacy colors and biome keys contain eight instruments times three actual variations")
 	var music:=Music.new();var distinct:Array[PackedByteArray]=[]
 	for mode in range(4):
 		var key:String="wood/1" if mode==0 else "%d/wood/1"%mode
@@ -66,7 +66,7 @@ func _bank()->void:
 	var bounded:=true;var looped:=true
 	for id:String in bank.harmony:
 		bounded=bounded and float(bank.report.harmony_peaks[id])>0. and float(bank.report.harmony_peaks[id])<=.180001
-		var bed:bool=id.get_slice("/",1) in ["foundation","air","terrace"]
+		var bed:bool=id.get_slice("/",1) in ["foundation","air","terrace","concert"]
 		var wav:AudioStreamWAV=bank.harmony[id]
 		looped=looped and (wav.loop_mode==AudioStreamWAV.LOOP_FORWARD and wav.get_length()==24. if bed else wav.loop_mode==AudioStreamWAV.LOOP_DISABLED)
 	_check(bounded and looped,"every actual modal wave is bounded and only long beds loop")

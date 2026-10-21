@@ -308,6 +308,8 @@ func _render_biomes()->void:
 		seal.mouse_filter=Control.MOUSE_FILTER_IGNORE;heading.add_child(seal)
 		heading.add_child(_label(Biomes.NAMES[i],20,false))
 		column.add_child(_label(Biomes.DESCRIPTIONS[i],15))
+		var music_label:=_label(Biomes.music_name(Biomes.descriptor(id)),13,false)
+		music_label.add_theme_color_override("font_color",UI.MUTED);column.add_child(music_label)
 		if id=="daily_resonance":column.add_child(_label(Time.get_date_string_from_system(),12,false))
 		card.pressed.connect(func()->void:
 			if not _busy:biome_requested.emit(id))

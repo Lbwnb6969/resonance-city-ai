@@ -45,6 +45,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.waters.assign(snapshot.waters)
 	state.districts.assign(snapshot.get("districts",[]))
 	state.terrain_strokes.assign(snapshot.get("terrain_strokes",[]))
+	state.biome_seed=snapshot.get("biome_seed",{}).duplicate()
 	if snapshot.has("ground_cache"):
 		# The request owns this cache; it was copied before starting the thread.
 		state._ground_terrain = snapshot.ground_cache

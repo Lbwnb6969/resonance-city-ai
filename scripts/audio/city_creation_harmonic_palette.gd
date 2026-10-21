@@ -1,22 +1,34 @@
 extends RefCounted
-## All colors share the last-bar Dadd9 pivot. Melodies use five safe tones;
-## pad/chord voices retain the actual thirds, sevenths and suspended ninths.
-const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响"]
-const SCALES:=[[2,4,6,9,11],[11,2,4,6,9],[7,9,11,2,4],[2,4,7,9,11]]
+## The original four colors keep their common Dadd9 pivot. Biomes have their
+## own tonic, characteristic modal degrees and final bar, including every cue.
+const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响","G吕底亚 · 千阶微光","B多利亚 · 沙洲回声","A大调 · 林间牧歌","F♯小调 · 星夜流光"]
+const BIOME_MODES:=[0,4,5,6,7]
+const SCALES:=[[2,4,6,9,11],[11,2,4,6,9],[7,9,11,2,4],[2,4,7,9,11],
+	[7,9,11,1,6],[11,1,2,6,8],[9,11,1,4,6],[6,9,11,1,4]]
+const KEY_TONES:=[[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],
+	[7,9,11,1,2,4,6],[11,1,2,4,6,8,9],[9,11,1,2,4,6,8],[6,8,9,11,1,2,4]]
 const PROGRESSIONS:=[
 	[[50,54,57,64],[47,50,54,57],[43,47,50,54],[45,49,52,54]],
 	[[47,50,54,57],[43,47,50,54],[40,43,47,50],[42,45,49,52]],
 	[[43,47,50,54],[43,45,49,52],[42,45,49,52],[47,50,54,57]],
-	[[50,54,57,64],[43,47,50,52,57],[40,43,47,50,54],[45,50,52,57]]]
+	[[50,54,57,64],[43,47,50,52,57],[40,43,47,50,54],[45,50,52,57]],
+	[[43,47,50,57],[45,49,52,55],[40,43,47,54],[47,50,54,57]],
+	[[47,50,54,56],[45,49,52,59],[40,44,47,54],[42,45,49,56]],
+	[[45,49,52,59],[42,45,49,52],[38,42,45,49],[40,44,47,54]],
+	[[42,45,49,56],[38,42,45,49],[47,50,54,57],[40,44,47,54]]]
 const PIVOT:=[50,54,57,64]
+const BIOME_PIVOTS:=[[43,47,50,54,61],[47,50,54,56,61],[45,49,52,59],[42,45,49,56]]
 const TRANSITIONS:=[[6,2,2,1],[3,6,2,2],[3,2,6,2],[3,2,2,6]]
 
 static func chords(mode:int)->Array:
 	var result:Array=[]
-	for bar in range(8):result.append(PIVOT if bar==7 else PROGRESSIONS[clampi(mode,0,3)][bar%4])
+	mode=clampi(mode,0,NAMES.size()-1)
+	for bar in range(8):result.append((PIVOT if mode<4 else BIOME_PIVOTS[mode-4]) if bar==7 else PROGRESSIONS[mode][bar%4])
 	return result
 
-static func scale(mode:int,bar:int)->Array:return SCALES[0] if posmod(bar,8)==7 else SCALES[clampi(mode,0,3)]
+static func scale(mode:int,bar:int)->Array:
+	mode=clampi(mode,0,NAMES.size()-1)
+	return SCALES[0] if mode<4 and posmod(bar,8)==7 else SCALES[mode]
 
 static func quantize(midi:int,mode:int,bar:int)->int:
 	var allowed:=scale(mode,bar)
@@ -24,6 +36,12 @@ static func quantize(midi:int,mode:int,bar:int)->int:
 		if posmod(midi-distance,12) in allowed:return midi-distance
 		if posmod(midi+distance,12) in allowed:return midi+distance
 	return midi
+
+static func stair_pitch(mode:int,rank:int)->int:
+	var tones:Array=KEY_TONES[clampi(mode,0,NAMES.size()-1)]
+	var degree:=posmod(rank,14);var root:int=int(tones[0])+48
+	var offset:=posmod(int(tones[degree%7])-int(tones[0]),12)
+	return root+offset+12*int(degree/7)
 
 static func pitch(mode:int,bar:int,band:int,variant:int)->int:
 	var root:int=int(chords(mode)[posmod(bar,8)][0])+12
@@ -60,7 +78,7 @@ static func _wave(out:Dictionary,key:String,duration:float,events:Array,add:Call
 
 static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_edits:Dictionary,pitch_bank:Script,reply_bank:Script)->Dictionary:
 	var out:Dictionary={"streams":{},"notes":{},"peaks":{},"variations":{},"variation_notes":{},"variation_peaks":{}}
-	for mode in range(4):
+	for mode in range(NAMES.size()):
 		var progression:=chords(mode)
 		var variants:Dictionary=theme.render_variations(add,make,progression,leads,mode)
 		for key:String in variants.streams:
@@ -76,6 +94,16 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 				elif bed=="air":events.append(_note(bar*3.+.75,1.85,quantize(int(chord[2])+24,mode,bar),.045,"air"))
 				else:events.append(_note(bar*3.+2.25,.60,quantize(int(chord[2])+24,mode,bar),.033,"bell"))
 			_wave(out,"%d/%s"%[mode,bed],24.,events,add,make,true)
+		# Biome landmark tutti uses the same modal progression as the leads;
+		# it never introduces the original D-major concert into another key.
+		var tutti:Array=[]
+		for bar in range(8):
+			var chord:Array=progression[bar]
+			for i in range(4):tutti.append(_note(bar*3.+.15+float(i)*.6,.95,quantize(int(chord[i%chord.size()])+12,mode,bar),.055,"piano" if i%2==0 else "wood"))
+			for midi:int in chord:tutti.append(_note(bar*3.+.02,2.8,midi,.016,"strings"))
+		_wave(out,"%d/concert"%mode,24.,tutti,add,make,true)
+		for rank in range(14):
+			_wave(out,"%d/stair_key_%d"%[mode,rank],.42,[_note(0.,.38,stair_pitch(mode,rank),.072,"piano")],add,make)
 		var replies:Dictionary=reply_bank.render(progression,add,make)
 		for key:String in replies.streams:
 			out.streams["%d/%s"%[mode,key]]=replies.streams[key];out.notes["%d/%s"%[mode,key]]=replies.events[key];out.peaks["%d/%s"%[mode,key]]=replies.peaks[key]
@@ -107,9 +135,9 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 				var notes:Array=[]
 				for i in range(3 if kind in ["road","concert","arrival"] else 2):notes.append(_note(i*.065,.58,quantize(int(c[i%c.size()])+12+(12 if kind in ["tea","terrace","installed"] else 0),mode,bar),.09,"wood" if kind in ["road","craft"] else "bell"))
 				_wave(out,prefix+"edit/%s/%d"%[kind,bar],.8,notes,add,make)
-	# One wave per (instrument, MIDI), shared by all four palettes.
+	# One wave per (instrument, MIDI), shared by all palettes and biome keys.
 	var timbres:Array=pitch_bank.TIMBRES.values()+pitch_bank.ERA_TIMBRES.values()
-	for mode in range(4):
+	for mode in range(NAMES.size()):
 		for bar in range(8):
 			for band in range(5):
 				for variant in range(2):

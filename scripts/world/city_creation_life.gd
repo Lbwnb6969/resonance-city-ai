@@ -211,6 +211,7 @@ func begin_budget_sync() -> bool:
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
 	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
+	_budget_request.snapshot["biome_seed"]=state.biome_seed.duplicate()
 	var resident_stops:Dictionary={}
 	for resident:Dictionary in residents:resident_stops[str(resident.home_id)]=resident.stops.duplicate()
 	_budget_request.snapshot["resident_stops"]=resident_stops
@@ -254,7 +255,7 @@ func commit_budget_sync() -> bool:
 	# native value comparisons cover every captured geometry input here without
 	# reconstructing all held actors' remaining route bounds a second time.
 	var captured:Dictionary=_budget_request.snapshot
-	if int(_budget_request.revision) != state.revision or captured.houses!=state.houses or captured.roads!=state.roads or captured.waters!=state.waters or captured.districts!=state.districts or captured.terrain_strokes!=state.terrain_strokes:
+	if int(_budget_request.revision) != state.revision or captured.houses!=state.houses or captured.roads!=state.roads or captured.waters!=state.waters or captured.districts!=state.districts or captured.terrain_strokes!=state.terrain_strokes or captured.biome_seed!=state.biome_seed:
 		begin_budget_sync()
 		return false
 	var started := Time.get_ticks_usec()

@@ -37,9 +37,9 @@ func allows(category:String)->bool:
 	if current_mode==Mode.SYMPHONY:return category=="tower_bell"
 	return true
 
-func enqueue_pluck_arpeggio(plan:Dictionary,clock_sec:float)->bool:
+func enqueue_pluck_arpeggio(plan:Dictionary,clock_sec:float,player_action:bool=true)->bool:
 	if plan.is_empty():return false
-	notify_sculpt_action(clock_sec)
+	if player_action:notify_sculpt_action(clock_sec)
 	if not _arp_queue.is_empty() and _arp_queue[-1].stream_key==plan.stream_key and _arp_queue[-1].house_id==plan.house_id:
 		stats.coalesced+=1;return true
 	if _arp_queue.size()==MAX_ARP_QUEUE:_arp_queue.pop_front();stats.superseded+=1

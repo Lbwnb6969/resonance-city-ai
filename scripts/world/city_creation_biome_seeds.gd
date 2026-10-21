@@ -5,6 +5,11 @@ const IDS:=["sunny_banks","terraced_peaks","misty_archipelago","sylvan_sanctuary
 const NAMES:=["晴翠双岸","叠翠千阶","烟水群岛","林间秘境","星夜流光","每日随机共鸣"]
 const GLYPHS:=["water","terrain","water","vegetation","sundial_night","district"]
 const DESCRIPTIONS:=["晴光与双岸，留白从三座家开始。","三级天然台地，高地生产提速40%。","四片沙洲环水，水岸与过桥余韵加成翻倍。","保留林木唤醒10米森林和声，可提前营建植物宫。","星夜萤火，灯街、花房与暖窗声域扩大50%。","今日独有的地形组合，并赠送一座真实地标。"]
+const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
+
+static func music_name(seed:Dictionary)->String:
+	var voice:int=profile(seed).voice
+	return "D大调 · 双岸晨曲" if voice==0 else Palette.NAMES[Palette.BIOME_MODES[voice]]
 
 static func descriptor(id:String,day:String="")->Dictionary:
 	if id not in IDS:return {}
