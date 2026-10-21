@@ -1147,7 +1147,7 @@ func _attention_trigger(category:String,payload:Dictionary)->bool:
 	if category=="pluck_arp":return _play_queued_house(payload)
 	if category=="quality_upgrade":return _play_quality_cue(str(payload.source_id),int(payload.tier))
 	var phrase:int=payload.phrase
-	if choir_mode and not concert_active:return true
+	if choir_mode and not concert_active and category!="district_reply":return true
 	match category:
 		"tower_bell":_tower_at_phrase(phrase)
 		"waterwheel":

@@ -4,17 +4,17 @@ extends RefCounted
 ## our instructions prepare tools and views, never complete a goal for the player.
 const ACTIONS := {
 	"bridge": ["画一座桥", "从这一岸按住左键，拖到对岸的空地再松开。\n路会自动搭桥，再把桥头接到原有小路。"],
-	"bread": ["查看炉火", "在右侧把房屋用途设为面包坊。\n把门前小路接到居所所在的路网，面包师到岗就会开炉。"],
-	"concert": ["邀请演出", "在右侧选择演奏庭，点「邀请街坊演出」。\n门前接路，让住户沿同一条路网走来，等一曲完整落幕。"],
+	"bread": ["查看炉火", "点这栋房屋，在屋顶卡片选择「面包」。\n把门前小路接到居所所在的路网，面包师到岗就会开炉。"],
+	"concert": ["邀请演出", "选择已有演奏庭或音乐地标，点「邀演」。\n门前接路，让住户沿同一条路网走来，等一曲完整落幕。"],
 	"houses": ["添些新屋", "在小路旁的空地点击或拖动，添上几座新屋。\n扩房增加房间；在空地建造才会增加房屋数量。"],
-	"tea": ["安排茶座", "把右侧用途设为花圃茶座，门外留空地。\n让茶座、面包坊与居所路网相通，等两位买过面包的住户来喝茶。"],
-	"craft": ["查看制琴坊", "把右侧用途设为制琴坊，并接通居所所在的路网。\n匠人到岗后制作木饰，沿小路送到周围22米内的邻屋。"],
+	"tea": ["安排茶座", "点这栋房屋，在屋顶卡片选择「茶座」，门外留空地。\n让茶座、面包坊与居所路网相通，等两位买过面包的住户来喝茶。"],
+	"craft": ["查看制琴坊", "点这栋房屋，在屋顶卡片选择「制琴」，接通居所路网。\n匠人到岗后制作木饰，沿小路送到周围22米内的邻屋。"],
 	"districts": ["画新街坊", "选一种尚未使用的街坊声音，拖过一片住户。\n再用另一种声音画另一片住户，两种声音都要有房屋。"],
-	"tower": ["长出钟楼", "在这座独立小屋的屋顶继续加层，叠满三层。\n顶层留成单格房间，避开邻屋屋顶，便会长出尖顶钟楼。"],
+	"tower": ["长出钟楼", "已为这座独立小屋开启加建；点击屋顶继续加层，叠满三层。\n顶层留成单格房间，避开邻屋屋顶，便会长出尖顶钟楼。"],
 	"festival": ["查看节庆委托", "让演奏庭先完整演出一场，发出节庆委托。\n有匠人和成品的制琴坊会沿相通路网送来；布置就绪后再演一场。"],
 	"highland": ["刷一处台地", "先在这片空地刷出一处「平顶·台地」。\n再切到房屋工具，在台地顶上建一座新屋；原有房屋不会被地面顶起。"],
 	"scenic_route": ["铺一段灯街", "「石板宽街」已选好。沿原有小路再描一笔，或拖出新路。\n切换夕照或星夜，看路旁的灯盏亮起。"],
-	"landmark": ["选择建筑样式", "在右侧建筑样式中选择「圆塔·望楼」。\n独立的一柱房间会长成圆塔；也可建玻璃花房或连拱柱廊。"],
+	"landmark": ["选择建筑样式", "点这栋房屋，在屋顶卡片的「风貌」中选择「圆塔·望楼」。\n独立的一柱房间会长成圆塔；也可建玻璃花房或连拱柱廊。"],
 	"musical_link": ["牵起共鸣音弧", "「连接共鸣街坊」已开启，从一片街坊拖向另一片。\n至少先画出两片有住户的街坊；连接可以跨过河流。"],
 }
 
@@ -53,7 +53,7 @@ static func apply(demo: Node3D, goal: Dictionary) -> void:
 		demo.focus = Vector3(at.x, float(demo.state.ground_height(at)) + 0.5, at.y)
 		demo.zoom = 16.0
 	demo._update_camera()
-	demo.select_tool(int(goal.tool))
+	demo.select_tool(0 if int(goal.tool)==4 else int(goal.tool))
 	if not bool(goal.done):
 		match action:
 			"bridge", "scenic_route":
@@ -88,6 +88,10 @@ static func apply(demo: Node3D, goal: Dictionary) -> void:
 				demo.selected_district = ""
 		demo.guided_hint = instruction(goal)
 		demo._refresh_ui()
+	if action=="tower" and not bool(goal.done):
+		demo.house_module_mode=true
+	elif not id.is_empty() and int(goal.tool)==4 and demo.spatial_popover!=null:
+		demo.spatial_popover.open_for_house(id)
 	demo._message(str(goal.label))
 
 static func _home(state: RefCounted, role: String) -> String:

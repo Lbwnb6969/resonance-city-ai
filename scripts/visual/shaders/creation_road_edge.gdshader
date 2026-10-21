@@ -1,13 +1,27 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled, cull_disabled;
 varying vec3 world_at;
+varying flat vec4 edge_a;
+varying flat vec4 edge_b;
+varying flat vec4 edge_c;
 #include "res://scripts/visual/shaders/creation_path_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_era_road.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
-void vertex() { world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz; }
+void vertex() {
+	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	edge_a=vec4(UV,UV2);edge_b=CUSTOM0;edge_c=CUSTOM1;
+}
+float edge_distance(vec2 at,vec4 edge) {
+	vec2 delta=edge.zw-edge.xy;
+	float t=clamp(dot(at-edge.xy,delta)/max(dot(delta,delta),.00000001),0.,1.);
+	return length(at-edge.xy-delta*t);
+}
 void fragment() {
-	float across = clamp(UV.x,0.0,1.0);
+	// Evaluate metric distance at the pixel. Interpolated endpoint distances
+	// form green wedges on the long triangles around overlapping curved caps.
+	float distance=min(edge_distance(world_at.xz,edge_a),min(edge_distance(world_at.xz,edge_b),edge_distance(world_at.xz,edge_c)));
+	float across = clamp(distance/.16,0.0,1.0);
 	float drift = (path_noise(world_at.xz*17.0)-0.5)*0.32*sin(across*3.14159265);
 	float reveal = smoothstep(0.0,1.0,clamp(across+drift,0.0,1.0));
 	// Bridge decks keep their own material right to the parapet. The same

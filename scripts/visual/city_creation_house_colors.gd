@@ -12,7 +12,8 @@ static func _palette(renderer,index: int) -> Array:
 
 static func _index(house: Dictionary) -> int:
 	if house.has("custom_colors"):return 8
-	return 4+FINISHES.find(str(house.finish)) if house.has("finish") else posmod(int(house.get("palette",0)),4)
+	if house.has("finish"):return 4+FINISHES.find(str(house.finish))
+	return posmod(int(house.get("palette",0)),4)
 
 
 static func _authoring(house: Dictionary) -> Dictionary:
@@ -29,7 +30,8 @@ static func base_palette(renderer,house:Dictionary)->Array:
 		base=[Color.from_string(colors.wall,Color.WHITE),Color.from_string(colors.roof,Color("b85c3e")),base[2]]
 	return base
 
-static func era_palette(renderer,house:Dictionary,base:Array)->Array:
+static func era_palette(renderer,house:Dictionary,base:Array,custom:bool=false)->Array:
+	if custom:return base
 	match renderer.state.house_era(house):
 		"renaissance":return renderer.Renaissance.palette(base)
 		"clockwork":return renderer.Clockwork.palette(base)
@@ -55,7 +57,7 @@ static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->b
 		for index in range(4+FINISHES.size()):
 			var base := era_palette(renderer,house,_palette(renderer,index))
 			palettes.append(_colors(base))
-		palettes.append(_colors(era_palette(renderer,house,base_palette(renderer,house))))
+		palettes.append(_colors(era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors"))))
 		var current: int = _index(house)
 		var lookup := {}
 		for index in range(palettes[current].size()): lookup[palettes[current][index].to_abgr32()] = index
@@ -143,7 +145,7 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 	if cache.authoring != _authoring(house) or str(root.get_meta("era_theme","pastoral")) != renderer.state.house_era(house): return false
 	var index: int = _index(house)
 	if house.has("custom_colors") and cache.get("custom_colors",{})!=house.custom_colors:
-		cache.palettes[8]=_colors(era_palette(renderer,house,base_palette(renderer,house)))
+		cache.palettes[8]=_colors(era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors")))
 		for buffer:Dictionary in cache.buffers:buffer.variants[8]=PackedByteArray()
 		cache.custom_colors=house.custom_colors.duplicate()
 	elif index == int(cache.index): return true
@@ -166,6 +168,6 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 			if recipe >= 0: row.parts[part].color = colors[recipe]
 		row.node.set_meta("style_details",row.parts)
 	cache.index = index
-	var base:=era_palette(renderer,house,base_palette(renderer,house))
+	var base:=era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors"))
 	root.set_meta("palette_colors",base.duplicate())
 	return true

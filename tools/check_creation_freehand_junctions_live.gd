@@ -11,7 +11,10 @@ func run()->void:
 	root.size=Vector2i(1440,900);Engine.max_fps=144
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/作品";root.add_child(demo)
 	demo.life.set_process(false);demo.ui_layer.visible=false
-	var loaded:Dictionary=demo.state.restore(JSON.parse_string(FileAccess.get_file_as_string(OUT+"/只读试玩副本.json")))
+	var fixture:String=OUT+"/只读试玩副本.json"
+	if not FileAccess.file_exists(fixture):fixture="res://数据/四库共鸣交响大城样例.json"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	var loaded:Dictionary=demo.state.restore(JSON.parse_string(FileAccess.get_file_as_string(fixture)))
 	if not loaded.ok:push_error(str(loaded));quit(1);return
 	if "--paths" in OS.get_cmdline_user_args():
 		for road:Dictionary in demo.state.roads:road.style="path"
@@ -23,12 +26,14 @@ func run()->void:
 		var miny:=INF;var maxy:=-INF
 		for sample:Dictionary in profile.samples:miny=minf(miny,sample.y);maxy=maxf(maxy,sample.y)
 		report.append({"id":road.id,"elevated":profile.elevated,"miny":miny,"maxy":maxy})
-	print(JSON.stringify(report))
+	print("ROAD_SEAM_LIVE "+JSON.stringify({"roads":report,"fixture":fixture,"all_paths":"--paths" in OS.get_cmdline_user_args()}))
 	demo.focus=Vector3(-14,.7,0);demo.zoom=24.;demo.pitch=1.1;demo.yaw=.62;demo._update_camera()
 	await capture("01_当前路网")
 	for edge:MeshInstance3D in demo.town.find_children("SoftRoadEdge","MeshInstance3D",true,false):edge.hide()
 	await capture("02_无压边")
 	for edge:MeshInstance3D in demo.town.find_children("SoftRoadEdge","MeshInstance3D",true,false):edge.show()
+	demo.town.meadow.hide();await capture("03_无草实例");demo.town.meadow.show()
+	demo.town.terrain_surface.hide();await capture("04_无地面");demo.town.terrain_surface.show()
 	demo.sun.shadow_enabled=false
 	await capture("03_无阴影")
 	demo.queue_free();await process_frame;quit()

@@ -1438,9 +1438,7 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 	var domes:Array=RenaissancePlan.for_house(state,house) if house.has("signature") else [];var dome_cells:Dictionary={}
 	for plan:Dictionary in domes:
 		for id:String in plan.cell_ids:dome_cells[id]=true
-	if era=="renaissance":palette=Renaissance.palette(palette)
-	elif era=="clockwork":palette=Clockwork.palette(palette)
-	elif era=="modern_eco":palette=Modern.palette(palette)
+	palette=HouseColors.era_palette(self,house,palette,house.has("custom_colors"))
 	var canopy:Dictionary={};var flower_plan:Dictionary={};var arcade_faces:Array=[]
 	if era!="modern_eco":
 		canopy=TerraceCanopy.choose(state.houses,house)

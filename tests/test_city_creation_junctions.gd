@@ -28,6 +28,10 @@ func _initialize() -> void:
 	var city:=City.new()
 	city.roads=[_road("r1",[Vector2(-3,0),Vector2(3,0)]),_road("r2",[Vector2(0,-3),Vector2(0,3)])]
 	var context:=Junctions.new()
+	var bend:=City.new()
+	bend.roads=[_road("r1",[Vector2(0,-3),Vector2(0,0),Vector2(3,0)]),_road("r2",[Vector2(-3,-.8),Vector2(3,-.8)])]
+	var bend_context:=Junctions.new();bend_context.prepare(bend)
+	_check(bend_context.at(Vector2(-.47,.47))=="r1","tight curved mouth joins its round core without an exposed grass slit")
 	var original: Array=city.roads.duplicate(true)
 	context.prepare(city)
 	_check(city.roads==original,"derivation preserves authored IDs, points and widths")

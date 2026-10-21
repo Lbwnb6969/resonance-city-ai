@@ -18,9 +18,8 @@ static func build(renderer,house: Dictionary) -> Node3D:
 	if plan.is_empty(): return null
 	var root := Node3D.new()
 	root.name = str(house.id)
-	var palette: Array = renderer.PALETTES[posmod(int(house.get("palette",0)),renderer.PALETTES.size())]
-	if house.has("finish"): palette=renderer.FINISH_PALETTES[str(house.finish)]
-	if renderer.state.house_era(house)=="renaissance": palette=renderer.Renaissance.palette(palette)
+	var palette:Array=renderer.HouseColors.base_palette(renderer,house)
+	palette=renderer.HouseColors.era_palette(renderer,house,palette,house.has("custom_colors"))
 	root.set_meta("era_theme",renderer.state.house_era(house))
 	root.set_meta("palette_colors",palette.duplicate())
 	root.set_meta("house_style","round_tower")

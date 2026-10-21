@@ -46,15 +46,22 @@ func prepare(renderer: Node3D, road: Dictionary, extra_cuts: Array = []) -> Dict
 	var values := {}
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	surface.set_custom_format(0,SurfaceTool.CUSTOM_RGBA_FLOAT)
+	surface.set_custom_format(1,SurfaceTool.CUSTOM_RGBA_FLOAT)
 	for triangle in range(0,vertices.size(),3):
+		var nearest_edges:Array=[]
+		for vertex:int in range(3):
+			var vertex_at:=Vector2(vertices[triangle+vertex].x,vertices[triangle+vertex].z)
+			var best:Array=[];var best_distance:=INF
+			for segment:Array in edge_bins.get(Vector2i(floori(vertex_at.x),floori(vertex_at.y)),edge_segments):
+				var distance:float=vertex_at.distance_squared_to(Geometry2D.get_closest_point_to_segment(vertex_at,segment[0],segment[1]))
+				if distance<best_distance:best_distance=distance;best=segment
+			nearest_edges.append(Color(best[0].x,best[0].y,best[1].x,best[1].y))
 		for offset in [0,2,1]:
 			var point: Vector3 = vertices[triangle+offset]
 			var at := Vector2(point.x,point.z)
 			if not values.has(at):
 				var bin := Vector2i(floori(at.x),floori(at.y))
-				var distance := INF
-				for segment: Array in edge_bins.get(bin,edge_segments):
-					distance = minf(distance,at.distance_to(Geometry2D.get_closest_point_to_segment(at,segment[0],segment[1])))
 				var nearest := samples[0]
 				var near_distance := INF
 				for segment: Array in center_bins.get(bin,center_segments):
@@ -62,11 +69,12 @@ func prepare(renderer: Node3D, road: Dictionary, extra_cuts: Array = []) -> Dict
 					if at.distance_squared_to(candidate)<near_distance:
 						near_distance=at.distance_squared_to(candidate)
 						nearest=candidate
-				values[at] = Vector2(clampf(distance/WIDTH,0,1),renderer._street_height(nearest)+0.001)
-			var value: Vector2 = values[at]
-			point.y = value.y
+				values[at] = renderer._street_height(nearest)+0.001
+			point.y = float(values[at])
 			surface.set_normal(Vector3.UP)
-			surface.set_uv(Vector2(value.x,0.0))
+			surface.set_uv(Vector2(nearest_edges[0].r,nearest_edges[0].g))
+			surface.set_uv2(Vector2(nearest_edges[0].b,nearest_edges[0].a))
+			surface.set_custom(0,nearest_edges[1]);surface.set_custom(1,nearest_edges[2])
 			surface.add_vertex(point)
 	surface.index()
 	return {"arrays":surface.commit_to_arrays(),"stats":{"triangles":vertices.size()/3,"vertices":values.size()}}
@@ -74,7 +82,8 @@ func prepare(renderer: Node3D, road: Dictionary, extra_cuts: Array = []) -> Dict
 func install(renderer: Node3D, data: Dictionary, parent: Node3D) -> Dictionary:
 	if data.arrays.is_empty(): return data.stats
 	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
+	var flags:int=(Mesh.ARRAY_CUSTOM_RGBA_FLOAT<<Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT)|(Mesh.ARRAY_CUSTOM_RGBA_FLOAT<<Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT)
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays,[],{},flags)
 	var node := MeshInstance3D.new()
 	node.name = "SoftRoadEdge"
 	node.mesh = mesh
@@ -95,13 +104,20 @@ func build(renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
 func _inside(point:Vector2,contours:Array)->bool:
 	var covered:=false
 	for contour:PackedVector2Array in contours:
-		if Geometry2D.is_point_in_polygon(point,contour):covered=not covered
+		# Boundary probes need strict parity. Geometry2D's approximate boundary
+		# hit tolerance grows at world coordinates and marks both sides inside.
+		for index:int in range(contour.size()):
+			var a:Vector2=contour[index];var b:Vector2=contour[(index+1)%contour.size()]
+			if (a.y>point.y)==(b.y>point.y):continue
+			var cross_x:float=float(a.x)+(float(point.y)-float(a.y))*(float(b.x)-float(a.x))/(float(b.y)-float(a.y))
+			if float(point.x)<cross_x:covered=not covered
 	return covered
 
 func _exposed_segments(groups:Array)->Array:
 	# Measure feathering against the complete local road union, never an
 	# internal stroke cap. Split contour edges exactly at neighboring borders.
 	var result:Array=[]
+	var seen:Dictionary={}
 	for own in range(groups.size()):
 		for contour:PackedVector2Array in groups[own]:
 			for i in range(contour.size()):
@@ -119,14 +135,37 @@ func _exposed_segments(groups:Array)->Array:
 				for part in range(1,breaks.size()):
 					if breaks[part]-breaks[part-1]<.000001:continue
 					var middle:=a+delta*(breaks[part]+breaks[part-1])*.5
-					var hidden:=false
-					for other in range(groups.size()):
-						if other!=own and _inside(middle,groups[other]):hidden=true;break
-					if not hidden:result.append([a+delta*breaks[part-1],a+delta*breaks[part]])
+					var normal:=Vector2(-delta.y,delta.x).normalized()*.00005
+					var left:=false;var right:=false
+					for group:Array in groups:
+						left=left or _inside(middle+normal,group)
+						right=right or _inside(middle-normal,group)
+					if left==right:continue
+					var start:Vector2=a+delta*breaks[part-1];var finish:Vector2=a+delta*breaks[part]
+					if not left:
+						var swap:=start;start=finish;finish=swap
+					var key:Array=[_key(start),_key(finish)]
+					if not seen.has(key):result.append([start,finish]);seen[key]=true
 	return result
 
 func _boundary_contours(segments:Array)->Array:
 	var starts:Dictionary={};var used:Dictionary={};var result:Array=[]
+	var points:Dictionary={}
+	# Intersection calculations arrive from opposite segment directions and
+	# differ by float32 rounding. Weld only endpoints within 0.05mm.
+	for segment:Array in segments:
+		for end:int in range(2):
+			var at:Vector2=segment[end];var bin:=Vector2i(floori(at.x*10000.),floori(at.y*10000.))
+			var found:=false
+			for x:int in range(-1,2):
+				for y:int in range(-1,2):
+					for candidate:Vector2 in points.get(bin+Vector2i(x,y),[]):
+						if at.distance_squared_to(candidate)<.0000000025:segment[end]=candidate;found=true;break
+					if found:break
+				if found:break
+			if not found:
+				if not points.has(bin):points[bin]=[]
+				points[bin].append(at)
 	for i:int in range(segments.size()):
 		var key:Vector2i=_key(segments[i][0])
 		if not starts.has(key):starts[key]=[]

@@ -395,9 +395,14 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 				amount_usec+=Time.get_ticks_usec()-amount_started
 				if maxf(extra_a,extra_b)<0.002: continue
 				var clip_started:=Time.get_ticks_usec()
-				var base_a:=start+n0*radius
-				var base_b:=finish+n1*radius
-				var polygon:=PackedVector2Array([base_a,base_b,base_b+n1.normalized()*extra_b,base_a+n0.normalized()*extra_a])
+				# A miter can lie outside the round capsule at a tight bend.
+				# Start the patch inside that capsule; clipping below removes the
+				# overlap, leaving no grass slit between the core and the mouth.
+				var base_a:=start+n0.normalized()*radius*.9
+				var base_b:=finish+n1.normalized()*radius*.9
+				var outer_a:=start+n0.normalized()*(radius+extra_a)
+				var outer_b:=finish+n1.normalized()*(radius+extra_b)
+				var polygon:=PackedVector2Array([base_a,base_b,outer_b,outer_a])
 				if Geometry2D.is_polygon_clockwise(polygon): polygon.reverse()
 				var pieces: Array=[polygon]
 				# Remove actual core, not a bounding box: loops and islands stay
