@@ -1,6 +1,6 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
-const OUT="res://验证记录/点屋色盘花园_2026-10-20"
+var output:="res://验证记录/点屋色盘花园_2026-10-20"
 var demo
 var checks:=0
 var failures:Array[String]=[]
@@ -22,11 +22,13 @@ func click_at(at:Vector2)->void:
 func click(button:Control)->void:await click_at(button.get_global_rect().get_center())
 func shot(label:String)->void:
 	demo.toast.hide();demo.toast_time=0.
-	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(OUT+"/"+label+".png")
+	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(output+"/"+label+".png")
 func run()->void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	root.size=Vector2i(1440,900);Engine.max_fps=100
-	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/作品";root.add_child(demo);demo.life.set_process(false)
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=output+"/作品";root.add_child(demo);demo.life.set_process(false)
 	await settle()
 	var original:Dictionary=demo.state.snapshot();var id:=str(demo.state.houses[0].id)
 	var pop=demo.spatial_popover
@@ -40,11 +42,21 @@ func run()->void:
 		await click_at(demo.camera.unproject_position(at))
 		check(pop.target_house_id==id and pop.card.is_visible_in_tree(),"normal house click opens roof inspector at "+str(resolution))
 		check(house.cells.size()==count and not demo.house_drawing,"selection does not add a module")
-		check(not demo.tool_buttons[4].is_visible_in_tree(),"purpose is absent from tool palette")
+		var primary:Array=[]
+		for button:Button in demo.tool_buttons:
+			if button.is_visible_in_tree():primary.append(button.caption)
+		check(primary==["筑屋","修路","烟火","林水","地形"],"five-core palette keeps the consolidated life entry and contextual roof actions")
 		check(not pop.role_buttons.has("venue") and not pop.concert_button.visible,"ordinary house has daily uses without a concert task")
 		await click(pop.expand_button)
 		check(pop.color_panel.is_visible_in_tree(),"expanded palette opens")
 		check(Rect2(Vector2.ZERO,Vector2(resolution)).encloses(pop.card.get_global_rect()),"expanded card fits screen")
+		await click(pop.wall_picker)
+		var picker:ColorPicker=pop.wall_picker.get_picker();var popup:PopupPanel=pop.wall_picker.get_popup()
+		check(popup.visible and picker.picker_shape==ColorPicker.SHAPE_HSV_WHEEL and not picker.color_modes_visible and menus_hidden(picker),"actual expanded picker opens a wheel without engine dropdowns at "+str(resolution))
+		check(popup.size.x<=resolution.x and popup.size.y<=resolution.y,"actual color popup fits the small and large window sizes")
+		await RenderingServer.frame_post_draw
+		check(popup.get_texture().get_image().save_png(output+"/实际色轮_"+str(resolution.x)+".png")==OK,"actual picker viewport captures")
+		popup.hide();await process_frame
 		var previous_colors:Dictionary=house.get("custom_colors",{}).duplicate()
 		var root_id:int=demo.town.house_roots[id].get_instance_id()
 		var bounds:Dictionary={}
@@ -57,7 +69,7 @@ func run()->void:
 		for node:MeshInstance3D in demo.town.house_roots[id].find_children("*","MeshInstance3D",true,false):stable=stable and bounds[node.get_instance_id()]==node.mesh.get_aabb()
 		check(stable,"recolor preserves exact mesh extents")
 		var cache:Dictionary=demo.town.house_roots[id].get_meta("house_color_cache")
-		check(int(cache.index)==8 and cache.custom_colors==house.custom_colors,"GPU recipe cache receives custom choice")
+		check(int(cache.index)==4+demo.town.HouseColors.FINISHES.size() and cache.custom_colors==house.custom_colors,"GPU recipe cache receives custom choice")
 		await shot("色盘_%d"%resolution.x)
 		demo._history(false);await settle();check(house.get("custom_colors",{})==previous_colors,"real undo restores previous colors")
 		demo._history(true);await settle();check(house.has("custom_colors"),"real redo restores custom colors")
@@ -74,5 +86,11 @@ func run()->void:
 	demo.ui_layer.hide();demo.focus=Vector3(-21,.7,21);demo.zoom=22.;demo.pitch=.7;demo.yaw=.2;demo._update_camera();await settle();await shot("金叶与三色花园")
 	var source:Dictionary=demo.state.snapshot();var reloaded:RefCounted=demo.State.new();check(reloaded.restore(source).ok,"custom color and garden persist through production serializer")
 	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty()}
-	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
+	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("PERSONALIZATION_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
+
+func menus_hidden(node:Node)->bool:
+	for child:Node in node.get_children(true):
+		if (child is MenuButton or child is OptionButton) and child.is_visible_in_tree():return false
+		if not menus_hidden(child):return false
+	return true

@@ -13,9 +13,14 @@ var water_material:ShaderMaterial
 func prepare(renderer,road:Dictionary)->Dictionary:
 	var city:RefCounted=renderer.state;var profile:Dictionary=city.road_profile(road);var samples:Array=profile.samples
 	renderer.promenade._prepare_clearance(city)
-	var input:int=hash([road,profile.signature,city.districts,city.plants,renderer.promenade._clearance_signature,renderer.promenade.height_signature(city,road),city._junctions.signature(str(road.id))])
+	var inputs:Array=[road,profile.signature,city.districts,city.plants,renderer.promenade._clearance_signature,renderer.promenade.height_signature(city,road),city._junctions.signature(str(road.id))]
+	var input:int=hash(inputs)
 	if _cache_signatures.get(str(road.id))==input and _cache.has(str(road.id)):return _cache[str(road.id)]
-	_cache_signatures[str(road.id)]=input
+	# Junction preparation validates all real doors. Resolve it once for this
+	# complete plan, then query its immutable spatial index at each garden site.
+	var junctions:RefCounted=city.road_junctions()
+	inputs[-1]=junctions.signature(str(road.id))
+	_cache_signatures[str(road.id)]=hash(inputs)
 	var data:Dictionary={"notes":[],"water":[],"gateways":[],"gardens":[]}
 	for i in range(1,samples.size()):
 		var from:String=_era(city,samples[i-1].xz);var to:String=_era(city,samples[i].xz)
@@ -64,24 +69,24 @@ func prepare(renderer,road:Dictionary)->Dictionary:
 	for gateway:Dictionary in data.gateways:
 		if gateway.kind=="bridge_lamps":continue
 		for side:float in [-1.,1.]:
-			var garden:=_boundary_garden(renderer,road,gateway,side,data,furniture)
+			var garden:=_boundary_garden(renderer,road,gateway,side,data,furniture,junctions)
 			if not garden.is_empty():data.gardens.append(garden)
 	_cache[str(road.id)]=data
 	return data
-func _boundary_garden(renderer,road:Dictionary,gateway:Dictionary,side:float,data:Dictionary,furniture:Array)->Dictionary:
+func _boundary_garden(renderer,road:Dictionary,gateway:Dictionary,side:float,data:Dictionary,furniture:Array,junctions:RefCounted)->Dictionary:
 	var city:RefCounted=renderer.state;var stones:Array=[]
 	# Pick each footprint independently: existing avenue trees/flower boxes
 	# often occupy opposite longitudinal positions on the two verges.
 	for outward:float in [.55,.85]:
 		for along:float in [-.4,.4,-1.,1.]:
 			var at:Vector2=gateway.at+gateway.normal*side*(float(road.width)*.5+outward)+gateway.tangent*along*side
-			if not _boundary_clear(renderer,road,at,STONE_RADIUS,data,furniture):continue
+			if not _boundary_clear(renderer,road,at,STONE_RADIUS,data,furniture,junctions):continue
 			var floor:=_seat(city,at,STONE_RADIUS)
 			if floor.y-floor.x<=.14:stones.append({"at":at,"y":floor.x-.025})
 	for outward:float in [1.,1.5]:
 		for along:float in [.8,-.8,.35,-.35]:
 			var shrub:Vector2=gateway.at+gateway.normal*side*(float(road.width)*.5+outward)+gateway.tangent*along*side
-			if not _boundary_clear(renderer,road,shrub,SHRUB_RADIUS,data,furniture):continue
+			if not _boundary_clear(renderer,road,shrub,SHRUB_RADIUS,data,furniture,junctions):continue
 			var floor:=_seat(city,shrub,SHRUB_RADIUS)
 			if floor.y-floor.x>.12:continue
 			for stone:Dictionary in stones:
@@ -91,7 +96,7 @@ func _boundary_garden(renderer,road:Dictionary,gateway:Dictionary,side:float,dat
 					"variant":posmod(hash([gateway.from,gateway.to,side]),3)}
 	return {}
 
-func _boundary_clear(renderer,road:Dictionary,at:Vector2,radius:float,data:Dictionary,furniture:Array)->bool:
+func _boundary_clear(renderer,road:Dictionary,at:Vector2,radius:float,data:Dictionary,furniture:Array,junctions:RefCounted)->bool:
 	var city:RefCounted=renderer.state
 	if not renderer.promenade._clear(city,road,at,radius):return false
 	# The promenade helper excludes its own road. A curved street's other
@@ -99,7 +104,7 @@ func _boundary_clear(renderer,road:Dictionary,at:Vector2,radius:float,data:Dicti
 	for i in range(1,road.points.size()):
 		var a:=Vector2(road.points[i-1][0],road.points[i-1][1]);var b:=Vector2(road.points[i][0],road.points[i][1])
 		if at.distance_to(Geometry2D.get_closest_point_to_segment(at,a,b))<float(road.width)*.5+radius+.03:return false
-	if not city.road_junctions().at(at).is_empty():return false
+	if not junctions.at(at).is_empty():return false
 	for plant:Dictionary in city.plants:
 		if str(plant.kind)=="shrub" and at.distance_to(Vector2(plant.position[0],plant.position[1]))<radius+.65*float(plant.scale)+.04:return false
 	for row:Dictionary in furniture:

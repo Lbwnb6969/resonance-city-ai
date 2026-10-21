@@ -70,6 +70,13 @@ func setup(owner,ui_root:Control)->void:
 	wall_picker=ColorPickerButton.new();wall_picker.name="WallColor";wall_picker.custom_minimum_size=Vector2(64,34);wall_picker.edit_alpha=false;color_row.add_child(wall_picker)
 	var roof_label:=Label.new();roof_label.text="屋顶";color_row.add_child(roof_label)
 	roof_picker=ColorPickerButton.new();roof_picker.name="RoofColor";roof_picker.custom_minimum_size=Vector2(64,34);roof_picker.edit_alpha=false;color_row.add_child(roof_picker)
+	for button:ColorPickerButton in [wall_picker,roof_picker]:
+		var picker:=button.get_picker()
+		picker.picker_shape=ColorPicker.SHAPE_HSV_WHEEL
+		picker.color_modes_visible=false
+		picker.sliders_visible=false
+		_hide_color_menus(picker)
+		button.get_popup().about_to_popup.connect(_hide_color_menus.bind(picker))
 	var apply:=Button.new();apply.text="换上配色";apply.name="ApplyColors";apply.pressed.connect(_apply_colors);color_row.add_child(apply)
 	var reward_row:=HBoxContainer.new();reward_row.add_theme_constant_override("separation",6);color_panel.add_child(reward_row)
 	var reward_label:=Label.new();reward_label.text="珍藏";reward_row.add_child(reward_label)
@@ -99,6 +106,13 @@ func setup(owner,ui_root:Control)->void:
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
 	parade_button=_seal(actions,"music","绘巡游",func()->void:demo.conductor_gesture.arm(target_house_id));parade_button.custom_minimum_size=Vector2(76,42)
 	card.hide()
+
+func _hide_color_menus(picker:Node)->void:
+	# The expanded palette is a color wheel. Keep precise hex entry, sampling
+	# and recent swatches without exposing the engine's mode/shape menus.
+	for child:Node in picker.get_children(true):
+		if child is MenuButton:child.hide()
+		_hide_color_menus(child)
 
 func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
 	var button:=Button.new();button.set_script(Seal);button.configure(glyph,42.)

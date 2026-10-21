@@ -2,9 +2,7 @@ extends SceneTree
 const Fixture=preload("res://tools/fixtures/city_creation_large_town_fixture.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Scene=preload("res://scenes/city_creation.tscn")
-const OUT="res://验证记录/四库路线_2026-10-17/Phase10"
-class FixtureInput extends Node:
-	func _input(event:InputEvent)->void:get_viewport().set_input_as_handled()
+var output:="res://验证记录/四库路线_2026-10-17/Phase10"
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -26,21 +24,33 @@ func _wait()->void:
 	await physics_frame;await process_frame
 func _capture(label:String)->void:
 	await process_frame;await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(OUT+"/"+label+".png")
+	root.get_texture().get_image().save_png(output+"/"+label+".png")
 func _metrics(samples:Array[float])->Dictionary:
 	samples.sort();var sum:=0.
 	for value:float in samples:sum+=value
 	return {"mean_ms":sum/samples.size(),"p95_ms":samples[int(samples.size()*.95)],"max_ms":samples[-1]}
 func _run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	var city:=Fixture.build(300,true);print("LARGE_FIXTURE_READY ",city.houses.size())
+	var city:RefCounted
+	var fixture_path:=output+"/authored_300_world.json"
+	if "--reuse-fixture" in OS.get_cmdline_user_args() and FileAccess.file_exists(fixture_path):
+		city=State.new()
+		var restored_fixture:Dictionary=city.restore(JSON.parse_string(FileAccess.get_file_as_string(fixture_path)))
+		_check(restored_fixture.ok,"previously authored large fixture validates against current production schema")
+	else:
+		city=Fixture.build(300,true)
+		FileAccess.open(fixture_path,FileAccess.WRITE).store_string(JSON.stringify(city.snapshot(),"",true,true))
+	print("LARGE_FIXTURE_READY ",city.houses.size())
 	var scene_started:=Time.get_ticks_usec()
-	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库";root.add_child(demo);root.add_child(FixtureInput.new());demo.life.set_process(false)
-	var restored:Dictionary=demo.state.restore(JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)))
-	_check(restored.ok,"three hundred authored four-era buildings restore through actual production schema")
-	demo._after_edit(restored,"history");await _wait();print("LARGE_RENDER_READY")
-	demo.remove_child(demo.life);demo.life.queue_free();demo._setup_life();demo.life.set_process(false)
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=output+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
+	var chosen:Dictionary={"ok":true,"id":"large_town","title":"三百屋四时代","world":JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)),"view":{"focus":[0.,0.,0.],"zoom":94.,"yaw":.4,"pitch":.83,"evening":false,"light_phase":0}}
+	await demo.gallery._open_chosen(chosen);demo.life.set_process(false)
+	_check(demo.state.houses.size()==300 and not demo.gallery.busy,"three hundred authored four-era buildings restore through the actual complete-work loader")
+	print("LARGE_RENDER_READY")
 	demo.ui_layer.visible=false;demo.focus=Vector3(0,0,0);demo.zoom=94;demo.yaw=.4;demo.pitch=.83;demo._update_camera();demo.town.clear_preview()
 	var eras:Dictionary={}
 	for house:Dictionary in demo.state.houses:eras[demo.state.house_era(house)]=true
@@ -62,7 +72,8 @@ func _run()->void:
 	var stages:Dictionary={};demo.life.profile_tick=true
 	for i in range(180):
 		await process_frame;var now:=Time.get_ticks_usec();demo.life._process((now-last)/1000000.);last=Time.get_ticks_usec()
-		for key:String in demo.life.tick_profile:stages[key]=float(stages.get(key,0.))+float(demo.life.tick_profile[key])/180000.
+		for key:String in demo.life.tick_profile:
+			if demo.life.tick_profile[key] is int or demo.life.tick_profile[key] is float:stages[key]=float(stages.get(key,0.))+float(demo.life.tick_profile[key])/180000.
 	demo.life.profile_tick=false
 	print("LIFE_STAGES ",stages)
 	var frames:Array[float]=[];var cpu:Array[float]=[];last=Time.get_ticks_usec()
@@ -79,9 +90,13 @@ func _run()->void:
 	var cpu_metrics:=_metrics(cpu);var frames_metrics:=_metrics(frames)
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"life_cpu":cpu_metrics,"policy":"reference_only"}))
 	var edit_metrics:Dictionary=await _edit_large_city()
+	await _large_ui()
+	var audio_metrics:Dictionary=await _audio_cycle()
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"production scale validation preserves personal saved city bytes")
-	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics,"edit":edit_metrics}
-	FileAccess.open(OUT+"/large_town_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("LARGE_TOWN_LIVE ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)
+	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics,"edit":edit_metrics,"audio":audio_metrics,"load":demo.gallery.load_stats.duplicate(true)}
+	FileAccess.open(output+"/large_town_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
+	print("LARGE_TOWN_LIVE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks.size(),"failures":failures,"houses":report.houses,"residents":report.residents,"moving":moving,"life_cpu":cpu_metrics,"audio":audio_metrics}))
+	quit(0 if failures.is_empty() else 1)
 
 func _edit_large_city()->Dictionary:
 	demo.focus=Vector3(-25,0,29);demo.zoom=14;demo._update_camera();demo.life.set_process(true)
@@ -111,3 +126,53 @@ func _edit_large_city()->Dictionary:
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"budget":budget,"max_frame_work_ms":rendered.get("max_frame_work_ms",0.),"policy":"reference_only"}))
 	await _capture("10_large_city_actual_terrain_edit")
 	return {"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"habitats":demo.town.wildlife.habitat_stats.duplicate(),"catchup_remaining":demo.life._budget_delta,"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}
+
+func _click_at(at:Vector2)->void:
+	var motion:=InputEventMouseMotion.new();motion.position=at;root.push_input(motion);await process_frame
+	for pressed:bool in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event);await process_frame
+	await _wait();await create_timer(.3).timeout
+
+func _large_ui()->void:
+	demo.life.set_process(false);demo.ui_layer.show();demo.select_tool(0)
+	var house:Dictionary=demo.state.houses[100];var id:=str(house.id);var top:=0
+	for cell:Dictionary in house.cells:top=maxi(top,int(cell.level))
+	var at:=Vector3(house.origin[0],float(house.get("base_y",0.))+(top+1)*demo.FLOOR+.2,house.origin[1])
+	var original:Dictionary=house.duplicate(true)
+	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+		root.size=resolution;demo.spatial_popover.close();demo.focus=Vector3(at.x,1.,at.z);demo.zoom=17.;demo.pitch=.85;demo._update_camera()
+		for i in range(8):await process_frame
+		await _click_at(demo.camera.unproject_position(at))
+		var pop=demo.spatial_popover
+		_check(pop.target_house_id==id and pop.card.is_visible_in_tree(),"real roof pointer opens the selected house in the three-hundred-house city at "+str(resolution))
+		_check(pop.role_buttons.size()==6 and not pop.concert_button.visible and not demo.place_panel.is_visible_in_tree(),"ordinary house keeps six life uses and the spatial inspector")
+		await _click_at(pop.expand_button.get_global_rect().get_center())
+		_check(Rect2(Vector2.ZERO,Vector2(resolution)).encloses(pop.card.get_global_rect()) and pop.color_panel.is_visible_in_tree(),"expanded large-city color palette fits "+str(resolution))
+		var root_id:int=demo.town.house_roots[id].get_instance_id()
+		pop.wall_picker.color=Color("99c6d2");pop.roof_picker.color=Color("75436c")
+		await _click_at(pop.card.find_child("ApplyColors",true,false).get_global_rect().get_center())
+		_check(house.get("custom_colors",{}).get("roof","")=="75436c" and demo.town.house_roots[id].get_instance_id()==root_id,"actual apply button updates color without rebuilding the large-city house")
+		for pressed:bool in [true,false]:
+			var key:=InputEventKey.new();key.keycode=KEY_Z;key.ctrl_pressed=true;key.pressed=pressed;root.push_input(key);await process_frame
+		await _wait()
+		_check(house==original and demo.state.houses.size()==300,"real Ctrl+Z restores the exact authored house and keeps all three hundred buildings")
+		await _capture("large_city_roof_palette_"+str(resolution.x))
+	demo.spatial_popover.close();root.size=Vector2i(1440,900)
+
+func _audio_cycle()->Dictionary:
+	demo.focus=Vector3.ZERO;demo.zoom=94.;demo._update_camera();demo.life.set_process(true)
+	var serials:Array=[]
+	for player:AudioStreamPlayer in demo.music._players.values():serials.append(player.get_instance_id())
+	var recording:=AudioEffectRecord.new();AudioServer.add_bus_effect(0,recording);recording.set_recording_active(true)
+	await create_timer(25.2).timeout
+	recording.set_recording_active(false);var wave:AudioStreamWAV=recording.get_recording();var peak:=0.
+	var duration:=0.
+	if wave!=null:
+		duration=wave.get_length();var pcm:=wave.data
+		for i in range(pcm.size()/2):peak=maxf(peak,absf(float(pcm.decode_s16(i*2))/32768.))
+		wave.save_to_wav(output+"/three_hundred_house_mix.wav")
+	_check(duration>=24. and peak>.0001 and peak<.99,"actual three-hundred-house native mix covers a full 24-second loop and remains audible without clipping")
+	var current:Array=[]
+	for player:AudioStreamPlayer in demo.music._players.values():current.append(player.get_instance_id())
+	_check(current==serials and current.size()==12 and demo.music._effects.size()==4,"full large-city music cycle preserves the original twelve long and four short voices")
+	return {"duration":duration,"peak":peak}

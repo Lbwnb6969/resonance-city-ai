@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/合订自然引导_2026-10-21"
+var output:="res://验证记录/合订自然引导_2026-10-21"
 var demo
 var checks:=0
 var failures:Array[String]=[]
@@ -28,7 +28,7 @@ func road(a:Vector2,b:Vector2)->void:
 	await mouse(point(b),false);await settle()
 func capture(label:String)->void:
 	await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png(OUT+"/"+label+".png")==OK,"capture "+label)
+	check(root.get_texture().get_image().save_png(output+"/"+label+".png")==OK,"capture "+label)
 func layout()->void:
 	var visible:Array=[]
 	for button:Button in demo.tool_buttons:
@@ -38,9 +38,11 @@ func layout()->void:
 	check(bounds.encloses(demo.ui_layer.get_node("Root/Toolbar").get_global_rect()),"five-key dock fits window")
 	for option:OptionButton in demo.ui_layer.find_children("*","OptionButton",true,false):check(not option.is_visible_in_tree(),"no visible native dropdown: "+str(option.name))
 func run()->void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=120
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output));root.size=Vector2i(1440,900);Engine.max_fps=120
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
-	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/隔离作品";root.add_child(demo)
+	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=output+"/隔离作品";root.add_child(demo)
 	demo.life.set_process(false);demo.focus=Vector3(-11,.7,-6);demo.zoom=24.;demo.pitch=.95;demo._update_camera();await settle()
 	var guide=demo.intuitive_guidance
 	layout();check(demo.state.houses.is_empty() and guide.stage=="houses" and guide.markers.get_child_count()==3,"empty river starts with three real ground rings")
@@ -84,7 +86,86 @@ func run()->void:
 	await click(demo.tactile_dock.nature_row.get_child(2));check(demo.tool==6 and demo.water_kind!="pond","channel seal selects the real channel mode")
 	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		root.size=resolution;await settle();layout();await capture("04_五键林水_%d"%resolution.x)
+	if "--complete-path" in OS.get_cmdline_user_args():await complete_path(trunk)
 	check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save remains byte-identical")
 	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"houses":demo.state.houses.size(),"roads":demo.state.roads.size(),"stage":guide.stage}
-	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("INTUITIVE_GUIDANCE ",JSON.stringify(report))
+	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("INTUITIVE_GUIDANCE ",JSON.stringify(report))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
+
+func key(code:int)->void:
+	for pressed:bool in [true,false]:
+		var event:=InputEventKey.new();event.keycode=code;event.pressed=pressed;root.push_input(event);await process_frame
+	await settle()
+
+func connect_door(id:String)->void:
+	if demo.life.house_connected(id):return
+	var entrances:Array=demo.state.house_entrances(id)
+	check(not entrances.is_empty(),"new construction exposes a real doorway")
+	if entrances.is_empty():return
+	var door:Vector2=entrances[0].at;var nearest:=Vector2.INF;var gap:=INF
+	for street:Dictionary in demo.state.roads:
+		for i in range(1,street.points.size()):
+			var at:=Geometry2D.get_closest_point_to_segment(door,Vector2(street.points[i-1][0],street.points[i-1][1]),Vector2(street.points[i][0],street.points[i][1]))
+			if at.distance_to(door)<gap:gap=at.distance_to(door);nearest=at
+	await click(demo.tool_buttons[2]);await road(nearest,door)
+	check(demo.life.house_connected(id),"real drawn road connects "+id)
+
+func complete_path(trunk:float)->void:
+	root.size=Vector2i(1440,900);demo.life.set_process(true)
+	await key(KEY_H)
+	var guide=demo.intuitive_guidance
+	if guide.stage=="plants":
+		check(not guide.target_points.is_empty(),"starter workshop receives a real planting hint")
+		var at:Vector2=guide.target_points[0]
+		await click(demo.tool_buttons[5]);await click(demo.tactile_dock.nature_row.get_child(0));await ground_click(at)
+		check(not demo.state.plants.is_empty(),"actual nature-tool pointer plants the first living garden")
+	check(guide.stage=="bridge" and guide.target_points.size()==3,"five-house life town points to a real river crossing")
+	if guide.target_points.size()!=3:return
+	var left:Vector2=guide.target_points[0];var right:Vector2=guide.target_points[-1]
+	await click(demo.tool_buttons[2]);await road(left,right)
+	check(demo.state.roads.any(func(row):return row.get("bridge",false)),"actual pointer lays the first real river bridge")
+	await road(Vector2(trunk,-3.85),Vector2(trunk,left.y));await road(Vector2(trunk,left.y),left)
+	for i in range(5):
+		await click(demo.tool_buttons[0]);await settle()
+		check(guide.stage=="houses" and not guide.target_points.is_empty(),"guide offers the next legal house toward the first landmark")
+		if guide.target_points.is_empty():return
+		var count:int=demo.state.houses.size();await ground_click(guide.target_points[0])
+		check(demo.state.houses.size()==count+1,"actual guided pointer adds house "+str(count+1))
+		await connect_door(str(demo.state.houses[-1].id))
+	await settle()
+	check("bell_keep" in demo.state.signature_unlocks and guide.stage=="landmark","ten real houses and the bridge naturally unlock the first landmark")
+	await click(demo.journal.button);await click(demo.signatures.button)
+	check(demo.signatures.panel.visible and not demo.signatures.buttons.bell_keep.disabled,"journal opens the usable earned landmark catalog")
+	await click(demo.signatures.buttons.bell_keep)
+	var sites:Array[Vector2]=[];var center:=Vector2.ZERO
+	for house:Dictionary in demo.state.houses:center+=Vector2(house.origin[0],house.origin[1])
+	center/=float(demo.state.houses.size())
+	for z in range(-12,4):
+		for x in range(-16,1):sites.append(Vector2(x,z)*1.8)
+	sites.sort_custom(func(a:Vector2,b:Vector2):return a.distance_squared_to(center)<b.distance_squared_to(center))
+	var chosen:=Vector2.INF
+	for at:Vector2 in sites:
+		if demo.state.preview_signature("bell_keep",at).ok:chosen=at;break
+	check(chosen.is_finite(),"first landmark has a legal real site near the starter town")
+	if not chosen.is_finite():return
+	await ground_click(chosen)
+	var landmarks:Array=demo.state.houses.filter(func(h):return h.get("signature","")=="bell_keep")
+	check(landmarks.size()==1,"actual catalog and ground clicks place the earned bell keep")
+	if landmarks.is_empty():return
+	var landmark:Dictionary=landmarks[0];var id:=str(landmark.id)
+	await connect_door(id);await click(demo.tool_buttons[0])
+	var roof:=Vector3(chosen.x,float(landmark.get("base_y",0.))+4.*demo.FLOOR+.2,chosen.y)
+	await mouse(demo.camera.unproject_position(roof),true);await mouse(demo.camera.unproject_position(roof),false);await settle()
+	check(demo.spatial_popover.target_house_id==id and demo.spatial_popover.concert_button.is_visible_in_tree(),"first landmark roof exposes the exclusive movement action")
+	var completed:int=demo.state.life_progress.concerts
+	await click(demo.spatial_popover.concert_button)
+	check(demo.life.concert_status().phase in ["gathering","playing"],"real movement click invites the actual starter-town audience")
+	var end:=Time.get_ticks_msec()+90000
+	while demo.state.life_progress.concerts==completed and Time.get_ticks_msec()<end:await process_frame
+	check(demo.state.life_progress.concerts==completed+1,"real audience journeys and a full movement award exactly one completion")
+	await capture("05_首座地标完整乐章")
+	demo.life.set_process(false)
+	await demo.gallery.save_work("从三屋到第一首乐章")
+	var saved:Dictionary=demo.gallery.library.read(demo.gallery.last_saved_id)
+	var restored:RefCounted=State.new()
+	check(saved.ok and restored.restore(saved.world).ok and restored.life_progress.concerts==demo.state.life_progress.concerts,"full onboarding construction, earned landmark and real concert history persist in an actual collection work")
