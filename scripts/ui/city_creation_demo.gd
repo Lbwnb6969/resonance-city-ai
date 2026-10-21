@@ -57,6 +57,7 @@ var terrain_brush: RefCounted
 var tactile_dock: RefCounted
 var world_toys=preload("res://scripts/visual/city_creation_world_toys.gd").new()
 var weather_visual:Node3D
+var conductor_gesture:Node3D
 var wish_pins:Control
 var intuitive_guidance:Control
 var start_empty:=false
@@ -292,6 +293,8 @@ func _ready() -> void:
 	preload("res://scripts/ui/city_creation_paper_hud.gd").setup(self)
 	weather_visual=preload("res://scripts/visual/city_creation_weather_visual.gd").new()
 	weather_visual.setup(self)
+	conductor_gesture=preload("res://scripts/ui/city_creation_conductor_gesture.gd").new()
+	conductor_gesture.setup(self)
 	state.era_unlocked.connect(_on_era_unlocked,CONNECT_DEFERRED)
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
@@ -1129,6 +1132,8 @@ func _input(event: InputEvent) -> void:
 			gallery.close_panel()
 			get_viewport().set_input_as_handled()
 		return
+	if conductor_gesture!=null and conductor_gesture.handle_input(event):
+		get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.keycode==KEY_SHIFT:
 		removal_shift = event.pressed
 		preview_key = ""
@@ -1325,6 +1330,7 @@ func _process(delta: float) -> void:
 	town.update_travel_music(music.travel_music_report())
 	world_toys.update(self,delta)
 	weather_visual.update()
+	conductor_gesture.update()
 	frame_samples.append(delta*1000.0)
 	if frame_samples.size() > 240: frame_samples.pop_front()
 	life_ui_timer -= delta

@@ -937,7 +937,7 @@ func _source_schedule() -> Array[Dictionary]:
 
 func _source_for_phrase(phrase: int) -> Dictionary:
 	if concert_active and _concert_view.get("landmark_movement",false):
-		return LandmarkMovement.source(_concert_view.movement_order,_house_music,_concert_venue,phrase)
+		return LandmarkMovement.source(_concert_view.movement_order,_house_music,_concert_venue,phrase,bool(_concert_view.get("conductor",false)))
 	if _grand_active():
 		var era:String=GrandFestival.PHRASES[clampi(phrase,0,7)]
 		var id:String=_concert_venue if era=="tutti" else str(_concert_view.era_cast[era])

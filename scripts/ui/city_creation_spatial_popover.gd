@@ -22,6 +22,7 @@ var era_button:Button
 var choir_button:Button
 var temperament_button:Button
 var concert_button:Button
+var parade_button:Button
 var expand_button:Button
 var color_panel:VBoxContainer
 var wall_picker:ColorPickerButton
@@ -86,6 +87,7 @@ func setup(owner,ui_root:Control)->void:
 	choir_button=_seal(actions,"district","曲风",_cycle_cluster_style);choir_button.custom_minimum_size=Vector2(76,42)
 	temperament_button=_seal(actions,"music","律动",_cycle_temperament);temperament_button.custom_minimum_size=Vector2(76,42)
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
+	parade_button=_seal(actions,"music","绘巡游",func()->void:demo.conductor_gesture.arm(target_house_id));parade_button.custom_minimum_size=Vector2(76,42)
 	card.hide()
 
 func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
@@ -140,6 +142,9 @@ func refresh()->void:
 	concert_button.visible=house.get("signature","") in demo.State.Signatures.IDS
 	concert_button.caption="停奏" if str(demo.life.concert_status().get("venue_id",""))==target_house_id else "奏乐章"
 	concert_button.tooltip_text="奏响传世共鸣乐章：聚落接力，末两乐句齐奏";concert_button.queue_redraw()
+	parade_button.visible=concert_button.visible and demo.life.ConductorParade.eligible(demo.state)
+	parade_button.disabled=demo.life.concert_status().phase!="idle"
+	parade_button.tooltip_text="手绘指挥顺序：划过聚落与地标，街坊沿真实街道提灯巡游"
 	status.text=str(demo.HouseholdFeedback.describe(demo.state,demo.life,target_house_id)).replace("\n"," · ")
 	_update_anchor(house)
 

@@ -68,6 +68,8 @@ var travel_callback: Callable
 var tram_callback: Callable
 const CONCERT_DURATION := 24.0
 var _concert: Dictionary = {}
+const ConductorParade=preload("res://scripts/world/city_creation_conductor_parade.gd")
+var conductor_parade:=ConductorParade.new()
 var _finale:Dictionary={}
 var _relay: Dictionary = {}
 var _resonance_signature: Array = []
@@ -157,7 +159,7 @@ func _update_citizen_lod(delta:float)->void:
 		var point:Vector3=motion.point() if motion!=null else resident.node.position
 		var visible:=view_camera==null or view_camera.is_position_in_frustum(point+Vector3.UP*.35)
 		var ticket:Dictionary=tram.tickets.get(str(resident.home_id),{})
-		var scalar:bool=not visible and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and ticket.get("state","")!="onboard"
+		var scalar:bool=not visible and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and not conductor_parade.owns(self,resident) and ticket.get("state","")!="onboard"
 		if scalar:
 			if not resident.has("offscreen_motion"):resident.offscreen_motion=CitizenMotion.new(point,resident.node.rotation.y)
 			resident.node.get_child(0).visible=false;_lod_scalar_count+=1
@@ -306,6 +308,7 @@ func setup(city: RefCounted) -> void:
 	cancel_budget_sync()
 	var fresh := state != city
 	if state != city:
+		conductor_parade.clear()
 		if tram!=null:tram.clear()
 		if bakery != null: bakery.clear()
 		if workshop != null: workshop.clear()
@@ -415,9 +418,11 @@ func _tick_life(delta: float) -> void:
 	# A newly started PCM performance belongs to the current real boundary.
 	# Old held time must never be spent inside that new twenty-four seconds.
 	if not _budget_catching_up: matinee.tick(delta)
+	conductor_parade.update(self)
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
+	if conductor_parade.owns(self,resident):return
 	if time<float(resident.get("greeting_until",-1.)):return
 	if resident.has("cafe_visit"): return
 	if float(resident.get("motion_advanced_at",-1.))==time:return
@@ -997,6 +1002,22 @@ func invite_landmark_movement(venue_id:String)->Dictionary:
 	_resonance_signature.clear();_refresh_resonance_membership()
 	return {"ok":true,"message":"传世共鸣乐章 · 街坊到齐后，全城聚落接力24秒。"}
 
+func invite_conductor_movement(venue_id:String,sequence:Array[String],stroke:Array[Vector2])->Dictionary:
+	var snapshot:Dictionary=state.snapshot()
+	var path_rows:Array=[]
+	for at:Vector2 in stroke:path_rows.append([at.x,at.y])
+	snapshot.schema=state.PERSONALIZATION_SCHEMA
+	snapshot.journey_checkpoint={"concert":{"landmark_movement":true,"source":"manual","duration":24.,"venue_id":venue_id,"movement_order":sequence,"conductor":true,"conductor_path":path_rows}}
+	var valid:Dictionary=state.LandmarkMovement.validate(state,snapshot)
+	if not valid.ok:return valid
+	if state.revision!=last_revision:_sync()
+	if ConductorParade.street_route(self,venue_id,sequence).size()<2:return {"ok":false,"message":"先把手绘经过的聚落与地标接到相通的街道。"}
+	var result:=invite_concert(venue_id,false,true)
+	if not result.ok:return result
+	_concert.landmark_movement=true;_concert.movement_order=sequence.duplicate();_concert.conductor=true;_concert.conductor_path=path_rows
+	_resonance_signature.clear();_refresh_resonance_membership()
+	return {"ok":true,"message":"手绘乐章已备好 · 街坊到齐后提灯巡游，依次传过%d处声部。"%sequence.size()}
+
 func invite_grand_festival(venue_id:String)->Dictionary:
 	if state.revision!=last_revision and not budget_sync_pending():_sync()
 	var index:int=state._house_index(venue_id)
@@ -1070,6 +1091,7 @@ func concert_view() -> Dictionary:
 	result.festival_ready_ids = state.festival_ready_venues()
 	if _concert.get("grand_festival",false):result.grand_festival=true;result.era_cast=_concert.era_cast.duplicate()
 	if _concert.get("landmark_movement",false):result.landmark_movement=true;result.movement_order=_concert.movement_order.duplicate()
+	if _concert.get("conductor",false):result.conductor=true;result.conductor_path=_concert.conductor_path.duplicate(true)
 	return result
 
 func finale_view()->Dictionary:
@@ -1087,8 +1109,9 @@ func matinee_status(venue_id: String) -> Dictionary:
 func concert_status() -> Dictionary:
 	if _concert.is_empty(): return {"phase":"idle","venue_id":"","invited":0,"arrived":0,"elapsed":0.0,"duration":CONCERT_DURATION}
 	var arrived := 0
+	if _concert.get("conductor",false) and _concert.phase=="playing":arrived=_concert.participants.size()
 	for resident: Dictionary in residents:
-		if _concert.participants.has(str(resident.home_id)) and str(resident.dwell_id) == str(_concert.venue_id): arrived += 1
+		if not (_concert.get("conductor",false) and _concert.phase=="playing") and _concert.participants.has(str(resident.home_id)) and str(resident.dwell_id) == str(_concert.venue_id): arrived += 1
 	return {"phase":str(_concert.phase),"venue_id":str(_concert.venue_id),"invited":_concert.participants.size(),"arrived":arrived,"elapsed":float(_concert.elapsed),"duration":CONCERT_DURATION,"source":str(_concert.get("source", "manual")),"sponsors":_concert.get("sponsors", []).duplicate()}
 
 func cancel_concert() -> Dictionary:
@@ -1102,6 +1125,7 @@ func _resume_concert_participant(resident: Dictionary) -> bool:
 	if not state.can_host_concert(venue) or not connected_houses.has(venue) or not connected_houses.has(resident.home_id): return false
 	# A participant's home and the venue must still belong to one network.
 	if _route(str(connected_houses[resident.home_id]), str(connected_houses[venue])).is_empty(): return false
+	if conductor_parade.owns(self,resident):return conductor_parade.resume(self,resident)
 	var target: Vector3 = positions[connected_houses[venue]] + Vector3(0,0.10,0)
 	if str(resident.dwell_id) == venue:
 		return resident.node.position.distance_to(target) < 0.15
@@ -1147,6 +1171,7 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 		else: _relay.clear()
 	else: _relay.clear()
 	_concert.clear()
+	conductor_parade.clear()
 	_wake_house_ids.clear()
 	for resident: Dictionary in residents:
 		if not resident.has("daily_snapshot"): continue
