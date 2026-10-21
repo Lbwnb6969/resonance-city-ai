@@ -260,6 +260,7 @@ func _work(context: Node3D) -> Dictionary:
 		pebble_records_usec+=Time.get_ticks_usec()-pebble_start
 	stages.pebble_records=float(pebble_records_usec)/1000.
 	stages.road_geometry=float(Time.get_ticks_usec()-structure_start)/1000.
+	stages.road_details=context.rebuild_stats.duplicate(true)
 	stages.structures_and_roads = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	var masks := {}

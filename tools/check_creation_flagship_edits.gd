@@ -71,7 +71,10 @@ func _run()->void:
 	var far_mask:RefCounted=demo.town.meadow.query_masks[Vector2i(4,4)]
 	var players:Array=[]
 	for key:String in demo.music.STEMS:players.append(demo.music._players[key].get_instance_id())
-	for kind:String in ["palette","terrain","house"]:await _edit(kind)
+	var kinds:Array[String]=["palette","terrain","house"]
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--edit-only="):kinds.assign([arg.trim_prefix("--edit-only=")])
+	for kind:String in kinds:await _edit(kind)
 	var current:Array=[]
 	for key:String in demo.music.STEMS:current.append(demo.music._players[key].get_instance_id())
 	_check(players==current,"edits retain original live music player identities")

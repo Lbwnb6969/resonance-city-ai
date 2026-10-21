@@ -12,6 +12,7 @@ var _revision := -1
 var _cache: Dictionary = {}
 var _cache_signatures:Dictionary={}
 var _clearance_signature:=0
+var _height_signatures:Dictionary={}
 var bud_mesh: SphereMesh
 const CLEARANCE_BIN_SIZE:=4.
 var _clearance_revision:=-1
@@ -40,7 +41,7 @@ func prepare(renderer,road: Dictionary) -> Array:
 	if style not in ["promenade","avenue","tram"]: return []
 	var profile: Dictionary = renderer.state.road_profile(road)
 	_prepare_clearance(renderer.state)
-	var input:int=hash([road,profile.signature,_clearance_signature])
+	var input:int=hash([road,profile.signature,_clearance_signature,height_signature(renderer.state,road)])
 	if _cache_signatures.get(str(road.id))==input and _cache.has(str(road.id)):return _cache[str(road.id)]
 	_cache_signatures[str(road.id)]=input
 	var samples: Array = profile.samples
@@ -107,7 +108,7 @@ func _clear(city,road: Dictionary,at: Vector2,radius: float) -> bool:
 func _prepare_clearance(city:RefCounted)->void:
 	if _clearance_revision==city.revision and _clearance_owner!=null and _clearance_owner.get_ref()==city:return
 	_clearance_revision=city.revision;_clearance_owner=weakref(city)
-	_clearance_records=[];_clearance_bins={}
+	_clearance_records=[];_clearance_bins={};_height_signatures={}
 	# Snapshot actual door records once, rather than asking every household
 	# for its complete frontage signature at every lamp and gateway sample.
 	for other:Dictionary in city.roads:
@@ -126,7 +127,7 @@ func _prepare_clearance(city:RefCounted)->void:
 		var at:=Vector2(plant.position[0],plant.position[1])
 		_add_clearance({"kind":"plant","at":at,"radius":.55},Rect2(at,Vector2.ZERO).grow(.55))
 
-	_clearance_signature=hash([_clearance_records,city.waters,city.roads,city._ground_terrain.vertices])
+	_clearance_signature=hash([_clearance_records,city.waters,city.roads])
 
 func _add_clearance(record:Dictionary,bounds:Rect2)->void:
 	var index:=_clearance_records.size();_clearance_records.append(record)
@@ -136,12 +137,24 @@ func _add_clearance(record:Dictionary,bounds:Rect2)->void:
 			if not _clearance_bins.has(bin):_clearance_bins[bin]=[]
 			_clearance_bins[bin].append(index)
 
+func height_signature(city:RefCounted,road:Dictionary)->int:
+	_prepare_clearance(city)
+	var id:=str(road.id)
+	if not _height_signatures.has(id):
+		var bounds:=Rect2(Vector2(road.points[0][0],road.points[0][1]),Vector2.ZERO)
+		for point:Array in road.points:bounds=bounds.expand(Vector2(point[0],point[1]))
+		# Furthest verge shrub: half-width + 1.5m, .48m seating radius,
+		# plus one .5m terrain interpolation neighbour.
+		_height_signatures[id]=city._ground_terrain.region_signature(bounds.grow(float(road.width)*.5+2.5))
+	return int(_height_signatures[id])
+
 func adopt_clearance(source:RefCounted,city:RefCounted)->void:
 	# The joined renderer worker owns these completed, read-only obstacle
 	# records. Only their weak city owner changes at publication.
 	_clearance_revision=city.revision;_clearance_owner=weakref(city)
 	_clearance_records=source._clearance_records;_clearance_bins=source._clearance_bins
 	_clearance_signature=source._clearance_signature
+	_height_signatures=source._height_signatures
 	_cache=source._cache;_cache_signatures=source._cache_signatures
 
 func doors_clear(city:RefCounted,at:Vector2,reach:float)->bool:

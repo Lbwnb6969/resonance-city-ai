@@ -2632,7 +2632,19 @@ func _road_fingerprint(road: Dictionary) -> int:
 	var bounds := Rect2(Vector2(road.points[0][0],road.points[0][1]),Vector2.ZERO)
 	for point: Array in road.points: bounds=bounds.expand(Vector2(point[0],point[1]))
 	var shoulder_signature: int=state._ground_terrain.region_signature(bounds.grow(float(road.width)*0.5+1.6),true)
-	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,state.music_mode,promenade.prepare(self,road),era_streets.prepare(self,road),TramTracks.signature(state,road),state.road_profile(road).signature,shoulder_signature,_road_water_signature(road),_road_join_signature(road),state._junctions.signature(str(road.id))])
+	var part_started:=Time.get_ticks_usec()
+	var walk:Array=promenade.prepare(self,road)
+	rebuild_stats["road_fingerprint_promenade_ms"]=float(rebuild_stats.get("road_fingerprint_promenade_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.;part_started=Time.get_ticks_usec()
+	var era:Dictionary=era_streets.prepare(self,road)
+	rebuild_stats["road_fingerprint_era_ms"]=float(rebuild_stats.get("road_fingerprint_era_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.;part_started=Time.get_ticks_usec()
+	var tram:Array=TramTracks.signature(state,road)
+	var profile:int=state.road_profile(road).signature
+	rebuild_stats["road_fingerprint_tram_ms"]=float(rebuild_stats.get("road_fingerprint_tram_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.;part_started=Time.get_ticks_usec()
+	var water:Array=_road_water_signature(road)
+	rebuild_stats["road_fingerprint_water_ms"]=float(rebuild_stats.get("road_fingerprint_water_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.;part_started=Time.get_ticks_usec()
+	var joins:Array=_road_join_signature(road)
+	rebuild_stats["road_fingerprint_joins_ms"]=float(rebuild_stats.get("road_fingerprint_joins_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.
+	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,state.music_mode,walk,era,tram,profile,shoulder_signature,water,joins,state._junctions.signature(str(road.id))])
 
 func _road_contours(samples: Array[Vector2], width: float, extras: Array) -> Array:
 	var core := _stroke_contours(samples,width*0.5)
@@ -2824,7 +2836,19 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 	var edge := {"arrays":[],"stats":{"triangles":0,"vertices":0}} if is_promenade else path_edge.prepare(self,road,stepping_cuts)
 	rebuild_stats["road_edges_ms"] = float(rebuild_stats.get("road_edges_ms",0.0))+float(Time.get_ticks_usec()-edge_started)/1000.0
 	rebuild_stats["road_mesh_ms"] = float(rebuild_stats.get("road_mesh_ms",0.0))+float(Time.get_ticks_usec()-started)/1000.0
-	return {"arrays":arrays,"curbs":curbs,"edge":edge,"stairs":stairs,"earthworks":RoadEarthworks.prepare(self,road,profile),"roundabouts":RoundaboutVisual.prepare(self,road),"promenade":promenade.prepare(self,road),"era_streets":era_streets.prepare(self,road),"stepping_runs":stepping_runs,"bridges":Bridges.prepare(profile),"tram":tram_tracks.prepare(self,road)}
+	var adjunct_started:=Time.get_ticks_usec()
+	var earthworks:Dictionary=RoadEarthworks.prepare(self,road,profile)
+	rebuild_stats["road_earthworks_ms"]=float(rebuild_stats.get("road_earthworks_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
+	var roundabouts:Array=RoundaboutVisual.prepare(self,road)
+	rebuild_stats["road_roundabouts_ms"]=float(rebuild_stats.get("road_roundabouts_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
+	var promenade_data:Array=promenade.prepare(self,road)
+	var era_data:Dictionary=era_streets.prepare(self,road)
+	rebuild_stats["road_decoration_ms"]=float(rebuild_stats.get("road_decoration_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
+	var bridges:Dictionary=Bridges.prepare(profile)
+	rebuild_stats["road_bridges_ms"]=float(rebuild_stats.get("road_bridges_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
+	var tram:Dictionary=tram_tracks.prepare(self,road)
+	rebuild_stats["road_tram_ms"]=float(rebuild_stats.get("road_tram_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.
+	return {"arrays":arrays,"curbs":curbs,"edge":edge,"stairs":stairs,"earthworks":earthworks,"roundabouts":roundabouts,"promenade":promenade_data,"era_streets":era_data,"stepping_runs":stepping_runs,"bridges":bridges,"tram":tram}
 
 
 func _append_road_descriptor(records: Array, size: Vector3, at: Vector3, color: Color, rotation := Vector3.ZERO) -> void:
