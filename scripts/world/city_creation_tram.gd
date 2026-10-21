@@ -184,6 +184,12 @@ func set_night(value: bool)->void:
 	night=value
 	for car: Dictionary in cars:car.glass.emission_energy_multiplier=.70 if night else .10
 
+func update_music(choir:RefCounted,clock:float)->void:
+	var pulse:float=choir.phrase_pulse(clock)
+	for car:Dictionary in cars:
+		var at:Vector3=car.node.position
+		car.glass.emission_energy_multiplier=(.70 if night else .10)+.32*pulse*choir.strength_at(Vector2(at.x,at.z))
+
 func _release_ticket(home: String,ticket: Dictionary)->void:
 	for car: Dictionary in cars:car.riders.erase(home)
 	var resident: Dictionary=ticket.resident

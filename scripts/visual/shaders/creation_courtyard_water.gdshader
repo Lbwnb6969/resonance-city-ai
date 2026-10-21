@@ -7,6 +7,8 @@ render_mode cull_disabled, diffuse_burley;
 uniform vec4 water_color : source_color = vec4(0.38,0.58,0.55,1.0);
 uniform vec2 fountain_at = vec2(0.0);
 uniform float music_pulse : hint_range(0.0,1.0) = 0.0;
+uniform float choir_pulse=0.0;
+uniform float water_base_y=0.0;
 varying vec3 world_at;
 
 float ripple(vec2 at) {
@@ -14,6 +16,11 @@ float ripple(vec2 at) {
 }
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	// Preserve the recovered water mesh and its lowest basin point; only
+	// its upper streams gently rise with the actual choir's three-second bar.
+	vec3 lifted=world_at;
+	lifted.y+=max(0.,world_at.y-water_base_y)*.065*choir_pulse;
+	VERTEX=(inverse(MODEL_MATRIX)*vec4(lifted,1.)).xyz;
 	VERTEX.y += ripple(world_at.xz)*0.0012;
 }
 void fragment() {

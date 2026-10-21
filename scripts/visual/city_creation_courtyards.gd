@@ -183,6 +183,12 @@ func _fountain(root: Node3D,plan: Dictionary,anchor_y: float) -> void:
 		var water: bool = str(part.name)=="FountainWater"
 		instance.material_override = material if water else stone_material
 		if water: instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		if water:
+			var water_base:=INF;var low:=Vector3.INF;var high:=Vector3(-INF,-INF,-INF)
+			for point:Vector3 in part.faces:
+				water_base=minf(water_base,(instance.transform*point).y);low=low.min(point);high=high.max(point)
+			material.set_shader_parameter("water_base_y",water_base)
+			instance.custom_aabb=AABB(low,high-low).grow((high-low).length()*.07)
 		root.add_child(instance)
 		if not water:
 			for point: Vector3 in part.faces: faces.append((relative*point)*scale_value)
@@ -200,7 +206,7 @@ func _fountain(root: Node3D,plan: Dictionary,anchor_y: float) -> void:
 	body.add_child(collision)
 	root.add_child(body)
 
-func update_music(view: Dictionary) -> void:
+func update_music(view: Dictionary,choir:RefCounted=null) -> void:
 	var audible := bool(view.get("audible",false))
 	var lead := str(view.get("lead_id","")) if audible else ""
 	var source := str(view.get("source_id","")) if audible else ""
@@ -210,9 +216,12 @@ func update_music(view: Dictionary) -> void:
 		var material: ShaderMaterial = root.get_meta("water_material",null)
 		if material==null: continue
 		var active := false
+		var chamber:=0.
 		for id: String in root.get_meta("members",[]):
-			if id==lead or id==source or chorus.has(id): active=true;break
-		material.set_shader_parameter("music_pulse",pulse if active else 0.0)
+			if id==lead or id==source or chorus.has(id):active=true
+			if choir!=null and choir.large_members.has(id):chamber=choir.phrase_pulse(float(view.get("clock_sec",0.)))
+		material.set_shader_parameter("music_pulse",maxf(pulse if active else 0.,chamber*.65))
+		material.set_shader_parameter("choir_pulse",chamber)
 
 func _remove(id: String) -> void:
 	if roots.has(id):

@@ -20,6 +20,20 @@ var _terrain_key:Variant=null
 var _serial:=0
 var emissions:=0
 var active_halos:=0
+var large_members:Dictionary={}
+var light_points:Array[Vector2]=[]
+var light_signature:=0
+
+static func phrase_pulse(clock:float)->float:
+	return pow(.5+.5*cos(TAU*clock/3.),2.)
+
+func strength_at(at:Vector2)->float:
+	var strength:=0.
+	for point:Vector2 in light_points:
+		var distance:=at.distance_squared_to(point)
+		if distance<=9.:return 1.
+		if distance<36.:strength=maxf(strength,1.-smoothstep(3.,6.,sqrt(distance)))
+	return strength
 
 func setup(owner:Node3D)->void:
 	renderer=owner;layer=Node3D.new();layer.name="LivingChoir";renderer.add_child(layer)
@@ -98,6 +112,7 @@ func update(records:Dictionary,snapshot:Dictionary,key:Variant,muted:bool=false)
 	var clock:=float(snapshot.get("clock_sec",0.));mote_material.set_shader_parameter("music_clock",clock)
 	for node:MeshInstance3D in halos:node.hide()
 	active_halos=0;var count:=0;var mote_bounds:=AABB()
+	large_members.clear();light_points.clear()
 	if not records.is_empty():_prepare(records,key)
 	if not muted and bool(snapshot.get("audible",false)) and not records.is_empty():
 		var response:Dictionary=snapshot.get("choral_wave",{})
@@ -113,6 +128,9 @@ func update(records:Dictionary,snapshot:Dictionary,key:Variant,muted:bool=false)
 					node.material_override.set_shader_parameter("music_clock",clock)
 					node.material_override.set_shader_parameter("strength",strength);node.show();active_halos+=1
 			if int(group.size)<15:continue
+			for id:String in group.members:
+				if float(response.get(id,0.))>0.:
+					large_members[id]=true;light_points.append(records[id].position)
 			for i in range(16):
 				if count>=MAX_MOTES:break
 				var id:String=group.members[i%group.members.size()];var row:Dictionary=records[id]
@@ -124,6 +142,7 @@ func update(records:Dictionary,snapshot:Dictionary,key:Variant,muted:bool=false)
 				motes.multimesh.set_instance_transform(count,Transform3D(Basis.IDENTITY,origin))
 				motes.multimesh.set_instance_custom_data(count,Color(phase,0,0,strength));count+=1
 	motes.multimesh.visible_instance_count=count
+	light_signature=hash([key,large_members.keys()])
 	if count>0:motes.multimesh.custom_aabb=mote_bounds.grow(.4)
 	for slot:Dictionary in waves:
 		var age:=clock-float(slot.started);var node:MeshInstance3D=slot.node

@@ -19,6 +19,24 @@ var _clearance_revision:=-1
 var _clearance_owner:WeakRef
 var _clearance_records:Array[Dictionary]=[]
 var _clearance_bins:Dictionary={}
+var _lamp_rigs:Array[WeakRef]=[]
+var _lamp_scope_key:Variant=null
+
+func update_music(choir:RefCounted,clock:float)->void:
+	for key:String in ["glow","pool"]:
+		if materials.has(key):materials[key].set_shader_parameter("music_clock",clock)
+	if _lamp_scope_key==choir.light_signature:return
+	_lamp_scope_key=choir.light_signature
+	var live:Array[WeakRef]=[]
+	for reference:WeakRef in _lamp_rigs:
+		var node:MultiMeshInstance3D=reference.get_ref()
+		if node==null:continue
+		live.append(reference)
+		var points:Array=node.get_meta("lamp_positions")
+		for i in range(points.size()):
+			var at:Vector3=points[i]
+			node.multimesh.set_instance_custom_data(i,Color(choir.strength_at(Vector2(at.x,at.z)),0,0,0))
+	_lamp_rigs=live
 
 func set_light(is_evening: bool,is_concert: bool) -> void:
 	if evening==is_evening and concert==is_concert: return
@@ -156,6 +174,7 @@ func adopt_clearance(source:RefCounted,city:RefCounted)->void:
 	_clearance_signature=source._clearance_signature
 	_height_signatures=source._height_signatures
 	_cache=source._cache;_cache_signatures=source._cache_signatures
+	_lamp_rigs.append_array(source._lamp_rigs);_lamp_scope_key=null
 
 func doors_clear(city:RefCounted,at:Vector2,reach:float)->bool:
 	_prepare_clearance(city)
@@ -266,15 +285,11 @@ func _glows(root: Node3D,points: Array[Vector3],pool: bool) -> void:
 		material.set_shader_parameter("ground_pool",1.0 if pool else 0.0)
 		materials[key]=material
 	var mesh := QuadMesh.new();mesh.size=Vector2(1.6,1.6) if pool else Vector2(.9,.9)
-	if not pool:
-		# Camera-facing orientation is performed by the instance shader.
-		if not materials.has("billboard"):
-			var shader := Shader.new()
-			shader.code=GlowShader.code.replace("void fragment()", "void vertex() { MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0],INV_VIEW_MATRIX[1],INV_VIEW_MATRIX[2],MODEL_MATRIX[3]); }\nvoid fragment()")
-			materials.billboard=shader
-		materials[key].shader=materials.billboard
-	var multi := MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.mesh=mesh;multi.instance_count=points.size()
+	var multi := MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true;multi.mesh=mesh;multi.instance_count=points.size();multi.visible_instance_count=points.size()
 	for i in range(points.size()):
 		multi.set_instance_transform(i,Transform3D(Basis(Vector3.RIGHT,-PI*.5) if pool else Basis.IDENTITY,points[i]))
+		multi.set_instance_custom_data(i,Color(0,0,0,0))
 	var node := MultiMeshInstance3D.new();node.name="LampPools" if pool else "LampHalos";node.multimesh=multi;node.material_override=materials[key]
 	node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;node.custom_aabb=multi.get_aabb().grow(1.0);root.add_child(node)
+	node.set_meta("lamp_positions",points.duplicate())
+	_lamp_rigs.append(weakref(node));_lamp_scope_key=null

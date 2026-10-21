@@ -1330,8 +1330,9 @@ func _process(delta: float) -> void:
 	resonance_snapshot["pluck"]=music.house_pluck_report()
 	ambience.set_muted(music.muted)
 	ambience.set_foreground(bool(resonance_snapshot.get("concert_active",false)) or bool(resonance_snapshot.pluck.get("audible",false)) or bool(resonance_snapshot.get("canon",{}).get("audible",false)) or bool(music.tram_music_report().audible))
-	town.update_city_resonance_visuals(resonance_snapshot)
 	if not _edit_pending:town.living_music.update(music._house_music,resonance_snapshot,_music_catalog_key,music.muted)
+	town.update_city_resonance_visuals(resonance_snapshot)
+	life.tram.update_music(town.living_music,float(resonance_snapshot.get("clock_sec",0.)))
 	var grand:Dictionary=music.grand_festival_report()
 	if not bool(grand.active) and not finale.is_empty():grand=finale
 	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
