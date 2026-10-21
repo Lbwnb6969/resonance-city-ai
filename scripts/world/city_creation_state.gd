@@ -9,6 +9,8 @@ var automatic_neighborhoods:=false
 const Microclimate=preload("res://scripts/world/city_creation_microclimate.gd")
 var microclimate:=""
 const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
+const ScoreModifiers=preload("res://scripts/world/city_creation_score_modifiers.gd")
+var era_modifiers:Array[String]=[]
 var biome_seed:Dictionary={}
 var _biome_revision:=-1
 var _biome_bonuses:Dictionary={}
@@ -164,6 +166,7 @@ func initialize_empty()->void:
 
 func initialize() -> void:
 	biome_seed={};_biome_revision=-1;_biome_bonuses={}
+	era_modifiers.clear()
 	microclimate=""
 	automatic_neighborhoods=false
 	_prosperity_revision = -1
@@ -867,6 +870,8 @@ func special_site(house_id:String)->Dictionary:
 	return _special_sites[house_id]
 
 func craft_radius(shop_id:String)->float:
+	var index:=_house_index(shop_id)
+	if index>=0 and houses[index].role=="atelier" and "polyphonic_academy" in era_modifiers:return INF
 	return service_radius(30. if special_site(shop_id).get("clock_hub",false) else 22.)
 
 func clockwork_speed_zones()->Array[Dictionary]:
@@ -1579,6 +1584,16 @@ func afterglow_remaining(house_id: String) -> float:
 func production_multiplier(house_id: String) -> float:
 	return site_production_multiplier(house_id) * (1.25 if afterglow_remaining(house_id) > 0.0 else 1.0)
 
+func choose_era_modifier(id:String)->Dictionary:
+	if not ScoreModifiers.CHOICES.has(id):return _fail("乐章铭牌无效")
+	var era:String=ScoreModifiers.CHOICES[id].era
+	if era not in era_unlocks:return _fail("这个时代尚未开启")
+	if not ScoreModifiers.selected(self,era).is_empty():return _fail("这个时代已选择铭牌，可撤销后重新选择")
+	var before:=snapshot()
+	era_modifiers.append(id)
+	_commit(before,"选择"+str(ScoreModifiers.CHOICES[id].name))
+	return {"ok":true,"message":str(ScoreModifiers.CHOICES[id].name)+"已生效"}
+
 func set_microclimate(mode:String)->Dictionary:
 	if mode not in Microclimate.IDS:return _fail("四时风物无效")
 	if mode==microclimate:return {"ok":true,"no_op":true,"message":"四时未变"}
@@ -1610,7 +1625,7 @@ func site_production_multiplier(house_id: String) -> float:
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
 	var weather:float=Microclimate.production(self,houses[index]) if index>=0 else 1.
-	return float(biome_bonus(house_id).get("production",1.))*transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	return (ScoreModifiers.production(self,houses[index]) if index>=0 else 1.)*float(biome_bonus(house_id).get("production",1.))*transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
 
 func biome_bonus(house_id:String)->Dictionary:
 	if _biome_revision!=revision:
@@ -1622,7 +1637,7 @@ func transit_efficiency(house_id:String)->float:
 	return 1.3 if _transit_corridor_revision==revision and _transit_corridor_houses.has(house_id) and index>=0 and houses[index].role in ["workshop","atelier","clockmaker","garden_cafe"] else 1.
 
 func cafe_time_multiplier(house_id:String)->float:
-	return float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)
+	return float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
 
 
 func synergy_buffs()->Dictionary:
@@ -1656,14 +1671,14 @@ func chord_together(house_ids:Array,chord:String)->bool:
 func installation_multiplier(shop_id:String,target_id:String)->float:
 	var index:=_house_index(shop_id)
 	if index<0:return 1.
-	var delivery:=float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
+	var delivery:=(1.25 if "craft_federation" in era_modifiers else 1.)*float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
 	var expansion:float=synergy_buffs().expansion_multiplier
 	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery*expansion
 	return delivery*float(planning_bonus(target_id).get("growth_mult",expansion))
 
 
 func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
-	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else (float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.) if phase=="returning" else 1.)
+	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else ((1.25 if "craft_federation" in era_modifiers else 1.)*float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.) if phase=="returning" else 1.)
 	return walking_multiplier(home_id)*delivery*temperament_walk(shop_id)
 
 
@@ -1701,11 +1716,11 @@ func cafe_afterglow_extension(house_id: String) -> float:
 	var base:=float(site_blessing(house_id).get("afterglow_extension",30.))
 	var index:=_house_index(house_id)
 	if index>=0 and water_clearance(Vector2(houses[index].origin[0],houses[index].origin[1]))<4.5:base=30.+(base-30.)*float(biome_bonus(house_id).get("water_bonus",1.))
-	return base*(1.25 if microclimate=="spring_breeze" else 1.)
+	return base*ScoreModifiers.afterglow(self)*(1.25 if microclimate=="spring_breeze" else 1.)
 
 
 func afterglow_limit(house_id: String) -> float:
-	return (360.0 if not signature_bonuses().palace_id.is_empty() else 240.0)*(2.0 if level_tier(house_id)>=5 else 1.0)
+	return ScoreModifiers.afterglow(self)*(360.0 if not signature_bonuses().palace_id.is_empty() else 240.0)*(2.0 if level_tier(house_id)>=5 else 1.0)
 
 func grant_concert_afterglow(venue_id:String,members:Array,duration:float,elapsed:float=0.)->void:
 	if not special_site(venue_id).get("hall_ecology",false):grant_resonance_afterglow(members,duration,elapsed);return
@@ -1721,7 +1736,7 @@ func grant_resonance_afterglow(house_ids: Array, duration: float = 60.0, elapsed
 	for house_id in house_ids:
 		if _house_index(str(house_id)) >= 0:
 			var id:=str(house_id)
-			var earned: float=duration*(2.0 if level_tier(id)>=5 else 1.0)-elapsed
+			var earned: float=duration*ScoreModifiers.afterglow(self)*(2.0 if level_tier(id)>=5 else 1.0)-elapsed
 			if earned>0.0:resonance_afterglow[id] = maxf(afterglow_remaining(id), clampf(earned, 0.0, afterglow_limit(id)))
 	if not house_ids.is_empty():
 		life_progress_dirty = true
@@ -2670,6 +2685,8 @@ func _apply_snapshot(data: Dictionary, preserve_issued_ids: bool = false) -> voi
 	_road_heights = RoadHeights.new()
 	_courtyard_revision = -1
 	var had_plants := Serializer.apply_data(self,data,preserve_issued_ids)
+	if preserve_issued_ids:
+		for id:String in resonance_afterglow:resonance_afterglow[id]=minf(float(resonance_afterglow[id]),afterglow_limit(id))
 	if not had_plants:
 		var preserved_plant_watermark := int(_high_watermark.get("plant", 0))
 		_generate_initial_plants()

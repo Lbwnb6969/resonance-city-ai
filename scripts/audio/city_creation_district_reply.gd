@@ -145,13 +145,14 @@ func at_phrase(absolute_phrase: int,offset_sec:float=0.) -> void:
 			if not _play(pending,absolute_phrase,true): skipped+=1
 		else: skipped+=1
 		return
-	if posmod(absolute_phrase,4)!=0 or not on_boundary: return
+	var interval:=2 if _owner._pluck_city!=null and "polyphonic_academy" in _owner._pluck_city.era_modifiers else 4
+	if posmod(absolute_phrase,interval)!=0 or not on_boundary: return
 	var eligible: Array[String] = []
 	for id: String in _pairs:
 		if _pair_valid(_pairs[id]): eligible.append(id)
 	if eligible.is_empty(): return
 	eligible.sort()
-	var selected: Dictionary = _pairs[eligible[posmod(int(absolute_phrase/4),eligible.size())]]
+	var selected: Dictionary = _pairs[eligible[posmod(int(absolute_phrase/interval),eligible.size())]]
 	var event := _direction(selected,absolute_phrase)
 	if _play(event,absolute_phrase,false): _pending=event
 	else: skipped+=1

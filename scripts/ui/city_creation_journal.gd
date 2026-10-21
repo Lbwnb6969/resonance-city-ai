@@ -25,6 +25,11 @@ var era_label: Label
 var next_label: Label
 var next_button: Button
 var _next_goal: Dictionary = {}
+var score_buttons:Dictionary={}
+var score_cards:Dictionary={}
+var score_title:Label
+var era_prompt_pending:=false
+var _era_prompt_target:=""
 
 func setup(owner: Node3D, parent: Control) -> void:
 	demo = owner
@@ -113,6 +118,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 	cards.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cards.add_theme_constant_override("separation", 14)
 	scroll.add_child(cards)
+	_create_score_cards()
 	var footer: Label = demo._label("达成会留下新饰色。随时继续自由建造，没有期限。", 13)
 	footer.add_theme_color_override("font_color", UI.MUTED)
 	column.add_child(footer)
@@ -147,6 +153,11 @@ func close_panel() -> void:
 	demo.preview_key = ""
 
 func refresh(notify: bool = true) -> void:
+	_refresh_score_cards()
+	if era_prompt_pending and not demo.edit_pending() and not demo.gallery.busy:
+		era_prompt_pending=false
+		open_panel()
+		_scroll_score_choice(_era_prompt_target)
 	rows = Growth.report(demo.state)
 	var earned: Array = demo.state.refresh_growth(rows)
 	if not earned.is_empty(): rows = Growth.report(demo.state)
@@ -270,3 +281,62 @@ func _choose_palette(index: int) -> void:
 	var result: Dictionary = demo.state.set_house_palette(demo.selected_house, index) if index < 4 else demo.state.set_house_finish(demo.selected_house, FINISH_ORDER[index - 4])
 	demo._after_edit(result, "terrace")
 	refresh_palette()
+
+func offer_era_choice(era:String)->void:
+	_era_prompt_target=era
+	era_prompt_pending=true
+	refresh(false)
+
+func _create_score_cards()->void:
+	score_title=demo._label("时代乐章 · 每个时代选择一枚铭牌",18)
+	score_title.name="ScoreModifiersTitle"
+	cards.add_child(score_title)
+	for index in range(demo.state.ScoreModifiers.ERAS.size()):
+		var era:String=demo.state.ScoreModifiers.ERAS[index]
+		var row:=HBoxContainer.new()
+		row.name="ScoreCards_"+era
+		row.add_theme_constant_override("separation",18)
+		cards.add_child(row)
+		score_cards[era]=row
+		for id:String in demo.state.ScoreModifiers.PAIRS[index]:
+			var data:Dictionary=demo.state.ScoreModifiers.CHOICES[id]
+			var leaf:=VBoxContainer.new()
+			leaf.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+			leaf.size_flags_stretch_ratio=1.
+			row.add_child(leaf)
+			var choose:Button=demo._button(str(data.name),_choose_score.bind(id))
+			choose.name="Score_"+id
+			choose.tooltip_text=str(data.text)+" 选定后可用Ctrl+Z撤销。"
+			leaf.add_child(choose)
+			score_buttons[id]=choose
+			var text:Label=demo._label(str(data.text),13)
+			text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+			text.add_theme_color_override("font_color",UI.MUTED)
+			leaf.add_child(text)
+
+func _refresh_score_cards()->void:
+	if score_title==null:return
+	# Paper HUD adds its overview after setup; earned choices lead this page.
+	if score_title.get_index()!=0:
+		cards.move_child(score_title,0)
+		for index in range(demo.state.ScoreModifiers.ERAS.size()):cards.move_child(score_cards[demo.state.ScoreModifiers.ERAS[index]],index+1)
+	score_title.visible=demo.state.era_unlocks.size()>1
+	for era:String in score_cards:
+		score_cards[era].visible=era in demo.state.era_unlocks
+		var selected:String=demo.state.ScoreModifiers.selected(demo.state,era)
+		for id:String in demo.state.ScoreModifiers.CHOICES:
+			if demo.state.ScoreModifiers.CHOICES[id].era!=era:continue
+			var b:Button=score_buttons[id]
+			b.disabled=not selected.is_empty() or demo.edit_pending() or demo.gallery.busy
+			b.text=("✓ " if id==selected else "")+"时代%d · "%[demo.state.ScoreModifiers.ERAS.find(era)+2]+str(demo.state.ScoreModifiers.CHOICES[id].name)
+
+func _choose_score(id:String)->void:
+	if demo.edit_pending() or demo.gallery.busy:return
+	demo._after_edit(demo.state.choose_era_modifier(id),"terrace",false)
+	refresh(false)
+
+func _scroll_score_choice(era:String)->void:
+	await demo.get_tree().process_frame
+	if panel.visible and score_cards.has(era):
+		var scroll:ScrollContainer=cards.get_parent()
+		scroll.ensure_control_visible(score_cards[era])

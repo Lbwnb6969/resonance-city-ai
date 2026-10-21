@@ -212,6 +212,7 @@ func begin_budget_sync() -> bool:
 	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
 	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
 	_budget_request.snapshot["biome_seed"]=state.biome_seed.duplicate()
+	_budget_request.snapshot["era_modifiers"]=state.era_modifiers.duplicate()
 	var resident_stops:Dictionary={}
 	for resident:Dictionary in residents:resident_stops[str(resident.home_id)]=resident.stops.duplicate()
 	_budget_request.snapshot["resident_stops"]=resident_stops
@@ -255,7 +256,7 @@ func commit_budget_sync() -> bool:
 	# native value comparisons cover every captured geometry input here without
 	# reconstructing all held actors' remaining route bounds a second time.
 	var captured:Dictionary=_budget_request.snapshot
-	if int(_budget_request.revision) != state.revision or captured.houses!=state.houses or captured.roads!=state.roads or captured.waters!=state.waters or captured.districts!=state.districts or captured.terrain_strokes!=state.terrain_strokes or captured.biome_seed!=state.biome_seed:
+	if int(_budget_request.revision) != state.revision or captured.houses!=state.houses or captured.roads!=state.roads or captured.waters!=state.waters or captured.districts!=state.districts or captured.terrain_strokes!=state.terrain_strokes or captured.biome_seed!=state.biome_seed or captured.era_modifiers!=state.era_modifiers:
 		begin_budget_sync()
 		return false
 	var started := Time.get_ticks_usec()
@@ -533,7 +534,9 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 	body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
 
 func _signature() -> Array:
-	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state)]
+	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate()]
+	if "arcade_market" in state.era_modifiers:
+		for house:Dictionary in state.houses:result.append([house.id,str(house.get("style","classic")),state.house_era(house),house.cells.duplicate(true)])
 	# Only finite-support edits which can change walking or an activity need
 	# a new network. These are analytic AABBs: never prepare the height field
 	# on the main thread merely to decide whether preparation is necessary.
@@ -1384,7 +1387,10 @@ func record_travel(actor_id: String, from: Vector2, to: Vector2) -> void:
 	if _budget_hold or budget_sync_pending(): return
 	var started:=Time.get_ticks_usec() if profile_tick else 0
 	for event: Dictionary in travel.observe(actor_id,from,to,time):
-		if travel_callback.is_valid(): travel_callback.call(actor_id,str(event.kind),str(event.id),Vector2(event.at))
+		if event.kind in ["arch","arcade_tea"] and "arcade_market" in state.era_modifiers:
+			var home:=actor_id.get_slice("/",1)
+			if _roles.get(home,"")=="residential":state.grant_resonance_afterglow([home],30.)
+		if event.kind!="arcade_tea" and travel_callback.is_valid(): travel_callback.call(actor_id,str(event.kind),str(event.id),Vector2(event.at))
 	if profile_tick:tick_profile.travel+=Time.get_ticks_usec()-started
 
 func travel_source_valid(kind: String, source_id: String, at: Vector2) -> bool:

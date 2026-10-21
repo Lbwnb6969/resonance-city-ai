@@ -2212,6 +2212,7 @@ func _on_era_unlocked(era: String)->void:
 	if not edit_pending():
 		_refresh_place();_refresh_district()
 		journal.refresh(false)
+	journal.offer_era_choice(era)
 	save_delay=3.0
 
 func _on_quality_changed(events: Array) -> void:

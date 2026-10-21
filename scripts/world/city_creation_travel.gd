@@ -5,6 +5,7 @@ const WET_SAMPLE := 0.15
 const SIDE_MARGIN := 0.06
 const COOLDOWN := 6.0
 const Stepping = preload("res://scripts/world/city_creation_stepping_plan.gd")
+const Arcade=preload("res://scripts/world/city_creation_arcade_plan.gd")
 const StairKeys=preload("res://scripts/world/city_creation_stair_keys.gd")
 var sites: Dictionary = {}
 var rebuilds := 0
@@ -29,6 +30,8 @@ func adopt_prepared(source: RefCounted) -> bool:
 func sync(city: RefCounted) -> void:
 	var signature: Array = []
 	signature.append(city.biome_seed.duplicate())
+	signature.append(city.era_modifiers.duplicate())
+	var tea_enabled:bool="arcade_market" in city.era_modifiers
 	signature.append(city.terrain_strokes.duplicate(true))
 	for road: Dictionary in city.roads:
 		signature.append([str(road.id),road.points.duplicate(true),float(road.width),str(road.get("style","path"))])
@@ -37,8 +40,8 @@ func sync(city: RefCounted) -> void:
 	for house: Dictionary in city.houses:
 		var cells: Array = []
 		for cell: Dictionary in house.cells:
-			if int(cell.level)==0: cells.append([str(cell.id),int(cell.x),int(cell.z),str(cell.kind)])
-		signature.append([str(house.id),house.origin.duplicate(),float(house.get("base_y",0.0)),cells])
+			if int(cell.level)==0 or tea_enabled: cells.append([str(cell.id),int(cell.x),int(cell.z),int(cell.level),str(cell.kind)])
+		signature.append([str(house.id),house.origin.duplicate(),float(house.get("base_y",0.0)),(city.house_era(house) if tea_enabled else ""),(str(house.get("style","classic")) if tea_enabled else ""),cells])
 	if signature==_signature: return
 	_signature=signature
 	rebuilds+=1
@@ -64,6 +67,32 @@ func sync(city: RefCounted) -> void:
 			var lateral := Vector2(0,1) if axis.x==1 else Vector2(1,0)
 			var at: Vector2 = passage.center+lateral*float(passage.offset)
 			_add_site("%s/arch/%s/%d" % [str(house.id),str(passage.cell_id),int(axis.x)],"arch",str(house.id),str(passage.road_id),at,axis,float(passage.half_width)-0.10)
+
+	if "arcade_market" in city.era_modifiers:
+		for house:Dictionary in city.houses:_arcade_tea_sites(city,house)
+
+func _arcade_tea_sites(city:RefCounted,house:Dictionary)->void:
+	for face:Dictionary in Arcade.for_house(city,house):
+		var cell:Dictionary={}
+		for row:Dictionary in house.cells:
+			if row.id==face.cell_id:cell=row;break
+		var normal:=Vector2(face.side)
+		var tangent:=Vector2(normal.y,-normal.x)
+		var wall:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8+normal*.9
+		var best:=INF
+		var point:=Vector2.ZERO
+		var selected:Dictionary={}
+		for road:Dictionary in city.roads:
+			for index in range(1,road.points.size()):
+				var a:=Vector2(road.points[index-1][0],road.points[index-1][1])
+				var b:=Vector2(road.points[index][0],road.points[index][1])
+				if absf((b-a).normalized().dot(tangent))<.9:continue
+				var nearest:=Geometry2D.get_closest_point_to_segment(wall,a,b)
+				var delta:=nearest-wall
+				if delta.dot(normal)<0. or delta.dot(normal)>float(road.width)*.5+.8 or absf(delta.dot(tangent))>.1:continue
+				if delta.length_squared()<best:best=delta.length_squared();point=nearest;selected=road
+		if not selected.is_empty():
+			_add_site("%s/tea/%s/%d/%d"%[house.id,cell.id,int(normal.x),int(normal.y)],"arcade_tea",str(house.id),str(selected.id),point,tangent,float(selected.width)*.5)
 
 func site(id: String) -> Dictionary:
 	return sites.get(id,{})

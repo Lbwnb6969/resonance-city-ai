@@ -82,6 +82,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.microclimate.is_empty():result.microclimate=city.microclimate;result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.era_modifiers.is_empty():result.era_modifiers=city.era_modifiers.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.biome_seed.is_empty():result.biome_seed=city.biome_seed.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
@@ -89,6 +90,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
 	city.biome_seed=data.get("biome_seed",{}).duplicate();city._biome_revision=-1;city._biome_bonuses={}
+	city.era_modifiers.assign(data.get("era_modifiers",[]))
 	city.microclimate=str(data.get("microclimate",""))
 	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
 	# Editing history restores geometry; completed daily visits remain history.
@@ -259,6 +261,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if data.has("house_clockwork") and data.schema<city.CLOCKWORK_SCHEMA:return city._fail("钟表工艺需要新存档版本")
 	if data.has("biome_seed") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.Biomes.valid(data.biome_seed)):return city._fail("声学地貌存档无效")
 	if data.has("microclimate") and (data.schema<city.PERSONALIZATION_SCHEMA or data.microclimate not in city.Microclimate.IDS):return city._fail("四时风物存档无效")
+	if data.has("era_modifiers") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.ScoreModifiers.valid(data.era_modifiers,unlocks)):return city._fail("时代乐章铭牌存档无效")
 	var memories: Variant = data.get("growth_memories", [])
 	if not memories is Array or memories.size()>Growth.CHAPTERS.size(): return city._fail("城市成长手记结构无效")
 	for index in range(memories.size()):
@@ -412,6 +415,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档共鸣余韵房屋无效")
 		var maximum: float=180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0
 		if int(data.schema)>=city.PLANNING_SCHEMA:maximum*=2.
+		if "lasting_resonance" in data.get("era_modifiers",[]):maximum*=1.5
 		var quality: Variant=data.get("building_quality",{}).get(house_id,{}) if data.get("building_quality",{}) is Dictionary else {}
 		if int(data.schema)>=city.QUALITY_CONTEXT_SCHEMA and quality is Dictionary and city._is_integer(quality.get("level_tier")) and quality.level_tier==5:maximum*=2.
 		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > maximum:
