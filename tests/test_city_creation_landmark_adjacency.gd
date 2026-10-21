@@ -43,11 +43,11 @@ func _mill()->void:
 	city.initialize();_check(city.landmark_bread.is_empty() and not city.snapshot().has("landmark_bread"),"new town clears the optional ledger and retains its old schema")
 func _auras()->void:
 	var city:=_city();var keep:Dictionary=city.place_signature("bell_keep",Vector2(-23,0))
-	_check(keep.ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.3),"real woodshop within sixteen metres installs thirty percent faster")
-	_check(is_equal_approx(city.artisan_walking_multiplier("h1","h3","h1","returning"),city.walking_multiplier("h1")*1.3) and is_equal_approx(city.artisan_walking_multiplier("h1","h3","h1","to_workshop"),city.walking_multiplier("h1")),"settlement return accelerates on its real route; commute retains the global walking aura")
+	_check(keep.ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.25),"real woodshop within sixteen metres installs twenty five percent faster")
+	_check(is_equal_approx(city.artisan_walking_multiplier("h1","h3","h1","returning"),city.walking_multiplier("h1")*1.25) and is_equal_approx(city.artisan_walking_multiplier("h1","h3","h1","to_workshop"),city.walking_multiplier("h1")),"settlement return accelerates on its real route; commute retains the global walking aura")
 	_check(city.place_signature("bell_keep",Vector2(-26,0),str(keep.house_id)).ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.),"moving keep beyond the circle withdraws the delivery bonus")
-	_check(city.undo().ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.3),"undo restores the local delivery circle")
-	_check(city.place_signature("bell_keep",Vector2(-24,0),str(keep.house_id)).ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.3),"workshop exactly on the sixteen metre boundary receives the aura")
+	_check(city.undo().ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.25),"undo restores the local delivery circle")
+	_check(city.place_signature("bell_keep",Vector2(-24,0),str(keep.house_id)).ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.25),"workshop exactly on the sixteen metre boundary receives the aura")
 	_check(city.place_signature("bell_keep",Vector2(-24.01,0),str(keep.house_id)).ok and is_equal_approx(city.installation_multiplier("h3","h1"),1.),"workshop just outside sixteen metres receives no delivery aura")
 	city=_city();var ordinary_batch:int=city.workshop_batch_size("h3");var academy:Dictionary=city.place_signature("music_academy",Vector2(-18,15))
 	var artist:Dictionary=city.add_house(Vector2(-15,0));_check(artist.ok and city.set_house_role(str(artist.house_id),"atelier").ok,"earned renaissance artist builds through normal state APIs")
@@ -62,7 +62,7 @@ func _auras()->void:
 	city=_city();var palace:Dictionary=city.place_signature("botanical_palace",Vector2(-15.5,-2))
 	if not palace.ok:_check(false,"palace fixture placement: "+str(palace));return
 	_check(palace.ok and bool(city.planning_bonus("h3").natural) and bool(city.site_blessing("h3").blessed) and bool(city.Quality.amenity(city,city.houses[city._house_index("h1")])),"palace supplies actual workshop forest blessing and household natural amenity")
-	_check(is_equal_approx(float(city.planning_bonus("h4").cafe_duration_mult),.6) and not bool(city.planning_bonus("h6").natural),"near cafe shortens tea forty percent and the far river bank receives no local nature aura")
+	_check(is_equal_approx(float(city.planning_bonus("h4").cafe_duration_mult),1./1.4) and not bool(city.planning_bonus("h6").natural),"near cafe accelerates real tea forty percent and the far river bank receives no local nature aura")
 	_check(city.remove_house(str(palace.house_id)).ok and not bool(city.planning_bonus("h3").natural) and is_equal_approx(float(city.planning_bonus("h4").cafe_duration_mult),1.),"palace recycling removes future local conditions and restores six second tea")
 	_check(city.undo().ok and bool(city.planning_bonus("h3").natural),"palace undo restores the complete local nature circle")
 	_check(city.place_signature("botanical_palace",Vector2(-22,-1.8),str(palace.house_id)).ok and bool(city.planning_bonus("h3").natural),"natural aura includes the actual flower circle's fourteen metre boundary")
@@ -73,15 +73,15 @@ func _tea()->void:
 	for i in range(12000):
 		if life.cafe.status("h4").phase=="tea":ready=true;break
 		life._process(.05)
-	_check(ready and is_equal_approx(float(life.cafe.status("h4").duration),3.6),"actual walk and seated party begin a 3.6 second tea")
+	_check(ready and is_equal_approx(float(life.cafe.status("h4").duration),6./1.4),"actual walk and seated party begin a forty-percent-faster tea")
 	if ready:
-		for i in range(18):life.cafe.tick(.1)
-		_check(absf(float(life.cafe.groups.h4.elapsed)-3.)<.00001 and absf(float(life.cafe.status("h4").elapsed)-1.8)<.00001,"half-time keeps the existing six-unit normalized saved progress")
+		life.cafe.tick(3./1.4)
+		_check(absf(float(life.cafe.groups.h4.elapsed)-3.)<.00001 and absf(float(life.cafe.status("h4").elapsed)-3./1.4)<.00001,"half-time keeps the existing six-unit normalized saved progress")
 		_check(city.set_journey_checkpoint(life.checkpoint()).ok,"accelerated seated party checkpoints through the existing journey format")
 		var restored:=_roundtrip(city,"half-finished accelerated tea reloads")
 		var resumed:=_life(restored);var before:=int(restored.life_progress.tea_parties)
-		resumed.cafe.tick(1.79);_check(int(restored.life_progress.tea_parties)==before,"reloaded tea does not complete before its remaining real time")
-		resumed.cafe.tick(.011);_check(int(restored.life_progress.tea_parties)==before+1,"remaining 1.8 seconds finish the actual tea exactly once")
+		resumed.cafe.tick(3./1.4-.01);_check(int(restored.life_progress.tea_parties)==before,"reloaded tea does not complete before its remaining real time")
+		resumed.cafe.tick(.011);_check(int(restored.life_progress.tea_parties)==before+1,"remaining half of the accelerated duration finish the actual tea exactly once")
 		resumed.free()
 	life.free()
 func _motion()->void:

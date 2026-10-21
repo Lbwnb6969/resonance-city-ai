@@ -146,6 +146,7 @@ func refresh()->void:
 	parade_button.disabled=demo.life.concert_status().phase!="idle"
 	parade_button.tooltip_text="手绘指挥顺序：划过聚落与地标，街坊沿真实街道提灯巡游"
 	status.text=str(demo.HouseholdFeedback.describe(demo.state,demo.life,target_house_id)).replace("\n"," · ")
+	if demo.state.transit_efficiency(target_house_id)>1.:status.text+="\n轨交直达 · "+("品茶效率+30%" if role=="garden_cafe" else "制作效率+30%")
 	_update_anchor(house)
 
 func follow()->void:

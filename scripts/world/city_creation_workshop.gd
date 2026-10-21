@@ -341,7 +341,7 @@ func _craft(worker: Dictionary, delta: float) -> void:
 		used += step
 		if float(worker.elapsed) < CRAFT_DURATION - 0.000001: continue
 		began=Time.get_ticks_usec() if life.profile_tick else 0
-		var produced: bool=life.state.produce_craft(shop,batch)
+		var produced: bool=life.state.produce_workshop_batch(shop)>0
 		if life.profile_tick:life.tick_profile.workshop_produce+=Time.get_ticks_usec()-began
 		if not produced:return
 		life.state.grant_temperament_resonance(shop,used)

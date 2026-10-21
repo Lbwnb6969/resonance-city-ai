@@ -5,7 +5,7 @@ const Towers=preload("res://scripts/world/city_creation_towers.gd")
 const Arrangement=preload("res://scripts/audio/city_creation_arrangement.gd")
 const Canon=preload("res://scripts/audio/city_creation_circular_canon.gd")
 static func signature(city:RefCounted)->int:
-	return hash([city.houses,city.roads,city.waters,city.districts,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
+	return hash([city.houses,city.roads,city.waters,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
 static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	var records:Dictionary={}
 	var daily:Array[String]=[]
@@ -52,6 +52,7 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	for group: Dictionary in groups.values():
 		var arrangement: Dictionary=Arrangement.compose(group.houses,group.style,group.adaptive)
 		for house: Dictionary in group.houses: records[str(house.id)]["mix"]=arrangement
+	for id:String in records:records[id].chords=state.planning_bonus(id).get("chord_scopes",{}).keys()
 	# Even the starting six houses have the full musical phrase. Building adds
 	# gentle color rather than requiring construction to unlock sound.
 	targets.foundation = -10.0

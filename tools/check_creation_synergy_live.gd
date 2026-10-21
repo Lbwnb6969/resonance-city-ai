@@ -1,71 +1,50 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/街坊规划加成_2026-10-19"
+const OUT="res://验证记录/聚落开拓与轨街_2026-10-21"
 var demo
-var checks:Array=[]
+var checks:=0
 var failures:Array[String]=[]
-var facts:Dictionary={}
-func _initialize()->void:_run.call_deferred()
-func _check(ok:bool,label:String)->void:
-	checks.append({"ok":ok,"label":label})
+func _initialize()->void:run.call_deferred()
+func check(ok:bool,label:String)->void:
+	checks+=1
 	if not ok:failures.append(label);push_error(label)
-func _settle()->void:
-	var start:=Time.get_ticks_msec();var end:=start+180000
-	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<end:await process_frame
-	var sample:Dictionary={"elapsed_ms":Time.get_ticks_msec()-start,"render":demo.town.budget_rebuild.stats.duplicate(true),"life_pending":demo.life.budget_sync_pending()}
-	if not facts.has("edits"):facts.edits=[]
-	facts.edits.append(sample);print("SYNERGY_EDIT ",JSON.stringify(sample))
-	_check(not demo.edit_pending(),"authored edit publishes its actual GL geometry")
-func _run()->void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+func settle()->void:
+	var until:=Time.get_ticks_msec()+180000
+	while (demo.edit_pending() or demo._edit_ui_pending or demo.life.budget_sync_pending() or demo.music._loading) and Time.get_ticks_msec()<until:await process_frame
+	for i:int in range(12):await process_frame
+func run()->void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=120
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
-	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/isolated";root.add_child(demo);demo.life.set_process(false)
-	var end:=Time.get_ticks_msec()+30000
-	while demo.music.audio_report.is_empty() and Time.get_ticks_msec()<end:await process_frame
-	demo._after_edit(demo.state.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))),"history");await _settle()
-	_check(demo.state.houses.size()==127,"real flagship remains intact")
-	var authored:Dictionary=demo.state.snapshot();var bonuses:Dictionary=demo.state.synergy_buffs()
-	_check(bonuses.connected_identities==4 and is_equal_approx(bonuses.expansion_multiplier,1.36),"four actual connected era voices grant thirty six percent production")
-	_check(demo.state._synergy_revision==demo.state.revision,"worker publishes planning with the same geometry revision")
-	_check(is_equal_approx(demo.state.planning_bonus("h55").water_power_mult,1.35) and is_equal_approx(demo.state.planning_bonus("h115").water_power_mult,1.),"real watermill receives its drive while remote workshops do not")
-	demo.selected_district="d7";demo._refresh_ui();demo._refresh_district()
-	var details:Control=demo.quest.get_parent()
-	details.show();demo.select_tool(7);demo.ledger.open_panel();demo.ledger.refresh()
-	_check(demo.quest.text.contains("36%") and demo.district_description.text.contains("8～16") and demo.district_description.text.contains("36%"),"actual target card and district drawer show expansion and capacity")
-	_check(demo.ledger.body.text.contains("水力工坊带") and demo.ledger.body.text.contains("36%"),"real operating ledger explains local drive and global production")
-	demo.ledger.panel.hide();demo.focus=Vector3(-15,.8,-4);demo.zoom=35.;demo.pitch=.8;demo.yaw=.3;demo._update_camera()
-	await process_frame;await RenderingServer.frame_post_draw
-	_check(root.get_texture().get_image().save_png(OUT+"/实际街坊规划.png")==OK,"actual GL planning image saved")
-	var baseline:float=demo.state.site_production_multiplier("h56")
-	demo._after_edit(demo.state.unlink_districts("d6","d7"),"terrace");await _settle()
-	# One edge removal leaves an alternate path through d8/d9, so the
-	# reward must stay. This catches accidental edge-count multipliers.
-	_check(is_equal_approx(demo.state.site_production_multiplier("h56"),baseline),"alternate connected path retains the actual production reward")
-	demo._after_edit(demo.state.unlink_districts("d7","d9"),"terrace");await _settle()
-	_check(is_equal_approx(demo.state.synergy_buffs().expansion_multiplier,1.24),"isolating one real voice drops expansion to twenty four percent")
-	demo._after_edit(demo.state.undo(),"history");await _settle()
-	_check(is_equal_approx(demo.state.site_production_multiplier("h56"),baseline),"actual undo and worker publication restore production")
-	root.size=Vector2i(1024,768);details.hide();demo._refresh_ui()
-	for i in range(4):await process_frame
-	var toolbar:Control=demo.tool_buttons[0].get_parent().get_parent()
-	_check(demo.district_panel.get_global_rect().end.y<toolbar.get_global_rect().position.y,"1024 by 768 district drawer stays above the toolbar")
-	_check(absf(demo.district_panel.get_global_rect().end.x-1000.)<1.,"resized district drawer retains its right screen margin")
-	var scroll:ScrollContainer=demo.district_panel.get_node("DistrictScroll")
-	scroll.scroll_vertical=int(scroll.get_v_scroll_bar().max_value)
-	await process_frame;await RenderingServer.frame_post_draw
-	_check(root.get_texture().get_image().save_png(OUT+"/1024街坊抽屉.png")==OK,"small real viewport keeps the final drawer controls reachable by scrolling")
-	var times:Array[float]=[]
-	for frame in range(600):
-		var start:=Time.get_ticks_usec()
-		for house:Dictionary in demo.state.houses:demo.state.planning_bonus(str(house.id))
-		times.append((Time.get_ticks_usec()-start)/1000.);await process_frame
-	times.sort();var sum:=0.
-	for value:float in times:sum+=value
-	facts.cached_127_house_queries_ms={"mean":sum/times.size(),"p95":times[int(times.size()*.95)],"max":times[-1]};facts.bonuses=bonuses
-	_check(demo.state.snapshot().bakery_supply==authored.bakery_supply and demo.state.snapshot().life_progress==authored.life_progress,"planning checks never invent household visits or oven stock")
-	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save remains byte identical")
-	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts},"\t",true,true))
-	demo.queue_free();await process_frame;await create_timer(.2).timeout
-	print("SYNERGY_LIVE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks.size(),"failures":failures,"queries":facts.cached_127_house_queries_ms}));quit(0 if failures.is_empty() else 1)
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/隔离作品";root.add_child(demo);demo.life.set_process(false)
+	demo._after_edit(demo.state.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/四库共鸣交响大城样例.json"))),"history");await settle();demo.life.set_process(false);demo.life._process(.001)
+	var load_ms:float=demo.edit_budget_report().get("latency_ms",0.)
+	var load_report:Dictionary=demo.edit_budget_report().duplicate(true)
+	var bonuses:Dictionary=demo.state.synergy_buffs()
+	check(demo.state.houses.size()==127 and bonuses.large_cluster_count==6 and bonuses.expansion_multiplier==1.6,"real flagship six independent five-home groups reach the sixty-percent cap")
+	check(demo.state.transit_efficiency("h104")==1.3 and demo.state.transit_efficiency("h115")==1.,"published street graph limits depot efficiency to its real corridor")
+	demo.ledger.open_panel();demo.ledger.refresh();await process_frame
+	check(demo.ledger.body.text.contains("60%") and demo.ledger.body.text.contains("水力工坊带"),"actual operating ledger explains expansion and local water drive")
+	demo.ledger.panel.hide();demo.select_tool(4)
+	var house:Dictionary=demo.town._house_record("h104");demo.focus=Vector3(house.origin[0],1.,house.origin[1]);demo.zoom=28.;demo._update_camera();demo.selected_house="h104"
+	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+		root.size=resolution;demo.spatial_popover.open_for_house("h104");await settle()
+		check(demo.spatial_popover.card.visible and demo.spatial_popover.status.text.contains("轨交直达"),"real workshop roof card shows thirty-percent transit efficiency at "+str(resolution))
+		check(Rect2(Vector2.ZERO,Vector2(resolution)).encloses(demo.spatial_popover.card.get_global_rect()),"transit information fits actual roof card at "+str(resolution))
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(OUT+"/轨街屋顶_%d.png"%resolution.x)
+	var authored:Dictionary=demo.state.snapshot()
+	demo._after_edit(demo.state.unlink_districts("d6","d7"),"history",false);await settle();demo.life._process(.001)
+	check(demo.state.synergy_buffs().expansion_multiplier==1.6 and demo.state.transit_efficiency("h104")==1.3,"changing an audio arc preserves actual independent groups and rail connectivity")
+	demo._after_edit(demo.state.undo(),"history",false);await settle();demo.life._process(.001)
+	check(demo.state.synergy_buffs().expansion_multiplier==1.6 and demo.state.transit_efficiency("h104")==1.3,"undo republishes the exact graph-derived bonuses")
+	var samples:Array[float]=[]
+	for i:int in range(60):
+		var began:=Time.get_ticks_usec()
+		for h:Dictionary in demo.state.houses:demo.state.planning_bonus(str(h.id))
+		samples.append(float(Time.get_ticks_usec()-began)/1000.);await process_frame
+	samples.sort()
+	check(demo.state.bakery_supply==authored.bakery_supply and demo.state.workshop_supply==authored.workshop_supply,"querying and inspecting planning never mints inventory")
+	check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"real UI verification preserves personal save bytes")
+	var result:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"initial_load_report":load_report,"initial_127_house_load_ms":load_ms,"cached_127_queries_p95_ms":samples[int(samples.size()*.95)]}
+	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));print("SYNERGY_LIVE ",JSON.stringify(result))
+	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

@@ -1153,7 +1153,7 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 		if not venue_district.is_empty(): districts[str(venue_district.id)]=true
 		state.record_concert_participants(venue,_concert.participants,not _relay.is_empty() or districts.size()>1 or bool(_concert.get("grand_festival",false)))
 		state.grant_concert_afterglow(venue,_chorus_house_ids, duration, completion_remainder)
-		var grand:bool=bool(_concert.get("grand_festival",false)) and state.houses[state._house_index(venue)].get("signature","")=="floating_amphitheater"
+		var grand:bool=(bool(_concert.get("grand_festival",false)) or bool(_concert.get("landmark_movement",false))) and state.houses[state._house_index(venue)].get("signature","")=="floating_amphitheater"
 		var checked:Array[String]=[]
 		if grand:
 			for house:Dictionary in state.houses:

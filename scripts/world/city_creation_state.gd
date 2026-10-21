@@ -130,6 +130,9 @@ var matinee_last_venue := ""
 var bakery_supply: Dictionary = {}
 var landmark_bread: Dictionary = {}
 var workshop_supply: Dictionary = {}
+var workshop_yield_remainder:Dictionary={}
+var _transit_corridor_houses:Dictionary={}
+var _transit_corridor_revision:=-1
 var house_improvements: Dictionary = {}
 var venue_commissions: Dictionary = {}
 var resonance_afterglow: Dictionary = {}
@@ -189,6 +192,8 @@ func initialize() -> void:
 	bakery_supply.clear()
 	landmark_bread.clear()
 	workshop_supply.clear()
+	workshop_yield_remainder.clear()
+	_transit_corridor_houses.clear();_transit_corridor_revision=-1
 	house_improvements.clear()
 	venue_commissions.clear()
 	resonance_afterglow.clear()
@@ -1600,7 +1605,14 @@ func site_production_multiplier(house_id: String) -> float:
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
 	var weather:float=Microclimate.production(self,houses[index]) if index>=0 else 1.
-	return weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	return transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+
+func transit_efficiency(house_id:String)->float:
+	var index:=_house_index(house_id)
+	return 1.3 if _transit_corridor_revision==revision and _transit_corridor_houses.has(house_id) and index>=0 and houses[index].role in ["workshop","atelier","clockmaker","garden_cafe"] else 1.
+
+func cafe_time_multiplier(house_id:String)->float:
+	return float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)
 
 
 func synergy_buffs()->Dictionary:
@@ -1635,8 +1647,9 @@ func installation_multiplier(shop_id:String,target_id:String)->float:
 	var index:=_house_index(shop_id)
 	if index<0:return 1.
 	var delivery:=float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
-	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery
-	return delivery*(1.5 if has_chord(target_id,"pastoral_triad") else 1.)
+	var expansion:float=synergy_buffs().expansion_multiplier
+	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery*expansion
+	return delivery*float(planning_bonus(target_id).get("growth_mult",expansion))
 
 
 func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
@@ -1890,6 +1903,9 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 
 
 func workshop_batch_size(house_id: String) -> int:
+	return maxi(0,floori(_workshop_yield(house_id)+float(workshop_yield_remainder.get(house_id,0.))))
+
+func _workshop_yield(house_id:String)->float:
 	var index := _house_index(house_id)
 	if index < 0 or houses[index].role not in ["workshop", "atelier", "clockmaker"]: return 0
 	var rooms := 0
@@ -1897,7 +1913,16 @@ func workshop_batch_size(house_id: String) -> int:
 		if cell.kind == "room": rooms += 1
 	var temperament:=house_temperament(house_id)
 	var base:=1 if temperament=="allegro" else maxi(1,rooms)*(2 if temperament=="largo" else 1)
-	return base*int(planning_bonus(house_id).get("batch_mult",1))
+	return base*int(planning_bonus(house_id).get("batch_mult",1))*float(planning_bonus(house_id).get("yield_mult",1.))
+
+func produce_workshop_batch(house_id:String)->int:
+	var earned:float=_workshop_yield(house_id)+float(workshop_yield_remainder.get(house_id,0.))
+	var quantity:=floori(earned)
+	if not produce_craft(house_id,quantity):return 0
+	var remainder:=earned-quantity
+	if remainder>0.:workshop_yield_remainder[house_id]=remainder
+	else:workshop_yield_remainder.erase(house_id)
+	return quantity
 
 
 func workshop_capacity(house_id: String) -> int:

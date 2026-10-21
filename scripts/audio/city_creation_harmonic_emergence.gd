@@ -13,6 +13,7 @@ var last_cycle:=-1
 
 static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_phrase:int,night:bool)->Dictionary:
 	var weights:Dictionary={};var representatives:Dictionary={};var nearest:Dictionary={}
+	var chord_sources:Dictionary={}
 	var eligible:=0;var largest:=0;var total:=0.;var height:=0.;var quality:=0.;var water:=0.;var upper:=0.;var rooms:=0.;var shapes:Array=[];var districts:Dictionary={}
 	for id:String in houses:
 		var w:float=acoustic.focus_weight(id)
@@ -20,6 +21,8 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 		var row:Dictionary=houses[id];var era:=str(row.get("era_theme","pastoral"))
 		var size:int=int(row.get("cluster_size",1))
 		if size<3:continue
+		for chord:String in row.get("chords",[]):
+			if not chord_sources.has(chord):chord_sources[chord]=id
 		eligible+=1;largest=maxi(largest,size)
 		var track:String=STYLE_TRACKS.get(str(row.get("style","warm")),"wood") if era=="pastoral" else ERA_TRACKS.get(era,"wood")
 		weights[track]=float(weights.get(track,0.))+w
@@ -48,6 +51,11 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 		targets.air=lerpf(-60.,-23.,clampf(elevation*.7+silhouette*.6,0.,1.))
 		targets.terrace=lerpf(-60.,-28.,clampf((average-1.)/4.+water/maxf(.001,total)*.25,0.,1.))
 		if largest>=15:targets.air=maxf(float(targets.air),-22.);targets.terrace=maxf(float(targets.terrace),-26.)
+	var chord_layers:Dictionary={"pastoral_triad":{"air":-22.},"highland_fifth":{"air":-20.5,"wood_sylvan":-25.},"renaissance_fugue":{"renaissance_fugue":-18.,"wood_weave":-26.},"clockwork_waltz":{"clockwork_waltz":-18.,"terrace":-23.},"chrono_counterpoint":{"air":-21.5,"terrace":-24.}}
+	for chord:String in chord_sources:
+		for track:String in chord_layers.get(chord,{}):
+			if float(targets[track])<float(chord_layers[chord][track]):
+				targets[track]=chord_layers[chord][track];representatives[track]=chord_sources[chord]
 	shapes.sort_custom(func(a:Array,b:Array)->bool:return str(a[0])<str(b[0]))
 	var dna:=hash([shapes,ring_count])
 	var richness:float=clampf((average-1.)*.23+silhouette*.45+minf(2.,ring_count)*.15+elevation*.2,0.,1.)

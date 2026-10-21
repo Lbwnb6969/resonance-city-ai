@@ -100,4 +100,5 @@ func _process(delta:float)->void:
 		var at:=Vector3(house.origin[0],float(house.get("base_y",0.))+(level+1)*demo.FLOOR+.8,house.origin[1])
 		var projected:Vector2=demo.camera.unproject_position(at)
 		pin.button.position=projected-pin.button.size*.5
-		pin.button.visible=not demo.camera.is_position_behind(at) and get_viewport_rect().grow(-65.).encloses(pin.button.get_rect()) and demo.spatial_popover.target_house_id.is_empty()
+		var viewport:=get_viewport_rect()
+		pin.button.visible=viewport.size.x>130. and viewport.size.y>130. and not demo.camera.is_position_behind(at) and viewport.grow(-65.).encloses(pin.button.get_rect()) and demo.spatial_popover.target_house_id.is_empty()

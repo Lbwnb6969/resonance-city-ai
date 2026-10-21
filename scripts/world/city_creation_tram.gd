@@ -67,6 +67,7 @@ func direct(first:String,second:String)->bool:
 	return valid
 
 func _build_corridor()->void:
+	_corridor_keys.clear();_corridor_houses.clear();_direct_pairs.clear()
 	if _depot_station.is_empty():return
 	if not plan.lines.any(func(line:Dictionary)->bool:return _depot_station in line.tour):return
 	var started:=Time.get_ticks_usec()
@@ -93,6 +94,11 @@ func _build_corridor()->void:
 		for edge:Array in bins.get(Vector2i(floori(point.x/8.),floori(point.y/8.)),[]):
 			if point.distance_to(Geometry2D.get_closest_point_to_segment(point,edge[0],edge[1]))<=6.:_corridor_houses[id]=true;break
 	corridor_prepare_ms=float(Time.get_ticks_usec()-started)/1000.
+	_publish_corridor()
+
+func _publish_corridor()->void:
+	life.state._transit_corridor_houses=_corridor_houses.duplicate()
+	life.state._transit_corridor_revision=life.state.revision
 
 func speed()->float:
 	return SPEED*float(life.state.signature_bonuses().tram_speed) if not _depot_station.is_empty() else SPEED
@@ -111,6 +117,7 @@ func _dispatch_station(next: Dictionary,depot_id: String)->String:
 func _init(owner: Node3D)->void:life=owner
 
 func clear()->void:
+	if life.state!=null:life.state._transit_corridor_houses.clear();life.state._transit_corridor_revision=-1
 	for ticket: Dictionary in tickets.values():
 		if ticket.get("state","")=="onboard":
 			var resident: Dictionary=ticket.resident
@@ -130,7 +137,9 @@ func clear()->void:
 
 func sync()->void:
 	var unlocked: bool=life.state.era_unlocks.has("clockwork")
-	if _revision==life.state.revision and _unlocked==unlocked:return
+	if _revision==life.state.revision and _unlocked==unlocked:
+		if life.state._transit_corridor_revision!=life.state.revision:_publish_corridor()
+		return
 	_revision=life.state.revision
 	# Negative trip decisions are cached until a new route. Only live waiting
 	# and onboard tickets need per-frame validation; prune removed homes here.
@@ -140,13 +149,13 @@ func sync()->void:
 	for home: String in tickets.keys():
 		if not homes.has(home):_release_ticket(home,tickets[home])
 	var network_signature:=hash(life._network_signature)
-	if network_signature==_network_signature and unlocked==_unlocked:_prepare_clock_speed();return
+	if network_signature==_network_signature and unlocked==_unlocked:_prepare_clock_speed();_publish_corridor();return
 	_network_signature=network_signature;_unlocked=unlocked
 	var next := Plan.from_network(life.state,life._network) if unlocked else {"graph":{},"positions":{},"lines":[],"stations":[],"station_keys":{},"edges":[],"length":0.}
 	var depot_id: String=life.state.signature_bonuses().depot_id
 	var dispatch:=_dispatch_station(next,depot_id)
 	var signature:=hash([next.graph,next.positions,next.lines,next.station_keys,dispatch,depot_id])
-	if signature==_rail_signature:plan=next;_prepare_clock_speed();return
+	if signature==_rail_signature:plan=next;_build_corridor();_prepare_clock_speed();return
 	clear()
 	_revision=life.state.revision;_network_signature=network_signature;_rail_signature=signature;_unlocked=unlocked
 	plan=next

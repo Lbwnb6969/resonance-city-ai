@@ -82,6 +82,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.microclimate.is_empty():result.microclimate=city.microclimate;result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
 	return result
 
@@ -90,6 +91,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
 	# Editing history restores geometry; completed daily visits remain history.
 	if not preserve_issued_ids:
+		city._transit_corridor_houses.clear();city._transit_corridor_revision=-1
 		city._special_sites.clear();city._special_site_key.clear()
 		city.signature_unlocks.assign(data.get("signature_unlocks",[]))
 		city.district_answers.assign(data.get("district_answers",[]))
@@ -135,6 +137,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 			row.batches=int(row.batches)
 			for id:String in row.gifts:row.gifts[id]=int(row.gifts[id])
 		city.workshop_supply = data.get("workshop_supply", {}).duplicate(true)
+		city.workshop_yield_remainder=data.get("workshop_yield_remainder",{}).duplicate()
 		city.house_improvements = data.get("house_improvements", {}).duplicate()
 		city.venue_commissions = data.get("venue_commissions", {}).duplicate(true)
 		for row in city.venue_commissions.values():
@@ -435,6 +438,12 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档面包供给收支不一致")
 	var craft_check: Dictionary = city._validate_craft_supply(data, int(issued.house))
 	if not craft_check.ok: return craft_check
+	var yields:Variant=data.get("workshop_yield_remainder",{})
+	if not yields is Dictionary or (data.has("workshop_yield_remainder") and data.schema<19):return city._fail("工艺产出余数版本或结构无效")
+	for id:Variant in yields:
+		var used:Dictionary={}
+		if not city._valid_id(id,"h",used) or int(id.substr(1))>int(issued.house) or not city._is_number(yields[id]) or float(yields[id])!=.5:return city._fail("工艺产出余数无效")
+		if int(data.get("workshop_supply",{}).get(id,{}).get("produced",0))<1:return city._fail("工艺余数缺少真实生产记录")
 	var quality_check: Dictionary=city.Quality.validate(city,data,issued)
 	if not quality_check.ok: return quality_check
 	var era_check:Dictionary=city.Eras.validate_answers(city,data,issued)

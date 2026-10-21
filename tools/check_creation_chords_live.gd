@@ -2,7 +2,7 @@ extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Fixtures=preload("res://tools/fixtures/city_creation_chord_fixture.gd")
-const OUT="res://验证记录/五类和弦经营_2026-10-19"
+const OUT="res://验证记录/策略合订_2026-10-21"
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -30,7 +30,7 @@ func _show(kind:String,city:RefCounted,probe:String,focus:Vector3,zoom:float)->v
 		var count:=0
 		for node:Node3D in demo.town.house_roots.values():
 			if not node.get_meta("arcades",[]).is_empty():count+=1
-		_check(count>=3,"the fugue recipe has at least three published arcade facades")
+		_check(count==2,"the consolidated fugue recipe has exactly two published arcade facades")
 		var shop:=""
 		for house:Dictionary in demo.state.houses:
 			if house.role=="workshop":shop=str(house.id)
@@ -41,9 +41,14 @@ func _show(kind:String,city:RefCounted,probe:String,focus:Vector3,zoom:float)->v
 		var count:=0
 		for node:Node3D in demo.town.house_roots.values():
 			if not node.get_meta("conservatory",{}).is_empty():count+=1
-		_check(count>=2 and not demo.life.tram.cars.is_empty(),"the waltz recipe has two rendered glasshouses and an actual tram")
+		_check(count==1 and not demo.life.tram.cars.is_empty(),"the waltz recipe has one rendered glasshouse and an actual tram")
 	demo.focus=focus;demo.zoom=zoom;demo.pitch=.82;demo.yaw=.22;demo._update_camera()
 	for i in range(4):await process_frame
+	await create_timer(3.2).timeout
+	var track:String={"pastoral_triad":"air","highland_fifth":"wood_sylvan","renaissance_fugue":"renaissance_fugue","clockwork_waltz":"clockwork_waltz","chrono_counterpoint":"air"}[kind]
+	var floor_db:float={"pastoral_triad":-22.,"highland_fifth":-25.,"renaissance_fugue":-18.,"clockwork_waltz":-18.,"chrono_counterpoint":-21.5}[kind]
+	_check(float(demo.music.emergence.score.targets.get(track,-60.))>=floor_db,"actual phrase boundary applies the localized chord stem: "+kind)
+	_check(demo.score_ribbon.chords.has_node("Chord_"+kind),"actual score ribbon shows the active chord seal: "+kind)
 	await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/"+kind+".png")==OK,"actual GL screenshot saved: "+kind)
 	var samples:Array[float]=[]
@@ -70,10 +75,20 @@ func _run()->void:
 	var end:=Time.get_ticks_msec()+30000
 	while demo.music.audio_report.is_empty() and Time.get_ticks_msec()<end:await process_frame
 	_check(DisplayServer.get_name()!="headless" and not demo.music.audio_report.is_empty(),"real GL window loads the production music bank")
-	await _show("pastoral_triad",Fixtures.pastoral(),"h1",Vector3(-7,.5,0),27.)
-	await _show("highland_fifth",Fixtures.highland(),"h1",Vector3(-22,1.,0),28.)
-	await _show("renaissance_fugue",Fixtures.renaissance(),"h1",Vector3(-12,.5,-1),30.)
-	await _show("clockwork_waltz",Fixtures.clockwork(),"h2",Vector3(-11,.5,-1),29.)
+	var pastoral:RefCounted=Fixtures.pastoral()
+	var joiner:Dictionary=pastoral.add_house(Vector2(-12.8,-3));assert(joiner.ok)
+	pastoral.set_house_role(str(joiner.house_id),"workshop")
+	await _show("pastoral_triad",pastoral,"h1",Vector3(-7,.5,0),27.)
+	await _show("highland_fifth",Fixtures.highland(1),"h1",Vector3(-22,1.,0),28.)
+	var fugue:RefCounted=Fixtures.renaissance()
+	for cell:Dictionary in fugue.houses[fugue._house_index("h3")].cells.duplicate(true):
+		if int(cell.level)==1:fugue.remove_cell("h3",str(cell.id))
+	fugue.remove_roundabout(Vector2(-22,0))
+	await _show("renaissance_fugue",fugue,"h1",Vector3(-12,.5,-1),30.)
+	var waltz:RefCounted=Fixtures.clockwork()
+	for cell:Dictionary in waltz.houses[waltz._house_index("h4")].cells.duplicate(true):
+		if int(cell.level)==1 and int(cell.x)==1:waltz.remove_cell("h4",str(cell.id))
+	await _show("clockwork_waltz",waltz,"h2",Vector3(-11,.5,-1),29.)
 	await _show("chrono_counterpoint",Fixtures.chrono(),"h1",Vector3(0,.5,0),39.)
 	demo.guide.open_panel();demo.guide.tabs.current_tab=1
 	for i in range(3):await process_frame

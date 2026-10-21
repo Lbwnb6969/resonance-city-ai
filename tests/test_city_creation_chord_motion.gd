@@ -31,10 +31,10 @@ func _compare(city:RefCounted,kind:String)->void:
 				gap=maxf(gap,a.node.position.distance_to(lod.worker_lod.position(b)));work_gap=maxf(work_gap,absf(float(a.elapsed)-lod.worker_lod.elapsed(b)))
 				same=same and a.phase==b.phase and a.get("target_id","")==b.get("target_id","")
 		if kind=="highland_fifth" and i in [601,801]:
-			var wanted:=1. if i==601 else 1.25
+			var wanted:=1. if i==601 else 1.25*1.1
 			_check(is_equal_approx(float(full.cafe._resident("h1").get("planning_walking_mult",0.)),wanted) and is_equal_approx(float(lod.cafe._resident("h1").get("planning_walking_mult",0.)),wanted),"network reuse refreshes the derived cohort walking speed")
 	_check(same and gap<.03 and work_gap<.003,"two minutes retain physical routes and accelerated job progress: "+kind)
-	_check(city.bakery_supply==hidden.bakery_supply and city.workshop_supply==hidden.workshop_supply and city.house_improvements==hidden.house_improvements and city.cafe_progress==hidden.cafe_progress,"bonus production installation and real tea settle identically: "+kind)
+	_check(city.bakery_supply==hidden.bakery_supply and city.workshop_supply==hidden.workshop_supply and city.workshop_yield_remainder==hidden.workshop_yield_remainder and city.house_improvements==hidden.house_improvements and city.cafe_progress==hidden.cafe_progress,"bonus production installation and real tea settle identically: "+kind)
 	_check(int(lod.worker_lod.stats.movement_sleeps)>0 and int(lod.worker_lod.stats.work_sleeps)>0,"actual bonus workers use deadline sleep: "+kind)
 	print("CHORD_MOTION_CASE ",JSON.stringify({"kind":kind,"same":same,"first_gap":first_gap,"max_position_gap":gap,"max_work_gap":work_gap,"stats":lod.worker_lod.stats}))
 	full.queue_free();lod.queue_free();camera.queue_free();await process_frame
@@ -59,4 +59,5 @@ func _run()->void:
 	var points:Array[Vector2]=[Vector2(-28,3.55),Vector2(-16,3.55)];_check(city.add_road(points,"path","none").ok,"highland homes receive real south-door street")
 	points=[Vector2(-28,0),Vector2(-28,3.55)];_check(city.add_road(points,"path","none").ok,"south-door street joins the original stair road")
 	await _compare(city,"highland_fifth")
+	await _compare(Fixture.renaissance(),"renaissance_fugue")
 	print("CHORD_MOTION ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

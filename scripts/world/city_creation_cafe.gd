@@ -63,13 +63,13 @@ func sync() -> void:
 	sync_stats.groups_us=Time.get_ticks_usec()-began
 
 func _prepare_status_parameters(id:String)->void:
-	_status_parameters[id]={"revision":life.state.revision,"time_scale":float(life.state.planning_bonus(id).get("cafe_duration_mult",1.)),"afterglow_extension":life.state.cafe_afterglow_extension(id)}
+	_status_parameters[id]={"revision":life.state.revision,"transit_revision":life.state._transit_corridor_revision,"time_scale":life.state.cafe_time_multiplier(id),"afterglow_extension":life.state.cafe_afterglow_extension(id)}
 
 func status(id: String) -> Dictionary:
 	var ledger: Dictionary = life.state.cafe_progress.get(id, {})
 	# A revision with unchanged routes can skip sync(). Refresh once released,
 	# while a held edit continues to describe the already published generation.
-	if not life._budget_hold and not life.budget_sync_pending() and int(_status_parameters.get(id,{}).get("revision",-1))!=life.state.revision:_prepare_status_parameters(id)
+	if not life._budget_hold and not life.budget_sync_pending() and (int(_status_parameters.get(id,{}).get("revision",-1))!=life.state.revision or int(_status_parameters.get(id,{}).get("transit_revision",-1))!=life.state._transit_corridor_revision):_prepare_status_parameters(id)
 	var parameters:Dictionary=_status_parameters.get(id,{})
 	var time_scale:=float(parameters.get("time_scale",1.))
 	var result := {"phase":"closed","arrived":0,"invited":0,"elapsed":0.0,"duration":DURATION*time_scale,"groups":int(ledger.get("groups", 0)),"visits":int(ledger.get("visits", 0)),"afterglow_extension":float(parameters.get("afterglow_extension",30.)),"participants":[],"seated_count":0,"seated_seats":[]}
@@ -210,7 +210,7 @@ func tick(delta: float) -> void:
 			continue
 		if was_tea:
 			# Keep the existing normalized 0..6 saved progress; only real time changes.
-			group.elapsed = minf(DURATION, float(group.elapsed) + delta/float(life.state.planning_bonus(str(id)).get("cafe_duration_mult",1.)))
+			group.elapsed = minf(DURATION, float(group.elapsed) + delta/life.state.cafe_time_multiplier(str(id)))
 			if float(group.elapsed) >= DURATION:
 				var homes: Array = group.participants.duplicate()
 				if life.state.complete_tea(str(id), homes):

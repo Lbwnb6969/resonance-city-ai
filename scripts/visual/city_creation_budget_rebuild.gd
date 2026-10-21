@@ -549,12 +549,9 @@ func poll(owner: Node3D, budget_ms: float, allow_commit: bool) -> Dictionary:
 	while staging != null and task_index < tasks.size() and float(Time.get_ticks_usec()-start)/1000.0 < budget_ms:
 		var task_kind:=str(tasks[task_index][0])
 		var units:=_task_units(tasks[task_index])
-		var spent:=float(Time.get_ticks_usec()-start)/1000.
-		# Unknown/expensive task types start a fresh frame. Known tasks leave
-		# room for their measured high-water cost instead of starting at 3.49ms.
-		var scale:=maxf(1.,float(units)/float(_task_max_units.get(task_kind,maxi(1,units))))
-		var expected:=float(_task_peak_ms.get(task_kind,3.5))*scale*1.2+.08 if units>0 else .03
-		if spent>.08 and spent+expected>budget_ms-.08:break
+		# Leaf tasks already split assembly/color/mesh work. Spend the actual
+		# slice; a historical outlier must not serialize every cheap subdivision
+		# into its own frame or prevent the first useful task from starting.
 		var step_start := Time.get_ticks_usec()
 		var task_complete := _step(tasks[task_index])
 		var step_ms:=float(Time.get_ticks_usec()-step_start)/1000.
