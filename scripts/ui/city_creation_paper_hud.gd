@@ -34,6 +34,8 @@ static func setup(demo:Node3D)->void:
 	demo.spatial_popover.setup(demo,parent)
 	demo.intuitive_guidance=preload("res://scripts/ui/city_creation_intuitive_guidance.gd").new()
 	demo.intuitive_guidance.setup(demo,parent)
+	demo.wish_pins=preload("res://scripts/ui/city_creation_wish_pins.gd").new()
+	demo.wish_pins.setup(demo,parent)
 	parent.remove_child(help_panel);help_panel.queue_free()
 	parent.remove_child(old_header);old_header.queue_free()
 	# Modal papers stay above the living ribbon and circular controls.

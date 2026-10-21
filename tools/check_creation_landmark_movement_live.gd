@@ -40,26 +40,34 @@ func run()->void:
 	# The 24s audio transport runs in real time; only audience walking is sped up.
 	var venue:String=ids.watermill;var house:Dictionary=demo.town._house_record(venue)
 	demo.selected_house=venue;demo.focus=Vector3(house.origin[0],1.,house.origin[1]);demo.zoom=30.;demo._update_camera()
+	print("MOVEMENT_LIVE inviting final")
 	check(demo.life.invite_landmark_movement(venue).ok,"start actual 24-second performance")
+	print("MOVEMENT_LIVE gathering")
 	var until:=Time.get_ticks_msec()+20000
 	while demo.life.concert_status().phase=="gathering" and Time.get_ticks_msec()<until:
 		demo.life._process(.5);await process_frame
+	print("MOVEMENT_LIVE gathered ",demo.life.concert_status())
 	check(demo.life.concert_status().phase=="playing","actual audience arrives before playing")
 	var before:=int(demo.state.life_progress.concerts)
 	var record:=AudioEffectRecord.new();AudioServer.add_bus_effect(0,record);record.set_recording_active(true)
 	demo.life.set_process(true)
+	print("MOVEMENT_LIVE recording")
+	var last_phrase:=-1
 	var phrases:Dictionary={};var final_phrases:Dictionary={};var clock:float=demo.music._playback_clock()
 	until=Time.get_ticks_msec()+28000
 	while Time.get_ticks_msec()<until and demo.life.concert_status().phase!="idle":
 		await process_frame
 		var report:Dictionary=demo.music.grand_festival_report()
 		if report.active:
+			if int(report.phrase)!=last_phrase:print("MOVEMENT_LIVE phrase ",report.phrase);last_phrase=int(report.phrase)
 			phrases[int(report.phrase)]=str(report.source_id)
 			if report.era=="tutti":final_phrases[int(report.phrase)]=true
+	print("MOVEMENT_LIVE ending record")
 	demo.life.set_process(false);record.set_recording_active(false)
 	var wave:AudioStreamWAV=record.get_recording();var peak:=0.
 	if wave!=null:
-		for i:int in range(wave.data.size()/2):peak=maxf(peak,absf(float(wave.data.decode_s16(i*2))/32768.))
+		var pcm:PackedByteArray=wave.data
+		for i:int in range(pcm.size()/2):peak=maxf(peak,absf(float(pcm.decode_s16(i*2))/32768.))
 		wave.save_to_wav(OUT+"/水车指挥24秒.wav")
 	for i:int in range(AudioServer.get_bus_effect_count(0)-1,-1,-1):
 		if AudioServer.get_bus_effect(0,i)==record:AudioServer.remove_bus_effect(0,i)

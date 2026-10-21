@@ -26,7 +26,7 @@ func evaluate_mode(zoom:float,concert_active:bool,strolling:bool,delta:float,clo
 	elif strolling or zoom<=18.:current_mode=Mode.STROLLING
 	elif zoom>32.:current_mode=Mode.SYMPHONY
 	else:current_mode=Mode.MANAGING
-	var target:float=-4.2 if current_mode==Mode.SCULPTING else (2. if current_mode==Mode.SYMPHONY else 0.)
+	var target:float=-3.5 if current_mode==Mode.SCULPTING else (2. if current_mode==Mode.SYMPHONY else 0.)
 	backing_duck_db=lerpf(backing_duck_db,target,1.-exp(-maxf(0.,delta)*6.))
 	return current_mode
 

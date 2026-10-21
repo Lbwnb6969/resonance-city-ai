@@ -34,7 +34,7 @@ static func workshop_blessing(state: RefCounted, workshop_id: String) -> Diction
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
 		var trees := 0
 		for plant: Dictionary in state.plants:
-			if str(plant.get("kind", "")) in ["olive", "cypress"]:
+			if str(plant.get("kind", "")) in ["olive", "cypress", "golden_tree"]:
 				var pt := Vector2(float(plant.position[0]), float(plant.position[1]))
 				if pt.distance_to(origin) <= 8.0 and bool(state.vegetation_visible(plant)):
 					trees += 1
@@ -44,7 +44,7 @@ static func workshop_blessing(state: RefCounted, workshop_id: String) -> Diction
 			"blessed": active,
 			"trees": trees,
 			"speed_multiplier": 1.35 if active else 1.0,
-			"label": "翡翠花海良木加持 · 制琴提速35%" if palace else ("🌲 良木林间加持（%d棵树）· 制琴提速35%%" % trees if active else "周围种满3棵橄榄或柏树可获良木加持（当前%d/3）" % trees),
+			"label": "翡翠花海良木加持 · 制琴提速35%" if palace else ("🌲 良木林间加持（%d棵树）· 制琴提速35%%" % trees if active else "周围种满3棵橄榄、柏树或金叶树可获良木加持（当前%d/3）" % trees),
 		}
 	return {"blessed": false, "speed_multiplier": 1.0, "label": ""}
 

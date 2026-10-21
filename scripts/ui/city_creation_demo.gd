@@ -55,6 +55,8 @@ var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
 var tactile_dock: RefCounted
+var world_toys=preload("res://scripts/visual/city_creation_world_toys.gd").new()
+var wish_pins:Control
 var intuitive_guidance:Control
 var start_empty:=false
 var spatial_popover: RefCounted
@@ -1289,12 +1291,14 @@ func _process(delta: float) -> void:
 			save_city()
 	_poll_edit_budget()
 	if not _edit_pending:town.quality_visual.poll(town)
-	if tool==4 and not guide.visible() and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_P)):
+	if tool==4 and not guide.visible() and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null:
 		var hit := _ray_hit(pointer)
 		var body: Object = hit.get("collider")
 		var id := str(body.get_meta("house_id", "")) if body!=null else ""
 		if not id.is_empty() and id != _last_strummed_house_id:
-			if _strum_house(id): _last_strummed_house_id=id
+			if int(state.natural_clusters().get(id,{}).get("size",1))>=3 and _strum_house(id): _last_strummed_house_id=id
+		elif id.is_empty():
+			_last_strummed_house_id="";world_toys.hover(self,_ground_at(pointer))
 	else: _last_strummed_house_id=""
 	music.reply.update_links((life.district_reply_pairs()+music.manual_reply_pairs()) if not _edit_pending else [],not _edit_pending and not life.budget_sync_pending())
 	var concert_view: Dictionary = life.concert_view()
@@ -1316,6 +1320,7 @@ func _process(delta: float) -> void:
 	if not bool(grand.active) and not finale.is_empty():grand=finale
 	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
 	town.update_travel_music(music.travel_music_report())
+	world_toys.update(self,delta)
 	frame_samples.append(delta*1000.0)
 	if frame_samples.size() > 240: frame_samples.pop_front()
 	life_ui_timer -= delta
@@ -2062,7 +2067,8 @@ func _toggle_music() -> void:
 
 func _strum_house(id: String) -> bool:
 	if not music.play_house(id): return false
-	town.animate_house_bounce(id,0.055)
+	town.animate_house_bounce(id,0.045)
+	life.greet_house(id)
 	return true
 
 func _toggle_light() -> void:
@@ -2310,6 +2316,7 @@ func _refresh_relay() -> void:
 	else: relay_info.text=""
 
 func _on_concert_event(event: String, venue_id: String) -> void:
+	if event=="started":life.greet_house(venue_id)
 	var name_value := "演奏庭"
 	for house: Dictionary in state.houses:
 		if house.id == venue_id: name_value = str(house.name)

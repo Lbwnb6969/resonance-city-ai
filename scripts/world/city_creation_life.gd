@@ -3,6 +3,7 @@ extends Node3D
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
 const CitizenMotion=preload("res://scripts/world/city_creation_citizen_motion.gd")
+var greetings=preload("res://scripts/world/city_creation_greetings.gd").new()
 const CitizenSchedule=preload("res://scripts/world/city_creation_citizen_schedule.gd")
 var _citizen_schedule:=CitizenSchedule.new()
 const State=preload("res://scripts/world/city_creation_state.gd")
@@ -388,6 +389,7 @@ func _tick_life(delta: float) -> void:
 	state.advance_resonance_afterglow(delta)
 	state.advance_matinee_rest(delta)
 	time += delta
+	greetings.update(time)
 	if profile_tick:tick_profile.production=Time.get_ticks_usec()-sampled;sampled=Time.get_ticks_usec()
 	_update_citizen_lod(delta)
 	var has_trams:bool=not tram.cars.is_empty()
@@ -416,6 +418,7 @@ func _tick_life(delta: float) -> void:
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
+	if time<float(resident.get("greeting_until",-1.)):return
 	if resident.has("cafe_visit"): return
 	if float(resident.get("motion_advanced_at",-1.))==time:return
 	var motion:RefCounted=resident.get("offscreen_motion")
@@ -800,6 +803,12 @@ func _pause_at_home(resident: Dictionary, place_at_door: bool=false) -> void:
 			resident.node.position = positions[connected_houses[house.id]]+Vector3(0,0.10,0)
 		else:
 			resident.node.position = Vector3(entrance.x,state.street_height(entrance)+0.10,entrance.y)
+
+func greet_house(house_id:String)->int:
+	var index:int=state._house_index(house_id)
+	if index<0:return 0
+	var house:Dictionary=state.houses[index]
+	return greetings.greet(self,Vector2(house.origin[0],house.origin[1]))
 
 func _resume(resident: Dictionary) -> void:
 	if not resident.node.visible:

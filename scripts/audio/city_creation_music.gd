@@ -12,6 +12,7 @@ const Catalog=preload("res://scripts/audio/city_creation_music_catalog.gd")
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const ThemePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
 const BankCache=preload("res://scripts/audio/city_creation_bank_cache.gd")
+const WorldToys=preload("res://scripts/visual/city_creation_world_toys.gd")
 const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Towers = preload("res://scripts/world/city_creation_towers.gd")
@@ -280,6 +281,7 @@ func play_house(house_id: String) -> bool:
 	return attention.enqueue_pluck_arpeggio(plan,_playback_clock())
 
 func _play_queued_house(queued: Dictionary)->bool:
+	if queued.has("world_kind"):return WorldToys.play_note(self,queued)
 	if muted or concert_active or _loading:return false
 	var house_id:=str(queued.house_id)
 	var plan:=PitchPluck.plan(_pluck_city,house_id,_playback_clock(),harmony_mode())

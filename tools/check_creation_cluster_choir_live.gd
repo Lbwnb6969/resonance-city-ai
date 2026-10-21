@@ -52,7 +52,8 @@ func run()->void:
 	check(demo.music._playback_clock()>clock+7.5,"service events do not restart transport")
 	recorder.set_recording_active(false);var wave:AudioStreamWAV=recorder.get_recording();var peak:=0.
 	if wave!=null:
-		for i:int in range(wave.data.size()/2):peak=maxf(peak,absf(float(wave.data.decode_s16(i*2))/32768.))
+		var pcm:PackedByteArray=wave.data
+		for i:int in range(pcm.size()/2):peak=maxf(peak,absf(float(pcm.decode_s16(i*2))/32768.))
 		check(wave.save_to_wav(OUT+"/实际聚落伴奏.wav")==OK and peak>.0001 and peak<.99,"actual Master recording is audible and unclipped")
 	else:check(false,"actual Master audio exists")
 	for i:int in range(AudioServer.get_bus_effect_count(0)-1,-1,-1):

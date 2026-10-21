@@ -9,6 +9,7 @@ func request(renderer: Node3D, id: String, strength: float = 0.06) -> void:
 	if root == null: return
 	if active.has(id) and is_instance_valid(active[id].pivot):
 		active[id].pivot.scale = Vector3.ONE
+		active[id].pivot.position.y=float(active[id].base_y)
 	var pivot: Node3D = root.get_node_or_null("TouchVisualPivot")
 	if pivot == null:
 		pivot = Node3D.new()
@@ -19,7 +20,7 @@ func request(renderer: Node3D, id: String, strength: float = 0.06) -> void:
 		for child: Node in root.get_children():
 			if child is MeshInstance3D or child.name == "ResonanceVisualPivot":
 				child.reparent(pivot, true)
-	active[id] = {"pivot":pivot, "elapsed":0.0, "strength":strength}
+	active[id] = {"pivot":pivot, "elapsed":0.0, "strength":strength,"base_y":pivot.position.y}
 	var house: Dictionary = renderer._house_record(id)
 	renderer.wildlife.uproot_near(Vector2(house.origin[0],house.origin[1]))
 
@@ -40,6 +41,8 @@ func update(delta: float) -> void:
 		var t := float(row.elapsed)
 		var press := -float(row.strength) * cos(t*25.0) * exp(-t*11.0)
 		row.pivot.scale = Vector3(1.0-press*0.45, 1.0+press, 1.0-press*0.45)
+		row.pivot.position.y=float(row.base_y)+.04*sin(clampf(t/.55,0.,1.)*PI)
 		if t >= 0.55:
 			row.pivot.scale = Vector3.ONE
+			row.pivot.position.y=float(row.base_y)
 			active.erase(id)

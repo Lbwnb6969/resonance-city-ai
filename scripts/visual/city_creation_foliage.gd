@@ -44,12 +44,17 @@ func material(part: String) -> Material:
 		shader.code = """
 shader_type spatial;
 render_mode specular_disabled;
+uniform vec2 touch_at=vec2(0.0);
+uniform float touch_time=10.0;
 varying float leaf_height;
 void vertex() {
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	float phase = world.x * 0.37 + world.z * 0.29;
 	float gust = sin(TIME * 1.19 + phase) + 0.35 * sin(TIME * 2.31 + phase * 1.7);
 	float weight = COLOR.a * COLOR.a;
+	float touched=exp(-touch_time*3.0)*sin(touch_time*13.0)*(1.0-smoothstep(0.0,2.5,length(world.xz-touch_at)));
+	VERTEX.x+=touched*weight*.10;
+	VERTEX.z+=touched*weight*.06;
 	VERTEX.x += gust * 0.047 * weight;
 	VERTEX.z += sin(TIME * 0.93 + phase + 1.2) * 0.033 * weight;
 	leaf_height = COLOR.a;
