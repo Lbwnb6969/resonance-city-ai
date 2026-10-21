@@ -15,6 +15,8 @@ var suggested_role:=""
 var target_points:Array[Vector2]=[]
 var available:Array[int]=[0]
 var _revision:=-1
+var _state_id:=0
+var _light_phase:=-1
 var _timer:=0.
 var _pulse:=0.
 
@@ -126,6 +128,10 @@ func _house_sites(amount:int)->Array[Vector2]:
 	return result
 
 func update_guidance(delta:float)->void:
+	if _state_id!=demo.state.get_instance_id():
+		_state_id=demo.state.get_instance_id();available.assign([0]);_revision=-1
+	if _light_phase!=demo.light_phase:
+		_light_phase=demo.light_phase;banner.add_theme_color_override("font_color",UI.PAPER if _light_phase==2 else UI.INK)
 	_pulse+=delta;_timer+=delta
 	if not demo.edit_pending() and (demo.state.revision!=_revision or _timer>1.5):_rebuild()
 	var hidden:bool=not demo.ui_layer.visible or demo.camera_rig.strolling or demo.gallery.panel.visible or demo.journal.panel.visible or demo.guide.visible() or demo.ledger.visible()

@@ -21,9 +21,9 @@ static func bakery_blessing(state: RefCounted, bakery_id: String) -> Dictionary:
 		return {
 			"blessed": active,
 			"kind": "water_mill" if near_water else ("courtyard_spring" if near_fountain else "none"),
-			"speed_multiplier": 1.35 if active else 1.0,
-			"bonus_batch": 1 if active else 0,
-			"label": "💧 活水磨坊加持 · 烘焙提速35% · 每炉+1份" if active else "靠近河岸或喷泉内院可获活水磨坊加持",
+			"speed_multiplier": 1.+.35*float(state.biome_bonus(bakery_id).get("water_bonus",1.)) if active else 1.0,
+			"bonus_batch": int(state.biome_bonus(bakery_id).get("water_bonus",1.)) if active else 0,
+			"label": ("沙洲活水加持 · 烘焙提速70% · 每炉+2份" if float(state.biome_bonus(bakery_id).get("water_bonus",1.))>1. else "💧 活水磨坊加持 · 烘焙提速35% · 每炉+1份") if active else "靠近河岸或喷泉内院可获活水磨坊加持",
 		}
 	return {"blessed": false, "speed_multiplier": 1.0, "bonus_batch": 0, "label": ""}
 

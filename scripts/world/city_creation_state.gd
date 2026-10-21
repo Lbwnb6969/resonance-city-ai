@@ -8,6 +8,10 @@ const AutoNeighborhoods=preload("res://scripts/world/city_creation_auto_neighbor
 var automatic_neighborhoods:=false
 const Microclimate=preload("res://scripts/world/city_creation_microclimate.gd")
 var microclimate:=""
+const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
+var biome_seed:Dictionary={}
+var _biome_revision:=-1
+var _biome_bonuses:Dictionary={}
 const NaturalClusters=preload("res://scripts/world/city_creation_clusters.gd")
 var _natural_cluster_key:Variant=null
 var _natural_cluster_rows:Dictionary={}
@@ -159,6 +163,7 @@ func initialize_empty()->void:
 	revision+=1;_undo.clear();_redo.clear()
 
 func initialize() -> void:
+	biome_seed={};_biome_revision=-1;_biome_bonuses={}
 	microclimate=""
 	automatic_neighborhoods=false
 	_prosperity_revision = -1
@@ -1605,7 +1610,12 @@ func site_production_multiplier(house_id: String) -> float:
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
 	var weather:float=Microclimate.production(self,houses[index]) if index>=0 else 1.
-	return transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	return float(biome_bonus(house_id).get("production",1.))*transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+
+func biome_bonus(house_id:String)->Dictionary:
+	if _biome_revision!=revision:
+		_biome_bonuses=Biomes.evaluate(self);_biome_revision=revision
+	return _biome_bonuses.get(house_id,{})
 
 func transit_efficiency(house_id:String)->float:
 	var index:=_house_index(house_id)
@@ -1688,7 +1698,10 @@ func city_harmony_summary() -> Dictionary:
 
 
 func cafe_afterglow_extension(house_id: String) -> float:
-	return float(site_blessing(house_id).get("afterglow_extension", 30.0))*(1.25 if microclimate=="spring_breeze" else 1.)
+	var base:=float(site_blessing(house_id).get("afterglow_extension",30.))
+	var index:=_house_index(house_id)
+	if index>=0 and water_clearance(Vector2(houses[index].origin[0],houses[index].origin[1]))<4.5:base=30.+(base-30.)*float(biome_bonus(house_id).get("water_bonus",1.))
+	return base*(1.25 if microclimate=="spring_breeze" else 1.)
 
 
 func afterglow_limit(house_id: String) -> float:

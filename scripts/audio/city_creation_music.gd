@@ -55,7 +55,9 @@ func record_life_activity(kind:String,source_id:String="",at:Vector2=Vector2.INF
 			if d<distance:distance=d;source_id=id;row=_house_music[id]
 	if row.is_empty() or int(row.get("cluster_size",1))<3 or acoustic.focus_weight(source_id)<=0.:return false
 	var family:String="air" if kind in ["tea","arrival","bridge","arch","stepping"] else "terrace" if kind in ["craft","installed","art_installed","mechanism_installed","tram"] else "foundation"
-	_life_activity[str(row.get("cluster_id",source_id))+"/"+family]={"source_id":source_id,"family":family,"until":_playback_clock()+12.}
+	var duration:=12.
+	if kind in ["bridge","stepping"] and is_instance_valid(life_source):duration*=float(life_source.state.biome_bonus(source_id).get("crossing_bonus",1.))
+	_life_activity[str(row.get("cluster_id",source_id))+"/"+family]={"source_id":source_id,"family":family,"until":_playback_clock()+duration}
 	return true
 
 func _apply_life_orchestration()->void:

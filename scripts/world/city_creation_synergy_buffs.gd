@@ -64,7 +64,9 @@ static func evaluate(city:RefCounted)->Dictionary:
 		if purity>1.:labels.append("声部纯净 · 生产提速25%")
 		if str(house.role) in ["bakery","workshop"]:
 			for mill:Dictionary in mills:
-				if _same_bank_band(city,house,mill):water_power=1.35;labels.append("水力工坊带 · 同岸18米内生产提速35%");break
+				if _same_bank_band(city,house,mill):
+					water_power=1.+.35*float(city.biome_bonus(id).get("water_bonus",1.))
+					labels.append("水力工坊带 · 同岸18米内生产提速%d%%"%roundi((water_power-1.)*100.));break
 		var scopes:Dictionary=chords.houses.get(id,{})
 		var natural:=_near(house,palaces,14.)
 		var delivery:=1.25 if str(house.role) in ["workshop","atelier","clockmaker"] and _near(house,keeps,16.) else 1.

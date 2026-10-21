@@ -22,6 +22,7 @@ func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	panel.save_requested.connect(save_work)
 	panel.open_requested.connect(open_work)
 	panel.example_requested.connect(open_example)
+	panel.biome_requested.connect(open_biome)
 	panel.close_requested.connect(close_panel)
 
 func open_panel() -> void:
@@ -94,6 +95,20 @@ func open_example(id: String) -> void:
 	if busy or demo.edit_pending(): return
 	await _open_chosen(Examples.read(id))
 
+func open_biome(id:String)->void:
+	if busy or demo.edit_pending():return
+	var city:RefCounted=demo.State.new()
+	var created:Dictionary=city.Biomes.create(city,id)
+	if not created.ok:panel.set_status(str(created.message));return
+	var world:Dictionary=city.snapshot()
+	var checked:Dictionary=city._validate_snapshot(world)
+	if not checked.ok:panel.set_status(str(checked.message));return
+	var night:bool=city.microclimate=="starlight_fireflies"
+	var features:Dictionary=city.Biomes.profile(city.biome_seed)
+	var view_zoom:=48. if features.terraces or features.islands else 38.
+	var chosen:={"ok":true,"id":"biome_"+id,"title":city.Biomes.NAMES[city.Biomes.IDS.find(id)],"world":world,"view":{"focus":[-3.,0.,0.],"yaw":demo.yaw,"pitch":demo.pitch,"zoom":view_zoom,"evening":night,"light_phase":2 if night else 0}}
+	await _open_chosen(chosen)
+
 func _open_chosen(chosen: Dictionary) -> void:
 	if not chosen.ok:
 		panel.set_status(str(chosen.message))
@@ -133,6 +148,9 @@ func _open_chosen(chosen: Dictionary) -> void:
 	demo._rendered_terrain=city.terrain_strokes.duplicate(true)
 	demo.selected_house=""
 	demo.selected_district=""
+	demo.spatial_popover.close()
+	demo.house_module_mode=false
+	demo.select_tool(0)
 	demo.place_panel.hide()
 	demo._save_requested=false
 	demo._edit_ui_pending=false

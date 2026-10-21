@@ -1,9 +1,12 @@
 extends Control
 ## Presentation only: the owner handles every save/open request and disk write.
 const UI = preload("res://scripts/ui/valley_ui_theme.gd")
+const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
+const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
 signal save_requested(title: String)
 signal open_requested(id: String)
 signal example_requested(id: String)
+signal biome_requested(id:String)
 signal close_requested
 
 var title_input: LineEdit
@@ -21,6 +24,9 @@ var footer: Label
 var _items: Array = []
 var _examples: Array = []
 var _examples_selected := false
+var _biomes_selected:=false
+var biome_button:Button
+var biome_buttons:Dictionary={}
 var _busy := false
 var _status := ""
 var _covers: Dictionary = {}
@@ -60,6 +66,12 @@ func _ready() -> void:
 	close_button.name = "CloseGallery"
 	close_button.pressed.connect(func() -> void: close_requested.emit())
 	header.add_child(close_button)
+	biome_button=_button("开启新河湾 · 选择声学地貌")
+	biome_button.name="ChooseAcousticBiome"
+	biome_button.tooltip_text="先自动收藏当前河湾，再从六种地貌开始建造"
+	biome_button.pressed.connect(func()->void:
+		_biomes_selected=not _biomes_selected;scroll.scroll_vertical=0;_render_items())
+	body.add_child(biome_button)
 	var save_row := HBoxContainer.new()
 	save_row.add_theme_constant_override("separation", 10)
 	body.add_child(save_row)
@@ -101,6 +113,7 @@ func _ready() -> void:
 	tabs.add_tab("官方示范河湾")
 	tabs.current_tab = 1 if _examples_selected else 0
 	tabs.tab_changed.connect(func(index: int) -> void:
+		_biomes_selected=false
 		_examples_selected = index == 1
 		scroll.scroll_vertical = 0
 		_render_items())
@@ -165,6 +178,8 @@ func set_busy(value: bool) -> void:
 	if save_button == null: return
 	save_button.disabled = value
 	close_button.disabled = value
+	biome_button.disabled=value
+	for seed_button:Button in biome_buttons.values():seed_button.disabled=value
 	title_input.editable = not value
 	for index in range(tabs.tab_count): tabs.set_tab_disabled(index, value)
 	for id: String in open_buttons:
@@ -199,6 +214,9 @@ func _render_items() -> void:
 		child.queue_free()
 	cards.clear()
 	open_buttons.clear()
+	biome_buttons.clear()
+	if _biomes_selected:
+		_render_biomes();return
 	var visible_items: Array = _examples if _examples_selected else _items
 	empty_label.text = "示范河湾正在准备。" if _examples_selected else "这里会留下你造过的河湾。\n为当前作品起名，收藏第一张风景。"
 	empty_label.visible = visible_items.is_empty()
@@ -269,6 +287,31 @@ func _render_items() -> void:
 			else: open_requested.emit(id))
 		column.add_child(open_button)
 		open_buttons[id] = open_button
+	_queue_fit()
+
+func _render_biomes()->void:
+	empty_label.hide()
+	footer.text="选择印章开启新河湾。当前作品会先自动留存，随时可以回来继续。"
+	for i in range(Biomes.IDS.size()):
+		var id:String=Biomes.IDS[i]
+		var card:=Button.new();card.name="Biome_"+id
+		card.custom_minimum_size=Vector2(250,176);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		card.add_theme_stylebox_override("normal",UI.card(14))
+		card.add_theme_stylebox_override("hover",UI.button("hover"))
+		card.disabled=_busy;card.tooltip_text=Biomes.DESCRIPTIONS[i]
+		var column:=VBoxContainer.new();column.mouse_filter=Control.MOUSE_FILTER_IGNORE
+		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		column.offset_left=14;column.offset_right=-14;column.offset_top=12;column.offset_bottom=-12
+		card.add_child(column)
+		var heading:=HBoxContainer.new();heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;column.add_child(heading)
+		var seal:=Button.new();seal.set_script(Seal);seal.configure(Biomes.GLYPHS[i],46.)
+		seal.mouse_filter=Control.MOUSE_FILTER_IGNORE;heading.add_child(seal)
+		heading.add_child(_label(Biomes.NAMES[i],20,false))
+		column.add_child(_label(Biomes.DESCRIPTIONS[i],15))
+		if id=="daily_resonance":column.add_child(_label(Time.get_date_string_from_system(),12,false))
+		card.pressed.connect(func()->void:
+			if not _busy:biome_requested.emit(id))
+		grid.add_child(card);biome_buttons[id]=card
 	_queue_fit()
 
 func _cover(path: String) -> Texture2D:
