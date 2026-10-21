@@ -19,6 +19,7 @@ var tier:Label
 var status:Label
 var style_button:Button
 var era_button:Button
+var choir_button:Button
 var temperament_button:Button
 var concert_button:Button
 var expand_button:Button
@@ -82,6 +83,7 @@ func setup(owner,ui_root:Control)->void:
 	status.add_theme_color_override("font_color",UI.MUTED);summary.add_child(status)
 	var actions:=HBoxContainer.new();actions.add_theme_constant_override("separation",5);column.add_child(actions)
 	var extend:=_seal(actions,"house","加建",_extend_house);extend.name="ExtendHouse";extend.custom_minimum_size=Vector2(76,42)
+	choir_button=_seal(actions,"district","曲风",_cycle_cluster_style);choir_button.custom_minimum_size=Vector2(76,42)
 	temperament_button=_seal(actions,"music","律动",_cycle_temperament);temperament_button.custom_minimum_size=Vector2(76,42)
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
 	card.hide()
@@ -123,7 +125,9 @@ func refresh()->void:
 	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
 	var era:=str(house.get("era_theme","district"));era_button.caption="时代 · "+_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
-	era_button.disabled=house.has("signature");era_button.queue_redraw()
+	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换整片自然聚落的时代风貌";era_button.queue_redraw()
+	choir_button.disabled=house.has("signature")
+	choir_button.caption={"warm":"暖庭","deep":"深流","weave":"织机","market":"市集","sylvan":"林间"}.get(demo.state.house_acoustic_style(house),"曲风");choir_button.tooltip_text="轮换整片自然聚落的共同曲风";choir_button.queue_redraw()
 	var palette:=int(house.get("palette",0))
 	for index:int in range(swatches.size()):
 		var style:=swatches[index].get_theme_stylebox("normal") as StyleBoxFlat
@@ -133,7 +137,9 @@ func refresh()->void:
 	temperament_button.caption={"andante":"温润","allegro":"轻快","largo":"深邃"}.get(temperament,"温润")
 	temperament_button.queue_redraw()
 	var role:=str(house.get("role","residential"))
-	concert_button.visible=str(house.get("signature","")) in ["music_academy","floating_amphitheater","bell_keep"]
+	concert_button.visible=house.get("signature","") in demo.State.Signatures.IDS
+	concert_button.caption="停奏" if str(demo.life.concert_status().get("venue_id",""))==target_house_id else "奏乐章"
+	concert_button.tooltip_text="奏响传世共鸣乐章：聚落接力，末两乐句齐奏";concert_button.queue_redraw()
 	status.text=str(demo.HouseholdFeedback.describe(demo.state,demo.life,target_house_id)).replace("\n"," · ")
 	_update_anchor(house)
 
@@ -192,13 +198,19 @@ func _set_palette(index:int)->void:
 	var result:Dictionary=demo.state.set_house_palette(target_house_id,index)
 	demo._after_edit(result,"terrace",false);refresh()
 
+func _cycle_cluster_style()->void:
+	var house:Dictionary=demo.town._house_record(target_house_id)
+	if house.is_empty() or house.has("signature"):return
+	var styles:Array=demo.State.DISTRICT_STYLES
+	var next:String=styles[posmod(styles.find(demo.state.house_acoustic_style(house))+1,styles.size())]
+	demo._after_edit(demo.state.set_cluster_style(target_house_id,next),"room",false);refresh()
+
 func _cycle_era()->void:
-	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty() or house.has("signature"):return
-	var choices:Array[String]=["district"]
-	for era:String in demo.State.Eras.IDS:
-		if demo.state.era_unlocks.has(era):choices.append(era)
-	var current:=str(house.get("era_theme","district"));var result:Dictionary=demo.state.set_house_era(target_house_id,choices[posmod(choices.find(current)+1,choices.size())])
-	demo._after_edit(result,"room",true,target_house_id);refresh()
+	var house:Dictionary=demo.town._house_record(target_house_id)
+	if house.is_empty() or house.has("signature"):return
+	var choices:Array=demo.state.era_unlocks
+	var next:String=choices[posmod(choices.find(demo.state.house_era(house))+1,choices.size())]
+	demo._after_edit(demo.state.set_cluster_era(target_house_id,next),"room",true,target_house_id);refresh()
 
 func _cycle_temperament()->void:
 	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty():return

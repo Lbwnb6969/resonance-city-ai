@@ -30,6 +30,9 @@ var bubble_rows:Control
 var district_name_row:HBoxContainer
 var bindings:Array[Dictionary]=[]
 var active_tool:=-1
+var nature_row:HBoxContainer
+const PRIMARY:=[0,2,4,5,8]
+const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
 
 func button_for(source_name:String,index:int=0)->Button:
 	for binding:Dictionary in bindings:
@@ -47,12 +50,13 @@ func _setup(owner:Node,parent_control:Control)->void:
 	var toolbar:PanelContainer=parent.get_node("Toolbar")
 	var style:=UI.panel(6);style.set_corner_radius_all(30);style.bg_color=Color(UI.PAPER,.85);style.shadow_size=6
 	toolbar.add_theme_stylebox_override("panel",style)
-	toolbar.offset_left=-284;toolbar.offset_right=284;toolbar.offset_top=-105;toolbar.offset_bottom=-45
+	toolbar.offset_left=-202;toolbar.offset_right=202;toolbar.offset_top=-105;toolbar.offset_bottom=-45
 	for i in range(demo.tool_buttons.size()):
 		var button:Button=demo.tool_buttons[i]
 		button.set_script(Seal);button.configure(Icons.TOOL_KINDS[i],48.)
-		button.caption=demo.TOOL_NAMES[i];button.key_label=str(i+1)
-		if i==4:button.hide()
+		button.caption=CAPTIONS[PRIMARY.find(i)] if i in PRIMARY else demo.TOOL_NAMES[i];button.key_label=""
+		button.visible=i in PRIMARY
+		button.tooltip_text=button.caption+" · 原快捷键 "+str(i+1)
 	for button:Button in [demo.undo_button,demo.redo_button]:
 		button.set_script(Seal);button.configure("undo" if button==demo.undo_button else "redo",32.)
 	var legacy:=Control.new();legacy.name="LegacyToolOptions";legacy.hide();legacy.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -62,6 +66,11 @@ func _setup(owner:Node,parent_control:Control)->void:
 		if old!=null:old.reparent(legacy);old.hide()
 	popup=Control.new();popup.name="ToolBubbles";popup.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	popup.mouse_filter=Control.MOUSE_FILTER_IGNORE;parent.add_child(popup)
+	nature_row=HBoxContainer.new();nature_row.name="NatureModes";nature_row.add_theme_constant_override("separation",GAP)
+	for mode:int in range(3):
+		var button:=_seal(nature_row,["vegetation","pond","water"][mode],["林木","池塘","溪渠"][mode],"栽种林木" if mode==0 else "挖掘睡莲池塘" if mode==1 else "引水溪渠")
+		button.pressed.connect(_nature_mode.bind(mode))
+	popup.add_child(nature_row)
 	bubble_rows=VBoxContainer.new();bubble_rows.name="BubbleRows"
 	bubble_rows.add_theme_constant_override("separation",GAP)
 	bubble_rows.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -79,7 +88,15 @@ func _setup(owner:Node,parent_control:Control)->void:
 func refresh()->void:
 	if demo==null or popup==null:return
 	var tool:int=demo.tool
-	popup.visible=bool(TOOL_GROUPS.has(tool)) and demo.ui_layer.visible
+	for index:int in PRIMARY:
+		var button:Button=demo.tool_buttons[index]
+		button.visible=true
+		if demo.intuitive_guidance!=null:button.disabled=not demo.intuitive_guidance.tool_available(index)
+		button.modulate.a=.28 if button.disabled else 1.
+		button.active=tool==index or (index==0 and tool in [1,3]) or (index==5 and tool==6)
+		button.queue_redraw()
+	popup.visible=(bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and (tool!=0 or demo.state.houses.size()>=3)
+	nature_row.visible=tool in [5,6]
 	district_name_row.visible=tool==7
 	if not popup.visible:return
 	if active_tool!=tool:
@@ -94,6 +111,16 @@ func _rebuild(tool:int)->void:
 	bindings.clear()
 	var row:HBoxContainer
 	var row_count:=0
+	if tool in [0,1]:
+		row=HBoxContainer.new();row.add_theme_constant_override("separation",GAP);row.alignment=BoxContainer.ALIGNMENT_CENTER;bubble_rows.add_child(row)
+		_seal(row,"house","房间","扩建房间").pressed.connect(func()->void:demo.select_tool(0);demo.house_module_mode=true)
+		_seal(row,"vegetation","露台","点击侧墙或屋顶添置露台").pressed.connect(func()->void:demo.select_tool(1))
+		_seal(row,"erase","拆除","点击模块拆除；Shift整栋").pressed.connect(func()->void:demo.select_tool(3))
+	elif tool==4:
+		row=HBoxContainer.new();row.add_theme_constant_override("separation",GAP);row.alignment=BoxContainer.ALIGNMENT_CENTER;bubble_rows.add_child(row)
+		for role:String in ["residential","bakery","garden_cafe","workshop","atelier","clockmaker"]:
+			var button:=_seal(row,role if role!="residential" else "house",{"residential":"居所","bakery":"面包","garden_cafe":"茶座","workshop":"制琴","atelier":"书院","clockmaker":"钟表"}[role],"点房屋打开用途卡片")
+			button.pressed.connect(_life_role.bind(role))
 	for group:Array in TOOL_GROUPS.get(tool,[]):
 		var source:Control=parent.find_child(str(group[0]),true,false)
 		if source==null:continue
@@ -157,7 +184,7 @@ func _sync()->void:
 
 func _position_popup()->void:
 	if not is_instance_valid(popup) or not popup.visible or active_tool<0:return
-	var source:Control=demo.tool_buttons[active_tool]
+	var source:Control=demo.tool_buttons[0 if active_tool in [1,3] else 5 if active_tool==6 else 4 if active_tool==7 else active_tool]
 	var anchor:=source.get_global_rect()
 	var extent:=bubble_rows.get_combined_minimum_size()
 	bubble_rows.size=extent
@@ -165,3 +192,19 @@ func _position_popup()->void:
 	var bounds:=parent.get_viewport_rect().size
 	bubble_rows.position.x=clampf(anchor.get_center().x-extent.x*.5,12.,maxf(12.,bounds.x-extent.x-12.))
 	bubble_rows.position.y=maxf(12.,anchor.position.y-16.-extent.y)
+	if nature_row.visible:
+		var nature_size:=nature_row.get_combined_minimum_size();nature_row.size=nature_size
+		nature_row.position=Vector2(clampf(anchor.get_center().x-nature_size.x*.5,12.,maxf(12.,bounds.x-nature_size.x-12.)),maxf(12.,bubble_rows.position.y-nature_size.y-8.))
+
+func _nature_mode(mode:int)->void:
+	if mode==0:demo.select_tool(5)
+	else:
+		demo.select_tool(6)
+		var source:OptionButton=parent.find_child("WaterMode",true,false)
+		source.select(mode-1);source.item_selected.emit(mode-1)
+	refresh()
+
+func _life_role(role:String)->void:
+	if demo.selected_house.is_empty():demo._message("点一栋房屋，在屋顶卡片安排生活。 ");return
+	demo._after_edit(demo.state.set_house_role(demo.selected_house,role),"room")
+	demo.spatial_popover.open_for_house(demo.selected_house)

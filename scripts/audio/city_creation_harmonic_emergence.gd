@@ -47,6 +47,7 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 		if largest>=5 and not second.is_empty():targets[second]=-18.+linear_to_db(minf(.45,float(weights[second])/float(weights[lead])))
 		targets.air=lerpf(-60.,-23.,clampf(elevation*.7+silhouette*.6,0.,1.))
 		targets.terrace=lerpf(-60.,-28.,clampf((average-1.)/4.+water/maxf(.001,total)*.25,0.,1.))
+		if largest>=15:targets.air=maxf(float(targets.air),-22.);targets.terrace=maxf(float(targets.terrace),-26.)
 	shapes.sort_custom(func(a:Array,b:Array)->bool:return str(a[0])<str(b[0]))
 	var dna:=hash([shapes,ring_count])
 	var richness:float=clampf((average-1.)*.23+silhouette*.45+minf(2.,ring_count)*.15+elevation*.2,0.,1.)

@@ -12,6 +12,7 @@ const Catalog=preload("res://scripts/audio/city_creation_music_catalog.gd")
 const Arrangement = preload("res://scripts/audio/city_creation_arrangement.gd")
 const ThemePCM = preload("res://scripts/audio/city_creation_theme_pcm.gd")
 const BankCache=preload("res://scripts/audio/city_creation_bank_cache.gd")
+const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Towers = preload("res://scripts/world/city_creation_towers.gd")
 const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.gd")
@@ -28,6 +29,8 @@ var attention:=AttentionMixer.new()
 var attention_strolling:=false
 const HarmonicEmergence=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 var emergence:=HarmonicEmergence.new()
+const ClusterHarmony=preload("res://scripts/audio/city_creation_cluster_harmony.gd")
+var life_source:Node3D
 var choir_mode:=true
 var _life_activity:Dictionary={}
 var _life_orchestration:Dictionary={}
@@ -65,6 +68,12 @@ func _apply_life_orchestration()->void:
 	for id:String in _cafe_view:
 		if _cafe_eligible(id) and int(_house_music[id].get("cluster_size",1))>=3:_life_orchestration.air=true
 	if int(emergence.score.get("eligible_houses",0))<1:return
+	if is_instance_valid(life_source):
+		var actual:Dictionary=ClusterHarmony.life_stems(_house_music,acoustic,life_source.bakery.workers,life_source.workshop.workers,_cafe_view)
+		_life_orchestration.merge(actual.families)
+		for track:String in actual.targets:
+			emergence.score.targets[track]=maxf(float(emergence.score.targets.get(track,-60.)),float(actual.targets[track]))
+			emergence.score.source_ids[track]=actual.sources[track]
 	for family:String in _life_orchestration:
 		var floor_db:float={"foundation":-13.,"air":-20.,"terrace":-25.}[family]
 		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
@@ -641,13 +650,17 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 		if circular.glowing:lead=str(circular.house_id);audible=true
 	if attention.current_mode==AttentionMixer.Mode.SCULPTING and not concert_active:
 		lead="";chorus.clear();ambient.clear();linked.clear()
+	var wave:Dictionary={}
+	if choir_mode and not concert_active and audible and attention.current_mode!=AttentionMixer.Mode.SCULPTING:
+		wave=ClusterHarmony.choral_wave(_house_music,acoustic,clock)
+		chorus.clear();lead=""
 	var arcs: Array[Dictionary] = []
 	if audible and concert_active and lead != _concert_venue and not lead.is_empty():
 		arcs.append({"from_id":_concert_venue,"to_id":lead,"strength":1.0})
 	# This envelope describes the real shared 80 BPM transport, rather than
 	# a separate scene timer which could keep flashing after the audio stops.
 	var pulse := pow(0.5 + 0.5 * cos(TAU * clock / 0.75), 2.0) if audible else 0.0
-	return {"clock_sec":clock,"beat_pulse":pulse,"lead_id":lead,"venue_id":_concert_venue,
+	return {"choral_wave":wave,"clock_sec":clock,"beat_pulse":pulse,"lead_id":lead,"venue_id":_concert_venue,
 		"chorus_ids":chorus,"ambient_ids":ambient,"concert_active":concert_active and audible,
 		"phrase":phrase,"finale":concert_active and phrase == 7 and audible,"audible":audible,
 		"role":str(source.get("role", "daily")),"timbre":str(source.get("timbre", "")),
@@ -920,6 +933,8 @@ func _source_schedule() -> Array[Dictionary]:
 
 
 func _source_for_phrase(phrase: int) -> Dictionary:
+	if concert_active and _concert_view.get("landmark_movement",false):
+		return LandmarkMovement.source(_concert_view.movement_order,_house_music,_concert_venue,phrase)
 	if _grand_active():
 		var era:String=GrandFestival.PHRASES[clampi(phrase,0,7)]
 		var id:String=_concert_venue if era=="tutti" else str(_concert_view.era_cast[era])
@@ -960,7 +975,7 @@ func active_source() -> Dictionary:
 
 
 func target_gain_db(key: String, during_concert: bool) -> float:
-	if _grand_active():return GrandFestival.gain(key,_concert_phrase())
+	if _grand_active():return _movement_gain(key,_concert_phrase())
 	if not concert_active and not emergence.score.is_empty():return float(emergence.score.targets.get(key,-60.))
 	if key=="modern_symphony":return -24.0 if during_concert else -21.0
 	if key=="clockwork_waltz":return -24.0 if during_concert else -21.0
@@ -986,7 +1001,7 @@ func target_gain_db(key: String, during_concert: bool) -> float:
 
 
 func concert_gain_for_phrase(key: String, phrase: int) -> float:
-	if _grand_active():return GrandFestival.gain(key,phrase)
+	if _grand_active():return _movement_gain(key,phrase)
 	# Every house shares these fixed voices. The final chord opens the
 	# harmonic colors once, regardless of how many houses join the response.
 	if phrase == 7:
@@ -1175,13 +1190,18 @@ func _remote_concert()->bool:
 	return concert_active and str(acoustic.zones.get(_concert_venue,{}).get("zone","silent")) in ["event","silent"]
 
 func _grand_active()->bool:
-	return concert_active and bool(_concert_view.get("grand_festival",false))
+	return concert_active and (bool(_concert_view.get("grand_festival",false)) or bool(_concert_view.get("landmark_movement",false)))
+
+func _movement_gain(key:String,phrase:int)->float:
+	if not _concert_view.get("landmark_movement",false):return GrandFestival.gain(key,phrase)
+	var era:=str(_source_for_phrase(phrase).era)
+	return GrandFestival.gain(key,{"pastoral":0,"renaissance":2,"clockwork":4,"modern_eco":6,"tutti":7}[era])
 
 func grand_festival_report()->Dictionary:
 	var active:=_grand_active();var source:Dictionary=_source_for_phrase(_concert_phrase()) if active else {}
 	var gains:Dictionary={}
 	if active:
-		for key:String in STEMS:gains[key]=GrandFestival.gain(key,int(source.phrase))
+		for key:String in STEMS:gains[key]=_movement_gain(key,int(source.phrase))
 	return {"active":active,"audible":active and not muted,"venue_id":_concert_venue,"source_id":str(source.get("source_id","")),"era":str(source.get("era","")),"phrase":int(source.get("phrase",-1)),"cast":_concert_view.get("era_cast",{}).duplicate(),"gains":gains,"remote":active and _remote_concert(),"elapsed":maxf(0.,_playback_clock()-_concert_clock_origin) if active else 0.}
 
 func _long_acoustic_weight(key: String)->float:

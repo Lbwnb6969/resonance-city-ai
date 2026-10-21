@@ -161,6 +161,8 @@ func _bake(worker: Dictionary, delta: float) -> void:
 		used += step
 		if float(worker.elapsed) < BAKE_DURATION - 0.000001: continue
 		if not life.state.produce_bread(shop, batch): return
+		life.state.grant_temperament_resonance(shop,used)
+		if life.state.house_temperament(shop)=="largo":bonus_remaining=maxf(bonus_remaining,used+20.)
 		if life.production_callback.is_valid(): life.production_callback.call(shop, batch)
 		worker.elapsed = 0.0
 		worker.batches = int(worker.batches) + 1
@@ -185,7 +187,7 @@ func _walk(worker: Dictionary, delta: float) -> void:
 	var target: Vector3 = route[index]
 	var direction := target - node.position
 	var distance:=Vector2(direction.x,direction.z).length()
-	var step: float=delta*.83*life.state.walking_multiplier(str(worker.home_id))
+	var step: float=delta*.83*life.state.walking_multiplier(str(worker.home_id))*life.state.temperament_walk(str(worker.bakery_id))
 	if distance <= step:
 		node.position = target
 		worker.index = index + 1

@@ -344,6 +344,8 @@ func _craft(worker: Dictionary, delta: float) -> void:
 		var produced: bool=life.state.produce_craft(shop,batch)
 		if life.profile_tick:life.tick_profile.workshop_produce+=Time.get_ticks_usec()-began
 		if not produced:return
+		life.state.grant_temperament_resonance(shop,used)
+		if life.state.house_temperament(shop)=="largo":bonus_remaining=maxf(bonus_remaining,used+20.)
 		worker.elapsed = 0.0
 		if life.craft_callback.is_valid():
 			began=Time.get_ticks_usec() if life.profile_tick else 0

@@ -602,6 +602,7 @@ func _sync() -> void:
 	cancel_budget_sync()
 	last_revision = state.revision
 	_read_progress()
+	if _concert.get("landmark_movement",false) and not state.LandmarkMovement.validate(state,{"schema":state.PERSONALIZATION_SCHEMA,"houses":state.houses,"roads":state.roads,"journey_checkpoint":{"concert":_concert}}).ok:_end_concert(false)
 	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:_end_concert(false)
 	var signature := _signature()
 	if signature == _network_signature:
@@ -704,7 +705,8 @@ func _sync_people() -> void:
 	budget_commit_stats.cafe_ms = (Time.get_ticks_usec()-started)/1000.0
 	started = Time.get_ticks_usec()
 	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:concert_invalid=true
-	if not _concert.is_empty() and (concert_invalid or str(_roles.get(str(_concert.venue_id), "")) != "venue"):
+	if _concert.get("landmark_movement",false) and not state.LandmarkMovement.validate(state,{"schema":state.PERSONALIZATION_SCHEMA,"houses":state.houses,"roads":state.roads,"journey_checkpoint":{"concert":_concert}}).ok:concert_invalid=true
+	if not _concert.is_empty() and (concert_invalid or not state.can_host_concert(str(_concert.venue_id))):
 		_end_concert(false)
 	elif not _relay.is_empty() and not ConcertRelay.remaining_reachable(self,_relay):
 		# A removed or disconnected later stop ends the remaining itinerary;
@@ -926,18 +928,18 @@ func start_relay(venue_id: String) -> Dictionary:
 	_relay={"venues":venues,"index":0,"concerts_before":int(state.life_progress.concerts)}
 	return {"ok":true,"message":"庆典从这里出发，沿小路在 %d 座演奏庭依次奏响。" % venues.size()}
 
-func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
+func invite_concert(venue_id: String, automatic: bool = false, landmark: bool = false) -> Dictionary:
 	flush_citizens()
 	if _budget_hold or budget_sync_pending(): return {"ok":false,"message":"街道正在接合，完成后再邀请。"}
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
 	if not _concert.is_empty(): return {"ok":false,"message":"街坊正在赴约，这场结束后再邀请。"}
-	if str(_roles.get(venue_id, "")) != "venue" or not connected_houses.has(venue_id):
+	if not state.can_host_concert(venue_id) or not connected_houses.has(venue_id):
 		return {"ok":false,"message":"先为音乐屋接上一条能走到的路。"}
 	var candidates: Array[Dictionary] = []
 	var routes: Array = []
 	var venue_house: Dictionary=state.houses[state._house_index(venue_id)]
 	var venue_at:=Vector2(float(venue_house.origin[0]),float(venue_house.origin[1]))
-	var coverage: float=state.concert_radius(venue_id)
+	var coverage: float=INF if landmark else state.concert_radius(venue_id)
 	for resident: Dictionary in residents:
 		if resident.paused or (automatic and resident.has("cafe_visit")): continue
 		var home: Dictionary=state.houses[state._house_index(str(resident.home_id))]
@@ -967,13 +969,24 @@ func invite_concert(venue_id: String, automatic: bool = false) -> Dictionary:
 	_concert = {"phase":"gathering","venue_id":venue_id,"participants":participants,"elapsed":0.0,"duration":CONCERT_DURATION}
 	_concert.source = "auto" if automatic else "manual"
 	if automatic: _concert.sponsors = sponsors
-	if not automatic and _relay.is_empty() and state.houses[state._house_index(venue_id)].get("signature","")=="music_academy":
+	if not automatic and not landmark and _relay.is_empty() and state.houses[state._house_index(venue_id)].get("signature","")=="music_academy":
 		var venues:=ConcertRelay.candidates(self,venue_id)
 		if venues.size()>1:_relay={"venues":venues,"index":0,"concerts_before":int(state.life_progress.concerts)}
 	_wake_house_ids.clear()
 	_refresh_resonance_membership()
 	if automatic and concert_callback.is_valid(): concert_callback.call("invited", venue_id)
 	return {"ok":true,"message":"已邀请 %d 位街坊沿路来听演出。" % participants.size()}
+
+func invite_landmark_movement(venue_id:String)->Dictionary:
+	var index:int=state._house_index(venue_id)
+	if index<0 or state.houses[index].get("signature","") not in state.Signatures.IDS:return {"ok":false,"message":"传世乐章由特殊地标指挥。"}
+	var sequence:Array[String]=state.LandmarkMovement.order(state)
+	if sequence.is_empty():return {"ok":false,"message":"先让三座邻屋聚成一片合唱街巷。"}
+	var result:=invite_concert(venue_id,false,true)
+	if not result.ok:return result
+	_concert.landmark_movement=true;_concert.movement_order=sequence
+	_resonance_signature.clear();_refresh_resonance_membership()
+	return {"ok":true,"message":"传世共鸣乐章 · 街坊到齐后，全城聚落接力24秒。"}
 
 func invite_grand_festival(venue_id:String)->Dictionary:
 	if state.revision!=last_revision and not budget_sync_pending():_sync()
@@ -1008,6 +1021,7 @@ func _refresh_resonance_membership() -> void:
 			has_venue = true
 	var venue_district := str(state.district_at(venue_origin).get("id", "")) if has_venue else ""
 	var existing := {}
+	var natural:Dictionary=state.natural_clusters() if _concert.get("landmark_movement",false) else {}
 	for house: Dictionary in state.houses:
 		var id := str(house.id)
 		existing[id] = true
@@ -1017,7 +1031,7 @@ func _refresh_resonance_membership() -> void:
 		_resonance_bins[bucket].append({"id":id,"at":at})
 		if not has_venue: continue
 		var distance := at.distance_to(venue_origin)
-		if id == venue_id or _concert.get("participants", []).has(id) or distance <= state.concert_radius(venue_id) or (not venue_district.is_empty() and str(state.district_at(at).get("id", "")) == venue_district):
+		if (_concert.get("landmark_movement",false) and int(natural[id].size)>=3) or id == venue_id or _concert.get("participants", []).has(id) or distance <= state.concert_radius(venue_id) or (not venue_district.is_empty() and str(state.district_at(at).get("id", "")) == venue_district):
 			_chorus_house_ids.append(id)
 		elif distance <= state.concert_radius(venue_id)+10.0:
 			_ambient_house_ids.append(id)
@@ -1046,6 +1060,7 @@ func concert_view() -> Dictionary:
 	result.afterglow_house_ids = state.resonance_afterglow.keys()
 	result.festival_ready_ids = state.festival_ready_venues()
 	if _concert.get("grand_festival",false):result.grand_festival=true;result.era_cast=_concert.era_cast.duplicate()
+	if _concert.get("landmark_movement",false):result.landmark_movement=true;result.movement_order=_concert.movement_order.duplicate()
 	return result
 
 func finale_view()->Dictionary:
@@ -1075,7 +1090,7 @@ func cancel_concert() -> Dictionary:
 
 func _resume_concert_participant(resident: Dictionary) -> bool:
 	var venue := str(_concert.get("venue_id", ""))
-	if str(_roles.get(venue, "")) != "venue" or not connected_houses.has(venue) or not connected_houses.has(resident.home_id): return false
+	if not state.can_host_concert(venue) or not connected_houses.has(venue) or not connected_houses.has(resident.home_id): return false
 	# A participant's home and the venue must still belong to one network.
 	if _route(str(connected_houses[resident.home_id]), str(connected_houses[venue])).is_empty(): return false
 	var target: Vector3 = positions[connected_houses[venue]] + Vector3(0,0.10,0)
@@ -1187,7 +1202,7 @@ func restore_checkpoint(data: Dictionary) -> void:
 	var venue := str(saved_concert.get("venue_id", ""))
 	var elapsed_value: Variant = saved_concert.get("elapsed", -1.0)
 	var saved_elapsed := float(elapsed_value) if elapsed_value is float or elapsed_value is int else -1.0
-	var eligible_concert: bool = phase in ["gathering", "playing"] and str(_roles.get(venue, "")) == "venue" and connected_houses.has(venue) and is_finite(saved_elapsed) and saved_elapsed >= 0.0 and saved_elapsed < CONCERT_DURATION and saved_concert.get("participants", null) is Array and not saved_concert.get("participants", []).is_empty()
+	var eligible_concert: bool = phase in ["gathering", "playing"] and state.can_host_concert(venue) and connected_houses.has(venue) and is_finite(saved_elapsed) and saved_elapsed >= 0.0 and saved_elapsed < CONCERT_DURATION and saved_concert.get("participants", null) is Array and not saved_concert.get("participants", []).is_empty()
 	if (data.get("schema")==2 and saved_relay.is_empty()) or (data.get("schema")==1 and data.has("relay")): eligible_concert=false
 	if saved_concert.get("source", "manual") not in ["manual", "auto"]: eligible_concert = false
 	if saved_concert.get("source", "manual") == "manual" and (saved_concert.has("sponsors") or not state.matinee_pending.is_empty()): eligible_concert = false

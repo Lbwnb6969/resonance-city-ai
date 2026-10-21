@@ -255,6 +255,7 @@ func update(snapshot: Dictionary) -> void:
 		weight = maxf(weight,tower_response)
 		var reply_response:=reply_strength if id==reply_source else 0.0
 		weight=maxf(weight,reply_response)
+		weight=maxf(weight,float(snapshot.get("choral_wave",{}).get(id,0.)))
 		if chorus.has(id): weight = maxf(weight,0.64+0.16*pulse)
 		if ambient.has(id): weight = maxf(weight,0.25+0.10*(sin(clock*0.65)+1.0)*0.5)
 		if wake.has(id): weight = maxf(weight,0.22+0.12*pulse)

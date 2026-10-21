@@ -75,14 +75,17 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for id:String in city.resonance_afterglow:
 		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
 	for house:Dictionary in city.houses:
-		if house.has("custom_colors"):result.schema=city.PERSONALIZATION_SCHEMA;break
+		if house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
 		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
+	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
+	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
+	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
 	# Editing history restores geometry; completed daily visits remain history.
 	if not preserve_issued_ids:
 		city._special_sites.clear();city._special_site_key.clear()
@@ -336,6 +339,10 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for house in data.houses:
 		if not house is Dictionary or not city._valid_id(house.get("id"), "h", ids):
 			return city._fail("城市存档房屋身份无效")
+		if house.has("acoustic_style"):
+			if data.schema<city.PERSONALIZATION_SCHEMA or house.acoustic_style not in city.DISTRICT_STYLES:return city._fail("聚落曲风字段无效")
+		if house.has("temperament"):
+			if data.schema<city.PERSONALIZATION_SCHEMA or house.temperament not in ["andante","allegro","largo"]:return city._fail("建筑律动字段无效")
 		if house.has("base_y"):
 			if data.schema<city.ELEVATION_SCHEMA: return city._fail("高地房屋需要新存档版本")
 			if not city._is_number(house.base_y) or float(house.base_y)<0.0 or float(house.base_y)>6.0 or absf(float(house.base_y)/0.05-roundf(float(house.base_y)/0.05))>0.00001: return city._fail("城市存档房屋海拔无效")
@@ -499,6 +506,10 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return site
 		if road.get("bridge", false) != site.bridge:
 			return city._fail("城市存档桥梁标记与占地不一致")
+	var neighborhoods:Dictionary=city.AutoNeighborhoods.validate(city,data)
+	if not neighborhoods.ok:return neighborhoods
+	var movement:Dictionary=city.LandmarkMovement.validate(city,data)
+	if not movement.ok:return movement
 	return {"ok": true, "message": ""}
 
 static func read(city: RefCounted, path: String) -> Dictionary:

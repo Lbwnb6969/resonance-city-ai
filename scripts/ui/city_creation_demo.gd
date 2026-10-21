@@ -55,6 +55,8 @@ var gallery_button: Button
 var gallery: RefCounted
 var terrain_brush: RefCounted
 var tactile_dock: RefCounted
+var intuitive_guidance:Control
+var start_empty:=false
 var spatial_popover: RefCounted
 var journal: RefCounted
 var guide: RefCounted
@@ -194,6 +196,7 @@ var _save_requested := false
 func _ready() -> void:
 	persistence = persistence and not "--isolated-session" in OS.get_cmdline_user_args()
 	state.initialize()
+	if start_empty or (persistence and not FileAccess.file_exists(SAVE_PATH)):state.initialize_empty()
 	if "--creation-example" in OS.get_cmdline_user_args():
 		persistence = false
 		state.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/创作河湾样例.json")))
@@ -268,6 +271,7 @@ func _ready() -> void:
 	ambience.set_view_samples_source(_ambient_visible_samples)
 	ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
 	_setup_life()
+	music.life_source=life
 	music.set_concert_view(life.concert_view())
 	_setup_ui()
 	terrain_brush=TerrainBrush.new()
@@ -377,6 +381,7 @@ func _setup_life() -> void:
 	music.tram_source_gate=life.tram.source_valid
 	music.travel_source_gate = life.travel_source_valid
 	life.concert_start_gate = music.concert_can_start
+	if music!=null:music.life_source=life
 
 func _setup_world() -> void:
 	environment_rig.setup(self)
@@ -801,8 +806,8 @@ func _setup_ui() -> void:
 		var width:=clampf(root.size.x-664.0,260.0,520.0)
 		toast.offset_left=-width*0.5
 		toast.offset_right=width*0.5
-		toast.offset_top=-138.0-maxf(46.0,toast.get_combined_minimum_size().y)
-		toast.offset_bottom=-138.0
+		toast.offset_top=-root.size.y+112.
+		toast.offset_bottom=toast.offset_top+maxf(46.0,toast.get_combined_minimum_size().y)
 	toast.minimum_size_changed.connect(fit_toast)
 	root.resized.connect(fit_toast)
 	root.resized.connect(func()->void: _refresh_ui.call_deferred())
@@ -1213,7 +1218,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				if _edit_pending and tool not in [0,1,2]:
 					_message(Copy.EDIT_PENDING_ROAD_TOAST)
 					return
-				if tool in [0,1]:
+				if tool in [0,1,4] and event.shift_pressed:
+					var previous:=tool;tool=3;removal_shift=false;_update_hover();_commit_click();tool=previous
+				elif tool in [0,1]:
 					_update_hover()
 					if candidate.has("select"):_commit_click()
 					else:_begin_house_stroke()
@@ -1266,6 +1273,7 @@ func _process(delta: float) -> void:
 	music.attention_strolling=camera_rig.strolling
 	camera_rig.update(self, delta)
 	if spatial_popover!=null:spatial_popover.follow()
+	if intuitive_guidance!=null:intuitive_guidance.update_guidance(delta)
 	if gallery!=null and gallery.busy: return
 	if _color_ui_pending and not _edit_pending:
 		_color_ui_pending=false
@@ -2258,7 +2266,7 @@ func _invite_concert() -> void:
 	var active: Dictionary = life.concert_status()
 	var relay: Dictionary = life.relay_status()
 	var hall:bool=town._house_record(selected_house).get("role","")=="symphony_hall"
-	var result: Dictionary = life.cancel_concert() if bool(relay.active) or (str(active.phase) != "idle" and str(active.venue_id) == selected_house) else life.invite_grand_festival(selected_house) if hall else life.invite_concert(selected_house)
+	var result: Dictionary = life.cancel_concert() if bool(relay.active) or (str(active.phase) != "idle" and str(active.venue_id) == selected_house) else life.invite_landmark_movement(selected_house) if town._house_record(selected_house).has("signature") else life.invite_grand_festival(selected_house) if hall else life.invite_concert(selected_house)
 	_message(str(result.message))
 	if result.ok:
 		if str(life.concert_status().phase)=="gathering": music.play_edit("concert")

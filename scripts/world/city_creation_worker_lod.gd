@@ -64,7 +64,7 @@ func before(worker: Dictionary,delta: float,moving: Array)->bool:
 		_settle_work(worker)
 		var route: Array[Vector3]=[];route.assign(worker.route)
 		if int(worker.index)>=route.size():flush(worker);return true
-		var speed: float=.83*life.state.walking_multiplier(str(worker.home_id))
+		var speed: float=.83*life.state.walking_multiplier(str(worker.home_id))*life.state.temperament_walk(str(worker.bakery_id)) if worker.has("bakery_id") else .83*life.state.walking_multiplier(str(worker.home_id))
 		if worker.has("workshop_id"):speed=.83*life.state.artisan_walking_multiplier(str(worker.home_id),str(worker.workshop_id),str(worker.target_id),phase)
 		var motion: RefCounted=worker.get("worker_motion")
 		if motion==null:

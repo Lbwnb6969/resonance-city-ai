@@ -3,6 +3,13 @@ extends RefCounted
 signal era_unlocked(era: String)
 
 ## Authoritative, immediate state for the independent city creation slice.
+const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
+const AutoNeighborhoods=preload("res://scripts/world/city_creation_auto_neighborhoods.gd")
+var automatic_neighborhoods:=false
+const NaturalClusters=preload("res://scripts/world/city_creation_clusters.gd")
+var _natural_cluster_key:Variant=null
+var _natural_cluster_rows:Dictionary={}
+
 const Serializer = preload("res://scripts/world/city_creation_serializer.gd")
 const SaveValidation = preload("res://scripts/world/city_creation_save_validation.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
@@ -137,7 +144,16 @@ var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
 
 
+func initialize_empty()->void:
+	initialize()
+	automatic_neighborhoods=true
+	houses.clear();roads.clear();plants.clear();waters.clear();districts.clear();terrain_strokes.clear()
+	_next_house_id=1;_next_cell_id=1;_next_road_id=1;_next_plant_id=1;_next_water_id=1;_next_district_id=1
+	_high_watermark={"house":0,"cell":0,"road":0,"plant":0,"water":0,"district":0}
+	revision+=1;_undo.clear();_redo.clear()
+
 func initialize() -> void:
+	automatic_neighborhoods=false
 	_prosperity_revision = -1
 	_special_sites.clear();_special_site_key.clear()
 	_synergy_revision=-1
@@ -303,7 +319,9 @@ func add_house_stroke(position: Vector2, cells: Array) -> Dictionary:
 
 func _new_stroke_house(position: Vector2) -> Dictionary:
 	var number := maxi(_next_house_id, int(_high_watermark.house) + 1)
-	return {"id":"h%d" % number,"name":"石榴巷%d号" % number,"role":"residential","bakery_open":true,"workshop_open":true,"auto_matinee":false,"origin":[position.x,position.y],"base_y":sample_house_base_y(position) if is_finite(position.x) and is_finite(position.y) else 0.0,"cells":[],"palette":(number - 1) % 6,"seed":81000 + number * 977}
+	var house:Dictionary={"id":"h%d" % number,"name":"石榴巷%d号" % number,"role":"residential","bakery_open":true,"workshop_open":true,"auto_matinee":false,"origin":[position.x,position.y],"base_y":sample_house_base_y(position) if is_finite(position.x) and is_finite(position.y) else 0.0,"cells":[],"palette":(number - 1) % 6,"seed":81000 + number * 977}
+	_inherit_cluster(house)
+	return house
 
 
 func _preview_house_stroke_cells(house: Dictionary, cells: Array, new_house: bool) -> Dictionary:
@@ -457,6 +475,7 @@ func add_house(position: Vector2) -> Dictionary:
 	var cell_number := maxi(_next_cell_id, int(_high_watermark.cell) + 1)
 	var house := {"id": "h%d" % house_number, "name": "石榴巷%d号" % house_number, "role": "residential", "bakery_open":true,"workshop_open":true,"auto_matinee":false, "origin": [position.x, position.y], "cells": [{"id": "c%d" % cell_number, "x": 0, "z": 0, "level": 0, "kind": "room", "source": "new_house"}], "palette": (house_number - 1) % 6, "seed": 81000 + house_number * 977}
 	house.base_y = sample_house_base_y(position)
+	_inherit_cluster(house)
 	houses.append(house)
 	_next_house_id = house_number + 1
 	_next_cell_id = cell_number + 1
@@ -561,6 +580,27 @@ func set_house_style(house_id: String, style: String) -> Dictionary:
 	return {"ok":true,"message":"已换为"+{"classic":"河湾灰泥屋","timber":"木构街屋","stone":"石砌街屋","round_tower":"圆塔望楼"}[style]}
 
 
+func house_temperament(house_id:String)->String:
+	var index:=_house_index(house_id)
+	return str(houses[index].get("temperament","andante")) if index>=0 else "andante"
+
+func temperament_speed(house_id:String)->float:
+	return {"andante":1.,"allegro":1.25,"largo":1./1.3}[house_temperament(house_id)]
+
+func temperament_walk(house_id:String)->float:
+	return 1.25 if house_temperament(house_id)=="allegro" else 1.
+
+func grant_temperament_resonance(house_id:String,offset:float=0.)->void:
+	if house_temperament(house_id)!="largo":return
+	var index:=_house_index(house_id)
+	if index<0:return
+	var at:=Vector2(houses[index].origin[0],houses[index].origin[1])
+	for house:Dictionary in houses:
+		if at.distance_squared_to(Vector2(house.origin[0],house.origin[1]))<=225.:
+			var id:=str(house.id)
+			resonance_afterglow[id]=minf(afterglow_limit(id),maxf(afterglow_remaining(id),offset)+20.)
+			life_progress_dirty=true;dirty=true
+
 func set_house_temperament(house_id:String,temperament:String)->Dictionary:
 	var index:=_house_index(house_id)
 	if index<0:return _fail("房屋不存在")
@@ -628,6 +668,11 @@ func district_at(position: Vector2) -> Dictionary:
 		return {}
 	for index in range(districts.size() - 1, -1, -1):
 		var district: Dictionary = districts[index]
+		if district.has("auto_members"):
+			for id:String in district.auto_members:
+				var index_value:=_house_index(id)
+				if index_value>=0 and position.distance_squared_to(Vector2(houses[index_value].origin[0],houses[index_value].origin[1]))<1.44:return district.duplicate(true)
+			continue
 		if _water_stroke_distance(position, district.points) <= float(district.width) * 0.5:
 			return district.duplicate(true)
 	return {}
@@ -637,7 +682,13 @@ func district_for_house(house_id: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index < 0:
 		return {}
-	return district_at(Vector2(float(houses[index].origin[0]), float(houses[index].origin[1])))
+	var at:=Vector2(float(houses[index].origin[0]),float(houses[index].origin[1]))
+	for i:int in range(districts.size()-1,-1,-1):
+		var district:Dictionary=districts[i]
+		if not district.has("auto_members") and _water_stroke_distance(at,district.points)<=float(district.width)*.5:return district.duplicate(true)
+	for district:Dictionary in districts:
+		if house_id in district.get("auto_members",[]):return district.duplicate(true)
+	return {}
 
 
 func district_members(district_id: String) -> Array[String]:
@@ -678,6 +729,60 @@ func set_district_style(district_id: String, style: String) -> Dictionary:
 	_commit(before, "更改街坊音乐风格")
 	return {"ok": true, "message": "街坊音乐风格已更改"}
 
+
+func can_host_concert(house_id:String)->bool:
+	var index:=_house_index(house_id)
+	return index>=0 and (houses[index].get("signature","") in Signatures.IDS or houses[index].role in ["venue","symphony_hall"])
+
+func natural_clusters()->Dictionary:
+	var input:Array=[]
+	for house:Dictionary in houses:
+		var ground:Array=[]
+		for cell:Dictionary in house.cells:
+			if int(cell.level)==0:ground.append([cell.x,cell.z,cell.kind])
+		input.append([house.id,house.origin,ground])
+	var key:=hash([input,roads])
+	if _natural_cluster_key!=key:
+		var doors:Dictionary={}
+		for house:Dictionary in houses:doors[house.id]=house_entrances(str(house.id))
+		_natural_cluster_rows=NaturalClusters.derive(houses,NaturalClusters.street_members(houses,roads,doors));_natural_cluster_key=key
+	return _natural_cluster_rows
+
+func house_acoustic_style(house:Dictionary)->String:
+	if house.has("acoustic_style"):return str(house.acoustic_style)
+	return str(district_for_house(str(house.id)).get("style","warm"))
+
+func _inherit_cluster(house:Dictionary)->void:
+	var at:=Vector2(house.origin[0],house.origin[1]);var best:Dictionary={};var distance:=INF
+	for other:Dictionary in houses:
+		if other.has("signature"):continue
+		var gap:=at.distance_squared_to(Vector2(other.origin[0],other.origin[1]))
+		if gap>NaturalClusters.REACH*NaturalClusters.REACH:continue
+		if gap<distance or (is_equal_approx(gap,distance) and str(other.id)<str(best.get("id","~"))):best=other;distance=gap
+	if best.is_empty():return
+	var era:=house_era(best);var style:=house_acoustic_style(best)
+	if era!="pastoral":house.era_theme=era
+	if style!="warm":house.acoustic_style=style
+
+func set_cluster_style(house_id:String,style:String)->Dictionary:
+	if style not in DISTRICT_STYLES:return _fail("未知的聚落曲风")
+	var group:Dictionary=natural_clusters().get(house_id,{})
+	if group.is_empty():return _fail("房屋不存在")
+	var before:=snapshot()
+	for house:Dictionary in houses:
+		if house.id in group.members and not house.has("signature"):house.acoustic_style=style
+	_commit(before,"更改聚落曲风")
+	return {"ok":true,"message":"整片聚落已换上共同曲风"}
+
+func set_cluster_era(house_id:String,era:String)->Dictionary:
+	if era not in era_unlocks:return _fail("这个时代尚未开启")
+	var group:Dictionary=natural_clusters().get(house_id,{})
+	if group.is_empty():return _fail("房屋不存在")
+	var before:=snapshot()
+	for house:Dictionary in houses:
+		if house.id in group.members and not house.has("signature"):house.era_theme=era
+	Eras.refresh(self);_commit(before,"更改聚落时代")
+	return {"ok":true,"message":"整片聚落已换上共同风貌"}
 
 func house_era(house: Dictionary) -> String:
 	return Eras.for_house(self, house)
@@ -918,7 +1023,7 @@ func _valid_district_name(value: Variant) -> bool:
 
 func _validate_district_fields(district: Dictionary) -> Dictionary:
 	for field in district:
-		if field not in ["id", "name", "style", "points", "width", "adaptive", "era_theme"]:
+		if field not in ["id", "name", "style", "points", "width", "adaptive", "era_theme", "auto_members"]:
 			return _fail("街坊存在未知字段")
 	if district.has("era_theme") and district.era_theme not in Eras.IDS: return _fail("街坊时代风貌无效")
 	if district.has("adaptive") and typeof(district.adaptive) != TYPE_BOOL:
@@ -1444,8 +1549,13 @@ func record_life_event(kind: String) -> void:
 
 
 func bakery_capacity(house_id: String) -> int:
-	# Water improves the oven; existing shelves retain six base batches.
-	return (bakery_batch_size(house_id) - int(site_blessing(house_id).get("bonus_batch", 0)) - int(signature_bonuses().bread_batch)) * 6
+	var index:=_house_index(house_id)
+	if index<0:return 0
+	var rooms:=0
+	for cell:Dictionary in houses[index].cells:
+		if cell.kind=="room":rooms+=1
+	# Shelves belong to the building, so changing tempo cannot erase stock.
+	return maxi(1,rooms)*12
 
 
 func afterglow_remaining(house_id: String) -> float:
@@ -1478,7 +1588,7 @@ func site_production_multiplier(house_id: String) -> float:
 	var index:=_house_index(house_id)
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
-	return float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	return temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
 
 
 func synergy_buffs()->Dictionary:
@@ -1519,7 +1629,7 @@ func installation_multiplier(shop_id:String,target_id:String)->float:
 
 func artisan_walking_multiplier(home_id:String,shop_id:String,target_id:String,phase:String)->float:
 	var delivery:=installation_multiplier(shop_id,target_id) if phase=="to_target" else (float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.) if phase=="returning" else 1.)
-	return walking_multiplier(home_id)*delivery
+	return walking_multiplier(home_id)*delivery*temperament_walk(shop_id)
 
 
 func tram_synergy_houses(at:Vector2,from:Vector2=Vector2.INF)->Array[String]:
@@ -1605,7 +1715,10 @@ func bakery_batch_size(house_id: String) -> int:
 	for cell in houses[index].cells:
 		if cell.kind == "room":
 			rooms += 1
-	return maxi(1, rooms)*2 + int(site_blessing(house_id).get("bonus_batch", 0)) + int(signature_bonuses().bread_batch)
+	var base:=maxi(1,rooms)*2
+	var temperament:=house_temperament(house_id)
+	base=1 if temperament=="allegro" else base
+	return (base+int(site_blessing(house_id).get("bonus_batch",0))+int(signature_bonuses().bread_batch))*(2 if temperament=="largo" else 1)
 
 
 func bakery_status(house_id: String) -> Dictionary:
@@ -1770,11 +1883,18 @@ func workshop_batch_size(house_id: String) -> int:
 	var rooms := 0
 	for cell in houses[index].cells:
 		if cell.kind == "room": rooms += 1
-	return maxi(1, rooms)*int(planning_bonus(house_id).get("batch_mult",1))
+	var temperament:=house_temperament(house_id)
+	var base:=1 if temperament=="allegro" else maxi(1,rooms)*(2 if temperament=="largo" else 1)
+	return base*int(planning_bonus(house_id).get("batch_mult",1))
 
 
 func workshop_capacity(house_id: String) -> int:
-	return workshop_batch_size(house_id) * 4
+	var index:=_house_index(house_id)
+	if index<0:return 0
+	var rooms:=0
+	for cell:Dictionary in houses[index].cells:
+		if cell.kind=="room":rooms+=1
+	return maxi(1,rooms)*int(planning_bonus(house_id).get("batch_mult",1))*4
 
 
 func workshop_status(house_id: String) -> Dictionary:
@@ -1808,6 +1928,10 @@ func festival_ready_venues() -> Array[String]:
 ## Only a completed performance consumes its prepared gift and issues demand.
 func record_concert_completion(venue_id: String) -> float:
 	var index := _house_index(venue_id)
+	if index>=0 and houses[index].get("signature","") in Signatures.IDS and houses[index].role not in ["venue","symphony_hall"]:
+		life_progress.concerts=int(life_progress.concerts)+1
+		_craft_changed()
+		return 180. if not signature_bonuses().palace_id.is_empty() else 60.
 	if index < 0 or houses[index].role not in ["venue","symphony_hall"]: return 60.0
 	var status := festival_status(venue_id)
 	var duration := 180.0 if not signature_bonuses().palace_id.is_empty() else 90.0 if status.ready else 60.0
@@ -1954,6 +2078,8 @@ func set_journey_checkpoint(data: Dictionary) -> Dictionary:
 	if not check.ok: return check
 	var grand:Dictionary=GrandFestival.validate(self,{"schema":MODERN_SCHEMA,"houses":houses,"districts":districts,"era_unlocks":era_unlocks,"journey_checkpoint":data})
 	if not grand.ok:return grand
+	var movement:Dictionary=LandmarkMovement.validate(self,{"schema":PERSONALIZATION_SCHEMA,"houses":houses,"roads":roads,"journey_checkpoint":data})
+	if not movement.ok:return movement
 	if journey_checkpoint != data:
 		journey_checkpoint = data.duplicate(true)
 		dirty = true
@@ -1981,7 +2107,7 @@ func _prune_missing_journeys() -> void:
 	var concert: Dictionary = journey_checkpoint.concert
 	var cancel_concert := false
 	if concert.get("phase", "idle") != "idle":
-		cancel_concert = existing.get(concert.get("venue_id", ""), "") not in ["venue","symphony_hall"]
+		cancel_concert = not can_host_concert(str(concert.get("venue_id", "")))
 		if concert.get("grand_festival",false) and not GrandFestival.validate(self,{"schema":MODERN_SCHEMA,"houses":houses,"districts":districts,"era_unlocks":era_unlocks,"journey_checkpoint":journey_checkpoint}).ok:cancel_concert=true
 		for home in concert.get("participants", []):
 			if not existing.has(home):
@@ -2395,6 +2521,7 @@ func _make_cell(x: int, z: int, level: int, kind: String) -> Dictionary:
 
 func _commit(before: Dictionary, label: String) -> void:
 	if journey_checkpoint.get("concert",{}).get("grand_festival",false):_prune_missing_journeys()
+	AutoNeighborhoods.refresh(self)
 	_prune_afterglow()
 	_normalize_craft_transit()
 	revision += 1
