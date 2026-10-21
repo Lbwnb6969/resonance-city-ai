@@ -10,7 +10,7 @@ func _initialize() -> void:
 	var pond_points: Array[Vector2] = [Vector2(-7, 0)]
 	_check(city.preview_water(pond_points, 4.0, "pond").ok and city.snapshot() == initial, "preview consumes no state or identities")
 	_check(not city.preview_water([Vector2(-7, 0), Vector2(-4, 0)], 2.4, "channel").ok, "channel starts in existing water")
-	_check(not city.preview_water([Vector2(-17.5, 0)], 2.4, "pond").ok, "complete shoreline footprint stays in bounds")
+	_check(not city.preview_water([Vector2(State.WORLD_RECT.position.x + 0.5, 0)], 2.4, "pond").ok, "complete shoreline footprint stays in bounds")
 	var added := city.add_water(pond_points, 4.0, "pond")
 	_check(added.ok and city.revision == 1 and city.waters.size() == 1, "pond commits one transaction")
 	var record: Dictionary = city.waters[0].duplicate(true)
@@ -63,7 +63,7 @@ func _initialize() -> void:
 		var bad := saved.duplicate(true)
 		match field:
 			"width": bad.waters[0].width = -2.0
-			"points": bad.waters[0].points = [[-17.5, 0]]
+			"points": bad.waters[0].points = [[State.WORLD_RECT.position.x + 0.5, 0]]
 			"source": bad.waters[0].source = "invented"
 			"seed": bad.waters[0].seed = 0.5
 			"id": bad.waters[0].id = "w0"

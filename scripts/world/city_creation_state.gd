@@ -1085,8 +1085,14 @@ func _validate_district_fields(district: Dictionary) -> Dictionary:
 
 ## Water is an editable continuous mask, inspired by Tiny Glade's separate
 ## WaterRas / Terrain fields. Author strokes; derive occupancy and shoreline.
+const WaterDistance=preload("res://scripts/world/city_creation_water_distance.gd")
+var _water_distance:=WaterDistance.new()
+
 func water_clearance(position: Vector2) -> float:
-	return _water_clearance_in(position, waters)
+	var river:=absf(position.x-river_x(position.y))-RIVER_HALF_WIDTH
+	if waters.is_empty():return river
+	_water_distance.prepare(waters)
+	return _water_distance.distance(position,river)
 
 
 func street_height(position: Vector2) -> float:
