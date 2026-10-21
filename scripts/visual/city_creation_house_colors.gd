@@ -3,7 +3,7 @@ extends RefCounted
 ## uploads only interleaved COLOR/UV attribute bytes; positions, normals,
 ## indices, resources, picking bodies and natural-world caches stay in place.
 const Styles := preload("res://scripts/visual/city_creation_house_styles.gd")
-const FINISHES := ["dawn","tide","festival","nocturne"]
+const FINISHES := ["dawn","tide","festival","nocturne","river_jade","opal"]
 
 
 static func _palette(renderer,index: int) -> Array:
@@ -11,7 +11,7 @@ static func _palette(renderer,index: int) -> Array:
 
 
 static func _index(house: Dictionary) -> int:
-	if house.has("custom_colors"):return 8
+	if house.has("custom_colors"):return 4+FINISHES.size()
 	if house.has("finish"):return 4+FINISHES.find(str(house.finish))
 	return posmod(int(house.get("palette",0)),4)
 
@@ -145,8 +145,8 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 	if cache.authoring != _authoring(house) or str(root.get_meta("era_theme","pastoral")) != renderer.state.house_era(house): return false
 	var index: int = _index(house)
 	if house.has("custom_colors") and cache.get("custom_colors",{})!=house.custom_colors:
-		cache.palettes[8]=_colors(era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors")))
-		for buffer:Dictionary in cache.buffers:buffer.variants[8]=PackedByteArray()
+		cache.palettes[4+FINISHES.size()]=_colors(era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors")))
+		for buffer:Dictionary in cache.buffers:buffer.variants[4+FINISHES.size()]=PackedByteArray()
 		cache.custom_colors=house.custom_colors.duplicate()
 	elif index == int(cache.index): return true
 	var colors: Array = cache.palettes[index]

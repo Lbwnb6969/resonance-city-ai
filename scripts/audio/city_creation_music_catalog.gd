@@ -5,7 +5,7 @@ const Towers=preload("res://scripts/world/city_creation_towers.gd")
 const Arrangement=preload("res://scripts/audio/city_creation_arrangement.gd")
 const Canon=preload("res://scripts/audio/city_creation_circular_canon.gd")
 static func signature(city:RefCounted)->int:
-	return hash([city.houses,city.roads,city.waters,city.plants,city.biome_seed,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
+	return hash([city.houses,city.roads,city.waters,city.plants,city.biome_seed,city.music_mode,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
 static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	var records:Dictionary={}
 	var daily:Array[String]=[]

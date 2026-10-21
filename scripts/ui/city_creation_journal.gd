@@ -4,7 +4,7 @@ const Growth = preload("res://scripts/world/city_creation_growth.gd")
 const Guidance = preload("res://scripts/ui/city_creation_guidance.gd")
 const UI = preload("res://scripts/ui/valley_ui_theme.gd")
 const BASE_NAMES = ["暖石与陶瓦", "白灰与青瓦", "沙岩与赭顶", "奶油与麦金"]
-const FINISH_ORDER = ["dawn", "tide", "festival", "nocturne"]
+const FINISH_ORDER = ["dawn", "tide", "festival", "nocturne","river_jade","opal"]
 var demo: Node3D
 var panel: Control
 var paper: PanelContainer
@@ -265,15 +265,15 @@ func refresh_palette() -> void:
 			house = row
 			break
 	if house.is_empty(): return
-	var signature: Array = [house.id, house.palette, house.get("finish", ""), demo.state.growth_memories.duplicate()]
+	var signature: Array = [house.id, house.palette, house.get("finish", ""), demo.state.growth_memories.duplicate(),demo.state.archive_unlocks.duplicate()]
 	if signature == _palette_signature or picker.get_popup().visible: return
 	_palette_signature = signature.duplicate(true)
 	picker.clear()
 	for index in range(BASE_NAMES.size()): picker.add_icon_item(_icons[index], BASE_NAMES[index])
 	for index in range(FINISH_ORDER.size()):
 		var id: String = FINISH_ORDER[index]
-		var earned: bool = demo.state.growth_memories.has(id)
-		picker.add_icon_item(_icons[index + 4], str(Growth.FINISHES[id].name) + ("" if earned else " · 手记第%d章" % (index + 1)))
+		var earned: bool = demo.state.finish_available(id)
+		picker.add_icon_item(_icons[index + 4], str(Growth.FINISHES[id].name) + ("" if earned else (" · 声学图鉴" if index>=4 else " · 手记第%d章" % (index + 1))))
 		picker.set_item_disabled(index + 4, not earned)
 	picker.select(4 + FINISH_ORDER.find(str(house.finish)) if house.has("finish") else posmod(int(house.palette), 4))
 

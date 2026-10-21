@@ -11,7 +11,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 	var count := 0
 	var key_light:Array[Vector3]=[];var key_dark:Array[Vector3]=[]
 	var keys:Dictionary=StairKeys.layout(road,profile) if StairKeys.enabled(renderer.state) else {}
-	var mode:int=0 if keys.is_empty() else StairKeys.Palette.BIOME_MODES[int(renderer.state.Biomes.profile(renderer.state.biome_seed).voice)]
+	var mode:int=0 if keys.is_empty() else maxi(0,StairKeys.Palette.for_city(renderer.state))
 	for tread: Dictionary in profile.treads:
 		var a: Vector2 = tread.a
 		var b: Vector2 = tread.b

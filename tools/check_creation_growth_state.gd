@@ -28,7 +28,7 @@ func _run() -> void:
 	_check(initial.schema==1 and not initial.has("growth_memories") and city.growth_memories.is_empty(), "legacy city starts with no journal field or invented memories")
 	_check(city.houses[4].palette==4 and city.houses[5].palette==5 and State.new().restore(initial).ok, "legacy palette numbers outside manual picker range keep their original values")
 	var rows := Growth.report(city)
-	_check(rows.size()==3 and not rows[0].ready and not rows[1].ready and not rows[2].ready, "three transparent chapters start incomplete")
+	_check(rows.size()==4 and rows.map(func(row):return str(row.id))==["dawn","tide","festival","nocturne"] and rows.all(func(row):return not row.ready and not row.earned), "four native chapters remain incomplete, separate from archive rewards")
 	_check(city.snapshot()==initial and city.refresh_growth().is_empty() and city.snapshot()==initial, "report and incomplete refresh are zero-write operations")
 	_check(not city.set_house_finish("h1","dawn").ok and not city.set_house_finish("h1","unknown").ok and city.snapshot()==initial, "locked and unknown finishes never change a house")
 	var bridge: Array[Vector2] = [Vector2(-1,-10), Vector2(8,-10)]

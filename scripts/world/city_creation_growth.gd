@@ -10,7 +10,9 @@ const FINISHES := {
 	"dawn":{"name":"晨杏与陶红","chapter":"dawn"},
 	"tide":{"name":"海盐与青瓦","chapter":"tide"},
 	"festival":{"name":"夜蓝与金穗","chapter":"festival"},
-	"nocturne":{"name":"星夜鎏金与月白","chapter":"nocturne"}}
+	"nocturne":{"name":"星夜鎏金与月白","chapter":"nocturne"},
+	"river_jade":{"name":"青瓷与黛瓦","chapter":"","achievement":"five_chords"},
+	"opal":{"name":"月石与鸢尾","chapter":"","achievement":"century_symphony"}}
 
 
 static func report(state) -> Array[Dictionary]:

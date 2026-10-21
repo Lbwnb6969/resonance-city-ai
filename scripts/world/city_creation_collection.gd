@@ -1,6 +1,7 @@
 extends RefCounted
 ## Immutable creation works. Publish the flushed, checked JSON marker last.
 ## A work owns its complete State snapshot; loading never remaps authored IDs.
+const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
 const State = preload("res://scripts/world/city_creation_state.gd")
 const DIRECTORY := "user://city_creation_works"
 const SCHEMA := "resonance_creation_work_v1"
@@ -8,13 +9,14 @@ const COVER_SIZE := Vector2i(480, 300)
 var directory := DIRECTORY
 
 
-func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reason: String = "manual") -> Dictionary:
+func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reason: String = "manual", mix:Dictionary={}) -> Dictionary:
 	var clean_title := title.strip_edges()
 	if not _valid_text(clean_title): return _fail("请为作品填写单行名称")
 	if not _valid_text(reason): return _fail("作品保存来源无效")
 	var checked := State.new().restore(world)
 	if not checked.ok: return _fail("作品城市无效：" + str(checked.message))
 	if not _valid_view(view): return _fail("作品镜头格式无效")
+	if not mix.is_empty() and not Phonograph.valid(mix):return _fail("作品混音格式无效")
 	if cover == null or cover.is_empty(): return _fail("作品封面为空")
 	if DirAccess.make_dir_recursive_absolute(directory) != OK: return _fail("无法创建作品收藏目录")
 	var saved_at := int(Time.get_unix_time_from_system() * 1000.0)
@@ -28,6 +30,7 @@ func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reas
 	if cover_bytes.is_empty(): return _fail("作品封面编码失败")
 	var payload := {"id":id,"title":clean_title,"saved_at":saved_at,"reason":reason,
 		"world":world.duplicate(true),"view":view.duplicate(true),"cover_sha256":_digest(cover_bytes)}
+	if not mix.is_empty():payload["phonograph_mix"]=mix.duplicate(true)
 	# Hash the exact serialized text: JSON.parse converts integer values to
 	# floats, so hashing a reserialized Dictionary would change valid digests.
 	var encoded_payload := JSON.stringify(payload, "", true, true)
@@ -93,18 +96,19 @@ func _read_path(path: String, id: String, cover_path: String) -> Dictionary:
 	var parsed_payload: Variant = JSON.parse_string(encoded_payload)
 	if not parsed_payload is Dictionary: return _fail("作品内容损坏")
 	var payload: Dictionary = parsed_payload
-	if payload.size() != 7 or payload.get("id") != id or not _valid_id(id): return _fail("作品身份与文件不一致")
+	if payload.size() not in [7,8] or (payload.size()==8 and not payload.has("phonograph_mix")) or payload.get("id") != id or not _valid_id(id): return _fail("作品身份与文件不一致")
 	if not payload.get("title") is String or not _valid_text(payload.title): return _fail("作品名称无效")
 	if not payload.get("reason") is String or not _valid_text(payload.reason): return _fail("作品保存来源无效")
 	if not _integer(payload.get("saved_at")) or payload.saved_at <= 0: return _fail("作品保存时间无效")
 	if not payload.get("world") is Dictionary or not payload.get("view") is Dictionary: return _fail("作品内容不完整")
 	if not _valid_view(payload.view): return _fail("作品镜头格式无效")
+	if payload.has("phonograph_mix") and not Phonograph.valid(payload.phonograph_mix):return _fail("作品混音格式无效")
 	var city := State.new()
 	var checked := city.restore(payload.world)
 	if not checked.ok: return _fail("作品城市无效：" + str(checked.message))
 	var preview_valid := _preview_valid(cover_path, payload.get("cover_sha256"))
 	return {"ok":true,"message":"","id":id,"title":payload.title,"world":city.snapshot(),
-		"view":payload.view,"saved_at":int(payload.saved_at),"reason":payload.reason,"path":path,
+		"phonograph_mix":payload.get("phonograph_mix",{}).duplicate(true),"view":payload.view,"saved_at":int(payload.saved_at),"reason":payload.reason,"path":path,
 		"cover_path":cover_path if preview_valid else "","preview_valid":preview_valid}
 
 

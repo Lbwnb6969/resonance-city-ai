@@ -16,6 +16,8 @@ const WorldToys=preload("res://scripts/visual/city_creation_world_toys.gd")
 const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
 const Towers = preload("res://scripts/world/city_creation_towers.gd")
+const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
+var phonograph:=Phonograph.new()
 const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.gd")
 const ReplyPCM = preload("res://scripts/audio/city_creation_reply_pcm.gd")
 const Spatial = preload("res://scripts/audio/city_creation_spatial.gd")
@@ -735,7 +737,7 @@ func update_city(state: RefCounted, prepared:Dictionary={}) -> void:
 	# household traits, then detach mutable playback metadata from that seed.
 	var data:Dictionary=prepared if not prepared.is_empty() and prepared.signature==Catalog.signature(state) else Catalog.prepare(state)
 	_pluck_city=state
-	_biome_mode=-1 if state.biome_seed.is_empty() else int(Palette.BIOME_MODES[int(state.Biomes.profile(state.biome_seed).voice)])
+	_biome_mode=Palette.for_city(state)
 	_life_activity.clear();_life_orchestration.clear()
 	canon.sync(state,data.canon)
 	_linked_key=null
@@ -1268,6 +1270,7 @@ func renaissance_music_report() -> Dictionary:
 	return {"unlocked":atelier,"source_id":source,"weight":weight,"track":"renaissance_fugue"}
 
 func _process(delta: float) -> void:
+	if phonograph.active:phonograph.tick(self,delta);return
 	attention.evaluate_mode(acoustic.zoom,concert_active,attention_strolling,delta,_playback_clock())
 	_acoustic_timer-=delta
 	if _acoustic_timer<=0.0:

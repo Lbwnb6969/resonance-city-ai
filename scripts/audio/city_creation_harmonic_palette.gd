@@ -1,12 +1,12 @@
 extends RefCounted
 ## The original four colors keep their common Dadd9 pivot. Biomes have their
 ## own tonic, characteristic modal degrees and final bar, including every cue.
-const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响","G吕底亚 · 千阶微光","B多利亚 · 沙洲回声","A大调 · 林间牧歌","F♯小调 · 星夜流光"]
+const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响","G吕底亚 · 千阶微光","B多利亚 · 沙洲回声","A大调 · 林间牧歌","F♯小调 · 星夜流光","C宫五声 · 宫商河韵","F大七 · 印象水光"]
 const BIOME_MODES:=[0,4,5,6,7]
 const SCALES:=[[2,4,6,9,11],[11,2,4,6,9],[7,9,11,2,4],[2,4,7,9,11],
-	[7,9,11,1,6],[11,1,2,6,8],[9,11,1,4,6],[6,9,11,1,4]]
+	[7,9,11,1,6],[11,1,2,6,8],[9,11,1,4,6],[6,9,11,1,4],[0,2,4,7,9],[5,7,9,0,4]]
 const KEY_TONES:=[[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],[2,4,6,7,9,11,1],
-	[7,9,11,1,2,4,6],[11,1,2,4,6,8,9],[9,11,1,2,4,6,8],[6,8,9,11,1,2,4]]
+	[7,9,11,1,2,4,6],[11,1,2,4,6,8,9],[9,11,1,2,4,6,8],[6,8,9,11,1,2,4],[0,2,4,7,9],[5,7,9,10,0,2,4]]
 const PROGRESSIONS:=[
 	[[50,54,57,64],[47,50,54,57],[43,47,50,54],[45,49,52,54]],
 	[[47,50,54,57],[43,47,50,54],[40,43,47,50],[42,45,49,52]],
@@ -15,10 +15,17 @@ const PROGRESSIONS:=[
 	[[43,47,50,57],[45,49,52,55],[40,43,47,54],[47,50,54,57]],
 	[[47,50,54,56],[45,49,52,59],[40,44,47,54],[42,45,49,56]],
 	[[45,49,52,59],[42,45,49,52],[38,42,45,49],[40,44,47,54]],
-	[[42,45,49,56],[38,42,45,49],[47,50,54,57],[40,44,47,54]]]
+	[[42,45,49,56],[38,42,45,49],[47,50,54,57],[40,44,47,54]],
+	[[48,52,55,57],[45,48,52,55],[43,48,50,55],[50,55,57,60]],
+	[[41,45,48,52],[38,41,45,52],[46,50,53,57],[48,52,55,58]]]
 const PIVOT:=[50,54,57,64]
-const BIOME_PIVOTS:=[[43,47,50,54,61],[47,50,54,56,61],[45,49,52,59],[42,45,49,56]]
+const BIOME_PIVOTS:=[[43,47,50,54,61],[47,50,54,56,61],[45,49,52,59],[42,45,49,56],[48,52,55,62],[41,45,48,52]]
 const TRANSITIONS:=[[6,2,2,1],[3,6,2,2],[3,2,6,2],[3,2,2,6]]
+
+static func for_city(city:RefCounted)->int:
+	if city.music_mode=="gong_pentatonic":return 8
+	if city.music_mode=="impressionist_major7":return 9
+	return -1 if city.biome_seed.is_empty() else int(BIOME_MODES[int(city.Biomes.profile(city.biome_seed).voice)])
 
 static func chords(mode:int)->Array:
 	var result:Array=[]
@@ -40,8 +47,8 @@ static func quantize(midi:int,mode:int,bar:int)->int:
 static func stair_pitch(mode:int,rank:int)->int:
 	var tones:Array=KEY_TONES[clampi(mode,0,NAMES.size()-1)]
 	var degree:=posmod(rank,14);var root:int=int(tones[0])+48
-	var offset:=posmod(int(tones[degree%7])-int(tones[0]),12)
-	return root+offset+12*int(degree/7)
+	var offset:=posmod(int(tones[degree%tones.size()])-int(tones[0]),12)
+	return root+offset+12*int(degree/tones.size())
 
 static func pitch(mode:int,bar:int,band:int,variant:int)->int:
 	var root:int=int(chords(mode)[posmod(bar,8)][0])+12

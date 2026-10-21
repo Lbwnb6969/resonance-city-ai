@@ -24,6 +24,7 @@ var temperament_button:Button
 var concert_button:Button
 var parade_button:Button
 var expand_button:Button
+var reward_buttons:Dictionary={}
 var color_panel:VBoxContainer
 var wall_picker:ColorPickerButton
 var roof_picker:ColorPickerButton
@@ -70,6 +71,15 @@ func setup(owner,ui_root:Control)->void:
 	var roof_label:=Label.new();roof_label.text="屋顶";color_row.add_child(roof_label)
 	roof_picker=ColorPickerButton.new();roof_picker.name="RoofColor";roof_picker.custom_minimum_size=Vector2(64,34);roof_picker.edit_alpha=false;color_row.add_child(roof_picker)
 	var apply:=Button.new();apply.text="换上配色";apply.name="ApplyColors";apply.pressed.connect(_apply_colors);color_row.add_child(apply)
+	var reward_row:=HBoxContainer.new();reward_row.add_theme_constant_override("separation",6);color_panel.add_child(reward_row)
+	var reward_label:=Label.new();reward_label.text="珍藏";reward_row.add_child(reward_label)
+	for id:String in demo.TownRenderer.FINISH_PALETTES:
+		var palette:Array=demo.TownRenderer.FINISH_PALETTES[id]
+		var reward:=Button.new();reward.name="Finish_"+id;reward.custom_minimum_size=Vector2(34,34)
+		var swatch:=StyleBoxFlat.new();swatch.bg_color=palette[0];swatch.border_color=palette[1];swatch.set_border_width_all(5);swatch.set_corner_radius_all(17)
+		reward.add_theme_stylebox_override("normal",swatch);reward.add_theme_stylebox_override("disabled",swatch)
+		reward.pressed.connect(func()->void:demo._after_edit(demo.state.set_house_finish(target_house_id,id),"terrace",false);refresh())
+		reward_row.add_child(reward);reward_buttons[id]=reward
 	color_panel.hide()
 	var roles:=GridContainer.new();roles.name="RoofCompassRoles";roles.columns=4
 	roles.add_theme_constant_override("h_separation",4);roles.add_theme_constant_override("v_separation",4);column.add_child(roles)
@@ -110,6 +120,10 @@ func close()->void:
 
 func refresh()->void:
 	if target_house_id.is_empty() or not is_instance_valid(demo):return
+	for id:String in reward_buttons:
+		reward_buttons[id].disabled=not demo.state.finish_available(id)
+		reward_buttons[id].modulate.a=1. if demo.state.finish_available(id) else .35
+		reward_buttons[id].tooltip_text=str(demo.state.Growth.FINISHES[id].name)+( "" if demo.state.finish_available(id) else " · 手记/图鉴解锁")
 	if demo.tool not in [0,4] or not demo.ui_layer.visible:
 		card.hide();return
 	var house:Dictionary=demo.town._house_record(target_house_id)

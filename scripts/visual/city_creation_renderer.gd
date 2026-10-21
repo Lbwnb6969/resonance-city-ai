@@ -85,7 +85,9 @@ const FINISH_PALETTES := {
 	"dawn":[Color("efd3b2"),Color("b8614e"),Color("7d9271")],
 	"tide":[Color("e2e5d6"),Color("538e94"),Color("4d727a")],
 	"festival":[Color("d9dfe2"),Color("465a78"),Color("c1a16b")],
-	"nocturne":[Color("ece8df"),Color("324860"),Color("d8a852")]
+	"nocturne":[Color("ece8df"),Color("324860"),Color("d8a852")],
+	"river_jade":[Color("cee6dc"),Color("355f63"),Color("c8a16a")],
+	"opal":[Color("e8e1f0"),Color("73608d"),Color("bfa978")]
 }
 var state: RefCounted
 var record_only := false
@@ -2630,7 +2632,7 @@ func _road_fingerprint(road: Dictionary) -> int:
 	var bounds := Rect2(Vector2(road.points[0][0],road.points[0][1]),Vector2.ZERO)
 	for point: Array in road.points: bounds=bounds.expand(Vector2(point[0],point[1]))
 	var shoulder_signature: int=state._ground_terrain.region_signature(bounds.grow(float(road.width)*0.5+1.6),true)
-	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,promenade.prepare(self,road),era_streets.prepare(self,road),TramTracks.signature(state,road),state.road_profile(road).signature,shoulder_signature,_road_water_signature(road),_road_join_signature(road),state._junctions.signature(str(road.id))])
+	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,state.music_mode,promenade.prepare(self,road),era_streets.prepare(self,road),TramTracks.signature(state,road),state.road_profile(road).signature,shoulder_signature,_road_water_signature(road),_road_join_signature(road),state._junctions.signature(str(road.id))])
 
 func _road_contours(samples: Array[Vector2], width: float, extras: Array) -> Array:
 	var core := _stroke_contours(samples,width*0.5)

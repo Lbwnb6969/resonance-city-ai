@@ -82,6 +82,8 @@ static func snapshot(city: RefCounted) -> Dictionary:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.microclimate.is_empty():result.microclimate=city.microclimate;result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.archive_unlocks.is_empty():result.archive_unlocks=city.archive_unlocks.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.music_mode.is_empty():result.music_mode=city.music_mode;result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.era_modifiers.is_empty():result.era_modifiers=city.era_modifiers.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.biome_seed.is_empty():result.biome_seed=city.biome_seed.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
@@ -90,6 +92,8 @@ static func snapshot(city: RefCounted) -> Dictionary:
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
 	city.biome_seed=data.get("biome_seed",{}).duplicate();city._biome_revision=-1;city._biome_bonuses={}
+	if not preserve_issued_ids:city.archive_unlocks.assign(data.get("archive_unlocks",[]))
+	city.music_mode=str(data.get("music_mode",""))
 	city.era_modifiers.assign(data.get("era_modifiers",[]))
 	city.microclimate=str(data.get("microclimate",""))
 	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
@@ -262,6 +266,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if data.has("biome_seed") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.Biomes.valid(data.biome_seed)):return city._fail("声学地貌存档无效")
 	if data.has("microclimate") and (data.schema<city.PERSONALIZATION_SCHEMA or data.microclimate not in city.Microclimate.IDS):return city._fail("四时风物存档无效")
 	if data.has("era_modifiers") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.ScoreModifiers.valid(data.era_modifiers,unlocks)):return city._fail("时代乐章铭牌存档无效")
+	var archive_check:Dictionary=city.ArchiveRewards.validate(data)
+	if not archive_check.ok:return archive_check
 	var memories: Variant = data.get("growth_memories", [])
 	if not memories is Array or memories.size()>Growth.CHAPTERS.size(): return city._fail("城市成长手记结构无效")
 	for index in range(memories.size()):
@@ -364,7 +370,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if house.has("finish"):
 			if data.schema<city.JOURNAL_SCHEMA: return city._fail("饰色作品需要新存档版本")
 			if not house.finish is String or not Growth.FINISHES.has(house.finish): return city._fail("城市存档房屋饰色无效")
-			if str(Growth.FINISHES[house.finish].chapter) not in memories: return city._fail("城市存档房屋饰色尚未获得")
+			if not city.ArchiveRewards.finish_available(house.finish,memories,data.get("archive_unlocks",[])):return city._fail("城市存档房屋饰色尚未获得")
 		if house.has("style"):
 			if data.schema<city.BUILDING_SCHEMA: return city._fail("建筑样式作品需要新存档版本")
 			if not house.style is String or house.style not in city.HOUSE_STYLES: return city._fail("城市存档建筑样式无效")

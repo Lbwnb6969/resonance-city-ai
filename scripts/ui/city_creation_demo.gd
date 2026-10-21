@@ -61,6 +61,7 @@ var conductor_gesture:Node3D
 var wish_pins:Control
 var intuitive_guidance:Control
 var start_empty:=false
+var archive_persistence:=false
 var spatial_popover: RefCounted
 var journal: RefCounted
 var guide: RefCounted
@@ -1021,6 +1022,7 @@ func _refresh_ui() -> void:
 	_refresh_workshops()
 	_refresh_cafes()
 	_refresh_concert()
+	if gallery!=null:gallery.observe_archive()
 	if journal!=null: journal.refresh()
 	if signatures!=null:signatures.refresh()
 	if score_ribbon!=null:score_ribbon.refresh()
@@ -1279,6 +1281,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_commit_click()
 
 func _process(delta: float) -> void:
+	if gallery!=null and not gallery.preview_id.is_empty():gallery.tick_preview();return
 	music.attention.dragging=house_drawing or road_drawing or vegetation_drawing or water_drawing or district_drawing or district_link_drawing or (terrain_brush!=null and terrain_brush.drawing)
 	music.attention_strolling=camera_rig.strolling
 	camera_rig.update(self, delta)
@@ -2340,6 +2343,7 @@ func _on_concert_event(event: String, venue_id: String) -> void:
 	for house: Dictionary in state.houses:
 		if house.id == venue_id: name_value = str(house.name)
 	_message({"invited":"街坊在茶座聊起新曲，自发相约前往 %s。","started":"街坊到齐了，%s 与整条街共同奏响。","finished":"%s 的演出落幕，暖灯余韵留在街坊，面包师愉快劳作。","cancelled":"%s 的演出已结束，街坊继续自己的日常。"}[event] % name_value)
+	if event=="finished":gallery.observe_archive(life.last_completed_movement)
 	if event=="finished" and not life.finale_view().is_empty():_message("盛典落幕 · 金色声浪向河湾展开 · %d栋房屋晋升"%life.finale_view().changes.size())
 	life_info.text = life.summary()
 	_capture_journeys()

@@ -10,6 +10,9 @@ const Microclimate=preload("res://scripts/world/city_creation_microclimate.gd")
 var microclimate:=""
 const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
 const ScoreModifiers=preload("res://scripts/world/city_creation_score_modifiers.gd")
+const ArchiveRewards=preload("res://scripts/world/city_creation_archive_rewards.gd")
+var archive_unlocks:Array[String]=[]
+var music_mode:=""
 var era_modifiers:Array[String]=[]
 var biome_seed:Dictionary={}
 var _biome_revision:=-1
@@ -166,7 +169,7 @@ func initialize_empty()->void:
 
 func initialize() -> void:
 	biome_seed={};_biome_revision=-1;_biome_bonuses={}
-	era_modifiers.clear()
+	era_modifiers.clear();archive_unlocks.clear();music_mode=""
 	microclimate=""
 	automatic_neighborhoods=false
 	_prosperity_revision = -1
@@ -630,11 +633,24 @@ func set_house_temperament(house_id:String,temperament:String)->Dictionary:
 	return {"ok":true,"message":"建筑律动已调整"}
 
 
+func finish_available(finish:String)->bool:
+	return ArchiveRewards.finish_available(finish,growth_memories,archive_unlocks)
+
+func apply_archive_unlocks(ids:Array)->void:
+	for id:String in ids:
+		if id in ArchiveRewards.IDS and id not in archive_unlocks:archive_unlocks.append(id);dirty=true
+
+func set_music_mode(mode:String)->Dictionary:
+	if mode!="" and not ArchiveRewards.mode_available(mode,archive_unlocks):return _fail("这个调式尚未在图鉴中解锁")
+	if mode==music_mode:return {"ok":true,"no_op":true,"message":"调式未变"}
+	var before:=snapshot();music_mode=mode;_commit(before,"选择河湾调式")
+	return {"ok":true,"message":"已选择"+str(ArchiveRewards.MODE_NAMES.get(mode,"地貌原声"))}
+
 func set_house_finish(house_id: String, finish: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")
 	if not Growth.FINISHES.has(finish): return _fail("未知的房屋饰色")
-	if str(Growth.FINISHES[finish].chapter) not in growth_memories: return _fail("先在成长手记中留下这一章")
+	if not finish_available(finish):return _fail("先在手记或声学图鉴中解锁这款饰色")
 	if houses[index].get("finish", "")==finish: return {"ok":true,"message":"房屋饰色未变","no_op":true}
 	var before := snapshot()
 	houses[index].finish = finish

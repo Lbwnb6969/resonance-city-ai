@@ -7,6 +7,9 @@ signal save_requested(title: String)
 signal open_requested(id: String)
 signal example_requested(id: String)
 signal biome_requested(id:String)
+signal preview_requested(id:String)
+signal stop_requested
+signal mode_requested(mode:String)
 signal close_requested
 
 var title_input: LineEdit
@@ -14,6 +17,18 @@ var save_button: Button
 var close_button: Button
 var cards: Dictionary = {}
 var open_buttons: Dictionary = {}
+var preview_buttons:Dictionary={}
+var mode_buttons:Dictionary={}
+var playback_row:HBoxContainer
+var playback_title:Label
+var playback_progress:ProgressBar
+var stop_button:Button
+var _archive_data:Dictionary={"chords":[],"landmarks":[],"performances":[],"awards":[]}
+var _archive_rewards:Array=[]
+var _music_mode:=""
+var _playing_id:=""
+var _playing_title:=""
+var _playing_mode:=""
 var panel: PanelContainer
 var scroll: ScrollContainer
 var grid: GridContainer
@@ -111,6 +126,7 @@ func _ready() -> void:
 	tabs.add_theme_color_override("font_hovered_color", UI.INK)
 	tabs.add_tab("我的作品")
 	tabs.add_tab("官方示范河湾")
+	tabs.add_tab("留声机与名胜图鉴")
 	tabs.current_tab = 1 if _examples_selected else 0
 	tabs.tab_changed.connect(func(index: int) -> void:
 		_biomes_selected=false
@@ -118,6 +134,13 @@ func _ready() -> void:
 		scroll.scroll_vertical = 0
 		_render_items())
 	body.add_child(tabs)
+	playback_row=HBoxContainer.new();playback_row.add_theme_constant_override("separation",12);body.add_child(playback_row)
+	var record:Control=preload("res://scripts/ui/city_creation_phonograph_badge.gd").new();playback_row.add_child(record)
+	var playing:=VBoxContainer.new();playing.size_flags_horizontal=Control.SIZE_EXPAND_FILL;playback_row.add_child(playing)
+	playback_title=_label("",15);playing.add_child(playback_title)
+	playback_progress=ProgressBar.new();playback_progress.max_value=24.;playback_progress.show_percentage=false;playback_progress.custom_minimum_size.y=8;playing.add_child(playback_progress)
+	stop_button=_button("停下唱针");stop_button.name="StopPhonograph";stop_button.pressed.connect(func()->void:stop_requested.emit());playback_row.add_child(stop_button)
+	playback_row.hide()
 	scroll = ScrollContainer.new()
 	scroll.name = "GalleryScroll"
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -180,6 +203,8 @@ func set_busy(value: bool) -> void:
 	close_button.disabled = value
 	biome_button.disabled=value
 	for seed_button:Button in biome_buttons.values():seed_button.disabled=value
+	for b:Button in preview_buttons.values():b.disabled=value or not bool(b.get_meta("valid",false))
+	for id:String in mode_buttons:mode_buttons[id].disabled=value or (id!="" and not preload("res://scripts/world/city_creation_archive_rewards.gd").mode_available(id,_archive_rewards))
 	title_input.editable = not value
 	for index in range(tabs.tab_count): tabs.set_tab_disabled(index, value)
 	for id: String in open_buttons:
@@ -214,9 +239,11 @@ func _render_items() -> void:
 		child.queue_free()
 	cards.clear()
 	open_buttons.clear()
-	biome_buttons.clear()
+	biome_buttons.clear();preview_buttons.clear();mode_buttons.clear()
 	if _biomes_selected:
 		_render_biomes();return
+	if tabs.current_tab==2:
+		_render_archive();return
 	var visible_items: Array = _examples if _examples_selected else _items
 	empty_label.text = "示范河湾正在准备。" if _examples_selected else "这里会留下你造过的河湾。\n为当前作品起名，收藏第一张风景。"
 	empty_label.visible = visible_items.is_empty()
@@ -287,6 +314,12 @@ func _render_items() -> void:
 			else: open_requested.emit(id))
 		column.add_child(open_button)
 		open_buttons[id] = open_button
+		if not is_example:
+			var listen:=_button("♫ 回放这座河湾" if id!=_playing_id else "♫ 正在回放")
+			listen.name="ListenWork";listen.set_meta("valid",valid);listen.disabled=_busy or not valid
+			listen.pressed.connect(func()->void:
+				if not _busy:preview_requested.emit(id))
+			column.add_child(listen);preview_buttons[id]=listen
 	_queue_fit()
 
 func _render_biomes()->void:
@@ -349,3 +382,44 @@ func _button(text: String) -> Button:
 	button.text = text
 	button.custom_minimum_size.y = 40
 	return button
+
+func refresh_archive(data:Dictionary,rewards:Array,mode:String)->void:
+	_archive_data=data.duplicate(true);_archive_rewards=rewards.duplicate();_music_mode=mode
+	if is_node_ready() and tabs.current_tab==2 and not _biomes_selected:_render_items()
+
+func set_playing(id:String,title:String,mode:String)->void:
+	_playing_id=id;_playing_title=title;_playing_mode=mode
+	playback_row.visible=not id.is_empty()
+	playback_title.text="留声机 · "+title+" · "+mode
+	for key:String in preview_buttons:preview_buttons[key].text="♫ 正在回放" if key==id else "♫ 回放这座河湾"
+	_queue_fit()
+
+func _archive_card(title:String,text:String)->VBoxContainer:
+	var card:=PanelContainer.new();card.add_theme_stylebox_override("panel",UI.card(14));card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;grid.add_child(card)
+	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",8);card.add_child(column)
+	column.add_child(_label(title,18));var copy:=_label(text,14);copy.add_theme_color_override("font_color",UI.MUTED);column.add_child(copy)
+	return column
+
+func _render_archive()->void:
+	empty_label.hide()
+	footer.text="图鉴跨河湾保留。我的作品中点「回放」放下唱针；关闭收藏，继续原来的城市。"
+	var rewards=preload("res://scripts/world/city_creation_archive_rewards.gd")
+	for id:String in rewards.IDS:
+		var earned:bool=id in _archive_rewards
+		var text:String=("历次河湾收录声学和弦 %d / 5。解锁青瓷与黛瓦、C宫五声。"%_archive_data.get("chords",[]).size()) if id=="five_chords" else "完成一次至少100屋、四时代参与的24秒地标盛典。解锁月石与鸢尾、F大七调式。"
+		_archive_card(("✓ " if earned else "○ ")+str(rewards.NAMES[id]),text)
+	var modes:=_archive_card("为当前河湾选择调式","按下一枚唱片，新的建造、日常合奏与地标乐章一起换调。")
+	for id:String in ["","gong_pentatonic","impressionist_major7"]:
+		var b:=_button(("✓ " if id==_music_mode else "")+str(rewards.MODE_NAMES.get(id,"地貌原声")))
+		b.name="Mode_"+("automatic" if id.is_empty() else id)
+		b.disabled=_busy or (not id.is_empty() and not rewards.mode_available(id,_archive_rewards))
+		b.tooltip_text="用于当前河湾" if not b.disabled else "达成对应图鉴成就后解锁"
+		b.pressed.connect(func()->void:
+			if not _busy:mode_requested.emit(id))
+		modes.add_child(b);mode_buttons[id]=b
+	var signatures=preload("res://scripts/world/city_creation_signatures.gd")
+	for id:String in signatures.IDS:
+		var built:bool=id in _archive_data.get("landmarks",[])
+		var heard:bool=id in _archive_data.get("performances",[])
+		_archive_card(("♫ " if heard else "✓ " if built else "○ ")+str(signatures.NAMES[id]),("传世乐章已聆听。" if heard else "已建成；奏响一次完整乐章留下唱片印记。" if built else "尚未在自己的河湾中发现。")+"\n"+str(signatures.LOCAL_EFFECTS[id]))
+	_queue_fit()

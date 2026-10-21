@@ -57,6 +57,7 @@ var current_population := 0
 var time := 0.0
 var arrival_callback: Callable
 var concert_callback: Callable
+var last_completed_movement:Dictionary={}
 var concert_start_gate: Callable
 var production_callback: Callable
 var purchase_callback: Callable
@@ -1142,6 +1143,7 @@ func _resume_concert_participant(resident: Dictionary) -> bool:
 func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 	flush_citizens()
 	if _concert.is_empty(): return
+	last_completed_movement={}
 	var venue := str(_concert.venue_id)
 	if completed and _concert.get("source", "manual") == "auto":
 		completed = state.complete_matinee(venue, _concert.get("sponsors", []))
@@ -1149,6 +1151,14 @@ func _end_concert(completed: bool, completion_remainder: float = 0.0) -> void:
 	if completed:
 		_refresh_resonance_membership()
 		var duration: float = state.record_concert_completion(venue)
+		if _concert.get("landmark_movement",false) or _concert.get("grand_festival",false):
+			var eras:Array[String]=[]
+			for id:String in _chorus_house_ids:
+				var index:int=state._house_index(id)
+				if index<0:continue
+				var era:String=state.house_era(state.houses[index])
+				if era not in eras:eras.append(era)
+			last_completed_movement={"signature":str(state.houses[state._house_index(venue)].get("signature","")),"duration":24.,"houses":state.houses.size(),"eras":eras,"concerts":int(state.life_progress.concerts)}
 		var districts := {}
 		for id: String in _concert.participants:
 			var district: Dictionary=state.district_for_house(id)
