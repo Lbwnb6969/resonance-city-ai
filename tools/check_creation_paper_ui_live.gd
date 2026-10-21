@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene = preload("res://scenes/city_creation.tscn")
 const State = preload("res://scripts/world/city_creation_state.gd")
-const OUT = "res://验证记录/乐谱界面_2026-10-20"
+var OUT = "res://验证记录/当前HUD_2026-10-22"
 var demo
 var checks: Array = []
 var failures: Array = []
@@ -27,16 +27,57 @@ func layout() -> void:
 	var actions:Control=demo.sundial_hud
 	for button:Control in actions.get_children():
 		check(screen.encloses(button.get_global_rect()),"circular action fits: "+str(button.name))
-	check(actions.get_child_count()==4 and not actions.get_global_rect().intersects(ribbon.get_global_rect()),"exactly four action seals leave the ribbon unobstructed")
+	check(actions.get_child_count()==5 and not actions.get_global_rect().intersects(ribbon.get_global_rect()),"all five action seals leave the ribbon unobstructed")
 	var toolbar:Control=demo.ui_layer.get_node("Root/Toolbar")
-	check(screen.encloses(toolbar.get_global_rect()),"all nine dock tools fit")
+	check(screen.encloses(toolbar.get_global_rect()),"five-core dock and undo/redo fit")
 	check(screen.encloses(demo.whisper_keycaps.get_global_rect()) and not demo.whisper_keycaps.get_global_rect().intersects(toolbar.get_global_rect()),"single-line keycaps fit below the tools")
 	var area:=0.
-	for node:Control in [ribbon,actions,toolbar,demo.whisper_keycaps]:area+=node.get_global_rect().get_area()
+	var occupied:Array[Control]=[ribbon,actions,toolbar,demo.whisper_keycaps]
+	# Full-screen transparent ToolBubbles is not painted; its actual compact
+	# child rows are. Include them in the conservative resting-HUD footprint.
+	for row:Control in [demo.tactile_dock.bubble_rows,demo.tactile_dock.nature_row]:
+		if row.is_visible_in_tree():occupied.append(row)
+	for node:Control in occupied:
+		check(screen.encloses(node.get_global_rect()),"painted HUD row fits: "+str(node.name))
+		area+=node.get_global_rect().get_area()
 	var open:=1.-area/screen.get_area();facts[str(root.size)]={"open_world_fraction":open,"ribbon":ribbon.get_global_rect(),"keycaps":demo.whisper_keycaps.get_global_rect()}
 	check(open>=.88,"resting HUD leaves at least 88 percent of the city visible")
 
+func settle()->void:
+	while demo.edit_pending() or demo._edit_ui_pending or demo.gallery.busy:await process_frame
+	for i in range(8):await process_frame
+
+func options_fit()->void:
+	var screen:=Rect2(Vector2.ZERO,Vector2(root.size))
+	for row:Control in [demo.tactile_dock.bubble_rows,demo.tactile_dock.nature_row]:
+		if row.is_visible_in_tree():check(screen.encloses(row.get_global_rect()),"current option row fits at "+str(root.size)+": "+str(row.name))
+	var legacy:Control=demo.ui_layer.get_node("Root/LegacyToolOptions")
+	check(not legacy.is_visible_in_tree() and visible_native_options(demo.ui_layer)==0,"actual context has no visible native dropdown or fixed legacy drawer")
+
+func visible_native_options(node:Node)->int:
+	var count:=1 if node is OptionButton and node.is_visible_in_tree() else 0
+	for child:Node in node.get_children():count+=visible_native_options(child)
+	return count
+
+func core_tools()->void:
+	var captions:Array=[]
+	for button:Button in demo.tool_buttons:
+		if button.is_visible_in_tree():captions.append(button.caption)
+	check(captions==["筑屋","修路","烟火","林水","地形"],"only five intended core tools occupy the dock")
+	for index:int in [0,2,4,5,8]:
+		await click(demo.tool_buttons[index].get_global_rect().get_center());await settle()
+		check(demo.tool==index,"actual visible core seal selects "+str(demo.tool_buttons[index].caption))
+		options_fit()
+	await click(demo.tool_buttons[5].get_global_rect().get_center());await settle()
+	check(demo.tactile_dock.nature_row.get_child_count()==3,"nature palette has tree pond and channel seals")
+	for mode:int in range(3):
+		await click(demo.tactile_dock.nature_row.get_child(mode).get_global_rect().get_center());await settle();options_fit()
+		check((demo.tool==5 if mode==0 else demo.tool==6 and demo.water_kind==["pond","channel"][mode-1]),"actual nature subtool selects "+["trees","pond","channel"][mode])
+	demo.select_tool(0);await settle()
+
 func _run() -> void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	root.size=Vector2i(1440,900);Engine.max_fps=180
 	var personal := FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
@@ -44,9 +85,9 @@ func _run() -> void:
 	for i in range(35): await process_frame
 	while demo.toast.visible:await process_frame
 	var original: Dictionary=demo.state.snapshot();var undo: int=demo.state._undo.size()
-	layout();await image("01_乐谱主界面")
+	layout();await core_tools();await image("01_乐谱主界面")
 	check(demo.ui_layer.get_node("Root").get_node_or_null("PaperHeader")==null and not demo.quest.is_visible_in_tree(),"permanent header and instruction cards are removed")
-	check(demo.score_ribbon.seals.get_child_count()==3,"only journal gallery and guide seals occupy the ribbon")
+	check(demo.score_ribbon.seals.get_child_count()==4,"journal landmarks gallery and guide have direct ribbon seals")
 	await click(demo.journal.button.get_global_rect().get_center())
 	check(demo.journal.panel.visible and demo.quest.is_visible_in_tree(),"visible journal seal reveals actual goals and city accounts")
 	await click(demo.ledger.button.get_global_rect().get_center());check(demo.ledger.visible() and not demo.journal.panel.visible,"journal opens real city ledger and closes itself")
@@ -54,12 +95,28 @@ func _run() -> void:
 	await click(demo.journal.button.get_global_rect().get_center());await click(demo.signatures.button.get_global_rect().get_center())
 	check(demo.signatures.panel.visible and not demo.journal.panel.visible,"journal opens actual landmark catalogue")
 	await key(KEY_ESCAPE)
+	await click(demo.score_ribbon.landmark_button.get_global_rect().get_center())
+	check(demo.signatures.panel.visible and demo.score_ribbon.landmark_button.kind=="landmark","direct landmark seal opens the actual six-landmark catalogue")
+	await key(KEY_ESCAPE)
+	var weather_history:int=demo.state._undo.size()
+	for mode:int in range(4):
+		await click(demo.sundial_hud.weather.get_global_rect().get_center());await settle()
+		check(demo.state.microclimate==demo.State.Microclimate.IDS[mode] and demo.weather_visual._mode==demo.state.microclimate,"actual weather seal applies "+str(demo.state.microclimate))
+	while demo.state._undo.size()>weather_history:demo._history(false);await settle()
+	var restored_weather:Dictionary=demo.state.snapshot();var expected_weather:Dictionary=original.duplicate(true)
+	restored_weather.erase("revision");expected_weather.erase("revision")
+	check(restored_weather==expected_weather,"weather tour undoes to the complete original authored world")
+	original=demo.state.snapshot()
 	var players:Array=[]
 	for id:String in demo.music.STEMS:players.append(demo.music._players[id].get_instance_id())
 	var clock:float=demo.music._playback_clock()
 	for phase in range(3):
+		var turn:float=demo.light_button.turn
 		await click(demo.light_button.get_global_rect().get_center())
-		await create_timer(.42).timeout
+		await create_timer(.10).timeout
+		check(absf(demo.light_button.turn-turn)>.01 and absf(demo.light_button.turn-demo.sundial_hud._dial_target)>.001,"sundial rotates continuously during its spring transition")
+		await create_timer(.36).timeout
+		check(absf(demo.light_button.turn-demo.sundial_hud._dial_target)<.001,"sundial settles at its next third-turn")
 		check(demo.light_phase==(phase+1)%3 and demo.sundial_hud.sundial.kind==["sundial_day","sundial_dusk","sundial_night"][demo.light_phase],"native sundial click applies actual lighting phase")
 	await click(demo.music_button.get_global_rect().get_center());await process_frame
 	check(demo.music.muted and demo.ambience._muted and demo.music_button.muted,"native tuning fork mutes music and ambience together")
@@ -89,9 +146,7 @@ func _run() -> void:
 	check(FileAccess.file_exists(demo.camera_rig.last_postcard) and demo.camera_rig.last_postcard.begins_with(ProjectSettings.globalize_path(OUT)) and demo.ui_layer.visible,"native postcard seal saves a real isolated postcard and restores the same HUD")
 	await process_frame
 	check(not demo.toast.text.contains(demo.camera_rig.last_postcard) and demo.sundial_hud.postcard.tooltip_text.contains(demo.camera_rig.last_postcard),"postcard success stays compact while the real save destination remains discoverable on the camera seal")
-	for index in range(9):
-		await click(demo.tool_buttons[index].get_global_rect().get_center())
-		check(demo.tool==index,"actual dock selects tool "+str(index+1))
+	await core_tools()
 	demo.select_tool(2);await process_frame;await image("02_道路气泡")
 	var legacy:Control=demo.ui_layer.get_node("Root/LegacyToolOptions")
 	var bubbles:Control=demo.ui_layer.get_node("Root/ToolBubbles")
@@ -99,12 +154,14 @@ func _run() -> void:
 	var promenade_button:Button
 	for binding:Dictionary in demo.tactile_dock.bindings:
 		if binding.type=="option" and binding.source==demo.road_panel.find_child("RoadStyle",true,false) and int(binding.index)==1:promenade_button=binding.button
-	check(promenade_button!=null and demo.tactile_dock.bindings.size()==7,"road mode, four street finishes and roundabout have contextual seals")
+	check(promenade_button!=null and demo.tactile_dock.button_for("RoadMode",1)!=null and demo.tactile_dock.button_for("RoadSize",3)!=null,"road mode, street finishes, widths and roundabout have contextual seals")
 	if promenade_button!=null:await click(promenade_button.get_global_rect().get_center())
 	check(demo.road_style=="promenade" and demo.road_panel.find_child("RoadStyle",true,false).selected==1 and promenade_button.active,"road seal changes the original road style state and highlights its selection")
-	for item:Array in [[3,2],[5,6],[6,5],[7,15],[8,10]]:
-		demo.select_tool(int(item[0]));await process_frame
-		check(bubbles.visible and demo.tactile_dock.bindings.size()==int(item[1]),"tool "+str(int(item[0])+1)+" exposes its existing options as contextual seals")
+	for index:int in [3,5,6,7,8]:
+		demo.select_tool(index);await settle();options_fit()
+		for binding:Dictionary in demo.tactile_dock.bindings:
+			check(binding.button.is_visible_in_tree(),"legacy callback has a visible contextual replacement: "+str(binding.source.name))
+
 	demo.select_tool(5);await process_frame
 	var cypress:Button
 	for binding:Dictionary in demo.tactile_dock.bindings:
@@ -155,7 +212,7 @@ func _run() -> void:
 	root.size=Vector2i(1024,768)
 	demo.select_tool(0)
 	for i in range(10):await process_frame
-	layout();await key(KEY_F1);await process_frame
+	layout();await core_tools();await key(KEY_F1);await process_frame
 	check(Rect2(Vector2.ZERO,Vector2(root.size)).encloses(demo.guide.paper.get_global_rect()),"guide paper fits smaller window")
 	await image("05_小窗口手札");await key(KEY_ESCAPE);await image("06_小窗口主界面")
 	check(demo.state.snapshot()==original and demo.state._undo.size()==undo,"UI tour preserves exact authored state and undo stack")
@@ -184,5 +241,5 @@ func _run() -> void:
 	await key(KEY_F)
 	check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save unchanged")
 	var report := {"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures,"checks":checks}
-	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("SCORE_UI ",JSON.stringify(report))
+	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("SCORE_UI ",JSON.stringify({"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures}))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

@@ -108,6 +108,11 @@ static func draw_icon(canvas:CanvasItem,kind:String,center:Vector2,radius:float,
 			stroke(canvas,[Vector2(0,-.45),Vector2(-.62,-.65),Vector2(-.62,.48),Vector2(0,.65),Vector2(.62,.48),Vector2(.62,-.65),Vector2(0,-.45),Vector2(0,.65)],center,radius,color)
 			stroke(canvas,[Vector2(-.43,-.30),Vector2(-.18,-.22)],center,radius,accent,1.2)
 			stroke(canvas,[Vector2(.18,-.22),Vector2(.43,-.30)],center,radius,accent,1.2)
+		"landmark":
+			stroke(canvas,[Vector2(-.72,-.30),Vector2(0,-.78),Vector2(.72,-.30),Vector2(-.72,-.30)],center,radius,color)
+			for x:float in [-.45,0.,.45]:stroke(canvas,[Vector2(x,-.15),Vector2(x,.48)],center,radius,color)
+			stroke(canvas,[Vector2(-.68,.54),Vector2(.68,.54)],center,radius,accent)
+			stroke(canvas,[Vector2(-.77,.73),Vector2(.77,.73)],center,radius,color)
 		"gallery":
 			canvas.draw_rect(Rect2(center-Vector2(.58,.58)*radius,Vector2(1.16,1.16)*radius),color,false,1.7)
 			stroke(canvas,[Vector2(-.32,.3),Vector2(0,-.06),Vector2(.33,.3)],center,radius,accent)

@@ -131,6 +131,7 @@ var era_road_field=preload("res://scripts/visual/city_creation_era_road_field.gd
 var era_streets=preload("res://scripts/visual/city_creation_era_streets.gd").new()
 var conservatory := Conservatory.new()
 var resonance := Resonance.new()
+var living_music=preload("res://scripts/visual/city_creation_living_music.gd").new()
 var grand_festival_visual=preload("res://scripts/visual/city_creation_grand_festival_visual.gd").new()
 var travel_visual := TravelVisual.new()
 var craft := Craft.new()
@@ -236,6 +237,7 @@ func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
 	house_music_layer.name = "HouseMusicalResponse"
 	add_child(house_music_layer)
 	resonance.setup(house_music_layer)
+	living_music.setup(self)
 	grand_festival_visual.setup(self)
 	travel_visual.setup(self)
 	craft.setup(self)

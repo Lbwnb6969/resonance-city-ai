@@ -6,6 +6,7 @@ var demo:Node3D
 var staff:Control
 var seals:HBoxContainer
 var chords:HBoxContainer
+var landmark_button:Button
 var _active_chords:Array=[]
 var pulse:=0.
 var clock:=0.
@@ -36,6 +37,9 @@ func setup(owner:Node3D,parent:Control)->void:
 	chords.add_theme_constant_override("separation",3);row.add_child(chords)
 	seals=HBoxContainer.new();seals.name="RibbonSeals";seals.add_theme_constant_override("separation",4);row.add_child(seals)
 	demo.journal.button.reparent(seals);demo.journal.button.set_script(Seal);demo.journal.button.configure("journal",32.)
+	landmark_button=Seal.new();landmark_button.name="OpenLandmarks";landmark_button.configure("landmark",32.)
+	landmark_button.tooltip_text="地标名胜 · 六座传世乐章的起点"
+	landmark_button.pressed.connect(func()->void:demo.signatures.open_panel());seals.add_child(landmark_button)
 	demo.gallery_button.reparent(seals);demo.gallery_button.set_script(Seal);demo.gallery_button.configure("gallery",32.)
 	var guide:=Seal.new();guide.name="OpenGuide";guide.configure("guide",32.)
 	guide.tooltip_text="营造手札 · F1";guide.pressed.connect(func()->void:demo.guide.open_panel());seals.add_child(guide)

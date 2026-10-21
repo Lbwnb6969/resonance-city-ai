@@ -381,7 +381,7 @@ func _setup_life(prepared:Node3D=null) -> void:
 	life.view_camera=camera
 	life.arrival_callback = func(_kind: String) -> void: music.record_life_activity("arrival","",Vector2(focus.x,focus.z))
 	life.concert_callback = _on_concert_event
-	life.production_callback = func(house_id:String,_quantity:int)->void: music.queue_bakery_cue("baked",house_id)
+	life.production_callback = _on_bread_produced
 	life.purchase_callback = func(shop_id:String,home_id:String)->void: music.queue_bakery_cue("purchased",shop_id,home_id)
 	life.craft_callback = _on_craft_event
 	life.quality_callback = _on_quality_changed
@@ -1331,6 +1331,7 @@ func _process(delta: float) -> void:
 	ambience.set_muted(music.muted)
 	ambience.set_foreground(bool(resonance_snapshot.get("concert_active",false)) or bool(resonance_snapshot.pluck.get("audible",false)) or bool(resonance_snapshot.get("canon",{}).get("audible",false)) or bool(music.tram_music_report().audible))
 	town.update_city_resonance_visuals(resonance_snapshot)
+	if not _edit_pending:town.living_music.update(music._house_music,resonance_snapshot,_music_catalog_key,music.muted)
 	var grand:Dictionary=music.grand_festival_report()
 	if not bool(grand.active) and not finale.is_empty():grand=finale
 	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
@@ -2237,8 +2238,18 @@ func _on_quality_changed(events: Array) -> void:
 	_refresh_place();save_delay=3.0
 	if life.profile_tick:life.tick_profile.quality_ui_us=Time.get_ticks_usec()-began
 
+func _on_bread_produced(house_id:String,_quantity:int)->void:
+	music.queue_bakery_cue("baked",house_id)
+	_show_largo_completion(house_id)
+
+func _show_largo_completion(house_id:String)->void:
+	if _edit_pending or music.muted or music.acoustic.weight(house_id)<=0. or state.house_temperament(house_id)!="largo":return
+	var row:Dictionary=music._house_music.get(house_id,{})
+	if not row.is_empty():town.living_music.emit_production(house_id,row,music._playback_clock())
+
 func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
 	music.record_life_activity(kind,_shop_id)
+	if kind=="crafted":_show_largo_completion(_shop_id)
 	if kind=="mechanism_installed":
 		_refresh_house_music_traits([target_id])
 		_message("♫ 邻屋收到钟表匠送来的"+("发条八音盒" if level==1 else "报时风向标"))
