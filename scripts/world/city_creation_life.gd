@@ -1374,7 +1374,7 @@ func district_reply_pairs() -> Array:
 	var district_rows: Array=[]
 	for district: Dictionary in state.districts:
 		district_rows.append([district.id,district.points,district.width,district.style])
-	var signature:=hash(district_rows)
+	var signature:=hash([district_rows,state.microclimate])
 	if _district_link_network!=_network or _district_link_signature!=signature:
 		_district_link_network=_network
 		_district_link_signature=signature

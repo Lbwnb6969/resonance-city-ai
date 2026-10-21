@@ -4,6 +4,7 @@
 uniform vec4 grass_low : source_color = vec4(0.25,0.43,0.27,1.0);
 uniform vec4 grass_mid : source_color = vec4(0.345,0.505,0.29,1.0);
 uniform vec4 grass_high : source_color = vec4(0.44,0.58,0.31,1.0);
+uniform float season_gold=0.0;
 float meadow_hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 // Extracted Grass2 world_albedo_tint, sampled in the original 128 m mirrored
 // domain. The mean exposure adapts our local meadow palette; this is not the
@@ -54,6 +55,7 @@ vec3 meadow_color(vec2 at,vec3 low,vec3 high) {
 	vec3 grass = mix(mix(low,middle,clamp(blend*2.0,0.0,1.0)),high,clamp(blend*2.0-1.0,0.0,1.0));
 	float grain = meadow_noise(at*1.6+5.1)-0.5;
 	grass=meadow_world_tint_linear(at,grass*(1.0+grain*0.012));
+	grass=mix(grass,grass*vec3(1.28,.97,.64),season_gold*.65);
 	return OUTPUT_IS_SRGB ? meadow_linear_to_srgb(grass) : grass;
 }
 // Tiny changes in the turf's light normal soften the flat plane. This is

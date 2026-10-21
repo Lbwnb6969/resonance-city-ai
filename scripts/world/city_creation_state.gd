@@ -6,6 +6,8 @@ signal era_unlocked(era: String)
 const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
 const AutoNeighborhoods=preload("res://scripts/world/city_creation_auto_neighborhoods.gd")
 var automatic_neighborhoods:=false
+const Microclimate=preload("res://scripts/world/city_creation_microclimate.gd")
+var microclimate:=""
 const NaturalClusters=preload("res://scripts/world/city_creation_clusters.gd")
 var _natural_cluster_key:Variant=null
 var _natural_cluster_rows:Dictionary={}
@@ -146,6 +148,7 @@ var _redo: Array[Dictionary] = []
 
 func initialize_empty()->void:
 	initialize()
+	microclimate="spring_breeze"
 	automatic_neighborhoods=true
 	houses.clear();roads.clear();plants.clear();waters.clear();districts.clear();terrain_strokes.clear()
 	_next_house_id=1;_next_cell_id=1;_next_road_id=1;_next_plant_id=1;_next_water_id=1;_next_district_id=1
@@ -153,6 +156,7 @@ func initialize_empty()->void:
 	revision+=1;_undo.clear();_redo.clear()
 
 func initialize() -> void:
+	microclimate=""
 	automatic_neighborhoods=false
 	_prosperity_revision = -1
 	_special_sites.clear();_special_site_key.clear()
@@ -1565,6 +1569,13 @@ func afterglow_remaining(house_id: String) -> float:
 func production_multiplier(house_id: String) -> float:
 	return site_production_multiplier(house_id) * (1.25 if afterglow_remaining(house_id) > 0.0 else 1.0)
 
+func set_microclimate(mode:String)->Dictionary:
+	if mode not in Microclimate.IDS:return _fail("四时风物无效")
+	if mode==microclimate:return {"ok":true,"no_op":true,"message":"四时未变"}
+	var before:=snapshot();microclimate=mode
+	_commit(before,"切换四时风物")
+	return {"ok":true,"message":Microclimate.NAMES[Microclimate.IDS.find(mode)]}
+
 
 func site_blessing(house_id: String) -> Dictionary:
 	# Geometry-derived only: daily production and credit changes do not rebuild
@@ -1588,7 +1599,8 @@ func site_production_multiplier(house_id: String) -> float:
 	var index:=_house_index(house_id)
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
-	return temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	var weather:float=Microclimate.production(self,houses[index]) if index>=0 else 1.
+	return weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
 
 
 func synergy_buffs()->Dictionary:
@@ -1663,7 +1675,7 @@ func city_harmony_summary() -> Dictionary:
 
 
 func cafe_afterglow_extension(house_id: String) -> float:
-	return float(site_blessing(house_id).get("afterglow_extension", 30.0))
+	return float(site_blessing(house_id).get("afterglow_extension", 30.0))*(1.25 if microclimate=="spring_breeze" else 1.)
 
 
 func afterglow_limit(house_id: String) -> float:
@@ -1868,7 +1880,7 @@ func complete_tea(cafe_id: String, homes: Array) -> bool:
 	var glow_ids := homes.duplicate()
 	glow_ids.append(cafe_id)
 	var extension := cafe_afterglow_extension(cafe_id)
-	if not signature_bonuses().palace_id.is_empty():grant_resonance_afterglow(glow_ids,180.0)
+	if not signature_bonuses().palace_id.is_empty():grant_resonance_afterglow(glow_ids,180.0*(1.25 if microclimate=="spring_breeze" else 1.))
 	for id in glow_ids:
 		var remaining := afterglow_remaining(str(id))
 		if remaining > 0.0: resonance_afterglow[str(id)] = maxf(remaining,minf(afterglow_limit(str(id)), remaining + extension*(2.0 if level_tier(str(id))>=5 else 1.0)))

@@ -56,6 +56,7 @@ var gallery: RefCounted
 var terrain_brush: RefCounted
 var tactile_dock: RefCounted
 var world_toys=preload("res://scripts/visual/city_creation_world_toys.gd").new()
+var weather_visual:Node3D
 var wish_pins:Control
 var intuitive_guidance:Control
 var start_empty:=false
@@ -289,6 +290,8 @@ func _ready() -> void:
 	guide=Guide.new()
 	guide.setup(self,ui_layer.get_child(0))
 	preload("res://scripts/ui/city_creation_paper_hud.gd").setup(self)
+	weather_visual=preload("res://scripts/visual/city_creation_weather_visual.gd").new()
+	weather_visual.setup(self)
 	state.era_unlocked.connect(_on_era_unlocked,CONNECT_DEFERRED)
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
@@ -1321,6 +1324,7 @@ func _process(delta: float) -> void:
 	town.grand_festival_visual.update(grand,life._network,life.tram.plan,str(life.connected_houses.get(grand.venue_id,"")))
 	town.update_travel_music(music.travel_music_report())
 	world_toys.update(self,delta)
+	weather_visual.update()
 	frame_samples.append(delta*1000.0)
 	if frame_samples.size() > 240: frame_samples.pop_front()
 	life_ui_timer -= delta
@@ -2072,7 +2076,15 @@ func _strum_house(id: String) -> bool:
 	return true
 
 func _toggle_light() -> void:
-	light_phase = (light_phase+1)%3
+	_set_light_phase((light_phase+1)%3)
+
+func _toggle_microclimate()->void:
+	if edit_pending():return
+	var index:=State.Microclimate.IDS.find(state.microclimate)
+	_after_edit(state.set_microclimate(State.Microclimate.IDS[(index+1)%4]),"weather",false)
+
+func _set_light_phase(value:int)->void:
+	light_phase=value
 	evening = light_phase>=1
 	environment_rig.apply(light_phase)
 	town.set_light_phase(light_phase)

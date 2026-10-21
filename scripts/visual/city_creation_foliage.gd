@@ -46,6 +46,7 @@ shader_type spatial;
 render_mode specular_disabled;
 uniform vec2 touch_at=vec2(0.0);
 uniform float touch_time=10.0;
+uniform float season_gold=0.0;
 varying float leaf_height;
 void vertex() {
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -60,11 +61,11 @@ void vertex() {
 	leaf_height = COLOR.a;
 }
 void fragment() {
-	ALBEDO = COLOR.rgb;
+	ALBEDO = mix(COLOR.rgb,COLOR.rgb*vec3(1.28,.91,.58),season_gold*.72);
 	ROUGHNESS = 0.96;
 	SPECULAR = 0.0;
 	AO = mix(0.82, 1.0, leaf_height);
-	EMISSION = COLOR.rgb * 0.018;
+	EMISSION = ALBEDO * 0.018;
 }
 void light() {
 	float ndl = dot(NORMAL, LIGHT);

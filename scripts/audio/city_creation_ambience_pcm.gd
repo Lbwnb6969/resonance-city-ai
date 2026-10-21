@@ -7,7 +7,7 @@ static func render(include_water: bool=false) -> Dictionary:
 	var streams: Dictionary = {}
 	var peaks: Dictionary = {}
 	var layers: Dictionary = {}
-	var kinds: Array = ["wind","birds","insects"]
+	var kinds: Array = ["wind","birds","insects","rain"]
 	if include_water: kinds.append("water")
 	for kind: String in kinds:
 		var samples := PackedFloat32Array()
@@ -24,6 +24,10 @@ static func render(include_water: bool=false) -> Dictionary:
 			elif kind=="wind":
 				low=lerpf(low,rng.randf_range(-1.0,1.0),0.055)
 				value=low*(0.58+0.25*sin(TAU*t/12.0)+0.12*sin(TAU*t/4.0))
+			elif kind=="rain":
+				var noise:=rng.randf_range(-1.,1.)
+				low=lerpf(low,noise,.23)
+				value=low*.62+noise*.11+sin(TAU*1380.*t)*pow(maxf(0.,sin(TAU*7.*t+2.*sin(TAU*t/3.))),30.)*.06
 			elif kind=="insects":
 				var pulse := pow(maxf(0.0,sin(TAU*4.0*t)),4.0)
 				value=(sin(TAU*4180.0*t)+0.28*sin(TAU*5630.0*t))*pulse*(0.48+0.15*sin(TAU*t/6.0))

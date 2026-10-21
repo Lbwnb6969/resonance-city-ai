@@ -8,6 +8,7 @@ const MAX_EMPTY_GAP := 2.7
 const TIE_EPSILON := 0.000001
 
 func derive(city: RefCounted,network: RefCounted) -> Array[Dictionary]:
+	var reach:=1.4 if city.microclimate=="starlight_fireflies" else 1.
 	var houses: Array[Dictionary] = []
 	for house: Dictionary in city.houses:
 		var id := str(house.id)
@@ -25,18 +26,18 @@ func derive(city: RefCounted,network: RefCounted) -> Array[Dictionary]:
 			var to: Dictionary = houses[second]
 			if from.district==to.district or from.style==to.style: continue
 			var planar: float = Vector2(from.position).distance_to(Vector2(to.position))
-			if planar>HOUSE_RANGE: continue
+			if planar>HOUSE_RANGE*reach: continue
 			# Each connected house has one selected real entrance/component.
 			# A port-to-port straight distance is only a lower bound, never a link.
 			var port_a: Vector3 = network.positions[from.port]
 			var port_b: Vector3 = network.positions[to.port]
-			if Vector2(port_a.x,port_a.z).distance_to(Vector2(port_b.x,port_b.z))>ROUTE_RANGE: continue
+			if Vector2(port_a.x,port_a.z).distance_to(Vector2(port_b.x,port_b.z))>ROUTE_RANGE*reach: continue
 			var route: Array[Vector3] = network._route(str(from.port),str(to.port))
 			if route.is_empty(): continue
 			var distance := 0.0
 			for index in range(1,route.size()):
 				distance += Vector2(route[index-1].x,route[index-1].z).distance_to(Vector2(route[index].x,route[index].z))
-			if distance>ROUTE_RANGE: continue
+			if distance>ROUTE_RANGE*reach: continue
 			var district_ids: Array[String] = [str(from.district),str(to.district)]
 			district_ids.sort()
 			var id := "district_link_"+"_".join(district_ids)

@@ -10,6 +10,7 @@ uniform float night : hint_range(0.0,1.0) = 0.0;
 uniform vec2 travel_ripple_at = vec2(0.0);
 uniform float travel_ripple_time = 0.0;
 uniform float travel_ripple_strength = 0.0;
+uniform float season_rain=0.0;
 varying vec3 world_at;
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
@@ -37,6 +38,11 @@ void fragment() {
 	vec3 water = mix(bed,water_deep.rgb,smoothstep(0.18,0.60+grain,depth));
 	float ripples = sin(at.y*1.05+TIME*0.28)+sin(at.x*1.73-at.y*0.31-TIME*0.17);
 	water *= 1.0+ripples*0.018;
+	vec2 rain_cell=floor(at*2.0);
+	vec2 rain_center=(rain_cell+vec2(meadow_hash(rain_cell),meadow_hash(rain_cell+19.0)))/2.0;
+	float rain_age=fract(TIME*1.4+meadow_hash(rain_cell+7.0));
+	float rain_ring=(1.0-smoothstep(.012,.035,abs(distance(at,rain_center)-rain_age*.3)))*(1.0-rain_age);
+	water+=vec3(.075,.09,.08)*rain_ring*season_rain*smoothstep(.08,.3,depth);
 
 	// Placemaker/Water: frac triangle wave, -time*.4, 1.4 band bias,
 	// threshold 1.1 and fwidth(2*q+b). Metre mapping/opacity are ours.

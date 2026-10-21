@@ -24,6 +24,7 @@ var _forest_skips := 0
 var _muted := false
 var _foreground := false
 var _duck := 1.0
+var _rain_mix:=0.
 var _revision := -1
 var _timer := QUERY_INTERVAL
 var _trees: Array[Dictionary] = []
@@ -102,7 +103,7 @@ func set_foreground(value: bool) -> void:
 func _refresh_trees(visible: Dictionary) -> void:
 	_trees.clear()
 	for plant: Dictionary in state.plants:
-		if str(plant.kind) not in ["olive","cypress"]: continue
+		if str(plant.kind) not in ["olive","cypress","golden_tree"]: continue
 		var at := Vector2(float(plant.position[0]),float(plant.position[1]))
 		if not state.WORLD_RECT.has_point(at): continue
 		var accepted := bool(visible.get(str(plant.id),false)) if _visibility_source.is_valid() else bool(state.vegetation_visible(plant))
@@ -137,6 +138,8 @@ func _query() -> void:
 	weights.wind=clampf(0.20+forest*0.55+clampf((_zoom-9.0)/35.0,0.0,1.0)*0.20,0.0,1.0)
 	weights.birds=forest*([1.0,0.35,0.0][_light_phase])
 	weights.insects=forest*([0.0,0.35,1.0][_light_phase])
+	if state.microclimate=="spring_breeze":weights.birds=minf(1.,weights.birds*1.25)
+	if state.microclimate=="sun_shower":weights.wind=maxf(.65,weights.wind)
 	for kind: String in CAPS: targets[kind]=float(CAPS[kind])*float(weights[kind])
 	_queries+=1
 
@@ -161,6 +164,7 @@ func _process(delta: float) -> void:
 		if changed or _visibility_hash!=hash(visible): _refresh_trees(visible)
 		_query()
 	var blend := 1.0-exp(-delta*2.5)
+	_rain_mix=lerpf(_rain_mix,1. if state.microclimate=="sun_shower" else 0.,blend)
 	_duck=lerpf(_duck,0.5 if _foreground else 1.0,blend)
 	for kind: String in CAPS: _base_gains[kind]=0.0 if _muted else lerpf(float(_base_gains[kind]),float(targets[kind]),blend)
 	_apply_gains()
@@ -179,13 +183,14 @@ func _fill_forest() -> void:
 	var total := float(gains.wind)+float(gains.birds)+float(gains.insects)
 	var mix := Vector3(float(gains.wind),float(gains.birds),float(gains.insects))/maxf(total,0.000001)
 	var wind: PackedFloat32Array=_pcm.samples.wind
+	var rain:PackedFloat32Array=_pcm.samples.rain
 	var birds: PackedFloat32Array=_pcm.samples.birds
 	var insects: PackedFloat32Array=_pcm.samples.insects
 	var buffer := PackedVector2Array()
 	buffer.resize(count)
 	for index in range(count):
 		var frame := (_forest_frame+index)%wind.size()
-		var sample := wind[frame]*mix.x+birds[frame]*mix.y+insects[frame]*mix.z
+		var sample := lerpf(wind[frame],rain[frame],_rain_mix)*mix.x+birds[frame]*mix.y+insects[frame]*mix.z
 		buffer[index]=Vector2(sample,sample)
 	_forest_playback.push_buffer(buffer)
 	_forest_frame=(_forest_frame+count)%wind.size()

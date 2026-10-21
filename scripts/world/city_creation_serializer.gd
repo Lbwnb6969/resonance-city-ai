@@ -81,10 +81,12 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for plant:Dictionary in city.plants:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.microclimate.is_empty():result.microclimate=city.microclimate;result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
+	city.microclimate=str(data.get("microclimate",""))
 	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
 	# Editing history restores geometry; completed daily visits remain history.
 	if not preserve_issued_ids:
@@ -250,6 +252,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if (data.has("era_unlocks") or data.has("house_culture")) and data.schema < city.ERA_SCHEMA: return city._fail("时代作品需要新存档版本")
 	if (data.has("building_quality") or data.has("house_concerts") or data.has("signature_unlocks") or data.has("district_answers")) and data.schema < city.QUALITY_SCHEMA: return city._fail("品质作品需要新存档版本")
 	if data.has("house_clockwork") and data.schema<city.CLOCKWORK_SCHEMA:return city._fail("钟表工艺需要新存档版本")
+	if data.has("microclimate") and (data.schema<city.PERSONALIZATION_SCHEMA or data.microclimate not in city.Microclimate.IDS):return city._fail("四时风物存档无效")
 	var memories: Variant = data.get("growth_memories", [])
 	if not memories is Array or memories.size()>Growth.CHAPTERS.size(): return city._fail("城市成长手记结构无效")
 	for index in range(memories.size()):

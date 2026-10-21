@@ -78,6 +78,7 @@ func _apply_life_orchestration()->void:
 	for family:String in _life_orchestration:
 		var floor_db:float={"foundation":-13.,"air":-20.,"terrace":-25.}[family]
 		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
+	if is_instance_valid(life_source):life_source.state.Microclimate.music(emergence.score.targets,life_source.state.microclimate)
 
 func harmony_mode()->int:return -1 if concert_active else int(emergence.score.get("harmony_mode",0))
 var acoustic:=AcousticField.new()

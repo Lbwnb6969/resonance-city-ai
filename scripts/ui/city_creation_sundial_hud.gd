@@ -5,6 +5,7 @@ var sundial:Button
 var fork:Button
 var walk:Button
 var postcard:Button
+var weather:Button
 var _phase:=-1
 var _turn:Tween
 var _dial_target:=0.
@@ -16,9 +17,10 @@ var _postcard_path:=""
 func setup(owner:Node3D,parent:Control)->void:
 	demo=owner;name="Actions";parent.add_child(self)
 	set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	offset_left=-220;offset_right=-16;offset_top=16;offset_bottom=60
+	offset_left=-272;offset_right=-16;offset_top=16;offset_bottom=60
 	add_theme_constant_override("separation",8)
 	sundial=_seal("Sundial","sundial_day",demo._toggle_light)
+	weather=_seal("FourSeasons","vegetation",demo._toggle_microclimate)
 	fork=_seal("MusicFork","music",demo._toggle_music)
 	walk=_seal("StreetStroll","walk",func()->void:demo.camera_rig.toggle(demo))
 	postcard=_seal("Postcard","postcard",func()->void:demo.camera_rig.capture(demo))
@@ -35,6 +37,9 @@ func _seal(label:String,kind:String,action:Callable)->Button:
 func saved()->void:_glow=1.
 
 func _process(delta:float)->void:
+	var season:int=demo.State.Microclimate.IDS.find(demo.state.microclimate)
+	weather.kind=demo.State.Microclimate.GLYPHS[maxi(0,season)]
+	weather.tooltip_text="四时风物 · "+(demo.State.Microclimate.NAMES[season] if season>=0 else "原作天气")+"\n点击轮换花吹雪、太阳雨、金风与星夜萤火"
 	if demo.light_phase!=_phase:
 		if _phase>=0:_dial_target+=TAU/3.
 		_phase=demo.light_phase;sundial.kind=["sundial_day","sundial_dusk","sundial_night"][_phase]
@@ -55,4 +60,4 @@ func _process(delta:float)->void:
 	if demo.state.dirty:_dirty=true
 	elif _dirty:_dirty=false;saved()
 	_glow=maxf(0.,_glow-delta*.7);fork.saved_glow=_glow
-	for seal:Button in [sundial,fork,walk,postcard]:seal.queue_redraw()
+	for seal:Button in [sundial,weather,fork,walk,postcard]:seal.queue_redraw()
