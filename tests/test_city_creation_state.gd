@@ -98,7 +98,9 @@ func _initialize() -> void:
 			break
 	_check(not obscured_record.is_empty(), "grove includes buildable vegetation site")
 	_check(obscured.undo().ok and obscured.vegetation_visible(obscured_record), "construction undo reveals original vegetation seed and ID")
-	var path := "user://city_creation_contract_%d.json" % Time.get_ticks_usec()
+	var folder := "res://验证记录/旧作品兼容_2026-10-22/state_%d" % Time.get_ticks_usec()
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	var path := folder + "/city.json"
 	var saved := city.snapshot()
 	_check(city.save_city(path).ok and not city.dirty, "atomic save verified")
 	var loaded := State.new()

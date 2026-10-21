@@ -139,6 +139,8 @@ var _ensemble_context := false
 var _concert_clock_origin := 0.0
 var _clock_cycles := 0
 var _clock_previous := 0.0
+var _concert_gate_previous := -1.0
+var _concert_gate_sample := -1.0
 var _cafe_view: Dictionary = {}
 var _cafe_player: AudioStreamPlayer
 var _cafe_source := ""
@@ -562,7 +564,18 @@ func _playback_clock() -> float:
 func concert_can_start() -> bool:
 	# An even bar preserves the piano/wood call-and-response parity of the
 	# already-running PCM bank. Muting never suspends the musical clock.
-	return not _loading and _players.has("concert") and _players.concert.playing and fposmod(_playback_clock(), 6.0) < 0.075
+	if _loading or not _players.has("concert") or not _players.concert.playing:return false
+	return _concert_boundary_ready(_playback_clock())
+
+func _concert_boundary_ready(clock:float)->bool:
+	# Playback positions advance in audio blocks, which can exceed 75ms.
+	# Accept the first observed block across an even bar as well as its
+	# repeated reads; a long observation gap must not start a late movement.
+	if clock!=_concert_gate_previous:_concert_gate_sample=-1.0
+	if _concert_gate_previous>=0. and clock-_concert_gate_previous<.5 and floori(clock/6.)>floori(_concert_gate_previous/6.):
+		_concert_gate_sample=clock
+	_concert_gate_previous=clock
+	return fposmod(clock,6.)<.075 or clock==_concert_gate_sample
 
 
 func set_concert_view(view: Dictionary) -> void:
@@ -583,6 +596,8 @@ func set_concert_view(view: Dictionary) -> void:
 func restore_city_transport(view: Dictionary) -> void:
 	# Switching complete works reuses the fixed bank. Short cues belong to the
 	# previous city; a restored performance resumes its exact saved bar phase.
+	_concert_gate_previous=-1.0
+	_concert_gate_sample=-1.0
 	clear_travel()
 	attention.clear()
 	emergence.reset();_variation_pending.clear()
