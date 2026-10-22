@@ -60,6 +60,10 @@ func run():
 	var field:=LineEdit.new();root.add_child(field);field.grab_focus();await process_frame
 	check(not gesture.handle_input(host,key(true)) and not gesture.active(),"text focus retains P as input instead of world play")
 	field.release_focus();field.free()
+	gesture.handle_input(host,key(true));var popup:=PopupPanel.new();root.add_child(popup);popup.popup(Rect2i(10,10,120,80));await process_frame;gesture.update(host)
+	check(not gesture.active() and not gesture.handle_input(host,key(true)),"embedded popup ownership cancels P without relying on a parent key release")
+	popup.push_input(key(false));popup.hide();await process_frame
+	check(not gesture.active(),"a release inside the popup cannot leave a held world gesture after it closes");popup.free()
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures}
 	var output:="res://验证记录/临时拨奏_2026-10-22";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	FileAccess.open(output+"/cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("STRUM_HOLD_CPU ",JSON.stringify(result));host.free();quit(0 if failures.is_empty() else 1)

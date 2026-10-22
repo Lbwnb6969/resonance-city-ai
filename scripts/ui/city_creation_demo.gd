@@ -2441,7 +2441,7 @@ func _message(text_value: String) -> void:
 	toast_time = 4.0
 
 func _notification(what: int) -> void:
-	if what==NOTIFICATION_APPLICATION_FOCUS_OUT:strum_hold.cancel()
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_WM_WINDOW_FOCUS_OUT]:strum_hold.cancel()
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if persistence and not save_blocked:
 			if _edit_pending:

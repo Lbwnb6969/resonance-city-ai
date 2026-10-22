@@ -17,6 +17,10 @@ func blocked(demo)->bool:
 	if demo.ledger!=null and demo.ledger.visible():return true
 	if demo.journal!=null and demo.journal.panel.visible:return true
 	if demo.gallery!=null and (demo.gallery.busy or demo.gallery.panel.visible or not demo.gallery.preview_id.is_empty()):return true
+	# Embedded color wheels receive their own key-up events. Cancel when they
+	# open rather than waiting for a release that cannot reach the world.
+	for popup:Window in demo.get_viewport().get_embedded_subwindows():
+		if popup.visible:return true
 	var focus:Control=demo.get_viewport().gui_get_focus_owner()
 	return focus is LineEdit or focus is TextEdit
 

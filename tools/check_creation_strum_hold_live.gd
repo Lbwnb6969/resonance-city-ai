@@ -104,6 +104,14 @@ func run():
 	check(demo.road_drawing and not demo.strum_hold.active(),"P cannot steal an in-progress road stroke")
 	await key(KEY_P,false);await key(KEY_ESCAPE,true);await key(KEY_ESCAPE,false);await mouse(MOUSE_BUTTON_LEFT,false,demo.pointer)
 	check(not demo.road_drawing and demo.state.snapshot()==saved,"canceling the original road draft commits no geometry")
+	demo.select_tool(0);demo.spatial_popover.open_for_house("h1");demo.spatial_popover._toggle_colors();for frame in range(5):await process_frame
+	await hover(Vector2(40,90));await key(KEY_P,true);await click(demo.spatial_popover.wall_picker);for frame in range(4):await process_frame
+	var popup:PopupPanel=demo.spatial_popover.wall_picker.get_popup()
+	check(popup.visible and not demo.strum_hold.active(),"clicking the actual expanded color wheel cancels held P before child-window input")
+	var released:=InputEventKey.new();released.keycode=KEY_P;released.pressed=false;popup.push_input(released);await process_frame;popup.hide();for frame in range(3):await process_frame
+	check(not demo.strum_hold.active(),"P released inside the actual color popup stays released after closing it")
+	demo.spatial_popover.close();demo.select_tool(2);await key(KEY_P,true);demo.notification(Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT);await process_frame
+	check(not demo.strum_hold.active(),"world-window focus loss cancels the override for native child windows too");await key(KEY_P,false)
 	await key(KEY_P,true);await key(KEY_P,true,true);await key(KEY_ESCAPE,true);await key(KEY_ESCAPE,false);await key(KEY_P,true,true)
 	check(not demo.strum_hold.active() and demo.tool==2,"real Escape ends held P and later keyboard repeats do not reactivate it");await key(KEY_P,false)
 	demo.select_tool(4);await hover(Vector2(40,90));await roof("1024_常驻浏览")
