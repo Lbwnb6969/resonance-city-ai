@@ -30,5 +30,5 @@ func _process(delta:float)->void:
 	if demo.tool!=_tool or demo.hint.text!=_text:
 		_tool=demo.tool;_text=demo.hint.text;_quiet=0.;tooltip_text=_text+"\nAlt 自由落点 · Esc 取消 · Ctrl+Z 撤销"
 	_quiet+=delta
-	var target:=.35 if uses[_tool]>=3 and _quiet>2. and not get_global_rect().has_point(get_global_mouse_position()) else .88
+	var target:=.30 if uses[_tool]>=3 and _quiet>2. and not get_global_rect().has_point(get_global_mouse_position()) else .88
 	modulate.a=move_toward(modulate.a,target,delta*1.8)

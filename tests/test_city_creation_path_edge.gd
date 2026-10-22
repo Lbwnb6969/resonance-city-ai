@@ -33,12 +33,27 @@ func _verify(town: Node3D) -> void:
 		_check(edge!=null,"each street has its own cached soft boundary")
 		if edge==null: continue
 		var contours: Array=town.road_outlines[road.id]
+		# The current shader receives three actual exposed boundary segments,
+		# rather than a scalar UV distance. Check the uploaded attributes against
+		# the compiler's complete boundary; footprint/overlap checks below remain
+		# independent even/odd tests of the authored road contours.
+		var groups:Array=[contours]
+		for other:Dictionary in town.state.roads:
+			if other.id!=road.id and town._roads_touch(road,other):groups.append(town.road_outlines[other.id])
+		var exterior:Array=town.path_edge._exposed_segments(groups)
 		var arrays: Array=edge.mesh.surface_get_arrays(0)
+		var second:PackedFloat32Array=arrays[Mesh.ARRAY_CUSTOM0]
+		var third:PackedFloat32Array=arrays[Mesh.ARRAY_CUSTOM1]
 		for index in range(arrays[Mesh.ARRAY_VERTEX].size()):
 			var point: Vector3=arrays[Mesh.ARRAY_VERTEX][index]
 			var at := Vector2(point.x,point.z)
-			var expected := clampf(_edge_distance(at,contours)/0.16,0.0,1.0)
-			_check(absf(arrays[Mesh.ARRAY_TEX_UV][index].x-expected)<0.003,"indexed lateral UV equals independent exact contour distance")
+			var expected:=INF
+			for segment:Array in exterior:expected=minf(expected,at.distance_to(Geometry2D.get_closest_point_to_segment(at,segment[0],segment[1])))
+			expected=clampf(expected/.16,0.,1.)
+			var encoded: Array=[arrays[Mesh.ARRAY_TEX_UV][index],arrays[Mesh.ARRAY_TEX_UV2][index],Vector2(second[index*4],second[index*4+1]),Vector2(second[index*4+2],second[index*4+3]),Vector2(third[index*4],third[index*4+1]),Vector2(third[index*4+2],third[index*4+3])]
+			var actual:=INF
+			for pair in range(0,encoded.size(),2):actual=minf(actual,at.distance_to(Geometry2D.get_closest_point_to_segment(at,encoded[pair],encoded[pair+1])))
+			_check(absf(clampf(actual/.16,0.,1.)-expected)<0.003,"uploaded shader segments retain the full compiled boundary distance")
 			var nearest:=Vector2(road.points[0][0],road.points[0][1])
 			var distance:=INF
 			for segment in range(1,road.points.size()):
@@ -103,6 +118,7 @@ func _run() -> void:
 	town.rebuild()
 	for id: String in saved_edges:
 		_check(town.road_roots[id].get_node("SoftRoadEdge").mesh.surface_get_arrays(0)==saved_edges[id],"undo and redo reproduce exact edge data")
+	_check(vertices_checked>0 and triangles_checked>0,"all road fixtures execute their actual uploaded geometry checks")
 	print("CITY_CREATION_PATH_EDGE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"vertices":vertices_checked,"triangles":triangles_checked,"failures":failures}))
 	town.queue_free()
 	await process_frame

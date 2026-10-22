@@ -224,7 +224,18 @@ func _run() -> void:
 		while demo.edit_pending() or demo._edit_ui_pending:await process_frame
 	var motion:=InputEventMouseMotion.new();motion.position=Vector2(650,500);root.push_input(motion)
 	await create_timer(2.6).timeout
-	check(demo.whisper_keycaps.uses[0]>=3 and demo.whisper_keycaps.modulate.a<=.36,"three actual accepted actions soften the whisper text")
+	check(demo.whisper_keycaps.uses[0]>=3 and is_equal_approx(demo.whisper_keycaps.modulate.a,.30),"three actual accepted actions settle whisper text at the required thirty percent")
+	facts.whisper_practice={"accepted":demo.whisper_keycaps.uses[0],"alpha":demo.whisper_keycaps.modulate.a}
+	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+		root.size=resolution;for frame in range(6):await process_frame
+		await image("07_熟练轻语_"+str(resolution.x))
+	var hint_at:Vector2=demo.whisper_keycaps.get_global_rect().get_center()
+	motion=InputEventMouseMotion.new();motion.position=hint_at;motion.global_position=hint_at;root.push_input(motion)
+	await create_timer(.7).timeout
+	check(is_equal_approx(demo.whisper_keycaps.modulate.a,.88),"hovering the actual keycap strip restores readable instructions")
+	motion=InputEventMouseMotion.new();motion.position=Vector2(650,500);motion.global_position=motion.position;root.push_input(motion)
+	await create_timer(2.6).timeout
+	check(is_equal_approx(demo.whisper_keycaps.modulate.a,.30),"leaving the familiar keycap strip returns it to thirty percent")
 	for i in range(3):
 		demo._history(false)
 		while demo.edit_pending() or demo._edit_ui_pending:await process_frame

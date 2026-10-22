@@ -2294,10 +2294,23 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = [], c
 	# group uses even/odd fill; union its intervals with all other stroke groups.
 	# Holes, self-returning channels and water inside an island remain truthful.
 	var edges_by_group: Array = []
+	var intersection_bins:Array=[]
 	var starts_by_group: Array = []
 	var active_by_group: Array = []
 	var cursors: Array[int] = []
 	var levels: Array[float] = []
+	# Neighbour cuts can extend across the whole city, but no output exists
+	# outside the source's vertical extent or its final clipping mask. Retain
+	# exact event heights and ordering within that intersection.
+	var low:=INF;var high:=-INF
+	for group:Array in groups:
+		for contour:PackedVector2Array in group:
+			for point:Vector2 in contour:low=minf(low,point.y);high=maxf(high,point.y)
+	if not clip_to.is_empty():
+		var clip_low:=INF;var clip_high:=-INF
+		for contour:PackedVector2Array in clip_to:
+			for point:Vector2 in contour:clip_low=minf(clip_low,point.y);clip_high=maxf(clip_high,point.y)
+		low=maxf(low,clip_low);high=minf(high,clip_high)
 	var inputs:Array=groups+subtract
 	if not clip_to.is_empty():inputs.append(clip_to)
 	for group: Array in inputs:
@@ -2309,6 +2322,7 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = [], c
 				levels.append(a.y)
 				if absf(a.y - b.y) > 0.000001: edges.append([a,b,minf(a.y,b.y),maxf(a.y,b.y),edges.size()])
 		edges_by_group.append(edges)
+		intersection_bins.append(path_edge._bins(edges,.00001))
 		var starts: Array = edges.duplicate()
 		starts.sort_custom(func(a: Array,b: Array) -> bool: return float(a[2])<float(b[2]))
 		starts_by_group.append(starts)
@@ -2319,8 +2333,13 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = [], c
 	for left in range(edges_by_group.size()):
 		for right in range(left + 1, edges_by_group.size()):
 			for a: Array in edges_by_group[left]:
-				for b: Array in starts_by_group[right]:
-					if float(b[2])>float(a[3]): break
+				var candidates:Dictionary={}
+				var bounds:=Rect2(a[0],Vector2.ZERO).expand(a[1]).grow(.00001)
+				for y in range(floori(bounds.position.y),floori(bounds.end.y)+1):
+					for x in range(floori(bounds.position.x),floori(bounds.end.x)+1):
+						for edge:Array in intersection_bins[right].get(Vector2i(x,y),[]):candidates[edge[4]]=edge
+				for b: Array in candidates.values():
+					if float(b[2])>float(a[3]): continue
 					if float(b[3])<float(a[2]): continue
 					if maxf(a[0].x, a[1].x) < minf(b[0].x, b[1].x) or maxf(b[0].x, b[1].x) < minf(a[0].x, a[1].x): continue
 					var crossing: Variant = Geometry2D.segment_intersects_segment(a[0], a[1], b[0], b[1])
@@ -2333,6 +2352,7 @@ func _water_scanline_union(groups: Array, height: float, subtract: Array = [], c
 	for index in range(unique.size() - 1):
 		var y0 := unique[index]
 		var y1 := unique[index + 1]
+		if y1<low or y0>high:continue
 		var middle := (y0 + y1) * 0.5
 		var intervals: Array = []
 		var excluded: Array = []
