@@ -80,8 +80,8 @@
         "scripts/world/city_creation_eras.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_era_streets_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_component_material.gd -- --isolated-session (29 PASS); tests/test_city_creation_personalization.gd (67 PASS), tests/test_city_creation_incremental_mesh_batch.gd (16 PASS), tests/test_city_creation_eras.gd (32 PASS), tests/test_city_creation_legacy_roundtrip.gd (375 PASS), same headless/isolation flags. Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_era_streets_live.gd -- --isolated-session --out-dir=res://验证记录/M04/四时代构件 (34 PASS; actual published stone/terracotta/slate/cantilever batches 335/2/1/10, finite component AO bounds; sixteen day/evening/night/10-degree PNG and 1440/1024 UI manually reviewed, short labels fit and full era names retained in tooltips; Master WAV actual 3.065s peak 0.01254272, clipped 0; frame p95 5.616ms). Exact vertex sRGB and raised component bounds verified, existing road GPU edit/undo and bridge picking retained; era IDs/Schema1-19/personal save bytes unchanged. Only three renderer line replacements. Ordinary eligible renaissance homes now receive existing dome plan instead of landmark-only restriction. Transient UI probe failure retained; final capture waits for actual layout spring. Hollow compass layout remains M08."
     },
     {
       "id": "M05",

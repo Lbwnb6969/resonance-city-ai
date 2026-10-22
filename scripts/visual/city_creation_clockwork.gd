@@ -1,5 +1,6 @@
 extends RefCounted
 ## Red brick, bronze cornices and a joined, two-slope slate mansard envelope.
+const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 const Brick=preload("res://scripts/visual/shaders/creation_clockwork_brick.gdshader")
 const UNIT := 1.8
 const FLOOR := 1.7
@@ -17,7 +18,7 @@ static func wall_material(renderer,color: Color)->ShaderMaterial:
 
 static func facade(renderer,wall: Node3D,door: bool,upper: bool)->void:
 	var bronze: Material=renderer._material(Color("b3975e"),.72)
-	var stone: Material=renderer._material(Color("d4bd97"))
+	var stone: Material=Wall.source(Color("d4bd97"), null, "component", Wall.Kind.STONE)
 	for side: float in [-1.,1.]:
 		renderer._box(wall,Vector3(.14,.13,.13),Vector3(side*.80,1.43,.11),stone)
 		renderer._box(wall,Vector3(.07,.20,.15),Vector3(side*.80,1.28,.09),bronze)
@@ -104,7 +105,7 @@ static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void
 	var row:Dictionary=data
 	var center:Vector2=data.center
 	var array_mesh:=ArrayMesh.new();array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
-	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=renderer._material(Color("45585c"))
+	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=Wall.source(Color("45585c"), null, "component", Wall.Kind.SLATE)
 	mesh.material_override.cull_mode=BaseMaterial3D.CULL_DISABLED;root.add_child(mesh);mesh.name="ClockworkMansard_"+str(row.cell.id)
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(row.cell.id));body.set_meta("cell",row.cell.duplicate(true))
 	preload("res://scripts/visual/city_creation_roof_pick.gd").attach(body,array_mesh.get_aabb(),"MansardPick")
@@ -112,7 +113,7 @@ static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void
 	var copper: Material=renderer._material(Color("b3975e"),.7)
 	for side: Vector2 in [Vector2.UP,Vector2.DOWN]:
 		var at:=center+side*.68
-		renderer._box(root,Vector3(.47,.46,.12),Vector3(at.x,float(row.base)+.63,at.y),renderer._material(Color("ddcba7")))
+		renderer._box(root,Vector3(.47,.46,.12),Vector3(at.x,float(row.base)+.63,at.y),Wall.source(Color("ddcba7"), null, "component", Wall.Kind.STONE))
 		renderer._box(root,Vector3(.30,.30,.135),Vector3(at.x,float(row.base)+.66,at.y+side.y*.065),renderer._material(Color("718c82"),.25))
 		renderer._box(root,Vector3(.55,.06,.22),Vector3(at.x,float(row.base)+.90,at.y),copper)
 

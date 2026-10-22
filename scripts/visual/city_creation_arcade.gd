@@ -1,4 +1,5 @@
 extends RefCounted
+const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 ## A real recessed frontage has this outer colonnade and a separately owned
 ## inner wall. Original metric geometry reuses Architecture's polygon extrusion;
 ## classical_frontage_details.gd contains no recovered colonnade parameters.
@@ -16,8 +17,8 @@ static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Di
 	var pieces: Array[MeshInstance3D] = []
 	var base_color: Color = palette[0].lerp(Color("c9c5ae"),0.72)
 	var trim_color := Color("ded4b9")
-	var stone: Material = renderer._material(base_color,0.96)
-	var trim: Material = renderer._material(trim_color,0.94)
+	var stone: Material = Wall.source(base_color,null,"component",Wall.Kind.STONE)
+	var trim: Material = Wall.source(trim_color,null,"component",Wall.Kind.STONE)
 	var upper: Array[Vector3] = []
 	# The spandrel carries the upper storey; it starts above the open shaft
 	# height instead of filling the walkway with an invisible full-height box.

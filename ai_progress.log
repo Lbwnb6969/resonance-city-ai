@@ -34,3 +34,10 @@
 - MUSIC 2/5 → M06/M07：cluster_harmony:42只有clock/3余弦脉冲，无跨聚落乐句领奏与48s合奏+24s留白；stair_keys:5仍限terraces种子；接共享时钟轮奏/呼吸包络，并用任意地图真实>=1m石阶验证可踩发声。
 - UI/JUICE 2/5 → M08/M09：spatial_popover:43/91仍为388px实心卡+4列印章，未实现中空罗盘；缺0.1875s伙伴欢跳→金弧→五线谱连锁；落实后双分辨率选房截图须露空房屋中心并验证完整事件链。
 - PERSISTENCE 2/5 → M10/M11/M12：自由建造和旧档基座保留；harmony_journey尚仅纯逻辑，无外部调用/城市字段接线；接生活事件XP、三选一与奇遇存档，新增保存退出→隔离次日读档→继续扩建全流程；现有未完成项保持false。
+
+[SESSION_M04] 2026-10-22 COMPLETE M04：四时代建筑构件统一三平面纸纹/微法线/接触AO与显示名；备份backup/before-m04-20261022。
+- FILES: wall_material/wall shader、mesh_batcher、classical/arcade/renaissance/clockwork/modern、renderer三行；eras/copy/popover命名；component_material单元与component_probe/era_streets_live/audio_probe、24/25及backlog。
+- GATE1/2: Harness/文档PASS；component29/personalization67/incremental_batch16/eras32/legacy375 PASS，原色字节与抬高构件AO边界正确。
+- GATE3: era_streets34 PASS，实际四类构件335/2/1/10批；16张昼夕夜/10度及1440/1024UI已核；实际Master3.065s峰.01254272/削波0，帧p95 5.616ms。
+- LIMITS: 现有实心罗盘仍会遮房，M08负责中空布局；过早UI布局探针失败记录保留，等待布局后通过；个人存档/旧档/时代ID及音频池不变。
+- NEXT_UP: 连续逐轮认领M05，接六种邻接反应的悬停预影和预听；本轮不扩展其它玩法。

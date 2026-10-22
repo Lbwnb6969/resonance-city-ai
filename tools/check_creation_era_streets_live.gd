@@ -44,6 +44,9 @@ func _run()->void:
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	root.size=Vector2i(1440,900);Engine.max_fps=180;DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	var fixture:=Fixture.build();var city:RefCounted=fixture.city;_street_id=fixture.street.road_id
+	for level in [1,2]:
+		if not city.houses[3].cells.any(func(cell:Dictionary)->bool:return int(cell.level)==level):
+			_check(city.add_cell("h4",0,0,level).ok,"grow an actual renaissance lantern dome with public building API")
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
 	var restored:Dictionary=demo.state.restore(JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)))
 	_check(restored.ok,"authored four-era street and modern bridge restore with existing schema sixteen")
@@ -105,6 +108,10 @@ func _run()->void:
 	for i in range(180):
 		await process_frame;var now:=Time.get_ticks_usec();frames.append((now-last)/1000.);last=now
 	frames.sort()
+	var components:Dictionary=await preload("res://tools/fixtures/city_creation_component_probe.gd").capture(demo,OUT)
+	_check(components.ok,"all four actual era components publish finite contact bounds and unified lit shader kinds")
+	var audio:Dictionary=await preload("res://tools/fixtures/city_creation_audio_probe.gd").record(OUT+"/Master.wav")
+	_check(audio.ok,"actual Master recording is audible and unclipped without adding voices")
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"isolated real-window validation preserves personal save bytes")
-	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"field_upload":uploaded,"car_position":var_to_str(car_position),"p95_ms":frames[int(frames.size()*.95)],"max_ms":frames[-1]}
+	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"components":components,"audio":audio,"field_upload":uploaded,"car_position":var_to_str(car_position),"p95_ms":frames[int(frames.size()*.95)],"max_ms":frames[-1]}
 	FileAccess.open(OUT+"/era_streets_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("ERA_STREETS_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

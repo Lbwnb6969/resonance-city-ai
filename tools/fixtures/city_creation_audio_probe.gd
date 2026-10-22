@@ -20,4 +20,4 @@ static func record(path: String, seconds: float = 3.2) -> Dictionary:
 		saved = wave.save_to_wav(path) == OK
 	for i: int in range(AudioServer.get_bus_effect_count(0)-1,-1,-1):
 		if AudioServer.get_bus_effect(0,i) == effect: AudioServer.remove_bus_effect(0,i)
-	return {"ok":saved and peak > .0001 and peak < .99 and clipped == 0,"peak":peak,"clipped_samples":clipped,"seconds":seconds}
+	return {"ok":saved and peak > .0001 and peak < .99 and clipped == 0,"peak":peak,"clipped_samples":clipped,"seconds":wave.get_length() if wave != null else 0.,"requested_seconds":seconds}

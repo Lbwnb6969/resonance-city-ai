@@ -1465,7 +1465,7 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 	var era:String=state.house_era(house)
 	if era not in ["clockwork","modern_eco"] and not RoundTowerPlan.for_house(house,state.houses,state.roads).is_empty():return {"round":true}
 	var palette:Array=HouseColors.base_palette(self,house)
-	var domes:Array=RenaissancePlan.for_house(state,house) if house.has("signature") else [];var dome_cells:Dictionary={}
+	var domes:Array=RenaissancePlan.for_house(state,house);var dome_cells:Dictionary={}
 	for plan:Dictionary in domes:
 		for id:String in plan.cell_ids:dome_cells[id]=true
 	palette=HouseColors.era_palette(self,house,palette,house.has("custom_colors"))
@@ -1482,7 +1482,7 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 	var doors:Dictionary={}
 	for entrance:Dictionary in entrances:doors[[entrance.cell_id,entrance.side]]=entrance
 	var structural:=_structural_joined(house)
-	return {"round":false,"palette":palette,"era":era,"style":"timber" if era=="renaissance" and not house.has("signature") and house.get("style","classic")=="classic" else str(house.get("style","classic")),
+	return {"round":false,"palette":palette,"era":era,"style":str(house.get("style","classic")),
 		"domes":domes,"dome_cells":dome_cells,"canopy":canopy,"flower_plan":flower_plan,"arcade_faces":arcade_faces,
 		"entrances":entrances,"passages":passages,"tower_ids":tower_ids,"doors":doors,"primary":_primary_entrance(house),
 		"structural_joined":structural,"joined":building_context.joined(str(house.id)) or house.cells.size()>1 or structural}
@@ -1504,7 +1504,7 @@ func _begin_house_assembly(house:Dictionary,hidden:bool)->HouseAssembly:
 		root.set_meta("terrace_canopy",job.canopy)
 		job.walls=_style_wall_material(job.style,job.palette[0])
 		if job.era=="clockwork":job.walls=Clockwork.wall_material(self,job.palette[0])
-		elif job.era=="modern_eco":job.walls=_material(job.palette[0])
+		elif job.era=="modern_eco":job.walls=WallMaterial.source(job.palette[0],null,"component",WallMaterial.Kind.CANTILEVER)
 		job.trim=_material(Color("f1e5cc"))
 		root.set_meta("entrances",plan.entrances.duplicate(true));root.set_meta("passages",job.passages.duplicate(true))
 		root.set_meta("tower_cells",job.tower_info);root.set_meta("structural_joined",plan.structural_joined);root.set_meta("joined_roof",job.joined)

@@ -154,8 +154,8 @@ func refresh()->void:
 	var style_key:=str(house.get("style","classic"));var style_index:int=demo.State.HOUSE_STYLES.find(style_key)
 	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
-	var era:=str(house.get("era_theme","district"));era_button.caption="时代 · "+_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
-	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换整片自然聚落的时代风貌";era_button.queue_redraw()
+	var era:=str(house.get("era_theme","district"));era_button.caption=_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
+	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换街坊时代 · "+str(demo.State.Eras.NAMES[demo.State.Eras.IDS.find(demo.state.house_era(house))]);era_button.queue_redraw()
 	choir_button.disabled=house.has("signature")
 	choir_button.caption={"warm":"暖庭","deep":"深流","weave":"织机","market":"市集","sylvan":"林间"}.get(demo.state.house_acoustic_style(house),"曲风");choir_button.tooltip_text="轮换整片自然聚落的共同曲风";choir_button.queue_redraw()
 	var palette:=int(house.get("palette",0))
@@ -266,4 +266,4 @@ func _invite()->void:
 func _era_name(era:String)->String:
 	if era=="district":return "街坊"
 	var index:int=demo.State.Eras.IDS.find(era)
-	return str(demo.State.Eras.NAMES[index]) if index>=0 else "街坊"
+	return ["古典田园","文艺复兴","蒸汽花房","现代生态"][index] if index>=0 else "街坊"

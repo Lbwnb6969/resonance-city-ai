@@ -79,8 +79,8 @@ func _append_instance(job: Dictionary, instance: MeshInstance3D) -> void:
 		stats.skipped_instances+=1
 		return
 	var material_id := material.get_instance_id()
-	if not profiles.has(material_id):
-		var wall_profile := WallMaterial.profile(material,wall_base_y,wall_story_height)
+	if not profiles.has(material_id) or int(material.get_meta("creation_surface_kind",0)) > 0:
+		var wall_profile := WallMaterial.profile(material,wall_base_y,wall_story_height,instance)
 		profiles[material_id] = wall_profile if not wall_profile.is_empty() else _solid_profile(material)
 	var profile: Array = profiles[material_id]
 	var overlay: Material = instance.material_overlay
@@ -146,7 +146,7 @@ func _vertex_material(source: StandardMaterial3D,profile: Array) -> Material:
 					shader = Shader.new()
 					shader.code = WallMaterial.WallShader.code.replace("cull_back", "cull_disabled" if cull_mode == BaseMaterial3D.CULL_DISABLED else "cull_front")
 				_wall_shaders[cull_mode] = shader
-			materials[profile] = WallMaterial.merged(source,float(profile[7]),float(profile[8]),_wall_shaders[cull_mode])
+			materials[profile] = WallMaterial.merged(source,float(profile[7]),float(profile[8]),_wall_shaders[cull_mode],profile[10])
 		return materials[profile]
 	if not materials.has(profile):
 		var material := source.duplicate() as StandardMaterial3D

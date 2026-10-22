@@ -1,4 +1,5 @@
 extends RefCounted
+const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 ## Original octagonal terracotta crown, articulated stone ribs and lit lantern.
 static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> void:
 	root.set_meta("domes",plans.duplicate(true))
@@ -12,7 +13,7 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 			if str(cell.id)==str(plan.cell_ids[0]): body.set_meta("cell",cell.duplicate(true))
 		dome.add_child(body)
 		var r := float(plan.radius); var h := float(plan.height)
-		var stone: Material = renderer._material(Color("e6d2ad"))
+		var stone: Material = Wall.source(Color("e6d2ad"), null, "component", Wall.Kind.STONE)
 		renderer._cylinder(dome,r*.99,r*1.02,.24,Vector3(0,.12,0),stone,8).name="OctagonalDrum"
 		var tiles: Array[Vector3] = []; var ribs: Array[Vector3] = []
 		for side in range(8):
@@ -25,8 +26,8 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 				tiles.append_array([a,c,b,a,d,c])
 				var width := .022/r
 				ribs.append_array([_point(angle-width,t0,r*1.015,h),_point(angle+width,t0,r*1.015,h),_point(angle+width,t1,r*1.015,h),_point(angle-width,t0,r*1.015,h),_point(angle+width,t1,r*1.015,h),_point(angle-width,t1,r*1.015,h)])
-		var surface: MeshInstance3D = renderer._triangles(dome,tiles,Color("b76546")); surface.name="TerracottaDome"
-		renderer._triangles(dome,ribs,Color("ebd6ad")).name="EightStoneRibs"
+		var surface: MeshInstance3D = Wall.apply(renderer._triangles(dome,tiles,Color("b76546")), Wall.Kind.TERRACOTTA); surface.name="TerracottaDome"
+		Wall.apply(renderer._triangles(dome,ribs,Color("ebd6ad")), Wall.Kind.STONE).name="EightStoneRibs"
 		var lantern_y := .24+h
 		renderer._cylinder(dome,r*.22,r*.25,.09,Vector3(0,lantern_y,0),stone,8)
 		var glass := StandardMaterial3D.new(); glass.albedo_color=Color("d8ba7d"); glass.emission_enabled=true; glass.emission=Color("f6c477"); glass.emission_energy_multiplier=.35
@@ -34,7 +35,7 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 		for side in range(8):
 			var angle := TAU*side/8.0+PI/8.0
 			renderer._cylinder(dome,.025,.025,.40,Vector3(cos(angle)*r*.18,lantern_y+.23,sin(angle)*r*.18),stone,6)
-		renderer._cylinder(dome,0,r*.25,.27,Vector3(0,lantern_y+.56,0),renderer._material(Color("b76546")),8)
+		renderer._cylinder(dome,0,r*.25,.27,Vector3(0,lantern_y+.56,0),Wall.source(Color("b76546"), null, "component", Wall.Kind.TERRACOTTA),8)
 		renderer._cylinder(dome,.024,.024,.18,Vector3(0,lantern_y+.77,0),renderer._material(Color("c9ab62")),6)
 		preload("res://scripts/visual/city_creation_roof_pick.gd").from_children(body,dome,"DomePick")
 	root.set_meta("dome_cells",covered)
@@ -47,10 +48,10 @@ static func palette(base: Array) -> Array:
 	return [base[0].lerp(Color("d8bd8c"),.55),base[1].lerp(Color("b76546"),.75),base[2]]
 
 static func facade(renderer, wall: Node3D, door: bool, upper: bool) -> void:
-	var stone: Material = renderer._material(Color("e6d2ad"))
+	var stone: Material = Wall.source(Color("e6d2ad"), null, "component", Wall.Kind.STONE)
 	# Shallow triangular pediment and keystone sit outside the recessed wall.
 	if not door:
-		renderer._triangles(wall,[Vector3(-.38,1.16,.19),Vector3(.38,1.16,.19),Vector3(0,1.40,.19)],Color("e6d2ad")).name="ClassicalPediment"
+		Wall.apply(renderer._triangles(wall,[Vector3(-.38,1.16,.19),Vector3(.38,1.16,.19),Vector3(0,1.40,.19)],Color("e6d2ad")), Wall.Kind.STONE).name="ClassicalPediment"
 		renderer._box(wall,Vector3(.82,.065,.12),Vector3(0,1.15,.19),stone)
 	if upper:
 		renderer._box(wall,Vector3(.97,.07,.35),Vector3(0,.39,.26),stone)
