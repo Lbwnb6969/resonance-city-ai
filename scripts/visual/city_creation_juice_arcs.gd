@@ -6,7 +6,7 @@ var emitted:=0
 func setup(parent:Node3D)->void:
 	layer=Node3D.new();layer.name="JuicePartnerArcs";parent.add_child(layer)
 	for i in range(8):
-		var node:=MeshInstance3D.new();node.name="PartnerGoldArc_"+str(i);node.material_override=Materials.glow(true)
+		var node:=MeshInstance3D.new();node.name="PartnerGoldArc_"+str(i);node.material_override=Materials.glow(true);node.material_override.set_shader_parameter("albedo_color",Color("d5a34c"))
 		node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;layer.add_child(node);node.hide()
 		slots.append({"node":node,"clock":-100.,"from":"","to":""})
 func emit(city:RefCounted,from:String,to:String,clock:float)->void:
@@ -24,7 +24,7 @@ func emit(city:RefCounted,from:String,to:String,clock:float)->void:
 		points.append(Vector3(at.x,maxf(city.street_height(at),city.Terrain.WATER_LEVEL)+.08,at.y))
 	var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES);surface.set_normal(Vector3.UP)
 	for i in range(24):
-		var axis:Vector3=points[i+1]-points[i];var side:=Vector3(-axis.z,0,axis.x).normalized()*.035
+		var axis:Vector3=points[i+1]-points[i];var side:=Vector3(-axis.z,0,axis.x).normalized()*.07
 		for j in range(6):
 			var end:=j in [1,2,5];surface.set_uv(Vector2(float(i+(1 if end else 0))/24.,0.))
 			surface.add_vertex((points[i+1] if end else points[i])+side*(1. if j in [1,4,5] else -1.))

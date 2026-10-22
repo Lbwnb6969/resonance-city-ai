@@ -5,6 +5,11 @@ var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
 var postcard_directory := "user://postcards"
+func collection_view(demo:Node3D)->Dictionary:
+	# A street-level look can tilt beyond the authored overview camera range.
+	# Collections reopen the creative view kept when entering the stroll.
+	var at:Vector3=saved.focus if strolling and not saved.is_empty() else demo.focus
+	return {"focus":[at.x,at.y,at.z],"yaw":saved.yaw if strolling and not saved.is_empty() else demo.yaw,"pitch":saved.pitch if strolling and not saved.is_empty() else demo.pitch,"zoom":saved.zoom if strolling and not saved.is_empty() else demo.zoom,"evening":demo.evening,"light_phase":demo.light_phase}
 
 static func orthographic_distance(zoom:float,pitch:float)->float:
 	# At the lowest supported pitch the bottom viewport ray must still start

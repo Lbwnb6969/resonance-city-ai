@@ -2,8 +2,10 @@ extends RefCounted
 ## At viewport edges, place only displaced islands in the nearest free margin.
 static func clamp_at(at:Vector2,size:Vector2,view:Rect2)->Vector2:
 	return at.clamp(view.position,view.end-size)
-static func fit(items:Array,house:Rect2,view:Rect2)->bool:
-	var occupied:Array[Rect2]=[];var success:=true
+static func fit(items:Array,house:Rect2,view:Rect2,neighbors:Array=[],reserved:Array=[])->bool:
+	var occupied:Array[Rect2]=[];
+	for rect:Rect2 in reserved:occupied.append(rect)
+	var success:=true
 	var ordered:Array=items.duplicate()
 	ordered.sort_custom(func(a:Control,b:Control)->bool:
 		var difference:=a.size.x*a.size.y-b.size.x*b.size.y
@@ -20,6 +22,7 @@ static func fit(items:Array,house:Rect2,view:Rect2)->bool:
 		var found:=false
 		for candidate:Vector2 in candidates:
 			var rect:=Rect2(candidate,size)
+			if item.name=="HouseStatusCapsule" and neighbors.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			if rect.intersects(house.grow(4.)) or occupied.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			item.global_position=candidate;occupied.append(rect);found=true;break
 		success=success and found

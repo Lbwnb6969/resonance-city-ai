@@ -3,6 +3,7 @@ const Popover=preload("res://scripts/ui/city_creation_spatial_popover.gd")
 const Book=preload("res://scripts/ui/city_creation_paper_scroll.gd")
 class Host extends Node3D:
 	const TownRenderer=preload("res://scripts/visual/city_creation_renderer.gd")
+	var state=preload("res://scripts/world/city_creation_state.gd").new()
 	var camera:Camera3D
 	var preview_key:=""
 	var journal:RefCounted
@@ -23,8 +24,9 @@ func run()->void:
 	host.journal=Presenter.new();host.signatures=Presenter.new();host.ledger=Presenter.new()
 	var canvas:=Control.new();root.add_child(canvas);canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var pop:=Popover.new();pop.setup(host,canvas)
-	var house:={"origin":[0.,0.],"cells":[{"x":0,"z":0,"level":0},{"x":0,"z":0,"level":3}]}
-	var metrics:Array=[]
+	var house:={"id":"selected","origin":[0.,0.],"cells":[{"x":0,"z":0,"level":0},{"x":0,"z":0,"level":3}]}
+	var neighbor:Dictionary={"id":"neighbor","origin":[0.,4.],"cells":[{"x":0,"z":0,"level":0}]}
+	host.state.houses.assign([house,neighbor]);var metrics:Array=[]
 	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		root.size=size;await process_frame;await process_frame
 		for yaw:float in [0.,.62,1.5]:
@@ -37,6 +39,7 @@ func run()->void:
 				overlap=overlap or item.get_global_rect().intersects(actual)
 				enclosed=enclosed and Rect2(Vector2.ZERO,Vector2(size)).encloses(item.get_global_rect())
 			check(not overlap and enclosed,"all interactive wings and seals remain around the model and within the viewport")
+			check(not pop.ring.bottom.get_global_rect().intersects(pop.ring.project(pop,neighbor)),"status capsule clears the adjacent house")
 			metrics.append({"size":size,"yaw":yaw,"house":actual,"hole":empty,"card":pop.card.get_global_rect()})
 		for origin:Vector2 in [Vector2(-9,0),Vector2(9,0)]:
 			house.origin=[origin.x,origin.y];host.camera.size=36.;pop.ring.follow(pop,house);await process_frame

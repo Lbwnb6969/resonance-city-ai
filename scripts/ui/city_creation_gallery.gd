@@ -77,7 +77,7 @@ func _set_busy(value: bool) -> void:
 	panel.set_busy(value)
 
 func _view() -> Dictionary:
-	return {"focus":[demo.focus.x,demo.focus.y,demo.focus.z],"yaw":demo.yaw,"pitch":demo.pitch,"zoom":demo.zoom,"evening":demo.evening,"light_phase":demo.light_phase}
+	return demo.camera_rig.collection_view(demo)
 
 func _capture(title: String, reason: String) -> Dictionary:
 	# A real viewport image without UI, not an artist-created thumbnail. Pause

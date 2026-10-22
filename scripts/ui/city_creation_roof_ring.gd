@@ -71,14 +71,27 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 		roles[i].position=Vector2(width*.5+cos(angle)*radius-24.,150.+sin(angle)*65.-24.)
 	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-148.)*.5));left.size=Vector2(88,148)
 	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-176.)*.5));right.size=Vector2(88,176)
-	bottom.position=Vector2((width-340.)*.5,hole.end.y+12.);bottom.size=Vector2(340,78)
+	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,70)
 	colors.visible=pop.color_panel.visible
 	if colors.visible:
 		colors.size=Vector2(300,96)
 		colors.position=Vector2(clampf(origin.x+width+6.,10.,viewport.x-310.)-origin.x,clampf(origin.y+hole.end.y+10.,68.,viewport.y-colors.size.y-120.)-origin.y)
-	var islands:=controls();var key:=[house_rect,viewport,colors.visible,pop.card.scale,islands.map(func(item:Control)->Vector2:return item.size)]
+	var neighbors:Array=[];var reserved:Array=[]
+	var at:=Vector2(house.origin[0],house.origin[1])
+	for other:Dictionary in pop.demo.state.houses:
+		if other.get("id","")==house.get("id","") or at.distance_to(Vector2(other.origin[0],other.origin[1]))>6.:continue
+		var rect:=project(pop,other)
+		if rect.size!=Vector2.ZERO:neighbors.append(rect)
+	if pop.demo.has_meta("inspiration_draft"):
+		var badge:Control=pop.demo.get_meta("inspiration_draft").badge
+		if badge.visible:reserved.append(badge.get_global_rect())
+		if pop.demo.journal.scrollbook.visible:reserved.append(pop.demo.journal.scrollbook.get_global_rect())
+		var dock:RefCounted=pop.demo.tactile_dock
+		if dock.bubble_rows.is_visible_in_tree():reserved.append(dock.bubble_rows.get_global_rect())
+		if dock.nature_row.is_visible_in_tree():reserved.append(dock.nature_row.get_global_rect())
+	var islands:=controls();var key:=[house_rect,viewport,neighbors,reserved,colors.visible,pop.card.scale,islands.map(func(item:Control)->Vector2:return item.size)]
 	if key!=_placement_key:
-		placement_ok=preload("res://scripts/ui/city_creation_ring_placement.gd").fit(islands,house_rect,Rect2(Vector2(10,68),viewport-Vector2(20,188)))
+		placement_ok=preload("res://scripts/ui/city_creation_ring_placement.gd").fit(islands,house_rect,Rect2(Vector2(10,68),viewport-Vector2(20,188)),neighbors,reserved)
 		_placement_key=key;_placed.clear()
 		for item:Control in islands:_placed[item.get_instance_id()]=item.global_position
 	else:
