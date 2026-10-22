@@ -4,6 +4,8 @@
 
 | 工具 | 用途 |
 | --- | --- |
+| `check_ai_harness.py` | M01～M12任务原文契约、完成证据、四主文件棘轮与入口120行/15KB审计；单元验证运行 `python -B tests/test_ai_harness.py` |
+| `check_creation_harness_live.gd` | M01隔离OpenGL烟测：两分辨率昼夕夜、5°/10°/15°低视角、真实Master录音峰值与帧时；PNG人工检查后记入verified_by |
 | `sync_github_main.py` | `prepare`核对跟踪树差异与<100MB体积，`push`同步GitHub main；本地完整参考原件不上传 |
 | `creation_bundle_audit.py` | 当前主场景的资源依赖闭包、三库来源记录与真实包资源审计；独立于旧P0打包器 |
 | `bake_creation_music_bank.gd` | 从GDScript合成可重建PCM缓存；GitHub不存二进制缓存，导出或银行缓存验证前先运行 |
@@ -11,7 +13,7 @@
 | `build_creation_playtest.py` | 用户要求Windows试玩时导出；自动运行实际release EXE，核对两张GPU距离场及昼夕夜近远景，不以编辑器加载PCK代替 |
 | `check_creation_spatial_popover_live.gd` | 屋顶罗盘两分辨率真实控件、相机跟随、保存及撤销验证 |
 | `check_creation_edit_latency.gd` | 同一28屋样例的远岸、近路、改色编辑准备/提交帧时 |
-| `check_creation_v3_experience.gd` | 本轮v3实窗光影、生命生态、触感、刮奏和漫步验证 |
+| `check_creation_v3_experience.gd` | 旧v3综合探针；固定窗光/旧和声/混音断言待适配，P多屋拾取失败待核对；M01入口用当前HUD与隔离烟测，原失败证据保留 |
 | `extract_creation_ambience.py` | Foundation溪流适配资源的定向提取，输出不覆盖现存原件 |
 | `check_creation_phase_seven_alignment.gd` | 当前品质经营与首批地标整体验收；旧阶段文件名不作为当前阶段编号 |
 | `fixtures/` | 可随仓库使用的回归数据；长路夹具独立于个人备份目录 |

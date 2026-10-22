@@ -25,8 +25,8 @@
         "tools/check_ai_harness.py"
       ],
       "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (15 documents, 204 local links, 0 errors). Gate2: python -B tests/test_ai_harness.py (8 PASS); D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --headless --audio-driver Dummy --path . --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session (375 PASS). Gate3: D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_paper_ui_live.gd -- --isolated-session (249 PASS); D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_harness_live.gd -- --isolated-session (17 PASS, 28 houses, 1440x900/1024x768, day/evening/night + 5/10/15 degree PNG manually reviewed: no clipped UI text or colored broken faces in these samples; actual 6.037s Master WAV peak 0.02774048, 0 clipped samples, frame p95 10.043ms; personal city save unchanged). Entry docs 47/48 lines, 4658/3640 bytes; full previous text preserved in doc24. Supplemental legacy v3_experience probe FAILED fixed night_glow / old harmony-gain / conservative PCM-bound assertions and an unresolved held-P multi-pick check; retained evidence, not counted as a passing gate. Current HUD and direct Master recording provide M01 evidence; project-wide low-view repair remains M02."
     },
     {
       "id": "M02",

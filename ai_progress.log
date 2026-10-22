@@ -6,3 +6,10 @@
 - 产品定位明确：长线可存档陪伴型箱庭城市建设游戏 + 嵌入式轻肉鸽灵感奇遇（随时双击 `继续我的河湾.cmd` 读档接着造，建房/设工坊 100% 自由不卡手，通过长线共鸣等级触发三选一传世手札与林间微缩造景奇遇）。
 - 已就绪预置模块：`scripts/world/city_creation_harmony_journey.gd`（长线共鸣等级、18张灵感手札池与微缩奇遇纯逻辑层）与 `tools/check_ai_harness.py`（架构纪律与进度自动审计器）。
 - 下一棒任务（NEXT_UP）：请认领 `ai_feature_backlog.json` 中的 `M01`（仓库入口文档瘦身与 AI 长期施工脚手架落地），随后依次推进 `M02` ~ `M12`。
+
+[SESSION_M01] 2026-10-22 COMPLETE M01：入口路由与长期施工脚手架；入场改动备份 a8d5338d / backup/incoming-m01-20261022。
+- FILES: AGENTS.md; AI_START_HERE.md; PROJECT.md; 文档/24_合订接续验证记录.md; tools/check_ai_harness.py; tests/test_ai_harness.py; tools/check_creation_harness_live.gd; tools/check_creation_v3_experience.gd; tools/README.md; ai_feature_backlog.json; ai_progress.log。
+- GATE1/2: Harness PASS；文档15份/204链接/0错误；Harness单元8 PASS；legacy_roundtrip -- --isolated-session 375 PASS；入口47/48行，旧入口原文完整归档。
+- GATE3: gl_compatibility + isolated-session：paper_ui 249 PASS；harness_live 17 PASS；昼夕夜/双分辨率/5°10°15° PNG人工通过；6.037s录音峰值0.02774048、削波0；28屋帧p95 10.043ms；个人城市存档不变。
+- REMAINING: 旧v3综合探针固定窗光/旧增益/PCM边界断言失败，P多屋拾取仅1音仍待核对，证据留验证记录/v3可试玩体验_2026-10-16；误生成的测试明信片已移隔离目录且工具已补postcard_directory，当前门禁使用直接实录/当前HUD；本轮未改游戏逻辑。
+- NEXT_UP: 仅认领M02，核对入场已有wish_fulfilment实现与低视角全域缺口；新文档/用户原件原位保留，根backlog为唯一进度真值。每3项独立验收尚未到期。

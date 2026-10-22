@@ -32,6 +32,7 @@ func _run() -> void:
 	demo.persistence=false
 	demo.collection_directory=OUT+"/临时作品库"
 	root.add_child(demo)
+	demo.camera_rig.postcard_directory=OUT+"/isolated_postcards"
 	demo.life.set_process(false)
 	var source := FileAccess.get_file_as_bytes("res://数据/经营河湾样例.json")
 	var restored: Dictionary = demo.state.restore(JSON.parse_string(source.get_string_from_utf8()))
