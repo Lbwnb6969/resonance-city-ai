@@ -38,7 +38,8 @@ func _run()->void:
 	_check(QualityFixture.until(life,func():return int(city.life_progress.concerts)>concerts,700.),"actual audience and full performance finish with palace active")
 	_check(city.afterglow_remaining(venue)>179.,"actual completed concert gains the palace's one-hundred-eighty-second duration")
 	var saved:Dictionary=city.snapshot();var fresh:=State.new()
-	_check(saved.schema==State.QUALITY_CONTEXT_SCHEMA and fresh.restore(JSON.parse_string(JSON.stringify(saved,"",true,true))).ok,"new landmark identities and earned long durations restore with current quality history schema")
+	var restored:Dictionary=fresh.restore(JSON.parse_string(JSON.stringify(saved,"",true,true)))
+	_check(restored.ok and fresh.houses==city.houses and fresh.signature_unlocks==city.signature_unlocks and fresh.building_quality==city.building_quality and fresh.resonance_afterglow==city.resonance_afterglow,"current optional schema restores actual landmark identities quality and earned long durations")
 	var bad:Dictionary=saved.duplicate(true);bad.schema=14
 	_check(not fresh.restore(bad).ok,"older schema cannot smuggle new landmarks or extended afterglow")
 	var moved:Dictionary=city.place_signature("botanical_palace",Vector2(-31,0),palace.house_id)
@@ -55,7 +56,8 @@ func _run()->void:
 		_check(life.tram.cars[0].line.tour[0]==key and life.tram.cars[0].node.position.distance_to(life.tram.plan.positions[key])<.01,"actual dispatched carriage starts at the depot station rather than an arbitrary line end")
 	var car:Dictionary=life.tram.cars[0]
 	car.wait=0.;var position:Vector3=car.node.position;life.tram.tick(.1)
-	_check(absf(Vector2(car.node.position.x,car.node.position.z).distance_to(Vector2(position.x,position.z))-.336)<.002,"real carriage displacement reflects depot's twenty-percent speed gain")
+	# This established town also contains the real clock-hub synergy (+15%).
+	_check(not city.clockwork_speed_zones().is_empty() and absf(Vector2(car.node.position.x,car.node.position.z).distance_to(Vector2(position.x,position.z))-(2.8*1.2*1.15*.1))<.002,"real carriage displacement stacks depot twenty-percent and clock-hub fifteen-percent gains")
 	city.remove_house(depot.house_id);life._sync()
 	_check(life.tram.report().depot_id.is_empty() and is_equal_approx(life.tram.speed(),2.8) and city.signature_unlocks.has("clockwork_depot"),"depot recycling removes dispatch boost while retaining earned free-placement right")
 	print("CLOCKWORK_LANDMARKS ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures,"facts":scene.facts,"palace":palace,"depot":depot}));life.free();quit(0 if failures.is_empty() else 1)

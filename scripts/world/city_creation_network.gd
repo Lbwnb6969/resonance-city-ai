@@ -13,6 +13,9 @@ const RouteSolver = preload("res://scripts/world/city_creation_route_solver.gd")
 var state: RefCounted
 var graph: Dictionary = {}
 var positions: Dictionary = {}
+# Exact source-road edges, excluding walk-across-width/door connectors. Rail
+# consumers must not mistake the pedestrian graph's short links for tracks.
+var road_edges:Dictionary={}
 var connected_houses: Dictionary = {}
 var selected_entrances: Dictionary = {}
 var component_of: Dictionary = {}
@@ -199,6 +202,7 @@ func _build_graph() -> void:
 	prepare_stats["ground_ms"] = float(Time.get_ticks_usec()-ground_started)/1000.0
 	var prior := connected_houses.duplicate()
 	graph.clear()
+	road_edges.clear()
 	positions.clear()
 	connected_houses.clear()
 	selected_entrances.clear()
@@ -319,6 +323,12 @@ func _build_graph() -> void:
 			if not graph.has(kb): graph[kb] = {}
 			graph[ka][kb] = a.distance_to(b)
 			graph[kb][ka] = a.distance_to(b)
+			if segment.has("road_id") and ka!=kb:
+				for pair:Array in [[ka,kb],[kb,ka]]:
+					if not road_edges.has(pair[0]):road_edges[pair[0]]={}
+					if not road_edges[pair[0]].has(pair[1]):road_edges[pair[0]][pair[1]]=[]
+					var owners:Array=road_edges[pair[0]][pair[1]]
+					if str(segment.road_id) not in owners:owners.append(str(segment.road_id))
 
 	var components: Dictionary = {}
 	var component_sizes: Dictionary = {}

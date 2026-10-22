@@ -15,7 +15,12 @@ static func from_network(city: RefCounted,network: RefCounted)->Dictionary:
 			if a>=b:continue
 			var aa: Vector3=network.positions[a];var bb: Vector3=network.positions[b]
 			var p:=Vector2(aa.x,aa.z);var q:=Vector2(bb.x,bb.z)
-			var owner:=_owner(p,q,rails,markers)
+			var owners:Array=network.road_edges.get(a,{}).get(b,[])
+			if owners.is_empty():continue
+			var owner:=""
+			for road:Dictionary in rails:
+				if str(road.id) in owners:owner=str(road.id);break
+			if owner.is_empty():owner=_roundabout_owner(p,q,rails,markers)
 			if owner.is_empty():continue
 			if not result.graph.has(a):result.graph[a]={}
 			if not result.graph.has(b):result.graph[b]={}
@@ -27,7 +32,10 @@ static func from_network(city: RefCounted,network: RefCounted)->Dictionary:
 	var visited: Dictionary={}
 	var keys: Array=result.graph.keys();keys.sort()
 	for key: String in keys:
-		if result.graph[key].size()!=2 or network.graph[key].size()>2 or key in network.connected_houses.values():result.station_keys[key]=true
+		var street_owners:Dictionary={}
+		for owners:Array in network.road_edges.get(key,{}).values():
+			for owner:String in owners:street_owners[owner]=true
+		if result.graph[key].size()!=2 or street_owners.size()>1 or key in network.connected_houses.values():result.station_keys[key]=true
 	for key: String in keys:
 		if visited.has(key):continue
 		var tour: Array[String]=[]
@@ -55,12 +63,7 @@ static func _walk(key: String,parent: String,graph: Dictionary,visited: Dictiona
 			continue
 		_walk(next,key,graph,visited,tour);tour.append(key)
 
-static func _owner(a: Vector2,b: Vector2,roads: Array,markers: Array)->String:
-	var midpoint: Vector2=(a+b)*.5
-	for road: Dictionary in roads:
-		for index in range(road.points.size()-1):
-			var p:=Vector2(road.points[index][0],road.points[index][1]);var q:=Vector2(road.points[index+1][0],road.points[index+1][1])
-			if Geometry2D.get_closest_point_to_segment(a,p,q).distance_to(a)<.025 and Geometry2D.get_closest_point_to_segment(b,p,q).distance_to(b)<.025:return str(road.id)
+static func _roundabout_owner(a:Vector2,b:Vector2,roads:Array,markers:Array)->String:
 	for marker: Dictionary in markers:
 		if absf(a.distance_to(marker.center)-Roundabouts.ROUTE_RADIUS)>.04 or absf(b.distance_to(marker.center)-Roundabouts.ROUTE_RADIUS)>.04:continue
 		for road: Dictionary in roads:
