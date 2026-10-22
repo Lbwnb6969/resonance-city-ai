@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-var out_dir:="res://验证记录/心愿实际闭环_2026-10-22/accepted"
+var out_dir:="res://验证记录/心愿即时回馈_2026-10-22/accepted"
 var demo
 var checks:=0
 var failures:Array[String]=[]
@@ -35,6 +35,7 @@ func fixture()->RefCounted:
 	for row:Dictionary in [{"z":-20.45,"end":-22.},{"z":-15.45,"end":-26.},{"z":-6.45,"end":-26.}]:
 		check(city.add_road([Vector2(-33,row.z),Vector2(row.end,row.z)] as Array[Vector2]).ok,"door approach")
 	check(city.place_plant(Vector2(-35,12),"golden_tree").ok,"existing planted garden unlocks advanced guidance")
+	city.set_bakery_open("h1",false);city.set_workshop_open("h2",false)
 	return city
 func choose(kind:String)->Dictionary:
 	demo.spatial_popover.close();demo.wish_pins.refresh();await process_frame
@@ -60,6 +61,13 @@ func run()->void:
 		root.size=resolution
 		await demo.gallery._open_chosen({"ok":true,"world":original,"id":"wish-fixture","title":"屋顶心愿","view":{"focus":[-27.,.7,-18.],"zoom":28.,"yaw":0.,"pitch":1.05,"evening":false,"light_phase":0}})
 		demo.life.set_process(false);await settle()
+		check(root.size==resolution and demo.state.houses.size()==original.houses.size() and demo.state.waters==original.waters and demo.state.roads==original.roads and demo.state.wish_rewards.is_empty(),"requested native resolution and fresh source world actually opened")
+		var arrived:=Time.get_ticks_msec();demo.life.set_process(true)
+		while Time.get_ticks_msec()-arrived<45000 and not (demo.life.bakery.workers[0].phase=="baking" and demo.life.workshop.workers[0].phase=="crafting"):await process_frame
+		demo.life.set_process(false)
+		check(demo.life.bakery.workers[0].phase=="baking" and demo.life.workshop.workers[0].phase=="crafting","real wall-time workers arrive at closed oven and bench before testing immediate feedback")
+		check(demo.state.bakery_status("h1").produced==0 and demo.state.workshop_status("h2").produced==0,"closed shops have no pre-seeded goods")
+		check(root.size==resolution and demo.state.houses.size()==original.houses.size() and demo.state.roads==original.roads,"native worker warmup leaves source geometry and viewport unchanged")
 		var wishes=demo.wish_pins
 		check(wishes.offers().slice(0,2).map(func(row):return row.kind)==["road","water"],"unconnected home and dry bakery receive priority")
 		# Fulfil a displayed road need without clicking its seal: stale pins must retire.
@@ -78,9 +86,14 @@ func run()->void:
 			var first:=world(Vector2(-26,-15.45));await motion(first);await mouse(first,true)
 			await motion(world(road.at));await mouse(world(road.at),false);await settle();demo.life.set_process(false)
 		check(demo.life.house_connected("h6") and not wishes.offers().any(func(row):return row.house_id=="h6" and row.kind=="road"),"actual mouse-drawn approach connects the requested home and retires its need")
+		demo._after_edit(demo.state.set_bakery_open("h1",true),"room");await settle();demo.life.set_process(false)
 		var water:=await choose("water")
 		check(demo.tool==6 and demo.water_kind=="pond" and not water.is_empty(),"water wish selects actual pond tool")
+		var water_clock:float=demo.life.time
 		if not water.is_empty():await place(water.at)
+		check(demo.state.wish_rewards.get("h1",{}).get("water",0)==demo.state.bakery_batch_size("h1") and demo.state.bakery_status("h1").produced==demo.state.bakery_batch_size("h1") and demo.life.time==water_clock,"actual pond release immediately publishes one hot batch without advancing simulation")
+		await shot(str(resolution.x)+"_hot_batch")
+		demo._after_edit(demo.state.set_workshop_open("h2",true),"room");await settle();demo.life.set_process(false)
 		check(bool(demo.state.site_blessing("h1").get("blessed",false)) and float(demo.state.site_blessing("h1").get("speed_multiplier",1.))>1.,"actual highlighted pond activates the watermill baking bonus")
 		check(not wishes.offers().any(func(row):return row.house_id=="h1" and row.kind=="water"),"fulfilled water need is absent")
 		# A prior forest brush must not turn one precise wish marker into a random grove.
@@ -89,7 +102,12 @@ func run()->void:
 			var tree:=await choose("tree")
 			check(demo.tool==5 and demo.vegetation_single and demo.vegetation_kind=="olive" and mode.selected==0,"tree wish prepares a single real tree even after forest-brush use")
 			var count:int=demo.state.plants.size()
+			var craft_clock:float=demo.life.time;var position:Vector3=demo.life.workshop.workers[0].node.position
 			if not tree.is_empty():await place(tree.at)
+			if i==2:
+				var worker:Dictionary=demo.life.workshop.workers[0]
+				check(demo.state.workshop_status("h2").produced==1 and worker.phase=="to_target" and worker.carry.visible and demo.life.time==craft_clock and worker.node.position==position,"third mouse-planted tree immediately reserves the real object and dispatches the onsite artisan without teleporting")
+				await shot(str(resolution.x)+"_instant_dispatch")
 			check(demo.state.plants.size()==count+1 and int(demo.state.site_blessing("h2").get("trees",0))==i+1,"highlighted planting contributes exactly one visible tree within eight metres")
 		check(bool(demo.state.site_blessing("h2").get("blessed",false)) and not wishes.offers().any(func(row):return row.house_id=="h2" and row.kind=="tree"),"third real tree activates good wood and retires the wish")
 		var tea:=await choose("tea");await settle();demo.life.set_process(false)
@@ -98,16 +116,16 @@ func run()->void:
 		wishes.elapsed=17.;await process_frame;check(wishes.pins.is_empty(),"fulfilled wishes do not immediately refill before eighteen seconds")
 		await shot(str(resolution.x)+"_completed")
 		var loaded:=State.new();check(loaded.restore(demo.state.snapshot()).ok and loaded.plants==demo.state.plants and loaded.waters==demo.state.waters and loaded.houses==demo.state.houses,"completed roads, pond, individual trees and cafe survive actual schema restore")
-		facts[str(resolution.x)]={"road_connected":demo.life.house_connected("h6"),"bakery":demo.state.site_blessing("h1"),"workshop":demo.state.site_blessing("h2"),"tea":tea}
+		facts[str(resolution.x)]={"road_connected":demo.life.house_connected("h6"),"bakery":demo.state.site_blessing("h1"),"workshop":demo.state.site_blessing("h2"),"tea":tea,"rewards":demo.state.wish_rewards.duplicate(true)}
 	# Run real wall-time life after completing the needs. No fabricated inventories or worker phases.
 	var started:=Time.get_ticks_msec();var seen_delivery:=false;var samples:Array[float]=[]
 	demo.life.set_process(true)
 	while Time.get_ticks_msec()-started<45000:
 		var tick:=Time.get_ticks_usec();await RenderingServer.frame_post_draw;samples.append(float(Time.get_ticks_usec()-tick)/1000.)
 		seen_delivery=seen_delivery or demo.life.workshop.workers.any(func(worker):return worker.phase=="to_target" and worker.carry.visible)
-		if seen_delivery and int(demo.state.bakery_status("h1").produced)>0:break
-	check(int(demo.state.bakery_status("h1").produced)>0,"attended blessed oven really produces bread")
-	check(seen_delivery and int(demo.state.workshop_status("h2").produced)>0,"good-wood artisan really crafts and departs carrying the object")
+		if seen_delivery and int(demo.state.workshop_status("h2").delivered)>0 and int(demo.state.bakery_status("h1").served)>0:break
+	check(int(demo.state.bakery_status("h1").served)>0,"actual buyer consumes real hot-batch stock")
+	check(seen_delivery and int(demo.state.workshop_status("h2").delivered)>0,"dispatched artisan completes the actual carrying route and installs once")
 	samples.sort();facts.life={"elapsed_ms":Time.get_ticks_msec()-started,"bread":demo.state.bakery_status("h1"),"craft":demo.state.workshop_status("h2"),"delivery_seen":seen_delivery,"frames":samples.size(),"p95_ms":samples[int(samples.size()*.95)],"max_ms":samples[-1]}
 	await shot("real_bread_and_delivery")
 	var current:Array=[]

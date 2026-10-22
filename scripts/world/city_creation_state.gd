@@ -21,6 +21,9 @@ const NaturalClusters=preload("res://scripts/world/city_creation_clusters.gd")
 var _natural_cluster_key:Variant=null
 var _natural_cluster_rows:Dictionary={}
 
+const WishFulfilment=preload("res://scripts/world/city_creation_wish_fulfilment.gd")
+var wish_rewards:Dictionary={}
+var _wish_epoch:=0
 const Serializer = preload("res://scripts/world/city_creation_serializer.gd")
 const SaveValidation = preload("res://scripts/world/city_creation_save_validation.gd")
 const Frontage := preload("res://scripts/world/city_creation_frontage.gd")
@@ -200,6 +203,8 @@ func initialize() -> void:
 	matinee_pending.clear()
 	matinee_cooldown = 0.0
 	matinee_last_venue = ""
+	_wish_epoch+=1
+	wish_rewards.clear()
 	bakery_supply.clear()
 	landmark_bread.clear()
 	workshop_supply.clear()

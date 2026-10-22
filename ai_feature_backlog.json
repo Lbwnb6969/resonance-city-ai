@@ -1,0 +1,203 @@
+{
+  "project": "Resonance City (共鸣之城)",
+  "product_positioning": "长线可存档陪伴型 3D 箱庭音乐城市建设游戏 + 嵌入式轻肉鸽灵感奇遇 (Persistent Cozy City Builder with Embedded Roguelite Progression)",
+  "engine": "Godot 4.7.2 Compatibility (1440x900 / 1024x768)",
+  "harness_rules": [
+    "1. 唯一真值源：严禁删除或篡改本文件中任何 milestone 的 id、title、description 或 verification_cmd。",
+    "2. 单任务增量原则：每次 AI 会话只允许认领第 1 个 passes=false 的里程碑，完成后立即 git commit、更新 ai_progress.log 并结束会话（执行 Context Reset）。",
+    "3. 上帝文件行数棘轮（Ratchet）：严禁向 city_creation_renderer.gd(2985行)、city_creation_state.gd(2969行)、city_creation_demo.gd(2481行)、city_creation_music.gd(1783行) 堆砌新实现；新逻辑必须拆分为 <250 行的独立子脚本，主文件仅允许 <=8 行委托调用。",
+    "4. 自由城建与存档铁律：建房、修路、种树、改用途（6种生活工坊）永远保持 100% 自由零卡手；所有新增长线轻肉鸽字段作为 Schema 19 可选字段保存，必须 100% 通过 375 项旧存档与撤销/重做回归测试；个人 user:// 存档严禁在测试中污染。",
+    "5. 双门禁验收：必须同时跑通 headless CPU 单元测试与 gl_compatibility 实窗验证（且通过 tools/check_ai_harness.py 架构审计），才可将 passes 改为 true。"
+  ],
+  "milestones": [
+    {
+      "id": "M01",
+      "phase_mapping": "Harness & Stage 10 Prep",
+      "category": "harness_and_docs",
+      "title": "仓库入口文档瘦身与 AI 长期施工脚手架落地",
+      "description": "将 PROJECT.md 与 AI_START_HERE.md 中堆积的逐轮测试流水账归档至 文档/24_合订接续验证记录.md，使根入口文档精简至 120 行以内的高信噪比路由表；接入 ai_feature_backlog.json、ai_progress.log 与 tools/check_ai_harness.py。",
+      "files_touched": [
+        "AI_START_HERE.md",
+        "AGENTS.md",
+        "PROJECT.md",
+        "ai_feature_backlog.json",
+        "ai_progress.log",
+        "tools/check_ai_harness.py"
+      ],
+      "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M02",
+      "phase_mapping": "Stage 1 & Stage 8 Unfinished Fix",
+      "category": "building_and_rendering",
+      "title": "补齐心愿气泡达成瞬间首炉爆发 + 彻底根治低视角彩色大面破面",
+      "description": "1) 补齐文档/25第27行未完成项：在 State 的 bakery_supply/workshop_supply 增加可选 first_blessing_burst 锁，当挖池塘激活活水加持或种满第3棵树激活良木加持时，0.2s 内立即出炉首份热面包/触发匠人携琴送装（防撤销重刷）；2) 为全部 MultiMesh 封装 safe_set_instance（隐藏槽位用 0.0001 正交缩放埋入 y=-500m 并设 visible_instance_count），过滤道路/水岸 <0.002m 重合点并在 Shader 中安全归一化，解除低视角破面暂缓。",
+      "files_touched": [
+        "scripts/world/city_creation_state.gd",
+        "scripts/world/city_creation_life.gd",
+        "scripts/visual/city_creation_meadow.gd",
+        "scripts/visual/city_creation_foliage.gd",
+        "scripts/visual/city_creation_path_pebbles.gd",
+        "scripts/visual/city_creation_shore.gd",
+        "scripts/visual/shaders/creation_road.gdshader"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_wish_pins_live.gd -- --isolated-session && Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_low_view_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M03",
+      "phase_mapping": "Stage 10 Performance & Tactile Building",
+      "category": "building_system",
+      "title": "大城读档/修路局部脏块提速与 0ms 弹簧落笔代理网格",
+      "description": "1) 在 city_creation_city_load.gd 将隐藏读档 STAGING_SLICE_MS 从 8.0ms 提升至 24.0ms；2) 在 city_creation_budget_rebuild.gd 中修复 road_join_signatures.clear() 全城清空问题，改为仅失效变更道路 AABB 扩 4.0m 内的局部路口签名；3) 升级 city_creation_pending_modules.gd 为带 Tween.TRANS_BACK 弹簧缩放的着色实体代理网格，简化穹顶/孟莎顶拾取碰撞为轻量包围盒。",
+      "files_touched": [
+        "scripts/ui/city_creation_city_load.gd",
+        "scripts/visual/city_creation_budget_rebuild.gd",
+        "scripts/visual/city_creation_pending_modules.gd",
+        "scripts/visual/city_creation_renaissance.gd",
+        "scripts/visual/city_creation_clockwork.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_edit_latency.gd -- --isolated-session && Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_city_load_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M04",
+      "phase_mapping": "Art & Era Cohesion",
+      "category": "art_and_eras",
+      "title": "扩展 creation_wall.gdshader 统一四时代建筑构件陶土/水彩肌理与命名校准",
+      "description": "修复 classical.gd、renaissance.gd、clockwork.gd、modern.gd 中时代构件（柱廊山花、八角砖红穹顶、青石板孟莎顶、现代圆角挑板）使用裸 StandardMaterial3D 导致塑料积木感的问题：扩展 city_creation_wall_material.gd 与 creation_wall.gdshader 支持构件级三平面暖纸微法线、接地/屋檐 AO 与冷暖包裹漫反射；统一四时代显示名为「古典田园河湾 / 文艺复兴连拱城 / 蒸汽钟表与花房 / 现代生态交响城」（保持 era ID 兼容）。",
+      "files_touched": [
+        "scripts/visual/city_creation_wall_material.gd",
+        "scripts/visual/shaders/creation_wall.gdshader",
+        "scripts/visual/city_creation_classical.gd",
+        "scripts/visual/city_creation_renaissance.gd",
+        "scripts/visual/city_creation_clockwork.gd",
+        "scripts/visual/city_creation_modern.gd",
+        "scripts/world/city_creation_eras.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_era_streets_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M05",
+      "phase_mapping": "Building Chemistry Preview",
+      "category": "building_system",
+      "title": "建造悬停“邻接化学反应虚线预影 + 和弦声部预听”",
+      "description": "当玩家握持筑屋/修路画具悬停于将触发 6 大几何化学反应（闭合内院喷泉、临宽街底层连拱廊、二楼连格玻璃花房、跨河双孔石拱桥、跨高差石阶、现代空中连廊）的位置时，在 3D 预览位置实时显示金色虚线结构预影与微章提示，并轻柔预听对应和弦泛音。",
+      "files_touched": [
+        "scripts/visual/city_creation_terrain_preview.gd",
+        "scripts/ui/city_creation_demo.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_courtyards_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M06",
+      "phase_mapping": "Music Emergence & Anti-Fatigue",
+      "category": "music_system",
+      "title": "3.0s 乐句级跨聚落水平问答轮奏 + 长线游玩“声学呼吸潮汐”",
+      "description": "在坚守 12长轨+4短槽+6总线 的前提下，升级 city_creation_cluster_harmony.gd：1) 按 8 乐句周期（每句 3.0s）在主聚落与次聚落/对岸异时代聚落间执行“起-承-转-合”交替领奏包络；2) 引入长线防听觉疲劳的“声学呼吸潮汐（Acoustic Breathing Tide）”——每 2 轮饱满合奏（48s）穿插 1 轮轻柔留白变奏（24s，突出吉他/竖琴轻拨与溪流鸟鸣），让玩家连续挂机数小时依然温润耐听。",
+      "files_touched": [
+        "scripts/audio/city_creation_cluster_harmony.gd",
+        "scripts/audio/city_creation_music.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_cluster_choir_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M07",
+      "phase_mapping": "Visible Spatial Sequencers",
+      "category": "music_and_world",
+      "title": "四大空间实体节拍器显性化（内院卡农光钟、全图石阶琴键、水车重拍、电车音流）",
+      "description": "1) 解除石阶琴键仅限台地种子的限制，让任何地图海拔落差 >=1.0m 的 3D 石阶路均激活当前调式五声音阶琴键与踩踏琥珀微光；2) 闭合内院石板按 80 BPM 顺时针每拍泛起卡农光环；3) 水车每 3.0s 正拍击水扩散金色波纹，电车到站沿铁轨奔涌暖金光流。",
+      "files_touched": [
+        "scripts/world/city_creation_stair_keys.gd",
+        "scripts/visual/city_creation_courtyards.gd",
+        "scripts/visual/city_creation_living_music.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_biome_music_live.gd -- --isolated-session --keyboard-only",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M08",
+      "phase_mapping": "UI & Spatial Ergonomics",
+      "category": "ui_system",
+      "title": "中空拱形屋顶罗盘（不遮挡建筑本体）+ 左侧滑出式三合一羊皮手卷",
+      "description": "1) 优化 city_creation_spatial_popover.gd 布局，采用顶部半圆用途印章弧 + 左右风貌/配色翼 + 底部状态胶囊的中空环绕结构，让被选中的 3D 房屋在屏幕中心完整露出；2) 将手记(J)、名胜、账本(L)整合为左侧 310px 半透明滑出式羊皮手卷，打开手卷时右侧 78% 河湾画面仍可实时点击与欣赏。",
+      "files_touched": [
+        "scripts/ui/city_creation_spatial_popover.gd",
+        "scripts/ui/city_creation_journal.gd",
+        "scripts/ui/city_creation_ledger.gd",
+        "scripts/ui/city_creation_signature_panel.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_spatial_popover_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M09",
+      "phase_mapping": "Juicy Feedback Stack",
+      "category": "ui_and_juice",
+      "title": "Balatro 式多米诺共鸣连锁弹跳结算与和弦点亮仪式",
+      "description": "新建 scripts/ui/city_creation_juice_feedback.gd：当玩家凑齐五大声学和弦、激活地标邻接光环、完成心愿气泡或建筑晋升 Lv.2~5 时，按 0.1875s 十六分音符节拍依次触发涉事 3D 房屋 4cm 弹簧欢跳 -> 地面射出流光金弧连接伙伴 -> 飘出金色微章并化作流光飞入左上 ScoreRibbonHUD 五线谱条拨动琴弦。",
+      "files_touched": [
+        "scripts/ui/city_creation_juice_feedback.gd",
+        "scripts/ui/city_creation_score_ribbon.gd",
+        "scripts/ui/city_creation_demo.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_chords_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M10",
+      "phase_mapping": "Cozy Roguelite Layer 1: Endless Harmony & Inspiration Drafts",
+      "category": "roguelite_progression",
+      "title": "长线城建嵌入式轻肉鸽（上）：无限河湾共鸣等级与 18 张传世灵感手札三选一",
+      "description": "接入 scripts/world/city_creation_harmony_journey.gd 与新建 scripts/ui/city_creation_inspiration_draft.gd：在完全保留自由建房/自由设工坊的前提下，让日常出炉、茶聚、送装、心愿与和弦自然累积 harmony_xp；每升 1 级弹出温润的羊皮手札三选一（含扩充后的 12 枚时代章程与 6 张街坊声学秘方），永久保存在当前城市存档（Schema 19 可选字段）中，每次读档继续造城都能持续成长。",
+      "files_touched": [
+        "scripts/world/city_creation_harmony_journey.gd",
+        "scripts/world/city_creation_score_modifiers.gd",
+        "scripts/ui/city_creation_inspiration_draft.gd",
+        "scripts/world/city_creation_state.gd",
+        "scripts/world/city_creation_serializer.gd"
+      ],
+      "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_score_modifiers_live.gd -- --isolated-session && Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M11",
+      "phase_mapping": "Cozy Roguelite Layer 2: Emergent Acoustic Vignettes",
+      "category": "roguelite_vignettes",
+      "title": "长线城建嵌入式轻肉鸽（下）：林间微缩声学奇遇委托与 6 秒时代晋升交响仪式",
+      "description": "1) 在 city_creation_harmony_journey.gd 中启用动态微缩造景奇遇（Emergent Vignettes）：根据当前城市空地/水岸/台地定期浮现 1 个无时间压力的温柔造景小目标（可随时完成获永久街坊声学赐福，也可一键换新），给玩家每次读档上线提供“再扩建一小片街区”的治愈牵引；2) 实装解锁第 2/3/4 时代时的 6 秒钟声、暖金波纹与手记铭牌仪式。",
+      "files_touched": [
+        "scripts/world/city_creation_harmony_journey.gd",
+        "scripts/ui/city_creation_wish_pins.gd",
+        "scripts/ui/city_creation_demo.gd"
+      ],
+      "verification_cmd": "Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_eras.gd -- --isolated-session && Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_intuitive_guidance_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": ""
+    },
+    {
+      "id": "M12",
+      "phase_mapping": "Stage 10 Final QA & Delivery",
+      "category": "final_qa",
+      "title": "长线存档续玩全流程自动探针、双分辨率全稿核对与 GitHub <100MB 交付收口",
+      "description": "编写并运行 tools/check_creation_long_session_journey_live.gd（验证新城建房->心愿首炉爆发->共鸣升级三选一->完成林间奇遇->保存退出->模拟次日读档继续扩建->跨四时代盛典全流程），确认 1440x900 与 1024x768 零破面、零削波、375 项旧档全绿，并通过 sync_github_main.py prepare 核对 <100MB。",
+      "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py && python tools/sync_github_main.py prepare",
+      "passes": false,
+      "verified_by": ""
+    }
+  ]
+}

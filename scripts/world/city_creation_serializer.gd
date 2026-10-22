@@ -88,6 +88,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if not city.biome_seed.is_empty():result.biome_seed=city.biome_seed.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.wish_rewards.is_empty():result.wish_rewards=city.wish_rewards.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -139,6 +140,10 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		for row in city.cafe_progress.values():
 			row.groups = int(row.groups)
 			row.visits = int(row.visits)
+		city._wish_epoch+=1
+		city.wish_rewards=data.get("wish_rewards",{}).duplicate(true)
+		for row:Dictionary in city.wish_rewards.values():
+			for kind:String in row:row[kind]=int(row[kind])
 		city.bakery_supply = data.get("bakery_supply", {}).duplicate(true)
 		city.landmark_bread=data.get("landmark_bread",{}).duplicate(true)
 		for row:Dictionary in city.landmark_bread.values():
@@ -451,6 +456,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档面包供给收支不一致")
 	var craft_check: Dictionary = city._validate_craft_supply(data, int(issued.house))
 	if not craft_check.ok: return craft_check
+	var wish_check:Dictionary=city.WishFulfilment.validate(city,data,int(issued.house))
+	if not wish_check.ok:return wish_check
 	var yields:Variant=data.get("workshop_yield_remainder",{})
 	if not yields is Dictionary or (data.has("workshop_yield_remainder") and data.schema<19):return city._fail("工艺产出余数版本或结构无效")
 	for id:Variant in yields:

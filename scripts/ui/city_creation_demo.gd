@@ -384,6 +384,7 @@ func _setup_life(prepared:Node3D=null) -> void:
 	life.arrival_callback = func(_kind: String) -> void: music.record_life_activity("arrival","",Vector2(focus.x,focus.z))
 	life.concert_callback = _on_concert_event
 	life.production_callback = _on_bread_produced
+	life.wish_callback = _on_site_wish_completed
 	life.purchase_callback = func(shop_id:String,home_id:String)->void: music.queue_bakery_cue("purchased",shop_id,home_id)
 	life.craft_callback = _on_craft_event
 	life.quality_callback = _on_quality_changed
@@ -2256,6 +2257,10 @@ func _on_quality_changed(events: Array) -> void:
 		_message("♫ 共鸣品质 %d / 5 · %s"%[int(event.to),State.Quality.NAMES[int(event.to)-1]])
 	_refresh_place();save_delay=3.0
 	if life.profile_tick:life.tick_profile.quality_ui_us=Time.get_ticks_usec()-began
+
+func _on_site_wish_completed(house_id:String,kind:String,quantity:int)->void:
+	town.animate_house_bounce(house_id,.04)
+	_message("活水已到，%d份热面包出炉。"%quantity if kind=="water" else "良木已成林，%d件匠作已备好送往邻家。"%quantity)
 
 func _on_bread_produced(house_id:String,_quantity:int)->void:
 	music.queue_bakery_cue("baked",house_id)

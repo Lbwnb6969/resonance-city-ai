@@ -60,6 +60,8 @@ var concert_callback: Callable
 var last_completed_movement:Dictionary={}
 var concert_start_gate: Callable
 var production_callback: Callable
+var wish_callback:Callable
+var site_wishes:RefCounted
 var purchase_callback: Callable
 var quality_callback: Callable
 var _quality_timer:=0.0
@@ -252,7 +254,9 @@ func poll_budget_sync(commit: bool = true) -> bool:
 	return commit_budget_sync() if commit else true
 
 func commit_budget_sync() -> bool:
-	if _budget_ready_network == null: return not budget_sync_pending()
+	if _budget_ready_network == null:
+		if not budget_sync_pending():site_wishes.poll()
+		return not budget_sync_pending()
 	# The joined worker already validated the full routing signature. Exact
 	# native value comparisons cover every captured geometry input here without
 	# reconstructing all held actors' remaining route bounds a second time.
@@ -327,6 +331,7 @@ func setup(city: RefCounted, defer_sync:bool=false) -> void:
 		_wake_house_ids.clear()
 	state = city
 	if fresh:
+		site_wishes=State.WishFulfilment.new(self)
 		_quality_inputs=null;_quality_cursor=-1
 		tram=Tram.new(self)
 		travel = Travel.new()
@@ -391,6 +396,7 @@ func _tick_life(delta: float) -> void:
 	tram.tick(delta)
 	if profile_tick:tick_profile.tram=Time.get_ticks_usec()-tram_started
 	var work_started:=Time.get_ticks_usec() if profile_tick else 0
+	site_wishes.poll()
 	bakery.tick(delta)
 	if profile_tick:tick_profile.bakery=Time.get_ticks_usec()-work_started;work_started=Time.get_ticks_usec()
 	workshop.tick(delta)
@@ -622,7 +628,7 @@ func _sync() -> void:
 	if _concert.get("grand_festival",false) and not GrandFestival.validate(state,{"schema":state.MODERN_SCHEMA,"houses":state.houses,"districts":state.districts,"era_unlocks":state.era_unlocks,"journey_checkpoint":{"concert":_concert}}).ok:_end_concert(false)
 	var signature := _signature()
 	if signature == _network_signature:
-		state.prepare_regional_echo(_network);return
+		state.prepare_regional_echo(_network);site_wishes.poll();return
 	_network_signature = signature
 	_build_graph()
 	_sync_people()
@@ -734,6 +740,7 @@ func _sync_people() -> void:
 	started = Time.get_ticks_usec()
 	workshop.sync()
 	budget_commit_stats.workshop_ms = (Time.get_ticks_usec()-started)/1000.0
+	site_wishes.poll()
 	_capture_published_surface()
 
 func _refresh_quality(first:int=0,count:int=-1) -> Array[Dictionary]:

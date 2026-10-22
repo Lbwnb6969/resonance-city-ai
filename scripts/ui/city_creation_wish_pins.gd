@@ -90,6 +90,7 @@ func _activate(row:Dictionary)->void:
 	var current:=offers().filter(func(r):return r.house_id==row.house_id and r.kind==row.kind)
 	if current.is_empty():refresh();return
 	row=current[0];target=row.duplicate()
+	demo.life.site_wishes.arm(str(row.house_id),str(row.kind))
 	match str(row.kind):
 		"road":demo.select_tool(2)
 		"water":demo.tactile_dock._nature_mode(1)
