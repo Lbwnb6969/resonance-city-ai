@@ -62,3 +62,10 @@
 - MUSIC 3/5 → M06通过/M07待修：独立扫描真实76.068571s WAV峰.05334473/削波0，按start_clock截三段各20s，留白低2.64826466dB；24稳态最大误差.078565dB、仅初切换/渐变2点排除合理；stair_keys:5仍限terraces，M07须全图>=1m阶路踩响调式琴键并捕获微光。
 - UI/JUICE 2/5 → M08/M09：era_names_ui_1024/1440中388px实心卡仍盖住高楼上半身，spatial_popover:43/91对应实心面板/4列印章；改中空环绕+310px手卷，补.1875s伙伴欢跳→地面金弧→五线谱事件链及双分辨率实拍。
 - PERSISTENCE 2/5 → M10/M11/M12：自由造城/旧档基座保留，harmony_journey尚无城市成长字段与外部接线；接生活事件XP、三选一/奇遇的Schema19可选存档与读档续建，再以真实保存退出→隔离次日读档→跨时代仪式闭环验收；这些项保持false。
+
+[SESSION_M07] 2026-10-23 COMPLETE M07：全图五声阶键、80BPM庭院光钟、水车正拍、电车到站光流；备份backup/before-m07-20261022。
+- FILES: stair_keys/road_heights/travel/road_stairs/world_toys、metronome三子脚本/living_music/signature_visual、demo两委托；stair_keys/living_music测试与biome_live/helper；tools/README、24/25、backlog。
+- GATE1/2: Harness/文档PASS；stair_keys29/living_music32/stair_surface14（30438样点）/legacy375 PASS，10调式/1m阈值/普通手绘旧图覆盖。
+- GATE3: canonical biome_music --keyboard-only 34 PASS；真实鼠标/居民踩踏、庭院8拍、水车2次3s正拍、真实到站及无重复；20张昼夕夜/10度/双分辨率PNG已看。
+- METRICS/LIMITS: Master3.158s峰.00396729/削波0，p958.407ms；固定12+4+6+2/个人档/事务保持；窄阶名义拾取与既有电车余韵的过宽断言失败保留，归因后完整重跑PASS。
+- NEXT_UP: 连续逐轮只认领M08，中空屋顶罗盘与310px三合一手卷；M09后再独立验收。

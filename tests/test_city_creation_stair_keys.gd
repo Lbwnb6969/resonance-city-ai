@@ -15,7 +15,7 @@ func run()->void:
 	check(placed.ok,"draw a real road up and down the natural terrace")
 	var road:Dictionary=city.roads[0];var profile:Dictionary=city.road_profile(road)
 	check(profile.treads.size()>10,"shared collision/navigation height field actually produces stone stairs")
-	var layout:Dictionary=Keys.layout(road,profile);var expected:Dictionary={}
+	var layout:Dictionary=Keys.layout(road,profile,4);var expected:Dictionary={}
 	for tread:Dictionary in profile.treads:expected["%d/%d"%[int(tread.run),int(tread.step)]]=true
 	check(layout.sites.size()==expected.size() and layout.ranks.size()==expected.size(),"one acoustic key per physical tread, including curve-split faces")
 	var travel:=Travel.new();travel.sync(city)
@@ -41,8 +41,23 @@ func run()->void:
 	var restored:=Travel.new();restored.sync(loaded)
 	check(restored.sites==travel.sites,"save restoration re-derives identical keys without saved musical cursors")
 	var before:Dictionary=city.snapshot();city.biome_seed={"id":"sunny_banks"};city.revision+=1;travel.sync(city)
-	check(city.road_profile(road).treads.size()>10 and travel.sites.values().filter(func(row):return row.kind=="stair").is_empty(),"ordinary stone stairs retain their geometry without biome keyboard sound")
+	check(city.road_profile(road).treads.size()>10 and travel.sites.values().filter(func(row):return row.kind=="stair").size()==sites.size(),"ordinary-map stairs keep the same real keyboard after a seed change")
 	city.restore(before);travel.sync(city)
 	check(travel.sites.values().filter(func(row):return row.kind=="stair").size()==sites.size(),"switching back restores derived keys from unchanged real geometry")
+	for mode in range(Keys.Palette.SCALES.size()):
+		var notes:Dictionary={};var valid:=true
+		for degree in range(20):
+			var rank:=Keys.voice_rank(mode,degree);var pitch:=Keys.Palette.stair_pitch(mode,rank)
+			valid=valid and rank>=0 and rank<14 and posmod(pitch,12) in Keys.Palette.SCALES[mode]
+			notes[posmod(pitch,12)]=true
+		check(valid and notes.size()==5,"five actual bank pitches in both octaves, mode "+str(mode))
+	var boundary:Dictionary=profile.duplicate(true)
+	for tread:Dictionary in boundary.treads:tread.rise=.999
+	check(Keys.layout(road,boundary).sites.is_empty(),"sub-metre physical stair runs remain ordinary stone")
+	for tread:Dictionary in boundary.treads:tread.rise=1.
+	check(not Keys.layout(road,boundary).sites.is_empty(),"exact one-metre stair run activates keys")
+	var ordinary:=State.new();check(ordinary.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/高地河湾样例.json"))).ok,"restore an ordinary hand-sculpted old map with no biome seed")
+	var ordinary_travel:=Travel.new();ordinary_travel.sync(ordinary)
+	check(ordinary.biome_seed.is_empty() and ordinary_travel.sites.values().any(func(row):return row.kind=="stair"),"authored terrain, without any biome identity, publishes real keys")
 	print("STAIR_KEYS ",checks-failures.size(),"/",checks," ",failures)
 	quit(0 if failures.is_empty() else 1)

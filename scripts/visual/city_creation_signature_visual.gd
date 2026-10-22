@@ -47,7 +47,7 @@ static func _mill(renderer,root: Node3D,house: Dictionary)->void:
 	var hub: MeshInstance3D=renderer._cylinder(rotor,.14,.14,.65,Vector3.ZERO,iron,12);hub.rotation.x=PI*.5
 	renderer._merge_meshes(rotor)
 	for part: MeshInstance3D in rotor.find_children("*","MeshInstance3D",true,false):part.set_meta("creation_live_visual",true)
-	root.set_meta("waterwheel",{"at":plan.at,"side":plan.side,"radius":1.08,"paddles":16,"angular_speed":.52,"river_clearance":plan.clearance})
+	root.set_meta("waterwheel",{"at":plan.at,"side":plan.side,"radius":1.08,"paddles":16,"angular_speed":TAU/12.,"river_clearance":plan.clearance})
 
 static func _academy(renderer,root: Node3D,house: Dictionary)->void:
 	var at:=Vector3(float(house.origin[0])+.9,float(house.get("base_y",0)),float(house.origin[1])-.91)
@@ -59,8 +59,8 @@ static func _academy(renderer,root: Node3D,house: Dictionary)->void:
 			renderer._cylinder(root,.035,.035,.035,at+Vector3(x-.16+i*.16,3.02+i*.045,-.105),gold,8).rotation.x=PI*.5
 	root.set_meta("academy",{"radius":renderer.state.concert_radius(str(house.id)),"ensemble":"string_quartet","free_placement":true})
 
-static func animate(renderer,delta: float)->void:
+static func animate(renderer,_delta: float)->void:
 	var id: String=renderer.state.signature_bonuses().get("watermill_id","")
 	if id.is_empty() or not renderer.house_roots.has(id):return
 	var rotor: Node3D=renderer.house_roots[id].get_node_or_null("WaterwheelAxle/Rotor")
-	if rotor!=null:rotor.rotation.z=fposmod(rotor.rotation.z-delta*.52,TAU)
+	if rotor!=null:rotor.rotation.z=-renderer.living_music.metronomes.last_clock*TAU/12.

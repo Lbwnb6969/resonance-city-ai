@@ -10,7 +10,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 	var width := float(road.width)
 	var count := 0
 	var key_light:Array[Vector3]=[];var key_dark:Array[Vector3]=[]
-	var keys:Dictionary=StairKeys.layout(road,profile) if StairKeys.enabled(renderer.state) else {}
+	var keys:Dictionary=StairKeys.layout(road,profile,StairKeys.Palette.for_city(renderer.state)) if StairKeys.enabled(renderer.state) else {}
 	var mode:int=0 if keys.is_empty() else maxi(0,StairKeys.Palette.for_city(renderer.state))
 	for tread: Dictionary in profile.treads:
 		var a: Vector2 = tread.a
@@ -37,7 +37,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 			var indices := Geometry2D.triangulate_polygon(piece)
 			for index in range(0,indices.size(),3):
 				renderer._append_water_triangle(faces,piece[indices[index]],piece[indices[index+1]],piece[indices[index+2]],y)
-				if not keys.is_empty():
+				if not keys.is_empty() and keys.ranks.has("%d/%d"%[int(tread.run),int(tread.step)]):
 					var rank:int=keys.ranks.get("%d/%d"%[int(tread.run),int(tread.step)],0)
 					var dark:bool=posmod(StairKeys.Palette.stair_pitch(mode,rank),12) in [1,3,6,8,10]
 					renderer._append_water_triangle(key_dark if dark else key_light,piece[indices[index]],piece[indices[index+1]],piece[indices[index+2]],y+.006)
@@ -64,11 +64,13 @@ static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -
 	parent.add_child(root)
 	var surface: MeshInstance3D = renderer._triangles(root,data.faces,Color("c4bda5"))
 	surface.name="StoneTreads"
+	preload("res://scripts/visual/city_creation_metronome_material.gd").stone(surface)
 	for kind:String in ["key_light","key_dark"]:
 		var vertices:Array[Vector3]=data.get(kind,[])
 		if not vertices.is_empty():
 			var keys:MeshInstance3D=renderer._triangles(root,vertices,Color("eee6cf") if kind=="key_light" else Color("4a5353"))
 			keys.name="PianoIvory" if kind=="key_light" else "PianoBasalt"
+			preload("res://scripts/visual/city_creation_metronome_material.gd").stone(keys)
 	var body := StaticBody3D.new()
 	body.name="StairGroundPick"
 	body.collision_layer=2

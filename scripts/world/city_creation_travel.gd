@@ -50,9 +50,9 @@ func sync(city: RefCounted) -> void:
 	clear_observations()
 	for road: Dictionary in city.roads:
 		if StairKeys.enabled(city):
-			for key:Dictionary in StairKeys.layout(road,city.road_profile(road)).sites:
+			for key:Dictionary in StairKeys.layout(road,city.road_profile(road),StairKeys.Palette.for_city(city)).sites:
 				_add_site(key.id,"stair",str(road.id),str(road.id),key.at,key.axis,key.width*.5-.08)
-				sites[key.id].merge({"height":key.height,"depth":key.depth,"rank":key.rank,"width":key.width})
+				sites[key.id].merge({"height":key.height,"depth":key.depth,"rank":key.rank,"degree":key.degree,"width":key.width})
 		var stepping: Array = Stepping.for_road(city,road)
 		_bridge_sites(city,road,stepping)
 		for run: Dictionary in stepping:

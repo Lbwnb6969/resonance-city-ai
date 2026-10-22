@@ -123,8 +123,8 @@
         "scripts/visual/city_creation_living_music.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_biome_music_live.gd -- --isolated-session --keyboard-only",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_stair_keys.gd -- --isolated-session (29 PASS, all10 modes including hidden pentatonic, sub1m/exact1m, ordinary authored terrain); tests/test_city_creation_living_music.gd (32 PASS), tests/test_city_creation_stair_surface.gd (14 PASS,30438 height samples), tests/test_city_creation_legacy_roundtrip.gd (375 PASS), same flags. Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_biome_music_live.gd -- --isolated-session --keyboard-only (34 PASS). Actual terrace resident crossings, no-biome sculpted map actual mouse ray/pentatonic bank/amber flash; eight real clockwise .75s court beats; two real3s wheel downbeats with shared-clock rotor; actual tram arrival and moving rail mesh, no fake spawn/repeated dwell.20 PNG day/evening/night1440/1024 and10degree low views manually reviewed. Actual3.157914s Master peak.00396729/clipped0; normal framep958.407ms/max8.896ms; original daily/stage/footstep peaks.02938843/.03652954/.01004028. Fixed12+4+6+2 identities and personal save bytes unchanged. New observer16 repeated calls leave snapshot/history unchanged; real tram correctly retains existing resonance_afterglow reward. Failed nominal-tread and overbroad live-snapshot assertions retained, corrected to actual ray hit and attribution, final canonical command rerun PASS. Demo only2 delegate replacements; no Music/bank/schema changes."
     },
     {
       "id": "M08",

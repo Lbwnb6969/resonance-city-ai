@@ -4,6 +4,7 @@ const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances
 ## No simulation, independent musical clock, save fields or audio players.
 const FieldShader=preload("res://scripts/visual/shaders/creation_living_music_field.gdshader")
 const MoteShader=preload("res://scripts/visual/shaders/creation_choir_motes.gdshader")
+var metronomes=preload("res://scripts/visual/city_creation_spatial_metronomes.gd").new()
 const MAX_MOTES:=192
 const MAX_HALOS:=16
 const MAX_WAVES:=4
@@ -38,6 +39,7 @@ func strength_at(at:Vector2)->float:
 
 func setup(owner:Node3D)->void:
 	renderer=owner;layer=Node3D.new();layer.name="LivingChoir";renderer.add_child(layer)
+	metronomes.setup(renderer,layer)
 	motes=MultiMeshInstance3D.new();motes.name="ChamberGoldenMotes";layer.add_child(motes)
 	motes.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true
@@ -110,6 +112,7 @@ func emit_production(id:String,row:Dictionary,clock:float)->bool:
 	return true
 
 func update(records:Dictionary,snapshot:Dictionary,key:Variant,muted:bool=false)->void:
+	metronomes.update(snapshot,muted)
 	var clock:=float(snapshot.get("clock_sec",0.));mote_material.set_shader_parameter("music_clock",clock)
 	for node:MeshInstance3D in halos:node.hide()
 	active_halos=0;var count:=0;var mote_bounds:=AABB()

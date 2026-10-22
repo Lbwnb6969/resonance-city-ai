@@ -329,7 +329,7 @@ func _treads(city: RefCounted,samples: Array,width: float) -> Array:
 				var b := _point(samples,float(breaks[part+1]),width)
 				var middle: Vector2 = (Vector2(a.xz)+Vector2(b.xz))*0.5
 				var bottom := minf(float(city._ground_terrain.raw_height_at(middle))-0.02,y-STEP_HEIGHT)
-				result.append({"a":a.xz,"b":b.xz,"offset_a":a.offset,"offset_b":b.offset,"y":y,"bottom":bottom,"s0":float(breaks[part]),"s1":float(breaks[part+1]),"run":run,"step":step,"width":width})
+				result.append({"a":a.xz,"b":b.xz,"offset_a":a.offset,"offset_b":b.offset,"y":y,"bottom":bottom,"s0":float(breaks[part]),"s1":float(breaks[part+1]),"run":run,"step":step,"width":width,"rise":absf(dy)})
 		run+=1
 		i=finish
 	return result

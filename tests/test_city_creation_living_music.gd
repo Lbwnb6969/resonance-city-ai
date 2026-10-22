@@ -9,6 +9,8 @@ const Tram=preload("res://scripts/world/city_creation_tram.gd")
 const TramVisual=preload("res://scripts/visual/city_creation_tram_visual.gd")
 class Host extends Node3D:
 	var state:RefCounted
+	var courtyards=Courts.new()
+	var house_roots:Dictionary={}
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:run.call_deferred()

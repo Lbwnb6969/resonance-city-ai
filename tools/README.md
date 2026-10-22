@@ -29,3 +29,5 @@ M02实窗：`check_creation_low_view_live.gd`捕获两城×昼夕夜×5°/10°/1
 M05：`check_creation_courtyards_live.gd` 默认运行六类邻接预影/预听实窗，输出 `验证记录/M05/邻接预影`；历史庭院综合探针完整保留，可附 `--legacy-courtyard` 调用，旧9轨约束不代表当前12轨验收。CPU对应 `tests/test_city_creation_chemistry_preview.gd`。
 
 M06：`check_creation_cluster_choir_live.gd` 追加真实76秒双岸问答/呼吸与双分辨率昼夕夜采样；`test_city_creation_phrase_tide.gd`验证乐句策略。修改音乐主脚本使声部库整文件签名变化时，先运行两项`bake_creation_*bank.gd`；`check_creation_bank_revision.gd -- --isolated-session --before-bank=res://废弃/<归档>/城市同步声部库.res`可核对全3907条PCM与循环端点。
+
+M07：`check_creation_biome_music_live.gd -- --isolated-session --keyboard-only` 保留台地实际居民踩阶，并追加无种子手绘高地真实鼠标、庭院八拍、水车两正拍和真实电车到站；输出 `验证记录/M07/空间节拍器`。CPU阶键覆盖10调式、1米阈值与旧图，阶面测试覆盖30438个高度样点。全部实窗加 `--rendering-method gl_compatibility --audio-driver Dummy`。

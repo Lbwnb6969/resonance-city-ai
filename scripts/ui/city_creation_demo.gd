@@ -280,7 +280,7 @@ func _ready() -> void:
 	ambience.set_view_samples_source(_ambient_visible_samples)
 	ambience.set_view(Vector2(focus.x,focus.z),zoom,light_phase)
 	_setup_life()
-	music.life_source=life
+	town.living_music.metronomes.bind_life(music,life)
 	music.set_concert_view(life.concert_view())
 	_setup_ui()
 	terrain_brush=TerrainBrush.new()
@@ -397,7 +397,7 @@ func _setup_life(prepared:Node3D=null) -> void:
 	music.tram_source_gate=life.tram.source_valid
 	music.travel_source_gate = life.travel_source_valid
 	life.concert_start_gate = music.concert_can_start
-	if music!=null:music.life_source=life
+	if music!=null:town.living_music.metronomes.bind_life(music,life)
 
 func _setup_world() -> void:
 	environment_rig.setup(self)

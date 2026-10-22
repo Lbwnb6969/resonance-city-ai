@@ -31,10 +31,11 @@ func hover(demo,at:Vector2)->bool:
 
 static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)->bool:
 	if music.muted or music.concert_active or music._loading or not is_instance_valid(music.life_source):return false
-	if music.acoustic.mode=="city" or music.acoustic.point_weight(at)<=0.:return false
+	if (music.acoustic.mode=="city" and not player_action) or music.acoustic.point_weight(at)<=0.:return false
 	var stair:Dictionary=music.life_source.travel.site(source)
 	if stair.get("kind","")!="stair" or not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",source,at):return false
 	var plan:={"house_id":"world/"+source,"stream_key":"stair_key_%d"%int(stair.rank),"position":at,"world_kind":"stair","source_id":source,"rank":int(stair.rank)}
+	if stair.has("degree"):plan.degree=int(stair.degree)
 	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
 
 static func play_note(music,plan:Dictionary)->bool:
@@ -57,6 +58,7 @@ static func play_note(music,plan:Dictionary)->bool:
 		if not music._harmony_streams.has(key):return false
 		stream=music._harmony_streams[key]
 	else:
+		if plan.world_kind=="stair" and plan.has("degree"):key="stair_key_%d"%preload("res://scripts/world/city_creation_stair_keys.gd").voice_rank(mode,int(plan.degree))
 		if not music._edit_streams.has(key):return false
 		stream=music._edit_streams[key]
 	var player:AudioStreamPlayer=music._effects[0]
@@ -89,10 +91,9 @@ func update(demo,delta:float)->void:
 		if not is_instance_valid(key_flash):
 			key_flash=MeshInstance3D.new();key_flash.name="StairKeyTouch";key_flash.mesh=BoxMesh.new()
 			key_flash.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
-			key_flash.material_override=material;demo.add_child(key_flash)
+			key_flash.material_override=preload("res://scripts/visual/city_creation_metronome_material.gd").glow();demo.add_child(key_flash)
 		key_flash.mesh.size=Vector3(float(stair.width)*.82,.012,maxf(.06,minf(.4,float(stair.depth)*.8)))
 		key_flash.position=Vector3(pulse.at.x,float(stair.height)+.018,pulse.at.y)
 		key_flash.rotation.y=atan2(stair.axis.x,stair.axis.y)
-		key_flash.material_override.albedo_color=Color(1.,.83,.39,exp(-age*6.))
+		key_flash.material_override.set_shader_parameter("metronome_strength",exp(-age*6.))
 		key_flash.show()

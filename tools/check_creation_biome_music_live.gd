@@ -144,6 +144,9 @@ func run()->void:
 	var after:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():after.append(player.get_instance_id())
 	check(after==ids and after.size()==12 and demo.music._effects.size()==4,"all biome keys, landmark music and footsteps reuse the same twelve plus four nodes")
+	if "--keyboard-only" in OS.get_cmdline_user_args():
+		var spatial:Dictionary=await preload("res://tools/fixtures/city_creation_spatial_metronomes_live.gd").new().run(demo)
+		for label:String in spatial.checks:check(spatial.checks[label],"M07 spatial: "+label)
 	var result:={"checks":checks,"failures":failures,"ok":failures.is_empty(),"peaks":peaks,"pointer_note":pointer_note}
 	FileAccess.open(OUT+("/keyboard_report.json" if "--keyboard-only" in OS.get_cmdline_user_args() else "/report.json"),FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));print("BIOME_MUSIC_LIVE ",JSON.stringify(result))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
