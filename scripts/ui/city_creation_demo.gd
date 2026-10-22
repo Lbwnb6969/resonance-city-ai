@@ -56,6 +56,7 @@ var gallery: RefCounted
 var terrain_brush: RefCounted
 var tactile_dock: RefCounted
 var world_toys=preload("res://scripts/visual/city_creation_world_toys.gd").new()
+var strum_hold=preload("res://scripts/ui/city_creation_strum_hold.gd").new()
 var weather_visual:Node3D
 var conductor_gesture:Node3D
 var wish_pins:Control
@@ -1035,6 +1036,7 @@ func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
 
 func select_tool(index: int) -> void:
+	strum_hold.cancel()
 	guided_hint=""
 	tool = index
 	_cancel_draft()
@@ -1110,6 +1112,8 @@ func home_camera() -> void:
 	_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if strum_hold.handle_input(self,event):
+		get_viewport().set_input_as_handled();return
 	if gallery!=null and gallery.busy:return
 	if guide!=null and guide.visible():
 		if event is InputEventKey and event.pressed and event.keycode in [KEY_ESCAPE,KEY_F1]:
@@ -1180,7 +1184,6 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_J: journal.open_panel()
 		elif event.keycode == KEY_L: ledger.open_panel()
 		elif event.keycode == KEY_F1 and guide != null: guide.open_panel()
-		elif event.keycode == KEY_P: select_tool(4)
 		elif event.keycode == KEY_V: camera_rig.toggle(self)
 		elif event.keycode == KEY_F12: camera_rig.capture(self)
 		elif event.keycode == KEY_F10: RenderCapture.capture(self,render_capture_directory)
@@ -1209,6 +1212,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if ledger!=null and ledger.visible(): return
 	if journal!=null and journal.panel.visible: return
 	if gallery!=null and gallery.panel.visible: return
+	if strum_hold.active() and event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
+		get_viewport().set_input_as_handled();return
 	if event is InputEventMouseMotion and house_drawing:
 		_append_house_stroke()
 		get_viewport().set_input_as_handled()
@@ -1285,6 +1290,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_commit_click()
 
 func _process(delta: float) -> void:
+	strum_hold.update(self)
 	if gallery!=null and not gallery.preview_id.is_empty():gallery.tick_preview();return
 	music.attention.dragging=house_drawing or road_drawing or vegetation_drawing or water_drawing or district_drawing or district_link_drawing or (terrain_brush!=null and terrain_brush.drawing)
 	music.attention_strolling=camera_rig.strolling
@@ -1306,7 +1312,7 @@ func _process(delta: float) -> void:
 			save_city()
 	_poll_edit_budget()
 	if not _edit_pending:town.quality_visual.poll(town)
-	if tool==4 and not guide.visible() and not camera_rig.strolling and not orbiting and not panning and not _edit_pending and get_viewport().gui_get_hovered_control()==null:
+	if (tool==4 or strum_hold.active()) and not strum_hold.blocked(self) and get_viewport().gui_get_hovered_control()==null:
 		var hit := _ray_hit(pointer)
 		var body: Object = hit.get("collider")
 		var id := str(body.get_meta("house_id", "")) if body!=null else ""
@@ -1443,6 +1449,8 @@ func _plane_at(screen: Vector2, height: float) -> Vector2:
 	return Vector2(p.x, p.z)
 
 func _update_hover() -> void:
+	if strum_hold.active():
+		town.clear_preview();preview_key="";candidate.clear();return
 	if signatures!=null and not signatures.placing.is_empty():
 		signatures.hover(_ground_at(pointer).snapped(Vector2.ONE*.1));return
 	hovered = _ray_hit(pointer)
@@ -2433,6 +2441,7 @@ func _message(text_value: String) -> void:
 	toast_time = 4.0
 
 func _notification(what: int) -> void:
+	if what==NOTIFICATION_APPLICATION_FOCUS_OUT:strum_hold.cancel()
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if persistence and not save_blocked:
 			if _edit_pending:

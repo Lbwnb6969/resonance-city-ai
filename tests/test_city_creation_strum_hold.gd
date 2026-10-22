@@ -1,0 +1,65 @@
+extends SceneTree
+const Gesture=preload("res://scripts/ui/city_creation_strum_hold.gd")
+class Preview extends RefCounted:
+	var clears:=0
+	func clear_preview():clears+=1
+class Host extends Node3D:
+	var state:=RefCounted.new()
+	var town:=Preview.new()
+	var world_toys:={"last_key":"old"}
+	var candidate:={"build":true}
+	var preview_key:="old"
+	var _last_strummed_house_id:="h1"
+	var _edit_pending:=false
+	var camera_rig:={"strolling":false}
+	var orbiting:=false
+	var panning:=false
+	var house_drawing:=false
+	var road_drawing:=false
+	var vegetation_drawing:=false
+	var water_drawing:=false
+	var district_drawing:=false
+	var district_link_drawing:=false
+	var terrain_brush:={"drawing":false}
+	var conductor_gesture:={"venue":""}
+	var signatures:={"placing":""}
+	var guide=null
+	var ledger=null
+	var journal=null
+	var gallery=null
+var checks:=0
+var failures:Array[String]=[]
+func _initialize():run.call_deferred()
+func check(ok:bool,label:String):
+	checks+=1
+	if not ok:failures.append(label);push_error(label)
+func key(pressed:bool,echo:bool=false)->InputEventKey:
+	var event:=InputEventKey.new();event.keycode=KEY_P;event.pressed=pressed;event.echo=echo;return event
+func side(index:int,pressed:bool)->InputEventMouseButton:
+	var event:=InputEventMouseButton.new();event.button_index=index;event.pressed=pressed;return event
+func run():
+	var host:=Host.new();root.add_child(host);var gesture:=Gesture.new()
+	check(gesture.handle_input(host,key(true)) and gesture.active(),"P press starts an actual held gesture")
+	check(host.candidate.is_empty() and host.preview_key.is_empty() and host.town.clears==1,"momentary world play removes only derived construction previews")
+	check(gesture.handle_input(host,key(true,true)) and host.town.clears==1,"keyboard repeats do not rearm the same touch")
+	check(gesture.handle_input(host,side(MOUSE_BUTTON_XBUTTON1,true)) and gesture.held.size()==2,"side key and P can overlap")
+	check(gesture.handle_input(host,key(false)) and gesture.active(),"releasing P retains the still-held mouse side key")
+	check(gesture.handle_input(host,side(MOUSE_BUTTON_XBUTTON1,false)) and not gesture.active(),"releasing the last control ends world play")
+	for field:String in ["house_drawing","road_drawing","vegetation_drawing","water_drawing","district_drawing","district_link_drawing","orbiting","panning","_edit_pending"]:
+		host.set(field,true);check(not gesture.handle_input(host,key(true)) and not gesture.active(),"existing gesture retains ownership: "+field);host.set(field,false)
+	host.terrain_brush.drawing=true;check(not gesture.handle_input(host,key(true)),"terrain stroke is not interrupted");host.terrain_brush.drawing=false
+	host.signatures.placing="bell_keep";check(not gesture.handle_input(host,key(true)),"armed landmark placement retains ownership");host.signatures.placing=""
+	host.conductor_gesture.venue="h1";check(not gesture.handle_input(host,key(true)),"armed conductor stroke retains ownership");host.conductor_gesture.venue=""
+	var modified:=key(true);modified.ctrl_pressed=true;check(not gesture.handle_input(host,modified),"modified shortcut does not enter the world-play gesture")
+	gesture.handle_input(host,side(MOUSE_BUTTON_XBUTTON2,true));host.state=RefCounted.new();gesture.update(host)
+	check(not gesture.active(),"replacing the work cancels the previous city's held gesture")
+	gesture.handle_input(host,key(true));host._edit_pending=true;gesture.update(host)
+	check(not gesture.active() and not gesture.handle_input(host,key(false)),"background edits cancel the gesture and accept no stale ownership");host._edit_pending=false
+	gesture.handle_input(host,key(true));var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true
+	check(gesture.handle_input(host,escape) and not gesture.active() and not gesture.handle_input(host,key(true,true)),"Escape cancels until a new physical press, even under key repeat")
+	var field:=LineEdit.new();root.add_child(field);field.grab_focus();await process_frame
+	check(not gesture.handle_input(host,key(true)) and not gesture.active(),"text focus retains P as input instead of world play")
+	field.release_focus();field.free()
+	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures}
+	var output:="res://验证记录/临时拨奏_2026-10-22";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+	FileAccess.open(output+"/cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("STRUM_HOLD_CPU ",JSON.stringify(result));host.free();quit(0 if failures.is_empty() else 1)
