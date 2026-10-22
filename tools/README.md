@@ -27,3 +27,5 @@
 M02实窗：`check_creation_low_view_live.gd`捕获两城×昼夕夜×5°/10°/15°×两朝向，并审计所有GPU容量槽、LOD/编辑/撤销、真实Master录音。`check_creation_wish_closure_live.gd`支持`--resolution=1440`或`--resolution=1024`独立进程核对鼠标首炉延迟、真实携物路线和库存；使用`--out-dir=res://验证记录/...`隔离输出。
 
 M05：`check_creation_courtyards_live.gd` 默认运行六类邻接预影/预听实窗，输出 `验证记录/M05/邻接预影`；历史庭院综合探针完整保留，可附 `--legacy-courtyard` 调用，旧9轨约束不代表当前12轨验收。CPU对应 `tests/test_city_creation_chemistry_preview.gd`。
+
+M06：`check_creation_cluster_choir_live.gd` 追加真实76秒双岸问答/呼吸与双分辨率昼夕夜采样；`test_city_creation_phrase_tide.gd`验证乐句策略。修改音乐主脚本使声部库整文件签名变化时，先运行两项`bake_creation_*bank.gd`；`check_creation_bank_revision.gd -- --isolated-session --before-bank=res://废弃/<归档>/城市同步声部库.res`可核对全3907条PCM与循环端点。

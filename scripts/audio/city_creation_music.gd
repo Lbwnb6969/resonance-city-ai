@@ -84,6 +84,7 @@ func _apply_life_orchestration()->void:
 		var floor_db:float={"foundation":-13.,"air":-20.,"terrace":-25.}[family]
 		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
 	if is_instance_valid(life_source):life_source.state.Microclimate.music(emergence.score.targets,life_source.state.microclimate)
+	ClusterHarmony.Tide.conduct(self)
 
 func harmony_mode()->int:
 	return _biome_mode if _biome_mode>=0 else (-1 if concert_active else int(emergence.score.get("harmony_mode",0)))
@@ -678,7 +679,7 @@ func resonance_state(view: Dictionary = {}) -> Dictionary:
 		lead="";chorus.clear();ambient.clear();linked.clear()
 	var wave:Dictionary={}
 	if choir_mode and not concert_active and audible and attention.current_mode!=AttentionMixer.Mode.SCULPTING:
-		wave=ClusterHarmony.choral_wave(_house_music,acoustic,clock)
+		wave=ClusterHarmony.choral_wave(_house_music,acoustic,clock,emergence.score.get("phrase_tide",{}))
 		chorus.clear();lead=""
 	var arcs: Array[Dictionary] = []
 	if audible and concert_active and lead != _concert_venue and not lead.is_empty():
@@ -1011,7 +1012,7 @@ func active_source() -> Dictionary:
 
 func target_gain_db(key: String, during_concert: bool) -> float:
 	if _grand_active():return _movement_gain(key,_concert_phrase())
-	if not concert_active and not emergence.score.is_empty():return float(emergence.score.targets.get(key,-60.))
+	if not concert_active and not emergence.score.is_empty():return ClusterHarmony.Tide.gain(key,emergence.score,_playback_clock())
 	if key=="modern_symphony":return -24.0 if during_concert else -21.0
 	if key=="clockwork_waltz":return -24.0 if during_concert else -21.0
 	if key=="renaissance_fugue": return -23.0 if during_concert else -19.0

@@ -62,7 +62,9 @@ func run()->void:
 	await seconds(.5)
 	check(demo.music.house_pluck_report().get("house_id","")==first,"manual response is attributed to the selected house")
 	check(demo.music._players.size()==12 and demo.music._effects.size()==4,"voice counts stay bounded at twelve long and four short")
-	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"recorded_peak":peak,"score":demo.music.emergence.score,"life_layers":demo.music._life_orchestration}
+	var tide:Dictionary=await preload("res://tools/fixtures/city_creation_phrase_tide_live.gd").run(demo,OUT)
+	check(tide.ok,"real seventy-six-second multi-cluster phrase conducting and breathing pass")
+	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"recorded_peak":peak,"score":demo.music.emergence.score,"life_layers":demo.music._life_orchestration,"tide":tide}
 	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("CLUSTER_CHOIR_LIVE ",JSON.stringify({"checks":checks,"failures":failures,"ok":failures.is_empty(),"recorded_peak":peak}))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
