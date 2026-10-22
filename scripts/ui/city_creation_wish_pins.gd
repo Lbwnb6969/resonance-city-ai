@@ -8,6 +8,7 @@ var elapsed:=18.
 var highlight:MeshInstance3D
 var highlight_left:=0.
 var target:Dictionary={}
+var offered_revision:=-1
 
 func setup(owner,ui_root:Control)->void:
 	demo=owner;name="CitizenWishPins";mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -30,24 +31,41 @@ func offers()->Array[Dictionary]:
 		elif house.role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<3:
 			var point:=_site(at,"tree")
 			if point.is_finite():result.append({"house_id":id,"kind":"tree","at":point,"caption":"良木","glyph":"vegetation"})
-		elif house.role=="residential" and int(groups[id].size)>=4:
-			var bakery:=false;var cafe:=false;var homes:=0
-			for member:String in groups[id].members:
-				var other:Dictionary=demo.state.houses[demo.state._house_index(member)]
-				bakery=bakery or other.role=="bakery";cafe=cafe or other.role=="garden_cafe"
-				homes+=1 if other.role=="residential" else 0
-			if bakery and not cafe and homes>=3:result.append({"house_id":id,"kind":"tea","at":at,"caption":"茶叙","glyph":"garden_cafe"})
+		elif house.role=="residential" and _tea_needed(id,groups):
+			result.append({"house_id":id,"kind":"tea","at":at,"caption":"茶叙","glyph":"garden_cafe"})
 	result.sort_custom(func(a:Dictionary,b:Dictionary)->bool:
 		var order:Array=["road","water","tree","tea"]
 		return str(a.house_id)<str(b.house_id) if a.kind==b.kind else order.find(a.kind)<order.find(b.kind))
 	return result
+
+func _tea_needed(id:String,groups:Dictionary)->bool:
+	if int(groups[id].size)<4:return false
+	var bakery:=false;var cafe:=false;var homes:=0
+	for member:String in groups[id].members:
+		var other:Dictionary=demo.state.houses[demo.state._house_index(member)]
+		bakery=bakery or other.role=="bakery";cafe=cafe or other.role=="garden_cafe"
+		homes+=1 if other.role=="residential" else 0
+	return bakery and not cafe and homes>=3
+
+func _still_needed(row:Dictionary)->bool:
+	var id:=str(row.house_id);var index:int=demo.state._house_index(id)
+	if index<0:return false
+	if row.kind=="road":return not demo.life.house_connected(id)
+	if not demo.life.house_connected(id):return false
+	var role:=str(demo.state.houses[index].role)
+	match str(row.kind):
+		"water":return role=="bakery" and not demo.state.site_blessing(id).get("blessed",false)
+		"tree":return role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<3
+		"tea":return role=="residential" and _tea_needed(id,demo.state.natural_clusters())
+	return false
 
 func _site(origin:Vector2,kind:String)->Vector2:
 	for radius:float in [3.,4.,5.,6.]:
 		for i:int in range(12):
 			var at:=origin+Vector2.from_angle(float(i)*TAU/12.)*radius
 			if kind=="water":
-				if demo.state.preview_water([at] as Array[Vector2],demo.water_width,"pond").ok:return at
+				# A legal pond outside the blessing radius cannot fulfil this wish.
+				if origin.distance_to(at)-demo.water_width*.5<4.5 and demo.state.preview_water([at] as Array[Vector2],demo.water_width,"pond").ok:return at
 			else:
 				var plant:Dictionary=demo.state._make_plant("preview",at,"olive",1.,1,"player")
 				if demo.state._plant_geometry_compatible(plant,[],true):return at
@@ -66,6 +84,7 @@ func refresh()->void:
 		pins.append({"row":row,"button":button})
 		if pins.size()==2:break
 	elapsed=0.
+	offered_revision=demo.state.revision
 
 func _activate(row:Dictionary)->void:
 	var current:=offers().filter(func(r):return r.house_id==row.house_id and r.kind==row.kind)
@@ -78,6 +97,8 @@ func _activate(row:Dictionary)->void:
 			demo.tactile_dock._nature_mode(0)
 			var species:OptionButton=demo.ui_layer.find_child("Species",true,false)
 			species.select(0);species.item_selected.emit(0)
+			var planting:OptionButton=demo.ui_layer.find_child("PlantingMode",true,false)
+			planting.select(0);planting.item_selected.emit(0)
 		"tea":demo._after_edit(demo.state.set_house_role(str(row.house_id),"garden_cafe"),"room",true,str(row.house_id))
 	highlight.position=Vector3(row.at.x,demo.state.ground_height(row.at)+.05,row.at.y);highlight_left=8.
 	demo._message({"road":"门前的金圈是接路落点。","water":"金圈处留有可挖池塘的空地。","tree":"在金圈附近种下喜欢的树。","tea":"茶座已备好，街坊买过面包就会来相聚。"}[row.kind])
@@ -91,6 +112,14 @@ func _process(delta:float)->void:
 	visible=not early and demo.ui_layer.visible and not demo.camera_rig.strolling and not demo.edit_pending() and not demo.gallery.panel.visible and not demo.journal.panel.visible and not demo.guide.visible()
 	highlight.visible=visible and highlight_left>0.
 	if not visible:return
+	if offered_revision!=demo.state.revision:
+		# Retire fulfilled/deleted needs after the real geometry/Life publish.
+		# Do not offer replacements before the normal eighteen-second interval.
+		for i:int in range(pins.size()-1,-1,-1):
+			var row:Dictionary=pins[i].row
+			if not _still_needed(row):
+				pins[i].button.queue_free();pins.remove_at(i)
+		offered_revision=demo.state.revision
 	if elapsed>=18.:refresh()
 	for pin:Dictionary in pins:
 		var row:Dictionary=pin.row;var house:Dictionary=demo.town._house_record(str(row.house_id))
