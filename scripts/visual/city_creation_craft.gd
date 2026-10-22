@@ -26,6 +26,21 @@ var build_count := 0
 var layouts:Dictionary={}
 var layout_inputs:Dictionary={}
 var facades:Dictionary={}
+var chime_rigs:Array[Dictionary]=[]
+
+func update_music(snapshot:Dictionary)->void:
+	material.set_shader_parameter("music_clock",float(snapshot.get("clock_sec",0.)))
+	var wave:Dictionary=snapshot.get("choral_wave",{}) if bool(snapshot.get("audible",false)) else {}
+	var live:Array[Dictionary]=[]
+	for row:Dictionary in chime_rigs:
+		var node:MultiMeshInstance3D=row.node.get_ref()
+		if node==null or node.is_queued_for_deletion() or not layer.get_parent().is_ancestor_of(node):continue
+		live.append(row)
+		var value:=Color(row.phase,clampf(float(wave.get(row.house_id,0.)),0.,1.),1. if wave.has(row.house_id) else 0.,0.)
+		if row.value==value:continue
+		for i in range(node.multimesh.instance_count):node.multimesh.set_instance_custom_data(i,value)
+		row.value=value
+	chime_rigs=live
 
 func prepare_layout(renderer,house:Dictionary,frontages:Variant=null,arcades:Variant=null)->void:
 	var id:=str(house.id);var key:Array=[renderer.state.get_instance_id(),renderer.state.revision,hash(house)]
@@ -91,7 +106,7 @@ func progress(renderer,only: Array[String]=[]) -> void:
 		# Wind chimes retain their local moving vertices and shared prefab.
 		# The other three pieces share material and never move: bake their
 		# transforms into one house-local surface, retaining real shadow casting.
-		_batch(root,"chime",records.chime,posmod(hash(id),6283)/1000.0)
+		_batch(root,"chime",records.chime,posmod(hash(id),6283)/1000.0,id)
 		_static_batch(root,records)
 		roots[id] = root
 		fingerprints[id] = fingerprint
@@ -322,7 +337,7 @@ func _placements(renderer, house: Dictionary, level: int, prepared:Variant=null)
 				break
 	return result
 
-func _batch(parent: Node3D, kind: String, transforms: Array, phase: float) -> void:
+func _batch(parent: Node3D, kind: String, transforms: Array, phase: float, house_id:String="") -> void:
 	if transforms.is_empty(): return
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
@@ -339,8 +354,12 @@ func _batch(parent: Node3D, kind: String, transforms: Array, phase: float) -> vo
 	DetailLod.bind(instance,DetailLod.CHIME)
 	instance.multimesh = multi
 	instance.material_override = material
-	instance.custom_aabb = multi.get_aabb().grow(0.06)
+	instance.custom_aabb = multi.get_aabb().grow(0.08)
 	parent.add_child(instance)
+	# Only installed eave chimes join their household's choir. Workshop stock
+	# uses the same prefab but has no household binding until it is delivered.
+	if kind=="chime" and not house_id.is_empty():
+		chime_rigs.append({"node":weakref(instance),"house_id":house_id,"phase":phase,"value":Color(phase,0,0,0)})
 
 func _static_batch(parent: Node3D, records: Dictionary) -> void:
 	var surface := SurfaceTool.new()

@@ -158,7 +158,7 @@ func progress(renderer,only:Array[String]=[])->void:
 				for i in range(7):renderer._cylinder(frame,.009,.009,.18,Vector3(-.30+i*.10,.01,.16),iron,5)
 			root.set_meta("iron_flowerboxes",records.planter.size())
 		if tier>=3 and renderer.state.improvement_level(id)==0:
-			renderer.craft._batch(root,"chime",records.chime,posmod(hash(id),6283)/1000.0)
+			renderer.craft._batch(root,"chime",records.chime,posmod(hash(id),6283)/1000.0,id)
 			features.append("bronze_chime")
 		if tier>=4 and renderer.state.improvement_level(id)<3:
 			renderer.craft._static_batch(root,{"pergola":records.pergola})

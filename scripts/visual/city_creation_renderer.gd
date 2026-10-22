@@ -893,6 +893,7 @@ func show_concert(status: Dictionary) -> void:
 func update_city_resonance_visuals(snapshot: Dictionary) -> void:
 	house_music_source = str(snapshot.get("lead_id","")) if bool(snapshot.get("audible",false)) else ""
 	resonance.update(snapshot)
+	craft.update_music(snapshot)
 	courtyards.update_music(snapshot,living_music)
 	promenade.update_music(living_music,float(snapshot.get("clock_sec",0.)))
 	promenade.set_light(promenade.evening,bool(snapshot.get("audible",false)) and str(snapshot.get("phase","idle"))=="playing")
