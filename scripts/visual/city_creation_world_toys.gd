@@ -26,7 +26,7 @@ func hover(demo,at:Vector2)->bool:
 	if demo.music.muted or demo.music.concert_active or demo.music._loading:return false
 	last_key=key;last_at=clock
 	if kind=="stair":return queue_stair(demo.music,key,origin,true)
-	var plan:Dictionary={"house_id":"world/"+key,"stream_key":"tea" if kind=="water" else "arrival","position":origin,"world_kind":kind}
+	var plan:Dictionary={"house_id":"world/"+key,"stream_key":"world_"+kind,"position":origin,"world_kind":kind,"source_id":key}
 	return demo.music.attention.enqueue_pluck_arpeggio(plan,clock)
 
 static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)->bool:
@@ -38,13 +38,32 @@ static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)
 	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
 
 static func play_note(music,plan:Dictionary)->bool:
-	if music.muted or music.concert_active or not music._edit_streams.has(plan.stream_key) or music.acoustic.point_weight(plan.position)<=0.:return false
+	if music.muted or music.concert_active or music.acoustic.point_weight(plan.position)<=0.:return false
 	if plan.world_kind=="stair" and (not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",plan.source_id,plan.position)):return false
+	var stream:AudioStreamWAV;var key:=str(plan.stream_key)
+	var mode:=maxi(0,int(music.harmony_mode()));var bar:=posmod(int(music._playback_clock()/3.),8)
+	if plan.world_kind in ["water","tree"]:
+		var city:RefCounted=music._pluck_city
+		if city==null:return false
+		if plan.world_kind=="water" and city.water_clearance(plan.position)>=-.12:return false
+		if plan.world_kind=="tree":
+			var present:=false;var source:=str(plan.get("source_id",""))
+			for plant:Dictionary in city.plants:
+				if (source.is_empty() or str(plant.id)==source) and plant.kind in ["olive","cypress","golden_tree"] and Vector2(plant.position[0],plant.position[1]).distance_squared_to(plan.position)<.01:present=true;break
+			if not present:return false
+		# Resolve on execution, so a queued touch crossing a phrase or key
+		# change cannot play the previous chord after the score has moved on.
+		key="%d/world_%s_%d"%[mode,str(plan.world_kind),bar]
+		if not music._harmony_streams.has(key):return false
+		stream=music._harmony_streams[key]
+	else:
+		if not music._edit_streams.has(key):return false
+		stream=music._edit_streams[key]
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break
-	music.play_effect_at(player,music._edit_streams[plan.stream_key],plan.position,.75)
-	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial")})
+	music.play_effect_at(player,stream,plan.position,.75)
+	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial"),"stream_key":key,"mode":mode,"bar":bar})
 	return true
 
 func update(demo,delta:float)->void:

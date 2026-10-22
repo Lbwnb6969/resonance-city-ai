@@ -7,6 +7,9 @@ func check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func _initialize()->void:run.call_deferred()
 func run()->void:
+	var output:="res://验证记录/缺库首开_2026-10-22"
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
 	var bank:=Cache.load_bank_at(Cache.PORTABLE_PATH)
 	check(not bank.is_empty() and bank.report.get("bank_codec","")=="qoa","complete portable bank matches current synthesis signature")
 	if bank.is_empty():quit(1);return
@@ -33,12 +36,12 @@ func run()->void:
 				for frame:Vector2 in actual:finite=finite and frame.is_finite() and absf(frame.x)<1. and absf(frame.y)<1.
 				samples+=actual.size();playback.stop()
 			count+=1
-	check(bank.streams.size()==12 and bank.variations.size()==240 and count==3747,"all twelve stems, 240 variations and full short/modal catalogue ship together")
+	check(bank.streams.size()==12 and bank.variations.size()==240 and count==3907,"all twelve stems, 240 variations and full short/modal catalogue ship together")
 	check(metadata_ok,"native encoded lengths, sample rate and all loop endpoints remain exact")
 	check(finite,"every encoded stream decodes to finite unclipped audio at start, middle and tail")
 	var snr:=10.*log(power/errors)/log(10.) if errors>0. else 0.
 	if not original.is_empty():check(snr>40. and sqrt(errors/samples)<.001,"native sampled codec error stays below the music quality budget")
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"streams":count,"decoded_samples":samples,"reference_pcm":not original.is_empty(),"snr_db":snr,"rms_error":sqrt(errors/samples),"maximum_error":maximum}
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://验证记录/缺库首开_2026-10-22"))
-	FileAccess.open("res://验证记录/缺库首开_2026-10-22/portable_cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+	FileAccess.open(output+"/portable_cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true))
 	print("PORTABLE_CPU ",JSON.stringify(result));quit(0 if failures.is_empty() else 1)

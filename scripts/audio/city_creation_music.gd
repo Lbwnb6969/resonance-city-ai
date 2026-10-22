@@ -1730,6 +1730,12 @@ func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi:
 			"water_marimba":
 				envelope=minf(t/0.006,1.0)*exp(-t*10.0)*minf((duration-t)/0.10,1.0)
 				tone=sin(phase+0.18*exp(-t*28.0)*sin(phase*2.0))+0.18*sin(phase*3.0)*exp(-t*18.0)+0.08*sin(phase*4.0)*exp(-t*28.0)
+			"songbird":
+				# A soft two-syllable whistle: brief syrinx glide settles on the
+				# current modal pitch, with a narrow trill and rounded breath edges.
+				var syrinx:=phase+TAU*frequency*.035*(1.-exp(-t*28.))/28.+.16*sin(TAU*28.*t)
+				envelope=pow(maxf(0.,sin(PI*t/duration)),.8)*(.82+.18*cos(TAU*18.*t))
+				tone=sin(syrinx)+.065*sin(syrinx*2.)
 			"harp":
 				envelope=minf(t/0.004,1.0)*exp(-t*4.7)*minf((duration-t)/0.16,1.0)
 				tone=sin(phase)+0.28*sin(phase*2.0)*exp(-t*5.0)+0.12*sin(phase*3.0)*exp(-t*8.0)+0.05*sin(phase*4.0)*exp(-t*12.0)

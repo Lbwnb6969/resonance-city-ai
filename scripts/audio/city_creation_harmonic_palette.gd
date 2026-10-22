@@ -116,6 +116,10 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 			out.streams["%d/%s"%[mode,key]]=replies.streams[key];out.notes["%d/%s"%[mode,key]]=replies.events[key];out.peaks["%d/%s"%[mode,key]]=replies.peaks[key]
 		for bar in range(8):
 			var c:Array=progression[bar];var prefix:String="%d/"%mode
+			# Fingertip nature responses share the current chord and the existing
+			# four short voices, but have their own physical timbres and envelopes.
+			_wave(out,prefix+"world_tree_%d"%bar,.64,[_note(0.,.13,quantize(int(c[0])+48,mode,bar),.050,"songbird"),_note(.1875,.16,quantize(int(c[1])+48,mode,bar),.042,"songbird")],add,make)
+			_wave(out,prefix+"world_water_%d"%bar,.64,[_note(0.,.38,quantize(int(c[0])+24,mode,bar),.065,"water_marimba"),_note(.1875,.28,quantize(int(c[2])+24,mode,bar),.028,"water_marimba")],add,make)
 			_wave(out,prefix+"cafe_flute_%d"%bar,.8,[_note(.07,.34,int(c[0])+24,.07,"flute"),_note(.43,.34,int(c[1])+24,.07,"flute")],add,make)
 			_wave(out,prefix+"tram_chime_%d"%bar,.95,[_note(0.,.68,int(c[0])+24,.052,"celesta"),_note(.19,.68,int(c[2])+12,.044,"bell")],add,make)
 			_wave(out,prefix+"tower_bell_%d"%bar,1.6,[_note(0.,1.55,int(c[0])+24,.074,"bell"),_note(.375,1.2,int(c[1])+24,.035,"bell")],add,make)
