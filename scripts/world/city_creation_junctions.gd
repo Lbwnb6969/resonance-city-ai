@@ -404,33 +404,11 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 				var outer_b:=finish+n1.normalized()*(radius+extra_b)
 				var polygon:=PackedVector2Array([base_a,base_b,outer_b,outer_a])
 				if Geometry2D.is_polygon_clockwise(polygon): polygon.reverse()
-				var pieces: Array=[polygon]
-				# Remove actual core, not a bounding box: loops and islands stay
-				# authored. A candidate lies beside one original segment, so test
-				# its centroid against the complete even/odd core before clipping.
-				for outline: PackedVector2Array in core:
-					if Geometry2D.is_polygon_clockwise(outline): continue
-					var next: Array=[]
-					for piece: PackedVector2Array in pieces: next.append_array(Geometry2D.clip_polygons(piece,outline))
-					pieces=next
-				for blocker: PackedVector2Array in blockers:
-					var next: Array=[]
-					for piece: PackedVector2Array in pieces:
-						if _bounds(piece).intersects(_bounds(blocker),true): next.append_array(Geometry2D.clip_polygons(piece,blocker))
-						else: next.append(piece)
-					pieces=next
-				for piece: PackedVector2Array in pieces:
-					if Geometry2D.is_polygon_clockwise(piece): continue
-					# Conservative water rejection applies to the whole tiny convex
-					# piece, not just its vertices; analytic river Lipschitz <=1.005.
-					var center:=Vector2.ZERO
-					for point: Vector2 in piece: center+=point
-					center/=float(piece.size())
-					var bound:=0.0
-					for point: Vector2 in piece: bound=maxf(bound,center.distance_to(point))
-					if float(city.water_clearance(center))<bound*1.005+0.015: continue
-					result.append(piece)
+				result.append_array(_clip_patch(city,polygon,core,blockers))
 				clip_usec+=Time.get_ticks_usec()-clip_started
+	var caps_started:=Time.get_ticks_usec()
+	result.append_array(_corner_caps(city,points,radius,junctions,core,houses,doors,foreign,blockers))
+	stats["corner_caps_ms"]=float(Time.get_ticks_usec()-caps_started)/1000.
 	stats["amount_ms"]=float(amount_usec)/1000.0
 	stats["clip_ms"]=float(clip_usec)/1000.0
 	stats["pieces_before_merge"]=result.size()
@@ -439,6 +417,57 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 	stats["merge_ms"]=float(Time.get_ticks_usec()-merge_started)/1000.0
 	stats["shape_ms"]=float(Time.get_ticks_usec()-shape_started)/1000.0
 	return merged
+
+func _clip_patch(city:RefCounted,polygon:PackedVector2Array,core:Array,blockers:Array[PackedVector2Array])->Array[PackedVector2Array]:
+	var result:Array[PackedVector2Array]=[]
+	var pieces: Array=[polygon]
+	# Keep only the added band outside the original core and away from the
+	# existing obstacle set. Caps and side ribbons use the same clipping rules.
+	for outline: PackedVector2Array in core:
+		if Geometry2D.is_polygon_clockwise(outline): continue
+		var next: Array=[]
+		for piece: PackedVector2Array in pieces: next.append_array(Geometry2D.clip_polygons(piece,outline))
+		pieces=next
+	for blocker: PackedVector2Array in blockers:
+		var next: Array=[]
+		for piece: PackedVector2Array in pieces:
+			if _bounds(piece).intersects(_bounds(blocker),true): next.append_array(Geometry2D.clip_polygons(piece,blocker))
+			else: next.append(piece)
+		pieces=next
+	for piece: PackedVector2Array in pieces:
+		if Geometry2D.is_polygon_clockwise(piece): continue
+		# Conservative water rejection applies to the whole tiny convex
+		# piece, not just its vertices; analytic river Lipschitz <=1.005.
+		var center:=Vector2.ZERO
+		for point: Vector2 in piece: center+=point
+		center/=float(piece.size())
+		var bound:=0.0
+		for point: Vector2 in piece: bound=maxf(bound,center.distance_to(point))
+		if float(city.water_clearance(center))<bound*1.005+0.015: continue
+		result.append(piece)
+	return result
+
+func _corner_caps(city:RefCounted,points:Array[Vector2],radius:float,junctions:Array,core:Array,houses:Array,doors:Array,foreign:Array[Dictionary],blockers:Array[PackedVector2Array])->Array[PackedVector2Array]:
+	var result:Array[PackedVector2Array]=[]
+	for index in range(points.size()):
+		if index>0 and index<points.size()-1:
+			var incoming:Vector2=(points[index]-points[index-1]).normalized()
+			var outgoing:Vector2=(points[index+1]-points[index]).normalized()
+			if incoming.dot(outgoing)>cos(PI/12.):continue
+		var at:=points[index];var normals:Array[Vector2]=[];var amounts:Array[float]=[]
+		# Round the expanded mouth at a real cusp/terminal. The continuous
+		# side ribbons alone form a hard tip where the authored brush reverses.
+		for side in range(24):
+			var normal:=Vector2.from_angle(TAU*float(side)/24.)
+			normals.append(normal);amounts.append(_amount(city,at,normal,radius,junctions,houses,doors,foreign))
+		for side in range(24):
+			var next:=(side+1)%24
+			if maxf(amounts[side],amounts[next])<.002:continue
+			var a:=normals[side];var b:=normals[next]
+			var polygon:=PackedVector2Array([at+a*radius*.9,at+b*radius*.9,at+b*(radius+amounts[next]),at+a*(radius+amounts[side])])
+			if Geometry2D.is_polygon_clockwise(polygon):polygon.reverse()
+			result.append_array(_clip_patch(city,polygon,core,blockers))
+	return result
 
 func _corner_offset(points:Array[Vector2],index:int)->Vector2:
 	var incoming:Vector2=(points[index]-points[maxi(0,index-1)]).normalized()
@@ -527,11 +556,21 @@ func _rect_less(a: Rect2,b: Rect2) -> bool:
 	if a.size.x!=b.size.x: return a.size.x<b.size.x
 	return a.size.y<b.size.y
 
-func _points(raw: Array) -> Array[Vector2]:
+func _points(raw: Array) -> Array[Vector2]:return geometry_points(raw)
+
+static func geometry_points(raw: Array) -> Array[Vector2]:
+	# One derived centreline for both core clipping and the displayed sweep.
+	# Sub-2mm pointer jitter must not introduce a new normal or tiny reversal.
+	# The original authored arrays and all graph/undo identities remain intact.
+	var ordered:=raw
+	if raw.size()>1:
+		var first:Vector2=raw[0] if raw[0] is Vector2 else Vector2(raw[0][0],raw[0][1])
+		var last:Vector2=raw[-1] if raw[-1] is Vector2 else Vector2(raw[-1][0],raw[-1][1])
+		if first.x>last.x or (first.x==last.x and first.y>last.y):ordered=raw.duplicate();ordered.reverse()
 	var result: Array[Vector2]=[]
-	for value in raw:
-		var point:=Vector2(float(value[0]),float(value[1]))
-		if not result.is_empty() and result[-1].distance_squared_to(point)<0.00000001: continue
+	for value in ordered:
+		var point:Vector2=value if value is Vector2 else Vector2(float(value[0]),float(value[1]))
+		if not result.is_empty() and result[-1].distance_squared_to(point)<0.000004: continue
 		while result.size()>1:
 			var a:=result[-1]-result[-2]
 			var b:=point-result[-1]

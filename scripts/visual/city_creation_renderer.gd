@@ -2527,8 +2527,7 @@ func _tree(p: Vector2, scale_value: float, cypress: bool) -> void:
 
 func _road_samples(points: Array) -> Array[Vector2]:
 	var samples: Array[Vector2] = []
-	for point in points:
-		var at: Vector2 = point if point is Vector2 else Vector2(float(point[0]),float(point[1]))
+	for at:Vector2 in Junctions.geometry_points(points):
 		if samples.is_empty(): samples.append(at)
 		else:
 			var from := samples[-1]
