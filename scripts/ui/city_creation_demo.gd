@@ -1124,7 +1124,7 @@ func _input(event: InputEvent) -> void:
 			guide.close_panel()
 			get_viewport().set_input_as_handled()
 		return
-	if ledger!=null and ledger.visible():
+	if ledger!=null and ledger.visible() and ledger.blocks_world(event):
 		if event is InputEventKey and event.pressed and event.keycode in [KEY_ESCAPE,KEY_L]:
 			ledger.close_panel()
 			get_viewport().set_input_as_handled()
@@ -1132,7 +1132,7 @@ func _input(event: InputEvent) -> void:
 			guide.open_panel(1)
 			get_viewport().set_input_as_handled()
 		return
-	if journal!=null and journal.panel.visible:
+	if journal!=null and journal.panel.visible and journal.blocks_world(event):
 		if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 			journal.close_panel()
 			get_viewport().set_input_as_handled()
@@ -1213,8 +1213,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT: orbiting=event.pressed
 		return
 	if guide!=null and guide.visible(): return
-	if ledger!=null and ledger.visible(): return
-	if journal!=null and journal.panel.visible: return
+	if ledger!=null and ledger.visible() and ledger.blocks_world(event): return
+	if journal!=null and journal.panel.visible and journal.blocks_world(event): return
 	if gallery!=null and gallery.panel.visible: return
 	if strum_hold.active() and event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
 		get_viewport().set_input_as_handled();return

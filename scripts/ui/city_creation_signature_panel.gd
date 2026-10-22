@@ -2,6 +2,7 @@ extends RefCounted
 const UI = preload("res://scripts/ui/valley_ui_theme.gd")
 const Copy = preload("res://scripts/ui/city_creation_copy.gd")
 var demo: Node3D
+var scrollbook
 var panel: PanelContainer
 var button: Button
 var buttons: Dictionary = {}
@@ -19,28 +20,11 @@ func setup(owner: Node3D, parent: Control) -> void:
 	button.name = "SignatureBuildings"
 	button.tooltip_text = "达成城市与音乐里程碑后，可免费营建六座独占地标名胜（每座限一处，可随时移位或回收）"
 	demo.gallery_button.get_parent().add_child(button)
-	panel = PanelContainer.new()
-	panel.name = "SignatureCatalog"
-	parent.add_child(panel)
-	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	panel.offset_left = -354
-	panel.offset_right = -24
-	panel.offset_top = 84
-	panel.add_theme_stylebox_override("panel", UI.panel(16))
-	var scroll := ScrollContainer.new()
-	scroll.name = "LandmarkScroll"
-	scroll.custom_minimum_size = Vector2(306, minf(650.0, demo.get_viewport().get_visible_rect().size.y - 200.0))
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	panel.add_child(scroll)
-	var column := VBoxContainer.new()
-	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	column.add_theme_constant_override("separation", 10)
-	scroll.add_child(column)
+	var column:VBoxContainer=preload("res://scripts/ui/city_creation_scroll_pages.gd").landmarks(self,parent)
 	column.add_child(demo._label("地标名胜 · 每座限一处", 18))
 	var intro: Label = demo._label("里程碑达成即可免费选址落位，赋予全城持久声学与生活增益。", 13)
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	intro.custom_minimum_size.x = 290
+	intro.custom_minimum_size.x = 0
 	intro.add_theme_color_override("font_color", UI.MUTED)
 	column.add_child(intro)
 	for id: String in demo.state.Signatures.IDS:
@@ -50,17 +34,17 @@ func setup(owner: Node3D, parent: Control) -> void:
 		var card_col := VBoxContainer.new()
 		card_col.add_theme_constant_override("separation", 6)
 		card.add_child(card_col)
-		card_col.add_child(demo._label(demo.state.Signatures.NAMES[id], 16))
+		preload("res://scripts/ui/city_creation_scroll_pages.gd").label(demo,card_col,demo.state.Signatures.NAMES[id],16)
 		var sub_text: String = str(Copy.SIGNATURE_SUBTITLES.get(id, ""))
 		if not sub_text.is_empty():
 			var sub: Label = demo._label(sub_text, 12)
 			sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			sub.custom_minimum_size.x = 276
+			sub.custom_minimum_size.x = 0
 			sub.add_theme_color_override("font_color", UI.MUTED)
 			card_col.add_child(sub)
 		var label: Label = demo._label("", 13)
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		label.custom_minimum_size.x = 276
+		label.custom_minimum_size.x = 0
 		card_col.add_child(label)
 		labels[id] = label
 		var place: Button = demo._button("免费选址", begin.bind(id, ""))
@@ -80,7 +64,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 func open_panel() -> void:
 	if demo.edit_pending(): return
 	demo._cancel_draft()
-	panel.show()
+	scrollbook.show_page("landmarks")
 	refresh()
 
 func refresh() -> void:

@@ -12,6 +12,7 @@ const ROLE_NAMES = {
 }
 var demo: Node3D
 var button: Button
+var scrollbook
 var panel: Control
 var paper: PanelContainer
 var close_button: Button
@@ -28,76 +29,10 @@ func setup(owner: Node3D, parent: Control) -> void:
 	button.name = "CityLedger"
 	button.tooltip_text = "看看各家的库存与河湾已经发生的日常 · L"
 	demo.gallery_button.get_parent().add_child(button)
-	panel = Control.new()
-	panel.name = "LifeLedger"
-	parent.add_child(panel)
-	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	panel.theme = UI.make_theme()
-	var shade := ColorRect.new()
-	shade.color = Color(0.08, 0.16, 0.14, 0.56)
-	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	panel.add_child(shade)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	paper = PanelContainer.new()
-	paper.name = "LedgerPaper"
-	paper.add_theme_stylebox_override("panel", UI.panel(24))
-	panel.add_child(paper)
-	paper.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 12)
-	paper.add_child(column)
-	var heading := HBoxContainer.new()
-	heading.add_theme_constant_override("separation", 12)
-	column.add_child(heading)
-	var title: Label = demo._label("生活账本", 24)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	heading.add_child(title)
-	guide_button = demo._button("营造手札 · F1", func() -> void:
-		if demo.get("guide") != null: demo.guide.open_panel(1))
-	guide_button.name = "OpenGuideFromLedger"
-	guide_button.focus_mode = Control.FOCUS_NONE
-	guide_button.tooltip_text = "查看经营闭环、工坊加持与建筑 1–5 级进化指南 · F1"
-	heading.add_child(guide_button)
-	close_button = demo._button("回到河湾 · Esc", close_panel)
-	close_button.name = "CloseLedger"
-	close_button.focus_mode = Control.FOCUS_ALL
-	heading.add_child(close_button)
-	var subtitle: Label = demo._label("一炉面包，一桌茶，一场演出，慢慢记在这里。", 15)
-	subtitle.add_theme_color_override("font_color", UI.MUTED)
-	column.add_child(subtitle)
-	column.add_child(HSeparator.new())
-	scroll = ScrollContainer.new()
-	scroll.name = "LedgerScroll"
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.focus_mode = Control.FOCUS_ALL
-	column.add_child(scroll)
-	body = RichTextLabel.new()
-	body.name = "LedgerEntries"
-	body.bbcode_enabled = false
-	body.fit_content = true
-	body.scroll_active = false
-	body.selection_enabled = true
-	body.custom_minimum_size.x = 320
-	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_theme_font_size_override("normal_font_size", 16)
-	body.add_theme_color_override("default_color", UI.INK)
-	body.add_theme_constant_override("line_separation", 5)
-	scroll.add_child(body)
-	var note: Label = demo._label("门路只表示门前已接通道路；成绩只记实际完成的日常。", 13)
-	note.add_theme_color_override("font_color", UI.MUTED)
-	column.add_child(note)
-	panel.resized.connect(_fit)
-	_fit()
-	panel.hide()
+	preload("res://scripts/ui/city_creation_scroll_pages.gd").ledger(self,parent)
 
 func _fit() -> void:
-	var dimensions := Vector2(minf(900.0, panel.size.x - 48.0), minf(680.0, panel.size.y - 64.0))
-	paper.offset_left = -dimensions.x * 0.5
-	paper.offset_right = dimensions.x * 0.5
-	paper.offset_top = -dimensions.y * 0.5
-	paper.offset_bottom = dimensions.y * 0.5
+	scrollbook.fit()
 
 func open_panel() -> void:
 	if demo.edit_pending() or demo.gallery.busy: return
@@ -105,13 +40,13 @@ func open_panel() -> void:
 	demo.orbiting = false
 	demo.panning = false
 	demo.town.clear_preview()
-	panel.show()
+	scrollbook.show_page("ledger")
 	_last_refresh = -500
 	refresh()
 	close_button.grab_focus()
 
 func close_panel() -> void:
-	panel.hide()
+	scrollbook.close_page("ledger")
 	close_button.release_focus()
 	demo.preview_key = ""
 
@@ -247,3 +182,6 @@ static func cafe_activity(status: Dictionary) -> String:
 		"leaving": "一桌茶聚已完成，街坊正在沿路离席。",
 	}
 	return str(descriptions.get(str(status.get("phase", "closed")), "街坊正在赴约。"))
+
+func blocks_world(event:InputEvent)->bool:
+	return scrollbook.blocks_world(event)

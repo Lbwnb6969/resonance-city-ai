@@ -13,7 +13,8 @@ const PALETTE_COLORS:Array[Color]=[Color("#b85c3e"),Color("#347e88"),Color("#c3a
 var demo
 var root:Control
 var overlay:Control
-var card:PanelContainer
+var card:Control
+var ring=preload("res://scripts/ui/city_creation_roof_ring.gd").new()
 var name_field:LineEdit
 var tier:Label
 var status:Label
@@ -105,7 +106,7 @@ func setup(owner,ui_root:Control)->void:
 	temperament_button=_seal(actions,"music","律动",_cycle_temperament);temperament_button.custom_minimum_size=Vector2(76,42)
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
 	parade_button=_seal(actions,"music","绘巡游",func()->void:demo.conductor_gesture.arm(target_house_id));parade_button.custom_minimum_size=Vector2(76,42)
-	card.hide()
+	ring.setup(self)
 
 func _hide_color_menus(picker:Node)->void:
 	# The expanded palette is a color wheel. Keep precise hex entry, sampling
@@ -177,6 +178,7 @@ func refresh()->void:
 	if demo.state.transit_efficiency(target_house_id)>1.:status.text+="\n轨交直达 · "+("品茶效率+30%" if role=="garden_cafe" else "制作效率+30%")
 	var biome_label:=str(demo.state.biome_bonus(target_house_id).get("label",""))
 	if not biome_label.is_empty():status.text+="\n"+biome_label
+	status.tooltip_text=status.text;status.text=ring.status_caption(self,house)
 	_update_anchor(house)
 
 func follow()->void:
@@ -186,18 +188,7 @@ func follow()->void:
 	card.show();_update_anchor(house)
 
 func _update_anchor(house:Dictionary)->void:
-	var highest:=0
-	for cell:Dictionary in house.get("cells",[]):highest=maxi(highest,int(cell.get("level",0)))
-	var world:=Vector3(float(house.origin[0]),float(house.get("base_y",0.))+float(highest+1)*demo.FLOOR+1.2,float(house.origin[1]))
-	if demo.camera.is_position_behind(world):card.hide();return
-	var projected:Vector2=demo.camera.unproject_position(world);var size:Vector2=card.get_combined_minimum_size()
-	card.size=size
-	var viewport:=overlay.get_viewport_rect().size
-	var y:float=projected.y-size.y-14.
-	if y<66.:y=projected.y+22.
-	var target:=Vector2(clampf(projected.x-size.x*.5,12.,maxf(12.,viewport.x-size.x-12.)),clampf(y,62.,maxf(62.,viewport.y-size.y-112.)))
-	card.position=target if _last_position==Vector2.ZERO else _last_position.lerp(target,.35)
-	_last_position=card.position
+	ring.follow(self,house)
 
 func _toggle_colors()->void:
 	color_panel.visible=not color_panel.visible

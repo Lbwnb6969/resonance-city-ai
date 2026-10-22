@@ -139,8 +139,8 @@
         "scripts/ui/city_creation_signature_panel.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_spatial_popover_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_spatial_scroll.gd -- --isolated-session (24 PASS: actual camera projection, four storeys/three yaws/two resolutions, edge selections and one nonmodal sheet); tests/test_city_creation_legacy_roundtrip.gd, same flags (375 PASS). Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_spatial_popover_live.gd -- --isolated-session (65 PASS: original36 actual transactions plus29 hollow/scroll criteria). Six actual seals remain above fourth-storey roof, islands do not intersect its projected rectangle, real center pointer and house selection pass;310px shared journal/landmarks/ledger, J/L and mouse tabs, sixth landmark reachable; actual build/CtrlZ/right-drag while reading in1440/1024. Authored snapshot and history restored, only intentional ID high-water increases. Twelve day/evening/night and paper PNG reviewed; actual3.250794s Master peak.01818848/clipped0; framep955.785ms/max6.388ms. Additional GL check_creation_personalization_live.gd with same flags and --out-dir=res://验证记录/M08/色翼回归 (65 PASS, actual color-wheel popup/custom colors/fast recolor/undo/redo/roof extension). Fixed12+4+6+2 and personal save unchanged.310px leaves78.4722percent at1440 and69.7266percent at1024; no full-screen dimmer or world input lock. Demo only4 guard delegates. Initial focus warnings and all-snapshot assertion retained, fixed focus permissions and separately verified never-recycled IDs; final canonical rerun clean PASS."
     },
     {
       "id": "M09",

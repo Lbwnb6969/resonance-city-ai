@@ -6,6 +6,7 @@ const UI = preload("res://scripts/ui/valley_ui_theme.gd")
 const BASE_NAMES = ["暖石与陶瓦", "白灰与青瓦", "沙岩与赭顶", "奶油与麦金"]
 const FINISH_ORDER = ["dawn", "tide", "festival", "nocturne","river_jade","opal"]
 var demo: Node3D
+var scrollbook
 var panel: Control
 var paper: PanelContainer
 var cards: VBoxContainer
@@ -53,88 +54,10 @@ func setup(owner: Node3D, parent: Control) -> void:
 		icon.fill(palette[0])
 		icon.fill_rect(Rect2i(18, 0, 18, 16), palette[1])
 		_icons.append(ImageTexture.create_from_image(icon))
-	panel = Control.new()
-	panel.name = "GrowthJournal"
-	parent.add_child(panel)
-	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	panel.theme = UI.make_theme()
-	var shade := ColorRect.new()
-	shade.color = Color(0.08, 0.16, 0.14, 0.56)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	panel.add_child(shade)
-	paper = PanelContainer.new()
-	paper.name = "JournalPaper"
-	panel.add_child(paper)
-	paper.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	paper.offset_left = -360
-	paper.offset_right = 360
-	paper.offset_top = -284
-	paper.offset_bottom = 284
-	paper.add_theme_stylebox_override("panel", UI.panel(24))
-	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 10)
-	paper.add_child(column)
-	var title_row := HBoxContainer.new()
-	title_row.add_theme_constant_override("separation", 10)
-	column.add_child(title_row)
-	var title: Label = demo._label("河湾手记", 24)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_row.add_child(title)
-	guide_button = demo._button("营造手札 · F1", func() -> void:
-		if demo.get("guide") != null: demo.guide.open_panel(0))
-	guide_button.name = "OpenGuideFromJournal"
-	guide_button.tooltip_text = "查看完整营造手势、1–5级进化与四温区声场说明 · F1"
-	title_row.add_child(guide_button)
-	close_button = demo._button("回到河湾 · Esc", close_panel)
-	close_button.focus_mode = Control.FOCUS_ALL
-	close_button.name = "CloseJournal"
-	title_row.add_child(close_button)
-	var subtitle: Label = demo._label("从一座桥、一炉面包，到有自己声音的城。", 15)
-	subtitle.add_theme_color_override("font_color", UI.MUTED)
-	column.add_child(subtitle)
-	era_label = demo._label("", 13)
-	era_label.name = "EraChapters"
-	column.add_child(era_label)
-	var next_row := HBoxContainer.new()
-	next_row.add_theme_constant_override("separation", 12)
-	column.add_child(next_row)
-	next_label = demo._label("", 14)
-	next_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	next_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	next_row.add_child(next_label)
-	next_button = demo._button("", _follow_next)
-	next_button.name = "NextJournalStep"
-	UI.primary(next_button)
-	next_row.add_child(next_button)
-	column.add_child(HSeparator.new())
-	var scroll := ScrollContainer.new()
-	scroll.name = "Chapters"
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	column.add_child(scroll)
-	cards = VBoxContainer.new()
-	cards.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cards.add_theme_constant_override("separation", 14)
-	scroll.add_child(cards)
-	_create_score_cards()
-	var footer: Label = demo._label("达成会留下新饰色。随时继续自由建造，没有期限。", 13)
-	footer.add_theme_color_override("font_color", UI.MUTED)
-	column.add_child(footer)
-	panel.resized.connect(_fit)
-	_fit()
-	panel.hide()
-	refresh(false)
+	preload("res://scripts/ui/city_creation_scroll_pages.gd").journal(self,parent)
 
 func _fit() -> void:
-	if paper == null or panel == null or panel.size.x <= 0.0: return
-	var w := minf(720.0, panel.size.x - 48.0)
-	var h := minf(568.0, panel.size.y - 64.0)
-	paper.offset_left = -w * 0.5
-	paper.offset_right = w * 0.5
-	paper.offset_top = -h * 0.5
-	paper.offset_bottom = h * 0.5
+	scrollbook.fit()
 
 func open_panel() -> void:
 	if demo.edit_pending() or demo.gallery.busy: return
@@ -142,13 +65,12 @@ func open_panel() -> void:
 	demo.orbiting = false
 	demo.panning = false
 	demo.town.clear_preview()
-	panel.show()
-	_fit()
+	scrollbook.show_page("journal")
 	refresh()
 	close_button.grab_focus()
 
 func close_panel() -> void:
-	panel.hide()
+	scrollbook.close_page("journal")
 	close_button.release_focus()
 	demo.preview_key = ""
 
@@ -216,6 +138,7 @@ func _create_cards() -> void:
 		card.add_theme_constant_override("separation", 5)
 		cards.add_child(card)
 		var title: Label = demo._label("", 18)
+		title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		card.add_child(title)
 		_chapter_titles.append(title)
 		var reward: Label = demo._label("", 13)
@@ -224,7 +147,7 @@ func _create_cards() -> void:
 		_chapter_rewards.append(reward)
 		var labels: Array[Label] = []
 		for goal_index in range(row.goals.size()):
-			var line := HBoxContainer.new()
+			var line := VBoxContainer.new()
 			card.add_child(line)
 			var label: Label = demo._label("", 14)
 			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -289,11 +212,12 @@ func offer_era_choice(era:String)->void:
 
 func _create_score_cards()->void:
 	score_title=demo._label("时代乐章 · 每个时代选择一枚铭牌",18)
+	score_title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	score_title.name="ScoreModifiersTitle"
 	cards.add_child(score_title)
 	for index in range(demo.state.ScoreModifiers.ERAS.size()):
 		var era:String=demo.state.ScoreModifiers.ERAS[index]
-		var row:=HBoxContainer.new()
+		var row:=VBoxContainer.new()
 		row.name="ScoreCards_"+era
 		row.add_theme_constant_override("separation",18)
 		cards.add_child(row)
@@ -340,3 +264,6 @@ func _scroll_score_choice(era:String)->void:
 	if panel.visible and score_cards.has(era):
 		var scroll:ScrollContainer=cards.get_parent()
 		scroll.ensure_control_visible(score_cards[era])
+
+func blocks_world(event:InputEvent)->bool:
+	return scrollbook.blocks_world(event)

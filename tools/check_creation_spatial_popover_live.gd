@@ -46,6 +46,8 @@ func run()->void:
 		actual.erase("revision");expected.erase("revision")
 		check(actual==expected,"ordinary undo restores all authored fields")
 		demo.select_tool(2);await settle();check(not pop.card.visible,"tool change closes compass")
+	var spatial:Dictionary=await preload("res://tools/fixtures/city_creation_spatial_scroll_live.gd").new().run(demo)
+	for label:String in spatial.checks:check(spatial.checks[label],"M08: "+label)
 	var report:Dictionary={"ok":failures.is_empty(),"count":count,"failures":failures}
 	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("SPATIAL_POPOVER ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

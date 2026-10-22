@@ -17,7 +17,7 @@ static func setup(demo:Node3D)->void:
 	demo.quest.reparent(details);demo.life_info.reparent(details)
 	var echo:=Label.new();echo.name="RegionalEchoBadge";echo.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	echo.add_theme_font_size_override("font_size",12);details.add_child(echo);echo.hide();demo.set_meta("regional_echo_badge",echo)
-	var links:=HBoxContainer.new();links.name="JournalCityLinks";links.add_theme_constant_override("separation",8);details.add_child(links)
+	var links:=VBoxContainer.new();links.name="JournalCityLinks";links.add_theme_constant_override("separation",8);details.add_child(links)
 	for button:Button in [demo.signatures.button,demo.ledger.button,audition]:
 		button.reparent(links);button.add_theme_font_size_override("font_size",12)
 		button.text="地标名胜" if button==demo.signatures.button else "生活账本 · L" if button==demo.ledger.button else "点房试听 · P"
@@ -39,4 +39,4 @@ static func setup(demo:Node3D)->void:
 	parent.remove_child(help_panel);help_panel.queue_free()
 	parent.remove_child(old_header);old_header.queue_free()
 	# Modal papers stay above the living ribbon and circular controls.
-	for panel:Control in [demo.gallery.panel,demo.journal.panel,demo.ledger.panel,demo.guide.panel]:parent.move_child(panel,parent.get_child_count()-1)
+	for panel:Control in [demo.gallery.panel,demo.journal.scrollbook,demo.guide.panel]:parent.move_child(panel,parent.get_child_count()-1)
