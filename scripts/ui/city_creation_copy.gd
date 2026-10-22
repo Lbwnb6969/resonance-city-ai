@@ -16,7 +16,7 @@ const GAME_SUBTITLE_NIGHT := "星夜灯火 · 万家暖窗共鸣"
 
 const OPENING_TOAST := "邻近三屋自然成歌。点屋选用途，选「加建」扩房加层。"
 const SAVE_BLOCKED_TOAST := "作品读取失败，原文件已保留。当前河湾不会覆盖它。"
-const EDIT_PENDING_HINT := "河湾正在落定新变化。\n可以移动视野或撤销。"
+const EDIT_PENDING_HINT := "河湾正在落定新变化。\n可以继续加建、移动视野或撤销。"
 const EDIT_PENDING_ROAD_TOAST := "小路正在接合，片刻后继续营建。"
 const SAVE_PENDING_TOAST := "小路接合完成后保存这座河湾。"
 const SAVE_SUCCESS_TOAST := "河湾已保存，下次从这里继续。"

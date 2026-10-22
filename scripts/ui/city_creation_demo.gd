@@ -135,6 +135,7 @@ var vegetation_radius := 1.4
 var vegetation_kind := "olive"
 var vegetation_single := true
 var house_module_mode := false
+var pending_modules:=preload("res://scripts/visual/city_creation_pending_modules.gd").new()
 var vegetation_panel: PanelContainer
 var water_panel: PanelContainer
 var water_status: Label
@@ -1403,13 +1404,17 @@ func _process(delta: float) -> void:
 			if tool==3: removal_info.text=REMOVAL_HINT
 
 func _ray_hit(screen: Vector2) -> Dictionary:
-	# During a queued edit the old visible collision belongs to the old city.
-	# New road gestures use the ground plane until the new geometry commits.
-	if _edit_pending: return {}
+	# House editing keeps the published collision and the committed addition
+	# outlines available. Road gestures still wait for the atomic ground update.
+	if _edit_pending and tool not in [0,1]: return {}
 	var origin := camera.project_ray_origin(screen)
 	var direction := camera.project_ray_normal(screen)
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction * 120.0)
-	return get_world_3d().direct_space_state.intersect_ray(query)
+	var hit:Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
+	if _edit_pending:
+		var addition:Dictionary=pending_modules.pick(origin,direction)
+		if not addition.is_empty() and (hit.is_empty() or pending_modules.supersedes(town,hit,addition) or origin.distance_squared_to(addition.position)<origin.distance_squared_to(hit.position)):return addition
+	return hit
 
 func _ground_at(screen: Vector2) -> Vector2:
 	var origin := camera.project_ray_origin(screen)
@@ -1489,9 +1494,9 @@ func _update_hover() -> void:
 			town.show_vegetation_brush(ground, .22 if vegetation_single else vegetation_radius, Input.is_key_pressed(KEY_SHIFT))
 		return
 	var body: Object = hovered.get("collider")
-	if body != null and body.has_meta("house_id"):
-		var house_id := str(body.get_meta("house_id"))
-		var cell_id := str(body.get_meta("cell_id"))
+	if hovered.has("house_id") or (body != null and body.has_meta("house_id")):
+		var house_id := str(hovered.house_id) if hovered.has("house_id") else str(body.get_meta("house_id"))
+		var cell_id := str(hovered.cell_id) if hovered.has("cell_id") else str(body.get_meta("cell_id"))
 		var cell := _find_cell(house_id, cell_id)
 		if cell.is_empty(): return
 		if tool == 4 or (tool==0 and not house_module_mode):
@@ -1958,6 +1963,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 		life.set_budget_hold(true)
 		life.begin_budget_sync()
 		town.request_budget_rebuild()
+		pending_modules.sync(town,kind in ["room","terrace","house"])
 		preview_key=""
 		if pluck_house.is_empty(): music.play_edit(kind)
 		else: music.play_house(pluck_house)
@@ -1970,6 +1976,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 		life.cancel_budget_sync()
 		town.cancel_budget_rebuild()
 		_edit_pending=false
+	pending_modules.clear()
 	life._sync()
 	if not selected_house.is_empty() and town._house_record(selected_house).is_empty():
 		selected_house=""
@@ -2011,6 +2018,7 @@ func _poll_edit_budget() -> void:
 	_edit_polls+=1
 	_edit_poll_max_ms=maxf(_edit_poll_max_ms,(Time.get_ticks_usec()-started)/1000.0)
 	if not bool(render.get("committed",false)): return
+	pending_modules.clear()
 	if float(render.get("work_ms",0.0)) > 2.2:
 		_life_commit_render=render
 		return
@@ -2042,7 +2050,9 @@ func _finish_edit_publication(render: Dictionary, started: int) -> void:
 
 func _history(forward: bool) -> void:
 	_cancel_draft()
-	_after_edit(state.redo() if forward else state.undo(), "history")
+	var result:Dictionary=state.redo() if forward else state.undo()
+	if result.ok:pending_modules.tracking=true
+	_after_edit(result, "history")
 
 func _cancel_draft() -> void:
 	if signatures!=null:signatures.cancel()

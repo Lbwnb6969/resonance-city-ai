@@ -1304,7 +1304,8 @@ func _preview_removed_roof(house: Dictionary, cell: Dictionary, color: Color) ->
 		roof.material_override=material
 		roof.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
-func _preview_cell(house: Dictionary, cell: Dictionary, color: Color, valid: bool) -> void:
+func _preview_cell(house: Dictionary, cell: Dictionary, color: Color, valid: bool, parent:Node3D=null) -> MeshInstance3D:
+	if parent==null:parent=preview
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -1313,14 +1314,15 @@ func _preview_cell(house: Dictionary, cell: Dictionary, color: Color, valid: boo
 	var level := int(cell.get("level",0))
 	var height := 0.16 if str(cell.get("kind","room")) == "terrace" else FLOOR
 	var pos := _cell_position(house,cell)+Vector3(0,level*FLOOR+height*0.5+0.04,0)
-	var volume := _box(preview,Vector3(UNIT+0.04,height+0.03,UNIT+0.04),pos,material)
+	var volume := _box(parent,Vector3(UNIT+0.04,height+0.03,UNIT+0.04),pos,material)
 	volume.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# A clear outline remains readable against both stone and foliage.
 	var edge := _material(Color("f3e7ae") if valid else Color("ef7862"))
 	for x in [-1,1]:
-		_box(preview,Vector3(0.025,0.035,UNIT+0.1),pos+Vector3(x*(UNIT*0.5+0.03),height*0.5,0),edge)
+		_box(parent,Vector3(0.025,0.035,UNIT+0.1),pos+Vector3(x*(UNIT*0.5+0.03),height*0.5,0),edge)
 	for z in [-1,1]:
-		_box(preview,Vector3(UNIT+0.1,0.035,0.025),pos+Vector3(0,height*0.5,z*(UNIT*0.5+0.03)),edge)
+		_box(parent,Vector3(UNIT+0.1,0.035,0.025),pos+Vector3(0,height*0.5,z*(UNIT*0.5+0.03)),edge)
+	return volume
 
 func _house_record(id: String) -> Dictionary:
 	for house: Dictionary in state.houses:
