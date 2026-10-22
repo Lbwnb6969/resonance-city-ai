@@ -1,4 +1,5 @@
 extends SceneTree
+const AudioComparison=preload("res://tests/city_creation_audio_comparison.gd")
 const Music=preload("res://scripts/audio/city_creation_music.gd")
 const Bank=preload("res://scripts/audio/city_creation_bank_cache.gd")
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
@@ -22,7 +23,7 @@ func run()->void:
 		for note:Dictionary in notes:
 			synth._add_harmony_note(full,note.start,note.duration,note.midi,note.gain,note.timbre,true)
 			if note.start>=21. and note.timbre=="pad":final.append(int(note.midi))
-		check(synth._pcm_stream(full,true).data==bank.harmony[key].data,"independent event resynthesis exactly matches the actual reward foundation: "+str(mode))
+		check(AudioComparison.matches(synth._pcm_stream(full,true),bank.harmony[key]),"independent event resynthesis exactly matches the actual reward foundation: "+str(mode))
 		check(final==Palette.chords(mode)[7],"stored final bar has the actual intended reward tonic: "+str(mode))
 		var keys_safe:=true;var key_waves:=true
 		for rank in range(14):
@@ -30,7 +31,7 @@ func run()->void:
 			keys_safe=keys_safe and posmod(pitch,12) in ([0,2,4,7,9] if mode==8 else [5,7,9,10,0,2,4])
 			var pcm:=PackedFloat32Array();pcm.resize(int(.42*22050.))
 			synth._add_harmony_note(pcm,0.,.38,pitch,.072,"piano",false)
-			key_waves=key_waves and synth._pcm_stream(pcm,false).data==bank.harmony[prefix+"stair_key_"+str(rank)].data
+			key_waves=key_waves and AudioComparison.matches(synth._pcm_stream(pcm,false),bank.harmony[prefix+"stair_key_"+str(rank)])
 		check(keys_safe and key_waves,"all fourteen real key WAVs match independently generated reward pitches: "+str(mode))
 		var present:=true
 		for stem:String in synth.HarmonicEmergence.LEADS:

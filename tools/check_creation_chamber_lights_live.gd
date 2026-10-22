@@ -18,10 +18,11 @@ func focus(at:Vector2,zoom:float)->void:
 	var start:=Time.get_ticks_msec()
 	while (not demo.resonance_snapshot.get("audible",false) or demo.town.living_music.strength_at(at)<=0.) and Time.get_ticks_msec()-start<6500:await process_frame
 	for i in range(12):await process_frame
-func lamp()->Dictionary:
+func lamp(within:Node=null)->Dictionary:
 	for ref:WeakRef in demo.town.promenade._lamp_rigs:
 		var node:MultiMeshInstance3D=ref.get_ref()
 		if node==null or node.name!="LampHalos":continue
+		if within!=null and not within.is_ancestor_of(node):continue
 		for i in range(node.multimesh.instance_count):
 			if node.multimesh.get_instance_custom_data(i).r>.05:
 				return {"node":node,"index":i,"at":node.multimesh.get_instance_transform(i).origin}
@@ -95,7 +96,9 @@ func shader_probes(water:MeshInstance3D,source_material:ShaderMaterial,lit:Dicti
 	material.set_shader_parameter("water_base_y",source_material.get_shader_parameter("water_base_y"))
 	var bounds:AABB=clone.transform*water.mesh.get_aabb();var center:=bounds.get_center()
 	facts.water_probe={"bounds":bounds,"transform":clone.transform,"base":material.get_shader_parameter("water_base_y"),"original_base":source_material.get_shader_parameter("water_base_y")}
-	camera.size=maxf(bounds.size.x,bounds.size.y)*1.4;camera.position=center+Vector3(0,0,3);camera.look_at(center)
+	# Imported water surfaces are horizontal discs. A slight downward view
+	# makes their silhouette measurable instead of viewing both edge-on.
+	camera.size=maxf(bounds.size.x,bounds.size.y)*1.4;camera.position=center+Vector3(0,.7,3);camera.look_at(center)
 	var masks:Array[Rect2i]=[]
 	for amount:float in [0.,1.]:
 		material.set_shader_parameter("choir_pulse",amount)
@@ -170,8 +173,9 @@ func run()->void:
 		var old_id:int=lit.node.get_instance_id()
 		demo._after_edit(demo.state.remove_road(road_id),"erase");await settle()
 		demo._history(false);await settle();await focus(Vector2(anchor.x,anchor.z),13.)
-		var restored:=lamp()
+		var restored:=lamp(demo.town.road_roots.get(road_id))
 		check(demo.state.roads.any(func(row):return row.id==road_id) and not restored.is_empty() and restored.node.get_instance_id()!=old_id,"road undo publishes fresh, scoped lamp instances through normal staging adoption")
+		facts.restored_road=road_id
 		await shot("restored_lamps")
 	var current:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():current.append(player.get_instance_id())

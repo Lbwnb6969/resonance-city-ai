@@ -19,10 +19,33 @@ func view(city:RefCounted,clock:float)->Dictionary:
 	var records:Dictionary=Catalog.prepare(city).houses
 	var acoustic:=Acoustic.new();acoustic.focus=Vector2(-23,-17);acoustic.evaluate(records,[],[])
 	return {"records":records,"snapshot":{"audible":true,"clock_sec":clock,"choral_wave":Harmony.choral_wave(records,acoustic,clock)}}
+func fountain_geometry(host:Node3D)->void:
+	var court:=Courts.new();court.setup(host)
+	var node:=Node3D.new();host.add_child(node)
+	var at:=Vector2(7.,-11.);var scale:=.16;var anchor_y:=1.3
+	court._fountain(node,{"at":at,"scale":scale},anchor_y)
+	var water:MeshInstance3D=node.get_node("FountainWater")
+	var jet:MeshInstance3D=node.get_node("FountainJet")
+	var source:Dictionary=court.source_parts.filter(func(part):return part.name=="FountainWater")[0]
+	var expected:Transform3D=Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*scale),Vector3(at.x,anchor_y,at.y))*source.transform
+	check(water.mesh==source.mesh and water.transform.is_equal_approx(expected),"added jet preserves the recovered basin mesh and complete nonzero-height placement")
+	var upper:=-INF
+	for vertex:Vector3 in source.faces:upper=maxf(upper,(expected*vertex).y)
+	check(is_equal_approx(float(water.material_override.get_shader_parameter("water_base_y")),upper),"both recovered basin surfaces lie at or below the fixed shader anchor")
+	check(is_equal_approx(jet.position.y-jet.mesh.height*.5,upper) and jet.position.x==at.x and jet.position.z==at.y,"the central jet starts exactly on the real upper basin")
+	check(jet.mesh.height>0. and jet.mesh.bottom_radius>jet.mesh.top_radius and jet.mesh.top_radius>0.,"a finite tapered water column exists above the recovered flat surfaces")
+	check(jet.material_override==water.material_override and jet.extra_cull_margin>=jet.mesh.height*.065,"jet shares the actual choir shader and covers its maximum vertex displacement")
+	var collision:CollisionShape3D=node.get_node("FountainObstacle").get_child(0)
+	var original_stone_vertices:=0
+	for part:Dictionary in court.source_parts:
+		if part.name!="FountainWater":original_stone_vertices+=part.faces.size()
+	check(collision.shape.get_faces().size()==original_stone_vertices,"water motion adds no obstacle or duplicate stone collision")
+	node.free();court.layer.free()
 func run()->void:
 	var city:=State.new();city.initialize_empty()
 	for at:Vector2 in [Vector2(-28,-22),Vector2(-23.5,-22),Vector2(-19,-22)]:check(city.add_house(at).ok,"authored initial choir house")
 	var host:=Host.new();host.state=city;root.add_child(host)
+	fountain_geometry(host)
 	var visual:=Visual.new();visual.setup(host)
 	var prepared:=view(city,1.2);var original:=city.snapshot()
 	visual.update(prepared.records,prepared.snapshot,city.revision)

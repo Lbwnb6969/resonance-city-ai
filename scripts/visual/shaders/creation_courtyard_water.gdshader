@@ -16,8 +16,8 @@ float ripple(vec2 at) {
 }
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
-	// Preserve the recovered water mesh and its lowest basin point; only
-	// its upper streams gently rise with the actual choir's three-second bar.
+	// Both recovered basin surfaces stay seated; the added central jet above
+	// the upper basin gently rises with the actual choir's three-second bar.
 	vec3 lifted=world_at;
 	lifted.y+=max(0.,world_at.y-water_base_y)*.065*choir_pulse;
 	VERTEX=(inverse(MODEL_MATRIX)*vec4(lifted,1.)).xyz;

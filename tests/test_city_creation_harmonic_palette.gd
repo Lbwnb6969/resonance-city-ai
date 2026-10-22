@@ -1,4 +1,5 @@
 extends SceneTree
+const AudioComparison=preload("res://tests/city_creation_audio_comparison.gd")
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 const Score=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 const Acoustic=preload("res://scripts/audio/city_creation_acoustic_field.gd")
@@ -53,7 +54,7 @@ func _bank()->void:
 		var expected:=PackedFloat32Array();expected.resize(66150)
 		for event:Dictionary in bank.report.variation_notes[key]:
 			if event.start<3.:music._add_harmony_note(expected,event.start,event.duration,event.midi,event.gain,event.timbre,false)
-		_check(music._pcm_stream(expected,false).data==wave.data.slice(0,132300),"independently synthesized first motif matches the actual palette PCM: "+str(mode))
+		_check(AudioComparison.matches(music._pcm_stream(expected,false),wave),"independently synthesized first motif matches the actual palette audio: "+str(mode))
 		for kind:String in ["foundation","air","terrace","cafe_flute_0","tower_bell_0","reply_warm_0","bakery_baked_0","travel_bridge_0","tram_chime_0","quality_upgrade_0"]:
 			var id:String="%d/%s"%[mode,kind]
 			_check(bank.harmony.has(id) and bank.report.harmony_peaks[id]>0. and bank.report.harmony_peaks[id]<=.180001,"real harmonized bed or service wave is present and bounded: "+id)

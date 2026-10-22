@@ -1,4 +1,5 @@
 extends SceneTree
+const AudioComparison=preload("res://tests/city_creation_audio_comparison.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Music=preload("res://scripts/audio/city_creation_music.gd")
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
@@ -52,14 +53,14 @@ func run()->void:
 			var samples:=PackedFloat32Array();samples.resize(66150)
 			for event:Dictionary in bank.report.variation_notes[name]:
 				if float(event.start)<3.:music._add_harmony_note(samples,event.start,event.duration,event.midi,event.gain,event.timbre,false)
-			check(music._pcm_stream(samples,false).data==wave.data.slice(0,132300),"independent note synthesis proves the actual modal melody PCM: "+str(mode))
+			check(AudioComparison.matches(music._pcm_stream(samples,false),wave),"independent note synthesis proves the actual modal melody audio: "+str(mode))
 			var notes_ok:=true
 			for rank in range(14):
 				var key:="%d/stair_key_%d"%[mode,rank];var note:Dictionary=bank.report.harmony_notes[key][0]
 				notes_ok=notes_ok and posmod(int(note.midi),12) in EXPECTED[mode] and note.timbre=="piano"
 				samples=PackedFloat32Array();samples.resize(9261)
 				music._add_harmony_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,false)
-				notes_ok=notes_ok and music._pcm_stream(samples,false).data==bank.harmony[key].data
+				notes_ok=notes_ok and AudioComparison.matches(music._pcm_stream(samples,false),bank.harmony[key])
 			check(notes_ok,"fourteen actual piano keys match their note score and PCM: "+str(mode))
 		var different:=true
 		for a in range(waves.size()):

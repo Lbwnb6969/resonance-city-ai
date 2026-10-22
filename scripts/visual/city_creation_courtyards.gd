@@ -184,11 +184,19 @@ func _fountain(root: Node3D,plan: Dictionary,anchor_y: float) -> void:
 		instance.material_override = material if water else stone_material
 		if water: instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		if water:
-			var water_base:=INF;var low:=Vector3.INF;var high:=Vector3(-INF,-INF,-INF)
+			var water_top:=-INF
 			for point:Vector3 in part.faces:
-				water_base=minf(water_base,(instance.transform*point).y);low=low.min(point);high=high.max(point)
-			material.set_shader_parameter("water_base_y",water_base)
-			instance.custom_aabb=AABB(low,high-low).grow((high-low).length()*.07)
+				water_top=maxf(water_top,(instance.transform*point).y)
+			# The recovered mesh contains two horizontal basin surfaces, not a
+			# stream. Keep both surfaces seated and add a small tapered central jet.
+			material.set_shader_parameter("water_base_y",water_top)
+			var jet_mesh:=CylinderMesh.new()
+			jet_mesh.bottom_radius=scale_value*.065;jet_mesh.top_radius=scale_value*.012
+			jet_mesh.height=scale_value*1.4;jet_mesh.radial_segments=8;jet_mesh.rings=3
+			var jet:=MeshInstance3D.new();jet.name="FountainJet";jet.mesh=jet_mesh
+			jet.position=Vector3(anchor.x,water_top+jet_mesh.height*.5,anchor.z)
+			jet.material_override=material;jet.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			jet.extra_cull_margin=jet_mesh.height*.07;root.add_child(jet)
 		root.add_child(instance)
 		if not water:
 			for point: Vector3 in part.faces: faces.append((relative*point)*scale_value)
