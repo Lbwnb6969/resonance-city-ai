@@ -3,7 +3,7 @@ const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Fixture=preload("res://tests/test_city_creation_tram.gd")
 const Stroke=preload("res://scripts/world/city_creation_stroke.gd")
-const OUT="res://验证记录/曲线电车实窗_2026-10-22"
+var OUT="res://验证记录/曲线电车实窗_2026-10-22"
 var demo
 var sampling:=false
 var draw_ms:Array[float]=[]
@@ -28,6 +28,8 @@ func settle()->void:
 func capture(label:String)->void:
  await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(OUT+"/"+label+".png")
 func run()->void:
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
  var personal:PackedByteArray=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
  demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/isolated_"+str(Time.get_ticks_usec());root.add_child(demo);demo.life.set_process(false);await settle();demo.ui_layer.hide();demo.life_save_timer=100000.

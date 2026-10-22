@@ -10,10 +10,9 @@ func _initialize()->void:run.call_deferred()
 func check(ok:bool,label:String)->void:
  checks+=1
  if not ok:failures.append(label);push_error(label)
-func endpoint(record:Dictionary,side:float)->Vector3:
- var center:=Vector3(record.at.x,record.y,record.at.y)
- var direction:=Basis.from_euler(Vector3(record.pitch,record.yaw,0))*Vector3.BACK
- return center+direction*(float(record.length)-.004)*.5*side
+func endpoint(part:Array,side:float)->Vector3:
+ var direction:=Basis.from_euler(part[3])*Vector3.BACK
+ return Vector3(part[1])+direction*(float(part[0].z)-Renderer.TramTracks.RAIL_OVERLAP)*.5*side
 func run()->void:
  var rail_pairs:=0
  for width:float in [2.1,2.6,3.2]:
@@ -34,16 +33,19 @@ func run()->void:
   check(chain and plan.lines[0].tour.front()==plan.lines[0].tour.back(),"continuous curve dispatch visits the real chain and returns "+str(width))
   check(var_to_bytes([network.graph,network.positions,network.connected_houses])==walking,"rail filtering preserves the entire pedestrian graph "+str(width))
   var town:=Renderer.new();town.state=city;city.prepare_ground_height()
-  var records:Array=town.promenade.prepare(town,city.roads[0]);var rails:Array=[]
-  for record:Dictionary in records:
-   if record.kind=="rail":rails.append(record)
-  var joined:=true;var worst:=0.;var has_pitch:=false
-  for i:int in range(2,rails.size()):
-   var gap:float=endpoint(rails[i-2],1.).distance_to(endpoint(rails[i],-1.))
-   worst=maxf(worst,gap);joined=joined and gap<.00002
-  for record:Dictionary in rails:has_pitch=has_pitch or absf(float(record.pitch))>.001
+  var data:Dictionary=town.tram_tracks.prepare(town,city.roads[0]);var rails:Array=[];var tips:Array[Vector3]=[]
+  for part:Array in data.parts:
+   if is_equal_approx(part[0].x,.055) and is_equal_approx(part[0].y,.028):rails.append(part);tips.append(endpoint(part,-1.));tips.append(endpoint(part,1.))
+  var open_ends:=0;var has_pitch:=false
+  for i:int in range(tips.size()):
+   var nearest:=INF
+   for j:int in range(tips.size()):
+    if i/2==j/2:continue
+    nearest=minf(nearest,tips[i].distance_to(tips[j]))
+   if nearest>.00002:open_ends+=1
+  for part:Array in rails:has_pitch=has_pitch or absf(float(part[3].x))>.001
   rail_pairs+=rails.size()/2
-  check(rails.size()>10 and joined and has_pitch,"both native rail boxes meet through bends and slopes "+str(width)+" gap="+str(worst))
+  check(rails.size()>10 and open_ends==4 and has_pitch,"both compiled rail boxes meet through bends/slopes, with only four terminal tips "+str(width)+" open="+str(open_ends))
   check(city.snapshot()==original,"geometry preparation does not alter authored work "+str(width))
   Renderer.BudgetRebuild.new()._dispose_context(town)
  print("CURVED_TRAM ",JSON.stringify({"checks":checks,"failures":failures,"rail_pairs":rail_pairs,"ok":failures.is_empty()}))

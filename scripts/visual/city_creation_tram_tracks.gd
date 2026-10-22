@@ -1,9 +1,14 @@
 extends RefCounted
-## Shared pure rail graph supplies actual overhead wires, stops and plaza rails.
+## One routed graph compiles continuous street/plaza rails, wires and stops.
 const Network=preload("res://scripts/world/city_creation_network.gd")
 const Plan=preload("res://scripts/world/city_creation_tram_plan.gd")
+const GAUGE_HALF:=.32
+const RAIL_OVERLAP:=.008
 var _revision := -1
 var _plan: Dictionary={}
+var _tip_cache:Dictionary={}
+# Preserve the navigation graph identity function without duplicating its rounding.
+var _key_api:=Network.new()
 
 static func signature(city: RefCounted,road: Dictionary)->Array:
 	if str(road.get("style","path"))!="tram":return []
@@ -18,13 +23,16 @@ func prepare(renderer,road: Dictionary)->Dictionary:
 	if str(road.get("style","path"))!="tram":return result
 	if _revision!=renderer.state.revision:
 		var network:=Network.new();network.state=renderer.state;network._build_graph()
-		_plan=Plan.from_network(renderer.state,network);_revision=renderer.state.revision
+		_plan=Plan.from_network(renderer.state,network);_revision=renderer.state.revision;_tip_cache.clear()
 	var bronze:=Color("a98a54");var iron:=Color("4a6158")
 	var markers: Array=renderer.state.Roundabouts.all(renderer.state.roads)
 	for edge: Dictionary in _plan.edges:
 		if str(edge.owner)!=str(road.id):continue
 		var a:=Vector2(edge.a.x,edge.a.z);var b:=Vector2(edge.b.x,edge.b.z)
-		var direction: Vector2=(b-a).normalized();var normal:=Vector2(-direction.y,direction.x)
+		var direction: Vector2=(b-a).normalized()
+		var ka:String=_key_api._key(a);var kb:String=_key_api._key(b)
+		var offsets:Array=[]
+		for side:float in [-1.,1.]:offsets.append([_rail_tip(_plan,ka,kb,side),_rail_tip(_plan,kb,ka,-side)])
 		var count:=maxi(1,ceili(a.distance_to(b)/.35))
 		for i in range(count):
 			var p:=a.lerp(b,float(i)/count);var q:=a.lerp(b,float(i+1)/count)
@@ -33,12 +41,15 @@ func prepare(renderer,road: Dictionary)->Dictionary:
 			var rotation:=Vector3(-atan2(y1-y0,p.distance_to(q)),atan2(direction.x,direction.y),0)
 			_box(result,Vector3(.018,.018,Vector3(p.x,y0,p.y).distance_to(Vector3(q.x,y1,q.y))+.004),Vector3(midpoint.x,y+1.73,midpoint.y),bronze,rotation)
 			result.wire_segments+=1
-			for marker: Dictionary in markers:
-				if midpoint.distance_to(marker.center)>float(marker.radius)+.1:continue
-				for side: float in [-1.,1.]:
-					var at: Vector2=midpoint+normal*.32*side
-					_box(result,Vector3(.035,.025,p.distance_to(q)+.008),Vector3(at.x,y+.014,at.y),Color("67716b"),rotation);result.ring_rails+=1
-				break
+			var in_ring:=false
+			for marker:Dictionary in markers:
+				if midpoint.distance_to(marker.center)<=float(marker.radius)+.1:in_ring=true;break
+			for ends:Array in offsets:
+				var rp:Vector2=p+Vector2(ends[0]).lerp(ends[1],float(i)/count)
+				var rq:Vector2=q+Vector2(ends[0]).lerp(ends[1],float(i+1)/count)
+				var delta:=Vector3(rq.x-rp.x,y1-y0,rq.y-rp.y)
+				_box(result,Vector3(.055,.028,delta.length()+RAIL_OVERLAP),Vector3((rp.x+rq.x)*.5,y+.014,(rp.y+rq.y)*.5),Color("67716b"),Vector3(-atan2(delta.y,Vector2(delta.x,delta.z).length()),atan2(delta.x,delta.z),0))
+				if in_ring:result.ring_rails+=1
 	for station: Dictionary in _plan.stations:
 		var key: String=station.key;var owner := ""
 		for edge: Dictionary in _plan.edges:
@@ -61,6 +72,62 @@ func prepare(renderer,road: Dictionary)->Dictionary:
 		_box(result,Vector3(.035,.18,.075),Vector3(post.x,y+1.59,post.y+.005),iron)
 		result.lamps.append(Vector3(post.x,y+1.99,post.y));result.stations.append(key)
 	return result
+
+static func _xz(plan:Dictionary,key:String)->Vector2:
+	var at:Vector3=plan.positions[key]
+	return Vector2(at.x,at.z)
+
+static func _continuation(plan:Dictionary,key:String,other:String)->String:
+	var at:=_xz(plan,key);var direction:=(_xz(plan,other)-at).normalized()
+	var neighbors:Array=plan.graph[key].keys();neighbors.sort()
+	var best:=INF;var next:=""
+	for neighbor:String in neighbors:
+		if neighbor==other:continue
+		var alignment:=direction.dot((_xz(plan,neighbor)-at).normalized())
+		if alignment<best:best=alignment;next=neighbor
+	return next
+
+static func _node_offset(plan:Dictionary,key:String,other:String)->Vector2:
+	var at:=_xz(plan,key);var direction:=(_xz(plan,other)-at).normalized()
+	var normal:=Vector2(-direction.y,direction.x)
+	var next:=_continuation(plan,key,other)
+	if next.is_empty():return normal*GAUGE_HALF
+	var continuation:=(_xz(plan,next)-at).normalized()
+	var miter:Vector2=(normal-Vector2(-continuation.y,continuation.x)).normalized()
+	return miter*(GAUGE_HALF/maxf(.5,miter.dot(normal)))
+
+func _rail_tip(plan:Dictionary,key:String,other:String,side:float)->Vector2:
+	var cache_key:Array=[key,other,side]
+	if _tip_cache.has(cache_key):return _tip_cache[cache_key]
+	var basic:=_node_offset(plan,key,other)*side
+	var mate:=_continuation(plan,key,other)
+	# Through pairs retain their shared miter, including both axes of a cross.
+	if mate.is_empty() or _continuation(plan,key,mate)==other:
+		_tip_cache[cache_key]=basic;return basic
+	# A turnout has two independently fitted heads. Its inner head must land
+	# on the curved through rail, rather than stopping on an infinite tangent.
+	var neighbors:Array=plan.graph[key].keys();neighbors.sort()
+	var at:=_xz(plan,key);var primary:Array=[];var alignment:=INF
+	for i:int in range(neighbors.size()):
+		for j:int in range(i+1,neighbors.size()):
+			var dot_value:=(_xz(plan,neighbors[i])-at).normalized().dot((_xz(plan,neighbors[j])-at).normalized())
+			if dot_value<alignment:alignment=dot_value;primary=[neighbors[i],neighbors[j]]
+	var wanted:=at+basic;var fitted:=wanted;var distance:=INF
+	for first:String in primary:
+		var previous:=key;var current:=first;var walked:=0.
+		while walked<GAUGE_HALF*4.:
+			var a:=_xz(plan,previous);var b:=_xz(plan,current)
+			var n0:=_node_offset(plan,previous,current);var n1:=-_node_offset(plan,current,previous)
+			for rail_side:float in [-1.,1.]:
+				var candidate:=Geometry2D.get_closest_point_to_segment(wanted,a+n0*rail_side,b+n1*rail_side)
+				var gap:=wanted.distance_squared_to(candidate)
+				if gap<distance:distance=gap;fitted=candidate
+			walked+=a.distance_to(b)
+			var next:=_continuation(plan,current,previous)
+			if next.is_empty() or next==key:break
+			previous=current;current=next
+	_tip_cache[cache_key]=fitted-at
+	return fitted-at
 
 static func _clear(city: RefCounted,at: Vector2)->bool:
 	for house: Dictionary in city.houses:

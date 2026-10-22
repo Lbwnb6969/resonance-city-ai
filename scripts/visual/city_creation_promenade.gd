@@ -91,20 +91,6 @@ func prepare(renderer,road: Dictionary) -> Array:
 				if style=="avenue" and _clear(renderer.state,road,tree_at,.65):
 					records.append({"kind":"tree","at":tree_at,"y":renderer.state.ground_height(tree_at),"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
 		arc+=SPACING;station+=1
-	if style=="tram":
-		for index in range(samples.size()-1):
-			var a: Vector2=samples[index].xz;var b: Vector2=samples[index+1].xz
-			var on_plaza:=false
-			for marker: Dictionary in renderer.state.Roundabouts.all(renderer.state.roads):
-				if ((a+b)*.5).distance_to(marker.center)<float(marker.radius)+.1: on_plaza=true
-			if on_plaza: continue
-			# Adjacent pieces share the same miter at a sample corner, so the
-			# inside and outside rails both meet rather than opening tiny gaps.
-			var n0:Vector2=renderer.state._road_heights._offset(samples,index,.64)
-			var n1:Vector2=renderer.state._road_heights._offset(samples,index+1,.64)
-			for side: float in [-1.0,1.0]:
-				var p:Vector2=a+n0*side;var q:Vector2=b+n1*side
-				records.append({"kind":"rail","at":(p+q)*.5,"y":(float(samples[index].y)+float(samples[index+1].y))*.5+.012,"yaw":atan2(q.x-p.x,q.y-p.y),"pitch":-atan2(float(samples[index+1].y)-float(samples[index].y),p.distance_to(q)),"length":sqrt(p.distance_squared_to(q)+pow(float(samples[index+1].y)-float(samples[index].y),2.))+.004})
 	_cache[str(road.id)]=records
 	return records
 
