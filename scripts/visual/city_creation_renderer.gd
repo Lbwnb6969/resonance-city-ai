@@ -328,7 +328,7 @@ func rebuild() -> void:
 	var layout_signature := _road_layout_key()
 	if layout_signature != road_layout_signature:
 		road_layout_signature = layout_signature
-		road_join_signatures.clear()
+		preload("res://scripts/visual/city_creation_road_dirty_cache.gd").invalidate_sync(self)
 		_prepare_road_layout()
 	rebuild_stats["road_layout_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
 	path_pebbles.prepare(state)

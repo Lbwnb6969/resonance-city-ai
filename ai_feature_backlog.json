@@ -61,8 +61,8 @@
         "scripts/visual/city_creation_clockwork.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_edit_latency.gd -- --isolated-session && Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_city_load_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_pending_modules.gd -- --isolated-session (37 PASS); tests/test_city_creation_road_dirty_cache.gd (5 PASS), tests/test_city_creation_change_set.gd (6 PASS), tests/test_city_creation_clockwork.gd (10 PASS), tests/test_city_creation_renaissance_milestone.gd (20 PASS), tests/test_city_creation_legacy_roundtrip.gd (375 PASS), same headless/isolation flags. Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_edit_latency.gd -- --isolated-session (23 PASS; actual far road keeps 16 join signatures and unchanged r1 mesh identity; Master 3.2s peak 0.02490234, clipped 0); tools/check_creation_city_load_live.gd, same GL/isolation flags plus --out-dir=res://验证记录/M03/后台读档 (18 PASS; real 127-house hidden prepare 20330.995ms, first draw 240.182ms, all GPU field bytes exact, dome/mansard BoxShape3D); tools/check_creation_module_flow_live.gd, same GL/isolation flags plus --out-dir=res://验证记录/M03/弹簧连续加建 (40 PASS, both native resolutions, three edits/undo/redo retain exact authored cells and voice identities). Proxies are built in the input handler before preparation, colored wall micro-normal/AO surfaces, .2 to 1 back spring in .18s, retained across rapid edits. Corrected roof winding visually reviewed with proxy_fixed.png; loading_1024/published_1024 screenshots fit and remain intact. Personal/source save bytes unchanged; no performance threshold used."
     },
     {
       "id": "M04",

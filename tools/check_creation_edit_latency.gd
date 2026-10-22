@@ -162,6 +162,16 @@ func _near_road()->void:
 	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(OUT+"/03_近路塑形同步发布.png")
 
 func _finish(personal:PackedByteArray,source:PackedByteArray,audio:Array,clock:float)->void:
+	var joins:Dictionary=demo.town.road_join_signatures.duplicate(true)
+	var road_root:int=demo.town.road_roots.r1.get_instance_id()
+	var added:Dictionary=demo.state.add_road([Vector2(30,-30),Vector2(35,-30)] as Array[Vector2])
+	demo._after_edit(added,"road");await _wait()
+	var cache:Dictionary=demo.town.budget_rebuild.stats.get("worker_stages",{}).get("join_cache",{})
+	facts.local_join_cache=cache
+	_check(added.ok and not cache.is_empty() and int(cache.get("retained",0))>0,"real background road edit retains distant junction signatures")
+	_check(demo.town.road_join_signatures.r1==joins.r1 and demo.town.road_roots.r1.get_instance_id()==road_root,"distant actual street keeps its exact join data and published mesh identity")
+	facts.audio=await preload("res://tools/fixtures/city_creation_audio_probe.gd").record(OUT+"/实际编辑主混音.wav")
+	_check(facts.audio.ok,"actual editor Master recording remains audible and unclipped")
 	_check(_audio()==audio and demo.music.get_child_count()==demo.music.STEMS.size()+4 and demo.ambience.players.size()==2 and demo.music._playback_clock()>clock and FileAccess.get_file_as_bytes(SAMPLE)==source and (FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all measured edits preserve original music ambience transport sample and personal save")
 	var report:Dictionary={"ok":failures.is_empty(),"count":checks.size(),"checks":checks,"failures":failures,"facts":facts,"measurement":"Each operation records actual frame maximum from request through publication and final CPU retirement; command for Window release includes its awaited frame, not just handler CPU."}
 	FileAccess.open(OUT+("/near.json" if "--near-only" in OS.get_cmdline_user_args() else "/live.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("EDIT_LATENCY_CHECK ",JSON.stringify(report))

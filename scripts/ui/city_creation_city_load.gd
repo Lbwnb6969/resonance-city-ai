@@ -1,7 +1,7 @@
 extends RefCounted
 ## A new work owns fresh contexts. Keep the published city intact while the
 ## existing CPU workers and hidden GPU staging prepare its replacement.
-const STAGING_SLICE_MS:=8.0
+const STAGING_SLICE_MS:=24.0
 var town:Node3D
 var life:Node3D
 var stats:Dictionary={}

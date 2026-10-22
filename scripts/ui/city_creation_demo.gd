@@ -1962,10 +1962,10 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 		_edit_started_usec=started
 		_edit_poll_max_ms=0.0
 		_edit_polls=0
+		pending_modules.sync(town,kind in ["room","terrace","house"])
 		life.set_budget_hold(true)
 		life.begin_budget_sync()
 		town.request_budget_rebuild()
-		pending_modules.sync(town,kind in ["room","terrace","house"])
 		preview_key=""
 		if pluck_house.is_empty(): music.play_edit(kind)
 		else: music.play_house(pluck_house)

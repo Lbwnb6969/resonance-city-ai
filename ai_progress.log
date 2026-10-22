@@ -20,3 +20,10 @@
 - GATE3: wish_pins 13/low_view 50/1440与1024独立实窗各55 PASS；首炉反馈最慢7.332ms；两城73,318槽位零无效，36张昼夕夜低视角核图；录音峰值0.02078247、削波0，帧p95 10.040ms。
 - LIMITS: 旧大面本次基线未复现；本轮验证数值入口、全部槽位和代表视角；旧联合用例第二分辨率漂移失败保留，独立进程通过；个人城市存档未变，Schema1～19与已发奖励/撤销守恒。
 - NEXT_UP: 按用户最新目标连续逐轮推进，仅认领M03；每轮验收提交后进入下一项，不等待新窗口。M03完成后按每3项规则执行独立品质验收。
+
+[SESSION_M03] 2026-10-22 COMPLETE M03：同步实体弹簧落笔、4m局部路口缓存、24ms隐藏加载与屋顶盒形拾取；备份backup/before-m03-20261022。
+- FILES: city_load/demo短委托；budget_rebuild/renderer短委托；pending_modules/pending_mesh、road_dirty_cache、roof_pick、renaissance/clockwork、change_set；对应CPU/实窗/audio_probe；状态与文档24/25。
+- GATE1/2: Harness/文档PASS；pending37/dirty5/change_set6/clockwork10/renaissance20/legacy375 PASS，实体代理不写State且连续保留、稳定拾取。
+- GATE3: module_flow40/city_load18/edit_latency23 PASS；真实远路保留16签名及旧街网格身份；127屋隐藏准备20.331s、首绘240.182ms；录音峰值0.02490234、削波0；双分辨率PNG已核。
+- LIMITS: 新池塘输入仍记录约130ms帧峰，后续按体验关注；原PNG直接读取导出警告留UI资源入口处理；固定声部/个人存档/原示范文件均保持。
+- NEXT_UP: 按每3项规则执行独立品质验收，之后认领第一个未通过项；按用户最新目标连续逐轮推进，不等待新窗口。

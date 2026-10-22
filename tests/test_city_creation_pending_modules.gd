@@ -22,6 +22,11 @@ func run()->void:
 	check(pending.records.size()==1 and pending.root.is_inside_tree(),"committed addition immediately has one visible construction volume")
 	check(pending.root.find_children("*","CollisionObject3D",true,false).is_empty(),"construction feedback has no simulation or picking collision bodies")
 	check(city.snapshot()==authored,"preparing feedback never mutates the authored city")
+	var proxy:Node3D=pending.records[0].node
+	check(is_equal_approx(proxy.scale.y,.2) and proxy.find_children("*","MeshInstance3D",true,false).size()==3,"same-handler feedback starts as a colored solid spring proxy with walls roof and windows")
+	for mesh:MeshInstance3D in proxy.find_children("*","MeshInstance3D",true,false):check(mesh.material_override.get_meta("creation_wall_batch",false),"every proxy surface uses the wall micro-normal and contact-AO pipeline")
+	var roof_normals:PackedVector3Array=Pending.Proxy.roof_mesh().surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
+	check(not roof_normals.is_empty() and Array(roof_normals).all(func(normal):return normal.is_finite() and normal.y>=-.0001),"proxy roof uses finite outward/upward slope normals")
 	var bounds:AABB=pending.records[0].bounds
 	var center:=bounds.get_center()
 	var hit:Dictionary=pending.pick(Vector3(center.x,20,center.z),Vector3.DOWN)
@@ -41,7 +46,7 @@ func run()->void:
 	check(pending.pick(Vector3(100,20,100),Vector3.DOWN).is_empty(),"empty space stays empty")
 	check(pending.pick(Vector3(center.x,200,center.z),Vector3.DOWN,10.).is_empty(),"ray length matches the editor picking range")
 	check(city.add_cell(id,1,0,0).ok,"real second committed module")
-	pending.sync(town);check(pending.records.size()==2,"latest State retains both unpublished additions")
+	pending.sync(town);check(pending.records[0].node==proxy,"a second edit retains the first spring rather than restarting it");check(pending.records.size()==2,"latest State retains both unpublished additions")
 	check(city.undo().ok,"undo second addition before publication")
 	pending.sync(town,false);check(pending.records.size()==1,"undo immediately removes only its pending construction volume")
 	check(city.undo().ok,"undo first addition before publication")
@@ -59,6 +64,9 @@ func run()->void:
 	check(city.add_cell(id,1,0,0,"terrace").ok,"real ground terrace")
 	pending.sync(town);bounds=pending.records[-1].bounds;center=bounds.get_center()
 	check(absf(bounds.size.y-.19)<.00001 and pending.pick(center+Vector3.UP*10,Vector3.DOWN).cell.kind=="terrace","terrace feedback and picking use the real low terrace volume")
+	var until:=Time.get_ticks_msec()+250
+	while Time.get_ticks_msec()<until:await process_frame
+	check(pending.records.all(func(row):return is_equal_approx(row.node.scale.y,1.)),"the 180ms back-ease springs settle at exact authored height")
 	pending.clear()
 	check(original.houses[0].cells.size()==1,"original published snapshot remains immutable")
 	Renderer.BudgetRebuild.new()._dispose_context(town)

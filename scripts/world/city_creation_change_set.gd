@@ -75,7 +75,12 @@ static func _bounds(domain: String, row: Dictionary) -> Rect2:
 	if points.is_empty() and row.has("origin"):
 		var origin: Variant = row.origin
 		var at := Vector2(float(origin[0]), float(origin[1]))
-		return Rect2(at - Vector2.ONE * 1.0, Vector2.ONE * 2.0).grow(0.5)
+		var footprint := Rect2(at-Vector2.ONE,Vector2.ONE*2.)
+		for cell: Dictionary in row.get("cells",[]):
+			if int(cell.level)!=0: continue
+			var center := at+Vector2(float(cell.x),float(cell.z))*1.8
+			footprint = footprint.expand(center-Vector2.ONE).expand(center+Vector2.ONE)
+		return footprint.grow(.5)
 	if points.is_empty() and row.has("position"):
 		var position: Variant = row.position
 		var at := Vector2(float(position[0]), float(position[1]))

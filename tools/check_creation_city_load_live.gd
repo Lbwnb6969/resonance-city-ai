@@ -98,6 +98,10 @@ func run()->void:
 	check(retained and frames>25 and phases.size()>=2,"old published work stays intact while actual preparation and upload phases keep drawing")
 	check(blocked,"undo and a second opening request cannot alter the pending switch")
 	check(demo.gallery.last_opened_id==example_id and demo.state.houses.size()==expected.world.houses.size() and demo.town.house_roots.size()==expected.world.houses.size() and demo.life.last_revision==demo.state.revision,"actual card publishes the complete new work and current Life together")
+	if example_id=="example_flagship":
+		var dome:Array=demo.town.find_children("DomePick","CollisionShape3D",true,false)
+		var mansard:Array=demo.town.find_children("MansardPick","CollisionShape3D",true,false)
+		check(not dome.is_empty() and not mansard.is_empty() and (dome+mansard).all(func(node):return node.shape is BoxShape3D),"actual flagship dome and mansard picking use lightweight box shapes")
 	var kept:Dictionary=demo.gallery.library.read(demo.gallery.last_auto_id)
 	check(kept.ok and kept.world.houses==old_world.houses and kept.reason=="before_open","previous work is preserved in the real immutable collection")
 	check(old_water.get_layer_data(0).get_data()==old_bytes and old_water!=demo.town.water_field.texture,"loading uses distinct arrays and leaves the previous GPU field bytes intact")

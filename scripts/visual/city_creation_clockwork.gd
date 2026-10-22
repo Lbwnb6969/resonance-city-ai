@@ -107,8 +107,8 @@ static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void
 	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=renderer._material(Color("45585c"))
 	mesh.material_override.cull_mode=BaseMaterial3D.CULL_DISABLED;root.add_child(mesh);mesh.name="ClockworkMansard_"+str(row.cell.id)
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(row.cell.id));body.set_meta("cell",row.cell.duplicate(true))
-	var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(data.collision)
-	var collision:=CollisionShape3D.new();collision.shape=shape;body.add_child(collision);root.add_child(body)
+	preload("res://scripts/visual/city_creation_roof_pick.gd").attach(body,array_mesh.get_aabb(),"MansardPick")
+	root.add_child(body)
 	var copper: Material=renderer._material(Color("b3975e"),.7)
 	for side: Vector2 in [Vector2.UP,Vector2.DOWN]:
 		var at:=center+side*.68

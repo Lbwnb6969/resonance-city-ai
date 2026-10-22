@@ -36,11 +36,7 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 			renderer._cylinder(dome,.025,.025,.40,Vector3(cos(angle)*r*.18,lantern_y+.23,sin(angle)*r*.18),stone,6)
 		renderer._cylinder(dome,0,r*.25,.27,Vector3(0,lantern_y+.56,0),renderer._material(Color("b76546")),8)
 		renderer._cylinder(dome,.024,.024,.18,Vector3(0,lantern_y+.77,0),renderer._material(Color("c9ab62")),6)
-		var pick_faces := PackedVector3Array()
-		for mesh: MeshInstance3D in dome.find_children("*","MeshInstance3D",true,false):
-			for point: Vector3 in mesh.mesh.get_faces(): pick_faces.append(mesh.transform*point)
-		var shape := ConcavePolygonShape3D.new(); shape.backface_collision=true; shape.set_faces(pick_faces)
-		var collision := CollisionShape3D.new(); collision.shape=shape; collision.name="DomePick"; body.add_child(collision)
+		preload("res://scripts/visual/city_creation_roof_pick.gd").from_children(body,dome,"DomePick")
 	root.set_meta("dome_cells",covered)
 
 static func _point(angle: float, t: float, radius: float, height: float) -> Vector3:

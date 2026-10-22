@@ -1,6 +1,7 @@
 extends RefCounted
 ## Committed additions remain editable while their finished house is prepared.
-## These outlines have no physics bodies and never enter the saved city.
+## Lit spring proxies have no physics bodies and never enter the saved city.
+const Proxy = preload("res://scripts/visual/city_creation_pending_mesh.gd")
 var root:Node3D
 var records:Array[Dictionary]=[]
 var tracking:=false
@@ -19,20 +20,31 @@ func _clear_visuals()->void:
 func sync(renderer:Node3D,allow_new:bool=true)->void:
 	if not allow_new and not tracking:return
 	tracking=true
-	_clear_visuals()
 	var published:Dictionary={}
 	for house:Dictionary in renderer.budget_rebuild._published_snapshot.get("houses",[]):
 		for cell:Dictionary in house.cells:published[[house.id,cell.id]]=_geometry(house,cell)
-	root=Node3D.new();root.name="PendingHouseModules";renderer.add_child(root)
+	if not is_instance_valid(root):
+		root=Node3D.new();root.name="PendingHouseModules";renderer.add_child(root)
+	var previous:Dictionary={}
+	for row:Dictionary in records:previous[[row.house_id,row.cell_id]]=row
+	var next:Array[Dictionary]=[]
 	for house:Dictionary in renderer.state.houses:
 		for cell:Dictionary in house.cells:
-			if published.get([house.id,cell.id],[])==_geometry(house,cell):continue
-			var volume:MeshInstance3D=renderer._preview_cell(house,cell,Color(.63,.89,.72,.32),true,root)
-			records.append({"house_id":str(house.id),"cell_id":str(cell.id),"cell":cell.duplicate(),"bounds":volume.global_transform*volume.get_aabb()})
+			var key:Array=[house.id,cell.id];var signature:=_geometry(house,cell)
+			if published.get(key,[])==signature:continue
+			var old:Dictionary=previous.get(key,{})
+			if not old.is_empty() and old.signature==signature:
+				next.append(old);previous.erase(key);continue
+			var proxy:Dictionary=Proxy.build(renderer,root,house,cell)
+			proxy.merge({"house_id":str(house.id),"cell_id":str(cell.id),"cell":cell.duplicate(),"signature":signature})
+			next.append(proxy)
+	for row:Dictionary in previous.values():
+		row.node.get_parent().remove_child(row.node);row.node.queue_free()
+	records=next
 	if records.is_empty():_clear_visuals()
 
 func _geometry(house:Dictionary,cell:Dictionary)->Array:
-	return [house.origin,house.get("base_y",0.),cell.x,cell.z,cell.level,cell.kind]
+	return [house.origin,house.get("base_y",0.),cell.x,cell.z,cell.level,cell.kind,house.get("palette",0),house.get("finish",""),house.get("custom_colors",{})]
 
 func supersedes(renderer:Node3D,published:Dictionary,addition:Dictionary)->bool:
 	# A tall old tower cap can extend through the new floor. That roof is no

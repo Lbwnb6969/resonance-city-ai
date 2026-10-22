@@ -216,7 +216,7 @@ func _work(context: Node3D) -> Dictionary:
 	var signature: int = context._road_layout_key()
 	if signature != context.road_layout_signature:
 		context.road_layout_signature = signature
-		context.road_join_signatures.clear()
+		stages.join_cache = preload("res://scripts/visual/city_creation_road_dirty_cache.gd").invalidate(context,changes)
 		context._prepare_road_layout()
 	stages.road_layout=float(Time.get_ticks_usec()-structure_start)/1000.
 	var pebble_start:=Time.get_ticks_usec()
