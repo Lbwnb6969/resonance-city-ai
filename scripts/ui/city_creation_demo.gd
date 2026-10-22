@@ -170,6 +170,7 @@ var selected_district := ""
 var life_save_timer := 15.0
 var hovered: Dictionary = {}
 var candidate: Dictionary = {}
+var chemistry_brush = preload("res://scripts/ui/city_creation_chemistry_brush.gd").new()
 var preview_key := ""
 var toast_time := 0.0
 var save_delay := -1.0
@@ -203,6 +204,7 @@ var _save_requested := false
 func _ready() -> void:
 	persistence = persistence and not "--isolated-session" in OS.get_cmdline_user_args()
 	state.initialize()
+	chemistry_brush.setup(self)
 	if start_empty or (persistence and not FileAccess.file_exists(SAVE_PATH)):state.initialize_empty()
 	if "--creation-example" in OS.get_cmdline_user_args():
 		persistence = false
@@ -1292,6 +1294,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_commit_click()
 
 func _process(delta: float) -> void:
+	chemistry_brush.tick(delta)
 	strum_hold.update(self)
 	if gallery!=null and not gallery.preview_id.is_empty():gallery.tick_preview();return
 	music.attention.dragging=house_drawing or road_drawing or vegetation_drawing or water_drawing or district_drawing or district_link_drawing or (terrain_brush!=null and terrain_brush.drawing)
@@ -1539,6 +1542,7 @@ func _update_hover() -> void:
 		removal_info.text = str(removal.message).replace("已移除","将移除")
 		if bool(removal.ok):
 			removal_info.text += "\n"+ ("整栋房屋 · " if bool(removal.whole_house) else "单元与附属结构 · ")+"%d个单元\nCtrl+Z 可恢复原形状、名字与用途。" % int(removal.removed_count)
+	chemistry_brush.building(candidate)
 
 func _find_cell(house_id: String, cell_id: String) -> Dictionary:
 	for house: Dictionary in state.houses:
@@ -1610,6 +1614,7 @@ func _refresh_house_stroke() -> void:
 	var cells: Array=house_stroke_result.get("added_cells",[]) if bool(house_stroke_result.ok) else house_stroke_result.get("input_cells",house_stroke.cells)
 	var preview_base := float(house_stroke_result.get("base_y",house_stroke_base_y))
 	town.set_house_stroke_preview(house_stroke_origin,cells,bool(house_stroke_result.ok),preview_base)
+	chemistry_brush.stroke()
 	hint.text="松开建成这笔 · %d 个新单元\nEsc 取消，Ctrl+Z 收回整笔。" % int(house_stroke_result.get("added_count",0)) if bool(house_stroke_result.ok) else str(house_stroke_result.message)+"\n本笔全部未落定。Esc 取消。"
 
 func _finish_house_stroke() -> void:
@@ -1659,6 +1664,7 @@ func _append_road_point(force: bool=false) -> void:
 		var porches: int = town.preview_road(road_preview,bool(check.ok),float(check.get("width",1.25)),bool(check.get("bridge",false)),str(check.get("style",road_style)))
 		town.preview.set_meta("brush_timings",{"curve_ms":(curve_done-brush_started)/1000.,"validation_ms":(check_done-curve_done)/1000.,"paint_ms":(Time.get_ticks_usec()-check_done)/1000.,"mask_ms":town.road_draft_field.last_ms})
 		if road_draft_straight: town.preview_road_measure(road_preview,road_locked_segments)
+		chemistry_brush.road(road_preview,float(check.get("width",1.25)),str(check.get("style",road_style)),bool(check.ok))
 		var passages := int(town.preview.get_meta("passage_previews",0))
 		var stepping := int(town.preview.get_meta("stepping_previews",0))
 		var bridge_parts := int(town.preview.get_meta("bridge_previews",0))

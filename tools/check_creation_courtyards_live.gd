@@ -19,7 +19,9 @@ var original_court_plants: Dictionary = {}
 var added_court_plant_ids: Array[String] = []
 
 
-func _initialize() -> void: _run.call_deferred()
+func _initialize() -> void:
+	if "--legacy-courtyard" in OS.get_cmdline_user_args(): _run.call_deferred()
+	else: preload("res://tools/fixtures/city_creation_chemistry_live_probe.gd").run.call_deferred(self)
 
 
 func _check(ok: bool,label: String) -> void:

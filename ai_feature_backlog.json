@@ -94,8 +94,8 @@
         "scripts/ui/city_creation_demo.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_courtyards_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_chemistry_preview.gd -- --isolated-session (70 PASS; all six real fixtures, exact state/history/high-water and published road profiles unchanged); tests/test_city_creation_legacy_roundtrip.gd, same flags (375 PASS). Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_courtyards_live.gd -- --isolated-session (39 PASS; six real cities publish, actual gold dashed meshes and Label3D micro-seals; real roof mouse hover reaches production delegate; 220ms dwell, one current-mode harp overtone per recipe and exit hysteresis, fixed audio node identities, personal save unchanged). Twelve 1440/1024 day/night PNG manually reviewed, fine lit overlays remain visible through existing roof/terrain and text is legible. Actual Master WAV 3.065s peak 0.00491333, clipped 0; frame p95 8.416ms/max8.518ms. Actual preview planning 0.523-17.429ms in these fixtures. Demo adds six delegate lines; no save/schema/audio-pool changes. Canonical courtyard command now runs M05 probe; complete historical courtyard runner is retained behind --legacy-courtyard, its old nine-voice assumptions are not counted as current evidence."
     },
     {
       "id": "M06",
