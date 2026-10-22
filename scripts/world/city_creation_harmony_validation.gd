@@ -27,4 +27,4 @@ static func valid(value:Variant,cards:Dictionary,unlocks:Array)->bool:
 		if not key is String or key.is_empty() or not integer(value.receipts[key]):return false
 	if value.has("xp_remainder") and (not value.xp_remainder is float and not value.xp_remainder is int):return false
 	if not is_finite(float(value.get("xp_remainder",0.))) or float(value.get("xp_remainder",0.))<0. or float(value.get("xp_remainder",0.))>=1.:return false
-	return true
+	return preload("res://scripts/world/city_creation_vignette_validation.gd").valid(value,unlocks)

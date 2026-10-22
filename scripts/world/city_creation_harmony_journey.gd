@@ -12,37 +12,7 @@ const TRADITION_CARDS:={
 	"lantern_bridge_echo":{"name":"提灯桥影","text":"距活水4.5米内的生活工坊制作提速15%。"},
 	"courtyard_canon_spring":{"name":"围院清泉","text":"闭合内院周围的生活工坊制作提速30%。"}
 }
-const VIGNETTE_TEMPLATES := [
-	{
-		"id": "vignette_river_bend_choir",
-		"title": "✨ 河湾浅滩的游吟诗社",
-		"prompt": "在河对岸或水畔空地新聚拢 4 座小屋并接通小路，唤醒一片新的岸边伴奏聚落。",
-		"reward_xp": 85,
-		"reward_desc": "奖励 +85 ♪ 共鸣度，并立刻触发一次【河湾灵感手札三选一】"
-	},
-	{
-		"id": "vignette_highland_terrace",
-		"title": "⛰️ 登高望远的石阶茶席",
-		"prompt": "在海拔 >=1.0m 的台地上建起 3 座小屋并拉一条石阶路下山，让居民踩响石阶琴键。",
-		"reward_xp": 95,
-		"reward_desc": "奖励 +95 ♪ 共鸣度，台地街坊永久解锁高空木管五度延音"
-	},
-	{
-		"id": "vignette_courtyard_fountain",
-		"title": "⛲ 合围内院的顺时针轮唱",
-		"prompt": "用连排房屋围合出一处闭合石铺内院，唤醒内院喷泉与顺时针窗光卡农轮唱。",
-		"reward_xp": 110,
-		"reward_desc": "奖励 +110 ♪ 共鸣度，内院周围民居直接获得 60 秒黄金余韵"
-	},
-	{
-		"id": "vignette_olive_grove_craft",
-		"title": "🌲 橄榄林间的制琴木香",
-		"prompt": "在一处制琴坊周围种满 4 棵橄榄树或金叶树，让匠人为邻屋挂上铜风铃。",
-		"reward_xp": 90,
-		"reward_desc": "奖励 +90 ♪ 共鸣度，全城制琴坊立即额外产出 1 件木饰"
-	}
-]
-
+const VIGNETTE_TEMPLATES=preload("res://scripts/world/city_creation_vignette_catalog.gd").TEMPLATES
 static func default_state()->Dictionary:
 	return {"harmony_xp":0,"harmony_level":1,"traditions":[],"ranks":{},"pending_draft":[],"receipts":{}}
 static func xp_for_next_level(level:int)->int:
@@ -100,4 +70,9 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		for field:String in ["harmony_xp","harmony_level"]:target[field]=int(target[field])
 		for field:String in ["ranks","receipts"]:
 			for key:String in target[field]:target[field][key]=int(target[field][key])
+		if target.has("vignette_serial"):target.vignette_serial=int(target.vignette_serial)
+		if not target.get("active_vignette",{}).is_empty():
+			for field:String in ["serial","house_floor","plant_floor"]:
+				if target.active_vignette.has(field):target.active_vignette[field]=int(target.active_vignette[field])
+		for key:String in target.get("completed_vignettes",{}):target.completed_vignettes[key]=int(target.completed_vignettes[key])
 	city.harmony_journey=target

@@ -84,6 +84,7 @@ func _setup(owner:Node,parent_control:Control)->void:
 	demo.district_name.reparent(district_name_row)
 	bubble_rows.add_child(district_name_row);district_name_row.hide()
 	parent.resized.connect(_position_popup)
+	demo.journal.scrollbook.visibility_changed.connect(_position_popup)
 
 func refresh()->void:
 	if demo==null or popup==null:return
@@ -192,9 +193,11 @@ func _position_popup()->void:
 	var bounds:=parent.get_viewport_rect().size
 	bubble_rows.position.x=clampf(anchor.get_center().x-extent.x*.5,12.,maxf(12.,bounds.x-extent.x-12.))
 	bubble_rows.position.y=maxf(12.,anchor.position.y-16.-extent.y)
+	if demo.journal.scrollbook.visible:bubble_rows.position.x=maxf(demo.journal.scrollbook.size.x+12.,bubble_rows.position.x)
 	if nature_row.visible:
 		var nature_size:=nature_row.get_combined_minimum_size();nature_row.size=nature_size
 		nature_row.position=Vector2(clampf(anchor.get_center().x-nature_size.x*.5,12.,maxf(12.,bounds.x-nature_size.x-12.)),maxf(12.,bubble_rows.position.y-nature_size.y-8.))
+		if demo.journal.scrollbook.visible:nature_row.position.x=maxf(demo.journal.scrollbook.size.x+12.,nature_row.position.x)
 
 func _nature_mode(mode:int)->void:
 	if mode==0:demo.select_tool(5)

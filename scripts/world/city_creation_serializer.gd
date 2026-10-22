@@ -466,6 +466,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if not craft_check.ok: return craft_check
 	var wish_check:Dictionary=city.WishFulfilment.validate(city,data,int(issued.house))
 	if not wish_check.ok:return wish_check
+	if not preload("res://scripts/world/city_creation_vignette_validation.gd").issued_valid(data.get("harmony_journey",{}),int(issued.house),int(issued.get("plant",0))):return city._fail("林间奇遇引用尚未发出的身份")
 	var yields:Variant=data.get("workshop_yield_remainder",{})
 	if not yields is Dictionary or (data.has("workshop_yield_remainder") and data.schema<19):return city._fail("工艺产出余数版本或结构无效")
 	for id:Variant in yields:

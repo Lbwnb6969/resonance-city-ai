@@ -16,6 +16,7 @@ func setup(owner,ui_root:Control)->void:
 	highlight=MeshInstance3D.new();highlight.name="WishTargetRing"
 	highlight.mesh=demo.intuitive_guidance.marker_mesh;highlight.material_override=demo.intuitive_guidance.marker_material
 	highlight.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;demo.add_child(highlight);highlight.hide()
+	preload("res://scripts/ui/city_creation_vignette_journey.gd").new().setup(owner,ui_root)
 
 func offers()->Array[Dictionary]:
 	var result:Array[Dictionary]=[];var groups:Dictionary=demo.state.natural_clusters()

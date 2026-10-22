@@ -123,6 +123,7 @@ func run()->void:
 	var stable:=api.snapshot()
 	check(not api.load_city(invalid_path).ok and api.snapshot()==stable,"malformed external file preserves the current city")
 	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save bytes remain unchanged")
+	if checks<375 or works.size()<27:failures.append("旧档覆盖不完整：必须实际执行至少375项并恢复27个作品/格式契约")
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"works":works}
 	FileAccess.open(folder+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"))
 	print("LEGACY_ROUNDTRIP ",JSON.stringify(result))

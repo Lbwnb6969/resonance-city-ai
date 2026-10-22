@@ -71,9 +71,11 @@ static func arrange(records: Dictionary, acoustic: RefCounted, score: Dictionary
 		for key: String in ["wood","terrace"]:
 			targets[key] = maxf(float(targets.get(key,-60.)),-26. if key == "wood" else -27.)
 			sources[key] = source
+	var vignette_db:float=preload("res://scripts/world/city_creation_vignettes.gd").music(city,selected.members) if city!=null else 0.
+	targets[lead]+=vignette_db
 	score.source_id = source; score.lead_track = lead
 	return {"phrase":phrase,"stage":["起","承","转","合"][stage],"primary":primary.id,"secondary":secondary.id,
-		"lead_cluster":selected.id,"source_id":source,"lead_track":lead,"groups":ranked.size(),"light_cycle":light,"boosts":boosts}
+		"lead_cluster":selected.id,"source_id":source,"lead_track":lead,"groups":ranked.size(),"light_cycle":light,"vignette_db":vignette_db,"boosts":boosts}
 static func conduct(owner: Node) -> void:
 	if owner.concert_active or owner.emergence.score.is_empty(): return
 	owner.emergence.score.phrase_tide = arrange(owner._house_music,owner.acoustic,owner.emergence.score,owner._playback_clock(),owner._pluck_city)

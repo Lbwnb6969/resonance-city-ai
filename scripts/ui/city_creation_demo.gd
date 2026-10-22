@@ -300,7 +300,7 @@ func _ready() -> void:
 	weather_visual.setup(self)
 	conductor_gesture=preload("res://scripts/ui/city_creation_conductor_gesture.gd").new()
 	conductor_gesture.setup(self)
-	state.era_unlocked.connect(_on_era_unlocked,CONNECT_DEFERRED)
+	get_meta("era_ceremony").bind()
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
 	if save_blocked: _message(Copy.SAVE_BLOCKED_TOAST)
@@ -2241,14 +2241,7 @@ func _refresh_workshops() -> void:
 	workshop_button.text="暂停制作" if bool(selected.open) else "继续制作"
 
 func _on_era_unlocked(era: String)->void:
-	var index: int=State.Eras.IDS.find(era)
-	_message("♫ "+State.Eras.NAMES[index]+"已开启 · 旧街坊风貌保留，可为新街坊选择新时代。")
-	music.play_edit("terrace")
-	if not edit_pending():
-		_refresh_place();_refresh_district()
-		journal.refresh(false)
-	journal.offer_era_choice(era)
-	save_delay=3.0
+	preload("res://scripts/ui/city_creation_era_ceremony.gd").announce(self,era)
 
 func _on_quality_changed(events: Array) -> void:
 	if town.quality_visual.layer==null:return

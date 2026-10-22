@@ -1,5 +1,6 @@
 extends RefCounted
 ## Legacy era choices and journey-earned charters consume real city operations.
+const Vignettes=preload("res://scripts/world/city_creation_vignettes.gd")
 const ERAS := ["renaissance", "clockwork", "modern_eco"]
 const CHOICES := {
 	"hearth_neighbors":{"era":"pastoral","name":"炉边邻里章程","text":"面包坊制作提速10%。"},
@@ -15,7 +16,7 @@ const CHOICES := {
 	"lasting_resonance":{"era":"modern_eco","name":"长鸣花园章程","text":"演出与真实茶聚获得的余韵延长50%，同时提高余韵上限。"},
 	"craft_federation":{"era":"modern_eco","name":"百工共生章程","text":"制琴坊、书院与钟表坊的制作及实际送装提速25%。"}
 }
-const PAIRS := [["arcade_market","polyphonic_academy"],["hydraulic_guild","tram_promenade"],["lasting_resonance","craft_federation"]]
+const PAIRS := [["arcade_market","polyphonic_academy","illuminated_atelier"],["hydraulic_guild","tram_promenade","brass_orchard"],["lasting_resonance","craft_federation","cloud_gallery"]]
 
 static func selected(city:RefCounted,era:String)->String:
 	for id:String in city.era_modifiers:
@@ -55,10 +56,10 @@ static func production(city:RefCounted,house:Dictionary)->float:
 	if "courtyard_canon_spring" in owned:
 		for court:Dictionary in city.courtyard_plans():
 			if str(house.id) in court.get("members",[]):result*=1.3;break
-	return result
+	return result*Vignettes.production(city,str(house.id))
 
 static func walking(city:RefCounted,id:String)->float:
 	var index:int=city._house_index(id)
-	return 1.2 if index>=0 and "stone_step_carillon" in city.harmony_journey.get("traditions",[]) and float(city.houses[index].get("base_y",0.))>=1. else 1.
+	return Vignettes.walking(city,id)*(1.2 if index>=0 and "stone_step_carillon" in city.harmony_journey.get("traditions",[]) and float(city.houses[index].get("base_y",0.))>=1. else 1.)
 static func afterglow(city:RefCounted)->float:
 	return (1.5 if city.era_modifiers.has("lasting_resonance") else 1.)*(1.25 if "twilight_tea_pavilion" in city.harmony_journey.get("traditions",[]) else 1.)

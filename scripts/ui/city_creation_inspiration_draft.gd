@@ -69,7 +69,8 @@ func refresh(force:bool=false)->void:
 		signature=key;rebuild()
 	display()
 func display()->void:
-	var covered:bool=demo.journal.scrollbook.visible or demo.gallery.panel.visible or demo.guide.panel.visible
+	var ceremony:bool=demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty()
+	var covered:bool=ceremony or demo.journal.scrollbook.visible or demo.gallery.panel.visible or demo.guide.panel.visible
 	badge.visible=not covered
 	paper.visible=not covered and not postponed and Journey.credits(demo.state.harmony_journey)>0
 func rebuild()->void:
