@@ -13,6 +13,10 @@ var clock:=0.
 var midi:=-1
 var audible:=false
 var staff_points:Array[PackedVector2Array]=[]
+var juice_energy:=0.
+var juice_hits:=0
+func receive_juice(_kind:String)->void:
+	juice_energy=1.;juice_hits+=1;staff.queue_redraw()
 
 func setup(owner:Node3D,parent:Control)->void:
 	demo=owner;name="ScoreRibbonHUD";parent.add_child(self)
@@ -63,6 +67,7 @@ func refresh()->void:
 		seal.pressed.connect(func()->void:demo.guide.open_panel(2));chords.add_child(seal)
 
 func _process(_delta:float)->void:
+	juice_energy=move_toward(juice_energy,0.,_delta*2.)
 	if not is_visible_in_tree():return
 	var report:Dictionary=demo.resonance_snapshot
 	var pluck:Dictionary=report.get("pluck",{})
@@ -99,6 +104,7 @@ func _draw_staff()->void:
 		for step in range(17):
 			var t:=step/16.
 			var wave:=sin(t*PI)*sin(clock*TAU/.75+i*.45)*pulse*1.5
+			wave+=sin(t*PI)*sin(clock*24.+i*.45)*juice_energy*4.
 			points.append(Vector2(t*56.,9.+i*4.4+wave))
 		staff_points.append(points);staff.draw_polyline(points,Color(UI.GOLD,.80 if audible else .36),1.,true)
 	if audible and midi>=0:

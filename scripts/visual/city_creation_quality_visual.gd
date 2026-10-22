@@ -17,6 +17,7 @@ var pending_city:=0
 var queue_stats:Dictionary={"queued":0,"rendered":0,"last_poll_us":0,"max_poll_us":0}
 
 func schedule_flash(renderer,events:Array)->void:
+	if renderer.has_meta("juice_feedback"):renderer.get_meta("juice_feedback").quality(events)
 	var city_id:int=renderer.state.get_instance_id()
 	if pending_city!=city_id:pending_events.clear();pending_city=city_id
 	for i in range(events.size()):

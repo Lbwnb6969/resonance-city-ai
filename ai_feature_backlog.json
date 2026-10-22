@@ -154,8 +154,8 @@
         "scripts/ui/city_creation_demo.gd"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_chords_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_juice_feedback.gd -- --isolated-session (34 PASS, all5 actual recipes, local landmark beneficiaries, load/undo/redo quiet and exact state/history); tests/test_city_creation_legacy_roundtrip.gd, same flags (375 PASS). Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_chords_live.gd -- --isolated-session (98 PASS, final console has no errors). Real authored recipe completions generate26 sequential hops, .1875s schedule max actual error5.497ms, measured peaks.03999496-.04000000m, static pick bodies outside visual pivots. Lit finite world arcs, actual flying-seal arrival increments and bends ScoreRibbon staff; day/evening/night in1440/1024 plus10degree view,13 main PNG and5 staff crops reviewed. Real first-batch wish, real bread customer quality1to2 and earned keep aura use same chain; undo/redo/reload do not replay, reward/history and fixed12+4+6+2 unchanged. Supplemental same canonical command with --juice-extras-only (13 PASS, clean ordinary-tool images), actual3.157914s Master peak.00424194/clipped0; full-run peak.00369263. Normal scene framep955.572-5.682ms. First timing probe failed coarse93ms playback chunks and capture stalls; UI uses the same transport plus AudioServer.get_time_since_last_mix, PNG saved after chain, all26 final samples pass. Invalid Chinese metadata names in capture helper fixed to local Image, error logs retained. Demo only2 same-line delegation replacements; no Music/bank/schema change."
     },
     {
       "id": "M10",

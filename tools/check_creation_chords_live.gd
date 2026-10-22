@@ -13,6 +13,7 @@ func _check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func _show(kind:String,city:RefCounted,probe:String,focus:Vector3,zoom:float)->void:
 	var start:=Time.get_ticks_msec()
+	_check(preload("res://tools/fixtures/city_creation_juice_fixture.gd").apply(city,kind,false).ok,"remove one real recipe ingredient before loading")
 	var result:Dictionary=demo.state.restore(JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)))
 	_check(result.ok,"actual saved recipe scene loads: "+kind)
 	if not result.ok:return
@@ -20,6 +21,10 @@ func _show(kind:String,city:RefCounted,probe:String,focus:Vector3,zoom:float)->v
 	var end:=Time.get_ticks_msec()+180000
 	while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec()<end:await process_frame
 	_check(not demo.edit_pending(),"real GL geometry publishes: "+kind)
+	demo.select_tool(0);demo.focus=focus;demo.zoom=zoom;demo.pitch=.82;demo.yaw=.22;demo._update_camera()
+	for i in range(8):await process_frame
+	var juice:Dictionary=await preload("res://tools/fixtures/city_creation_juice_live.gd").finish(demo,kind)
+	for label:String in juice.checks:_check(juice.checks[label],kind+" juice: "+label)
 	_check(demo.state.has_chord(probe,kind),"published geometry retains exact recipe: "+kind)
 	demo.selected_district=str(demo.state.district_for_house(probe).get("id",""));demo.select_tool(7)
 	demo.quest.get_parent().show();demo._refresh_ui();demo._refresh_district()
@@ -75,6 +80,10 @@ func _run()->void:
 	var end:=Time.get_ticks_msec()+30000
 	while demo.music.audio_report.is_empty() and Time.get_ticks_msec()<end:await process_frame
 	_check(DisplayServer.get_name()!="headless" and not demo.music.audio_report.is_empty(),"real GL window loads the production music bank")
+	if "--juice-extras-only" in OS.get_cmdline_user_args():
+		var extras:Dictionary=await preload("res://tools/fixtures/city_creation_juice_extras_live.gd").new().run(demo)
+		for label:String in extras.checks:_check(extras.checks[label],"juice extras: "+label)
+		print("JUICE_EXTRAS_ONLY ",checks.size()," ",failures);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
 	var pastoral:RefCounted=Fixtures.pastoral()
 	var joiner:Dictionary=pastoral.add_house(Vector2(-12.8,-3));assert(joiner.ok)
 	pastoral.set_house_role(str(joiner.house_id),"workshop")
@@ -100,6 +109,9 @@ func _run()->void:
 	for i in range(3):await process_frame
 	await RenderingServer.frame_post_draw
 	_check(root.get_texture().get_image().save_png(OUT+"/声学和弦手札.png")==OK,"the actual scrollable planning handbook is captured")
+	demo.guide.close_panel()
+	var extras:Dictionary=await preload("res://tools/fixtures/city_creation_juice_extras_live.gd").new().run(demo)
+	for label:String in extras.checks:_check(extras.checks[label],"juice extras: "+label)
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all five recipe scenes preserve personal save bytes")
 	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts},"\t",true,true))
 	demo.queue_free();await process_frame;await create_timer(.2).timeout

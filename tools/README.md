@@ -33,3 +33,5 @@ M06：`check_creation_cluster_choir_live.gd` 追加真实76秒双岸问答/呼�
 M07：`check_creation_biome_music_live.gd -- --isolated-session --keyboard-only` 保留台地实际居民踩阶，并追加无种子手绘高地真实鼠标、庭院八拍、水车两正拍和真实电车到站；输出 `验证记录/M07/空间节拍器`。CPU阶键覆盖10调式、1米阈值与旧图，阶面测试覆盖30438个高度样点。全部实窗加 `--rendering-method gl_compatibility --audio-driver Dummy`。
 
 M08：`check_creation_spatial_popover_live.gd` 保留真实改名/用途/配色/撤销，再运行四层中空模型拾取、三页310px手卷、翻到第六地标及阅读时真实建房/撤销/拖转；CPU `test_city_creation_spatial_scroll.gd` 覆盖多朝向与屏边布局。证据 `验证记录/M08/中空罗盘与手卷`；`check_creation_personalization_live.gd -- --isolated-session --out-dir=res://验证记录/M08/色翼回归` 覆盖自由色轮与加建回归。
+
+M09：`check_creation_chords_live.gd` 对五配方先真实移除一项条件，再通过正式施工API完成；记录共享音频时钟的0.1875s顺序、4cm实际视觉枢轴位移、伙伴金弧、微章与五线谱到达。附加真实首炉/面包顾客升级/古钟塔光环及撤销/读档静默，`--juice-extras-only`可单独复核后半段。截图读回内存，连锁结束后写PNG；证据 `验证记录/M09/多米诺连锁`。CPU `test_city_creation_juice_feedback.gd`。
