@@ -1,6 +1,7 @@
 extends RefCounted
 ## A new work owns fresh contexts. Keep the published city intact while the
 ## existing CPU workers and hidden GPU staging prepare its replacement.
+const STAGING_SLICE_MS:=8.0
 var town:Node3D
 var life:Node3D
 var stats:Dictionary={}
@@ -27,7 +28,10 @@ func prepare(demo:Node3D,city:RefCounted,status:Callable)->void:
 		await demo.get_tree().process_frame
 		var started:=Time.get_ticks_usec()
 		var ready:bool=life.poll_budget_sync(false)
-		poll=town.poll_budget_rebuild(3.5,ready)
+		# This modal load stages an entire hidden work. A fuller slice avoids
+		# spending several extra seconds waiting between tiny assembly batches.
+		# Interactive edits keep their independent, smaller slice.
+		poll=town.poll_budget_rebuild(STAGING_SLICE_MS,ready)
 		stats.poll_max_ms=maxf(float(stats.get("poll_max_ms",0.)),float(Time.get_ticks_usec()-started)/1000.)
 		frames+=1
 		var total:int=town.budget_rebuild.tasks.size()

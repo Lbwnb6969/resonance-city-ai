@@ -2786,7 +2786,11 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 		stepping_cuts.append(_stroke_contours(line,width*.5+.24))
 	cuts.append_array(stepping_cuts)
 	var stairs := RoadStairs.prepare(self,road,profile,cuts)
-	cuts.append_array(stairs.cuts)
+	# Adjacent tread masks form one floor cut; keep the individual tread
+	# faces/colliders above unchanged. Do not scan every riser as a hole.
+	var stair_cuts:Array=[]
+	for cut:Array in stairs.cuts:_merge_water_group(stair_cuts,cut)
+	cuts.append_array(stair_cuts)
 	curbs.append_array(stairs.rails)
 	var vertices: Array[Vector3] = _road_surface_vertices(road_outlines[road.id],cuts)
 	# Height-aware streets require intermediate vertices even on dry land.

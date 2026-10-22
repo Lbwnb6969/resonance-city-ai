@@ -50,7 +50,7 @@ func _process(_delta:float)->bool:
 	return false
 func _initialize()->void:run.call_deferred()
 func run()->void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1024,768) if "--small-window" in OS.get_cmdline_user_args() else Vector2i(1440,900);Engine.max_fps=100
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/isolated_"+str(Time.get_ticks_usec());root.add_child(demo);demo.life.set_process(false)
 	while demo.music._loading:await process_frame
 	var chosen:Dictionary=Examples.read("example_flagship")
@@ -74,6 +74,7 @@ func run()->void:
 		same_world=same_world and world.get(key,[])==chosen.world.get(key,[])
 	var report:Dictionary={"open_ms":total,"render":demo.town.rebuild_stats.duplicate(true),"meadow":demo.town.meadow.stage_ms.duplicate(),"shore_ms":demo.town.shore.elapsed_ms,"terrain":demo.state._ground_terrain.stats.duplicate(true),"houses":demo.state.houses.size(),"roads":demo.state.roads.size(),"same_world":same_world,"life_revision":demo.life.last_revision,"revision":demo.state.revision,"valid":same_world and demo.life.last_revision==demo.state.revision}
 	if "--budget-probe" in OS.get_cmdline_user_args():report.budget=demo.edit_budget_report()
+	report.window_size=[root.size.x,root.size.y]
 	report.loading=demo.gallery.load_stats
 	report.retained=retained
 	report.frames=frame_ms.size()
