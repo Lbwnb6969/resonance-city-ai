@@ -14,6 +14,8 @@ const ArchiveRewards=preload("res://scripts/world/city_creation_archive_rewards.
 var archive_unlocks:Array[String]=[]
 var music_mode:=""
 var era_modifiers:Array[String]=[]
+const HarmonyJourney=preload("res://scripts/world/city_creation_harmony_journey.gd")
+var harmony_journey:Dictionary={}
 var biome_seed:Dictionary={}
 var _biome_revision:=-1
 var _biome_bonuses:Dictionary={}
@@ -172,7 +174,7 @@ func initialize_empty()->void:
 
 func initialize() -> void:
 	biome_seed={};_biome_revision=-1;_biome_bonuses={}
-	era_modifiers.clear();archive_unlocks.clear();music_mode=""
+	era_modifiers.clear();archive_unlocks.clear();music_mode="";harmony_journey.clear()
 	microclimate=""
 	automatic_neighborhoods=false
 	_prosperity_revision = -1
@@ -933,7 +935,7 @@ func _record_regional_exchange(a:String,b:String,ledger:Array[Dictionary])->bool
 	ledger.append(pair);_invalidate_regional_echo();_craft_changed();return true
 
 func walking_multiplier(home_id: String) -> float:
-	return float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)*float(planning_bonus(home_id).get("walking_mult",1.))
+	return ScoreModifiers.walking(self,home_id)*float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)*float(planning_bonus(home_id).get("walking_mult",1.))
 
 func level_tier(house_id: String) -> int:
 	return int(building_quality.get(house_id,{}).get("level_tier",1))
@@ -1664,7 +1666,7 @@ func transit_efficiency(house_id:String)->float:
 	return 1.3 if _transit_corridor_revision==revision and _transit_corridor_houses.has(house_id) and index>=0 and houses[index].role in ["workshop","atelier","clockmaker","garden_cafe"] else 1.
 
 func cafe_time_multiplier(house_id:String)->float:
-	return float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
+	return (.9 if "garden_salons" in era_modifiers else 1.)*float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
 
 
 func synergy_buffs()->Dictionary:

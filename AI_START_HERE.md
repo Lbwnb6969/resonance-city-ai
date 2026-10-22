@@ -29,7 +29,7 @@
 | 材质 | [墙材质](scripts/visual/city_creation_wall_material.gd)、[统一 shader](scripts/visual/shaders/creation_wall.gdshader)；新增构件接微法线与接触 AO |
 | 居民 / 工坊 | [life](scripts/world/city_creation_life.gd)、[调度](scripts/world/city_creation_citizen_schedule.gd)；真实路网、出炉、送装与茶聚 |
 | 音乐 | [music](scripts/audio/city_creation_music.gd)、[聚落和声](scripts/audio/city_creation_cluster_harmony.gd)；共享时钟与固定声部池 |
-| 长线成长 | [journey](scripts/world/city_creation_harmony_journey.gd)；预置纯逻辑，M10/M11 接入 |
+| 长线成长 | [journey](scripts/world/city_creation_harmony_journey.gd)；真实生活共鸣、18札三选一与Schema19；M11续接奇遇 |
 
 ## 运行、验证与交付
 

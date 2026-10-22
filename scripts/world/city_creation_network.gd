@@ -50,6 +50,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.terrain_strokes.assign(snapshot.get("terrain_strokes",[]))
 	state.biome_seed=snapshot.get("biome_seed",{}).duplicate()
 	state.era_modifiers.assign(snapshot.get("era_modifiers",[]))
+	state.harmony_journey=snapshot.get("harmony_journey",{}).duplicate(true)
 	if snapshot.has("ground_cache"):
 		# The request owns this cache; it was copied before starting the thread.
 		state._ground_terrain = snapshot.ground_cache

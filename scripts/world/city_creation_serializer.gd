@@ -89,6 +89,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.wish_rewards.is_empty():result.wish_rewards=city.wish_rewards.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
+	if not city.harmony_journey.is_empty():result.harmony_journey=city.harmony_journey.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
 	city.WishFulfilment.write_snapshot(city,result)
 	return result
 
@@ -97,6 +98,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	if not preserve_issued_ids:city.archive_unlocks.assign(data.get("archive_unlocks",[]))
 	city.music_mode=str(data.get("music_mode",""))
 	city.era_modifiers.assign(data.get("era_modifiers",[]))
+	city.HarmonyJourney.apply(city,data,preserve_issued_ids)
 	city.microclimate=str(data.get("microclimate",""))
 	city.automatic_neighborhoods=bool(data.get("automatic_neighborhoods",false))
 	# Editing history restores geometry; completed daily visits remain history.
@@ -272,7 +274,10 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if data.has("house_clockwork") and data.schema<city.CLOCKWORK_SCHEMA:return city._fail("钟表工艺需要新存档版本")
 	if data.has("biome_seed") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.Biomes.valid(data.biome_seed)):return city._fail("声学地貌存档无效")
 	if data.has("microclimate") and (data.schema<city.PERSONALIZATION_SCHEMA or data.microclimate not in city.Microclimate.IDS):return city._fail("四时风物存档无效")
-	if data.has("era_modifiers") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.ScoreModifiers.valid(data.era_modifiers,unlocks)):return city._fail("时代乐章铭牌存档无效")
+	if data.has("harmony_journey") and (data.schema<19 or not city.HarmonyJourney.validate(data.harmony_journey,unlocks)):return city._fail("河湾共鸣手札存档无效")
+	if data.has("era_modifiers") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.ScoreModifiers.valid(data.era_modifiers,unlocks,data.get("harmony_journey",{}) if data.get("harmony_journey",{}) is Dictionary else {})):return city._fail("时代乐章铭牌存档无效")
+	for id:String in data.get("harmony_journey",{}).get("traditions",[]):
+		if city.ScoreModifiers.CHOICES.has(id) and id not in data.get("era_modifiers",[]):return city._fail("手札与时代章程不一致")
 	var archive_check:Dictionary=city.ArchiveRewards.validate(data)
 	if not archive_check.ok:return archive_check
 	var memories: Variant = data.get("growth_memories", [])
@@ -429,6 +434,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		var maximum: float=180.0 if int(data.schema)>=city.CLOCKWORK_SCHEMA else 120.0
 		if int(data.schema)>=city.PLANNING_SCHEMA:maximum*=2.
 		if "lasting_resonance" in data.get("era_modifiers",[]):maximum*=1.5
+		if "twilight_tea_pavilion" in data.get("harmony_journey",{}).get("traditions",[]):maximum*=1.25
 		var quality: Variant=data.get("building_quality",{}).get(house_id,{}) if data.get("building_quality",{}) is Dictionary else {}
 		if int(data.schema)>=city.QUALITY_CONTEXT_SCHEMA and quality is Dictionary and city._is_integer(quality.get("level_tier")) and quality.level_tier==5:maximum*=2.
 		if not city._is_number(afterglow[house_id]) or float(afterglow[house_id]) <= 0.0 or float(afterglow[house_id]) > maximum:

@@ -284,6 +284,9 @@ func _restore_daily(resident: Dictionary, exit_first: bool, canceled_plan: Dicti
 			resident.route = prefix
 			resident.index = 0
 			return
+	# A loaded city can retain the home ID while removing its street connection.
+	if resident.stops.size()<2 or not life.connected_houses.has(str(resident.home_id)):
+		life._pause_at_home(resident);return
 	life._resume(resident)
 
 func _cancel(id: String, canceled_plan: Dictionary = {}) -> void:

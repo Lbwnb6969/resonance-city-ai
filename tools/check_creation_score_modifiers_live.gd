@@ -30,18 +30,20 @@ func show_city(city:RefCounted,title:String)->void:
 	if not validated.ok:quit(1);return
 	var world:Dictionary={"ok":true,"id":title,"title":title,"world":city.snapshot(),"view":{"focus":[-5.,.7,-1.],"yaw":demo.yaw,"pitch":.78,"zoom":24.,"evening":false,"light_phase":0}}
 	await demo.gallery._open_chosen(world);await settle();demo.life.set_process(false)
+	check(demo.state.houses==city.houses and demo.state.districts==city.districts and demo.state.era_modifiers==city.era_modifiers,"normal gallery actually publishes candidate: "+title+" "+str(demo.gallery.panel.status_label.text))
 func run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/隔离作品";root.add_child(demo);demo.life.set_process(false);await settle()
 	for player:AudioStreamPlayer in demo.music._players.values():identities.append(player.get_instance_id())
-	if "--reply-only" not in OS.get_cmdline_user_args():
+	if "--reply-only" not in OS.get_cmdline_user_args() and "--harmony-only" not in OS.get_cmdline_user_args():
 		check(not demo.journal.score_title.visible,"first era introduces no premature choice cards")
 		var city:=Modern.earned_city();await show_city(city,"已达成四时代的河湾")
 		check(not demo.journal.panel.visible and demo.state.era_modifiers.is_empty(),"loading legacy earned town does not force or invent choices")
 		demo._on_era_unlocked("renaissance");await process_frame
 		check(demo.journal.panel.visible and demo.journal.score_cards.renaissance.visible,"actual era event opens the journal with two alternatives")
 		for size_value:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
-			root.size=size_value;for i in range(6):await process_frame
+			root.size=size_value;await create_timer(.25).timeout
+			for i in range(6):await process_frame
 			var paper:Rect2=demo.journal.paper.get_global_rect()
 			check(Rect2(Vector2.ZERO,Vector2(size_value)).encloses(paper),"journal stays in viewport: "+str(size_value))
 			var rect:Rect2=demo.journal.score_buttons.arcade_market.get_global_rect()
@@ -66,6 +68,11 @@ func run()->void:
 		if saved.ok:
 			var opened:Dictionary=demo.gallery.library.read(str(saved.id))
 			check(opened.ok and opened.world.get("era_modifiers",[])==["polyphonic_academy","lasting_resonance"] and State.new().restore(opened.world).ok,"immutable gallery JSON restores exact authored choice")
+	if "--reply-only" not in OS.get_cmdline_user_args():
+		var harmony:Dictionary=await preload("res://tools/fixtures/city_creation_harmony_live.gd").new().run(demo)
+		for label:String in harmony.checks:check(bool(harmony.checks[label]),"harmony: "+label)
+		if "--harmony-only" in OS.get_cmdline_user_args():
+			print("SCORE_HARMONY ",checks," ",failures);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
 	# The old earned work retains real routes and pair ownership; only the
 	# selected charter changes the original reply scheduling interval.
 	var reply_city:RefCounted=preload("res://tests/test_city_creation_eras.gd").fixture()

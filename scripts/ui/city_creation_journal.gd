@@ -249,10 +249,10 @@ func _refresh_score_cards()->void:
 		score_cards[era].visible=era in demo.state.era_unlocks
 		var selected:String=demo.state.ScoreModifiers.selected(demo.state,era)
 		for id:String in demo.state.ScoreModifiers.CHOICES:
-			if demo.state.ScoreModifiers.CHOICES[id].era!=era:continue
+			if demo.state.ScoreModifiers.CHOICES[id].era!=era or not score_buttons.has(id):continue
 			var b:Button=score_buttons[id]
 			b.disabled=not selected.is_empty() or demo.edit_pending() or demo.gallery.busy
-			b.text=("✓ " if id==selected else "")+"时代%d · "%[demo.state.ScoreModifiers.ERAS.find(era)+2]+str(demo.state.ScoreModifiers.CHOICES[id].name)
+			b.text=("✓ " if id in demo.state.era_modifiers else "")+"时代%d · "%[demo.state.ScoreModifiers.ERAS.find(era)+2]+str(demo.state.ScoreModifiers.CHOICES[id].name)
 
 func _choose_score(id:String)->void:
 	if demo.edit_pending() or demo.gallery.busy:return

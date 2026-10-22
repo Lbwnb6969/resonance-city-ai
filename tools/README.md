@@ -35,3 +35,5 @@ M07：`check_creation_biome_music_live.gd -- --isolated-session --keyboard-only`
 M08：`check_creation_spatial_popover_live.gd` 保留真实改名/用途/配色/撤销，再运行四层中空模型拾取、三页310px手卷、翻到第六地标及阅读时真实建房/撤销/拖转；CPU `test_city_creation_spatial_scroll.gd` 覆盖多朝向与屏边布局。证据 `验证记录/M08/中空罗盘与手卷`；`check_creation_personalization_live.gd -- --isolated-session --out-dir=res://验证记录/M08/色翼回归` 覆盖自由色轮与加建回归。
 
 M09：`check_creation_chords_live.gd` 对五配方先真实移除一项条件，再通过正式施工API完成；记录共享音频时钟的0.1875s顺序、4cm实际视觉枢轴位移、伙伴金弧、微章与五线谱到达。附加真实首炉/面包顾客升级/古钟塔光环及撤销/读档静默，`--juice-extras-only`可单独复核后半段。截图读回内存，连锁结束后写PNG；证据 `验证记录/M09/多米诺连锁`。CPU `test_city_creation_juice_feedback.gd`。
+
+M10：`check_creation_score_modifiers_live.gd` 保留旧时代章程/连续问答验收，追加真实出炉、茶聚、送装、心愿赚取共鸣→鼠标三选一/撤销重做→收藏并重新打开→继续实际成长及新和弦防重刷。`--harmony-only`只跑新闭环；全部使用GL/Dummy/isolated-session，输出`验证记录/M10/共鸣手札`。CPU `test_city_creation_harmony_journey.gd`涵盖100级研习、18札效果、Schema19合法性、全部章程共生与真实茶客断路；旧章程 `test_city_creation_score_modifiers.gd`、茶聚 `test_city_creation_cafe_life.gd`与旧档375项保留。
