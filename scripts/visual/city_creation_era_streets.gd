@@ -13,14 +13,11 @@ var water_material:ShaderMaterial
 func prepare(renderer,road:Dictionary)->Dictionary:
 	var city:RefCounted=renderer.state;var profile:Dictionary=city.road_profile(road);var samples:Array=profile.samples
 	renderer.promenade._prepare_clearance(city)
-	var inputs:Array=[road,profile.signature,city.districts,city.plants,renderer.promenade._clearance_signature,renderer.promenade.height_signature(city,road),city._junctions.signature(str(road.id))]
+	var junctions:RefCounted=renderer.road_junctions()
+	var inputs:Array=[road,profile.signature,city.districts,city.plants,renderer.promenade._clearance_signature,renderer.promenade.height_signature(city,road),junctions.signature(str(road.id))]
 	var input:int=hash(inputs)
 	if _cache_signatures.get(str(road.id))==input and _cache.has(str(road.id)):return _cache[str(road.id)]
-	# Junction preparation validates all real doors. Resolve it once for this
-	# complete plan, then query its immutable spatial index at each garden site.
-	var junctions:RefCounted=city.road_junctions()
-	inputs[-1]=junctions.signature(str(road.id))
-	_cache_signatures[str(road.id)]=hash(inputs)
+	_cache_signatures[str(road.id)]=input
 	var data:Dictionary={"notes":[],"water":[],"gateways":[],"gardens":[]}
 	for i in range(1,samples.size()):
 		var from:String=_era(city,samples[i-1].xz);var to:String=_era(city,samples[i].xz)

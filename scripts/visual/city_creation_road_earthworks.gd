@@ -21,7 +21,7 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 			if int(cell.level)!=0: continue
 			var center := Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
 			blockers.append(Rect2(center-Vector2.ONE*0.9,Vector2.ONE*1.8).grow(0.30))
-		for entry: Dictionary in renderer.state.house_entrances(str(house.id)): doors.append([entry.wall_at,entry.at])
+		for entry: Dictionary in renderer.house_entrances(str(house.id)): doors.append([entry.wall_at,entry.at])
 	for index in range(points.size()-1):
 		if samples[index].bridge or samples[index+1].bridge: continue
 		if bool(samples[index].get("stepping",false)) or bool(samples[index+1].get("stepping",false)): continue

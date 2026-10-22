@@ -276,7 +276,7 @@ func _exit_tree() -> void:
 
 func rebuild() -> void:
 	_house_dependency_revision=-1
-	_entrance_views.clear();_passage_views.clear();_frontage_views.clear();_entrance_view_key=[];music_catalog={}
+	_entrance_views.clear();_passage_views.clear();_frontage_views.clear();_entrance_view_key=[];_junction_view_key=[];music_catalog={}
 	craft.layouts.clear();craft.layout_inputs.clear();craft.facades.clear()
 	_craft_view_geometry.clear()
 	craft.stock_inputs.clear()
@@ -791,6 +791,16 @@ var _entrance_views:Dictionary={}
 var music_catalog:Dictionary={}
 var _passage_views:Dictionary={}
 var _entrance_view_key:Array=[]
+var _junction_view_key:Array=[]
+func road_junctions()->RefCounted:
+	# One render revision owns one immutable road/door layout. State keeps its
+	# public validation path; renderer consumers share the already prepared index.
+	var key:Array=[state.get_instance_id(),state.revision]
+	if key!=_junction_view_key:
+		state.road_junctions()
+		_junction_view_key=key
+	return state._junctions
+
 func house_entrances(house_id:String)->Array:
 	# Renderer consumers read these records only. State's authoring API keeps
 	# its detached-copy contract; view caches belong to this published revision.
@@ -2649,7 +2659,7 @@ func _road_geometry(road: Dictionary) -> Dictionary:
 	return cached
 
 func _road_layout_key() -> int:
-	var junctions: RefCounted = state.road_junctions()
+	var junctions: RefCounted = road_junctions()
 	var rows: Array = []
 	for road: Dictionary in state.roads:
 		rows.append([road.id,road.points,road.width,road.get("roundabouts",[]),junctions.signature(str(road.id))])
