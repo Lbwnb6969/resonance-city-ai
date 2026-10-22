@@ -188,8 +188,10 @@ var road_fingerprints: Dictionary = {}
 var road_roots: Dictionary = {}
 var road_water_signatures: Dictionary = {}
 var rebuild_stats := {"houses_changed":0,"roads_changed":0,"houses_removed":0,"roads_removed":0,"vegetation_blocks_changed":0,"vegetation_instances":0,"elapsed_ms":0.0}
+var setup_stats:Dictionary={}
 
 func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
+	var began:=Time.get_ticks_usec()
 	state = city_state
 	if not defer_rebuild:
 		era_road_field.prepare(state);era_road_field.upload()
@@ -197,6 +199,8 @@ func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
 		ground_contact_field.prepare(state)
 		ground_contact_field.upload()
 	else:water_field._state=state
+	setup_stats={"fields_ms":float(Time.get_ticks_usec()-began)/1000.}
+	began=Time.get_ticks_usec()
 	landscape = Node3D.new()
 	landscape.name = "RiverGarden"
 	add_child(landscape)
@@ -244,6 +248,7 @@ func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
 	quality_visual.setup(self)
 	cafes.setup(self)
 	courtyards.setup(self)
+	setup_stats.layers_ms=float(Time.get_ticks_usec()-began)/1000.;began=Time.get_ticks_usec()
 	districts_layer = Node3D.new()
 	districts_layer.name = "MusicalDistricts"
 	add_child(districts_layer)
@@ -252,8 +257,10 @@ func setup(city_state: RefCounted, defer_rebuild:bool=false) -> void:
 	bread_layer.name = "BakeryCounterSupply"
 	add_child(bread_layer)
 	_build_landscape(defer_rebuild)
+	setup_stats.landscape_ms=float(Time.get_ticks_usec()-began)/1000.;began=Time.get_ticks_usec()
 	if not defer_rebuild:rebuild()
 	else:_water_surface_material()
+	setup_stats.finish_ms=float(Time.get_ticks_usec()-began)/1000.
 
 func _clear(node: Node3D) -> void:
 	for child in node.get_children():

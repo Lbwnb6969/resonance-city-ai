@@ -15,6 +15,7 @@ var water_material:ShaderMaterial
 var ground_material:ShaderMaterial
 var triangles:=0
 var _terrain:=Terrain.new()
+static var _geometry:Dictionary={}
 static func river_x(z:float)->float:
 	var outside:=maxf(absf(z)-Bounds.LAND_RECT.end.y,0.)
 	return State.river_x(z)+signf(z)*8.*sin(outside*.038)*smoothstep(0.,18.,outside)
@@ -30,6 +31,17 @@ func build()->void:
 	ground_material.set_shader_parameter("scenery_river",true);ground_material.set_shader_parameter("grass2_world_tint",WorldTint);ground_material.set_shader_parameter("grass2_world_tint_enabled",true)
 	water_material=ShaderMaterial.new();water_material.shader=WaterShader;Palette.configure(water_material)
 	water_material.set_shader_parameter("scenery_river",true);water_material.set_shader_parameter("grass2_world_tint",WorldTint);water_material.set_shader_parameter("grass2_world_tint_enabled",true)
+	# This scenery has no authored city inputs. Share its fixed GPU meshes;
+	# nodes and material overrides remain private to each town and light phase.
+	if _geometry.is_empty():_build_geometry()
+	else:
+		_mesh_instance("ValleyGround",_geometry.ValleyGround,ground_material)
+		_mesh_instance("ValleyRiver",_geometry.ValleyRiver,water_material)
+	var multimesh:=MultiMesh.new();multimesh.transform_format=MultiMesh.TRANSFORM_3D;multimesh.mesh=Mountain;multimesh.instance_count=MOUNTAIN_COUNT
+	for i:int in range(MOUNTAIN_COUNT):
+		multimesh.set_instance_transform(i,mountain_transform(i))
+	var mountains:=MultiMeshInstance3D.new();mountains.name="MountainSilhouette";mountains.multimesh=multimesh;mountains.material_override=ground_material;mountains.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(mountains)
+func _build_geometry()->void:
 	var inner:=Bounds.LAND_RECT.end.x
 	var wide:Array[float]=[];var rim:Array[float]=[];var outward:Array[float]=[]
 	for x:int in range(-int(OUTER),-int(inner),2):wide.append(float(x))
@@ -53,10 +65,6 @@ func build()->void:
 		for step:int in range(int(OUTER-inner)):
 			var a:=start+step*2;river_indices.append_array(PackedInt32Array([a,a+1,a+3,a,a+3,a+2]))
 	_mesh("ValleyRiver",river_vertices,river_normals,river_indices,water_material)
-	var multimesh:=MultiMesh.new();multimesh.transform_format=MultiMesh.TRANSFORM_3D;multimesh.mesh=Mountain;multimesh.instance_count=MOUNTAIN_COUNT
-	for i:int in range(MOUNTAIN_COUNT):
-		multimesh.set_instance_transform(i,mountain_transform(i))
-	var mountains:=MultiMeshInstance3D.new();mountains.name="MountainSilhouette";mountains.multimesh=multimesh;mountains.material_override=ground_material;mountains.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(mountains)
 func _grid(xs:Array[float],zs:Array[float],vertices:PackedVector3Array,normals:PackedVector3Array,indices:PackedInt32Array,bend:bool)->void:
 	var start:=vertices.size();var columns:=xs.size()
 	for z:float in zs:
@@ -75,6 +83,9 @@ func _grid(xs:Array[float],zs:Array[float],vertices:PackedVector3Array,normals:P
 func _mesh(label:String,vertices:PackedVector3Array,normals:PackedVector3Array,indices:PackedInt32Array,material:ShaderMaterial)->void:
 	var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX);arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_INDEX]=indices
 	var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-	var instance:=MeshInstance3D.new();instance.name=label;instance.mesh=mesh;instance.material_override=material;instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(instance);triangles+=indices.size()/3
+	_geometry[label]=mesh
+	_mesh_instance(label,mesh,material)
+func _mesh_instance(label:String,mesh:ArrayMesh,material:ShaderMaterial)->void:
+	var instance:=MeshInstance3D.new();instance.name=label;instance.mesh=mesh;instance.material_override=material;instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(instance);triangles+=mesh.surface_get_array_index_len(0)/3
 func set_light(phase:int)->void:
 	water_material.set_shader_parameter("evening",1. if phase==1 else 0.);water_material.set_shader_parameter("night",1. if phase==2 else 0.)

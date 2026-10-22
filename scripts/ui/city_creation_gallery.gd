@@ -5,6 +5,13 @@ const Archive=preload("res://scripts/world/city_creation_acoustic_archive.gd")
 const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
 const CityLoad=preload("res://scripts/ui/city_creation_city_load.gd")
 var load_stats:Dictionary={}
+var load_phase:=""
+var _load_phase_started:=0
+var _load_phases:Dictionary={}
+func _load_phase(name:String)->void:
+	var now:=Time.get_ticks_usec()
+	if not load_phase.is_empty():_load_phases[load_phase]=float(now-_load_phase_started)/1000.
+	load_phase=name;_load_phase_started=now
 var archive:=Archive.new()
 var preview_id:=""
 var _preview_life_processing:=false
@@ -132,26 +139,32 @@ func _open_chosen(chosen: Dictionary) -> void:
 	if not chosen.ok:
 		panel.set_status(str(chosen.message))
 		return
+	_load_phases={};_load_phase("validate")
 	var city:RefCounted=demo.State.new()
 	var restored:Dictionary=city.restore(chosen.world)
 	if not restored.ok:
-		panel.set_status(str(restored.message));return
+		_load_phase("");panel.set_status(str(restored.message));return
+	_load_phase("archive")
 	city.apply_archive_unlocks(archive.awards)
 	stop_preview()
 	_set_busy(true)
 	panel.set_status("先留住当前河湾，再打开作品……")
+	_load_phase("checkpoint")
 	var kept: Dictionary=await _capture(current_title,"before_open")
 	if not kept.ok:
 		panel.set_status(str(kept.message))
 		_set_busy(false)
+		_load_phase("")
 		return
 	last_auto_id=str(kept.id)
 	demo.life.set_process(false)
 	demo._cancel_draft()
 	panel.show()
+	_load_phase("prepare")
 	var loading:=CityLoad.new()
 	await loading.prepare(demo,city,panel.set_status)
 	load_stats=loading.stats
+	_load_phase("publish")
 	# A different work can reuse h1/c1. Fresh life/geometry contexts prevent
 	# residents or pending render caches from leaking between those identities.
 	demo.remove_child(demo.life)
@@ -169,10 +182,13 @@ func _open_chosen(chosen: Dictionary) -> void:
 	demo.town.show_districts(demo.tool==7)
 	demo._setup_life(loading.life)
 	demo.life.set_process(false)
+	_load_phase("music")
 	demo.music.update_city(city,demo.town.music_catalog)
 	# Reuse the four environmental voices and PCM bank, but sample the new
 	# city's water/trees. setup retargets its cache without restarting audio.
+	_load_phase("ambience")
 	demo.ambience.setup(city)
+	_load_phase("ui")
 	demo._rendered_waters=city.waters.duplicate(true)
 	demo._rendered_terrain=city.terrain_strokes.duplicate(true)
 	demo.selected_house=""
@@ -197,6 +213,7 @@ func _open_chosen(chosen: Dictionary) -> void:
 	demo._refresh_ui()
 	# Keep restored actors paused through the publication frame. Saved work
 	# and performance time must not advance by any loading/publication delay.
+	_load_phase("first_draw")
 	await RenderingServer.frame_post_draw
 	demo.music.restore_city_transport(demo.life.concert_view())
 	demo.life.set_process(true)
@@ -205,6 +222,8 @@ func _open_chosen(chosen: Dictionary) -> void:
 	_set_busy(false)
 	close_panel()
 	demo._message("已打开「%s」，切换前的河湾也已收藏。" % current_title)
+	_load_phase("")
+	load_stats.phases=_load_phases.duplicate()
 
 func observe_archive(completed:Dictionary={})->void:
 	if not preview_id.is_empty() or not archive.enabled:return

@@ -14,6 +14,7 @@ func prepare(demo:Node3D,city:RefCounted,status:Callable)->void:
 	# by the existing worker without borrowing any previous work's identities.
 	town.setup(city,true)
 	stats.bootstrap_ms=float(Time.get_ticks_usec()-began)/1000.
+	stats.bootstrap_parts=town.setup_stats.duplicate()
 	status.call("正在铺开街道与屋舍……")
 	await demo.get_tree().process_frame
 	town.request_budget_rebuild()
@@ -41,4 +42,7 @@ func prepare(demo:Node3D,city:RefCounted,status:Callable)->void:
 	life.set_budget_hold(false)
 	town.refresh_ecology()
 	stats.life_commit_ms=float(Time.get_ticks_usec()-started)/1000.
+	# Keep completed hidden contexts paused for one frame. Actor/ecology setup
+	# and the new city's first visible GPU draw must not occupy the same frame.
+	await demo.get_tree().process_frame
 	stats.total_ms=float(Time.get_ticks_usec()-began)/1000.

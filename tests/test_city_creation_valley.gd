@@ -45,4 +45,11 @@ func _run()->void:
 	valley.set_light(2)
 	_check(valley.water_material.get_shader_parameter("night")==1. and valley.water_material.get_shader_parameter("scenery_river")==true,"extended water uses the original night palette and the dedicated analytic shore")
 	_check(city.snapshot()==original,"creating and lighting scenery leaves every authored city field intact")
-	print("VALLEY ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures,"build_ms":build_ms,"ground_vertices":vertices.size(),"ground_triangles":indices.size()/3,"seam_points":seam_points,"maximum_rim_gap":maximum}));valley.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
+	began=Time.get_ticks_usec();var cached:=Valley.new();root.add_child(cached);cached.build();var cached_ms:float=(Time.get_ticks_usec()-began)/1000.
+	_check(cached.get_node("ValleyGround").mesh==ground.mesh and cached.get_node("ValleyRiver").mesh==river.mesh and cached.triangles==valley.triangles,"a second town reuses exact immutable ground and river GPU meshes with identical triangle accounting")
+	_check(cached.get_node("ValleyGround")!=ground and cached.ground_material!=valley.ground_material and cached.water_material!=valley.water_material,"shared geometry retains distinct scenery nodes and material ownership")
+	cached.set_light(1)
+	_check(cached.water_material.get_shader_parameter("evening")==1. and cached.water_material.get_shader_parameter("night")==0. and valley.water_material.get_shader_parameter("night")==1.,"changing the next town to evening leaves the published town at night")
+	cached.free()
+	_check(ground.mesh.surface_get_arrays(0)==arrays and river.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]==river_vertices,"retiring a cached town leaves the original GPU mesh arrays alive and exact")
+	print("VALLEY ",JSON.stringify({"ok":failures.is_empty(),"count":checks,"failures":failures,"build_ms":build_ms,"cached_ms":cached_ms,"ground_vertices":vertices.size(),"ground_triangles":indices.size()/3,"seam_points":seam_points,"maximum_rim_gap":maximum}));valley.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
