@@ -1,5 +1,6 @@
 class_name CityCreationMeadow
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original low-detail meadow exemplars. Tiny Glade's recovered Grass2
 ## records inform deterministic clumps, obstacle removal and tip-weighted
@@ -222,7 +223,7 @@ func apply_view_detail() -> void:
 
 func _apply_lawn_detail(multi: MultiMesh) -> void:
 	multi.mesh = _mesh("lawn_lod" if detail <= 0.84375 else "lawn")
-	multi.visible_instance_count = 0 if detail <= 0.0 else -1
+	multi.visible_instance_count = 0 if detail <= 0.0 else int(multi.get_meta("valid_count",multi.instance_count))
 
 func set_water_field(texture: Texture2DArray) -> void:
 	water_field = texture
@@ -601,18 +602,18 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 	multi.use_colors = true
 	multi.use_custom_data = true
 	multi.mesh = _mesh(part)
-	multi.instance_count = records.size()
+	SafeInstances.initialize(multi,records.size())
 	# Actual terrain heights are baked into the transforms; retain extra
 	# room for GPU wind, obstacle push and the slender species' taller tips.
 	var mesh_bounds := multi.mesh.get_aabb()
 	var source_transform: Transform3D = meshes.get(part+"_transform",Transform3D.IDENTITY)
-	var bounds: AABB = (records[0][0]*source_transform) * mesh_bounds
+	var bounds := AABB()
 	for index in range(records.size()):
 		var transform: Transform3D = records[index][0]*source_transform
-		bounds = bounds.merge(transform * mesh_bounds)
-		multi.set_instance_transform(index, transform)
-		multi.set_instance_color(index, records[index][1])
-		multi.set_instance_custom_data(index, records[index][2] if records[index].size() > 2 else Color(0.0, 0.0, 1.0, 0.0))
+		var slot:=SafeInstances.append(multi,transform,records[index][1],records[index][2] if records[index].size()>2 else Color(0,0,1,0))
+		if slot<0:continue
+		bounds = transform*mesh_bounds if slot==0 else bounds.merge(transform*mesh_bounds)
+	multi.set_meta("valid_count",multi.visible_instance_count)
 	multi.custom_aabb = bounds.grow(0.12)
 	# Keep the full seven-leaf bounds, including when installing a far-view
 	# mesh. A later camera change only swaps shared meshes and draw counts.

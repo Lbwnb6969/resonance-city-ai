@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original low-poly stones. The local Tiny Glade path_pebbles compute shader
 ## informs stable scatter + path/water masking; no recovered mesh is used.
@@ -89,7 +90,7 @@ func apply_view_detail()->void:
 	var live:Array[WeakRef]=[]
 	for entry:WeakRef in batches:
 		var multi:MultiMesh=entry.get_ref()
-		if multi!=null:multi.visible_instance_count=0 if detail<=0. else -1;live.append(entry)
+		if multi!=null:multi.visible_instance_count=0 if detail<=0. else int(multi.get_meta("valid_count",multi.instance_count));live.append(entry)
 	batches=live
 
 func build(_renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
@@ -107,20 +108,20 @@ func build(_renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
 		multi.transform_format = MultiMesh.TRANSFORM_3D
 		multi.use_colors = true
 		multi.mesh = _mesh(key.z)
-		multi.instance_count = groups[key].size()
+		SafeInstances.initialize(multi,groups[key].size())
 		var bounds := AABB(Vector3(-0.14,-0.1,-0.14),Vector3(8.28,0.25,8.28))
 		for index in range(groups[key].size()):
 			var record: Dictionary = groups[key][index]
 			var transform: Transform3D = record.transform
 			transform.origin -= block_origin
+			if SafeInstances.append(multi,transform,record.tint)<0:continue
 			bounds=bounds.expand(transform.origin+Vector3.UP*0.10).expand(transform.origin-Vector3.UP*0.10)
-			multi.set_instance_transform(index, transform)
-			multi.set_instance_color(index, record.tint)
+		multi.set_meta("valid_count",multi.visible_instance_count)
 		multi.custom_aabb=bounds
 		var instance := MultiMeshInstance3D.new()
 		instance.name = "PathPebbles_%d_%d_%d" % [key.x, key.y, key.z]
 		DetailLod.bind(instance,DetailLod.PEBBLES)
-		multi.visible_instance_count=0 if detail<=0. else -1
+		multi.visible_instance_count=0 if detail<=0. else int(multi.get_meta("valid_count",multi.instance_count))
 		batches.append(weakref(multi))
 		instance.position = block_origin
 		instance.multimesh = multi

@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Shared, immutable garden furniture. Real life drives prebuilt cup/bubble
 ## visibility; a status refresh never allocates geometry or invents residents.
@@ -149,11 +150,9 @@ func _batch(parent: Node3D, name: String, transforms: Array, kind: String) -> vo
 	multi.use_colors=true
 	multi.use_custom_data=true
 	multi.mesh=_mesh(kind)
-	multi.instance_count=transforms.size()
+	SafeInstances.initialize(multi,transforms.size())
 	for index in range(transforms.size()):
-		multi.set_instance_transform(index,transforms[index])
-		multi.set_instance_color(index,Color.WHITE)
-		multi.set_instance_custom_data(index,Color(float(index)/3.0,1.0 if kind=="chat" else 0.0,0,0))
+		SafeInstances.append(multi,transforms[index],Color.WHITE,Color(float(index)/3.0,1.0 if kind=="chat" else 0.0,0,0))
 	var instance := MultiMeshInstance3D.new()
 	instance.name=name
 	DetailLod.bind(instance,DetailLod.CHIME if kind in ["cup","chat"] else DetailLod.FURNITURE)

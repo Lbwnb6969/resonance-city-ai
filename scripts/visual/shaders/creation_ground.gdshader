@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 varying vec3 world_at;
 varying vec3 terrain_normal;
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
@@ -55,12 +56,12 @@ float stone_cover(float mask, float height) {
 }
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
-	terrain_normal = normalize(mat3(MODEL_MATRIX)*NORMAL);
+	terrain_normal = safe_normalize(mat3(MODEL_MATRIX)*NORMAL);
 }
 void fragment() {
-	vec3 metric_normal = normalize(terrain_normal);
-	vec3 relief_normal = normalize(metric_normal+meadow_normal(world_at.xz)-vec3(0.0,1.0,0.0));
-	NORMAL = normalize((VIEW_MATRIX*vec4(relief_normal,0.0)).xyz);
+	vec3 metric_normal = safe_normalize(terrain_normal);
+	vec3 relief_normal = safe_normalize(metric_normal+meadow_normal(world_at.xz)-vec3(0.0,1.0,0.0));
+	NORMAL = safe_normalize((VIEW_MATRIX*vec4(relief_normal,0.0)).xyz);
 	vec3 grass = meadow_contact_color(world_at.xz,shore_ground(world_at.xz,meadow_color(world_at.xz,grass_low.rgb,grass_high.rgb)));
 	float bank = (1.0-smoothstep(-0.08,-0.015,world_at.y))*(1.0-smoothstep(0.25,0.6,shore_distance(world_at.xz)));
 	// TG terrain_derivative's metric rock threshold, applied to real normals.

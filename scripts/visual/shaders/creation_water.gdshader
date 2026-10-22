@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_festival_wave.gdshaderinc"
 render_mode cull_disabled, diffuse_burley, specular_schlick_ggx;
 uniform vec4 water_deep : source_color = vec4(0.38,0.61,0.56,1.0);
@@ -26,8 +27,8 @@ void fragment() {
 	float water_cover = smoothstep(0.01,0.13+grain,depth);
 	float wave_a = sin(at.x*2.4+at.y*1.6+TIME*0.85);
 	float wave_b = cos(at.x*1.7-at.y*2.9-TIME*0.65);
-	vec3 wave_normal = normalize(vec3((wave_a+wave_b)*0.018*water_cover,1.0,(wave_a-wave_b)*0.018*water_cover));
-	NORMAL = normalize((VIEW_MATRIX*vec4(wave_normal,0.0)).xyz);
+	vec3 wave_normal = safe_normalize(vec3((wave_a+wave_b)*0.018*water_cover,1.0,(wave_a-wave_b)*0.018*water_cover));
+	NORMAL = safe_normalize((VIEW_MATRIX*vec4(wave_normal,0.0)).xyz);
 
 	// Preserve the shared meadow/Foundation wet-sand contact palette.
 	vec3 ground = shore_ground(at,meadow_color(at,grass_low.rgb,grass_high.rgb));

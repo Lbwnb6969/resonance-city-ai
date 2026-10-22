@@ -1,10 +1,11 @@
 shader_type spatial;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 uniform vec4 brick_color : source_color = vec4(0.64,0.32,0.22,1.0);
 varying vec3 world_at;
 varying vec3 world_normal;
 void vertex() {
 	world_at=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
-	world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	world_normal=safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
 }
 void fragment() {
 	float along=abs(world_normal.z)>abs(world_normal.x)?world_at.x:world_at.z;

@@ -44,8 +44,8 @@
         "scripts/visual/shaders/creation_road.gdshader"
       ],
       "verification_cmd": "Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_wish_pins_live.gd -- --isolated-session && Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_low_view_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": ""
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_wish_fulfilment.gd -- --isolated-session (62 PASS); tests/test_city_creation_render_safety.gd (15 PASS), tests/test_city_creation_prepared_blessings.gd (20 PASS), tests/test_city_creation_path_edge.gd (194294 assertions / 20342 triangles PASS), tests/test_city_creation_legacy_roundtrip.gd (375 PASS), same headless/isolation flags. Gate3: Godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_wish_pins_live.gd -- --isolated-session (13 PASS); tools/check_creation_low_view_live.gd, same GL/isolation flags (50 PASS; 8/127-house cities, 73318 GPU slots valid including unused capacity; LOD/edit/undo valid; 36 day/evening/night PNG at 5/10/15 degrees and two yaws manually reviewed, no colored broken faces). tools/check_creation_wish_closure_live.gd, same GL/isolation flags plus --resolution=1440 --out-dir=res://验证记录/M02/心愿1440 and separately --resolution=1024 --out-dir=res://验证记录/M02/心愿1024 (55 PASS each; actual mouse-release bread/craft latency 7.165/3.031ms and 7.332/3.215ms; real route delivery, conserved inventories and unchanged personal city save). Recorded 6.037s Master WAV peak 0.02078247, zero clipped samples, frame p95 10.040ms. Original giant-face baseline did not reproduce this run; verified numerical guards/all slots and captured views. Failed combined-resolution harness attempt retained; independent-resolution runs passed."
     },
     {
       "id": "M03",

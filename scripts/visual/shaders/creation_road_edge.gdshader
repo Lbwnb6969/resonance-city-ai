@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled, cull_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 varying vec3 world_at;
 varying flat vec4 edge_a;
 varying flat vec4 edge_b;
@@ -32,7 +33,7 @@ void fragment() {
 	vec3 soil = path_color(world_at.xz)*vec3(0.91,0.94,0.91);
 	vec3 path = era_road_color(world_at.xz,mix(soil,path_color(world_at.xz),smoothstep(0.18,0.85,across)),1.0);
 	ALBEDO = mix(grass,path,reveal);
-	vec3 normal = normalize(mix(meadow_normal(world_at.xz),vec3(0.0,1.0,0.0),reveal));
-	NORMAL = normalize((VIEW_MATRIX*vec4(normal,0.0)).xyz);
+	vec3 normal = safe_normalize(mix(meadow_normal(world_at.xz),vec3(0.0,1.0,0.0),reveal));
+	NORMAL = safe_normalize((VIEW_MATRIX*vec4(normal,0.0)).xyz);
 	ROUGHNESS = 1.0;
 }

@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_never, diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 varying float puff_age;
 
 float smoke_hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
@@ -22,6 +23,6 @@ void fragment() {
 	// the recovered height-fade idea, without claiming its opaque pipeline.
 	float coverage = smoothstep(0.0,0.09,puff_age)*(1.0-smoothstep(0.35,1.0,puff_age));
 	ALBEDO = vec3(0.78,0.785,0.74);
-	ALPHA = coverage*0.27*pow(max(dot(normalize(NORMAL),normalize(VIEW)),0.0),1.5);
+	ALPHA = coverage*0.27*pow(max(dot(safe_normalize(NORMAL),safe_normalize(VIEW)),0.0),1.5);
 	ROUGHNESS = 1.0;
 }

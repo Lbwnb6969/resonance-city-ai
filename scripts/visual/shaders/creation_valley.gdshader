@@ -1,12 +1,13 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 varying vec3 world_at;
 varying vec3 terrain_normal;
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
 void vertex() {
 	world_at=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
-	terrain_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	terrain_normal=safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
 }
 void fragment() {
 	vec3 grass=shore_ground(world_at.xz,meadow_color(world_at.xz,grass_low.rgb,grass_high.rgb));

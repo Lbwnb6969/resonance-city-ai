@@ -1,6 +1,7 @@
 extends RefCounted
 ## A narrow ring inside the real street footprint. Exact neighbour cuts remove
 ## internal junction edges; the original single road surface stays authoritative.
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const WIDTH := 0.16
 const EdgeShader = preload("res://scripts/visual/shaders/creation_road_edge.gdshader")
 const ShorePalette = preload("res://scripts/visual/city_creation_shore_palette.gd")
@@ -183,7 +184,9 @@ func _boundary_contours(segments:Array)->Array:
 				if not used.has(candidate):next=candidate;break
 			if next<0:break
 			current=next
-		if closed and contour.size()>=3:result.append(contour)
+		if closed:
+			var clean:=SafeInstances.clean_contour(contour)
+			if clean.size()>=3:result.append(clean)
 	return result
 
 func _key(at:Vector2)->Vector2i:return Vector2i(roundi(at.x*10000.),roundi(at.y*10000.))

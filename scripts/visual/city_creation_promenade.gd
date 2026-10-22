@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## Stable arc-distance decoration on the real road. TG's separate path and
 ## exclusion masks inform the placement rules; 4.5m spacing is the v2 design.
 ## Lamp proportions/amber colours adapt classical_lamp_light.gd into 3D.
@@ -251,8 +252,8 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 	set_light(saved_evening,saved_concert)
 
 func _tree_batch(root: Node3D,label: String,mesh: Mesh,material: Material,positions: Array[Vector3],offset: Vector3) -> void:
-	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.mesh=mesh;multi.instance_count=positions.size()
-	for i in range(positions.size()): multi.set_instance_transform(i,Transform3D(Basis.IDENTITY,positions[i]+offset))
+	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.mesh=mesh;SafeInstances.initialize(multi,positions.size())
+	for i in range(positions.size()): SafeInstances.append(multi,Transform3D(Basis.IDENTITY,positions[i]+offset))
 	var instance:=MultiMeshInstance3D.new();instance.name=label;instance.multimesh=multi;instance.material_override=material;root.add_child(instance)
 
 func _box(renderer,batches: Dictionary,origin: Vector3,size_value: Vector3,local: Vector3,material: Material,yaw: float=0.0) -> void:
@@ -275,10 +276,9 @@ func _glows(root: Node3D,points: Array[Vector3],pool: bool) -> void:
 		material.set_shader_parameter("ground_pool",1.0 if pool else 0.0)
 		materials[key]=material
 	var mesh := QuadMesh.new();mesh.size=Vector2(1.6,1.6) if pool else Vector2(.9,.9)
-	var multi := MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true;multi.mesh=mesh;multi.instance_count=points.size();multi.visible_instance_count=points.size()
+	var multi := MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true;multi.mesh=mesh;SafeInstances.initialize(multi,points.size())
 	for i in range(points.size()):
-		multi.set_instance_transform(i,Transform3D(Basis(Vector3.RIGHT,-PI*.5) if pool else Basis.IDENTITY,points[i]))
-		multi.set_instance_custom_data(i,Color(0,0,0,0))
+		SafeInstances.append(multi,Transform3D(Basis(Vector3.RIGHT,-PI*.5) if pool else Basis.IDENTITY,points[i]))
 	var node := MultiMeshInstance3D.new();node.name="LampPools" if pool else "LampHalos";node.multimesh=multi;node.material_override=materials[key]
 	node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;node.custom_aabb=multi.get_aabb().grow(1.0);root.add_child(node)
 	node.set_meta("lamp_positions",points.duplicate())

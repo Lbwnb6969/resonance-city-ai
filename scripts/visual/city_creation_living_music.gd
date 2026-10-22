@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## Visual consequences of the published choir and actual finished batches.
 ## No simulation, independent musical clock, save fields or audio players.
 const FieldShader=preload("res://scripts/visual/shaders/creation_living_music_field.gdshader")
@@ -41,10 +42,10 @@ func setup(owner:Node3D)->void:
 	motes.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true
 	var quad:=QuadMesh.new();quad.size=Vector2(.14,.14);multi.mesh=quad
-	multi.instance_count=MAX_MOTES;multi.visible_instance_count=0
+	SafeInstances.initialize(multi,MAX_MOTES);multi.visible_instance_count=0
 	# Unused capacity has finite, non-singular transforms even before it is
 	# culled. Every displayed slot is rewritten with the real roof position.
-	for i in range(MAX_MOTES):multi.set_instance_transform(i,Transform3D(Basis.IDENTITY,Vector3(0,-500,0)))
+
 	multi.custom_aabb=AABB(Vector3(-42,-5,-42),Vector3(84,35,84));motes.multimesh=multi
 	mote_material=ShaderMaterial.new();mote_material.shader=MoteShader;motes.material_override=mote_material
 	for i in range(MAX_HALOS):halos.append(_field("ChoirMeadow_%d"%i,0))
@@ -139,9 +140,9 @@ func update(records:Dictionary,snapshot:Dictionary,key:Variant,muted:bool=false)
 				var height:=float(row.base_y)+(float(row.max_level)+1.)*1.7+1.+phase*.8
 				var origin:=Vector3(at.x,height,at.y)
 				mote_bounds=AABB(origin,Vector3.ZERO) if count==0 else mote_bounds.expand(origin)
-				motes.multimesh.set_instance_transform(count,Transform3D(Basis.IDENTITY,origin))
+				SafeInstances.safe_set_instance(motes.multimesh,count,Transform3D(Basis.IDENTITY,origin))
 				motes.multimesh.set_instance_custom_data(count,Color(phase,0,0,strength));count+=1
-	motes.multimesh.visible_instance_count=count
+	SafeInstances.show_prefix(motes.multimesh,count)
 	light_signature=hash([key,large_members.keys()])
 	if count>0:motes.multimesh.custom_aabb=mote_bounds.grow(.4)
 	for slot:Dictionary in waves:

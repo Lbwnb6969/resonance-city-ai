@@ -1918,6 +1918,7 @@ func _district_home_has_service(home_id: String, role: String) -> bool:
 func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, pluck_house: String="") -> void:
 	_message(str(result.message))
 	if not result.ok or bool(result.get("no_op",false)): return
+	life.site_wishes.on_edit(result)
 	if whisper_keycaps!=null and kind!="history":whisper_keycaps.record_action(tool)
 	if music!=null:music.attention.notify_sculpt_action(music._playback_clock())
 	var started := Time.get_ticks_usec()
@@ -2259,6 +2260,7 @@ func _on_quality_changed(events: Array) -> void:
 	if life.profile_tick:life.tick_profile.quality_ui_us=Time.get_ticks_usec()-began
 
 func _on_site_wish_completed(house_id:String,kind:String,quantity:int)->void:
+	preload("res://scripts/visual/city_creation_blessing_burst.gd").play(self,house_id)
 	town.animate_house_bounce(house_id,.04)
 	_message("活水已到，%d份热面包出炉。"%quantity if kind=="water" else "良木已成林，%d件匠作已备好送往邻家。"%quantity)
 

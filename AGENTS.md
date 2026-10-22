@@ -8,7 +8,7 @@
    - 先读根目录 `ai_progress.log` 最后30行、`AI_START_HERE.md` 与 `ai_feature_backlog.json`，只做第一个 `passes=false` 的里程碑；本地 `新文档/` 为用户原件，不维护第二套进度。
    - 新排期以 `文档/26_长线陪伴城建与轻肉鸽终极施工蓝图.md` 为准：长线存档陪伴、自由造城，传世手札与微缩奇遇分步接入。旧Phase/Stage仅作基座与来源映射。
    - 新逻辑放入 `<250` 行独立子脚本；renderer/state/demo/music 四主文件每次只加 `<=8` 行委托。新美术构件接既有微法线与接触AO管线。
-   - 三门禁（Harness/文档、相关CPU/旧档、OpenGL实窗与录音）真实通过才更新该项 `passes` / `verified_by`；日志追加不超过6行，`feat(Mxx): 描述` 提交同步后立即结束。每3项执行独立品质验收。
+   - 三门禁（Harness/文档、相关CPU/旧档、OpenGL实窗与录音）真实通过才更新该项 `passes` / `verified_by`；日志追加不超过6行，`feat(Mxx): 描述` 提交同步后结束本轮；按用户2026-10-22后续授权连续逐轮推进，不等待新窗口，每轮仍只做一项。每3项执行独立品质验收。
    - 根入口 `AI_START_HERE.md` / `PROJECT.md` 保持120行以内且小于15,000字节；逐轮数据归档至文档/24，保留原文。
    - 先读 `AI_START_HERE.md` 与 `PROJECT.md` 了解当前代码入口与当前所处的施工阶段（Phase 1 ～ Phase 12）；
    - 再读四库总纲 `文档/code_artifact.md`、`文档/22_去GPT化空间UI与触觉交互规范.md`、`文档/23_声学涌现与玩家城市共生系统规范.md` 与 `文档/参考索引.md`；保留Phase1～11四库基座与已验收Stage A/B。

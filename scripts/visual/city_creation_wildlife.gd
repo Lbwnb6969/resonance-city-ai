@@ -1,5 +1,6 @@
 class_name CityCreationWildlife
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## Townscaper-inspired BirdFlock (879180.c/879c30.c) & Butterfly/Firefly flock (8811c0.c).
 ## Renders all rooftop birds and meadow butterflies/fireflies in 2 MultiMesh batches.
 
@@ -83,7 +84,7 @@ void fragment() {
 	mm.use_colors = true
 	mm.use_custom_data = true
 	mm.mesh = mesh
-	mm.instance_count = MAX_BIRDS
+	SafeInstances.initialize(mm,MAX_BIRDS)
 	mm.visible_instance_count = 0
 	birds_mm = MultiMeshInstance3D.new()
 	birds_mm.name = "RooftopBirds"
@@ -141,7 +142,7 @@ void fragment() {
 	mm.use_colors = true
 	mm.use_custom_data = true
 	mm.mesh = mesh
-	mm.instance_count = MAX_FLUTTER
+	SafeInstances.initialize(mm,MAX_FLUTTER)
 	mm.visible_instance_count = 0
 	flutter_mm = MultiMeshInstance3D.new()
 	flutter_mm.name = "MeadowFlutters"
@@ -230,8 +231,8 @@ func refresh_habitats(renderer: Node3D = null) -> void:
 	# newly allocated slot, including when the scene has not processed yet.
 	for i in range(_birds.size()):_write_bird(i,0.0 if str(_birds[i].mode)=="perched" else 1.0)
 	_write_flutters()
-	birds_mm.multimesh.visible_instance_count = _birds.size()
-	flutter_mm.multimesh.visible_instance_count = _flutters.size()
+	SafeInstances.show_prefix(birds_mm.multimesh,_birds.size())
+	SafeInstances.show_prefix(flutter_mm.multimesh,_flutters.size())
 	# Shader wings and flight paths extend beyond each tiny source mesh.
 	var bounds := AABB(Vector3(-48, -5, -48), Vector3(96, 30, 96))
 	birds_mm.custom_aabb = bounds
@@ -312,7 +313,7 @@ func _process(delta: float) -> void:
 func _write_bird(i:int,flap:float)->void:
 	var b:Dictionary=_birds[i]
 	var basis := Basis(Vector3.UP, float(b.yaw))
-	birds_mm.multimesh.set_instance_transform(i, Transform3D(basis, b.pos))
+	SafeInstances.safe_set_instance(birds_mm.multimesh,i,Transform3D(basis,b.pos))
 	birds_mm.multimesh.set_instance_color(i, b.color)
 	birds_mm.multimesh.set_instance_custom_data(i, Color(flap, float(b.phase), 0.0, 0.0))
 
@@ -323,6 +324,6 @@ func _write_flutters()->void:
 		var offset := Vector3(sin(ph * 1.3) * 0.85, 0.25 + sin(ph * 2.1) * 0.22, cos(ph * 0.9) * 0.85)
 		var pos: Vector3 = Vector3(f.anchor) + offset
 		var yaw := atan2(cos(ph * 1.3), -sin(ph * 0.9))
-		flutter_mm.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw), pos))
+		SafeInstances.safe_set_instance(flutter_mm.multimesh,i,Transform3D(Basis(Vector3.UP,yaw),pos))
 		flutter_mm.multimesh.set_instance_color(i, f.color)
 		flutter_mm.multimesh.set_instance_custom_data(i, Color(1.0, float(f.phase), 0.0, 0.0))

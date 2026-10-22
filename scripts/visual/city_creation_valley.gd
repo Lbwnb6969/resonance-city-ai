@@ -1,4 +1,5 @@
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## Non-editable valley outside the immutable 96m land rim. No State records,
 ## physics bodies, navigation edges or worker rebuilds belong to this scenery.
 const Bounds=preload("res://scripts/world/city_creation_bounds.gd")
@@ -37,9 +38,9 @@ func build()->void:
 	else:
 		_mesh_instance("ValleyGround",_geometry.ValleyGround,ground_material)
 		_mesh_instance("ValleyRiver",_geometry.ValleyRiver,water_material)
-	var multimesh:=MultiMesh.new();multimesh.transform_format=MultiMesh.TRANSFORM_3D;multimesh.mesh=Mountain;multimesh.instance_count=MOUNTAIN_COUNT
+	var multimesh:=MultiMesh.new();multimesh.transform_format=MultiMesh.TRANSFORM_3D;multimesh.mesh=Mountain;SafeInstances.initialize(multimesh,MOUNTAIN_COUNT)
 	for i:int in range(MOUNTAIN_COUNT):
-		multimesh.set_instance_transform(i,mountain_transform(i))
+		SafeInstances.append(multimesh,mountain_transform(i))
 	var mountains:=MultiMeshInstance3D.new();mountains.name="MountainSilhouette";mountains.multimesh=multimesh;mountains.material_override=ground_material;mountains.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(mountains)
 func _build_geometry()->void:
 	var inner:=Bounds.LAND_RECT.end.x

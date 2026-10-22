@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 varying vec3 world_at;
 varying vec2 bridge_paving;
 #include "res://scripts/visual/shaders/creation_path_palette.gdshaderinc"
@@ -20,6 +21,7 @@ vec3 bridge_timber(vec2 at) {
 }
 void vertex() { world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz; bridge_paving = COLOR.rg; }
 void fragment() {
+	NORMAL = safe_normalize(NORMAL);
 	vec3 surface=mix(path_color(world_at.xz),bridge_timber(UV),bridge_paving.x);
 	surface=mix(surface,promenade_color(world_at.xz),bridge_paving.y);
 	ALBEDO = era_road_color(world_at.xz,surface,1.0);

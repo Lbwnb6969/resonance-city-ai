@@ -89,6 +89,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if not city.workshop_yield_remainder.is_empty():result.workshop_yield_remainder=city.workshop_yield_remainder.duplicate();result.schema=city.PERSONALIZATION_SCHEMA
 	if city.journey_checkpoint.get("concert",{}).get("landmark_movement",false):result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.wish_rewards.is_empty():result.wish_rewards=city.wish_rewards.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
+	city.WishFulfilment.write_snapshot(city,result)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -162,6 +163,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		for row in city.bakery_supply.values():
 			for key in ["stock", "produced", "served"]:
 				row[key] = int(row[key])
+		city.WishFulfilment.restore_locks(city)
 		city.journey_checkpoint = data.get("journey_checkpoint",{}).duplicate(true)
 		if not city.journey_checkpoint.is_empty():
 			city.journey_checkpoint.schema = int(city.journey_checkpoint.schema)
@@ -447,7 +449,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if not city._valid_id(house_id, "h", supply_ids) or int(house_id.substr(1)) > int(issued.house):
 			return city._fail("城市存档面包供给房屋无效")
 		var row: Variant = supply[house_id]
-		if not row is Dictionary or row.size() != 3:
+		if not city.WishFulfilment.valid_supply_row(row,3,int(data.schema)):
 			return city._fail("城市存档面包供给字段无效")
 		for key in ["stock", "produced", "served"]:
 			if not city._is_integer(row.get(key)) or row[key] < 0:

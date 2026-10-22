@@ -1,4 +1,5 @@
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const Weather=preload("res://scripts/world/city_creation_microclimate.gd")
 const ShaderSource=preload("res://scripts/visual/shaders/creation_microclimate.gdshader")
 var demo
@@ -34,15 +35,14 @@ func update()->void:
 func _prepare()->void:
 	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true
 	var quad:=QuadMesh.new();quad.size=Vector2(.08,.13);multi.mesh=quad
-	multi.instance_count=192;multi.visible_instance_count=192
+	SafeInstances.initialize(multi,192)
 	var rng:=RandomNumberGenerator.new();rng.seed=hash([_center,1949])
 	var bounds:=AABB(Vector3(_center.x-19.,-5.,_center.y-19.),Vector3(38.,25.,38.))
 	for i:int in range(192):
 		var p:=_center+Vector2(rng.randf_range(-18.,18.),rng.randf_range(-18.,18.))
 		var y:float=demo.state.ground_height(p)+rng.randf_range(.8,3.5)
 		var basis:=Basis(Vector3.UP,rng.randf()*TAU)
-		multi.set_instance_transform(i,Transform3D(basis,Vector3(p.x,y,p.y)))
-		multi.set_instance_custom_data(i,Color(rng.randf(),0,0,1))
+		SafeInstances.append(multi,Transform3D(basis,Vector3(p.x,y,p.y)),Color.WHITE,Color(rng.randf(),0,0,1))
 	multi.custom_aabb=bounds;particles.multimesh=multi
 
 func _apply_materials()->void:

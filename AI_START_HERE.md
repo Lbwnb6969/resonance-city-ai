@@ -15,7 +15,7 @@
 3. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
 4. Gate 2：相关 CPU 单元和 `tests/test_city_creation_legacy_roundtrip.gd`，均加 `-- --isolated-session`。
 5. Gate 3：执行该项 `verification_cmd`；实窗使用 `--rendering-method gl_compatibility -- --isolated-session`，查看 PNG 与录音峰值。M01 的 Python 验收外补一次实际音画烟测。
-6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述`，同步 GitHub 后结束，不接着做下一项。
+6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，结束本轮。按用户2026-10-22后续授权连续逐轮推进至文档目标完成，再认领下一项，不等待新窗口。
 
 每完成 3 项执行独立品质验收，五项评分及修复要求按用户 Evaluator 指令处理。
 

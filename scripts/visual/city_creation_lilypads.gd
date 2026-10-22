@@ -1,4 +1,5 @@
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Derived pond-only records. Workers never load source meshes or textures.
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
@@ -150,15 +151,14 @@ func _clear(at: Vector2, radius: float, pond: Dictionary, local: Dictionary) -> 
 func _make_batch(root: Node3D, part: String, records: Array) -> void:
 	if records.is_empty(): return
 	var multi := MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true;multi.use_colors=true
-	multi.mesh=_mesh(part);multi.instance_count=records.size()
-	var bounds: AABB = records[0].transform*multi.mesh.get_aabb()
+	multi.mesh=_mesh(part);SafeInstances.initialize(multi,records.size())
+	var bounds := AABB()
 	for index in range(records.size()):
-		multi.set_instance_transform(index,records[index].transform)
+		var slot:=SafeInstances.append(multi,records[index].transform,Color.WHITE,Color(float(posmod(int(records[index].seed),65536))/65535.0,0,0,0))
+		if slot<0:continue
 		# Compatibility multiplies mesh COLOR by instance color. Explicit WHITE
 		# preserves the recovered linear colors beside our custom seed buffer.
-		multi.set_instance_color(index,Color.WHITE)
-		multi.set_instance_custom_data(index,Color(float(posmod(int(records[index].seed),65536))/65535.0,0,0,0))
-		bounds=bounds.merge(records[index].transform*multi.mesh.get_aabb())
+		bounds=records[index].transform*multi.mesh.get_aabb() if slot==0 else bounds.merge(records[index].transform*multi.mesh.get_aabb())
 	multi.custom_aabb=bounds
 	var instance := MultiMeshInstance3D.new();instance.name="Lilypads_"+part
 	DetailLod.bind(instance,72. if part=="leaf" else DetailLod.FURNITURE)

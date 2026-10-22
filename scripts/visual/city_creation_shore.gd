@@ -1,5 +1,6 @@
 class_name CityCreationShore
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original shore exemplars: deterministic placement, obstacle removal and
 ## tip-weighted wind informed by Tiny Glade's Grass2 report, without assets.
@@ -414,7 +415,8 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 			if rect.intersects(tile.grow(CLUSTER_REACH+0.105),true): rows.append(["court",tile])
 	return rows
 
-func _collect(rows: Array, rect: Rect2, kind: String, points: Array, radius: float) -> void:
+func _collect(rows: Array, rect: Rect2, kind: String, raw: Array, radius: float) -> void:
+	var points: Array = SafeInstances.clean_path(raw)
 	for index in range(maxi(1, points.size() - 1)):
 		var a := Vector2(float(points[index][0]), float(points[index][1]))
 		var next := mini(index + 1, points.size() - 1)
@@ -428,13 +430,13 @@ func _make_batch(root: Node3D, part: String, records: Array) -> void:
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.use_colors = true
 	multi.mesh = _mesh(part)
-	multi.instance_count = records.size()
+	SafeInstances.initialize(multi,records.size())
 	var mesh_bounds := multi.mesh.get_aabb()
-	var bounds: AABB = records[0].transform * mesh_bounds
+	var bounds := AABB()
 	for index in range(records.size()):
-		bounds = bounds.merge(records[index].transform * mesh_bounds)
-		multi.set_instance_transform(index, records[index].transform)
-		multi.set_instance_color(index, records[index].tint)
+		var slot:=SafeInstances.append(multi,records[index].transform,records[index].tint)
+		if slot<0:continue
+		bounds = records[index].transform*mesh_bounds if slot==0 else bounds.merge(records[index].transform*mesh_bounds)
 	# World-space wind remains inside this margin at the widest instance scale.
 	multi.custom_aabb = bounds.grow(0.06)
 	var instance := MultiMeshInstance3D.new()
@@ -519,7 +521,8 @@ void vertex() {
 	VERTEX.z += wind * 0.013 * tip * tip;
 }
 void fragment() {
-	NORMAL = normalize((VIEW_MATRIX * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
+	vec3 up = (VIEW_MATRIX * vec4(0.0, 1.0, 0.0, 0.0)).xyz;
+	NORMAL = up / max(length(up), 0.0001);
 	ALBEDO = tint.rgb * mix(vec3(0.93, 0.98, 0.90), vec3(1.05), tip);
 	ROUGHNESS = 1.0;
 }

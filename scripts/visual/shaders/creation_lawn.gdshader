@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode cull_disabled, depth_draw_opaque, diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 uniform float detail = 1.0;
 uniform float meadow_time_override = -1.0;
 uniform sampler2D road_draft_field : filter_linear, repeat_disable;
@@ -30,7 +31,7 @@ void vertex() {
 	// Derived meadow retreats from the same shore as the exposed sand. The
 	// authored plants, CPU clumps and terrain stay intact and undo unchanged.
 	if (bank_sand_enabled) { edge_height *= smoothstep(.22,.85,shore_distance(world_at.xz)); }
-	vec2 wind = normalize(vec2(0.82,0.57));
+	vec2 wind = safe_normalize(vec2(0.82,0.57));
 	float wind_time = meadow_time_override < 0.0 ? TIME : meadow_time_override;
 	gust = sin(dot(world_at.xz,wind)*0.48-wind_time*1.15)*0.68
 		+ sin(world_at.x*0.73-world_at.z*0.38-wind_time*1.73)*0.32;
@@ -48,14 +49,14 @@ void vertex() {
 	// Convert the shared world breeze into each rotated clump's local frame.
 	vec3 local_wind = world_to_local*vec3(wind.x,0.0,wind.y);
 	VERTEX.xz += local_wind.xz*grass2_wind_displacement(gust*0.09,tip,1.0)*detail*edge_height;
-	blade_world_normal = normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	blade_world_normal = safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
 }
 void fragment() {
 	float leaf = smoothstep(0.12,0.92,tip)*detail;
 	vec3 turf_normal = meadow_normal(world_at.xz);
-	vec3 soft_normal = normalize(mix(turf_normal,normalize(blade_world_normal),leaf*0.20)
+	vec3 soft_normal = safe_normalize(mix(turf_normal,safe_normalize(blade_world_normal),leaf*0.20)
 		+ vec3(0.82,0.0,0.57)*gust*leaf*0.035);
-	NORMAL = normalize((VIEW_MATRIX*vec4(soft_normal,0.0)).xyz);
+	NORMAL = safe_normalize((VIEW_MATRIX*vec4(soft_normal,0.0)).xyz);
 	vec3 ground = meadow_contact_color(world_at.xz,shore_ground(world_at.xz,meadow_color(clump_world_at,grass_low.rgb,grass_high.rgb)));
 	vec3 ground_linear=OUTPUT_IS_SRGB ? meadow_srgb_to_linear(ground) : ground;
 	// TG's seed tint belongs to the whole clump. Our quarter-strength mapping

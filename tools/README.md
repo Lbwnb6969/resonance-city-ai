@@ -23,3 +23,5 @@
 旧2.5D工具、失效的55MB导出器、依赖私人备份的单轮对照已移入本地 `废弃/主仓库旧体系归档_2026-10-18/`；本次依赖计划与结果见本地 `验证记录/仓库清理_2026-10-18/`。日常不自动导出便携ZIP，保留当前回归测试、个人 `user://` 数据和四库原件。
 
 十二阶段对齐：`check_creation_phase_nine_alignment.gd` 核对30m总站门槛/真实派车；`check_creation_phase_ten_alignment.gd` 核对8桌120株/三拱植物宫/双倍野花。均支持headless单元与 `-- --live --isolated-session` 实窗。植物宫夹具通过真实居民茶聚与公开植被接口生成有效台账。
+
+M02实窗：`check_creation_low_view_live.gd`捕获两城×昼夕夜×5°/10°/15°×两朝向，并审计所有GPU容量槽、LOD/编辑/撤销、真实Master录音。`check_creation_wish_closure_live.gd`支持`--resolution=1440`或`--resolution=1024`独立进程核对鼠标首炉延迟、真实携物路线和库存；使用`--out-dir=res://验证记录/...`隔离输出。

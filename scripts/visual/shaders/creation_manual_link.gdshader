@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, cull_disabled, depth_draw_never;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 // The editing guide reuses the musical ribbon mesh and arch, with a steadier
 // visible core so an authored link remains legible over bright grass/water.
 uniform vec3 from_at = vec3(0.0);
@@ -10,7 +11,7 @@ varying vec2 ribbon_uv;
 void vertex() {
 	ribbon_uv=UV;
 	vec3 direction=to_at-from_at;
-	vec3 cross_axis=normalize(vec3(-direction.z,0.0,direction.x)+vec3(0.00001,0.0,0.0));
+	vec3 cross_axis=safe_normalize(vec3(-direction.z,0.0,direction.x)+vec3(0.00001,0.0,0.0));
 	vec3 center=mix(from_at,to_at,UV.x);
 	center.y+=sin(UV.x*3.141593)*min(2.0,0.35+length(direction.xz)*0.13);
 	VERTEX=center+cross_axis*((UV.y-0.5)*0.18);

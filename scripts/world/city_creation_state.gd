@@ -1827,7 +1827,7 @@ func produce_bread(house_id: String, quantity: int) -> bool:
 	var current := bakery_status(house_id)
 	if capacity == 0 or not current.open or quantity <= 0 or quantity > capacity - int(current.stock):
 		return false
-	bakery_supply[house_id] = {"stock":int(current.stock) + quantity, "produced":int(current.produced) + quantity, "served":int(current.served)}
+	bakery_supply[house_id] = WishFulfilment.keep_burst(bakery_supply,house_id,{"stock":int(current.stock) + quantity, "produced":int(current.produced) + quantity, "served":int(current.served)})
 	var index:=_house_index(house_id)
 	if houses[index].get("signature","")=="watermill" and quantity==int(current.batch_size):_mill_batch(house_id)
 	life_progress_dirty = true
@@ -1861,7 +1861,7 @@ func serve_bread(house_id: String, home_id: String = "") -> bool:
 	var current := bakery_status(house_id)
 	if bakery_capacity(house_id) == 0 or int(current.stock) <= 0:
 		return false
-	bakery_supply[house_id] = {"stock":int(current.stock) - 1, "produced":int(current.produced), "served":int(current.served) + 1}
+	bakery_supply[house_id] = WishFulfilment.keep_burst(bakery_supply,house_id,{"stock":int(current.stock) - 1, "produced":int(current.produced), "served":int(current.served) + 1})
 	record_life_event("purchases")
 	var home_index := _house_index(home_id)
 	if home_index >= 0 and houses[home_index].role == "residential" and not has_cafe_credit(home_id):
@@ -2049,7 +2049,7 @@ func set_workshop_open(house_id: String, opened: bool) -> Dictionary:
 func produce_craft(house_id: String, quantity: int) -> bool:
 	var status := workshop_status(house_id)
 	if not status.open or quantity <= 0 or quantity > status.capacity - status.stock: return false
-	workshop_supply[house_id] = {"stock":status.stock + quantity,"produced":status.produced + quantity,"delivered":status.delivered,"transit":status.transit}
+	workshop_supply[house_id] = WishFulfilment.keep_burst(workshop_supply,house_id,{"stock":status.stock + quantity,"produced":status.produced + quantity,"delivered":status.delivered,"transit":status.transit})
 	_craft_changed()
 	return true
 
@@ -2089,7 +2089,7 @@ func reserve_craft(shop_id: String, home_id: String, target_id: String, kind: St
 	elif improvement_level(target_id) + reserved >= 3: return false
 	var transit := {"home_id":home_id,"target_id":target_id}
 	if kind != "upgrade": transit.kind = kind
-	workshop_supply[shop_id] = {"stock":status.stock - 1,"produced":status.produced,"delivered":status.delivered,"transit":transit}
+	workshop_supply[shop_id] = WishFulfilment.keep_burst(workshop_supply,shop_id,{"stock":status.stock - 1,"produced":status.produced,"delivered":status.delivered,"transit":transit})
 	_craft_changed()
 	return true
 
@@ -2108,7 +2108,7 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 	elif kind=="musicbox":
 		if mechanism_level(target_id)>=2:return false
 	elif kind != "upgrade" or improvement_level(target_id) >= 3: return false
-	workshop_supply[shop_id] = {"stock":status.stock,"produced":status.produced,"delivered":status.delivered + 1,"transit":{}}
+	workshop_supply[shop_id] = WishFulfilment.keep_burst(workshop_supply,shop_id,{"stock":status.stock,"produced":status.produced,"delivered":status.delivered + 1,"transit":{}})
 	if kind == "festival":
 		venue_commissions[target_id].delivered = int(venue_commissions[target_id].delivered) + 1
 	elif kind == "art":
@@ -2136,7 +2136,7 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 func return_craft(shop_id: String) -> bool:
 	var status := workshop_status(shop_id)
 	if status.transit.is_empty(): return false
-	workshop_supply[shop_id] = {"stock":status.stock + 1,"produced":status.produced,"delivered":status.delivered,"transit":{}}
+	workshop_supply[shop_id] = WishFulfilment.keep_burst(workshop_supply,shop_id,{"stock":status.stock + 1,"produced":status.produced,"delivered":status.delivered,"transit":{}})
 	_craft_changed()
 	return true
 

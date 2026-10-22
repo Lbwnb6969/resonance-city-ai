@@ -1,3 +1,4 @@
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 // One meadow base for ground, blades, road fringes and shallow shore blends.
 // v3 display anchors: deeper green roots and a warm meadow crown. These
 // authored colors are not original TG LUT quantiles or deferred exposure.
@@ -68,5 +69,5 @@ vec3 meadow_normal(vec2 at) {
 	float center = meadow_relief(at);
 	float x = meadow_relief(at+vec2(0.10,0.0));
 	float z = meadow_relief(at+vec2(0.0,0.10));
-	return normalize(vec3((center-x)*10.0,1.0,(center-z)*10.0));
+	return safe_normalize(vec3((center-x)*10.0,1.0,(center-z)*10.0));
 }

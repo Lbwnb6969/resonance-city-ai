@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## Real household needs add a small exterior flowerpot, without changing the
 ## authored city, doorway clearance, collision or natural-world height field.
 static func build(renderer: Node3D, parent: Node3D,records: Variant=null) -> int:
@@ -52,11 +53,9 @@ static func _batch(parent: Node3D, name_value: String, mesh: Mesh, material: Mat
 	mm.use_colors=not colors.is_empty()
 	mm.use_custom_data=true
 	mm.mesh=mesh
-	mm.instance_count=transforms.size()
+	SafeInstances.initialize(mm,transforms.size())
 	for i in range(transforms.size()):
-		mm.set_instance_transform(i,transforms[i])
-		mm.set_instance_custom_data(i,Color(0,0,1,0))
-		if not colors.is_empty(): mm.set_instance_color(i,colors[i])
+		SafeInstances.append(mm,transforms[i],colors[i] if not colors.is_empty() else Color.WHITE,Color(0,0,1,0))
 	var node := MultiMeshInstance3D.new()
 	node.name=name_value;node.multimesh=mm;node.material_override=material
 	parent.add_child(node)

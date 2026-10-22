@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled, cull_back;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 
 uniform vec4 albedo_color : source_color = vec4(1.0);
 uniform sampler2D wall_texture : source_color, filter_linear_mipmap, repeat_enable;
@@ -37,7 +38,7 @@ float plaster_height(vec2 at, float fine_detail) {
 
 void vertex() {
 	world_at = (MODEL_MATRIX * vec4(VERTEX,1.0)).xyz;
-	wall_normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
+	wall_normal = safe_normalize(MODEL_NORMAL_MATRIX * NORMAL);
 	wall_color = COLOR;
 }
 
@@ -50,13 +51,13 @@ void fragment() {
 		// Preserve source stone UVs; world projection would stretch arch walls.
 		base *= texture(wall_texture,UV * uv_scale + uv_offset).rgb;
 	}
-	vec3 normal = normalize(wall_normal);
+	vec3 normal = safe_normalize(wall_normal);
 	vec3 tangent = vec3(normal.z,0.0,-normal.x);
 	if (dot(tangent,tangent) < 0.0001) {
 		tangent = vec3(1.0,0.0,0.0);
 	}
-	tangent = normalize(tangent);
-	vec3 vertical = normalize(cross(normal,tangent));
+	tangent = safe_normalize(tangent);
+	vec3 vertical = safe_normalize(cross(normal,tangent));
 	vec2 planar = vec2(dot(world_at,tangent),dot(world_at,vertical));
 	float footprint = max(length(dFdx(planar)),length(dFdy(planar)));
 	float fine_detail = 1.0-smoothstep(0.018,0.070,footprint);
@@ -66,8 +67,8 @@ void fragment() {
 	float epsilon = 0.015;
 	float slope_u = (plaster_height(planar+vec2(epsilon,0.0),fine_detail)-plaster_height(planar-vec2(epsilon,0.0),fine_detail))/(2.0*epsilon);
 	float slope_v = (plaster_height(planar+vec2(0.0,epsilon),fine_detail)-plaster_height(planar-vec2(0.0,epsilon),fine_detail))/(2.0*epsilon);
-	vec3 perturbed = normalize(normal-(tangent*slope_u+vertical*slope_v)*micro_normal_strength*detail);
-	NORMAL = normalize((VIEW_MATRIX * vec4(perturbed,0.0)).xyz);
+	vec3 perturbed = safe_normalize(normal-(tangent*slope_u+vertical*slope_v)*micro_normal_strength*detail);
+	NORMAL = safe_normalize((VIEW_MATRIX * vec4(perturbed,0.0)).xyz);
 	base *= 1.0+(grain-0.5)*0.035*detail;
 
 	// The datum belongs to the whole authored house, including raised houses.

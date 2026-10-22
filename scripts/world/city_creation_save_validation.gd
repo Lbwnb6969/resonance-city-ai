@@ -88,7 +88,7 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 		var ids := {}
 		if not _valid_id(shop_id, "h", ids) or int(shop_id.substr(1)) > issued_house: return _fail("城市存档工坊身份无效")
 		var row: Variant = supply[shop_id]
-		if not row is Dictionary or row.size() != 4 or not row.get("transit") is Dictionary: return _fail("城市存档工坊台账字段无效")
+		if not preload("res://scripts/world/city_creation_wish_fulfilment.gd").valid_supply_row(row,4,int(data.schema)) or not row.get("transit") is Dictionary: return _fail("城市存档工坊台账字段无效")
 		for key in ["stock", "produced", "delivered"]:
 			if not _is_integer(row.get(key)) or row[key] < 0: return _fail("城市存档工坊计数无效")
 		var cargo: Dictionary = row.transit

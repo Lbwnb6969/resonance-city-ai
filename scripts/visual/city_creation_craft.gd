@@ -1,4 +1,5 @@
 extends RefCounted
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Permanent, delivered improvements are independent of structural house meshes
 ## and the music rig. Shared prefab meshes and one material serve the whole city.
@@ -344,11 +345,9 @@ func _batch(parent: Node3D, kind: String, transforms: Array, phase: float, house
 	multi.use_colors = true
 	multi.use_custom_data = true
 	multi.mesh = _mesh(kind)
-	multi.instance_count = transforms.size()
+	SafeInstances.initialize(multi,transforms.size())
 	for index in range(transforms.size()):
-		multi.set_instance_transform(index,transforms[index])
-		multi.set_instance_color(index,Color.WHITE)
-		multi.set_instance_custom_data(index,Color(phase,0,0,0))
+		SafeInstances.append(multi,transforms[index],Color.WHITE,Color(phase,0,0,0))
 	var instance := MultiMeshInstance3D.new()
 	instance.name = kind.capitalize()
 	DetailLod.bind(instance,DetailLod.CHIME)

@@ -5,7 +5,9 @@ var out_dir:="res://验证记录/心愿即时回馈_2026-10-22/accepted"
 var demo
 var checks:=0
 var failures:Array[String]=[]
-var facts:Dictionary={}
+var facts:Dictionary={"burst_latencies_ms":[]}
+var release_started:=0
+var resolutions:Array[Vector2i]=[Vector2i(1440,900),Vector2i(1024,768)]
 func _initialize()->void:run.call_deferred()
 func check(ok:bool,label:String)->void:
 	checks+=1
@@ -22,7 +24,11 @@ func click(button:Control)->void:
 func world(at:Vector2)->Vector2:
 	return demo.camera.unproject_position(Vector3(at.x,demo.state.ground_height(at),at.y))
 func place(at:Vector2)->void:
-	var screen:=world(at);await motion(screen);await mouse(screen,true);await mouse(screen,false);await settle();demo.life.set_process(false)
+	var screen:=world(at);await motion(screen);await mouse(screen,true)
+	var count:int=facts.burst_latencies_ms.size();release_started=Time.get_ticks_usec()
+	await mouse(screen,false)
+	if facts.burst_latencies_ms.size()>count:await shot(str(root.size.x)+"_instant_burst_"+str(count))
+	await settle();demo.life.set_process(false)
 func shot(label:String)->void:
 	demo.toast.hide();demo.toast_time=0.
 	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(out_dir+"/"+label+".png")
@@ -50,6 +56,7 @@ func choose(kind:String)->Dictionary:
 func run()->void:
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-dir="):out_dir=arg.trim_prefix("--out-dir=")
+		if arg.begins_with("--resolution="):resolutions=[Vector2i(1024,768) if arg.ends_with("1024") else Vector2i(1440,900)]
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out_dir));Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=out_dir+"/isolated";root.add_child(demo);demo.life.set_process(false)
@@ -57,10 +64,14 @@ func run()->void:
 	var voices:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():voices.append(player.get_instance_id())
 	var city:=fixture();var original:Dictionary=city.snapshot()
-	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+	for resolution:Vector2i in resolutions:
 		root.size=resolution
 		await demo.gallery._open_chosen({"ok":true,"world":original,"id":"wish-fixture","title":"屋顶心愿","view":{"focus":[-27.,.7,-18.],"zoom":28.,"yaw":0.,"pitch":1.05,"evening":false,"light_phase":0}})
 		demo.life.set_process(false);await settle()
+		var callback:Callable=demo.life.wish_callback
+		demo.life.wish_callback=func(id,kind,quantity):
+			callback.call(id,kind,quantity)
+			facts.burst_latencies_ms.append({"id":id,"kind":kind,"ms":float(Time.get_ticks_usec()-release_started)/1000.})
 		check(root.size==resolution and demo.state.houses.size()==original.houses.size() and demo.state.waters==original.waters and demo.state.roads==original.roads and demo.state.wish_rewards.is_empty(),"requested native resolution and fresh source world actually opened")
 		var arrived:=Time.get_ticks_msec();demo.life.set_process(true)
 		while Time.get_ticks_msec()-arrived<45000 and not (demo.life.bakery.workers[0].phase=="baking" and demo.life.workshop.workers[0].phase=="crafting"):await process_frame
@@ -91,7 +102,7 @@ func run()->void:
 		check(demo.tool==6 and demo.water_kind=="pond" and not water.is_empty(),"water wish selects actual pond tool")
 		var water_clock:float=demo.life.time
 		if not water.is_empty():await place(water.at)
-		check(demo.state.wish_rewards.get("h1",{}).get("water",0)==demo.state.bakery_batch_size("h1") and demo.state.bakery_status("h1").produced==demo.state.bakery_batch_size("h1") and demo.life.time==water_clock,"actual pond release immediately publishes one hot batch without advancing simulation")
+		check(demo.state.wish_rewards.get("h1",{}).get("water",0)==2 and demo.state.bakery_status("h1").produced==2 and demo.life.time==water_clock,"actual pond release immediately publishes one hot batch without advancing simulation")
 		await shot(str(resolution.x)+"_hot_batch")
 		demo._after_edit(demo.state.set_workshop_open("h2",true),"room");await settle();demo.life.set_process(false)
 		check(bool(demo.state.site_blessing("h1").get("blessed",false)) and float(demo.state.site_blessing("h1").get("speed_multiplier",1.))>1.,"actual highlighted pond activates the watermill baking bonus")
@@ -128,6 +139,7 @@ func run()->void:
 	check(seen_delivery and int(demo.state.workshop_status("h2").delivered)>0,"dispatched artisan completes the actual carrying route and installs once")
 	samples.sort();facts.life={"elapsed_ms":Time.get_ticks_msec()-started,"bread":demo.state.bakery_status("h1"),"craft":demo.state.workshop_status("h2"),"delivery_seen":seen_delivery,"frames":samples.size(),"p95_ms":samples[int(samples.size()*.95)],"max_ms":samples[-1]}
 	await shot("real_bread_and_delivery")
+	check(facts.burst_latencies_ms.size()==resolutions.size()*2 and facts.burst_latencies_ms.all(func(row):return row.ms<=200.),"both resolutions show the first-batch burst within 0.2 seconds of actual mouse release")
 	var current:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():current.append(player.get_instance_id())
 	check(current==voices and current.size()==12 and demo.music._effects.size()==4,"wish fulfilment retains the fixed audio pool")

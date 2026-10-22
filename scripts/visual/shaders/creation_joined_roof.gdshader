@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
+#include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 uniform vec4 roof_color : source_color = vec4(0.73,0.44,0.33,1.0);
 varying vec3 roof_normal;
 varying vec3 roof_contour;
@@ -10,12 +11,12 @@ float tile_hash(vec2 p) {
 }
 
 void vertex() {
-	roof_normal = normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	roof_normal = safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
 	vec3 contour=vec3(NORMAL.z,0.0,-NORMAL.x);
 	if(dot(contour,contour)<0.0001){contour=vec3(1.0,0.0,0.0);}
-	contour=normalize(contour);
-	roof_contour=normalize((MODEL_MATRIX*vec4(contour,0.0)).xyz);
-	roof_downhill=normalize((MODEL_MATRIX*vec4(cross(contour,NORMAL),0.0)).xyz);
+	contour=safe_normalize(contour);
+	roof_contour=safe_normalize((MODEL_MATRIX*vec4(contour,0.0)).xyz);
+	roof_downhill=safe_normalize((MODEL_MATRIX*vec4(cross(contour,NORMAL),0.0)).xyz);
 }
 
 float pulse_integral(float x,float width){
@@ -27,9 +28,9 @@ float filtered_joint(float at,float width,float footprint){
 }
 
 void fragment() {
-	vec3 normal=normalize(roof_normal);
-	vec3 contour=normalize(roof_contour);
-	vec3 downhill=normalize(roof_downhill);
+	vec3 normal=safe_normalize(roof_normal);
+	vec3 contour=safe_normalize(roof_contour);
+	vec3 downhill=safe_normalize(roof_downhill);
 	vec2 tile=UV;
 	// Take derivatives before the discontinuous stagger, then integrate seams
 	// and barrel normals across the actual pixel footprint.
@@ -47,8 +48,8 @@ void fragment() {
 	float barrel=(sin(PI*fract(tile.x+footprint.x*0.5))-sin(PI*fract(tile.x-footprint.x*0.5)))/(PI*footprint.x);
 	float across=-barrel*0.19+(seed-0.5)*0.025;
 	float along = 0.045+(tilt-0.5)*0.035;
-	vec3 tile_normal = normalize(normal+(contour*across-downhill*along)*detail);
-	NORMAL = normalize((VIEW_MATRIX*vec4(tile_normal,0.0)).xyz);
+	vec3 tile_normal = safe_normalize(normal+(contour*across-downhill*along)*detail);
+	NORMAL = safe_normalize((VIEW_MATRIX*vec4(tile_normal,0.0)).xyz);
 
 	vec3 scatter = mix(vec3(0.955,0.945,0.935),vec3(1.045,1.025,0.995),seed);
 	vec3 base = roof_color.rgb*mix(vec3(1.0),scatter,detail);

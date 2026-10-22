@@ -1,6 +1,7 @@
 extends RefCounted
 ## CPU-only cut/fill geometry derived from the same road profile as walkers.
 ## No State mutation or GPU resources: usable in the budget rebuild worker.
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const Highland = preload("res://scripts/visual/city_creation_highland.gd")
 const THRESHOLD := 0.35
 const THICKNESS := 0.22
@@ -8,7 +9,7 @@ const THICKNESS := 0.22
 static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictionary:
 	var faces: Array[Vector3] = []
 	var sections: Array = []
-	var samples: Array = profile.get("samples", [])
+	var samples: Array = SafeInstances.clean_samples(profile.get("samples", []))
 	var offsets: Array[Vector2] = []
 	var points: Array[Vector2] = []
 	for sample: Dictionary in samples: points.append(sample.xz)

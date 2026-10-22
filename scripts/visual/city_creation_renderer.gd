@@ -1,5 +1,6 @@
 class_name CityCreationRenderer
 extends Node3D
+const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 ## All geometry is authored here. Picking and building use the same local cells.
 const UNIT := 1.8
 const FLOOR := 1.7
@@ -739,9 +740,9 @@ func _make_tree_multimesh(parent: Node3D, part: String, transforms: Array) -> vo
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.use_colors = false
 	multi.mesh = _shared_tree_mesh(part)
-	multi.instance_count = transforms.size()
+	SafeInstances.initialize(multi,transforms.size())
 	for index in range(transforms.size()):
-		multi.set_instance_transform(index, transforms[index])
+		SafeInstances.append(multi,transforms[index])
 	multi.custom_aabb = multi.get_aabb().grow(0.12)
 	var instance := MultiMeshInstance3D.new()
 	instance.name = "Multi_%s" % part
@@ -995,11 +996,11 @@ func show_vegetation_brush(at: Vector2, radius: float, erase: bool = false, poin
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.mesh = vegetation_brush_mesh
-	multi.instance_count = centers.size()
+	SafeInstances.initialize(multi,centers.size())
 	for index in range(centers.size()):
 		var center := centers[index]
 		var size_value := radius if index == centers.size() - 1 else minf(radius * 0.22, 0.25)
-		multi.set_instance_transform(index, Transform3D(Basis.IDENTITY.scaled(Vector3(size_value, 1.0, size_value)), Vector3(center.x, 0.08, center.y)))
+		SafeInstances.append(multi,Transform3D(Basis.IDENTITY.scaled(Vector3(size_value, 1.0, size_value)), Vector3(center.x, 0.08, center.y)))
 	var instance := MultiMeshInstance3D.new()
 	instance.name = "VegetationBrushGuide"
 	instance.multimesh = multi
@@ -1147,8 +1148,8 @@ func preview_road_measure(points: Array[Vector2], locked_segments: int) -> void:
 		var multi := MultiMesh.new()
 		multi.transform_format = MultiMesh.TRANSFORM_3D
 		multi.mesh = road_measure_mesh
-		multi.instance_count = marks.size()
-		for index in range(marks.size()): multi.set_instance_transform(index,marks[index])
+		SafeInstances.initialize(multi,marks.size())
+		for index in range(marks.size()): SafeInstances.append(multi,marks[index])
 		var instance := MultiMeshInstance3D.new()
 		instance.name = "RoadMeasureTicks"
 		instance.multimesh = multi
@@ -2575,7 +2576,7 @@ func _road_samples(points: Array) -> Array[Vector2]:
 			for step in range(1,steps+1):
 				var position := from.lerp(at,float(step)/steps)
 				if samples[-1].distance_to(position) > 0.001: samples.append(position)
-	return samples
+	return SafeInstances.clean_points(samples)
 
 func _road_offsets(samples: Array[Vector2], width: float) -> Array[Vector2]:
 	var result: Array[Vector2] = []
