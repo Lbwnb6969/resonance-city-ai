@@ -33,6 +33,9 @@ func update_music(snapshot:Dictionary)->void:
 	material.set_shader_parameter("music_clock",float(snapshot.get("clock_sec",0.)))
 	var wave:Dictionary=snapshot.get("choral_wave",{}) if bool(snapshot.get("audible",false)) else {}
 	wave=preload("res://scripts/world/city_creation_tradition_rules.gd").chime_wave(layer.get_parent().state,wave)
+	if preload("res://scripts/world/city_creation_tradition_synergy.gd").tier(layer.get_parent().state,"artisan")>0:
+		wave=wave.duplicate()
+		for id:String in wave:wave[id]=minf(1.,float(wave[id])*1.2)
 	var live:Array[Dictionary]=[]
 	for row:Dictionary in chime_rigs:
 		var node:MultiMeshInstance3D=row.node.get_ref()

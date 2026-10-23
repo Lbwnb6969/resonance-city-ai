@@ -167,6 +167,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	rig.custom_aabb = rig.mesh.get_aabb().grow(0.8)
 	var material := ShaderMaterial.new()
 	material.shader = GlowShader
+	material.set_shader_parameter("salon_pulse",0.)
 	material.set_shader_parameter("house_phase",float(posmod(hash(id),1000))*0.006283185)
 	rig.material_override = material
 	rig.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -273,7 +274,7 @@ func update(snapshot: Dictionary) -> void:
 		material.set_shader_parameter("finale_glow",float(snapshot.get("finale_glow",0.)))
 		material.set_shader_parameter("festival_ready",1.0 if ready else 0.0)
 		_apply_pluck(id,row,last_pluck)
-		row.mesh.visible = weight > 0.0 or glow > 0.0 or ready or float(row.pluck_strength)>0.0 or night_glow>0.0 or float(row.get("harmony",0.0))>0.0
+		row.mesh.visible = float(material.get_shader_parameter("salon_pulse"))>0. or weight > 0.0 or glow > 0.0 or ready or float(row.pluck_strength)>0.0 or night_glow>0.0 or float(row.get("harmony",0.0))>0.0
 		row.pivot.scale.y = 1.0+0.02*pulse*lead
 		row.weight = weight
 		row.afterglow = glow

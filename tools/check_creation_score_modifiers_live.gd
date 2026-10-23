@@ -36,6 +36,10 @@ func run()->void:
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/隔离作品";root.add_child(demo);demo.life.set_process(false);await settle()
 	for player:AudioStreamPlayer in demo.music._players.values():identities.append(player.get_instance_id())
 	if "--reply-only" not in OS.get_cmdline_user_args() and "--harmony-only" not in OS.get_cmdline_user_args():
+		var schools:Dictionary=await preload("res://tools/fixtures/city_creation_schools_live.gd").new().run(demo)
+		for label:String in schools.checks:check(bool(schools.checks[label]),"schools: "+label)
+		if "--schools-only" in OS.get_cmdline_user_args():
+			print("SCORE_SCHOOLS ",checks," ",failures);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
 		check(not demo.journal.score_title.visible,"first era introduces no premature choice cards")
 		var city:=Modern.earned_city();await show_city(city,"已达成四时代的河湾")
 		check(not demo.journal.panel.visible and demo.state.era_modifiers.is_empty(),"loading legacy earned town does not force or invent choices")
@@ -47,7 +51,7 @@ func run()->void:
 			var paper:Rect2=demo.journal.paper.get_global_rect()
 			check(Rect2(Vector2.ZERO,Vector2(size_value)).encloses(paper),"journal stays in viewport: "+str(size_value))
 			var rect:Rect2=demo.journal.score_buttons.arcade_market.get_global_rect()
-			check(rect.size.x>200. and paper.encloses(rect),"two readable choice leaves fit at "+str(size_value))
+			check(rect.size.x>200. and paper.encloses(rect) and demo.journal.cards.get_parent().get_global_rect().encloses(rect),"two readable choice leaves fit at "+str(size_value))
 			await capture("铭牌_"+str(size_value.x))
 		await click(demo.journal.score_buttons.arcade_market);await settle()
 		check(demo.state.era_modifiers==["arcade_market"] and demo.journal.score_buttons.polyphonic_academy.disabled,"mouse chooses exactly one real modifier and seals sibling")

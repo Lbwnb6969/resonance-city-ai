@@ -1,5 +1,6 @@
 extends RefCounted
 ## Legacy era choices and journey-earned charters consume real city operations.
+const Families=preload("res://scripts/world/city_creation_tradition_synergy.gd")
 const Vignettes=preload("res://scripts/world/city_creation_vignettes.gd")
 const ERAS := ["renaissance", "clockwork", "modern_eco"]
 const CHOICES := {
@@ -56,10 +57,10 @@ static func production(city:RefCounted,house:Dictionary)->float:
 	if "courtyard_canon_spring" in owned:
 		for court:Dictionary in city.courtyard_plans():
 			if str(house.id) in court.get("members",[]):result*=1.3;break
-	return result*Vignettes.production(city,str(house.id))
+	return result*Vignettes.production(city,str(house.id))*Families.production_multiplier(city,house)
 
 static func walking(city:RefCounted,id:String)->float:
 	var index:int=city._house_index(id)
-	return Vignettes.walking(city,id)*(1.2 if index>=0 and "stone_step_carillon" in city.harmony_journey.get("traditions",[]) and float(city.houses[index].get("base_y",0.))>=.65 else 1.)
+	return (Families.walking_multiplier(city,city.houses[index]) if index>=0 else 1.)*Vignettes.walking(city,id)*(1.2 if index>=0 and "stone_step_carillon" in city.harmony_journey.get("traditions",[]) and float(city.houses[index].get("base_y",0.))>=.65 else 1.)
 static func afterglow(city:RefCounted)->float:
-	return (1.5 if city.era_modifiers.has("lasting_resonance") else 1.)*(1.25 if "twilight_tea_pavilion" in city.harmony_journey.get("traditions",[]) else 1.)
+	return Families.afterglow_multiplier(city)*(1.5 if city.era_modifiers.has("lasting_resonance") else 1.)*(1.25 if "twilight_tea_pavilion" in city.harmony_journey.get("traditions",[]) else 1.)

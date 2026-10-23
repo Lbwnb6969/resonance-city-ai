@@ -49,3 +49,5 @@ M14：`test_city_creation_render_safety.gd`新增三变体四树种的14×6曲�
 M15：`test_city_creation_juice_feedback.gd`追加金弧横向UV、14cm曲顶与八槽回收。canonical `check_creation_chords_live.gd`保留原98项，再附窗光共享场/双分辨率昼夕夜真实道路像素A/B与公共石路/池塘沙岸造景九项；新22张PNG在`验证记录/M15/双色金弧与窗光`，`lighting.json`保存实际红通道增幅。`--lighting-only`可独立补拍新10项。金弧色芯继续使用原wall纸纹/AO，首次绘制用开场零透明度微网格预热，避免首个真实和弦编译停顿。
 
 M16：`test_city_creation_harmony_journey.gd`含独立`tests/helpers/city_creation_tradition_rules_checks.gd`，共230项；`check_creation_tradition_rules_live.gd`以隔离合法测试信用逐项验证空间法则，44项覆盖真实缓坡网格/原生阶键/2树瞬发/6m活水及18卡排版，52张PNG与Master在`验证记录/M16/手札空间法则`。真实赚取、鼠标选札及续玩用原`check_creation_score_modifiers_live.gd -- --isolated-session --harmony-only`27项复核。
+
+M17：`test_city_creation_tradition_synergy.gd`59项覆盖18札去重/2至3阶/真实生活奖励与旧茶基线；canonical `check_creation_score_modifiers_live.gd`75项，`--schools-only`仅跑新25项，`--harmony-only`原27项。流派图与实际阶键双音/原音/WAV/报告在`验证记录/M17/四大学派`，`octave_pcm_analysis.json`记录880Hz新增高八度；最终完整日志`M17_canonical_live_final_console.log`。

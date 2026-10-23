@@ -263,7 +263,7 @@ func _scroll_score_choice(era:String)->void:
 	await demo.get_tree().process_frame
 	if panel.visible and score_cards.has(era):
 		var scroll:ScrollContainer=cards.get_parent()
-		scroll.ensure_control_visible(score_cards[era])
+		scroll.ensure_control_visible(score_cards[era].get_child(0))
 
 func blocks_world(event:InputEvent)->bool:
 	return scrollbook.blocks_world(event)

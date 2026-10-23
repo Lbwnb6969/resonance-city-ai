@@ -104,9 +104,13 @@ func run(owner:Node)->Dictionary:
 	demo.focus=Vector3(-6,.7,0);demo.zoom=25.;demo.pitch=.9;demo._update_camera()
 	var completed:Dictionary=Fixture.apply(demo.state,"pastoral_triad",true);demo._after_edit(completed,"terrace");await settle();draft.poll()
 	checks.real_chord=completed.ok and draft.events.any(func(row):return row.events.has("chord"))
+	# The initial woodland letter is queued independently of chord earnings.
+	# Establish its real baseline before comparing the complete history ledger.
+	demo.get_meta("vignette_journey").poll()
 	var earned_total:Dictionary=demo.state.harmony_journey.duplicate(true)
 	demo._after_edit(demo.state.undo(),"history");await settle();draft.poll();demo._after_edit(demo.state.redo(),"history");await settle();draft.poll()
 	checks.no_chord_farm=demo.state.harmony_journey==earned_total
+	if not checks.no_chord_farm:details.history_difference={"before":earned_total,"after":demo.state.harmony_journey.duplicate(true)}
 	demo._set_light_phase(1);await capture("夕景续长_1024")
 	demo._set_light_phase(2);demo.pitch=deg_to_rad(10.);demo._update_camera();await capture("夜景低视角_1024")
 	# The diagnostic low angle is outside the gallery's authored camera range.

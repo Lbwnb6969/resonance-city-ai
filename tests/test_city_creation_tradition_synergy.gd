@@ -1,0 +1,66 @@
+extends SceneTree
+const Families=preload("res://scripts/world/city_creation_tradition_synergy.gd")
+const Fixture=preload("res://tools/fixtures/city_creation_tradition_fixture.gd")
+const Modern=preload("res://tools/fixtures/city_creation_modern_fixture.gd")
+const Receipts=preload("res://scripts/world/city_creation_harmony_receipts.gd")
+const State=preload("res://scripts/world/city_creation_state.gd")
+var checks:=0
+var failures:Array[String]=[]
+func _initialize()->void:run.call_deferred()
+func check(ok:bool,label:String)->void:
+	checks+=1
+	if not ok:failures.append(label);push_error(label)
+func family(city:RefCounted,id:String,count:int)->void:
+	for card:String in Families.FAMILIES[id].members.slice(0,count):check(Fixture.learn(city,card).ok,"actual family study: "+card)
+func run()->void:
+	var all:Array=[]
+	for id:String in Families.FAMILIES:
+		var cards:Array=Families.FAMILIES[id].members
+		for card:String in cards:check(Families.family_of(card)==id and card not in all,"unique family: "+card);all.append(card)
+		check(Families.summary(cards.slice(0,1)).tiers[id]==0 and Families.summary(cards.slice(0,2)).tiers[id]==1 and Families.summary(cards.slice(0,3)).tiers[id]==2,"one/two/three leaf thresholds: "+id)
+		var repeated:Array=[cards[0],cards[0],cards[0],"unknown"]
+		check(Families.summary(repeated).counts[id]==1 and Families.summary(repeated).tiers[id]==0,"duplicate ranks and unknown leaves never create an echo")
+	check(all.size()==18 and Families.family_of("unknown")=="","exactly eighteen known cards, unknown not assigned to riverbank")
+	var river:RefCounted=Modern.earned_city();river.set_house_role("h1","bakery");river.add_water([Vector2(-18,-2)] as Array[Vector2],2.,"pond")
+	family(river,"riverbank",2)
+	check(Families.tier(river,"riverbank")==1 and is_equal_approx(Families.lead_boost_db(river,true),.4) and Families.lead_boost_db(river,false)==0.,"two leaves give .4dB only to actual waterfront")
+	check(is_equal_approx(Families.production_multiplier(river,river.houses[river._house_index("h1")]),1.08),"two water leaves affect actual near-water production")
+	Fixture.learn(river,"hydraulic_guild");Receipts.collect(river)
+	check(Families.tier(river,"riverbank")==2 and is_equal_approx(Families.lead_boost_db(river,true),.8),"third river leaf raises actual lead to .8dB")
+	check(river.produce_bread("h1",2),"real two-loaf batch")
+	var earned:=Receipts.collect(river)
+	check(earned.earned==7,"one real batch earns 4 loaf XP plus 3 crown XP, not 3 per loaf")
+	check(Receipts.collect(river).earned==0,"same batch cannot award twice")
+	var saved:Dictionary=river.snapshot();var copy:=State.new()
+	check(copy.restore(JSON.parse_string(JSON.stringify(saved))).ok and Families.for_city(copy)==Families.for_city(river) and Receipts.collect(copy).earned==0,"school and paid batch rederive after actual JSON without replay")
+	var slots:int=Fixture.Journey.choices_made(river.harmony_journey)
+	Fixture.learn(river,"warm_hearth_ballad")
+	check(Fixture.Journey.choices_made(river.harmony_journey)==slots+1 and Families.for_city(river).counts.riverbank==3,"repeat study consumes credit but does not increase unique school count")
+	var tea:RefCounted=Modern.earned_city();tea.set_house_role("h1","bakery");tea.set_house_role("h4","garden_cafe")
+	family(tea,"courtyard",3)
+	check(is_equal_approx(Families.tea_multiplier(tea),.9) and is_equal_approx(Families.afterglow_multiplier(tea),1.3),"courtyard actually changes tea and warmth consumers")
+	tea.produce_bread("h1",2);tea.serve_bread("h1","h2");tea.serve_bread("h1","h3");Receipts.collect(tea)
+	check(tea.complete_tea("h4",["h2","h3"]),"actual paid household credits complete tea")
+	check(Receipts.collect(tea).earned==12,"one tea party earns 8 ordinary plus 4 courtyard XP")
+	check(Receipts.collect(tea).earned==0,"tea crown receipt cannot replay")
+	var art:RefCounted=Modern.earned_city();art.set_house_role("h1","workshop");family(art,"artisan",3);Receipts.collect(art)
+	art.produce_craft("h1",1);Receipts.collect(art)
+	check(art.reserve_craft("h1","h2","h2") and art.complete_craft("h1","h2","h2"),"real wood production and installation")
+	check(Receipts.collect(art).earned==15,"real delivery awards ten normal plus five crown XP")
+	var deliveries:Array=art.get_meta("family_delivery_events",[])
+	check(deliveries.size()==1 and deliveries[0].target=="h2" and deliveries[0].count==1,"domino event identifies the actual gifted home")
+	check(not art.complete_craft("h1","h2","h2") and art.get_meta("family_delivery_events",[]).size()==1,"failed repeated delivery cannot enqueue another chain")
+	var old:RefCounted=Modern.earned_city();old.choose_era_modifier("hydraulic_guild");old.choose_era_modifier("lasting_resonance")
+	check(Families.tier(old,"riverbank")==1 and old.harmony_journey.is_empty(),"two real legacy charters derive an echo without creating another saved ledger")
+	var high:RefCounted=preload("res://tools/fixtures/city_creation_juice_fixture.gd").city("highland_fifth")
+	# Stone + pastoral neighbour are available on an earned highland map.
+	family(high,"highland",2)
+	check(Families.walking_multiplier(high,high.houses[0])>1. and Families.production_multiplier(high,high.houses[0])>1.,"actual sculpted highland house receives walking and work echo")
+	check(Families.delivery_multiplier(high,"h1")>1.,"highland echo reaches actual installation consumer")
+	var badge:=Families.card_badge("hydraulic_guild",["warm_hearth_ballad","lantern_bridge_echo"])
+	check("2/3" in badge and "水岸吟游" in badge and "★" not in badge,"draft badge states current count rather than unearned crown")
+	check(State.new().restore(art.snapshot()).ok and State.new().restore(tea.snapshot()).ok,"real crown inventories and tea history still validate")
+	var upgraded:=State.new();upgraded.restore(tea.snapshot());upgraded.harmony_journey.receipts.erase("school_receipts_baseline");upgraded.harmony_journey.receipts.erase("tea_house/h4")
+	check(Receipts.collect(upgraded).earned==0,"existing schema19 tea groups are baselined on upgrade, never retroactively crown-paid")
+	print("TRADITION_SYNERGY_CPU ",checks-failures.size(),"/",checks," ",failures)
+	quit(0 if failures.is_empty() else 1)

@@ -10,10 +10,18 @@ static func counters(city:RefCounted)->Dictionary:
 		for kind:String in city.wish_rewards[id]:result["wish/"+id+"/"+kind]=1
 	for scope:String in city.synergy_buffs().chord_scopes:
 		for chord:String in city.synergy_buffs().chord_scopes[scope].chords:result["chord/"+chord+"/"+scope]=1
+	for id:String in city.cafe_progress:result["tea_house/"+id]=int(city.cafe_progress[id].get("groups",0))
+	for key:String in city.harmony_journey.get("receipts",{}):
+		if key.begins_with("batch_count/"):result["bake/"+key.get_slice("/",1)]=int(city.harmony_journey.receipts[key])
+		elif key.begins_with("delivery_count/"):result["delivery/"+key.get_slice("/",1)]=int(city.harmony_journey.receipts[key])
 	return result
 static func initialize(city:RefCounted)->void:
-	if not city.harmony_journey.is_empty():return
-	city.harmony_journey=Journey.default_state();city.harmony_journey.receipts=counters(city)
+	if not city.harmony_journey.is_empty():
+		if not city.harmony_journey.receipts.has("school_receipts_baseline"):
+			for id:String in city.cafe_progress:city.harmony_journey.receipts["tea_house/"+id]=int(city.cafe_progress[id].get("groups",0))
+			city.harmony_journey.receipts["school_receipts_baseline"]=1
+		return
+	city.harmony_journey=Journey.default_state();city.harmony_journey.receipts=counters(city);city.harmony_journey.receipts["school_receipts_baseline"]=1
 	city.dirty=true;city.life_progress_dirty=true
 static func collect(city:RefCounted)->Dictionary:
 	initialize(city)
@@ -25,7 +33,7 @@ static func collect(city:RefCounted)->Dictionary:
 		journey.receipts[key]=maxi(current,int(journey.receipts.get(key,0)))
 		if delta==0:continue
 		var kind:=key.get_slice("/",0)
-		var xp:int={"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30}[kind]*delta
+		var xp:int=int({"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30}.get(kind,0))*delta+preload("res://scripts/world/city_creation_tradition_synergy.gd").bonus_xp(city,key,delta)
 		earned+=xp;events[kind]=int(events.get(kind,0))+delta
 	var repeat_count:int=Journey.choices_made(journey)-journey.traditions.size()
 	var exact:float=earned*(1.+minf(.5,repeat_count*.02))+float(journey.get("xp_remainder",0.))

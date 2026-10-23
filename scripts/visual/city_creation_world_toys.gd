@@ -61,11 +61,12 @@ static func play_note(music,plan:Dictionary)->bool:
 		if plan.world_kind=="stair" and plan.has("degree"):key="stair_key_%d"%preload("res://scripts/world/city_creation_stair_keys.gd").voice_rank(mode,int(plan.degree))
 		if not music._edit_streams.has(key):return false
 		stream=music._edit_streams[key]
+	if plan.world_kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").stream(music,stream,mode,int(key.get_slice("_",2)))
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break
 	music.play_effect_at(player,stream,plan.position,.75)
-	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial"),"stream_key":key,"mode":mode,"bar":bar})
+	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial"),"stream_key":key,"mode":mode,"bar":bar,"octave_dyad":bool(stream.get_meta("octave_dyad",false))})
 	return true
 
 func update(demo,delta:float)->void:
@@ -85,7 +86,7 @@ func update(demo,delta:float)->void:
 			if material is ShaderMaterial:
 				material.set_shader_parameter("touch_at",pulse.at)
 				material.set_shader_parameter("touch_time",age)
-	elif pulse.kind=="stair" and age<.65:
+	elif pulse.kind=="stair" and age<(.95 if preload("res://scripts/world/city_creation_tradition_synergy.gd").tier(demo.state,"highland")>0 else .65):
 		var stair:Dictionary=demo.life.travel.site(str(pulse.get("source_id","")))
 		if stair.is_empty():return
 		if not is_instance_valid(key_flash):

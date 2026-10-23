@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_disabled, specular_disabled;
 uniform float night_glow = 0.0;
+uniform float salon_pulse=0.0;
 uniform float harmony = 0.0;
 uniform float clock_sec = 0.0;
 uniform float beat_pulse : hint_range(0.0, 1.0) = 0.0;
@@ -67,6 +68,7 @@ void fragment() {
 		color = mix(color,vec3(1.0,0.84,0.48),pluck_window*0.65);
 	}
 	if (part < 1.5) opacity = max(opacity,night_glow*(1.85+0.10*sin(clock_sec*1.1+house_phase)));
+	if (part<1.5) { opacity=max(opacity,salon_pulse*.8);color=mix(color,vec3(1.,.82,.42),salon_pulse); }
 	if (opacity < 0.015) discard;
 	ALBEDO = color;
 	EMISSION = amber * amount * ((part < 1.5 || (part > 4.5 && part < 5.5)) ? 0.32 : 0.0)+vec3(1.0,0.78,0.35)*pluck_window*0.48;
@@ -78,6 +80,7 @@ void fragment() {
 		EMISSION+=vec3(1.0,0.73,0.27)*finale_glow*0.65;
 		opacity=max(opacity,finale_glow*0.6);
 	}
+	if (part<1.5) EMISSION+=vec3(1.,.72,.28)*salon_pulse*.6;
 	ROUGHNESS = 1.0;
 	ALPHA = clamp(opacity, 0.0, 1.0);
 }

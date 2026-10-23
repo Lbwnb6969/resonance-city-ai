@@ -1666,7 +1666,7 @@ func transit_efficiency(house_id:String)->float:
 	return 1.3 if _transit_corridor_revision==revision and _transit_corridor_houses.has(house_id) and index>=0 and houses[index].role in ["workshop","atelier","clockmaker","garden_cafe"] else 1.
 
 func cafe_time_multiplier(house_id:String)->float:
-	return (.9 if "garden_salons" in era_modifiers else 1.)*float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
+	return preload("res://scripts/world/city_creation_tradition_synergy.gd").tea_multiplier(self)*(.9 if "garden_salons" in era_modifiers else 1.)*float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
 
 
 func synergy_buffs()->Dictionary:
@@ -1700,7 +1700,7 @@ func chord_together(house_ids:Array,chord:String)->bool:
 func installation_multiplier(shop_id:String,target_id:String)->float:
 	var index:=_house_index(shop_id)
 	if index<0:return 1.
-	var delivery:=(1.25 if "craft_federation" in era_modifiers else 1.)*float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
+	var delivery:=preload("res://scripts/world/city_creation_tradition_synergy.gd").delivery_multiplier(self,shop_id)*(1.25 if "craft_federation" in era_modifiers else 1.)*float(planning_bonus(shop_id).get("delivery_mult",1.))*(1.4 if special_site(shop_id).get("arcade_street",false) else 1.)
 	var expansion:float=synergy_buffs().expansion_multiplier
 	if str(houses[index].role)!="workshop" or level_tier(target_id)>=3:return delivery*expansion
 	return delivery*float(planning_bonus(target_id).get("growth_mult",expansion))

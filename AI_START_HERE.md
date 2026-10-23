@@ -25,7 +25,7 @@
 | 主场景 / UI | [city_creation.tscn](scenes/city_creation.tscn)、[demo](scripts/ui/city_creation_demo.gd)、`city_creation_postcard_stamp.gd`（M21待接） |
 | 世界 / 存档 | [state](scripts/world/city_creation_state.gd)、[serializer](scripts/world/city_creation_serializer.gd)；Schema 1～19 与撤销/重做 |
 | 美术 / 建筑 | [现代区](scripts/visual/city_creation_modern.gd)、[现代四原型](scripts/visual/city_creation_modern_archetypes.gd)、[油画植被](scripts/visual/city_creation_foliage.gd)、[描边金弧](scripts/visual/city_creation_juice_arcs.gd) |
-| 轻肉鸽 / 奇遇 | [共鸣成长](scripts/world/city_creation_harmony_journey.gd)、`city_creation_tradition_synergy.gd`（M17待接）、[十二风物诗](scripts/world/city_creation_vignette_catalog.gd) |
+| 轻肉鸽 / 奇遇 | [共鸣成长](scripts/world/city_creation_harmony_journey.gd)、[四流派冠冕](scripts/world/city_creation_tradition_synergy.gd)、[十二风物诗](scripts/world/city_creation_vignette_catalog.gd) |
 | 音乐 / 拂奏 | [music](scripts/audio/city_creation_music.gd)、[乐句潮汐](scripts/audio/city_creation_phrase_tide.gd)、[古筝琶音拂奏](scripts/ui/city_creation_strum_hold.gd) |
 
 ## 运行与验证

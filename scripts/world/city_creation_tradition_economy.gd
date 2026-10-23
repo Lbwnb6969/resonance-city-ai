@@ -1,6 +1,7 @@
 extends RefCounted
 const Rules=preload("res://scripts/world/city_creation_tradition_rules.gd")
 static func produced(city:RefCounted,id:String,kind:String)->void:
+	preload("res://scripts/world/city_creation_tradition_synergy.gd").record_batch(city,id,kind)
 	if not Rules.has(city,"hydraulic_guild"):return
 	var index:int=city._house_index(id)
 	if index<0 or city.water_clearance(Vector2(city.houses[index].origin[0],city.houses[index].origin[1]))>=Rules.water_radius(city):return
@@ -13,6 +14,7 @@ static func produced(city:RefCounted,id:String,kind:String)->void:
 	if int(supply[id].stock)>=capacity:return
 	supply[id].stock=int(supply[id].stock)+1;supply[id].produced=int(supply[id].produced)+1
 static func delivered(city:RefCounted,shop:String,target:String,kind:String)->void:
+	preload("res://scripts/world/city_creation_tradition_synergy.gd").record_delivery(city,shop,target)
 	if kind!="art" or not Rules.has(city,"illuminated_atelier") or city.culture_level(target)>=2:return
 	var reserved:=0
 	for row:Dictionary in city.workshop_supply.values():
