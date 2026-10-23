@@ -57,3 +57,5 @@ M18：`test_city_creation_poems.gd`覆盖新增8篇真实公共造景、时代/�
 M19：`test_city_creation_strum_hold.gd`42项保留输入所有权与独立0.45秒冷却/十调式递增；canonical `check_creation_strum_hold_live.gd`保留原32项，再运行`city_creation_arpeggio_stroll_live.gd`的五屋→树→池→真实石阶八音、实际4cm、原生WASD漫步与5m微光/原生俯仰。真实播放器PCM、Master、双分辨率昼夕夜与暂停同帧A/B在`验证记录/M19/琶音与漫步`，FFT结果`pcm_frequency.json`；全程GL/Dummy/isolated-session。原探针空白鼠标锚点避开新增共鸣徽章，先poll真实成长/来信建立完整快照基线。
 
 M20：`test_city_creation_heritage_draft.gd`80项覆盖六种真实新地貌、图鉴权限、单份开局传承、原生经验不变、选札/撤销重做/JSON与防重授；配合原acoustic_archive33/harmony230/legacy375。`check_creation_phonograph_live.gd`保留真实图鉴大奖、混音回放与原色饰/调式，附跨城图鉴逐弦、原生两次新地貌/传承选札/待选仍可建屋及四流派烟火手卷，输出`验证记录/M20/传承与烟火`。原`check_creation_ledger_focused_live.gd`验证L/Enter/Esc/Tab/滚动与只读性，等待实际.22秒开卷Tween，并先poll真实来信/成长建立完整快照基线。全部GL/Dummy/isolated-session。
+
+M21：`test_city_creation_road_prepared_inputs.gd`以60路完整冷编译对照验证一次装饰交接/消耗与跨revision失效，配合clockwork/legacy。`check_creation_paper_ui_live.gd`完整HUD/原生明信片按钮并附四时代实际127屋的双分辨率昼夕夜明信片；`--postcard-only`可独立核24项印记/逐像素原图/临时标记恢复/录音。输出`验证记录/M21/明信片`；诊断`city_creation_render_capture.gd`与原始测试截图通道不盖印。另跑原`check_creation_city_load_live.gd`核127屋60路隐藏安放/字段GPU精确回读/槽位身份，不以固定FPS作门槛。全部GL/Dummy/isolated-session。

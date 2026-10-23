@@ -61,38 +61,15 @@ func update(demo: Node3D, delta: float) -> void:
 func capture(demo: Node3D) -> void:
 	if postcard_busy: return
 	postcard_busy = true
-	var visible_ui: bool = demo.ui_layer.visible
-	demo.ui_layer.visible = false
-	var layer := CanvasLayer.new()
-	layer.layer = 100
-	var frame := PostcardFrame.new()
-	frame.city_title = demo.gallery.current_title if demo.gallery!=null else "河湾来信"
-	frame.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layer.add_child(frame)
-	demo.add_child(layer)
-	frame.size = demo.get_viewport().get_visible_rect().size
-	await RenderingServer.frame_post_draw
-	var image: Image = demo.get_viewport().get_texture().get_image()
+	var image:Image=await preload("res://scripts/ui/city_creation_postcard_stamp.gd").scene_frame(demo)
+	image = await preload("res://scripts/ui/city_creation_postcard_stamp.gd").compose(demo,image,demo.state,demo.gallery.current_title)
 	var directory := postcard_directory
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(directory))
 	var stamp := Time.get_datetime_string_from_system().replace(":","-")
 	var path := directory+"/河湾_"+stamp+"_"+str(Time.get_ticks_msec())+".png"
 	var result := image.save_png(path)
-	layer.queue_free()
-	demo.ui_layer.visible = visible_ui
 	postcard_busy = false
 	if result == OK:
 		last_postcard = ProjectSettings.globalize_path(path)
 		demo._message(demo.Copy.POSTCARD_SAVED_TOAST)
 	else: demo._message("明信片保存失败："+error_string(result))
-
-class PostcardFrame extends Control:
-	var city_title := "河湾来信"
-	func _draw() -> void:
-		var paper := Color("eee6d3")
-		draw_rect(Rect2(Vector2.ZERO,size),paper,false,24.0)
-		draw_rect(Rect2(12,size.y-54,size.x-24,42),paper)
-		var font := ThemeDB.fallback_font
-		var text := "共鸣之城 · "+city_title+"    "+Time.get_date_string_from_system()
-		draw_string(font,Vector2(36,size.y-26),text,HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color("5e5b51"))

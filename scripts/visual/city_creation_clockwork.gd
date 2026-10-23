@@ -95,10 +95,8 @@ static func prepare(city: RefCounted,house: Dictionary)->Array:
 			surface.add_vertex(faces[index]);surface.add_vertex(faces[index+2]);surface.add_vertex(faces[index+1])
 		surface.generate_normals();surface.index()
 		var arrays:=surface.commit_to_arrays()
-		var collision_faces:=PackedVector3Array()
-		for index:int in arrays[Mesh.ARRAY_INDEX]:collision_faces.append(arrays[Mesh.ARRAY_VERTEX][index])
 		var metadata:Dictionary={"cell_id":str(row.cell.id),"bounds":rect,"base":row.base,"crease_distance":.28,"triangles":faces.size()/3}
-		records.append({"arrays":arrays,"collision":collision_faces,"cell":row.cell,"center":row.center,"base":row.base,"metadata":metadata})
+		records.append({"arrays":arrays,"cell":row.cell,"center":row.center,"base":row.base,"metadata":metadata})
 	return records
 
 static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void:

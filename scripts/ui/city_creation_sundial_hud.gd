@@ -25,7 +25,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	walk=_seal("StreetStroll","walk",func()->void:demo.camera_rig.toggle(demo))
 	postcard=_seal("Postcard","postcard",func()->void:demo.camera_rig.capture(demo))
 	walk.tooltip_text="街头漫步 · V\nWASD/方向键行走，V 返回俯瞰；H 回到河湾全景"
-	postcard.tooltip_text="留下河湾明信片 · F12\n纸框、作品名与日期会一同保存"
+	postcard.tooltip_text="留下河湾明信片 · F12\n羊皮金框、时代印章、和弦与共鸣落款一同保存"
 	demo.music_button=fork;demo.light_button=sundial
 	_dirty=demo.state.dirty
 	_process(0.)
@@ -50,7 +50,7 @@ func _process(delta:float)->void:
 	walk.active=demo.camera_rig.strolling
 	if _postcard_path!=demo.camera_rig.last_postcard:
 		_postcard_path=demo.camera_rig.last_postcard
-		postcard.tooltip_text="留下河湾明信片 · F12\n纸框、作品名与日期会一同保存\n上次保存："+_postcard_path
+		postcard.tooltip_text="留下河湾明信片 · F12\n羊皮金框、时代印章、和弦与共鸣落款一同保存\n上次保存："+_postcard_path
 	if _zones_revision!=demo.music.acoustic.revision:
 		_zones_revision=demo.music.acoustic.revision
 		var counts:Array[int]=[0,0,0,0]

@@ -13,10 +13,15 @@ func check(ok: bool, label: String) -> void:
 func key(code: Key) -> void:
 	for pressed: bool in [true,false]:
 		var event := InputEventKey.new();event.keycode=code;event.pressed=pressed;root.push_input(event);await process_frame
+	await book_settled()
 func click(at: Vector2) -> void:
 	var motion := InputEventMouseMotion.new();motion.position=at;motion.global_position=at;root.push_input(motion);await process_frame
+	await RenderingServer.frame_post_draw
 	for pressed: bool in [true,false]:
 		var event := InputEventMouseButton.new();event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event);await process_frame
+	await book_settled()
+func book_settled()->void:
+	while demo.ledger.scrollbook.tween!=null and demo.ledger.scrollbook.tween.is_running():await process_frame
 func image(name: String) -> void:
 	await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png(OUT+"/"+name+".png")==OK,"capture "+name)
@@ -66,7 +71,9 @@ func core_tools()->void:
 	check(captions==["筑屋","修路","烟火","林水","地形"],"only five intended core tools occupy the dock")
 	for index:int in [0,2,4,5,8]:
 		await click(demo.tool_buttons[index].get_global_rect().get_center());await settle()
-		check(demo.tool==index,"actual visible core seal selects "+str(demo.tool_buttons[index].caption))
+		if not facts.has("core_clicks"):facts.core_clicks=[]
+		facts.core_clicks.append({"window":root.size,"target":index,"actual":demo.tool,"disabled":demo.tool_buttons[index].disabled,"hover":str(root.gui_get_hovered_control().get_path()) if root.gui_get_hovered_control()!=null else ""})
+		check(demo.tool==index,"actual visible core seal selects "+str(demo.tool_buttons[index].caption)+" at "+str(root.size)+" actual="+str(demo.tool))
 		options_fit()
 	await click(demo.tool_buttons[5].get_global_rect().get_center());await settle()
 	check(demo.tactile_dock.nature_row.get_child_count()==3,"nature palette has tree pond and channel seals")
@@ -84,6 +91,12 @@ func _run() -> void:
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
 	for i in range(35): await process_frame
 	while demo.toast.visible:await process_frame
+	if "--postcard-only" in OS.get_cmdline_user_args():
+		demo.camera_rig.postcard_directory=OUT+"/isolated_postcards"
+		await click(demo.sundial_hud.postcard.get_global_rect().get_center())
+		while demo.camera_rig.postcard_busy:await process_frame
+		var focused:Dictionary=await preload("res://tools/fixtures/city_creation_postcard_live.gd").new().run(demo)
+		print("POSTCARD_FOCUSED ",focused.ok);demo.queue_free();await process_frame;quit(0 if focused.ok else 1);return
 	var original: Dictionary=demo.state.snapshot();var undo: int=demo.state._undo.size()
 	layout();await core_tools();await image("01_乐谱主界面")
 	check(demo.ui_layer.get_node("Root").get_node_or_null("PaperHeader")==null and not demo.quest.is_visible_in_tree(),"permanent header and instruction cards are removed")
@@ -251,6 +264,8 @@ func _run() -> void:
 	await key(KEY_F);check(demo.ui_layer.visible!=before_view,"original hide-interface key still controls all new HUD components")
 	await key(KEY_F)
 	check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save unchanged")
+	var postcard:Dictionary=await preload("res://tools/fixtures/city_creation_postcard_live.gd").new().run(demo)
+	for label:String in postcard.checks:check(postcard.checks[label],"postcard: "+label)
 	var report := {"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures,"checks":checks}
 	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("SCORE_UI ",JSON.stringify({"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures}))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
