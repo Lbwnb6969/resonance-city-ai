@@ -49,6 +49,19 @@ func run() -> void:
 	for contour: PackedVector2Array in edges._boundary_contours(segments):
 		for i: int in range(contour.size()): legal = legal and contour[i].distance_to(contour[(i+1)%contour.size()]) >= .002
 	check(legal, "production boundary tessellation filters close points after preserving intersection topology")
+	var foliage:=preload("res://scripts/visual/city_creation_foliage.gd").new()
+	check(foliage.SIDES==14 and foliage.RINGS==6,"painterly curved leaf topology")
+	for kind:String in ["olive","golden_tree","cypress","shrub"]:
+		for variant in range(3):
+			var geometry:Dictionary=foliage.parts(kind,variant);var finite:=true
+			for mesh:ArrayMesh in geometry.values():
+				var arrays:Array=mesh.surface_get_arrays(0)
+				for point:Vector3 in arrays[Mesh.ARRAY_VERTEX]:finite=finite and point.is_finite()
+				for normal:Vector3 in arrays[Mesh.ARRAY_NORMAL]:finite=finite and normal.is_finite() and normal.length_squared()>.9
+			check(finite,"finite curved canopy and branches "+kind+str(variant))
+			check(geometry.canopy.surface_get_array_len(0)>(14*6+2)*(12 if kind=="golden_tree" else 1),"actual clustered silhouette "+kind+str(variant))
+	var material:ShaderMaterial=foliage.material("canopy")
+	check(material.shader==preload("res://scripts/visual/shaders/creation_foliage.gdshader") and float(material.get_shader_parameter("transmission_strength"))>.2,"shared live leaf paper and transmission shader")
 	renderer.shore.free();renderer.lilypads.free();renderer.wildlife.free()
 	renderer.free()
 	renderer = null

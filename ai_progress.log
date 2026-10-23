@@ -125,3 +125,10 @@
 - GATE3: canonical era_streets_live43 PASS，真实12现代屋4屋顶/3立面、受光批次、天窗暖光/水盘、切时代撤销/恢复稳定；新增24图与原组件图已看。
 - METRICS/FIX: Master3.157914s峰.01724243/削波0，p955.583ms；旧UI探针恢复完整房屋镜头，屋顶玻璃补staging共享后真实夜光；初版失败日志保留，最终干净通过。
 - NEXT_UP: 仅认领M14，油画树冠14×6/副簇、微法线/体积AO/暖金透射；M15光影后执行独立验收，不提前接后续系统。
+
+[SESSION_M14] 2026-10-23 COMPLETE M14：14×6油画树冠/金叶副簇、叶纸微法线/体积AO/暖金透射；备份backup/before-m14-20261023。
+- FILES: foliage与独立creation_foliage shader、render_safety CPU、low_view及foliage_live夹具；README/24/25/backlog。
+- GATE1/2: Harness/16篇202链接PASS；render_safety41/legacy375与27作品PASS，4种×3变体顶点/法线均有限；四主文件未改、Foliage221行。
+- GATE3: canonical low_view51 PASS/无ERROR，73318GPU槽与LOD/种树/撤销有效；36城图+19树图已看，补完整树冠构图7 PASS/19图，双分辨率昼夕夜5/10/15度无彩面。
+- METRICS/FIX: Master5.944308s峰.00274658/削波0，补拍峰.00305176/削波0，p9510.034～10.035ms；headless uniform缺省显式设定后CPU干净通过，个人档/固定池保持。
+- NEXT_UP: 仅认领M15，双色琥珀描边金弧+夕夜街面窗光；完成第三项后独立品质验收，再继续M16。

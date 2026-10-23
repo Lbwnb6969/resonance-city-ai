@@ -3,7 +3,7 @@ extends SceneTree
 const Scene = preload("res://scenes/city_creation.tscn")
 const State = preload("res://scripts/world/city_creation_state.gd")
 const Audit = preload("res://tools/fixtures/city_creation_render_safety_audit.gd")
-const OUT = "res://验证记录/M02/低视角"
+var OUT = "res://验证记录/M14/低视角"
 var demo
 var checks := 0
 var failures: Array[String] = []
@@ -21,6 +21,8 @@ func shot(name: String) -> void:
 	check(root.get_texture().get_image().save_png(OUT+"/"+name+".png") == OK,"capture "+name)
 	facts.screenshots.append(name)
 func run() -> void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	check("--isolated-session" in OS.get_cmdline_user_args(),"isolated session required")
 	if not failures.is_empty(): quit(1); return
 	root.size = Vector2i(1440,900)
@@ -37,6 +39,7 @@ func run() -> void:
 	var source := "res://验证记录/自由曲路接缝_2026-10-20/只读试玩副本.json"
 	if not FileAccess.file_exists(source): source = "res://数据/经营河湾样例.json"
 	for sample: Dictionary in [{"id":"复现河湾","path":source},{"id":"旗舰127屋","path":"res://数据/四库共鸣交响大城样例.json"}]:
+		if "--foliage-only" in OS.get_cmdline_user_args():continue
 		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(sample.path))
 		var restored: Dictionary = demo.state.restore(data)
 		check(restored.ok,"saved city restores: "+str(sample.id))
@@ -78,6 +81,9 @@ func run() -> void:
 		var after := Audit.multimeshes(demo)
 		check(after.invalid.is_empty(),"LOD/edit/undo retain valid transforms: "+str(sample.id))
 		facts.samples[-1].after_history = after
+	var foliage:Dictionary=await preload("res://tools/fixtures/city_creation_foliage_live.gd").capture(demo,OUT)
+	check(foliage.ok,"actual painterly trees publish shared paper transmission shader")
+	facts.foliage=foliage
 	var probe := await Audit.gpu_probe()
 	check(probe.ok,"GPU readback confirms compact colors/custom data and buried retired capacity")
 	facts.gpu_probe = probe

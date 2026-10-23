@@ -5,8 +5,8 @@ extends RefCounted
 ## Tiny Glade's recovered Grass2 semantics informed height tint, instance-scale
 ## variation and height-weighted wind, not these authored vertices or colours.
 
-const SIDES := 10
-const RINGS := 4
+const SIDES := 14
+const RINGS := 6
 var _parts: Dictionary = {}
 var _materials: Dictionary = {}
 
@@ -40,42 +40,11 @@ func material(part: String) -> Material:
 		wood.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 		result = wood
 	else:
-		var shader := Shader.new()
-		shader.code = """
-shader_type spatial;
-render_mode specular_disabled;
-uniform vec2 touch_at=vec2(0.0);
-uniform float touch_time=10.0;
-uniform float season_gold=0.0;
-varying float leaf_height;
-void vertex() {
-	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	float phase = world.x * 0.37 + world.z * 0.29;
-	float gust = sin(TIME * 1.19 + phase) + 0.35 * sin(TIME * 2.31 + phase * 1.7);
-	float weight = COLOR.a * COLOR.a;
-	float touched=exp(-touch_time*3.0)*sin(touch_time*13.0)*(1.0-smoothstep(0.0,2.5,length(world.xz-touch_at)));
-	VERTEX.x+=touched*weight*.10;
-	VERTEX.z+=touched*weight*.06;
-	VERTEX.x += gust * 0.047 * weight;
-	VERTEX.z += sin(TIME * 0.93 + phase + 1.2) * 0.033 * weight;
-	leaf_height = COLOR.a;
-}
-void fragment() {
-	ALBEDO = mix(COLOR.rgb,COLOR.rgb*vec3(1.28,.91,.58),season_gold*.72);
-	ROUGHNESS = 0.96;
-	SPECULAR = 0.0;
-	AO = mix(0.82, 1.0, leaf_height);
-	EMISSION = ALBEDO * 0.018;
-}
-void light() {
-	float ndl = dot(NORMAL, LIGHT);
-	float wrapped = clamp((ndl + 0.32) / 1.32, 0.0, 1.0);
-	float transmitted = pow(max(-ndl, 0.0), 2.0) * 0.12;
-	DIFFUSE_LIGHT += ALBEDO * LIGHT_COLOR * ATTENUATION * (wrapped + transmitted) / 3.14159265;
-}
-"""
+		var shader := preload("res://scripts/visual/shaders/creation_foliage.gdshader")
 		var foliage := ShaderMaterial.new()
 		foliage.shader = shader
+		foliage.set_shader_parameter("micro_normal_strength",.045)
+		foliage.set_shader_parameter("transmission_strength",.32)
 		result = foliage
 	_materials[part] = result
 	return result
@@ -141,6 +110,9 @@ func _golden(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant
 		var end:=fork+Vector3(cos(angle)*.64,.42+rng.randf()*.4,sin(angle)*.64)
 		_branch(wood,fork,end,.045,.016)
 		_lobe(leaves,end+Vector3(0,.28,0),Vector3(.59,.48,.52),rng,"golden",3.1)
+		for sub in range(2):
+			var offset:=Vector3(cos(angle+float(sub)*1.1),.18+float(sub)*.19,sin(angle+float(sub)*1.1))
+			_lobe(leaves,end+offset*Vector3(.47,1.,.42),Vector3(.27,.22,.26),rng,"golden",3.1)
 	_lobe(leaves,fork+Vector3(0,1.05,0),Vector3(.65,.55,.62),rng,"golden",3.1)
 
 func _flowers(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int,kind:String)->void:
@@ -183,7 +155,8 @@ func _lobe(data: Dictionary, center: Vector3, radius: Vector3, rng: RandomNumber
 			var wave := 1.0 + 0.10 * sin(angle * 3.0 + phase) * sin(theta) + 0.055 * sin(angle * 5.0 - phase + theta * 2.0)
 			var unit := Vector3(cos(angle) * sin(theta),cos(theta),sin(angle) * sin(theta))
 			var position := center + unit * radius * wave
-			var normal := Vector3(unit.x / radius.x,unit.y / radius.y,unit.z / radius.z).normalized()
+			var normal := Vector3(unit.x / radius.x,unit.y / radius.y,unit.z / radius.z)
+			normal/=maxf(normal.length(),.0001)
 			_leaf_vertex(data,position,normal,kind,height,hue)
 	var bottom: int = data.vertices.size()
 	_leaf_vertex(data,center - Vector3(0,radius.y,0),Vector3.DOWN,kind,height,hue)
@@ -223,10 +196,12 @@ func _leaf_vertex(data: Dictionary, position: Vector3, normal: Vector3, kind: St
 
 func _branch(data: Dictionary, start: Vector3, end: Vector3, radius_start: float, radius_end: float) -> void:
 	var first: int = data.vertices.size()
-	var axis := (end - start).normalized()
-	var tangent := axis.cross(Vector3.FORWARD).normalized()
+	var axis := (end-start)/maxf((end-start).length(),.0001)
+	var tangent := axis.cross(Vector3.FORWARD)
+	tangent/=maxf(tangent.length(),.0001)
 	if tangent.length_squared() < 0.1: tangent = Vector3.RIGHT
-	var bitangent := axis.cross(tangent).normalized()
+	var bitangent := axis.cross(tangent)
+	bitangent/=maxf(bitangent.length(),.0001)
 	for ring in range(2):
 		for side in range(7):
 			var angle := TAU * side / 7.0

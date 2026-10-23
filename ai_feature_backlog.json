@@ -218,8 +218,8 @@
       "phase": "Art & Painterly Nature",
       "title": "手绘油画感树冠升级：叶簇微法线、半球体积 AO 与逆光暖金透射（Foliage SSS）",
       "priority": 14,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (16 documents/202 links/0 errors). Gate2: D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --headless --audio-driver Dummy --path . --script tests/test_city_creation_render_safety.gd -- --isolated-session (41 PASS: original15 plus topology and all3 variants of4 kinds finite vertices/normals, golden subsidiary lobes/shared leaf shader); same flags tests/test_city_creation_legacy_roundtrip.gd (375 PASS/27 works). Gate3 canonical tools/check_creation_low_view_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session (51 PASS/noERROR; original50 plus actual planted foliage scene). All73,318 GPU capacity slots across8/127house works remain finite and invertible before/after real planting, undo and LOD; actual GPU colors/custom readback and retired slots confirmed. 36 city day/evening/night5/10/15degree/two-yaw PNG and19 dual-resolution leaf close views inspected. Supplemental same tool --foliage-only --out-dir=res://验证记录/M14/完整树冠构图 (7 PASS/noERROR) reframes full trees and removes construction preview,19 final leaf PNG inspected. Canonical actual Master5.944308s peak.00274658/clipped0; supplemental peak.00305176/clipped0, normalp9510.034/10.035ms. Geometry14sides/6rings, golden12 subsidiary lobes and existing7 major lobes, smooth finite ellipsoid/branch normals; triplanar world paper micro-normal, lower hemisphere AO, warm backlit transmission and Fresnel rim in independent shared shader; wind/touch/season parameters retained, no personal/schema/audio-pool/giant-file change. Foliage script221lines. Initial headless get_shader_parameter default returnednull; explicit uniform material values set, CPU rerun clean. No claim of final5of5 art judgment; independent review follows M15.",
       "files_to_touch": [
         "scripts/visual/city_creation_foliage.gd",
         "tests/test_city_creation_render_safety.gd",
