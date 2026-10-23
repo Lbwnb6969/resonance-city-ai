@@ -1,4 +1,6 @@
-# 《共鸣之城》AI 施工入口（艺术品级升华篇 · M13～M22）
+# 《共鸣之城》AI 施工入口（M01～M22 已验收）
+
+M01～M22 已完成三门禁与独立终审，当前五维实评分均为 **4/5**。本轮停止施工；项目缺口与十二种新建筑方向见 [项目复盘](文档/28_项目复盘与建筑风貌扩展.md)。
 
 先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑。
 
@@ -16,7 +18,7 @@
 3. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
 4. Gate 2：相关 CPU 单元和 `tests/test_city_creation_legacy_roundtrip.gd`，均加 `-- --isolated-session`。
 5. Gate 3：执行该项 `verification_cmd`；实窗使用 `--rendering-method gl_compatibility -- --isolated-session`，查看 PNG 与录音峰值。
-6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，继续认领下一项直至 M22 完成。
+6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，尚有未通过项时再按顺序认领；全部通过后停止施工。
 
 ## 代码入口与预置模块
 

@@ -6,18 +6,8 @@ const Plan=preload("res://scripts/world/city_creation_skybridge_plan.gd")
 static func palette(base:Array)->Array:
 	return [base[0].lerp(Color("eee9d9"),.90),Color("71916f"),base[2].lerp(Color("b8976a"),.74)]
 static func facade(renderer,wall:Node3D,door:bool,seed_value:int,p:Array)->void:
-	var timber:Material=Wall.source(p[2],null,"component",Wall.Kind.STONE);var white:Material=Wall.source(p[0], null, "component", Wall.Kind.CANTILEVER)
-	var warm:=posmod(seed_value*31,100)<35
-	var pane:MeshInstance3D=renderer._box(wall,Vector3(1.58,1.40,.035),Vector3(0,.85,.018),white)
-	pane.material_override=renderer.conservatory.ensure_material(warm);pane.set_meta("creation_live_visual",true);pane.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	for x:float in [-.83,0.,.83]:renderer._box(wall,Vector3(.055,1.48,.095),Vector3(x,.87,.055),timber)
-	renderer._box(wall,Vector3(1.76,.055,.10),Vector3(0,1.55,.055),white)
-	if door:
-		renderer._box(wall,Vector3(.57,1.18,.055),Vector3(0,.73,.065),renderer._material(Color("526d60")))
-		renderer._box(wall,Vector3(.035,.24,.055),Vector3(.18,.75,.11),timber)
-	else:
-		Archetypes.populate_facade_greenery(renderer,wall,seed_value,timber)
-	wall.set_meta("modern_glass",{"warm":warm,"floor_to_ceiling":true})
+	preload("res://scripts/visual/city_creation_modern_envelope.gd").facade(renderer,wall,door,seed_value,p)
+
 static func terrace(renderer,node:Node3D,cell:Dictionary,cells:Array,y:float,p:Array)->void:
 	_slab(renderer,node,Vector3(0,y+.16,0),Vector2(2.18,2.18),.16,p[0])
 	for side:Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
@@ -40,7 +30,7 @@ static func prepare(city:RefCounted,house:Dictionary)->Dictionary:
 
 static func roof(renderer,root:Node3D,house:Dictionary,p:Array,cell:Dictionary)->Dictionary:
 	var node:Node3D=root.get_node(str(cell.id));var y:float=(int(cell.level)+1)*1.7
-	_slab(renderer,node,Vector3(0,y+.03,0),Vector2(2.22,2.22),.16,p[0])
+	preload("res://scripts/visual/city_creation_modern_envelope.gd").roof(renderer,node,y,p,Archetypes.roof_kind(house,cell))
 	_slab(renderer,node,Vector3(0,y+.13,0),Vector2(1.68,1.68),.06,Color("70975f"),false)
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));node.add_child(body)
 	renderer._cell_box_shape(body,Vector3(2.20,.16,2.20),Vector3(0,y+.03,0))

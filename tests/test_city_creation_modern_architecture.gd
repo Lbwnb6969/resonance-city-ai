@@ -57,6 +57,13 @@ func run()->void:
 	var unique:Dictionary={}
 	for count in shapes.values():unique[count]=true
 	check(unique.size()==4 and facades.size()==3,"four distinct actual silhouettes and three facade layouts")
+	var envelopes:Dictionary={}
+	for seed_value in range(4):
+		var wall:=Node3D.new();renderer.add_child(wall);Modern.facade(renderer,wall,false,seed_value,palette)
+		var geometry:Array=[]
+		for mesh:MeshInstance3D in wall.find_children("*","MeshInstance3D",true,false):geometry.append([mesh.transform,mesh.mesh.get_aabb()])
+		envelopes[hash(geometry)]=true;wall.free()
+	check(envelopes.size()==4,"four facades change actual structural mass and openings, beyond rooftop props")
 	var parts:=Modern.prepare(city,city.houses[0])
 	check(parts.roofs.size()==1 and int(parts.roofs[0].level)==2,"covered room roofs remain suppressed")
 	renderer.conservatory.set_light(true)

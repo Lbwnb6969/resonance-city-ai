@@ -51,6 +51,10 @@ func _run()->void:
 	await demo.gallery._open_chosen(chosen);demo.life.set_process(false)
 	_check(demo.state.houses.size()==300 and not demo.gallery.busy,"three hundred authored four-era buildings restore through the actual complete-work loader")
 	print("LARGE_RENDER_READY")
+	if "--views-only" in OS.get_cmdline_user_args():
+		var views:Dictionary=await preload("res://tools/fixtures/city_creation_final_city_views.gd").capture(demo,output)
+		FileAccess.open(output+"/final_views.json",FileAccess.WRITE).store_string(JSON.stringify(views,"\t"));print("FINAL_CITY_VIEWS ",JSON.stringify(views))
+		quit(0 if views.ok else 1);return
 	demo.ui_layer.visible=false;demo.focus=Vector3(0,0,0);demo.zoom=94;demo.yaw=.4;demo.pitch=.83;demo._update_camera();demo.town.clear_preview()
 	var eras:Dictionary={}
 	for house:Dictionary in demo.state.houses:eras[demo.state.house_era(house)]=true
@@ -91,9 +95,11 @@ func _run()->void:
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"life_cpu":cpu_metrics,"policy":"reference_only"}))
 	var edit_metrics:Dictionary=await _edit_large_city()
 	await _large_ui()
+	var art:Dictionary=await preload("res://tools/fixtures/city_creation_final_city_views.gd").capture(demo,output)
+	_check(art.ok,"four-era day/dusk/night and5/10/15degree views preserve the complete300-house world")
 	var audio_metrics:Dictionary=await _audio_cycle()
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"production scale validation preserves personal saved city bytes")
-	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics,"edit":edit_metrics,"audio":audio_metrics,"load":demo.gallery.load_stats.duplicate(true)}
+	var report:Dictionary={"ok":failures.is_empty(),"checks":checks,"failures":failures,"houses":demo.state.houses.size(),"residents":demo.life.residents.size(),"moving":moving,"moved":moved,"deferred":deferred,"lod":demo.life.citizen_lod_stats,"life_stages_ms":stages,"life_cpu":cpu_metrics,"near_frames":frames_metrics,"overview_frames":_metrics(overview),"bank":bank_metrics,"edit":edit_metrics,"audio":audio_metrics,"load":demo.gallery.load_stats.duplicate(true),"art":art}
 	FileAccess.open(output+"/large_town_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("LARGE_TOWN_LIVE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks.size(),"failures":failures,"houses":report.houses,"residents":report.residents,"moving":moving,"life_cpu":cpu_metrics,"audio":audio_metrics}))
 	quit(0 if failures.is_empty() else 1)

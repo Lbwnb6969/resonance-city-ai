@@ -2,7 +2,7 @@ extends SceneTree
 const Context=preload("res://tools/fixtures/city_creation_long_journey_context.gd")
 func _initialize()->void:run.call_deferred()
 func run()->void:
-	var phase:="day1";var resolution:=1440;var output_root:="res://验证记录/M12"
+	var phase:="day1";var resolution:=1440;var output_root:="res://验证记录/M22"
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--phase="):phase=arg.trim_prefix("--phase=")
 		if arg.begins_with("--resolution="):resolution=int(arg.trim_prefix("--resolution="))

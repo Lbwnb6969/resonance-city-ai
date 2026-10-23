@@ -29,15 +29,18 @@ def main():
     parser.add_argument("--godot", default="D:/GODOT/Godot_v4.7.2-stable_win64_console.exe")
     parser.add_argument("--resolutions", default="1440,1024")
     parser.add_argument("--phases", default="day1,day2,qa")
+    parser.add_argument("--out-dir", default="res://验证记录/M22")
     args = parser.parse_args()
+    output_root = ROOT / args.out_dir.removeprefix("res://")
+    output_root.mkdir(parents=True, exist_ok=True)
     reports = []
     for resolution in map(int, args.resolutions.split(",")):
-        folder = ROOT / "验证记录" / "M12" / str(resolution)
+        folder = output_root / str(resolution)
         folder.mkdir(parents=True, exist_ok=True)
         for phase in args.phases.split(","):
             command = [args.godot, "--path", str(ROOT), "--rendering-method", "gl_compatibility",
                        "--audio-driver", "Dummy", "--script", "tools/check_creation_long_session_journey_live.gd",
-                       "--", "--isolated-session", f"--phase={phase}", f"--resolution={resolution}"]
+                       "--", "--isolated-session", f"--phase={phase}", f"--resolution={resolution}", f"--out-dir={args.out_dir}"]
             print(f"RUN {resolution} {phase}", flush=True)
             started = time.monotonic()
             log = folder / f"suite_{phase}_{time.time_ns()}.log"
@@ -56,7 +59,7 @@ def main():
                 row["ok"] = row["audio"]["clipped_samples"] == 0 and row["audio"]["seconds"] >= 140
             reports.append(row)
             suite = {"ok": all(r["ok"] for r in reports), "runs": reports}
-            (ROOT / "验证记录" / "M12" / "suite.json").write_text(json.dumps(suite, ensure_ascii=False, indent=2), encoding="utf-8")
+            (output_root / "suite.json").write_text(json.dumps(suite, ensure_ascii=False, indent=2), encoding="utf-8")
             print(json.dumps(row, ensure_ascii=False), flush=True)
             if not row["ok"]:
                 return 1

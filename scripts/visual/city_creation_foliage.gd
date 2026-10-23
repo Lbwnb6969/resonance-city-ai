@@ -147,19 +147,17 @@ func _lobe(data: Dictionary, center: Vector3, radius: Vector3, rng: RandomNumber
 	var phase := rng.randf_range(0,TAU)
 	var twist := rng.randf_range(-0.26,0.26)
 	var hue := rng.randf_range(-0.035,0.035)
-	_leaf_vertex(data,center + Vector3(0,radius.y,0),Vector3.UP,kind,height,hue)
+	_leaf_vertex(data,center+preload("res://scripts/visual/city_creation_canopy_shape.gd").point(0.,0.,phase,radius,kind),Vector3.UP,kind,height,hue)
 	for ring in range(1,RINGS + 1):
 		var theta := PI * ring / float(RINGS + 1)
 		for side in range(SIDES):
 			var angle := TAU * side / float(SIDES) + twist * sin(theta)
-			var wave := 1.0 + 0.10 * sin(angle * 3.0 + phase) * sin(theta) + 0.055 * sin(angle * 5.0 - phase + theta * 2.0)
-			var unit := Vector3(cos(angle) * sin(theta),cos(theta),sin(angle) * sin(theta))
-			var position := center + unit * radius * wave
-			var normal := Vector3(unit.x / radius.x,unit.y / radius.y,unit.z / radius.z)
-			normal/=maxf(normal.length(),.0001)
+			var shape=preload("res://scripts/visual/city_creation_canopy_shape.gd")
+			var position:Vector3=center+shape.point(theta,angle,phase,radius,kind)
+			var normal:Vector3=shape.normal(theta,angle,phase,radius,kind)
 			_leaf_vertex(data,position,normal,kind,height,hue)
 	var bottom: int = data.vertices.size()
-	_leaf_vertex(data,center - Vector3(0,radius.y,0),Vector3.DOWN,kind,height,hue)
+	_leaf_vertex(data,center+preload("res://scripts/visual/city_creation_canopy_shape.gd").point(PI,0.,phase,radius,kind),Vector3.DOWN,kind,height,hue)
 	for side in range(SIDES):
 		var next := (side + 1) % SIDES
 		# Clockwise from outside, the convention used by Godot mesh surfaces.

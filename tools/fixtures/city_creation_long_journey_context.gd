@@ -42,8 +42,17 @@ func edit(result:Dictionary,kind:String="room",geometry:bool=true)->void:
 	check(result.get("ok",false),"edit_%d"%checks.size());demo._after_edit(result,kind,geometry);await settle()
 func mouse(at:Vector2,down:bool)->void:
 	var motion:=InputEventMouseMotion.new();motion.position=at;motion.global_position=at;tree.root.push_input(motion);await tree.process_frame
+	await RenderingServer.frame_post_draw
 	var event:=InputEventMouseButton.new();event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down;tree.root.push_input(event);await tree.process_frame
 func click(control:Control)->void:
+	while demo.journal.scrollbook.tween!=null and demo.journal.scrollbook.tween.is_running():await tree.process_frame
+	var parent:=control.get_parent()
+	while parent!=null:
+		if parent is ScrollContainer:
+			parent.ensure_control_visible(control)
+			for i in range(3):await tree.process_frame
+			break
+		parent=parent.get_parent()
 	var at:=control.get_global_rect().get_center();await mouse(at,true);await mouse(at,false);await settle()
 func ground(at:Vector2)->void:
 	var world:=Vector3(at.x,demo.state.ground_height(at),at.y);var screen:Vector2=demo.camera.unproject_position(world)

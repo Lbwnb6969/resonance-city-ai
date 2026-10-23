@@ -4,6 +4,7 @@ const Sequence=preload("res://scripts/audio/city_creation_strum_sequence.gd")
 const Recording=preload("res://tools/fixtures/city_creation_recording_span.gd")
 const OUT="res://验证记录/M19/琶音与漫步"
 var demo
+var output:=OUT
 var tree:SceneTree
 var checks:Dictionary={}
 var facts:Dictionary={"notes":[]}
@@ -36,7 +37,7 @@ func capture(label:String):
 			tree.root.size=size;await postpone()
 			for i in range(12):await tree.process_frame
 			demo.toast.hide();demo.toast_time=0.;await RenderingServer.frame_post_draw
-			tree.root.get_texture().get_image().save_png(OUT+"/"+label+"_"+str(phase)+"_"+str(size.x)+".png")
+			tree.root.get_texture().get_image().save_png(output+"/"+label+"_"+str(phase)+"_"+str(size.x)+".png")
 func look(delta:float):
 	var e:=InputEventMouseButton.new();e.button_index=MOUSE_BUTTON_RIGHT;e.position=Vector2(tree.root.size)*.5;e.pressed=true;tree.root.push_input(e);await tree.process_frame
 	var motion:=InputEventMouseMotion.new();motion.position=e.position;motion.relative=Vector2(0,delta);tree.root.push_input(motion);await tree.process_frame
@@ -44,9 +45,9 @@ func look(delta:float):
 	for i in range(3):await tree.process_frame
 func glow_pixels(label:String):
 	tree.paused=true;await RenderingServer.frame_post_draw
-	var with_glow:Image=tree.root.get_texture().get_image();with_glow.save_png(OUT+"/"+label+"_有光.png")
+	var with_glow:Image=tree.root.get_texture().get_image();with_glow.save_png(output+"/"+label+"_有光.png")
 	demo.camera_rig.aura.layer.hide();await tree.process_frame;await RenderingServer.frame_post_draw
-	var quiet:Image=tree.root.get_texture().get_image();quiet.save_png(OUT+"/"+label+"_静默.png")
+	var quiet:Image=tree.root.get_texture().get_image();quiet.save_png(output+"/"+label+"_静默.png")
 	var count:=0
 	for y in range(int(quiet.get_height()*.30),int(quiet.get_height()*.84)):
 		for x in range(quiet.get_width()):
@@ -65,9 +66,10 @@ func note(at:Vector2,height:float,kind:String,id:String=""):
 	facts.notes.append(event)
 	for player:AudioStreamPlayer in demo.music._effects:
 		if player.get_instance_id()==event.player_id and player.get_meta("creation_voice_serial",-1)==event.voice_serial and player.playing:
-			player.stream.save_to_wav(OUT+"/note_"+str(facts.notes.size())+".wav");break
-func run(owner)->Dictionary:
-	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+			player.stream.save_to_wav(output+"/note_"+str(facts.notes.size())+".wav");break
+func run(owner,directory:String=OUT)->Dictionary:
+	output=directory
+	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	var voices:Array=[]
 	for node:Node in demo.music.get_children()+demo.ambience.get_children():voices.append(node.get_instance_id())
 	var city:RefCounted=preload("res://tools/fixtures/city_creation_modern_fixture.gd").earned_city()
@@ -108,7 +110,7 @@ func run(owner)->Dictionary:
 		if demo.town.touch.active.has(ids[-1]):
 			var row:Dictionary=demo.town.touch.active[ids[-1]];peak=maxf(peak,float(row.pivot.position.y)-float(row.base_y))
 	await key(KEY_P,false);facts.hop_peak=peak;checks.four_centimetres=peak>.039 and peak<=.04001
-	facts.audio=Recording.finish(record,OUT+"/Master.wav");checks.unclipped=facts.audio.ok
+	facts.audio=Recording.finish(record,output+"/Master.wav");checks.unclipped=facts.audio.ok
 	checks.held_history_clean=demo.state.snapshot()==before and demo.state._undo.size()==undo
 	await capture("五屋琶音")
 	if not stairs.is_empty():
@@ -145,4 +147,4 @@ func run(owner)->Dictionary:
 	for node:Node in demo.music.get_children()+demo.ambience.get_children():current.append(node.get_instance_id())
 	checks.fixed_pool=current==voices and demo.music._players.size()==12 and demo.music._effects.size()==4
 	var report:={"checks":checks,"facts":facts,"ok":checks.values().all(func(v):return v)}
-	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("ARPEGGIO_STROLL ",JSON.stringify(report));return report
+	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("ARPEGGIO_STROLL ",JSON.stringify(report));return report
