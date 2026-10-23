@@ -456,8 +456,8 @@
       "phase": "Phase 3B · 阿尔卑斯现代建筑群落",
       "title": "阿尔卑斯现代原型（上）：『非对称山墙木屋』、『单坡玻璃亭』与『顺坡错层台地宅』",
       "priority": 25,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py (18 documents, 201 links PASS). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_modern_architecture.gd -- --isolated-session (311 PASS, cpu_resume_console.log); tests/test_city_creation_legacy_roundtrip.gd (375 PASS/27 works, legacy_console.log). Gate3: tools/check_creation_era_streets_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --out-dir=res://验证记录/M25/final_bridge (55 PASS, live_final_bridge_console.log, no ERROR). Three alpine massing recipes, continuous chalet ridge, terrain-sampled deck supports, original 4 ecological roof objects, real glass airbridge picking/clear underpass, actual stair road, atomic isolated JSON/era undo/floor undo and fixed audio identities PASS. 68 dual-resolution day/evening/night and true 5/10/15 degree images plus compass and component images; representative source images reviewed. Master 3.157914s peak .048431396, 0 clipped; p95 5.615ms/max71.411ms recorded without performance gate. Personal save unchanged; earlier failures and underside comparison retained.",
       "files_to_touch": [
         "scripts/visual/city_creation_alpine_modern.gd",
         "scripts/visual/city_creation_modern.gd",
