@@ -84,6 +84,8 @@ func run() -> void:
 	var foliage:Dictionary=await preload("res://tools/fixtures/city_creation_foliage_live.gd").capture(demo,OUT)
 	check(foliage.ok,"actual painterly trees publish shared paper transmission shader")
 	facts.foliage=foliage
+	var contact:Dictionary=await preload("res://tools/fixtures/city_creation_nature_contact_live.gd").capture(demo,OUT)
+	check(contact.ok,"actual stone stair and highland contact ribbons fit terrain and preserve world");facts.contact=contact
 	var probe := await Audit.gpu_probe()
 	check(probe.ok,"GPU readback confirms compact colors/custom data and buried retired capacity")
 	facts.gpu_probe = probe

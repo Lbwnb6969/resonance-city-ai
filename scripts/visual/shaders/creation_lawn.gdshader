@@ -40,6 +40,7 @@ void vertex() {
 	mat3 world_to_local = inverse(mat3(MODEL_MATRIX));
 	vec3 local_push = world_to_local*push;
 	VERTEX.y *= detail*edge_height*mix(1.0,1.20,species);
+	VERTEX.y -= (1.0-smoothstep(0.0,.30,tip))*.020;
 	VERTEX.z *= mix(1.0,0.46,species);
 	// Mask's .18 parameter reserves 7.56 cm, not 18 cm. Contract the whole
 	// footprint at the edge, including its wind, rather than clipping grass roots.
@@ -77,14 +78,14 @@ void fragment() {
 	float reveal = smoothstep(0.04,0.94,tip)*detail*0.78;
 	vec3 albedo=mix(ground_linear,blade,reveal);
 	ALBEDO=OUTPUT_IS_SRGB ? meadow_linear_to_srgb(albedo) : albedo;
-	AO = mix(0.93,1.0,smoothstep(0.0,0.55,tip)*detail);
+	AO = mix(0.98,1.0,smoothstep(0.0,0.55,tip)*detail);
 	AO_LIGHT_AFFECT = 0.30;
 	ROUGHNESS = mix(0.94,0.74,tip*detail);
 	BACKLIGHT = vec3(0.24,0.28,0.09)*leaf;
 }
 void light() {
 	float ndotl = dot(NORMAL,LIGHT);
-	float wrapped = grass2_sun_wrap(ndotl);
+	float wrapped = mix(max(ndotl,0.0),grass2_sun_wrap(ndotl),smoothstep(.02,.48,tip));
 	float back_sun = clamp(dot(-VIEW,LIGHT)*0.5+0.5,0.0,1.0);
 	float transmission = pow(tip,1.35)*detail*(0.35+0.65*back_sun);
 	// Godot multiplies final diffuse by ALBEDO; LIGHT_COLOR already includes PI.

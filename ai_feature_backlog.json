@@ -500,8 +500,8 @@
       "phase": "Phase 3C · 鲜活微观自然与小人",
       "title": "树冠『分枝留空透光（Sky Apertures）』与近地草丛/石阶/台基柔和接地过渡",
       "priority": 27,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py and tools/check_doc_links.py PASS (18 documents/203 links). Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_sky_apertures.gd -- --isolated-session (22 PASS: nine real indexed-mesh sky rays per variant, peripheral foliage retained, shared resources, terrain-clipped stair contacts); render_safety41, highland_contact19 and legacy_roundtrip375/27 works PASS, no ERROR. Gate3: tools/check_creation_low_view_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --out-dir=res://验证记录/M27/verified (52 PASS, live_verified.log). 79 original images: old 8/127-house low views, dual-resolution tree day/evening/night 5/10/15 plus backlight and 24 plinth/stair close-ups; representative originals directly reviewed. 73318 GPU slots finite and history/LOD safe. Published 729 ground-contact vertices fit terrain with max residual 1.185e-7m above authored 12mm lift; contact shader/real merged plinth present. Actual Master6.037188s peak .002288818, clipped0; p95 16.769ms recorded only. Personal save and fixed voice pool unchanged. New-process quality replay of previously independent native-input probe:37 PASS, actual first bread43.711ms, 7 clear galleries/6 directed paths, 24.148753s Master peak.008636475 clipped0, p95 16.766/max19.483ms. Implementer quality re-review remains 4/5; near grass silhouettes and straight branches remain visible. Initial cleanup failure and merged-node-name false negative retained; corrected probes pass.",
       "files_to_touch": [
         "scripts/visual/city_creation_foliage.gd",
         "scripts/visual/city_creation_canopy_shape.gd",

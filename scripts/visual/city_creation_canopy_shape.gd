@@ -11,6 +11,9 @@ static func point(theta:float,angle:float,phase:float,radius:Vector3,kind:String
 		at.y*=.70 if kind=="golden" else .78
 		at.x+=radius.x*.24*unit.y*sin(phase)
 		at.y+=radius.y*.18*sin(angle+phase)*sin(theta)
+		# A tapered spray ends in a narrow twig tip, with a fuller lower shoulder.
+		var taper:=1.-.20*smoothstep(-.15,.95,unit.y)
+		at.x*=taper;at.z*=taper
 	return at
 static func normal(theta:float,angle:float,phase:float,radius:Vector3,kind:String)->Vector3:
 	var a:=point(theta+.002,angle,phase,radius,kind)-point(theta-.002,angle,phase,radius,kind)

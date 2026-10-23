@@ -68,22 +68,20 @@ func _olive(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, va
 	var fork := Vector3(lean.x,1.26,lean.z)
 	_branch(wood, Vector3.ZERO, Vector3(lean.x * 0.5,0.72,0), 0.105, 0.082)
 	_branch(wood, Vector3(lean.x * 0.5,0.72,0), fork, 0.082, 0.059)
-	# Broad, asymmetric branch forks leave small apertures beneath the crown.
+	# Staggered branch fans leave an open vertical aperture and side windows.
 	for arm in range(4):
-		var angle := float(arm) * TAU / 4.0 + float(variant) * 0.49 + 0.18
-		var reach := 0.46 + rng.randf_range(-0.05,0.09)
-		var end := fork + Vector3(cos(angle) * reach,0.48 + rng.randf_range(0.0,0.2),sin(angle) * reach)
-		_branch(wood, fork, end, 0.052, 0.022)
+		var angle := float(arm)*TAU/4.+variant*.49+.18
+		var reach := .72+rng.randf_range(-.04,.08)
+		var end := fork+Vector3(cos(angle)*reach,[.32,.71,.49,.91][arm],sin(angle)*reach)
+		_branch(wood,fork,end,.052,.022)
 		for twig in range(2):
-			var split_angle := angle + (-0.53 if twig == 0 else 0.57)
-			var tip := end + Vector3(cos(split_angle) * 0.19,0.18,sin(split_angle) * 0.19)
-			_branch(wood, end, tip, 0.023, 0.011)
-			_lobe(leaves, tip + Vector3(0,0.18,0), Vector3(0.36,0.38 + rng.randf_range(0.0,0.08),0.34), rng, "olive", 2.9)
-	# Four upper crowns form an uneven vaulted top, rather than stacked balls.
-	for top in range(4):
-		var angle := float(top) * TAU / 4.0 + 0.7 + variant * 0.49
-		var center := lean + Vector3(cos(angle) * 0.32,2.28 + rng.randf_range(-0.06,0.09),sin(angle) * 0.29)
-		_lobe(leaves, center, Vector3(0.40,0.44,0.38), rng, "olive", 2.9)
+			var phase: float=angle+(-.48 if twig==0 else .53)
+			var tip := end+Vector3(cos(phase)*.23,.14+twig*.13,sin(phase)*.23)
+			_branch(wood,end,tip,.023,.009)
+			_lobe(leaves,tip+Vector3(0,.08,0),Vector3(.26,.28,.23),rng,"olive",2.9)
+		var upper := end+Vector3(-sin(angle)*.13,.43,cos(angle)*.13)
+		_branch(wood,end,upper,.019,.008)
+		_lobe(leaves,upper,Vector3(.23,.27,.22),rng,"olive",2.9)
 
 func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, variant: int) -> void:
 	var bend := Vector3(0.035 * (variant - 1),0,0.025)
@@ -102,18 +100,20 @@ func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, 
 	_lobe(leaves, Vector3(bend.x * 2,3.24,bend.z * 2), Vector3(0.115,0.27,0.10), rng, "cypress",3.5)
 
 func _golden(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int)->void:
-	var fork:=Vector3(.08*(variant-1),1.65,.03)
+	var fork:=Vector3(.08*(variant-1),1.35,.03)
 	_branch(wood,Vector3.ZERO,fork,.12,.055)
-	# A spreading deciduous crown, with open branches beneath layered gold.
+	# No central cap: six ascending boughs carry independent small sprays.
 	for arm:int in range(6):
 		var angle:float=arm*TAU/6.+variant*.43
-		var end:=fork+Vector3(cos(angle)*.64,.42+rng.randf()*.4,sin(angle)*.64)
+		var reach:float=.91+rng.randf()*.12
+		var end:=fork+Vector3(cos(angle)*reach,.47+posmod(arm*2,5)*.14,sin(angle)*reach)
 		_branch(wood,fork,end,.045,.016)
-		_lobe(leaves,end+Vector3(0,.28,0),Vector3(.59,.48,.52),rng,"golden",3.1)
+		_lobe(leaves,end+Vector3(0,.12,0),Vector3(.32,.32,.29),rng,"golden",3.1)
 		for sub in range(2):
-			var offset:=Vector3(cos(angle+float(sub)*1.1),.18+float(sub)*.19,sin(angle+float(sub)*1.1))
-			_lobe(leaves,end+offset*Vector3(.47,1.,.42),Vector3(.27,.22,.26),rng,"golden",3.1)
-	_lobe(leaves,fork+Vector3(0,1.05,0),Vector3(.65,.55,.62),rng,"golden",3.1)
+			var phase:float=angle+(-.58 if sub==0 else .62)
+			var tip:=end+Vector3(cos(phase)*.31,.22+sub*.17,sin(phase)*.31)
+			_branch(wood,end,tip,.017,.007)
+			_lobe(leaves,tip,Vector3(.23,.26,.22),rng,"golden",3.1)
 
 func _flowers(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int,kind:String)->void:
 	var petal:Color={"pink_flower":Color("ef9db3"),"white_flower":Color("fff5dc"),"yellow_flower":Color("efc44f")}[kind]

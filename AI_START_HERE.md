@@ -1,6 +1,6 @@
 # 《共鸣之城》AI 施工入口（三期艺术品大成篇 · M23～M32）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（M23～M26已通过，当前从 `M27` 开始）。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（M23～M27已通过，当前从 `M28` 开始）。
 
 ## 三期核心目标：攻克最后 4/5 → 5/5 的艺术品壁垒
 

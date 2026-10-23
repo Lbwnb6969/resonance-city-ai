@@ -7,6 +7,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 	var cuts: Array = []
 	var faces: Array[Vector3] = []
 	var rails: Array = []
+	var contacts: Array = []
 	var width := float(road.width)
 	var count := 0
 	var key_light:Array[Vector3]=[];var key_dark:Array[Vector3]=[]
@@ -50,12 +51,13 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 			var p := a+n0*float(side)
 			var q := b+n1*float(side)
 			if renderer._inside_other_road((p+q)*0.5,str(road.id)): continue
+			contacts.append([p,q,(n0+n1).normalized()*float(side),y,str(road.id)])
 			# Cap and body are a low continuous stone parapet, not picket posts.
 			var center := Vector3((p.x+q.x)*0.5,y+0.16,(p.y+q.y)*0.5)
 			var yaw := atan2(q.x-p.x,q.y-p.y)
 			rails.append([Vector3(0.12,0.32,p.distance_to(q)+0.012),center,Color("b6b199"),Vector3(0,yaw,0)])
 			rails.append([Vector3(0.16,0.055,p.distance_to(q)+0.012),center+Vector3.UP*0.16,Color("d5cbb1"),Vector3(0,yaw,0)])
-	return {"cuts":cuts,"faces":faces,"rails":rails,"count":count,"key_light":key_light,"key_dark":key_dark}
+	return {"cuts":cuts,"faces":faces,"rails":rails,"count":count,"key_light":key_light,"key_dark":key_dark,"contact":preload("res://scripts/visual/city_creation_stair_contact.gd").prepare(renderer,contacts)}
 
 static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -> void:
 	if data.faces.is_empty(): return
@@ -81,3 +83,4 @@ static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -
 	body.add_child(collider)
 	root.add_child(body)
 	root.set_meta("treads",data.count)
+	preload("res://scripts/visual/city_creation_stair_contact.gd").install(renderer,root,data.get("contact",[]))

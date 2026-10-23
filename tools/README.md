@@ -72,3 +72,6 @@ M24：`check_creation_courtyards_live.gd` 默认顺序验证六类原造景预�
 M25：modern_architecture CPU311与era_streets canonical55验证阿尔卑斯前三型、真实顺坡支承/连续山脊/四生态顶及空廊；GL/Dummy/isolated-session，输出参数--out-dir=res://验证记录/M25/final_bridge。
 
 M26：test_city_creation_architecture_choice.gd验证六现代/六古典空间选择、Schema19与事务；check_creation_personalization_live.gd保留原色盘/加层/花园并附六现代72张双分辨率昼夕夜低视角、真实原型按钮/CtrlZ/Y/隔离JSON与连桥净空。GL/Dummy/isolated-session，--out-dir=res://验证记录/M26/final；Master.wav在同目录。
+
+
+M27：test_city_creation_sky_apertures.gd以实际索引网格射线验证三变体天光孔，并核阶侧接地三角贴地/渐隐；check_creation_low_view_live.gd保留原两城安全检查，再附双分辨率自然与台基/石阶24近图，输出--out-dir=res://验证记录/M27/verified。台基合批后按共享shader及实际顶点核验，避免依赖临时节点名；完整实窗使用GL/Dummy/isolated-session。
