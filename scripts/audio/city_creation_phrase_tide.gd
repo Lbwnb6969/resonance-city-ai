@@ -2,12 +2,13 @@ extends RefCounted
 ## Shared-transport conducting; no player, timer, PCM or persistent field.
 const Emergence = preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 const HEAVY := ["foundation","wood_deep","wood_market","renaissance_fugue","clockwork_waltz","modern_symphony"]
+const Cadence=preload("res://scripts/audio/city_creation_cadence_variation.gd")
 static func breath(clock: float) -> float:
 	var at := fposmod(maxf(0.,clock),72.)
 	return smoothstep(48.,49.5,at)*(1.-smoothstep(70.5,72.,at))
 static func gain(track: String, score: Dictionary, clock: float) -> float:
 	var db := float(score.get("targets",{}).get(track,-60.))
-	return db-4.5*breath(clock) if db > -55. and track in HEAVY else db
+	return (db-4.5*breath(clock) if db > -55. and track in HEAVY else db)+Cadence.gain(track,score,clock)
 static func groups(records: Dictionary, acoustic: RefCounted, city: RefCounted = null) -> Array:
 	var collected := {}
 	for id: String in acoustic.focus_ids:
@@ -53,9 +54,10 @@ static func arrange(records: Dictionary, acoustic: RefCounted, score: Dictionary
 		if not sources.has(key): sources[key] = group.source
 		if key != lead: targets[key] = maxf(float(targets.get(key,-60.)),-24.)-3.
 	if stage == 2:
-		var family := "air" if phrase == 4 else "terrace"
-		var id := str(sources.get(family,""))
-		if records.has(id) and acoustic.focus_weight(id) > 0. and float(targets.get(family,-60.)) > -38.:
+		var family := Cadence.solo(clock,phrase)
+		var id := Cadence.source(family,records,acoustic,score)
+		if id.is_empty():family="air" if phrase==4 else "terrace";id=Cadence.source(family,records,acoustic,score)
+		if not id.is_empty():
 			source = id; lead = family
 			for group: Dictionary in ranked:
 				if id in group.members: selected = group; break
@@ -82,3 +84,5 @@ static func arrange(records: Dictionary, acoustic: RefCounted, score: Dictionary
 static func conduct(owner: Node) -> void:
 	if owner.concert_active or owner.emergence.score.is_empty(): return
 	owner.emergence.score.phrase_tide = arrange(owner._house_music,owner.acoustic,owner.emergence.score,owner._playback_clock(),owner._pluck_city)
+	owner.emergence.score.cadence_night=owner.night
+	owner.emergence.score.cadence_season=owner._pluck_city.microclimate if owner._pluck_city!=null else ""

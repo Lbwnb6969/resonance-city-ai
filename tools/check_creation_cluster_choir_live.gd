@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/聚落成歌_2026-10-20"
+var OUT="res://验证记录/M29"
 var demo
 var checks:=0
 var failures:Array[String]=[]
@@ -15,6 +15,8 @@ func seconds(duration:float)->void:
 	var until:=Time.get_ticks_msec()+int(duration*1000.)
 	while Time.get_ticks_msec()<until:await process_frame
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/作品";root.add_child(demo);demo.life.set_process(false)
 	var deadline:=Time.get_ticks_msec()+15000
@@ -63,7 +65,7 @@ func run()->void:
 	check(demo.music.house_pluck_report().get("house_id","")==first,"manual response is attributed to the selected house")
 	check(demo.music._players.size()==12 and demo.music._effects.size()==4,"voice counts stay bounded at twelve long and four short")
 	var tide:Dictionary=await preload("res://tools/fixtures/city_creation_phrase_tide_live.gd").run(demo,OUT)
-	check(tide.ok,"real seventy-six-second multi-cluster phrase conducting and breathing pass")
+	check(tide.ok,"real one-hundred-four-second multi-cluster phrase conducting and breathing pass")
 	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"recorded_peak":peak,"score":demo.music.emergence.score,"life_layers":demo.music._life_orchestration,"tide":tide}
 	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("CLUSTER_CHOIR_LIVE ",JSON.stringify({"checks":checks,"failures":failures,"ok":failures.is_empty(),"recorded_peak":peak}))

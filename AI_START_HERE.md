@@ -1,6 +1,6 @@
 # 《共鸣之城》AI 施工入口（三期艺术品大成篇 · M23～M32）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（M23～M28已通过，当前从 `M29` 开始）。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（M23～M29已通过，当前从 `M30` 开始）。
 
 ## 三期核心目标：攻克最后 4/5 → 5/5 的艺术品壁垒
 
@@ -27,7 +27,7 @@
 | 新古典建筑 | [neoclassical](scripts/visual/city_creation_neoclassical.gd)、[civic](scripts/visual/city_creation_neoclassical_civic.gd)、[classical](scripts/visual/city_creation_classical.gd)、[renaissance](scripts/visual/city_creation_renaissance.gd) |
 | 阿尔卑斯现代 | [alpine_modern](scripts/visual/city_creation_alpine_modern.gd) 与 [lodge](scripts/visual/city_creation_alpine_lodge.gd)、[modern](scripts/visual/city_creation_modern.gd)、[highland](scripts/visual/city_creation_highland.gd) |
 | 鲜活小人与自然 | [citizen_visual](scripts/visual/city_creation_citizen_visual.gd)、[life](scripts/world/city_creation_life.gd)、[foliage](scripts/visual/city_creation_foliage.gd) |
-| 音乐跨周期变奏 | `city_creation_cadence_variation.gd`（按里程碑接入）、[phrase_tide](scripts/audio/city_creation_phrase_tide.gd) |
+| 音乐跨周期变奏 | [cadence_variation](scripts/audio/city_creation_cadence_variation.gd)、[phrase_tide](scripts/audio/city_creation_phrase_tide.gd) |
 | 渲染与局部缓存 | [renderer](scripts/visual/city_creation_renderer.gd)、[budget_rebuild](scripts/visual/city_creation_budget_rebuild.gd) |
 
 ## 运行与验证

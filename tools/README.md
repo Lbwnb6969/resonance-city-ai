@@ -78,3 +78,6 @@ M27：test_city_creation_sky_apertures.gd以实际索引网格射线验证三变
 
 
 M28：test_city_creation_citizen_visual.gd验证共享身份/道具资源、主体绘制预算与真实购买/送装；配合greetings、bakery_life、workshop_life与worker_lod。check_creation_greetings_live.gd保留原原生回应，再附42张双分辨率透视近景真实持物/相遇/茶杯、夜灯及Master；--out-dir=res://验证记录/M28/grounded，GL/Dummy/isolated-session。
+
+
+M29：test_city_creation_phrase_tide.gd保留原55并扩至73项。check_creation_cluster_choir_live.gd默认M29，支持--out-dir=res://验证记录/M29/final；附104秒三真实聚落四周期领奏/句尾317帧与固定音池/72秒呼吸记录，104秒真实室内乐与呼吸.wav和phrase_tide.json在同目录。使用GL/Dummy/isolated-session；生活cue由既有公开声学入口发出，不改库存。

@@ -46,5 +46,15 @@ func _run() -> void:
 	var reversed := {}; var ids: Array = records.keys(); ids.reverse()
 	for id: String in ids: reversed[id] = records[id]
 	check(Tide.groups(records,field)==Tide.groups(reversed,field),"conducting does not depend on insertion order")
+	for cycle in range(4):
+		check(Tide.Cadence.solo(cycle*24.+12.,4)==Tide.Cadence.SOLO_ROTATION[cycle],"four-cycle solo family "+str(cycle))
+		check(Tide.Cadence.solo(cycle*24.+15.,5)==Tide.Cadence.SOLO_ROTATION[(cycle+1)%4],"following phrase keeps chamber rotation "+str(cycle))
+	for clock:float in [0.,21.,22.8,24.,48.]:check(is_zero_approx(Tide.Cadence.taper(clock)),"cadence boundaries remain smooth "+str(clock))
+	check(is_equal_approx(Tide.Cadence.taper(23.5),-2.5) and Tide.Cadence.taper(23.)<0.,"last 1.2 seconds contain actual 2.5dB accompaniment breath")
+	var shaded:={"targets":{"air":-20.,"foundation":-16.},"lead_track":"air","cadence_night":true}
+	check(is_equal_approx(Tide.Cadence.gain("air",shaded,23.5),.8),"night upper solo remains present during accompaniment breath")
+	check(is_equal_approx(Tide.Cadence.gain("foundation",shaded,23.5),-2.5),"breath tapers accompaniment and preserves main melody")
+	shaded.cadence_night=false;check(is_equal_approx(Tide.Cadence.gain("foundation",shaded,10.),.5),"daylight lower strings receive gentle warmth")
+	shaded.targets.air=-60.;check(Tide.Cadence.gain("air",shaded,23.5)==0.,"shade cannot awaken an unavailable track")
 	print("PHRASE_TIDE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}))
 	quit(0 if failures.is_empty() else 1)
