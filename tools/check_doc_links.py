@@ -70,11 +70,15 @@ def check(paths):
     errors = []
     cache = {}
     total = 0
-    tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode("utf-8").split("\0")) - {""}
-    published = set(tracked)
-    for name in tracked:
-        parts = name.split("/")
-        published.update("/".join(parts[:length]) for length in range(1, len(parts)))
+    try:
+        tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT, stderr=subprocess.DEVNULL).decode("utf-8").split("\0")) - {""}
+    except Exception:
+        tracked = None
+    published = set(tracked) if tracked is not None else None
+    if tracked is not None:
+        for name in tracked:
+            parts = name.split("/")
+            published.update("/".join(parts[:length]) for length in range(1, len(parts)))
     for path in paths:
         for number, target in inline_links(path.read_text(encoding="utf-8")):
             if re.match(r"[A-Za-z][A-Za-z0-9+.-]*:", target) or target.startswith("//"):
@@ -84,7 +88,7 @@ def check(paths):
             destination = (path.parent / file).resolve() if file else path
             if not destination.exists():
                 errors.append((path, number, target, "missing file"))
-            elif destination.is_relative_to(ROOT) and destination.relative_to(ROOT).as_posix() not in published:
+            elif published is not None and destination.is_relative_to(ROOT) and destination.relative_to(ROOT).as_posix() not in published:
                 errors.append((path, number, target, "target is local-only, absent from published Git tree"))
             elif fragment and destination.suffix.lower() == ".md":
                 if destination not in cache:

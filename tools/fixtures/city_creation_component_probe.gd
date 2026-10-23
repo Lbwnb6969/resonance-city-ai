@@ -37,9 +37,10 @@ static func capture(demo: Node3D, directory: String) -> Dictionary:
 		tree.root.get_texture().get_image().save_png(directory+"/component_"+era+"_low10.png")
 	var ui_fits := true
 	demo.focus = Vector3(float(demo.state.houses[3].origin[0]),2.8,float(demo.state.houses[3].origin[1]))
-	demo.pitch = .56; demo._update_camera(); demo.ui_layer.visible = true
+	demo.zoom = 18.; demo.pitch = .75; demo._update_camera(); demo.ui_layer.visible = true
 	for size: Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		tree.root.size = size
+		await tree.process_frame; demo._update_camera()
 		demo.spatial_popover.open_for_house("h4")
 		for i in range(60): await tree.process_frame
 		await RenderingServer.frame_post_draw

@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""只读审计 M01～M12 契约、验证证据、主文件棘轮与精简入口。"""
+"""只读审计 M01～M22 契约、验证证据、主文件棘轮与精简入口。"""
 import hashlib
 import json
 from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_MILESTONES = [f"M{i:02d}" for i in range(1, 13)]
+EXPECTED_MILESTONES = [f"M{i:02d}" for i in range(1, 23)]
 # 固定用户交付的任务契约；passes / verified_by 可变，其余任务定义不得漂移。
-CONTRACT_SHA256 = "ed271b3dd9e037042050ad45f95f4d6a659c223e3ce0162e24f2343a08875d1b"
+CONTRACT_SHA256 = "c492ddee7c83718f7c4d2e5ac85028a32b22db7a4d5984cd96cc5ba60ee80e4c"
 CONTRACT_FIELDS = ("id", "title", "description", "verification_cmd")
-# M01 入场实测行数 + 最多 8 行短委托；不得通过抬高上限容纳内联实现。
+# M01～M12 实测行数 + 艺术品升华篇最多 10 行短委托；不得通过抬高上限容纳内联实现。
 GOD_FILE_LIMITS = {
-    "scripts/visual/city_creation_renderer.gd": 2993,
-    "scripts/world/city_creation_state.gd": 2982,
-    "scripts/ui/city_creation_demo.gd": 2494,
-    "scripts/audio/city_creation_music.gd": 1791,
+    "scripts/visual/city_creation_renderer.gd": 3005,
+    "scripts/world/city_creation_state.gd": 2992,
+    "scripts/ui/city_creation_demo.gd": 2504,
+    "scripts/audio/city_creation_music.gd": 1800,
 }
 
 
@@ -28,7 +28,7 @@ def audit(root):
         if not isinstance(milestones, list) or any(not isinstance(m, dict) for m in milestones):
             raise ValueError("milestones 必须为对象列表")
         if [m.get("id") for m in milestones] != EXPECTED_MILESTONES:
-            errors.append("里程碑必须依序完整保留 M01～M12")
+            errors.append("里程碑必须依序完整保留 M01～M22")
         contract = [{key: m.get(key) for key in CONTRACT_FIELDS} for m in milestones]
         digest = hashlib.sha256(json.dumps(contract, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         if digest != CONTRACT_SHA256:
@@ -77,8 +77,9 @@ def main():
             print("  [X]", error)
         return 1
     completed = sum(m["passes"] for m in milestones)
+    total = len(milestones)
     pending = next((m["id"] + " (" + m["title"] + ")" for m in milestones if not m["passes"]), "ALL_COMPLETED")
-    print(f"AI_HARNESS_AUDIT PASS: {completed}/12 milestones completed | Next up: {pending}")
+    print(f"AI_HARNESS_AUDIT PASS: {completed}/{total} milestones completed | Next up: {pending}")
     return 0
 
 

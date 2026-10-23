@@ -110,6 +110,8 @@ func _run()->void:
 	frames.sort()
 	var components:Dictionary=await preload("res://tools/fixtures/city_creation_component_probe.gd").capture(demo,OUT)
 	_check(components.ok,"all four actual era components publish finite contact bounds and unified lit shader kinds")
+	var modern:Dictionary=await preload("res://tools/fixtures/city_creation_modern_archetypes_live.gd").capture(demo,OUT)
+	for label:String in modern.checks:_check(modern.checks[label],"modern archetypes: "+label)
 	var audio:Dictionary=await preload("res://tools/fixtures/city_creation_audio_probe.gd").record(OUT+"/Master.wav")
 	_check(audio.ok,"actual Master recording is audible and unclipped without adding voices")
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"isolated real-window validation preserves personal save bytes")

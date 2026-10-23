@@ -1,11 +1,12 @@
 extends RefCounted
 ## Warm white rounded cantilevers, full-height glass and planted roofs/walls.
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
+const Archetypes=preload("res://scripts/visual/city_creation_modern_archetypes.gd")
 const Plan=preload("res://scripts/world/city_creation_skybridge_plan.gd")
 static func palette(base:Array)->Array:
 	return [base[0].lerp(Color("eee9d9"),.90),Color("71916f"),base[2].lerp(Color("b8976a"),.74)]
 static func facade(renderer,wall:Node3D,door:bool,seed_value:int,p:Array)->void:
-	var timber:Material=renderer._material(p[2]);var white:Material=Wall.source(p[0], null, "component", Wall.Kind.CANTILEVER)
+	var timber:Material=Wall.source(p[2],null,"component",Wall.Kind.STONE);var white:Material=Wall.source(p[0], null, "component", Wall.Kind.CANTILEVER)
 	var warm:=posmod(seed_value*31,100)<35
 	var pane:MeshInstance3D=renderer._box(wall,Vector3(1.58,1.40,.035),Vector3(0,.85,.018),white)
 	pane.material_override=renderer.conservatory.ensure_material(warm);pane.set_meta("creation_live_visual",true);pane.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -15,8 +16,7 @@ static func facade(renderer,wall:Node3D,door:bool,seed_value:int,p:Array)->void:
 		renderer._box(wall,Vector3(.57,1.18,.055),Vector3(0,.73,.065),renderer._material(Color("526d60")))
 		renderer._box(wall,Vector3(.035,.24,.055),Vector3(.18,.75,.11),timber)
 	else:
-		renderer._box(wall,Vector3(.23,.12,.26),Vector3(-.64,.22,.18),timber)
-		for i in range(4):renderer._crown(wall,Vector3(-.67+float(i%2)*.13,.42+float(i)*.20,.24),Vector3(.15,.17,.12),Color("5e8c62").lightened(float(i%2)*.12))
+		Archetypes.populate_facade_greenery(renderer,wall,seed_value,timber)
 	wall.set_meta("modern_glass",{"warm":warm,"floor_to_ceiling":true})
 static func terrace(renderer,node:Node3D,cell:Dictionary,cells:Array,y:float,p:Array)->void:
 	_slab(renderer,node,Vector3(0,y+.16,0),Vector2(2.18,2.18),.16,p[0])
@@ -44,15 +44,9 @@ static func roof(renderer,root:Node3D,house:Dictionary,p:Array,cell:Dictionary)-
 	_slab(renderer,node,Vector3(0,y+.13,0),Vector2(1.68,1.68),.06,Color("70975f"),false)
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));node.add_child(body)
 	renderer._cell_box_shape(body,Vector3(2.20,.16,2.20),Vector3(0,y+.03,0))
-	for i in range(5):
-		var x:=sin(float(i)*2.4)*.58;var z:=cos(float(i)*2.4)*.58
-		renderer._box(node,Vector3(.22,.14,.24),Vector3(x,y+.24,z),renderer._material(Color("b59c79")))
-		renderer._crown(node,Vector3(x,y+.43,z),Vector3(.20,.22,.20),Color("5e875c"))
-		for blade in range(5):
-			var a:=float(blade)*TAU/5.;var center:=Vector3(x+cos(a)*.17,y+.18,z+sin(a)*.17)
-			renderer._triangles(node,[center+Vector3(-.035,0,0),center+Vector3(0,.14,0),center+Vector3(.035,0,0)],Color("91af72"))
+	Archetypes.populate_roof(renderer,node,house,cell,y,p)
 	if house.role=="bakery":root.set_meta("chimneys",[node.position+Vector3(.60,y+.48,-.60)])
-	return {"cell_id":str(cell.id),"roof_y":float(house.get("base_y",0.))+y+.16,"cantilever":.21,"lawn":true}
+	return {"cell_id":str(cell.id),"roof_y":float(house.get("base_y",0.))+y+.16,"cantilever":.21,"lawn":true,"archetype":Archetypes.roof_kind(house,cell)}
 
 static func build(renderer,root:Node3D,house:Dictionary,p:Array)->void:
 	var parts:=prepare(renderer.state,house);var roofs:Array=[]

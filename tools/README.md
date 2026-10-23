@@ -4,7 +4,7 @@
 
 | 工具 | 用途 |
 | --- | --- |
-| `check_ai_harness.py` | M01～M12任务原文契约、完成证据、四主文件棘轮与入口120行/15KB审计；单元验证运行 `python -B tests/test_ai_harness.py` |
+| `check_ai_harness.py` | M01～M22任务原文契约、完成证据、四主文件棘轮与入口120行/15KB审计；单元验证运行 `python -B tests/test_ai_harness.py` |
 | `check_creation_harness_live.gd` | M01隔离OpenGL烟测：两分辨率昼夕夜、5°/10°/15°低视角、真实Master录音峰值与帧时；PNG人工检查后记入verified_by |
 | `sync_github_main.py` | `prepare`核对跟踪树差异与<100MB体积，`push`同步GitHub main；本地完整参考原件不上传 |
 | `creation_bundle_audit.py` | 当前主场景的资源依赖闭包、三库来源记录与真实包资源审计；独立于旧P0打包器 |
@@ -41,3 +41,5 @@ M10：`check_creation_score_modifiers_live.gd` 保留旧时代章程/连续问�
 M11：`check_creation_intuitive_guidance_live.gd`默认先跑原84项鼠标新手，再验证四类真实造景、保存未完成页/完成赐福、换页、撤销读档防重领、三次自然晋升与6秒双钟/微法线暖金波、三章程手记及真实领奏+0.6dB。可用`--vignettes-only`单独迭代后半段；证据`验证记录/M11/林间奇遇与时代盛典`，全部GL/Dummy/isolated-session。CPU `test_city_creation_vignettes.gd`含重做旧几何防刷，配合eras、phrase_tide、harmony_journey、score_modifiers与legacy_roundtrip。`city_creation_recording_span.gd`可记录一段真实交互全过程，不增音频声部。
 
 M12：`python tools/check_creation_long_session_journey.py`顺序启动六个GL/Dummy/isolated-session进程（1440×900、1024×768各day1/day2/qa），首日保存退出后由真正不同PID读取同一作品、扩建到50屋并自然解锁四时代；生活模拟加速，声音及三场六秒仪式走实际时间。每次日2实际录Master约150秒、核两轮留白/八乐句/固定声音池；QA检查127屋GPU槽、四层屋中心/邻屋/二级用途坞避让、昼夕夜与漫步5°/10°/15°、漫步收藏保存。`--phases qa`只重跑画面；`--resolutions 1024`只跑该分辨率。直接GD工具需显式`--phase=... --resolution=...`，支持`--out-dir=res://验证记录/...`供独立验收隔离。输出`验证记录/M12/<分辨率>/<phase>.json`、PNG、WAV与时间戳日志；suite.json为最近一次批次，full_suite.json保留本轮完整六进程结果。CPU为spatial_scroll、juice_feedback与legacy_roundtrip；M12规范验收还须两项纪律检查及sync_github_main.py prepare。
+
+M13：`test_city_creation_modern_architecture.gd`验证四屋顶/三立面实际几何、JSON稳定派生、原Box拾取、受光纸纹批次、暖光天窗与无状态写入。`check_creation_era_streets_live.gd`保留原34项，再附四原型发布/切时代撤销/恢复与双分辨率近景、昼夕夜、10°及UI检查，输出`modern_archetypes.json`；实窗加GL/Dummy/isolated-session，可设`--out-dir=res://验证记录/M13/现代原型`。未施工的M14～M22模块留在用户原件目录，按里程碑逐项接入。

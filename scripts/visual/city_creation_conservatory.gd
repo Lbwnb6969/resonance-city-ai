@@ -10,6 +10,7 @@ const FLOOR_OFFSET := 0.19
 var glass_material: ShaderMaterial
 var clockwork_glass_material: ShaderMaterial
 var palace_glass_material: ShaderMaterial
+var roof_glass_material: ShaderMaterial
 var evening := false
 var response := 0.0
 
@@ -25,6 +26,9 @@ func set_light(value: bool,amount: float = 0.0) -> void:
 	if palace_glass_material!=null:
 		palace_glass_material.set_shader_parameter("evening",1.0 if evening else 0.0)
 		palace_glass_material.set_shader_parameter("response",response)
+	if roof_glass_material!=null:
+		roof_glass_material.set_shader_parameter("evening",1.0 if evening else 0.0)
+		roof_glass_material.set_shader_parameter("response",response)
 
 func _glass_material(clockwork: bool=false) -> ShaderMaterial:
 	if clockwork:
@@ -41,6 +45,15 @@ func _glass_material(clockwork: bool=false) -> ShaderMaterial:
 
 func ensure_material(clockwork: bool=false) -> ShaderMaterial:
 	return _glass_material(clockwork)
+
+func ensure_roof_material()->ShaderMaterial:
+	if roof_glass_material==null:
+		roof_glass_material=ShaderMaterial.new();roof_glass_material.shader=GlassShader
+		roof_glass_material.set_shader_parameter("warmth",1.)
+		roof_glass_material.set_shader_parameter("night_energy",2.5)
+		roof_glass_material.set_shader_parameter("night_opacity",.45)
+		set_light(evening,response)
+	return roof_glass_material
 
 func ensure_palace_material()->ShaderMaterial:
 	if palace_glass_material==null:
