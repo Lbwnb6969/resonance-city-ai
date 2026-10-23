@@ -81,3 +81,5 @@ M28：test_city_creation_citizen_visual.gd验证共享身份/道具资源、主�
 
 
 M29：test_city_creation_phrase_tide.gd保留原55并扩至73项。check_creation_cluster_choir_live.gd默认M29，支持--out-dir=res://验证记录/M29/final；附104秒三真实聚落四周期领奏/句尾317帧与固定音池/72秒呼吸记录，104秒真实室内乐与呼吸.wav和phrase_tide.json在同目录。使用GL/Dummy/isolated-session；生活cue由既有公开声学入口发出，不改库存。
+
+M30：test_city_creation_local_service_cache.gd七类公共编辑145项冷等价；check_creation_edit_latency.gd支持--out-dir，完整23项；check_creation_large_town_live.gd完整入口附三类编辑及撤销冷等价，可--local-only单独复验六项。复用300夹具先复制authored_300_world.json到新输出目录再--reuse-fixture，避免改原件。GL/Dummy/isolated-session。性能取budget.latency_ms，补充total_ms包含冷对照耗时；M30/three_edits_compare.json保存改前/后相同CPU输入和逐字段结果。

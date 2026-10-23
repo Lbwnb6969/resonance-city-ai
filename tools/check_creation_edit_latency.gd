@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-var OUT="res://验证记录/编辑响应_2026-10-16"
+var OUT="res://验证记录/M30/编辑响应"
 const SAMPLE="res://数据/经营河湾样例.json"
 var demo
 var checks:Array=[]
@@ -73,6 +73,8 @@ func _colors(id:String="h1")->String:
 		rows.append(var_to_bytes([arrays[Mesh.ARRAY_COLOR],str(mesh.material_override)]).hex_encode())
 	return str(hash(rows))
 func _run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--out="): OUT=argument.trim_prefix("--out=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))

@@ -51,6 +51,9 @@ func _run()->void:
 	await demo.gallery._open_chosen(chosen);demo.life.set_process(false)
 	_check(demo.state.houses.size()==300 and not demo.gallery.busy,"three hundred authored four-era buildings restore through the actual complete-work loader")
 	print("LARGE_RENDER_READY")
+	if "--local-only" in OS.get_cmdline_user_args():
+		var local:Dictionary=await preload("res://tools/fixtures/city_creation_local_town_edits_live.gd").run(demo,output)
+		print("LOCAL_TOWN_EDITS ",JSON.stringify(local));quit(0 if local.ok else 1);return
 	if "--views-only" in OS.get_cmdline_user_args():
 		var views:Dictionary=await preload("res://tools/fixtures/city_creation_final_city_views.gd").capture(demo,output)
 		FileAccess.open(output+"/final_views.json",FileAccess.WRITE).store_string(JSON.stringify(views,"\t"));print("FINAL_CITY_VIEWS ",JSON.stringify(views))
@@ -94,6 +97,8 @@ func _run()->void:
 	var cpu_metrics:=_metrics(cpu);var frames_metrics:=_metrics(frames)
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"life_cpu":cpu_metrics,"policy":"reference_only"}))
 	var edit_metrics:Dictionary=await _edit_large_city()
+	var local:Dictionary=await preload("res://tools/fixtures/city_creation_local_town_edits_live.gd").run(demo,output)
+	_check(local.ok,"three hundred house local building road pond edits and undo match cold service computation")
 	await _large_ui()
 	var art:Dictionary=await preload("res://tools/fixtures/city_creation_final_city_views.gd").capture(demo,output)
 	_check(art.ok,"four-era day/dusk/night and5/10/15degree views preserve the complete300-house world")

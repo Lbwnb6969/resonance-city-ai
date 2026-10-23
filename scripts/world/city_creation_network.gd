@@ -61,6 +61,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	connected_houses = prior
 	var stage_started := Time.get_ticks_usec()
 	_build_graph()
+	preload("res://scripts/visual/city_creation_local_service_cache.gd").reuse_network(self,snapshot.get("network_reuse",{}))
 	prepare_stats["graph_ms"] = float(Time.get_ticks_usec()-stage_started)/1000.0
 	prepare_stats["terrain_changed_vertices"] = int(state._ground_terrain.stats.get("raw_changed_vertices",0))
 	stage_started=Time.get_ticks_usec()
@@ -509,11 +510,11 @@ func _exterior_route_from_position(point: Vector3, finish: String) -> Array[Vect
 		for house: Dictionary in state.houses:
 			var house_id := str(house.id)
 			if not connected_houses.has(house_id): continue
-			var continuation := _route(str(connected_houses[house_id]),finish)
-			if continuation.is_empty(): continue
 			var target: Vector3=positions[connected_houses[house_id]]
 			var local: Array[Vector2]=Frontage.exterior_route(house,planar,Vector2(target.x,target.z),state)
 			if local.is_empty(): continue
+			var continuation := _route(str(connected_houses[house_id]),finish)
+			if continuation.is_empty(): continue
 			var candidate: Array[Vector3]=[]
 			var length := 0.0
 			for at: Vector2 in local:

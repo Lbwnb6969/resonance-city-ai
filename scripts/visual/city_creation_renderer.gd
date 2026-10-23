@@ -369,7 +369,7 @@ func rebuild() -> void:
 	# The first local edit compares against the already visible city, just as
 	# subsequent commits do. An empty baseline marks every domain dirty.
 	if budget_rebuild==null:budget_rebuild=BudgetRebuild.new()
-	budget_rebuild.record_published(state)
+	budget_rebuild.record_published(state,self)
 
 func _bind_era_road_field()->void:
 	for material:ShaderMaterial in [_shared_road_material(),promenade.road_material(),path_edge.material]:

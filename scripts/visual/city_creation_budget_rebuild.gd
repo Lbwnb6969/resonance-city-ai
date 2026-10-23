@@ -22,6 +22,7 @@ var _request_ms := 0.0
 var _max_step_ms := 0.0
 var _main_ms := 0.0
 var _published_snapshot: Dictionary = {}
+var _published_services: Dictionary = {}
 var _cpu_retirement:=CPURetirement.new()
 var retired_values:Array=[]
 var retired_solvers:Array[RefCounted]=[]
@@ -83,8 +84,9 @@ func _merge_value_cache(target:Dictionary,incoming:Dictionary)->void:
 		if (previous is Array or previous is Dictionary or (previous is RefCounted and not previous is Resource)) and not is_same(previous,incoming[key]):retired_values.append(previous)
 	target.merge(incoming,true)
 
-func record_published(state:RefCounted)->void:
+func record_published(state:RefCounted,owner:Node3D=null)->void:
 	_published_snapshot=ChangeSet.snapshot(state)
+	if owner!=null:_published_services=preload("res://scripts/visual/city_creation_local_service_cache.gd").capture(owner)
 
 func _copy_fields(source: Object, target: Object, fields: Array) -> void:
 	for field: String in fields:
@@ -174,6 +176,7 @@ func request(owner: Node3D) -> int:
 	queued.set_meta("snapshot",current_snapshot)
 	queued.set_meta("generation",generation)
 	queued.set_meta("changes",changes)
+	queued.set_meta("local_service_seed",preload("res://scripts/visual/city_creation_local_service_cache.gd").seed(changes,_published_services))
 	_request_ms = float(Time.get_ticks_usec()-start)/1000.0
 	_main_ms = _request_ms
 	_max_step_ms = _request_ms
@@ -194,6 +197,7 @@ func _work(context: Node3D) -> Dictionary:
 	var changes: Dictionary = context.get_meta("changes",{})
 	var labels: Array = changes.get("labels",[])
 	var stages: Dictionary = {}
+	stages.local_services=preload("res://scripts/visual/city_creation_local_service_cache.gd").prime(context)
 	var stage_start := Time.get_ticks_usec()
 	context.water_field.prepare_update()
 	context.era_road_field.prepare(context.state)
@@ -839,6 +843,7 @@ func _commit(owner: Node3D) -> void:
 	committed_generation = generation
 	retired_values.append(_published_snapshot)
 	_published_snapshot = staging.get_meta("snapshot")
+	_published_services=preload("res://scripts/visual/city_creation_local_service_cache.gd").capture(owner)
 	_discard_staging(true)
 	stages.dispose_ms = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stats.commit_stages = stages

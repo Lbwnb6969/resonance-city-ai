@@ -58,6 +58,7 @@ func prepare(renderer: Node3D) -> Dictionary:
 	for plan: Dictionary in renderer.state.courtyard_plans():
 		var id := str(plan.id)
 		live[id] = true
+		if renderer.get_meta("local_courts",{}).has(id):continue
 		var bounds: Rect2 = plan.bounds
 		var height_signature: int = renderer.state._ground_terrain.region_signature(bounds.grow(0.5))
 		var signature := hash([plan,height_signature])

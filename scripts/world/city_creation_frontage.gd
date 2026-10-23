@@ -184,6 +184,14 @@ static func hits_rect(a: Vector2,b: Vector2,rect: Rect2) -> bool:
 
 static func exterior_route(house: Dictionary, from: Vector2, to: Vector2, city: RefCounted) -> Array[Vector2]:
 	var empty: Array[Vector2]=[]
+	# Prove the existing 72cm ownership condition before constructing the
+	# global obstacle graph. Distant houses cannot own this exterior prefix.
+	var owns:=false
+	for room:Dictionary in house.cells:
+		if int(room.level)!=0:continue
+		var rect:=Rect2(center(house,room)-Vector2.ONE*.9,Vector2.ONE*UNIT)
+		if not rect.has_point(from) and rect.grow(.72).has_point(from):owns=true;break
+	if not owns:return empty
 	var nearby := false
 	var candidates: Array[Vector2]=[from,to]
 	var obstacles: Array[Rect2]=[]

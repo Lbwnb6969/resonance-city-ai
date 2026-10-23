@@ -214,6 +214,7 @@ func begin_budget_sync() -> bool:
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
 	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
+	_budget_request.snapshot["network_reuse"]=preload("res://scripts/visual/city_creation_local_service_cache.gd").network_seed(_network)
 	_budget_request.snapshot["biome_seed"]=state.biome_seed.duplicate()
 	_budget_request.snapshot["era_modifiers"]=state.era_modifiers.duplicate()
 	_budget_request.snapshot["harmony_journey"]=state.harmony_journey.duplicate(true)

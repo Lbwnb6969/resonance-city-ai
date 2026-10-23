@@ -566,8 +566,8 @@
       "phase": "Phase 3D · 长时音乐变奏与大城顺畅度",
       "title": "300 屋大城局部编辑『脏区增量服务缓存』，大幅压缩大城局部建造发布等待",
       "priority": 30,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py PASS. Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_local_service_cache.gd -- --isolated-session (145 PASS, 82 reused records; seven public edits including water blessing and courtyard topology, cold equivalence); route_solver7/100 routes, service_routes7/1409 pairs and legacy375/27 works PASS. Gate3: canonical check_creation_edit_latency.gd23 PASS at 验证记录/M30/编辑响应; full check_creation_large_town_live.gd24 PASS at M30/300, supplemental --local-only6 PASS at M30/300_local. Actual 300-house terrain publication3531.984ms vs historical8899.538ms; Life p952.656/max7.307ms, Master25.077551s peak.04510498 clipped0. Actual house/road/water publication5643.999/6458.107/5484.03ms and undo match cold service plans, cafe layouts and blessings. Exact same-input old/current network comparison: house13966.14→7166.471ms, road10465.106→6305.118ms, water10261.064→6093.145ms; all graph/positions/connections/routes/stops/sites equal. New 18m published-value service reuse plus conservative court/cafe dependency closure; unchanged graph route-cache copy. Main gain comes from exact house-ownership rejection before expensive global exterior routing, not service-cache-only attribution. Failed reverse-tree experiment retained in 废弃/M30_未产生收益的反向路由树; native AStar remains. New-process quality37 PASS, first bread48.669ms, Master24.148753s peak.013153076 clipped0; implementer review4/5, 5–6s large-edit waits remain. Representative source images reviewed; personal saves and fixed audio pool unchanged.",
       "files_to_touch": [
         "scripts/visual/city_creation_local_service_cache.gd",
         "scripts/visual/city_creation_budget_rebuild.gd",
