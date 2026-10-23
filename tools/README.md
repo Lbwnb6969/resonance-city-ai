@@ -51,3 +51,5 @@ M15：`test_city_creation_juice_feedback.gd`追加金弧横向UV、14cm曲顶与
 M16：`test_city_creation_harmony_journey.gd`含独立`tests/helpers/city_creation_tradition_rules_checks.gd`，共230项；`check_creation_tradition_rules_live.gd`以隔离合法测试信用逐项验证空间法则，44项覆盖真实缓坡网格/原生阶键/2树瞬发/6m活水及18卡排版，52张PNG与Master在`验证记录/M16/手札空间法则`。真实赚取、鼠标选札及续玩用原`check_creation_score_modifiers_live.gd -- --isolated-session --harmony-only`27项复核。
 
 M17：`test_city_creation_tradition_synergy.gd`59项覆盖18札去重/2至3阶/真实生活奖励与旧茶基线；canonical `check_creation_score_modifiers_live.gd`75项，`--schools-only`仅跑新25项，`--harmony-only`原27项。流派图与实际阶键双音/原音/WAV/报告在`验证记录/M17/四大学派`，`octave_pcm_analysis.json`记录880Hz新增高八度；最终完整日志`M17_canonical_live_final_console.log`。
+
+M18：`test_city_creation_poems.gd`覆盖新增8篇真实公共造景、时代/合法选址、二阶与Schema19；原`test_city_creation_vignettes.gd`81项保持。canonical `check_creation_intuitive_guidance_live.gd`保留完整自然引导/原4奇遇，再附十二诗新夹具；`--poems-only`只跑新增部分。双分辨率来信/昼夕夜/双拱与空廊低视角、二阶续玩及Master在`验证记录/M18/十二风物诗`。拍摄前通过原生点击收好待选札；实测品质粒子初始隐藏、真实发射可见、结束隐藏，避免Compatibility未发射缓冲显形。

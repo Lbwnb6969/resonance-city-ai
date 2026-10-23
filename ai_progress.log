@@ -153,3 +153,22 @@
 - GATE3: canonical score_modifiers_live75 PASS/无ERROR，25流派+27原成长+23原章程；实际.4→.8dB乐句领奏，A4/A5同槽双音，真实送装欢跳与五户同拍金窗；16流派图及原手卷/低视角已核。
 - METRICS/FIX: Master3.065034s峰.021026611/削波0，原成长峰.004882813/p9510.103ms；FFT增量880.00145Hz、双音峰.0921936/削波0；修StringName迁移键/首叶滚动，探针等3s乐句并先建立实际来信基线，失败保留。
 - NEXT_UP: 仅认领M18，十二风物诗/时代与合法选址过滤/二阶回响；完成后运行第三项独立Evaluator，不将本轮普通流派夹具信用当真实赚取。
+
+[EVALUATOR_FIX_REQUIRED] 2026-10-23 M18 独立验收：美术3/5，其余4项4/5；M18保持passes=false。
+- EVIDENCE: fresh GL poems-only73/CPU84+59/legacy375全过仍见金色锯齿四边片；Evaluator_M18目录保留M18双拱桥左岸与M16缓坡右下原帧/裁片。
+- FIX: 定位真实发片节点并修正有限几何/变换/渲染；双分辨率昼夕夜低视角重拍；桥日景捕获须等待待选手札收起，避免遮挡主体。
+- REVIEW: 修正后独立复审；报告验证记录/Evaluator_M18_2026-10-23/independent_report.json，不能把73项绿色当零彩面证明。
+- ROOT_CAUSE: 逐节点隐藏A/B确诊未发射却visible=true的BuildingQuality/QualityUpgrade_0～3 CPUParticles3D；金ROI分别减少474/82/305/145像素，其它22节点无影响；待生命周期修复与独立复审。
+
+[EVALUATOR_FIX_RESOLVED] 2026-10-23 M18：独立复审五项均4/5；初次3分金锯齿缺陷已修，失败原帧/报告保留。
+- FIX: QualityUpgrade四粒子初始化/finished隐藏、真实flash再显示；每张捕获原生收起待选札，桥主体不遮挡。
+- VERIFIED: 独立GL poems-only77/77无ERROR，含静默/发射/结束3检查；双桥/空廊8张双分辨率昼夜10度原图无金片，M16同场景修后已看；Master3.065034s峰.03286743/削波0。
+- GATES: Harness/16篇203链接、poems84/family59/legacy375与27作品均PASS；差分FFT880.00145Hz，个人档与固定池保持。
+- NEXT: 报告验证记录/Evaluator_M18_2026-10-23/independent_report.json；交回M18提交同步，不冒充M22满分终审，现代主体重复/圆叶簇留待冲5分。
+
+[SESSION_M18] 2026-10-23 COMPLETE M18：十二风物诗/合法时代选址/二阶回响；备份backup/before-m18-20261023。
+- FILES: poem_features/sites、vignette目录/选址/校验/兑现/UI、journey整数恢复、quality_visual粒子生命周期；CPU/实际造景与live夹具/24/25/README/backlog。
+- GATE1/2: Harness/16篇203链接/治理8 PASS；poems84/原vignettes81/legacy375与27作品/render_safety41 PASS，无ERROR；新生产62/51行，四主文件及Music音库未改。
+- GATE3: 完整canonical238/独立新窗77 PASS，无ERROR；8实际配方/8撤销守恒、二阶95→143XP/真实+.8dB、收藏续开静默；80双分辨率来信/昼夕夜/10度图已核。
+- METRICS/FIX: Master3.157914s峰.023742676/削波0；独立3.065034s峰.03286743/削波0，五维均4/5。独立先验3分金锯齿确诊4个未发射CPU粒子，修后同场景ROI1660→2；待选札resize后原生收起，失败与FIX区块保留。
+- NEXT_UP: 仅认领M19，P/侧键五声递增琶音与5m漫步微光；M22继续现代结构重复/树冠圆团感，当前4/5不当终审5/5。

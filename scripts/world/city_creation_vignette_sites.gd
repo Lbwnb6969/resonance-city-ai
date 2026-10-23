@@ -29,4 +29,5 @@ static func proposals(city:RefCounted)->Dictionary:
 		if house.role=="workshop" and int(city.site_blessing(str(house.id)).get("trees",0))<4:
 			result.vignette_olive_grove_craft=Vector2(house.origin[0],house.origin[1]);break
 	if not result.has("vignette_olive_grove_craft") and result.has("vignette_courtyard_fountain"):result.vignette_olive_grove_craft=result.vignette_courtyard_fountain
+	result.merge(preload("res://scripts/world/city_creation_poem_sites.gd").proposals(city,origin))
 	return result

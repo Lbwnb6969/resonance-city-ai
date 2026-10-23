@@ -72,7 +72,9 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 			for key:String in target[field]:target[field][key]=int(target[field][key])
 		if target.has("vignette_serial"):target.vignette_serial=int(target.vignette_serial)
 		if not target.get("active_vignette",{}).is_empty():
-			for field:String in ["serial","house_floor","plant_floor"]:
+			for field:String in ["serial","house_floor","plant_floor","tier"]:
 				if target.active_vignette.has(field):target.active_vignette[field]=int(target.active_vignette[field])
 		for key:String in target.get("completed_vignettes",{}):target.completed_vignettes[key]=int(target.completed_vignettes[key])
+	for row:Dictionary in target.get("vignette_echoes",{}).values():
+		for id:String in row:row[id]=int(row[id])
 	city.harmony_journey=target

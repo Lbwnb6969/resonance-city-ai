@@ -71,6 +71,8 @@ func setup(renderer: Node3D)->void:
 		var effect:=CPUParticles3D.new();effect.name="QualityUpgrade_%d"%i;effect.mesh=mesh;effect.material_override=material
 		effect.amount=18;effect.lifetime=1.15;effect.one_shot=true;effect.explosiveness=.9;effect.emitting=false
 		effect.direction=Vector3.UP;effect.spread=42;effect.initial_velocity_min=.7;effect.initial_velocity_max=1.5;effect.gravity=Vector3(0,-.35,0)
+		# Compatibility may draw an uninitialized CPU particle buffer before its first restart.
+		effect.hide();effect.finished.connect(effect.hide)
 		DetailLod.bind(effect,DetailLod.SMOKE);effect.visibility_aabb=AABB(Vector3(-3,-1,-3),Vector3(6,6,6));layer.add_child(effect);particles.append(effect)
 
 func _draw_welcome(renderer,frame:Node3D)->void:
@@ -223,7 +225,7 @@ func flash(renderer, events: Array)->void:
 		var id:=str(event.house_id)
 		if not renderer.resonance.rigs.has(id):continue
 		var effect:=particles[next_particle%particles.size()];next_particle+=1
-		effect.position=renderer.resonance.rigs[id].anchor-Vector3.UP*.5;effect.restart();effect.emitting=true
+		effect.position=renderer.resonance.rigs[id].anchor-Vector3.UP*.5;effect.restart();effect.emitting=true;effect.show()
 
 func _remove(id: String)->void:
 	if not roots.has(id):return

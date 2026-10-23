@@ -48,7 +48,7 @@ func run(owner:Node)->Dictionary:
 		var reward:Dictionary=observer.completions[-1] if observer.completions.size()>start else {}
 		checks["permanent_"+kind]=not reward.is_empty() and reward.members.all(func(id):return Vignettes.production(demo.state,id)>=1.1) and is_equal_approx(Vignettes.music(demo.state,reward.members),.6)
 		if not reward.is_empty() and reward.members.size()>=3:
-			var deadline:=Time.get_ticks_msec()+1800
+			var deadline:=Time.get_ticks_msec()+4000
 			while Time.get_ticks_msec()<deadline and float(demo.music.emergence.score.get("phrase_tide",{}).get("vignette_db",0.))<.59:await tree.process_frame
 			checks["actual_audio_bonus_"+kind]=float(demo.music.emergence.score.get("phrase_tide",{}).get("vignette_db",0.))>=.59
 		if not reward.is_empty():details[kind]={"reward":reward,"journey":demo.state.harmony_journey.duplicate(true)}

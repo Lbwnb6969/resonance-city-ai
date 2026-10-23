@@ -18,7 +18,7 @@ func setup(owner:Node,parent:Control)->void:
 	demo=owner;name="VignetteJourney";demo.add_child(self);demo.set_meta("vignette_journey",self)
 	paper=PanelContainer.new();paper.name="WoodlandVignette";paper.theme=UI.make_theme();paper.custom_minimum_size.x=286;paper.add_theme_stylebox_override("panel",UI.panel(12));parent.add_child(paper)
 	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",6);paper.add_child(column)
-	heading=Label.new();heading.text="林间来信";heading.add_theme_font_size_override("font_size",15);column.add_child(heading)
+	heading=Label.new();heading.text="林间来信";heading.add_theme_font_size_override("font_size",14);heading.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;column.add_child(heading)
 	detail=Label.new();detail.custom_minimum_size.x=260;detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.add_theme_font_size_override("font_size",12);detail.add_theme_color_override("font_color",UI.MUTED);column.add_child(detail)
 	progress=Label.new();progress.add_theme_font_size_override("font_size",12);column.add_child(progress)
 	var row:=HBoxContainer.new();column.add_child(row)
@@ -54,10 +54,12 @@ func refresh()->void:
 	var quest:Dictionary=demo.state.harmony_journey.get("active_vignette",{})
 	if quest.is_empty():heading.text="林间来信 · 回响已留下";detail.text="慢慢欣赏片刻，下一页会再来。";progress.text="没有倒计时，也不必赶路。";return
 	var template:=Vignettes.template(str(quest.id));var status:=Vignettes.candidates(demo.state,demo.life.connected_houses)
-	heading.text="林间来信 · 随心营造"
-	detail.text={Vignettes.IDS[0]:"在金圈附近的水畔新聚拢4屋，并接通小路。",Vignettes.IDS[1]:"在金圈附近的1米台地新筑3屋，连上石阶下山。",Vignettes.IDS[2]:"在金圈附近围一座新的闭合喷泉内院。",Vignettes.IDS[3]:"在金圈附近的制琴坊旁聚拢4棵树，添一棵新树。"}[str(quest.id)]
-	progress.text="%d / %d · +%d ♪ · 永久街坊回响"%[mini(int(status.count),int(status.needed)),int(status.needed),int(template.reward_xp)]
-	paper.tooltip_text=str(template.reward_desc)+"\n每种奇遇的制作与领奏赐福每屋各留一份；领奏叠至1.2dB。"
+	var second:=int(quest.get("tier",1))>=2
+	heading.text=("二阶 · " if second else "")+str(template.title)
+	detail.text=str(template.prompt)
+	var reward:=int(ceil(float(template.reward_xp)*(1.5 if second else 1.)))
+	progress.text="%d / %d · +%d ♪ · 永久街坊回响"%[mini(int(status.count),int(status.needed)),int(status.needed),reward]
+	paper.tooltip_text=str(template.reward_desc)+("\n二阶传世风物诗：更高共鸣与街坊领奏+0.8dB。" if second else "\n街坊领奏+0.6dB；再次完成本主题可升格二阶。")
 	var at:=Vector2(quest.anchor[0],quest.anchor[1]);marker.position=Vector3(at.x,demo.state.ground_height(at)+.06,at.y)
 func _process(delta:float)->void:
 	wait_next=maxf(0.,wait_next-delta);elapsed+=delta
