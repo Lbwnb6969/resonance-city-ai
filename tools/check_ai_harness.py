@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""只读审计 M01～M22 契约、验证证据、主文件棘轮与精简入口。"""
+"""只读审计 M01～M32 契约、验证证据、主文件棘轮与精简入口。"""
 import hashlib
 import json
 from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_MILESTONES = [f"M{i:02d}" for i in range(1, 23)]
+EXPECTED_MILESTONES = [f"M{i:02d}" for i in range(1, 33)]
 # 固定用户交付的任务契约；passes / verified_by 可变，其余任务定义不得漂移。
-CONTRACT_SHA256 = "c492ddee7c83718f7c4d2e5ac85028a32b22db7a4d5984cd96cc5ba60ee80e4c"
+CONTRACT_SHA256 = "0f09f6dedda7c60c7646385faa89a280c3a10fd19741b6ae2d70da8bc8b381ab"
 CONTRACT_FIELDS = ("id", "title", "description", "verification_cmd")
 # M01～M12 实测行数 + 艺术品升华篇最多 10 行短委托；不得通过抬高上限容纳内联实现。
 GOD_FILE_LIMITS = {
@@ -28,7 +28,7 @@ def audit(root):
         if not isinstance(milestones, list) or any(not isinstance(m, dict) for m in milestones):
             raise ValueError("milestones 必须为对象列表")
         if [m.get("id") for m in milestones] != EXPECTED_MILESTONES:
-            errors.append("里程碑必须依序完整保留 M01～M22")
+            errors.append("里程碑必须依序完整保留 M01～M32")
         contract = [{key: m.get(key) for key in CONTRACT_FIELDS} for m in milestones]
         digest = hashlib.sha256(json.dumps(contract, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         if digest != CONTRACT_SHA256:

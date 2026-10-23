@@ -200,3 +200,16 @@
 - GATE3: 1440/1024各day1 25/day2 88/qa23、完整300屋24与54图机位补拍全PASS；实际P/冠冕/漫步、退出续城四时代、个人档/固定音池保持；独立五维4/5达标而非5/5。
 - METRICS/FIX: 两份149.165s峰.079956/.090424、300屋24.985s峰.037323、独立峰.003998均削波0；首炉20.953/20.103/独立22.992ms；修滚动点击/屋内机位/来信基线与独立金弧采样，失败保留；300首开60.250s/局部完整尾10.775s仍待打磨。
 - NEXT_UP: 当前22项完结后停止施工；文档28记录建筑同构/叶簇/近草/大城等待等缺口与6新古典+6阿尔卑斯现代方案，类型尚未施工，交由下一阶段选定具体任务。
+
+[SESSION_PHASE3_INIT] 2026-10-23
+- 二期成果核验：M01～M22 已 22/22 全部通过！现代四屋顶、14×6 逆光叶簇、双色琥珀描边金弧与夜窗漫射、18 札空间法则质变、四大声学流派冠冕、12 篇河湾风物诗、P 键递增五声琶音、5m 漫步微光、去报表化烟火手卷、跨城图鉴赠札与离屏羊皮烫金明信片已全部落地并通过六进程跨日终检。
+- 三期目标（M23～M32 · 艺术品终极收官篇）：直接承接 `文档/28_项目复盘与建筑风貌扩展.md` 指出的最后差距（建筑体量同构、树冠伞盘感、木偶小人缺持物、长时音乐句尾变奏、1024小窗深滚与300屋局部编辑等待），实装 6 类新古典建筑原型 + 6 类阿尔卑斯现代建筑原型、留空分枝树冠与柔和接地、手持面包篮/木琴/提灯的鲜活小人、多周期室内乐独奏变奏与大城局部增量服务缓存，冲击独立 Evaluator 五维 5/5 满分！
+- 预置模块就绪：scripts/visual/city_creation_neoclassical.gd、scripts/visual/city_creation_alpine_modern.gd、scripts/visual/city_creation_citizen_visual.gd、scripts/audio/city_creation_cadence_variation.gd。
+- 下一棒任务（NEXT_UP）：请认领 `ai_feature_backlog.json` 中的第一个未完成项 `M23`，依次推进 `M23` ~ `M32` 直至 32/32 全绿通过。
+
+[SESSION_M23] 2026-10-24 COMPLETE M23：新古典门庭/分层街屋/真实转角凸窗，备份backup/before-m23-20261024。
+- FILES: Neoclassical/Classical/Renderer两委托、neoclassical CPU与fixture/current house_styles live、三期29与根入口/契约Harness/README/24/25/backlog；用户包原件及前22项证据未改。
+- GATE1/2: Harness23/32、18篇200链接、Harness8 PASS；neoclassical266/legacy375与27作品/render41 PASS无ERROR；新生产131/13行，原棘轮不抬高，State/Demo/Music不改。
+- GATE3: canonical133 PASS无ERROR；74张1440/1024昼夕夜/真实5/10/15与原生罗盘图已核，实际风貌切换/CtrlZ/Y/原子隔离落盘/两时代回读/六凸窗拾取与净空保持。
+- METRICS/FIX: Master3.157914s峰.022521973/削波0，原12PCM身份字节/12+4+6+2/个人档保持；修山花法线与分面、合法临街夹具及变奏资源探针，失败与旧工具保留。
+- NEXT_UP: 仅认领M24合院连柱/圆厅书院/山花会馆，完成后独立第24项Evaluator；随后逐项至M32终审完成才停止，当前住宅三型不冒充12型全完。

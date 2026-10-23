@@ -1,15 +1,15 @@
-# 《共鸣之城》AI 施工入口（M01～M22 已验收）
+# 《共鸣之城》AI 施工入口（三期艺术品大成篇 · M23～M32）
 
-M01～M22 已完成三门禁与独立终审，当前五维实评分均为 **4/5**。本轮停止施工；项目缺口与十二种新建筑方向见 [项目复盘](文档/28_项目复盘与建筑风貌扩展.md)。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（M23已通过，当前从 `M24` 开始）。
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑。
+## 三期核心目标：攻克最后 4/5 → 5/5 的艺术品壁垒
 
-## 核心设计准则
+二期 M13～M22 已圆满完成，并在 [文档/28](文档/28_项目复盘与建筑风貌扩展.md) 中精准总结了阻挡主观艺术评分从 4/5 迈向 5/5 满分的最后差距。三期（M23～M32）将这批设计全部转化为实机体验：
+1. **12 大可辨识建筑体量原型（M23～M26）**：落地 6 类新古典原型（柱廊门庭小宅、三段式街屋、圆角凸窗转角屋、内院连柱公馆、小型圆厅书院、山花街坊会馆）与 6 类阿尔卑斯现代原型（非对称山墙木屋、单坡玻璃亭、顺坡错层台地宅、木框全景山居、双山墙连桥工坊、石基绿顶山舍），彻底终结 `1.8m` 方盒同构感。
+2. **留空透光树冠与手持风物小人（M27～M28）**：让树冠呈现“枝干穿插、簇间见天”的手绘透气感，柔化草石接地边缘；为胶囊小人戴上草帽/贝雷帽/礼帽，在采购、送装与夜行时真实手持面包篮、木琴与暖光提灯。
+3. **长时音乐变奏、大城局部秒级响应与小窗工艺（M29～M32）**：实装跨周期室内乐独奏轮换与句尾呼吸收束、300 屋局部编辑脏区增量缓存与 1024 紧凑手卷。
 
-1. **系统既不简单、又不冗余**：绝不堆砌无感知的纯百分比文字；每一项手札、流派与奇遇都必须落地为**可见的建筑/自然微景观、可听的声部/和弦回应、或可感的空间造景规则变化**。
-2. **手绘箱庭插画级美术**：所有建筑、植被与光效必须保持温润的纸纹微法线、接触 AO 与冷暖包裹光，杜绝机械复制感与生硬多边形棱角。
-
-依次阅读 [艺术品级系统精炼与美术总纲](文档/27_艺术品级系统精炼与美术升华总纲.md)、[一期长线终极蓝图](文档/26_长线陪伴城建与轻肉鸽终极施工蓝图.md)、[四库总纲](文档/code_artifact.md)、[空间 UI](文档/22_去GPT化空间UI与触觉交互规范.md) 与 [声学共生](文档/23_声学涌现与玩家城市共生系统规范.md)。
+依次阅读 [三期建筑原型与鲜活微观世界施工总纲](文档/29_三期建筑原型与鲜活微观世界施工总纲.md)、[项目复盘与建筑风貌扩展](文档/28_项目复盘与建筑风貌扩展.md)、[二期总纲](文档/27_艺术品级系统精炼与美术升华总纲.md) 与 [四库总纲](文档/code_artifact.md)。
 
 ## 单里程碑闭环
 
@@ -18,17 +18,17 @@ M01～M22 已完成三门禁与独立终审，当前五维实评分均为 **4/5*
 3. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
 4. Gate 2：相关 CPU 单元和 `tests/test_city_creation_legacy_roundtrip.gd`，均加 `-- --isolated-session`。
 5. Gate 3：执行该项 `verification_cmd`；实窗使用 `--rendering-method gl_compatibility -- --isolated-session`，查看 PNG 与录音峰值。
-6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，尚有未通过项时再按顺序认领；全部通过后停止施工。
+6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，继续认领下一项直至 M32 完成。
 
-## 代码入口与预置模块
+## 代码入口与三期预置模块
 
 | 系统 | 入口与边界 |
 |---|---|
-| 主场景 / UI | [city_creation.tscn](scenes/city_creation.tscn)、[demo](scripts/ui/city_creation_demo.gd)、[明信片印记](scripts/ui/city_creation_postcard_stamp.gd) |
-| 世界 / 存档 | [state](scripts/world/city_creation_state.gd)、[serializer](scripts/world/city_creation_serializer.gd)；Schema 1～19 与撤销/重做 |
-| 美术 / 建筑 | [现代区](scripts/visual/city_creation_modern.gd)、[现代四原型](scripts/visual/city_creation_modern_archetypes.gd)、[油画植被](scripts/visual/city_creation_foliage.gd)、[描边金弧](scripts/visual/city_creation_juice_arcs.gd) |
-| 轻肉鸽 / 奇遇 | [共鸣成长](scripts/world/city_creation_harmony_journey.gd)、[四流派冠冕](scripts/world/city_creation_tradition_synergy.gd)、[十二风物诗](scripts/world/city_creation_vignette_catalog.gd) |
-| 音乐 / 拂奏 | [music](scripts/audio/city_creation_music.gd)、[乐句潮汐](scripts/audio/city_creation_phrase_tide.gd)、[古筝琶音拂奏](scripts/ui/city_creation_strum_hold.gd) |
+| 新古典建筑 | [neoclassical](scripts/visual/city_creation_neoclassical.gd)、[classical](scripts/visual/city_creation_classical.gd)、[renaissance](scripts/visual/city_creation_renaissance.gd) |
+| 阿尔卑斯现代 | `city_creation_alpine_modern.gd`（按里程碑接入）、[modern](scripts/visual/city_creation_modern.gd)、[highland](scripts/visual/city_creation_highland.gd) |
+| 鲜活小人与自然 | `city_creation_citizen_visual.gd`（按里程碑接入）、[life](scripts/world/city_creation_life.gd)、[foliage](scripts/visual/city_creation_foliage.gd) |
+| 音乐跨周期变奏 | `city_creation_cadence_variation.gd`（按里程碑接入）、[phrase_tide](scripts/audio/city_creation_phrase_tide.gd) |
+| 渲染与局部缓存 | [renderer](scripts/visual/city_creation_renderer.gd)、[budget_rebuild](scripts/visual/city_creation_budget_rebuild.gd) |
 
 ## 运行与验证
 

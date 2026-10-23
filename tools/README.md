@@ -61,3 +61,6 @@ M20：`test_city_creation_heritage_draft.gd`80项覆盖六种真实新地貌、�
 M21：`test_city_creation_road_prepared_inputs.gd`以60路完整冷编译对照验证一次装饰交接/消耗与跨revision失效，配合clockwork/legacy。`check_creation_paper_ui_live.gd`完整HUD/原生明信片按钮并附四时代实际127屋的双分辨率昼夕夜明信片；`--postcard-only`可独立核24项印记/逐像素原图/临时标记恢复/录音。输出`验证记录/M21/明信片`；诊断`city_creation_render_capture.gd`与原始测试截图通道不盖印。另跑原`check_creation_city_load_live.gd`核127屋60路隐藏安放/字段GPU精确回读/槽位身份，不以固定FPS作门槛。全部GL/Dummy/isolated-session。
 
 M22：`python tools/check_creation_long_session_journey.py`默认写`验证记录/M22`，1440/1024各独立day1→退出→day2→qa六进程；`--out-dir=res://验证记录/另目录`保留旧M12证据。day2真实150秒窗口/两轮呼吸，qa保留127屋/罗盘/金弧/低视角并重跑原生递增琶音/漫步、现代4原型与油画树冠；琶音工具新增可选输出目录以免覆盖M19原证据。`check_creation_large_town_live.gd -- --isolated-session --out-dir=res://验证记录/M22/300`生成/保存真实300屋；已有同目录authored_300_world.json可加`--reuse-fixture`。完整工具检居民/编辑/24秒混音/54图；仅机位补拍可加`--views-only`，检查全部真实ground-cell外1.35m与完整作品只读，不替代完整功能/音频门禁。GL仍带--rendering-method gl_compatibility --audio-driver Dummy。所有性能数值仅作体验参考。
+
+
+M23：`check_creation_house_styles_live.gd` 为当前新古典/真实罗盘实窗入口（委托 `check_creation_neoclassical_live.gd`）；统一GL兼容/Dummy/隔离参数，默认输出 `验证记录/M23`，可用 `--out-dir=res://验证记录/M23/final`。覆盖双分辨率六屋昼夕夜/真实相机5/10/15度、原生选屋/风貌与CtrlZ/Y、隔离保存回读、原始PCM固定音池及Master录音。历史旧面板探针留在本地废弃/M23_旧样式实窗工具。
