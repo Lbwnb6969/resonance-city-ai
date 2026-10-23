@@ -29,7 +29,7 @@ func offers()->Array[Dictionary]:
 		elif house.role=="bakery" and not demo.state.site_blessing(id).get("blessed",false):
 			var point:=_site(at,"water")
 			if point.is_finite():result.append({"house_id":id,"kind":"water","at":point,"caption":"活水","glyph":"water"})
-		elif house.role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<3:
+		elif house.role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<preload("res://scripts/world/city_creation_tradition_rules.gd").tree_count(demo.state):
 			var point:=_site(at,"tree")
 			if point.is_finite():result.append({"house_id":id,"kind":"tree","at":point,"caption":"良木","glyph":"vegetation"})
 		elif house.role=="residential" and _tea_needed(id,groups):
@@ -56,7 +56,7 @@ func _still_needed(row:Dictionary)->bool:
 	var role:=str(demo.state.houses[index].role)
 	match str(row.kind):
 		"water":return role=="bakery" and not demo.state.site_blessing(id).get("blessed",false)
-		"tree":return role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<3
+		"tree":return role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<preload("res://scripts/world/city_creation_tradition_rules.gd").tree_count(demo.state)
 		"tea":return role=="residential" and _tea_needed(id,demo.state.natural_clusters())
 	return false
 

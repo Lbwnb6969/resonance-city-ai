@@ -9,10 +9,10 @@ static func voice_rank(mode:int,degree:int)->int:
 	var scale:Array=Palette.SCALES[mode];var tones:Array=Palette.KEY_TONES[mode]
 	return tones.find(scale[posmod(degree,5)])+tones.size()*posmod(floori(float(degree)/5.),2)
 
-static func layout(road:Dictionary,profile:Dictionary,mode:int=0)->Dictionary:
+static func layout(road:Dictionary,profile:Dictionary,mode:int=0,minimum_rise:float=1.)->Dictionary:
 	var groups:Dictionary={};var runs:Dictionary={};var ranks:Dictionary={};var sites:Array=[]
 	for tread:Dictionary in profile.get("treads",[]):
-		if float(tread.get("rise",0.))<1.-.000001:continue
+		if float(tread.get("rise",0.))<minimum_rise-.000001:continue
 		var key:="%d/%d"%[int(tread.run),int(tread.step)]
 		if not groups.has(key):groups[key]=[]
 		groups[key].append(tread)

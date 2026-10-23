@@ -10,7 +10,7 @@ static func prepare(renderer,road: Dictionary,profile: Dictionary,other_cuts: Ar
 	var width := float(road.width)
 	var count := 0
 	var key_light:Array[Vector3]=[];var key_dark:Array[Vector3]=[]
-	var keys:Dictionary=StairKeys.layout(road,profile,StairKeys.Palette.for_city(renderer.state)) if StairKeys.enabled(renderer.state) else {}
+	var keys:Dictionary=StairKeys.layout(road,profile,StairKeys.Palette.for_city(renderer.state),preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(renderer.state)) if StairKeys.enabled(renderer.state) else {}
 	var mode:int=0 if keys.is_empty() else maxi(0,StairKeys.Palette.for_city(renderer.state))
 	for tread: Dictionary in profile.treads:
 		var a: Vector2 = tread.a

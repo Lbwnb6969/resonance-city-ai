@@ -5,12 +5,12 @@ const Scores=preload("res://scripts/world/city_creation_score_modifiers.gd")
 const BASE_XP_THRESHOLD:=100
 const XP_STEP_GROWTH:=65
 const TRADITION_CARDS:={
-	"warm_hearth_ballad":{"name":"暖炉晨曲","text":"面包坊制作提速20%，让麦香更常伴着低音回响。"},
-	"sylvan_luthier_guild":{"name":"林间琴社","text":"制琴坊制作提速25%，让街坊更早收到木饰。"},
-	"twilight_tea_pavilion":{"name":"夕照茶亭","text":"茶聚与演出余韵延长25%，余韵上限同步提高。"},
-	"stone_step_carillon":{"name":"千阶石琴","text":"海拔至少1米的台地住户步速提高20%。"},
-	"lantern_bridge_echo":{"name":"提灯桥影","text":"距活水4.5米内的生活工坊制作提速15%。"},
-	"courtyard_canon_spring":{"name":"围院清泉","text":"闭合内院周围的生活工坊制作提速30%。"}
+	"warm_hearth_ballad":{"name":"暖炉晨曲","text":"活水圈延至6米；首炉炊烟化作金色音符，轻轻唤醒水面。"},
+	"sylvan_luthier_guild":{"name":"林间琴社","text":"两棵乔木便成琴社，良木初成即刻制出木饰，让匠人出发。"},
+	"twilight_tea_pavilion":{"name":"夕照茶亭","text":"茶聚余韵更长，归家的客人身旁飘起细小金色音符。"},
+	"stone_step_carillon":{"name":"千阶石琴","text":"0.65米缓坡石阶也成五声琴键，台地住户轻快穿行。"},
+	"lantern_bridge_echo":{"name":"提灯桥影","text":"活水圈延至6米；夕夜桥畔散开暖金波纹，过桥唤起泛音。"},
+	"courtyard_canon_spring":{"name":"围院清泉","text":"清泉随80拍乐律双重跃动，围院工坊也随轮唱轻快开工。"}
 }
 const VIGNETTE_TEMPLATES=preload("res://scripts/world/city_creation_vignette_catalog.gd").TEMPLATES
 static func default_state()->Dictionary:

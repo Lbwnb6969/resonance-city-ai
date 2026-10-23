@@ -43,3 +43,4 @@ static func setup(demo:Node3D)->void:
 	preload("res://scripts/ui/city_creation_juice_feedback.gd").new().setup(demo,parent)
 	preload("res://scripts/ui/city_creation_inspiration_draft.gd").new().setup(demo,parent)
 	preload("res://scripts/ui/city_creation_era_ceremony.gd").new().setup(demo,parent)
+	preload("res://scripts/visual/city_creation_tradition_scenery.gd").new().setup(demo)

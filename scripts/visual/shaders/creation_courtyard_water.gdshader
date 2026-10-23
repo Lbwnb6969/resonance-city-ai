@@ -8,6 +8,7 @@ uniform vec4 water_color : source_color = vec4(0.38,0.58,0.55,1.0);
 uniform vec2 fountain_at = vec2(0.0);
 uniform float music_pulse : hint_range(0.0,1.0) = 0.0;
 uniform float choir_pulse=0.0;
+uniform float spring_pulse=0.0;
 uniform float water_base_y=0.0;
 varying vec3 world_at;
 
@@ -19,7 +20,7 @@ void vertex() {
 	// Both recovered basin surfaces stay seated; the added central jet above
 	// the upper basin gently rises with the actual choir's three-second bar.
 	vec3 lifted=world_at;
-	lifted.y+=max(0.,world_at.y-water_base_y)*.065*choir_pulse;
+	lifted.y+=max(0.,world_at.y-water_base_y)*.065*(choir_pulse+spring_pulse);
 	VERTEX=(inverse(MODEL_MATRIX)*vec4(lifted,1.)).xyz;
 	VERTEX.y += ripple(world_at.xz)*0.0012;
 }

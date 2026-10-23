@@ -1,5 +1,6 @@
 class_name CityCreationProsperity
 extends RefCounted
+const Rules=preload("res://scripts/world/city_creation_tradition_rules.gd")
 ## Foundation-inspired Site Blessings & Household Harmony Tiers (SEMANTIC_GUIDE.md).
 ## Purely positive emergent rules: water/forest/promenade proximity boosts workshops,
 ## and fulfilled resident needs (Food + Tea + Craft) elevate household harmony tiers (0..3).
@@ -10,11 +11,11 @@ static func bakery_blessing(state: RefCounted, bakery_id: String) -> Dictionary:
 			continue
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
 		var water_dist := float(state.water_clearance(origin))
-		var near_water := water_dist < 4.5
+		var near_water := water_dist < Rules.water_radius(state)
 		var near_fountain := false
 		for court: Dictionary in ([] if near_water else state.courtyard_plans()):
 			var fountain: Dictionary = court.get("fountain", {})
-			if not fountain.is_empty() and (bakery_id in court.get("members", []) or origin.distance_to(Vector2(fountain.at)) < 4.5):
+			if not fountain.is_empty() and (bakery_id in court.get("members", []) or origin.distance_to(Vector2(fountain.at)) < Rules.water_radius(state)):
 				near_fountain = true
 				break
 		var active := near_water or near_fountain
@@ -36,15 +37,15 @@ static func workshop_blessing(state: RefCounted, workshop_id: String) -> Diction
 		for plant: Dictionary in state.plants:
 			if str(plant.get("kind", "")) in ["olive", "cypress", "golden_tree"]:
 				var pt := Vector2(float(plant.position[0]), float(plant.position[1]))
-				if pt.distance_to(origin) <= 8.0 and bool(state.vegetation_visible(plant)):
+				if pt.distance_to(origin) <= Rules.tree_radius(state) and bool(state.vegetation_visible(plant)):
 					trees += 1
 		var palace:=bool(state.planning_bonus(workshop_id).get("natural",false))
-		var active := trees >= 3 or palace
+		var active := trees >= Rules.tree_count(state) or palace
 		return {
 			"blessed": active,
 			"trees": trees,
 			"speed_multiplier": 1.35 if active else 1.0,
-			"label": "翡翠花海良木加持 · 制琴提速35%" if palace else ("🌲 良木林间加持（%d棵树）· 制琴提速35%%" % trees if active else "周围种满3棵橄榄、柏树或金叶树可获良木加持（当前%d/3）" % trees),
+			"label": "翡翠花海良木加持" if palace else ("良木已成 · %d棵相伴"%trees if active else "种下%d棵乔木唤醒良木（当前%d/%d）"%[Rules.tree_count(state),trees,Rules.tree_count(state)]),
 		}
 	return {"blessed": false, "speed_multiplier": 1.0, "label": ""}
 

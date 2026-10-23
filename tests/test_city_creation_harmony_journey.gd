@@ -108,5 +108,6 @@ func run()->void:
 	daily.roads.clear();daily.revision+=1;life._sync()
 	check(life.cafe.groups.is_empty() and life.residents.all(func(resident):return resident.paused),"cancelled guests pause at real homes when restored streets disappear")
 	life.free()
+	preload("res://tests/helpers/city_creation_tradition_rules_checks.gd").run(self,check)
 	print("HARMONY_JOURNEY_CPU ",checks-failures.size(),"/",checks," ",failures)
 	quit(0 if failures.is_empty() else 1)

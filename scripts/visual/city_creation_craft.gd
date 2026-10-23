@@ -32,6 +32,7 @@ var chime_rigs:Array[Dictionary]=[]
 func update_music(snapshot:Dictionary)->void:
 	material.set_shader_parameter("music_clock",float(snapshot.get("clock_sec",0.)))
 	var wave:Dictionary=snapshot.get("choral_wave",{}) if bool(snapshot.get("audible",false)) else {}
+	wave=preload("res://scripts/world/city_creation_tradition_rules.gd").chime_wave(layer.get_parent().state,wave)
 	var live:Array[Dictionary]=[]
 	for row:Dictionary in chime_rigs:
 		var node:MultiMeshInstance3D=row.node.get_ref()

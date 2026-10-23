@@ -1824,7 +1824,7 @@ func _house_fingerprint(house: Dictionary) -> int:
 func _house_geometry_fingerprint(house: Dictionary) -> int:
 	if _house_dependency_revision!=state.revision:
 		_house_dependency_revision=state.revision
-		_house_dependency_global=hash([state.roads,state.waters,state.districts,state.era_unlocks])
+		_house_dependency_global=hash([state.roads,state.waters,state.districts,state.era_unlocks,preload("res://scripts/world/city_creation_tradition_rules.gd").geometry_key(state)])
 		_house_dependency_bounds={}
 		for row:Dictionary in state.houses:
 			var at:=Vector2(row.origin[0],row.origin[1]);var bounds:=Rect2(at,Vector2.ZERO)
@@ -2693,7 +2693,7 @@ func _road_fingerprint(road: Dictionary) -> int:
 	rebuild_stats["road_fingerprint_water_ms"]=float(rebuild_stats.get("road_fingerprint_water_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.;part_started=Time.get_ticks_usec()
 	var joins:Array=_road_join_signature(road)
 	rebuild_stats["road_fingerprint_joins_ms"]=float(rebuild_stats.get("road_fingerprint_joins_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.
-	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,state.music_mode,walk,era,tram,profile,shoulder_signature,water,joins,state._junctions.signature(str(road.id))])
+	return hash([road.points,road.get("width",1.1),road.get("style","path"),state.biome_seed,state.music_mode,preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(state),walk,era,tram,profile,shoulder_signature,water,joins,state._junctions.signature(str(road.id))])
 
 func _road_contours(samples: Array[Vector2], width: float, extras: Array) -> Array:
 	var core := _stroke_contours(samples,width*0.5)

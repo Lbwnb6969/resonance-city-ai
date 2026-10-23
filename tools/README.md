@@ -47,3 +47,5 @@ M13：`test_city_creation_modern_architecture.gd`验证四屋顶/三立面实际
 M14：`test_city_creation_render_safety.gd`新增三变体四树种的14×6曲面/副簇顶点与法线有限检查。`check_creation_low_view_live.gd`保留两城所有GPU槽与36张低视角，再追加真实栽种的橄榄/金叶/柏树/灌木双分辨率5°/10°/15°昼夕夜；可用`--foliage-only --out-dir=res://验证记录/M14/...`只重拍树冠。共享叶shader独立为`creation_foliage.gdshader`，原触摸/风动/四时参数保留，录音/个人档/固定池检查不变。
 
 M15：`test_city_creation_juice_feedback.gd`追加金弧横向UV、14cm曲顶与八槽回收。canonical `check_creation_chords_live.gd`保留原98项，再附窗光共享场/双分辨率昼夕夜真实道路像素A/B与公共石路/池塘沙岸造景九项；新22张PNG在`验证记录/M15/双色金弧与窗光`，`lighting.json`保存实际红通道增幅。`--lighting-only`可独立补拍新10项。金弧色芯继续使用原wall纸纹/AO，首次绘制用开场零透明度微网格预热，避免首个真实和弦编译停顿。
+
+M16：`test_city_creation_harmony_journey.gd`含独立`tests/helpers/city_creation_tradition_rules_checks.gd`，共230项；`check_creation_tradition_rules_live.gd`以隔离合法测试信用逐项验证空间法则，44项覆盖真实缓坡网格/原生阶键/2树瞬发/6m活水及18卡排版，52张PNG与Master在`验证记录/M16/手札空间法则`。真实赚取、鼠标选札及续玩用原`check_creation_score_modifiers_live.gd -- --isolated-session --harmony-only`27项复核。

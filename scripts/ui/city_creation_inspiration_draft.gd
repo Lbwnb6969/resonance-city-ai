@@ -89,7 +89,7 @@ func choose(id:String)->void:
 	if demo.edit_pending() or demo.gallery.busy:return
 	Receipts.collect(demo.state)
 	var result:=Journey.choose(demo.state,id)
-	if result.ok:demo._after_edit(result,"terrace",false)
+	if result.ok:demo._after_edit(result,"terrace",true)
 	refresh(true)
 func _process(delta:float)->void:
 	display()

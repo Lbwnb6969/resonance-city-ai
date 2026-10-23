@@ -40,6 +40,7 @@ static func amenity(city: RefCounted, house: Dictionary) -> bool:
 	if bool(city.planning_bonus(str(house.id)).get("natural",false)):return true
 	if city.has_chord(str(house.id),"renaissance_fugue"):return true
 	var at:=Vector2(float(house.origin[0]),float(house.origin[1]))
+	if preload("res://scripts/world/city_creation_tradition_rules.gd").has(city,"lasting_resonance") and city.water_clearance(at)<preload("res://scripts/world/city_creation_tradition_rules.gd").water_radius(city):return true
 	var district: Dictionary=city.district_for_house(str(house.id))
 	for road: Dictionary in city.roads:
 		if road.get("style","") not in ["promenade","avenue","tram"]: continue

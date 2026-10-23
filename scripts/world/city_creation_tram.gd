@@ -29,7 +29,7 @@ var corridor_prepare_ms:=0.
 var _clock_speed_edges:Dictionary={}
 
 func _segment_speed(a:String,b:String)->float:
-	return speed()*float(_clock_speed_edges.get(a+":"+b,1.))
+	return speed()*float(_clock_speed_edges.get(a+":"+b,1.))*(1.25 if preload("res://scripts/world/city_creation_tradition_rules.gd").has(life.state,"tram_promenade") and absf(Vector3(plan.positions[a]).y-Vector3(plan.positions[b]).y)>.08 else 1.)
 
 func _prepare_clock_speed()->void:
 	_clock_speed_edges.clear()
@@ -76,11 +76,12 @@ func _build_corridor()->void:
 		var key:String=queue.pop_back()
 		if _corridor_keys.has(key):continue
 		_corridor_keys[key]=true;queue.append_array(plan.graph.get(key,{}).keys())
+	var radius:=8. if preload("res://scripts/world/city_creation_tradition_rules.gd").has(life.state,"tram_promenade") else 6.
 	var bins:Dictionary={}
 	for edge:Dictionary in plan.edges:
 		if not _corridor_keys.has(life._network._key(Vector2(edge.a.x,edge.a.z))):continue
 		var a:=Vector2(edge.a.x,edge.a.z);var b:=Vector2(edge.b.x,edge.b.z)
-		var low:Vector2=a.min(b)-Vector2.ONE*6.;var high:Vector2=a.max(b)+Vector2.ONE*6.
+		var low:Vector2=a.min(b)-Vector2.ONE*radius;var high:Vector2=a.max(b)+Vector2.ONE*radius
 		for x in range(floori(low.x/8.),floori(high.x/8.)+1):
 			for z in range(floori(low.y/8.),floori(high.y/8.)+1):
 				var bucket:=Vector2i(x,z)
@@ -92,7 +93,7 @@ func _build_corridor()->void:
 		if not life.connected_houses.has(id) or life._network.component_of[str(life.connected_houses[id])]!=component:continue
 		var point:=Vector2(float(house.origin[0]),float(house.origin[1]))
 		for edge:Array in bins.get(Vector2i(floori(point.x/8.),floori(point.y/8.)),[]):
-			if point.distance_to(Geometry2D.get_closest_point_to_segment(point,edge[0],edge[1]))<=6.:_corridor_houses[id]=true;break
+			if point.distance_to(Geometry2D.get_closest_point_to_segment(point,edge[0],edge[1]))<=radius:_corridor_houses[id]=true;break
 	corridor_prepare_ms=float(Time.get_ticks_usec()-started)/1000.
 	_publish_corridor()
 
@@ -148,7 +149,7 @@ func sync()->void:
 		if house.get("role","residential")=="residential":homes[str(house.id)]=true
 	for home: String in tickets.keys():
 		if not homes.has(home):_release_ticket(home,tickets[home])
-	var network_signature:=hash(life._network_signature)
+	var network_signature:=hash([life._network_signature,preload("res://scripts/world/city_creation_tradition_rules.gd").has(life.state,"tram_promenade")])
 	if network_signature==_network_signature and unlocked==_unlocked:_prepare_clock_speed();_publish_corridor();return
 	_network_signature=network_signature;_unlocked=unlocked
 	var next := Plan.from_network(life.state,life._network) if unlocked else {"graph":{},"positions":{},"lines":[],"stations":[],"station_keys":{},"edges":[],"length":0.}

@@ -87,7 +87,7 @@ static func consumed(city: RefCounted, id: String, kind: String) -> bool:
 	return bool(supply(city, kind).get(id, {}).get(LOCK, false)) or city.wish_rewards.get(id, {}).has(kind)
 static func satisfied(city: RefCounted, id: String, kind: String) -> bool:
 	var blessing: Dictionary = city.site_blessing(id)
-	return bool(blessing.get("blessed", false)) if kind == "water" else int(blessing.get("trees", 0)) >= 3
+	return bool(blessing.get("blessed", false)) if kind == "water" else int(blessing.get("trees", 0)) >= preload("res://scripts/world/city_creation_tradition_rules.gd").tree_count(city)
 static func grant(city: RefCounted, id: String, kind: String) -> int:
 	if kind not in ["water", "tree"] or consumed(city, id, kind): return 0
 	var index: int = city._house_index(id)

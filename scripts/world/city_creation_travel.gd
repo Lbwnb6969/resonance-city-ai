@@ -31,6 +31,7 @@ func sync(city: RefCounted) -> void:
 	var signature: Array = []
 	signature.append(city.biome_seed.duplicate())
 	signature.append(city.era_modifiers.duplicate())
+	signature.append(preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(city))
 	var tea_enabled:bool="arcade_market" in city.era_modifiers
 	signature.append(city.terrain_strokes.duplicate(true))
 	for road: Dictionary in city.roads:
@@ -50,7 +51,7 @@ func sync(city: RefCounted) -> void:
 	clear_observations()
 	for road: Dictionary in city.roads:
 		if StairKeys.enabled(city):
-			for key:Dictionary in StairKeys.layout(road,city.road_profile(road),StairKeys.Palette.for_city(city)).sites:
+			for key:Dictionary in StairKeys.layout(road,city.road_profile(road),StairKeys.Palette.for_city(city),preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(city)).sites:
 				_add_site(key.id,"stair",str(road.id),str(road.id),key.at,key.axis,key.width*.5-.08)
 				sites[key.id].merge({"height":key.height,"depth":key.depth,"rank":key.rank,"degree":key.degree,"width":key.width})
 		var stepping: Array = Stepping.for_road(city,road)

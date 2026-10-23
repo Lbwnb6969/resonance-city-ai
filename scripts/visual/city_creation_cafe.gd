@@ -29,7 +29,7 @@ func prepare(renderer) -> Dictionary:
 	var live := {}
 	var changes := {}
 	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(renderer.state.houses)
-	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters])
+	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters,preload("res://scripts/world/city_creation_tradition_rules.gd").has(renderer.state,"garden_salons")])
 	for house: Dictionary in renderer.state.houses:
 		if str(house.get("role",""))!="garden_cafe": continue
 		var id := str(house.id)
@@ -82,6 +82,7 @@ func _extras(city, plan: Dictionary, id: String) -> Dictionary:
 	if plan.is_empty(): return {}
 	var center: Vector2=plan.center
 	var result := {}
+	var doubled:bool=preload("res://scripts/world/city_creation_tradition_rules.gd").has(city,"garden_salons")
 	var paths: Array = []
 	for seat: Vector2 in plan.seats: paths.append(layout_api.route(city,id,plan.entrance,seat))
 	for index in range(6):
@@ -96,8 +97,9 @@ func _extras(city, plan: Dictionary, id: String) -> Dictionary:
 				if point.distance_to(Geometry2D.get_closest_point_to_segment(point,path[leg-1],path[leg]))<radius+0.20: free=false
 		if not free: continue
 		if not result.has("flowers"): result.flowers=point
+		elif doubled and not result.has("flowers_extra"):result.flowers_extra=point
 		elif not result.has("fountain"): result.fountain=point
-		if result.size()==2: break
+		if result.size()==(3 if doubled else 2): break
 	return result
 
 func _build(root: Node3D, plan: Dictionary, extras: Dictionary) -> void:
@@ -111,7 +113,7 @@ func _build(root: Node3D, plan: Dictionary, extras: Dictionary) -> void:
 	_batch(root,"ThreeChairs",chairs,"chair")
 	for name: String in extras:
 		var at: Vector2=extras[name]
-		_batch(root,name.capitalize(),[Transform3D(Basis.IDENTITY,Vector3(at.x,0.08,at.y))],name)
+		_batch(root,name.capitalize(),[Transform3D(Basis.IDENTITY,Vector3(at.x,0.08,at.y))],"flowers" if name=="flowers_extra" else name)
 	for index in range(3):
 		var seat: Vector2 = plan.seats[index]
 		var cup := center+(seat-center).normalized()*0.31

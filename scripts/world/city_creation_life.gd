@@ -452,7 +452,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 		else:motion.defer(self,speed)
 		citizen_lod_stats.scheduled_steps+=1
 		return
-	var walk_step: float=state.ScoreModifiers.walking(state,str(resident.home_id))*base_walk_step*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)*float(resident.get("planning_walking_mult",1.))
+	var walk_step: float=state.ScoreModifiers.walking(state,str(resident.home_id))*base_walk_step*preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_walk(state,resident.node.position,travel)*(1.08 if state.level_tier(str(resident.home_id))>=2 else 1.0)*float(resident.get("planning_walking_mult",1.))
 	if has_trams:
 		var ticket: Dictionary=tram.tickets.get(str(resident.home_id),{})
 		var status: String=str(ticket.get("state",""))
@@ -545,7 +545,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 	body.position.y = sin(time * 9.0 + float(resident.phase)) * 0.025
 
 func _signature() -> Array:
-	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate()]
+	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate(),state.harmony_journey.get("traditions",[]).duplicate()]
 	if "arcade_market" in state.era_modifiers:
 		for house:Dictionary in state.houses:result.append([house.id,str(house.get("style","classic")),state.house_era(house),house.cells.duplicate(true)])
 	# Only finite-support edits which can change walking or an activity need

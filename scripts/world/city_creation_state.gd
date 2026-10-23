@@ -938,7 +938,7 @@ func walking_multiplier(home_id: String) -> float:
 	return ScoreModifiers.walking(self,home_id)*float(signature_bonuses().walking)*(1.08 if level_tier(home_id)>=2 else 1.0)*float(planning_bonus(home_id).get("walking_mult",1.))
 
 func level_tier(house_id: String) -> int:
-	return int(building_quality.get(house_id,{}).get("level_tier",1))
+	return preload("res://scripts/world/city_creation_tradition_economy.gd").shared_tier(self,house_id)
 
 func refresh_quality(connected: Dictionary, workplaces: Dictionary={}, first:int=0, count:int=-1) -> Array[Dictionary]:
 	if _quality_geometry_revision!=revision:
@@ -1830,6 +1830,7 @@ func produce_bread(house_id: String, quantity: int) -> bool:
 	if capacity == 0 or not current.open or quantity <= 0 or quantity > capacity - int(current.stock):
 		return false
 	bakery_supply[house_id] = WishFulfilment.keep_burst(bakery_supply,house_id,{"stock":int(current.stock) + quantity, "produced":int(current.produced) + quantity, "served":int(current.served)})
+	preload("res://scripts/world/city_creation_tradition_economy.gd").produced(self,house_id,"bread")
 	var index:=_house_index(house_id)
 	if houses[index].get("signature","")=="watermill" and quantity==int(current.batch_size):_mill_batch(house_id)
 	life_progress_dirty = true
@@ -2052,6 +2053,7 @@ func produce_craft(house_id: String, quantity: int) -> bool:
 	var status := workshop_status(house_id)
 	if not status.open or quantity <= 0 or quantity > status.capacity - status.stock: return false
 	workshop_supply[house_id] = WishFulfilment.keep_burst(workshop_supply,house_id,{"stock":status.stock + quantity,"produced":status.produced + quantity,"delivered":status.delivered,"transit":status.transit})
+	preload("res://scripts/world/city_creation_tradition_economy.gd").produced(self,house_id,"craft")
 	_craft_changed()
 	return true
 
@@ -2130,6 +2132,7 @@ func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool
 				workshop_supply[shop_id].produced=int(workshop_supply[shop_id].produced)+1
 				workshop_supply[shop_id].delivered=int(workshop_supply[shop_id].delivered)+1
 	var gift:=float(regional_echo().delivery_glow)
+	preload("res://scripts/world/city_creation_tradition_economy.gd").delivered(self,shop_id,target_id,kind)
 	if gift>0.:grant_resonance_afterglow([target_id],gift)
 	_craft_changed()
 	return true

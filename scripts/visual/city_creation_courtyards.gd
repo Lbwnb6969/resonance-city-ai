@@ -230,6 +230,8 @@ func update_music(view: Dictionary,choir:RefCounted=null) -> void:
 			if choir!=null and choir.large_members.has(id):chamber=choir.phrase_pulse(float(view.get("clock_sec",0.)))
 		material.set_shader_parameter("music_pulse",maxf(pulse if active else 0.,chamber*.65))
 		material.set_shader_parameter("choir_pulse",chamber)
+		var spring:bool=preload("res://scripts/world/city_creation_tradition_rules.gd").has(layer.get_parent().state,"courtyard_canon_spring")
+		material.set_shader_parameter("spring_pulse",pow(maxf(0.,cos(float(view.get("clock_sec",0.))*TAU/.75)),4.) if spring else 0.)
 
 func _remove(id: String) -> void:
 	if roots.has(id):
