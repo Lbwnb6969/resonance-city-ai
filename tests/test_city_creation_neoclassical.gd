@@ -68,5 +68,6 @@ func run() -> void:
 	city.undo();check(city.houses==before and Neo.floors(city.houses[4],city.houses[4].cells[0])==1,"undo returns exact cottage geometry recipe")
 	city.redo();check(Neo.floors(city.houses[4],city.houses[4].cells[0])==2,"redo reinstates townhouse hierarchy")
 	check(not Neo.eligible({},"pastoral","timber") and not Neo.eligible({"signature":"bell_keep"},"pastoral","classic") and not Neo.eligible({},"modern_eco","classic"),"timber, landmark and other eras retain their own shapes")
+	preload("res://tests/test_city_creation_neoclassical_civic.gd").run(self,check)
 	print("NEOCLASSICAL ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}))
 	renderer.free(); quit(0 if failures.is_empty() else 1)

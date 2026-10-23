@@ -1765,6 +1765,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		job.role_prop_added = true
 
 func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
+	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,job.house).is_empty():return
 	var house:Dictionary=job.house
 	var root:Node3D=job.root
 	var cells:Array=job.cells
@@ -1885,6 +1886,7 @@ func _structural_joined(house: Dictionary) -> bool:
 	return false
 
 func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
+	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,house).is_empty():return
 	var roofs: Array[Vector3] = []
 	var fascia: Array[Vector3] = []
 	var gables: Array[Vector3] = []

@@ -2,10 +2,11 @@ extends RefCounted
 const Scene = preload("res://scenes/city_creation.tscn")
 const Fixture = preload("res://tools/fixtures/city_creation_chemistry_fixture.gd")
 const State = preload("res://scripts/world/city_creation_state.gd")
-static func run(tree: SceneTree) -> void:
-	var out := "res://验证记录/M05/邻接预影"
-	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--out-dir="): out = arg.trim_prefix("--out-dir=")
+static func run(tree: SceneTree, finish: bool = true, preferred_out: String = "") -> bool:
+	var out := preferred_out if not preferred_out.is_empty() else "res://验证记录/M05/邻接预影"
+	if preferred_out.is_empty():
+		for arg: String in OS.get_cmdline_user_args():
+			if arg.begins_with("--out-dir="): out = arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
 	var personal := FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	tree.root.size = Vector2i(1440,900); Engine.max_fps = 120
@@ -22,6 +23,8 @@ static func run(tree: SceneTree) -> void:
 		deadline = Time.get_ticks_msec()+45000
 		while (demo.edit_pending() or demo._edit_ui_pending) and Time.get_ticks_msec() < deadline: await tree.process_frame
 		demo.life.set_process(false); demo.set_process(false); demo.town.clear_preview()
+		demo.get_meta("inspiration_draft").poll(); demo.get_meta("vignette_journey").poll()
+		for i in range(3): await tree.process_frame
 		checks.append({"ok":loaded.ok and not demo.edit_pending(),"label":kind+" real city publishes"})
 		var before := var_to_bytes(demo.state.snapshot()); var undo: int = demo.state._undo.size()
 		demo.tool = (1 if kind == "conservatory" else 0) if data.has("candidate") else 2
@@ -56,7 +59,11 @@ static func run(tree: SceneTree) -> void:
 			while demo.light_phase != (0 if size.x == 1440 else 2): demo._toggle_light()
 			await tree.process_frame; await tree.process_frame; await RenderingServer.frame_post_draw
 			tree.root.get_texture().get_image().save_png(out+"/"+kind+"_"+str(size.x)+".png")
-		checks.append({"ok":var_to_bytes(demo.state.snapshot())==before and demo.state._undo.size()==undo,"label":kind+" hover/audio preserve state and history"})
+		var after: Dictionary = demo.state.snapshot()
+		var baseline: Dictionary = bytes_to_var(before)
+		var changed: Array = baseline.keys().filter(func(k):return after.get(k)!=baseline[k])
+		if not changed.is_empty(): print("CHEMISTRY_STATE_DIFFERENCE ",kind," ",changed)
+		checks.append({"ok":after==baseline and demo.state._undo.size()==undo,"label":kind+" hover/audio preserve complete state and history"})
 		checks.append({"ok":_voices(demo)==identity,"label":kind+" retains fixed audio node identity"})
 		cases.append({"kind":kind,"preview_ms":demo.chemistry_brush.prepare_ms,"cues":cues,"dashes":demo.town.preview.get_node("ChemistryGhost").get_meta("dash_count",0) if demo.town.preview.has_node("ChemistryGhost") else 0})
 		demo.town.clear_preview(); demo.chemistry_brush.tick(1.1)
@@ -73,7 +80,9 @@ static func run(tree: SceneTree) -> void:
 	var ok := checks.all(func(row: Dictionary) -> bool: return row.ok)
 	var report := {"ok":ok,"checks":checks,"cases":cases,"audio":audio,"p95_ms":frames[114],"max_ms":frames[-1]}
 	FileAccess.open(out+"/chemistry_live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
-	print("CHEMISTRY_LIVE ",JSON.stringify(report)); demo.queue_free(); await tree.process_frame; tree.quit(0 if ok else 1)
+	print("CHEMISTRY_LIVE ",JSON.stringify(report)); demo.queue_free(); await tree.process_frame
+	if finish: tree.quit(0 if ok else 1)
+	return ok
 static func _voices(demo: Node) -> Array:
 	var ids: Array = []
 	for node: Node in demo.music.get_children(): ids.append(node.get_instance_id())

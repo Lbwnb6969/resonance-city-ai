@@ -2,6 +2,7 @@ extends RefCounted
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 ## Original octagonal terracotta crown, articulated stone ribs and lit lantern.
 static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> void:
+	preload("res://scripts/visual/city_creation_neoclassical_civic.gd").build(renderer,root,house)
 	root.set_meta("domes",plans.duplicate(true))
 	var covered := {}
 	for plan: Dictionary in plans:
@@ -12,6 +13,7 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 		for cell: Dictionary in house.cells:
 			if str(cell.id)==str(plan.cell_ids[0]): body.set_meta("cell",cell.duplicate(true))
 		dome.add_child(body)
+		preload("res://scripts/visual/city_creation_neoclassical_civic.gd").drum(renderer,dome,plan)
 		var r := float(plan.radius); var h := float(plan.height)
 		var stone: Material = Wall.source(Color("e6d2ad"), null, "component", Wall.Kind.STONE)
 		renderer._cylinder(dome,r*.99,r*1.02,.24,Vector3(0,.12,0),stone,8).name="OctagonalDrum"
@@ -35,7 +37,7 @@ static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> vo
 		for side in range(8):
 			var angle := TAU*side/8.0+PI/8.0
 			renderer._cylinder(dome,.025,.025,.40,Vector3(cos(angle)*r*.18,lantern_y+.23,sin(angle)*r*.18),stone,6)
-		renderer._cylinder(dome,0,r*.25,.27,Vector3(0,lantern_y+.56,0),Wall.source(Color("b76546"), null, "component", Wall.Kind.TERRACOTTA),8)
+		renderer._cylinder(dome,r*.25,0,.27,Vector3(0,lantern_y+.56,0),Wall.source(Color("b76546"), null, "component", Wall.Kind.TERRACOTTA),8)
 		renderer._cylinder(dome,.024,.024,.18,Vector3(0,lantern_y+.77,0),renderer._material(Color("c9ab62")),6)
 		preload("res://scripts/visual/city_creation_roof_pick.gd").from_children(body,dome,"DomePick")
 	root.set_meta("dome_cells",covered)

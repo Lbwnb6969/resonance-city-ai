@@ -14,6 +14,7 @@ const RETREAT := 0.38
 const SEGMENTS := 14
 
 static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Dictionary:
+	if int(body.get_meta("cell").level)>0: return preload("res://scripts/visual/city_creation_neoclassical_civic.gd").terrace(renderer,wall,body,palette)
 	var pieces: Array[MeshInstance3D] = []
 	var base_color: Color = palette[0].lerp(Color("c9c5ae"),0.72)
 	var trim_color := Color("ded4b9")

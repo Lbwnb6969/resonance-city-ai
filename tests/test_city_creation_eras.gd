@@ -45,7 +45,7 @@ func _run()->void:
 	city.set_house_era("h1","renaissance")
 	_check(city.add_cell("h1",0,0,1).ok and city.add_cell("h1",0,0,2).ok,"grow supported three-storey column")
 	crowns=Dome.for_house(city,city.houses[0])
-	_check(crowns.size()==1 and crowns[0].cell_ids.size()==1 and is_equal_approx(float(crowns[0].y),5.1),"covered 2x2 no longer crowns over its upper room; tower gets lantern")
+	_check(crowns.size()==1 and crowns[0].cell_ids.size()==1 and is_equal_approx(float(crowns[0].drum_y),5.1) and is_equal_approx(float(crowns[0].y),5.7),"covered 2x2 crowns only its upper room, with supported rotunda drum below lantern")
 	# A clean, connected physical delivery scene keeps the lifecycle evidence small.
 	city=fixture()
 	var life:=_life(city)

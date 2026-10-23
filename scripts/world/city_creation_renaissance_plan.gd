@@ -30,4 +30,4 @@ static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 			if top.has(key+side): isolated=false
 		if not isolated: continue
 		result.append({"cell_ids":[str(top[key].id)],"center":Vector2(float(house.origin[0])+key.x*1.8,float(house.origin[1])+key.z*1.8),"y":float(house.get("base_y",0.0))+(key.y+1)*1.7,"radius":.86,"height":1.12})
-	return result
+	return preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").rotundas(house,result)

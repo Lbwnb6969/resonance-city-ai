@@ -30,8 +30,9 @@ static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 			for road: Dictionary in city.roads:
 				if str(road.get("style","path")) not in ["promenade","avenue","tram"] or float(road.width)<1.75: continue
 				if _street(city,road,wall,normal,tangent,base): source="promenade";break
-			if source.is_empty() and _court(courts,wall,normal,tangent,base): source="courtyard"
+			if _court(courts,wall,normal,tangent,base): source="courtyard"
 			if not source.is_empty(): result.append({"cell_id":str(cell.id),"side":SIDES[side_index],"retreat":RETREAT,"source":source})
+	if preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").eligible(city,house): result.append_array(preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").terraces(house,result))
 	return result
 
 static func _upper_room(cells: Array, cell: Dictionary) -> bool:

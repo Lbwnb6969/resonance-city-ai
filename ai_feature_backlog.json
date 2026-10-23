@@ -434,8 +434,8 @@
       "phase": "Phase 3A · 新古典建筑群落",
       "title": "新古典建筑原型（下）：『内院连柱公馆』、『小型圆厅书院』与『山花街坊会馆』",
       "priority": 24,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "2026-10-24 Gate1 python tools/check_ai_harness.py / python tools/check_doc_links.py PASS (18docs/201links). Gate2 Godot_v4.7.2-stable_win64_console.exe --headless --audio-driver Dummy --path . --script tests/test_city_creation_neoclassical.gd -- --isolated-session 301 PASS; test_city_creation_legacy_roundtrip.gd same flags 375/27works PASS; test_city_creation_eras.gd32 PASS, final no ERROR. Gate3 & D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_courtyards_live.gd -- --isolated-session --out-dir=res://验证记录/M24/final_cap civic127 and original six chemistry39 PASS/no ERROR; 72 native dual-resolution day/dusk/night/actual5/10/15 PNG +12 chemistry frames inspected. Real7 inward arcades/7 upper recessed galleries with all physics corridors clear, four-node resident route, role change/native CtrlZ/Y/isolated disk JSON/fresh render preserve complete state. Master3.250794s peak.028442383/clip0, chemistry3.065034s peak.005035400/0, fixed12+4+6+2/personal bytes preserved. Independent Evaluator_M24 freshCPU301/legacy375; actual firstbread22.882ms, native P and1024 journal/hollow compass, preserved initial36/37 old fixture route failure, corrected fresh8/8 with six directed courtyard routes and separate PID reopen; 24.148753s Master peak.035186768/clip0 and all8phrases. Five dimensions4/5, not5/5. Final cap orientation directly re-reviewed; independent_report.json/md. New production74/50lines, Renderer2delegates, State/Demo/Music unchanged. Existing shared external roof groups retain union roof; isolated public row houses get civic nave/wings; actual two-floor court terraces and supported rotunda drum preserve authored footprints.",
       "files_to_touch": [
         "scripts/visual/city_creation_neoclassical_civic.gd",
         "scripts/visual/city_creation_renaissance.gd",

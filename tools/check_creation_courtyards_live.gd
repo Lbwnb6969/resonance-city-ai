@@ -21,7 +21,12 @@ var added_court_plant_ids: Array[String] = []
 
 func _initialize() -> void:
 	if "--legacy-courtyard" in OS.get_cmdline_user_args(): _run.call_deferred()
-	else: preload("res://tools/fixtures/city_creation_chemistry_live_probe.gd").run.call_deferred(self)
+	elif "--chemistry-only" in OS.get_cmdline_user_args(): preload("res://tools/fixtures/city_creation_chemistry_live_probe.gd").run.call_deferred(self)
+	else: _civic.call_deferred()
+
+func _civic() -> void:
+	var script := preload("res://tools/check_creation_civic_live.gd").new()
+	await script.run(self)
 
 
 func _check(ok: bool,label: String) -> void:

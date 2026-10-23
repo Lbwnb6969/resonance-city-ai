@@ -64,3 +64,6 @@ M22：`python tools/check_creation_long_session_journey.py`默认写`验证记�
 
 
 M23：`check_creation_house_styles_live.gd` 为当前新古典/真实罗盘实窗入口（委托 `check_creation_neoclassical_live.gd`）；统一GL兼容/Dummy/隔离参数，默认输出 `验证记录/M23`，可用 `--out-dir=res://验证记录/M23/final`。覆盖双分辨率六屋昼夕夜/真实相机5/10/15度、原生选屋/风貌与CtrlZ/Y、隔离保存回读、原始PCM固定音池及Master录音。历史旧面板探针留在本地废弃/M23_旧样式实窗工具。
+
+
+M24：`check_creation_courtyards_live.gd` 默认顺序验证六类原造景预影及新古典公共三型（`check_creation_civic_live.gd`），使用GL兼容/Dummy/隔离参数，默认输出 `验证记录/M24`，可加 `--out-dir=res://验证记录/M24/final_cap`。`--chemistry-only` 仅重验预影；`--civic-only` 跳过预影，仅补验公共体量。旧2026-10-16庭院原探针保留 `--legacy-courtyard`，其旧UI/音池断言不作为本轮通过证据。
