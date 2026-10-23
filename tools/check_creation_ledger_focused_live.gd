@@ -25,6 +25,7 @@ func _key(code: int) -> void:
 		event.keycode = code;event.pressed = down
 		root.push_input(event)
 		await process_frame
+	while demo.ledger.scrollbook.tween!=null and demo.ledger.scrollbook.tween.is_running():await process_frame
 
 func _mouse(at: Vector2, code: int = MOUSE_BUTTON_LEFT) -> void:
 	var motion := InputEventMouseMotion.new()
@@ -70,6 +71,7 @@ func _run() -> void:
 	for ignored in range(4): await process_frame
 	_check(DisplayServer.get_name() != "headless" and restored.ok and not demo.edit_pending(), "real GL scene loads the unmodified operating-town sample")
 	if DisplayServer.get_name() == "headless" or not restored.ok or demo.edit_pending(): await _finish();return
+	demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll()
 	before = demo.state.snapshot().duplicate(true)
 	collection_before = _files(demo.collection_directory)
 	facts.state_revision = demo.state.revision

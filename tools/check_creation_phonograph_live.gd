@@ -61,8 +61,14 @@ func run()->void:
 	life.free()
 	demo=Scene.instantiate();demo.persistence=false;demo.archive_persistence=true;demo.start_empty=true;demo.collection_directory=collection;root.add_child(demo);demo.life.set_process(false);await settle()
 	for player:AudioStreamPlayer in demo.music._players.values():player_ids.append(player.get_instance_id())
+	if "--heritage-only" in OS.get_cmdline_user_args():
+		var heritage:Dictionary=await preload("res://tools/fixtures/city_creation_heritage_life_live.gd").new().run(demo)
+		check(heritage.ok,"focused heritage and ledger capture")
+		quit(0 if failures.is_empty() else 1);return
 	check(demo.state.archive_unlocks.size()==2 and demo.state.growth_memories.is_empty(),"new bay inherits archive rewards without inventing native chapters")
 	var town:=State.new();town.initialize();town.apply_archive_unlocks(archive.awards);town.set_music_mode("gong_pentatonic");town.set_house_finish("h1","river_jade")
+	for x:float in [-23.,-19.4,-15.8]:check(town.add_house(Vector2(x,-6)).ok,"legal recorded choir home: "+str(x))
+	check(int(town.natural_clusters().h7.get("size",0))==3,"record an actual three-house choir rather than an isolated-house rest")
 	demo._after_edit(demo.state.restore(town.snapshot()),"history");await settle();demo.life.set_process(false);demo.focus=Vector3(-10,.7,-1);demo.zoom=24.;demo._update_camera();await delay(3.3)
 	check(demo.music.harmony_mode()==8 and paint_present("river_jade"),"C gong key and actual jade wall vertex colors are installed")
 	demo.gallery.open_panel();await process_frame
@@ -70,6 +76,7 @@ func run()->void:
 	check(first.ok,"normal collection saves first reward-key work")
 	var saved:Dictionary=demo.gallery.library.read(str(first.id))
 	check(saved.ok and Phono.valid(saved.phonograph_mix) and int(saved.phonograph_mix.mode)==8,"saved work includes exact bounded bank identities and current key")
+	check(float(saved.phonograph_mix.tracks.foundation.db)>-40.,"saved foundation belongs to the actual audible choir")
 	demo.gallery._refresh();demo.gallery.panel.tabs.current_tab=2
 	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		root.size=resolution;for i in range(7):await process_frame
@@ -138,6 +145,8 @@ func run()->void:
 	var stable:bool=demo.music._players.size()==12 and demo.music._effects.size()==4
 	for player:AudioStreamPlayer in demo.music._players.values():stable=stable and player.get_instance_id() in player_ids
 	check(stable,"all preview and tonal changes retain the original twelve long/four short nodes")
+	var heritage:Dictionary=await preload("res://tools/fixtures/city_creation_heritage_life_live.gd").new().run(demo)
+	for label:String in heritage.checks:check(bool(heritage.checks[label]),"M20: "+label)
 	var report:Dictionary={"checks":checks,"failures":failures,"peak":peak,"ok":failures.is_empty(),"archive":demo.gallery.archive.summary()}
 	FileAccess.open(OUT+"/live_report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("PHONOGRAPH_LIVE ",JSON.stringify(report))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

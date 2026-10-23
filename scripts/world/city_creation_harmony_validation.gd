@@ -7,6 +7,8 @@ static func valid(value:Variant,cards:Dictionary,unlocks:Array)->bool:
 	for field:String in ["harmony_xp","harmony_level"]:
 		if not integer(value.get(field)):return false
 	var level:=int(value.harmony_level)
+	var gift:Variant=value.get("heritage_credit",0)
+	if not integer(gift) or int(gift)>1:return false
 	if level<1 or int(value.harmony_xp)>=100+(level-1)*65:return false
 	if not value.get("traditions") is Array or not value.get("ranks") is Dictionary or not value.get("pending_draft") is Array or not value.get("receipts") is Dictionary:return false
 	var seen:Array[String]=[];var count:=0
@@ -15,9 +17,9 @@ static func valid(value:Variant,cards:Dictionary,unlocks:Array)->bool:
 		if cards[id].has("era") and cards[id].era not in unlocks:return false
 		if not integer(value.ranks.get(id)) or int(value.ranks[id])<1:return false
 		count+=int(value.ranks[id]);seen.append(id)
-	if value.ranks.size()!=seen.size() or count>level-1:return false
+	if value.ranks.size()!=seen.size() or count>level-1+int(gift):return false
 	var pending:Array=value.pending_draft
-	if pending.size()!=(3 if count<level-1 else 0):return false
+	if pending.size()!=(3 if count<level-1+int(gift) else 0):return false
 	seen.clear()
 	for id:Variant in pending:
 		if not id is String or not cards.has(id) or id in seen:return false

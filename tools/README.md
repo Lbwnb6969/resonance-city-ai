@@ -55,3 +55,5 @@ M17：`test_city_creation_tradition_synergy.gd`59项覆盖18札去重/2至3阶/�
 M18：`test_city_creation_poems.gd`覆盖新增8篇真实公共造景、时代/合法选址、二阶与Schema19；原`test_city_creation_vignettes.gd`81项保持。canonical `check_creation_intuitive_guidance_live.gd`保留完整自然引导/原4奇遇，再附十二诗新夹具；`--poems-only`只跑新增部分。双分辨率来信/昼夕夜/双拱与空廊低视角、二阶续玩及Master在`验证记录/M18/十二风物诗`。拍摄前通过原生点击收好待选札；实测品质粒子初始隐藏、真实发射可见、结束隐藏，避免Compatibility未发射缓冲显形。
 
 M19：`test_city_creation_strum_hold.gd`42项保留输入所有权与独立0.45秒冷却/十调式递增；canonical `check_creation_strum_hold_live.gd`保留原32项，再运行`city_creation_arpeggio_stroll_live.gd`的五屋→树→池→真实石阶八音、实际4cm、原生WASD漫步与5m微光/原生俯仰。真实播放器PCM、Master、双分辨率昼夕夜与暂停同帧A/B在`验证记录/M19/琶音与漫步`，FFT结果`pcm_frequency.json`；全程GL/Dummy/isolated-session。原探针空白鼠标锚点避开新增共鸣徽章，先poll真实成长/来信建立完整快照基线。
+
+M20：`test_city_creation_heritage_draft.gd`80项覆盖六种真实新地貌、图鉴权限、单份开局传承、原生经验不变、选札/撤销重做/JSON与防重授；配合原acoustic_archive33/harmony230/legacy375。`check_creation_phonograph_live.gd`保留真实图鉴大奖、混音回放与原色饰/调式，附跨城图鉴逐弦、原生两次新地貌/传承选札/待选仍可建屋及四流派烟火手卷，输出`验证记录/M20/传承与烟火`。原`check_creation_ledger_focused_live.gd`验证L/Enter/Esc/Tab/滚动与只读性，等待实际.22秒开卷Tween，并先poll真实来信/成长建立完整快照基线。全部GL/Dummy/isolated-session。

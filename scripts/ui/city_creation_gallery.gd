@@ -125,6 +125,7 @@ func open_biome(id:String)->void:
 	var city:RefCounted=demo.State.new()
 	var created:Dictionary=city.Biomes.create(city,id)
 	if not created.ok:panel.set_status(str(created.message));return
+	preload("res://scripts/world/city_creation_heritage_draft.gd").grant(city,archive.awards)
 	var world:Dictionary=city.snapshot()
 	var checked:Dictionary=city._validate_snapshot(world)
 	if not checked.ok:panel.set_status(str(checked.message));return

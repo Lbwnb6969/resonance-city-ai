@@ -325,6 +325,7 @@ func _render_items() -> void:
 func _render_biomes()->void:
 	empty_label.hide()
 	footer.text="选择印章开启新河湾。当前作品会先自动留存，随时可以回来继续。"
+	if preload("res://scripts/world/city_creation_archive_rewards.gd").heritage_available(_archive_rewards):footer.text+="\n旧城留下的灵感相伴 · 新河湾任选一页传世手札。"
 	for i in range(Biomes.IDS.size()):
 		var id:String=Biomes.IDS[i]
 		var card:=Button.new();card.name="Biome_"+id
@@ -403,6 +404,7 @@ func _archive_card(title:String,text:String)->VBoxContainer:
 func _render_archive()->void:
 	empty_label.hide()
 	footer.text="图鉴跨河湾保留。我的作品中点「回放」放下唱针；关闭收藏，继续原来的城市。"
+	preload("res://scripts/ui/city_creation_archive_collection.gd").render(self)
 	var rewards=preload("res://scripts/world/city_creation_archive_rewards.gd")
 	for id:String in rewards.IDS:
 		var earned:bool=id in _archive_rewards

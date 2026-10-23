@@ -77,6 +77,7 @@ func rebuild()->void:
 	for child:Node in leaves.get_children():leaves.remove_child(child);child.queue_free()
 	buttons.clear();var journey:Dictionary=demo.state.harmony_journey
 	title.text="河湾赠来的灵感 · 选一页传世手札"
+	if int(journey.get("heritage_credit",0))==1 and Journey.choices_made(journey)==0:title.text="跨城传承 · 为新河湾选一页手札"
 	for id:String in journey.pending_draft:
 		var card:Dictionary=Journey.cards()[id];var box:=PanelContainer.new();box.add_theme_stylebox_override("panel",UI.card(14));box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.custom_minimum_size=Vector2(220,230);leaves.add_child(box)
 		var column:=VBoxContainer.new();column.add_theme_constant_override("separation",14);box.add_child(column)

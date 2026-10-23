@@ -20,6 +20,7 @@ var guide_button: Button
 var scroll: ScrollContainer
 var body: RichTextLabel
 var rows: Array[Dictionary] = []
+var family_badges:Dictionary={}
 var _last_refresh: int = -500
 var _text: String = ""
 
@@ -36,6 +37,7 @@ func _fit() -> void:
 
 func open_panel() -> void:
 	if demo.edit_pending() or demo.gallery.busy: return
+	if visible():close_panel();return
 	demo._cancel_draft()
 	demo.orbiting = false
 	demo.panning = false
@@ -58,81 +60,47 @@ func refresh() -> void:
 	var now: int = Time.get_ticks_msec()
 	if now - _last_refresh < 500: return
 	_last_refresh = now
-	var progress: Dictionary = demo.state.life_progress
-	var bakery_members: Dictionary = _worker_counts(demo.life.bakery.workers, "bakery_id")
-	var workshop_members: Dictionary = _worker_counts(demo.life.workshop.workers, "workshop_id")
-	var lines := PackedStringArray()
-	lines.append("【河湾已经发生的日常】")
-	lines.append("采购 %d 次    ·    茶聚 %d 桌 / %d 人次" % [int(progress.get("purchases", 0)), int(progress.get("tea_parties", 0)), int(progress.get("tea_visits", 0))])
-	lines.append("街坊小聚 %d 次" % int(progress.get("gatherings", 0)))
-	lines.append("演出 %d 场    ·    其中自发邀演 %d 场" % [int(progress.get("concerts", 0)), int(progress.get("auto_concerts", 0))])
-	lines.append("工作成员：面包坊 %d 人    ·    工坊 / 书院 / 钟表 %d 人" % [demo.life.bakery.workers.size(), demo.life.workshop.workers.size()])
-	var harmony: Dictionary = demo.state.city_harmony_summary()
-	lines.append("居所共鸣 %.1f / 3 阶    ·    百鸟和鸣 %d 户" % [float(harmony.average_tier), int(harmony.tier_counts[3])])
-	lines.append(str(demo.state.synergy_buffs().label))
-	lines.append(str(demo.state.regional_echo().label))
-	var tram:Dictionary=demo.life.tram.report()
-	if not str(tram.depot_id).is_empty():lines.append("总站黄金走廊：沿连通轨街跨区直达，本站线路每车24席。")
-	lines.append("\n【各家的日常】")
+	var capsules=preload("res://scripts/ui/city_creation_life_capsules.gd")
+	capsules.refresh(self)
+	var progress:Dictionary=demo.state.life_progress
+	var lines:=PackedStringArray(["[font_size=15][color=#284c42]三缕烟火 · 河湾日常[/color][/font_size]"])
+	lines.append("采购 %d 次 · 茶聚 %d 桌 / %d 人次"%[int(progress.get("purchases",0)),int(progress.get("tea_parties",0)),int(progress.get("tea_visits",0))])
+	lines.append("演出 %d 场 · 自发邀演 %d 场"%[int(progress.get("concerts",0)),int(progress.get("auto_concerts",0))])
+	var chord_names:Dictionary=preload("res://scripts/world/city_creation_synergy_buffs.gd").CHORD_NAMES
+	var chords:Array=demo.state.synergy_buffs().active_chords
+	if not chords.is_empty():lines.append("♪ "+" · ".join(chords.map(func(id):return str(chord_names[id]))))
 	rows.clear()
-	for house: Dictionary in demo.state.houses:
-		var role: String = str(house.get("role", "residential"))
-		var id: String = str(house.id)
-		var title: String = str(house.get("name", ""))
-		var tier: int = demo.state.level_tier(id)
-		var tier_name: String = demo.state.Quality.NAMES[clampi(tier - 1, 0, demo.state.Quality.NAMES.size() - 1)]
-		if role == "residential":
-			var home_harmony: Dictionary = demo.state.house_harmony(id)
-			lines.append("\n%s · 共鸣 %d / 3 阶 · %s（Lv.%d %s）" % [title, int(home_harmony.tier), str(home_harmony.title), tier, tier_name])
-			lines.append("%s 麦香温饱    ·    %s 茶叙雅集    ·    %s 匠心风物" % ["已满足" if home_harmony.food else "待采购", "已满足" if home_harmony.social else "待茶叙", "已满足" if home_harmony.craft else "待送装"])
-			continue
-		var role_name: String = str(ROLE_NAMES.get(role, "街坊之家"))
-		if title.is_empty(): title = role_name
-		var connected: bool = demo.life.house_connected(id)
-		lines.append("\n%s · %s（Lv.%d %s）" % [title, role_name, tier, tier_name])
-		lines.append("门前已有道路；经营还需与居所步行相通" if connected else "门前尚未接路")
-		var planning:Dictionary=demo.state.planning_bonus(id)
-		if not str(planning.get("label","")).is_empty():lines.append(str(planning.label))
-		if demo.life.tram.corridor_house(id):lines.append("轨街黄金走廊 · 轨交直达，可沿连通轨街跨区服务")
-		var specialization:Dictionary=demo.state.special_site(id)
-		if not str(specialization.get("label","")).is_empty():lines.append(str(specialization.label).strip_edges())
-		var status: Dictionary = {}
+	for house:Dictionary in demo.state.houses:
+		var role:=str(house.get("role","residential"));var id:=str(house.id)
+		var title:=str(house.get("name",""));var tier:int=demo.state.level_tier(id)
+		if title.is_empty():title=str(ROLE_NAMES.get(role,"河湾暖舍"))
+		lines.append("\n[font_size=15][color=#284c42]%s[/color][/font_size] · Lv.%d %s"%[capsules.safe(title),tier,demo.state.Quality.NAMES[clampi(tier-1,0,4)]])
+		if role=="residential":
+			var harmony:Dictionary=demo.state.house_harmony(id)
+			lines.append(capsules.home(harmony));lines.append("共鸣 %d / 3 阶 · %s"%[int(harmony.tier),str(harmony.title)]);continue
+		var connected:bool=demo.life.house_connected(id);var status:Dictionary={}
+		if not connected:lines.append("门前尚未接路 · 一条小路，让烟火往来。")
 		match role:
 			"bakery":
-				status = demo.life.bakery_status(id)
-				lines.append("柜台 %d / %d    ·    已出炉 %d    ·    已售出 %d" % [int(status.stock), int(status.capacity), int(status.produced), int(status.served)-int(status.gifted)])
-				if demo.state.landmark_bread.has(id):lines.append("水车已开 %d 炉 · 赠粮 %d 份"%[int(demo.state.landmark_bread[id].batches),int(status.gifted)])
-				lines.append("%s    ·    工作成员 %d 人" % ["开门营业" if bool(status.open) else "暂停营业", int(bakery_members.get(id, 0))])
-				lines.append(business_activity("bakery", status))
-				lines.append(str(demo.state.site_blessing(id).label))
-				lines.append("每炉 %d 份 · 到岗烘焙 %.2f 秒" % [int(status.batch_size), 6.0 / float(demo.state.production_multiplier(id))])
-			"workshop", "atelier", "clockmaker":
-				status = demo.life.workshop_status(id)
-				var transit: Dictionary = status.transit
-				var item_label := "画作" if role == "atelier" else ("钟表工艺" if role == "clockmaker" else "木饰")
-				lines.append("在库 %d / %d    ·    已制成 %d    ·    已送达 %d" % [int(status.stock), int(status.capacity), int(status.produced), int(status.delivered)])
-				lines.append("%s    ·    %s    ·    工作成员 %d 人" % ["开门营业" if bool(status.open) else "暂停营业", "有一份%s正在运送" % item_label if not transit.is_empty() else "当前没有运送中的物件", int(workshop_members.get(id, 0))])
-				lines.append(business_activity(role, status))
-				var site:Dictionary=demo.state.site_blessing(id)
-				if site.has("label"):lines.append(str(site.label))
-				lines.append("到岗制作 %.2f 秒 · 普通%s送往22米内邻屋，节庆订单沿路送达" % [8.0 / float(demo.state.production_multiplier(id)), item_label])
-			"venue", "symphony_hall":
-				status = demo.state.festival_status(id)
-				var preparation: String = "尚无待备的节庆布置"
-				if bool(status.ready): preparation = "节庆布置已备妥"
-				elif bool(status.pending): preparation = "节庆布置等待送达"
-				lines.append("%s    ·    已使用 %d 份" % [preparation, int(status.used)])
+				status=demo.life.bakery_status(id)
+				lines.append("柜台 %d / %d · 已出炉 %d · 已售出 %d"%[int(status.stock),int(status.capacity),int(status.produced),int(status.served)-int(status.gifted)])
+				lines.append(capsules.safe(business_activity(role,status)))
+			"workshop","atelier","clockmaker":
+				status=demo.life.workshop_status(id)
+				lines.append("在库 %d / %d · 已制成 %d · 已送达 %d"%[int(status.stock),int(status.capacity),int(status.produced),int(status.delivered)])
+				lines.append(capsules.safe(business_activity(role,status)))
 			"garden_cafe":
-				status = demo.life.cafe_status(id)
-				lines.append("已开茶局 %d 桌    ·    已招待 %d 人次" % [int(status.get("groups", 0)), int(status.get("visits", 0))])
-				lines.append(cafe_activity(status))
-				lines.append(str(demo.state.site_blessing(id).label))
-		rows.append({"id": id, "role": role, "connected": connected, "status": status.duplicate(true)})
-	if rows.is_empty(): lines.append("\n河湾里还没有开张的店家。建一间面包坊，日常就有了香气。")
+				status=demo.life.cafe_status(id)
+				lines.append("已开茶局 %d 桌 · 已招待 %d 人次"%[int(status.get("groups",0)),int(status.get("visits",0))]);lines.append(cafe_activity(status))
+			"venue","symphony_hall":
+				status=demo.state.festival_status(id)
+				lines.append("节庆布置已备妥" if status.ready else "等匠人送来节庆布置" if status.pending else "静候下一场街坊相聚")
+				lines.append("已使用 %d 份节庆布置"%int(status.used))
+		rows.append({"id":id,"role":role,"connected":connected,"status":status.duplicate(true)})
+	if rows.is_empty():lines.append("\n添一间面包坊，日常就有了香气。")
 	var next_text: String = "\n".join(lines)
 	if next_text == _text: return
-	_text = next_text
-	body.text = _text
+	_text = next_text;body.text = _text
 
 func _worker_counts(workers: Array, key: String) -> Dictionary:
 	var result: Dictionary = {}

@@ -24,7 +24,7 @@ static func choices_made(journey:Dictionary)->int:
 	for value:Variant in journey.get("ranks",{}).values():result+=int(value)
 	return result
 static func credits(journey:Dictionary)->int:
-	return maxi(0,int(journey.get("harmony_level",1))-1-choices_made(journey))
+	return maxi(0,int(journey.get("harmony_level",1))-1+int(journey.get("heritage_credit",0))-choices_made(journey))
 static func refresh_draft(journey:Dictionary,unlocks:Array=["pastoral"])->void:
 	if credits(journey)<=0:journey.pending_draft=[]
 	elif Array(journey.get("pending_draft",[])).is_empty():journey.pending_draft=roll_inspiration_draft(journey,choices_made(journey)+1,74001,unlocks)
@@ -68,6 +68,7 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		target=earned;refresh_draft(target,city.era_unlocks)
 	if not target.is_empty():
 		for field:String in ["harmony_xp","harmony_level"]:target[field]=int(target[field])
+		if target.has("heritage_credit"):target.heritage_credit=int(target.heritage_credit)
 		for field:String in ["ranks","receipts"]:
 			for key:String in target[field]:target[field][key]=int(target[field][key])
 		if target.has("vignette_serial"):target.vignette_serial=int(target.vignette_serial)
