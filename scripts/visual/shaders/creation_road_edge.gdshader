@@ -9,6 +9,8 @@ varying flat vec4 edge_c;
 #include "res://scripts/visual/shaders/creation_era_road.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_meadow_contact.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_window_bounce.gdshaderinc"
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	edge_a=vec4(UV,UV2);edge_b=CUSTOM0;edge_c=CUSTOM1;
@@ -19,6 +21,7 @@ float edge_distance(vec2 at,vec4 edge) {
 	return length(at-edge.xy-delta*t);
 }
 void fragment() {
+	EMISSION=window_ground_bounce(world_at.xz);
 	// Evaluate metric distance at the pixel. Interpolated endpoint distances
 	// form green wedges on the long triangles around overlapping curved caps.
 	float distance=min(edge_distance(world_at.xz,edge_a),min(edge_distance(world_at.xz,edge_b),edge_distance(world_at.xz,edge_c)));

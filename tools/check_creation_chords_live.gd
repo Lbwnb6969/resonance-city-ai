@@ -80,6 +80,10 @@ func _run()->void:
 	var end:=Time.get_ticks_msec()+30000
 	while demo.music.audio_report.is_empty() and Time.get_ticks_msec()<end:await process_frame
 	_check(DisplayServer.get_name()!="headless" and not demo.music.audio_report.is_empty(),"real GL window loads the production music bank")
+	if "--lighting-only" in OS.get_cmdline_user_args():
+		var lighting:Dictionary=await preload("res://tools/fixtures/city_creation_window_bounce_live.gd").capture(demo)
+		for label:String in lighting.checks:_check(lighting.checks[label],label)
+		print("LIGHTING_ONLY ",JSON.stringify({"ok":failures.is_empty(),"checks":checks.size(),"failures":failures}));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
 	if "--juice-extras-only" in OS.get_cmdline_user_args():
 		var extras:Dictionary=await preload("res://tools/fixtures/city_creation_juice_extras_live.gd").new().run(demo)
 		for label:String in extras.checks:_check(extras.checks[label],"juice extras: "+label)
@@ -113,6 +117,8 @@ func _run()->void:
 	var extras:Dictionary=await preload("res://tools/fixtures/city_creation_juice_extras_live.gd").new().run(demo)
 	for label:String in extras.checks:_check(extras.checks[label],"juice extras: "+label)
 	_check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"all five recipe scenes preserve personal save bytes")
+	var lighting:Dictionary=await preload("res://tools/fixtures/city_creation_window_bounce_live.gd").capture(demo)
+	for label:String in lighting.checks:_check(lighting.checks[label],"two-tone and window bounce: "+label)
 	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts},"\t",true,true))
 	demo.queue_free();await process_frame;await create_timer(.2).timeout
 	print("CHORDS_LIVE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks.size(),"failures":failures}));quit(0 if failures.is_empty() else 1)

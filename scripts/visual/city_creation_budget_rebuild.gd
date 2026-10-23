@@ -391,6 +391,7 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	staging.conservatory.roof_glass_material = owner.conservatory.ensure_roof_material()
 	staging.conservatory.evening = owner.conservatory.evening
 	staging.conservatory.response = owner.conservatory.response
+	staging.light_phase = owner.light_phase
 	staging.contact_material = owner.contact_material
 	staging.terrain_surface.material = owner.terrain_surface.material
 	staging.path_edge.material = owner.path_edge.material

@@ -1,6 +1,6 @@
 # 《共鸣之城》AI 施工入口（艺术品级升华篇 · M13～M22）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（当前从 `M13` 开始）。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑。
 
 ## 核心设计准则
 

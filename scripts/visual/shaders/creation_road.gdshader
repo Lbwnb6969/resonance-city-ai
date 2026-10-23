@@ -19,8 +19,11 @@ vec3 bridge_timber(vec2 at) {
 	wood*=1.0+(grain-.5)*.11*detail;
 	return mix(wood*.70,wood,face);
 }
+#include "res://scripts/visual/shaders/creation_meadow_contact.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_window_bounce.gdshaderinc"
 void vertex() { world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz; bridge_paving = COLOR.rg; }
 void fragment() {
+	EMISSION=window_ground_bounce(world_at.xz);
 	NORMAL = safe_normalize(NORMAL);
 	vec3 surface=mix(path_color(world_at.xz),bridge_timber(UV),bridge_paving.x);
 	surface=mix(surface,promenade_color(world_at.xz),bridge_paving.y);

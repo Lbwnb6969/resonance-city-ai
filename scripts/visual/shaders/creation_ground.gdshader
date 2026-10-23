@@ -54,11 +54,13 @@ float stone_cover(float mask, float height) {
 	float gw = max(grass_score-offset,0.0);
 	return mix(mask,sw/(sw+gw),transition*.72);
 }
+#include "res://scripts/visual/shaders/creation_window_bounce.gdshaderinc"
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	terrain_normal = safe_normalize(mat3(MODEL_MATRIX)*NORMAL);
 }
 void fragment() {
+	EMISSION=window_ground_bounce(world_at.xz);
 	vec3 metric_normal = safe_normalize(terrain_normal);
 	vec3 relief_normal = safe_normalize(metric_normal+meadow_normal(world_at.xz)-vec3(0.0,1.0,0.0));
 	NORMAL = safe_normalize((VIEW_MATRIX*vec4(relief_normal,0.0)).xyz);

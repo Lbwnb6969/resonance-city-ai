@@ -28,4 +28,19 @@ func run()->void:
 	var sequence:=Events.sequence(city,"h1",["h1","h2","h2","missing","h3"])
 	check(sequence.size()==3 and sequence[0]=="h1" and not sequence.has("missing"),"domino order starts at source, deduplicates and excludes removed houses")
 	check(is_equal_approx(Feedback.STEP,.1875),"chain subdivision agrees with the 80 BPM sixteenth note")
+	var holder:=Node3D.new();root.add_child(holder)
+	var arcs:=preload("res://scripts/visual/city_creation_juice_arcs.gd").new();arcs.setup(holder)
+	var flat:RefCounted=Fixture.wishes();arcs.emit(flat,"h1","h2",0.)
+	var mesh:ArrayMesh=arcs.slots[0].node.mesh;var arrays:Array=mesh.surface_get_arrays(0)
+	var both:Dictionary={};var finite:=true;var peak:=0.
+	for i in range(arrays[Mesh.ARRAY_VERTEX].size()):
+		var at:Vector3=arrays[Mesh.ARRAY_VERTEX][i];var uv:Vector2=arrays[Mesh.ARRAY_TEX_UV][i]
+		both[uv.y]=true;finite=finite and at.is_finite() and uv.is_finite()
+		peak=maxf(peak,at.y-flat.street_height(Vector2(at.x,at.z)))
+	check(both.has(0.) and both.has(1.) and both.size()==2,"actual transverse UV reaches both ink edges")
+	check(finite and absf(peak-.22)<.005,"gold curve rises fourteen centimetres over eight centimetre clearance")
+	check(arcs.slots[0].node.material_override.shader.code.contains("float core="),"flow material retains paper with dedicated two-tone cross-section")
+	arcs.update(.325);check(arcs.slots[0].node.visible,"two-tone arc uses same temporal slot")
+	arcs.clear();check(arcs.slots.all(func(row):return not row.node.visible),"all eight slots retire without nodes or audio allocation")
+	holder.free()
 	print("JUICE_FEEDBACK_CPU ",checks-failures.size(),"/",checks," ",failures);quit(0 if failures.is_empty() else 1)

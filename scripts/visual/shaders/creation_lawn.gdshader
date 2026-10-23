@@ -17,6 +17,7 @@ varying float species;
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_meadow_contact.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_grass2_response.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_window_bounce.gdshaderinc"
 void vertex() {
 	world_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	tip = clamp(UV.y,0.0,1.0);
@@ -52,6 +53,7 @@ void vertex() {
 	blade_world_normal = safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
 }
 void fragment() {
+	EMISSION=window_ground_bounce(world_at.xz);
 	float leaf = smoothstep(0.12,0.92,tip)*detail;
 	vec3 turf_normal = meadow_normal(world_at.xz);
 	vec3 soft_normal = safe_normalize(mix(turf_normal,safe_normalize(blade_world_normal),leaf*0.20)

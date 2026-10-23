@@ -45,3 +45,5 @@ M12：`python tools/check_creation_long_session_journey.py`顺序启动六个GL/
 M13：`test_city_creation_modern_architecture.gd`验证四屋顶/三立面实际几何、JSON稳定派生、原Box拾取、受光纸纹批次、暖光天窗与无状态写入。`check_creation_era_streets_live.gd`保留原34项，再附四原型发布/切时代撤销/恢复与双分辨率近景、昼夕夜、10°及UI检查，输出`modern_archetypes.json`；实窗加GL/Dummy/isolated-session，可设`--out-dir=res://验证记录/M13/现代原型`。未施工的M14～M22模块留在用户原件目录，按里程碑逐项接入。
 
 M14：`test_city_creation_render_safety.gd`新增三变体四树种的14×6曲面/副簇顶点与法线有限检查。`check_creation_low_view_live.gd`保留两城所有GPU槽与36张低视角，再追加真实栽种的橄榄/金叶/柏树/灌木双分辨率5°/10°/15°昼夕夜；可用`--foliage-only --out-dir=res://验证记录/M14/...`只重拍树冠。共享叶shader独立为`creation_foliage.gdshader`，原触摸/风动/四时参数保留，录音/个人档/固定池检查不变。
+
+M15：`test_city_creation_juice_feedback.gd`追加金弧横向UV、14cm曲顶与八槽回收。canonical `check_creation_chords_live.gd`保留原98项，再附窗光共享场/双分辨率昼夕夜真实道路像素A/B与公共石路/池塘沙岸造景九项；新22张PNG在`验证记录/M15/双色金弧与窗光`，`lighting.json`保存实际红通道增幅。`--lighting-only`可独立补拍新10项。金弧色芯继续使用原wall纸纹/AO，首次绘制用开场零透明度微网格预热，避免首个真实和弦编译停顿。

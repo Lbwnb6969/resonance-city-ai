@@ -398,6 +398,7 @@ func _bind_ground_contact_field() -> void:
 		material.set_shader_parameter("ground_contact_world_rect",Vector4(Bounds.LAND_RECT.position.x,Bounds.LAND_RECT.position.y,Bounds.LAND_RECT.size.x,Bounds.LAND_RECT.size.y))
 		material.set_shader_parameter("ground_contact_range",GroundContactField.RANGE)
 		material.set_shader_parameter("ground_contact_enabled",true)
+	preload("res://scripts/visual/city_creation_window_bounce.gd").bind(self)
 
 func show_districts(visible: bool) -> void:
 	districts_visible = visible
@@ -932,6 +933,7 @@ func set_light_phase(phase: int) -> void:
 	water_material.set_shader_parameter("evening",1.0 if phase==1 else 0.0)
 	water_material.set_shader_parameter("night",1.0 if phase==2 else 0.0)
 	if valley!=null:valley.set_light(phase)
+	preload("res://scripts/visual/city_creation_window_bounce.gd").bind(self)
 
 var ecology_stats: Dictionary={}
 
