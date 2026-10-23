@@ -75,3 +75,6 @@ M26：test_city_creation_architecture_choice.gd验证六现代/六古典空间�
 
 
 M27：test_city_creation_sky_apertures.gd以实际索引网格射线验证三变体天光孔，并核阶侧接地三角贴地/渐隐；check_creation_low_view_live.gd保留原两城安全检查，再附双分辨率自然与台基/石阶24近图，输出--out-dir=res://验证记录/M27/verified。台基合批后按共享shader及实际顶点核验，避免依赖临时节点名；完整实窗使用GL/Dummy/isolated-session。
+
+
+M28：test_city_creation_citizen_visual.gd验证共享身份/道具资源、主体绘制预算与真实购买/送装；配合greetings、bakery_life、workshop_life与worker_lod。check_creation_greetings_live.gd保留原原生回应，再附42张双分辨率透视近景真实持物/相遇/茶杯、夜灯及Master；--out-dir=res://验证记录/M28/grounded，GL/Dummy/isolated-session。

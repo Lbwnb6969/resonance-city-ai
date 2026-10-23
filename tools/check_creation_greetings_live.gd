@@ -42,6 +42,7 @@ func run()->void:
 	demo.focus=Vector3(-8,.7,-4.5);demo.zoom=11.;demo.pitch=1.;demo.yaw=0.;demo._update_camera();demo.toast.hide();demo.toast_time=0.;demo.life_save_timer=10000.
 	await hover(Vector2(1000,90))
 	var house:Dictionary=demo.state.houses[demo.state._house_index("h1")]
+	demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll()
 	var saved:Dictionary=demo.state.snapshot();var ledger:Dictionary=demo.state.life_progress.duplicate(true)
 	var voices:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():voices.append(player.get_instance_id())
@@ -79,6 +80,9 @@ func run()->void:
 	check(absf(row.arm.rotation.z-arm_pose)>.15 and walker.node.position==anchor,"raised arm changes angle during the same stationary greeting")
 	check(demo.state.life_progress==ledger,"touch and greeting create no purchases, production or concert completions")
 	check(demo.state.snapshot()==saved,"temporary greeting and pose never write the authored work")
+	if demo.state.snapshot()!=saved:
+		FileAccess.open(output+"/before.json",FileAccess.WRITE).store_string(JSON.stringify(saved,"\t"))
+		FileAccess.open(output+"/after.json",FileAccess.WRITE).store_string(JSON.stringify(demo.state.snapshot(),"\t"))
 	demo.life.set_process(true)
 	while not demo.life.greetings.active.is_empty():await process_frame
 	demo.life.set_process(false)
@@ -92,5 +96,9 @@ func run()->void:
 	for player:AudioStreamPlayer in demo.music._players.values():current.append(player.get_instance_id())
 	check(current==voices and current.size()==12 and demo.music._effects.size()==4,"greeting visuals preserve native music voice identities")
 	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save remains byte-identical")
+	var visual:Dictionary=await preload("res://tools/fixtures/city_creation_citizen_visual_live.gd").capture(demo,output)
+	for label:String in visual.checks:check(visual.checks[label],"citizens: "+label)
+	var audio:Dictionary=await preload("res://tools/fixtures/city_creation_audio_probe.gd").record(output+"/Master.wav")
+	check(audio.ok,"actual citizen-world Master audible and unclipped");facts.visual=visual;facts.audio=audio
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts}
 	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("GREETINGS_LIVE ",JSON.stringify(result));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

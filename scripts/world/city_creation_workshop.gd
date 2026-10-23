@@ -70,41 +70,9 @@ func sync() -> void:
 func _new_worker(home: String, shop: String) -> Dictionary:
 	var node: Node3D = life._person(workers.size() + 3)
 	node.name = "Artisan_" + home + "_" + shop
-	var cloth: StandardMaterial3D = node.get_child(0).get_child(0).material_override
-	cloth.albedo_color = Color("6f9e98")
-	var artist := str(life._roles.get(shop,"")) == "atelier"
-	var mechanic := str(life._roles.get(shop,""))=="clockmaker"
-	if artist: cloth.albedo_color = Color("a477a5")
-	var carry := Node3D.new()
-	carry.name = "CarriedChime"
-	carry.position = Vector3(0.12, 0.32, 0.10)
-	for index in range(3):
-		var tube := MeshInstance3D.new()
-		var mesh := CylinderMesh.new()
-		mesh.top_radius = 0.018
-		mesh.bottom_radius = 0.018
-		mesh.height = 0.15 + index * 0.025
-		mesh.radial_segments = 5
-		tube.mesh = mesh
-		tube.material_override = _chime_material
-		tube.position.x = (index - 1) * 0.045
-		carry.add_child(tube)
-	if artist:
-		for child in carry.get_children(): child.free()
-		var canvas := MeshInstance3D.new()
-		var panel := BoxMesh.new(); panel.size = Vector3(.28,.32,.055)
-		canvas.mesh = panel
-		var paint := StandardMaterial3D.new(); paint.albedo_color = Color("b86665")
-		canvas.material_override = paint; carry.add_child(canvas)
-		carry.name = "CarriedArtwork"
-	if mechanic:
-		cloth.albedo_color=Color("aa8956")
-		for child in carry.get_children():child.free()
-		var box:=MeshInstance3D.new();var mesh:=BoxMesh.new();mesh.size=Vector3(.27,.19,.23);box.mesh=mesh
-		var material:=StandardMaterial3D.new();material.albedo_color=Color("b79358");box.material_override=material;carry.add_child(box)
-		carry.name="CarriedMusicBox"
-	carry.visible = false
-	node.get_child(0).add_child(carry)
+	var visual=preload("res://scripts/visual/city_creation_citizen_visual.gd")
+	visual.identify(node,str(life._roles[shop]))
+	var carry:Node3D=visual.carry(str(life._roles[shop]));node.get_child(0).add_child(carry)
 	life.add_child(node)
 	node.position = _target(home) if life.connected_houses.has(home) else life.bakery._door_position(home)
 	return {"service_role":str(life._roles[shop]),"node":node,"carry":carry,"home_id":home,"workshop_id":shop,"target_id":"","phase":"to_workshop","resume_phase":"to_workshop","elapsed":0.0,"deliveries":0,"route":[],"index":0}

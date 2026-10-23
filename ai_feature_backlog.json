@@ -522,8 +522,8 @@
       "phase": "Phase 3C · 鲜活微观自然与小人",
       "title": "鲜活河湾小人（Expressive Miniature Citizens）：时代帽饰披肩、手持风物道具与街角驻足交谈",
       "priority": 28,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py PASS. Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_citizen_visual.gd -- --isolated-session (52 PASS: shared body/hat/prop resources, body+prop <=2 draws, real served bread and typed reserved cargo); original greetings14, bakery_life, workshop_life45, worker_lod20 and legacy375/27 works PASS. Actual offscreen/full-detail two-minute production and routes remain equal after fixing peer visual pauses; initial failure retained. Gate3: tools/check_creation_greetings_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --out-dir=res://验证记录/M28/grounded (24 PASS, no ERROR, live_grounded.log). Original native hover/note/arm pixels and movement resume, complete snapshot equality, voice and personal-save identities PASS. 42 native dual-resolution perspective close-ups/day/evening/night show real workshop/atelier/clockmaker cargo, actual bread shopper, straw-hat baker, naturally met pair and real seated cup; additional actual night lantern screenshot. Grounded feet and attached forearm fix source-image floating poses; earlier wide and failed probes retained. Master3.065034s peak .005462646, clipped0. Isolated 300-house/299-actor CPU sample: warm p95 8.541ms/max10.35ms, cold max303.308ms, shared body mesh pool5; recorded as experience evidence with no fixed FPS gate. No new saved fields/player nodes; transient bread visual derives from actual served event/loaded route and ledger.",
       "files_to_touch": [
         "scripts/visual/city_creation_citizen_visual.gd",
         "scripts/world/city_creation_life.gd",

@@ -54,9 +54,7 @@ func sync() -> void:
 func _new_worker(home: String, shop: String) -> Dictionary:
 	var node: Node3D = life._person(workers.size())
 	node.name = "Baker_" + home + "_" + shop
-	# A light apron distinguishes the working household member.
-	var cloth: StandardMaterial3D = node.get_child(0).get_child(0).material_override
-	cloth.albedo_color = Color("eee0b8")
+	preload("res://scripts/visual/city_creation_citizen_visual.gd").identify(node,"bakery")
 	life.add_child(node)
 	node.position = _target(home) if life.connected_houses.has(home) else _door_position(home)
 	return {"node":node,"home_id":home,"bakery_id":shop,"phase":"walking","resume_phase":"walking","elapsed":0.0,"batches":0,"route":[],"index":0}

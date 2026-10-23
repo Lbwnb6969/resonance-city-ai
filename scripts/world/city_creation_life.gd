@@ -432,6 +432,7 @@ func _tick_life(delta: float) -> void:
 	# Old held time must never be spent inside that new twenty-four seconds.
 	if not _budget_catching_up: matinee.tick(delta)
 	conductor_parade.update(self)
+	preload("res://scripts/visual/city_creation_citizen_props.gd").update(self)
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
@@ -488,6 +489,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 		var service := str(resident.service_pending)
 		# An empty shelf retains a completed visit until real bread arrives.
 		if service == "bakery" and not state.serve_bread(reached, str(resident.home_id)): return
+		if service == "bakery":resident.visual_bread=true
 		if service == "bakery" and purchase_callback.is_valid(): purchase_callback.call(reached,str(resident.home_id))
 		resident.dwell_id = ""
 		resident.service_pending = ""
@@ -904,6 +906,7 @@ func _arrive(resident: Dictionary) -> void:
 		_pause_at_home(resident)
 		return
 	var role := str(_roles[reached])
+	if reached==str(resident.home_id):resident.erase("visual_bread")
 	resident.dwell_id = reached
 	if resident.has("daily_snapshot"):
 		resident.service_pending = "concert"
@@ -1466,27 +1469,4 @@ func _route_length(start:String,finish:String)->float:
 	return _network.route_length(start,finish)
 
 func _person(index: int) -> Node3D:
-	var root := Node3D.new()
-	var body := Node3D.new()
-	root.add_child(body)
-	var cloth := StandardMaterial3D.new()
-	cloth.albedo_color = [Color("b67755"),Color("709694"),Color("c9b273"),Color("889574")][index%4]
-	var tunic := MeshInstance3D.new()
-	var capsule := CapsuleMesh.new()
-	capsule.radius = 0.10
-	capsule.height = 0.34
-	tunic.mesh = capsule
-	tunic.material_override = cloth
-	tunic.position.y = 0.22
-	body.add_child(tunic)
-	var head := MeshInstance3D.new()
-	var sphere := SphereMesh.new()
-	sphere.radius = 0.09
-	sphere.height = 0.18
-	head.mesh = sphere
-	var skin := StandardMaterial3D.new()
-	skin.albedo_color = Color("e2bb8e")
-	head.material_override = skin
-	head.position.y = 0.45
-	body.add_child(head)
-	return root
+	return preload("res://scripts/visual/city_creation_citizen_visual.gd").person(index)
