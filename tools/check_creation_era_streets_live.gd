@@ -2,7 +2,7 @@ extends SceneTree
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Scene=preload("res://scenes/city_creation.tscn")
 const Fixture=preload("res://tools/fixtures/city_creation_era_street_fixture.gd")
-var OUT="res://验证记录/时代边界花境_2026-10-20/live"
+var OUT="res://验证记录/M25"
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -103,6 +103,13 @@ func _run()->void:
 			if Vector2(p.x,p.z).distance_to(at)<.35 and absf(p.y-demo.state.street_height(Vector2(p.x,p.z)))<.001:car_seen=true;car_position=p
 		if car_seen:break
 	_check(car_seen,"the actual derived tram traverses the modern bridge on the same raised street profile")
+	var aerial:Array=demo.town.house_roots["h1"].get_meta("skybridges",[])
+	_check(aerial.size()==1 and demo.town.house_roots["h1"].find_children("ModernSkybridge_*","Node3D",true,false).size()==1,"new alpine roof preserves the real original upper glass skybridge")
+	if not aerial.is_empty():
+		var mid:Vector2=(aerial[0].a+aerial[0].b)*.5
+		var overhead:Dictionary=demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(mid.x,8,mid.y),Vector3(mid.x,1.,mid.y),1))
+		var below:Dictionary=demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(mid.x,.7,mid.y-1),Vector3(mid.x,.7,mid.y+1),1))
+		_check(not overhead.is_empty() and overhead.collider.get_meta("skybridge",false) and below.is_empty(),"actual airbridge floor remains pickable above a physically clear street corridor")
 	demo.focus=Vector3(at.x,.3,at.y);demo.zoom=14;demo.yaw=.65;demo.pitch=.5;demo._update_camera();await _capture("08_white_single_arch_glass_parapets_and_actual_tram")
 	var frames:Array[float]=[];var last:=Time.get_ticks_usec();demo.life.set_process(true)
 	for i in range(180):

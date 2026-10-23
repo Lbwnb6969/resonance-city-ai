@@ -1753,7 +1753,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 	if door:
 		wall.name = "Entrance_%d_%d" % [direction.x,direction.y]
 		wall.set_meta("entrance",entrance.duplicate(true))
-	if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette)
+	if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette,house,cell,direction)
 	else:Classical.openings(self,job,frame,wall,door,active,wall_width)
 	if era in ["pastoral","renaissance"] and not house.has("signature"):Classical.facade(self,job,frame,wall,direction,door,wall_width)
 	elif era == "renaissance" and house.has("signature"): Renaissance.facade(self,wall,door,level>0)

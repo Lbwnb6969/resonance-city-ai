@@ -1,8 +1,8 @@
 extends SceneTree
 const Renderer=preload("res://scripts/visual/city_creation_renderer.gd")
 const Modern=preload("res://scripts/visual/city_creation_modern.gd")
-const Archetypes=preload("res://scripts/visual/city_creation_modern_archetypes.gd")
-const Fixture=preload("res://tools/fixtures/city_creation_modern_fixture.gd")
+const Alpine=preload("res://scripts/visual/city_creation_alpine_modern.gd")
+const Fixture=preload("res://tools/fixtures/city_creation_alpine_fixture.gd")
 var checks:=0
 var failures:Array[String]=[]
 func _initialize()->void:run.call_deferred()
@@ -10,65 +10,48 @@ func check(ok:bool,label:String)->void:
 	checks+=1
 	if not ok:failures.append(label);push_error(label)
 func run()->void:
-	var city:RefCounted=Fixture.architecture();var before:Dictionary=city.snapshot()
+	var data:=Fixture.build();var city:RefCounted=data.city;var before:Dictionary=city.snapshot()
 	var renderer:=Renderer.new();renderer.state=city;root.add_child(renderer)
-	var kinds:Dictionary={};var shapes:Dictionary={};var facades:Dictionary={};var palette:=Modern.palette([Color("efdfc3"),Color("ca835c"),Color("725844")])
-	for index in range(16):
-		var house:Dictionary=city.houses[index].duplicate(true)
-		var cell:Dictionary=house.cells[-1].duplicate(true)
-		var kind:=Archetypes.roof_kind(house,cell);kinds[kind]=true
-		var restored:Dictionary=JSON.parse_string(JSON.stringify(house,"",true,true))
-		check(Archetypes.roof_kind(restored,restored.cells[-1])==kind,"JSON preserves exact roof selection")
-		var building:=Node3D.new();renderer.add_child(building);building.set_meta("creation_wall_base_y",0.)
-		var node:=Node3D.new();node.name=str(cell.id);building.add_child(node)
-		var result:=Modern.roof(renderer,building,house,palette,cell)
-		check(result.archetype==kind and node.get_node("EcoRoof_"+str(cell.id)).get_meta("roof_kind")==kind,"real roof records stable archetype")
-		var bodies:=node.find_children("*","StaticBody3D",true,false)
-		var shape:CollisionShape3D=bodies[0].get_child(0)
-		check(bodies.size()==1 and shape.shape is BoxShape3D and shape.shape.size==Vector3(2.2,.16,2.2) and bodies[0].get_meta("cell_id")==cell.id,"unchanged solid roof pick contract")
-		var architectural:=0;var vertices:=0;var foliage:=0
-		for mesh:MeshInstance3D in node.find_children("*","MeshInstance3D",true,false):
-			vertices+=mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size()
-			var material:Material=mesh.material_override
-			if material.get_meta("creation_wall",false):architectural+=1
-			if material==renderer.foliage.material("canopy"):foliage+=1
-		check(architectural>=4 and foliage>=2,"structural paper materials and real shared foliage")
-		shapes[kind]=vertices
-		if kind==1:
-			var glass_found:=false
-			for mesh:MeshInstance3D in node.find_children("*","MeshInstance3D",true,false):
-				if mesh.material_override==renderer.conservatory.ensure_roof_material():glass_found=mesh.get_meta("creation_live_visual",false)
-			check(glass_found,"skylight remains live transparent warm glass")
-		var batcher:=preload("res://scripts/visual/city_creation_mesh_batcher.gd").new();batcher.merge(building)
-		var valid:=true;var wall_batches:=0
-		for mesh:MeshInstance3D in building.find_children("*","MeshInstance3D",true,false):
-			var points:PackedVector3Array=mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-			for point:Vector3 in points:valid=valid and point.is_finite()
+	renderer.buildings=Node3D.new();renderer.add_child(renderer.buildings)
+	for node in [renderer.shore,renderer.lilypads,renderer.wildlife]:renderer.add_child(node)
+	var kinds:Dictionary={};var recipes:Dictionary={};var eco:Dictionary={};var deck_count:=0
+	for house:Dictionary in city.houses:
+		var built:Node3D=renderer._house(house);var records:Array=built.get_meta("modern_roofs",[])
+		check(not records.is_empty(),"production modern roofs derive alpine envelope")
+		var kind:int=Alpine.Plan.kind_for(house);kinds[kind]=true
+		check(records.all(func(r):return r.alpine_kind==kind),"one deterministic massing recipe across house modules")
+		var signatures:Array=[];var paper:=0;var finite:=true
+		for mesh:MeshInstance3D in built.find_children("*","MeshInstance3D",true,false):
+			signatures.append([mesh.transform,mesh.mesh.get_aabb()])
+			if mesh.material_override.get_meta("creation_wall",false):paper+=1
+			for vertex:Vector3 in mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]:finite=finite and vertex.is_finite()
+		check(paper>10 and finite,"cedar, slate and stone finite shaded components")
+		recipes[kind]=hash(signatures)
+		for shape:CollisionShape3D in built.find_children("AlpineRoofPick","CollisionShape3D",true,false):
+			var body:StaticBody3D=shape.get_parent()
+			check(shape.shape is BoxShape3D and shape.shape.size.x>1.7 and shape.shape.size.y>.05 and body.get_meta("house_id")==house.id and not str(body.get_meta("cell_id")).is_empty(),"real pitched roof AABB retains actual house/cell picking")
+		for deck:Node3D in built.find_children("TerrainSupportedDeck","Node3D",true,false):
+			deck_count+=1
+			var samples:Array=deck.get_meta("support_samples",[])
+			check(samples.size()==3 and samples.all(func(s):return float(s.ground)<=.10),"three actual terrain samples support deck and prevent slope intersection")
+		if kind==2:
+			for node:Node3D in built.find_children("*","Node3D",true,false):
+				if node.has_meta("roof_kind"):eco[int(node.get_meta("roof_kind"))]=true
+		if str(house.id)==data.chalet:
+			check(built.find_children("CedarGable*","MeshInstance3D",true,false).size()==2 and built.find_children("JoinedCedarRidge*","MeshInstance3D",true,false).size()==3,"three adjoining chalet modules form one continuous ridge with only two terminal gables")
+			check(records[0].joined_ends==[false,true] and records[1].joined_ends==[true,true] and records[2].joined_ends==[true,false],"shared roof seams suppress internal eaves in both directions")
+		var batcher:=preload("res://scripts/visual/city_creation_mesh_batcher.gd").new();batcher.merge(built)
+		var batches:=0
+		for mesh:MeshInstance3D in built.find_children("*","MeshInstance3D",true,false):
 			if mesh.material_override.get_meta("creation_wall_batch",false):
-				wall_batches+=1
-				valid=valid and is_equal_approx(float(mesh.material_override.get_shader_parameter("micro_normal_strength")),.025)
-		check(valid and wall_batches>=2,"published geometry finite and structural micro-normal survives batching")
-		building.free()
-	for seed_value in range(3):
-		var wall:=Node3D.new();renderer.add_child(wall)
-		Archetypes.populate_facade_greenery(renderer,wall,seed_value,Modern.Wall.source(Color("b8976a"),null,"component",Modern.Wall.Kind.STONE))
-		facades[wall.get_meta("eco_greenery_variant")]=wall.get_child_count();wall.free()
-	check(kinds.size()==4 and shapes.values().size()==4,"actual neighboring IDs cover all four roofs")
-	var unique:Dictionary={}
-	for count in shapes.values():unique[count]=true
-	check(unique.size()==4 and facades.size()==3,"four distinct actual silhouettes and three facade layouts")
-	var envelopes:Dictionary={}
-	for seed_value in range(4):
-		var wall:=Node3D.new();renderer.add_child(wall);Modern.facade(renderer,wall,false,seed_value,palette)
-		var geometry:Array=[]
-		for mesh:MeshInstance3D in wall.find_children("*","MeshInstance3D",true,false):geometry.append([mesh.transform,mesh.mesh.get_aabb()])
-		envelopes[hash(geometry)]=true;wall.free()
-	check(envelopes.size()==4,"four facades change actual structural mass and openings, beyond rooftop props")
-	var parts:=Modern.prepare(city,city.houses[0])
-	check(parts.roofs.size()==1 and int(parts.roofs[0].level)==2,"covered room roofs remain suppressed")
-	renderer.conservatory.set_light(true)
-	check(renderer.conservatory.ensure_roof_material().get_shader_parameter("evening")==1.,"night lighting reaches shared skylight")
-	check(city.snapshot()==before,"architecture is derived without state or history writes")
-	for unused:Node3D in [renderer.shore,renderer.lilypads,renderer.wildlife]:unused.free()
-	renderer.free();await process_frame;await process_frame
-	print("MODERN_ARCHITECTURE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)
+				batches+=1;check(float(mesh.material_override.get_shader_parameter("micro_normal_strength"))>0,"actual publication retains paper micro-normal and component AO bounds")
+		check(batches>0,"actual material batching publishes lit alpine architecture")
+		built.free()
+	check(kinds.size()==3 and recipes.values().size()==3,"all three distinct alpine massing recipes in real authored city")
+	check(eco.size()==4 and deck_count>0,"all four previous ecological rooftop objects live on stepped roof terraces with terrain-supported decks")
+	var road:Dictionary=city.roads.filter(func(r):return r.id==data.stairs)[0]
+	check(not city.road_profile(road).treads.is_empty(),"real uphill approach derives actual stone stair treads")
+	var saved:Dictionary=city.snapshot();var loaded:=Fixture.Modern.Clockwork.State.new()
+	check(loaded.restore(JSON.parse_string(JSON.stringify(saved,"",true,true))).ok and loaded.snapshot()==saved,"full JSON restores existing schema and deterministic alpine derivation")
+	check(city.snapshot()==before,"all architecture preparation and material publication leave authored world unchanged")
+	renderer.free();print("MODERN_ARCHITECTURE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

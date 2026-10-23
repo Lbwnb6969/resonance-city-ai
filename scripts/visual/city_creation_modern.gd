@@ -5,8 +5,9 @@ const Archetypes=preload("res://scripts/visual/city_creation_modern_archetypes.g
 const Plan=preload("res://scripts/world/city_creation_skybridge_plan.gd")
 static func palette(base:Array)->Array:
 	return [base[0].lerp(Color("eee9d9"),.90),Color("71916f"),base[2].lerp(Color("b8976a"),.74)]
-static func facade(renderer,wall:Node3D,door:bool,seed_value:int,p:Array)->void:
-	preload("res://scripts/visual/city_creation_modern_envelope.gd").facade(renderer,wall,door,seed_value,p)
+static func facade(renderer,wall:Node3D,door:bool,seed_value:int,p:Array,house:Dictionary={},cell:Dictionary={},direction:Vector2i=Vector2i.DOWN)->void:
+	if house.is_empty():preload("res://scripts/visual/city_creation_modern_envelope.gd").facade(renderer,wall,door,seed_value,p)
+	else:preload("res://scripts/visual/city_creation_alpine_modern.gd").facade(renderer,wall,door,p,house,cell,direction)
 
 static func terrace(renderer,node:Node3D,cell:Dictionary,cells:Array,y:float,p:Array)->void:
 	_slab(renderer,node,Vector3(0,y+.16,0),Vector2(2.18,2.18),.16,p[0])
@@ -29,14 +30,7 @@ static func prepare(city:RefCounted,house:Dictionary)->Dictionary:
 	return {"roofs":roofs,"bridges":Plan.for_house(city,house)}
 
 static func roof(renderer,root:Node3D,house:Dictionary,p:Array,cell:Dictionary)->Dictionary:
-	var node:Node3D=root.get_node(str(cell.id));var y:float=(int(cell.level)+1)*1.7
-	preload("res://scripts/visual/city_creation_modern_envelope.gd").roof(renderer,node,y,p,Archetypes.roof_kind(house,cell))
-	_slab(renderer,node,Vector3(0,y+.13,0),Vector2(1.68,1.68),.06,Color("70975f"),false)
-	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));node.add_child(body)
-	renderer._cell_box_shape(body,Vector3(2.20,.16,2.20),Vector3(0,y+.03,0))
-	Archetypes.populate_roof(renderer,node,house,cell,y,p)
-	if house.role=="bakery":root.set_meta("chimneys",[node.position+Vector3(.60,y+.48,-.60)])
-	return {"cell_id":str(cell.id),"roof_y":float(house.get("base_y",0.))+y+.16,"cantilever":.21,"lawn":true,"archetype":Archetypes.roof_kind(house,cell)}
+	return preload("res://scripts/visual/city_creation_alpine_modern.gd").roof(renderer,root,house,p,cell)
 
 static func build(renderer,root:Node3D,house:Dictionary,p:Array)->void:
 	var parts:=prepare(renderer.state,house);var roofs:Array=[]
