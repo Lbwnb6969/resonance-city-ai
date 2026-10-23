@@ -64,6 +64,22 @@ func run():
 	check(not gesture.active() and not gesture.handle_input(host,key(true)),"embedded popup ownership cancels P without relying on a parent key release")
 	popup.push_input(key(false));popup.hide();await process_frame
 	check(not gesture.active(),"a release inside the popup cannot leave a held world gesture after it closes");popup.free()
+	var sequence:=preload("res://scripts/audio/city_creation_strum_sequence.gd").new()
+	check(sequence.claim("h1",0.)==0 and sequence.claim("h1",.8)==-1,"a stationary pointer never repeats its target")
+	check(sequence.claim("h2",.85)==1 and sequence.claim("h1",.9)==2,"each target has an independent cooldown")
+	check(sequence.claim("h2",.95)==-1,"fast re-entry respects the same target 0.45s cooldown")
+	sequence.claim("",1.0);check(sequence.claim("h2",1.31)==3,"leaving then re-entering after cooldown advances the gesture")
+	check(sequence.claim("h3",3.)==0,"a breathing pause starts a new phrase at its root")
+	sequence.reset();check(sequence.claim("h1",3.01)==0,"a fresh physical hold resets its musical contour")
+	var gong:Array=[]
+	for degree in range(6):gong.append(sequence.pitch(8,degree))
+	check(gong==[60,62,64,67,69,72],"C gong gesture plays do re mi sol la high do")
+	for mode in range(10):
+		var previous:=-1;var modal:=true
+		for degree in range(10):
+			var midi:int=sequence.pitch(mode,degree)
+			modal=modal and midi>previous and posmod(midi,12) in sequence.Palette.SCALES[mode];previous=midi
+		check(modal,"two-octave ascending gesture stays in biome mode "+str(mode))
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures}
 	var output:="res://验证记录/临时拨奏_2026-10-22";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	FileAccess.open(output+"/cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));print("STRUM_HOLD_CPU ",JSON.stringify(result));host.free();quit(0 if failures.is_empty() else 1)

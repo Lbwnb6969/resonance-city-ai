@@ -4,6 +4,7 @@ var strolling := false
 var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
+var aura:=preload("res://scripts/visual/city_creation_stroll_glow.gd").new()
 var postcard_directory := "user://postcards"
 func collection_view(demo:Node3D)->Dictionary:
 	# A street-level look can tilt beyond the authored overview camera range.
@@ -34,8 +35,10 @@ func toggle(demo: Node3D) -> void:
 		demo.camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 		demo._message("回到河湾创作视角。")
 	demo._update_camera()
+	if demo.tactile_dock!=null:demo.tactile_dock.refresh()
 
 func update(demo: Node3D, delta: float) -> void:
+	aura.update(demo,strolling)
 	if not strolling: return
 	if demo.gallery.panel.visible or demo.journal.panel.visible or demo.ledger.visible() or demo.guide.visible(): return
 	if demo.get_viewport().gui_get_focus_owner() is LineEdit: return

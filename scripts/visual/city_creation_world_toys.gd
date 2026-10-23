@@ -7,7 +7,7 @@ var age:=0.
 var _state_id:=0
 var key_flash:MeshInstance3D
 
-func hover(demo,at:Vector2)->bool:
+func target(demo,at:Vector2)->Dictionary:
 	var kind:="";var key:="";var origin:=at
 	if demo.state.water_clearance(at)<-.12:
 		kind="water";key="water/"+str((at/1.2).floor())
@@ -20,7 +20,11 @@ func hover(demo,at:Vector2)->bool:
 				if plant.kind not in ["olive","cypress","golden_tree"]:continue
 				var p:=Vector2(plant.position[0],plant.position[1]);var gap:=p.distance_squared_to(at)
 				if gap<distance:distance=gap;origin=p;kind="tree";key=str(plant.id)
-	if kind.is_empty():last_key="";return false
+	return {} if kind.is_empty() else {"kind":kind,"key":key,"at":origin}
+func hover(demo,at:Vector2)->bool:
+	var found:=target(demo,at)
+	if found.is_empty():last_key="";return false
+	var kind:String=found.kind;var key:String=found.key;var origin:Vector2=found.at
 	var clock:float=demo.music._playback_clock()
 	if key==last_key or clock-last_at<.25:return false
 	if demo.music.muted or demo.music.concert_active or demo.music._loading:return false
@@ -39,6 +43,7 @@ static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)
 	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
 
 static func play_note(music,plan:Dictionary)->bool:
+	if plan.has("strum_step"):return preload("res://scripts/audio/city_creation_strum_arpeggio.gd").play(music,plan)
 	if music.muted or music.concert_active or music.acoustic.point_weight(plan.position)<=0.:return false
 	if plan.world_kind=="stair" and (not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",plan.source_id,plan.position)):return false
 	var stream:AudioStreamWAV;var key:=str(plan.stream_key)
@@ -70,6 +75,7 @@ static func play_note(music,plan:Dictionary)->bool:
 	return true
 
 func update(demo,delta:float)->void:
+	preload("res://scripts/audio/city_creation_strum_arpeggio.gd").feedback(demo)
 	if is_instance_valid(key_flash):key_flash.hide()
 	if _state_id!=demo.state.get_instance_id():
 		_state_id=demo.state.get_instance_id();pulse.clear();last_key="";demo.music.set_meta("world_pluck",{})

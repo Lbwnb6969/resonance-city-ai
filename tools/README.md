@@ -53,3 +53,5 @@ M16：`test_city_creation_harmony_journey.gd`含独立`tests/helpers/city_creati
 M17：`test_city_creation_tradition_synergy.gd`59项覆盖18札去重/2至3阶/真实生活奖励与旧茶基线；canonical `check_creation_score_modifiers_live.gd`75项，`--schools-only`仅跑新25项，`--harmony-only`原27项。流派图与实际阶键双音/原音/WAV/报告在`验证记录/M17/四大学派`，`octave_pcm_analysis.json`记录880Hz新增高八度；最终完整日志`M17_canonical_live_final_console.log`。
 
 M18：`test_city_creation_poems.gd`覆盖新增8篇真实公共造景、时代/合法选址、二阶与Schema19；原`test_city_creation_vignettes.gd`81项保持。canonical `check_creation_intuitive_guidance_live.gd`保留完整自然引导/原4奇遇，再附十二诗新夹具；`--poems-only`只跑新增部分。双分辨率来信/昼夕夜/双拱与空廊低视角、二阶续玩及Master在`验证记录/M18/十二风物诗`。拍摄前通过原生点击收好待选札；实测品质粒子初始隐藏、真实发射可见、结束隐藏，避免Compatibility未发射缓冲显形。
+
+M19：`test_city_creation_strum_hold.gd`42项保留输入所有权与独立0.45秒冷却/十调式递增；canonical `check_creation_strum_hold_live.gd`保留原32项，再运行`city_creation_arpeggio_stroll_live.gd`的五屋→树→池→真实石阶八音、实际4cm、原生WASD漫步与5m微光/原生俯仰。真实播放器PCM、Master、双分辨率昼夕夜与暂停同帧A/B在`验证记录/M19/琶音与漫步`，FFT结果`pcm_frequency.json`；全程GL/Dummy/isolated-session。原探针空白鼠标锚点避开新增共鸣徽章，先poll真实成长/来信建立完整快照基线。

@@ -1317,15 +1317,7 @@ func _process(delta: float) -> void:
 			save_city()
 	_poll_edit_budget()
 	if not _edit_pending:town.quality_visual.poll(town)
-	if (tool==4 or strum_hold.active()) and not strum_hold.blocked(self) and get_viewport().gui_get_hovered_control()==null:
-		var hit := _ray_hit(pointer)
-		var body: Object = hit.get("collider")
-		var id := str(body.get_meta("house_id", "")) if body!=null else ""
-		if not id.is_empty() and id != _last_strummed_house_id:
-			if int(state.natural_clusters().get(id,{}).get("size",1))>=3 and _strum_house(id): _last_strummed_house_id=id
-		elif id.is_empty():
-			_last_strummed_house_id="";world_toys.hover(self,_ground_at(pointer))
-	else: _last_strummed_house_id=""
+	strum_hold.hover(self)
 	music.reply.update_links((life.district_reply_pairs()+music.manual_reply_pairs()) if not _edit_pending else [],not _edit_pending and not life.budget_sync_pending())
 	var concert_view: Dictionary = life.concert_view()
 	music.set_concert_view(concert_view)
