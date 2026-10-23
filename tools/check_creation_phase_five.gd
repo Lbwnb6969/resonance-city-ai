@@ -115,7 +115,7 @@ func _run()->void:
 	while demo.light_phase!=0:demo._toggle_light()
 	await _capture("06_delivered_culture")
 	demo.ui_layer.visible=true;demo.journal.open_panel();await _capture("07_four_era_journal")
-	_check(demo.journal.era_label.text.contains("时代 4") and demo.journal.era_label.text.contains("已开启"),"journal presents all four era chapters and earned status")
+	_check(demo.journal.era_label.tooltip_text.contains("时代 4") and demo.journal.era_label.tooltip_text.contains("已开启"),"journal presents all four era chapters and earned status")
 	demo.journal.close_panel();demo.ui_layer.visible=false
 	demo.focus=Vector3(-35,.7,35);demo.zoom=12;demo._update_camera();await create_timer(.4).timeout
 	_check(demo.music.renaissance_music_report().weight==0 and player.volume_linear==0,"empty camera exactly silences added era track without stopping transport")

@@ -1,7 +1,7 @@
 extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/屋顶罗盘_2026-10-20"
+var OUT:String="res://验证记录/M31/罗盘"
 var demo
 var failures:Array[String]=[]
 var count:=0
@@ -19,6 +19,8 @@ func click(button:Control)->void:
 		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=at;event.pressed=pressed;root.push_input(event);await process_frame
 	await settle()
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900)
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/作品";root.add_child(demo)
 	demo.life.set_process(false);await settle();demo.toast.hide();demo.toast_time=0.

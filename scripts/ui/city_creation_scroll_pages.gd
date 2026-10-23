@@ -22,15 +22,15 @@ static func journal(widget:RefCounted,parent:Control)->void:
 	label(demo,heading,"河湾手记",19)
 	widget.close_button=demo._button("合卷",widget.close_panel);widget.close_button.name="CloseJournal";heading.add_child(widget.close_button)
 	widget.close_button.focus_mode=Control.FOCUS_ALL
-	widget.guide_button=demo._button("营造手札 · F1",func()->void:demo.guide.open_panel(0))
-	widget.guide_button.name="OpenGuideFromJournal";column.add_child(widget.guide_button)
+	widget.guide_button=demo._button("手札 · F1",func()->void:demo.guide.open_panel(0))
+	widget.guide_button.name="OpenGuideFromJournal";heading.add_child(widget.guide_button)
 	widget.era_label=label(demo,column,"",12);widget.era_label.name="EraChapters"
 	widget.next_label=label(demo,column,"",13)
 	widget.next_button=demo._button("",widget._follow_next);widget.next_button.name="NextJournalStep"
 	UI.primary(widget.next_button);column.add_child(widget.next_button)
 	var chapters:=scroll(column,"Chapters")
 	widget.cards=VBoxContainer.new();widget.cards.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	widget.cards.add_theme_constant_override("separation",14);chapters.add_child(widget.cards)
+	widget.cards.add_theme_constant_override("separation",6);chapters.add_child(widget.cards)
 	widget._create_score_cards()
 	label(demo,column,"纪念随城保存，营建没有期限。",12)
 	widget.refresh(false)

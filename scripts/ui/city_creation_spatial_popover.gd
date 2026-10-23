@@ -159,7 +159,7 @@ func refresh()->void:
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
 	var architecture=preload("res://scripts/world/city_creation_architecture_choice.gd")
 	var available:Array=architecture.choices(demo.state,house);var selected:String=str(house.get("architecture",""))
-	architecture_button.caption=architecture.label(selected if selected in available else "");architecture_button.tooltip_text="建筑原型 · "+architecture_button.caption
+	architecture_button.caption=preload("res://scripts/ui/city_creation_prototype_caption.gd").caption(self,house);architecture_button.tooltip_text="当前原型 · "+architecture_button.caption+(" · 随房形自动生长" if selected.is_empty() else " · 手选")+"；点击轮换"
 	architecture_button.disabled=available.is_empty();architecture_button.queue_redraw()
 	var era:=str(house.get("era_theme","district"));era_button.caption=_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
 	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换街坊时代 · "+str(demo.State.Eras.NAMES[demo.State.Eras.IDS.find(demo.state.house_era(house))]);era_button.queue_redraw()

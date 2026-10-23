@@ -19,7 +19,8 @@ var rows: Array = []
 var _signature: Array = []
 var _palette_signature: Array = []
 var _icons: Array[Texture2D] = []
-var _chapter_titles: Array[Label] = []
+var _chapter_titles: Array[Button] = []
+var compact=preload("res://scripts/ui/city_creation_compact_journal.gd").new()
 var _chapter_rewards: Array[Label] = []
 var _goal_labels: Array = []
 var era_label: Label
@@ -67,6 +68,7 @@ func open_panel() -> void:
 	demo.town.clear_preview()
 	scrollbook.show_page("journal")
 	refresh()
+	cards.get_parent().scroll_vertical=0
 	close_button.grab_focus()
 
 func close_panel() -> void:
@@ -83,7 +85,8 @@ func refresh(notify: bool = true) -> void:
 	rows = Growth.report(demo.state)
 	var earned: Array = demo.state.refresh_growth(rows)
 	if not earned.is_empty(): rows = Growth.report(demo.state)
-	era_label.text = demo.state.Eras.journal(demo.state)
+	era_label.text = compact.era_caption(self)
+	era_label.tooltip_text = demo.state.Eras.journal(demo.state)
 	var stage := 0
 	for row: Dictionary in rows:
 		if bool(row.earned): stage += 1
@@ -130,6 +133,7 @@ func refresh(notify: bool = true) -> void:
 			goal_buttons[button_index].text = Guidance.caption(goal)
 			goal_buttons[button_index].tooltip_text = Guidance.instruction(goal)
 			button_index += 1
+	compact.layout(self)
 
 func _create_cards() -> void:
 	for index in range(rows.size()):
@@ -137,10 +141,13 @@ func _create_cards() -> void:
 		var card := VBoxContainer.new()
 		card.add_theme_constant_override("separation", 5)
 		cards.add_child(card)
-		var title: Label = demo._label("", 18)
-		title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		var title: Button = demo._button("",func():pass)
+		title.add_theme_font_size_override("font_size",14)
+		title.clip_text=true;title.alignment=HORIZONTAL_ALIGNMENT_LEFT
+		title.custom_minimum_size.y=28
 		card.add_child(title)
 		_chapter_titles.append(title)
+		compact.chapter(self,index,card,title)
 		var reward: Label = demo._label("", 13)
 		reward.add_theme_color_override("font_color", UI.MUTED)
 		card.add_child(reward)
@@ -167,8 +174,7 @@ func _go(goal: Dictionary) -> void:
 	var action := str(goal.get("action", ""))
 	if not bool(goal.done) and action.begins_with("chapter:"):
 		var index := Growth.CHAPTERS.find(action.trim_prefix("chapter:"))
-		var scroll: ScrollContainer = panel.find_child("Chapters", true, false)
-		scroll.ensure_control_visible(_chapter_titles[index])
+		compact.reveal(self,index)
 		return
 	close_panel()
 	Guidance.apply(demo, goal)
@@ -211,48 +217,10 @@ func offer_era_choice(era:String)->void:
 	refresh(false)
 
 func _create_score_cards()->void:
-	score_title=demo._label("时代乐章 · 每个时代选择一枚铭牌",18)
-	score_title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	score_title.name="ScoreModifiersTitle"
-	cards.add_child(score_title)
-	for index in range(demo.state.ScoreModifiers.ERAS.size()):
-		var era:String=demo.state.ScoreModifiers.ERAS[index]
-		var row:=VBoxContainer.new()
-		row.name="ScoreCards_"+era
-		row.add_theme_constant_override("separation",18)
-		cards.add_child(row)
-		score_cards[era]=row
-		for id:String in demo.state.ScoreModifiers.PAIRS[index]:
-			var data:Dictionary=demo.state.ScoreModifiers.CHOICES[id]
-			var leaf:=VBoxContainer.new()
-			leaf.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-			leaf.size_flags_stretch_ratio=1.
-			row.add_child(leaf)
-			var choose:Button=demo._button(str(data.name),_choose_score.bind(id))
-			choose.name="Score_"+id
-			choose.tooltip_text=str(data.text)+" 选定后可用Ctrl+Z撤销。"
-			leaf.add_child(choose)
-			score_buttons[id]=choose
-			var text:Label=demo._label(str(data.text),13)
-			text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-			text.add_theme_color_override("font_color",UI.MUTED)
-			leaf.add_child(text)
+	compact.create_scores(self)
 
 func _refresh_score_cards()->void:
-	if score_title==null:return
-	# Paper HUD adds its overview after setup; earned choices lead this page.
-	if score_title.get_index()!=0:
-		cards.move_child(score_title,0)
-		for index in range(demo.state.ScoreModifiers.ERAS.size()):cards.move_child(score_cards[demo.state.ScoreModifiers.ERAS[index]],index+1)
-	score_title.visible=demo.state.era_unlocks.size()>1
-	for era:String in score_cards:
-		score_cards[era].visible=era in demo.state.era_unlocks
-		var selected:String=demo.state.ScoreModifiers.selected(demo.state,era)
-		for id:String in demo.state.ScoreModifiers.CHOICES:
-			if demo.state.ScoreModifiers.CHOICES[id].era!=era or not score_buttons.has(id):continue
-			var b:Button=score_buttons[id]
-			b.disabled=not selected.is_empty() or demo.edit_pending() or demo.gallery.busy
-			b.text=("✓ " if id in demo.state.era_modifiers else "")+"时代%d · "%[demo.state.ScoreModifiers.ERAS.find(era)+2]+str(demo.state.ScoreModifiers.CHOICES[id].name)
+	compact.scores(self)
 
 func _choose_score(id:String)->void:
 	if demo.edit_pending() or demo.gallery.busy:return

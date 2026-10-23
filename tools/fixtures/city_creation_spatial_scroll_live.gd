@@ -2,7 +2,7 @@ extends RefCounted
 const Legacy=preload("res://tests/test_city_creation_eras.gd")
 const Probe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
-const OUT="res://验证记录/M08/中空罗盘与手卷"
+var OUT:String="res://验证记录/M08/中空罗盘与手卷"
 var demo:Node
 var tree:SceneTree
 var checks:Dictionary={}
@@ -25,7 +25,10 @@ func capture(name:String)->void:
 	demo.toast.hide();demo.toast_time=0.;await RenderingServer.frame_post_draw
 	tree.root.get_texture().get_image().save_png(OUT+"/"+name+".png")
 func run(owner:Node)->Dictionary:
-	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	demo=owner;tree=demo.get_tree();
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")+"/spatial_scroll"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	var identities:Array=[]
 	for node:Node in demo.music.get_children()+demo.ambience.get_children():identities.append(node.get_instance_id())
@@ -33,7 +36,8 @@ func run(owner:Node)->Dictionary:
 	for level in range(1,4):
 		if city.validate_add_cell(id,0,0,level).ok:assert(city.add_cell(id,0,0,level).ok)
 	demo._after_edit(demo.state.restore(city.snapshot()),"history");await settle();demo.life.set_process(false)
-	var original:Dictionary=demo.state.snapshot();var history:int=demo.state._undo.size()
+	demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll();await settle()
+	var original:Dictionary=demo.state.snapshot();var history:int=demo.state._undo.size();var built:Array[String]=[]
 	var pop:RefCounted=demo.spatial_popover;var book:PanelContainer=demo.journal.scrollbook
 	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		tree.root.size=size;demo.select_tool(0)
@@ -73,6 +77,7 @@ func run(owner:Node)->Dictionary:
 		checks["outside_gui_free_"+str(size.x)]=blank!=Vector2.ZERO and tree.root.gui_get_hovered_control()==null
 		await click(blank)
 		checks["build_while_reading_"+str(size.x)]=demo.state.houses.size()==before+1 and book.visible
+		built.append(str(demo.state.houses[-1].id))
 		await key(KEY_Z,true)
 		checks["undo_while_reading_"+str(size.x)]=demo.state.houses.size()==before and book.visible
 		pop.close();var yaw:float=demo.yaw
@@ -86,10 +91,15 @@ func run(owner:Node)->Dictionary:
 	var changes:Array=[]
 	for field:String in expected:
 		if expected[field]!=after.get(field):changes.append(field)
-	metrics.append({"changed_after_build_undo":changes,"history_before":history,"history_after":demo.state._undo.size()})
+	metrics.append({"changed_after_build_undo":changes,"history_before":history,"history_after":demo.state._undo.size(),"journey_before":expected.harmony_journey,"journey_after":after.harmony_journey})
 	# New IDs are deliberately never recycled by undo. Compare authored data
 	# separately and retain the real high-water counters in the report.
 	checks.ids_not_recycled=int(after.high_watermark.house)>int(expected.high_watermark.house) and int(after.high_watermark.cell)>int(expected.high_watermark.cell)
+	var journey:Dictionary=expected.harmony_journey.duplicate(true)
+	for built_id:String in built:journey.receipts["house/"+built_id]=1
+	journey.harmony_xp+=built.size()*2
+	checks.real_build_receipts_survive_undo=after.harmony_journey==journey
+	expected.harmony_journey=journey
 	after.erase("high_watermark");expected.erase("high_watermark")
 	checks.authored_and_history_conserved=after==expected and demo.state._undo.size()==history
 	var audio:Dictionary=await Probe.record(OUT+"/界面实录.wav",3.2);checks.audible_unclipped=audio.ok

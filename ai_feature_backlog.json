@@ -588,8 +588,8 @@
       "phase": "Phase 3E · 小窗工艺与终局大成",
       "title": "1024 小窗直觉扫读工艺：紧凑章程徽章排布与无裁剪视觉引导",
       "priority": 31,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py and python tools/check_doc_links.py PASS. Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_spatial_scroll.gd -- --isolated-session (30 PASS); legacy_roundtrip375/27 works PASS. Gate3: check_creation_paper_ui_live.gd full293 PASS at 验证记录/M31/手札_verified, and check_creation_spatial_popover_live.gd full66 PASS at M31/罗盘_pass; GL/Dummy/isolated-session, no ERROR. Two resolutions1024x768/1440x900: real current goal and all three two-column charter buttons fully within clip at scroll0, native choice/undo, newly earned chapter presentation collapses to gold one-line and native reopens, actual automatic modern prototype short caption and all hollow islands fit. Pure presentation completed-chapter fixture awards no city memory. Original tabs/guide/weather/legacy context actions/postcard raw pixels/native build while reading/undo/orbit/save/personal identities retained. Full paper Master3.157914s peak.042602539 clipped0; compact Master3.065034s peak.000701904 clipped0; spatial Master3.157914s peak.013122559 clipped0, p9516.785/max17.741ms recorded. Old spatial snapshot now precisely expects two persistent genuine build receipts and4XP; all other authored fields and history equal. Failed pre-layout clicks retained and corrected by settling container before ensuring visibility. Caption reads published actual civic/neo/modern recipe metadata including automatic old works. Root journal APIs and score button callbacks preserved, no new save fields or voice nodes.",
       "files_to_touch": [
         "scripts/ui/city_creation_scroll_pages.gd",
         "scripts/ui/city_creation_journal.gd",

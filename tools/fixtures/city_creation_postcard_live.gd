@@ -2,9 +2,11 @@ extends RefCounted
 const Stamp=preload("res://scripts/ui/city_creation_postcard_stamp.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Probe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M21/明信片"
+var OUT:String="res://验证记录/M21/明信片"
 var checks:Dictionary={}
 func run(demo)->Dictionary:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")+"/postcard"
 	var tree:SceneTree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var exported:=Image.load_from_file(demo.camera_rig.last_postcard)
 	checks.native_export_has_added_frame=exported.get_width()>tree.root.size.x and exported.get_height()>tree.root.size.y+100

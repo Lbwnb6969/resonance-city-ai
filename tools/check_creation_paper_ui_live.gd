@@ -91,21 +91,25 @@ func _run() -> void:
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
 	for i in range(35): await process_frame
 	while demo.toast.visible:await process_frame
+	if "--compact-only" in OS.get_cmdline_user_args():
+		var focused:Dictionary=await preload("res://tools/fixtures/city_creation_compact_journal_live.gd").new().run(demo,OUT+"/compact")
+		print("COMPACT_FOCUSED ",focused.ok);demo.queue_free();await process_frame;quit(0 if focused.ok else 1);return
 	if "--postcard-only" in OS.get_cmdline_user_args():
 		demo.camera_rig.postcard_directory=OUT+"/isolated_postcards"
 		await click(demo.sundial_hud.postcard.get_global_rect().get_center())
 		while demo.camera_rig.postcard_busy:await process_frame
 		var focused:Dictionary=await preload("res://tools/fixtures/city_creation_postcard_live.gd").new().run(demo)
 		print("POSTCARD_FOCUSED ",focused.ok);demo.queue_free();await process_frame;quit(0 if focused.ok else 1);return
+	demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll();await settle()
 	var original: Dictionary=demo.state.snapshot();var undo: int=demo.state._undo.size()
 	layout();await core_tools();await image("01_乐谱主界面")
 	check(demo.ui_layer.get_node("Root").get_node_or_null("PaperHeader")==null and not demo.quest.is_visible_in_tree(),"permanent header and instruction cards are removed")
 	check(demo.score_ribbon.seals.get_child_count()==4,"journal landmarks gallery and guide have direct ribbon seals")
 	await click(demo.journal.button.get_global_rect().get_center())
 	check(demo.journal.panel.visible and demo.quest.is_visible_in_tree(),"visible journal seal reveals actual goals and city accounts")
-	await click(demo.ledger.button.get_global_rect().get_center());check(demo.ledger.visible() and not demo.journal.panel.visible,"journal opens real city ledger and closes itself")
+	await click(demo.journal.scrollbook.tabs.ledger.get_global_rect().get_center());check(demo.ledger.visible() and not demo.journal.panel.visible,"journal opens real city ledger and closes itself")
 	await key(KEY_ESCAPE)
-	await click(demo.journal.button.get_global_rect().get_center());await click(demo.signatures.button.get_global_rect().get_center())
+	await click(demo.journal.button.get_global_rect().get_center());await click(demo.journal.scrollbook.tabs.landmarks.get_global_rect().get_center())
 	check(demo.signatures.panel.visible and not demo.journal.panel.visible,"journal opens actual landmark catalogue")
 	await key(KEY_ESCAPE)
 	await click(demo.score_ribbon.landmark_button.get_global_rect().get_center())
@@ -266,6 +270,8 @@ func _run() -> void:
 	check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save unchanged")
 	var postcard:Dictionary=await preload("res://tools/fixtures/city_creation_postcard_live.gd").new().run(demo)
 	for label:String in postcard.checks:check(postcard.checks[label],"postcard: "+label)
+	var compact:Dictionary=await preload("res://tools/fixtures/city_creation_compact_journal_live.gd").new().run(demo,OUT+"/compact")
+	for label:String in compact.checks:check(compact.checks[label],"compact: "+label)
 	var report := {"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures,"checks":checks}
 	FileAccess.open(OUT+"/live.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("SCORE_UI ",JSON.stringify({"facts":facts,"ok":failures.is_empty(),"count":checks.size(),"failures":failures}))
 	demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

@@ -51,7 +51,7 @@ func run()->void:
 			var paper:Rect2=demo.journal.paper.get_global_rect()
 			check(Rect2(Vector2.ZERO,Vector2(size_value)).encloses(paper),"journal stays in viewport: "+str(size_value))
 			var rect:Rect2=demo.journal.score_buttons.arcade_market.get_global_rect()
-			check(rect.size.x>200. and paper.encloses(rect) and demo.journal.cards.get_parent().get_global_rect().encloses(rect),"two readable choice leaves fit at "+str(size_value))
+			check(rect.size.x>=120. and paper.encloses(rect) and demo.journal.cards.get_parent().get_global_rect().encloses(rect),"two-column charter badges fit at "+str(size_value))
 			await capture("铭牌_"+str(size_value.x))
 		await click(demo.journal.score_buttons.arcade_market);await settle()
 		check(demo.state.era_modifiers==["arcade_market"] and demo.journal.score_buttons.polyphonic_academy.disabled,"mouse chooses exactly one real modifier and seals sibling")
