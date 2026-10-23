@@ -6,6 +6,8 @@ const Eco = preload("res://scripts/visual/city_creation_modern_archetypes.gd")
 
 static func facade(renderer, wall: Node3D, door: bool, p: Array, house: Dictionary, cell: Dictionary, direction: Vector2i) -> void:
 	var kind := Plan.kind_for(house)
+	if kind>=3:
+		preload("res://scripts/visual/city_creation_alpine_lodge.gd").facade(renderer,wall,door,p,house,cell,direction);return
 	var wood := Wall.source(p[2].lerp(Color("ad845b"),.48),null,"component",Wall.Kind.STONE)
 	var stone := Wall.source(p[0].lerp(Color("b8b3a0"),.55),null,"component",Wall.Kind.STONE)
 	var glass: Material = renderer.conservatory.ensure_material(true)
@@ -30,6 +32,7 @@ static func facade(renderer, wall: Node3D, door: bool, p: Array, house: Dictiona
 	wall.set_meta("modern_glass",{"floor_to_ceiling":kind!=0,"alpine_kind":kind,"warm":true})
 
 static func roof(renderer, root: Node3D, house: Dictionary, p: Array, cell: Dictionary) -> Dictionary:
+	if Plan.kind_for(house)>=3:return preload("res://scripts/visual/city_creation_alpine_lodge.gd").roof(renderer,root,house,p,cell)
 	var node: Node3D = root.get_node(str(cell.id))
 	var frame := Node3D.new(); frame.name="AlpineRoof_"+str(cell.id); node.add_child(frame)
 	var kind := Plan.kind_for(house); var front := Plan.front(renderer.state,house)

@@ -15,12 +15,14 @@ static func terraces(house: Dictionary, arcades: Array) -> Array[Dictionary]:
 
 static func rotundas(house: Dictionary, original: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
+	var choice: String=house.get("architecture","")
+	if choice in ["portico","townhouse","oriel","guildhall"]:return result
 	if house.has("signature") or str(house.get("style","classic")) in ["timber","round_tower"]: result.assign(original); return result
 	for plan: Dictionary in original:
 		var row := plan.duplicate(true)
 		row.civic="rotunda"; row.drum_y=row.y; row.y=float(row.y)+.60
 		result.append(row)
-	if result.is_empty() and str(house.get("role",""))=="atelier":
+	if result.is_empty() and (str(house.get("role",""))=="atelier" or choice=="rotunda"):
 		var cell: Dictionary = house.cells[0]
 		for room: Dictionary in house.cells:
 			if room.kind=="room" and int(room.level)>int(cell.level): cell=room
@@ -28,7 +30,8 @@ static func rotundas(house: Dictionary, original: Array) -> Array[Dictionary]:
 		result.append({"cell_ids":[str(cell.id)],"center":Vector2(house.origin[0]+cell.x*1.8,house.origin[1]+cell.z*1.8),"y":y+.60,"drum_y":y,"radius":.83,"height":.76,"civic":"rotunda"})
 	return result
 
-static func guild(city, house: Dictionary) -> Dictionary:
+static func guild(city, house: Dictionary, ignore_choice: bool=false) -> Dictionary:
+	if not ignore_choice and house.get("architecture","") in ["portico","townhouse","oriel","rotunda","peristyle"]:return {}
 	if not eligible(city,house) or str(house.get("role","")) not in ["venue","bakery","garden_cafe"]: return {}
 	var rooms: Array = house.cells.filter(func(c):return c.kind=="room")
 	if rooms.size()!=house.cells.size(): return {}

@@ -1,6 +1,8 @@
 extends RefCounted
-enum Kind { SPLIT_GABLE_CHALET, MONO_PITCH_PAVILION, STEPPED_TERRACE_HOUSE }
+enum Kind { SPLIT_GABLE_CHALET, MONO_PITCH_PAVILION, STEPPED_TERRACE_HOUSE, TIMBER_PANORAMA, TWIN_GABLE, GREEN_LODGE }
 static func kind_for(house: Dictionary) -> int:
+	var selected: int=preload("res://scripts/world/city_creation_architecture_choice.gd").ALPINE.find(str(house.get("architecture","")))
+	if selected>=0:return selected
 	if float(house.get("base_y",0.))>=.6: return Kind.STEPPED_TERRACE_HOUSE
 	return posmod(hash([str(house.id),int(house.get("seed",0))]),2)
 

@@ -19,6 +19,7 @@ var name_field:LineEdit
 var tier:Label
 var status:Label
 var style_button:Button
+var architecture_button:Button
 var era_button:Button
 var choir_button:Button
 var temperament_button:Button
@@ -54,6 +55,7 @@ func setup(owner,ui_root:Control)->void:
 	tier.add_theme_color_override("font_color",UI.GREEN);heading.add_child(tier)
 	var finish_row:=HBoxContainer.new();finish_row.add_theme_constant_override("separation",4);column.add_child(finish_row)
 	style_button=_seal(finish_row,"house","风貌",_cycle_style);style_button.custom_minimum_size=Vector2(76,42)
+	architecture_button=_seal(finish_row,"house","随形生长",_cycle_architecture);architecture_button.custom_minimum_size=Vector2(76,42)
 	era_button=_seal(finish_row,"district","时代",_cycle_era);era_button.custom_minimum_size=Vector2(76,42)
 	var swatch_box:=HBoxContainer.new();swatch_box.add_theme_constant_override("separation",5);finish_row.add_child(swatch_box)
 	for index:int in range(PALETTE_COLORS.size()):
@@ -155,6 +157,10 @@ func refresh()->void:
 	var style_key:=str(house.get("style","classic"));var style_index:int=demo.State.HOUSE_STYLES.find(style_key)
 	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
+	var architecture=preload("res://scripts/world/city_creation_architecture_choice.gd")
+	var available:Array=architecture.choices(demo.state,house);var selected:String=str(house.get("architecture",""))
+	architecture_button.caption=architecture.label(selected if selected in available else "");architecture_button.tooltip_text="建筑原型 · "+architecture_button.caption
+	architecture_button.disabled=available.is_empty();architecture_button.queue_redraw()
 	var era:=str(house.get("era_theme","district"));era_button.caption=_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
 	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换街坊时代 · "+str(demo.State.Eras.NAMES[demo.State.Eras.IDS.find(demo.state.house_era(house))]);era_button.queue_redraw()
 	choir_button.disabled=house.has("signature")
@@ -220,6 +226,12 @@ func _cycle_style()->void:
 		if bool(result.get("ok",false)) and not bool(result.get("no_op",false)):
 			demo._after_edit(result,"room",true,target_house_id);break
 	refresh()
+
+func _cycle_architecture()->void:
+	var house:Dictionary=demo.town._house_record(target_house_id)
+	var choices:Array=[""]+preload("res://scripts/world/city_creation_architecture_choice.gd").choices(demo.state,house)
+	var key:String=choices[posmod(choices.find(str(house.get("architecture","")))+1,choices.size())]
+	demo._after_edit(demo.state.set_house_architecture(target_house_id,key),"room",true,target_house_id);refresh()
 
 func _set_palette(index:int)->void:
 	var result:Dictionary=demo.state.set_house_palette(target_house_id,index)

@@ -594,6 +594,8 @@ func set_house_colors(house_id:String,wall:Color,roof:Color)->Dictionary:
 	return {"ok":true,"message":"已换上自选配色","appearance_house_id":house_id}
 
 
+func set_house_architecture(house_id: String, key: String) -> Dictionary:
+	return preload("res://scripts/world/city_creation_architecture_choice.gd").set_choice(self,house_id,key)
 func set_house_style(house_id: String, style: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")

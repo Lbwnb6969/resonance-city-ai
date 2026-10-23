@@ -1,6 +1,6 @@
 # 《共鸣之城》当前施工看板（三期艺术品大成篇 · M23～M32）
 
-任务顺序与验收真值：[ai_feature_backlog.json](ai_feature_backlog.json)。接棒先读 [日志](ai_progress.log) 最后 30 行，再按 [施工入口](AI_START_HERE.md) 执行一项、三门禁、提交，M23～M25已验收（25/32），从 `M26` 连续推进至 `M32`。
+任务顺序与验收真值：[ai_feature_backlog.json](ai_feature_backlog.json)。接棒先读 [日志](ai_progress.log) 最后 30 行，再按 [施工入口](AI_START_HERE.md) 执行一项、三门禁、提交，M23～M26已验收（26/32），从 `M27` 连续推进至 `M32`。
 
 ## 一期与二期已验收基座（M01～M22 22/22 全绿通过）
 

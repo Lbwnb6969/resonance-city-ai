@@ -59,6 +59,10 @@ static func build(renderer, wall: Node3D, house: Dictionary, cell: Dictionary, d
 	var level := int(cell.level)
 	var total := floors(house, cell)
 	var corners := corner_sides(renderer.state, house, cell) if level > 0 else []
+	var choice: String=house.get("architecture","")
+	if choice=="portico":total=1 if level==0 else maxi(2,total)
+	if choice=="townhouse":total=maxi(2,total)
+	if choice in ["portico","townhouse"]:corners=[]
 	var kind := classify(level, total, not corners.is_empty())
 	var details := Node3D.new()
 	details.name = ["NeoclassicalPortico", "TripartiteElevation", "CornerOrielBay"][kind]
@@ -71,7 +75,7 @@ static func build(renderer, wall: Node3D, house: Dictionary, cell: Dictionary, d
 	var base := Wall.source(palette[0].lerp(Color("b7ac96"), .6), null, "component", Wall.Kind.STONE)
 	if total == 1:
 		renderer._box(details, Vector3(1.80,.085,.30), Vector3(0,1.54,.06), stone)
-		if door: _portico(renderer, details, stone, stone_col)
+		if door and level==0: _portico(renderer, details, stone, stone_col)
 	else:
 		if level == 0:
 			for x: float in [-.76,.76]:

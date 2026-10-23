@@ -24,7 +24,7 @@ func setup(pop:RefCounted)->void:
 	pop.overlay.add_child(pop.card)
 	heading=paper(pop.card,title);heading.name="HouseNameCapsule";pop.name_field.custom_minimum_size.x=170
 	var left_column:=VBoxContainer.new();pop.card.add_child(left_column)
-	for button:Button in [pop.style_button,pop.era_button,pop.choir_button]:button.reparent(left_column)
+	for button:Button in [pop.architecture_button,pop.style_button,pop.era_button,pop.choir_button]:button.reparent(left_column)
 	left=paper(pop.card,left_column);left.name="StyleWing"
 	var right_column:=VBoxContainer.new();pop.card.add_child(right_column)
 	var palette:=GridContainer.new();palette.columns=2;right_column.add_child(palette)
@@ -69,7 +69,7 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 	for i in range(roles.size()):
 		var angle:=lerpf(PI*1.12,PI*1.88,float(i)/maxi(1,roles.size()-1))
 		roles[i].position=Vector2(width*.5+cos(angle)*radius-24.,150.+sin(angle)*65.-24.)
-	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-148.)*.5));left.size=Vector2(88,148)
+	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-194.)*.5));left.size=Vector2(88,194)
 	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-176.)*.5));right.size=Vector2(88,176)
 	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,70)
 	colors.visible=pop.color_panel.visible

@@ -67,3 +67,8 @@ M23：`check_creation_house_styles_live.gd` 为当前新古典/真实罗盘实�
 
 
 M24：`check_creation_courtyards_live.gd` 默认顺序验证六类原造景预影及新古典公共三型（`check_creation_civic_live.gd`），使用GL兼容/Dummy/隔离参数，默认输出 `验证记录/M24`，可加 `--out-dir=res://验证记录/M24/final_cap`。`--chemistry-only` 仅重验预影；`--civic-only` 跳过预影，仅补验公共体量。旧2026-10-16庭院原探针保留 `--legacy-courtyard`，其旧UI/音池断言不作为本轮通过证据。
+
+
+M25：modern_architecture CPU311与era_streets canonical55验证阿尔卑斯前三型、真实顺坡支承/连续山脊/四生态顶及空廊；GL/Dummy/isolated-session，输出参数--out-dir=res://验证记录/M25/final_bridge。
+
+M26：test_city_creation_architecture_choice.gd验证六现代/六古典空间选择、Schema19与事务；check_creation_personalization_live.gd保留原色盘/加层/花园并附六现代72张双分辨率昼夕夜低视角、真实原型按钮/CtrlZ/Y/隔离JSON与连桥净空。GL/Dummy/isolated-session，--out-dir=res://验证记录/M26/final；Master.wav在同目录。

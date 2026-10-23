@@ -478,8 +478,8 @@
       "phase": "Phase 3B · 阿尔卑斯现代建筑群落",
       "title": "阿尔卑斯现代原型（下）：『木框全景山居』、『双山墙连桥工坊』、『石基绿顶山舍』与屋顶罗盘风貌切换",
       "priority": 26,
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1: python tools/check_ai_harness.py and python tools/check_doc_links.py PASS. Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_architecture_choice.gd -- --isolated-session (55 PASS: all six alpine geometry recipes, all six neoclassical choices in real spatial contexts, full-house undo/redo, Schema19 JSON, invalid atomic rejection, automatic old recipe); modern_architecture311, neoclassical301 and legacy_roundtrip375/27 works PASS, no ERROR. Gate3: tools/check_creation_personalization_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --out-dir=res://验证记录/M26/final (87 PASS, live_final.log); original actual color-picker/recolor/module interactions retained, 72 dual-resolution six-alpine day/evening/night and 5/10/15 degree images plus 2 compasses; representative originals reviewed. Actual prototype click, native CtrlZ/Y, isolated atomic disk restore/re-render, real panorama-to-twin upper airbridge and clear physical underpass, roof picking, original PCM/player identities and personal save unchanged. Master3.157914s peak .001098633, zero clipped samples. Fixed roof-frame posts protruding through pitched slate; initial images retained. Optional choice field preserves old HOUSE_STYLES and Schema1-19, renderer one-line fingerprint and State two-line delegate; new Lodge72/Choice33 lines.",
       "files_to_touch": [
         "scripts/visual/city_creation_alpine_lodge.gd",
         "scripts/visual/city_creation_modern.gd",

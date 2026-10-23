@@ -24,6 +24,8 @@ func shot(label:String)->void:
 	demo.toast.hide();demo.toast_time=0.
 	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(output+"/"+label+".png")
 func run()->void:
+	var path:String=preload("res://scripts/world/city_creation_state.gd").DEFAULT_PATH
+	var personal:PackedByteArray=FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else PackedByteArray()
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
@@ -85,6 +87,11 @@ func run()->void:
 	demo._after_edit({"ok":true,"message":"花园"},"plant");await settle()
 	demo.ui_layer.hide();demo.focus=Vector3(-21,.7,21);demo.zoom=22.;demo.pitch=.7;demo.yaw=.2;demo._update_camera();await settle();await shot("金叶与三色花园")
 	var source:Dictionary=demo.state.snapshot();var reloaded:RefCounted=demo.State.new();check(reloaded.restore(source).ok,"custom color and garden persist through production serializer")
+	var architecture:Dictionary=await preload("res://tools/fixtures/city_creation_architecture_choice_live.gd").capture(demo,output,self)
+	for label:String in architecture.checks:check(architecture.checks[label],"architecture: "+label)
+	var audio:Dictionary=await preload("res://tools/fixtures/city_creation_audio_probe.gd").record(output+"/Master.wav")
+	check(audio.ok,"Master audible and unclipped")
+	check((FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else PackedByteArray())==personal,"personal save bytes unchanged")
 	var report:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty()}
 	FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("PERSONALIZATION_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

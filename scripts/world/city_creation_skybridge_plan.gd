@@ -65,7 +65,7 @@ static func adjacency_signature(city:RefCounted,house:Dictionary)->Array:
 	var result:Array=[]
 	for other:Dictionary in city.houses:
 		for cell:Dictionary in other.cells:
-			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,city.house_era(other)]);break
+			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),city.house_era(other)]);break
 	for field:String in ["roads","terrain_strokes","waters","districts"]:
 		for row:Dictionary in city.get(field):
 			var influence:=_stroke_bounds(row.points).grow(float(row.get("radius",row.get("width",0.)))*1.5)
