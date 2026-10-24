@@ -32,6 +32,8 @@ static func line(canvas:CanvasItem,points:Array,at:Vector2,r:float,color:Color,w
 static func draw(canvas:CanvasItem,key:String,at:Vector2,r:float,color:Color,gold:Color)->void:
 	var outline:Array=PROFILES.get(key,PROFILES.portico)
 	line(canvas,outline,at,r,color);line(canvas,[[-.98,.72],[.98,.72]],at,r,gold)
+	if key=="portico":line(canvas,[[-.88,-.12],[.88,-.12]],at,r,color,2.2)
+	if key=="rotunda":canvas.draw_arc(at+Vector2(0,-.1)*r,r*.67,PI,TAU,20,color,1.6,true)
 	match key:
 		"portico","guildhall","peristyle","rotunda","belvedere_villa":
 			for x:float in [-.55,0.,.55]:line(canvas,[[x,-.05],[x,.55]],at,r,gold,1.2)
@@ -42,8 +44,9 @@ static func draw(canvas:CanvasItem,key:String,at:Vector2,r:float,color:Color,gol
 				else:canvas.draw_arc(at+Vector2(x,.15)*r,r*.2,PI,TAU,12,gold,1.2,true);line(canvas,[[x-.2,.15],[x-.2,.55]],at,r,gold,1.2)
 		"clock_turret":canvas.draw_circle(at+Vector2(.55,-.42)*r,.14*r,gold)
 		"iron_conservatory","pavilion","panorama":
-			for x:float in [-.55,0.,.55]:line(canvas,[[x,-.3],[x,.55]],at,r,gold,1.2)
+			for x:float in ([-.55,.55] if key=="panorama" else [-.55,0.,.55]):line(canvas,[[x,-.3],[x,.55]],at,r,gold,1.2)
 			line(canvas,[[-.8,.12],[.8,.12]],at,r,gold,1.2)
+			if key=="panorama":line(canvas,[[-.55,.55],[.55,-.25]],at,r,gold,1.2)
 		"twin_gable":line(canvas,[[-.1,.15],[.1,.15],[.1,.4],[-.1,.4]],at,r,gold,2.)
 		"townhouse":
 			for y:float in [-.35,.05,.45]:line(canvas,[[-.5,y],[.5,y]],at,r,gold,1.2)

@@ -87,7 +87,7 @@ func _run() -> void:
 			patch_max = maxf(patch_max, patch)
 	_expect(smooth_direction and patch_max - patch_min > 0.5, "continuous broad direction/density field varies across town")
 	var mesh: Mesh = meadow._mesh("lawn")
-	_expect(mesh.get_faces().size() / 3 == 82, "seven folded leaves and basal trefoil share one near mesh")
+	_expect(mesh.get_faces().size() / 3 == 572, "seven folded leaves and basal trefoil share one near mesh")
 	_expect(meadow._mesh("lawn_lod").get_faces().size()/3 == 20, "far mesh retains two leaves from each ring")
 	_expect(mesh == meadow._mesh("lawn") and mesh == meadow._mesh("grass"), "lawn and fringe share one cached ribbon mesh")
 	var arrays: Array = mesh.surface_get_arrays(0)
@@ -101,7 +101,7 @@ func _run() -> void:
 		var at: Vector3 = arrays[Mesh.ARRAY_VERTEX][index]
 		var uv: Vector2 = arrays[Mesh.ARRAY_TEX_UV][index]
 		var normal: Vector3 = arrays[Mesh.ARRAY_NORMAL][index]
-		continuous_normals = continuous_normals and normal.is_normalized() and normal.y > 0.0
+		continuous_normals = continuous_normals and normal.is_normalized() and normal.is_finite()
 		if normals_by_vertex.has(at): continuous_normals = continuous_normals and normal.is_equal_approx(normals_by_vertex[at])
 		normals_by_vertex[at] = normal
 		if is_equal_approx(uv.y, 1.0):

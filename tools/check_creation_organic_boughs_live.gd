@@ -2,7 +2,7 @@ extends SceneTree
 const Scene=preload("res://scenes/city_creation.tscn")
 const Fixture=preload("res://tools/fixtures/city_creation_foliage_live.gd")
 const Audio=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M38/live"
+var OUT:="res://验证记录/M38/live"
 var demo
 var checks:=0
 var failures:Array=[]
@@ -11,6 +11,8 @@ func check(ok:bool,label:String)->void:
 	checks+=1
 	if not ok:failures.append(label);push_error(label)
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(Fixture.State.DEFAULT_PATH) if FileAccess.file_exists(Fixture.State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);demo.life.set_process(false)

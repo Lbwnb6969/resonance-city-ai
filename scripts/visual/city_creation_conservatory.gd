@@ -35,6 +35,7 @@ func _glass_material(clockwork: bool=false) -> ShaderMaterial:
 		if clockwork_glass_material==null:
 			clockwork_glass_material=ShaderMaterial.new();clockwork_glass_material.shader=GlassShader
 			clockwork_glass_material.set_shader_parameter("warmth",1.0)
+			clockwork_glass_material.set_shader_parameter("night_energy",.38)
 			set_light(evening,response)
 		return clockwork_glass_material
 	if glass_material==null:
@@ -50,8 +51,8 @@ func ensure_roof_material()->ShaderMaterial:
 	if roof_glass_material==null:
 		roof_glass_material=ShaderMaterial.new();roof_glass_material.shader=GlassShader
 		roof_glass_material.set_shader_parameter("warmth",1.)
-		roof_glass_material.set_shader_parameter("night_energy",2.5)
-		roof_glass_material.set_shader_parameter("night_opacity",.45)
+		roof_glass_material.set_shader_parameter("night_energy",.65)
+		roof_glass_material.set_shader_parameter("night_opacity",.10)
 		set_light(evening,response)
 	return roof_glass_material
 

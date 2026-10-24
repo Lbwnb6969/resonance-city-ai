@@ -1,7 +1,7 @@
 extends RefCounted
 ## The existing choir and spatial pool share one measured headroom budget.
 const SCULPT_DUCK_DB := -1.2
-const MASTER_LIFT_DB := 18.0
+const MASTER_LIFT_DB := 20.5
 const LONG_PEAK_BUDGET := .56
 static func solo(houses: Dictionary, acoustic: RefCounted, targets: Dictionary, sources: Dictionary) -> Dictionary:
 	var best := ""; var weight := 0.

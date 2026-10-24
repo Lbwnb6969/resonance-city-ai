@@ -1,44 +1,62 @@
 extends RefCounted
-## Four shared morphs animate separate limbs without splitting the body draw.
+## Five shared morphs animate separate limbs without splitting the body draw.
 static func mesh(source:ArrayMesh)->ArrayMesh:
 	var arrays:Array=source.surface_get_arrays(0);var shapes:Array=[];var result:=ArrayMesh.new()
-	for mode:int in [0,1,2,3]:
-		result.add_blend_shape(["StepLeft","StepRight","Inspect","Seated"][mode])
+	for mode:int in [0,1,2,3,4]:
+		result.add_blend_shape(["StepLeft","StepRight","Inspect","Seated","Sip"][mode])
 		var shape:Array=[];shape.resize(Mesh.ARRAY_MAX)
 		var points:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX].duplicate();var normals:PackedVector3Array=arrays[Mesh.ARRAY_NORMAL].duplicate()
 		var tags:PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV2]
 		for i in range(points.size()):
 			var tag:=roundi(tags[i].x);var pivot:=Vector3.ZERO;var angle:=0.
-			var sign_side:float=-1. if tag in [1,3] else 1.
+			var sign_side:float=-1. if tag in [1,3,7] else 1.
 			if tag in [1,2]:
 				pivot=Vector3(sign_side*.045,.075,0);angle=(.42 if mode==0 else -.42)*sign_side if mode<2 else .03*sign_side
-			elif tag in [3,4]:
-				pivot=Vector3(sign_side*.11,.36,0);angle=(-.26 if mode==0 else .26)*sign_side if mode<2 else -.85 if tag==4 else -.12
+			elif tag in [3,4,6,7]:
+				pivot=Vector3(sign_side*.11,.36,0);angle=(-.26 if mode==0 else .26)*sign_side if mode<2 else -.85 if tag in [4,6] else -.12
+			if tag in [4,6] and mode>=3:angle=-1.45 if mode==3 else -1.85
 			elif tag==5 and mode>=2:pivot=Vector3(0,.38,0);angle=.13
-			if mode==3 and tag in [1,2]:
+			if tag==8:
+				var hand_angle:float=[-.26,.26,-.85,-1.45,-1.85][mode]
+				var hand_center:=Vector3(.11,.36,0)+Basis(Vector3.RIGHT,hand_angle)*Vector3(0,-.19,0)
+				points[i]=hand_center+points[i]-Vector3(.11,.17,0)
+			elif mode>=3 and tag in [1,2]:
 				var at:Vector3=points[i]
 				# Upper half bends over the seat edge; lower half hangs below the knee.
 				if at.y>=0.:
-					points[i]=Vector3(at.x,.075+at.z,.075-at.y);normals[i]=Basis(Vector3.RIGHT,-PI*.5)*normals[i]
-				else:points[i]=at+Vector3(0,.075,.075)
+					points[i]=Vector3(at.x,.075+at.z,(.075-at.y)*2.1);normals[i]=Basis(Vector3.RIGHT,-PI*.5)*normals[i]
+				else:points[i]=at+Vector3(0,.075,.16)
 			else:
 				var turn:=Basis(Vector3.RIGHT,angle);points[i]=pivot+turn*(points[i]-pivot);normals[i]=turn*normals[i]
-			if mode==3:points[i].y-=.08
+			if mode>=3:points[i].y-=.08
 		shape[Mesh.ARRAY_VERTEX]=points;shape[Mesh.ARRAY_NORMAL]=normals;shapes.append(shape)
-	result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,shapes);return result
+	var palms:=PackedVector3Array()
+	for vertices:PackedVector3Array in [arrays[Mesh.ARRAY_VERTEX]]+shapes.map(func(shape):return shape[Mesh.ARRAY_VERTEX]):
+		var anchor:=Vector3.ZERO;var count:=0
+		for i in range(vertices.size()):
+			if roundi(arrays[Mesh.ARRAY_TEX_UV2][i].x)==6:anchor+=vertices[i];count+=1
+		palms.append(anchor/float(count))
+	result.set_meta("right_palms",palms);result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,shapes);return result
 static func _near(life,root:Node3D)->bool:
 	return root.visible and root.get_child(0).visible and (life.view_camera==null or (life.view_camera.global_position.distance_squared_to(root.global_position)<1600. and life.view_camera.is_position_in_frustum(root.global_position+Vector3.UP*.3)))
 static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bool=false,greeting:bool=false,cargo:Node3D=null)->void:
 	var body:Node3D=root.get_child(0);var skin:MeshInstance3D=body.get_child(0)
 	var phase:float=time*8.7+float(root.get_meta("citizen_index",0))*.73
 	var stride:float=sin(phase) if moving else 0.;var inspect:float=(.65+.2*sin(time*1.7)) if seated or working else .35 if root.get_meta("citizen_prop","") in ["cup","lantern"] else 0.
-	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1. if seated else 0.)
+	var sip:float=.5+.5*sin(time*1.1)
+	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
 		body.position.y=.28+sin(time*1.7)*.004 if seated else absf(stride)*.023
 		body.rotation=Vector3(-.055 if moving else .025*sin(time*1.3) if working else 0.,0.,sin(phase)*.035 if moving else 0.)
 	var prop:MeshInstance3D=body.get_node("HandProp")
 	if prop.visible:
 		prop.position=Vector3(.15,.27+inspect*.065-(.08 if seated else 0.),.10+inspect*.025);prop.rotation=Vector3(sin(phase-.45)*.10 if moving else -.12*inspect,0.,-stride*.075 if moving else sin(time*1.7)*.04)
+		var palms:PackedVector3Array=skin.mesh.get_meta("right_palms");var anchor:=Vector3.ZERO;var weight:=0.
+		for i in range(5):
+			var blend:float=skin.get_blend_shape_value(i);anchor+=palms[i+1]*blend;weight+=blend
+		anchor+=palms[0]*(1.-weight)
+		var grip:=Vector3(0,.12,0) if root.get_meta("citizen_prop","")=="lantern" else Vector3(0,-.035,-.015)
+		prop.position=anchor-prop.basis*grip
 	if cargo!=null and cargo.visible:
 		cargo.position=Vector3(.12,.32+absf(stride)*.014,.10);cargo.rotation=Vector3(sin(phase-.45)*.075,0.,-stride*.05)
 static func _walking(root:Node3D,time:float)->bool:

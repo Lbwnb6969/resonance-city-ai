@@ -21,18 +21,18 @@ static func person(index:int)->Node3D:
 	var prop:=MeshInstance3D.new();prop.name="HandProp";prop.position=Vector3(.15,.27,.10);prop.material_override=paper();prop.hide();body.add_child(prop)
 	identify(root,"resident");return root
 static func identify(root:Node3D,role:String)->void:
-	var index:int=posmod(int(root.get_meta("citizen_index")),4);var key:="person/%s/%d"%[role,index]
-	if not meshes.has(key):meshes[key]=preload("res://scripts/visual/city_creation_citizen_gait.gd").mesh(_body(role,index))
+	var index:int=posmod(int(root.get_meta("citizen_index")),4);var cup:bool=root.get_meta("citizen_prop","")=="cup";var key:="person/%s/%d%s"%[role,index,"/cup" if cup else ""]
+	if not meshes.has(key):meshes[key]=preload("res://scripts/visual/city_creation_citizen_gait.gd").mesh(_body(role,index,cup))
 	root.get_child(0).get_child(0).mesh=meshes[key]
 	root.get_child(0).get_child(0).set_meta("sleeve_material",tint(_cloth(role,index)))
 	root.set_meta("citizen_role",role)
 static func _cloth(role:String,index:int)->Color:
 	return {"bakery":Color("eee0b8"),"workshop":Color("6f9e98"),"atelier":Color("a477a5"),"clockmaker":Color("aa8956")}.get(role,COLORS[index])
-static func _body(role:String,index:int)->ArrayMesh:
+static func _body(role:String,index:int,cup:bool=false)->ArrayMesh:
 	var s:=SurfaceTool.new();s.begin(Mesh.PRIMITIVE_TRIANGLES);var cloth:=_cloth(role,index);var skin:=Color("e2bb8e")
 	_capsule(s,.10,.34,Vector3(0,.22,0),cloth);_sphere(s,Vector3(.09,.09,.09),Vector3(0,.45,0),skin)
 	for side:float in [-1.,1.]:
-		_capsule(s,.025,.18,Vector3(side*.11,.28,0),cloth,3 if side<0. else 4);_sphere(s,Vector3.ONE*.031,Vector3(side*.11,.17,0),skin,3 if side<0. else 4)
+		_capsule(s,.025,.18,Vector3(side*.11,.28,0),cloth,3 if side<0. else 4);_sphere(s,Vector3.ONE*.031,Vector3(side*.11,.17,0),skin,7 if side<0. else 6)
 		_capsule(s,.027,.14,Vector3(side*.045,.0,0),cloth.darkened(.28),1 if side<0. else 2)
 		_box(s,Vector3(.065,.06,.11),Vector3(side*.045,-.075,.018),Color("5c5143"),1 if side<0. else 2)
 	if role=="bakery":
@@ -47,6 +47,9 @@ static func _body(role:String,index:int)->ArrayMesh:
 		_box(s,Vector3(.13,.18,.03),Vector3(0,.25,.092),Color("425256"))
 	else:
 		_cylinder(s,.105,.105,.043,Vector3(0,.365,0),Color("bd704d"));_box(s,Vector3(.045,.12,.035),Vector3(.048,.29,.09),Color("bd704d"))
+	if cup:
+		_cylinder(s,.033,.025,.058,Vector3(.11,.23,0),Color("eee1be"),8)
+		_sphere(s,Vector3.ONE*.014,Vector3(.14,.22,0),skin,8)
 	s.index();return s.commit()
 static func prop_mesh(kind:String)->ArrayMesh:
 	if meshes.has(kind):return meshes[kind]
@@ -80,17 +83,17 @@ static func prop_mesh(kind:String)->ArrayMesh:
 	s.index();meshes[kind]=s.commit();return meshes[kind]
 static func hand(root:Node3D,kind:String,time:float=0.)->void:
 	var prop:MeshInstance3D=root.get_child(0).get_node("HandProp")
+	var previous:String=root.get_meta("citizen_prop","")
 	if root.get_meta("citizen_prop","")!=kind:
-		root.set_meta("citizen_prop",kind);prop.visible=not kind.is_empty()
+		root.set_meta("citizen_prop",kind);prop.visible=not kind.is_empty() and kind!="cup"
 		if not kind.is_empty():prop.mesh=prop_mesh(kind)
+		if kind=="cup" or previous=="cup":identify(root,str(root.get_meta("citizen_role","resident")))
 		prop.material_override=paper()
 		if kind=="lantern":
 			if not materials.has("lantern"):
 				var shader:=Shader.new();shader.code=Wall.WallShader.code.replace("ROUGHNESS = roughness;","ROUGHNESS = roughness; EMISSION = ALBEDO * vec3(.45,.32,.12);")
 				var m:ShaderMaterial=paper().duplicate();m.shader=shader;materials.lantern=m
 			prop.material_override=materials.lantern
-	prop.rotation.z=sin(time*2.)*.12 if kind=="lantern" else 0.
-	prop.position.y=.32+sin(time*1.7)*.025 if kind=="cup" else .27
 static func carry(role:String)->Node3D:
 	var node:=Node3D.new();node.name={"atelier":"CarriedArtwork","clockmaker":"CarriedMusicBox"}.get(role,"CarriedChime")
 	node.position=Vector3(.12,.32,.10)
@@ -106,4 +109,4 @@ static func _sphere(s:SurfaceTool,radius:Vector3,at:Vector3,color:Color,tag:int=
 static func _capsule(s:SurfaceTool,radius:float,height:float,at:Vector3,color:Color,tag:int=0)->void:
 	var mesh:=CapsuleMesh.new();mesh.radius=radius;mesh.height=height;mesh.radial_segments=10;mesh.rings=4;_piece(s,mesh,at,color,Vector3.ONE,tag)
 static func _cylinder(s:SurfaceTool,bottom:float,top:float,height:float,at:Vector3,color:Color,tag:int=0)->void:
-	var mesh:=CylinderMesh.new();mesh.bottom_radius=bottom;mesh.top_radius=top;mesh.height=height;mesh.radial_segments=10;_piece(s,mesh,at,color)
+	var mesh:=CylinderMesh.new();mesh.bottom_radius=bottom;mesh.top_radius=top;mesh.height=height;mesh.radial_segments=10;_piece(s,mesh,at,color,Vector3.ONE,tag)

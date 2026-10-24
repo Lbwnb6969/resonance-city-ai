@@ -5,6 +5,9 @@ static func point(theta:float,angle:float,phase:float,radius:Vector3,kind:String
 	var unit:=Vector3(cos(angle)*sin(theta),cos(theta),sin(angle)*sin(theta))
 	var wave:=1.+.10*sin(angle*3.+phase)*sin(theta)+.055*sin(angle*5.-phase+theta*2.)*sin(theta)
 	var at:=unit*radius*wave
+	if kind=="cypress":
+		var taper:=1.-.32*smoothstep(-.25,1.,unit.y)
+		at.x*=taper;at.z*=taper;at.y+=radius.y*.06*sin(angle*3.+phase)*sin(theta)
 	if kind in ["olive","golden"]:
 		var fan:=1.+.13*sin(angle*3.+phase+theta*.8)*sin(theta)*sin(theta)
 		at.x*=fan;at.z*=fan

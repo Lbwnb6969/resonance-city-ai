@@ -27,8 +27,8 @@ func run()->void:
 	var facts:Dictionary={}
 	if "--large-only" in OS.get_cmdline_user_args():facts.large=await large()
 	else:
-		facts.citizens=await Citizens.capture(demo,OUT);check(facts.citizens.ok,"actual six props,production,purchases,tea and street meetings")
-		for label:String in ["workshop","atelier","clockmaker","bread_shopper","night_lantern","seated_tea"]:
+		facts.citizens=await Citizens.capture_tea(demo,OUT) if "--tea-only" in OS.get_cmdline_user_args() else await Citizens.capture(demo,OUT);check(facts.citizens.ok,"actual public living citizen fixture")
+		for label:String in (["seated_tea"] if "--tea-only" in OS.get_cmdline_user_args() else ["workshop","atelier","clockmaker","bread_shopper","night_lantern","seated_tea"]):
 			var path:String=OUT+"/motion_"+label+"/motion.json"
 			check(FileAccess.file_exists(path) and JSON.parse_string(FileAccess.get_file_as_string(path)).ok,"actual24frame motion sequence "+label)
 		demo.set_process(false);demo.ui_layer.hide();demo.camera_rig.strolling=true;demo.camera.projection=Camera3D.PROJECTION_PERSPECTIVE;demo.camera.fov=42.

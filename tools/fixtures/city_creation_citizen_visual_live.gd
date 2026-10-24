@@ -85,3 +85,14 @@ static func capture(demo,out:String)->Dictionary:
 	checks.two_draws_with_real_cargo=draw_ok;checks.images=images>=30
 	var result:={"ok":checks.values().all(func(v):return v),"checks":checks,"images":images,"roles":seen,"mesh_pool":Visual.meshes.size(),"material_pool":Visual.materials.size()}
 	FileAccess.open(out+"/citizen_visual.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));return result
+static func capture_tea(demo,out:String)->Dictionary:
+	var tea:=preload("res://scripts/world/city_creation_state.gd").new();tea.initialize();assert(tea.set_house_role("h4","garden_cafe").ok)
+	await show_world(demo,tea);demo.focus=Vector3(-8,.7,-4.5);demo.zoom=14.;demo._update_camera();var guest:Dictionary={}
+	for i in range(6000):
+		demo.life._process(.05)
+		for row:Dictionary in demo.life.residents:
+			if row.get("cafe_visit",{}).get("phase","")=="seated":guest=row
+		if not guest.is_empty():break
+	var count:=0
+	if not guest.is_empty():count=await frames(demo,out,"seated_tea",guest.node)
+	return {"ok":not guest.is_empty() and count==6,"images":count}

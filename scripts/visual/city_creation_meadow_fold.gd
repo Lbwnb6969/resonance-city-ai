@@ -7,6 +7,7 @@ static func blade(owner,s:SurfaceTool,index:int,folded:bool)->void:
 	var width:float=[.046,.050,.044,.048,.042,.044,.042][index]
 	var outward:=Vector3(cos(angle),0,sin(angle));var across:=Vector3(-sin(angle),0,cos(angle))
 	var root:Vector3=outward*.006;var outer:bool=index<4
+	if folded:_rounded(s,root,outward,across,height,reach,width,index);return
 	var centers:Array[Vector3]=[root,root+outward*reach*.22+Vector3.UP*height*(.48 if outer else .38),root+outward*reach*.62+Vector3.UP*height*(.90 if outer else .74),root+outward*reach+Vector3.UP*height]
 	var widths:Array[float]=[width*.55,width,width*.62,0.]
 	var left:Array[Vector3]=[];var right:Array[Vector3]=[]
@@ -17,18 +18,26 @@ static func blade(owner,s:SurfaceTool,index:int,folded:bool)->void:
 		for i in range(2):
 			owner._triangle(s,left[i],right[i],right[i+1],Color.WHITE,height,outward);owner._triangle(s,left[i],right[i+1],left[i+1],Color.WHITE,height,outward)
 		owner._triangle(s,left[2],right[2],centers[3],Color.WHITE,height,outward);return
-	for i in range(1,3):centers[i]+=Vector3.UP*minf(width*.36,height*.06)
-	for i in range(2):
-		for edge:Array in [[left[i],left[i+1]],[right[i],right[i+1]]]:
-			_triangle(s,centers[i],edge[0],edge[1],height,outward,across,width)
-			_triangle(s,centers[i],edge[1],centers[i+1],height,outward,across,width)
-	_triangle(s,centers[2],left[2],centers[3],height,outward,across,width)
-	_triangle(s,centers[2],right[2],centers[3],height,outward,across,width)
-static func _triangle(s:SurfaceTool,a:Vector3,b:Vector3,c:Vector3,height:float,outward:Vector3,across:Vector3,width:float)->void:
-	for at:Vector3 in [a,b,c]:
-		var tip:float=clampf(at.y/height,0.,1.)
-		var normal:Vector3=(Vector3.UP*(.28+tip*.45)-outward+across*(at.dot(across)/width)*.38).normalized()
-		s.set_normal(normal);s.set_color(Color.WHITE);s.set_uv(Vector2(0,tip));s.add_vertex(at)
+static func _rounded(s:SurfaceTool,root:Vector3,outward:Vector3,across:Vector3,height:float,reach:float,width:float,index:int)->void:
+	var points:=PackedVector3Array();var normals:=PackedVector3Array();var faces:Array[int]=[]
+	# A closed biconvex leaf has a real rounded edge even at ground level.
+	for i in range(5):
+		var t:float=[0.,.18,.38,.60,.82][i];var w:float=width*[.35,.74,1.,.92,.55][i]
+		var center:Vector3=root+outward*reach*pow(t,1.22)+Vector3.UP*height*sin(t*PI*.5)
+		var tangent:Vector3=(outward*reach*1.22*pow(maxf(t,.001),.22)+Vector3.UP*height*PI*.5*cos(t*PI*.5)).normalized()
+		var depth_axis:Vector3=across.cross(tangent).normalized();var depth:float=minf(w*.30,maxf(.002,height-center.y)*.65)
+		for sector in range(8):
+			var angle:float=float(sector)*TAU/8.
+			points.append(center+across*cos(angle)*w+depth_axis*sin(angle)*depth)
+			normals.append((across*cos(angle)/w+depth_axis*sin(angle)/depth).normalized())
+	points.append(root+outward*reach+Vector3.UP*height);normals.append(Vector3.UP)
+	points.append(root);normals.append(-outward)
+	for i in range(4):
+		for j in range(8):
+			var a:int=i*8+j;var b:int=i*8+(j+1)%8;faces.append_array([a,b,a+8,b,b+8,a+8])
+	for j in range(8):faces.append_array([32+j,32+(j+1)%8,40,j,41,(j+1)%8])
+	for i:int in faces:
+		s.set_normal(normals[i]);s.set_color(Color.WHITE);s.set_uv(Vector2(0.,clampf(points[i].y/height,0.,1.)));s.add_vertex(points[i])
 static func base(s:SurfaceTool)->void:
 	for leaf in range(3):
 		var angle:float=.35+float(leaf)*TAU/3.;var out:=Vector3(cos(angle),0,sin(angle));var side:=Vector3(-sin(angle),0,cos(angle))
