@@ -768,13 +768,14 @@
       "evidence_Paths": [
         "本地验证记录/M38/organic_boughs_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "彻底解决 文档/28 指出的『直线枝干』短板。将 city_creation_foliage.gd 中原本只有 2 个截面环的笔直圆柱树干与主枝，升级为带自然弧度、树种特征偏转与根颈微隆（Root Flare）的 4 环有机曲枝。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_foliage.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": "",
+      "verified_by": "Gate1:harness/doc PASS. Gate2:tests/test_city_creation_foliage.gd91PASS including18old-vs-newcanopy arrays byte-identical with ignored HEAD baseline;sky_apertures22/render_safety41/legacy375and27worksPASS. Gate3:tools/check_creation_organic_boughs_live.gd41PASS actual OpenGL atM38/live, dualresday/dusk/night5/10/15deg and perspective bark closeups reviewed; grounded flare and species curves, one shared live leaf shader,readonly plants/personalbytes.120framep9510.026/max10.127ms;Master6.130s peak.13549805 zero clips after actual nature stroll returns to starter choir. Independent5original-imageCritic pass_with_refinements,zero blockers;UI7.5/10,wave6.5,branches7,root6.5;subjective audio/motion unassessed. Nonblocking gold-core/root-fork/cypress-overlap polish assignedM41.",
       "independent_review_followups": [
         "M34独立Critic：近景枝干存在直管剪影；M38用曲枝/根颈实际近景复验。"
-      ]
+      ],
+      "implementation_notes": "Four static rings and existing7sides, curved species-specific centreline/tangents,nonlinear taper androotflare. Olive trunk unified after raw-image review removed previous segmented cuff. Leaf arrays, RNG use, shared prefab/material caching and existing shader wind preserved;fourmainfiles unchanged."
     },
     {
       "id": "M39",
@@ -852,7 +853,8 @@
       "verification_cmd": "godot --headless --path . -s tools/check_creation_aesthetic_music_subagent_gate.gd; godot --headless --path . -s tools/check_code_health.gd",
       "verified_by": "",
       "independent_review_followups": [
-        "M36 critic: reduce broad amber night glazing so conservatory plants retain contrast; correlate short recording low-energy windows with real swap events before diagnosing dropouts."
+        "M36 critic: reduce broad amber night glazing so conservatory plants retain contrast; correlate short recording low-energy windows with real swap events before diagnosing dropouts.",
+        "M38 independentR1/R2/R3: evaluate moving wide-view gold core/endpoint contrast, directional root ridges/fork transition, cypress oval overlap; keep stylized scale and cached meshes. Nonblocking scores retained honestly."
       ]
     },
     {

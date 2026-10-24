@@ -66,8 +66,7 @@ func _mesh(data: Dictionary) -> ArrayMesh:
 func _olive(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, variant: int) -> void:
 	var lean := Vector3(-0.11 + variant * 0.11, 0.0, 0.06)
 	var fork := Vector3(lean.x,1.26,lean.z)
-	_branch(wood, Vector3.ZERO, Vector3(lean.x * 0.5,0.72,0), 0.105, 0.082)
-	_branch(wood, Vector3(lean.x * 0.5,0.72,0), fork, 0.082, 0.059)
+	_branch(wood,Vector3.ZERO,fork,.105,.059)
 	# Staggered branch fans leave an open vertical aperture and side windows.
 	for arm in range(4):
 		var angle := float(arm)*TAU/4.+variant*.49+.18
@@ -85,8 +84,8 @@ func _olive(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, va
 
 func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, variant: int) -> void:
 	var bend := Vector3(0.035 * (variant - 1),0,0.025)
-	_branch(wood, Vector3.ZERO, Vector3(bend.x,1.45,bend.z), 0.08, 0.043)
-	_branch(wood, Vector3(bend.x,1.45,bend.z), Vector3(bend.x * 2,3.03,bend.z * 2), 0.043, 0.014)
+	_branch(wood, Vector3.ZERO, Vector3(bend.x,1.45,bend.z), 0.08, 0.043,"cypress")
+	_branch(wood, Vector3(bend.x,1.45,bend.z), Vector3(bend.x * 2,3.03,bend.z * 2), 0.043, 0.014,"cypress")
 	# Narrow spiral fans along the axis keep a cypress silhouette without cones.
 	for fan in range(10):
 		var t := float(fan) / 9.0
@@ -96,23 +95,23 @@ func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, 
 		var radius := lerpf(0.29,0.13,t)
 		_lobe(leaves, center, Vector3(radius,0.45 - t * 0.12,radius * 0.89), rng, "cypress", 3.5)
 		if fan < 8:
-			_branch(wood,Vector3(bend.x,center.y - 0.16,bend.z),center,0.022 - t * 0.010,0.009)
+			_branch(wood,Vector3(bend.x,center.y - 0.16,bend.z),center,0.022 - t * 0.010,0.009,"cypress")
 	_lobe(leaves, Vector3(bend.x * 2,3.24,bend.z * 2), Vector3(0.115,0.27,0.10), rng, "cypress",3.5)
 
 func _golden(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int)->void:
 	var fork:=Vector3(.08*(variant-1),1.35,.03)
-	_branch(wood,Vector3.ZERO,fork,.12,.055)
+	_branch(wood,Vector3.ZERO,fork,.12,.055,"golden_tree")
 	# No central cap: six ascending boughs carry independent small sprays.
 	for arm:int in range(6):
 		var angle:float=arm*TAU/6.+variant*.43
 		var reach:float=.91+rng.randf()*.12
 		var end:=fork+Vector3(cos(angle)*reach,.47+posmod(arm*2,5)*.14,sin(angle)*reach)
-		_branch(wood,fork,end,.045,.016)
+		_branch(wood,fork,end,.045,.016,"golden_tree")
 		_lobe(leaves,end+Vector3(0,.12,0),Vector3(.32,.32,.29),rng,"golden",3.1)
 		for sub in range(2):
 			var phase:float=angle+(-.58 if sub==0 else .62)
 			var tip:=end+Vector3(cos(phase)*.31,.22+sub*.17,sin(phase)*.31)
-			_branch(wood,end,tip,.017,.007)
+			_branch(wood,end,tip,.017,.007,"golden_tree")
 			_lobe(leaves,tip,Vector3(.23,.26,.22),rng,"golden",3.1)
 
 func _flowers(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,variant:int,kind:String)->void:
@@ -121,7 +120,7 @@ func _flowers(leaves:Dictionary,wood:Dictionary,rng:RandomNumberGenerator,varian
 		var angle:float=stem*2.39996+variant*.6
 		var at:=Vector3(cos(angle),0,sin(angle))*(.09+float(stem)*.038)
 		var top:=at+Vector3(0,.24+rng.randf()*.24,0)
-		_branch(wood,at,top,.014,.008)
+		_branch(wood,at,top,.014,.008,"flower")
 		_lobe(leaves,at+Vector3(.025,.12,0),Vector3(.12,.055,.06),rng,"shrub",.55)
 		for petal_index:int in range(5):
 			var phase:float=petal_index*TAU/5.
@@ -192,26 +191,8 @@ func _leaf_vertex(data: Dictionary, position: Vector3, normal: Vector3, kind: St
 	data.normals.append(normal)
 	data.colors.append(color)
 
-func _branch(data: Dictionary, start: Vector3, end: Vector3, radius_start: float, radius_end: float) -> void:
-	var first: int = data.vertices.size()
-	var axis := (end-start)/maxf((end-start).length(),.0001)
-	var tangent := axis.cross(Vector3.FORWARD)
-	tangent/=maxf(tangent.length(),.0001)
-	if tangent.length_squared() < 0.1: tangent = Vector3.RIGHT
-	var bitangent := axis.cross(tangent)
-	bitangent/=maxf(bitangent.length(),.0001)
-	for ring in range(2):
-		for side in range(7):
-			var angle := TAU * side / 7.0
-			var radial := tangent * cos(angle) + bitangent * sin(angle)
-			data.vertices.append((start if ring == 0 else end) + radial * (radius_start if ring == 0 else radius_end))
-			data.normals.append(radial)
-			data.colors.append(Color("837155").lerp(Color("aa9673"),clampf((start.y if ring == 0 else end.y) / 3.5,0,1)))
-	for side in range(7):
-		var a := first + side
-		var b := first + (side + 1) % 7
-		_triangle(data,a,a + 7,b)
-		_triangle(data,b,a + 7,b + 7)
+func _branch(data: Dictionary, start: Vector3, end: Vector3, radius_start: float, radius_end: float, kind:String="olive") -> void:
+	preload("res://scripts/visual/city_creation_bough_curve.gd").append(data,start,end,radius_start,radius_end,kind)
 
 func _triangle(data: Dictionary, a: int, b: int, c: int) -> void:
 	data.indices.append(a)
