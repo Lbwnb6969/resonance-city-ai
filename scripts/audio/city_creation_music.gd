@@ -20,6 +20,8 @@ const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
 var phonograph:=Phonograph.new()
 const DistrictReply = preload("res://scripts/audio/city_creation_district_reply.gd")
 const ReplyPCM = preload("res://scripts/audio/city_creation_reply_pcm.gd")
+const Smooth=preload("res://scripts/audio/city_creation_smooth_variation.gd")
+const Construction=preload("res://scripts/audio/city_creation_construction_walk.gd")
 const Spatial = preload("res://scripts/audio/city_creation_spatial.gd")
 const PitchPluck = preload("res://scripts/audio/city_creation_pitch_pluck.gd")
 const CircularCanon=preload("res://scripts/audio/city_creation_circular_canon.gd")
@@ -295,7 +297,7 @@ func _play_queued_house(queued: Dictionary)->bool:
 	if queued.has("world_kind"):return WorldToys.play_note(self,queued)
 	if muted or concert_active or _loading:return false
 	var house_id:=str(queued.house_id)
-	var plan:=PitchPluck.plan(_pluck_city,house_id,_playback_clock(),harmony_mode())
+	var plan:=Construction.replan(self,queued)
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key) or acoustic.point_weight(plan.position)<=0.:return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id):return false
 	var selected: AudioStreamPlayer
@@ -837,43 +839,7 @@ func _advance_daily_phrase(phrase: int) -> void:
 		_daily_arrangement.weights=weights
 
 func _update_variations(_delta:float)->void:
-	if _variation_streams.is_empty():return
-	var now:=Time.get_ticks_usec()
-	var mode:=maxi(0,harmony_mode())
-	var clock:=_playback_clock()
-	var bar:=posmod(floori(clock/3.),8)
-	var seeded:=_biome_mode>=0
-	var view:Array=[harmony_mode(),bar,concert_active]
-	if view!=_harmony_view:
-		_harmony_view=view;_edit_streams=_base_edit_streams.duplicate()
-		if not concert_active or seeded:
-			for id:String in _harmony_streams:
-				var prefix:String="%d/"%mode
-				if not id.begins_with(prefix):continue
-				var key:String=id.trim_prefix(prefix)
-				if not key.contains("/"):_edit_streams[key]=_harmony_streams[id]
-			for kind:String in ["room","terrace","road","erase","history","concert","arrival","bakery","craft","installed","tea"]:_edit_streams[kind]=_harmony_streams["%d/edit/%s/%d"%[mode,kind,bar]]
-	var keys:Array=HarmonicEmergence.LEADS+["foundation","air","terrace"]
-	if seeded or _variation_active.has("concert"):keys.append("concert")
-	for key:String in keys:
-		var id:String="original"
-		if key=="concert":
-			if seeded:id="%d/concert"%mode
-		elif not concert_active or seeded:
-			id="%s/%d"%[key,2 if concert_active else int(emergence.score.get("variant",0))] if key in HarmonicEmergence.LEADS else "%d/%s"%[mode,key]
-			if mode>0 and key in HarmonicEmergence.LEADS:id="%d/"%mode+id
-		if _variation_active.get(key,"")==id:
-			_variation_pending.erase(key);continue
-		if not _variation_pending.has(key) or _variation_pending[key].id!=id:
-			_variation_pending[key]={"id":id,"started":now};continue
-		if now-int(_variation_pending[key].started)<40000:continue
-		# Native WAV players support seek and restore. The shared concert
-		# transport never changes; the new loop joins its current sample phase.
-		var player:AudioStreamPlayer=_players[key]
-		player.volume_db=-60.
-		player.stream=_original_streams[key] if id=="original" else (_variation_streams[id] if key in HarmonicEmergence.LEADS else _harmony_streams[id])
-		player.play(fposmod(clock,SECONDS))
-		_variation_active[key]=id;_variation_pending.erase(key);_variation_changed_usec=now
+	Smooth.update(self)
 
 func _mix_label(arrangement: Dictionary) -> String:
 	var label: String=STYLE_NAMES[str(arrangement.base_style)]
@@ -1109,18 +1075,7 @@ func music_report() -> Dictionary:
 
 
 func play_edit(kind: String) -> void:
-	# Every caller is a direct player edit or invitation. Quiet daily cues
-	# have their own queue; sculpting must retain its foreground feedback.
-	if kind in ["room","road","terrain","house","terrace","erase","remove"]:attention.notify_sculpt_action(_playback_clock())
-	if kind=="terrain": kind="road"
-	if muted or not _edit_streams.has(kind):
-		return
-	var selected: AudioStreamPlayer = _effects[0]
-	for effect in _effects:
-		if not effect.playing:
-			selected = effect
-			break
-	play_effect_at(selected,_edit_streams[kind])
+	Construction.edit(self,kind)
 
 func queue_bakery_cue(kind: String,shop_id: String,home_id: String="") -> bool:
 	return Experience.bakery(self,kind,shop_id,home_id)
@@ -1358,10 +1313,7 @@ func _process(delta: float) -> void:
 		# long stems only return to the already verified PCM peak envelope.
 		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)+attention.backing_duck_db+ATTENTION_HEADROOM_DB+experience_lift
 		if not is_finite(_players[key].volume_db): _players[key].volume_db=-60.0
-		var fading:bool=_variation_pending.has(key)
-		if fading:target=-60.
-		var recovering:bool=Time.get_ticks_usec()-_variation_changed_usec<140000
-		_players[key].volume_db = lerpf(_players[key].volume_db, target, 1.0 - exp(-delta * (120. if fading else (60. if recovering else 2.8))))
+		_players[key].volume_db=lerpf(_players[key].volume_db,target,1.-exp(-delta*2.8))
 
 
 func _exit_tree() -> void:

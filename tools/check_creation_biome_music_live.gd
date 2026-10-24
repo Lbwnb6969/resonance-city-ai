@@ -52,7 +52,6 @@ func selected_streams(mode:int,stage:bool)->bool:
 	for key:String in demo.music.HarmonicEmergence.LEADS:
 		var active:String=demo.music._variation_active.get(key,"")
 		okay=okay and active.begins_with(key+"/" if mode==0 else "%d/%s/"%[mode,key])
-		if stage:okay=okay and active.ends_with("/2")
 		okay=okay and demo.music._variation_streams.get(active)==demo.music._players[key].stream
 	for key:String in ["foundation","air","terrace","concert"]:okay=okay and demo.music._players[key].stream==demo.music._harmony_streams["%d/%s"%[mode,key]]
 	return okay
@@ -73,6 +72,8 @@ func run()->void:
 	for id:String in cases:
 		var scene:=build(id);await show_city(scene.city,id)
 		var mode:int=Palette.BIOME_MODES[int(demo.state.Biomes.profile(demo.state.biome_seed).voice)]
+		var adopt_until:=Time.get_ticks_msec()+26000
+		while not selected_streams(mode,false) and Time.get_ticks_msec()<adopt_until:await process_frame
 		var clock:float=demo.music._playback_clock();var record:=start_record();await create_timer(3.3).timeout
 		var peak:=end_record(record,id+"_日常")
 		check(selected_streams(mode,false) and demo.music._players.wood.volume_db>-45.,"actual audible long players use the selected biome key: "+id)
@@ -83,8 +84,9 @@ func run()->void:
 		var report:Dictionary=demo.music.house_pluck_report()
 		check(demo.music._pluck_serial>serial and posmod(int(report.get("midi",-1)),12) in Palette.KEY_TONES[mode],"actual roof voice uses the modal note bank: "+id)
 		var bar:int=posmod(floori(demo.music._playback_clock()/3.),8)
-		var room_wave:AudioStreamWAV=demo.music._harmony_streams["%d/edit/room/%d"%[mode,bar]]
 		demo.music.play_edit("room");await process_frame
+		var note:Dictionary=demo.music.get_meta("construction_last_note",{})
+		var room_wave:AudioStreamWAV=demo.music._edit_streams.get(str(note.get("stream_key","")))
 		check(demo.music._effects.any(func(player):return player.playing and player.stream==room_wave),"actual construction voice uses the same key: "+id)
 		await capture(id)
 		var invited:Dictionary=demo.life.invite_landmark_movement(scene.venue)

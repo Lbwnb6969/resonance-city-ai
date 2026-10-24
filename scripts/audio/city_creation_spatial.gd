@@ -21,9 +21,11 @@ func setup(owner: Node, theme_players: Array, concert_player: AudioStreamPlayer,
 	# The five theme players share the same original output in Music. Their
 	# common panner keeps the adaptive arrangement's relative gains intact.
 	var theme_bus := _make_bus(prefix+"Theme",theme_players[0].bus)
+	preload("res://scripts/audio/city_creation_smooth_variation.gd").reverb(AudioServer.get_bus_index(theme_bus.name))
 	_theme=theme_bus.effect
 	for player: AudioStreamPlayer in theme_players: _route(player,theme_bus.name)
 	var concert_bus := _make_bus(prefix+"Concert",concert_player.bus)
+	preload("res://scripts/audio/city_creation_smooth_variation.gd").reverb(AudioServer.get_bus_index(concert_bus.name))
 	_concert=concert_bus.effect
 	_concert_filter=concert_bus.filter
 	_route(concert_player,concert_bus.name)

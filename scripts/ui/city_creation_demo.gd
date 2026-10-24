@@ -1966,7 +1966,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 		town.request_budget_rebuild()
 		preview_key=""
 		if pluck_house.is_empty(): music.play_edit(kind)
-		else: music.play_house(pluck_house)
+		else: music.Construction.house(music,pluck_house)
 		save_delay=3.0
 		_refresh_ui()
 		_edit_request_ms=float(Time.get_ticks_usec()-started)/1000.0
@@ -1991,7 +1991,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 	life.set_budget_hold(false)
 	preview_key = ""
 	if pluck_house.is_empty(): music.play_edit(kind)
-	else: music.play_house(pluck_house)
+	else: music.Construction.house(music,pluck_house)
 	save_delay = 3.0
 	_refresh_ui()
 	edit_samples.append(float(Time.get_ticks_usec()-started)/1000.0)

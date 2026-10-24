@@ -670,10 +670,10 @@
       "evidence_Paths": [
         "本地验证记录/M34/music_reverb_and_walk_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "消除每 3～6 秒换变奏时强制将发声主轨拉向 -60dB 造成的『旋律打嗝/吞音』；在共享空间总线上挂载温暖的山谷木质室内混响（AudioEffectReverb）洗去纯正弦波的干瘪电子味；并让玩家连续点击建房/加层/修路/种树时，音效沿着当前小节的五声音阶逐级上行（Melodic Construction Walk），让造城落笔如同指尖弹琴。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_cadence_variation.gd; godot --headless --path . -s tools/check_creation_biome_music_live.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "Gate1: python tools/check_ai_harness.py34/42 and python tools/check_doc_links.py PASS. Gate2: Godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_smooth_variation.gd -- --isolated-session111 PASS, phrase_tide73 and legacy_roundtrip375/27 works PASS. Gate3: tools/check_creation_smooth_music_live.gd --path . --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --out-dir=res://验证记录/M34/live_final43 PASS, log no ERROR. Actual51.919819s stereo Master peak.263519287/-11.58375dBFS, RMS-26.33191dBFS, clipped0;96 actual stream changes all at24s lead-in or already-silent voices,3328 pending frames with zero forced lead-gain holes. Sounding wood/foundation/air retain real gains at24.061678 and wood at48.024671. Six actual public-build actions through Demo publish and original queue emit step0..5 / MIDI52,54,57,59,62,64 with actual pastoral pluck; unit verifies all ten keys and four authored era instruments. Two existing shared buses carry reverb.36/.74/.13 wet/.87 dry; no extra players or buses. Original3907 PCM streams exact against archived M33 bank; portable62682389 bytes/3907 roundtrips. Six native dual-resolution day/dusk/night PNG reviewed;5242 sampled frames p9510.078/max10.583ms recorded only. Personal saves unchanged. Independent fork-none Critic reviewed real images and independently recomputed PCM: no M33/M34 blocker; hearing subjective quality unassessed, concrete straight branches/card grass/rigid poses/night text contrast assigned M38/M39/M40; report 验证记录/M34/critic/independent_review.json. First recorder analysis copied full WAV each sample; fixed to one PCM read, original run retained. No forced subjective5/5 claim."
     },
     {
       "id": "M35",
@@ -768,7 +768,10 @@
       "passes": false,
       "description": "彻底解决 文档/28 指出的『直线枝干』短板。将 city_creation_foliage.gd 中原本只有 2 个截面环的笔直圆柱树干与主枝，升级为带自然弧度、树种特征偏转与根颈微隆（Root Flare）的 4 环有机曲枝。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_foliage.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "",
+      "independent_review_followups": [
+        "M34独立Critic：近景枝干存在直管剪影；M38用曲枝/根颈实际近景复验。"
+      ]
     },
     {
       "id": "M39",
@@ -792,7 +795,10 @@
       "passes": false,
       "description": "一次性彻底解决 文档/28 指出的『近草卡片感』与『近景肢体姿态偏木偶』两大短板：为近景草簇赋予横向折脊与基底托叶，为行走与驻足的小人赋予轻快步态起伏、身体微倾、持物惯性轻摆及工坊门前品评微姿态。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_citizen_visual.gd; godot --headless --path . -s tests/test_city_creation_citizen_lod.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "",
+      "independent_review_followups": [
+        "M34独立Critic：近草平面片感、小人并脚直立木偶感；M39分别用低角近景/连续步态序列复验。"
+      ]
     },
     {
       "id": "M40",
@@ -815,7 +821,10 @@
       "passes": false,
       "description": "将屋顶罗盘左侧的建筑原型按钮升级为『手绘建筑剪影图标 + 四字短名』的一瞥即懂印章；同时让春夏秋冬与昼夕夜切换触发细腻的声画风物时刻（春晓花朝、夏夕茶席、秋暮金叶、冬夜提灯）。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_compact_journal.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "",
+      "independent_review_followups": [
+        "M34独立Critic：1024夜景底部深色操作提示对比不足；M40在既有小窗工艺中修正提示颜色/阴影并用夜景原图复验。"
+      ]
     },
     {
       "id": "M41",

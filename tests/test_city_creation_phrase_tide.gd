@@ -23,7 +23,7 @@ func _run() -> void:
 		check(plan.primary==primary and plan.secondary==secondary and secondary=="c2","prefer a real other-bank different-era response over a nearer same-era group")
 		check(plan.lead_cluster==(secondary if phrase in [2,3] else primary),"three-second source stages stay stable for each two-phrase passage")
 		check(records[score.source_id].cluster_id==plan.lead_cluster and score.source_ids[score.lead_track]==score.source_id,"audible source attribution follows the conducting plan")
-		check(is_equal_approx(score.targets[score.lead_track],-11.5 if phrase in [2,3] else -12. if phrase<2 else -13.5),"primary +1.5dB secondary +2dB and unboosted later passages")
+		check(is_equal_approx(score.targets[score.lead_track],-11.5 if phrase in [2,3] else -9. if phrase<2 else -10.5),"primary +1.5dB secondary +2dB and unboosted later passages")
 	var score := Emergence.evaluate(records,field,[],0,false)
 	Tide.arrange(records,field,score,50.)
 	check(score.targets.wood>=-26. and score.targets.terrace>=-27.,"breathing retains an available gentle plucked layer")

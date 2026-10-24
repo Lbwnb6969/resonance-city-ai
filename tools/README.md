@@ -87,3 +87,8 @@ M30：test_city_creation_local_service_cache.gd七类公共编辑145项冷等价
 M31：check_creation_paper_ui_live.gd完整293项（--out-dir=res://验证记录/M31/手札_verified），--compact-only单独验证双窗口20项；完成章节夹具只改呈现rows，不写存档奖励。check_creation_spatial_popover_live.gd完整66项（--out-dir=res://验证记录/M31/罗盘_pass）；子探针与明信片跟随新输出目录，不覆盖旧证据。统一GL/Dummy/isolated-session，先等容器布局再ensure/原生点标题。
 
 M32：long_session_journey.py/live和large_town_live默认输出M32；原M22证据保留。QA追加FinalPrototypes两尺寸各48图/十二原型实际短名与物理拾取/JSON冷重绘；1440阶段再跑小人、接地与紧凑手记（子工具自身覆盖两尺寸）。几何夹具跨世界后，小人另开真实新场景并通过作品加载切城，拍照先更新当前近景LOD。失败阶段可用--resolutions和--phases单独重验，保留成功长录；M32/suite_final.json列出本轮六阶段最终成功源。大型场景音频检查核对原PCM哈希、播放器身份及原缓存池归属，允许正常乐句变奏换源。
+
+
+M33：`test_city_creation_music_experience.gd`核首屋/双屋、四时代、-1.2dB退让与专用钟楼声源。`check_creation_music_experience_live.gd`使用原生GL/Dummy/isolated-session，`--out-dir=res://验证记录/M33/另目录`隔离输出；可用`--cafe-only`、`--bell-only`、`--mill-only`独立验证合法公开视图/库存/地标。实际Master、双尺寸PNG、声池身份与个人档字节均留证。大城单采样窗错过的短音不伪装为通过，保留原日志并用对应真实公共地标单独复验。
+
+M34：`test_city_creation_smooth_variation.gd`核实际AudioStreamPlayer的延迟换流/音量保持、十调式六音阶、实际四时代编辑音色和共享混响/总线回收。`check_creation_smooth_music_live.gd`连续52秒实录与原生状态编辑，检查每次切轨时间、pending主轨没有强制-60dB坑、六次真实建屋依次发声、双尺寸昼夕夜和原音池；默认输出`验证记录/M34/live`，支持`--out-dir=`。`analyze_creation_master.py <WAV...> --out <JSON>`用NumPy测峰/RMS/20ms包络/频谱；本机可用Codex bundled Python运行，指标不代替主观审听。每两项与M41/M42将原图/录音诊断交独立上下文Critic，原始报告保留在本地验证记录。

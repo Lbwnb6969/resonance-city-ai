@@ -47,7 +47,7 @@ static func run(demo: Node, directory: String) -> Dictionary:
 			var weight: float = demo.music._long_acoustic_weight(track)
 			values[track] = player.volume_db
 			if weight > 0. and float(score.targets.get(track,-60.)) > -50.:
-				expected[track] = demo.music.target_gain_db(track,false)+linear_to_db(weight)+demo.music.attention.backing_duck_db+demo.music.ATTENTION_HEADROOM_DB
+				expected[track] = demo.music.target_gain_db(track,false)+linear_to_db(weight)+demo.music.attention.backing_duck_db+demo.music.ATTENTION_HEADROOM_DB+demo.music.Experience.lift(demo.music)
 				maximum_error = maxf(maximum_error,absf(player.volume_db-expected[track]))
 		samples.append({"clock":clock,"plan":plan.duplicate(true),"values":values,"expected":expected,"max_error_db":maximum_error,
 			"breath":demo.music.ClusterHarmony.Tide.breath(clock),"source":demo.music.daily_source()})
