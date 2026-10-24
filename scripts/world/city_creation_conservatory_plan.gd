@@ -9,6 +9,7 @@ const EPS := 0.002
 
 static func for_house(city: RefCounted,house: Dictionary)->Dictionary:
 	var terrace := choose(city.houses,house)
+	if house.get("architecture","") in preload("res://scripts/world/city_creation_architecture_choice.gd").CLOCKWORK:return terrace
 	if city.house_era(house)!="clockwork" or not terrace.is_empty():return terrace
 	# A clear exposed row can carry a glazed winter garden above its mansard.
 	var tops := {}

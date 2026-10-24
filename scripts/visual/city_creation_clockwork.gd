@@ -53,6 +53,7 @@ static func adjacency_signature(city: RefCounted,house: Dictionary)->Array:
 	return result
 
 static func prepare(city: RefCounted,house: Dictionary)->Array:
+	if house.get("architecture","") in preload("res://scripts/world/city_creation_architecture_choice.gd").CLOCKWORK:return preload("res://scripts/visual/city_creation_clockwork_prototypes.gd").prepare(city,house,_tops(city))
 	var rows := _tops(city)
 	var boundaries: Array=[]
 	for row: Dictionary in rows:
@@ -100,6 +101,8 @@ static func prepare(city: RefCounted,house: Dictionary)->Array:
 	return records
 
 static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void:
+	if data.has("prototype"):
+		preload("res://scripts/visual/city_creation_clockwork_prototypes.gd").install(renderer,root,house,data);return
 	var row:Dictionary=data
 	var center:Vector2=data.center
 	var array_mesh:=ArrayMesh.new();array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)

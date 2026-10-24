@@ -694,10 +694,11 @@
       "evidence_Paths": [
         "本地验证记录/M35/clockwork_prototypes_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "消除第三时代（clockwork）在屋顶罗盘中没有可选建筑原型、整片街区只有单一红砖孟莎盒子的断层。为蒸汽钟表时代新增 4 种极具辨识度的建筑原型：折顶天窗工坊（sawtooth_atrium）、转角铜钟阁（clock_turret）、铁艺花房茶廊（iron_conservatory）、红砖拱券行会（guild_arcade）。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_architecture_choice.gd; godot --headless --path . -s tools/check_creation_clockwork_architecture.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py PASS. Gate2: clockwork_prototypes120 / architecture_choice55 / old_clockwork10 / legacy375 and27 works PASS (Godot4.7.2, headless Dummy, isolated-session). Gate3: tools/check_creation_clockwork_prototypes_live.gd native OpenGL106 PASS at M35/accepted; actual compass clicks CtrlZ/Y, JSON save/restore, roof physics, dual resolutions day/dusk/night and5/10/15deg with rear angle reviewed. Corrected roof winding and clock pedestal after raw-image review. Master6.130s peak0.18222046 zero clips; frames p9510.061/max10.303ms; fixed audio pool and personal save bytes unchanged. Earlier failing fixtures and visual iterations retained under M35.",
+      "implementation_notes": "Actual clockwork worker/roof pipeline, shared wall micro-normal/contact AO and existing live roof glazing. Selected roofs replace mansards; optional authored terraces retained. Source sample health commands are design references; actual gates use existing harness/doc tools and the new native prototype probe."
     },
     {
       "id": "M36",

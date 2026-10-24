@@ -2,13 +2,15 @@ extends RefCounted
 ## Optional Schema19 choices leave old works and their automatic recipes intact.
 const ALPINE=["chalet","pavilion","terrace","panorama","twin_gable","green_lodge"]
 const NEO=["portico","townhouse","oriel","peristyle","rotunda","guildhall"]
-const LABELS=["山墙木屋","玻璃亭","台地宅","全景山居","连桥工坊","绿顶山舍","柱廊门庭","分层街屋","转角凸窗","内院连柱","圆厅书院","山花会馆"]
+const CLOCKWORK=["sawtooth_atrium","clock_turret","iron_conservatory","guild_arcade"]
+const LABELS=["山墙木屋","玻璃亭","台地宅","全景山居","连桥工坊","绿顶山舍","柱廊门庭","分层街屋","转角凸窗","内院连柱","圆厅书院","山花会馆","折顶天窗","转角铜钟","铁艺花房","红砖拱会"]
 static func valid(value: Variant) -> bool:
-	return value is String and value in ALPINE+NEO
+	return value is String and value in ALPINE+NEO+CLOCKWORK
 static func choices(city, house: Dictionary) -> Array:
 	if house.has("signature"): return []
 	var era: String=city.house_era(house)
 	if era=="modern_eco": return ALPINE
+	if era=="clockwork": return CLOCKWORK
 	if era not in ["pastoral","renaissance"] or house.get("style","") in ["timber","round_tower"]: return []
 	var result: Array=["portico","townhouse"]
 	var Neo=preload("res://scripts/visual/city_creation_neoclassical.gd")
@@ -19,7 +21,7 @@ static func choices(city, house: Dictionary) -> Array:
 	if not Civic.guild(city,house,true).is_empty(): result.append("guildhall")
 	return result
 static func label(key: String) -> String:
-	var index: int=(ALPINE+NEO).find(key)
+	var index: int=(ALPINE+NEO+CLOCKWORK).find(key)
 	return LABELS[index] if index>=0 else "随形生长"
 static func set_choice(city, id: String, key: String) -> Dictionary:
 	var index: int=city._house_index(id)
