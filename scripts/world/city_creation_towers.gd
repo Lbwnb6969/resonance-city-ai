@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## A derived crown never changes the authored room, role or house identity.
 ## Global occupancy follows the same Townscaper-derived context principle as
 ## joined roofs; the three-storey rule and crown clearance are this game's.
@@ -18,7 +19,7 @@ static func derive(houses: Array, roads: Array = []) -> Dictionary:
 		result[str(house.id)] = []
 		for cell: Dictionary in house.cells:
 			occupied[Vector3i(int(cell.x),int(cell.level),int(cell.z))] = cell
-			var at := Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
+			var at := Frame.center(house,cell)
 			var key := Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
 			if not bins.has(key): bins[key] = []
 			bins[key].append({"house_id":str(house.id),"cell_id":str(cell.id),"at":at,"bottom":float(house.get("base_y",0.0))+int(cell.level)*FLOOR})
@@ -38,7 +39,7 @@ static func derive(houses: Array, roads: Array = []) -> Dictionary:
 					supported = false
 					break
 			if not supported: continue
-			var at := Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
+			var at := Frame.center(house,cell)
 			var bin := Vector2i(floori(at.x/BIN_SIZE),floori(at.y/BIN_SIZE))
 			var clear := true
 			# Full and partial face contacts, terraces, diagonal neighbors and

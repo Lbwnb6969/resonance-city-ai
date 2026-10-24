@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Saved intent lives on a real owning road; circular coverage, routes and
 ## scenery are derived. No synthetic road IDs or changes to house entrances.
 const RADIUS := 2.4
@@ -42,8 +43,7 @@ static func site(city: RefCounted,center: Vector2,radius: float,houses: Array,wa
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
 			var at:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
-			var offset: Vector2=(center-at).abs()-Vector2.ONE*.9
-			if offset.max(Vector2.ZERO).length()<radius+.3: return {"ok":false,"message":"环岛需要避开房屋与门前"}
+			if Frame.distance(Frame.footprint(house,cell),center)<radius+.3: return {"ok":false,"message":"环岛需要避开房屋与门前"}
 	for at: Vector2 in polygon(center,radius+.15):
 		if city._water_clearance_in(at,waters)<.25: return {"ok":false,"message":"环岛需要干燥的岸上路口"}
 	if city._water_clearance_in(center,waters)<radius+.25: return {"ok":false,"message":"环岛需要干燥的岸上路口"}

@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Derived, real extra street coverage; authored capsule cores stay untouched.
 ## The .38 * (1 - d / 1.4)^2 profile adapts the project design blueprint.
 ## Tiny Glade's restored paths shaders separate occupancy/exclusion from visual
@@ -123,7 +124,7 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
 			var center := Vector2(float(house.origin[0]),float(house.origin[1]))+Vector2(float(cell.x),float(cell.z))*1.8
-			houses.append(Rect2(center-Vector2.ONE*0.92,Vector2.ONE*1.84))
+			houses.append(Frame.footprint(house,cell,.02))
 	# Read existing real entrances; do not call State.road_at / road_junctions.
 	# The entrance cache is independent of derived extra street coverage.
 	var doors: Array = []
@@ -244,8 +245,8 @@ func _prepare(city: RefCounted,only_id: String) -> void:
 		for joint: Vector2 in junctions:
 			var region:=Rect2(joint-Vector2.ONE*2.5,Vector2.ONE*5.0)
 			regions.append(region)
-			for rect: Rect2 in houses:
-				if region.intersects(rect,true) and not local_houses.has(rect): local_houses.append(rect)
+			for rect:Variant in houses:
+				if region.intersects(Frame.bounds(rect),true) and not local_houses.has(rect): local_houses.append(rect)
 			for rect: Rect2 in doors:
 				if region.intersects(rect,true) and not local_doors.has(rect): local_doors.append(rect)
 			for water: Dictionary in water_rows:
@@ -334,8 +335,8 @@ func _build(city: RefCounted,points: Array[Vector2],radius: float,junctions: Arr
 	# retain their original contours; their fillet extension is deferred.
 	if junctions.is_empty() or core.size()!=1: return result
 	var blockers: Array[PackedVector2Array]=[]
-	for rect: Rect2 in houses+doors:
-		blockers.append(PackedVector2Array([rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)]))
+	for rect:Variant in houses+doors:
+		blockers.append(Frame.corners(rect))
 	for segment: Dictionary in foreign:
 		var line: Array[Vector2]=[segment.a,segment.b]
 		# Offset arcs are inscribed with <1.6cm chord error. Reserve another 2cm
@@ -524,7 +525,7 @@ func _amount(city: RefCounted,center: Vector2,normal: Vector2,radius: float,junc
 	var base:=center+normal*radius
 	# min distance is 1-Lipschitz; leaving a 2cm shell prevents an outward
 	# band entering the real building or its door approach rectangle.
-	for rect: Rect2 in houses+doors: extra=minf(extra,_rect_distance(base,rect))
+	for rect:Variant in houses+doors:extra=minf(extra,Frame.distance(rect,base))
 	for segment: Dictionary in foreign:
 		var nearest:=Geometry2D.get_closest_point_to_segment(base,segment.a,segment.b)
 		extra=minf(extra,maxf(0,base.distance_to(nearest)-float(segment.radius)-0.07))
@@ -550,7 +551,8 @@ func _components(links: Dictionary) -> Dictionary:
 func _rect_distance(point: Vector2,rect: Rect2) -> float:
 	return point.distance_to(point.clamp(rect.position,rect.end))
 
-func _rect_less(a: Rect2,b: Rect2) -> bool:
+func _rect_less(a:Variant,b:Variant) -> bool:
+	a=Frame.bounds(a);b=Frame.bounds(b)
 	if a.position.x!=b.position.x: return a.position.x<b.position.x
 	if a.position.y!=b.position.y: return a.position.y<b.position.y
 	if a.size.x!=b.size.x: return a.size.x<b.size.x

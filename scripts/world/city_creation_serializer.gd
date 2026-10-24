@@ -75,7 +75,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for id:String in city.resonance_afterglow:
 		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
 	for house:Dictionary in city.houses:
-		if house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture"):result.schema=city.PERSONALIZATION_SCHEMA;break
+		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
 		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
@@ -205,6 +205,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	city._next_district_id = int(data.get("next_district_id", 1))
 	# JSON numbers enter as floats; restore the authoritative integer fields.
 	for house in city.houses:
+		if house.has("yaw"):house.yaw=float(house.yaw)
 		if house.has("base_y"): house.base_y=float(house.base_y)
 		house.name = house.get("name", "石榴巷%s号" % house.id.substr(1))
 		house.role = house.get("role", "residential")
@@ -369,6 +370,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for house in data.houses:
 		if not house is Dictionary or not city._valid_id(house.get("id"), "h", ids):
 			return city._fail("城市存档房屋身份无效")
+		if house.has("yaw") and (data.schema<city.PERSONALIZATION_SCHEMA or not city._is_number(house.yaw) or float(house.yaw)<-PI or float(house.yaw)>=PI):return city._fail("房屋转向字段无效")
 		if house.has("acoustic_style"):
 			if data.schema<city.PERSONALIZATION_SCHEMA or house.acoustic_style not in city.DISTRICT_STYLES:return city._fail("聚落曲风字段无效")
 		if house.has("temperament"):

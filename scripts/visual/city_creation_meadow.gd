@@ -1,5 +1,6 @@
 class_name CityCreationMeadow
 extends Node3D
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original low-detail meadow exemplars. Tiny Glade's recovered Grass2
@@ -68,7 +69,7 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 	var entrances := _entrances_by_house() if entrances_by_house.is_empty() else entrances_by_house
 	var centers: Array[Vector2]=[]
 	for house: Dictionary in state.houses:
-		if house.get("signature","")=="botanical_palace":centers.append(Vector2(house.origin[0],house.origin[1])+Vector2(0,1.8))
+		if house.get("signature","")=="botanical_palace":centers.append(Frame.point(house,Vector2(house.origin[0],house.origin[1])+Vector2(0,1.8)))
 	var candidates: Array[Vector2i]=dirty.duplicate()
 	if centers!=palace_centers:
 		# Moving/removing a palace invalidates both flower halos, including
@@ -370,8 +371,8 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 	var rect := Rect2(Vector2(block) * BLOCK_SIZE, Vector2.ONE * BLOCK_SIZE).grow(1.0)
 	var relevant: Array = []
 	for court: Dictionary in state.courtyard_plans():
-		for footprint: Rect2 in court.tiles:
-			if rect.intersects(footprint): relevant.append(["courtyard",footprint])
+		for footprint:Variant in court.tiles:
+			if rect.intersects(Frame.bounds(footprint)): relevant.append(["courtyard",footprint])
 	if entrances_by_house.is_empty(): entrances_by_house = _entrances_by_house()
 	for house: Dictionary in state.get("houses"):
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
@@ -385,9 +386,9 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 			var at := origin + Vector2(float(cell.x), float(cell.z)) * 1.8
 			# Full foundation and exposed south doorway define the grass removal
 			# domain; upper floors, names and palettes never invalidate grass.
-			var footprint := Rect2(at - Vector2.ONE * 0.9, Vector2.ONE * 1.8)
-			if rect.intersects(footprint.grow(0.12)):
-				relevant.append(["house", at, cell.kind])
+			var footprint:Variant=Frame.footprint(house,cell)
+			if rect.intersects(Frame.bounds(Frame.grow(footprint,.12))):
+				relevant.append(["house",Frame.box_center(footprint),cell.kind] if footprint is Rect2 else ["house_frame",footprint,cell.kind])
 		var entrances: Array = entrances_by_house[str(house.get("id", str(house.origin)))]
 		for entrance: Dictionary in entrances:
 			var door: Vector2 = entrance.clearance_at
@@ -534,10 +535,11 @@ func _prepare_samples(block: Vector2i, obstacles: Array) -> void:
 		var origin := Vector2(block) * BLOCK_SIZE
 		for row: Array in changed:
 			var bounds := Rect2()
-			if row[0] == "house":
+			if row[0]=="house_frame":bounds=Frame.bounds(Frame.grow(row[1],GrassMask.EDGE_DISTANCE))
+			elif row[0] == "house":
 				bounds = Rect2(row[1] - Vector2.ONE * 0.9, Vector2.ONE * 1.8).grow(GrassMask.EDGE_DISTANCE)
 			elif row[0] == "courtyard":
-				bounds = (row[1] as Rect2).grow(GrassMask.EDGE_DISTANCE)
+				bounds=Frame.bounds(Frame.grow(row[1],GrassMask.EDGE_DISTANCE))
 			elif row[0] == "door":
 				bounds = Rect2(row[1] - Vector2.ONE * (0.95 + GrassMask.EDGE_DISTANCE), Vector2.ONE * (1.9 + GrassMask.EDGE_DISTANCE * 2.0))
 			else:

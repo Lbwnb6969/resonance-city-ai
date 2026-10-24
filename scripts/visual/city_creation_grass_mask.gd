@@ -1,5 +1,6 @@
 class_name CityCreationGrassMask
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Dirty-block-only spatial index of production vegetation predicates.
 ## House neighbours are resolved once, not scanned for each grass candidate.
 const State := preload("res://scripts/world/city_creation_state.gd")
@@ -12,10 +13,10 @@ const MAX_CLEARANCE := 0.42 * 0.25
 const EDGE_DISTANCE := 0.65
 
 class Bin extends RefCounted:
-	var footprints: Array[Rect2] = []
+	var footprints: Array = []
 	var doors := PackedVector2Array()
 	var capsules: Array[Capsule] = []
-	var edge_footprints: Array[Rect2] = []
+	var edge_footprints: Array = []
 	var edge_doors := PackedVector2Array()
 	var edge_capsules: Array[Capsule] = []
 
@@ -41,20 +42,20 @@ func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = 
 	# Derived paving suppresses ground cover; authored tree/shrub visibility
 	# still belongs to State and remains independent of this grass-only mask.
 	for court: Dictionary in state.courtyard_plans():
-		for footprint: Rect2 in court.tiles:
-			for index: int in _indices(footprint.grow(MAX_CLEARANCE)):
+		for footprint:Variant in court.tiles:
+			for index: int in _indices(Frame.bounds(Frame.grow(footprint,MAX_CLEARANCE))):
 				_bins[index].footprints.append(footprint)
-			for index: int in _indices(footprint.grow(EDGE_DISTANCE)):
+			for index: int in _indices(Frame.bounds(Frame.grow(footprint,EDGE_DISTANCE))):
 				_bins[index].edge_footprints.append(footprint)
 	for house: Dictionary in state.get("houses"):
 		for cell: Dictionary in house.cells:
 			if int(cell.level) != 0:
 				continue
 			var at := Vector2(float(house.origin[0]) + int(cell.x) * State.CELL_UNIT, float(house.origin[1]) + int(cell.z) * State.CELL_UNIT)
-			var footprint := Rect2(at - Vector2.ONE * State.CELL_UNIT * 0.5, Vector2.ONE * State.CELL_UNIT)
-			for index: int in _indices(footprint.grow(MAX_CLEARANCE)):
+			var footprint:Variant=Frame.footprint(house,cell)
+			for index: int in _indices(Frame.bounds(Frame.grow(footprint,MAX_CLEARANCE))):
 				_bins[index].footprints.append(footprint)
-			for index: int in _indices(footprint.grow(EDGE_DISTANCE)):
+			for index: int in _indices(Frame.bounds(Frame.grow(footprint,EDGE_DISTANCE))):
 				_bins[index].edge_footprints.append(footprint)
 		var key := str(house.get("id",str(house.origin)))
 		var entrances: Array = entrances_by_house[key] if entrances_by_house.has(key) else state.house_entrances(str(house.id)) if house.has("id") else Frontage.entrances(house, state.get("roads"))
@@ -105,8 +106,8 @@ func visible(at: Vector2, scale: float) -> bool:
 	var local := at - _origin
 	var index := floori(local.y / BIN_SIZE) * BIN_COUNT + floori(local.x / BIN_SIZE)
 	var bin: Bin = _bins[index]
-	for footprint: Rect2 in bin.footprints:
-		if footprint.grow(clearance).has_point(at):
+	for footprint:Variant in bin.footprints:
+		if Frame.contains(Frame.grow(footprint,clearance),at):
 			return false
 	for door: Vector2 in bin.doors:
 		if at.distance_to(door) <= 0.95 + clearance:
@@ -145,7 +146,7 @@ func continuous_edge(at: Vector2) -> Dictionary:
 	var local := at - _origin
 	var index := floori(local.y / BIN_SIZE) * BIN_COUNT + floori(local.x / BIN_SIZE)
 	var bin: Bin = _bins[index]
-	for footprint: Rect2 in bin.edge_footprints:
+	for footprint:Variant in bin.edge_footprints:
 		var edge := _rect_edge(at, footprint)
 		if edge.z < best:
 			best = edge.z
@@ -174,9 +175,11 @@ func continuous_edge(at: Vector2) -> Dictionary:
 				push = Vector2.RIGHT
 	return {"clearance": best, "push": push}
 
-func _rect_edge(at: Vector2, footprint: Rect2) -> Vector3:
-	var offset := at - footprint.get_center()
-	var q := offset.abs() - footprint.size * 0.5
+func _rect_edge(at: Vector2, footprint:Variant) -> Vector3:
+	if footprint is Dictionary:
+		var edge:=_rect_edge(Frame.local_point(footprint,at),Frame.rect(footprint));var push:=Vector2(edge.x,edge.y).rotated(-float(footprint.angle));return Vector3(push.x,push.y,edge.z)
+	var offset:Vector2=at-footprint.get_center()
+	var q:Vector2=offset.abs()-footprint.size*.5
 	var outside := Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0))
 	var distance := outside.length() + minf(maxf(q.x, q.y), 0.0)
 	var push := Vector2.ZERO

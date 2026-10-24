@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Visible clocks observe real courtyards, wheel geometry and tram station arrivals.
 const Geometry = preload("res://scripts/visual/city_creation_metronome_geometry.gd")
 const Materials = preload("res://scripts/visual/city_creation_metronome_material.gd")
@@ -19,10 +20,10 @@ func bind_life(music: Node, source: Node3D) -> void:
 	for row: Dictionary in flows: row.started = -100.
 static func tile_order(tiles: Array, center: Vector2) -> Array:
 	var perimeter: Array = []
-	for tile: Rect2 in tiles:
-		var at := tile.get_center(); var exposed := false
+	for tile:Variant in tiles:
+		var at := Frame.box_center(tile); var exposed := false
 		for side: Vector2 in [Vector2.LEFT,Vector2.RIGHT,Vector2.UP,Vector2.DOWN]:
-			if not tiles.any(func(other: Rect2) -> bool: return other.has_point(at+side*1.8)): exposed = true
+			if not tiles.any(func(other:Variant) -> bool: return Frame.contains(other,at+side*1.8)): exposed = true
 		if exposed: perimeter.append(at)
 	perimeter.sort_custom(func(a: Vector2,b: Vector2) -> bool: return fposmod(atan2(a.x-center.x,center.y-a.y),TAU)<fposmod(atan2(b.x-center.x,center.y-b.y),TAU))
 	return perimeter

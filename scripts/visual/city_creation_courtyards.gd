@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Derived courts only. Foundation's extracted fountain retains its original
 ## meshes, node transforms and Y=0 anchor, including the buried negative base.
 ## Paving adapts classical_civic_court.gd's .32/.44 staggered stone courses.
@@ -81,9 +82,9 @@ func _paving(state: RefCounted,plan: Dictionary) -> Dictionary:
 	var data := {"vertices":PackedVector3Array(),"normals":PackedVector3Array(),
 		"colors":PackedColorArray(),"indices":PackedInt32Array(),"stones":0}
 	var planters: Array = plan.get("planters",[])
-	for tile: Rect2 in plan.tiles:
+	for tile:Variant in plan.tiles:
 		# Open seams between authored tiles leave drainage/soil visible.
-		var bounds := tile.grow(-0.014)
+		var bounds:Rect2=Frame.rect(tile).grow(-.014)
 		for row in range(floori(bounds.position.y/COURSE),ceili(bounds.end.y/COURSE)):
 			var stagger := STONE*0.5 if posmod(row,2)==1 else 0.0
 			for column in range(floori((bounds.position.x-stagger)/STONE),ceili((bounds.end.x-stagger)/STONE)):
@@ -96,11 +97,15 @@ func _paving(state: RefCounted,plan: Dictionary) -> Dictionary:
 				for z in range(2):
 					for x in range(2):
 						var patch := Rect2(stone.position+stone.size*Vector2(x,z)*0.5,stone.size*0.5)
-						if _touches_planter(patch,planters): continue
-						_patch(state,data,patch,tint)
+						if _patch_has_planter(patch,planters,tile):continue
+						_patch(state,data,patch,tint,tile)
 				if data.vertices.size()>before: data.stones+=1
 	return data
 
+func _patch_has_planter(patch:Rect2,planters:Array,tile:Variant)->bool:
+	if tile is Rect2:return _touches_planter(patch,planters)
+	var box:={"center":Vector2(tile.center)+patch.get_center().rotated(-float(tile.angle)),"half":patch.size*.5,"angle":tile.angle}
+	return planters.any(func(p):return Frame.distance(box,p.at)<=float(p.radius))
 func _touches_planter(patch: Rect2,planters: Array) -> bool:
 	for planter: Dictionary in planters:
 		var center: Vector2 = planter.at
@@ -108,15 +113,18 @@ func _touches_planter(patch: Rect2,planters: Array) -> bool:
 		if closest.distance_squared_to(center)<=pow(float(planter.radius),2.0): return true
 	return false
 
-func _patch(state: RefCounted,data: Dictionary,bounds: Rect2,tint: Color) -> void:
+func _patch(state: RefCounted,data: Dictionary,bounds: Rect2,tint: Color,tile:Variant=null) -> void:
 	var a := bounds.position
 	var c := bounds.end
 	var corners := [a,Vector2(c.x,a.y),c,Vector2(a.x,c.y)]
 	var positions: Array[Vector3] = []
-	for at: Vector2 in corners: positions.append(Vector3(at.x,float(state.ground_height(at))+FLOOR_LIFT,at.y))
+	for design:Vector2 in corners:
+		var at:Vector2=design if not tile is Dictionary else Vector2(tile.center)+design.rotated(-float(tile.angle))
+		positions.append(Vector3(at.x,float(state.ground_height(at))+FLOOR_LIFT,at.y))
 	var dx := ((positions[1].y-positions[0].y)+(positions[2].y-positions[3].y))*0.5/bounds.size.x
 	var dz := ((positions[3].y-positions[0].y)+(positions[2].y-positions[1].y))*0.5/bounds.size.y
 	var normal := Vector3(-dx,1.0,-dz).normalized()
+	if tile is Dictionary:normal=(positions[3]-positions[0]).cross(positions[1]-positions[0]).normalized()
 	var start: int = data.vertices.size()
 	for position: Vector3 in positions:
 		data.vertices.append(position)

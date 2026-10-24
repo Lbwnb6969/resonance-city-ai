@@ -1,5 +1,6 @@
 class_name CityCreationRoadIntent
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 
 ## Authoring assistance only. State's complete road validator remains authoritative.
 ## Tiny Glade inspires continuous road joints; bank anchoring is a new Godot rule,
@@ -170,6 +171,6 @@ static func _near_ground_house(city: RefCounted, point: Vector2, width: float) -
 		for cell in house.cells:
 			if int(cell.level) != 0: continue
 			var center := origin + Vector2(float(cell.x), float(cell.z)) * unit
-			if Rect2(center - Vector2.ONE * unit * 0.5, Vector2.ONE * unit).grow(width * 0.5 + 0.08).has_point(point):
+			if Frame.contains(Frame.footprint(house,cell,width*.5+.08),point):
 				return true
 	return false

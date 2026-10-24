@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Immutable edit labels for staged simulation/render preparation.
 ## The producer records both old and new support bounds; consumers decide how
 ## far to propagate them. This mirrors CS2's explicit change tags without
@@ -79,7 +80,7 @@ static func _bounds(domain: String, row: Dictionary) -> Rect2:
 		for cell: Dictionary in row.get("cells",[]):
 			if int(cell.level)!=0: continue
 			var center := at+Vector2(float(cell.x),float(cell.z))*1.8
-			footprint = footprint.expand(center-Vector2.ONE).expand(center+Vector2.ONE)
+			footprint=footprint.merge(Frame.bounds(Frame.footprint(row,cell,.1)))
 		return footprint.grow(.5)
 	if points.is_empty() and row.has("position"):
 		var position: Variant = row.position

@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Original metric masonry, sharing the streets' warm stone tones.
 ## Like TG support stations, the footing samples both sides and the centre;
 ## its exposed face follows the actual unprotected ground, not sea level.
@@ -38,7 +39,7 @@ static func footing(renderer,house: Dictionary,cell: Dictionary) -> float:
 	var bottom := center.y-0.04
 	for x: float in [-0.92,0.0,0.92]:
 		for z: float in [-0.92,0.0,0.92]:
-			bottom=minf(bottom,renderer.state.raw_terrain_height(Vector2(center.x+x,center.z+z))-0.15)
+			bottom=minf(bottom,renderer.state.raw_terrain_height(Frame.point(house,Vector2(center.x+x,center.z+z)))-0.15)
 	# Existing riverbank foundations continue below the old shallow bank.
 	if center.y<0.05: bottom=minf(bottom,renderer.Terrain.BASE_HEIGHT-renderer.Terrain.BANK_DEPTH-0.02)
 	var depth:=bottom-center.y
@@ -114,6 +115,7 @@ func contact_plan(renderer,house:Dictionary,footings:Array=[])->Dictionary:
 		for piece:Rect2 in pieces:
 			var rect:=Rect2(piece.position+Vector2(center.x,center.z),piece.size)
 			var inner:=_corners(rect.grow(CONTACT_INSET));var outer:=_corners(rect.grow(CONTACT_INSET+CONTACT_WIDTH))
+			for i in range(4):inner[i]=Frame.point(house,inner[i]);outer[i]=Frame.point(house,outer[i])
 			for edge in range(4):
 				# Only the cell's exterior perimeter. Interior pier edges must not
 				# lay a gravel strip across the real walk-through arch opening.
@@ -126,7 +128,7 @@ func contact_plan(renderer,house:Dictionary,footings:Array=[])->Dictionary:
 					var half:=Vector2(1.1,float(passage.half_width)) if horizontal else Vector2(float(passage.half_width),1.1)
 					var at:=Vector2(center.x,center.z)+(Vector2(0,float(passage.offset)) if horizontal else Vector2(float(passage.offset),0))
 					var remaining:Array=[]
-					for polygon:PackedVector2Array in polygons:remaining.append_array(Geometry2D.clip_polygons(polygon,_corners(Rect2(at-half,half*2.))))
+					for polygon:PackedVector2Array in polygons:remaining.append_array(Geometry2D.clip_polygons(polygon,Frame.corners({"center":Frame.point(house,at),"half":half,"angle":Frame.yaw(house)})))
 					polygons=remaining
 				var bounds:=Rect2(outer[edge],Vector2.ZERO).expand(outer[next]).grow(CONTACT_WIDTH)
 				var blockers:Dictionary=_nearby(bounds)
@@ -137,7 +139,7 @@ func contact_plan(renderer,house:Dictionary,footings:Array=[])->Dictionary:
 					polygons=remaining
 					if polygons.is_empty():break
 				for polygon:PackedVector2Array in polygons:
-					_append_ground(renderer,polygon,rect,center,vertices,normals,colors,uv)
+					_append_ground(renderer,polygon,rect,center,vertices,normals,colors,uv,house)
 		if vertices.is_empty():continue
 		var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX)
 		arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_TEX_UV]=uv
@@ -173,7 +175,7 @@ func _prepare_blockers(renderer)->void:
 		for cell:Dictionary in house.cells:
 			if int(cell.level)!=0:continue
 			var at:=Vector2(house.origin[0]+cell.x*UNIT,house.origin[1]+cell.z*UNIT)
-			_add_blocker(str(house.id)+"/"+str(cell.id),_corners(Rect2(at-Vector2.ONE*.955,Vector2.ONE*1.91)))
+			_add_blocker(str(house.id)+"/"+str(cell.id),Frame.corners(Frame.footprint(house,cell,.055)))
 	var junctions:RefCounted=renderer.state.road_junctions()
 	for road:Dictionary in renderer.state.roads:
 		var serial:=0
@@ -189,7 +191,7 @@ func _prepare_blockers(renderer)->void:
 		for polygon:PackedVector2Array in junctions.additions(str(road.id)):
 			_add_blocker("road/"+str(road.id)+"/"+str(serial),polygon);serial+=1
 
-static func _append_ground(renderer,polygon:PackedVector2Array,rect:Rect2,center:Vector3,vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array)->void:
+static func _append_ground(renderer,polygon:PackedVector2Array,rect:Rect2,center:Vector3,vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,house:Dictionary={})->void:
 	# Clip to the exact terrain triangles before sampling height: even on a
 	# steep bank the ribbon cannot straddle a ridge and flicker into the ground.
 	var terrain=renderer.Terrain;var bounds:=Rect2(polygon[0],Vector2.ZERO)
@@ -215,9 +217,10 @@ static func _append_ground(renderer,polygon:PackedVector2Array,rect:Rect2,center
 						if cross.y<0.:points.reverse();cross=-cross
 						var normal:=cross.normalized()
 						for point:Vector3 in points:
-							var distance:Vector2=(Vector2(point.x,point.z)-rect.get_center()).abs()-rect.size*.5
+							var local:Vector3=point if house.is_empty() else Frame.design3(house,point)
+							var distance:Vector2=(Vector2(local.x,local.z)-rect.get_center()).abs()-rect.size*.5
 							var alpha:=1.-clampf((maxf(distance.x,distance.y)-CONTACT_INSET)/CONTACT_WIDTH,0.,1.)
-							vertices.append(point-center);normals.append(normal);colors.append(Color(1.,1.,1.,alpha));uv.append(Vector2(point.x,point.z))
+							vertices.append(local-center);normals.append(normal if house.is_empty() else Frame.design_normal(house,normal));colors.append(Color(1.,1.,1.,alpha));uv.append(Vector2(point.x,point.z))
 
 static func install_contact(renderer,parent:Node3D,house:Dictionary,cell:Dictionary)->void:
 	var plan:Dictionary=renderer.highland.contact_plan(renderer,house)

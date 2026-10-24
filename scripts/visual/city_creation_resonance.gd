@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Derived visual state only. Geometry is built once with the corresponding
 ## house, and clock/phrase/mute updates touch uniforms and visual transforms.
 const GlowShader = preload("res://scripts/visual/shaders/creation_resonance.gdshader")
@@ -189,8 +190,8 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	arc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	arc.visible = false
 	arc.custom_aabb = AABB(Vector3(-22,-1,-19),Vector3(44,21,38))
-	root.add_child(arc)
-	var row := {"root":root,"pivot":pivot,"mesh":rig,"material":material,"arc":arc,"arc_material":arc_material,"anchor":Vector3(center.x,top+0.10,center.z),"base_y":center.y,"height":maxf(FLOOR,top-center.y),"weight":0.0,"afterglow":0.0,"level_tier":renderer.state.level_tier(id),"inhabited":str(house.get("role",""))=="residential"}
+	root.add_child(arc);arc.set_as_top_level(true);arc.global_transform=Transform3D.IDENTITY
+	var row := {"root":root,"pivot":pivot,"mesh":rig,"material":material,"arc":arc,"arc_material":arc_material,"anchor":Frame.world3(house,Vector3(center.x,top+0.10,center.z)),"base_y":center.y,"height":maxf(FLOOR,top-center.y),"weight":0.0,"afterglow":0.0,"level_tier":renderer.state.level_tier(id),"inhabited":str(house.get("role",""))=="residential"}
 	material.set_shader_parameter("pluck_base_y",center.y)
 	material.set_shader_parameter("pluck_height",float(row.height))
 	rigs[id] = row

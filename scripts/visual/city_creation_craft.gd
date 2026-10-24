@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Permanent, delivered improvements are independent of structural house meshes
@@ -89,7 +90,7 @@ func progress(renderer,only: Array[String]=[]) -> void:
 	_mechanisms(renderer,only)
 	var live := {}
 	var footprints: Array = []
-	for house: Dictionary in renderer.state.houses: footprints.append([house.id,house.origin,house.cells,house.get("base_y",0.0),house.get("style","classic")])
+	for house: Dictionary in renderer.state.houses: footprints.append([house.id,house.origin,house.cells,house.get("base_y",0.0),house.get("style","classic"),Frame.yaw(house)])
 	var geometry_signature := hash([footprints,renderer.state.roads,renderer.state.waters])
 	for house: Dictionary in _houses(renderer,only):
 		var id := str(house.id)
@@ -148,14 +149,14 @@ func _mechanisms(renderer,only: Array[String]=[])->void:
 				chosen=cell;side=direction;break
 			if not chosen.is_empty():break
 		if not chosen.is_empty():
-			var frame:=Node3D.new();root.add_child(frame);frame.position=renderer._cell_position(house,chosen)+Vector3(side.x*.92,int(chosen.level)*1.7,side.y*.92);frame.rotation.y=atan2(float(side.x),float(side.y))
+			var frame:=Node3D.new();root.add_child(frame);frame.position=Frame.world3(house,renderer._cell_position(house,chosen)+Vector3(side.x*.92,int(chosen.level)*1.7,side.y*.92));frame.rotation.y=atan2(float(side.x),float(side.y))+Frame.yaw(house)
 			renderer._box(frame,Vector3(.31,.22,.18),Vector3(0,.48,.08),wood)
 			renderer._box(frame,Vector3(.33,.035,.19),Vector3(0,.60,.08),brass)
 			var cylinder: MeshInstance3D=renderer._cylinder(frame,.048,.048,.18,Vector3(0,.52,.18),brass,10);cylinder.rotation.z=PI*.5
 			for i in range(5):renderer._box(frame,Vector3(.012,.07,.018),Vector3(-.075+i*.037,.48,.19),brass)
 		if level>=2:
 			var highest: Dictionary=cells[0]
-			var at: Vector3=renderer._cell_position(house,highest)+Vector3(0,(int(highest.level)+1)*1.7+1.20,0)
+			var at:Vector3=Frame.world3(house,renderer._cell_position(house,highest)+Vector3(0,(int(highest.level)+1)*1.7+1.20,0))
 			var greenhouse: Dictionary=renderer.ConservatoryPlan.for_house(renderer.state,house)
 			if not greenhouse.is_empty():at.y=maxf(at.y,float(greenhouse.roof_top_y)+.12)
 			renderer._cylinder(root,.025,.025,.52,at+Vector3.UP*.26,brass,8)
@@ -206,8 +207,8 @@ func _culture(renderer,only: Array[String]=[]) -> void:
 				for arcade: Dictionary in arcades:
 					if arcade.cell_id==cell.id and arcade.side==side: radius-=float(arcade.retreat)
 				var face := Node3D.new(); root.add_child(face)
-				face.position=renderer._cell_position(house,cell)+Vector3(side.x*radius,int(cell.level)*1.7,side.y*radius)
-				face.rotation.y=atan2(float(side.x),float(side.y))
+				face.position=Frame.world3(house,renderer._cell_position(house,cell)+Vector3(side.x*radius,int(cell.level)*1.7,side.y*radius))
+				face.rotation.y=atan2(float(side.x),float(side.y))+Frame.yaw(house)
 				renderer.Renaissance.art(renderer,face,display_level); placed=true; break
 			if placed: break
 		renderer._merge_meshes(root)
@@ -233,7 +234,7 @@ func supply(renderer, statuses: Dictionary) -> void:
 		if not entry.is_empty() and not bool(entry.get("passage",false)):
 			var point: Vector3 = renderer._entrance_point(entry,Vector3(0.90,0.0,0.20))
 			if renderer._clearance_at(Vector2(point.x,point.z),str(entry.cell_id),0.35):
-				var yaw := atan2(float(entry.side.x),float(entry.side.y))
+				var yaw:=atan2(Frame.normal(entry).x,Frame.normal(entry).y)
 				for index in range(count):
 					var local := Vector3(-0.15+(index%3)*0.15,0.91+(index/3)*0.20,0.0)
 					records.append(Transform3D(Basis(Vector3.UP,yaw).scaled(Vector3.ONE*0.48),point+Basis(Vector3.UP,yaw)*local))
@@ -299,7 +300,7 @@ func _placements(renderer, house: Dictionary, level: int, prepared:Variant=null)
 			for arcade: Dictionary in arcade_faces:
 				if str(arcade.cell_id)==str(cell.id) and arcade.side==side: face_radius-=float(arcade.retreat)
 			var at: Vector3 = renderer._cell_position(house,cell)+Vector3(side.x*face_radius,int(cell.level)*1.7,side.y*face_radius)
-			var frame := Transform3D(Basis(Vector3.UP,atan2(float(side.x),float(side.y))),at)
+			var frame := Transform3D(Basis(Vector3.UP,atan2(float(side.x),float(side.y))+Frame.yaw(house)),Frame.world3(house,at))
 			faces.append({"cell_id":str(cell.id),"frame":frame,"level":int(cell.level),"opening":opening,"door":door})
 	# Prefer a real upstairs eave, then an unpierced downstairs face.
 	faces.sort_custom(func(a,b): return int(a.level)*4+int(a.opening.is_empty())*2 > int(b.level)*4+int(b.opening.is_empty())*2)

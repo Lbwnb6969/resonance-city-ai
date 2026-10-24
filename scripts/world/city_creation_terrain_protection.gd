@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Target-elevation building/activity pads, followed by terrain-height roads.
 const CafePlans = preload("res://scripts/world/city_creation_cafe_layout_context.gd")
 const RoadHeights = preload("res://scripts/world/city_creation_road_heights.gd")
@@ -52,12 +53,12 @@ func _prepare_layout(city: RefCounted) -> void:
 			if int(cell.level)!=0: continue
 			var center := Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8)
 			# Shoulder ends at the wall face; downhill stone remains visible.
-			result.append({"id":str(cell.id),"rect":Rect2(center-Vector2.ONE*0.72,Vector2.ONE*1.44),"target_y":target,"transition":0.18,"priority":3.0})
+			result.append({"id":str(cell.id),"rect":Frame.footprint(house,cell,-.18),"target_y":target,"transition":0.18,"priority":3.0})
 		for entry: Dictionary in city.house_entrances(str(house.id)):
-			var end: Vector2 = entry.wall_at+Vector2(entry.side)*0.65
+			var end: Vector2 = entry.wall_at+Frame.normal(entry)*0.65
 			result.append({"id":str(house.id)+str(entry.cell_id)+str(entry.side),"a":Vector2(entry.wall_at),"b":end,"radius":0.42,"target_y":target,"transition":0.25,"priority":3.0})
 			if str(house.get("role",""))=="venue":
-				var gathering: Vector2 = entry.wall_at+Vector2(entry.side)*2.2
+				var gathering: Vector2 = entry.wall_at+Frame.normal(entry)*2.2
 				result.append({"id":"venue"+str(house.id)+str(entry.cell_id)+str(entry.side),"a":gathering,"b":gathering,"radius":3.0,"target_y":target})
 		if str(house.get("role",""))=="garden_cafe":
 			var plan: Dictionary = cafes.layout(city,str(house.id))
@@ -69,7 +70,7 @@ func _prepare_layout(city: RefCounted) -> void:
 	var courts: Array = []
 	for court: Dictionary in city.courtyard_plans():
 		for index in range(court.tiles.size()):
-			courts.append({"id":str(court.id)+"/"+str(index),"rect":court.tiles[index].grow(0.15),"target_y":float(court.get("base_y",0.0))-0.02})
+			courts.append({"id":str(court.id)+"/"+str(index),"rect":Frame.grow(court.tiles[index],.15),"target_y":float(court.get("base_y",0.0))-0.02})
 	_court_pads = courts
 	_layout_signature = signature
 	layout_rebuilds += 1

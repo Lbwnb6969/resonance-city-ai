@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Derived paving inside genuinely closed ground-room rings. No authored state,
 ## height, scene node or rendering resource is changed by this planner.
 const Frontage = preload("res://scripts/world/city_creation_frontage.gd")
@@ -52,21 +53,22 @@ func plans(city: RefCounted) -> Array[Dictionary]:
 
 func _find_holes(city: RefCounted) -> Array[Dictionary]:
 	var rooms: Array[Dictionary] = []
-	var footprints: Array[Rect2] = []
+	var footprints:Array = []
 	var bins: Dictionary = {}
 	for house: Dictionary in city.houses:
 		for cell: Dictionary in house.cells:
 			var at := Frontage.center(house,cell)
-			footprints.append(Rect2(at-Vector2.ONE*0.9,Vector2.ONE*UNIT))
+			footprints.append(Frame.footprint(house,cell))
 			if int(cell.level)!=0 or str(cell.kind)!="room": continue
 			var key := _bin(at)
 			if not bins.has(key): bins[key] = []
 			bins[key].append(rooms.size())
-			rooms.append({"at":at,"house":str(house.id),"base_y":float(house.get("base_y",0.0))})
+			rooms.append({"at":at,"yaw":Frame.yaw(house),"house":str(house.id),"base_y":float(house.get("base_y",0.0))})
 	var seen: Dictionary = {}
 	var result: Array[Dictionary] = []
 	for start in range(rooms.size()):
 		if seen.has(start): continue
+		var angle:float=rooms[start].yaw
 		var group: Array[int] = [start]
 		seen[start] = true
 		var cursor := 0
@@ -74,12 +76,12 @@ func _find_holes(city: RefCounted) -> Array[Dictionary]:
 			var at: Vector2 = rooms[group[cursor]].at
 			cursor += 1
 			for side: Vector2i in SIDES:
-				var target := at+Vector2(side)*UNIT
+				var target:=at+Vector2(side).rotated(-angle)*UNIT
 				var bucket := _bin(target)
 				for dx in range(-1,2):
 					for dz in range(-1,2):
 						for other: int in bins.get(bucket+Vector2i(dx,dz),[]):
-							if seen.has(other): continue
+							if seen.has(other) or absf(float(rooms[other].yaw)-angle)>.00001:continue
 							if absf(float(rooms[other].base_y)-float(rooms[start].base_y))>ALIGN: continue
 							if (Vector2(rooms[other].at)-target).abs().x>ALIGN or (Vector2(rooms[other].at)-target).abs().y>ALIGN: continue
 							seen[other] = true
@@ -91,11 +93,11 @@ func _find_holes(city: RefCounted) -> Array[Dictionary]:
 		var low := Vector2i.ZERO
 		var high := Vector2i.ZERO
 		for index: int in group:
-			var local := (Vector2(rooms[index].at)-anchor)/UNIT
+			var local := (Vector2(rooms[index].at)-anchor).rotated(angle)/UNIT
 			var key := Vector2i(roundi(local.x),roundi(local.y))
 			# Adjacency is pairwise tolerant; reject accumulated drift rather than
 			# silently snapping a long, genuinely misaligned strip into a ring.
-			if (Vector2(rooms[index].at)-(anchor+Vector2(key)*UNIT)).abs().x>ALIGN or (Vector2(rooms[index].at)-(anchor+Vector2(key)*UNIT)).abs().y>ALIGN: continue
+			if (Vector2(rooms[index].at)-(anchor+Vector2(key).rotated(-angle)*UNIT)).abs().x>ALIGN or (Vector2(rooms[index].at)-(anchor+Vector2(key).rotated(-angle)*UNIT)).abs().y>ALIGN: continue
 			occupied[key] = str(rooms[index].house)
 			low = Vector2i(mini(low.x,key.x),mini(low.y,key.y))
 			high = Vector2i(maxi(high.x,key.x),maxi(high.y,key.y))
@@ -111,7 +113,7 @@ func _find_holes(city: RefCounted) -> Array[Dictionary]:
 				_flood(key,low,high,occupied,hole)
 				outside.merge(hole)
 				if hole.size()<4: continue
-				var plan := _paving(city,anchor,hole,occupied,footprints,float(rooms[start].base_y))
+				var plan := _paving(city,anchor,hole,occupied,footprints,float(rooms[start].base_y),angle)
 				if not plan.is_empty(): result.append(plan)
 	result.sort_custom(func(a: Dictionary,b: Dictionary)->bool: return str(a.id)<str(b.id))
 	return result
@@ -135,27 +137,27 @@ func _flood(start: Vector2i, low: Vector2i, high: Vector2i, occupied: Dictionary
 			queue.append(next)
 
 
-func _paving(city: RefCounted, anchor: Vector2, hole: Dictionary, occupied: Dictionary, footprints: Array[Rect2], base_y: float) -> Dictionary:
+func _paving(city: RefCounted, anchor: Vector2, hole: Dictionary, occupied: Dictionary, footprints:Array, base_y: float,angle:float=0.) -> Dictionary:
 	var keys: Array = hole.keys()
 	keys.sort_custom(func(a: Vector2i,b: Vector2i)->bool: return a.x<b.x or (a.x==b.x and a.y<b.y))
 	var ids := PackedStringArray()
 	var members: Array[String] = []
-	var tiles: Array[Rect2] = []
+	var tiles:Array = []
 	var center := Vector2.ZERO
 	var bounds := Rect2()
 	for key: Vector2i in keys:
-		var at := anchor+Vector2(key)*UNIT
+		var at:=anchor+Vector2(key).rotated(-angle)*UNIT
 		ids.append("%d,%d" % [roundi(at.x*1000.0),roundi(at.y*1000.0)])
 		for side: Vector2i in SIDES:
 			if occupied.has(key+side) and not members.has(occupied[key+side]): members.append(occupied[key+side])
-		var tile := Rect2(at-Vector2.ONE*0.9,Vector2.ONE*UNIT)
+		var tile:Variant=Rect2(at-Vector2.ONE*.9,Vector2.ONE*UNIT) if is_zero_approx(angle) else {"center":at,"angle":angle,"half":Vector2.ONE*.9}
 		var clear := true
-		for footprint: Rect2 in footprints:
-			if tile.grow(-ALIGN).intersects(footprint.grow(-ALIGN)):
+		for footprint:Variant in footprints:
+			if Frame.boxes_overlap(Frame.grow(tile,-ALIGN),Frame.grow(footprint,-ALIGN)):
 				clear = false
 				break
 		if not clear or not _dry_tile(city,tile): continue
-		bounds = tile if tiles.is_empty() else bounds.merge(tile)
+		bounds=Frame.bounds(tile) if tiles.is_empty() else bounds.merge(Frame.bounds(tile))
 		tiles.append(tile)
 		center += at
 	if tiles.size()<4: return {}
@@ -163,10 +165,10 @@ func _paving(city: RefCounted, anchor: Vector2, hole: Dictionary, occupied: Dict
 	return {"id":"court_"+(";".join(ids)).sha256_text().left(16),"tiles":tiles,"bounds":bounds,"members":members,"center":center/float(tiles.size()),"base_y":base_y,"fountain":{}}
 
 
-func _dry_tile(city: RefCounted, tile: Rect2) -> bool:
+func _dry_tile(city: RefCounted, tile:Variant) -> bool:
 	for x: float in [0.0,0.5,1.0]:
 		for z: float in [0.0,0.5,1.0]:
-			if city.water_clearance(tile.position+tile.size*Vector2(x,z))<0.05: return false
+			if city.water_clearance(Frame.sample(tile,Vector2(x,z)))<0.05: return false
 	return true
 
 
@@ -175,15 +177,15 @@ func _make_obstacles(city: RefCounted) -> Dictionary:
 	var cafes := CafePlans.new()
 	for house: Dictionary in city.houses:
 		for cell: Dictionary in house.cells:
-			result.rooms.append(Rect2(Frontage.center(house,cell)-Vector2.ONE*0.9,Vector2.ONE*UNIT))
+			result.rooms.append(Frame.footprint(house,cell))
 		for entry: Dictionary in city.house_entrances(str(house.id)):
 			var wall: Vector2 = entry.wall_at
 			var at: Vector2 = entry.at
 			var direction := (at-wall).normalized()
-			if direction.is_zero_approx(): direction = Vector2(entry.side)
+			if direction.is_zero_approx(): direction = Frame.normal(entry)
 			result.doors.append([wall,at+direction*0.5,0.30])
 			if str(house.role)=="venue":
-				var gathering := wall+Vector2(entry.side)*2.2
+				var gathering := wall+Frame.normal(entry)*2.2
 				result.gatherings.append([gathering,gathering,3.0])
 		if str(house.role)=="garden_cafe":
 			var layout := cafes.layout(city,str(house.id))
@@ -217,8 +219,8 @@ func _fountain(city: RefCounted, plan: Dictionary, obstacles: Dictionary) -> Dic
 		return da<db if not is_equal_approx(da,db) else (a.x<b.x or (a.x==b.x and a.y<b.y)))
 	for at: Vector2 in candidates:
 		var inside := false
-		for tile: Rect2 in plan.tiles:
-			if tile.has_point(at): inside = true; break
+		for tile:Variant in plan.tiles:
+			if Frame.contains(tile,at): inside = true; break
 		if not inside: continue
 		var clear := true
 		for edge: Array in edges:
@@ -229,8 +231,8 @@ func _fountain(city: RefCounted, plan: Dictionary, obstacles: Dictionary) -> Dic
 
 func _boundary(tiles: Array) -> Array:
 	var edges: Dictionary = {}
-	for tile: Rect2 in tiles:
-		var corners := [tile.position,Vector2(tile.end.x,tile.position.y),tile.end,Vector2(tile.position.x,tile.end.y)]
+	for tile:Variant in tiles:
+		var corners:=Frame.corners(tile)
 		for index in range(4):
 			var a: Vector2 = corners[index]
 			var b: Vector2 = corners[(index+1)%4]
@@ -246,8 +248,8 @@ func _boundary(tiles: Array) -> Array:
 
 func _fountain_clear(city: RefCounted, at: Vector2, obstacles: Dictionary) -> bool:
 	if city.water_clearance(at)<FOUNTAIN_RADIUS+0.05: return false
-	for rect: Rect2 in obstacles.rooms:
-		if _rect_distance(at,rect)<FOUNTAIN_RADIUS+0.15: return false
+	for rect:Variant in obstacles.rooms:
+		if Frame.distance(rect,at)<FOUNTAIN_RADIUS+0.15: return false
 	for group: String in ["roads","doors","gatherings"]:
 		for capsule: Array in obstacles[group]:
 			if _segment_distance(at,capsule[0],capsule[1])<FOUNTAIN_RADIUS+float(capsule[2]): return false
@@ -267,8 +269,8 @@ func _planters(city: RefCounted, tiles: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for plant: Dictionary in city.plants:
 		var at := _point(plant.position)
-		for tile: Rect2 in tiles:
-			if not tile.has_point(at): continue
+		for tile:Variant in tiles:
+			if not Frame.contains(tile,at): continue
 			result.append({"at":at,"radius":clampf(0.30*float(plant.scale),0.25,0.65)})
 			break
 	return result

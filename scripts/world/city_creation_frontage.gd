@@ -1,5 +1,6 @@
 extends RefCounted
 ## Derive wall openings and approach corridors from geometry, never saved flags.
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const UNIT := 1.8
 const SIDES := [Vector2i(0,1),Vector2i(1,0),Vector2i(-1,0),Vector2i(0,-1)]
 const CONTACT := 0.55
@@ -16,7 +17,7 @@ static func ground_geometry(houses:Array,include_overhangs:bool=false)->Array:
 		var ground:Dictionary={}
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:cells.append(cell);ground[Vector2i(cell.x,cell.z)]=true
-		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.))]
+		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.)),Frame.yaw(house)]
 		if include_overhangs:
 			# Courtyard paving/fountains also avoid elevated terrace footprints.
 			# Repeated floors over an existing footprint add no new obstruction.
@@ -28,7 +29,7 @@ static func ground_geometry(houses:Array,include_overhangs:bool=false)->Array:
 	return geometry
 
 static func porch_plan(city: RefCounted,house: Dictionary,entry: Dictionary) -> Dictionary:
-	var at: Vector2=entry.wall_at+Vector2(entry.side)*0.78
+	var at: Vector2=entry.wall_at+Frame.normal(entry)*0.78
 	var base := float(house.get("base_y",0.0))
 	var ground: float=city.street_height(at)
 	# Existing level-ground doors keep their original three shallow treads.
@@ -37,7 +38,7 @@ static func porch_plan(city: RefCounted,house: Dictionary,entry: Dictionary) -> 
 	return {"count":3 if rise<0.20 else clampi(ceili(rise/0.12),1,10),"bottom":bottom,"ground_y":ground,"base_y":base,"at":at}
 
 static func center(house: Dictionary, cell: Dictionary) -> Vector2:
-	return Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
+	return Frame.center(house,cell)
 
 static func exposed(house: Dictionary, cell: Dictionary, side: Vector2i) -> bool:
 	for other: Dictionary in house.cells:
@@ -57,7 +58,7 @@ static func terminal(house: Dictionary, cell: Dictionary, points: Array, at_star
 	var origin := center(house,cell)
 	for side: Vector2i in SIDES:
 		if not exposed(house,cell,side): continue
-		var normal := Vector2(side)
+		var normal := Frame.direction(house,Vector2(side))
 		var wall_at := origin+normal*0.9
 		var offset := endpoint-wall_at
 		var outward := offset.dot(normal)
@@ -78,9 +79,9 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 			for passage: Dictionary in passages:
 				if passage.cell_id==str(cell.get("id","")) and passage.sides.has(side): opening=passage
 			if not opening.is_empty():
-				var lateral := Vector2(0,float(opening.offset)) if opening.axis.x==1 else Vector2(float(opening.offset),0)
-				var wall_at := center(house,cell)+Vector2(side)*0.9+lateral
-				result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Vector2(side)*0.62,"clearance_at":wall_at+Vector2(side)*0.65,"active":true,"passage":true,"road_id":str(opening.road_id)})
+				var lateral:Vector2=Frame.direction(house,Vector2(0,float(opening.offset)) if opening.axis.x==1 else Vector2(float(opening.offset),0))
+				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9+lateral
+				result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side))*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":true,"passage":true,"road_id":str(opening.road_id)})
 				continue
 			var active := false
 			var road_id := ""
@@ -93,10 +94,11 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 						break
 				if active: break
 			if not active and side!=Vector2i(0,1): continue
-			var wall_at := center(house,cell)+Vector2(side)*0.9
-			result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Vector2(side)*0.62,"clearance_at":wall_at+Vector2(side)*0.65,"active":active,"road_id":road_id})
+			var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9
+			result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side))*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":active,"road_id":road_id})
 	var outside: Array[Dictionary] = []
 	for entrance: Dictionary in result:
+		entrance.outward=Frame.direction(house,Vector2(entrance.side))
 		# A true road passage is a portal into a traversable arch, even when the
 		# next room belongs to a different household. Ordinary doors need air.
 		if entrance.get("passage",false) or approach_clear(house,entrance.wall_at,entrance.at,houses): outside.append(entrance)
@@ -107,10 +109,10 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 			if int(cell.level)!=0 or str(cell.kind)!="room": continue
 			for side: Vector2i in SIDES:
 				if not exposed(house,cell,side): continue
-				var wall_at := center(house,cell)+Vector2(side)*0.9
-				var at := wall_at+Vector2(side)*0.62
+				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9
+				var at := wall_at+Frame.direction(house,Vector2(side))*0.62
 				if not approach_clear(house,wall_at,at,houses): continue
-				outside.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":at,"clearance_at":wall_at+Vector2(side)*0.65,"active":false,"road_id":""})
+				outside.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"outward":Frame.direction(house,Vector2(side)),"wall_at":wall_at,"at":at,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":false,"road_id":""})
 				return outside
 	return outside
 
@@ -119,8 +121,8 @@ static func approach_clear(house: Dictionary, wall_at: Vector2, at: Vector2, hou
 		if str(other.id)==str(house.id): continue
 		for cell: Dictionary in other.cells:
 			if int(cell.level)!=0 or str(cell.kind)!="room": continue
-			var rect := Rect2(center(other,cell)-Vector2.ONE*0.9,Vector2.ONE*UNIT).grow(0.18)
-			if hits_rect(wall_at,at,rect): return false
+			var rect:Variant=Frame.footprint(other,cell,.18)
+			if Frame.segment(rect,wall_at,at): return false
 	return true
 
 static func blocker_signature(house: Dictionary, houses: Array) -> Array:
@@ -133,10 +135,11 @@ static func blocker_signature(house: Dictionary, houses: Array) -> Array:
 		if str(other.id)==str(house.id): continue
 		for cell: Dictionary in other.cells:
 			if int(cell.level)==0 and str(cell.kind)=="room" and bounds.has_point(center(other,cell)):
-				result.append([str(other.id),str(cell.id),center(other,cell),float(other.get("base_y",0.0))])
+				result.append([str(other.id),str(cell.id),center(other,cell),float(other.get("base_y",0.0)),Frame.yaw(other)])
 	return result
 
 static func road_cell_conflict(house: Dictionary, cell: Dictionary, points: Array, width: float) -> bool:
+	if not is_zero_approx(Frame.yaw(house)):return road_cell_conflict(Frame.zero(house),cell,Frame.points_local(house,points),width)
 	if not Passage.for_cell(house,cell,points,width).is_empty(): return false
 	var origin := center(house,cell)
 	var wall := Rect2(origin-Vector2.ONE*0.9,Vector2.ONE*UNIT)
@@ -189,27 +192,26 @@ static func exterior_route(house: Dictionary, from: Vector2, to: Vector2, city: 
 	var owns:=false
 	for room:Dictionary in house.cells:
 		if int(room.level)!=0:continue
-		var rect:=Rect2(center(house,room)-Vector2.ONE*.9,Vector2.ONE*UNIT)
-		if not rect.has_point(from) and rect.grow(.72).has_point(from):owns=true;break
+		var rect:Variant=Frame.footprint(house,room)
+		if not Frame.contains(rect,from) and Frame.contains(Frame.grow(rect,.72),from):owns=true;break
 	if not owns:return empty
 	var nearby := false
 	var candidates: Array[Vector2]=[from,to]
-	var obstacles: Array[Rect2]=[]
+	var obstacles:Array=[]
 	for row: Dictionary in city.houses:
 		for cell: Dictionary in row.cells:
 			if int(cell.level)!=0: continue
-			var footprint := Rect2(center(row,cell)-Vector2.ONE*0.9,Vector2.ONE*UNIT)
-			obstacles.append(footprint.grow(0.20))
+			var footprint:Variant=Frame.footprint(row,cell)
+			obstacles.append(Frame.grow(footprint,.20))
 			if str(row.id)!=str(house.id): continue
-			if not footprint.has_point(from) and footprint.grow(0.72).has_point(from): nearby=true
-			var corners := footprint.grow(0.26)
-			candidates.append_array([corners.position,Vector2(corners.end.x,corners.position.y),corners.end,Vector2(corners.position.x,corners.end.y)])
+			if not Frame.contains(footprint,from) and Frame.contains(Frame.grow(footprint,.72),from): nearby=true
+			candidates.append_array(Frame.corners(Frame.grow(footprint,.26)))
 	if not nearby: return empty
 	var points: Array[Vector2]=[]
 	for at: Vector2 in candidates:
 		var valid: bool = city.WORLD_RECT.has_point(at) and city.water_clearance(at)>0.12
-		for obstacle: Rect2 in obstacles:
-			if obstacle.has_point(at): valid=false
+		for obstacle:Variant in obstacles:
+			if Frame.contains(obstacle,at): valid=false
 		if points.size()<2 and (at==from or at==to) and not valid: return empty
 		if valid and not points.has(at): points.append(at)
 	if points.size()<2 or points[0]!=from or points[1]!=to: return empty
@@ -239,9 +241,9 @@ static func exterior_route(house: Dictionary, from: Vector2, to: Vector2, city: 
 		result.push_front(points[index])
 	return result
 
-static func _dry_leg(a: Vector2,b: Vector2,obstacles: Array[Rect2],city: RefCounted) -> bool:
-	for obstacle: Rect2 in obstacles:
-		if hits_rect(a,b,obstacle): return false
+static func _dry_leg(a: Vector2,b: Vector2,obstacles:Array,city: RefCounted) -> bool:
+	for obstacle:Variant in obstacles:
+		if Frame.segment(obstacle,a,b): return false
 	for step in range(ceili(a.distance_to(b)/0.12)+1):
 		var at := a.move_toward(b,float(step)*0.12)
 		if city.water_clearance(at)<=0.12: return false

@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## A derived recessed facade; authored rooms, entrances and roads stay intact.
 const UNIT := 1.8
 const FLOOR := 1.7
@@ -23,7 +24,7 @@ static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 		var center := _center(house,cell)
 		var base := float(house.get("base_y",0.0))
 		for side_index in range(SIDES.size()):
-			var normal := Vector2(SIDES[side_index])
+			var normal:=Frame.direction(house,Vector2(SIDES[side_index]))
 			var tangent := Vector2(normal.y,-normal.x)
 			var wall := center+normal*0.9
 			if not _exposed(city.houses,house,cell,wall,normal,tangent,base): continue
@@ -101,11 +102,11 @@ static func _court(courts: Array, wall: Vector2, normal: Vector2, tangent: Vecto
 		var complete := true
 		for offset: float in [-0.70,0.0,0.70]:
 			var inside := false
-			for tile: Rect2 in court.tiles:
-				if tile.has_point(wall+normal*0.16+tangent*offset): inside=true;break
+			for tile:Variant in court.tiles:
+				if Frame.contains(tile,wall+normal*0.16+tangent*offset): inside=true;break
 			if not inside: complete=false;break
 		if complete: return true
 	return false
 
 static func _center(house: Dictionary, cell: Dictionary) -> Vector2:
-	return Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
+	return Frame.center(house,cell)

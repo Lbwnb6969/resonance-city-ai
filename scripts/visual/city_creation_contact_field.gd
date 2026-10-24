@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Visual contact distances only. State keeps its exact construction masks.
 ## prepare() is CPU-only; upload() and material binding belong to main thread.
 const Bounds := preload("res://scripts/world/city_creation_bounds.gd")
@@ -98,7 +99,7 @@ func _records(city: RefCounted) -> Dictionary:
 		for cell: Dictionary in house.cells:
 			if int(cell.level) != 0: continue
 			var at := Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
-			result["h/"+str(house.id)+"/"+str(cell.x)+"/"+str(cell.z)] = [0,Rect2(at-Vector2.ONE*0.9,Vector2.ONE*1.8)]
+			result["h/"+str(house.id)+"/"+str(cell.x)+"/"+str(cell.z)] = [0,Frame.footprint(house,cell)]
 	for road: Dictionary in city.roads:
 		for index in range(maxi(1,road.points.size()-1)):
 			var a := Vector2(road.points[index][0],road.points[index][1])
@@ -115,7 +116,7 @@ func _records(city: RefCounted) -> Dictionary:
 	return result
 
 func _bounds(record: Array) -> Rect2:
-	if int(record[0]) == 0: return record[1].grow(RANGE+maxf(PIXEL_SIZE.x,PIXEL_SIZE.y))
+	if int(record[0]) == 0:return Frame.bounds(record[1]).grow(RANGE+maxf(PIXEL_SIZE.x,PIXEL_SIZE.y))
 	if record.size()==2:
 		var polygon: PackedVector2Array=record[1]
 		var bounds:=Rect2(polygon[0],Vector2.ZERO)
@@ -162,10 +163,7 @@ func exact_at(at: Vector2) -> Vector3:
 		var distance: float
 		var channel := int(record[0])
 		if channel == 0:
-			var rect: Rect2 = record[1]
-			var dx := maxf(maxf(rect.position.x-at.x,at.x-rect.end.x),0.0)
-			var dy := maxf(maxf(rect.position.y-at.y,at.y-rect.end.y),0.0)
-			distance = sqrt(dx*dx+dy*dy)
+			distance=Frame.distance(record[1],at)
 		elif record.size()==2:
 			distance = _polygon_distance(at,record[1])
 		else:

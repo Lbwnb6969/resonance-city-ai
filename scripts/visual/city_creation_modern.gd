@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Warm white rounded cantilevers, full-height glass and planted roofs/walls.
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 const Archetypes=preload("res://scripts/visual/city_creation_modern_archetypes.gd")
@@ -53,7 +54,7 @@ static func _slab(renderer,parent:Node3D,at:Vector3,size:Vector2,height:float,co
 	if architectural:Wall.apply(mesh,Wall.Kind.CANTILEVER)
 static func _bridge(renderer,root:Node3D,house:Dictionary,plan:Dictionary,p:Array)->void:
 	var node:=Node3D.new();node.name="ModernSkybridge_"+str(plan.from_cell)+"_"+str(plan.to_cell);root.add_child(node)
-	var middle:Vector2=(plan.a+plan.b)*.5;var direction:Vector2=(plan.b-plan.a).normalized()
+	var middle:Vector2=Frame.inverse(house,(plan.a+plan.b)*.5);var direction:Vector2=(plan.b-plan.a).normalized().rotated(Frame.yaw(house))
 	node.position=Vector3(middle.x,plan.floor_y,middle.y);node.rotation.y=atan2(direction.x,direction.y)
 	_slab(renderer,node,Vector3.ZERO,Vector2(plan.width+.16,plan.length),.14,p[0])
 	var wood:Material=renderer._material(p[2]);var white:Material=Wall.source(p[0], null, "component", Wall.Kind.CANTILEVER)

@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Derived geometry eligibility only; the authored rooms and role stay intact.
 const Passage = preload("res://scripts/world/city_creation_passage.gd")
 const UNIT := 1.8
@@ -38,8 +39,7 @@ static func for_house(house: Dictionary, houses: Array, roads: Array = []) -> Di
 			# Include the other cell's real upper roof envelope. Lower rooms and
 			# terraces remain blockers only where their world heights overlap.
 			var top := bottom+(0.30 if str(cell.kind)=="terrace" else FLOOR+0.65)
-			var nearest := Vector2(clampf(center.x,at.x-0.9,at.x+0.9),clampf(center.y,at.y-0.9,at.y+0.9))
-			var gap := center.distance_to(nearest)
+			var gap:float=Frame.distance(Frame.footprint(other,cell),Frame.point(house,center))
 			if top>base_y+EPS and bottom<roof_base_y-EPS and gap<=RADIUS+EPS: return {}
 			if top>roof_base_y-EPS and bottom<roof_top_y+EPS:
 				# The curved cone is widest at the lowest overlapping height;
@@ -50,4 +50,4 @@ static func for_house(house: Dictionary, houses: Array, roads: Array = []) -> Di
 	return {"house_id":str(house.id),"center":center,"base_y":base_y,"top_level":int(cells[-1].level),
 		"top_cell_id":str(cells[-1].id),"cells":cells,"radius":RADIUS,"roof_radius":ROOF_RADIUS,
 		"roof_base_y":roof_base_y,"roof_top_y":roof_top_y,"roof_height":ROOF_HEIGHT,
-		"signature":hash([house.id,center,base_y,cells,roof_base_y,roof_top_y])}
+		"signature":hash([house.id,center,base_y,cells,roof_base_y,roof_top_y,Frame.yaw(house)])}

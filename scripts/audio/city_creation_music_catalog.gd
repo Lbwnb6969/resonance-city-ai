@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Pure copied city values become a catalogue; playback remains on Music.
 const Choir=preload("res://scripts/audio/city_creation_cluster_choir.gd")
 const Towers=preload("res://scripts/world/city_creation_towers.gd")
@@ -29,7 +30,7 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		tower_count+=count
 		var positions: Array[Vector2] = []
 		for cell: Dictionary in towers.get(str(house.id),[]):
-			positions.append(Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8))
+			positions.append(Frame.center(house,cell))
 		if positions.is_empty() and house.get("signature","")=="bell_keep":positions.append(Vector2(house.origin[0],house.origin[1]))
 		records[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":state.house_acoustic_style(house),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}

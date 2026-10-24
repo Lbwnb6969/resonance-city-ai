@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## A single CPU worker and one replaceable latest request. GPU resources and
 ## nodes are created only by poll(), on the main thread, in a hidden staging
 ## hierarchy. A superseded job never writes a visible root or geometry cache.
@@ -316,7 +317,7 @@ func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Arra
 	for change: Array in terrain_blocks:
 		add_bounds.call(Rect2(change[1]).grow(1.0))
 	for house: Dictionary in houses:
-		add_bounds.call(Rect2(Vector2(float(house.origin[0]),float(house.origin[1])),Vector2.ONE*1.8*4.0).grow(1.5))
+		for cell:Dictionary in house.cells:add_bounds.call(Frame.bounds(Frame.footprint(house,cell,1.5)))
 	for road: Dictionary in roads:
 		var points: Array = road.get("points",[])
 		if points.is_empty(): continue

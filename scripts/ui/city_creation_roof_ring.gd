@@ -47,7 +47,7 @@ func project(pop:RefCounted,house:Dictionary)->Rect2:
 		for dx:float in [-.96,.96]:
 			for dz:float in [-.96,.96]:
 				for dy:float in [0.,2.8]:
-					var world:=Vector3(float(house.origin[0])+int(cell.x)*1.8+dx,float(house.get("base_y",0.))+int(cell.level)*1.7+dy,float(house.origin[1])+int(cell.z)*1.8+dz)
+					var world:Vector3=preload("res://scripts/world/city_creation_house_frame.gd").world3(house,Vector3(float(house.origin[0])+int(cell.x)*1.8+dx,float(house.get("base_y",0.))+int(cell.level)*1.7+dy,float(house.origin[1])+int(cell.z)*1.8+dz))
 					if pop.demo.camera.is_position_behind(world):return Rect2()
 					var p:Vector2=pop.demo.camera.unproject_position(world);low=low.min(p);high=high.max(p)
 	return Rect2(low,high-low)
@@ -109,5 +109,5 @@ func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var role:=str(house.get("role","residential"));var level:int=pop.demo.state.level_tier(str(house.id))
 	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 	var key:String=family.prototype(pop.demo.state,house);var caption:String=family.family_caption(key) if not key.is_empty() else str(pop.ROLE_LABELS.get(role,"街坊"))
-	if role=="residential":return "%s · 共鸣 %d/3 · 品质 %d"%[caption,int(pop.demo.state.house_harmony(str(house.id)).tier),level]
-	return "%s · 品质 %d · %s"%[caption,level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]
+	if role=="residential":return "%s · 共鸣 %d/3 · 品质 %d\nQ/E 转90° · R 自由转向"%[caption,int(pop.demo.state.house_harmony(str(house.id)).tier),level]
+	return "%s · 品质 %d · %s\nQ/E 转90° · R 自由转向"%[caption,level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]

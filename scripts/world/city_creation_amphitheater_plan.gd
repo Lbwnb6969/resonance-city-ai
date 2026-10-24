@@ -1,10 +1,17 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Dry authored rooms anchor a derived stage which genuinely projects over water.
 const RADIUS:=1.65
 const Frontage=preload("res://scripts/world/city_creation_frontage.gd")
 static func for_house(city:RefCounted,house:Dictionary,water_rows:Variant=null)->Dictionary:
 	if house.get("signature","")!="floating_amphitheater":return {}
 	var waters:Array=city.waters if water_rows==null else water_rows
+	if not is_zero_approx(Frame.yaw(house)):
+		var plan:=for_house(city,Frame.zero(house),water_rows)
+		if plan.is_empty():return plan
+		for field:String in ["center","shore","stage","jetty_start","jetty_end"]:plan[field]=Frame.point(house,plan[field])
+		plan.direction=Frame.direction(house,plan.direction)
+		return plan if city._water_clearance_in(plan.stage,waters)<=-.65 and city.WORLD_RECT.grow(-RADIUS-.15).has_point(plan.stage) else {}
 	var center:=Vector2(house.origin[0]+.9,house.origin[1]+.9)
 	var best:=INF;var direction:=Vector2.ZERO;var shore:=Vector2.ZERO
 	for side:Vector2 in [Vector2.RIGHT,Vector2.LEFT,Vector2.UP,Vector2.DOWN]:
@@ -22,12 +29,11 @@ static func hits_house(plan:Dictionary,house:Dictionary)->bool:
 	var masks:=ground_masks(plan)
 	for cell:Dictionary in house.cells:
 		var at:=Vector2(house.origin[0]+int(cell.x)*1.8,house.origin[1]+int(cell.z)*1.8)
-		var rect:=Rect2(at-Vector2.ONE*.9,Vector2.ONE*1.8)
-		var near:=Vector2(clampf(plan.stage.x,rect.position.x,rect.end.x),clampf(plan.stage.y,rect.position.y,rect.end.y))
-		if near.distance_to(plan.stage)<RADIUS+.1:return true
-		if Frontage.hits_rect(plan.jetty_start,plan.jetty_end,rect.grow(.55)):return true
+		var rect:Variant=Frame.footprint(house,cell)
+		if Frame.distance(rect,plan.stage)<RADIUS+.1:return true
+		if Frame.segment(Frame.grow(rect,.55),plan.jetty_start,plan.jetty_end):return true
 		for mask:Rect2 in masks:
-			if rect.intersects(mask):return true
+			if Frame.boxes_overlap(rect,mask):return true
 	return false
 static func occupies(plan:Dictionary,at:Vector2,radius:float=0.)->bool:
 	if plan.is_empty():return false

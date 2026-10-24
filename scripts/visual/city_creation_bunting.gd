@@ -1,5 +1,6 @@
 class_name CityCreationBunting
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Townscaper-inspired PropWire / FlagMesh / ItalianMesh (758e50.c, 805ae0.c, 8063b0.c).
 ## Connects facing upper-story facades across streets/courtyards with festive bunting & warm lanterns.
 
@@ -27,12 +28,12 @@ static func _anchors(renderer: Node3D) -> Array[Dictionary]:
 			for side: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 				if not renderer._neighbor_cell(house, cell, side).is_empty():
 					continue
-				var center_xz := origin + Vector2(cell.x, cell.z) * 1.8 + Vector2(side) * 0.91
+				var center_xz:=Frame.point(house,origin+Vector2(cell.x,cell.z)*1.8+Vector2(side)*.91)
 				var anchor_y := base_y + float(int(cell.level) + 1) * 1.7 - 0.14
 				anchors.append({
 					"house_id": hid,
 					"pos": Vector3(center_xz.x, anchor_y, center_xz.y),
-					"normal": Vector2(side),
+					"normal":Frame.direction(house,Vector2(side)),
 					"festive": festive,
 					"color_a": palette[1],
 					"color_b": palette[2],

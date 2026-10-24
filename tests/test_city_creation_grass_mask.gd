@@ -25,6 +25,7 @@ func _initialize() -> void:
 		{"x": 0, "z": 0, "level": 0, "kind": "room"},
 		{"x": 0, "z": 1, "level": 0, "kind": "terrace"},
 		{"x": 1, "z": 0, "level": 1, "kind": "room"}]})
+	_normalize_fixture(city)
 	var before := city.snapshot()
 	var query := {"id": "pcomparison", "position": [0.0, 0.0], "kind": "shrub", "scale": 0.1, "seed": 0, "source": "seed"}
 	var checked := 0
@@ -92,6 +93,7 @@ func _check_boundaries() -> int:
 	for occupied in [false, true]:
 		if occupied:
 			city.houses[0].cells.append({"x": 0, "z": 1, "level": 0, "kind": "terrace"})
+		_normalize_fixture(city)
 		var masks: Dictionary = {}
 		for scale_value in [0.1, 0.18, 0.25]:
 			var clearance: float = 0.42 * scale_value
@@ -122,3 +124,14 @@ func _check_boundaries() -> int:
 				_check(masks[block].visible(at, scale_value) == city.vegetation_visible(query), "exact epsilon boundary at %s scale %.2f occupied=%s" % [at, scale_value, occupied])
 				count += 1
 	return count
+
+func _normalize_fixture(city)->void:
+	for i in range(city.houses.size()):
+		var h:Dictionary=city.houses[i]
+		if not h.has("id"):h.id="h"+str(9000+i);h.role="residential";h.name="mask fixture";h.palette=0;h.seed=1
+		for j in range(h.cells.size()):
+			if not h.cells[j].has("id"):h.cells[j].id="c"+str(9000+i*10+j)
+	for i in range(city.roads.size()):
+		if not city.roads[i].has("id"):city.roads[i].id="r"+str(9000+i)
+	for i in range(city.waters.size()):
+		if not city.waters[i].has("id"):city.waters[i].id="w"+str(9000+i);city.waters[i].kind="pond";city.waters[i].seed=0

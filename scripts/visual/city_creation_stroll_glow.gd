@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## A camera-owned view of authored treads and courtyard tiles; no city writes.
 const Materials=preload("res://scripts/visual/city_creation_metronome_material.gd")
 const Geometry=preload("res://scripts/visual/city_creation_metronome_geometry.gd")
@@ -23,8 +24,8 @@ func _sync(demo)->void:
 		sites.append({"kind":"stair","id":str(stair.id),"at":Vector2(stair.at),"height":float(stair.height)+.025,"yaw":atan2(stair.axis.x,stair.axis.y),"mesh":box})
 	var ring:=Geometry.ring(.58,.045)
 	for court:Dictionary in demo.state.courtyard_plans():
-		for tile:Rect2 in court.tiles:
-			var at:=tile.get_center()
+		for tile:Variant in court.tiles:
+			var at:=Frame.box_center(tile)
 			sites.append({"kind":"court","id":str(court.id)+"/"+str(at),"at":at,"height":maxf(float(court.base_y),demo.state.ground_height(at))+.026,"yaw":0.,"mesh":ring})
 func update(demo,strolling:bool)->void:
 	visible_sites.clear()

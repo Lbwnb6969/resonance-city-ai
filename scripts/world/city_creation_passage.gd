@@ -1,5 +1,6 @@
 extends RefCounted
 ## A passage is derived from a genuine street crossing, never a saved room flag.
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const UNIT := 1.8
 const HALF := 0.9
 const PIER := 0.08
@@ -24,6 +25,10 @@ static func clip(a: Vector2,b: Vector2,rect: Rect2) -> Array[Vector2]:
 	return [a+delta*lo,a+delta*hi]
 
 static func for_cell(house: Dictionary,cell: Dictionary,points: Array,width: float,road_id: String="") -> Dictionary:
+	if not is_zero_approx(Frame.yaw(house)):
+		var record:=for_cell(Frame.zero(house),cell,Frame.points_local(house,points),width,road_id)
+		if not record.is_empty():record.center=Frame.point(house,record.center)
+		return record
 	if int(cell.level)!=0 or str(cell.kind)!="room" or points.size()<2: return {}
 	var origin := center(house,cell)
 	var room := Rect2(origin-Vector2.ONE*HALF,Vector2.ONE*UNIT)
@@ -90,6 +95,7 @@ static func for_house(house: Dictionary,roads: Array) -> Array[Dictionary]:
 	return result
 
 static func segment_blocked(house: Dictionary,cell: Dictionary,a: Vector2,b: Vector2,passages: Array[Dictionary]) -> bool:
+	if not is_zero_approx(Frame.yaw(house)):return segment_blocked(Frame.zero(house),cell,Frame.inverse(house,a),Frame.inverse(house,b),passages)
 	var origin := center(house,cell)
 	var inside := clip(a,b,Rect2(origin-Vector2.ONE*0.89,Vector2.ONE*1.78))
 	if inside.is_empty(): return false

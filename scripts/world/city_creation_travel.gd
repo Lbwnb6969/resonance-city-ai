@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Geometry-only musical crossing sites; observations come exclusively from walking.
 const BIN := 4.0
 const WET_SAMPLE := 0.15
@@ -64,8 +65,8 @@ func sync(city: RefCounted) -> void:
 		# State's cache is derived by Passage.for_house and was already prepared
 		# by the published network; do not repeat the house-by-road clipping.
 		for passage: Dictionary in city.house_passages(str(house.id)):
-			var axis := Vector2(passage.axis)
-			var lateral := Vector2(0,1) if axis.x==1 else Vector2(1,0)
+			var axis:=Frame.direction(house,Vector2(passage.axis))
+			var lateral:=Frame.direction(house,Vector2(0,1) if passage.axis.x==1 else Vector2(1,0))
 			var at: Vector2 = passage.center+lateral*float(passage.offset)
 			_add_site("%s/arch/%s/%d" % [str(house.id),str(passage.cell_id),int(axis.x)],"arch",str(house.id),str(passage.road_id),at,axis,float(passage.half_width)-0.10)
 
@@ -77,9 +78,9 @@ func _arcade_tea_sites(city:RefCounted,house:Dictionary)->void:
 		var cell:Dictionary={}
 		for row:Dictionary in house.cells:
 			if row.id==face.cell_id:cell=row;break
-		var normal:=Vector2(face.side)
+		var normal:=Frame.direction(house,Vector2(face.side))
 		var tangent:=Vector2(normal.y,-normal.x)
-		var wall:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8+normal*.9
+		var wall:=Frame.center(house,cell)+normal*.9
 		var best:=INF
 		var point:=Vector2.ZERO
 		var selected:Dictionary={}

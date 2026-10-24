@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Shared CPU terrain for visible mesh, ground picking and planted roots.
 ## Tiny Glade recovered_stair_terrain.py / VA 0x14140ce00 establishes one
 ## sampled height field; terrain_derivative/000.comp derives real metre slopes.
@@ -234,7 +235,7 @@ func _changed_stroke_bounds(strokes: Array) -> Array:
 	return result
 
 func _protection_bounds(row: Dictionary) -> Rect2:
-	if row.has("rect"): return row.rect.grow(PAD_TRANSITION)
+	if row.has("rect"):return Frame.bounds(row.rect).grow(PAD_TRANSITION)
 	return Rect2(row.a,Vector2.ZERO).expand(row.b).grow(float(row.radius)+PAD_TRANSITION)
 
 func _changed_protection_bounds(protection: Array) -> Array:
@@ -363,9 +364,7 @@ func _protection_weight(at: Vector2) -> float:
 	for row: Dictionary in _protection_bins.get(key,[]):
 		var distance: float
 		if row.has("rect"):
-			var rect: Rect2=row.rect
-			var offset:=Vector2(maxf(rect.position.x-at.x,at.x-rect.end.x),maxf(rect.position.y-at.y,at.y-rect.end.y)).max(Vector2.ZERO)
-			distance=offset.length()
+			distance=Frame.distance(row.rect,at)
 		else: distance=_segment_distance(at,row.a,row.b)-float(row.radius)
 		weight=minf(weight,smoothstep(0.0,PAD_TRANSITION,distance))
 	return weight
@@ -399,9 +398,7 @@ func _protected_height(at: Vector2,raw: float) -> float:
 func _pad_influence(at: Vector2,row: Dictionary) -> float:
 	var distance: float
 	if row.has("rect"):
-		var rect: Rect2 = row.rect
-		var outside := Vector2(maxf(rect.position.x-at.x,at.x-rect.end.x),maxf(rect.position.y-at.y,at.y-rect.end.y)).max(Vector2.ZERO)
-		distance = outside.length()
+		distance=Frame.distance(row.rect,at)
 	else: distance = _segment_distance(at,row.a,row.b)-float(row.radius)
 	return 1.0-smoothstep(0.0,float(row.get("transition",PAD_TRANSITION)),distance)
 

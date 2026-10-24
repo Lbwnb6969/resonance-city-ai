@@ -1,8 +1,13 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const Plan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
 static func build(renderer,root:Node3D,house:Dictionary)->void:
 	var plan:=Plan.for_house(renderer.state,house)
 	if plan.is_empty():return
+	var world_plan:=plan.duplicate(true)
+	plan=plan.duplicate(true)
+	for field:String in ["center","shore","stage","jetty_start","jetty_end"]:plan[field]=Frame.inverse(house,plan[field])
+	plan.direction=Vector2(plan.direction).rotated(Frame.yaw(house))
 	var stage:=Vector3(plan.stage.x,plan.deck_y,plan.stage.y);var direction:Vector2=plan.direction;var tangent:=Vector2(-direction.y,direction.x)
 	var group:=Node3D.new();group.name="FloatingAmphitheater";root.add_child(group)
 	var cream:Material=renderer._material(Color("eee8d6"));var oak:Material=renderer._material(Color("bfa27b"));var bronze:Material=renderer._material(Color("b69a5c"),.55)
@@ -61,7 +66,7 @@ static func build(renderer,root:Node3D,house:Dictionary)->void:
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(cell.id));body.set_meta("cell",cell.duplicate(true));body.set_meta("water_stage",true)
 	var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(faces)
 	var collision:=CollisionShape3D.new();collision.shape=shape;body.add_child(collision);group.add_child(body)
-	root.set_meta("amphitheater",plan);root.set_meta("signature_stage_triangles",faces.size()/3)
+	root.set_meta("amphitheater",world_plan);root.set_meta("signature_stage_triangles",faces.size()/3)
 static func jetty_polygon(plan:Dictionary)->PackedVector2Array:
 	var side:=Vector2(-plan.direction.y,plan.direction.x)*.47
 	return PackedVector2Array([Vector2(plan.jetty_start)+side,Vector2(plan.jetty_end)+side,Vector2(plan.jetty_end)-side,Vector2(plan.jetty_start)-side])

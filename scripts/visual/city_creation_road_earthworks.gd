@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## CPU-only cut/fill geometry derived from the same road profile as walkers.
 ## No State mutation or GPU resources: usable in the budget rebuild worker.
 const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
@@ -15,13 +16,13 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 	for sample: Dictionary in samples: points.append(sample.xz)
 	if points.size()<2: return {"faces":faces,"sections":sections}
 	offsets=renderer._road_offsets(points,float(road.width))
-	var blockers: Array[Rect2]=[]
+	var blockers:Array=[]
 	var doors: Array=[]
 	for house: Dictionary in renderer.state.houses:
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
 			var center := Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*1.8
-			blockers.append(Rect2(center-Vector2.ONE*0.9,Vector2.ONE*1.8).grow(0.30))
+			blockers.append(Frame.footprint(house,cell,.30))
 		for entry: Dictionary in renderer.house_entrances(str(house.id)): doors.append([entry.wall_at,entry.at])
 	for index in range(points.size()-1):
 		if samples[index].bridge or samples[index+1].bridge: continue
@@ -59,11 +60,11 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 			sections.append({"kind":"cut" if cut else "fill","a":a,"b":b,"top_a":top0,"top_b":top1,"bottom_a":low0,"bottom_b":low1,"road_y_a":y0,"road_y_b":y1})
 	return {"faces":faces,"sections":sections}
 
-static func _clear(renderer,a: Vector2,b: Vector2,road_id: String,blockers: Array[Rect2],doors: Array) -> bool:
+static func _clear(renderer,a: Vector2,b: Vector2,road_id: String,blockers:Array,doors: Array) -> bool:
 	for at: Vector2 in [a,(a+b)*0.5,b]:
 		if renderer.state.water_clearance(at)<0.15 or renderer._inside_other_road(at,road_id): return false
-		for rect: Rect2 in blockers:
-			if rect.has_point(at): return false
+		for rect:Variant in blockers:
+			if Frame.contains(rect,at): return false
 		for entry: Array in doors:
 			if Geometry2D.get_closest_point_to_segment(at,entry[0],entry[1]).distance_to(at)<0.65: return false
 	return true

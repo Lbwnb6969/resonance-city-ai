@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Quality decor has independent ownership: no road, terrain or house rebuild.
 const NAMES := ["初筑暖舍","安居花舍","雅致风铃屋","连廊华宅","传世共鸣名宅"]
@@ -146,7 +147,7 @@ func progress(renderer,only:Array[String]=[])->void:
 		var features: Array[String]=[]
 		if not entry.is_empty():
 			var frame:=Node3D.new();root.add_child(frame)
-			frame.position=renderer._entrance_point(entry,Vector3(0,0,.38));frame.rotation.y=atan2(float(entry.side.x),float(entry.side.y))
+			frame.position=renderer._entrance_point(entry,Vector3(0,0,.38));frame.rotation.y=atan2(Frame.normal(entry).x,Frame.normal(entry).y)
 			var at:=Vector2(frame.position.x,frame.position.z);frame.position.y=renderer.state.street_height(at)+.012
 			_welcome(renderer,frame)
 			features.append_array(["welcome_stones","door_flowerpot","warm_porch_lamp"])
@@ -183,11 +184,12 @@ func progress(renderer,only:Array[String]=[])->void:
 func _canopy(renderer,root: Node3D,house: Dictionary,features: Array[String])->void:
 	for cell: Dictionary in house.cells:
 		if cell.kind!="terrace":continue
-		var at: Vector3=renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7+.18,0)
+		var frame:=Node3D.new();root.add_child(frame);frame.position=Frame.world3(house,renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7+.18,0));frame.rotation.y=Frame.yaw(house)
+		var at:=Vector3.ZERO
 		var wood: Material=renderer._material(Color("a8845f"));var cream: Material=renderer._material(Color("eadbb4"))
 		for x: float in [-.68,.68]:
-			for z: float in [-.65,.65]:renderer._cylinder(root,.025,.025,1.35,at+Vector3(x,.675,z),wood,6)
-		renderer._box(root,Vector3(1.5,.055,1.45),at+Vector3(0,1.36,0),cream)
+			for z: float in [-.65,.65]:renderer._cylinder(frame,.025,.025,1.35,at+Vector3(x,.675,z),wood,6)
+		renderer._box(frame,Vector3(1.5,.055,1.45),at+Vector3(0,1.36,0),cream)
 		features.append("sunshine_terrace_canopy");break
 
 func _vane(renderer,root: Node3D,house: Dictionary)->void:
@@ -206,7 +208,7 @@ func _rose_window(renderer,root: Node3D,house: Dictionary)->void:
 		if cell.kind!="room":continue
 		var side:=Vector2i.DOWN
 		if not renderer._neighbor_cell(house,cell,side).is_empty():continue
-		var frame:=Node3D.new();root.add_child(frame);frame.position=renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7,1.02)
+		var frame:=Node3D.new();root.add_child(frame);frame.position=Frame.world3(house,renderer._cell_position(house,cell)+Vector3(0,int(cell.level)*1.7,1.02));frame.rotation.y=Frame.yaw(house)
 		# High circular glazing leaves the existing door clear below it.
 		var ring: MeshInstance3D=renderer._cylinder(frame,.18,.18,.025,Vector3(0,1.43,0),renderer._material(Color("d9b464")),16);ring.rotation.x=PI*.5
 		for i in range(6):

@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Thin semantic outlines derived from the production plans, in world metres.
 const Bridge = preload("res://scripts/world/city_creation_bridge_plan.gd")
 static func row(kind: String, label: String, lines: Array, at: Vector3) -> Dictionary:
@@ -14,8 +15,8 @@ static func arcade(house: Dictionary, face: Dictionary) -> Dictionary:
 	var cell := {}
 	for item: Dictionary in house.cells:
 		if item.id == face.cell_id: cell = item; break
-	var normal := Vector3(face.side.x,0,face.side.y); var tangent := Vector3(normal.z,0,-normal.x)
-	var center := Vector3(float(house.origin[0])+cell.x*1.8,float(house.get("base_y",0.)),float(house.origin[1])+cell.z*1.8)+normal*.94
+	var normal:=Basis(Vector3.UP,Frame.yaw(house))*Vector3(face.side.x,0,face.side.y); var tangent := Vector3(normal.z,0,-normal.x)
+	var center := Frame.world3(house,Vector3(float(house.origin[0])+cell.x*1.8,float(house.get("base_y",0.)),float(house.origin[1])+cell.z*1.8))+normal*.94
 	var arch: Array[Vector3] = [center-tangent*.72+Vector3.UP*.1,center-tangent*.72+Vector3.UP*.91]
 	for i in range(17):
 		var angle := PI-float(i)*PI/16.; arch.append(center+tangent*cos(angle)*.72+Vector3.UP*(.91+sin(angle)*.63))

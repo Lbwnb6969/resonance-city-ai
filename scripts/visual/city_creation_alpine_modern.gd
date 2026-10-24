@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 const Plan = preload("res://scripts/world/city_creation_alpine_plan.gd")
 const Pick = preload("res://scripts/visual/city_creation_roof_pick.gd")
@@ -97,7 +98,7 @@ static func _deck(renderer, parent: Node3D, house: Dictionary, cell: Dictionary,
 	var samples: Array=[]
 	for x: float in [-.76,0.,.76]:
 		var at: Vector3=deck.to_global(Vector3(x,0,.97))
-		var ground: float=renderer.state.raw_terrain_height(Vector2(at.x,at.z))-float(house.get("base_y",0.))
+		var ground: float=renderer.state.raw_terrain_height(Frame.point(house,Vector2(at.x,at.z)))-float(house.get("base_y",0.))
 		if ground>.10: deck.free(); return
 		samples.append({"x":x,"ground":ground})
 	renderer._box(deck,Vector3(1.92,.10,.58),Vector3(0,.16,.75),wood)

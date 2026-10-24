@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Geometry fixes membership; the uninterrupted PCM transport fixes every slot.
 ## One visible ring shares the existing short pool, never one player per house.
 const Pitch=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
@@ -20,7 +21,7 @@ static func _house_center(house: Dictionary)->Vector2:
 	var sum:=Vector2.ZERO;var count:=0
 	for cell: Dictionary in house.cells:
 		if int(cell.level)!=0 or cell.kind!="room":continue
-		sum+=Vector2(house.origin[0]+cell.x*1.8,house.origin[1]+cell.z*1.8);count+=1
+		sum+=Frame.center(house,cell);count+=1
 	return sum/float(count) if count>0 else Vector2(house.origin[0],house.origin[1])
 
 static func _ordered(ids: Array,center: Vector2,houses: Dictionary)->Array[String]:
@@ -46,8 +47,8 @@ static func derive(city: RefCounted)->Array[Dictionary]:
 			# The courtyard planner's local grid anchor can change with storage
 			# order. Absolute millimetre tile keys keep this musical identity fixed.
 			var tiles: Array[Vector2i]=[]
-			for tile: Rect2 in court.tiles:
-				var at:=tile.get_center();tiles.append(Vector2i(roundi(at.x*1000.),roundi(at.y*1000.)))
+			for tile:Variant in court.tiles:
+				var at:=Frame.box_center(tile);tiles.append(Vector2i(roundi(at.x*1000.),roundi(at.y*1000.)))
 			tiles.sort_custom(func(a: Vector2i,b: Vector2i)->bool:return a.x<b.x or (a.x==b.x and a.y<b.y))
 			var key:=PackedStringArray()
 			for tile: Vector2i in tiles:key.append("%d,%d"%[tile.x,tile.y])
@@ -58,7 +59,7 @@ static func derive(city: RefCounted)->Array[Dictionary]:
 			var house: Dictionary=houses[id];var distance:=INF
 			for cell: Dictionary in house.cells:
 				if int(cell.level)!=0 or cell.kind!="room":continue
-				var at:=Vector2(house.origin[0]+cell.x*1.8,house.origin[1]+cell.z*1.8)
+				var at:=Frame.center(house,cell)
 				distance=minf(distance,at.distance_to(marker.center))
 			if distance<=float(marker.radius)+ROUND_REACH:ids.append(id)
 		var ordered:=_ordered(ids,marker.center,houses)

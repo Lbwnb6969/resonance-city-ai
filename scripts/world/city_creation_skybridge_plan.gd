@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Shared derived bridges connect real second/third floors without new save IDs.
 const UNIT:=1.8
 const FLOOR:=1.7
@@ -11,16 +12,17 @@ static func for_house(city:RefCounted,house:Dictionary)->Array[Dictionary]:
 		var at:=_center(house,cell);var y:=float(house.get("base_y",0.))+int(cell.level)*FLOOR+.15
 		for direction:Vector2i in [Vector2i.RIGHT,Vector2i.DOWN,Vector2i.LEFT,Vector2i.UP]:
 			if _neighbor(house,cell,direction):continue
+			var normal:=Frame.direction(house,Vector2(direction))
 			var closest:=INF;var selected:Dictionary={}
 			for other:Dictionary in city.houses:
-				if str(house.id)==str(other.id) or city.house_era(other)!="modern_eco":continue
+				if str(house.id)==str(other.id) or city.house_era(other)!="modern_eco" or absf(Frame.yaw(house)-Frame.yaw(other))>.00001:continue
 				for target:Dictionary in other.cells:
 					if target.kind!="room" or int(target.level) not in [1,2] or _neighbor(other,target,-direction):continue
 					var height:=float(other.get("base_y",0.))+int(target.level)*FLOOR+.15
 					if absf(height-y)>.02:continue
-					var to:=_center(other,target);var offset:=to-at;var distance:=offset.dot(Vector2(direction))
-					if distance<2.2 or distance>preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city) or absf(offset.cross(Vector2(direction)))>.02 or distance>=closest:continue
-					var a:=at+Vector2(direction)*.87;var b:=to-Vector2(direction)*.87
+					var to:=_center(other,target);var offset:=to-at;var distance:=offset.dot(normal)
+					if distance<2.2 or distance>preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city) or absf(offset.cross(normal))>.02 or distance>=closest:continue
+					var a:=at+normal*.87;var b:=to-normal*.87
 					if not _clear(city,a,b,y,str(cell.id),str(target.id)):continue
 					closest=distance;selected={"from_house":str(house.id),"to_house":str(other.id),"from_cell":str(cell.id),"to_cell":str(target.id),"a":a,"b":b,"floor_y":y,"width":WIDTH,"level":int(cell.level),"length":a.distance_to(b)}
 			if not selected.is_empty() and int(str(house.id).substr(1))<int(str(selected.to_house).substr(1)):result.append(selected)
@@ -31,7 +33,7 @@ static func for_house(city:RefCounted,house:Dictionary)->Array[Dictionary]:
 		selected_pairs[bridge.to_house]=true;unique.append(bridge)
 	return unique
 static func _center(house:Dictionary,cell:Dictionary)->Vector2:
-	return Vector2(house.origin[0]+int(cell.x)*UNIT,house.origin[1]+int(cell.z)*UNIT)
+	return Frame.center(house,cell)
 static func _neighbor(house:Dictionary,cell:Dictionary,direction:Vector2i)->bool:
 	for other:Dictionary in house.cells:
 		if other.kind=="room" and int(other.level)==int(cell.level) and int(other.x)==int(cell.x)+direction.x and int(other.z)==int(cell.z)+direction.y:return true
@@ -49,7 +51,7 @@ static func _clear(city:RefCounted,a:Vector2,b:Vector2,y:float,from_cell:String,
 					if int(above.x)==int(cell.x) and int(above.z)==int(cell.z) and int(above.level)>int(cell.level):covered=true;break
 				if not covered:top+=.70 if city.house_era(house)=="modern_eco" else 1.8 if city.house_era(house)=="renaissance" or house.get("style","")=="round_tower" else 1.0
 			if top<y-.1 or bottom>y+1.4:continue
-			if corridor.intersects(Rect2(_center(house,cell)-Vector2.ONE*.9,Vector2.ONE*UNIT)):return false
+			if Frame.segment(Frame.footprint(house,cell,WIDTH*.5+.04),a,b):return false
 	for i in range(1,6):
 		var p:=a.lerp(b,float(i)/6.)
 		if city.ground_height(p)>y-.2:return false
@@ -65,7 +67,7 @@ static func adjacency_signature(city:RefCounted,house:Dictionary)->Array:
 	var result:Array=[]
 	for other:Dictionary in city.houses:
 		for cell:Dictionary in other.cells:
-			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),city.house_era(other)]);break
+			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),Frame.yaw(other),city.house_era(other)]);break
 	for field:String in ["roads","terrain_strokes","waters","districts"]:
 		for row:Dictionary in city.get(field):
 			var influence:=_stroke_bounds(row.points).grow(float(row.get("radius",row.get("width",0.)))*1.5)

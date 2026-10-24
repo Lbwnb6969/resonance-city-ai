@@ -1,4 +1,5 @@
 extends Node3D
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Derived pond-only records. Workers never load source meshes or textures.
@@ -33,11 +34,11 @@ func rebuild() -> void:
 	var began := Time.get_ticks_usec()
 	last_changed=0
 	var geometry: Array = [state.waters.duplicate(true),state.roads.duplicate(true)]
-	var footprints: Array[Rect2] = []
+	var footprints: Array = []
 	for house: Dictionary in state.houses:
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
-			footprints.append(Rect2(Frontage.center(house,cell)-Vector2.ONE*0.9,Vector2.ONE*1.8))
+			footprints.append(Frame.footprint(house,cell))
 	for court: Dictionary in state.courtyard_plans(): footprints.append_array(court.tiles)
 	geometry.append(footprints)
 	if geometry==_geometry:
@@ -73,7 +74,7 @@ func rebuild() -> void:
 			add_child(root);blocks[block]=root
 	elapsed_ms=float(Time.get_ticks_usec()-began)/1000.0
 
-func _local_geometry(bounds: Rect2, footprints: Array[Rect2]) -> Dictionary:
+func _local_geometry(bounds: Rect2, footprints: Array) -> Dictionary:
 	var result := {"ponds":[],"roads":[],"footprints":[]}
 	for water: Dictionary in state.waters:
 		if str(water.kind)!="pond": continue
@@ -85,8 +86,8 @@ func _local_geometry(bounds: Rect2, footprints: Array[Rect2]) -> Dictionary:
 			var a := Vector2(road.points[index-1][0],road.points[index-1][1])
 			var b := Vector2(road.points[index][0],road.points[index][1])
 			if bounds.intersects(Rect2(a,Vector2.ZERO).expand(b).grow(float(road.width)*0.5+0.28+0.55),true): result.roads.append([a,b,float(road.width)*0.5+0.28])
-	for footprint: Rect2 in footprints:
-		if bounds.intersects(footprint.grow(0.55),true): result.footprints.append(footprint)
+	for footprint:Variant in footprints:
+		if bounds.intersects(Frame.bounds(Frame.grow(footprint,.55)),true): result.footprints.append(footprint)
 	return result
 
 func _records(block: Vector2i, local: Dictionary) -> Array:
@@ -135,17 +136,16 @@ func _clear(at: Vector2, radius: float, pond: Dictionary, local: Dictionary) -> 
 	if shore < -0.85 or shore > -0.25 or shore>=-radius-0.08: return false
 	for road: Array in local.roads:
 		if at.distance_to(Geometry2D.get_closest_point_to_segment(at,road[0],road[1]))<=float(road[2])+radius: return false
-	for footprint: Rect2 in local.footprints:
-		var nearest := at.clamp(footprint.position,footprint.end)
-		if at.distance_to(nearest)<=radius: return false
+	for footprint:Variant in local.footprints:
+		if Frame.distance(footprint,at)<=radius: return false
 	for sample in range(17):
 		var point := at if sample==16 else at+Vector2.from_angle(sample*TAU/16.0)*radius
 		if state.water_clearance(point)>=-0.08: return false
 		if state._water_stroke_distance(point,pond.points)-float(pond.width)*0.5>=-0.08: return false
 		for road: Array in local.roads:
 			if point.distance_to(Geometry2D.get_closest_point_to_segment(point,road[0],road[1]))<=float(road[2]): return false
-		for footprint: Rect2 in local.footprints:
-			if footprint.has_point(point): return false
+		for footprint:Variant in local.footprints:
+			if Frame.contains(footprint,point): return false
 	return true
 
 func _make_batch(root: Node3D, part: String, records: Array) -> void:

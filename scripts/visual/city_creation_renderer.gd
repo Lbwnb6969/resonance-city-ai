@@ -510,7 +510,7 @@ func update_bakery_supply(statuses: Dictionary) -> void:
 		if not entrance.is_empty():
 			var front := _entrance_point(entrance,Vector3(0.82,0.65,0.20))
 			if _clearance_at(Vector2(front.x,front.z),str(entrance.cell_id),0.29):
-				var side: Vector2i = entrance.side
+				var side:Vector2=preload("res://scripts/world/city_creation_house_frame.gd").normal(entrance)
 				var along := Vector3(float(side.y),0,-float(side.x))
 				for bread in range(count):
 					_crown(root,front+along*(-0.16+bread*0.16),Vector3(0.07,0.045,0.15),Color("d6a35d"))
@@ -853,7 +853,7 @@ func _primary_entrance(house: Dictionary) -> Dictionary:
 	return entrances[0] if not entrances.is_empty() else {}
 
 func _entrance_point(entrance: Dictionary, local: Vector3) -> Vector3:
-	var side: Vector2i = entrance.side
+	var side:Vector2=preload("res://scripts/world/city_creation_house_frame.gd").normal(entrance)
 	var at: Vector2 = entrance.wall_at
 	var base_y := 0.0
 	for house: Dictionary in state.houses:
@@ -899,7 +899,7 @@ func try_update_house_colors(house_id: String) -> Dictionary:
 func clear_preview() -> void:
 	if preview == null: return
 	road_draft_field.clear(self)
-	_clear(preview)
+	_clear(preview);preview.transform=Transform3D.IDENTITY;preview.remove_meta("design_transform") if preview.has_meta("design_transform") else null
 	for key in ["removal_house","removal_cells","removal_valid","stroke_cells","stroke_valid","stroke_roofs","porch_previews","passage_previews","stepping_previews","terrain_points","terrain_contours","terrain_core_radius"]:
 		if preview.has_meta(key): preview.remove_meta(key)
 
@@ -1189,8 +1189,9 @@ func set_preview(house_id: String, cell: Dictionary, valid: bool) -> void:
 	if house.is_empty(): return
 	var color := Color(0.63,0.89,0.72,0.40) if valid else Color(0.95,0.39,0.31,0.45)
 	_preview_cell(house,cell,color,valid)
+	preload("res://scripts/world/city_creation_house_frame.gd").apply(preview,house)
 
-func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y: float = 0.0) -> void:
+func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y: float = 0.0,angle:float=0.) -> void:
 	clear_preview()
 	var host := {"origin":[origin.x,origin.y],"base_y":base_y}
 	for cell: Dictionary in cells:
@@ -1198,7 +1199,7 @@ func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y
 	var roof_count := _preview_stroke_roofs(origin,cells,base_y,Color(0.92,0.54,0.40,0.34) if valid else Color(0.95,0.39,0.31,0.28))
 	preview.set_meta("stroke_cells",cells.duplicate(true))
 	preview.set_meta("stroke_valid",valid)
-	preview.set_meta("stroke_roofs",roof_count)
+	preview.set_meta("stroke_roofs",roof_count);host.yaw=angle;preload("res://scripts/world/city_creation_house_frame.gd").apply(preview,host)
 
 func _preview_stroke_roofs(origin: Vector2, cells: Array, base_y: float, color: Color) -> int:
 	# A cheap authored preview of the same gable profile used after release.
@@ -1265,7 +1266,7 @@ func set_removal_preview(house_id: String, cells: Array, valid: bool) -> void:
 		_preview_cell(house,cell,color,valid)
 		_preview_removed_roof(house,cell,color)
 	preview.set_meta("removal_cells",ids)
-	preview.set_meta("removal_valid",valid)
+	preview.set_meta("removal_valid",valid);preload("res://scripts/world/city_creation_house_frame.gd").apply(preview,house)
 
 func _preview_removed_roof(house: Dictionary, cell: Dictionary, color: Color) -> void:
 	var x := int(cell.x)
@@ -1541,6 +1542,7 @@ func _advance_house_assembly(job:HouseAssembly,budget_ms:float)->bool:
 		job.stats.part_peaks[label]=maxf(float(job.stats.part_peaks.get(label,0.)),ms)
 		units+=1
 	if job.stage!=HouseAssembly.Stage.DONE:return false
+	preload("res://scripts/world/city_creation_house_frame.gd").apply(job.root,job.house)
 	job.root.set_meta("house_assembly",job.stats)
 	return true
 

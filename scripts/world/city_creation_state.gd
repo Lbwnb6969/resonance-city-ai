@@ -3,6 +3,7 @@ extends RefCounted
 signal era_unlocked(era: String)
 
 ## Authoritative, immediate state for the independent city creation slice.
+const Rotation=preload("res://scripts/world/city_creation_house_rotation.gd")
 const LandmarkMovement=preload("res://scripts/world/city_creation_landmark_movement.gd")
 const AutoNeighborhoods=preload("res://scripts/world/city_creation_auto_neighborhoods.gd")
 var automatic_neighborhoods:=false
@@ -582,6 +583,9 @@ func set_house_palette(house_id: String, palette: int) -> Dictionary:
 	return {"ok":true,"message":"房屋已换上配色","appearance_house_id":house_id}
 
 
+func rotate_house(house_id:String,angle:float)->Dictionary:
+	return Rotation.set_angle(self,house_id,angle)
+
 func set_house_colors(house_id:String,wall:Color,roof:Color)->Dictionary:
 	var index:=_house_index(house_id)
 	if index<0:return _fail("房屋不存在")
@@ -784,7 +788,7 @@ func natural_clusters()->Dictionary:
 		var ground:Array=[]
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:ground.append([cell.x,cell.z,cell.kind])
-		input.append([house.id,house.origin,ground])
+		input.append([house.id,house.origin,ground,Rotation.Frame.yaw(house)])
 	var key:=hash([input,roads])
 	if _natural_cluster_key!=key:
 		var doors:Dictionary={}
@@ -1258,7 +1262,7 @@ func _water_conflicts(points: Array, width: float, house_rows: Array, road_rows:
 		for cell in house.cells:
 			var center := Vector2(float(house.origin[0]) + int(cell.x) * CELL_UNIT, float(house.origin[1]) + int(cell.z) * CELL_UNIT)
 			var rect := Rect2(center - Vector2.ONE * CELL_UNIT * 0.5, Vector2.ONE * CELL_UNIT)
-			if _stroke_hits_rect(points, width * 0.5, rect):
+			if (Rotation.Frame.stroke_hits(house,cell,points,width*.5) if not is_zero_approx(Rotation.Frame.yaw(house)) else _stroke_hits_rect(points,width*.5,rect)):
 				conflicts.append({"kind": "house", "id": house.id, "name": house.get("name", house.id), "position":[center.x,center.y], "source": cell.get("source", "seed")})
 				break
 	for road in road_rows:
@@ -2560,8 +2564,8 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 			if cell.level != 0:
 				continue
 			var center := Vector2(float(house.origin[0]) + int(cell.x) * CELL_UNIT, float(house.origin[1]) + int(cell.z) * CELL_UNIT)
-			var footprint := Rect2(center - Vector2.ONE * CELL_UNIT * 0.5, Vector2.ONE * CELL_UNIT).grow(clearance)
-			if footprint.has_point(position):
+			var footprint:Variant=Rotation.Frame.footprint(house,cell,clearance)
+			if Rotation.Frame.contains(footprint,position):
 				return false
 		# A render pass already resolves these immutable entrances once. Reusing
 		# them avoids rebuilding every road/blocker signature for every plant.
@@ -2701,6 +2705,7 @@ func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
 
 
 func _pair_overlaps(first: Dictionary, second: Dictionary) -> bool:
+	if not is_zero_approx(Rotation.Frame.yaw(first)) or not is_zero_approx(Rotation.Frame.yaw(second)):return Rotation.Frame.overlaps(first,second)
 	for a in first.cells:
 		for b in second.cells:
 			if a.level != b.level:
@@ -2748,7 +2753,7 @@ func _validate_snapshot(data: Dictionary) -> Dictionary:
 func house_entrances(house_id: String) -> Array[Dictionary]:
 	for house: Dictionary in houses:
 		if str(house.id)!=house_id: continue
-		var signature: Array=[house.origin.duplicate(),[]]
+		var signature: Array=[house.origin.duplicate(),[],Rotation.Frame.yaw(house)]
 		for cell: Dictionary in house.cells:
 			if int(cell.level)==0:
 				signature[1].append([str(cell.id),int(cell.x),int(cell.z),str(cell.kind)])
@@ -2775,12 +2780,13 @@ func house_passages(house_id: String) -> Array[Dictionary]:
 
 func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
 	var scene_roads: Array = roads if road_rows == null else road_rows
+	if not is_zero_approx(Rotation.Frame.yaw(house)):return Rotation.site(self,house,scene_roads,waters if water_rows==null else water_rows)
 	for marker: Dictionary in Roundabouts.all(scene_roads):
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
 			var at:=Vector2(house.origin[0],house.origin[1])+Vector2(cell.x,cell.z)*CELL_UNIT
 			var offset: Vector2=(at-Vector2(marker.center)).abs()-Vector2.ONE*.9
-			if offset.max(Vector2.ZERO).length()<float(marker.radius)+.1: return _fail("请给环岛广场留出空间")
+			if offset.max(Vector2.ZERO).length()<float(marker.radius)+.3: return _fail("请给环岛广场留出空间")
 	var scene_waters: Array = waters if water_rows == null else water_rows
 	for cell in house.cells:
 		var center := Vector2(float(house.origin[0]) + cell.x * CELL_UNIT, float(house.origin[1]) + cell.z * CELL_UNIT)
@@ -2822,7 +2828,7 @@ func _validate_road_site(points: Array, width: float, house_rows: Variant = null
 		for cell in house.cells:
 			if int(cell.level)!=0:continue
 			var origin: Vector2=Frontage.center(house,cell)
-			if not bounds.intersects(Rect2(origin-Vector2.ONE*.9,Vector2.ONE*1.8).grow(width*.5),true):continue
+			if not bounds.intersects(Rotation.Frame.bounds(Rotation.Frame.footprint(house,cell,width*.5)),true):continue
 			if Frontage.road_cell_conflict(house,cell,points,width):
 				return _fail("道路需要正面接门，或从底层房间的相对两面完整穿过")
 	if length < 0.2:

@@ -1,5 +1,6 @@
 class_name CityCreationLife
 extends Node3D
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
 const CitizenMotion=preload("res://scripts/world/city_creation_citizen_motion.gd")
@@ -568,7 +569,7 @@ func _signature() -> Array:
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue
 			var at := Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8)
-			var footprint := Rect2(at-Vector2.ONE*0.9,Vector2.ONE*1.8)
+			var footprint:Rect2=Frame.bounds(Frame.footprint(house,cell))
 			bounds=footprint if first else bounds.merge(footprint)
 			first=false
 		if not first:

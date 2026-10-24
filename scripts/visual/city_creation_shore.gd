@@ -1,5 +1,6 @@
 class_name CityCreationShore
 extends Node3D
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const SafeInstances = preload("res://scripts/visual/city_creation_safe_instances.gd")
 const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Original shore exemplars: deterministic placement, obstacle removal and
@@ -396,9 +397,9 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 		for cell: Dictionary in house.cells:
 			if int(cell.level) != 0: continue
 			var at := origin + Vector2(float(cell.x), float(cell.z)) * State.CELL_UNIT
-			var footprint := Rect2(at - Vector2.ONE * 0.9, Vector2.ONE * 1.8).grow(CLUSTER_REACH+0.105)
-			if not rect.intersects(footprint, true): continue
-			rows.append(["house", at, cell.kind])
+			var footprint:Variant=Frame.footprint(house,cell,CLUSTER_REACH+.105)
+			if not rect.intersects(Frame.bounds(footprint),true):continue
+			rows.append(["house",Frame.center(house,cell),cell.kind,Frame.yaw(house)])
 		var entrances: Array = entrances_by_house[str(house.get("id", str(house.origin)))]
 		for entrance: Dictionary in entrances:
 			var door: Vector2 = entrance.clearance_at
@@ -411,8 +412,8 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 		_collect(rows, rect, "water", water.points, float(water.width) * 0.5 + 3.8)
 	for plant: Array in _plant_obstacles(block): rows.append(["plant",plant])
 	for court: Dictionary in state.courtyard_plans():
-		for tile: Rect2 in court.tiles:
-			if rect.intersects(tile.grow(CLUSTER_REACH+0.105),true): rows.append(["court",tile])
+		for tile:Variant in court.tiles:
+			if rect.intersects(Frame.bounds(Frame.grow(tile,CLUSTER_REACH+0.105)),true): rows.append(["court",tile])
 	return rows
 
 func _collect(rows: Array, rect: Rect2, kind: String, raw: Array, radius: float) -> void:

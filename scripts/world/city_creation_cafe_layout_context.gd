@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## A derived, shared footprint for both actual guests and their garden furniture.
 ## No camera or renderer data enters this plan.
 const Frontage = preload("res://scripts/world/city_creation_frontage.gd")
@@ -62,12 +63,11 @@ func _context(city) -> Dictionary:
 		var corners: Array[Vector2] = []
 		for cell: Dictionary in row.cells:
 			if int(cell.level)!=0: continue
-			var footprint := Rect2(Frontage.center(row,cell)-Vector2.ONE*0.9,Vector2.ONE*1.8)
-			context.footprints.append([Frontage.center(row,cell),Vector2.ONE*0.9])
-			var rect := footprint.grow(GUEST_RADIUS)
+			var footprint:Variant=Frame.footprint(row,cell)
+			context.footprints.append(footprint)
+			var rect:Variant=Frame.grow(footprint,GUEST_RADIUS)
 			context.obstacles.append(rect)
-			var walk := rect.grow(0.05)
-			corners.append_array([walk.position,Vector2(walk.end.x,walk.position.y),walk.end,Vector2(walk.position.x,walk.end.y)])
+			corners.append_array(Frame.corners(Frame.grow(rect,.05)))
 		context.corners[str(row.id)]=corners
 		context.entries.append_array(city.house_entrances(str(row.id)))
 	for road: Dictionary in city.roads:
@@ -97,7 +97,7 @@ func layout(city, id: String) -> Dictionary:
 	var result := {}
 	for entry: Dictionary in entries:
 		if bool(entry.get("passage",false)): continue
-		var normal := Vector2(entry.side)
+		var normal:=Frame.normal(entry)
 		var tangent := Vector2(normal.y,-normal.x)
 		for distance: float in [2.6,3.2,3.8]:
 			for offset: float in [0.0,1.4,-1.4,2.5,-2.5]:
@@ -142,9 +142,8 @@ func clear(city, at: Vector2, radius: float) -> bool:
 
 func _clear(city, context: Dictionary, at: Vector2, radius: float) -> bool:
 	if not city.WORLD_RECT.grow(-radius).has_point(at) or city.water_clearance(at)<=radius: return false
-	for footprint: Array in context.footprints:
-		var delta: Vector2 = (at-Vector2(footprint[0])).abs()-Vector2(footprint[1])
-		if Vector2(maxf(delta.x,0),maxf(delta.y,0)).length()<radius: return false
+	for footprint:Variant in context.footprints:
+		if Frame.distance(footprint,at)<radius:return false
 	for entry: Dictionary in context.entries:
 		if at.distance_to(Vector2(entry.clearance_at))<0.46+radius: return false
 	for segment: Array in context.roads:
@@ -279,8 +278,8 @@ func _route(city, house: Dictionary, plan: Dictionary, from: Vector2, to: Vector
 
 func _leg(city, plan: Dictionary, a: Vector2, b: Vector2, from: Vector2, to: Vector2, obstacles: Array, other_plans: Array) -> bool:
 	if not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(a) or not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(b): return false
-	for obstacle: Rect2 in obstacles:
-		if Frontage.hits_rect(a,b,obstacle): return false
+	for obstacle:Variant in obstacles:
+		if Frame.segment(obstacle,a,b):return false
 	var center: Vector2 = plan.center
 	if center.distance_to(Geometry2D.get_closest_point_to_segment(center,a,b))<TABLE_RADIUS+GUEST_RADIUS: return false
 	for seat: Vector2 in plan.seats:

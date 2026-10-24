@@ -1,4 +1,5 @@
 extends RefCounted
+const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Actionable journal guidance over real construction/production conditions.
 ## Foundation's quest/condition assets distinguish prerequisites from rewards;
 ## our instructions prepare tools and views, never complete a goal for the player.
@@ -114,7 +115,7 @@ static func _empty_highland(state: RefCounted) -> Vector2:
 		var clear := true
 		for house: Dictionary in state.houses:
 			for cell: Dictionary in house.cells:
-				var p := Vector2(house.origin[0], house.origin[1]) + Vector2(cell.x, cell.z) * 1.8
+				var p := Frame.center(house,cell)
 				if p.distance_to(at) < 6.0: clear = false
 		for road: Dictionary in state.roads:
 			for i in range(road.points.size() - 1):
