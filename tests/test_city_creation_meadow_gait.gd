@@ -11,7 +11,7 @@ func run()->void:
 	for role:String in ["resident","bakery","workshop","atelier","clockmaker"]:
 		var actor:=Visual.person(1);root.add_child(actor);Visual.identify(actor,role);actor.position=Vector3(4,.1,-3)
 		var body:MeshInstance3D=actor.get_child(0).get_child(0);var mesh:ArrayMesh=body.mesh
-		check(mesh.get_blend_shape_count()==3 and mesh.get_surface_count()==1,"shared body has three morphs and one draw "+role)
+		check(mesh.get_blend_shape_count()==4 and mesh.get_surface_count()==1,"shared body has four morphs and one draw "+role)
 		var arrays:Array=mesh.surface_get_arrays(0);var shapes:Array=mesh.surface_get_blend_shape_arrays(0)
 		var finite:=true;var left:=false;var right:=false;var head:=false
 		for i in range(arrays[Mesh.ARRAY_VERTEX].size()):
@@ -30,6 +30,14 @@ func run()->void:
 		for kind:String in ["bread","workshop","atelier","clockmaker","lantern","cup"]:
 			Visual.hand(actor,kind,1.);Gait.pose(actor,1.,true);var old:Transform3D=actor.get_child(0).get_node("HandProp").transform
 			Gait.pose(actor,1.15,true);check(old!=actor.get_child(0).get_node("HandProp").transform and actor.transform==before,"six held props swing without changing real route "+role+kind)
-		Gait.pose(actor,2.,false,true);check(absf(actor.get_child(0).position.y-.28)<.005 and body.get_blend_shape_value(2)>.4,"seated cup and inspect pose retain real seat offset "+role)
+		Gait.pose(actor,2.,false,true);check(absf(actor.get_child(0).position.y-.28)<.005 and body.get_blend_shape_value(3)>.99,"seated cup and inspect pose retain real seat offset "+role)
+		var seated_shape:Array=shapes[3];var knees_forward:=false;var lower_hangs:=false
+		for i in range(arrays[Mesh.ARRAY_VERTEX].size()):
+			var at:Vector3=arrays[Mesh.ARRAY_VERTEX][i];var tag:int=roundi(arrays[Mesh.ARRAY_TEX_UV2][i].x)
+			if tag not in [1,2]:continue
+			var bent:Vector3=seated_shape[Mesh.ARRAY_VERTEX][i]
+			knees_forward=knees_forward or (at.y>=0. and bent.z-at.z>.04)
+			lower_hangs=lower_hangs or (at.y<-.06 and bent.y<.02 and bent.z-at.z>.06)
+		check(knees_forward and lower_hangs,"seated thighs turn forward and lower legs hang below knees "+role)
 		actor.free()
 	print("MEADOW_GAIT ",JSON.stringify({"checks":count,"failures":failures,"ok":failures.is_empty()}));quit(0 if failures.is_empty() else 1)

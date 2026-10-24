@@ -5,7 +5,7 @@ static func capture(demo,out:String,label:String,actor:Node3D)->Dictionary:
 	demo.camera.projection=Camera3D.PROJECTION_PERSPECTIVE;demo.camera.fov=38.;demo.life.view_camera=demo.camera
 	for i in range(24):
 		demo.life._process(1./24.)
-		var target:Vector3=actor.global_position+Vector3.UP*.30;demo.camera.global_position=target+Vector3(1.0,.35,1.0);demo.camera.look_at(target)
+		var target:Vector3=actor.global_position+Vector3.UP*(.36 if label=="seated_tea" else .30);demo.camera.global_position=target+(actor.global_basis*Vector3(1.3,.5,1.5) if label=="seated_tea" else Vector3(1.0,.35,1.0));demo.camera.look_at(target)
 		demo.life._update_citizen_lod(0.);demo.life.flush_workers()
 		preload("res://scripts/visual/city_creation_citizen_gait.gd").update(demo.life)
 		await tree.process_frame;await RenderingServer.frame_post_draw

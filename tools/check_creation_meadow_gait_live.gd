@@ -3,7 +3,7 @@ const Scene=preload("res://scenes/city_creation.tscn")
 const Citizens=preload("res://tools/fixtures/city_creation_citizen_visual_live.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Audio=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M39/live"
+var OUT:="res://验证记录/M39/live"
 var demo
 var checks:=0
 var failures:Array=[]
@@ -18,6 +18,8 @@ func shot(name:String)->void:
 	demo.toast.hide();demo.toast_time=0.;await process_frame;demo.town.clear_preview();await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png(OUT+"/"+name+".png")==OK,"native view "+name)
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);demo.life.set_process(false);await settle()

@@ -12,7 +12,7 @@ static func frames(demo,out:String,label:String,actor:Node3D)->int:
 		for phase in range(3):
 			demo._set_light_phase(phase)
 			var target:Vector3=actor.global_position+Vector3.UP*.30
-			demo.camera.global_position=target+(Vector3(-1.8,.70,1.8) if label=="seated_tea" else Vector3(1.8,.70,1.8));demo.camera.look_at(target)
+			demo.camera.global_position=target+(actor.global_basis*Vector3(1.8,.90,1.8) if label=="seated_tea" else Vector3(1.8,.70,1.8));demo.camera.look_at(target)
 			demo.life._update_citizen_lod(0.);demo.life.flush_workers()
 			demo.life.set_meta("citizen_visual_next",0.);Props.update(demo.life)
 			if await Live.shot(demo,out,"citizen_%s_%d_%d"%[label,size.x,phase]):count+=1

@@ -796,10 +796,10 @@
       "evidence_Paths": [
         "本地验证记录/M39/meadow_and_citizen_gait_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "一次性彻底解决 文档/28 指出的『近草卡片感』与『近景肢体姿态偏木偶』两大短板：为近景草簇赋予横向折脊与基底托叶，为行走与驻足的小人赋予轻快步态起伏、身体微倾、持物惯性轻摆及工坊门前品评微姿态。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_citizen_visual.gd; godot --headless --path . -s tests/test_city_creation_citizen_lod.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": "",
+      "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py PASS. Gate2: Godot4.7.2 --headless --audio-driver Dummy --path . --script tests/test_city_creation_meadow_gait.gd -- --isolated-session (55 PASS), citizen_visual52/citizen_lod12/legacy_roundtrip375 and27works PASS. Existing actualGL meadow_clumps26/meadow_drifts23 PASS, early headless GPU-buffer readback failures retained. Gate3: tools/check_creation_meadow_gait_live.gd --rendering-method gl_compatibility --audio-driver Dummy -- --isolated-session --gait-sequences --out-dir=res://验证记录/M39/verified (22 PASS); six actual24frame prop/tea sequences, two resolutions5/10/15degree day/night grass, real production/purchase/greetings/cafe states, unchanged personal save. 300house native6PASS prior same-gait baseline:298actors/281moved/235scalar deferred; Life p951.798/max4.459ms, frame p9512.218/max113.383ms. Final6.037188s Master peak.13485718/zero clipping. Independent context Critic closed standing-on-chair blocker after fourth seated morph, torso lowering and camera correction; no current blocker. Remaining polygonal leaf style, cloak obscuring thigh, low cup and cropped dynamic head honestly limited, retained for M41 refinement; subjective listening unassessed. See M39/critic and doc24. Source check_code_health/compact paths absent; actual commands above used.",
       "independent_review_followups": [
         "M34独立Critic：近草平面片感、小人并脚直立木偶感；M39分别用低角近景/连续步态序列复验。"
       ]

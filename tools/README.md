@@ -92,3 +92,5 @@ M32：long_session_journey.py/live和large_town_live默认输出M32；原M22证�
 M33：`test_city_creation_music_experience.gd`核首屋/双屋、四时代、-1.2dB退让与专用钟楼声源。`check_creation_music_experience_live.gd`使用原生GL/Dummy/isolated-session，`--out-dir=res://验证记录/M33/另目录`隔离输出；可用`--cafe-only`、`--bell-only`、`--mill-only`独立验证合法公开视图/库存/地标。实际Master、双尺寸PNG、声池身份与个人档字节均留证。大城单采样窗错过的短音不伪装为通过，保留原日志并用对应真实公共地标单独复验。
 
 M34：`test_city_creation_smooth_variation.gd`核实际AudioStreamPlayer的延迟换流/音量保持、十调式六音阶、实际四时代编辑音色和共享混响/总线回收。`check_creation_smooth_music_live.gd`连续52秒实录与原生状态编辑，检查每次切轨时间、pending主轨没有强制-60dB坑、六次真实建屋依次发声、双尺寸昼夕夜和原音池；默认输出`验证记录/M34/live`，支持`--out-dir=`。`analyze_creation_master.py <WAV...> --out <JSON>`用NumPy测峰/RMS/20ms包络/频谱；本机可用Codex bundled Python运行，指标不代替主观审听。每两项与M41/M42将原图/录音诊断交独立上下文Critic，原始报告保留在本地验证记录。
+
+M39：`test_city_creation_meadow_gait.gd`核共享形态、左右腿、屈腿坐姿与权威坐标不变；citizen_visual/citizen_lod和原生meadow_clumps/meadow_drifts保持。`check_creation_meadow_gait_live.gd`使用GL/Dummy/isolated-session，附`--gait-sequences`采集真实生活24帧序列，`--large-only`读原300屋夹具记录可见/离屏模拟；支持`--out-dir=res://验证记录/M39/verified`，不同轮证据不覆盖。记录性能实测，不设固定耗时门槛。
