@@ -107,5 +107,7 @@ func controls()->Array:
 	return [heading,left,right,bottom]+roles+([colors] if colors.visible else [])
 func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var role:=str(house.get("role","residential"));var level:int=pop.demo.state.level_tier(str(house.id))
-	if role=="residential":return "居所 · 共鸣 %d / 3 · 品质 %d"%[int(pop.demo.state.house_harmony(str(house.id)).tier),level]
-	return "%s · 品质 %d · %s"%[str(pop.ROLE_LABELS.get(role,"街坊")),level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]
+	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
+	var key:String=family.prototype(pop.demo.state,house);var caption:String=family.family_caption(key) if not key.is_empty() else str(pop.ROLE_LABELS.get(role,"街坊"))
+	if role=="residential":return "%s · 共鸣 %d/3 · 品质 %d"%[caption,int(pop.demo.state.house_harmony(str(house.id)).tier),level]
+	return "%s · 品质 %d · %s"%[caption,level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]

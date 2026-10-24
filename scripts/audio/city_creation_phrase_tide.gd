@@ -8,7 +8,7 @@ static func breath(clock: float) -> float:
 	return smoothstep(48.,49.5,at)*(1.-smoothstep(70.5,72.,at))
 static func gain(track: String, score: Dictionary, clock: float) -> float:
 	var db := float(score.get("targets",{}).get(track,-60.))
-	return (db-4.5*breath(clock) if db > -55. and track in HEAVY else db)+Cadence.gain(track,score,clock)
+	return (db-4.5*breath(clock) if db > -55. and track in HEAVY else db)+Cadence.gain(track,score,clock)+float(score.get("prototype_gain",{}).get(track,0.))
 static func groups(records: Dictionary, acoustic: RefCounted, city: RefCounted = null) -> Array:
 	var collected := {}
 	for id: String in acoustic.focus_ids:
@@ -84,5 +84,6 @@ static func arrange(records: Dictionary, acoustic: RefCounted, score: Dictionary
 static func conduct(owner: Node) -> void:
 	if owner.concert_active or owner.emergence.score.is_empty(): return
 	owner.emergence.score.phrase_tide = arrange(owner._house_music,owner.acoustic,owner.emergence.score,owner._playback_clock(),owner._pluck_city)
+	owner.emergence.score.prototype_gain=preload("res://scripts/audio/city_creation_prototype_mix.gd").conduct(owner._house_music,owner.emergence.score)
 	owner.emergence.score.cadence_night=owner.night
 	owner.emergence.score.cadence_season=owner._pluck_city.microclimate if owner._pluck_city!=null else ""

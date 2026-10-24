@@ -33,11 +33,12 @@ func clear()->void:
 	chains.clear();arcs.clear();flight.clear()
 func enqueue(event:Dictionary)->void:
 	var ids:=Events.sequence(demo.state,str(event.source),event.members)
+	ids=preload("res://scripts/visual/city_creation_prototype_activity.gd").extend(demo,event,ids)
 	if ids.is_empty():return
 	serial+=1
 	var clock:float=_clock()
 	chains.append({"serial":serial,"event":event.duplicate(true),"ids":ids,"index":0,"start":clock,"next":clock})
-	_record({"serial":serial,"phase":"queued","kind":event.kind,"ids":ids.duplicate(),"clock":clock})
+	_record({"serial":serial,"phase":"queued","kind":event.kind,"ids":ids.duplicate(),"members":event.members.duplicate(),"prototype_extra":event.get("prototype_extra",""),"clock":clock})
 func wish(id:String,kind:String)->void:
 	var group:Dictionary=demo.state.natural_clusters().get(id,{})
 	var members:Array=group.get("members",[id]).duplicate()

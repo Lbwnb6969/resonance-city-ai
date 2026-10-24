@@ -23,7 +23,7 @@ func evaluate(houses: Dictionary,pairs: Array,event_ids: Array=[])->void:
 	zones.clear();focus_ids.clear();linked_ids.clear()
 	for id: String in houses:
 		var house: Dictionary=houses[id]
-		var distance:=focus.distance_to(house.position)/(radius*float(house.get("radius_multiplier",1.)))
+		var distance:=focus.distance_to(house.position)/(radius*float(house.get("radius_multiplier",1.))+float(house.get("echo_radius_bonus",0.)))
 		var inside: bool=distance<1.0 and (not visible_test.is_valid() or bool(visible_test.call(id)))
 		var weight:=1.0-smoothstep(.25,1.0,distance) if inside else 0.0
 		zones[id]={"zone":"focus" if weight>0 else "silent","weight":weight,"distance":distance,

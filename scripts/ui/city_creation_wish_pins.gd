@@ -2,6 +2,7 @@ extends Control
 ## At most two current, visible needs are offered every eighteen seconds.
 ## Clicking prepares the actual tool and a legal site; it grants no progress.
 const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
+const Family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 var demo
 var pins:Array[Dictionary]=[]
 var elapsed:=18.
@@ -34,8 +35,10 @@ func offers()->Array[Dictionary]:
 			if point.is_finite():result.append({"house_id":id,"kind":"tree","at":point,"caption":"良木","glyph":"vegetation"})
 		elif house.role=="residential" and _tea_needed(id,groups):
 			result.append({"house_id":id,"kind":"tea","at":at,"caption":"茶叙","glyph":"garden_cafe"})
+		elif Family.scenic_needed(demo.state,house):
+			result.append({"house_id":id,"kind":"scenic","at":at,"caption":"远眺","glyph":"house"})
 	result.sort_custom(func(a:Dictionary,b:Dictionary)->bool:
-		var order:Array=["road","water","tree","tea"]
+		var order:Array=["road","water","tree","tea","scenic"]
 		return str(a.house_id)<str(b.house_id) if a.kind==b.kind else order.find(a.kind)<order.find(b.kind))
 	return result
 
@@ -58,6 +61,7 @@ func _still_needed(row:Dictionary)->bool:
 		"water":return role=="bakery" and not demo.state.site_blessing(id).get("blessed",false)
 		"tree":return role=="workshop" and int(demo.state.site_blessing(id).get("trees",0))<preload("res://scripts/world/city_creation_tradition_rules.gd").tree_count(demo.state)
 		"tea":return role=="residential" and _tea_needed(id,demo.state.natural_clusters())
+		"scenic":return Family.scenic_needed(demo.state,demo.state.houses[index])
 	return false
 
 func _site(origin:Vector2,kind:String)->Vector2:
@@ -80,7 +84,7 @@ func refresh()->void:
 		if used.has(row.house_id):continue
 		used[row.house_id]=true
 		var button:=Seal.new();button.name="Wish_"+str(row.house_id);button.configure(str(row.glyph),40.);button.caption=row.caption
-		button.tooltip_text={"road":"盼望通路：点此切换修路并标出门前","water":"渴望活水：点此切换池塘并标出可挖位置","tree":"寻觅良木：点此切换栽树并标出空地","tea":"夕照茶叙：点此将这栋居所改为茶座"}[row.kind]
+		button.tooltip_text={"road":"盼望通路：点此切换修路并标出门前","water":"渴望活水：点此切换池塘并标出可挖位置","tree":"寻觅良木：点此切换栽树并标出空地","tea":"夕照茶叙：点此将这栋居所改为茶座","scenic":"登高远眺：点此为这座小屋选择眺望屋顶"}[row.kind]
 		button.pressed.connect(_activate.bind(row));add_child(button)
 		pins.append({"row":row,"button":button})
 		if pins.size()==2:break
@@ -91,6 +95,9 @@ func _activate(row:Dictionary)->void:
 	var current:=offers().filter(func(r):return r.house_id==row.house_id and r.kind==row.kind)
 	if current.is_empty():refresh();return
 	row=current[0];target=row.duplicate()
+	if row.kind=="scenic":
+		demo.select_tool(0);demo.spatial_popover.open_for_house(str(row.house_id));demo._message("给这座小屋留一处眺望的屋顶。")
+		return
 	demo.life.site_wishes.arm(str(row.house_id),str(row.kind))
 	match str(row.kind):
 		"road":demo.select_tool(2)

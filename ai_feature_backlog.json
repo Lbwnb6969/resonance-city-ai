@@ -744,10 +744,11 @@
       "evidence_Paths": [
         "本地验证记录/M37/prototype_resonance_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "让玩家选择的 18 种建筑原型不再只是视觉换皮，而是天然融入三大共鸣家族（廊院回声、登高揽胜、百工雅集），直接联动室内乐泛音、回声半径、住户心愿与金色音弧传递，做到『美观即玩法，系统零冗余』。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_architecture_choice.gd; godot --headless --path . -s tests/test_city_creation_harmonic_emergence.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "Gate1: harness/doc PASS. Gate2: prototype_resonance73 / harmonic53 / phrase_tide73 / acoustic11 / juice39 / wish_sites19 / experience22 / legacy375 with27works PASS. Gate3: native tools/check_creation_prototype_resonance_live.gd30PASS atM37/live, final accepted_pointer.log. Actual family capsules1440/1024, native button and scenic need, plucked stem+1.2dB/chamber solo+1.5dB, real bounded-step worker production/reservation/installation with conserved stock ->2housewave+1reachable, real bread purchases/walking/seating/completed3guesttea ->4housewave+1reachable. Master12.074s peak.18939209 zero clips;p9510.060/max10.154ms. Original12+4+6audio/personalbytes/JSON retained. Initial screenshot pointer fixture and unconnected extra-tea-neighbour failures retained; fixed actual street and settled native pointer, no weakened route rule.",
+      "implementation_notes": "Shared pure18-ID family resolver, actual catalog and camera acoustic radius+1.2m with offscreen zero. Existing wood_weave plucked strings and terrace bell harmonics carry lookout+1.2dB; matching chamber solo+1.5dB. Actual life callbacks enqueue stock-free visual waves only after completion. Scenic need is derived, fulfilled by actual view-family roof, with no invented terrain/XP/inventory. Runtime conducting outside PCM source files leaves baked3907streams unchanged."
     },
     {
       "id": "M38",
@@ -877,8 +878,28 @@
       "description": "完成跨进程全旅程、18 原型双分辨率昼夕夜全景画廊、近景曲枝草簇与小人步态微距检验、长时实录混音审听及 300 屋大城性能终验，由独立审美子代理正式签署五维 5/5 艺术品满分认证。",
       "verification_cmd": "godot --headless --path . -s tools/check_creation_aesthetic_music_subagent_gate.gd; godot --headless --path . -s tests/test_city_creation_save_roundtrip.gd; godot --headless --path . -s tools/check_code_health.gd",
       "verified_by": ""
+    },
+    {
+      "id": "M43",
+      "category": "user_ancient_architecture",
+      "title": "用户追加：古典时代改为真正古希腊与古罗马建筑形制",
+      "description": "古典时代采用可辨识的古希腊与古罗马建筑，柱式、山花、神庙式柱廊、罗马拱券与内院等按真实形制取舍，去掉现代楼房式立面观感。保留其他时代、原型稳定ID、玩家房屋模块与旧作品兼容。",
+      "verification_cmd": "godot --headless --path . --script tests/test_city_creation_ancient_architecture.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --script tools/check_creation_ancient_architecture_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "用户2026-10-24目标追加"
+    },
+    {
+      "id": "M44",
+      "category": "user_house_rotation",
+      "title": "用户追加：Q/E九十度与按键任意角度自由转向",
+      "description": "玩家按Q/E以90度旋转房屋朝向，并有一个明确键位进入任意角度的丝滑自由转向。朝向与真实建筑几何、占地、拾取、门路和存档一致，支持撤销重做，保持旧作品兼容；完成追加独立验收、Git备份与GitHub同步后停止目标。",
+      "verification_cmd": "godot --headless --path . --script tests/test_city_creation_house_rotation.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --script tools/check_creation_house_rotation_live.gd -- --isolated-session",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "用户2026-10-24目标追加"
     }
   ],
-  "phase": "M33–M42 · 四期施工",
+  "phase": "M33–M44 · 四期施工与用户追加古典形制/房屋转向",
   "design_source": "新文档/文档/29_四期终极艺术品大成总纲.md"
 }

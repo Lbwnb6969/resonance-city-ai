@@ -1,8 +1,8 @@
-# 《共鸣之城》AI 施工入口（M33～M42 四期施工）
+# 《共鸣之城》AI 施工入口（M33～M44 四期施工）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（前36项已通过，继续 M37～M42）。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，只认领第一个 `passes: false` 的里程碑（前37项已通过，继续 M38～M44）。
 
-四期入口：[音乐与微观艺术施工](文档/30_四期音乐与微观艺术施工.md)。当前 M37；原件在新文档，仅根 backlog 更新进度。每两项与 M41/M42 独立 Critic 审查，分数如实记录。
+四期入口：[音乐与微观艺术施工](文档/30_四期音乐与微观艺术施工.md)。当前 M38；原件在新文档，仅根 backlog 更新进度。每两项与 M41/M42 独立 Critic 审查，分数如实记录。
 
 ## 三期成果：十二原型、鲜活微观世界与续玩闭环
 
@@ -20,7 +20,7 @@
 3. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
 4. Gate 2：相关 CPU 单元和 `tests/test_city_creation_legacy_roundtrip.gd`，均加 `-- --isolated-session`。
 5. Gate 3：执行该项 `verification_cmd`；实窗使用 `--rendering-method gl_compatibility -- --isolated-session`，查看 PNG 与录音峰值。
-6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，继续认领下一项直至 M42 完成。
+6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，继续认领下一项直至 M44 完成。
 
 ## 代码入口与三期预置模块
 
@@ -45,3 +45,5 @@
 历史证据见 [合订验证记录](文档/24_合订接续验证记录.md)，需求对照见 [需求核对](文档/25_合订需求核对.md)，本地参考见 [参考索引](文档/参考索引.md)。
 
 M33已完成首屋牧歌、-1.2dB建造退让、限预算健康混音与生活短音/卡农；M34已完成安全换流、双共享总线混响与六音阶真实落笔；下一项 M35：四类蒸汽钟表建筑原型。首次独立Critic无M33/M34阻挡，细节修复已归M38/M39/M40，主观听感未冒评满分。
+
+用户追加M43古希腊/古罗马古典形制与M44 Q/E九十度、自由角度转向；按序完成追加实机/独立验收后才停止目标。

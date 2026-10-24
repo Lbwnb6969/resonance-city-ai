@@ -34,6 +34,8 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		records[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":state.house_acoustic_style(house),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
 		var row:Dictionary=records[str(house.id)]
+		row.prototype=preload("res://scripts/world/city_creation_prototype_resonance.gd").prototype(state,house)
+		row.echo_radius_bonus=preload("res://scripts/world/city_creation_prototype_resonance.gd").echo_radius_bonus(row.prototype)
 		row.cluster_id=clusters[str(house.id)].id;row.cluster_size=clusters[str(house.id)].size
 		row.cluster_members=clusters[str(house.id)].members
 		row.cluster_order=clusters[str(house.id)].ordered_members

@@ -2265,6 +2265,7 @@ func _show_largo_completion(house_id:String)->void:
 	if not row.is_empty():town.living_music.emit_production(house_id,row,music._playback_clock())
 
 func _on_craft_event(kind: String, _shop_id: String, target_id: String, level: int) -> void:
+	preload("res://scripts/visual/city_creation_prototype_activity.gd").craft(self,kind,_shop_id,target_id)
 	music.record_life_activity(kind,_shop_id)
 	if kind=="crafted":_show_largo_completion(_shop_id)
 	if kind=="mechanism_installed":
@@ -2313,6 +2314,7 @@ func _refresh_cafes() -> void:
 	cafe_progress.value=float(selected.elapsed)
 
 func _on_cafe_event(_cafe_id: String, homes: Array) -> void:
+	preload("res://scripts/visual/city_creation_prototype_activity.gd").gather(self,_cafe_id,homes)
 	music.record_life_activity("tea",_cafe_id)
 	_message("☕ %d位街坊在花下喝完一盏茶。" % homes.size())
 	_refresh_cafes()
