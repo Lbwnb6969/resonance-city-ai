@@ -34,6 +34,7 @@ const HarmonicEmergence=preload("res://scripts/audio/city_creation_harmonic_emer
 var emergence:=HarmonicEmergence.new()
 const ClusterHarmony=preload("res://scripts/audio/city_creation_cluster_harmony.gd")
 var life_source:Node3D
+const Experience=preload("res://scripts/audio/city_creation_music_experience.gd")
 var choir_mode:=true
 var _life_activity:Dictionary={}
 var _life_orchestration:Dictionary={}
@@ -163,7 +164,7 @@ func clear_tram_cues()->void:
 
 func queue_tram_chime(car_id: String,station: String,at: Vector2)->void:
 	if choir_mode:
-		record_life_activity("tram",station,at);return
+		record_life_activity("tram",station,at)
 	if muted or _loading or _playback_clock()-_tram_last<2.5:return
 	_tram_pending={"car_id":car_id,"station":station,"position":at,"at":_playback_clock()}
 
@@ -433,7 +434,7 @@ func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2
 	if kind=="stair":
 		WorldToys.queue_stair(self,source_id,at);return
 	if choir_mode:
-		record_life_activity(kind,source_id,at);return
+		record_life_activity(kind,source_id,at)
 	var event := {"actor_id":actor_id,"kind":kind,"source_id":source_id,"position":at,"queued_at":_playback_clock()}
 	if kind not in ["bridge","arch","stepping"] or not _travel_eligible(event): return
 	var clock := _playback_clock()
@@ -1122,7 +1123,7 @@ func play_edit(kind: String) -> void:
 	play_effect_at(selected,_edit_streams[kind])
 
 func queue_bakery_cue(kind: String,shop_id: String,home_id: String="") -> bool:
-	return record_life_activity(kind,shop_id) if choir_mode else bakery_cues.queue(kind,shop_id,home_id)
+	return Experience.bakery(self,kind,shop_id,home_id)
 
 func bakery_music_report() -> Dictionary:
 	return bakery_cues.report()
@@ -1199,7 +1200,7 @@ func _attention_trigger(category:String,payload:Dictionary)->bool:
 	if category=="pluck_arp":return _play_queued_house(payload)
 	if category=="quality_upgrade":return _play_quality_cue(str(payload.source_id),int(payload.tier))
 	var phrase:int=payload.phrase
-	if choir_mode and not concert_active and category!="district_reply":return true
+	if choir_mode and not concert_active and not Experience.allows(self,category):return false
 	match category:
 		"tower_bell":_tower_at_phrase(phrase)
 		"waterwheel":
@@ -1333,7 +1334,7 @@ func _process(delta: float) -> void:
 		if concert_active:
 			_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
 			_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-		if not choir_mode and attention.allows("canon"):canon.step(_playback_clock(),.375)
+		if Experience.allows(self,"canon") and attention.allows("canon"):canon.step(_playback_clock(),.375)
 		else:canon.clear()
 	bakery_cues.report()
 	signature_music_report()
@@ -1347,6 +1348,7 @@ func _process(delta: float) -> void:
 	spatial.update(delta,source_at,source_at if concert_active else Vector2.INF)
 	spatial.set_concert_remote(_remote_concert())
 	spatial.set_theme_remote(_grand_active() and _remote_concert())
+	var experience_lift:=Experience.lift(self)
 	for key in _players:
 		var weight:=_long_acoustic_weight(key)
 		if muted or weight<=0.0:
@@ -1354,7 +1356,7 @@ func _process(delta: float) -> void:
 			continue
 		# Reserve the overview lift in every ordinary mix. At +2 dB the
 		# long stems only return to the already verified PCM peak envelope.
-		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)+attention.backing_duck_db+ATTENTION_HEADROOM_DB
+		var target := target_gain_db(key, concert_active and (key=="concert" or not _remote_concert()))+linear_to_db(weight)+attention.backing_duck_db+ATTENTION_HEADROOM_DB+experience_lift
 		if not is_finite(_players[key].volume_db): _players[key].volume_db=-60.0
 		var fading:bool=_variation_pending.has(key)
 		if fading:target=-60.

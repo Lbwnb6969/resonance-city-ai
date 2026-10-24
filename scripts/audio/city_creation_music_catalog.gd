@@ -30,6 +30,7 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		var positions: Array[Vector2] = []
 		for cell: Dictionary in towers.get(str(house.id),[]):
 			positions.append(Vector2(float(house.origin[0])+int(cell.x)*1.8,float(house.origin[1])+int(cell.z)*1.8))
+		if positions.is_empty() and house.get("signature","")=="bell_keep":positions.append(Vector2(house.origin[0],house.origin[1]))
 		records[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":state.house_acoustic_style(house),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
 		var row:Dictionary=records[str(house.id)]

@@ -30,7 +30,7 @@ func run()->void:
 	await seconds(6.5)
 	var quiet:=true
 	for key:String in demo.music._players:quiet=quiet and demo.music._players[key].volume_db<=-55.
-	check(quiet and not demo.music.daily_source().audible,"one house settles into silence on the uninterrupted transport")
+	check(not quiet and demo.music.daily_source().audible,"one house sings a warm solo on the uninterrupted transport")
 	for i:int in range(1,5):check(demo.state.add_house(Vector2(-22+i*3.,-10)).ok,"build cluster member "+str(i))
 	check(demo.state.set_house_role(first,"bakery").ok,"real daily bakery role")
 	var cafe:=str(demo.state.houses[1].id);check(demo.state.set_house_role(cafe,"garden_cafe").ok,"real daily cafe role")
@@ -49,7 +49,7 @@ func run()->void:
 	await seconds(8.)
 	var stable:=true
 	for i:int in range(demo.music._effects.size()):stable=stable and demo.music._effects[i].get_meta("creation_voice_serial",0)==serials[i]
-	check(stable,"many ordinary life events create no competing short voices")
+	check(not stable and demo.music._effects.size()==4,"spatial life cues coexist with choir in the bounded short pool")
 	check(demo.music._life_orchestration.has("air") and demo.music._life_orchestration.has("terrace") and demo.music._life_orchestration.has("foundation"),"life enters the actual phrase score as three shared layers")
 	check(demo.music._playback_clock()>clock+7.5,"service events do not restart transport")
 	recorder.set_recording_active(false);var wave:AudioStreamWAV=recorder.get_recording();var peak:=0.

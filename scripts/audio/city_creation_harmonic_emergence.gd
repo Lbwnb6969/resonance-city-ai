@@ -8,6 +8,7 @@ const TIMBRES:={"wood":"wood","wood_deep":"air","wood_weave":"pluck","wood_marke
 var score:Dictionary={}
 var phrase:=-1
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
+const Experience=preload("res://scripts/audio/city_creation_music_experience.gd")
 var mode:=0
 var last_cycle:=-1
 
@@ -42,14 +43,17 @@ static func evaluate(houses:Dictionary,acoustic:RefCounted,rings:Array,absolute_
 	var second:String="" if ranked.size()<2 else ranked[1]
 	var targets:Dictionary={"foundation":-16. if eligible>0 else -60.,"air":-60.,"terrace":-60.,"concert":-60.}
 	for track:String in LEADS:targets[track]=-60.
+	if lead.is_empty():
+		var homestead:=Experience.solo(houses,acoustic,targets,representatives)
+		lead=str(homestead.get("lead_track",""))
 	var ring_count:=0
 	for ring:Dictionary in rings:
 		if acoustic.point_weight(ring.center)>0.:ring_count+=1
 	var average:float=quality/maxf(.001,total);var elevation:float=height/maxf(.001,total)
 	var silhouette:float=upper/maxf(1.,rooms)
 	if not lead.is_empty():
-		targets[lead]=-13.5 if largest>=5 else -24.
-		if largest>=5 and not second.is_empty():targets[second]=-18.+linear_to_db(minf(.45,float(weights[second])/float(weights[lead])))
+		if eligible>0:targets[lead]=-10.5 if largest>=5 else -12.5
+		if largest>=5 and not second.is_empty():targets[second]=-15.+linear_to_db(minf(.45,float(weights[second])/float(weights[lead])))
 		targets.air=lerpf(-60.,-23.,clampf(elevation*.7+silhouette*.6,0.,1.))
 		targets.terrace=lerpf(-60.,-28.,clampf((average-1.)/4.+water/maxf(.001,total)*.25,0.,1.))
 		if largest>=15:targets.air=maxf(float(targets.air),-22.);targets.terrace=maxf(float(targets.terrace),-26.)

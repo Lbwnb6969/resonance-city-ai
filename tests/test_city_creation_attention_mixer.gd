@@ -17,11 +17,11 @@ func _run()->void:
 	_check(mix.evaluate_mode(16.,false,false,1.,0.)==Mixer.Mode.STROLLING,"close view is strolling")
 	_check(mix.evaluate_mode(50.,false,false,1.,0.)==Mixer.Mode.SYMPHONY,"wide view is symphony")
 	mix.notify_sculpt_action(1.)
-	_check(mix.evaluate_mode(50.,false,false,1.,1.)==Mixer.Mode.SCULPTING and mix.backing_duck_db<-3.3,"actual editing takes priority over wide camera and ducks backing")
+	_check(mix.evaluate_mode(50.,false,false,1.,1.)==Mixer.Mode.SCULPTING and absf(mix.backing_duck_db+1.2)<.02,"actual editing takes priority over wide camera and ducks backing")
 	_check(not mix.allows("cafe_flute") and not mix.allows("district_reply") and mix.allows("pluck_arp"),"sculpting leaves the foreground to the player's notes")
 	_check(mix.evaluate_mode(16.,true,true,1.,1.)==Mixer.Mode.SYMPHONY,"active concert owns the attention mode")
 	mix.dragging=true;mix.evaluate_mode(25.,false,false,.1,9.);mix.dragging=false
-	_check(mix.evaluate_mode(25.,false,false,.1,10.)==Mixer.Mode.SCULPTING,"held road brush preserves the release grace period")
+	_check(mix.evaluate_mode(25.,false,false,.1,9.5)==Mixer.Mode.SCULPTING,"held road brush preserves the release grace period")
 	_check(mix.evaluate_mode(25.,false,false,1.,11.)==Mixer.Mode.MANAGING,"editing releases attention without a wall-clock timer")
 	mix.clear();heard.clear()
 	for i in range(16):mix.step(i*.1875+.002,_hear);mix.step(i*.1875+.003,_hear)

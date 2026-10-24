@@ -18,7 +18,7 @@ func _run()->void:
 		var row:Dictionary={"era_theme":era,"position":Vector2.ZERO,"style":"warm","level_tier":1,"base_y":0.,"rooms":2,"upper_rooms":0,"district_id":era,"cluster_size":5}
 		houses={"home":row};acoustic.evaluate(houses,[])
 		var score:=Score.evaluate(houses,acoustic,[],0,false)
-		_check(score.lead_track==Score.ERA_TRACKS[era] and score.targets[score.lead_track]==-13.5,"the visible era becomes the actual shared -13.5 dB lead: "+era)
+		_check(score.lead_track==Score.ERA_TRACKS[era] and score.targets[score.lead_track]==-10.5,"the visible era becomes the actual shared -10.5 dB lead: "+era)
 		_check(score.variant==0 and score.average_tier==1.,"simple low-level geometry begins with the sparse motif: "+era)
 	houses={}
 	for i in range(5):houses[str(i)]={"era_theme":"pastoral","style":Score.STYLE_TRACKS.keys()[i],"position":Vector2(i*1.,0),"rooms":1,"upper_rooms":0,"level_tier":1,"cluster_size":5}

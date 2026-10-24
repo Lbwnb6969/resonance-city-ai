@@ -22,11 +22,11 @@ func notify_sculpt_action(clock_sec: float)->void:last_sculpt_sec=clock_sec
 func evaluate_mode(zoom:float,concert_active:bool,strolling:bool,delta:float,clock_sec:float)->Mode:
 	if dragging:last_sculpt_sec=clock_sec
 	if concert_active:current_mode=Mode.SYMPHONY
-	elif dragging or clock_sec-last_sculpt_sec<=1.2:current_mode=Mode.SCULPTING
+	elif dragging or clock_sec-last_sculpt_sec<=.6:current_mode=Mode.SCULPTING
 	elif strolling or zoom<=18.:current_mode=Mode.STROLLING
 	elif zoom>32.:current_mode=Mode.SYMPHONY
 	else:current_mode=Mode.MANAGING
-	var target:float=-3.5 if current_mode==Mode.SCULPTING else (2. if current_mode==Mode.SYMPHONY else 0.)
+	var target:float=preload("res://scripts/audio/city_creation_music_experience.gd").SCULPT_DUCK_DB if current_mode==Mode.SCULPTING else (2. if current_mode==Mode.SYMPHONY else 0.)
 	backing_duck_db=lerpf(backing_duck_db,target,1.-exp(-maxf(0.,delta)*6.))
 	return current_mode
 
