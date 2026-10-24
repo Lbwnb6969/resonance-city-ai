@@ -30,6 +30,7 @@ func handle(event:InputEvent)->bool:
 		return true
 	if not event is InputEventKey or not event.pressed or event.echo or event.ctrl_pressed or event.alt_pressed:return false
 	if event.keycode not in [KEY_Q,KEY_E,KEY_R]:return false
+	if event.keycode==KEY_R and demo.tool==2:return false
 	if demo.get_viewport().gui_get_focus_owner() is LineEdit or demo.get_viewport().gui_get_focus_owner() is TextEdit:return false
 	if demo.house_drawing or demo.road_drawing or demo.vegetation_drawing or demo.water_drawing or demo.district_drawing or demo.district_link_drawing or demo.orbiting or demo.panning or (demo.terrain_brush!=null and demo.terrain_brush.drawing):return false
 	var id:=selected()

@@ -102,3 +102,5 @@ M41：`check_creation_aesthetic_music_subagent_gate.gd`必须GL/Dummy/isolated-s
 M42定向原生复拍：`check_creation_m42_refine_live.gd -- --isolated-session`，只重建圆拱与两处玻璃受检场景；完整图集和跨进程续玩沿用M41门禁/long_session_journey。
 
 M43：`check_creation_ancient_architecture_live.gd -- --isolated-session` 原生双尺寸/昼夜/低角32图与实际射线；`--geometry-only`只跑物理/旧档/录音，不重复图片。
+
+M44：`check_creation_house_rotation_live.gd -- --isolated-session` 原生按键/物理拾取/实际斜街采购/4时代/斜放内院/冷读；`check_creation_rotation_input_guard_live.gd` 专测草稿与相机release、斜墙非门位吸附。日常Q/E90°、R自由，单击/R/Enter确认，Esc/右键取消。
