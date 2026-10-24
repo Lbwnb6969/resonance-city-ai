@@ -29,7 +29,7 @@ def main():
     parser.add_argument("--godot", default="D:/GODOT/Godot_v4.7.2-stable_win64_console.exe")
     parser.add_argument("--resolutions", default="1440,1024")
     parser.add_argument("--phases", default="day1,day2,qa")
-    parser.add_argument("--out-dir", default="res://验证记录/M22")
+    parser.add_argument("--out-dir", default="res://验证记录/M32")
     args = parser.parse_args()
     output_root = ROOT / args.out_dir.removeprefix("res://")
     output_root.mkdir(parents=True, exist_ok=True)

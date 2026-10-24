@@ -19,6 +19,7 @@ func shot(out:String,name:String)->void:
 	tree.root.get_texture().get_image().save_png(out+"/"+name+".png")
 func run(owner,out:String)->Dictionary:
 	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
+	demo.ui_layer.show();demo.set_process(true);demo.camera_rig.strolling=false;demo.camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	demo.journal.close_panel();demo.spatial_popover.close()
 	var city:RefCounted=Modern.earned_city();demo._after_edit(demo.state.restore(city.snapshot()),"history");await Live.settle(demo)
 	demo.life.set_process(false);demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll();await Live.settle(demo)
@@ -29,6 +30,7 @@ func run(owner,out:String)->Dictionary:
 		var clip:=scroll.get_global_rect();var screen:=Rect2(Vector2.ZERO,Vector2(size));var buttons:Array=[]
 		for id:String in demo.state.ScoreModifiers.PAIRS[2]:buttons.append(j.score_buttons[id])
 		checks["current_goal_and_all_three_choices_no_scroll_%d"%size.x]=scroll.scroll_vertical==0 and screen.encloses(j.next_button.get_global_rect()) and screen.encloses(j.next_label.get_global_rect()) and buttons.all(func(b):return b.is_visible_in_tree() and clip.encloses(b.get_global_rect()))
+		checks["all_available_era_headers_no_scroll_%d"%size.x]=j.score_cards.values().all(func(row):return not row.is_visible_in_tree() or clip.encloses(row.get_child(0).get_global_rect()))
 		checks["two_columns_%d"%size.x]=is_equal_approx(buttons[0].global_position.y,buttons[1].global_position.y) and buttons[0].get_global_rect().end.x<buttons[1].global_position.x and buttons[2].global_position.y>buttons[0].global_position.y
 		facts[str(size.x)]={"scroll":clip,"next":j.next_button.get_global_rect(),"choices":buttons.map(func(b):return b.get_global_rect())}
 		await shot(out,"compact_choices_%d"%size.x)

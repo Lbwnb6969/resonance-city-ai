@@ -2,6 +2,7 @@ extends RefCounted
 const Audit=preload("res://tools/fixtures/city_creation_render_safety_audit.gd")
 const Probe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
 static func run(c:RefCounted)->void:
+	var native:int=c.tree.root.size.x
 	c.stage("127屋四时代昼夕夜与近景总检")
 	var source:="res://数据/四库共鸣交响大城样例.json";var original:=FileAccess.get_file_as_bytes(source)
 	await c.demo.gallery.open_example("example_flagship");await c.settle();c.demo.life.set_process(false)
@@ -58,4 +59,18 @@ static func run(c:RefCounted)->void:
 	c.check(c.details.modern.ok,"four_modern_envelopes_and_original_roofs")
 	c.details.foliage=await preload("res://tools/fixtures/city_creation_foliage_live.gd").capture(c.demo,c.out)
 	c.check(c.details.foliage.ok,"painterly_crowns_in_all_low_views")
+	c.stage("十二原型与鲜活微观世界终检")
+	c.details.prototypes=await preload("res://tools/fixtures/city_creation_final_prototypes_live.gd").capture(c,native)
+	c.check(c.details.prototypes.ok,"all_twelve_current_prototypes_roundtrip_and_roof_ui")
+	if native==1440:
+		# Start the citizen scenarios from a real fresh scene, then open each
+		# work normally; geometry fixtures use same-city history restoration.
+		c.demo.queue_free();await c.tree.process_frame
+		c.demo=preload("res://scenes/city_creation.tscn").instantiate();c.demo.persistence=false;c.demo.collection_directory=c.out+"/微观作品";c.tree.root.add_child(c.demo);await c.settle()
+		c.details.citizens=await preload("res://tools/fixtures/city_creation_citizen_visual_live.gd").capture(c.demo,c.out)
+		c.check(c.details.citizens.ok,"actual_role_cargo_cafe_and_night_citizens")
+		c.details.contacts=await preload("res://tools/fixtures/city_creation_nature_contact_live.gd").capture(c.demo,c.out)
+		c.check(c.details.contacts.ok,"current_soft_ground_contacts")
+		c.details.compact=await preload("res://tools/fixtures/city_creation_compact_journal_live.gd").new().run(c.demo,c.out)
+		c.check(c.details.compact.ok,"current_zero_scroll_charters_and_folded_chapters")
 	c.details.process_id=OS.get_process_id()

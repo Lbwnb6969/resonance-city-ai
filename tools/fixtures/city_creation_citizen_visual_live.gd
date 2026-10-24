@@ -12,15 +12,20 @@ static func frames(demo,out:String,label:String,actor:Node3D)->int:
 		for phase in range(3):
 			demo._set_light_phase(phase)
 			var target:Vector3=actor.global_position+Vector3.UP*.30
-			demo.camera.global_position=target+Vector3(1.8,.70,1.8);demo.camera.look_at(target)
+			demo.camera.global_position=target+(Vector3(-1.8,.70,1.8) if label=="seated_tea" else Vector3(1.8,.70,1.8));demo.camera.look_at(target)
+			demo.life._update_citizen_lod(0.);demo.life.flush_workers()
 			demo.life.set_meta("citizen_visual_next",0.);Props.update(demo.life)
 			if await Live.shot(demo,out,"citizen_%s_%d_%d"%[label,size.x,phase]):count+=1
 	demo.camera.projection=Camera3D.PROJECTION_ORTHOGONAL;demo.set_process(processing);demo._update_camera();return count
+static func show_world(demo,city)->void:
+	await demo.gallery._open_chosen({"ok":true,"id":"citizen_fixture","title":"微观街坊验收","world":city.snapshot(),"view":{"focus":[-8.,.7,-7.5],"zoom":24.,"yaw":.62,"pitch":.8,"light_phase":0,"evening":false}})
+	while demo.gallery.busy:await demo.get_tree().process_frame
+	await Live.settle(demo);demo.life.set_process(false)
 static func capture(demo,out:String)->Dictionary:
 	var checks:Dictionary={};var seen:Dictionary={};var images:=0;var draw_ok:=true;var tree:SceneTree=demo.get_tree()
 	for role:String in ["workshop","atelier","clockmaker"]:
 		var city:RefCounted=preload("res://tests/test_city_creation_clockmaker.gd").fixture();assert(city.set_house_role("h2",role).ok)
-		demo._after_edit(demo.state.restore(city.snapshot()),"history");await Live.settle(demo);demo.life.set_process(false)
+		await show_world(demo,city)
 		var worker:Dictionary=demo.life.workshop.workers[0]
 		for i in range(4000):
 			if worker.phase=="to_target":break
@@ -33,7 +38,7 @@ static func capture(demo,out:String)->Dictionary:
 		draw_ok=draw_ok and visible<=2
 		seen[role]={"draws":visible,"prop":str(worker.carry.name),"body_mesh":worker.node.get_child(0).get_child(0).mesh.get_instance_id()}
 	var city:=preload("res://scripts/world/city_creation_state.gd").new();city.initialize();assert(city.add_house(Vector2(-8,-10.5)).ok)
-	demo._after_edit(demo.state.restore(city.snapshot()),"history");await Live.settle(demo);demo.life.set_process(false)
+	await show_world(demo,city)
 	var shopper:Dictionary={};var baker:Dictionary={};var meeting:=false
 	for i in range(5000):
 		demo.life._process(.05)
@@ -44,7 +49,8 @@ static func capture(demo,out:String)->Dictionary:
 	if not shopper.is_empty():images+=await frames(demo,out,"bread_shopper",shopper.node)
 	if not demo.life.bakery.workers.is_empty():
 		baker=demo.life.bakery.workers[0];images+=await frames(demo,out,"strawhat_baker",baker.node)
-	demo._set_light_phase(0)
+	demo._set_light_phase(0);demo.focus=Vector3(-8.,.7,-7.5);demo.zoom=24.;demo.pitch=.8;demo.yaw=.62;demo._update_camera()
+	await Live.settle(demo)
 	for i in range(5000):
 		demo.life._process(.05)
 		for row:Dictionary in demo.life.greetings.active.values():
@@ -62,7 +68,7 @@ static func capture(demo,out:String)->Dictionary:
 	if not lanterns.is_empty():
 		demo.focus=lanterns[0].node.global_position+Vector3.UP*.28;demo.zoom=3.;demo._update_camera();await Live.shot(demo,out,"citizen_night_lantern")
 	var tea:=preload("res://scripts/world/city_creation_state.gd").new();tea.initialize();assert(tea.set_house_role("h4","garden_cafe").ok)
-	demo._after_edit(demo.state.restore(tea.snapshot()),"history");await Live.settle(demo);demo.life.set_process(false)
+	await show_world(demo,tea)
 	demo.focus=Vector3(-8,.7,-4.5);demo.zoom=14.;demo._update_camera();var guest:Dictionary={}
 	for i in range(6000):
 		demo.life._process(.05)
@@ -71,9 +77,8 @@ static func capture(demo,out:String)->Dictionary:
 		if not guest.is_empty():break
 	checks.actual_seated_cup=not guest.is_empty()
 	if not guest.is_empty():
-		demo.life.set_meta("citizen_visual_next",0.);Props.update(demo.life)
-		checks.actual_seated_cup=guest.node.get_meta("citizen_prop","")=="cup"
 		images+=await frames(demo,out,"seated_tea",guest.node)
+		checks.actual_seated_cup=guest.node.get_meta("citizen_prop","")=="cup"
 	checks.two_draws_with_real_cargo=draw_ok;checks.images=images>=30
 	var result:={"ok":checks.values().all(func(v):return v),"checks":checks,"images":images,"roles":seen,"mesh_pool":Visual.meshes.size(),"material_pool":Visual.materials.size()}
 	FileAccess.open(out+"/citizen_visual.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));return result

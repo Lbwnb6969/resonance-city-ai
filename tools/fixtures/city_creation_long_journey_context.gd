@@ -13,7 +13,7 @@ var samples:Array[Dictionary]=[]
 var frame_times:Array[float]=[]
 var previous:=0
 var last_second:=-1
-func setup(owner:SceneTree,resolution:int,stage:String,output_root:String="res://验证记录/M12")->void:
+func setup(owner:SceneTree,resolution:int,stage:String,output_root:String="res://验证记录/M32")->void:
 	tree=owner;phase=stage;out=output_root+"/%d"%resolution;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
 	tree.root.size=Vector2i(resolution,900 if resolution==1440 else 768);Engine.max_fps=100
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=out+"/隔离作品";tree.root.add_child(demo);demo.life.set_process(false)

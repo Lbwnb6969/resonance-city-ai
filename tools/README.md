@@ -85,3 +85,5 @@ M29：test_city_creation_phrase_tide.gd保留原55并扩至73项。check_creatio
 M30：test_city_creation_local_service_cache.gd七类公共编辑145项冷等价；check_creation_edit_latency.gd支持--out-dir，完整23项；check_creation_large_town_live.gd完整入口附三类编辑及撤销冷等价，可--local-only单独复验六项。复用300夹具先复制authored_300_world.json到新输出目录再--reuse-fixture，避免改原件。GL/Dummy/isolated-session。性能取budget.latency_ms，补充total_ms包含冷对照耗时；M30/three_edits_compare.json保存改前/后相同CPU输入和逐字段结果。
 
 M31：check_creation_paper_ui_live.gd完整293项（--out-dir=res://验证记录/M31/手札_verified），--compact-only单独验证双窗口20项；完成章节夹具只改呈现rows，不写存档奖励。check_creation_spatial_popover_live.gd完整66项（--out-dir=res://验证记录/M31/罗盘_pass）；子探针与明信片跟随新输出目录，不覆盖旧证据。统一GL/Dummy/isolated-session，先等容器布局再ensure/原生点标题。
+
+M32：long_session_journey.py/live和large_town_live默认输出M32；原M22证据保留。QA追加FinalPrototypes两尺寸各48图/十二原型实际短名与物理拾取/JSON冷重绘；1440阶段再跑小人、接地与紧凑手记（子工具自身覆盖两尺寸）。几何夹具跨世界后，小人另开真实新场景并通过作品加载切城，拍照先更新当前近景LOD。失败阶段可用--resolutions和--phases单独重验，保留成功长录；M32/suite_final.json列出本轮六阶段最终成功源。大型场景音频检查核对原PCM哈希、播放器身份及原缓存池归属，允许正常乐句变奏换源。

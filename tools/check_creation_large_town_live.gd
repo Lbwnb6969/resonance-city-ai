@@ -2,7 +2,7 @@ extends SceneTree
 const Fixture=preload("res://tools/fixtures/city_creation_large_town_fixture.gd")
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Scene=preload("res://scenes/city_creation.tscn")
-var output:="res://验证记录/四库路线_2026-10-17/Phase10"
+var output:="res://验证记录/M32/300"
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -113,8 +113,9 @@ func _edit_large_city()->Dictionary:
 	demo.focus=Vector3(-25,0,29);demo.zoom=14;demo._update_camera();demo.life.set_process(true)
 	await process_frame
 	var at:=Vector2(-25,29);var before:float=demo.state.ground_height(at);var network_id:int=demo.life._network.get_instance_id()
-	var audio:Dictionary={}
-	for key:String in demo.music._players:audio[key]=demo.music._players[key].stream.get_instance_id()
+	var audio:Array=preload("res://tools/fixtures/city_creation_alpine_live.gd").audio_identity(demo)
+	var assigned_before:Dictionary={}
+	for key:String in demo.music._players:assigned_before[key]=demo.music._players[key].stream.get_instance_id()
 	var points:Array[Vector2]=[at];var began:=Time.get_ticks_usec();edit_frames.clear();_watch_edit=true;_last_edit_tick=began
 	var result:Dictionary=demo.state.add_terrain_stroke(points,"raise",1.,1.,2);demo._after_edit(result,"terrain")
 	var command_ms:float=(Time.get_ticks_usec()-began)/1000.
@@ -128,15 +129,19 @@ func _edit_large_city()->Dictionary:
 	var after:float=demo.state.ground_height(at);var hit:Dictionary=demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(at.x,15,at.y),Vector3(at.x,-5,at.y),2))
 	_check(result.ok and after>before+.03 and not hit.is_empty() and absf(float(hit.position.y)-after)<.002,"actual three-hundred-house terrain edit visibly raises ground and publishes matching collision")
 	_check(not demo.edit_pending() and not demo._edit_ui_pending and not demo.town.budget_rebuild.retirement_pending() and demo.life._network.get_instance_id()!=network_id,"large-city edit finishes real route publication and every retired CPU record")
-	var same_audio:=true
-	for key:String in audio:same_audio=same_audio and demo.music._players[key].stream.get_instance_id()==audio[key]
+	var same_audio:bool=audio==preload("res://tools/fixtures/city_creation_alpine_live.gd").audio_identity(demo)
+	var allowed:Array=demo.music._original_streams.values()+demo.music._variation_streams.values()+demo.music._harmony_streams.values()
+	var assigned_after:Dictionary={}
+	for key:String in demo.music._players:
+		assigned_after[key]=demo.music._players[key].stream.get_instance_id()
+		same_audio=same_audio and demo.music._players[key].stream in allowed
 	_check(same_audio and demo.state.houses.size()==300 and demo.life.residents.size()>=200,"large live edit preserves shared PCM and all actual houses and residents")
 	_check(demo.life.budget_commit_stats.prepared_height_hits==demo.life.residents.size() and demo.life.budget_commit_stats.prepared_stop_hits==demo.life.residents.size() and demo.life._budget_delta==0.,"all actual resident heights and itineraries publish from exact prepared data and every held simulation step is repaid")
 	var metrics:=_metrics(edit_frames)
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"edit_frames":metrics,"command_ms":command_ms,"policy":"reference_only"}))
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"budget":budget,"max_frame_work_ms":rendered.get("max_frame_work_ms",0.),"policy":"reference_only"}))
 	await _capture("10_large_city_actual_terrain_edit")
-	return {"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"habitats":demo.town.wildlife.habitat_stats.duplicate(),"catchup_remaining":demo.life._budget_delta,"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}
+	return {"audio_identity":{"unchanged":same_audio,"assigned_before":assigned_before,"assigned_after":assigned_after,"residents":demo.life.residents.size()},"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"habitats":demo.town.wildlife.habitat_stats.duplicate(),"catchup_remaining":demo.life._budget_delta,"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}
 
 func _click_at(at:Vector2)->void:
 	var motion:=InputEventMouseMotion.new();motion.position=at;root.push_input(motion);await process_frame

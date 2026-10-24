@@ -58,9 +58,9 @@ func layout(j)->void:
 		for child:Control in chapters[i].card.get_children():child.visible=child==chapters[i].title or chapters[i].open
 		chapters[i].title.add_theme_color_override("font_color",UI.GOLD if earned else UI.INK)
 		chapters[i].title.tooltip_text=j.rows[i].title+" · "+j.rows[i].reward_name+" · 点击展开/收起"
-	if chapters.has(current):order.append(chapters[current].card)
 	for era:String in j.score_cards:
 		if not order.has(j.score_cards[era]):order.append(j.score_cards[era])
+	if chapters.has(current):order.append(chapters[current].card)
 	for i:int in chapters:
 		if i!=current:order.append(chapters[i].card)
 	for i in range(order.size()):
