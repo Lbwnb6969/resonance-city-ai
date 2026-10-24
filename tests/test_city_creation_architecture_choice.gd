@@ -49,7 +49,7 @@ func run()->void:
 				check(source.set_house_architecture(str(home.id),key).ok and home.cells==rooms,"classical choice keeps authored rooms "+key)
 				var reader:=Fixture.Modern.Clockwork.State.new();check(reader.restore(JSON.parse_string(JSON.stringify(source.snapshot(),"",true,true))).ok,"classical prototype JSON "+key)
 				seen[key]=true
-	check(seen.size()==6,"all six classical prototypes available in their actual spatial contexts")
+	check(seen.size()==8 and (Choice.NEO+Choice.RENAISSANCE).all(func(k):return seen.has(k)),"all six classical and two Renaissance prototypes available in actual spatial contexts")
 	r.free();print("ARCHITECTURE_CHOICE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)
 func _unique(values:Array)->int:
 	var seen:Dictionary={}

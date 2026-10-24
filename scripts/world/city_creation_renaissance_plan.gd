@@ -3,6 +3,7 @@ extends RefCounted
 static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	if city.house_era(house) != "renaissance": return result
+	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(city,house):return result
 	var top := {}; var used := {}
 	for cell: Dictionary in house.cells:
 		if cell.kind != "room": continue

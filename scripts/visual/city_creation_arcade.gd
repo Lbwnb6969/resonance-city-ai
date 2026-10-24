@@ -13,7 +13,7 @@ const DEPTH := 0.16
 const RETREAT := 0.38
 const SEGMENTS := 14
 
-static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Dictionary:
+static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array,pointed:bool=false) -> Dictionary:
 	if int(body.get_meta("cell").level)>0: return preload("res://scripts/visual/city_creation_neoclassical_civic.gd").terrace(renderer,wall,body,palette)
 	var pieces: Array[MeshInstance3D] = []
 	var base_color: Color = palette[0].lerp(Color("c9c5ae"),0.72)
@@ -28,8 +28,8 @@ static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Di
 		var high := -HALF_OPENING if side<0.0 else HALF
 		upper.append_array(Architecture._extrude(PackedVector2Array([Vector2(low,SPRING),Vector2(high,SPRING),Vector2(high,HEIGHT),Vector2(low,HEIGHT)]),DEPTH))
 	for index in range(SEGMENTS):
-		var a := _arch(float(index)/float(SEGMENTS))
-		var b := _arch(float(index+1)/float(SEGMENTS))
+		var a := _arch(float(index)/float(SEGMENTS),HALF_OPENING,RISE,pointed)
+		var b := _arch(float(index+1)/float(SEGMENTS),HALF_OPENING,RISE,pointed)
 		upper.append_array(Architecture._extrude(PackedVector2Array([a,b,Vector2(b.x,HEIGHT),Vector2(a.x,HEIGHT)]),DEPTH))
 	var spandrel: MeshInstance3D = renderer._triangles(wall,upper,base_color)
 	spandrel.name="ArcadeSpandrel"
@@ -39,10 +39,10 @@ static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Di
 	for index in range(SEGMENTS):
 		var t0 := (float(index)+0.035)/float(SEGMENTS)
 		var t1 := (float(index+1)-0.035)/float(SEGMENTS)
-		var a := _arch(t0)
-		var b := _arch(t1)
-		var c := _arch(t1,HALF_OPENING+0.075,RISE+0.075)
-		var d := _arch(t0,HALF_OPENING+0.075,RISE+0.075)
+		var a := _arch(t0,HALF_OPENING,RISE,pointed)
+		var b := _arch(t1,HALF_OPENING,RISE,pointed)
+		var c := _arch(t1,HALF_OPENING+0.075,RISE+0.075,pointed)
+		var d := _arch(t0,HALF_OPENING+0.075,RISE+0.075,pointed)
 		var faces := Architecture._extrude(PackedVector2Array([a,b,c,d]),DEPTH+0.035)
 		var block: MeshInstance3D = renderer._triangles(wall,faces,trim_color.darkened(float(index%3)*0.025))
 		block.name="ArcadeVoussoir_%02d" % index
@@ -78,10 +78,13 @@ static func build(renderer,wall: Node3D,body: StaticBody3D,palette: Array) -> Di
 	lamp.emission_enabled=true; lamp.emission=Color("e8b565"); lamp.emission_energy_multiplier=.35
 	renderer._cylinder(wall,.012,.012,.20,Vector3(0,1.50,-.17),stone,6).name="ArcadeLampChain"
 	renderer._box(wall,Vector3(.12,.15,.12),Vector3(0,1.34,-.17),lamp).name="ArcadeHangingLamp"
-	var report := {"half_width":HALF_OPENING,"spring":SPRING,"rise":RISE,"clear_height":SPRING+RISE,"height":HEIGHT,"depth":DEPTH,"retreat":RETREAT,"segments":SEGMENTS,"column_diameter":0.15,"column_foot_width":0.22,"triangles":faces.size()/3,"mesh_names":names,"collision_name":str(collision.name),"outer_frame":wall.transform}
+	var report := {"pointed":pointed,"half_width":HALF_OPENING,"spring":SPRING,"rise":RISE,"clear_height":SPRING+RISE,"height":HEIGHT,"depth":DEPTH,"retreat":RETREAT,"segments":SEGMENTS,"column_diameter":0.15,"column_foot_width":0.22,"triangles":faces.size()/3,"mesh_names":names,"collision_name":str(collision.name),"outer_frame":wall.transform}
 	wall.set_meta("arcade",report.duplicate(true))
 	return report
 
-static func _arch(t: float,radius: float = HALF_OPENING,rise: float = RISE) -> Vector2:
+static func _arch(t: float,radius: float = HALF_OPENING,rise: float = RISE,pointed:bool=false) -> Vector2:
+	if pointed:
+		var x:float=t*2.-1.
+		return Vector2(x*radius,SPRING+rise*sqrt(maxf(0.,4.-pow(absf(x)+1.,2.)))/sqrt(3.))
 	var angle := PI*(1.0-t)
 	return Vector2(cos(angle)*radius,SPRING+sin(angle)*rise)

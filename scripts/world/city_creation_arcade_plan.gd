@@ -12,9 +12,10 @@ static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 	var passages := Passage.for_house(house,city.roads)
 	var courts: Array = city.courtyard_plans()
 	var cells: Array = house.cells.duplicate()
+	var pointed:bool=city.house_era(house)=="renaissance" and house.get("architecture","")=="venetian_loggia"
 	cells.sort_custom(func(a: Dictionary,b: Dictionary)->bool: return str(a.id).naturalnocasecmp_to(str(b.id))<0)
 	for cell: Dictionary in cells:
-		if int(cell.level)!=0 or str(cell.kind)!="room" or not _upper_room(cells,cell): continue
+		if int(cell.level)!=0 or str(cell.kind)!="room" or (not pointed and not _upper_room(cells,cell)): continue
 		var crossed := false
 		for passage: Dictionary in passages:
 			if str(passage.cell_id)==str(cell.id): crossed=true;break

@@ -719,10 +719,11 @@
       "evidence_Paths": [
         "本地验证记录/M36/renaissance_prototypes_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "为第二时代（renaissance）补齐专属的威尼斯水畔尖拱画廊（venetian_loggia）与托斯卡纳双层敞廊观景山庄（belvedere_villa），达成四时代共 18 种建筑原型的大满贯，并支持新屋根据临水/坡地/街角条件智能派生。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_neoclassical_civic.gd; godot --headless --path . -s tests/test_city_creation_architecture_choice.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "Gate1: python tools/check_ai_harness.py/check_doc_links.py PASS. Gate2: renaissance_prototypes72 / architecture_choice59 / neoclassical including civic301 / legacy375 with27works PASS. Gate3: tools/check_creation_renaissance_prototypes_live.gd actual GL62PASS at M36/verified; two resolutions/day-dusk-night/5-10-15deg rear views, native click/CtrlZ-Y/roofphysics/JSON geometry, actual empty pointed-gallery shaft and pickable column rays. Master6.223s peak.20187378 zero clips;framesp9510.063/max10.200ms,personalbytes/fixedpoolunchanged. Independent critic24actual images noM35/M36 blocker; broad night-glass glow refinement and unexplained short low-energy windows assignedM41; subjective hearing unassessed. Reviewer findings serialized from received independent message after HTTP413; independent PCM report retained.",
+      "implementation_notes": "18stable IDs overall. Only new public point/stroke construction seeds water/hill/corner selection in Renaissance districts within original undo transaction. Old works preserve automatic derivation. Actual new roof/gallery recipes use existing AO/micro-normal/recess/collision paths; source pseudo health commands replaced with existing harness and native probe."
     },
     {
       "id": "M37",
@@ -848,7 +849,10 @@
       "passes": false,
       "description": "改变此前『施工 AI 自己写代码、自己看图评 4/5』的做法，运行 tools/check_creation_aesthetic_music_subagent_gate.gd 导出实录 WAV 分贝/频谱诊断与 5°/10°/15°/35° 昼夕夜近景特写原图，并强制唤起独立上下文的审美与听觉验收子代理（Critic Sub-Agent）执行五维盲审，根据子代理挑出的任何瑕疵完成定向精修。",
       "verification_cmd": "godot --headless --path . -s tools/check_creation_aesthetic_music_subagent_gate.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": ""
+      "verified_by": "",
+      "independent_review_followups": [
+        "M36 critic: reduce broad amber night glazing so conservatory plants retain contrast; correlate short recording low-energy windows with real swap events before diagnosing dropouts."
+      ]
     },
     {
       "id": "M42",

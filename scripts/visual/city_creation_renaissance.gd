@@ -2,6 +2,8 @@ extends RefCounted
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 ## Original octagonal terracotta crown, articulated stone ribs and lit lantern.
 static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> void:
+	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(renderer.state,house):
+		preload("res://scripts/visual/city_creation_renaissance_prototypes.gd").build(renderer,root,house);return
 	preload("res://scripts/visual/city_creation_neoclassical_civic.gd").build(renderer,root,house)
 	root.set_meta("domes",plans.duplicate(true))
 	var covered := {}

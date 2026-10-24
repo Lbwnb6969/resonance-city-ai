@@ -1716,7 +1716,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		outer.name="Arcade_%d_%d" % [direction.x,direction.y]
 		outer.transform=wall.transform
 		node.add_child(outer)
-		var report: Dictionary=Arcade.build(self,outer,body,palette)
+		var report: Dictionary=Arcade.build(self,outer,body,palette,era=="renaissance" and house.get("architecture","")=="venetian_loggia")
 		report["cell_id"]=str(cell.id)
 		report["side"]=direction
 		arcades.append(report)
@@ -1765,6 +1765,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		job.role_prop_added = true
 
 func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
+	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,job.house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,job.house).is_empty():return
 	var house:Dictionary=job.house
 	var root:Node3D=job.root
@@ -1886,6 +1887,7 @@ func _structural_joined(house: Dictionary) -> bool:
 	return false
 
 func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
+	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,house).is_empty():return
 	var roofs: Array[Vector3] = []
 	var fascia: Array[Vector3] = []

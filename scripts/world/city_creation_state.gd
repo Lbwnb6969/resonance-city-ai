@@ -335,6 +335,7 @@ func add_house_stroke(position: Vector2, cells: Array) -> Dictionary:
 	var house := _new_stroke_house(position)
 	house.cells.append_array(result.added_cells.duplicate(true))
 	houses.append(house)
+	preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").seed_new(self,house)
 	var house_number := int(house.id.substr(1))
 	_next_house_id = house_number + 1
 	_high_watermark.house = house_number
@@ -504,6 +505,7 @@ func add_house(position: Vector2) -> Dictionary:
 	house.base_y = sample_house_base_y(position)
 	_inherit_cluster(house)
 	houses.append(house)
+	preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").seed_new(self,house)
 	_next_house_id = house_number + 1
 	_next_cell_id = cell_number + 1
 	_high_watermark.house = house_number

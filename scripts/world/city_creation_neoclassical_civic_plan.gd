@@ -16,6 +16,7 @@ static func terraces(house: Dictionary, arcades: Array) -> Array[Dictionary]:
 static func rotundas(house: Dictionary, original: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	var choice: String=house.get("architecture","")
+	if choice in ["venetian_loggia","belvedere_villa"]:return result
 	if choice in ["portico","townhouse","oriel","guildhall"]:return result
 	if house.has("signature") or str(house.get("style","classic")) in ["timber","round_tower"]: result.assign(original); return result
 	for plan: Dictionary in original:
@@ -31,6 +32,7 @@ static func rotundas(house: Dictionary, original: Array) -> Array[Dictionary]:
 	return result
 
 static func guild(city, house: Dictionary, ignore_choice: bool=false) -> Dictionary:
+	if not ignore_choice and preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(city,house):return {}
 	if not ignore_choice and house.get("architecture","") in ["portico","townhouse","oriel","rotunda","peristyle"]:return {}
 	if not eligible(city,house) or str(house.get("role","")) not in ["venue","bakery","garden_cafe"]: return {}
 	var rooms: Array = house.cells.filter(func(c):return c.kind=="room")
