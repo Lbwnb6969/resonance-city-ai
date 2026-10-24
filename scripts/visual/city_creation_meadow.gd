@@ -648,9 +648,10 @@ func _mesh(part: String) -> Mesh:
 		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 		if part in ["grass","lawn","lawn_lod"]:
 			# Four low spreading leaves cup three upright leaves. Keep two of
-			# each ring in the far mesh: 35 near / 20 far opaque triangles.
+			# each ring in the far mesh; near leaves gain a ridge and basal trefoil.
 			for blade in ([0,2,4,6] if part == "lawn_lod" else [0,1,2,3,4,5,6]):
-				_ribbon(surface, blade)
+				_ribbon(surface,blade,part!="lawn_lod")
+			if part!="lawn_lod":preload("res://scripts/visual/city_creation_meadow_fold.gd").base(surface)
 		else:
 			# Three blooms remain inside the existing .085m flower footprint.
 			for bloom in range(3):
@@ -672,37 +673,8 @@ func _mesh(part: String) -> Mesh:
 	meshes[part] = mesh
 	return mesh
 
-func _ribbon(surface: SurfaceTool, blade: int) -> void:
-	# The low outer ring covers the root and the inner ring catches sunlight.
-	# Opaque curved ribbons avoid alpha overdraw; seed/transform identity stays
-	# in the existing mother/child distribution and never depends on the LOD.
-	var angles := [0.02,1.59,3.10,4.69,0.52,2.61,4.70]
-	var heights := [0.16,0.19,0.17,0.18,0.22,0.27,0.245]
-	var reaches := [0.16,0.17,0.165,0.175,0.07,0.06,0.075]
-	var shoulders := [0.046,0.050,0.044,0.048,0.042,0.044,0.042]
-	var angle: float = angles[blade]
-	var outward := Vector3(cos(angle), 0.0, sin(angle))
-	var side := Vector3(-sin(angle), 0.0, cos(angle))
-	var base := outward * 0.006
-	var height: float = heights[blade]
-	var reach: float = reaches[blade]
-	var shoulder: float = shoulders[blade]
-	var c0 := base
-	var outer := blade < 4
-	var c1 := base + outward*(reach*0.22) + Vector3.UP*(height*(0.48 if outer else 0.38))
-	var c2 := base + outward*(reach*0.62) + Vector3.UP*(height*(0.90 if outer else 0.74))
-	var tip: Vector3 = base + outward*reach + Vector3.UP*height
-	var left0 := c0 - side*(shoulder*0.55)
-	var right0 := c0 + side*(shoulder*0.55)
-	var left1 := c1 - side * shoulder
-	var right1 := c1 + side * shoulder
-	var left2 := c2 - side*(shoulder*0.62)
-	var right2 := c2 + side*(shoulder*0.62)
-	_triangle(surface, left0, right0, right1, Color.WHITE, height, outward)
-	_triangle(surface, left0, right1, left1, Color.WHITE, height, outward)
-	_triangle(surface, left1, right1, right2, Color.WHITE, height, outward)
-	_triangle(surface, left1, right2, left2, Color.WHITE, height, outward)
-	_triangle(surface, left2, right2, tip, Color.WHITE, height, outward)
+func _ribbon(surface: SurfaceTool, blade: int,folded:bool=true) -> void:
+	preload("res://scripts/visual/city_creation_meadow_fold.gd").blade(self,surface,blade,folded)
 
 func _triangle(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, tint: Color, tip_height: float = 0.235, blade_direction: Vector3 = Vector3.ZERO) -> void:
 	var normal := (c - a).cross(b - a).normalized()

@@ -22,7 +22,7 @@ static func person(index:int)->Node3D:
 	identify(root,"resident");return root
 static func identify(root:Node3D,role:String)->void:
 	var index:int=posmod(int(root.get_meta("citizen_index")),4);var key:="person/%s/%d"%[role,index]
-	if not meshes.has(key):meshes[key]=_body(role,index)
+	if not meshes.has(key):meshes[key]=preload("res://scripts/visual/city_creation_citizen_gait.gd").mesh(_body(role,index))
 	root.get_child(0).get_child(0).mesh=meshes[key]
 	root.get_child(0).get_child(0).set_meta("sleeve_material",tint(_cloth(role,index)))
 	root.set_meta("citizen_role",role)
@@ -32,9 +32,9 @@ static func _body(role:String,index:int)->ArrayMesh:
 	var s:=SurfaceTool.new();s.begin(Mesh.PRIMITIVE_TRIANGLES);var cloth:=_cloth(role,index);var skin:=Color("e2bb8e")
 	_capsule(s,.10,.34,Vector3(0,.22,0),cloth);_sphere(s,Vector3(.09,.09,.09),Vector3(0,.45,0),skin)
 	for side:float in [-1.,1.]:
-		_capsule(s,.025,.18,Vector3(side*.11,.28,0),cloth);_sphere(s,Vector3.ONE*.031,Vector3(side*.11,.17,0),skin)
-		_capsule(s,.027,.14,Vector3(side*.045,.0,0),cloth.darkened(.28))
-		_box(s,Vector3(.065,.06,.11),Vector3(side*.045,-.075,.018),Color("5c5143"))
+		_capsule(s,.025,.18,Vector3(side*.11,.28,0),cloth,3 if side<0. else 4);_sphere(s,Vector3.ONE*.031,Vector3(side*.11,.17,0),skin,3 if side<0. else 4)
+		_capsule(s,.027,.14,Vector3(side*.045,.0,0),cloth.darkened(.28),1 if side<0. else 2)
+		_box(s,Vector3(.065,.06,.11),Vector3(side*.045,-.075,.018),Color("5c5143"),1 if side<0. else 2)
 	if role=="bakery":
 		_cylinder(s,.16,.16,.025,Vector3(0,.525,0),Color("dfc387"));_cylinder(s,.085,.095,.065,Vector3(0,.56,0),Color("dfc387"))
 		_box(s,Vector3(.15,.20,.035),Vector3(0,.22,.09),Color("f1e8cc"))
@@ -95,14 +95,15 @@ static func carry(role:String)->Node3D:
 	var node:=Node3D.new();node.name={"atelier":"CarriedArtwork","clockmaker":"CarriedMusicBox"}.get(role,"CarriedChime")
 	node.position=Vector3(.12,.32,.10)
 	var mesh:=MeshInstance3D.new();mesh.mesh=prop_mesh(role);mesh.material_override=paper();node.add_child(mesh);node.hide();return node
-static func _piece(s:SurfaceTool,mesh:Mesh,at:Vector3,color:Color,scale:Vector3=Vector3.ONE)->void:
+static func _piece(s:SurfaceTool,mesh:Mesh,at:Vector3,color:Color,scale:Vector3=Vector3.ONE,tag:int=0)->void:
 	var arrays:=mesh.surface_get_arrays(0);var colors:=PackedColorArray();colors.resize(arrays[Mesh.ARRAY_VERTEX].size());colors.fill(color);arrays[Mesh.ARRAY_COLOR]=colors
+	var tags:=PackedVector2Array();tags.resize(arrays[Mesh.ARRAY_VERTEX].size());tags.fill(Vector2(5 if tag==0 and at.y>.4 else tag,0));arrays[Mesh.ARRAY_TEX_UV2]=tags
 	var source:=ArrayMesh.new();source.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays);s.append_from(source,0,Transform3D(Basis.from_scale(scale),at))
-static func _box(s:SurfaceTool,size:Vector3,at:Vector3,color:Color)->void:
-	var mesh:=BoxMesh.new();mesh.size=size;_piece(s,mesh,at,color)
-static func _sphere(s:SurfaceTool,radius:Vector3,at:Vector3,color:Color)->void:
-	var mesh:=SphereMesh.new();mesh.radius=1.;mesh.height=2.;mesh.radial_segments=10;mesh.rings=4;_piece(s,mesh,at,color,radius)
-static func _capsule(s:SurfaceTool,radius:float,height:float,at:Vector3,color:Color)->void:
-	var mesh:=CapsuleMesh.new();mesh.radius=radius;mesh.height=height;mesh.radial_segments=10;mesh.rings=4;_piece(s,mesh,at,color)
-static func _cylinder(s:SurfaceTool,bottom:float,top:float,height:float,at:Vector3,color:Color)->void:
+static func _box(s:SurfaceTool,size:Vector3,at:Vector3,color:Color,tag:int=0)->void:
+	var mesh:=BoxMesh.new();mesh.size=size;_piece(s,mesh,at,color,Vector3.ONE,tag)
+static func _sphere(s:SurfaceTool,radius:Vector3,at:Vector3,color:Color,tag:int=0)->void:
+	var mesh:=SphereMesh.new();mesh.radius=1.;mesh.height=2.;mesh.radial_segments=10;mesh.rings=4;_piece(s,mesh,at,color,radius,tag)
+static func _capsule(s:SurfaceTool,radius:float,height:float,at:Vector3,color:Color,tag:int=0)->void:
+	var mesh:=CapsuleMesh.new();mesh.radius=radius;mesh.height=height;mesh.radial_segments=10;mesh.rings=4;_piece(s,mesh,at,color,Vector3.ONE,tag)
+static func _cylinder(s:SurfaceTool,bottom:float,top:float,height:float,at:Vector3,color:Color,tag:int=0)->void:
 	var mesh:=CylinderMesh.new();mesh.bottom_radius=bottom;mesh.top_radius=top;mesh.height=height;mesh.radial_segments=10;_piece(s,mesh,at,color)

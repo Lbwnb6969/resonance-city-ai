@@ -1,7 +1,8 @@
 extends RefCounted
 const Visual=preload("res://scripts/visual/city_creation_citizen_visual.gd")
 static func update(life)->void:
-	if life.time<float(life.get_meta("citizen_visual_next",0.)):return
+	if life.time<float(life.get_meta("citizen_visual_next",0.)):
+		preload("res://scripts/visual/city_creation_citizen_gait.gd").update(life);return
 	life.set_meta("citizen_visual_next",life.time+.10)
 	for resident:Dictionary in life.residents:
 		if not _near(life,resident.node):continue
@@ -23,5 +24,6 @@ static func update(life)->void:
 		if not _near(life,worker.node):continue
 		Visual.hand(worker.node,"lantern" if not worker.carry.visible and life.tram.night and worker.phase in life.workshop.MOVING else "",life.time)
 	life.greetings.meet(life)
+	preload("res://scripts/visual/city_creation_citizen_gait.gd").update(life)
 static func _near(life,node:Node3D)->bool:
 	return node.visible and (life.view_camera==null or (life.view_camera.global_position.distance_squared_to(node.global_position)<1600. and life.view_camera.is_position_in_frustum(node.global_position+Vector3.UP*.3)))

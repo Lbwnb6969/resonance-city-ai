@@ -16,6 +16,8 @@ static func frames(demo,out:String,label:String,actor:Node3D)->int:
 			demo.life._update_citizen_lod(0.);demo.life.flush_workers()
 			demo.life.set_meta("citizen_visual_next",0.);Props.update(demo.life)
 			if await Live.shot(demo,out,"citizen_%s_%d_%d"%[label,size.x,phase]):count+=1
+	if "--gait-sequences" in OS.get_cmdline_user_args() and label in ["workshop","atelier","clockmaker","bread_shopper","seated_tea","night_lantern"]:
+		await preload("res://tools/fixtures/city_creation_gait_sequence.gd").capture(demo,out,label,actor)
 	demo.camera.projection=Camera3D.PROJECTION_ORTHOGONAL;demo.set_process(processing);demo._update_camera();return count
 static func show_world(demo,city)->void:
 	await demo.gallery._open_chosen({"ok":true,"id":"citizen_fixture","title":"微观街坊验收","world":city.snapshot(),"view":{"focus":[-8.,.7,-7.5],"zoom":24.,"yaw":.62,"pitch":.8,"light_phase":0,"evening":false}})
@@ -67,6 +69,7 @@ static func capture(demo,out:String)->Dictionary:
 	checks.real_night_lantern=not lanterns.is_empty()
 	if not lanterns.is_empty():
 		demo.focus=lanterns[0].node.global_position+Vector3.UP*.28;demo.zoom=3.;demo._update_camera();await Live.shot(demo,out,"citizen_night_lantern")
+		if "--gait-sequences" in OS.get_cmdline_user_args():images+=await frames(demo,out,"night_lantern",lanterns[0].node)
 	var tea:=preload("res://scripts/world/city_creation_state.gd").new();tea.initialize();assert(tea.set_house_role("h4","garden_cafe").ok)
 	await show_world(demo,tea)
 	demo.focus=Vector3(-8,.7,-4.5);demo.zoom=14.;demo._update_camera();var guest:Dictionary={}

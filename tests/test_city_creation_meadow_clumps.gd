@@ -87,7 +87,7 @@ func _run() -> void:
 			patch_max = maxf(patch_max, patch)
 	_expect(smooth_direction and patch_max - patch_min > 0.5, "continuous broad direction/density field varies across town")
 	var mesh: Mesh = meadow._mesh("lawn")
-	_expect(mesh.get_faces().size() / 3 == 35, "seven curved opaque leaves share thirty-five triangles")
+	_expect(mesh.get_faces().size() / 3 == 82, "seven folded leaves and basal trefoil share one near mesh")
 	_expect(meadow._mesh("lawn_lod").get_faces().size()/3 == 20, "far mesh retains two leaves from each ring")
 	_expect(mesh == meadow._mesh("lawn") and mesh == meadow._mesh("grass"), "lawn and fringe share one cached ribbon mesh")
 	var arrays: Array = mesh.surface_get_arrays(0)
