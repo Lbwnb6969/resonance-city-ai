@@ -1578,7 +1578,7 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 					Modern._bridge(self,job.root,job.house,bridges[job.modern_index-roofs.size()],job.palette);job.modern_index+=1
 					return
 				job.root.set_meta("skybridges",bridges)
-			elif job.joined:_joined_roofs(job.root,job.house,job.palette)
+			elif job.joined or Classical.Ancient.active(job.house,job.era):_joined_roofs(job.root,job.house,job.palette)
 			job.stage=HouseAssembly.Stage.DOMES
 		HouseAssembly.Stage.DOMES:
 			Renaissance.build(self,job.root,job.house,job.domes);job.stage=HouseAssembly.Stage.CONSERVATORY
@@ -1758,13 +1758,14 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 	if era in ["pastoral","renaissance"] and not house.has("signature"):Classical.facade(self,job,frame,wall,direction,door,wall_width)
 	elif era == "renaissance" and house.has("signature"): Renaissance.facade(self,wall,door,level>0)
 	elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
-	if wall_width>=UNIT-.01 and era!="modern_eco": HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
+	if wall_width>=UNIT-.01 and era!="modern_eco" and not Classical.Ancient.active(house,era): HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
 	if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
 	if principal and not job.role_prop_added:
 		_role_frontage(wall,str(house.get("role","residential")))
 		job.role_prop_added = true
 
 func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
+	if Classical.Ancient.active(job.house,job.era):return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,job.house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,job.house).is_empty():return
 	var house:Dictionary=job.house
@@ -1887,6 +1888,7 @@ func _structural_joined(house: Dictionary) -> bool:
 	return false
 
 func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
+	if Classical.Ancient.active(house,state.house_era(house)):Classical.Ancient.roofs(self,parent,house,palette);return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,house).is_empty():return
 	var roofs: Array[Vector3] = []

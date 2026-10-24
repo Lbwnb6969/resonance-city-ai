@@ -887,8 +887,8 @@
       "title": "用户追加：古典时代改为真正古希腊与古罗马建筑形制",
       "description": "古典时代采用可辨识的古希腊与古罗马建筑，柱式、山花、神庙式柱廊、罗马拱券与内院等按真实形制取舍，去掉现代楼房式立面观感。保留其他时代、原型稳定ID、玩家房屋模块与旧作品兼容。",
       "verification_cmd": "godot --headless --path . --script tests/test_city_creation_ancient_architecture.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --script tools/check_creation_ancient_architecture_live.gd -- --isolated-session",
-      "passes": false,
-      "verified_by": "",
+      "passes": true,
+      "verified_by": "Gate1 Harness/doc links PASS. Godot4.7.2 isolated headless/Dummy tests/test_city_creation_ancient_architecture.gd36PASS,architecture_choice59/custom_color_mesh12/legacy375+27works PASS. NativeGL tools/check_creation_ancient_architecture_live.gd -- --isolated-session accepted53PASS:4actual houses2sizes2anglesday/night32originals,roof physics IDs,fullcity JSON exact,personal save unchanged,Master6.130068s peak.18502808/0clip;framep9510.035/max10.082ms sampling only. Final --geometry-only25PASS adds real clear colonnade center/column mesh pick/hollow oculus/circular wall rays. Ancient/AncientMass independent scripts:whole single-storey rectangular temple shared2/4flutedDoric order/full-width2pediments/continuous gabletile roof and covertiles;single-roomrotunda replaces derived square shell with continuous circular cella/stylobate/open ringcornice/hemisphere with openoculus/templeporch. Other authored multi-storey/modules retained as Romaninsula/roundarches,othereras untouched;existingWall micro-normal/AO/custompalettecache integrated. Independent original3imageR1 6.8/10 B1 box-decoration blocker retained; final3imageR2 8.0/10 explicitly closesB1,no newblocker; simplifiedorders/softstone/highfloorrepetition nonblocking. Reports M43/critic,accepted,geometry_final/doc24. backup/before-m43-20261025; next M44 finalrotation+independentreview beforestop.",
       "design_source": "用户2026-10-24目标追加"
     },
     {

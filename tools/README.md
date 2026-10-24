@@ -100,3 +100,5 @@ M40：`test_city_creation_season_stamps.gd`核18轮廓边界/区分、四时声�
 M41：`check_creation_aesthetic_music_subagent_gate.gd`必须GL/Dummy/isolated-session；继承真实音源验收并追加52秒换流事件/PCM、18实际原型216图（`--full-angles`为468图）与小人。`--gait-sequences`含茶客72帧，其余24帧。`analyze_creation_continuity.py WAV events.json --out report.json`逐采样滑动20ms并区分发声/静音采纳，不以包络代替审听。`check_creation_meadow_gait_live.gd --tea-only --gait-sequences`定向复拍杯掌，`--large-only`核300屋；`check_creation_organic_boughs_live.gd`与`check_creation_prototype_resonance_live.gd`均新增`--out-dir=`隔离旧证据。Critic每个上下文限2～3张原图，结构化保存缺陷/未评项，避免超大图组413。
 
 M42定向原生复拍：`check_creation_m42_refine_live.gd -- --isolated-session`，只重建圆拱与两处玻璃受检场景；完整图集和跨进程续玩沿用M41门禁/long_session_journey。
+
+M43：`check_creation_ancient_architecture_live.gd -- --isolated-session` 原生双尺寸/昼夜/低角32图与实际射线；`--geometry-only`只跑物理/旧档/录音，不重复图片。

@@ -2,6 +2,7 @@ extends RefCounted
 ## Non-overlapping crowns derived from exposed top rooms; never alter saved cells.
 static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
+	if city.house_era(house)=="pastoral" and house.get("architecture","")=="rotunda":return preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").rotundas(house,[])
 	if city.house_era(house) != "renaissance": return result
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(city,house):return result
 	var top := {}; var used := {}

@@ -18,7 +18,7 @@ static func choices(city, house: Dictionary) -> Array:
 	if house.cells.any(func(c):return int(c.level)>0 and not Neo.corner_sides(city,house,c).is_empty()): result.append("oriel")
 	var Civic=preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd")
 	if not Civic.terraces(house,preload("res://scripts/world/city_creation_arcade_plan.gd").for_house(city,house)).is_empty(): result.append("peristyle")
-	if era=="renaissance": result.append("rotunda")
+	result.append("rotunda")
 	if not Civic.guild(city,house,true).is_empty(): result.append("guildhall")
 	if era=="renaissance":result.append_array(RENAISSANCE)
 	return result

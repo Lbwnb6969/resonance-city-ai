@@ -44,6 +44,7 @@ static func _colors(p: Array) -> Array[Color]:
 	return [p[0],p[1],p[2],p[0].darkened(0.06),p[0].darkened(0.08),p[0].lightened(0.045),
 		p[1].darkened(0.20),p[1].darkened(0.04),p[1].lightened(0.09),p[1].lightened(0.17),p[1].lightened(0.10),
 		p[2].lightened(0.13),p[2].darkened(0.20),stone,stone.lightened(0.12),stone.darkened(0.08),
+		p[0].lerp(Color("e7d9b9"),.5),p[0].lerp(Color("e6d8b8"),.48),p[0].lerp(Color("e4d5b5"),.45),p[2].darkened(.42),p[1].lightened(.09),
 		p[0].lerp(Color("c9c5ae"),0.72),p[0].lerp(Color.WHITE,0.60),tower,tower.darkened(0.18)]
 
 
