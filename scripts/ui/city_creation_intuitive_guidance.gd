@@ -136,7 +136,7 @@ func update_guidance(delta:float)->void:
 	if not demo.edit_pending() and (demo.state.revision!=_revision or _timer>1.5):_rebuild()
 	var hidden:bool=not demo.ui_layer.visible or demo.camera_rig.strolling or demo.gallery.panel.visible or demo.journal.panel.visible or demo.guide.visible() or demo.ledger.visible()
 	visible=not hidden;markers.visible=not hidden and not demo.edit_pending() and not stage.is_empty()
-	banner.visible=not stage.is_empty()
+	banner.visible=not stage.is_empty() and not demo.spatial_popover.card.visible
 	var screen:=get_viewport_rect().size
 	banner.position=Vector2(80,66);banner.size=Vector2(maxf(200,screen.x-160),42)
 	marker_material.albedo_color=Color(.91,.74,.34,.40+.18*sin(_pulse*2.8))

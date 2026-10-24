@@ -9,6 +9,8 @@ static func stroke(canvas:CanvasItem,points:Array,center:Vector2,radius:float,co
 	canvas.draw_polyline(line,color,width,true)
 
 static func draw_icon(canvas:CanvasItem,kind:String,center:Vector2,radius:float,color:Color,accent:Color=Color("c4a568"))->void:
+	if kind.begins_with("prototype/"):
+		preload("res://scripts/ui/city_creation_prototype_stamp.gd").draw(canvas,kind.trim_prefix("prototype/"),center,radius,color,accent);return
 	match kind:
 		"palette":
 			canvas.draw_arc(center,.67*radius,.3,TAU-.3,28,color,1.7,true)

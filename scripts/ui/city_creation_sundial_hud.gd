@@ -40,6 +40,7 @@ func _process(delta:float)->void:
 	var season:int=demo.State.Microclimate.IDS.find(demo.state.microclimate)
 	weather.kind=demo.State.Microclimate.GLYPHS[maxi(0,season)]
 	weather.tooltip_text="四时风物 · "+(demo.State.Microclimate.NAMES[season] if season>=0 else "原作天气")+"\n点击轮换花吹雪、太阳雨、金风与星夜萤火"
+	if season>=0:weather.tooltip_text+="\n"+preload("res://scripts/world/city_creation_season_moment.gd").TITLES[season]+" · "+preload("res://scripts/world/city_creation_season_moment.gd").POEMS[season]
 	if demo.light_phase!=_phase:
 		if _phase>=0:_dial_target+=TAU/3.
 		_phase=demo.light_phase;sundial.kind=["sundial_day","sundial_dusk","sundial_night"][_phase]

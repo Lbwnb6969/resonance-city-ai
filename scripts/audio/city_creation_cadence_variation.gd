@@ -11,7 +11,7 @@ static func gain(track:String,score:Dictionary,clock:float)->float:
 	var season:String=score.get("cadence_season","");var night:bool=score.get("cadence_night",false)
 	if (night or season=="autumn_gold") and track in ["air","terrace"]:db+=.8
 	elif (not night or season=="sun_shower") and track in ["foundation","wood_deep"]:db+=.5
-	return db
+	return db+preload("res://scripts/world/city_creation_season_moment.gd").gain(track,season,int(score.get("cadence_light",2 if night else 0)),clock,float(score.get("cadence_moment_start",0.)))
 static func source(family:String,records:Dictionary,acoustic,score:Dictionary)->String:
 	var id:String=score.source_ids.get(family,score.get("source_id",""))
 	if family in ["air","terrace"]:

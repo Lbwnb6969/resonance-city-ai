@@ -4,7 +4,7 @@ const ALPINE=["chalet","pavilion","terrace","panorama","twin_gable","green_lodge
 const NEO=["portico","townhouse","oriel","peristyle","rotunda","guildhall"]
 const CLOCKWORK=["sawtooth_atrium","clock_turret","iron_conservatory","guild_arcade"]
 const RENAISSANCE=["venetian_loggia","belvedere_villa"]
-const LABELS=["山墙木屋","玻璃亭","台地宅","全景山居","连桥工坊","绿顶山舍","柱廊门庭","分层街屋","转角凸窗","内院连柱","圆厅书院","山花会馆","折顶天窗","转角铜钟","铁艺花房","红砖拱会"]
+const LABELS=["山墙木屋","单坡玻亭","错层台宅","全景山居","连桥工坊","绿顶山舍","柱廊门庭","分层街屋","转角凸窗","内院连柱","圆厅书院","山花会馆","折顶天窗","转角铜钟","铁艺花房","红砖拱会"]
 static func valid(value: Variant) -> bool:
 	return value is String and value in ALPINE+NEO+CLOCKWORK+RENAISSANCE
 static func choices(city, house: Dictionary) -> Array:

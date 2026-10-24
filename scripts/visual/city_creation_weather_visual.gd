@@ -10,11 +10,13 @@ var _renderer:=0
 var _center:=Vector2.INF
 var _material_key:Variant=null
 var _revision:=-1
+var moment:Node3D
 
 func setup(owner)->void:
 	demo=owner;name="RiverWeather";demo.add_child(self)
 	particles=MultiMeshInstance3D.new();particles.name="SeasonalParticles";particles.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	material=ShaderMaterial.new();material.shader=ShaderSource;particles.material_override=material;add_child(particles)
+	moment=preload("res://scripts/visual/city_creation_season_moment.gd").new();add_child(moment);moment.setup(demo)
 
 func update()->void:
 	var mode:=str(demo.state.microclimate);var renderer:int=demo.town.get_instance_id()
@@ -31,6 +33,7 @@ func update()->void:
 		_center=at.snapped(Vector2.ONE*4.);_revision=demo.state.revision;_prepare()
 	particles.visible=mode in Weather.IDS
 	material.set_shader_parameter("music_clock",demo.music._playback_clock())
+	moment.update(mode)
 
 func _prepare()->void:
 	var multi:=MultiMesh.new();multi.transform_format=MultiMesh.TRANSFORM_3D;multi.use_custom_data=true

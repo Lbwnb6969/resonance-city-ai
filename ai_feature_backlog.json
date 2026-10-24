@@ -822,10 +822,10 @@
       "evidence_Paths": [
         "本地验证记录/M40/silhouette_and_seasons_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "将屋顶罗盘左侧的建筑原型按钮升级为『手绘建筑剪影图标 + 四字短名』的一瞥即懂印章；同时让春夏秋冬与昼夕夜切换触发细腻的声画风物时刻（春晓花朝、夏夕茶席、秋暮金叶、冬夜提灯）。",
       "verification_cmd": "godot --headless --path . -s tests/test_city_creation_compact_journal.gd; godot --headless --path . -s tools/check_code_health.gd",
-      "verified_by": "",
+      "verified_by": "Gate1: python tools/check_ai_harness.py/check_doc_links.py PASS. Gate2: Godot4.7.2 --headless --audio-driver Dummy --path . --script tests/test_city_creation_season_stamps.gd -- --isolated-session (61 PASS), architecture_choice59/phrase_tide73/microclimate35/legacy_roundtrip375 and27works PASS. Gate3: actualGL/Dummy tools/check_creation_season_stamps_live.gd -- --isolated-session --out-dir=res://验证记录/M40/accepted (154 PASS;18 actual recipe stamps at1440/1024,4season real seal/scene anchors/light/undo/redo and stable original audio pool/personal save). tools/check_creation_paper_ui_live.gd -- --isolated-session --compact-only --out-dir=res://验证记录/M40/compact all21 boolean checks PASS. Master8.080544s peak.16360474/0clip independently recomputed. Independent interim critic directly inspected25 M40+8 M39 originals; 413 final failure retained. Separate fresh-context final critic inspected3 accepted originals and PCM: guidance overlap closed, UI8.7-9.0/10, stamp8.8/10 in covered scene; no blocker. Similar icon pairs and bottom text over scenery remain nonblocking M41 polish; all unassessed dimensions left unscored. Full snapshot comparison initial3failures traced to original harmony_journey lazy initialization/new vignette; accepted initializes original subsystems normally then freezes polls and preserves exact snapshot. Source missing compact_journal/check_code_health commands replaced by actual tools above, preserved contract text.",
       "independent_review_followups": [
         "M34独立Critic：1024夜景底部深色操作提示对比不足；M40在既有小窗工艺中修正提示颜色/阴影并用夜景原图复验。"
       ]

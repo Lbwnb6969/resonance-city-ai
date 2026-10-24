@@ -94,3 +94,5 @@ M33：`test_city_creation_music_experience.gd`核首屋/双屋、四时代、-1.
 M34：`test_city_creation_smooth_variation.gd`核实际AudioStreamPlayer的延迟换流/音量保持、十调式六音阶、实际四时代编辑音色和共享混响/总线回收。`check_creation_smooth_music_live.gd`连续52秒实录与原生状态编辑，检查每次切轨时间、pending主轨没有强制-60dB坑、六次真实建屋依次发声、双尺寸昼夕夜和原音池；默认输出`验证记录/M34/live`，支持`--out-dir=`。`analyze_creation_master.py <WAV...> --out <JSON>`用NumPy测峰/RMS/20ms包络/频谱；本机可用Codex bundled Python运行，指标不代替主观审听。每两项与M41/M42将原图/录音诊断交独立上下文Critic，原始报告保留在本地验证记录。
 
 M39：`test_city_creation_meadow_gait.gd`核共享形态、左右腿、屈腿坐姿与权威坐标不变；citizen_visual/citizen_lod和原生meadow_clumps/meadow_drifts保持。`check_creation_meadow_gait_live.gd`使用GL/Dummy/isolated-session，附`--gait-sequences`采集真实生活24帧序列，`--large-only`读原300屋夹具记录可见/离屏模拟；支持`--out-dir=res://验证记录/M39/verified`，不同轮证据不覆盖。记录性能实测，不设固定耗时门槛。
+
+M40：`test_city_creation_season_stamps.gd`核18轮廓边界/区分、四时声部/相位/包络与原气候事务；`check_creation_season_stamps_live.gd`原生GL/Dummy/isolated-session采18种实际罗盘双尺寸及4时节图，支持`--out-dir=`。只读截图前让现有传世/奇遇正常初始化，再冻结其轮询，比较完整存档；模式切换使用真实天气印章。紧凑手札沿用`check_creation_paper_ui_live.gd --compact-only`。
