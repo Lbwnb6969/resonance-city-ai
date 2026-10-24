@@ -23,7 +23,7 @@ static func choices(city, house: Dictionary) -> Array:
 	if era=="renaissance":result.append_array(RENAISSANCE)
 	return result
 static func label(key: String) -> String:
-	if key in RENAISSANCE:return ["水畔尖拱","观景山庄"][RENAISSANCE.find(key)]
+	if key in RENAISSANCE:return ["水畔圆廊","观景山庄"][RENAISSANCE.find(key)]
 	var index: int=(ALPINE+NEO+CLOCKWORK).find(key)
 	return LABELS[index] if index>=0 else "随形生长"
 static func set_choice(city, id: String, key: String) -> Dictionary:

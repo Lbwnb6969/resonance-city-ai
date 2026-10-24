@@ -1716,7 +1716,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		outer.name="Arcade_%d_%d" % [direction.x,direction.y]
 		outer.transform=wall.transform
 		node.add_child(outer)
-		var report: Dictionary=Arcade.build(self,outer,body,palette,era=="renaissance" and house.get("architecture","")=="venetian_loggia")
+		var report: Dictionary=Arcade.build(self,outer,body,palette)
 		report["cell_id"]=str(cell.id)
 		report["side"]=direction
 		arcades.append(report)

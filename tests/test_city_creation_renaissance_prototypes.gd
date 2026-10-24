@@ -23,7 +23,7 @@ func run()->void:
 			check(built.find_children("TerracottaHippedRoof*","MeshInstance3D",true,false).size()>=4,"true four-sided tile crown "+id)
 			if kind=="venetian_loggia":
 				var faces:Array=built.get_meta("arcades",[])
-				check(not faces.is_empty() and faces.all(func(a):return a.pointed),"actual recessed pointed galleries "+id)
+				check(not faces.is_empty() and faces.all(func(a):return not a.pointed),"actual recessed round galleries "+id)
 				check(faces.all(func(a):return a.half_width==.64 and a.retreat==.38),"original walkway clearance retained "+id)
 			else:
 				check(built.find_children("OpenLoggiaColumn*","MeshInstance3D",true,false).size()==4,"one retreated open lookout with four columns "+id)

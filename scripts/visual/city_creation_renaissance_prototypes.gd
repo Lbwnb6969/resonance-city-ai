@@ -1,5 +1,5 @@
 extends RefCounted
-## Recessed pointed galleries and genuinely open roof loggias, no extra rooms.
+## Recessed round galleries and genuinely open roof loggias, no extra rooms.
 const Plan=preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd")
 const Parts=preload("res://scripts/visual/city_creation_clockwork_parts.gd")
 const Pick=preload("res://scripts/visual/city_creation_roof_pick.gd")
