@@ -96,3 +96,5 @@ M34：`test_city_creation_smooth_variation.gd`核实际AudioStreamPlayer的延�
 M39：`test_city_creation_meadow_gait.gd`核共享形态、左右腿、屈腿坐姿与权威坐标不变；citizen_visual/citizen_lod和原生meadow_clumps/meadow_drifts保持。`check_creation_meadow_gait_live.gd`使用GL/Dummy/isolated-session，附`--gait-sequences`采集真实生活24帧序列，`--large-only`读原300屋夹具记录可见/离屏模拟；支持`--out-dir=res://验证记录/M39/verified`，不同轮证据不覆盖。记录性能实测，不设固定耗时门槛。
 
 M40：`test_city_creation_season_stamps.gd`核18轮廓边界/区分、四时声部/相位/包络与原气候事务；`check_creation_season_stamps_live.gd`原生GL/Dummy/isolated-session采18种实际罗盘双尺寸及4时节图，支持`--out-dir=`。只读截图前让现有传世/奇遇正常初始化，再冻结其轮询，比较完整存档；模式切换使用真实天气印章。紧凑手札沿用`check_creation_paper_ui_live.gd --compact-only`。
+
+M41：`check_creation_aesthetic_music_subagent_gate.gd`必须GL/Dummy/isolated-session；继承真实音源验收并追加52秒换流事件/PCM、18实际原型216图（`--full-angles`为468图）与小人。`--gait-sequences`含茶客72帧，其余24帧。`analyze_creation_continuity.py WAV events.json --out report.json`逐采样滑动20ms并区分发声/静音采纳，不以包络代替审听。`check_creation_meadow_gait_live.gd --tea-only --gait-sequences`定向复拍杯掌，`--large-only`核300屋；`check_creation_organic_boughs_live.gd`与`check_creation_prototype_resonance_live.gd`均新增`--out-dir=`隔离旧证据。Critic每个上下文限2～3张原图，结构化保存缺陷/未评项，避免超大图组413。

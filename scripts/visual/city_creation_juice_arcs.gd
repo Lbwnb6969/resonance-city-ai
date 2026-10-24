@@ -25,7 +25,7 @@ func emit(city:RefCounted,from:String,to:String,clock:float)->void:
 		points.append(Vector3(at.x,maxf(city.street_height(at),city.Terrain.WATER_LEVEL)+.08+4.*t*(1.-t)*.14,at.y))
 	var surface:=SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES);surface.set_normal(Vector3.UP)
 	for i in range(24):
-		var axis:Vector3=points[i+1]-points[i];var side:=Vector3(-axis.z,0,axis.x).normalized()*.07
+		var axis:Vector3=points[i+1]-points[i];var side:=Vector3(-axis.z,0,axis.x).normalized()*.095
 		for j in range(6):
 			var end:=j in [1,2,5];surface.set_uv(Vector2(float(i+(1 if end else 0))/24.,1. if j in [1,4,5] else 0.))
 			surface.add_vertex((points[i+1] if end else points[i])+side*(1. if j in [1,4,5] else -1.))

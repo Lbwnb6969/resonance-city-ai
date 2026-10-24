@@ -3,7 +3,7 @@ const Scene=preload("res://scenes/city_creation.tscn")
 const Fixture=preload("res://tools/fixtures/city_creation_renaissance_prototypes_fixture.gd")
 const Family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 const Audio=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M37/live"
+var OUT:="res://验证记录/M37/live"
 var demo
 var checks:=0
 var failures:Array=[]
@@ -25,6 +25,8 @@ func click(button:Control)->void:
 	for pressed:bool in [true,false]:
 		var e:=InputEventMouseButton.new();e.position=at;e.global_position=at;e.button_index=MOUSE_BUTTON_LEFT;e.pressed=pressed;root.push_input(e);await process_frame
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(Fixture.State.DEFAULT_PATH) if FileAccess.file_exists(Fixture.State.DEFAULT_PATH) else PackedByteArray()
 	var f:=Fixture.build();var city:RefCounted=f.city
