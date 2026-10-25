@@ -63,7 +63,7 @@ func capture(name:String)->void:
 func postpone()->void:
 	var draft:Node=demo.get_meta("inspiration_draft");draft.poll()
 	for i in range(3):await tree.process_frame
-	if draft.paper.visible:await click(draft.paper.get_child(0).get_child(0).get_child(1))
+	if draft.paper.visible:await click(draft.paper.find_child("PostponeDraft",true,false))
 func total_xp()->int:
 	var journey:Dictionary=demo.state.harmony_journey;var count:=int(journey.harmony_level)-1
 	return int(journey.harmony_xp)+count*100+65*count*(count-1)/2

@@ -53,13 +53,17 @@ func large()->Dictionary:
 	var before:Dictionary={}
 	for row:Dictionary in demo.life.residents:before[row.home_id]=demo.life.citizen_position(row)
 	for i in range(90):demo.life._process(1./60.);await process_frame
-	var frames:Array[float]=[];var cpu:Array[float]=[];var last:=Time.get_ticks_usec()
-	for i in range(240):
+	var frames:Array[float]=[];var cpu:Array[float]=[];var spikes:Array=[];var last:=Time.get_ticks_usec()
+	var sample_count:=900 if "--profile-large" in OS.get_cmdline_user_args() else 240
+	for i in range(sample_count):
 		await process_frame;var now:=Time.get_ticks_usec();var began:=Time.get_ticks_usec();demo.life._process(1./60.);cpu.append(float(Time.get_ticks_usec()-began)/1000.);frames.append(float(now-last)/1000.);last=now
+		if frames[-1]>80.:spikes.append({"frame":i,"ms":frames[-1],"process_ms":Performance.get_monitor(Performance.TIME_PROCESS)*1000.,"physics_ms":Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS)*1000.,"loading":demo.music._loading,"edit":demo.edit_pending(),"life_ms":cpu[-1],"life_time":demo.life.time,"life_progress":demo.state.life_progress.duplicate(),"harmony_level":demo.state.harmony_journey.harmony_level})
 	var moved:=0;var deferred:=0
 	for row:Dictionary in demo.life.residents:
 		if demo.life.citizen_position(row).distance_to(before[row.home_id])>.1:moved+=1
 		if row.has("offscreen_motion"):deferred+=1
 	check(moved>=200 and deferred>100,"real200residents advance while offscreen simulation stays scalar")
+	var frame_sequence:=frames.duplicate()
+	var guidance_started:=Time.get_ticks_usec();demo.intuitive_guidance._rebuild();var guidance_ms:=(Time.get_ticks_usec()-guidance_started)/1000.
 	await shot("300_meadow_and_gait");frames.sort();cpu.sort()
-	return {"houses":300,"actors":demo.life.residents.size(),"moved":moved,"deferred":deferred,"frames":{"p95_ms":frames[228],"max_ms":frames[-1]},"life":{"p95_ms":cpu[228],"max_ms":cpu[-1]},"meadow":demo.town.meadow.diagnostics(),"performance_policy":"experience_reference_no_fixed_threshold"}
+	return {"frame_sequence_ms":frame_sequence if "--profile-large" in OS.get_cmdline_user_args() else [],"guidance_rebuild_ms":guidance_ms,"sample_frames":sample_count,"spikes":spikes,"houses":300,"actors":demo.life.residents.size(),"moved":moved,"deferred":deferred,"frames":{"p95_ms":frames[int(frames.size()*.95)],"max_ms":frames[-1]},"life":{"p95_ms":cpu[int(cpu.size()*.95)],"max_ms":cpu[-1]},"meadow":demo.town.meadow.diagnostics(),"performance_policy":"experience_reference_no_fixed_threshold"}

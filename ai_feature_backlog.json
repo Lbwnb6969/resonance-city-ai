@@ -1088,10 +1088,10 @@
       "evidence_Paths": [
         "本地验证记录/M52/final_masterpiece_52of52_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "完成跨进程全旅程、四时代 18 原型 + 古希腊/罗马 + 自由旋转 + 三大涌现街景全景画廊、300 屋大城流畅度与 375 旧档 100% 兼容终验，由独立 Critic 签署最终艺术品认证报告。",
       "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "verified_by": "",
+      "verified_by": "Gate1 Harness/doc PASS;52/52 designated adapted milestones. Fresh Godot4.7.2 isolated legacy375+27works PASS. Real4process journey at1440/1024:day1each25/day2each88 PASS,firstnightsave→differentPIDrestart→sameinventories/cards/poems→actualnativeextension→3real6sera ceremonies/charters→50house4era→finalwork reopen,12+4/6+2identities andpersonal saves unchanged;real Master147.307392/147.400272s peaks.2263489/.2447205,0clip. Native new ancient57/street29/rotation59 PASS includingactualoculus/columnpicks,waternormalpiers,cornergarden/fountain,nativeQ/E/R andcoldyaw. Finalgallery8groups311originalPNG,18actualprototypes216two-size/day-evening-nightimages fromM51sameproduction. Dense300house initial240frame343/242msmax and900frameperiodic163–182ms exposed realhitch;actualempty VignetteSites search320–331ms repeatedeachpoll. Cache empty/populated proposals byrevision/restoreepoch/eracopy,puremetadata,safecopy;repeat.005–.013ms. Independentcache15/publicedit-undo-redo-erachange-restore PASS,vignettes81/poems84PASS. Finalisolated900rawframes p9521.965/max37.167ms,Life3.158/max8.775ms,0over80,300houses298actors281moved245offscreen. Intermediates andoneunattributed342.936mshistoricalframe preserved,notdeleted. IndependentfreshCritic closesPERFblocker,acceptsscope withscores musictechnical8.8/architecture8.5/nature7.9/citizens8.4/streetsUI8.4;8WAV590.901s0clip,subjectivehearingunassessed. Explicitadaptations:no dedicatedbackgroundsidechain,no newexamplecardunlimitedglobalstock/virtualwaterconnectivity/global1.5x,retainreal18card/familyeffects+rarityXP/fourroofcrowns;noforced9rating. Docs24/28/PROJECT/AI_START updated;backup/before-m52-20261025. Final normal prepare/push proof is retained at 验证记录/M52/final_sync.json and independently checked in critic/final_signoff.json;stop after this release audit.",
       "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     }
   ],

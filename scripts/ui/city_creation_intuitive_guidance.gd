@@ -107,9 +107,10 @@ func _suggest(homes:Array[Dictionary],role:String,near_water:bool=false)->void:
 	homes.sort_custom(func(a:Dictionary,b:Dictionary)->bool:
 		var aa:=Vector2(a.origin[0],a.origin[1]);var bb:=Vector2(b.origin[0],b.origin[1])
 		return demo.state.water_clearance(aa)<demo.state.water_clearance(bb) if near_water else str(a.id)>str(b.id))
+	var clusters:Dictionary=demo.state.natural_clusters()
 	for house:Dictionary in homes:
 		if not demo.life.house_connected(str(house.id)):continue
-		if int(demo.state.natural_clusters()[house.id].size)<3:continue
+		if int(clusters[house.id].size)<3:continue
 		target_house_id=house.id;suggested_role=role
 		bubble.kind=role;bubble.caption={"bakery":"面包","garden_cafe":"茶座","workshop":"制琴"}[role]
 		bubble.tooltip_text="点此设为"+{"bakery":"麦香面包坊","garden_cafe":"花圃茶座","workshop":"制琴木工坊"}[role]
