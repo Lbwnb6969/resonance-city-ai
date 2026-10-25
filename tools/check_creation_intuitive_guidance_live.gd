@@ -43,12 +43,13 @@ func run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output));root.size=Vector2i(1440,900);Engine.max_fps=120
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=output+"/隔离作品";root.add_child(demo)
+	demo.set_meta("validation_out_dir",output)
 	demo.life.set_process(false);demo.focus=Vector3(-11,.7,-6);demo.zoom=24.;demo.pitch=.95;demo._update_camera();await settle()
 	if "--poems-only" in OS.get_cmdline_user_args():
 		var poems:Dictionary=await preload("res://tools/fixtures/city_creation_poems_live.gd").new().run(demo)
 		for label:String in poems.checks:check(bool(poems.checks[label]),"M18: "+label)
 		print("INTUITIVE_POEMS ",checks," ",failures);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
-	if "--vignettes-only" in OS.get_cmdline_user_args():
+	if "--vignettes-only" in OS.get_cmdline_user_args() or "--ceremonies-only" in OS.get_cmdline_user_args():
 		var result:Dictionary=await preload("res://tools/fixtures/city_creation_vignette_live.gd").new().run(demo)
 		for label:String in result.checks:check(bool(result.checks[label]),"M11: "+label)
 		print("INTUITIVE_VIGNETTES ",checks," ",failures);demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
@@ -95,6 +96,11 @@ func run()->void:
 	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
 		root.size=resolution;await settle();layout();await capture("04_五键林水_%d"%resolution.x)
 	if "--complete-path" in OS.get_cmdline_user_args():await complete_path(trunk)
+	if "--onboarding-only" in OS.get_cmdline_user_args():
+		check((FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray())==personal,"personal save remains byte-identical")
+		var result:Dictionary={"checks":checks,"failures":failures,"ok":failures.is_empty(),"houses":demo.state.houses.size(),"stage":guide.stage}
+		FileAccess.open(output+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true))
+		print("INTUITIVE_ONBOARDING ",JSON.stringify(result));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1);return
 	var vignettes:Dictionary=await preload("res://tools/fixtures/city_creation_vignette_live.gd").new().run(demo)
 	for label:String in vignettes.checks:check(bool(vignettes.checks[label]),"M11: "+label)
 	var poems:Dictionary=await preload("res://tools/fixtures/city_creation_poems_live.gd").new().run(demo)

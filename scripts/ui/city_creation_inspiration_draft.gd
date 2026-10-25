@@ -29,7 +29,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	var header:=HBoxContainer.new();column.add_child(header)
 	title=Label.new();title.add_theme_font_size_override("font_size",20);title.add_theme_color_override("font_color",UI.INK);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL;header.add_child(title)
 	reroll_button=Button.new();reroll_button.name="RerollDraft";reroll_button.pressed.connect(reroll);header.add_child(reroll_button)
-	var later:=Button.new();later.text="先收好 · 继续营造";later.pressed.connect(func()->void:postponed=true;paper.hide());header.add_child(later)
+	var later:=Button.new();later.name="PostponeDraft";later.text="先收好 · 继续营造";later.pressed.connect(func()->void:postponed=true;paper.hide());header.add_child(later)
 	leaves=HBoxContainer.new();leaves.add_theme_constant_override("separation",12);column.add_child(leaves)
 	var foot:=Label.new();foot.text="手札永久留在本城 · 可撤销重选 · 重读研习让共鸣收益每次增加2%，至多50%"
 	foot.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;foot.add_theme_font_size_override("font_size",12);foot.add_theme_color_override("font_color",UI.MUTED);column.add_child(foot)

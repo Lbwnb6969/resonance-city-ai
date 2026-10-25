@@ -39,7 +39,8 @@ static func ensure(journey:Dictionary)->void:
 	else:
 		for i in range(pending.size()):receipts[prefix+str(i)+"/"+str(pending[i])]=1
 	var tier_prefix:="draft_tier/%d/%d/"%[serial,version]
-	var rng:=RandomNumberGenerator.new();rng.seed=74001+serial*19937+version*839
+	# Separate streams: card position must not determine its rarity.
+	var rng:=RandomNumberGenerator.new();rng.seed=931859+serial*19937+version*839
 	var counts:Dictionary=Family.summary(journey.traditions).counts
 	var offered:Dictionary={};var prism:=false;var pity:=int(receipts.get("prismatic_drought",0))
 	for i in range(pending.size()):

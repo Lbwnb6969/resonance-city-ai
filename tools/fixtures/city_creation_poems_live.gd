@@ -2,7 +2,7 @@ extends RefCounted
 const Fixture=preload("res://tools/fixtures/city_creation_poem_fixture.gd")
 const Vignettes=Fixture.Vignettes
 const Probe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M18/十二风物诗"
+var OUT="res://验证记录/M18/十二风物诗"
 var demo:Node3D
 var tree:SceneTree
 var checks:Dictionary={}
@@ -31,7 +31,7 @@ func postpone()->void:
 	var draft:Node=demo.get_meta("inspiration_draft");draft.poll()
 	if not draft.paper.visible:return
 	await tree.process_frame;await tree.process_frame
-	var at:Vector2=draft.paper.get_child(0).get_child(0).get_child(1).get_global_rect().get_center()
+	var at:Vector2=draft.paper.find_child("PostponeDraft",true,false).get_global_rect().get_center()
 	var move:=InputEventMouseMotion.new();move.position=at;move.global_position=at;tree.root.push_input(move);await tree.process_frame
 	for down:bool in [true,false]:
 		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=at;event.global_position=at;event.pressed=down;tree.root.push_input(event);await tree.process_frame
@@ -47,6 +47,7 @@ func construct(index:int)->Array[Dictionary]:
 			if i%8==0:await tree.process_frame
 	return result
 func run(owner:Node3D)->Dictionary:
+	if owner.has_meta("validation_out_dir"):OUT=str(owner.get_meta("validation_out_dir"))+"/poems"
 	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	checks.particles_quiet=demo.town.quality_visual.particles.all(func(p):return not p.visible and not p.emitting)
 	var observer:Node=demo.get_meta("vignette_journey");var voices:Array=[]

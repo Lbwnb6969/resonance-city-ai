@@ -4,7 +4,7 @@ const EraFixture=preload("res://tools/fixtures/city_creation_era_ceremony_fixtur
 const Vignettes=Fixture.Vignettes
 const Span=preload("res://tools/fixtures/city_creation_recording_span.gd")
 const Probe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
-const OUT="res://验证记录/M11/林间奇遇与时代盛典"
+var OUT="res://验证记录/M11/林间奇遇与时代盛典"
 var demo:Node
 var tree:SceneTree
 var checks:Dictionary={}
@@ -26,13 +26,14 @@ func capture(label:String)->void:
 func postpone()->void:
 	var draft:Node=demo.get_meta("inspiration_draft");draft.poll()
 	for i in range(3):await tree.process_frame
-	if draft.paper.visible:await click(draft.paper.get_child(0).get_child(0).get_child(1))
+	if draft.paper.visible:await click(draft.paper.find_child("PostponeDraft",true,false))
 func run(owner:Node)->Dictionary:
+	if owner.has_meta("validation_out_dir"):OUT=str(owner.get_meta("validation_out_dir"))+"/vignettes"
 	demo=owner;tree=demo.get_tree();DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
 	var observer:Node=demo.get_meta("vignette_journey");var ceremony:Node=demo.get_meta("era_ceremony")
 	var identities:Array=[]
 	for node:Node in demo.music.get_children()+demo.ambience.get_children():identities.append(node.get_instance_id())
-	for index in range(Vignettes.IDS.size()):
+	for index in range(0 if "--ceremonies-only" in OS.get_cmdline_user_args() else Vignettes.IDS.size()):
 		print("M11_PROBE quest ",Vignettes.IDS[index])
 		var kind:String=Vignettes.IDS[index];var city:RefCounted=Fixture.start(kind);var anchor:Array=city.harmony_journey.active_vignette.anchor
 		tree.root.size=Vector2i(1440,900) if index%2==0 else Vector2i(1024,768)
@@ -73,9 +74,16 @@ func run(owner:Node)->Dictionary:
 		var city:RefCounted=EraFixture.before(era);await show(city,"晋升前_"+era,Vector2(-8,-2));var start:int=ceremony.events.size();var bells:int=ceremony.bell_count
 		checks["legacy_quiet_"+era]=ceremony.active.is_empty() and ceremony.pending.is_empty() and era not in demo.state.era_unlocks
 		if era=="clockwork":demo._after_edit(demo.state.set_district_era(str(demo.state.districts[-1].id),"renaissance"),"terrace")
+		if era=="renaissance":
+			# Warm the real bread/walk/tea simulation, then let audio run at its own clock.
+			# Advancing Life 20x during reply playback otherwise floods foreground cues.
+			for tick in range(2400):
+				if int(demo.state.life_progress.tea_parties)>0:break
+				demo.life._process(.2)
+				if tick%20==0:await tree.process_frame
+			checks.renaissance_actual_tea=int(demo.state.life_progress.tea_parties)>0
 		var deadline:=Time.get_ticks_msec()+50000
 		while Time.get_ticks_msec()<deadline and ceremony.events.size()==start:
-			if era=="renaissance":demo.life._process(.2)
 			await tree.process_frame
 		print("M11_PROBE natural ",era," rights=",demo.state.era_unlocks," tea=",demo.state.life_progress.tea_parties," reply=",demo.music.reply.report())
 		checks["earned_ceremony_"+era]=ceremony.events.size()>start and era in demo.state.era_unlocks
@@ -88,7 +96,7 @@ func run(owner:Node)->Dictionary:
 		var finished:Array=ceremony.events.slice(start).filter(func(row):return row.phase=="finish" and row.era==era)
 		checks["six_seconds_"+era]=finished.size()==1 and float(finished[0].duration)>=6. and float(finished[0].duration)<6.75
 		checks["bells_"+era]=ceremony.bell_count>bells
-		checks["three_charters_"+era]=demo.journal.panel.visible and demo.journal.score_cards[era].get_child_count()==3
+		checks["three_charters_"+era]=demo.journal.panel.visible and demo.journal.score_cards[era].get_node("CharterChoices").get_child_count()==3
 		details[era]={"events":ceremony.events.slice(start),"bells":ceremony.bell_count-bells,"audio":recorded,"tea":demo.state.life_progress.tea_parties,"answers":demo.state.era_answers.duplicate(true)}
 		await tree.create_timer(.26).timeout
 		checks["charter_layout_"+era]=Rect2(Vector2.ZERO,Vector2(tree.root.size)).encloses(demo.journal.paper.get_global_rect())

@@ -36,7 +36,13 @@ static func derive(city:RefCounted)->Dictionary:
 		if members.size()<2:continue
 		marker.members=members;data.fountains.append(marker)
 		for id:String in members:data.support[id]=true
+	city.set_meta("street_wonder_obstacles",obstacles)
 	city.set_meta("street_wonder_plan",data);return data
+static func memorial_socket(city:RefCounted,house:Dictionary,occupied:Array)->Dictionary:
+	derive(city)
+	var obstacles:Dictionary=city.get_meta("street_wonder_obstacles").duplicate(true)
+	obstacles.gardens.append_array(occupied)
+	return _pocket(city,house,obstacles)
 static func supports(city:RefCounted,id:String)->bool:return derive(city).support.has(id)
 static func _clear(city:RefCounted,at:Vector2,radius:float,obstacles:Dictionary,wet:bool=false)->bool:
 	if not city.WORLD_RECT.grow(-radius).has_point(at):return false

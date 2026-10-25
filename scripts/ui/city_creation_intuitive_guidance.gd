@@ -26,6 +26,8 @@ func setup(owner,ui_root:Control)->void:
 	banner=Label.new();banner.name="GuideWhisper";banner.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	banner.add_theme_color_override("font_color",UI.INK);banner.add_theme_font_size_override("font_size",14)
 	banner.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;banner.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(banner)
+	var backing:=UI.panel(10.);backing.bg_color.a=.86;backing.shadow_size=3
+	banner.add_theme_stylebox_override("normal",backing)
 	bubble=Button.new();bubble.name="OneClickRoleBubble";bubble.set_script(Seal);bubble.configure("bakery",54.)
 	bubble.custom_minimum_size=Vector2(68,60);bubble.focus_mode=Control.FOCUS_NONE
 	bubble.pressed.connect(_apply_suggestion);add_child(bubble);bubble.hide()
@@ -89,6 +91,8 @@ func _rebuild()->void:
 			stage="houses";banner.text="跨岸添些新屋；十座家与一座桥将迎来古钟地标。";target_points=_house_sites(1)
 		elif not demo.state.houses.any(func(h):return h.get("signature","")=="bell_keep"):
 			stage="landmark";banner.text="打开手记中的名胜，安放古钟塔，再点塔奏响乐章。"
+	if count>=10 and stage!="landmark" and connected>=5 and roles.has("bakery") and roles.has("garden_cafe") and roles.has("workshop"):
+		stage="wander";target_points.clear();target_house_id="";banner.text=preload("res://scripts/ui/city_creation_city_whispers.gd").text(demo.state)
 	bubble.visible=not target_house_id.is_empty()
 	for child:Node in markers.get_children():markers.remove_child(child);child.queue_free()
 	for at:Vector2 in target_points:
@@ -122,23 +126,34 @@ func _house_sites(amount:int)->Array[Vector2]:
 				if maxi(absi(x),absi(z))!=radius:continue
 				var at:Vector2=(origin+Vector2(x,z)*3.6).snapped(Vector2.ONE*1.8)
 				if demo.state.water_clearance(at)<1.8 or not demo.state.validate_add_house(at).ok:continue
+				if not _visible_ground_site(at):continue
 				if result.any(func(p):return p.distance_to(at)<3.):continue
 				result.append(at)
 				if result.size()==amount:return result
 	return result
 
+func _visible_ground_site(at:Vector2)->bool:
+	var world:=Vector3(at.x,demo.state.ground_height(at)+.01,at.y)
+	if demo.camera.is_position_behind(world):return false
+	var screen:Vector2=demo.camera.unproject_position(world)
+	if not get_viewport_rect().grow(-60.).has_point(screen):return false
+	var from:Vector3=demo.camera.project_ray_origin(screen)
+	return demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from,world,1)).is_empty()
+
 func update_guidance(delta:float)->void:
 	if _state_id!=demo.state.get_instance_id():
 		_state_id=demo.state.get_instance_id();available.assign([0]);_revision=-1
 	if _light_phase!=demo.light_phase:
-		_light_phase=demo.light_phase;banner.add_theme_color_override("font_color",UI.PAPER if _light_phase==2 else UI.INK)
+		_light_phase=demo.light_phase;banner.add_theme_color_override("font_color",UI.INK)
 	_pulse+=delta;_timer+=delta
 	if not demo.edit_pending() and (demo.state.revision!=_revision or _timer>1.5):_rebuild()
 	var hidden:bool=not demo.ui_layer.visible or demo.camera_rig.strolling or demo.gallery.panel.visible or demo.journal.panel.visible or demo.guide.visible() or demo.ledger.visible()
 	visible=not hidden;markers.visible=not hidden and not demo.edit_pending() and not stage.is_empty()
 	banner.visible=not stage.is_empty() and not demo.spatial_popover.card.visible
 	var screen:=get_viewport_rect().size
-	banner.position=Vector2(80,66);banner.size=Vector2(maxf(200,screen.x-160),42)
+	var width:=minf(620.,screen.x-344.)
+	var left:=maxf((screen.x-width)*.5,demo.get_meta("inspiration_draft").badge.get_global_rect().end.x+16.)
+	banner.position=Vector2(left,66);banner.size=Vector2(minf(width,screen.x-left-24.),42)
 	marker_material.albedo_color=Color(.91,.74,.34,.40+.18*sin(_pulse*2.8))
 	for ring:Node3D in markers.get_children():ring.scale=Vector3.ONE*(1.+.04*sin(_pulse*2.8))
 	if target_house_id.is_empty():bubble.hide();return
