@@ -110,4 +110,6 @@ func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 	var key:String=family.prototype(pop.demo.state,house);var caption:String=family.family_caption(key) if not key.is_empty() else str(pop.ROLE_LABELS.get(role,"街坊"))
 	if role=="residential":return "%s · 共鸣 %d/3 · 品质 %d\nQ/E 转90° · R 自由转向"%[caption,int(pop.demo.state.house_harmony(str(house.id)).tier),level]
+	var civic:=preload("res://scripts/world/city_creation_civic_supply.gd").status(pop.demo.state,str(house.id))
+	if civic.tier>0:return "%s · %s%s\nQ/E 转90° · R 自由转向"%[caption,"律动中枢" if role=="clockmaker" else "二阶共创" if civic.tier==2 else "一阶自给"," · 律动×1.35" if civic.tempo_mult>1. else ""]
 	return "%s · 品质 %d · %s\nQ/E 转90° · R 自由转向"%[caption,level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]

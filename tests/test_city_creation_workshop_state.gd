@@ -9,7 +9,7 @@ func _initialize() -> void:
 	var city := State.new()
 	city.initialize()
 	_check(city.workshop_supply.is_empty() and city.house_improvements.is_empty(), "new town has no invented crafts or installations")
-	_check(city.workshop_status("h2").capacity == 0 and not city.workshop_status("missing").open, "query excludes nonworkshops")
+	_check(not city.workshop_status("h2").open and city.workshop_status("h2").batch_size == 0 and not city.workshop_status("missing").open, "nonworkshops retain dormant shelf capacity but cannot open or produce a batch")
 	_check(city.set_house_role("h2", "workshop").ok and city.workshop_batch_size("h2") == 2 and city.workshop_capacity("h2") == 8, "real ground and upper rooms provide workshop capacity")
 	_check(city.set_house_role("h5", "workshop").ok and city.workshop_batch_size("h5") == 1, "terraces do not produce crafts")
 	_check(not city.produce_craft("h1", 1) and not city.produce_craft("missing", 1) and not city.produce_craft("h2", 0) and not city.produce_craft("h2", -1) and not city.produce_craft("h2", 9), "invalid production has no output")

@@ -14,6 +14,8 @@ static func counters(city:RefCounted)->Dictionary:
 	for key:String in city.harmony_journey.get("receipts",{}):
 		if key.begins_with("batch_count/"):result["bake/"+key.get_slice("/",1)]=int(city.harmony_journey.receipts[key])
 		elif key.begins_with("delivery_count/"):result["delivery/"+key.get_slice("/",1)]=int(city.harmony_journey.receipts[key])
+		elif key.begins_with("debut/"):result["wish/"+key.trim_prefix("debut/")]=1
+		elif key.begins_with("civic_received/"):result["civic/"+key.trim_prefix("civic_received/")]=1
 	return result
 static func initialize(city:RefCounted)->void:
 	if not city.harmony_journey.is_empty():
@@ -33,10 +35,10 @@ static func collect(city:RefCounted)->Dictionary:
 		journey.receipts[key]=maxi(current,int(journey.receipts.get(key,0)))
 		if delta==0:continue
 		var kind:=key.get_slice("/",0)
-		var xp:int=int({"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30}.get(kind,0))*delta+preload("res://scripts/world/city_creation_tradition_synergy.gd").bonus_xp(city,key,delta)
+		var xp:int=int({"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30,"civic":30}.get(kind,0))*delta+preload("res://scripts/world/city_creation_tradition_synergy.gd").bonus_xp(city,key,delta)
 		earned+=xp;events[kind]=int(events.get(kind,0))+delta
 	var repeat_count:int=Journey.choices_made(journey)-journey.traditions.size()
-	var exact:float=earned*(1.+minf(.5,repeat_count*.02))+float(journey.get("xp_remainder",0.))
+	var exact:float=earned*(1.+minf(.5,repeat_count*.02))*Journey.Rarity.xp_multiplier(journey)+float(journey.get("xp_remainder",0.))
 	journey.xp_remainder=exact-floor(exact)
 	var result:=Journey.add_harmony_xp(journey,int(exact),74001,city.era_unlocks)
 	result.earned=int(exact);result.events=events

@@ -7,6 +7,7 @@ var epoch := -1
 var observed_revision := -1
 var published_houses: Array = []
 var published_roads: Array = []
+const Debut=preload("res://scripts/world/city_creation_debut_encore.gd")
 const LOCK := "first_blessing_burst"
 func _init(owner: Node3D) -> void:
 	life = owner
@@ -26,12 +27,16 @@ func on_edit(result: Dictionary) -> void:
 		if kind.is_empty() or house.has("signature"): continue
 		var id := str(house.id)
 		var key := id+":"+kind
+		if not observed.has(key) and satisfied(life.state,id,kind) and not consumed(life.state,id,kind):pending[id]=kind
 		sites[key] = observed[key] if observed.has(key) else satisfied(life.state,id,kind)
 	observed = sites
-	if not (result.has("plant_ids") or result.has("water_id")): return
+	if not (result.has("plant_ids") or result.has("water_id")):
+		if Debut.same_geometry(life.state,published_houses,published_roads):poll(true)
+		return
 	observe()
 	if life.state.houses == published_houses and life.state.roads == published_roads: poll(true)
 func observe(baseline: bool = false) -> void:
+	if baseline:Debut.observe(life,true)
 	if observed_revision == life.state.revision: return
 	var current: Dictionary = {}
 	for house: Dictionary in life.state.houses:
@@ -62,6 +67,7 @@ func poll(immediate: bool = false) -> void:
 	if not immediate and life.last_revision != life.state.revision: return
 	if life.last_revision == life.state.revision and observed_revision != life.state.revision: remember_geometry()
 	observe()
+	Debut.poll(life)
 	for id: String in pending.keys():
 		var kind := str(pending[id])
 		var index: int = life.state._house_index(id)

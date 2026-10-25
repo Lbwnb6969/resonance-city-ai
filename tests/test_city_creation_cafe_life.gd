@@ -56,7 +56,7 @@ func _run() -> void:
 		var guest: Dictionary = resumed.cafe._resident(str(home))
 		var seat: Vector2 = resumed.cafe.layouts.h4.seats[int(guest.cafe_visit.seat)]
 		_check(Vector2(guest.node.position.x, guest.node.position.z).distance_to(seat) < 0.15, "guest body is physically at reserved chair")
-		_check(absf(float(guest.node.position.y) + float(guest.node.get_child(0).position.y) + 0.05 - (float(copy.street_height(seat)) + 0.43)) < 0.001, "seated tunic base rests on actual chair surface without lowering logical root")
+		_check(absf(float(guest.node.position.y) + float(guest.node.get_child(0).position.y) + 0.05 - (float(copy.street_height(seat)) + 0.43)) < 0.005, "seated body remains within 5mm breathing motion of chair height without lowering logical root")
 	_check(int(copy.life_progress.tea_parties) == 0 and int(copy.life_progress.tea_visits) == 0, "arrival alone earns no gathering")
 	var tea_homes: Array = status.participants.duplicate()
 	copy.grant_resonance_afterglow([tea_homes[0], "h4"], 60.0)

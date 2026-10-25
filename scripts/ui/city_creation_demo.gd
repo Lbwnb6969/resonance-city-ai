@@ -2258,7 +2258,7 @@ func _on_quality_changed(events: Array) -> void:
 func _on_site_wish_completed(house_id:String,kind:String,quantity:int)->void:
 	preload("res://scripts/visual/city_creation_blessing_burst.gd").play(self,house_id)
 	get_meta("juice_feedback").wish(house_id,kind)
-	_message("活水已到，%d份热面包出炉。"%quantity if kind=="water" else "良木已成林，%d件匠作已备好送往邻家。"%quantity)
+	_message(preload("res://scripts/world/city_creation_debut_encore.gd").copy(kind,quantity))
 
 func _on_bread_produced(house_id:String,_quantity:int)->void:
 	music.queue_bakery_cue("baked",house_id)

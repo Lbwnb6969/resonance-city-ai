@@ -1,6 +1,7 @@
 extends Node
 ## Nonmodal, postponable city-owned drafts. World simulation never pauses.
 const Journey=preload("res://scripts/world/city_creation_harmony_journey.gd")
+const Rarity=preload("res://scripts/world/city_creation_draft_rarity.gd")
 const Receipts=preload("res://scripts/world/city_creation_harmony_receipts.gd")
 const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 var demo:Node3D
@@ -16,6 +17,7 @@ var postponed:=false
 var events:Array[Dictionary]=[]
 var progress:ProgressBar
 var cue_count:=0
+var reroll_button:Button
 func setup(owner:Node3D,parent:Control)->void:
 	demo=owner;name="InspirationDraft";demo.add_child(self);demo.set_meta("inspiration_draft",self)
 	badge=Button.new();badge.theme=UI.make_theme();badge.name="HarmonyProgress";badge.position=Vector2(24,66);badge.custom_minimum_size=Vector2(238,32)
@@ -26,6 +28,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",12);paper.add_child(column);column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);column.offset_left=16.;column.offset_top=16.;column.offset_right=-16.;column.offset_bottom=-16.
 	var header:=HBoxContainer.new();column.add_child(header)
 	title=Label.new();title.add_theme_font_size_override("font_size",20);title.add_theme_color_override("font_color",UI.INK);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL;header.add_child(title)
+	reroll_button=Button.new();reroll_button.name="RerollDraft";reroll_button.pressed.connect(reroll);header.add_child(reroll_button)
 	var later:=Button.new();later.text="先收好 · 继续营造";later.pressed.connect(func()->void:postponed=true;paper.hide());header.add_child(later)
 	leaves=HBoxContainer.new();leaves.add_theme_constant_override("separation",12);column.add_child(leaves)
 	var foot:=Label.new();foot.text="手札永久留在本城 · 可撤销重选 · 重读研习让共鸣收益每次增加2%，至多50%"
@@ -34,7 +37,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	parent.resized.connect(fit);fit();poll()
 func fit()->void:
 	var viewport:Vector2=paper.get_parent().size
-	paper.size=Vector2(minf(840.,viewport.x-80.),354.);paper.position=Vector2((viewport.x-paper.size.x)*.5,114.)
+	paper.size=Vector2(minf(840.,viewport.x-80.),minf(400.,viewport.y-210.));paper.position=Vector2((viewport.x-paper.size.x)*.5,114.)
 func poll()->void:
 	if demo.gallery.busy or demo.edit_pending():return
 	var key:=[demo.state.get_instance_id(),demo.state._wish_epoch]
@@ -49,8 +52,9 @@ func poll()->void:
 func chime()->void:
 	if demo.music.muted or demo.music._loading:return
 	var Pluck=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
-	var mode:int=demo.music.harmony_mode();var phrase:=int(demo.music._playback_clock()/3.)%8
+	var mode:int=demo.music.harmony_mode();var phrase:int=demo.music.CueGrid.bar(demo.music.CueGrid.transport_clock(demo.music))
 	var midi:int=Pluck.Palette.pitch(mode,phrase,2,1) if mode>=0 else Pluck.pitch(phrase,2,1)
+	midi=demo.music.CueGrid.snap_to_chord_tone(midi,Pluck.Palette.chords(maxi(0,mode))[phrase])
 	var key:String=Pluck.stream_key("harp",midi)
 	if not demo.music._edit_streams.has(key):return
 	for effect:AudioStreamPlayer in demo.music._effects:
@@ -64,7 +68,9 @@ func refresh(force:bool=false)->void:
 	badge.text="♪ 河湾共鸣 %d · %d / %d%s"%[int(journey.harmony_level),int(journey.harmony_xp),Journey.xp_for_next_level(int(journey.harmony_level))," · 待选%d"%remaining if remaining>0 else ""]
 	badge.tooltip_text="新屋、真实出炉、茶聚、送装、心愿与和弦积累共鸣。\n已研习："+"、".join(Array(journey.traditions).map(func(id):return str(Journey.cards()[id].name)))
 	if remaining==0:paper.hide();signature=null;return
-	var key:=[journey.pending_draft.duplicate(),journey.ranks.duplicate(),remaining]
+	Rarity.ensure(journey)
+	reroll_button.text="翻阅新卷 · %d"%Rarity.rerolls_left(journey);reroll_button.disabled=Rarity.rerolls_left(journey)<=0
+	var key:=[journey.pending_draft.duplicate(),journey.ranks.duplicate(),journey.get("draft_rarities",{}).duplicate(),remaining]
 	if force or key!=signature:
 		signature=key;rebuild()
 	display()
@@ -73,19 +79,26 @@ func display()->void:
 	var covered:bool=ceremony or demo.journal.scrollbook.visible or demo.gallery.panel.visible or demo.guide.panel.visible
 	badge.visible=not covered
 	paper.visible=not covered and not postponed and Journey.credits(demo.state.harmony_journey)>0
+	if paper.visible:demo.toast.hide()
 func rebuild()->void:
 	for child:Node in leaves.get_children():leaves.remove_child(child);child.queue_free()
 	buttons.clear();var journey:Dictionary=demo.state.harmony_journey
 	title.text="河湾赠来的灵感 · 选一页传世手札"
 	if int(journey.get("heritage_credit",0))==1 and Journey.choices_made(journey)==0:title.text="跨城传承 · 为新河湾选一页手札"
 	for id:String in journey.pending_draft:
-		var card:Dictionary=Journey.cards()[id];var box:=PanelContainer.new();box.add_theme_stylebox_override("panel",UI.card(14));box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.custom_minimum_size=Vector2(220,230);leaves.add_child(box)
+		var card:Dictionary=Journey.cards()[id];var tier:=Rarity.tier(journey,id);var box:=PanelContainer.new();var style:=UI.card(14);style.border_color=Color(Rarity.COLORS[tier]);style.set_border_width_all(2 if tier>1 else 1);box.add_theme_stylebox_override("panel",style);box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.custom_minimum_size=Vector2(220,230);leaves.add_child(box)
 		var column:=VBoxContainer.new();column.add_theme_constant_override("separation",14);box.add_child(column)
 		var seal:=Label.new();seal.text=preload("res://scripts/world/city_creation_tradition_synergy.gd").card_badge(id,preload("res://scripts/world/city_creation_tradition_synergy.gd").owned(demo.state));seal.tooltip_text=str(preload("res://scripts/world/city_creation_tradition_synergy.gd").FAMILIES[preload("res://scripts/world/city_creation_tradition_synergy.gd").family_of(id)].crown);seal.add_theme_color_override("font_color",Color("8c682f"));column.add_child(seal)
+		var rarity:=Label.new();rarity.text=Rarity.NAMES[tier]+(" · 共鸣收益+25%" if tier==3 else " · 共鸣收益+12%" if tier==2 else "");rarity.add_theme_color_override("font_color",Color(Rarity.COLORS[tier]));rarity.add_theme_font_size_override("font_size",13);column.add_child(rarity)
 		var heading:=Label.new();heading.text=str(card.name);heading.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;heading.add_theme_font_size_override("font_size",20);heading.add_theme_color_override("font_color",UI.INK);column.add_child(heading)
 		var detail:=Label.new();detail.text=str(card.text);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.custom_minimum_size.y=84;detail.add_theme_font_size_override("font_size",15);detail.add_theme_color_override("font_color",UI.MUTED);detail.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(detail)
 		var button:=Button.new();button.text="融入河湾" if id not in journey.traditions else "再读一遍 · 研习%d"%(int(journey.ranks[id])+1);button.custom_minimum_size.y=36;button.pressed.connect(choose.bind(id));column.add_child(button);buttons[id]=button
 	fit();fit.call_deferred()
+func reroll()->void:
+	if demo.edit_pending() or demo.gallery.busy:return
+	var result:=Rarity.reroll(demo.state)
+	if result.ok:demo._after_edit(result,"history",false)
+	refresh(true)
 func choose(id:String)->void:
 	if demo.edit_pending() or demo.gallery.busy:return
 	Receipts.collect(demo.state)

@@ -15,6 +15,7 @@ const ArchiveRewards=preload("res://scripts/world/city_creation_archive_rewards.
 var archive_unlocks:Array[String]=[]
 var music_mode:=""
 var era_modifiers:Array[String]=[]
+const CivicSupply=preload("res://scripts/world/city_creation_civic_supply.gd")
 const HarmonyJourney=preload("res://scripts/world/city_creation_harmony_journey.gd")
 var harmony_journey:Dictionary={}
 var biome_seed:Dictionary={}
@@ -1662,7 +1663,7 @@ func site_production_multiplier(house_id: String) -> float:
 	var mill: float=float(signature_bonuses().baking_speed) if index>=0 and houses[index].role=="bakery" else 1.0
 	var echo:float=float(regional_echo().production_mult) if index>=0 and str(houses[index].role) in ["workshop","atelier","clockmaker"] else 1.
 	var weather:float=Microclimate.production(self,houses[index]) if index>=0 else 1.
-	return (ScoreModifiers.production(self,houses[index]) if index>=0 else 1.)*float(biome_bonus(house_id).get("production",1.))*transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo
+	return (ScoreModifiers.production(self,houses[index]) if index>=0 else 1.)*float(biome_bonus(house_id).get("production",1.))*transit_efficiency(house_id)*weather*temperament_speed(house_id)*float(site_blessing(house_id).get("speed_multiplier", 1.0)) * (1.25 if level_tier(house_id)>=4 else 1.0)*mill*float(planning_bonus(house_id).get("production_mult",1.0))*echo*CivicSupply.speed(self,house_id)
 
 func biome_bonus(house_id:String)->Dictionary:
 	if _biome_revision!=revision:
@@ -1674,7 +1675,7 @@ func transit_efficiency(house_id:String)->float:
 	return 1.3 if _transit_corridor_revision==revision and _transit_corridor_houses.has(house_id) and index>=0 and houses[index].role in ["workshop","atelier","clockmaker","garden_cafe"] else 1.
 
 func cafe_time_multiplier(house_id:String)->float:
-	return preload("res://scripts/world/city_creation_tradition_synergy.gd").tea_multiplier(self)*(.9 if "garden_salons" in era_modifiers else 1.)*float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)
+	return preload("res://scripts/world/city_creation_tradition_synergy.gd").tea_multiplier(self)*(.9 if "garden_salons" in era_modifiers else 1.)*float(planning_bonus(house_id).get("cafe_duration_mult",1.))/transit_efficiency(house_id)/(1.25 if "tram_promenade" in era_modifiers and transit_efficiency(house_id)>1. else 1.)/CivicSupply.tea_speed(self,house_id)
 
 
 func synergy_buffs()->Dictionary:

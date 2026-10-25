@@ -109,7 +109,9 @@ static func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dicti
 				reserved[cargo.target_id] = int(reserved.get(cargo.target_id, 0)) + 1
 		if row.produced != row.stock + row.delivered + (0 if cargo.is_empty() else 1): return _fail("城市存档木饰收支不一致")
 		delivered += int(row.delivered)
-	if delivered != installed + festival_delivered: return _fail("城市存档木饰安装及节庆交付与出库不一致")
+	var civic:=preload("res://scripts/world/city_creation_civic_validation.gd").valid(data,issued_house)
+	if not civic.ok:return _fail("城市供需首秀或书院器乐台账无效")
+	if delivered != installed + festival_delivered + int(civic.instruments): return _fail("城市存档木饰安装、书院器乐及节庆交付与出库不一致")
 	for target_id in reserved:
 		if int(improvements.get(target_id, 0)) + int(reserved[target_id]) > 3: return _fail("城市存档木饰预留超过升级上限")
 	for target_id in art_reserved:

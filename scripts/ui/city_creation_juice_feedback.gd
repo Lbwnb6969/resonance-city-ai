@@ -42,7 +42,7 @@ func enqueue(event:Dictionary)->void:
 func wish(id:String,kind:String)->void:
 	var group:Dictionary=demo.state.natural_clusters().get(id,{})
 	var members:Array=group.get("members",[id]).duplicate()
-	enqueue({"kind":"wish","source":id,"members":members,"label":"活水初炉" if kind=="water" else "良木成林"})
+	enqueue({"kind":"wish","source":id,"members":members,"label":{"water":"活水初炉","tree":"良木成林","bloom":"花下备席","arcade":"廊下初画","chime":"铜铃首鸣"}.get(kind,"街坊初聚")})
 func quality(events:Array)->void:
 	var ids:Array[String]=[];var tier:=1
 	for event:Dictionary in events:
@@ -54,6 +54,7 @@ func _process(_delta:float)->void:
 	if key!=epoch:
 		epoch=key;clear();baseline=true;dirty=true;demo.town.set_meta("juice_feedback",self)
 	if demo.gallery.busy:return
+	preload("res://scripts/world/city_creation_debut_encore.gd").tick(self)
 	if not demo.edit_pending() and (dirty or baseline):
 		if baseline:detector.rebase(demo.state);baseline=false
 		else:

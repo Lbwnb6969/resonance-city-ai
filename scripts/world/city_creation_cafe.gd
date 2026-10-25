@@ -226,6 +226,7 @@ func tick(delta: float) -> void:
 		elif group.phase == "waiting":
 			var current := status(str(id))
 			if int(current.arrived) >= 2 and current.arrived == current.invited:
+				preload("res://scripts/world/city_creation_civic_supply.gd").receive(life,str(id),true)
 				group.phase = "tea"
 				group.elapsed = 0.0
 

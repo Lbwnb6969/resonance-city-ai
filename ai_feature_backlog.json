@@ -946,10 +946,10 @@
       "evidence_Paths": [
         "本地验证记录/M46/all_role_debut_encore_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "消除五类工坊同质化并补齐无压力的城市建设经营感：构建『一阶采集（面包/制琴）→ 二阶雅集（茶座/书院跨店接收供货升入 Tier 2）→ 三阶律动中枢（钟表铺 14m 内 1.35x 提速光环）』供需链；同时为三选一手札引入『白银/鎏金/虹彩传世』三阶稀有度、流派共振加权与 3 次未出必出保底。",
       "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_wish_sites.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_wish_pins_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "verified_by": "",
+      "verified_by": "Gate1 Harness/doc links PASS. Isolated Godot4.7.2 CPU civic_supply54/HarmonyJourney230/wish_sites19/wish_fulfilment62/workshop136/cafe60/legacy375+27works PASS. Native GL/Dummy check_creation_civic_system_live accepted_final38PASS: five real role edits respond3.451-43.509ms, real conserved workshop->academy instrument and bakery->seated3resident tea group, Tier2 1.4x and same-network14m clock1.35x, actual flute/oboe duet,48s earned ambient encore,native pointer reroll/choice,two sizes,full-precision JSON exact inventories/rarities/poem coordinates,personal save and12+4/6+2 unchanged. Master12.074376s peak.2007141113/0clip;framep9510.126/max10.45ms sampling only. Independent Critic found P1 cross-choice undo reroll farming; stable earned-credit invitation identity and durable versioned offer/tier cache fix it,independent24/24 regression closes blocker,engineering8.6/visual8.2/digitalaudio8.6;subjective listening not assessed. Initial failed37/38 cold tests retained: probe default JSON precision truncated a coordinate;production already uses full precision,accepted_final38/38 correct. Earlier fragile CPU assertions upgraded to actual dormant shelf/4mm breathing semantics without changing production. backup/before-m46-20261025;sync required before next round.",
       "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     },
     {

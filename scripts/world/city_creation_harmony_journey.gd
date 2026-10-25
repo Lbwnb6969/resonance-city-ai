@@ -1,6 +1,7 @@
 class_name CityCreationHarmonyJourney
 extends RefCounted
 ## Earned life progress survives undo; choosing a tradition is an authored transaction.
+const Rarity=preload("res://scripts/world/city_creation_draft_rarity.gd")
 const Scores=preload("res://scripts/world/city_creation_score_modifiers.gd")
 const BASE_XP_THRESHOLD:=100
 const XP_STEP_GROWTH:=65
@@ -28,6 +29,7 @@ static func credits(journey:Dictionary)->int:
 static func refresh_draft(journey:Dictionary,unlocks:Array=["pastoral"])->void:
 	if credits(journey)<=0:journey.pending_draft=[]
 	elif Array(journey.get("pending_draft",[])).is_empty():journey.pending_draft=roll_inspiration_draft(journey,choices_made(journey)+1,74001,unlocks)
+	Rarity.ensure(journey)
 static func add_harmony_xp(journey:Dictionary,amount:int,rng_seed:int=74001,unlocks:Array=["pastoral"])->Dictionary:
 	var level:=int(journey.harmony_level)
 	journey.harmony_xp=int(journey.harmony_xp)+maxi(0,amount)
@@ -45,12 +47,12 @@ static func roll_inspiration_draft(journey:Dictionary,level:int,rng_seed:int,unl
 	var picked:Array[String]=[]
 	while picked.size()<3:
 		var source:Array[String]=fresh if not fresh.is_empty() else owned
-		var index:=rng.randi_range(0,source.size()-1);picked.append(source[index]);source.remove_at(index)
+		var index:=Rarity.pick_index(source,journey,rng);picked.append(source[index]);source.remove_at(index)
 	return picked
 static func choose_inspiration(journey:Dictionary,card_id:String,unlocks:Array=["pastoral"])->bool:
 	if credits(journey)<=0 or card_id not in journey.get("pending_draft",[]):return false
 	if card_id not in journey.traditions:journey.traditions.append(card_id)
-	journey.ranks[card_id]=int(journey.ranks.get(card_id,0))+1;journey.pending_draft=[];refresh_draft(journey,unlocks);return true
+	journey.ranks[card_id]=int(journey.ranks.get(card_id,0))+1;Rarity.chosen(journey,card_id);journey.pending_draft=[];refresh_draft(journey,unlocks);return true
 static func choose(city:RefCounted,id:String)->Dictionary:
 	if city.harmony_journey.is_empty():return city._fail("还没有待选手札")
 	var before:Dictionary=city.snapshot()
@@ -64,13 +66,25 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	var target:Dictionary=data.get("harmony_journey",{}).duplicate(true)
 	if history and not city.harmony_journey.is_empty():
 		var earned:Dictionary=city.harmony_journey.duplicate(true)
-		for field:String in ["traditions","ranks","pending_draft"]:earned[field]=target.get(field,[] if field!="ranks" else {}).duplicate(true)
+		var changed:bool=target.get("ranks",{})!=earned.get("ranks",{}) or target.get("traditions",[])!=earned.get("traditions",[])
+		for field:String in ["traditions","ranks"]:earned[field]=target.get(field,[] if field=="traditions" else {}).duplicate(true)
+		if changed or target.get("pending_draft",[]).size()==3:
+			earned.pending_draft=target.get("pending_draft",[]).duplicate()
+			for field:String in ["draft_rarities","draft_serial"]:
+				if target.has(field):earned[field]=target[field]
+				else:earned.erase(field)
+		if changed:
+			if target.has("rarity_ranks"):earned.rarity_ranks=target.rarity_ranks.duplicate()
+			else:earned.erase("rarity_ranks")
 		target=earned;refresh_draft(target,city.era_unlocks)
 	if not target.is_empty():
 		for field:String in ["harmony_xp","harmony_level"]:target[field]=int(target[field])
 		if target.has("heritage_credit"):target.heritage_credit=int(target.heritage_credit)
 		for field:String in ["ranks","receipts"]:
 			for key:String in target[field]:target[field][key]=int(target[field][key])
+		if target.has("draft_serial"):target.draft_serial=int(target.draft_serial)
+		for field:String in ["draft_rarities","rarity_ranks"]:
+			for id:String in target.get(field,{}):target[field][id]=int(target[field][id])
 		if target.has("vignette_serial"):target.vignette_serial=int(target.vignette_serial)
 		if not target.get("active_vignette",{}).is_empty():
 			for field:String in ["serial","house_floor","plant_floor","tier"]:
