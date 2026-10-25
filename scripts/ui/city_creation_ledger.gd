@@ -63,7 +63,7 @@ func refresh() -> void:
 	var capsules=preload("res://scripts/ui/city_creation_life_capsules.gd")
 	capsules.refresh(self)
 	var progress:Dictionary=demo.state.life_progress
-	var lines:=PackedStringArray(["[font_size=15][color=#284c42]三缕烟火 · 河湾日常[/color][/font_size]"])
+	var lines:=PackedStringArray(["[font_size=15][color=#46382a]三缕烟火 · 河湾日常[/color][/font_size]"])
 	lines.append("采购 %d 次 · 茶聚 %d 桌 / %d 人次"%[int(progress.get("purchases",0)),int(progress.get("tea_parties",0)),int(progress.get("tea_visits",0))])
 	lines.append("演出 %d 场 · 自发邀演 %d 场"%[int(progress.get("concerts",0)),int(progress.get("auto_concerts",0))])
 	var chord_names:Dictionary=preload("res://scripts/world/city_creation_synergy_buffs.gd").CHORD_NAMES
@@ -74,7 +74,7 @@ func refresh() -> void:
 		var role:=str(house.get("role","residential"));var id:=str(house.id)
 		var title:=str(house.get("name",""));var tier:int=demo.state.level_tier(id)
 		if title.is_empty():title=str(ROLE_NAMES.get(role,"河湾暖舍"))
-		lines.append("\n[font_size=15][color=#284c42]%s[/color][/font_size] · Lv.%d %s"%[capsules.safe(title),tier,demo.state.Quality.NAMES[clampi(tier-1,0,4)]])
+		lines.append("\n[font_size=15][color=#46382a]%s[/color][/font_size] · Lv.%d %s"%[capsules.safe(title),tier,demo.state.Quality.NAMES[clampi(tier-1,0,4)]])
 		if role=="residential":
 			var harmony:Dictionary=demo.state.house_harmony(id)
 			lines.append(capsules.home(harmony));lines.append("共鸣 %d / 3 阶 · %s"%[int(harmony.tier),str(harmony.title)]);continue
@@ -98,6 +98,7 @@ func refresh() -> void:
 				lines.append("已使用 %d 份节庆布置"%int(status.used))
 		rows.append({"id":id,"role":role,"connected":connected,"status":status.duplicate(true)})
 	if rows.is_empty():lines.append("\n添一间面包坊，日常就有了香气。")
+	preload("res://scripts/ui/city_creation_ledger_leaves.gd").refresh(self)
 	var next_text: String = "\n".join(lines)
 	if next_text == _text: return
 	_text = next_text;body.text = _text

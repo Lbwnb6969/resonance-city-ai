@@ -1,15 +1,34 @@
 extends Button
 const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 const Icons=preload("res://scripts/ui/city_creation_vector_icons.gd")
-var kind:="journal"
-var turn:=0.
-var pulse:=0.
-var active:=false
-var muted:=false
-var saved_glow:=0.
-var zones:Array[int]=[]
-var caption:=""
-var key_label:=""
+var kind:="journal":
+	set(value):
+		if kind!=value:kind=value;queue_redraw()
+var turn:=0.:
+	set(value):
+		if turn!=value:turn=value;queue_redraw()
+var pulse:=0.:
+	set(value):
+		if pulse!=value:pulse=value;queue_redraw()
+var active:=false:
+	set(value):
+		if active!=value:active=value;queue_redraw()
+var muted:=false:
+	set(value):
+		if muted!=value:muted=value;queue_redraw()
+var saved_glow:=0.:
+	set(value):
+		if saved_glow!=value:saved_glow=value;queue_redraw()
+var zones:Array[int]=[]:
+	set(value):
+		if zones!=value:zones=value;queue_redraw()
+var caption:="":
+	set(value):
+		if caption!=value:caption=value;queue_redraw()
+var key_label:="":
+	set(value):
+		if key_label!=value:key_label=value;queue_redraw()
+var draw_count:=0
 var _hover:Tween
 
 func configure(glyph:String,diameter:float=36.)->void:
@@ -31,6 +50,7 @@ func _float_to(value:float)->void:
 	_hover=create_tween();_hover.tween_property(self,"scale",Vector2.ONE*value,.20).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _draw()->void:
+	draw_count+=1
 	var color:=UI.PAPER if is_pressed() or active else UI.INK
 	if muted:color=UI.MUTED
 	if active:

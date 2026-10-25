@@ -7,6 +7,7 @@ var _text:=""
 var _quiet:=0.
 const SHORT_HINTS=["点地筑屋 · 点屋改造","点墙添露台","沿地拖出一条小路","点选拆除 · Shift整栋","点屋安排烟火","点地种花 · 拖动成林","轻划水岸","沿街圈出街坊","按住揉出地形"]
 var _backdrop:StyleBoxFlat
+var _draw_signature:Variant=null
 
 func setup(owner:Node3D,parent:Control)->void:
 	demo=owner;name="WhisperKeycapBar";parent.add_child(self)
@@ -37,11 +38,12 @@ func _draw()->void:
 func record_action(tool:int)->void:uses[tool]+=1
 
 func _process(delta:float)->void:
-	queue_redraw()
 	if demo.tool!=_tool or demo.hint.text!=_text:
 		_tool=demo.tool;_text=demo.hint.text;_quiet=0.;tooltip_text=_text+"\nAlt 自由落点 · Esc 取消 · Ctrl+Z 撤销"
 	demo.hint.text=SHORT_HINTS[demo.tool]
 	_text=demo.hint.text
+	var changed:=[demo.light_phase,_text,size]
+	if changed!=_draw_signature:_draw_signature=changed;queue_redraw()
 	_quiet+=delta
 	var target:=(.60 if demo.light_phase==2 else .30) if uses[_tool]>=3 and _quiet>2. and not get_global_rect().has_point(get_global_mouse_position()) else .88
 	modulate.a=move_toward(modulate.a,target,delta*1.8)

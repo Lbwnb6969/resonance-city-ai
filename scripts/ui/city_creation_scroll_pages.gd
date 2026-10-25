@@ -44,11 +44,12 @@ static func ledger(widget:RefCounted,parent:Control)->void:
 	widget.scroll=scroll(column,"LedgerScroll")
 	var entries:=VBoxContainer.new();entries.size_flags_horizontal=Control.SIZE_EXPAND_FILL;entries.add_theme_constant_override("separation",10);widget.scroll.add_child(entries)
 	preload("res://scripts/ui/city_creation_life_capsules.gd").setup(widget,entries)
+	preload("res://scripts/ui/city_creation_ledger_leaves.gd").setup(widget,entries)
 	widget.body=RichTextLabel.new();widget.body.name="LedgerEntries";widget.body.fit_content=true;widget.body.scroll_active=false
 	widget.body.bbcode_enabled=true
 	widget.body.selection_enabled=true;widget.body.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	widget.body.add_theme_font_size_override("normal_font_size",14);widget.body.add_theme_color_override("default_color",UI.INK)
-	widget.body.add_theme_constant_override("line_separation",5);entries.add_child(widget.body)
+	widget.body.add_theme_constant_override("line_separation",5);entries.add_child(widget.body);widget.body.hide()
 	label(demo,column,"库存与成绩只记实际完成的日常。",12)
 static func landmarks(widget:RefCounted,parent:Control)->VBoxContainer:
 	widget.scrollbook=Book.obtain(widget.demo,parent)

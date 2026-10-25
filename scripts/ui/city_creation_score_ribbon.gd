@@ -17,6 +17,8 @@ var _lit_notes:=0
 var level_label:Label
 var juice_energy:=0.
 var juice_hits:=0
+var _redraw_age:=0.
+var _staff_signature:Variant=null
 func receive_juice(_kind:String)->void:
 	juice_energy=1.;juice_hits+=1;staff.queue_redraw()
 
@@ -76,6 +78,9 @@ func refresh()->void:
 func _process(_delta:float)->void:
 	juice_energy=move_toward(juice_energy,0.,_delta*4.)
 	if not is_visible_in_tree():return
+	_redraw_age+=_delta
+	if _redraw_age<1./30.:return
+	_redraw_age=0.
 	var journey:Dictionary=demo.state.harmony_journey
 	level_label.text="Lv.%d"%int(journey.get("harmony_level",1))
 	_lit_notes=clampi(floori(float(journey.get("harmony_xp",0))/preload("res://scripts/world/city_creation_harmony_journey.gd").xp_for_next_level(int(journey.get("harmony_level",1)))*5.),0,5)
@@ -88,7 +93,8 @@ func _process(_delta:float)->void:
 	elif bool(report.get("canon",{}).get("audible",false)):midi=int(report.canon.get("midi",62))
 	elif audible:midi=_pcm_midi(report)
 	else:midi=-1
-	staff.queue_redraw()
+	var changed:=[audible,midi,_lit_notes,roundi(pulse*20.),roundi(clock*30.) if audible or juice_energy>0. else 0,roundi(juice_energy*20.)]
+	if changed!=_staff_signature:_staff_signature=changed;staff.queue_redraw()
 
 func _pcm_midi(report:Dictionary)->int:
 	var track:=str(demo.music.emergence.score.get("lead_track","wood"))

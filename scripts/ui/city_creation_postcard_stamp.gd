@@ -21,18 +21,18 @@ static func scene_frame(demo)->Image:
 static func details(city:RefCounted,title:String)->Dictionary:
 	var names:Dictionary=preload("res://scripts/world/city_creation_synergy_buffs.gd").CHORD_NAMES
 	var chords:Array=city.synergy_buffs().active_chords
-	return {"title":title,"eras":city.era_unlocks.duplicate(),"level":int(city.harmony_journey.get("harmony_level",1)),"chords":chords.map(func(id):return names[id]),"date":Time.get_date_string_from_system()}
+	return {"title":title,"eras":city.era_unlocks.duplicate(),"built_eras":city.Eras.IDS.filter(func(era):return city.houses.any(func(h):return city.house_era(h)==era)),"wonders":preload("res://scripts/world/city_creation_legendary_wonder_plan.gd").unlocked(city).keys(),"level":int(city.harmony_journey.get("harmony_level",1)),"chords":chords.map(func(id):return names[id]),"date":Time.get_date_string_from_system()}
 static func compose(host:Node,source:Image,city:RefCounted,title:String)->Image:
 	var margin:=maxi(16,roundi(source.get_width()*.018))
 	var viewport:=SubViewport.new();viewport.disable_3d=true;viewport.transparent_bg=false
 	viewport.size=source.get_size()+Vector2i(margin*2,margin*2+112)
 	viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
-	var art:=Imprint.new();art.source=ImageTexture.create_from_image(source);art.info=details(city,title);art.margin=margin;art.size=viewport.size
+	var art=preload("res://scripts/ui/city_creation_postcard_imprint.gd").new();art.source=ImageTexture.create_from_image(source);art.info=details(city,title);art.margin=margin;art.size=viewport.size
 	viewport.add_child(art);host.add_child(viewport)
 	await RenderingServer.frame_post_draw
 	var result:=viewport.get_texture().get_image();viewport.free()
 	return result
-class Imprint extends Control:
+class LegacyImprint extends Control:
 	var source:Texture2D
 	var info:Dictionary
 	var margin:int
