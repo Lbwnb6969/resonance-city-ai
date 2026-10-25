@@ -5,6 +5,8 @@ var heading:PanelContainer
 var left:PanelContainer
 var right:PanelContainer
 var bottom:PanelContainer
+var rotation_hint:Label
+var action_island:Control
 var colors:PanelContainer
 var roles:Array=[]
 var hole:=Rect2()
@@ -34,11 +36,10 @@ func setup(pop:RefCounted)->void:
 	right=paper(pop.card,right_column);right.name="PaletteWing"
 	for button:Button in pop.role_buttons.values():
 		button.reparent(pop.card);button.custom_minimum_size=Vector2(48,48);button.size=Vector2(48,48);roles.append(button)
-	var bottom_column:=VBoxContainer.new();pop.card.add_child(bottom_column)
-	pop.status.reparent(bottom_column);pop.status.autowrap_mode=TextServer.AUTOWRAP_OFF
-	pop.status.clip_text=true;pop.status.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
-	actions.reparent(bottom_column);actions.alignment=BoxContainer.ALIGNMENT_CENTER
-	bottom=paper(pop.card,bottom_column);bottom.name="HouseStatusCapsule"
+	bottom=paper(pop.card,pop.status);bottom.name="HouseStatusCapsule"
+	pop.status.autowrap_mode=TextServer.AUTOWRAP_OFF;pop.status.clip_text=true;pop.status.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS;pop.status.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	rotation_hint=Label.new();rotation_hint.name="RotationHint";rotation_hint.text="↻ Q/E · R";rotation_hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;rotation_hint.add_theme_font_size_override("font_size",10);rotation_hint.add_theme_color_override("font_color",UI.INK);rotation_hint.add_theme_stylebox_override("normal",UI.badge(Color(UI.PAPER,.78)));pop.card.add_child(rotation_hint)
+	actions.reparent(pop.card);actions.alignment=BoxContainer.ALIGNMENT_CENTER;action_island=actions
 	colors=paper(pop.card,pop.color_panel);colors.name="ColorWingDetails"
 	old.hide();old.queue_free();pop.card.hide()
 func project(pop:RefCounted,house:Dictionary)->Rect2:
@@ -71,7 +72,9 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 		roles[i].position=Vector2(width*.5+cos(angle)*radius-24.,150.+sin(angle)*65.-24.)
 	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-194.)*.5));left.size=Vector2(88,194)
 	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-176.)*.5));right.size=Vector2(88,176)
-	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,70)
+	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,28)
+	rotation_hint.position=Vector2((width-76.)*.5,hole.end.y+44.);rotation_hint.size=Vector2(76,18)
+	action_island.position=Vector2((width-90.)*.5,hole.end.y+66.);action_island.size=Vector2(90,42)
 	colors.visible=pop.color_panel.visible
 	if colors.visible:
 		colors.size=Vector2(300,96)
@@ -104,12 +107,12 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 	hole=Rect2(house_rect.get_center()-clear_size*.5-pop.card.global_position,clear_size)
 	pop._last_position=pop.card.position
 func controls()->Array:
-	return [heading,left,right,bottom]+roles+([colors] if colors.visible else [])
+	return [heading,left,right,bottom,rotation_hint,action_island]+roles+([colors] if colors.visible else [])
 func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var role:=str(house.get("role","residential"));var level:int=pop.demo.state.level_tier(str(house.id))
 	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 	var key:String=family.prototype(pop.demo.state,house);var caption:String=family.family_caption(key) if not key.is_empty() else str(pop.ROLE_LABELS.get(role,"街坊"))
-	if role=="residential":return "%s · 共鸣 %d/3 · 品质 %d\nQ/E 转90° · R 自由转向"%[caption,int(pop.demo.state.house_harmony(str(house.id)).tier),level]
+	if role=="residential":return "%s · %s"%[caption,"✦".repeat(level)]
 	var civic:=preload("res://scripts/world/city_creation_civic_supply.gd").status(pop.demo.state,str(house.id))
-	if civic.tier>0:return "%s · %s%s\nQ/E 转90° · R 自由转向"%[caption,"律动中枢" if role=="clockmaker" else "二阶共创" if civic.tier==2 else "一阶自给"," · 律动×1.35" if civic.tempo_mult>1. else ""]
-	return "%s · 品质 %d · %s\nQ/E 转90° · R 自由转向"%[caption,level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]
+	pop.status.tooltip_text="品质 %d · %s\n供需详见L工坊手记；Q/E每次90°，R拖动自由转向。"%[level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]
+	return preload("res://scripts/ui/city_creation_tactile_ui_theme.gd").format_compass_supply_capsule(role,civic,caption)

@@ -99,7 +99,7 @@ static func format_compass_supply_capsule(role: String, supply_status: Dictionar
 	elif tier >= 2:
 		tier_label = "✦✦ 街坊雅集共鸣"
 	if tempo > 1.05:
-		tier_label += " · 🕰️金钟合拍"
+		tier_label += " · ◷ 金钟合拍"
 	if not family_short.is_empty():
 		return "%s · %s" % [family_short, tier_label]
 	return tier_label
@@ -111,7 +111,7 @@ static func post_10_house_wander_whisper(city:RefCounted)->String:
 	var supplied:=false
 	for house:Dictionary in city.houses:
 		if house.role=="garden_cafe" and preload("res://scripts/world/city_creation_civic_supply.gd").status(city,str(house.id)).tier>=2:supplied=true
-	return "让面包沿小路，送到花下茶席。" if not supplied else ""
+	return "让面包坊沿小路，送到花下茶席。" if not supplied else ""
 static func rarity_key(tier:int)->String:return ["silver","gilded","prismatic"][clampi(tier-1,0,2)]
 static func seal_style(state:String)->StyleBoxFlat:
 	var key:="seal/"+state
