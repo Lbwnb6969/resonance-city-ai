@@ -1,6 +1,7 @@
 extends RefCounted
 const A=preload("res://scripts/visual/city_creation_architecture.gd")
 const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
+const Villa=preload("res://scripts/visual/city_creation_ancient_villa.gd")
 static func temple(house:Dictionary)->Dictionary:
 	if house.get("architecture","")=="rotunda" or house.cells.any(func(c):return int(c.level)!=0 or c.kind!="room"):return {}
 	var low:=Vector2i(house.cells[0].x,house.cells[0].z);var high:=low

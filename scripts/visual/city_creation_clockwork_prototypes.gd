@@ -58,7 +58,7 @@ static func _clock(r,node:Node3D,feature:bool,slate:Material,copper:Material,sto
 	r._cylinder(node,.035,.035,.20,Vector3(0,1.86,0),iron,8)
 	for angle:float in [0.,PI*.5,PI,PI*1.5]:Parts.dial(r,node,angle,stone,iron,copper)
 static func _vault(r,node:Node3D,data:Dictionary,copper:Material,iron:Material)->void:
-	var glass:Material=r.conservatory.ensure_roof_material()
+	var glass:Material=r.conservatory.ensure_roof_material(true)
 	for i in range(14):
 		var a:float=PI*float(i)/14.;var b:float=PI*float(i+1)/14.
 		var p:=Vector2(cos(a)*.86,.22+sin(a)*.82);var q:=Vector2(cos(b)*.86,.22+sin(b)*.82)

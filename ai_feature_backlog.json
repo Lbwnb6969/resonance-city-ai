@@ -1018,10 +1018,10 @@
       "evidence_Paths": [
         "本地验证记录/M49/ancient_and_roof_hierarchy_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "全面攻克独立 Critic 在 M36/M43/M44 指出的建筑与光影局限：1) 允许带露台或二层退台的古典房屋保留底层多立克山花柱廊（形成古典复合别墅）；2) 为宽幅屋面点缀赤陶采光小天窗；3) 下调蒸汽铁艺花房夜间琥珀发光 38% 以保留花房内部绿植对比度。",
       "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_ancient_architecture.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_ancient_architecture_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "verified_by": "",
+      "verified_by": "Gate1 Harness/doc links PASS. Godot4.7.2 isolated CPU ancient_villa17/ancient_architecture36/clockwork_prototypes120/legacy375+27works PASS. AncientMass.Villa derives rectangular ground rooms with authored terraces or partial upper storeys;full-width projecting Doric fluted two/four-column order,continuous entablature/full pediment/tiled porch keeps open upper terrace and original cells. Full stacked insula and hollow ground courts retain existing dispatch;door ornament duplication removed. Exact per-mesh porch picking preserves open center. Broad contiguous top-room tile roofs receive one/two actual-geometry sampled framed glass dormers/terracotta caps;renderer adds one delegate. Iron_conservatory exclusively uses separate glass night_energy.65*.62=.403;daylight/other roof glass unchanged. NativeGL check_creation_ancient_villa_live live_r2 24PASS:8authored villa cells,actual column/clear aisle/dormer picks,3subjects two sizes,iron night source/reduced comparison,actual .58rad terrace-villa yaw and exact cold city,personal save/audio identities unchanged. Master3.250794s peak.17764282/0clip;framep9510.035/max10.332ms. Required ancient_architecture_live --out-dir=M49/ancient_regression57PASS including open oculus/columns/real roof picks;Master6.222948s peak.20181274/0clip. Nine new originals inspected by primary,full independent review scheduled M50 cadence. Initial fixture rotation correctly rejected by its old doorway road;remove road before rotating rather than weakening site checks. Initial native probe type-inference parse error fixed;logs preserved. backup/before-m49-20261025;sync before M50.",
       "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     },
     {

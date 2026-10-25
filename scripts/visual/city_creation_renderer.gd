@@ -1583,7 +1583,8 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 			elif job.joined or Classical.Ancient.active(job.house,job.era):_joined_roofs(job.root,job.house,job.palette)
 			job.stage=HouseAssembly.Stage.DOMES
 		HouseAssembly.Stage.DOMES:
-			Renaissance.build(self,job.root,job.house,job.domes);job.stage=HouseAssembly.Stage.CONSERVATORY
+			Renaissance.build(self,job.root,job.house,job.domes)
+			preload("res://scripts/visual/city_creation_terracotta_skylights.gd").build(self,job.root,job.house,job.palette);job.stage=HouseAssembly.Stage.CONSERVATORY
 		HouseAssembly.Stage.CONSERVATORY:
 			if not job.flower_plan.is_empty():conservatory.build(self,job.root,job.house,job.flower_plan)
 			job.stage=HouseAssembly.Stage.SIGNATURE

@@ -39,7 +39,7 @@ static func facade(r,job,frame,wall:Node3D,door:bool,width:float)->void:
 	for i in range(maxi(2,int(width/.28))):
 		var x:float=-width*.5+.12+i*.28
 		for k in range(3):r._box(detail,Vector3(.018,.10,.035),Vector3(x+k*.035,1.57,.215),stone).name="DoricTriglyph"
-	if not door or int(frame.level)>0 or width<1.4 or not Mass.temple(job.house).is_empty():return
+	if not door or int(frame.level)>0 or width<1.4 or not Mass.temple(job.house).is_empty() or not Mass.Villa.plan(job.house).is_empty():return
 	# Two columns leave the original doorway and its approach clear.
 	for x:float in [-.64,.64]:column(r,detail,Vector3(x,.10,.34),1.22,.10,stone)
 	r._box(detail,Vector3(1.70,.11,.61),Vector3(0,1.39,.29),stone)
@@ -84,6 +84,7 @@ static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
 static func finish(r,parent:Node3D,house:Dictionary,plans:Array)->void:
 	parent.set_meta("ancient_architecture",{"order":"greek_doric_roman","saved_cells":house.cells.size()})
 	if Mass.rotunda(r,parent,house,parent.get_meta("palette_colors"),load("res://scripts/visual/city_creation_ancient_architecture.gd")):return
+	Mass.Villa.build(r,parent,house,parent.get_meta("palette_colors"),load("res://scripts/visual/city_creation_ancient_architecture.gd"))
 	for plan:Dictionary in plans:
 		var node:=Node3D.new();node.name="RomanOculusRotunda";parent.add_child(node);node.position=Vector3(plan.center.x,plan.drum_y,plan.center.y)
 		var stone:Material=material(parent.get_meta("palette_colors")[0]);var radius:=float(plan.radius)
