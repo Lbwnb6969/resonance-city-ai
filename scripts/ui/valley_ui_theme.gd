@@ -1,16 +1,16 @@
 extends RefCounted
 ## One minimalist material language for planning, listening, and the city chrome.
 ## Warm cotton paper, deep botanical ink, muted sage, and soft brass gold.
-const INK := Color("243f3a")
-const MUTED := Color("6d7c70")
-const PAPER := Color("f6f0e1")
-const CARD := Color("ede7d6")
-const INSET := Color("faf6ec")
-const BORDER := Color("d4cbb6")
-const BORDER_SOFT := Color("dfd8c6")
-const GREEN := Color("284f46")
-const GREEN_SOFT := Color("366358")
-const GOLD := Color("c4a568")
+const INK := Color("382d23")
+const MUTED := Color("857760")
+const PAPER := Color("f6eedc")
+const CARD := Color("ede2cb")
+const INSET := Color("fcf7e9")
+const BORDER := Color("c9b798")
+const BORDER_SOFT := Color("dfd0b5")
+const GREEN := Color("665038")
+const GREEN_SOFT := Color("7c6646")
+const GOLD := Color("b99559")
 const WARM_WARN := Color("946957")
 
 static func panel(padding: float = 20.0) -> StyleBoxFlat:

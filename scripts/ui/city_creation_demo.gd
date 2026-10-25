@@ -821,11 +821,7 @@ func _setup_ui() -> void:
 	toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var fit_toast:=func()->void:
-		var width:=clampf(root.size.x-664.0,260.0,520.0)
-		toast.offset_left=-width*0.5
-		toast.offset_right=width*0.5
-		toast.offset_top=-root.size.y+112.
-		toast.offset_bottom=toast.offset_top+maxf(46.0,toast.get_combined_minimum_size().y)
+		preload("res://scripts/ui/city_creation_manuscript_toast.gd").fit(self,root)
 	toast.minimum_size_changed.connect(fit_toast)
 	root.resized.connect(fit_toast)
 	root.resized.connect(func()->void: _refresh_ui.call_deferred())

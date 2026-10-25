@@ -26,8 +26,10 @@ func setup(owner:Node,parent:Control)->void:
 	var refresh:=Button.new();refresh.name="RefreshVignette";refresh.text="换一页";refresh.pressed.connect(replace);row.add_child(refresh)
 	marker=MeshInstance3D.new();marker.name="VignetteTarget";marker.mesh=Geometry.ring(2.2,.065);marker.material_override=GlowMaterial.glow();marker.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;demo.add_child(marker);marker.hide()
 	parent.resized.connect(fit);fit();poll()
+	preload("res://scripts/ui/city_creation_letter_fold.gd").setup(self)
 func fit()->void:
-	paper.size=Vector2(286,170);paper.position=Vector2(16,paper.get_parent().size.y-332.)
+	var folded:bool=paper.get_meta("letter_folded",true)
+	paper.size=Vector2(184,38) if folded else Vector2(286,170);paper.position=Vector2(16,paper.get_parent().size.y-(156. if folded else 332.))
 func replace()->void:
 	if demo.gallery.busy or demo.edit_pending():return
 	if Vignettes.offer(demo.state):wait_next=0.;refresh()
@@ -68,6 +70,6 @@ func _process(delta:float)->void:
 	if demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty():paper.hide()
 	if demo.has_meta("inspiration_draft") and demo.get_meta("inspiration_draft").paper.visible:paper.hide()
 	if not demo.spatial_popover.target_house_id.is_empty():paper.hide()
-	marker.visible=paper.visible and not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
+	marker.visible=paper.visible and not paper.get_meta("letter_folded",true) and not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
 	marker.material_override.set_shader_parameter("metronome_strength",.55+.2*sin(Time.get_ticks_msec()*.0015))
 	if elapsed>=1.:elapsed=0.;poll()

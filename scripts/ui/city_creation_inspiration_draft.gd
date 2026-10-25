@@ -23,6 +23,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	badge=Button.new();badge.theme=UI.make_theme();badge.name="HarmonyProgress";badge.position=Vector2(24,66);badge.custom_minimum_size=Vector2(238,32)
 	badge.pressed.connect(func()->void:postponed=false;refresh(true));parent.add_child(badge)
 	progress=ProgressBar.new();progress.show_percentage=false;progress.mouse_filter=Control.MOUSE_FILTER_IGNORE;badge.add_child(progress)
+	progress.hide()
 	progress.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE);progress.offset_top=-4.;progress.offset_bottom=-1.;progress.offset_left=8.;progress.offset_right=-8.
 	paper=Panel.new();paper.theme=UI.make_theme();paper.name="InspirationPaper";paper.add_theme_stylebox_override("panel",UI.panel(16));parent.add_child(paper);paper.hide()
 	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",12);paper.add_child(column);column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);column.offset_left=16.;column.offset_top=16.;column.offset_right=-16.;column.offset_bottom=-16.
@@ -65,7 +66,9 @@ func refresh(force:bool=false)->void:
 	if journey.is_empty():return
 	var remaining:=Journey.credits(journey)
 	progress.max_value=Journey.xp_for_next_level(int(journey.harmony_level));progress.value=int(journey.harmony_xp)
-	badge.text="♪ 河湾共鸣 %d · %d / %d%s"%[int(journey.harmony_level),int(journey.harmony_xp),Journey.xp_for_next_level(int(journey.harmony_level))," · 待选%d"%remaining if remaining>0 else ""]
+	badge.text="新卷待启 · %d"%remaining
+	badge.visible=remaining>0
+	badge.position=Vector2(24,64);badge.custom_minimum_size=Vector2(116,28)
 	badge.tooltip_text="新屋、真实出炉、茶聚、送装、心愿与和弦积累共鸣。\n已研习："+"、".join(Array(journey.traditions).map(func(id):return str(Journey.cards()[id].name)))
 	if remaining==0:paper.hide();signature=null;return
 	Rarity.ensure(journey)
@@ -77,7 +80,7 @@ func refresh(force:bool=false)->void:
 func display()->void:
 	var ceremony:bool=demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty()
 	var covered:bool=ceremony or demo.journal.scrollbook.visible or demo.gallery.panel.visible or demo.guide.panel.visible
-	badge.visible=not covered
+	badge.visible=not covered and Journey.credits(demo.state.harmony_journey)>0
 	paper.visible=not covered and not postponed and Journey.credits(demo.state.harmony_journey)>0
 	if paper.visible:demo.toast.hide()
 func rebuild()->void:

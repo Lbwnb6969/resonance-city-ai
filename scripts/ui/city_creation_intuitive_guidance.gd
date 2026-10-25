@@ -1,6 +1,7 @@
 extends Control
 ## Derived onboarding over the real city. Markers never create geometry or
 ## credit progress; roof actions commit the same transaction as the house card.
+const TactileUI=preload("res://scripts/ui/city_creation_tactile_ui_theme.gd")
 const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
 var demo
@@ -19,15 +20,17 @@ var _state_id:=0
 var _light_phase:=-1
 var _timer:=0.
 var _pulse:=0.
+var _hint_text:=""
+var _hint_age:=0.
 
 func setup(owner,ui_root:Control)->void:
 	demo=owner;name="IntuitiveGuidance";mouse_filter=Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);ui_root.add_child(self)
 	banner=Label.new();banner.name="GuideWhisper";banner.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	banner.add_theme_color_override("font_color",UI.INK);banner.add_theme_font_size_override("font_size",14)
+	banner.add_theme_color_override("font_color",TactileUI.whisper_text_color(demo.light_phase==2));banner.add_theme_stylebox_override("normal",TactileUI.whisper_pill_style(demo.light_phase==2));banner.add_theme_font_size_override("font_size",14)
 	banner.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;banner.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(banner)
-	var backing:=UI.panel(10.);backing.bg_color.a=.86;backing.shadow_size=3
-	banner.add_theme_stylebox_override("normal",backing)
+	banner.add_theme_stylebox_override("normal",TactileUI.whisper_pill_style())
+	banner.autowrap_mode=TextServer.AUTOWRAP_OFF;banner.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
 	bubble=Button.new();bubble.name="OneClickRoleBubble";bubble.set_script(Seal);bubble.configure("bakery",54.)
 	bubble.custom_minimum_size=Vector2(68,60);bubble.focus_mode=Control.FOCUS_NONE
 	bubble.pressed.connect(_apply_suggestion);add_child(bubble);bubble.hide()
@@ -55,28 +58,28 @@ func _rebuild()->void:
 		for index:int in [4,5,8]:
 			if not index in available:available.append(index)
 	if count<3:
-		stage="houses";banner.text="在金色屋基旁添几座家，让三屋聚成晨曲。"
+		stage="houses";banner.text="添三座小屋，让晨曲轻轻响起。"
 		target_points=_house_sites(3-count)
 	elif connected<mini(count,5):
-		stage="road";banner.text="沿屋门前拉一条小路，让街坊走出家门。"
+		stage="road";banner.text="沿屋门铺一条路，让街坊相遇。"
 		for house:Dictionary in demo.state.houses:
 			if demo.life.house_connected(str(house.id)):continue
 			var doors:Array=demo.state.house_entrances(str(house.id))
 			target_points.append(Vector2(house.origin[0],house.origin[1])+Vector2(0,1.55) if doors.is_empty() else Vector2(doors[0].at))
 			if target_points.size()==3:break
 	elif not roles.has("bakery"):
-		stage="bakery";banner.text="点水畔屋顶的面包印章，点亮第一炉麦香。"
+		stage="bakery";banner.text="点水畔的面包印章，唤醒麦香。"
 		_suggest(homes,"bakery",true)
 	elif not roles.has("garden_cafe"):
 		if count<4:
 			stage="houses";banner.text="给茶座留一栋新屋，也给街坊留住家。";target_points=_house_sites(1)
 		else:
-			stage="cafe";banner.text="点屋顶的茶座印章，让买过面包的街坊相聚。";_suggest(homes,"garden_cafe")
+			stage="cafe";banner.text="在花下设茶座，等街坊来相聚。";_suggest(homes,"garden_cafe")
 	elif not roles.has("workshop"):
 		if count<5:
 			stage="houses";banner.text="再添一栋家，让制琴坊加入合唱。";target_points=_house_sites(1)
 		else:
-			stage="workshop";banner.text="点制琴印章，让木饰与风铃沿街送到邻家。";_suggest(homes,"workshop")
+			stage="workshop";banner.text="点制琴印章，让风铃沿街而来。";_suggest(homes,"workshop")
 	elif demo.state.plants.is_empty():
 		stage="plants";banner.text="选「林水」，在街边种下喜欢的树与花。"
 		for at:Vector2 in _house_sites(1):target_points.append(at)
@@ -88,11 +91,11 @@ func _rebuild()->void:
 			var z:=8.;var x:float=demo.state.river_x(z)
 			target_points.assign([Vector2(x-5.,z),Vector2(x,z),Vector2(x+5.,z)])
 		elif count<10:
-			stage="houses";banner.text="跨岸添些新屋；十座家与一座桥将迎来古钟地标。";target_points=_house_sites(1)
+			stage="houses";banner.text="隔岸添几座家，迎来古钟声。";target_points=_house_sites(1)
 		elif not demo.state.houses.any(func(h):return h.get("signature","")=="bell_keep"):
-			stage="landmark";banner.text="打开手记中的名胜，安放古钟塔，再点塔奏响乐章。"
+			stage="landmark";banner.text="翻开名胜，安放一座古钟塔。"
 	if count>=10 and stage!="landmark" and connected>=5 and roles.has("bakery") and roles.has("garden_cafe") and roles.has("workshop"):
-		stage="wander";target_points.clear();target_house_id="";banner.text=preload("res://scripts/ui/city_creation_city_whispers.gd").text(demo.state)
+		stage="wander";target_points.clear();target_house_id="";banner.text=TactileUI.post_10_house_wander_whisper(demo.state)
 	bubble.visible=not target_house_id.is_empty()
 	for child:Node in markers.get_children():markers.remove_child(child);child.queue_free()
 	for at:Vector2 in target_points:
@@ -145,16 +148,19 @@ func update_guidance(delta:float)->void:
 	if _state_id!=demo.state.get_instance_id():
 		_state_id=demo.state.get_instance_id();available.assign([0]);_revision=-1
 	if _light_phase!=demo.light_phase:
-		_light_phase=demo.light_phase;banner.add_theme_color_override("font_color",UI.INK)
+		_light_phase=demo.light_phase;banner.add_theme_color_override("font_color",TactileUI.whisper_text_color(demo.light_phase==2));banner.add_theme_stylebox_override("normal",TactileUI.whisper_pill_style(demo.light_phase==2))
 	_pulse+=delta;_timer+=delta
 	if not demo.edit_pending() and (demo.state.revision!=_revision or _timer>1.5):_rebuild()
 	var hidden:bool=not demo.ui_layer.visible or demo.camera_rig.strolling or demo.gallery.panel.visible or demo.journal.panel.visible or demo.guide.visible() or demo.ledger.visible()
 	visible=not hidden;markers.visible=not hidden and not demo.edit_pending() and not stage.is_empty()
-	banner.visible=not stage.is_empty() and not demo.spatial_popover.card.visible
+	if banner.text!=_hint_text:_hint_text=banner.text;_hint_age=0.
+	_hint_age+=delta
+	banner.modulate.a=1.-smoothstep(8.,10.,_hint_age) if stage=="wander" else 1.
+	banner.visible=not stage.is_empty() and not banner.text.is_empty() and banner.modulate.a>.01 and not demo.spatial_popover.card.visible
 	var screen:=get_viewport_rect().size
-	var width:=minf(620.,screen.x-344.)
-	var left:=maxf((screen.x-width)*.5,demo.get_meta("inspiration_draft").badge.get_global_rect().end.x+16.)
-	banner.position=Vector2(left,66);banner.size=Vector2(minf(width,screen.x-left-24.),42)
+	var width:=minf(340.,screen.x-490.)
+	var left:=maxf((screen.x-width)*.5,demo.score_ribbon.get_global_rect().end.x+16.)
+	banner.position=Vector2(left,18);banner.size=Vector2(minf(width,screen.x-left-244.),32)
 	marker_material.albedo_color=Color(.91,.74,.34,.40+.18*sin(_pulse*2.8))
 	for ring:Node3D in markers.get_children():ring.scale=Vector3.ONE*(1.+.04*sin(_pulse*2.8))
 	if target_house_id.is_empty():bubble.hide();return

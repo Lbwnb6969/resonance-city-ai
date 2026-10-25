@@ -30,6 +30,7 @@ var bubble_rows:Control
 var district_name_row:HBoxContainer
 var bindings:Array[Dictionary]=[]
 var active_tool:=-1
+var house_options:=false
 var nature_row:HBoxContainer
 const PRIMARY:=[0,2,4,5,8]
 const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
@@ -48,17 +49,18 @@ func _setup(owner:Node,parent_control:Control)->void:
 	demo=owner
 	parent=parent_control
 	var toolbar:PanelContainer=parent.get_node("Toolbar")
-	var style:=UI.panel(6);style.set_corner_radius_all(30);style.bg_color=Color(UI.PAPER,.85);style.shadow_size=6
+	var style:=UI.panel(4);style.set_corner_radius_all(30);style.bg_color=Color(UI.PAPER,.78);style.shadow_size=6
 	toolbar.add_theme_stylebox_override("panel",style)
-	toolbar.offset_left=-202;toolbar.offset_right=202;toolbar.offset_top=-105;toolbar.offset_bottom=-45
+	toolbar.offset_left=-174;toolbar.offset_right=174;toolbar.offset_top=-89;toolbar.offset_bottom=-39
 	for i in range(demo.tool_buttons.size()):
 		var button:Button=demo.tool_buttons[i]
-		button.set_script(Seal);button.configure(Icons.TOOL_KINDS[i],48.)
+		button.set_script(Seal);button.configure(Icons.TOOL_KINDS[i],44.)
 		button.caption=CAPTIONS[PRIMARY.find(i)] if i in PRIMARY else demo.TOOL_NAMES[i];button.key_label=""
 		button.visible=i in PRIMARY
 		button.tooltip_text=button.caption+" · 原快捷键 "+str(i+1)
+		if i==0:button.pressed.connect(func()->void:house_options=not house_options;refresh())
 	for button:Button in [demo.undo_button,demo.redo_button]:
-		button.set_script(Seal);button.configure("undo" if button==demo.undo_button else "redo",32.)
+		button.set_script(Seal);button.configure("undo" if button==demo.undo_button else "redo",28.)
 	var legacy:=Control.new();legacy.name="LegacyToolOptions";legacy.hide();legacy.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	parent.add_child(legacy)
 	for panel_name:String in ["RoadOptions","RemovalOptions","VegetationOptions","WaterOptions","DistrictOptions","TerrainOptions"]:
@@ -96,7 +98,7 @@ func refresh()->void:
 		button.modulate.a=.28 if button.disabled else 1.
 		button.active=tool==index or (index==0 and tool in [1,3]) or (index==5 and tool==6)
 		button.queue_redraw()
-	popup.visible=(bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or demo.state.houses.size()>=3)
+	popup.visible=(bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or house_options)
 	nature_row.visible=tool in [5,6]
 	district_name_row.visible=tool==7
 	if not popup.visible:return

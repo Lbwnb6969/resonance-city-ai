@@ -17,7 +17,7 @@ var _postcard_path:=""
 func setup(owner:Node3D,parent:Control)->void:
 	demo=owner;name="Actions";parent.add_child(self)
 	set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	offset_left=-272;offset_right=-16;offset_top=16;offset_bottom=60
+	offset_left=-224;offset_right=-16;offset_top=16;offset_bottom=52
 	add_theme_constant_override("separation",8)
 	sundial=_seal("Sundial","sundial_day",demo._toggle_light)
 	weather=_seal("FourSeasons","vegetation",demo._toggle_microclimate)
@@ -31,7 +31,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	_process(0.)
 
 func _seal(label:String,kind:String,action:Callable)->Button:
-	var seal:=Seal.new();seal.name=label;seal.configure(kind,44.)
+	var seal:=Seal.new();seal.name=label;seal.configure(kind,36.)
 	seal.pressed.connect(action);add_child(seal);return seal
 
 func saved()->void:_glow=1.

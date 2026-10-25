@@ -1096,5 +1096,35 @@
     }
   ],
   "phase": "M45–M52 · 五期轻经营、稀有奇观与声画精修",
-  "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+  "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md",
+  "ui_refactor": {
+    "source": "新文档/UI/文档/31_五期极简丰盈系统与声画满贯施工总纲.md",
+    "user_era_rule": "新时代只解锁新建筑选择，旧屋保留；主动改造仅针对选中房屋。",
+    "rounds": [
+      {
+        "id": "UI01",
+        "title": "共享烫金羊皮主题、精简HUD与日夜轻语",
+        "passes": true,
+        "verified_by": "Gate1 Harness52/52+UI audit/doc21/196links PASS; theme CPU8 and legacy375+27works PASS. Native accepted_final51/51 at1440x900/1024x768 day/evening/night; actual permanentHUD4.8136%/7.9325%, nonoverlap, real mute/phase/juice input. Master4.27247s peak.195435 zero clip;12+4/6+2 and personal files unchanged. Failed intermediate parse/layout measurements retained. Evidence 验证记录/UI01/accepted_final/music_experience_core_report.json;backup/before-ui-refactor-20261025."
+      },
+      {
+        "id": "UI02",
+        "title": "三阶精简手札与中空屋顶罗盘",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "UI03",
+        "title": "310px三合一手卷与烫金明信片",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "UI04",
+        "title": "新时代解锁建造选择、旧屋保留与独立终验",
+        "passes": false,
+        "verified_by": ""
+      }
+    ]
+  }
 }

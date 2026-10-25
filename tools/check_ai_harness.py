@@ -33,6 +33,12 @@ def audit(root):
         digest = hashlib.sha256(json.dumps(contract, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         if digest != CONTRACT_SHA256:
             errors.append("任务契约被修改：id/title/description/verification_cmd 必须保留用户原文")
+        extension = data.get("ui_refactor", {}).get("rounds", [])
+        for row in extension:
+            if type(row.get("passes")) is not bool or not isinstance(row.get("verified_by"), str):
+                errors.append("UI补充轮次缺少有效状态/验证字段")
+            elif row["passes"] and not row["verified_by"].strip():
+                errors.append(f"{row.get('id')} 缺少真实验收记录")
         for m in milestones:
             if type(m.get("passes")) is not bool:
                 errors.append(f"{m.get('id')} passes 必须为布尔值")
@@ -80,6 +86,11 @@ def main():
     total = len(milestones)
     pending = next((m["id"] + " (" + m["title"] + ")" for m in milestones if not m["passes"]), "ALL_COMPLETED")
     print(f"AI_HARNESS_AUDIT PASS: {completed}/{total} milestones completed | Next up: {pending}")
+    extension = json.loads((ROOT / "ai_feature_backlog.json").read_text(encoding="utf-8")).get("ui_refactor", {}).get("rounds", [])
+    if extension:
+        done = sum(row["passes"] for row in extension)
+        pending_ui = next((row["id"] for row in extension if not row["passes"]), "ALL_COMPLETED")
+        print(f"UI_REFACTOR_AUDIT: {done}/{len(extension)} | Next up: {pending_ui}")
     return 0
 
 

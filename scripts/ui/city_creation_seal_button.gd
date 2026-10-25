@@ -18,11 +18,7 @@ func configure(glyph:String,diameter:float=36.)->void:
 	size_flags_vertical=Control.SIZE_SHRINK_CENTER
 	focus_mode=Control.FOCUS_NONE
 	for state:String in ["normal","hover","pressed","disabled","focus"]:
-		var style:=StyleBoxFlat.new()
-		style.bg_color=UI.GREEN if state=="pressed" else Color(UI.PAPER,.94 if state=="hover" else .84)
-		style.border_color=UI.GOLD if state in ["hover","focus"] else Color(UI.BORDER,.75)
-		style.set_border_width_all(1);style.set_corner_radius_all(ceili(diameter*.5))
-		style.shadow_color=Color(0.05,.12,.1,.16);style.shadow_size=3;style.shadow_offset=Vector2(0,2)
+		var style:=preload("res://scripts/ui/city_creation_tactile_ui_theme.gd").seal_style(state)
 		add_theme_stylebox_override(state,style)
 	mouse_entered.connect(func()->void:_float_to(1.09))
 	mouse_exited.connect(func()->void:_float_to(1.))
