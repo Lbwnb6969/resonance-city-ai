@@ -1,6 +1,7 @@
 extends RefCounted
 ## The original four colors keep their common Dadd9 pivot. Biomes have their
 ## own tonic, characteristic modal degrees and final bar, including every cue.
+const Grid=preload("res://scripts/audio/city_creation_cue_grid.gd")
 const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响","G吕底亚 · 千阶微光","B多利亚 · 沙洲回声","A大调 · 林间牧歌","F♯小调 · 星夜流光","C宫五声 · 宫商河韵","F大七 · 印象水光"]
 const BIOME_MODES:=[0,4,5,6,7]
 const SCALES:=[[2,4,6,9,11],[11,2,4,6,9],[7,9,11,2,4],[2,4,7,9,11],
@@ -73,8 +74,17 @@ static func _note(start:float,duration:float,midi:int,gain:float,timbre:String)-
 	return {"start":start,"duration":duration,"midi":midi,"gain":gain,"timbre":timbre}
 
 static func _wave(out:Dictionary,key:String,duration:float,events:Array,add:Callable,make:Callable,looped:bool=false)->void:
-	var samples:=PackedFloat32Array();samples.resize(roundi(22050.*duration))
-	for event:Dictionary in events:add.call(samples,event.start,event.duration,event.midi,event.gain,event.timbre,looped)
+	var samples:=PackedFloat32Array();samples.resize(roundi(22050.*(duration+(.1875 if not looped else 0.))))
+	for event:Dictionary in events:
+		if not looped:
+			event.start=Grid.quantize_cue_onset(float(event.start))
+			var parts:=key.split("/")
+			if parts.size()>1 and parts[0].is_valid_int() and parts[-1].get_slice("_",parts[-1].get_slice_count("_")-1).is_valid_int() and not parts[-1].begins_with("stair_key"):
+				var beat:=int(parts[-1].get_slice("_",parts[-1].get_slice_count("_")-1))
+				if parts[-1].begins_with("travel_stepping"):beat=int(parts[-1].get_slice("_",2))
+				if parts.size()>2:beat=int(parts[-1])
+				event.midi=Grid.snap_to_chord_tone(int(event.midi),chords(int(parts[0]))[posmod(beat,8)])
+		add.call(samples,event.start,event.duration,event.midi,event.gain,event.timbre,looped)
 	var peak:=0.
 	for value:float in samples:peak=maxf(peak,absf(value))
 	var gain:float=minf(1.,.18/maxf(.000001,peak))
@@ -148,13 +158,9 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 				_wave(out,prefix+"edit/%s/%d"%[kind,bar],.8,notes,add,make)
 	# One wave per (instrument, MIDI), shared by all palettes and biome keys.
 	var timbres:Array=pitch_bank.TIMBRES.values()+pitch_bank.ERA_TIMBRES.values()
-	for mode in range(NAMES.size()):
-		for bar in range(8):
-			for band in range(5):
-				for variant in range(2):
-					var midi:=pitch(mode,bar,band,variant)
-					for timbre:String in timbres:
-						var key:String=pitch_bank.stream_key(timbre,midi)
-						if legacy_edits.has(key) or out.streams.has(key):continue
-						_wave(out,key,.42,[_note(0.,.38,midi,.10,timbre)],add,make)
+	for midi in range(48,101):
+		for timbre:String in timbres:
+			var key:String=pitch_bank.stream_key(timbre,midi)
+			if legacy_edits.has(key) or out.streams.has(key):continue
+			_wave(out,key,.42,[_note(0.,.38,midi,.10,timbre)],add,make)
 	return out

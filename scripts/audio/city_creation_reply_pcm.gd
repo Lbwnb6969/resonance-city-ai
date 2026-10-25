@@ -29,7 +29,7 @@ static func render(chords: Array,add_note: Callable,make_stream: Callable) -> Di
 			samples.resize(int(RATE*DURATION))
 			var notes: Array=[]
 			for index in range(3):
-				var note: Dictionary={"start":[0.02,0.23,0.48][index],"duration":[0.22,0.24,0.26][index],
+				var note: Dictionary={"start":[0.,.1875,.375][index],"duration":[0.22,0.24,0.26][index],
 					"midi":int(chords[phrase][[0,2,1][index]])+int(voices[style][1]),"gain":0.045 if index==0 else 0.035,"timbre":str(voices[style][0])}
 				add_note.call(samples,note.start,note.duration,note.midi,note.gain,note.timbre,false)
 				notes.append(note)

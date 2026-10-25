@@ -7,6 +7,7 @@ const PITCH_CLASSES := [2, 4, 6, 9, 11]
 # Nearest D / E / F# / A / B; equal-distance ties take the lower note.
 const PENTATONIC_OFFSETS := [-1, 1, 0, -1, 0, -1, 0, -1, 1, 0, -1, 0]
 const VARIATION_PEAK:=.18
+const Dyads=preload("res://scripts/audio/city_creation_harmonic_dyads.gd")
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 
 ## Phrase-local motifs are baked once. Every bar has a short silent seam so
@@ -27,11 +28,11 @@ static func render_variations(add_note:Callable,make_stream:Callable,chords:Arra
 					var midi:int=int(chords[bar][degree])+12+(12 if variant==2 and i%3==2 else 0)
 					if mode>=0:midi=Palette.quantize(midi,mode,bar)
 					var duration:float=minf(.95 if variant==0 else .48,2.88-float(starts[i]))
-					_emit(samples,events,add_note,bar*3.+float(starts[i]),duration,midi,.068 if variant==0 else .052,timbres[key],mode<0)
+					_emit(samples,events,add_note,bar*3.+float(starts[i]),duration,midi,.068 if variant==0 else .052,timbres[key],mode)
 				if variant>=1 and key in ["renaissance_fugue","modern_symphony"]:
-					_emit(samples,events,add_note,bar*3.+.38,1.60,int(chords[bar][0])+12,.022,"oboe" if key=="renaissance_fugue" else "warm_pad",mode<0)
+					_emit(samples,events,add_note,bar*3.+.38,1.60,int(chords[bar][0])+12,.022,"oboe" if key=="renaissance_fugue" else "warm_pad",mode)
 				if variant==2:
-					_emit(samples,events,add_note,bar*3.+1.34,1.30,int(chords[bar][1])+12,.022,"strings" if key=="renaissance_fugue" else "harp",mode<0)
+					_emit(samples,events,add_note,bar*3.+1.34,1.30,int(chords[bar][1])+12,.022,"strings" if key=="renaissance_fugue" else "harp",mode)
 			var peak:=0.
 			for value:float in samples:peak=maxf(peak,absf(value))
 			var normalize:float=minf(1.,VARIATION_PEAK/maxf(.000001,peak))
@@ -101,9 +102,5 @@ static func render(samples: PackedFloat32Array, key: String, chords: Array,
 
 static func _emit(samples: PackedFloat32Array, events: Array[Dictionary],
 		add_note: Callable, start: float, duration: float, midi: int,
-		gain: float, timbre: String,quantize_note:bool=true) -> void:
-	var event := {"start": start, "duration": duration, "midi": quantize(midi) if quantize_note else midi,
-		"gain": gain, "timbre": timbre}
-	add_note.call(samples, event.start, event.duration, event.midi,
-		event.gain, event.timbre, true)
-	events.append(event)
+		gain: float, timbre: String,mode:int=-1) -> void:
+	Dyads.emit(samples,events,add_note,start,duration,midi,gain,timbre,mode)

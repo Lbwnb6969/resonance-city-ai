@@ -900,8 +900,88 @@
       "passes": true,
       "verified_by": "Gate1 Harness/doc links PASS. Godot4.7.2 isolated headless/Dummy test_city_creation_house_rotation55PASS incl SAT AABBfalsepositive,quarter/free/undo/redo/Schema19/NaN reject,actual oblique door road,courtyard and cafe,roundabout long-house cold-save regression;legacy375+27works PASS. Related frontage_walk28/passage87/junction42/cafe_geometry44/skybridge8/ground56/highland_contact19/render41/grassmask98940exact PASS. NativeGL tools/check_creation_house_rotation_live.gd -- --isolated-session final59PASS:realQ/E90,Rmouse .576rad preview/onecommit/Esc,no old-position collider,actual roof rays4eras,connected oblique doors with true bread purchase,1024/1440compass,4tile rotatedcourt/clearcenter,coldsave/playerpools/personalsave unchanged. tools/check_creation_rotation_input_guard_live.gd native9PASS after independent code review:real construction draft/camera drag do not enterR,releaseclears,road R keeps straight/curved toggle after house selection without city mutation,actual angled non-door wall falls toground without old axis snap. 300house native6PASS/298actors281moved235scalar;Life p951.951/max4.791ms/framep9516.726/max149.370ms reference only. Independent code Critic found real P1 roundabout restore rejection plus draft-release/non-door snap defects; all reproclosed withFrame footprint and unified+.3clearance/inputgate/tristatefallback;reports/probes retained. Independent3original visual7.9/10 no blocker;PCM6.130068s peak.19155884/0clip independently recomputed,technical4.5/5;subjective listening unassessed. Optional yaw retains old schema1-19/IDs/colors/modules;Frame unifies true root geometry/physics,OBBsite,doors/road/passage,cafe/court/ground/grass,preview/compass;original12+4/6+2 preserved. Backup3dad1e43,final_acceptance/doc24 contains exact command/results/failediterations and nonblocking style/149ms longframe. GitHub sync required before goal complete.",
       "design_source": "用户2026-10-24目标追加"
+    },
+    {
+      "id": "M45",
+      "category": "audio_harmonic_dyads_and_zoom_gate",
+      "title": "调式三六度双音、4-3延留解决与踩拍协和的空间短音",
+      "description": "真实调式三/六度伴奏与句尾4-3延留解决；所有短音按共享0.1875秒网格预入轨，按发声小节和弦吸附，近景生活短音扩至30米并平滑衰减，保持既有音池。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_music_experience.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_music_experience_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M46",
+      "category": "gameplay_all_role_debut_and_encore",
+      "title": "三层轻经营供需、全工坊首秀与三阶稀有手札保底",
+      "description": "面包与制琴供给茶座及书院，真实道路连通与库存守恒；钟表工坊14米提速；各工坊首次满足环境条件即时兑现且不可撤销刷取；手札银/金/虹彩稀有度与三次保底，接真实进度及欢庆。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_wish_sites.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_wish_pins_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M47",
+      "category": "world_emergent_street_wonders",
+      "title": "朝水栈桥、环岛涌泉与斜向街角口袋花园",
+      "description": "沿真实水岸方向派生亲水栈桥与系船灯；邻屋环岛派生涌泉花坛；斜向房屋空隙派生含接地底座的口袋花园；兼容真实门路、旋转、删除及经营条件。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_house_rotation.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_house_rotation_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M48",
+      "category": "world_vignette_monuments_and_guidance",
+      "title": "四座传世声学奇观、流派共鸣碑与经营轻语",
+      "description": "依虹彩传世手札和风物诗进度派生四种可辨识声学奇观与流派共鸣碑；十屋后针对未体验经营给温和轻语，增加羊皮底托并保持小窗可读。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_vignettes.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_intuitive_guidance_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M49",
+      "category": "visual_ancient_and_roof_hierarchy",
+      "title": "古典复合别墅、赤陶天窗与花房夜景通透化",
+      "description": "保留玩家层/台/模块的古希腊多立克底层山花柱廊与上层退台；宽屋面赤陶采光天窗；降低蒸汽花房夜光，保留内部植物和真实碰撞净空。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_ancient_architecture.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_ancient_architecture_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M50",
+      "category": "visual_meadow_cypress_citizen_polish",
+      "title": "垂弯草叶、螺旋柏树、迈腿举杯与远景大气透视",
+      "description": "近草柔尖重力垂弯、黄金角螺旋柏树、清晰迈腿与茶杯贴近唇边；低视角远景大气透视；以实图调整参数，保持权威居民位置及合批。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_meadow_gait.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_meadow_gait_live.gd -- --isolated-session --gait-sequences; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M51",
+      "category": "subagent_critic_round5_audit",
+      "title": "独立声画品质审阅与具体缺陷闭环",
+      "description": "采集五期实际双尺寸昼夕夜原图和真实Master录音，独立上下文Critic审阅音乐诊断、经营与街景、古建筑、自然小人和UI，修复具体阻挡并如实记录评分。",
+      "verification_cmd": "godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_aesthetic_music_subagent_gate.gd -- --isolated-session --gait-sequences; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
+    },
+    {
+      "id": "M52",
+      "category": "final_masterpiece_signoff",
+      "title": "五期跨进程续玩、旧档兼容与GitHub收官",
+      "description": "跨进程全旅程、18原型/古典/旋转/新街景、300屋体验、Schema1至19与27作品兼容；独立品质记录、提交备份、GitHub main文件树一致后停止，不强制虚构9分。",
+      "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
+      "passes": false,
+      "verified_by": "",
+      "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     }
   ],
-  "phase": "M33–M44 · 四期施工与用户追加古典形制/房屋转向",
-  "design_source": "新文档/文档/29_四期终极艺术品大成总纲.md"
+  "phase": "M45–M52 · 五期轻经营、稀有奇观与声画精修",
+  "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
 }

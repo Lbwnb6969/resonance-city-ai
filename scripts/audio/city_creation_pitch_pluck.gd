@@ -16,9 +16,10 @@ static func plan(city: RefCounted, hid: String, clock_sec: float,mode:int=-1) ->
 		for cell: Dictionary in house.cells: maximum=maxi(maximum,int(cell.level))
 		var district: Dictionary = city.district_for_house(hid)
 		var style := str(district.get("style","warm"))
-		var bar := posmod(int(floor(clock_sec/3.0)),8)
+		var bar := Palette.Grid.bar(clock_sec)
 		var variant := posmod(hash(hid),2)
 		var midi := pitch(bar,mini(maximum,4),variant) if mode<0 else Palette.pitch(mode,bar,mini(maximum,4),variant)
+		midi=Palette.Grid.snap_to_chord_tone(midi,Palette.chords(maxi(0,mode))[bar])
 		var era: String=city.house_era(house)
 		var timbre := str(ERA_TIMBRES.get(era,TIMBRES[style]))
 		return {"house_id":hid,"style":style,"era_theme":era,"max_level":maximum,"midi":midi,"timbre":timbre,

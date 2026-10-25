@@ -32,6 +32,7 @@ static func play(music,queued:Dictionary)->bool:
 		if city.water_clearance(at)>=-.12:return false
 	if music.acoustic.point_weight(at)<=0.:return false
 	var midi:=Sequence.pitch(maxi(0,music.harmony_mode()),int(queued.strum_step))
+	midi=Pitch.Palette.Grid.snap_to_chord_tone(midi,Pitch.Palette.chords(maxi(0,music.harmony_mode()))[Pitch.Palette.Grid.bar(Pitch.Palette.Grid.transport_clock(music))])
 	var timbre:="marimba" if kind=="water" else "harp"
 	var stream:=_stream(music,midi,timbre);var player:AudioStreamPlayer=music._effects[0]
 	if kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").at_pitch(music,stream,midi)

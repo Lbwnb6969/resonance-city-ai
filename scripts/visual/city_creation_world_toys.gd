@@ -47,7 +47,7 @@ static func play_note(music,plan:Dictionary)->bool:
 	if music.muted or music.concert_active or music.acoustic.point_weight(plan.position)<=0.:return false
 	if plan.world_kind=="stair" and (not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",plan.source_id,plan.position)):return false
 	var stream:AudioStreamWAV;var key:=str(plan.stream_key)
-	var mode:=maxi(0,int(music.harmony_mode()));var bar:=posmod(int(music._playback_clock()/3.),8)
+	var mode:=maxi(0,int(music.harmony_mode()));var bar:int=music.CueGrid.bar(music.CueGrid.transport_clock(music))
 	if plan.world_kind in ["water","tree"]:
 		var city:RefCounted=music._pluck_city
 		if city==null:return false
@@ -66,7 +66,11 @@ static func play_note(music,plan:Dictionary)->bool:
 		if plan.world_kind=="stair" and plan.has("degree"):key="stair_key_%d"%preload("res://scripts/world/city_creation_stair_keys.gd").voice_rank(mode,int(plan.degree))
 		if not music._edit_streams.has(key):return false
 		stream=music._edit_streams[key]
-	if plan.world_kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").stream(music,stream,mode,int(key.get_slice("_",2)))
+		if plan.world_kind=="stair":
+			var raw:=preload("res://scripts/audio/city_creation_harmonic_palette.gd").stair_pitch(mode,int(key.get_slice("_",2)))
+			var midi:int=music.CueGrid.snap_to_chord_tone(raw,preload("res://scripts/audio/city_creation_harmonic_palette.gd").chords(mode)[bar])
+			stream=music._edit_streams["house_pluck_piano_%d"%midi]
+	if plan.world_kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").at_pitch(music,stream,music.CueGrid.snap_to_chord_tone(preload("res://scripts/audio/city_creation_harmonic_palette.gd").stair_pitch(mode,int(key.get_slice("_",2))),preload("res://scripts/audio/city_creation_harmonic_palette.gd").chords(mode)[bar]))
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break

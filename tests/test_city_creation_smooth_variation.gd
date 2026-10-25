@@ -45,7 +45,8 @@ func run()->void:
 			for step in range(6):pitches.append(Walk.plan(owner,{"timbre":"piano"},step).midi)
 			var ordered:=true
 			for i in range(5):ordered=ordered and pitches[i+1]>pitches[i]
-			check(ordered and pitches[5]==pitches[0]+12,"six ascending cached pentatonic steps in mode/bar "+str([mode,bar]))
+			var chord:Array=owner.Palette.chords(mode)[bar]
+			check(ordered and pitches.all(func(n):return owner.Palette.Grid.snap_to_chord_tone(n,chord)==n),"six ascending cached chord tones in mode/bar "+str([mode,bar]))
 	city.era_unlocks.assign(city.Eras.IDS)
 	for era:String in city.Eras.IDS:
 		check(city.set_house_era("h1",era).ok,"actual era edit for construction timbre "+era)

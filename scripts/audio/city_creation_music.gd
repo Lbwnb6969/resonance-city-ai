@@ -36,6 +36,7 @@ const HarmonicEmergence=preload("res://scripts/audio/city_creation_harmonic_emer
 var emergence:=HarmonicEmergence.new()
 const ClusterHarmony=preload("res://scripts/audio/city_creation_cluster_harmony.gd")
 var life_source:Node3D
+const CueGrid=preload("res://scripts/audio/city_creation_cue_grid.gd")
 const Experience=preload("res://scripts/audio/city_creation_music_experience.gd")
 var choir_mode:=true
 var _life_activity:Dictionary={}
@@ -286,7 +287,7 @@ func _refresh_harmony_gains() -> void:
 
 func play_house(house_id: String) -> bool:
 	if muted or concert_active or _loading or _pluck_city==null: return false
-	var plan := PitchPluck.plan(_pluck_city,house_id,_playback_clock(),harmony_mode())
+	var plan := PitchPluck.plan(_pluck_city,house_id,CueGrid.transport_clock(self),harmony_mode())
 	if plan.is_empty() or not _edit_streams.has(plan.stream_key): return false
 	if acoustic.point_weight(plan.position)<=0.0: return false
 	if _house_music.has(house_id) and acoustic.visible_test.is_valid() and not acoustic.visible_test.call(house_id): return false
@@ -429,7 +430,7 @@ func _tower_at_phrase(phrase: int) -> void:
 
 
 func _travel_eligible(event: Dictionary) -> bool:
-	return not muted and not concert_active and not _loading and acoustic.point_weight(event.position)>0.0 and acoustic.mode=="detail" and travel_source_gate.is_valid() and travel_source_gate.call(event.kind,event.source_id,event.position)
+	return not muted and not concert_active and not _loading and acoustic.point_weight(event.position)>0.0 and acoustic.zoom<=CueGrid.MAX_ZOOM and travel_source_gate.is_valid() and travel_source_gate.call(event.kind,event.source_id,event.position)
 
 
 func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2) -> void:
@@ -456,7 +457,7 @@ func _stepping_now(event: Dictionary, clock: float) -> void:
 	# one .48s spacing and construction/foreground phrases keep their voices.
 	if clock-_stepping_last<STEPPING_INTERVAL or not _travel_pending.is_empty(): return
 	if bool(travel_music_report().audible) or bool(cafe_music_report().audible) or bool(tower_music_report().audible) or bool(reply.report().audible): return
-	var phrase := int(floor(clock/3.0))
+	var phrase := CueGrid.bar(CueGrid.transport_clock(self))
 	var note := posmod(hash(str(event.source_id)),3)
 	var key := "travel_stepping_%d_%d" % [posmod(phrase,8),note]
 	if not _edit_streams.has(key): return
@@ -468,7 +469,7 @@ func _stepping_now(event: Dictionary, clock: float) -> void:
 		_travel_active.merge({"phrase":phrase,"duration":STEPPING_DURATION,"timbre":"water_marimba","note":note},true)
 		_travel_cooldowns[str(event.source_id)]=clock
 		_stepping_last=clock
-		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position))
+		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position)*CueGrid.zoom_attenuation(acoustic.zoom))
 		_travel_cues+=1
 		return
 
@@ -510,7 +511,7 @@ func _travel_at_phrase(phrase: int) -> void:
 		_travel_active=event
 		_travel_active["phrase"]=phrase
 		_travel_cooldowns[str(event.source_id)]=_playback_clock()
-		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position))
+		play_effect_at(effect,_travel_stream,event.position,acoustic.point_weight(event.position)*CueGrid.zoom_attenuation(acoustic.zoom))
 		_travel_cues+=1
 		return
 
@@ -524,7 +525,7 @@ func set_cafe_view(view: Dictionary) -> void:
 
 func _cafe_eligible(id: String) -> bool:
 	var row: Dictionary = _cafe_view.get(id,{})
-	return not muted and str(row.get("phase",""))=="tea" and int(row.get("arrived",0))>=2 and _house_music.has(id) and str(_house_music[id].role)=="garden_cafe" and acoustic.focus_weight(id)>0.0 and acoustic.mode!="city"
+	return not muted and str(row.get("phase",""))=="tea" and int(row.get("arrived",0))>=2 and _house_music.has(id) and str(_house_music[id].role)=="garden_cafe" and acoustic.focus_weight(id)>0.0 and not concert_active and acoustic.zoom<=CueGrid.MAX_ZOOM
 
 
 func cafe_music_report() -> Dictionary:
@@ -550,7 +551,7 @@ func _cafe_at_phrase(phrase: int) -> void:
 		_cafe_source=eligible[posmod(phrase,eligible.size())]
 		_cafe_player=effect
 		_cafe_stream=_edit_streams[kind]
-		play_effect_at(effect,_cafe_stream,_house_music[_cafe_source].position,acoustic.focus_weight(_cafe_source)*(1.0-smoothstep(18.0,32.0,acoustic.zoom)))
+		play_effect_at(effect,_cafe_stream,_house_music[_cafe_source].position,acoustic.focus_weight(_cafe_source)*CueGrid.zoom_attenuation(acoustic.zoom))
 		_cafe_cues+=1
 		return
 
@@ -1098,7 +1099,7 @@ func _signature_at_phrase(phrase: int) -> void:
 			if _house_music[id].signature=="watermill" and acoustic.focus_weight(id)>0.0:source=id;kind="waterwheel";weight=acoustic.focus_weight(id);break
 	if source.is_empty() and posmod(phrase,2)==1:
 		var candidate: String=str(_source_for_phrase(_concert_phrase()).source_id) if concert_active else ""
-		if not concert_active and acoustic.mode!="city":
+		if not concert_active and not concert_active and acoustic.zoom<=CueGrid.MAX_ZOOM:
 			var score:=0.0
 			for id: String in acoustic.focus_ids:
 				var current: float=float(_house_music[id].level_tier)+acoustic.focus_weight(id)*.2
@@ -1170,13 +1171,8 @@ func _attention_trigger(category:String,payload:Dictionary)->bool:
 	return true
 
 func play_effect_at(player: AudioStreamPlayer,stream: AudioStreamWAV,at: Vector2=Vector2.INF,gain_weight: float=1.0,remote: bool=false) -> void:
-	# Every use of a pooled voice sets its position, including centered edits
-	# that preempt a previous spatial cue. Existing stream ownership stays real.
-	spatial.place_effect(player,at,remote)
-	player.volume_db=SHORT_GAIN_DB+linear_to_db(clampf(gain_weight,0.0,1.0))
-	player.set_meta("creation_voice_serial",int(player.get_meta("creation_voice_serial",0))+1)
-	player.stream=stream
-	player.play()
+	CueGrid.play(self,player,stream,at,gain_weight,remote)
+
 
 func _remote_concert()->bool:
 	if _grand_active():return acoustic.focus_weight(str(_source_for_phrase(_concert_phrase()).source_id))<=0.
@@ -1376,9 +1372,9 @@ func _render_bank() -> Dictionary:
 					for n in range(3):
 						_add_note(samples,bar*3.0+0.12+n*0.5,0.68,chords[bar][n]+12,0.082 if n==0 else 0.063,"pluck",true)
 			"wood_market", "wood_sylvan":
-				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_note,_add_pulse)
+				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_harmony_note,_add_pulse)
 			"renaissance_fugue", "clockwork_waltz", "modern_symphony":
-				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_note,_add_pulse)
+				report.theme_notes[key] = ThemePCM.render(samples,key,chords,melody,_add_harmony_note,_add_pulse)
 			"air":
 				for i in range(8):
 					_add_note(samples, i * 3.0 + 0.75, 2.05, melody[i * 2], 0.064, "air", true)
@@ -1447,7 +1443,7 @@ func _render_bank() -> Dictionary:
 		var notes: Array = edit_notes[kind]
 		for i in range(notes.size()):
 			var timbre := "pluck" if kind in ["concert", "arrival"] else ("wood" if kind in ["road", "craft"] else "bell")
-			_add_note(samples, i * 0.065, 0.58, notes[i], 0.09, timbre, false)
+			_add_note(samples,CueGrid.quantize_cue_onset( i * 0.065), 0.58, notes[i], 0.09, timbre, false)
 		var peak := 0.0
 		for sample in samples:
 			peak = maxf(peak, absf(sample))
@@ -1460,7 +1456,7 @@ func _render_bank() -> Dictionary:
 		var samples := PackedFloat32Array()
 		samples.resize(int(RATE*0.8))
 		for index in range(2):
-			_add_note(samples,0.07+index*0.36,0.34,int(chords[bar][index])+24,0.07,"flute",false)
+			_add_note(samples,CueGrid.quantize_cue_onset(0.07+index*0.36),0.34,int(chords[bar][index])+24,0.07,"flute",false)
 		var peak := 0.0
 		for sample in samples: peak=maxf(peak,absf(sample))
 		var kind := "cafe_flute_%d" % bar
@@ -1470,8 +1466,8 @@ func _render_bank() -> Dictionary:
 	# Actual station arrivals use a single chord-aligned celesta/bell doublet.
 	for bar in range(8):
 		var samples := PackedFloat32Array();samples.resize(int(RATE*.95))
-		_add_note(samples,.0,.68,int(chords[bar][0])+24,.052,"celesta",false)
-		_add_note(samples,.19,.68,int(chords[bar][2])+12,.044,"bell",false)
+		_add_note(samples,CueGrid.quantize_cue_onset(.0),.68,int(chords[bar][0])+24,.052,"celesta",false)
+		_add_note(samples,CueGrid.quantize_cue_onset(.19),.68,int(chords[bar][2])+12,.044,"bell",false)
 		var peak := 0.
 		for sample: float in samples:peak=maxf(peak,absf(sample))
 		report.effect_peaks["tram_chime_%d"%bar]=peak;effect_peak=maxf(effect_peak,peak)
@@ -1483,7 +1479,7 @@ func _render_bank() -> Dictionary:
 			var samples := PackedFloat32Array()
 			samples.resize(int(RATE*TRAVEL_DURATION))
 			for index in range(3):
-				_add_note(samples,index*0.12,0.50,int(chords[bar][index])+12,0.052 if index==0 else 0.040,"pluck" if travel_kind=="bridge" else "wood",false)
+				_add_note(samples,CueGrid.quantize_cue_onset(index*0.12),0.50,int(chords[bar][index])+12,0.052 if index==0 else 0.040,"pluck" if travel_kind=="bridge" else "wood",false)
 			var peak := 0.0
 			for sample in samples: peak=maxf(peak,absf(sample))
 			var kind := "travel_%s_%d" % [travel_kind,bar]
@@ -1499,7 +1495,7 @@ func _render_bank() -> Dictionary:
 			var samples := PackedFloat32Array()
 			samples.resize(int(RATE*STEPPING_DURATION))
 			var midi := int(chords[bar][index])+24
-			_add_note(samples,0.0,0.34,midi,0.055,"water_marimba",false)
+			_add_note(samples,CueGrid.quantize_cue_onset(0.0),0.34,midi,0.055,"water_marimba",false)
 			var peak := 0.0
 			for sample in samples: peak=maxf(peak,absf(sample))
 			var kind := "travel_stepping_%d_%d" % [bar,index]
@@ -1513,8 +1509,8 @@ func _render_bank() -> Dictionary:
 	for bar in range(8):
 		var samples := PackedFloat32Array()
 		samples.resize(int(RATE*TOWER_DURATION))
-		_add_note(samples,0.0,1.55,int(chords[bar][0])+24,0.074,"bell",false)
-		_add_note(samples,0.375,1.2,int(chords[bar][1])+24,0.035,"bell",false)
+		_add_note(samples,CueGrid.quantize_cue_onset(0.0),1.55,int(chords[bar][0])+24,0.074,"bell",false)
+		_add_note(samples,CueGrid.quantize_cue_onset(0.375),1.2,int(chords[bar][1])+24,0.035,"bell",false)
 		var peak := 0.0
 		for sample in samples: peak=maxf(peak,absf(sample))
 		var kind := "tower_bell_%d" % bar
@@ -1533,14 +1529,14 @@ func _render_bank() -> Dictionary:
 		var samples:=PackedFloat32Array();samples.resize(int(3.0*RATE))
 		for voice in range(4):
 			var midi: int=ThemePCM.quantize(int(chords[bar][voice%3])+12*(1 if voice>1 else 0))
-			_add_note(samples,.06+voice*.04,2.65,midi,.020,"strings",false)
+			_add_note(samples,CueGrid.quantize_cue_onset(.06+voice*.04),2.65,midi,.020,"strings",false)
 			signature_notes.append({"bar":bar,"voice":voice,"midi":midi,"timbre":"strings"})
 		edits["quartet_%d"%bar]=_pcm_stream(samples,false)
 		var peak:=0.0
 		for sample: float in samples:peak=maxf(peak,absf(sample))
 		report.effect_peaks["quartet_%d"%bar]=peak;effect_peak=maxf(effect_peak,peak)
 		samples=PackedFloat32Array();samples.resize(int(.45*RATE))
-		_add_note(samples,0,.38,int(chords[bar][0])+12,.035,"wood",false)
+		_add_note(samples,CueGrid.quantize_cue_onset(0),.38,int(chords[bar][0])+12,.035,"wood",false)
 		edits["waterwheel_%d"%bar]=_pcm_stream(samples,false)
 		peak=0.0
 		for sample: float in samples:peak=maxf(peak,absf(sample))
@@ -1552,11 +1548,11 @@ func _render_bank() -> Dictionary:
 			var samples:=PackedFloat32Array();samples.resize(int(.95*RATE))
 			for i in range(tier-1):
 				var midi: int=PitchPluck.pitch(bar,i,1)
-				_add_note(samples,i*.14,.48,midi,.022,"harp",false)
+				_add_note(samples,CueGrid.quantize_cue_onset(i*.14),.48,midi,.022,"harp",false)
 				flourishes.append({"bar":bar,"tier":tier,"midi":midi,"start":i*.14,"timbre":"harp"})
 			if tier==5:
-				_add_note(samples,.04,.80,PitchPluck.pitch(bar,4,0),.015,"strings",false)
-				_add_note(samples,.30,.58,PitchPluck.pitch(bar,2,0),.014,"strings",false)
+				_add_note(samples,CueGrid.quantize_cue_onset(.04),.80,PitchPluck.pitch(bar,4,0),.015,"strings",false)
+				_add_note(samples,CueGrid.quantize_cue_onset(.30),.58,PitchPluck.pitch(bar,2,0),.014,"strings",false)
 			var key: String="quality_flourish_%d_%d"%[tier,bar]
 			edits[key]=_pcm_stream(samples,false)
 			var peak:=0.0
@@ -1568,7 +1564,7 @@ func _render_bank() -> Dictionary:
 		var samples:=PackedFloat32Array();samples.resize(int(1.25*RATE))
 		for i in range(5):
 			var midi: int=PitchPluck.pitch(bar,i,0)
-			_add_note(samples,.10*i,.75,midi,.038,"harp",false)
+			_add_note(samples,CueGrid.quantize_cue_onset(.10*i),.75,midi,.038,"harp",false)
 			upgrades.append({"bar":bar,"midi":midi,"start":.10*i,"timbre":"harp"})
 		var key: String="quality_upgrade_%d"%bar
 		var peak:=0.0
@@ -1611,6 +1607,7 @@ func _render_bank() -> Dictionary:
 	report.mix_peaks["biome_stage_stereo_bound"]=stage_bound
 	report.mix_peaks.absolute_stereo_with_four_short_voices=maxf(report.mix_peaks.absolute_stereo_with_four_short_voices,maxf(varied_bound,stage_bound))
 	report.synthesis_ms=float(Time.get_ticks_usec()-synthesis_started)/1000.
+	CueGrid.prepare_short_bank(edits,harmony.streams)
 	return {"streams": streams, "edits": edits, "variations":harmony.variations,"harmony":harmony.streams,"report": report}
 
 

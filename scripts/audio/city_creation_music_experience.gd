@@ -32,7 +32,7 @@ static func lift(owner: Node) -> float:
 	return minf(MASTER_LIFT_DB, linear_to_db(LONG_PEAK_BUDGET / maxf(.000001, bound * 1.65)))
 static func allows(owner: Node, category: String) -> bool:
 	if owner.muted or owner.concert_active: return false
-	return owner.acoustic.zoom <= (42. if category in ["tower_bell", "tram_chime", "quality_upgrade", "district_reply"] else 28.)
+	return owner.acoustic.zoom <= (42. if category in ["tower_bell", "tram_chime", "quality_upgrade", "district_reply"] else 30.)
 static func bakery(owner: Node, kind: String, shop: String, home: String) -> bool:
 	owner.record_life_activity(kind, shop)
 	return owner.bakery_cues.queue(kind, shop, home) if allows(owner, "bakery_cue") else false

@@ -1,49 +1,27 @@
-# 《共鸣之城》AI 施工入口（M33～M44 四期施工）
+# 《共鸣之城》AI 施工入口（M45～M52 五期终极重构：三层轻经营生态 × 三阶稀有度抽卡奇观 × 零违和节拍量化音乐 × 全维美术满贯）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json) 与 [当前看板](PROJECT.md)，M01～M44 已全部通过，本次授权目标完成并停止；仅在收到新任务后认领新施工。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json)、[当前看板](PROJECT.md) 与 [五期总纲](文档/31_五期极简丰盈系统与声画满贯施工总纲.md)。`M01～M44` 已全部通过；当前请按顺序从 `M45` 推进至 `M52` 终验。
 
-四期入口：[音乐与微观艺术施工](文档/30_四期音乐与微观艺术施工.md)。M44 已完成，当前无待施工项；原件在新文档，仅根 backlog 更新进度。每两项与 M41/M42 独立 Critic 审查，分数如实记录。
+## 一至四期已完成基座（M01～M44 44/44 全绿通过）
 
-## 三期成果：十二原型、鲜活微观世界与续玩闭环
+1. **一期与二期（M01～M22）**：心愿首炉、零 NaN 安全矩阵、0.18s 弹簧代理、四时代纸纹微法线/AO、6 邻接预影、3s 起承转合轮奏与 48+24s 呼吸潮汐、石阶琴键、中空罗盘与 310px 羊皮手卷、0.1875s 多米诺欢跳、18 传世手札与四流派冠冕、12 风物诗、P 键五声琶音与烫金明信片。
+2. **三期与四期（M23～M44）**：四时代 18 原型（新古典 6 + 文艺复兴 2 + 蒸汽 4 + 阿尔卑斯现代 6）、三大共鸣家族、首屋即响与健康母带（`-13~-11 dBFS`）、24s 安全换流与双总线暖混响、6 音阶落笔、4 环自然曲枝、双凸草叶、5 形态小人步态与坐姿举杯、18 剪影印章、四时 48s 风物时刻、古希腊山花柱廊/古罗马圆厅（`M43`）与 `Q/E` 90° + `R` 自由转向（`M44`）。
+3. 历史设计见 [四期施工](文档/30_四期音乐与微观艺术施工.md)、[三期总纲](文档/29_三期建筑原型与鲜活微观世界施工总纲.md)、[项目复盘](文档/28_项目复盘与建筑风貌扩展.md)、[二期总纲](文档/27_艺术品级系统精炼与美术升华总纲.md) 与 [四库总纲](文档/code_artifact.md)。
 
-二期 M13～M22 已圆满完成，并在 [文档/28](文档/28_项目复盘与建筑风貌扩展.md) 中精准总结了阻挡主观艺术评分从 4/5 迈向 5/5 满分的最后差距。三期（M23～M32）已将这批设计接入实机，具体品质复评见文档/28：
-1. **12 大可辨识建筑体量原型（M23～M26）**：落地 6 类新古典原型（柱廊门庭小宅、三段式街屋、圆角凸窗转角屋、内院连柱公馆、小型圆厅书院、山花街坊会馆）与 6 类阿尔卑斯现代原型（非对称山墙木屋、单坡玻璃亭、顺坡错层台地宅、木框全景山居、双山墙连桥工坊、石基绿顶山舍），彻底终结 `1.8m` 方盒同构感。
-2. **留空透光树冠与手持风物小人（M27～M28）**：让树冠呈现“枝干穿插、簇间见天”的手绘透气感，柔化草石接地边缘；为胶囊小人戴上草帽/贝雷帽/礼帽，在采购、送装与夜行时真实手持面包篮、木琴与暖光提灯。
-3. **长时音乐变奏、大城局部秒级响应与小窗工艺（M29～M32）**：实装跨周期室内乐独奏轮换与句尾呼吸收束、300 屋局部编辑脏区增量缓存与 1024 紧凑手卷。
+## 五期核心使命（M45～M52）：三层轻经营生态 × 三阶稀有度抽卡奇观 × 零违和节拍量化音乐 × 全维 9.0+ 美术
 
-依次阅读 [三期建筑原型与鲜活微观世界施工总纲](文档/29_三期建筑原型与鲜活微观世界施工总纲.md)、[项目复盘与建筑风貌扩展](文档/28_项目复盘与建筑风貌扩展.md)、[二期总纲](文档/27_艺术品级系统精炼与美术升华总纲.md) 与 [四库总纲](文档/code_artifact.md)。
+围绕**「工坊不冗余且构成有机城建经营链、轻肉鸽有稀有卡/稀有奇观建筑惊喜、外部短音插播 100% 踩拍协和、全维美术无死角」**的目标，逐项落实 `M45～M52`：
+- **M45 · 零违和音乐系统：真调式双音、4-3 延留音解决、十六分音符网格量化、实时和弦内音吸附与 `zoom<=30m` 短音唤醒**：接入 `scripts/audio/city_creation_harmonic_dyads.gd`，放宽 `_travel_eligible` / `_cafe_eligible` 至 `zoom <= 30m`；实装 `quantize_cue_onset()`（短音自动对齐 `0.1875s` 网格）与 `snap_to_chord_tone()`（强制吸附至当前小节根音的 1/3/5/6 度协和音）及 `duck_gain_for_cue()`，彻底杜绝插播短音乱拍或撞音。
+- **M46 · 三层轻经营供需链、全员 `0.2s` 首秀爆发与轻肉鸽「白银/鎏金/虹彩传世」三阶稀有度抽卡**：接入 `scripts/world/city_creation_debut_encore.gd`，将 5 类工坊重构为「一阶采集（面包/制琴）→ 二阶雅集（茶座收茶点/书院收乐器升入 `Tier 2`）→ 三阶律动中枢（钟表铺 `14m` 内 `1.35x` 提速光环）」；并为羊皮手札三选一引入三阶稀有度、流派共振加权与 3 次未出必出虹彩保底。
+- **M47 · 真实水岸矢量对齐的三大街区自动涌现奇观（带接地软阴影底座）**：接入 `scripts/visual/city_creation_street_wonders.gd`，按真实水岸法线派生**朝水亲水木栈桥与系船暖灯**（临水 `<=3.2m`）、**环岛双层石砌涌泉花坛**、以及 **`Q/E/R` 斜向街角口袋花园**（含接地暗影底座、卵石、木长椅、石灯笼与双色野花簇），并全部并入工坊经营激活条件。
+- **M48 · 4 座「虹彩传世声学奇观建筑」、12 首风物诗「四流派共鸣碑」与 10 屋后「声景漫游轻语」**：当抽中虹彩传世卡或达成二阶风物诗时，点亮 **《海神竖琴灯塔》**、**《天顶浑天仪歌咏台》**、**《悬浮巴比伦交响花苑》**、**《永动黄金天文大钟楼》** 4 座稀有奇观冠冕；为 `GuideWhisper` 增加半透明暖羊皮底托与 10 屋后温和经营/造景轻语。
+- **M49 · 古希腊多立克柱廊多层/露台兼容、宽屋面赤陶天窗与铁艺花房夜景通透化**：支持「底层多立克山花柱廊 + 二层退台敞廊」的古典复合别墅；为宽屋面增加赤陶采光小天窗；将蒸汽铁艺花房夜间琥珀发光下调 `38%` 以透出内部绿植层次（攻克 `M41` 遗留反馈）。
+- **M50 · 二次曲线柔尖垂弯草叶、黄金角螺旋柏树、小人清晰迈腿/贴唇举杯与低视角远景大气色彩透视**：草叶 `t > 0.45` 重力垂弯，柏树 `137.5°` 黄金角螺旋排布；小人步幅扩至 `0.56 rad` 露腿，茶客 `Sip` 举杯上提 `+4.5cm`、内收 `-2.5cm` 贴近下颌唇边；低视角远景柔和向天空青色偏移。
+- **M51～M52 · 独立审美与听觉子代理（Critic Sub-Agent）盲审与 52/52 终极收官**：由独立上下文 Critic Sub-Agent 审阅实录 WAV 与昼夕夜微距原图，清零微瑕后完成终验。
 
-## 单里程碑闭环
+## 单里程碑三门禁闭环
 
-1. 恢复日志与 backlog，核对工作区，先备份已有改动；每轮只施工一项。
-2. 新逻辑放入 `<250` 行独立子脚本；四大主文件每次只加 `<=8` 行委托，严禁突破 `check_ai_harness.py` 行数棘轮。
-3. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
-4. Gate 2：相关 CPU 单元和 `tests/test_city_creation_legacy_roundtrip.gd`，均加 `-- --isolated-session`。
-5. Gate 3：执行该项 `verification_cmd`；实窗使用 `--rendering-method gl_compatibility -- --isolated-session`，查看 PNG 与录音峰值。
-6. 三门禁真实通过才更新该项 `passes` / `verified_by`，日志追加不超过 6 行；提交 `feat(Mxx): 描述` 并同步 GitHub，继续认领下一项直至 M44 完成。
-
-## 代码入口与三期预置模块
-
-| 系统 | 入口与边界 |
-|---|---|
-| 新古典建筑 | [neoclassical](scripts/visual/city_creation_neoclassical.gd)、[civic](scripts/visual/city_creation_neoclassical_civic.gd)、[classical](scripts/visual/city_creation_classical.gd)、[renaissance](scripts/visual/city_creation_renaissance.gd) |
-| 阿尔卑斯现代 | [alpine_modern](scripts/visual/city_creation_alpine_modern.gd) 与 [lodge](scripts/visual/city_creation_alpine_lodge.gd)、[modern](scripts/visual/city_creation_modern.gd)、[highland](scripts/visual/city_creation_highland.gd) |
-| 鲜活小人与自然 | [citizen_visual](scripts/visual/city_creation_citizen_visual.gd)、[life](scripts/world/city_creation_life.gd)、[foliage](scripts/visual/city_creation_foliage.gd) |
-| 音乐跨周期变奏 | [cadence_variation](scripts/audio/city_creation_cadence_variation.gd)、[phrase_tide](scripts/audio/city_creation_phrase_tide.gd) |
-| 渲染与局部缓存 | [renderer](scripts/visual/city_creation_renderer.gd)、[budget_rebuild](scripts/visual/city_creation_budget_rebuild.gd) |
-
-## 运行与验证
-
-引擎：`D:/GODOT/Godot_v4.7.2-stable_win64_console.exe`。启动主场景：`继续我的河湾.cmd`；作品收藏馆 `Ctrl+O`，手札 `F1`，临时拨奏按住 `P` / 鼠标侧键。
-
-```powershell
-& D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --headless --audio-driver Dummy --path . --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session
-& D:/GODOT/Godot_v4.7.2-stable_win64_console.exe --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_harness_live.gd -- --isolated-session
-```
-
-个人 `user://` 存档与作品库绝不写入；保持 Schema 1～19 和固定 `12 长轨 + 4 短槽 + 6 总线 + 2 自然声`。
-历史证据见 [合订验证记录](文档/24_合订接续验证记录.md)，需求对照见 [需求核对](文档/25_合订需求核对.md)，本地参考见 [参考索引](文档/参考索引.md)。
-
-M33已完成首屋牧歌、-1.2dB建造退让、限预算健康混音与生活短音/卡农；M34已完成安全换流、双共享总线混响与六音阶真实落笔；M35～M39已完成六类新原型、家族共鸣、曲枝/草簇与小人步态；M40剪影印章与四时风物已验收；M41独立采样/阻挡修复已验收；M42四期全景终验已完成，M43古希腊/罗马及M44真实转向/最终独立验收均已完成。首次独立Critic无M33/M34阻挡，细节修复已归M38/M39/M40，主观听感未冒评满分。
-
-用户追加M43/M44已通过。选中屋顶：Q/E每次90度；R自由转向，鼠标横移，单击/R确认，Esc取消。追加独立验收与GitHub同步完成后停止本目标，不自动扩项。
+1. 新逻辑放入 `<250` 行独立子脚本；四大主文件严守行数上限，保持 Schema 1～19、375 旧档与 `12长+4短+6总线+2自然声` 不变。
+2. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
+3. Gate 2：相关 CPU 单元测试与 `tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session`。
+4. Gate 3：实窗 `--rendering-method gl_compatibility -- --isolated-session`，核验原图、录音与独立 Critic 报告后更新 [合订验证记录](文档/24_合订接续验证记录.md)。

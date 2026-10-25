@@ -11,6 +11,7 @@ static func encode(source:AudioStreamWAV)->AudioStreamWAV:
 	bytes.encode_u32(28,source.mix_rate*(4 if source.stereo else 2));bytes.encode_u16(32,4 if source.stereo else 2)
 	bytes.encode_u16(34,16);bytes.encode_u32(36,0x61746164);bytes.encode_u32(40,data.size());bytes.append_array(data)
 	var wave:=AudioStreamWAV.load_from_buffer(bytes,{"compress/mode":2})
+	for key:StringName in source.get_meta_list():wave.set_meta(key,source.get_meta(key))
 	wave.loop_mode=source.loop_mode;wave.loop_begin=source.loop_begin;wave.loop_end=source.loop_end
 	return wave
 func build()->Dictionary:

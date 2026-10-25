@@ -10,10 +10,11 @@ static func at_pitch(music:Node,base:AudioStreamWAV,midi:int)->AudioStreamWAV:
 	var key:="%d/%d"%[base.get_instance_id(),midi]
 	if cache.has(key):return cache[key]
 	if cache.size()>=24:cache.clear()
-	var pcm:=PackedFloat32Array();pcm.resize(base.data.size()/2)
-	for i in range(pcm.size()):pcm[i]=float(base.data.decode_s16(i*2))/32768.*.8
+	# Re-render two notes rather than decoding a QOA stream as signed PCM.
+	var pcm:=PackedFloat32Array();pcm.resize(9261)
 	var upper:=midi+12
-	music._add_note(pcm,0.,.38,upper,.035,"harp",false,false)
+	music._add_harmony_note(pcm,0.,.38,midi,.080,"piano",false)
+	music._add_harmony_note(pcm,0.,.38,upper,.035,"harp",false)
 	var result:AudioStreamWAV=music._pcm_stream(pcm,false)
 	result.set_meta("octave_dyad",true);result.set_meta("pitches",[upper-12,upper]);cache[key]=result
 	return result
