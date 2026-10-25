@@ -5,6 +5,7 @@ func click(control:Control)->void:
  for pressed:bool in [true,false]:
   var e:=InputEventMouseButton.new();e.position=at;e.global_position=at;e.button_index=MOUSE_BUTTON_LEFT;e.pressed=pressed;root.push_input(e);await process_frame
 func capture(label:String)->void:
+ await create_timer(.26).timeout
  demo.toast_time=0.;demo.toast.hide();await super.capture(label)
 func run()->void:
  OUT="res://验证记录/UI01/live"

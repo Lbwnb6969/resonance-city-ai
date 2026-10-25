@@ -163,7 +163,7 @@ func refresh()->void:
 	architecture_button.disabled=available.is_empty();architecture_button.queue_redraw()
 	architecture_button.kind="prototype/"+preload("res://scripts/ui/city_creation_prototype_stamp.gd").key(self,house)
 	var era:=str(house.get("era_theme","district"));era_button.caption=_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
-	era_button.disabled=house.has("signature");era_button.tooltip_text="轮换街坊时代 · "+str(demo.State.Eras.NAMES[demo.State.Eras.IDS.find(demo.state.house_era(house))]);era_button.queue_redraw()
+	era_button.disabled=house.has("signature");era_button.caption={"pastoral":"古典","renaissance":"文艺","clockwork":"蒸汽","modern_eco":"生态"}[demo.state.house_era(house)];era_button.tooltip_text="仅改选中房屋 · "+str(demo.State.Eras.NAMES[demo.State.Eras.IDS.find(demo.state.house_era(house))]);era_button.queue_redraw()
 	choir_button.disabled=house.has("signature")
 	choir_button.caption={"warm":"暖庭","deep":"深流","weave":"织机","market":"市集","sylvan":"林间"}.get(demo.state.house_acoustic_style(house),"曲风");choir_button.tooltip_text="轮换整片自然聚落的共同曲风";choir_button.queue_redraw()
 	var palette:=int(house.get("palette",0))
@@ -250,7 +250,7 @@ func _cycle_era()->void:
 	if house.is_empty() or house.has("signature"):return
 	var choices:Array=demo.state.era_unlocks
 	var next:String=choices[posmod(choices.find(demo.state.house_era(house))+1,choices.size())]
-	demo._after_edit(demo.state.set_cluster_era(target_house_id,next),"room",true,target_house_id);refresh()
+	demo._after_edit(demo.state.set_house_era(target_house_id,next),"room",true,target_house_id);refresh()
 
 func _cycle_temperament()->void:
 	var house:Dictionary=demo.town._house_record(target_house_id);if house.is_empty():return

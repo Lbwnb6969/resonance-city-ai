@@ -31,6 +31,7 @@ var district_name_row:HBoxContainer
 var bindings:Array[Dictionary]=[]
 var active_tool:=-1
 var house_options:=false
+var _house_palette_key:Variant=null
 var nature_row:HBoxContainer
 const PRIMARY:=[0,2,4,5,8]
 const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
@@ -102,6 +103,9 @@ func refresh()->void:
 	nature_row.visible=tool in [5,6]
 	district_name_row.visible=tool==7
 	if not popup.visible:return
+	if tool in [0,1]:
+		var key:=[demo.state.get_instance_id(),demo.state.era_unlocks.duplicate()]
+		if key!=_house_palette_key:_house_palette_key=key;active_tool=-1
 	if active_tool!=tool:
 		active_tool=tool
 		_rebuild(tool)
@@ -119,6 +123,7 @@ func _rebuild(tool:int)->void:
 		_seal(row,"house","房间","扩建房间").pressed.connect(func()->void:demo.select_tool(0);demo.house_module_mode=true)
 		_seal(row,"vegetation","露台","点击侧墙或屋顶添置露台").pressed.connect(func()->void:demo.select_tool(1))
 		_seal(row,"erase","拆除","点击模块拆除；Shift整栋").pressed.connect(func()->void:demo.select_tool(3))
+		preload("res://scripts/ui/city_creation_build_palette.gd").setup(self,bubble_rows)
 	elif tool==4:
 		row=HBoxContainer.new();row.add_theme_constant_override("separation",GAP);row.alignment=BoxContainer.ALIGNMENT_CENTER;bubble_rows.add_child(row)
 		for role:String in ["residential","bakery","garden_cafe","workshop","atelier","clockmaker"]:

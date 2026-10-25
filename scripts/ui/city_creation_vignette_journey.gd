@@ -70,6 +70,7 @@ func _process(delta:float)->void:
 	if demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty():paper.hide()
 	if demo.has_meta("inspiration_draft") and demo.get_meta("inspiration_draft").paper.visible:paper.hide()
 	if not demo.spatial_popover.target_house_id.is_empty():paper.hide()
+	if demo.tactile_dock!=null and demo.tactile_dock.popup.is_visible_in_tree():paper.hide()
 	marker.visible=paper.visible and not paper.get_meta("letter_folded",true) and not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
 	marker.material_override.set_shader_parameter("metronome_strength",.55+.2*sin(Time.get_ticks_msec()*.0015))
 	if elapsed>=1.:elapsed=0.;poll()
