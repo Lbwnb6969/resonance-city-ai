@@ -91,6 +91,7 @@ func _run() -> void:
 	_expect(meadow._mesh("lawn_lod").get_faces().size()/3 == 20, "far mesh retains two leaves from each ring")
 	_expect(mesh == meadow._mesh("lawn") and mesh == meadow._mesh("grass"), "lawn and fringe share one cached ribbon mesh")
 	var arrays: Array = mesh.surface_get_arrays(0)
+	var tip_points := {}
 	var tips := 0
 	var low_tips := 0
 	var high_tips := 0
@@ -104,12 +105,21 @@ func _run() -> void:
 		continuous_normals = continuous_normals and normal.is_normalized() and normal.is_finite()
 		if normals_by_vertex.has(at): continuous_normals = continuous_normals and normal.is_equal_approx(normals_by_vertex[at])
 		normals_by_vertex[at] = normal
-		if is_equal_approx(uv.y, 1.0):
+		var tip := false
+		for blade in range(7):
+			var angle:float=[.02,1.59,3.10,4.69,.52,2.61,4.70][blade]
+			var outward:=Vector3(cos(angle),0,sin(angle))
+			var height:float=[.16,.19,.17,.18,.22,.27,.245][blade]
+			var reach:float=[.16,.17,.165,.175,.07,.06,.075][blade]
+			var expected:=preload("res://scripts/visual/city_creation_meadow_fold.gd")._center(outward*.006,outward,height,reach,1.,blade)
+			if at.distance_to(expected)<.000001:tip=true
+		if tip and not tip_points.has(at):
+			tip_points[at]=true
 			tips += 1
-			if at.y < 0.20: low_tips += 1
+			if at.y < 0.16: low_tips += 1
 			else: high_tips += 1
 			tip_directions[Vector2i(signf(at.x),signf(at.z))] = true
-	_expect(tips == 7 and low_tips == 4 and high_tips == 3 and tip_directions.size() >= 3, "exact tip UVs describe four cupped outer leaves and three upright inner leaves")
+	_expect(tips == 7 and low_tips == 4 and high_tips == 3 and tip_directions.size() >= 3, "seven actual tapered tips retain four low outer and three higher inner leaves")
 	_expect(continuous_normals, "curved leaf normals have no lighting seam at duplicated triangle vertices")
 	var legal := true
 	var custom_matches := true

@@ -1059,6 +1059,7 @@ func select_tool(index: int) -> void:
 	_refresh_ui()
 
 func _update_camera() -> void:
+	environment_rig.set_view(pitch)
 	focus.x=clampf(focus.x,State.WORLD_RECT.position.x,State.WORLD_RECT.end.x)
 	focus.z=clampf(focus.z,State.WORLD_RECT.position.y,State.WORLD_RECT.end.y)
 	zoom=clampf(zoom,State.Bounds.MIN_ZOOM,State.Bounds.MAX_ZOOM)

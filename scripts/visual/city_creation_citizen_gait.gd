@@ -2,6 +2,7 @@ extends RefCounted
 ## Five shared morphs animate separate limbs without splitting the body draw.
 static func mesh(source:ArrayMesh)->ArrayMesh:
 	var arrays:Array=source.surface_get_arrays(0);var shapes:Array=[];var result:=ArrayMesh.new()
+	result.blend_shape_mode=Mesh.BLEND_SHAPE_MODE_NORMALIZED
 	for mode:int in [0,1,2,3,4]:
 		result.add_blend_shape(["StepLeft","StepRight","Inspect","Seated","Sip"][mode])
 		var shape:Array=[];shape.resize(Mesh.ARRAY_MAX)
@@ -11,15 +12,15 @@ static func mesh(source:ArrayMesh)->ArrayMesh:
 			var tag:=roundi(tags[i].x);var pivot:=Vector3.ZERO;var angle:=0.
 			var sign_side:float=-1. if tag in [1,3,7] else 1.
 			if tag in [1,2]:
-				pivot=Vector3(sign_side*.045,.075,0);angle=(.42 if mode==0 else -.42)*sign_side if mode<2 else .03*sign_side
+				pivot=Vector3(sign_side*.045,.075,0);angle=(.56 if mode==0 else -.56)*sign_side if mode<2 else .03*sign_side
 			elif tag in [3,4,6,7]:
 				pivot=Vector3(sign_side*.11,.36,0);angle=(-.26 if mode==0 else .26)*sign_side if mode<2 else -.85 if tag in [4,6] else -.12
-			if tag in [4,6] and mode>=3:angle=-1.45 if mode==3 else -1.85
+			if tag in [4,6] and mode>=3:angle=-1.45 if mode==3 else -1.50
 			elif tag==5 and mode>=2:pivot=Vector3(0,.38,0);angle=.13
 			if tag==8:
-				var hand_angle:float=[-.26,.26,-.85,-1.45,-1.85][mode]
+				var hand_angle:float=[-.26,.26,-.85,-1.45,-1.50][mode]
 				var hand_center:=Vector3(.11,.36,0)+Basis(Vector3.RIGHT,hand_angle)*Vector3(0,-.19,0)
-				points[i]=hand_center+points[i]-Vector3(.11,.17,0)
+				points[i]=hand_center+points[i]-Vector3(.11,.215 if mode>=3 else .17,0)
 			elif mode>=3 and tag in [1,2]:
 				var at:Vector3=points[i]
 				# Upper half bends over the seat edge; lower half hangs below the knee.
@@ -28,6 +29,10 @@ static func mesh(source:ArrayMesh)->ArrayMesh:
 				else:points[i]=at+Vector3(0,.075,.16)
 			else:
 				var turn:=Basis(Vector3.RIGHT,angle);points[i]=pivot+turn*(points[i]-pivot);normals[i]=turn*normals[i]
+			if mode<2 and tag==0:points[i].y+=.018*(1.-smoothstep(.10,.20,points[i].y))*smoothstep(-.06,.08,points[i].z)
+			if mode>=3 and tag in [4,6,8]:
+				var grip:=clampf((.37-arrays[Mesh.ARRAY_VERTEX][i].y)/.20,0.,1.) if tag==4 else 1.
+				points[i]+=(Vector3(-.055,0,-.05)+(Vector3(0,.045,-.025) if mode==4 else Vector3.ZERO))*grip
 			if mode>=3:points[i].y-=.08
 		shape[Mesh.ARRAY_VERTEX]=points;shape[Mesh.ARRAY_NORMAL]=normals;shapes.append(shape)
 	var palms:=PackedVector3Array()

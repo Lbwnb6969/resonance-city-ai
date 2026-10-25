@@ -88,9 +88,9 @@ func _cypress(leaves: Dictionary, wood: Dictionary, rng: RandomNumberGenerator, 
 	_branch(wood, Vector3(bend.x,1.45,bend.z), Vector3(bend.x * 2,3.03,bend.z * 2), 0.043, 0.014,"cypress")
 	# Narrow spiral fans along the axis keep a cypress silhouette without cones.
 	for fan in range(10):
-		var t := float(fan) / 9.0
-		var angle := fan * 2.39996 + variant * 0.61
-		var radial := lerpf(0.25,0.075,t)
+		var t := clampf((float(fan)+.17*sin(fan*1.7+variant*.4))/9.0,0.,1.)
+		var angle := fan * deg_to_rad(137.5) + variant * 0.61
+		var radial := lerpf(0.25,0.075,t)*(1.+.12*sin(fan*2.1+variant))
 		var center := bend + Vector3(cos(angle) * radial,0.79 + t * 2.12,sin(angle) * radial)
 		var radius := lerpf(0.29,0.13,t)
 		_lobe(leaves, center, Vector3(radius,0.45 - t * 0.12,radius * 0.89), rng, "cypress", 3.5)

@@ -3,6 +3,7 @@ extends RefCounted
 var environment: Environment
 var sky_material: ProceduralSkyMaterial
 var sun: DirectionalLight3D
+var view_pitch:=.8
 
 func setup(parent: Node3D) -> void:
 	var world := WorldEnvironment.new()
@@ -62,3 +63,16 @@ func apply(phase: int) -> void:
 	sun.light_color = Color(row[3])
 	sun.light_energy = row[4]
 	sun.rotation_degrees = row[7]
+	set_view(view_pitch)
+
+func set_view(pitch:float)->void:
+	view_pitch=pitch
+	var low:=1.-smoothstep(.18,.50,pitch)
+	environment.fog_enabled=low>.001
+	environment.fog_mode=Environment.FOG_MODE_DEPTH
+	environment.fog_depth_begin=22.
+	environment.fog_depth_end=lerpf(260.,150.,low)
+	environment.fog_depth_curve=2.
+	environment.fog_light_color=sky_material.sky_top_color.lerp(environment.background_color,.38)
+	environment.fog_light_energy=.65
+	environment.fog_sky_affect=0.

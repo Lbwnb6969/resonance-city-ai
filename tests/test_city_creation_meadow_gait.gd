@@ -11,7 +11,7 @@ func run()->void:
 	for role:String in ["resident","bakery","workshop","atelier","clockmaker"]:
 		var actor:=Visual.person(1);root.add_child(actor);Visual.identify(actor,role);actor.position=Vector3(4,.1,-3)
 		var body:MeshInstance3D=actor.get_child(0).get_child(0);var mesh:ArrayMesh=body.mesh
-		check(mesh.get_blend_shape_count()==5 and mesh.get_surface_count()==1,"shared body has five morphs and one draw "+role)
+		check(mesh.get_blend_shape_count()==5 and mesh.get_surface_count()==1 and mesh.blend_shape_mode==Mesh.BLEND_SHAPE_MODE_NORMALIZED,"shared body has five morphs and one draw "+role)
 		var arrays:Array=mesh.surface_get_arrays(0);var shapes:Array=mesh.surface_get_blend_shape_arrays(0)
 		var finite:=true;var left:=false;var right:=false;var head:=false
 		for i in range(arrays[Mesh.ARRAY_VERTEX].size()):

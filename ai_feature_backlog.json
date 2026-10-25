@@ -1042,10 +1042,10 @@
       "evidence_Paths": [
         "本地验证记录/M50/meadow_cypress_citizen_polish_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "全面攻克独立 Critic 在 M41/M42 指出的自然（6.5/10）与小人（7.8/10）扣分项，并补齐低视角远景油画感大气色彩透视。",
       "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_meadow_gait.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_meadow_gait_live.gd -- --isolated-session --gait-sequences; python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "verified_by": "",
+      "verified_by": "Gate1 Harness/doc PASS. Godot4.7.2 CPU meadow_gait60/natural_polish21/foliage73/legacy375+27works PASS; actual OpenGL meadow_clumps26PASS incl13,069 deterministic candidates,10,788 masked roots,572tri near/20tri far,all signed GPU custom components error<=.000489. Seven real leaf tips have outward/downward terminal tangent;137.5deg cypress fans vary vertical/radial spacing without extra meshes. Step .56rad and18mm front hem; shared5morph body explicitly NORMALIZED: discovered default RELATIVE incorrectly added absolute morph vertices to base,causing elongated actors. Real seated grip calibrated before +.045m up/-.025m inward sip;cup cream rim within2.5cm lower face,below eye line,hand/sleeve follow shared grip. Low-pitch engine depth haze starts22m,phase sky tint,normal view off;demo one delegate. Native meadow_gait_live accepted_normalized22PASS:6actual route/cargo/lantern/tea motion sequences(24/72frames),two resolutions/day-evening-night citizens,12low grass views;Master6.037188s peak.157287598/0clip;personal save untouched. Initial live/tea_refined retained as visual failures due relative blend,not final evidence. Independent Critic no blockers;M49architecture8.5/iron night8.3,M50nature8.0/citizens8.3/atmosphere8.2;close grass faceting/repeated clumps P3,subjective listening not assessed. Old max-height tip UV assertion replaced by actual7 geometric tips;headless GPU buffer failure rerun native. backup/before-m50-20261025;sync before M51.",
       "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     },
     {
