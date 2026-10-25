@@ -41,6 +41,9 @@ func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = 
 		_bins.append(Bin.new())
 	# Derived paving suppresses ground cover; authored tree/shrub visibility
 	# still belongs to State and remains independent of this grass-only mask.
+	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(state)
+	for pocket:Dictionary in wonders.pockets:_add_segment(pocket.at,pocket.at,float(pocket.radius),false)
+	for pier:Dictionary in wonders.piers:_add_segment(pier.start,pier.end,.46,false)
 	for court: Dictionary in state.courtyard_plans():
 		for footprint:Variant in court.tiles:
 			for index: int in _indices(Frame.bounds(Frame.grow(footprint,MAX_CLEARANCE))):

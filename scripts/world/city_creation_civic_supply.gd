@@ -6,6 +6,7 @@ static func ready(city:RefCounted,house:Dictionary)->bool:
 	var id:=str(house.id);var role:=str(house.role);var at:=Vector2(house.origin[0],house.origin[1])
 	if role not in ROLES:return false
 	if not bool(house.get("bakery_open" if role=="bakery" else "workshop_open",true)):return false
+	if preload("res://scripts/world/city_creation_street_wonder_plan.gd").supports(city,id):return true
 	match role:
 		"bakery","workshop":return bool(city.site_blessing(id).get("blessed",false))
 		"garden_cafe":

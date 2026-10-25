@@ -1,6 +1,7 @@
 class_name CityCreationProsperity
 extends RefCounted
 const Rules=preload("res://scripts/world/city_creation_tradition_rules.gd")
+const Wonders=preload("res://scripts/world/city_creation_street_wonder_plan.gd")
 ## Foundation-inspired Site Blessings & Household Harmony Tiers (SEMANTIC_GUIDE.md).
 ## Purely positive emergent rules: water/forest/promenade proximity boosts workshops,
 ## and fulfilled resident needs (Food + Tea + Craft) elevate household harmony tiers (0..3).
@@ -18,10 +19,11 @@ static func bakery_blessing(state: RefCounted, bakery_id: String) -> Dictionary:
 			if not fountain.is_empty() and (bakery_id in court.get("members", []) or origin.distance_to(Vector2(fountain.at)) < Rules.water_radius(state)):
 				near_fountain = true
 				break
-		var active := near_water or near_fountain
+		var scenic := Wonders.supports(state,bakery_id)
+		var active := near_water or near_fountain or scenic
 		return {
 			"blessed": active,
-			"kind": "water_mill" if near_water else ("courtyard_spring" if near_fountain else "none"),
+			"kind": "water_mill" if near_water else ("courtyard_spring" if near_fountain else "street_spring" if scenic else "none"),
 			"speed_multiplier": 1.+.35*float(state.biome_bonus(bakery_id).get("water_bonus",1.)) if active else 1.0,
 			"bonus_batch": int(state.biome_bonus(bakery_id).get("water_bonus",1.)) if active else 0,
 			"label": ("沙洲活水加持 · 烘焙提速70% · 每炉+2份" if float(state.biome_bonus(bakery_id).get("water_bonus",1.))>1. else "💧 活水磨坊加持 · 烘焙提速35% · 每炉+1份") if active else "靠近河岸或喷泉内院可获活水磨坊加持",
@@ -40,12 +42,13 @@ static func workshop_blessing(state: RefCounted, workshop_id: String) -> Diction
 				if pt.distance_to(origin) <= Rules.tree_radius(state) and bool(state.vegetation_visible(plant)):
 					trees += 1
 		var palace:=bool(state.planning_bonus(workshop_id).get("natural",false))
-		var active := trees >= Rules.tree_count(state) or palace
+		var scenic := Wonders.supports(state,workshop_id)
+		var active := trees >= Rules.tree_count(state) or palace or scenic
 		return {
 			"blessed": active,
 			"trees": trees,
 			"speed_multiplier": 1.35 if active else 1.0,
-			"label": "翡翠花海良木加持" if palace else ("良木已成 · %d棵相伴"%trees if active else "种下%d棵乔木唤醒良木（当前%d/%d）"%[Rules.tree_count(state),trees,Rules.tree_count(state)]),
+			"label": "翡翠花海良木加持" if palace else ("街角共创加持 · 匠作提速35%" if scenic and trees<Rules.tree_count(state) else "良木已成 · %d棵相伴"%trees if active else "种下%d棵乔木唤醒良木（当前%d/%d）"%[Rules.tree_count(state),trees,Rules.tree_count(state)]),
 		}
 	return {"blessed": false, "speed_multiplier": 1.0, "label": ""}
 
@@ -96,7 +99,7 @@ static func cafe_blessing(state: RefCounted, cafe_id: String) -> Dictionary:
 	for house: Dictionary in state.houses:
 		if str(house.id) != cafe_id: continue
 		var origin := Vector2(float(house.origin[0]), float(house.origin[1]))
-		var active := false
+		var active := Wonders.supports(state,cafe_id)
 		for road: Dictionary in state.roads:
 			if str(road.get("style", "path")) not in ["promenade","avenue"] or float(road.width)<1.75: continue
 			if float(state._water_stroke_distance(origin, road.points)) < float(road.width) * 0.5 + 3.0:

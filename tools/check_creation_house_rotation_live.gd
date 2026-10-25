@@ -7,7 +7,10 @@ func key(code:Key)->void:
 func ray(at:Vector2)->Dictionary:
 	return demo.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(at.x,15,at.y),Vector3(at.x,.5,at.y),1))
 func run()->void:
-	OUT="res://验证记录/M44/final";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));Engine.max_fps=100;root.size=Vector2i(1440,900)
+	OUT="res://验证记录/M44/final"
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));Engine.max_fps=100;root.size=Vector2i(1440,900)
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle()
 	var city:=State.new();city.initialize_empty();var made:Dictionary=city.add_house(Vector2(-25,-17));var id:String=made.house_id

@@ -970,10 +970,10 @@
       "evidence_Paths": [
         "本地验证记录/M47/emergent_street_wonders_report.json"
       ],
-      "passes": false,
+      "passes": true,
       "description": "利用已有的水岸、环岛与 M44 房屋自由旋转（yaw），在不增加任何 UI 按钮的前提下，让建筑与环境组合时自动涌现三大矢量对齐、带接地软阴影底座并融入工坊经营链的微缩奇观。",
       "verification_cmd": "godot --headless --audio-driver Dummy --path . --script tests/test_city_creation_house_rotation.gd -- --isolated-session; godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_house_rotation_live.gd -- --isolated-session; python tools/check_ai_harness.py && python tools/check_doc_links.py",
-      "verified_by": "",
+      "verified_by": "Gate1 Harness/doc links PASS. Isolated Godot4.7.2 street_wonders50/house_rotation55/civic_supply54/legacy375+27works PASS;grass mask98,940 exact comparisons and epsilon boundary PASS. Native GL/Dummy check_creation_street_wonders_live accepted29PASS:2real pond-normal piers/1actual .58 then .80rad clear pocket/1original two-tier roundabout fountain flowerbed;native E/Q/R,real neighborhood removal/undo,exact cold plan,5day/night/two-size originals,12+4/6bus identity and personal save preserved. Master3.157914s peak.21658325/0clip;framep9510.076/max10.297ms. Required check_creation_house_rotation_live --out-dir=M47/rotation_live59PASS incl actual native input/mesh picking/rotated resident purchase and6.130068s Masterpeak.21594238/0clip. Water direction derives signed-distance gradient for actual ponds/channels/meandering river;decks connect dry shore to wet end,avoid real footprints/frontage/roads/cafe seats+routes/other piers+gardens. Corner plinth flattest clear angular pocket with bench/stone lantern/two blooms/pebbles;actual grass index suppresses through-plinth shoots;stone uses existing micro-normal/contactAO batcher and soft shadow. Actual microscenes feed Prosperity/CivicSupply readiness,real street network remains required. Steep shore requires authored stairs;decorations never forge traversable roads. Initial invalid fixture full-size planting/house overlap and visual untyped material/probe missing message fixed;failed logs kept. backup/before-m47-20261025;sync before M48.",
       "design_source": "新文档/文档/31_五期极简丰盈系统与声画满贯施工总纲.md"
     },
     {
