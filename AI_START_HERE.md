@@ -1,6 +1,6 @@
 # 《共鸣之城》AI 施工入口（M45～M52 五期终极重构：三层轻经营生态 × 三阶稀有度抽卡奇观 × 零违和节拍量化音乐 × 全维美术满贯）
 
-先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json)、[当前看板](PROJECT.md) 与 [五期总纲](文档/31_五期极简丰盈系统与声画满贯施工总纲.md)。`M01～M44` 已全部通过；当前请按顺序从 `M45` 推进至 `M52` 终验。
+先读 [进度日志](ai_progress.log) 最后 30 行、[任务真值](ai_feature_backlog.json)、[当前看板](PROJECT.md) 与 [五期总纲](文档/31_五期极简丰盈系统与声画满贯施工总纲.md)。`M01～M44` 已全部通过；M45 已验收；当前请按顺序从 `M46` 推进至 `M52` 终验。
 
 ## 一至四期已完成基座（M01～M44 44/44 全绿通过）
 
@@ -25,3 +25,5 @@
 2. Gate 1：`python tools/check_ai_harness.py`、`python tools/check_doc_links.py`。
 3. Gate 2：相关 CPU 单元测试与 `tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session`。
 4. Gate 3：实窗 `--rendering-method gl_compatibility -- --isolated-session`，核验原图、录音与独立 Critic 报告后更新 [合订验证记录](文档/24_合订接续验证记录.md)。
+
+M45 已通过：真实三/六度双音与4-3解决、30米生活短音、PCM/QOA采样对拍；24米实窗35检查、70.50秒录音零削波。详细证据及设计取舍见[24合订记录](文档/24_合订接续验证记录.md)。

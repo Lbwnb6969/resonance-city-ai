@@ -47,8 +47,9 @@ func run()->void:
 	await create_timer(2.).timeout
 	recording.set_recording_active(false)
 	var wave:AudioStreamWAV=recording.get_recording();var clipped:=0;var peak:=0.
-	for i in range(wave.data.size()/2):
-		var value:=absi(wave.data.decode_s16(i*2));peak=maxf(peak,float(value)/32768.)
+	var pcm:=wave.data
+	for i in range(pcm.size()/2):
+		var value:=absi(pcm.decode_s16(i*2));peak=maxf(peak,float(value)/32768.)
 		if value>=32767:clipped+=1
 	check(wave.save_to_wav(OUT+"/24m_Master.wav")==OK and peak>.01 and clipped==0,"real 24m Master recording contains life music and no clipping")
 	facts.recording={"seconds":wave.get_length(),"peak":peak,"clipped_samples":clipped}

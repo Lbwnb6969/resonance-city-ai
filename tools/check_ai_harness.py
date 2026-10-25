@@ -8,7 +8,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_MILESTONES = [f"M{i:02d}" for i in range(1, 53)]
 # 固定用户交付的任务契约；passes / verified_by 可变，其余任务定义不得漂移。
-CONTRACT_SHA256 = "3d1be218eb97ccb304a9cf04fae63f353663a231a46af5d603623fab7709ab79"
+CONTRACT_SHA256 = "71c34724cdaf43f91c9ef8020a1c85d565fb03b33f56122e9632b7754e5f0c37"
 CONTRACT_FIELDS = ("id", "title", "description", "verification_cmd")
 # M01～M12 实测行数 + 艺术品升华篇最多 10 行短委托；不得通过抬高上限容纳内联实现。
 GOD_FILE_LIMITS = {

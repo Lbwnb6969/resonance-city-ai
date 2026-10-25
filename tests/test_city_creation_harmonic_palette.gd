@@ -71,5 +71,14 @@ func _bank()->void:
 		var wav:AudioStreamWAV=bank.harmony[id]
 		looped=looped and (wav.loop_mode==AudioStreamWAV.LOOP_FORWARD and wav.get_length()==24. if bed else wav.loop_mode==AudioStreamWAV.LOOP_DISABLED)
 	_check(bounded and looped,"every actual modal wave is bounded and only long beds loop")
-	_check(bank.report.mix_peaks.emergent_stereo_bound<1. and bank.report.mix_peaks.absolute_stereo_with_four_short_voices<1.,"four-color beds, two leads and any four short tails retain the absolute stereo peak bound")
+	var stage:=0.
+	for key:String in Music.STEMS:stage+=.18*db_to_linear(float(Music.FINALE_GAINS[key]))
+	for phrase in range(8):
+		var bound:=0.
+		for key:String in Music.STEMS:bound+=.18*db_to_linear(Music.GrandFestival.gain(key,phrase))
+		stage=maxf(stage,bound)
+	var short_peak:=maxf(.18,float(bank.report.effect_peaks.values().max()))
+	var simultaneous:=(stage+short_peak*db_to_linear(Music.SHORT_GAIN_DB)*4.)*(1.+Music.Spatial.PAN_LIMIT)
+	_check(bank.report.mix_peaks.emergent_stereo_bound<1. and simultaneous<1.,"actual simultaneous finale or festival voicing plus four worst-case short tails fits below full scale")
+	print("ACTUAL_STAGE_STEREO_BOUND ",simultaneous,"; independent per-track historical maximum ",bank.report.mix_peaks.biome_stage_stereo_bound)
 	music.free()

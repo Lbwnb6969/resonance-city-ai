@@ -14,6 +14,7 @@ static func run(runner:SceneTree)->Dictionary:
 		if site.is_empty():continue
 		var at:Vector2=site.at
 		demo.focus=Vector3(at.x,.8,at.y);demo.zoom=float(runner.facts.get("life_cue_zoom",14.));demo._update_camera()
+		await runner.process_frame
 		demo.music.clear_travel();demo.music._travel_cooldowns.clear()
 		var before:int=demo.music._travel_cues
 		demo.music.queue_travel("probe_crossing",kind,str(site.id),at)
@@ -29,6 +30,7 @@ static func run(runner:SceneTree)->Dictionary:
 			if demo.life.tram.plan.station_keys.has(key):station=key;break
 		var point:Vector3=demo.life.tram.plan.positions[station];var at:=Vector2(point.x,point.z)
 		demo.focus=Vector3(at.x,.8,at.y);demo.zoom=float(runner.facts.get("life_cue_zoom",18.));demo._update_camera()
+		await runner.process_frame
 		var before:int=demo.music._tram_cues
 		demo.music.queue_tram_chime(str(car.id),station,at)
 		var heard:bool=await runner.wait_for(func():return demo.music._tram_cues>before,4200)
@@ -44,6 +46,7 @@ static func run(runner:SceneTree)->Dictionary:
 	if not step.is_empty():
 		var at:Vector2=step.at
 		demo.focus=Vector3(at.x,.8,at.y);demo.zoom=float(runner.facts.get("life_cue_zoom",14.));demo._update_camera()
+		await runner.process_frame
 		await runner.process_frame
 		var before:int=demo.music._travel_cues
 		demo.music.queue_travel("probe_footfall","stepping",str(step.id),at)

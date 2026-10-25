@@ -20,7 +20,9 @@ func _run() -> void:
 	var music := Music.new()
 	music.update_city(city)
 	var started := Time.get_ticks_usec()
-	var bank: Dictionary = music._render_bank()
+	var bank: Dictionary = music.BankCache.load_bank()
+	_check(not bank.is_empty(),"current production PCM bank is baked before validation")
+	if bank.is_empty():music.free();quit(1);return
 	var synthesis_ms := float(Time.get_ticks_usec()-started)/1000.0
 	_check(bank.streams.size()==Music.STEMS.size() and Music.STYLE_TRACKS.size()==5,"five real themes and era music use current fixed PCM stream pool")
 	_check(int(bank.report.pcm_bytes)==Music.FRAMES*2*Music.STEMS.size(),"fixed PCM budget matches actual twenty-four-second loop pool")
@@ -43,11 +45,11 @@ func _run() -> void:
 	var market: Array = bank.report.theme_notes.wood_market
 	var sylvan: Array = bank.report.theme_notes.wood_sylvan
 	_check(market.size()==32 and market.filter(func(note:Dictionary)->bool:return note.timbre=="accordion").size()==16 and market.filter(func(note:Dictionary)->bool:return note.timbre=="pluck").size()==16,"market PCM actually renders sixteen reed notes and sixteen separated plucks")
-	_check(sylvan.size()==12 and sylvan.filter(func(note:Dictionary)->bool:return note.timbre=="flute").size()==8 and sylvan.filter(func(note:Dictionary)->bool:return note.timbre=="bell").size()==4,"sylvan PCM actually renders eight long breaths and four sparse high bells")
+	_check(sylvan.size()==20 and sylvan.filter(func(note:Dictionary)->bool:return note.timbre=="flute").size()==16 and sylvan.filter(func(note:Dictionary)->bool:return note.timbre=="bell").size()==4,"sylvan PCM actually renders eight long diatonic dyads and four sparse high bells")
 	var notes_valid := true
 	for note: Dictionary in market+sylvan:
-		notes_valid = notes_valid and posmod(int(note.midi),12) in [2,4,6,9,11] and float(note.start)>=0.0 and float(note.start)+float(note.duration)<=24.0
-	_check(notes_valid,"actual note events share the same pentatonic pitch classes and bar-aligned loop")
+		notes_valid = notes_valid and posmod(int(note.midi),12) in ([2,4,6,7,9,11,1] if note.get("dyad",false) else [2,4,6,9,11]) and float(note.start)>=0.0 and float(note.start)+float(note.duration)<=24.0
+	_check(notes_valid,"lead notes keep the pentatonic theme while diatonic companions stay in key and inside the loop")
 	_check(float(bank.report.mix_peaks.absolute_with_four_edit_voices)<0.8,"all nine long voices plus four simultaneous effects retain conservative headroom")
 	var gains_finite := true
 	for style: String in State.DISTRICT_STYLES:

@@ -33,7 +33,8 @@ static func edit(owner:Node,kind:String)->void:
 	if kind in ["room","road","terrain","house","terrace","erase","remove"]:owner.attention.notify_sculpt_action(owner._playback_clock())
 	if owner.muted or owner._loading:return
 	if kind=="terrain":kind="road"
-	var wave:AudioStreamWAV=owner._edit_streams.get(kind)
+	var cue_key:="%d/edit/%s/%d"%[maxi(0,owner.harmony_mode()),kind,Palette.Grid.bar(Palette.Grid.transport_clock(owner))]
+	var wave:AudioStreamWAV=owner._harmony_streams.get(cue_key,owner._edit_streams.get(kind))
 	if kind in ["room","house","terrace","road"] and owner._pluck_city!=null:
 		var source:=str(owner._daily_source_id)
 		if owner._pluck_city._house_index(source)<0 and not owner._pluck_city.houses.is_empty():source=str(owner._pluck_city.houses[-1].id)

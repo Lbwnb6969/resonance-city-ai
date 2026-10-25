@@ -3,6 +3,8 @@ const Grid=preload("res://scripts/audio/city_creation_cue_grid.gd")
 const Dyads=preload("res://scripts/audio/city_creation_harmonic_dyads.gd")
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 const Cache=preload("res://scripts/audio/city_creation_bank_cache.gd")
+const Music=preload("res://scripts/audio/city_creation_music.gd")
+const Compare=preload("res://tests/city_creation_audio_comparison.gd")
 var failures:Array=[]
 var checks:=0
 func check(ok:bool,label:String)->void:
@@ -38,7 +40,8 @@ func _initialize()->void:
 	if "--bank" in OS.get_cmdline_user_args():verify_bank()
 	print("HARMONIC_DYADS ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"thirds":thirds,"sixths":sixths}));quit(0 if failures.is_empty() else 1)
 func verify_bank()->void:
-	var bank:=Cache.load_bank();check(not bank.is_empty(),"production precompiled bank matches current synthesis sources")
+	var bank:=Cache.load_bank_at(Cache.PORTABLE_PATH) if "--portable" in OS.get_cmdline_user_args() else Cache.load_bank()
+	check(not bank.is_empty(),"production precompiled bank matches current synthesis sources")
 	if bank.is_empty():return
 	var notes_valid:=true;var preroll:=true;var count:=0;var dyads:=0;var suspensions:=0
 	for key:String in bank.report.harmony_notes:
@@ -66,3 +69,16 @@ func verify_bank()->void:
 		for event:Dictionary in notes:
 			if event.get("suspension",false):suspensions+=1
 	check(suspensions>0,"actual sustained theme PCM contains 4-3 cadence events")
+	var music:=Music.new();var actual_pcm:=true
+	for mode in range(10):
+		for kind:String in ["cafe_flute_0","travel_bridge_0","bakery_baked_0"]:
+			var key:="%d/%s"%[mode,kind];var wave:AudioStreamWAV=bank.harmony[key]
+			var prefix_frames:=roundi(Grid.GRID*wave.mix_rate)
+			var expected:=PackedFloat32Array();expected.resize(roundi(wave.get_length()*wave.mix_rate)-prefix_frames)
+			for event:Dictionary in bank.report.harmony_notes[key]:
+				music._add_harmony_note(expected,event.start,event.duration,event.midi,event.gain,event.timbre,false)
+			var rendered:=music._pcm_stream(expected,false)
+			var data:=PackedByteArray();data.resize(prefix_frames*2);data.append_array(rendered.data);rendered.data=data
+			actual_pcm=actual_pcm and Compare.matches(rendered,wave)
+	check(actual_pcm,"independent note reconstruction matches 30 actual cafe/bridge/bakery waves including pre-roll and snapped pitches")
+	music.free()
