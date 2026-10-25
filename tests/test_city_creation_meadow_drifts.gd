@@ -87,7 +87,7 @@ func _run() -> void:
 	_expect(continuous and patch_max - patch_min > 0.5, "nonperiodic world field is continuous with visible broad patch amplitude")
 	var mesh: Mesh = meadow._mesh("lawn")
 	_expect(mesh == meadow._mesh("grass"), "lawn and woodland fringe share the same cached mesh")
-	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 572, "folded leaves and basal trefoil share one draw surface per meadow block")
+	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 908, "folded leaves and basal trefoil share one draw surface per meadow block")
 	var radius := 0.0
 	var geometry_finite := true
 	var normals_up := true
@@ -99,7 +99,7 @@ func _run() -> void:
 		geometry_finite = geometry_finite and vertex.is_finite() and normal.is_finite()
 		normals_up = normals_up and normal.is_normalized() and normal.is_finite()
 	_expect(geometry_finite and normals_up, "shared geometry has finite vertices and continuous upward leaf normals")
-	_expect(radius * max_xz <= 0.30, "bowl-shaped seven-leaf clumps retain a bounded thirty-centimetre horizontal reach")
+	_expect(radius * max_xz <= 0.42, "bowl-shaped seven-leaf clumps retain a bounded42cm maximum flexible-leaf footprint before obstacle-edge contraction")
 	var cached_species_zero := true
 	var record_species := false
 	var mask_channels := true

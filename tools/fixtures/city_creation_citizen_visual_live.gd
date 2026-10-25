@@ -39,6 +39,9 @@ static func capture(demo,out:String)->Dictionary:
 			if mesh.is_visible_in_tree() and mesh.mesh!=null:visible+=1
 		draw_ok=draw_ok and visible<=2
 		seen[role]={"draws":visible,"prop":str(worker.carry.name),"body_mesh":worker.node.get_child(0).get_child(0).mesh.get_instance_id()}
+	if "--cargo-only" in OS.get_cmdline_user_args():
+		var result:={"ok":checks.values().all(func(v):return v) and draw_ok and images==18,"checks":checks,"images":images,"roles":seen}
+		FileAccess.open(out+"/cargo_visual.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));return result
 	var city:=preload("res://scripts/world/city_creation_state.gd").new();city.initialize();assert(city.add_house(Vector2(-8,-10.5)).ok)
 	await show_world(demo,city)
 	var shopper:Dictionary={};var baker:Dictionary={};var meeting:=false

@@ -48,6 +48,7 @@ static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bo
 	var body:Node3D=root.get_child(0);var skin:MeshInstance3D=body.get_child(0)
 	var phase:float=time*8.7+float(root.get_meta("citizen_index",0))*.73
 	var stride:float=sin(phase) if moving else 0.;var inspect:float=(.65+.2*sin(time*1.7)) if seated or working else .35 if root.get_meta("citizen_prop","") in ["cup","lantern"] else 0.
+	if cargo!=null and cargo.visible:inspect=maxf(inspect,.60)
 	var sip:float=.5+.5*sin(time*1.1)
 	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
@@ -63,7 +64,12 @@ static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bo
 		var grip:=Vector3(0,.12,0) if root.get_meta("citizen_prop","")=="lantern" else Vector3(0,-.035,-.015)
 		prop.position=anchor-prop.basis*grip
 	if cargo!=null and cargo.visible:
-		cargo.position=Vector3(.12,.32+absf(stride)*.014,.10);cargo.rotation=Vector3(sin(phase-.45)*.075,0.,-stride*.05)
+		cargo.rotation=Vector3(sin(phase-.45)*.075,0.,-stride*.05)
+		var palms:PackedVector3Array=skin.mesh.get_meta("right_palms");var anchor:=palms[0];var weight:=0.
+		for i in range(5):weight+=skin.get_blend_shape_value(i)
+		anchor*=1.-weight
+		for i in range(5):anchor+=palms[i+1]*skin.get_blend_shape_value(i)
+		cargo.position=anchor-cargo.basis*Vector3(.025,-.035,-.085)
 static func _walking(root:Node3D,time:float)->bool:
 	var prior:Vector3=root.get_meta("gait_last_point",root.position)
 	if prior.distance_squared_to(root.position)>.000001:root.set_meta("gait_walk_until",time+.16)

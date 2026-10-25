@@ -24,6 +24,9 @@ void vertex() {
 	clump_tint = COLOR.rgb;
 	clump_world_at = (MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xz;
 	species = clamp(INSTANCE_CUSTOM.a,0.0,1.0);
+	float leaf_seed=meadow_hash(clump_world_at*1.37+vec2(UV.x*3.71,UV.x*.83));
+	VERTEX.xz*=mix(.82,1.0,leaf_seed);
+	VERTEX.y*=mix(.86,1.07,leaf_seed);
 	float edge_height = clamp(INSTANCE_CUSTOM.b,0.0,1.0);
 	if (road_draft_enabled) {
 		vec2 draft_uv=(world_at.xz-road_draft_world_rect.xy)/road_draft_world_rect.zw;

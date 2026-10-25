@@ -22,8 +22,8 @@ static func blade(owner,s:SurfaceTool,index:int,folded:bool)->void:
 static func _rounded(s:SurfaceTool,root:Vector3,outward:Vector3,across:Vector3,height:float,reach:float,width:float,index:int)->void:
 	var points:=PackedVector3Array();var normals:=PackedVector3Array();var faces:Array[int]=[]
 	# A closed biconvex leaf has a real rounded edge even at ground level.
-	for i in range(5):
-		var t:float=[0.,.24,.50,.73,.91][i];var w:float=width*[.22,.78,1.,.64,.20][i]
+	for i in range(8):
+		var t:float=[0.,.17,.34,.50,.65,.78,.90,.97][i];var w:float=width*[.22,.55,.86,1.,.88,.60,.26,.075][i]
 		var center:=_center(root,outward,height,reach,t,index)
 		var tangent:=(_center(root,outward,height,reach,minf(1.,t+.001),index)-_center(root,outward,height,reach,maxf(0.,t-.001),index)).normalized()
 		var depth_axis:Vector3=across.cross(tangent).normalized();var depth:float=minf(w*.30,maxf(.002,height-center.y)*.65)
@@ -33,12 +33,12 @@ static func _rounded(s:SurfaceTool,root:Vector3,outward:Vector3,across:Vector3,h
 			normals.append((across*cos(angle)/w+depth_axis*sin(angle)/depth).normalized())
 	points.append(_center(root,outward,height,reach,1.,index));normals.append((_center(root,outward,height,reach,1.,index)-_center(root,outward,height,reach,.999,index)).normalized())
 	points.append(root);normals.append(-outward)
-	for i in range(4):
+	for i in range(7):
 		for j in range(8):
 			var a:int=i*8+j;var b:int=i*8+(j+1)%8;faces.append_array([a,b,a+8,b,b+8,a+8])
-	for j in range(8):faces.append_array([32+j,32+(j+1)%8,40,j,41,(j+1)%8])
+	for j in range(8):faces.append_array([56+j,56+(j+1)%8,64,j,65,(j+1)%8])
 	for i:int in faces:
-		s.set_normal(normals[i]);s.set_color(Color.WHITE);s.set_uv(Vector2(0.,clampf(points[i].y/height,0.,1.)));s.add_vertex(points[i])
+		s.set_normal(normals[i]);s.set_color(Color.WHITE);s.set_uv(Vector2(float(index+1),clampf(points[i].y/height,0.,1.)));s.add_vertex(points[i])
 static func _center(root:Vector3,outward:Vector3,height:float,reach:float,t:float,index:int)->Vector3:
 	var bend:=pow(maxf(0.,(t-.45)/.55),2.)
 	var drop:=.36+.035*sin(index*1.7) if index<4 else .23+.025*cos(index*1.3)

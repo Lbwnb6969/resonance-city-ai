@@ -77,8 +77,8 @@ static func _garden(r,root:Node3D,cream:Material,gold:Material)->void:
 		_ring(root,radius,.07,Vector3.UP*y,cream)
 		for i in range(9):
 			var angle:=i*TAU/9.+tier*.6;var at:=Vector3(sin(angle)*radius,y,cos(angle)*radius)
-			r._crown(root,at+Vector3.DOWN*.10,Vector3(.10,.30+float(i%3)*.08,.10),Color("67916b"))
-			r._crown(root,at+Vector3.UP*.035,Vector3(.10,.055,.10),Color("d995ad") if i%2 else Color("dac18b"))
+			preload("res://scripts/visual/city_creation_garden_vines.gd").append(r,root,at,angle,i+tier*9)
+			r._crown(root,at+Vector3.UP*.035,Vector3(.065,.045,.065),Color("ae617d") if i%2 else Color("c29b55"))
 	var glass:Material=r._material(Color("93c9ba",.28));glass.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;glass.roughness=.25
 	var dome:=SphereMesh.new();dome.radius=.65;dome.height=1.3;dome.radial_segments=24;dome.rings=12
 	var pane:=MeshInstance3D.new();root.add_child(pane);pane.mesh=dome;pane.material_override=glass;pane.position.y=1.03;pane.scale.y=.55
