@@ -24,6 +24,7 @@ static func lift(owner: Node) -> float:
 	var bound := 0.
 	for key: String in owner._players:
 		var db: float = owner.target_gain_db(key, false)
+		db-=preload("res://scripts/audio/city_creation_long_form.gd").gain(key,owner.emergence.score,owner._playback_clock())
 		if db <= -55.: continue
 		var peak := .18
 		var id: String = owner._variation_active.get(key, "")

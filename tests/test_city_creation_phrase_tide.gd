@@ -31,8 +31,8 @@ func _run() -> void:
 	for clock: float in [50.,60.,70.,122.,132.]: check(is_equal_approx(Tide.breath(clock),1.),"twenty-four-second light cycle recurs every seventy-two seconds")
 	check(Tide.breath(48.75)>0. and Tide.breath(48.75)<1. and Tide.breath(71.25)>0. and Tide.breath(71.25)<1.,"1.5-second envelopes remove step changes at both breathing boundaries")
 	for key: String in ["foundation","renaissance_fugue"]:
-		check(is_equal_approx(Tide.gain(key,score,60.)-Tide.gain(key,score,30.),-4.5),"actual dense accompaniment targets duck 4.5dB")
-	for key: String in ["wood","terrace","air"]: check(Tide.gain(key,score,60.)==Tide.gain(key,score,30.),"light plucks and air remain at their actual targets")
+		check(is_equal_approx((Tide.gain(key,score,60.)-Tide.LongForm.gain(key,score,60.))-(Tide.gain(key,score,30.)-Tide.LongForm.gain(key,score,30.)),-4.5),"existing dense accompaniment breath remains4.5dB before long-form shade")
+	for key: String in ["wood","terrace","air"]: check(is_equal_approx(Tide.gain(key,score,60.)-Tide.LongForm.gain(key,score,60.),Tide.gain(key,score,30.)-Tide.LongForm.gain(key,score,30.)),"existing light plucks and air keep their targets before long-form shade")
 	for clock: float in [12.,15.]:
 		var family := "air" if clock == 12. else "terrace"
 		score = Emergence.evaluate(records,field,[],int(clock/3.),false)

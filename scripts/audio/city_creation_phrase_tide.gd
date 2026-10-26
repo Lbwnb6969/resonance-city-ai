@@ -3,12 +3,13 @@ extends RefCounted
 const Emergence = preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 const HEAVY := ["foundation","wood_deep","wood_market","renaissance_fugue","clockwork_waltz","modern_symphony"]
 const Cadence=preload("res://scripts/audio/city_creation_cadence_variation.gd")
+const LongForm=preload("res://scripts/audio/city_creation_long_form.gd")
 static func breath(clock: float) -> float:
 	var at := fposmod(maxf(0.,clock),72.)
 	return smoothstep(48.,49.5,at)*(1.-smoothstep(70.5,72.,at))
 static func gain(track: String, score: Dictionary, clock: float) -> float:
 	var db := float(score.get("targets",{}).get(track,-60.))
-	return (db-4.5*breath(clock) if db > -55. and track in HEAVY else db)+Cadence.gain(track,score,clock)+float(score.get("prototype_gain",{}).get(track,0.))
+	return (db-4.5*breath(clock) if db > -55. and track in HEAVY else db)+Cadence.gain(track,score,clock)+float(score.get("prototype_gain",{}).get(track,0.))+LongForm.gain(track,score,clock)
 static func groups(records: Dictionary, acoustic: RefCounted, city: RefCounted = null) -> Array:
 	var collected := {}
 	for id: String in acoustic.focus_ids:
@@ -86,4 +87,5 @@ static func conduct(owner: Node) -> void:
 	owner.emergence.score.phrase_tide = arrange(owner._house_music,owner.acoustic,owner.emergence.score,owner._playback_clock(),owner._pluck_city)
 	owner.emergence.score.prototype_gain=preload("res://scripts/audio/city_creation_prototype_mix.gd").conduct(owner._house_music,owner.emergence.score)
 	owner.emergence.score.cadence_night=owner.night
+	owner.emergence.score.long_form=LongForm.view(owner._playback_clock(),owner.emergence.score)
 	owner.emergence.score.cadence_season=owner._pluck_city.microclimate if owner._pluck_city!=null else ""

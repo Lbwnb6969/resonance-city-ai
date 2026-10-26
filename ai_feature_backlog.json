@@ -1176,8 +1176,8 @@
         "id": "RF07",
         "title": "长时音乐变化与听感评估",
         "acceptance": "真实长时续玩采样与空间/密度/休止分析，改进乐句变化与听觉留白；保留12+4/6+2和全部数值收益，主观听评仅在实际可听证据下报告。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "RF07 functional PASS: long_form14 full144s CPU continuity, phrase_tide73, attention21, legacy375+27; OpenGL no_recording13 PASS with34s real transport/gain diagnostics, native edit UndoRedo, day/night, original voices and cold city. User 2026-10-26 explicitly deferred recordings; no WAV or subjective-listening acceptance claimed. Earlier135s native runs received window close and have no completed report."
       },
       {
         "id": "RF08",
