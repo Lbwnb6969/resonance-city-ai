@@ -40,7 +40,7 @@ func record_action(tool:int)->void:uses[tool]+=1
 func _process(delta:float)->void:
 	if demo.tool!=_tool or demo.hint.text!=_text:
 		_tool=demo.tool;_text=demo.hint.text;_quiet=0.;tooltip_text=_text+"\nAlt 自由落点 · Esc 取消 · Ctrl+Z 撤销"
-	demo.hint.text="点工坊/奇观听独奏 · Esc 结束" if demo.camera_rig.strolling else "独奏中 · Esc 结束 · 右键自由转动" if demo.get_meta("solo_spotlight").active() else SHORT_HINTS[demo.tool]
+	demo.hint.text="点工坊/奇观听独奏 · Esc 结束" if demo.camera_rig.strolling else "独奏中 · Esc 结束 · 右键自由转动" if demo.get_meta("solo_spotlight").active() else demo.get_meta("road_tool").hint() if demo.tool==2 else SHORT_HINTS[demo.tool]
 	_text=demo.hint.text
 	var changed:=[demo.light_phase,_text,size]
 	if changed!=_draw_signature:_draw_signature=changed;queue_redraw()

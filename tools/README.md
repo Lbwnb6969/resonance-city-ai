@@ -107,3 +107,5 @@ M44：`check_creation_house_rotation_live.gd -- --isolated-session` 原生按键
 
 M57：`check_creation_musical_toys_live.gd`真实P/V点击、12s源独奏、邻人合法步行/中途冷档、两岸.75s回声与静音/停工/删路Undo；`check_creation_archway_details_live.gd`补四时代真实挂件、穿廊下的地面行人和奇观V聚焦。两者GL/isolated-session，输出可用`--out-dir=`隔离。CPU `tests/test_city_creation_musical_toys.gd`验证推导/实际移动/原日程/冷读。
 M58：跨进程day1先从林水或用途浮窗回筑屋、收好手札后实际展开来信；day2新纪元从统一手札领取已经赚取的页，旧独立章程仍由旧档工具覆盖。默认长录仍约150秒，不把此段标成3分钟；`--resolutions`/`--phases`可定向跑所需旅程。
+
+M59：`tests/test_city_creation_road_curve_geometry.gd`核RDP/向心Catmull与精确二次曲线/数组存档；原生`check_creation_three_road_modes_live.gd -- --isolated-session --out-dir=res://验证记录/M59/complete`双尺寸真实三印章、定点/拖画/Tab/取消/升级/撤销，`test_city_creation_road_chain_live.gd`保留锁段与文本输入回归，输出首参数在`--`后（并带`--isolated-session`）。

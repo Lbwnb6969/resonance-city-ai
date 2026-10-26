@@ -26,7 +26,7 @@ func _check(ok: bool, label: String) -> void:
 		push_error(label)
 
 func _screen(point: Vector2) -> Vector2:
-	return demo.camera.unproject_position(Vector3(point.x, 0.0, point.y))
+	return demo.camera.unproject_position(Vector3(point.x, demo.state.ground_height(point), point.y))
 
 func _button(point: Vector2, pressed: bool, button: int = MOUSE_BUTTON_LEFT, alt: bool = false) -> void:
 	var event := InputEventMouseButton.new()
@@ -146,7 +146,7 @@ func _run() -> void:
 		var player: Variant = demo.music._players.get(key)
 		if player != null and player.stream != null:
 			identities[key] = [player.get_instance_id(), player.stream.get_instance_id()]
-	_check(identities.size() == 9, "nine real PCM voices exist before chained drawing")
+	_check(identities.size() == 12, "twelve real long PCM voices exist before chained drawing")
 	var clock_before: float = demo.music._playback_clock()
 	await _key(KEY_3)
 	_check(demo.tool == 2 and not demo.road_straight, "real key 3 selects the default freehand road tool")
@@ -220,17 +220,12 @@ func _run() -> void:
 	_button(Vector2(-14, -5), false)
 	await process_frame
 	_check(_draft_is_clear() and not demo.road_straight and demo.state.snapshot() == before_cancel, "cancelling temporary Alt drawing restores freehand without a city operation")
-	# The freehand mode uses the same real pointer path, with a true tangent arc.
+	# M59 freehand uses RDP + centripetal Catmull-Rom rather than fixed-radius fillets.
 	_button(Vector2(-16,-7),true)
 	await _motion(Vector2(-13,-7))
 	await _motion(Vector2(-13,-4))
 	var curved: Array[Vector2] = demo.road_preview.duplicate()
-	var arc_points := 0
-	for point: Vector2 in curved:
-		if point.x > -13.851 and point.y < -6.149 and point.x < -13.001 and point.y > -6.999:
-			arc_points += 1
-			_check(absf(point.distance_to(Vector2(-13.85,-6.15))-0.85)<0.0001,"actual pointer sharp turn lies on the 0.85 metre circle")
-	_check(not demo.road_draft_straight and arc_points>=4,"freehand gesture actually inserts the tangent arc")
+	_check(not demo.road_draft_straight and curved.size()>3 and curved.any(func(point):return point.x>-13.8 and point.y<-6.5),"freehand gesture actually interpolates a smooth bend between the mouse controls")
 	var curve_count: int = demo.state.roads.size()
 	var curve_history: int = demo.state._undo.size()
 	_button(Vector2(-13,-4),false)
@@ -246,7 +241,7 @@ func _run() -> void:
 	await _key(KEY_SPACE)
 	var snapped_lock: Array[Vector2] = demo.road_preview.duplicate()
 	for frame in range(4): await process_frame
-	_check(snapped_lock.size()==2 and absf(snapped_lock[-1].x+11.0)<0.0001 and demo.road_preview==snapped_lock,"snapped locked endpoint remains stationary without a backwards tail from the unmoved pointer")
+	_check(snapped_lock.size()==2 and snapped_lock[-1].distance_to(Vector2(-11.55,-2))<.55 and demo.road_preview==snapped_lock,"soft-assisted locked endpoint remains stationary without a backwards tail from the unmoved pointer")
 	await _key(KEY_ESCAPE)
 	_button(Vector2(-11.55,-2),false)
 	await _key(KEY_R)

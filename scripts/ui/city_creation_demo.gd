@@ -305,6 +305,7 @@ func _ready() -> void:
 	preload("res://scripts/visual/city_creation_waterfront_light.gd").new().setup(self)
 	preload("res://scripts/ui/city_creation_solo_spotlight.gd").new().setup(self)
 	preload("res://scripts/visual/city_creation_musical_archways.gd").new().setup(self)
+	preload("res://scripts/ui/city_creation_road_tool.gd").new().setup(self)
 	get_meta("era_ceremony").bind()
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
@@ -757,6 +758,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if has_meta("house_rotation_input") and get_meta("house_rotation_input").handle(event):
 		get_viewport().set_input_as_handled();return
+	if get_meta("road_tool").input(event):get_viewport().set_input_as_handled();return
 	if conductor_gesture!=null and conductor_gesture.handle_input(event):
 		get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.keycode==KEY_SHIFT:
@@ -834,6 +836,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_append_house_stroke()
 		get_viewport().set_input_as_handled()
 		return
+	if get_meta("road_tool").unhandled(event):get_viewport().set_input_as_handled();return
 	if event is InputEventMouseButton:
 		pointer = event.position
 		if not event.pressed: return
@@ -1247,6 +1250,7 @@ func _selected_road_width()->float:
 	return 0. if road_size<0 else float(State.RoadUpgrade.sizes_for(road_style)[road_size])
 
 func _append_road_point(force: bool=false) -> void:
+	if get_meta("road_tool").active():get_meta("road_tool").update(force);return
 	var p := _road_pointer_at()
 	# The tail follows one screen pixel; fixed controls determine curve density.
 	var pixel: float=zoom/maxf(get_viewport().get_visible_rect().size.y,1.)
@@ -1282,6 +1286,7 @@ func _append_road_point(force: bool=false) -> void:
 		road_status.text = (ready if check.ok else str(check.message))+"\n%.1f 米" % length+mode_hint
 
 func _lock_road_segment() -> void:
+	if get_meta("road_tool").active():get_meta("road_tool").lock();return
 	_append_road_point()
 	if road_preview.size() < 2: return
 	if road_preview[-1].distance_to(road_preview[-2]) < 0.2: return
@@ -1311,6 +1316,7 @@ func _road_pointer_at() -> Vector2:
 	return _ground_at(pointer)
 
 func _finish_road() -> void:
+	if get_meta("road_tool").active():get_meta("road_tool").finish();return
 	_append_road_point(true)
 	road_drawing = false
 	if road_points.size() < 2:
@@ -1669,6 +1675,7 @@ func _history(forward: bool) -> void:
 	_after_edit(result, "history")
 
 func _cancel_draft() -> void:
+	if has_meta("road_tool"):get_meta("road_tool").reset()
 	if signatures!=null:signatures.cancel()
 	var cancelled_house := house_drawing
 	if terrain_brush!=null: terrain_brush.cancel()

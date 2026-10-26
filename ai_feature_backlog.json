@@ -1244,8 +1244,8 @@
         "id": "M59",
         "title": "三模修路与锚点操作",
         "acceptance": "道路画具内自由画/直路/双点曲路，明确的锚点/控制点/终点、Tab切换与Esc取消；保持现有拖画、路型升级、真实折线存档和撤销。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M59 Harness/doc/selftest8; road_curve_geometry21 and legacy375+27 PASS. Native complete82 at1440/1024 PASS: actual3 mode seal clicks/freehand drag/two-click straight/three-click quadratic/default-click ruler/Tab preserved control+visible mode stamp/Esc+right cancel/legacySpace+right locks/global3 context/retrace identity upgrade/preview-save exactness/cold/UndoRedo. Native old road_chain_current58 PASS including text field typing, camera orbit, Alt drag, stable soft-snapped lock, unchanged12long PCM IDs. RDP+centripetalCatmull resamples.2m; precise straight2m/quadratic arc-length.35m, no new save mode fields. Original gold anchor/control/live endpoint PNGs inspected. Master3.204s peak.041351 zero clipping, original12+4/6+2/personal bytes unchanged. Angle compass/snapping and closure remain M60/M61."
       },
       {
         "id": "M60",
