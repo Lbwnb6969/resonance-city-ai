@@ -16,6 +16,12 @@ func _initialize() -> void:
 	city.roads.append({"points": [[-16.0, 3.0], [-16.0, 3.0]], "width": 1.2})
 	city.waters.append({"points": [[-8.3, 7.8], [-5.7, 8.6], [-4.5, 10.8]], "width": 1.6})
 	city.waters.append({"points": [[10.0, -8.1]], "width": 1.4})
+	# Keep the deliberate degenerate segments, but give entities the identities
+	# required by the current derived scenery/grass consumer.
+	city.houses[0].id="h1";city.houses[0].role="residential";city.houses[0].palette=0;city.houses[0].seed=81977
+	for i in range(city.houses[0].cells.size()):city.houses[0].cells[i].id="c"+str(i+1)
+	for i in range(city.roads.size()):city.roads[i].id="r"+str(i+1)
+	for i in range(city.waters.size()):city.waters[i].id="w"+str(i+1)
 	var before := city.snapshot()
 	var masks: Dictionary = {}
 	# Brute-force oracle has no bins and uses nearest rectangle boundary points

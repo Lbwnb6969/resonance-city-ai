@@ -75,7 +75,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for id:String in city.resonance_afterglow:
 		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
 	for house:Dictionary in city.houses:
-		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel"):result.schema=city.PERSONALIZATION_SCHEMA;break
+		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel") or house.has("bend_angle_deg") or house.has("bend_axis") or house.has("organic_manual"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
 		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
@@ -205,6 +205,8 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	city._next_district_id = int(data.get("next_district_id", 1))
 	# JSON numbers enter as floats; restore the authoritative integer fields.
 	for house in city.houses:
+		if house.has("bend_angle_deg"):house.bend_angle_deg=float(house.bend_angle_deg)
+		if house.has("bend_axis"):house.bend_axis=int(house.bend_axis)
 		if house.has("corner_bevel"):house.corner_bevel=int(house.corner_bevel)
 		if house.has("yaw"):house.yaw=float(house.yaw)
 		if house.has("base_y"): house.base_y=float(house.base_y)
@@ -371,6 +373,9 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for house in data.houses:
 		if not house is Dictionary or not city._valid_id(house.get("id"), "h", ids):
 			return city._fail("城市存档房屋身份无效")
+		if house.has("bend_axis") and (data.schema<city.PERSONALIZATION_SCHEMA or not city._is_integer(house.bend_axis) or house.bend_axis<0 or house.bend_axis>3):return city._fail("侧翼铰链字段无效")
+		if house.has("bend_angle_deg") and (data.schema<city.PERSONALIZATION_SCHEMA or not preload("res://scripts/world/city_creation_house_hinge.gd").valid(house.bend_angle_deg)):return city._fail("建筑折角字段无效")
+		if house.has("organic_manual") and (data.schema<city.PERSONALIZATION_SCHEMA or not house.organic_manual is bool):return city._fail("微雕手选字段无效")
 		if house.has("corner_bevel") and (data.schema<city.PERSONALIZATION_SCHEMA or not preload("res://scripts/world/city_creation_organic_form.gd").valid(house.corner_bevel)):return city._fail("墙角微雕字段无效")
 		if house.has("yaw") and (data.schema<city.PERSONALIZATION_SCHEMA or not city._is_number(house.yaw) or float(house.yaw)<-PI or float(house.yaw)>=PI):return city._fail("房屋转向字段无效")
 		if house.has("acoustic_style"):

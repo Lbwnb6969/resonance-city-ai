@@ -70,11 +70,11 @@ func road_point(hit:Dictionary)->Variant:
 	var body:Object=hit.get("collider")
 	if body==null or not body.has_meta("house_id"):return null
 	var house:Dictionary=demo.town._house_record(str(body.get_meta("house_id")))
-	if house.is_empty() or is_zero_approx(Rotation.Frame.yaw(house)):return null
-	var cell:Dictionary=body.get_meta("cell");var normal:Vector3=Rotation.Frame.design_normal(house,hit.normal)
+	if house.is_empty() or not Rotation.Frame.transformed(house):return null
+	var cell:Dictionary=body.get_meta("cell");var normal:Vector3=Rotation.Frame.design_normal(house,hit.normal,cell)
 	if int(cell.level)!=0 or cell.kind!="room" or absf(normal.y)>=.45:return demo._ground_at(demo.pointer)
 	var side:=Vector2i(1 if normal.x>0 else -1,0) if absf(normal.x)>absf(normal.z) else Vector2i(0,1 if normal.z>0 else -1)
 	var center:=Rotation.Frame.center(house,cell);var point:Vector3=hit.position
-	var tangent:=Rotation.Frame.direction(house,Vector2(side.y,-side.x))
-	if absf((Vector2(point.x,point.z)-center).dot(tangent))<=demo.Frontage.HALF_DOOR and demo.Frontage.exposed(house,cell,side):return center+Rotation.Frame.direction(house,Vector2(side))*.92
+	var tangent:=Rotation.Frame.direction(house,Vector2(side.y,-side.x),cell)
+	if absf((Vector2(point.x,point.z)-center).dot(tangent))<=demo.Frontage.HALF_DOOR and demo.Frontage.exposed(house,cell,side):return center+Rotation.Frame.direction(house,Vector2(side),cell)*.92
 	return demo._ground_at(demo.pointer)

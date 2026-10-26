@@ -620,7 +620,7 @@ func _signature() -> Array:
 			if int(cell.level) == 0:
 				# A terrace can cover a neighboring door even without adding a room.
 				entrances.append([int(cell.x), int(cell.z),str(cell.kind)])
-		result.append([str(house.id), house.origin.duplicate(), str(house.get("role", "residential")),float(house.get("base_y",0.0)), entrances])
+		result.append([str(house.id), house.origin.duplicate(), str(house.get("role", "residential")),float(house.get("base_y",0.0)), entrances,Frame.yaw(house),Frame.Hinge.key(house)])
 	return result
 
 func _sync() -> void:

@@ -44,7 +44,7 @@ func sync(renderer:Node3D,allow_new:bool=true)->void:
 	if records.is_empty():_clear_visuals()
 
 func _geometry(house:Dictionary,cell:Dictionary)->Array:
-	return [house.origin,house.get("base_y",0.),cell.x,cell.z,cell.level,cell.kind,house.get("palette",0),house.get("finish",""),house.get("custom_colors",{})]
+	return [house.origin,house.get("base_y",0.),cell.x,cell.z,cell.level,cell.kind,house.get("palette",0),house.get("finish",""),house.get("custom_colors",{}),house.get("yaw",0.),preload("res://scripts/world/city_creation_house_hinge.gd").key(house)]
 
 func supersedes(renderer:Node3D,published:Dictionary,addition:Dictionary)->bool:
 	# A tall old tower cap can extend through the new floor. That roof is no
@@ -63,10 +63,11 @@ func pick(origin:Vector3,direction:Vector3,limit:float=120.)->Dictionary:
 	var closest:=limit*limit
 	var result:Dictionary={}
 	for row:Dictionary in records:
-		var bounds:AABB=row.bounds
-		var at:Variant=bounds.intersects_ray(origin,direction)
+		var bounds:AABB=row.get("local_bounds",row.bounds)
+		var pose:Transform3D=row.get("transform",Transform3D.IDENTITY);var inverse:=pose.affine_inverse()
+		var at:Variant=bounds.intersects_ray(inverse*origin,inverse.basis*direction)
 		if not at is Vector3:continue
-		var distance:=origin.distance_squared_to(at)
+		var world:Vector3=pose*at;var distance:=origin.distance_squared_to(world)
 		if distance>=closest:continue
 		var normal:=Vector3.ZERO;var gap:=INF
 		for axis in range(3):
@@ -76,5 +77,5 @@ func pick(origin:Vector3,direction:Vector3,limit:float=120.)->Dictionary:
 				if difference<gap:
 					gap=difference;normal=Vector3.ZERO;normal[axis]=side
 		closest=distance
-		result={"position":at,"normal":normal,"house_id":row.house_id,"cell_id":row.cell_id,"cell":row.cell}
+		result={"position":world,"normal":pose.basis*normal,"house_id":row.house_id,"cell_id":row.cell_id,"cell":row.cell}
 	return result

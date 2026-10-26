@@ -9,6 +9,7 @@ const Passage = preload("res://scripts/world/city_creation_passage.gd")
 
 static func for_house(city: RefCounted, house: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
+	if not is_zero_approx(Frame.Hinge.angle(house)):return result
 	if str(house.get("style","classic"))=="round_tower": return result
 	var passages := Passage.for_house(house,city.roads)
 	var courts: Array = city.courtyard_plans()

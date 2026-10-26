@@ -789,7 +789,7 @@ func natural_clusters()->Dictionary:
 		var ground:Array=[]
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:ground.append([cell.x,cell.z,cell.kind])
-		input.append([house.id,house.origin,ground,Rotation.Frame.yaw(house)])
+		input.append([house.id,house.origin,ground,Rotation.Frame.yaw(house),Rotation.Frame.Hinge.key(house)])
 	var key:=hash([input,roads])
 	if _natural_cluster_key!=key:
 		var doors:Dictionary={}
@@ -1263,7 +1263,7 @@ func _water_conflicts(points: Array, width: float, house_rows: Array, road_rows:
 		for cell in house.cells:
 			var center := Vector2(float(house.origin[0]) + int(cell.x) * CELL_UNIT, float(house.origin[1]) + int(cell.z) * CELL_UNIT)
 			var rect := Rect2(center - Vector2.ONE * CELL_UNIT * 0.5, Vector2.ONE * CELL_UNIT)
-			if (Rotation.Frame.stroke_hits(house,cell,points,width*.5) if not is_zero_approx(Rotation.Frame.yaw(house)) else _stroke_hits_rect(points,width*.5,rect)):
+			if (Rotation.Frame.stroke_hits(house,cell,points,width*.5) if Rotation.Frame.transformed(house) else _stroke_hits_rect(points,width*.5,rect)):
 				conflicts.append({"kind": "house", "id": house.id, "name": house.get("name", house.id), "position":[center.x,center.y], "source": cell.get("source", "seed")})
 				break
 	for road in road_rows:
@@ -2629,6 +2629,7 @@ func _make_cell(x: int, z: int, level: int, kind: String) -> Dictionary:
 
 
 func _commit(before: Dictionary, label: String) -> void:
+	preload("res://scripts/world/city_creation_curve_hug.gd").after_placement(self,before,label)
 	if journey_checkpoint.get("concert",{}).get("grand_festival",false):_prune_missing_journeys()
 	AutoNeighborhoods.refresh(self)
 	_prune_afterglow()
@@ -2706,7 +2707,7 @@ func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
 
 
 func _pair_overlaps(first: Dictionary, second: Dictionary) -> bool:
-	if not is_zero_approx(Rotation.Frame.yaw(first)) or not is_zero_approx(Rotation.Frame.yaw(second)):return Rotation.Frame.overlaps(first,second)
+	if Rotation.Frame.transformed(first) or Rotation.Frame.transformed(second):return Rotation.Frame.overlaps(first,second)
 	for a in first.cells:
 		for b in second.cells:
 			if a.level != b.level:
@@ -2755,7 +2756,7 @@ func house_entrances(house_id: String) -> Array[Dictionary]:
 	if has_meta("prepared_frontages"):return preload("res://scripts/visual/city_creation_prepared_frontages.gd").read(self,house_id)
 	for house: Dictionary in houses:
 		if str(house.id)!=house_id: continue
-		var signature: Array=[house.origin.duplicate(),[],Rotation.Frame.yaw(house)]
+		var signature: Array=[house.origin.duplicate(),[],Rotation.Frame.yaw(house),Rotation.Frame.Hinge.key(house)]
 		for cell: Dictionary in house.cells:
 			if int(cell.level)==0:
 				signature[1].append([str(cell.id),int(cell.x),int(cell.z),str(cell.kind)])
@@ -2782,7 +2783,7 @@ func house_passages(house_id: String) -> Array[Dictionary]:
 
 func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
 	var scene_roads: Array = roads if road_rows == null else road_rows
-	if not is_zero_approx(Rotation.Frame.yaw(house)):return Rotation.site(self,house,scene_roads,waters if water_rows==null else water_rows)
+	if Rotation.Frame.transformed(house):return Rotation.site(self,house,scene_roads,waters if water_rows==null else water_rows)
 	for marker: Dictionary in Roundabouts.all(scene_roads):
 		for cell: Dictionary in house.cells:
 			if int(cell.level)!=0: continue

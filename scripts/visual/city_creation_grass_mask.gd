@@ -183,6 +183,13 @@ func continuous_edge(at: Vector2) -> Dictionary:
 	return {"clearance": best, "push": push}
 
 func _rect_edge(at: Vector2, footprint:Variant) -> Vector3:
+	if footprint is Dictionary and footprint.has("polygon"):
+		var poly:PackedVector2Array=footprint.polygon;var nearest:=Vector2.ZERO;var best:=INF
+		for i in range(poly.size()):
+			var p:=Geometry2D.get_closest_point_to_segment(at,poly[i],poly[(i+1)%poly.size()]);var distance:=at.distance_to(p)
+			if distance<best:best=distance;nearest=p
+		var inside:=Frame.contains(footprint,at);var push:Vector2=(nearest-at if inside else at-nearest).normalized()
+		return Vector3(push.x,push.y,-best if inside else best)
 	if footprint is Dictionary:
 		var edge:=_rect_edge(Frame.local_point(footprint,at),Frame.rect(footprint));var push:=Vector2(edge.x,edge.y).rotated(-float(footprint.angle));return Vector3(push.x,push.y,edge.z)
 	var offset:Vector2=at-footprint.get_center()

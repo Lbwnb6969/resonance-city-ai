@@ -1,7 +1,7 @@
 extends RefCounted
 ## Main-thread assembly state. Geometry and picking publish only after DONE.
-enum Stage { ROUND_BODY, ROUND_FINISH, CELL_BASE, CELL_WALL, CELL_ROOF, CELL_ORGANIC, ERA_ROOF, DOMES, CONSERVATORY, SIGNATURE, SMOKE, DONE }
-const LABELS := ["round_body","round_finish","cell_base","cell_wall","cell_roof","cell_organic","era_roof","domes","conservatory","signature","smoke","done"]
+enum Stage { ROUND_BODY, ROUND_FINISH, CELL_BASE, CELL_WALL, CELL_ROOF, CELL_ORGANIC, ERA_ROOF, DOMES, CONSERVATORY, SIGNATURE, SMOKE, BEND, DONE }
+const LABELS := ["round_body","round_finish","cell_base","cell_wall","cell_roof","cell_organic","era_roof","domes","conservatory","signature","smoke","bend","done"]
 const DIRECTIONS := [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
 class Cell extends RefCounted:
 	var cell:Dictionary
@@ -19,6 +19,7 @@ class Cell extends RefCounted:
 	var body:StaticBody3D
 var house:Dictionary
 var root:Node3D
+var hinge:Dictionary={}
 var hidden:=false
 var stage:int=Stage.CELL_BASE
 var cell_index:=0

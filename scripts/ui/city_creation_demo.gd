@@ -1117,7 +1117,7 @@ func _update_hover() -> void:
 			var removed: Dictionary = state.preview_remove_house(house_id) if whole else state.preview_remove_cell(house_id,cell_id)
 			candidate = {"house_id":house_id,"cell_id":cell_id,"erase":true,"whole":whole,"removal":removed}
 		else:
-			var normal:Vector3=preload("res://scripts/world/city_creation_house_frame.gd").design_normal(town._house_record(house_id),hovered.normal)
+			var normal:Vector3=preload("res://scripts/world/city_creation_house_frame.gd").design_normal(town._house_record(house_id),hovered.normal,cell)
 			var target := cell.duplicate(true)
 			if normal.y > 0.45: target.level = int(cell.level) + 1
 			elif absf(normal.x) > absf(normal.z): target.x = int(cell.x) + (1 if normal.x > 0.0 else -1)
@@ -1220,7 +1220,7 @@ func _refresh_house_stroke() -> void:
 	house_stroke_key=str([state.revision,house_stroke.cells])
 	var cells: Array=house_stroke_result.get("added_cells",[]) if bool(house_stroke_result.ok) else house_stroke_result.get("input_cells",house_stroke.cells)
 	var preview_base := float(house_stroke_result.get("base_y",house_stroke_base_y))
-	town.set_house_stroke_preview(house_stroke_origin,cells,bool(house_stroke_result.ok),preview_base,get_meta("house_rotation_input").stroke_yaw())
+	town.set_house_stroke_preview(house_stroke_origin,cells,bool(house_stroke_result.ok),preview_base,get_meta("house_rotation_input").stroke_yaw(),house_stroke_host)
 	chemistry_brush.stroke()
 	hint.text="松开建成这笔 · %d 个新单元\nEsc 取消，Ctrl+Z 收回整笔。" % int(house_stroke_result.get("added_count",0)) if bool(house_stroke_result.ok) else str(house_stroke_result.message)+"\n本笔全部未落定。Esc 取消。"
 

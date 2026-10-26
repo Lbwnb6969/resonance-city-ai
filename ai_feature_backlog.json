@@ -1272,8 +1272,8 @@
         "id": "M63",
         "title": "侧翼折角与曲路贴合",
         "acceptance": "有条件的组合侧翼刚体微折、屋脊接缝封顶、曲路两端真实切线派生；支持的几何/道路/门口/存档依赖一致，明显不适合原型明确保留原形，不造成虚假可走范围。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M63 Harness/doc+selftest8; hinge66 incl full-precision isolated disk save,float/axis validation,stable chosen hinge across opposite extension and zero adjustment;rotation55/corners32/pending37/frontage_walk28/grass_edge96064/legacy375+27 PASS. Native final45 + details_verified26,zero script/render errors: actual curve-end tangents/auto rounded same placement transaction/right-click following,real rotated road terminal,actual Life door normal updates on angle-only edits,true roof fan ray coverage,Z and negativeX two-storey hinges,occupied old-pose reset rejected,leaf/wheel15..28deg,CtrlZ/Y,color fast path,pending oriented picking,actual end-wall hover/preview/click extension,yaw composition and cold JSON. Original triangles split at hinge,rigid halves plus swept outer seam faces shared by physics;Frame reserves real joint polygon/wing yaw,grass signed-edge and service/network caches corrected. Uniform authored one/two-storey rows only;special domes/glass/arcades retain silhouettes,no invented through-arch. Final manual hinge46.488ms total spread over units1.881ms peak;actual edit framesp95 14.401/max51.049ms,steady10.307/10.635ms(reference only). Masters3.061333/3.065034s peak.192627/.189301 zero clips;fixed12+4/6+2,personal saves/cell IDs/numeric and research rules preserved. Initial live43 had1377GrassMask polygon errors and was rejected despite green JSON;fixed and clean final45. Details parse/typed-array fixture failures retained. NextM64 includes independent Critic;stopM66."
       },
       {
         "id": "M64",

@@ -115,3 +115,5 @@ M60：`tests/test_city_creation_road_ruler.gd`核真实段切线/两侧角度/�
 M61：CPU `tests/test_city_creation_road_closure.gd`检查真实段中投影/曲线控制点/自闭合/多段平面环心及净空/冷读；原生`check_creation_road_closure_live.gd`双尺寸段中接路/真寻路/金环/自闭合泉/撤销/音频，`check_creation_road_loop_details_live.gd`补真圆半径闭合、四曲路成环/喷泉近景碰撞/桥端口。参数同`-- --isolated-session --out-dir=...`。空城自然声单独命名，闭合Master在真实点击前开启录制，不拿低电平自然声当泉声。
 
 M62：`test_city_creation_organic_corners.gd`32项核旧档/切角闭合体积/法线/共墙；`check_creation_organic_corners_live.gd`原生GL/isolated-session/--out-dir采实际微雕印章循环、真实墙角与檐口射线、双层合檐、旋转换色、圆厅暂存清除/Undo/恢复、冷读与Master。最终accepted46；实测几何/装配分片/编辑帧记录不设固定耗时门槛。
+
+M63：`test_city_creation_hinged_wing.gd`66核真实曲路、稳定铰链轴、接缝占地/封顶/门口/草缘/磁盘旧档；`check_creation_hinged_wing_live.gd`原生GL/isolated-session/--out-dir核叶章/滚轮/右键、代理拾取、真实端墙加建与冷读。`check_creation_hinged_wing_details_live.gd`另核双层Z/-X、角度单独改动后Life门口缓存、原位置占用拒绝拉直。门禁必须同时查日志无SCRIPT ERROR，最早live43绿报告含草缘错已拒；最终final45/details_verified26。

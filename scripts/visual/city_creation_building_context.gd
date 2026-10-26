@@ -57,7 +57,7 @@ func prepare(houses: Array, roads: Array = []) -> void:
 		cells.sort_custom(func(a,b): return str(a.id).naturalnocasecmp_to(str(b.id)) < 0)
 		for cell: Dictionary in cells:
 			var center := Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
-			var row := {"yaw":float(house.get("yaw",0.)),"house_id":str(house.id),"cell_id":str(cell.id),"cell":cell.duplicate(true),"center":center,"level":int(cell.level),"base_y":float(house.get("base_y",0.0)),"key":str(house.id)+":"+str(cell.id)}
+			var row := {"deformed":not is_zero_approx(preload("res://scripts/world/city_creation_house_hinge.gd").angle(house)),"yaw":float(house.get("yaw",0.)),"house_id":str(house.id),"cell_id":str(cell.id),"cell":cell.duplicate(true),"center":center,"level":int(cell.level),"base_y":float(house.get("base_y",0.0)),"key":str(house.id)+":"+str(cell.id)}
 			_rows.append(row)
 			_by_key[row.key] = row
 			var bin := _bin(center,row.level)
@@ -131,7 +131,7 @@ func tower_cells(house_id: String) -> Array:
 	return tower_cells_by_house.get(house_id,[])
 
 func _record(row: Dictionary) -> Array:
-	return [row.house_id,row.cell_id,row.center,row.level,str(row.cell.kind),row.base_y,row.yaw]
+	return [row.house_id,row.cell_id,row.center,row.level,str(row.cell.kind),row.base_y,row.yaw,row.deformed]
 
 func _bin(center: Vector2,level: int) -> Vector3i:
 	return Vector3i(floori(center.x/UNIT),level,floori(center.y/UNIT))
@@ -145,7 +145,7 @@ func _neighbor_row(row: Dictionary,side: Vector2i,offset: int,gaps: bool) -> Dic
 		for z in range(-1,2):
 			for other: Dictionary in _bins.get(bin+Vector3i(x,0,z),[]):
 				if other.key == row.key: continue
-				if other.house_id!=row.house_id and (not is_zero_approx(float(other.yaw)) or not is_zero_approx(float(row.yaw))):continue
+				if other.house_id!=row.house_id and (bool(other.deformed) or bool(row.deformed) or not is_zero_approx(float(other.yaw)) or not is_zero_approx(float(row.yaw))):continue
 				# Floors from independently elevated houses never erase each
 				# other's walls or participate in one continuous roof group.
 				if absf(float(other.base_y)-float(row.base_y))>EPS: continue

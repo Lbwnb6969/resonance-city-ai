@@ -20,8 +20,9 @@ static func set_corner(city,id:String,value:int)->Dictionary:
 	if index<0 or value<0 or value>2:return city._fail("房屋微雕无效")
 	var house:Dictionary=city.houses[index]
 	if value!=0 and not supported(city,house):return city._fail("此屋保留原型轮廓")
-	if int(house.get("corner_bevel",0))==value:return {"ok":true,"no_op":true}
-	var before:Dictionary=city.snapshot()
+	if house.has("bend_angle_deg"):return preload("res://scripts/world/city_creation_hinge_actions.gd").corner(city,id,value,LABELS[value])
+	if int(house.get("corner_bevel",0))==value and house.get("organic_manual",false):return {"ok":true,"no_op":true,"message":LABELS[value]}
+	var before:Dictionary=city.snapshot();house.organic_manual=true
 	if value==0:house.erase("corner_bevel")
 	else:house.corner_bevel=value
 	city._commit(before,"建筑有机微雕")

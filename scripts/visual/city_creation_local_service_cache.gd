@@ -20,9 +20,8 @@ static func seed(changes:Dictionary,published:Dictionary)->Dictionary:
 static func touches(bounds:Rect2,regions:Array)->bool:
 	return regions.any(func(r):return bounds.intersects(r,true))
 static func house_bounds(house:Dictionary)->Rect2:
-	var origin:=Vector2(house.origin[0],house.origin[1]);var result:=Rect2(origin,Vector2.ZERO).grow(1.)
-	for cell:Dictionary in house.cells:result=result.expand(origin+Vector2(cell.x,cell.z)*1.8-Vector2.ONE).expand(origin+Vector2(cell.x,cell.z)*1.8+Vector2.ONE)
-	return result
+	return preload("res://scripts/world/city_creation_house_frame.gd").house_bounds(house).grow(.1)
+
 static func prime(context)->Dictionary:
 	var seed_data:Dictionary=context.get_meta("local_service_seed",{});var prior:Dictionary=seed_data.get("published",{})
 	var stats:={"cold":true,"blessings_reused":0,"cafes_reused":0,"courts_reused":0}

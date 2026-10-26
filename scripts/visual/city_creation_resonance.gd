@@ -181,6 +181,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	rig.set_meta("arch_lanterns",arch_lanterns)
 	rig.set_meta("garlands",garlands)
 	rig.set_meta("tower_bells",tower_bells)
+	preload("res://scripts/visual/city_creation_hinge_assembly.gd").rig(house,root,rig)
 	var arc := MeshInstance3D.new()
 	arc.name = "ResonanceArc"
 	arc.mesh = arc_mesh if arc_mesh != null else _ribbon()

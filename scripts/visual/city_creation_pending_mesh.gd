@@ -11,6 +11,8 @@ static func build(renderer: Node3D, parent: Node3D, house: Dictionary, cell: Dic
 	node.name = "SpringProxy_"+str(cell.id)
 	parent.add_child(node)
 	node.position = renderer._cell_position(house,cell)+Vector3.UP*float(cell.level)*1.7
+	var frame=preload("res://scripts/world/city_creation_house_frame.gd");var center:Vector2=frame.center(house,cell)
+	node.position.x=center.x;node.position.z=center.y;node.rotation.y=frame.yaw(house)+frame.Hinge.cell_angle(house,cell)
 	var palette: Array = Colors.era_palette(renderer,house,Colors.base_palette(renderer,house),house.has("custom_colors"))
 	var body := MeshInstance3D.new()
 	body.mesh = wall_mesh(height)
@@ -29,7 +31,8 @@ static func build(renderer: Node3D, parent: Node3D, house: Dictionary, cell: Dic
 	node.set_meta("spring_started_usec",Time.get_ticks_usec())
 	var tween := node.create_tween()
 	tween.tween_property(node,"scale:y",1.,.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	return {"node":node,"bounds":AABB(node.position+Vector3(-.92,0,-.92),Vector3(1.84,height+(.42 if not terrace else 0.),1.84))}
+	var pose:=Transform3D(Basis(Vector3.UP,node.rotation.y),node.position);var bounds:=AABB(Vector3(-.92,0,-.92),Vector3(1.84,height+(.42 if not terrace else 0.),1.84))
+	return {"node":node,"transform":pose,"local_bounds":bounds,"bounds":pose*bounds}
 static func material(color: Color, base_y: float) -> ShaderMaterial:
 	var key: Array = [color,base_y]
 	if not materials.has(key):

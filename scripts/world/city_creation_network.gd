@@ -301,7 +301,7 @@ func _build_graph() -> void:
 			segments[best_segment].splits.append(best)
 			# A side porch has a real outside walking leg, never a house-internal
 			# connector between otherwise disconnected roads.
-			var target: Vector2 = entrance.at if entrance.active and (entrance.side!=Vector2i(0,1) or not is_zero_approx(Frame.yaw(house))) else best
+			var target: Vector2 = entrance.at if entrance.active and (entrance.side!=Vector2i(0,1) or Frame.transformed(house)) else best
 			if target.distance_to(best)>0.0005:
 				door_links.append({"a":best,"b":target,"splits":[best,target]})
 			candidates.append({"key":_key(target),"entrance":entrance,"distance":best_distance})

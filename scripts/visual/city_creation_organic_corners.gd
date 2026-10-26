@@ -48,7 +48,7 @@ static func shape_unit(frame,data:Dictionary,collision:CollisionShape3D,stats:Di
 	# their own dimensions and receive the same local corner map as their mesh.
 	if is_equal_approx(box.size.x,1.8) and is_equal_approx(box.size.z,1.8) and box.size.y>1.:box.size.x=Form.HALF*2.;box.size.z=Form.HALF*2.
 	var mesh:=Cut.build(box,transform,data.sides,int(data.mode));var shape:=ConvexPolygonShape3D.new()
-	shape.points=mesh.get_faces();collision.shape=shape;stats.collision_shapes+=1
+	shape.points=mesh.get_faces();collision.set_meta("organic_source_faces",shape.points);collision.shape=shape;stats.collision_shapes+=1
 static func patch(renderer,house:Dictionary,source:Dictionary,parent:Node3D)->Dictionary:
 	var value:=Form.mode(renderer.state,house)
 	if value==0:return source

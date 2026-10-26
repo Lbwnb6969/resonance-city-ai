@@ -1189,9 +1189,9 @@ func set_preview(house_id: String, cell: Dictionary, valid: bool) -> void:
 	if house.is_empty(): return
 	var color := Color(0.63,0.89,0.72,0.40) if valid else Color(0.95,0.39,0.31,0.45)
 	_preview_cell(house,cell,color,valid)
-	preload("res://scripts/world/city_creation_house_frame.gd").apply(preview,house)
+	preload("res://scripts/visual/city_creation_hinge_preview.gd").apply(self,preview,house,[cell])
 
-func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y: float = 0.0,angle:float=0.) -> void:
+func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y: float = 0.0,angle:float=0.,host_id:String="") -> void:
 	clear_preview()
 	var host := {"origin":[origin.x,origin.y],"base_y":base_y}
 	for cell: Dictionary in cells:
@@ -1199,7 +1199,7 @@ func set_house_stroke_preview(origin: Vector2, cells: Array, valid: bool, base_y
 	var roof_count := _preview_stroke_roofs(origin,cells,base_y,Color(0.92,0.54,0.40,0.34) if valid else Color(0.95,0.39,0.31,0.28))
 	preview.set_meta("stroke_cells",cells.duplicate(true))
 	preview.set_meta("stroke_valid",valid)
-	preview.set_meta("stroke_roofs",roof_count);host.yaw=angle;preload("res://scripts/world/city_creation_house_frame.gd").apply(preview,host)
+	preview.set_meta("stroke_roofs",roof_count);preload("res://scripts/visual/city_creation_hinge_preview.gd").apply(self,preview,_house_record(host_id) if not host_id.is_empty() else host,cells,angle)
 
 func _preview_stroke_roofs(origin: Vector2, cells: Array, base_y: float, color: Color) -> int:
 	# A cheap authored preview of the same gable profile used after release.
@@ -1602,7 +1602,9 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 		HouseAssembly.Stage.SMOKE:
 			var points:Array=job.root.get_meta("chimneys",[])
 			if str(job.house.get("role","residential"))=="bakery" and not points.is_empty():bakery_smoke.build(job.root,points[0])
-			job.stage=HouseAssembly.Stage.DONE
+			job.stage=HouseAssembly.Stage.BEND
+		HouseAssembly.Stage.BEND:
+			if preload("res://scripts/visual/city_creation_hinge_assembly.gd").step(job):job.stage=HouseAssembly.Stage.DONE
 
 func _house_cell_base(job:HouseAssembly,cell:Dictionary)->HouseAssembly.Cell:
 	var house:Dictionary=job.house
@@ -1837,9 +1839,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 		_house_dependency_global=hash([state.roads,state.waters,state.districts,state.era_unlocks,preload("res://scripts/world/city_creation_tradition_rules.gd").geometry_key(state)])
 		_house_dependency_bounds={}
 		for row:Dictionary in state.houses:
-			var at:=Vector2(row.origin[0],row.origin[1]);var bounds:=Rect2(at,Vector2.ZERO)
-			for cell:Dictionary in row.cells:bounds=bounds.expand(at+Vector2(cell.x,cell.z)*UNIT)
-			_house_dependency_bounds[str(row.id)]=bounds.grow(UNIT*.5)
+			_house_dependency_bounds[str(row.id)]=preload("res://scripts/world/city_creation_house_frame.gd").house_bounds(row)
 	var id:=str(house.id);var nearby:Array=[]
 	var influence:Rect2=_house_dependency_bounds[id].grow(10.)
 	for row:Dictionary in state.houses:
@@ -1859,7 +1859,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
 	craft.prepare_layout(self,house,frontages,arcades)
-	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),preload("res://scripts/world/city_creation_organic_form.gd").geometry_key(state,house),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),preload("res://scripts/world/city_creation_organic_form.gd").geometry_key(state,house),preload("res://scripts/world/city_creation_house_hinge.gd").key(house),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 	house_geometry_cache[id]={"dependency":dependency,"fingerprint":fingerprint}
 	return fingerprint
 

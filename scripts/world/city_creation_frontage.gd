@@ -17,7 +17,7 @@ static func ground_geometry(houses:Array,include_overhangs:bool=false)->Array:
 		var ground:Dictionary={}
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:cells.append(cell);ground[Vector2i(cell.x,cell.z)]=true
-		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.)),Frame.yaw(house)]
+		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.)),Frame.yaw(house),Frame.Hinge.key(house)]
 		if include_overhangs:
 			# Courtyard paving/fountains also avoid elevated terrace footprints.
 			# Repeated floors over an existing footprint add no new obstruction.
@@ -58,7 +58,7 @@ static func terminal(house: Dictionary, cell: Dictionary, points: Array, at_star
 	var origin := center(house,cell)
 	for side: Vector2i in SIDES:
 		if not exposed(house,cell,side): continue
-		var normal := Frame.direction(house,Vector2(side))
+		var normal := Frame.direction(house,Vector2(side),cell)
 		var wall_at := origin+normal*0.9
 		var offset := endpoint-wall_at
 		var outward := offset.dot(normal)
@@ -79,9 +79,9 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 			for passage: Dictionary in passages:
 				if passage.cell_id==str(cell.get("id","")) and passage.sides.has(side): opening=passage
 			if not opening.is_empty():
-				var lateral:Vector2=Frame.direction(house,Vector2(0,float(opening.offset)) if opening.axis.x==1 else Vector2(float(opening.offset),0))
-				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9+lateral
-				result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side))*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":true,"passage":true,"road_id":str(opening.road_id)})
+				var lateral:Vector2=Frame.direction(house,Vector2(0,float(opening.offset)) if opening.axis.x==1 else Vector2(float(opening.offset),0),cell)
+				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side),cell)*0.9+lateral
+				result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side),cell)*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side),cell)*0.65,"active":true,"passage":true,"road_id":str(opening.road_id)})
 				continue
 			var active := false
 			var road_id := ""
@@ -94,11 +94,12 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 						break
 				if active: break
 			if not active and side!=Vector2i(0,1): continue
-			var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9
-			result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side))*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":active,"road_id":road_id})
+			var wall_at := center(house,cell)+Frame.direction(house,Vector2(side),cell)*0.9
+			result.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"wall_at":wall_at,"at":wall_at+Frame.direction(house,Vector2(side),cell)*0.62,"clearance_at":wall_at+Frame.direction(house,Vector2(side),cell)*0.65,"active":active,"road_id":road_id})
 	var outside: Array[Dictionary] = []
 	for entrance: Dictionary in result:
-		entrance.outward=Frame.direction(house,Vector2(entrance.side))
+		var owner:Dictionary=house.cells.filter(func(c):return str(c.id)==str(entrance.cell_id))[0]
+		entrance.outward=Frame.direction(house,Vector2(entrance.side),owner)
 		# A true road passage is a portal into a traversable arch, even when the
 		# next room belongs to a different household. Ordinary doors need air.
 		if entrance.get("passage",false) or approach_clear(house,entrance.wall_at,entrance.at,houses): outside.append(entrance)
@@ -109,10 +110,10 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 			if int(cell.level)!=0 or str(cell.kind)!="room": continue
 			for side: Vector2i in SIDES:
 				if not exposed(house,cell,side): continue
-				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side))*0.9
-				var at := wall_at+Frame.direction(house,Vector2(side))*0.62
+				var wall_at := center(house,cell)+Frame.direction(house,Vector2(side),cell)*0.9
+				var at := wall_at+Frame.direction(house,Vector2(side),cell)*0.62
 				if not approach_clear(house,wall_at,at,houses): continue
-				outside.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"outward":Frame.direction(house,Vector2(side)),"wall_at":wall_at,"at":at,"clearance_at":wall_at+Frame.direction(house,Vector2(side))*0.65,"active":false,"road_id":""})
+				outside.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"outward":Frame.direction(house,Vector2(side),cell),"wall_at":wall_at,"at":at,"clearance_at":wall_at+Frame.direction(house,Vector2(side),cell)*0.65,"active":false,"road_id":""})
 				return outside
 	return outside
 
@@ -135,11 +136,11 @@ static func blocker_signature(house: Dictionary, houses: Array) -> Array:
 		if str(other.id)==str(house.id): continue
 		for cell: Dictionary in other.cells:
 			if int(cell.level)==0 and str(cell.kind)=="room" and bounds.has_point(center(other,cell)):
-				result.append([str(other.id),str(cell.id),center(other,cell),float(other.get("base_y",0.0)),Frame.yaw(other)])
+				result.append([str(other.id),str(cell.id),center(other,cell),float(other.get("base_y",0.0)),Frame.yaw(other),Frame.Hinge.cell_angle(other,cell)])
 	return result
 
 static func road_cell_conflict(house: Dictionary, cell: Dictionary, points: Array, width: float) -> bool:
-	if not is_zero_approx(Frame.yaw(house)):return road_cell_conflict(Frame.zero(house),cell,Frame.points_local(house,points),width)
+	if Frame.transformed(house):return road_cell_conflict(Frame.zero(house),cell,Frame.points_local(house,points,cell),width)
 	if not Passage.for_cell(house,cell,points,width).is_empty(): return false
 	var origin := center(house,cell)
 	var wall := Rect2(origin-Vector2.ONE*0.9,Vector2.ONE*UNIT)
