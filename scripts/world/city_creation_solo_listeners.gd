@@ -9,6 +9,7 @@ static func gather(life:Node3D,host:String,until:float)->Array[String]:
 	for r:Dictionary in life.residents:
 		if result.size()>=6:break
 		if r.paused or r.wait>0. or r.has("daily_snapshot") or r.has("cafe_visit") or not str(r.dwell_id).is_empty() or not str(r.service_pending).is_empty():continue
+		if life.tram.tickets.get(str(r.home_id),{}).get("state","")=="onboard" or life.time<float(r.get("greeting_until",-1.)):continue
 		life.flush_citizen(r)
 		if r.node.position.distance_to(center)>9.:continue
 		var route:Array[Vector3]=life._route_from_position(r.node.position,port)
@@ -18,6 +19,11 @@ static func gather(life:Node3D,host:String,until:float)->Array[String]:
 		for i in range(1,route.size()):
 			length+=route[i-1].distance_to(route[i]);chosen.append(route[i])
 		if length>10.:continue
+		var setback:=minf(length*.5,.35+result.size()*.32)
+		while chosen.size()>1 and setback>0.:
+			var last:int=chosen.size()-1;var segment:=chosen[last].distance_to(chosen[last-1])
+			if setback>=segment:setback-=segment;chosen.pop_back()
+			else:chosen[last]=chosen[last].move_toward(chosen[last-1],setback);setback=0.
 		r["solo_listen"]={"path":chosen,"index":0,"until":until,"host":host,"revision":life.state.revision,"source":center}
 		life._citizen_schedule.wake(r);result.append(str(r.home_id))
 	return result

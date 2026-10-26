@@ -304,6 +304,7 @@ func _ready() -> void:
 	preload("res://scripts/visual/city_creation_street_wonders.gd").new().setup(self)
 	preload("res://scripts/visual/city_creation_waterfront_light.gd").new().setup(self)
 	preload("res://scripts/ui/city_creation_solo_spotlight.gd").new().setup(self)
+	preload("res://scripts/visual/city_creation_musical_archways.gd").new().setup(self)
 	get_meta("era_ceremony").bind()
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
@@ -395,7 +396,9 @@ func _setup_life(prepared:Node3D=null) -> void:
 	life.craft_callback = _on_craft_event
 	life.quality_callback = _on_quality_changed
 	life.cafe_callback = _on_cafe_event
-	life.travel_callback = music.queue_travel
+	life.travel_callback = func(actor,kind,id,at):
+		music.queue_travel(actor,kind,id,at)
+		if has_meta("musical_archways"):get_meta("musical_archways").crossing(actor,kind,id,at)
 	music.clear_tram_cues()
 	life.tram_callback=music.queue_tram_chime
 	music.tram_source_gate=life.tram.source_valid

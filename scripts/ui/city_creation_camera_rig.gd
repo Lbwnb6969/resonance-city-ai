@@ -26,7 +26,7 @@ func toggle(demo: Node3D) -> void:
 		demo.focus.y = demo.state.street_height(Vector2(demo.focus.x,demo.focus.z)) + 1.2
 		demo.camera.projection = Camera3D.PROJECTION_PERSPECTIVE
 		demo.camera.fov = 48.0
-		demo._message("街头漫步：WASD / 方向键行走，右键转头，F12 拍明信片，V 返回。")
+		demo._message("街头漫步：WASD 行走 · 右键转头 · 点工坊/奇观听独奏 · F12 拍照 · V 返回")
 	else:
 		demo.focus = saved.focus
 		demo.yaw = saved.yaw

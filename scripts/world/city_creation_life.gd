@@ -163,7 +163,7 @@ func _update_citizen_lod(delta:float)->void:
 		var point:Vector3=motion.point() if motion!=null else resident.node.position
 		var visible:=view_camera==null or view_camera.is_position_in_frustum(point+Vector3.UP*.35)
 		var ticket:Dictionary=tram.tickets.get(str(resident.home_id),{})
-		var scalar:bool=not visible and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and not conductor_parade.owns(self,resident) and ticket.get("state","")!="onboard"
+		var scalar:bool=not visible and not resident.has("solo_listen") and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and not conductor_parade.owns(self,resident) and ticket.get("state","")!="onboard"
 		if scalar:
 			if not resident.has("offscreen_motion"):resident.offscreen_motion=CitizenMotion.new(point,resident.node.rotation.y)
 			resident.node.get_child(0).visible=false;_lod_scalar_count+=1

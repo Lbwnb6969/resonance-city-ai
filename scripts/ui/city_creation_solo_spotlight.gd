@@ -13,6 +13,7 @@ var stream:AudioStreamWAV
 var serial:=-1
 var track:=""
 var mode:=-2
+var pcm_peak:=0.
 var focus_tracking:=false
 var particles:Array[MeshInstance3D]=[]
 var roof:=Vector3.ZERO
@@ -21,12 +22,12 @@ var listeners:Array[String]=[]
 func setup(owner)->void:
 	demo=owner;name="SoloSpotlight";demo.add_child(self);demo.set_meta("solo_spotlight",self)
 	var material:=StandardMaterial3D.new();material.albedo_color=Color("d8b45d");material.emission_enabled=true;material.emission=Color("b28c33");material.emission_energy_multiplier=.5
-	var mesh:=SphereMesh.new();mesh.radius=.025;mesh.height=.05;mesh.radial_segments=6;mesh.rings=2
+	var mesh:=preload("res://scripts/visual/city_creation_solo_note.gd").mesh()
 	for i in range(12):
 		var note:=MeshInstance3D.new();note.mesh=mesh;note.material_override=material;note.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(note);note.hide();particles.append(note)
 func active()->bool:return not source.is_empty()
 func _blocked()->bool:
-	if demo.edit_pending() or demo.gallery.busy or demo.music.muted or demo.music.concert_active or demo.music._loading:return true
+	if demo.edit_pending() or demo.gallery.busy or demo.music.muted or demo.music.concert_active or demo.music._loading or demo.music.phonograph.active:return true
 	if demo.guide.visible() or demo.ledger.visible() or demo.journal.panel.visible or demo.gallery.panel.visible:return true
 	var focus:Control=demo.get_viewport().gui_get_focus_owner()
 	return focus is LineEdit or focus is TextEdit
@@ -81,7 +82,8 @@ func _adopt()->void:
 	stream=demo.music._variation_streams[key]
 	var h:Dictionary=demo.town._house_record(source);var at:=Vector2(h.origin[0],h.origin[1])
 	demo.music.play_effect_at(player,stream,at)
-	serial=int(player.get_meta("creation_voice_serial"));player.volume_db=-3.
+	serial=int(player.get_meta("creation_voice_serial"));pcm_peak=float(demo.music.audio_report.variation_peaks[key])
+	player.volume_db=-60.
 	player.play(fposmod(demo.music._playback_clock(),24.))
 func cancel(reason:String="finished")->void:
 	if not active():return
@@ -99,15 +101,17 @@ func _process(delta:float)->void:
 	if clock>=ends:cancel();return
 	if player.stream!=stream or int(player.get_meta("creation_voice_serial",-1))!=serial:cancel("voice_replaced");return
 	_adopt()
+	var envelope:=minf(smoothstep(0.,.12,clock-started),smoothstep(0.,.15,ends-clock))
+	player.volume_db=linear_to_db(.18/pcm_peak*maxf(.0001,envelope))
 	if focus_tracking:
 		var blend:=1.-exp(-delta*3.2)
 		if demo.camera_rig.strolling:
-			var look:Vector3=(demo.focus-roof).normalized();demo.yaw=lerp_angle(demo.yaw,atan2(look.x,look.z),blend);demo.pitch=lerpf(demo.pitch,clampf(asin(look.y),-.25,1.),blend)
+			var look:Vector3=(demo.focus-roof).normalized();demo.yaw=lerp_angle(demo.yaw,atan2(look.x,look.z),blend);demo.pitch=lerpf(demo.pitch,clampf(asin(look.y),-.7,1.),blend)
 		else:demo.focus=demo.focus.lerp(Vector3(roof.x,1.,roof.z),blend);demo.zoom=lerpf(demo.zoom,minf(demo.zoom,16.),blend)
 		demo._update_camera()
 	var elapsed:=clock-started
 	for i in range(particles.size()):
 		var age:=fposmod(elapsed+float(i)*.13,1.6);var angle:=float(i)*2.39996+age*.35
-		particles[i].position=roof+Vector3(cos(angle)*(.28+age*.12),age*.55,sin(angle)*(.28+age*.12));particles[i].visible=age<1.3
+		particles[i].position=roof+Vector3(cos(angle)*(.28+age*.12),age*.55,sin(angle)*(.28+age*.12));particles[i].rotation.y=demo.yaw;particles[i].visible=age<1.3
 func report()->Dictionary:
-	return {"active":active(),"source":source,"started":started,"ends":ends,"track":track,"mode":mode,"listeners":listeners.duplicate(),"events":events.duplicate(true)}
+	return {"active":active(),"source":source,"started":started,"ends":ends,"track":track,"mode":mode,"pcm_peak":pcm_peak,"output_peak":.18,"listeners":listeners.duplicate(),"events":events.duplicate(true)}
