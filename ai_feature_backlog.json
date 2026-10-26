@@ -1155,8 +1155,8 @@
         "id": "RF04",
         "title": "清理旧UI依赖与归档",
         "acceptance": "记录依赖闭包，替换隐藏控件状态来源，将无用旧界面/旧明信片实现移入唯一废弃目录；保留外部API/存档契约。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Harness/doc/harness8 PASS; legacy375/27works PASS. Archive dependency closure recorded before edits at 废弃/RF04旧UI_20261026_1130; complete prior demo/stamp sources and extracted LegacyImprint preserved plus GitRF03. Demo removes399old lines/adds4delegates; replaces hidden layout with minimal typed callback adapters, retains public fields/node names/defaults and PlaceScroll. OnlySave remains oldActions; realSundial/Inspector/Dock are sole visible UI; unused LegacyImprint removed from active source. Native60/60 two sizes: real road/mode/R/size/style,vegetation/water/removal/district toggles, selected appearance/Undo, publicAPI and raw postcard pixels; Master4.156371882086168 s peak0.19854736328125/0clip, pool/personalidentity unchanged. Eight protected State/Journey/Receipts/Rarity/Scores/Tradition algorithm files byte-identical moduloCRLF to before-refinement backup. No visual regression claimed beyond actual native evidence."
       },
       {
         "id": "RF05",
