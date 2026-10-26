@@ -74,7 +74,7 @@ void fragment() {
 	ALBEDO=mix(ALBEDO,vec3(.95,.77,.35),festival*.56);
 	vec3 lamp_glint=waterfront_shimmer(at,depth,CAMERA_POSITION_WORLD)*night*water_cover;
 	ALBEDO+=lamp_glint*.55;
-	EMISSION=vec3(.58,.34,.08)*festival+lamp_glint*.35;
+	EMISSION=vec3(.58,.34,.08)*festival+lamp_glint*.65;
 	ROUGHNESS = mix(1.0,0.64,smoothstep(0.24,0.8,depth));
 	SPECULAR = mix(0.0,0.16,smoothstep(0.12,0.6,depth));
 }

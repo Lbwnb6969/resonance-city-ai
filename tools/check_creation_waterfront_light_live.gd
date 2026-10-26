@@ -32,6 +32,21 @@ func run()->void:
 	check(scenery.crowns.any(func(n):return n.has_meta("water_lamp")),"earned real Poseidon crown has a visible lantern source")
 	await frame(Vector3(-30,.6,26),8.,.48,2,"pier_night")
 	check(demo.town.water_material.get_shader_parameter("water_lamp_count")==mini(16,light.sources.size()),"native water shader binds actual source count")
+	if "--glint-only" in OS.get_cmdline_user_args():
+		light.set_process(false);demo.set_process(false);Engine.time_scale=0.
+		for i in range(4):await process_frame
+		await RenderingServer.frame_post_draw
+		var on:Image=root.get_texture().get_image();on.save_png(OUT+"/glint_on.png")
+		demo.town.water_material.set_shader_parameter("water_lamp_count",0)
+		for i in range(4):await process_frame
+		await RenderingServer.frame_post_draw
+		var off:Image=root.get_texture().get_image();off.save_png(OUT+"/glint_off.png")
+		var rows:Array=[]
+		for lamp:Vector3 in light.sources:
+			var dir:Vector2=(Vector2(demo.camera.global_position.x,demo.camera.global_position.z)-Vector2(lamp.x,lamp.z)).normalized()
+			rows.append({"at":str(lamp),"water_distance":demo.state.water_clearance(Vector2(lamp.x,lamp.z)+dir*.8)})
+		FileAccess.open(OUT+"/glint_diagnostic.json",FileAccess.WRITE).store_string(JSON.stringify({"sources":rows,"night":demo.town.water_material.get_shader_parameter("night"),"shader_lamps":str(demo.town.water_material.get_shader_parameter("water_lamps")),"camera":str(demo.camera.global_position)},"\t"))
+		Engine.time_scale=1.;quit();return
 	demo.town.water_material.set_shader_parameter("water_lamp_count",0);light.set_process(false);await capture("pier_night_without_glint")
 	light.set_process(true);light.refresh()
 	demo.yaw=3.8;demo._update_camera();await settle();await capture("pier_night_across_pond")
@@ -49,8 +64,8 @@ func run()->void:
 	var finite:=true
 	for point:Vector3 in mesh.get_faces():finite=finite and point.is_finite()
 	check(finite and mesh.get_aabb().size.x<.7 and mesh.get_aabb().size.z<.7,"slender curled blades retain finite bounded footprint")
-	await frame(Vector3(-29,.25,30.1),4.,.24,0,"grass_day_low")
-	await frame(Vector3(-29,.25,30.1),4.,.24,2,"grass_night_low")
+	await frame(Vector3(-29,.25,30.1),4.,.31,0,"grass_day_low")
+	await frame(Vector3(-29,.25,30.1),4.,.31,2,"grass_night_low")
 	# Diagnostic macro uses the real world batch/mesh, with a closer orthographic
 	# crop than the ordinary 9m player limit. No substitute exemplar is inserted.
 	for phase:int in [0,2]:
@@ -60,14 +75,30 @@ func run()->void:
 	print("DUSK_OPEN ",demo.gallery.current_title," houses=",demo.state.houses.size()," status=",demo.gallery.panel._status)
 	check(demo.gallery.current_title=="dusk_columns" and demo.state.houses.size()==4,"actual ancient work opens before photographing its columns")
 	var h:Dictionary=demo.town._house_record(str(ancient.ids[0]));var at:=Vector3(h.origin[0],1.1,h.origin[1])
-	root.size=Vector2i(1440,900);await frame(at,8.,.23,1,"columns_dusk_low")
+	root.size=Vector2i(1440,900);await frame(at,8.,.31,1,"columns_dusk_low")
 	light=demo.get_meta("waterfront_light")
 	check(light.targets.size()>0 and float(light.get_meta("diagnostics").strength)>0.,"low dusk view binds real colonnade atmospheric cards")
 	check(light.veils.all(func(n):return n.find_children("*","StaticBody3D",true,false).is_empty()),"atmospheric cards do not modify collision")
 	await frame(at,8.,.7,1,"columns_dusk_high")
 	check(float(light.get_meta("diagnostics").strength)==0.,"high camera extinguishes dusk veil")
-	await frame(at,8.,.23,0,"columns_day_low")
+	await frame(at,8.,.31,0,"columns_day_low")
 	check(float(light.get_meta("diagnostics").strength)==0.,"daylight extinguishes dusk veil")
+	var dense:=State.new();dense.initialize_empty()
+	for x in range(7):
+		for z in range(4):
+			var built:Dictionary=dense.add_house(Vector2(-35+x*4,-32+z*4))
+			check(built.ok and dense.set_house_architecture(str(built.house_id),"portico").ok,"actual dense colonnade "+str(x)+"/"+str(z))
+	# Low diagnostic framing above can be below the ordinary collection range.
+	# Restore a legal authoring pitch before the gallery's switch checkpoint.
+	demo.pitch=.31;demo._update_camera()
+	await show(dense,Vector2(-35,-32),"dusk_pool");quiet();demo.life.set_process(false);light=demo.get_meta("waterfront_light")
+	check(demo.gallery.current_title=="dusk_pool" and demo.state.houses.size()==28,"actual28-home work opens before pool test")
+	await frame(Vector3(-35,1,-32),12.,.31,1,"dense_dusk_first")
+	var first:Array=light.targets.duplicate(true);var revision:int=demo.state.revision
+	await frame(Vector3(-11,1,-20),12.,.31,1,"dense_dusk_pan")
+	check(light.candidates.size()==28 and light.targets.size()==24 and light.targets!=first,"without editing camera pan reselects24 of28 actual colonnades")
+	check(demo.state.revision==revision,"atmospheric pool follows view without city edits")
+	facts.dusk_pool={"candidates":light.candidates.size(),"selected":light.targets.size(),"changed":light.targets!=first,"revision_before":revision,"revision_after":demo.state.revision}
 	var recording:Dictionary=await Probe.record(OUT+"/Master.wav",4.2);facts.recording=recording;check(recording.ok,"actual Master remains unclipped")
 	var reader:=State.new();var snapshot:Dictionary=demo.state.snapshot()
 	check(reader.restore(snapshot).ok and reader.snapshot()==snapshot,"visual changes preserve exact cold save")

@@ -11,6 +11,7 @@ var veils:Array[Node3D]=[]
 var material:ShaderMaterial
 var surface:QuadMesh
 var targets:Array[Dictionary]=[]
+var candidates:Array[Dictionary]=[]
 
 func setup(owner)->void:
 	demo=owner;name="WaterfrontLight";demo.add_child(self);demo.set_meta("waterfront_light",self)
@@ -29,6 +30,7 @@ func refresh()->void:
 	var key:Array=[demo.town.get_instance_id(),city.get_instance_id(),city.revision,scenery.epoch,scenery.layers.size()]
 	if epoch!=key:
 		epoch=key;_collect(scenery)
+	_select_targets()
 	_bind_lamps()
 	var low:=1.-smoothstep(.24,.35,float(demo.pitch))
 	var camera_direction:Vector3=(demo.camera.global_position-demo.focus).normalized()
@@ -45,9 +47,7 @@ func refresh()->void:
 	set_meta("diagnostics",{"lamps":sources.size(),"veils":veils.size(),"strength":strength,"phase":demo.light_phase})
 
 func _collect(scenery:Node3D)->void:
-	sources.clear();targets.clear()
-	for node:Node3D in veils:node.queue_free()
-	veils.clear()
+	sources.clear();candidates.clear()
 	for node:Node3D in scenery.layers:
 		if node.has_meta("water_lamp"):sources.append(node.to_global(node.get_meta("water_lamp")))
 	for house:Dictionary in demo.state.houses:
@@ -59,15 +59,22 @@ func _collect(scenery:Node3D)->void:
 		tall=top>=5.1 or str(house.get("signature",""))=="bell_keep"
 		if not tall and not root.has_meta("ancient_temple") and not root.has_meta("ancient_villa") and str(house.get("architecture",""))!="portico":continue
 		var at:=Vector3(house.origin[0],float(house.get("base_y",0.))+top*.6,house.origin[1])
-		targets.append({"at":at,"width":maxf(3.,top*.9),"height":maxf(3.,top*1.4)})
+		candidates.append({"at":at,"width":maxf(3.,top*.9),"height":maxf(3.,top*1.4)})
 	for road:Dictionary in demo.state.roads:
 		if not demo.town.road_roots.has(str(road.id)):continue
 		for bridge:Dictionary in demo.state.road_profile(road).get("bridge_runs",[]):
 			if str(bridge.get("family",""))=="clockwork_truss":continue
 			var point:Dictionary=Bridges._point(bridge.samples,(float(bridge.start)+float(bridge.end))*.5)
-			targets.append({"at":Vector3(point.at.x,float(bridge.deck_y)*.7+.7,point.at.y),"width":7.,"height":4.})
-	targets.sort_custom(func(a:Dictionary,b:Dictionary)->bool:return Vector3(a.at).distance_squared_to(demo.focus)<Vector3(b.at).distance_squared_to(demo.focus))
-	if targets.size()>24:targets.resize(24)
+			candidates.append({"at":Vector3(point.at.x,float(bridge.deck_y)*.7+.7,point.at.y),"width":7.,"height":4.})
+
+func _select_targets()->void:
+	var next:Array[Dictionary]=candidates.duplicate()
+	next.sort_custom(func(a:Dictionary,b:Dictionary)->bool:return Vector3(a.at).distance_squared_to(demo.focus)<Vector3(b.at).distance_squared_to(demo.focus))
+	if next.size()>24:next.resize(24)
+	# Retain actual cards while only their order changes during camera motion.
+	if next.size()==targets.size() and next.all(func(row:Dictionary)->bool:return row in targets):return
+	for node:Node3D in veils:remove_child(node);node.queue_free()
+	veils.clear();targets=next
 	for row:Dictionary in targets:
 		var card:=MeshInstance3D.new();card.name="DuskBacklight";card.mesh=surface;card.material_override=material
 		card.scale=Vector3(row.width,row.height,1.);card.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(card);veils.append(card)
