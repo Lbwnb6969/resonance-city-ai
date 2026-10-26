@@ -303,6 +303,7 @@ func _ready() -> void:
 	preload("res://scripts/ui/city_creation_house_rotation_input.gd").new().setup(self)
 	preload("res://scripts/visual/city_creation_street_wonders.gd").new().setup(self)
 	preload("res://scripts/visual/city_creation_waterfront_light.gd").new().setup(self)
+	preload("res://scripts/ui/city_creation_solo_spotlight.gd").new().setup(self)
 	get_meta("era_ceremony").bind()
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)
@@ -721,6 +722,7 @@ func home_camera() -> void:
 	_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if get_meta("solo_spotlight").handle_input(event):get_viewport().set_input_as_handled();return
 	if strum_hold.handle_input(self,event):
 		get_viewport().set_input_as_handled();return
 	if gallery!=null and gallery.busy:return

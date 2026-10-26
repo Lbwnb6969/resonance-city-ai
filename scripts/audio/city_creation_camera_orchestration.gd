@@ -3,7 +3,7 @@ extends RefCounted
 static func nocturne(owner:Node)->bool:
 	return owner.night or (owner._pluck_city!=null and owner._pluck_city.microclimate in ["sun_shower","starlight_fireflies"])
 static func gain(owner:Node,key:String,base:float)->float:
-	return gain_for(owner.emergence.score,key,base,float(owner.acoustic.zoom),nocturne(owner))
+	return gain_for(owner.emergence.score,key,base,float(owner.acoustic.zoom),nocturne(owner))-float(owner.get_meta("solo_duck_db",0.))
 static func lead(score:Dictionary)->String:
 	var weights:Dictionary=score.get("weights",{})
 	var keys:Array=weights.keys()

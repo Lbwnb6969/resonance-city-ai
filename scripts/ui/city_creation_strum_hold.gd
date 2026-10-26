@@ -29,6 +29,7 @@ func update(demo)->void:
 	if active() and (city_id!=demo.state.get_instance_id() or blocked(demo)):cancel()
 
 func hover(demo)->void:
+	if demo.has_meta("solo_spotlight") and demo.get_meta("solo_spotlight").active():return
 	if blocked(demo) or demo.get_viewport().gui_get_hovered_control()!=null:
 		demo._last_strummed_house_id="";return
 	if not active() and demo.tool!=4:demo._last_strummed_house_id="";return

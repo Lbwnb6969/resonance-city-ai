@@ -438,6 +438,7 @@ func _tick_life(delta: float) -> void:
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
+	if preload("res://scripts/world/city_creation_solo_listeners.gd").tick(self,resident,delta):return
 	if conductor_parade.owns(self,resident):return
 	if time<float(resident.get("greeting_until",-1.)):return
 	if resident.has("cafe_visit"): return
