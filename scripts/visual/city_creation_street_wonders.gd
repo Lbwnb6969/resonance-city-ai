@@ -27,6 +27,7 @@ func rebuild(city:RefCounted)->void:
 	for row:Dictionary in plan.piers:_pier(row)
 	for row:Dictionary in plan.pockets:_pocket(row)
 	for row:Dictionary in plan.fountains:_flowers(row,city)
+	for row:Dictionary in plan.loops:preload("res://scripts/visual/city_creation_loop_garden.gd").build(self,row)
 	var wonders:=LegendaryPlan.derive(city)
 	for row:Dictionary in wonders.monuments:layers.append(Legendary.memorial(self,row))
 	for row:Dictionary in wonders.crowns:

@@ -11,7 +11,7 @@ static func derive(city:RefCounted)->Dictionary:
 	var key:=[city.revision,city._wish_epoch]
 	var cache:Dictionary=city.get_meta("street_wonder_plan",{})
 	if cache.get("key",[])==key:return cache
-	var data:Dictionary={"key":key,"piers":[],"pockets":[],"fountains":[],"support":{}}
+	var data:Dictionary={"key":key,"piers":[],"pockets":[],"fountains":[],"loops":[],"support":{}}
 	var obstacles:Dictionary={"boxes":[],"doors":[],"cafes":[],"gardens":[],"piers":[]}
 	var cafe_context:=Cafes.new()
 	for house:Dictionary in city.houses:
@@ -36,6 +36,15 @@ static func derive(city:RefCounted)->Dictionary:
 		if members.size()<2:continue
 		marker.members=members;data.fountains.append(marker)
 		for id:String in members:data.support[id]=true
+	for loop:Dictionary in preload("res://scripts/world/city_creation_road_loop_faces.gd").faces(city.roads):
+		if not _clear(city,loop.center,1.38,obstacles):continue
+		var low:=INF;var high:=-INF
+		for i in range(8):
+			var y:float=city.ground_height(loop.center+Vector2.from_angle(i*TAU/8.)*1.2);low=minf(low,y);high=maxf(high,y)
+		if high-low>.1:continue
+		loop.radius=sqrt(float(loop.area)/PI);data.loops.append(loop);obstacles.gardens.append(loop.center)
+		for house:Dictionary in city.houses:
+			if Frame.origin(house).distance_to(loop.center)<float(loop.radius)+6.5:data.support[str(house.id)]=true
 	city.set_meta("street_wonder_obstacles",obstacles)
 	city.set_meta("street_wonder_plan",data);return data
 static func memorial_socket(city:RefCounted,house:Dictionary,occupied:Array)->Dictionary:

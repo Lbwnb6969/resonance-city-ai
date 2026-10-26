@@ -1258,8 +1258,8 @@
         "id": "M61",
         "title": "道路闭合与环心风物",
         "acceptance": "道路端点/线段/自身起点1.8m闭合、实际相交/顺接与路缘无缝，28～220平方米真实环路派生街心风物；轻拨刻度/五度闭合音，独立原图/音频Critic。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M61 Harness/doc+selftest8; closure29/street_wonders50/roundabout_rails25/ruler66/legacy375+27 PASS. Native final53/details_final23/ruler_regression62/modes_regression82 PASS:1.8m actual segment interiors/own start/bridge port,exact displayed arrays,retained entry and target tangent or orthogonal control,real two-home pedestrian route,double halo,actual64sqm/near78sqm loop fountain with collision/clearance/support/cold/UndoRedo. Planar half-edge faces split at real segment intersections with8m bins;300house18road face pass.67ms(reference only). Actual angle ticks incl75deg and two existing pooled harp notes7semitones on.1875s grid;3 final closure Masters peak.049927/.050323/.062225,zero clipping;empty-authoring ambience named honestly. Independent Critic inspected originals and decoded4finalWAV,closed trueR5m label/control mismatch fixed;no openP1/P2,scores8.7/8.7/7.9/8.3/8.5,subjective null,P3gold contrast/jet polish. Original12+4/6+2/personal bytes/schema/numeric research rules unchanged."
       },
       {
         "id": "M62",

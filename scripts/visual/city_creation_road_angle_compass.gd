@@ -17,3 +17,7 @@ static func append(mesh:ImmediateMesh,guide:RefCounted,arcs:Array)->void:
 			_line(mesh,guide,at+axis.rotated(turn*float(i)/count)*radius,at+axis.rotated(turn*float(i+1)/count)*radius)
 static func _line(mesh:ImmediateMesh,guide:RefCounted,a:Vector2,b:Vector2)->void:
 	mesh.surface_add_vertex(guide.point(a));mesh.surface_add_vertex(guide.point(b))
+static func closure(mesh:ImmediateMesh,guide:RefCounted,at:Vector2)->void:
+	mesh.surface_set_color(Color("f8cd6c"))
+	for radius:float in [.40,.57]:
+		for i in range(48):_line(mesh,guide,at+Vector2.from_angle(TAU*i/48.)*radius,at+Vector2.from_angle(TAU*(i+1)/48.)*radius)

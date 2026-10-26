@@ -59,4 +59,6 @@ static func plan(a:Vector2,control:Vector2,target:Vector2,ref:Dictionary,enable:
 		result.label=label+("\n"+result.label if not str(result.label).is_empty() else "")
 		result.arcs.push_front({"at":a,"axis":ref.axis,"turn":angle.signed,"radius":2.2,"strong":exact_snap})
 		result.intersection=angle;result.reference=ref
+	result.control=control
+	result.snap_enabled=enable
 	return result

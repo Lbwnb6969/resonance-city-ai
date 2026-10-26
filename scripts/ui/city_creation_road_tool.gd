@@ -3,6 +3,7 @@ extends Node
 const Geometry=preload("res://scripts/world/city_creation_road_curve_geometry.gd")
 const Guide=preload("res://scripts/visual/city_creation_road_anchor_guide.gd")
 const Ruler=preload("res://scripts/world/city_creation_road_ruler.gd")
+const Closure=preload("res://scripts/world/city_creation_road_closure.gd")
 var demo
 var guide:=Guide.new()
 var mode:=0
@@ -21,8 +22,10 @@ var valid:Dictionary={}
 var reference:Dictionary={}
 var ruler:Dictionary={}
 var reference_revision:=-1
+var closure:Dictionary={}
+var closure_audio=preload("res://scripts/audio/city_creation_road_closure_audio.gd").new()
 func setup(owner)->void:
-	demo=owner;name="RoadTool";demo.add_child(self);demo.set_meta("road_tool",self);guide.setup(demo)
+	demo=owner;closure_audio.demo=owner;name="RoadTool";demo.add_child(self);demo.set_meta("road_tool",self);guide.setup(demo)
 func active()->bool:return not phase.is_empty()
 func blocked()->bool:
 	return demo.camera_rig.strolling or demo.gallery.busy or demo.gallery.panel.visible or demo.guide.visible() or demo.ledger.visible() or demo.journal.panel.visible or demo.strum_hold.active()
@@ -32,7 +35,7 @@ func set_mode(value:int)->void:
 	demo.tactile_dock.refresh()
 func reset()->void:
 	phase="";pressed=false;dragged=false;raw.clear();locks.clear();control=Vector2.INF;signature.clear();valid.clear();reference.clear();ruler.clear();guide.clear()
-	show_mode()
+	closure.clear();closure_audio.mark="";show_mode()
 func show_mode()->void:
 	var options:OptionButton=demo.road_panel.find_child("RoadMode",true,false)
 	options.select(effective if active() else mode);demo.tactile_dock._sync()
@@ -109,6 +112,18 @@ func update(_force:bool=false)->void:
 		else:path.assign([start,point])
 		demo.road_points=path.duplicate()
 	if precise:path.assign(ruler.points)
+	closure={}
+	if not alt and (effective!=2 or control.is_finite()):
+		var closed:=Closure.resolve(demo.state,path,point,control,effective if precise else 0)
+		closure=closed.closure
+		if not closure.is_empty():
+			path.assign(closed.points);ruler=Ruler.plan(start,closed.control if effective==2 else Vector2.INF,path[-1],reference,false)
+			ruler.closure=closure;ruler.label=str(closed.label)+("\n"+str(ruler.label) if not str(ruler.label).is_empty() else "")
+			if closed.has("shape"):
+				var intersection:="θ %.1f°\n"%ruler.intersection.degrees if ruler.has("intersection") else ""
+				for field:String in ["circle","radius","center","points","turn"]:
+					if closed.shape.has(field):ruler[field]=closed.shape[field]
+				ruler.label=str(closed.label)+"\n"+intersection+str(closed.shape.label)
 	demo.road_draft_straight=effective==1
 	valid=demo.state.preview_road(path,demo.road_style,"none" if alt or precise else "soft",demo._selected_road_width())
 	if not precise and str(valid.upgrade_road_id).is_empty() and valid.points.size()>1 and (effective==2 and control.is_finite() or effective==1 and not dragged):
@@ -123,11 +138,12 @@ func update(_force:bool=false)->void:
 	if effective==1:demo.town.preview_road_measure(demo.road_preview,demo.road_locked_segments)
 	var anchors:Array[Vector2]=[demo.road_preview[0] if not demo.road_preview.is_empty() else start]
 	if effective==1 and dragged:anchors=locks.duplicate()
-	if effective==2 and control.is_finite():anchors.append(control)
+	if effective==2 and control.is_finite():anchors.append(ruler.get("control",control))
 	var tip:Vector2=demo.road_preview[-1] if not demo.road_preview.is_empty() else point
 	var text:=hint() if valid.ok or path.size()<2 else str(valid.message)
 	if valid.get("upgraded",false) or valid.get("no_op",false):text=str(valid.message)
 	guide.compass=ruler
+	if valid.ok:closure_audio.tick(ruler,tip)
 	guide.draw(anchors,tip,text)
 	demo.road_status.text=hint()
 func hint()->String:
@@ -148,6 +164,7 @@ func finish()->void:
 	update(true)
 	if demo.road_preview.size()<2:demo._cancel_draft();return
 	var points:Array[Vector2]=demo.road_preview.duplicate();var result:Dictionary=demo.state.add_road(points,demo.road_style,"none",demo._selected_road_width())
+	if result.ok and not result.get("no_op",false) and not closure.is_empty():closure_audio.close(points[-1])
 	demo._cancel_draft()
 	if result.ok:demo.completed["road"]=true
 	if result.get("no_op",false):demo._message(result.message)

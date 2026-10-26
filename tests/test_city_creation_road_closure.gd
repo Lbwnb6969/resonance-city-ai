@@ -1,0 +1,51 @@
+extends SceneTree
+const State=preload("res://scripts/world/city_creation_state.gd")
+const Closure=preload("res://scripts/world/city_creation_road_closure.gd")
+const Faces=preload("res://scripts/world/city_creation_road_loop_faces.gd")
+const Plan=preload("res://scripts/world/city_creation_street_wonder_plan.gd")
+const Geometry=Closure.Geometry
+var checks:=0
+var failures:Array[String]=[]
+func _initialize()->void:run.call_deferred()
+func check(ok:bool,label:String)->void:
+	checks+=1
+	if not ok:failures.append(label);push_error(label)
+func road(city:RefCounted,points:Array[Vector2])->void:check(city.add_road(points).ok,"public loop road segment")
+func run()->void:
+	var city:=State.new();city.initialize_empty();road(city,[Vector2(-28,-10),Vector2(-16,-10)])
+	var a:=Vector2(-24,-20);var raw:=Vector2(-24,-11.7);var path:=Geometry.straight(a,raw)
+	var target:=Closure.target(city,raw,path)
+	check(target.at==Vector2(-24,-10) and target.segment==0,"1.8m closure projects onto true segment interior, not only vertices")
+	check(Closure.target(city,Vector2(-24,-11.81),path).is_empty(),"outside1.8m has no closure")
+	var exact:=Closure.resolve(city,path,raw,Vector2.INF,1)
+	check(exact.points[0]==a and exact.points[-1]==target.at and exact.points.all(func(p):return absf(p.x-a.x)<.00001),"straight closure resamples whole displayed line through exact endpoint")
+	var c:=Vector2(-25,-10);a=Vector2(-30,-18);raw=Vector2(-20,-10.7)
+	var curve:=Closure.resolve(city,Geometry.quadratic(a,c,raw),raw,c,2)
+	check(curve.points[-1]==Vector2(-20,-10) and curve.closure.lock=="顺接" and curve.control.distance_to(c)<1.8,"curve control intersects retained entry tangent with exact target exit tangent")
+	check((Vector2(curve.control)-a).normalized().dot((c-a).normalized())>.99999 and absf((Vector2(curve.points[-1])-Vector2(curve.control)).normalized().y)<.00001,"curve analytic entry and exit tangents match true road join")
+	c=Vector2(-24,-15);a=Vector2(-30,-15);raw=Vector2(-24,-10.5)
+	curve=Closure.resolve(city,Geometry.quadratic(a,c,raw),raw,c,2)
+	check(curve.closure.lock=="正交" and curve.control==c and curve.points[-1]==Vector2(-24,-10),"perpendicular junction preserves incoming tangent and exact ground segment")
+	var loop:Array[Vector2]=[Vector2(-30,-24),Vector2(-22,-24),Vector2(-22,-16),Vector2(-30,-16),Vector2(-30,-23)]
+	var self_hit:=Closure.resolve(city,loop,loop[-1],Vector2.INF,0)
+	check(self_hit.closure.self and self_hit.points[0]==self_hit.points[-1],"long authored loop really closes to its own first point")
+	var garden:=State.new();garden.initialize_empty();road(garden,self_hit.points)
+	var before:=garden.snapshot();var faces:=Faces.faces(garden.roads)
+	check(faces.size()==1 and is_equal_approx(faces[0].area,64.) and faces[0].center==Vector2(-26,-20),"single actual closed road encloses64sqm with correct centroid")
+	check(Plan.derive(garden).loops.size()==1 and garden.snapshot()==before,"dry clear road loop derives one read-only garden even in an empty town")
+	var cold:=State.new();check(cold.restore(JSON.parse_string(JSON.stringify(before))).ok and Plan.derive(cold).loops==Plan.derive(garden).loops,"garden cold derives from existing coordinate arrays without new save fields")
+	check(garden.undo().ok and Plan.derive(garden).loops.is_empty() and garden.redo().ok and Plan.derive(garden).loops.size()==1,"road Undo/Redo removes and restores the actual loop garden")
+	var blocker:=garden.add_house(Vector2(-26,-20));check(blocker.ok and Plan.derive(garden).loops.is_empty(),"actual building in the center suppresses the derived fountain")
+	garden.undo();check(Plan.derive(garden).loops.size()==1,"Undo center obstruction restores the garden")
+	var split:=State.new();split.initialize_empty()
+	road(split,[Vector2(-30,-24),Vector2(-20,-24)]);road(split,[Vector2(-20,-24),Vector2(-20,-16)]);road(split,[Vector2(-20,-16),Vector2(-30,-16)]);road(split,[Vector2(-30,-16),Vector2(-30,-24)])
+	check(Faces.faces(split.roads).size()==1 and is_equal_approx(Faces.faces(split.roads)[0].area,80.),"multiple actual saved roads form the same planar face")
+	road(split,[Vector2(-25,-26),Vector2(-25,-14)])
+	faces=Faces.faces(split.roads)
+	check(faces.size()==2 and faces.all(func(row):return is_equal_approx(row.area,40.)),"segment-interior intersections split one loop into two real40sqm street faces")
+	var open:=split.snapshot();split.remove_road(str(split.roads[0].id));check(Faces.faces(split.roads).is_empty(),"opening one true boundary removes both faces despite remaining intersections")
+	for size:float in [4.,5.3,15.]:
+		var town:=State.new();town.initialize_empty();var p:=Vector2(-35,-35)
+		road(town,[p,p+Vector2(size,0),p+Vector2(size,size),p+Vector2(0,size),p])
+		check(Faces.faces(town.roads).size()==(1 if size==5.3 else 0),"only28..220sqm authored areas receive loop features")
+	print("ROAD_CLOSURE ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

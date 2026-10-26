@@ -111,3 +111,5 @@ M58：跨进程day1先从林水或用途浮窗回筑屋、收好手札后实际�
 M59：`tests/test_city_creation_road_curve_geometry.gd`核RDP/向心Catmull与精确二次曲线/数组存档；原生`check_creation_three_road_modes_live.gd -- --isolated-session --out-dir=res://验证记录/M59/complete`双尺寸真实三印章、定点/拖画/Tab/取消/升级/撤销，`test_city_creation_road_chain_live.gd`保留锁段与文本输入回归，输出首参数在`--`后（并带`--isolated-session`）。
 
 M60：`tests/test_city_creation_road_ruler.gd`核真实段切线/两侧角度/圆心半径/端点切线/非圆曲率。原生`check_creation_road_ruler_live.gd -- --isolated-session --out-dir=res://验证记录/M60/final`双尺寸Alt/相交罗盘/正圆与落地。三模工具等待UI真实位置稳定，device92隔离外部原生输入，仍经Viewport真实GUI点击，不直接调用选项方法。
+
+M61：CPU `tests/test_city_creation_road_closure.gd`检查真实段中投影/曲线控制点/自闭合/多段平面环心及净空/冷读；原生`check_creation_road_closure_live.gd`双尺寸段中接路/真寻路/金环/自闭合泉/撤销/音频，`check_creation_road_loop_details_live.gd`补真圆半径闭合、四曲路成环/喷泉近景碰撞/桥端口。参数同`-- --isolated-session --out-dir=...`。空城自然声单独命名，闭合Master在真实点击前开启录制，不拿低电平自然声当泉声。

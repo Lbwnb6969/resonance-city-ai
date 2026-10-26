@@ -42,4 +42,7 @@ func draw(anchors:Array[Vector2],tail:Vector2,text:String)->void:
 	if not arcs.is_empty():
 		if not begun:lines.surface_begin(Mesh.PRIMITIVE_LINES);begun=true
 		preload("res://scripts/visual/city_creation_road_angle_compass.gd").append(lines,self,arcs)
+	if not compass.get("closure",{}).is_empty():
+		if not begun:lines.surface_begin(Mesh.PRIMITIVE_LINES);begun=true
+		preload("res://scripts/visual/city_creation_road_angle_compass.gd").closure(lines,self,compass.closure.at)
 	if begun:lines.surface_end()
