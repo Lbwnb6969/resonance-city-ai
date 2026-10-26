@@ -104,3 +104,6 @@ M42定向原生复拍：`check_creation_m42_refine_live.gd -- --isolated-session
 M43：`check_creation_ancient_architecture_live.gd -- --isolated-session` 原生双尺寸/昼夜/低角32图与实际射线；`--geometry-only`只跑物理/旧档/录音，不重复图片。
 
 M44：`check_creation_house_rotation_live.gd -- --isolated-session` 原生按键/物理拾取/实际斜街采购/4时代/斜放内院/冷读；`check_creation_rotation_input_guard_live.gd` 专测草稿与相机release、斜墙非门位吸附。日常Q/E90°、R自由，单击/R/Enter确认，Esc/右键取消。
+
+M57：`check_creation_musical_toys_live.gd`真实P/V点击、12s源独奏、邻人合法步行/中途冷档、两岸.75s回声与静音/停工/删路Undo；`check_creation_archway_details_live.gd`补四时代真实挂件、穿廊下的地面行人和奇观V聚焦。两者GL/isolated-session，输出可用`--out-dir=`隔离。CPU `tests/test_city_creation_musical_toys.gd`验证推导/实际移动/原日程/冷读。
+M58：跨进程day1先从林水或用途浮窗回筑屋、收好手札后实际展开来信；day2新纪元从统一手札领取已经赚取的页，旧独立章程仍由旧档工具覆盖。默认长录仍约150秒，不把此段标成3分钟；`--resolutions`/`--phases`可定向跑所需旅程。

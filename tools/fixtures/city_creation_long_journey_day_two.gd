@@ -11,8 +11,16 @@ static func advance_era(c:RefCounted,era:String,choice:String)->void:
 	c.check(era in c.demo.state.era_unlocks and events.size()==1 and float(events[0].duration)>=6. and float(events[0].duration)<7.,"natural_six_second_"+era)
 	c.details[era]={"events":events,"answers":c.demo.state.era_answers.duplicate(true),"tea":c.demo.state.life_progress.tea_parties}
 	await c.tree.create_timer(.28).timeout
-	if c.demo.journal.score_buttons.has(choice):await c.click(c.demo.journal.score_buttons[choice])
-	c.check(choice in c.demo.state.era_modifiers,"native_charter_"+era)
+	# RF03 unifies fresh-era rewards into earned research; old free charter
+	# buttons are retained only for legacy works and no longer form this flow.
+	var draft:Node=c.demo.get_meta("inspiration_draft");draft.poll()
+	var before:int=c.Journey.choices_made(c.demo.state.harmony_journey)
+	if c.Journey.credits(c.demo.state.harmony_journey)>0:
+		if not draft.paper.visible:await c.click(draft.badge)
+		var selected:=str(draft.buttons.keys()[0]);await c.click(draft.buttons[selected])
+		c.check(selected in c.demo.state.harmony_journey.traditions and c.Journey.choices_made(c.demo.state.harmony_journey)==before+1,"native_research_"+era)
+	else:c.check(not draft.paper.visible,"no_unearned_research_"+era)
+	c.check(c.Journey.cards()[choice].era in c.demo.state.era_unlocks and not c.demo.journal.era_prompt_pending,"era_catalog_without_duplicate_charter_"+era)
 	await c.capture(era);c.demo.journal.close_panel();await c.postpone()
 static func run(c:RefCounted)->void:
 	c.stage("新进程读取第一晚作品")
