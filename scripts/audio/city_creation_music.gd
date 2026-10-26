@@ -980,7 +980,7 @@ func active_source() -> Dictionary:
 
 func target_gain_db(key: String, during_concert: bool) -> float:
 	if _grand_active():return _movement_gain(key,_concert_phrase())
-	if not concert_active and not emergence.score.is_empty():return ClusterHarmony.Tide.gain(key,emergence.score,_playback_clock())
+	if not concert_active and not emergence.score.is_empty():return preload("res://scripts/audio/city_creation_camera_orchestration.gd").gain(self,key,ClusterHarmony.Tide.gain(key,emergence.score,_playback_clock()))
 	if key=="modern_symphony":return -24.0 if during_concert else -21.0
 	if key=="clockwork_waltz":return -24.0 if during_concert else -21.0
 	if key=="renaissance_fugue": return -23.0 if during_concert else -19.0
@@ -1297,6 +1297,7 @@ func _process(delta: float) -> void:
 	var source_id:=str(_source_for_phrase(_concert_phrase()).source_id) if concert_active else _daily_source_id
 	var source_at:=_source_position(source_id)
 	spatial.update(delta,source_at,source_at if concert_active else Vector2.INF)
+	preload("res://scripts/audio/city_creation_camera_orchestration.gd").update(self,delta)
 	spatial.set_concert_remote(_remote_concert())
 	spatial.set_theme_remote(_grand_active() and _remote_concert())
 	var experience_lift:=Experience.lift(self)
@@ -1633,6 +1634,8 @@ func _add_note(samples: PackedFloat32Array, start: float, duration: float, midi:
 		var tone := sin(phase)
 		var envelope := 0.0
 		match timbre:
+			"guitar","cello_harmonic","felt_nocturne":
+				var rendered:Vector2=preload("res://scripts/audio/city_creation_chamber_timbres.gd").sample(timbre,t,duration,phase);tone=rendered.x;envelope=rendered.y
 			"felt_piano":
 				envelope=minf(t/.012,1.)*exp(-t*1.9)*minf((duration-t)/.16,1.)
 				tone=sin(phase)+.17*sin(phase*2.)*exp(-t*5.)+.035*sin(phase*3.)*exp(-t*7.)

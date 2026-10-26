@@ -26,13 +26,15 @@ static func update(owner:Node)->void:
 		elif not owner.concert_active or seeded:
 			id="%s/%d"%[key,2 if owner.concert_active else int(owner.emergence.score.get("variant",0))] if key in owner.HarmonicEmergence.LEADS else "%d/%s"%[mode,key]
 			if mode>0 and key in owner.HarmonicEmergence.LEADS:id="%d/"%mode+id
+			var camera_mix=preload("res://scripts/audio/city_creation_camera_orchestration.gd")
+			if not owner.concert_active and key==camera_mix.lead(owner.emergence.score) and camera_mix.nocturne(owner):id="%d/nocturne"%mode
 		if owner._variation_active.get(key,"")==id:
 			owner._variation_pending.erase(key);continue
 		owner._variation_pending[key]={"id":id,"requested_clock":clock}
 		var player:AudioStreamPlayer=owner._players[key]
 		if not can_swap(clock,player.volume_db):continue
 		var gain:=player.volume_db
-		player.stream=owner._original_streams[key] if id=="original" else (owner._variation_streams[id] if key in owner.HarmonicEmergence.LEADS else owner._harmony_streams[id])
+		player.stream=owner._original_streams[key] if id=="original" else owner._variation_streams.get(id,owner._harmony_streams.get(id))
 		player.play(fposmod(clock,24.));player.volume_db=gain
 		player.set_meta("last_smooth_swap",{"clock":clock,"db":gain,"id":id})
 		owner._variation_active[key]=id;owner._variation_pending.erase(key);owner._variation_changed_usec=now

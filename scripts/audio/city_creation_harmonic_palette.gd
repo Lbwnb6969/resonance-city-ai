@@ -2,6 +2,7 @@ extends RefCounted
 ## The original four colors keep their common Dadd9 pivot. Biomes have their
 ## own tonic, characteristic modal degrees and final bar, including every cue.
 const Grid=preload("res://scripts/audio/city_creation_cue_grid.gd")
+const Chamber=preload("res://scripts/audio/city_creation_chamber_pcm.gd")
 const NAMES:=["晨曦暖阳","深流古巷","人文晴空","星夜交响","G吕底亚 · 千阶微光","B多利亚 · 沙洲回声","A大调 · 林间牧歌","F♯小调 · 星夜流光","C宫五声 · 宫商河韵","F大七 · 印象水光"]
 const BIOME_MODES:=[0,4,5,6,7]
 const SCALES:=[[2,4,6,9,11],[11,2,4,6,9],[7,9,11,2,4],[2,4,7,9,11],
@@ -110,7 +111,9 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 					events.append(_note(bar*3.+.06,2.75,int(chord[0])-12,.048,"bass"))
 				elif bed=="air":events.append(_note(bar*3.+.75,1.85,quantize(int(chord[2])+24,mode,bar),.045,"air"))
 				else:events.append(_note(bar*3.+2.25,.60,quantize(int(chord[2])+24,mode,bar),.033,"bell"))
+			if bed in ["foundation","air"]:events=Chamber.bed(bed,progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd"))
 			_wave(out,"%d/%s"%[mode,bed],24.,events,add,make,true)
+		_wave(out,"%d/nocturne"%mode,24.,Chamber.nocturne(progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd")),add,make,true)
 		# Biome landmark tutti uses the same modal progression as the leads;
 		# it never introduces the original D-major concert into another key.
 		var tutti:Array=[]

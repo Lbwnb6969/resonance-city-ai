@@ -1217,8 +1217,8 @@
         "id": "M56",
         "title": "对位、镜头配器与夜曲",
         "acceptance": "反向/斜向声部与呼吸起音、镜头距离平滑配器/混响、稀疏夜曲，保留样本级节拍/旧声部预算；不能用改数字峰值冒充新音色。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M56 Harness/doc; chamber37 (3 contrary/1 oblique ledger motion,22ms companion,10 modal11-vs16 nocturne attacks, different PCM timbres/night phonograph), dyads bank-QOA13, smooth111, experience22, legacy375+27 PASS. Baked4117 exact roundtrips and complete QOA66,140,618 bytes; native live27 PASS with actual near guitar/flute and far horn/string players, .13012→.23929 wet, wood3/nocturne adoption, real night work save/daylight rain/cold/original12+4/6+2. Four actual Masters peak.237274/.280060/.278748/.221924 zero clipping, original PNGs inspected. Subjective listening unassessed."
       },
       {
         "id": "M57",
@@ -1230,7 +1230,69 @@
       {
         "id": "M58",
         "title": "六期独立声画与全档终验",
-        "acceptance": "六期证据、300屋连续编辑/冷读、375旧档与27作品、跨进程/真实输入/音频与五维独立Critic如实审查，Git备份与同步后停止。",
+        "acceptance": "六期证据、300屋连续编辑/冷读、375旧档与27作品、跨进程/真实输入/音频与五维独立Critic如实审查，Git备份与同步后进入新文档34七期。",
+        "passes": false,
+        "verified_by": ""
+      }
+    ]
+  },
+  "seventh_phase": {
+    "source": "新文档/34.md",
+    "schedule": "用户追加目标：完成33.md后继续34.md，M59～M66顺序施工，M66终验同步后停止。",
+    "rounds": [
+      {
+        "id": "M59",
+        "title": "三模修路与锚点操作",
+        "acceptance": "道路画具内自由画/直路/双点曲路，明确的锚点/控制点/终点、Tab切换与Esc取消；保持现有拖画、路型升级、真实折线存档和撤销。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M60",
+        "title": "夹角弧度罗盘与方向磁吸",
+        "acceptance": "真实参考道路切线/法线、15度步进与强磁吸、Alt临时释放；地面金弧与角度/半径小印章，等臂时使用真实圆弧或如实标注曲率，避免把二次贝塞尔冒充正圆。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M61",
+        "title": "道路闭合与环心风物",
+        "acceptance": "道路端点/线段/自身起点1.8m闭合、实际相交/顺接与路缘无缝，28～220平方米真实环路派生街心风物；轻拨刻度/五度闭合音，独立原图/音频Critic。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M62",
+        "title": "圆角导角与有机微雕入口",
+        "acceptance": "极简微雕循环/旧档默认/事务Undo；真实切去外露墙角并生成圆角/斜角/檐口，接原微法线AO合批及对应拾取碰撞，不在方盒外贴圆柱冒充圆角。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M63",
+        "title": "侧翼折角与曲路贴合",
+        "acceptance": "有条件的组合侧翼刚体微折、屋脊接缝封顶、曲路两端真实切线派生；支持的几何/道路/门口/存档依赖一致，明显不适合原型明确保留原形，不造成虚假可走范围。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M64",
+        "title": "外挑飘窗与弧形阳台",
+        "acceptance": "二层外挑/牛腿与六角飘窗，半圆及转角铁艺阳台/花箱，真实开放栏杆、宿主身份和行走/凭栏听曲；独立Critic核原图/碰撞/真实小人。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M65",
+        "title": "四层透明室内乐",
+        "acceptance": "承接M56对位/夜曲，唯一领唱与次区真实伴奏，低/中低/中高/高音区分工，约65%双音和呼吸应答，每小节最多2颗生活星芒，固定声部/经营数值和旧作品兼容。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M66",
+        "title": "七期独立终验与停止目标",
+        "acceptance": "新文档34道路/有机几何/四层音乐完整对照、真实输入/375旧档与27作品/300屋/跨进程/原图和实录独立Critic，Git备份及main文件树一致后停止目标。",
         "passes": false,
         "verified_by": ""
       }

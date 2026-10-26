@@ -46,7 +46,7 @@ func verify_bank()->void:
 	var notes_valid:=true;var preroll:=true;var count:=0;var dyads:=0;var suspensions:=0
 	for key:String in bank.report.harmony_notes:
 		var parts:=key.split("/")
-		if parts.size()<2 or not parts[0].is_valid_int() or parts[1] in ["foundation","air","terrace","concert"]:continue
+		if parts.size()<2 or not parts[0].is_valid_int() or parts[1] in ["foundation","air","terrace","concert","nocturne"]:continue
 		var mode:=int(parts[0]);var name:String=parts[-1]
 		if name.begins_with("stair_key"):continue
 		var bar:=int(name.get_slice("_",name.get_slice_count("_")-1))
