@@ -15,20 +15,22 @@ static func openings(r,job,frame,wall:Node3D,door:bool,lit:bool,width:float)->vo
 	var shade:Material=material(job.palette[2].darkened(.42),Wall.Kind.PLASTER)
 	if width<1.4:return
 	# Deep shuttered openings have an arched head, no modern cross mullions.
-	for x:float in [-.43,.43]:
+	var rhythm:=preload("res://scripts/visual/city_creation_street_rhythm.gd").opening(r,job.house,frame.cell,wall)
+	var radius:float=rhythm.radius;wall.set_meta("street_openings",rhythm)
+	for x:float in rhythm.positions:
 		var faces:Array[Vector3]=[]
 		for i in range(12):
-			var a:=Vector2(cos(PI*i/12.)*.19,.99+sin(PI*i/12.)*.19)
-			var b:=Vector2(cos(PI*(i+1)/12.)*.19,.99+sin(PI*(i+1)/12.)*.19)
+			var a:=Vector2(cos(PI*i/12.)*radius,.99+sin(PI*i/12.)*radius)
+			var b:=Vector2(cos(PI*(i+1)/12.)*radius,.99+sin(PI*(i+1)/12.)*radius)
 			faces.append_array([Vector3(x,.99,.105),Vector3(x+a.x,a.y,.105),Vector3(x+b.x,b.y,.105)])
 		var pane:MeshInstance3D=r._triangles(wall,faces,Color("364238"));pane.material_override=shade;pane.name="RomanArchedShutterHead"
-		r._box(wall,Vector3(.38,.39,.045),Vector3(x,.795,.105),shade).name="AncientShutter"
-		for side:float in [-1.,1.]:r._box(wall,Vector3(.065,.44,.12),Vector3(x+side*.225,.80,.13),stone)
+		r._box(wall,Vector3(radius*2.,.39,.045),Vector3(x,.795,.105),shade).name="AncientShutter"
+		for side:float in [-1.,1.]:r._box(wall,Vector3(.065,.44,.12),Vector3(x+side*(radius+.035),.80,.13),stone)
 		for i in range(12):
 			var a:=PI*i/12.;var b:=PI*(i+1)/12.
-			var polygon:=PackedVector2Array([Vector2(x+cos(a)*.19,.99+sin(a)*.19),Vector2(x+cos(b)*.19,.99+sin(b)*.19),Vector2(x+cos(b)*.26,.99+sin(b)*.26),Vector2(x+cos(a)*.26,.99+sin(a)*.26)])
+			var polygon:=PackedVector2Array([Vector2(x+cos(a)*radius,.99+sin(a)*radius),Vector2(x+cos(b)*radius,.99+sin(b)*radius),Vector2(x+cos(b)*(radius+.07),.99+sin(b)*(radius+.07)),Vector2(x+cos(a)*(radius+.07),.99+sin(a)*(radius+.07))])
 			Wall.apply(r._triangles(wall,Arch._extrude(polygon,.19),stone.albedo_color),Wall.Kind.STONE).name="RomanWindowVoussoir"
-		r._box(wall,Vector3(.55,.07,.22),Vector3(x,.56,.15),stone)
+		r._box(wall,Vector3(radius*2.+.17,.07,.22),Vector3(x,.56,.15),stone)
 	wall.set_meta("ancient_openings",true)
 static func facade(r,job,frame,wall:Node3D,door:bool,width:float)->void:
 	var color:Color=job.palette[0].lerp(Color("e6d8b8"),.48);var stone:Material=material(color)
@@ -40,11 +42,14 @@ static func facade(r,job,frame,wall:Node3D,door:bool,width:float)->void:
 		var x:float=-width*.5+.12+i*.28
 		for k in range(3):r._box(detail,Vector3(.018,.10,.035),Vector3(x+k*.035,1.57,.215),stone).name="DoricTriglyph"
 	if not door or int(frame.level)>0 or width<1.4 or not Mass.temple(job.house).is_empty() or not Mass.Villa.plan(job.house).is_empty():return
+	if job.primary.is_empty() or str(job.primary.cell_id)!=str(frame.cell.id) or job.primary.side!=Vector2i(roundi(wall.basis.z.x),roundi(wall.basis.z.z)):return
 	# Two columns leave the original doorway and its approach clear.
 	for x:float in [-.64,.64]:column(r,detail,Vector3(x,.10,.34),1.22,.10,stone)
 	r._box(detail,Vector3(1.70,.11,.61),Vector3(0,1.39,.29),stone)
-	var tri:=PackedVector2Array([Vector2(-.85,1.45),Vector2(.85,1.45),Vector2(0,1.74)])
-	Wall.apply(r._triangles(detail,Arch._extrude(tri,.62),color),Wall.Kind.STONE).name="GreekClosedPediment"
+	if job.house.get("architecture","")=="townhouse":r._box(detail,Vector3(1.70,.08,.62),Vector3(0,1.47,.29),stone).name="RomanEntryLintel"
+	else:
+		var tri:=PackedVector2Array([Vector2(-.85,1.45),Vector2(.85,1.45),Vector2(0,1.74)])
+		Wall.apply(r._triangles(detail,Arch._extrude(tri,.62),color),Wall.Kind.STONE).name="GreekClosedPediment"
 	var body:=StaticBody3D.new();detail.add_child(body)
 	for key:String in ["house_id","cell_id","cell"]:body.set_meta(key,job.house.id if key=="house_id" else (frame.cell.id if key=="cell_id" else frame.cell))
 	# Per-piece mesh collisions preserve the open central aisle.

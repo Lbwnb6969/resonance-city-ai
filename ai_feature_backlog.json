@@ -1162,8 +1162,8 @@
         "id": "RF05",
         "title": "街区轮廓与连续街景",
         "acceptance": "围绕端头/转角/连排/退台与院落调整现有构件，强化街道节奏与时代差异；验证加层、坡地、碰撞/道路净空及存档。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "RF05: Harness/doc PASS; street_rhythm16, ancient29/villa17, legacy375+27; OpenGL final_native110 with 16 era/size/day-night originals, actual roof collision/upper edit/Undo/rotation/cold; Master4.145s peak.264221 zero clipping; raised terrain CPU; authored geometry unchanged."
       },
       {
         "id": "RF06",

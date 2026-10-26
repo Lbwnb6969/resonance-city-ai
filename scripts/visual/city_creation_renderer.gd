@@ -1761,6 +1761,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 	if era in ["pastoral","renaissance"] and not house.has("signature"):Classical.facade(self,job,frame,wall,direction,door,wall_width)
 	elif era == "renaissance" and house.has("signature"): Renaissance.facade(self,wall,door,level>0)
 	elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
+	preload("res://scripts/visual/city_creation_street_rhythm.gd").decorate(self,job,frame,wall,direction,wall_width)
 	if wall_width>=UNIT-.01 and era!="modern_eco" and not Classical.Ancient.active(house,era): HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
 	if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
 	if principal and not job.role_prop_added:
