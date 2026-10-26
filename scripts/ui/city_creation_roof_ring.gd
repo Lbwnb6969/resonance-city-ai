@@ -114,6 +114,8 @@ func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")
 	var key:String=family.prototype(pop.demo.state,house);var caption:String=family.family_caption(key) if not key.is_empty() else str(pop.ROLE_LABELS.get(role,"街坊"))
 	if role=="residential":return "%s · %s"%[caption,"✦".repeat(level)]
+	var step:=preload("res://scripts/ui/city_creation_business_step.gd").describe(pop.demo,str(house.id))
+	if not step.text.is_empty():pop.status.tooltip_text=step.text;return step.text
 	var civic:=preload("res://scripts/world/city_creation_civic_supply.gd").status(pop.demo.state,str(house.id))
 	pop.status.tooltip_text="品质 %d · %s\n供需详见L工坊手记；Q/E每次90°，R拖动自由转向。"%[level,"门路相连" if pop.demo.life.house_connected(str(house.id)) else "等待接路"]
 	return preload("res://scripts/ui/city_creation_tactile_ui_theme.gd").format_compass_supply_capsule(role,civic,caption)

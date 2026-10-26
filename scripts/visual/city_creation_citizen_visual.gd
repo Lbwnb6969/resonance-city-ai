@@ -22,7 +22,7 @@ static func person(index:int)->Node3D:
 	identify(root,"resident");return root
 static func identify(root:Node3D,role:String)->void:
 	var index:int=posmod(int(root.get_meta("citizen_index")),4);var cup:bool=root.get_meta("citizen_prop","")=="cup";var key:="person/%s/%d%s"%[role,index,"/cup" if cup else ""]
-	if not meshes.has(key):meshes[key]=preload("res://scripts/visual/city_creation_citizen_gait.gd").mesh(_body(role,index,cup))
+	if not meshes.has(key):meshes[key]=preload("res://scripts/visual/city_creation_citizen_gait.gd").mesh(_body(role,index,cup),role)
 	root.get_child(0).get_child(0).mesh=meshes[key]
 	root.get_child(0).get_child(0).set_meta("sleeve_material",tint(_cloth(role,index)))
 	root.set_meta("citizen_role",role)

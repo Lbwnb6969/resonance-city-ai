@@ -10,6 +10,8 @@ var roles:Node
 var _target:=""
 var appearance_button:Button
 var purpose_button:Button
+var business_button:Button
+var _business_at:=0
 func setup(owner:RefCounted,ring:RefCounted)->void:
  pop=owner;pop.demo.add_child(self)
  roles=preload("res://scripts/ui/city_creation_role_palette.gd").new();roles.setup(pop);ring.roles.clear()
@@ -33,6 +35,7 @@ func setup(owner:RefCounted,ring:RefCounted)->void:
  purpose_button=Button.new();purpose_button.name="HousePurpose";purpose_button.text="用途";purpose_button.custom_minimum_size=Vector2(62,34);purpose_button.pressed.connect(func()->void:panel.hide();roles.show_for(true));ring.action_island.add_child(purpose_button);ring.action_island.move_child(purpose_button,0)
  appearance_button=Button.new();appearance_button.name="HouseAppearance";appearance_button.text="外观";appearance_button.custom_minimum_size=Vector2(62,34);appearance_button.pressed.connect(func()->void:roles.panel.hide();show_page("appearance"));ring.action_island.add_child(appearance_button);ring.action_island.move_child(appearance_button,1)
  ring.extra_controls=[panel,roles.panel]
+ business_button=preload("res://scripts/ui/city_creation_business_step.gd").inspector(pop)
 func show_page(id:String)->void:
  mode=id;_target=pop.target_house_id;appearance.visible=id=="appearance";music.visible=id=="music";panel.show();pop.refresh();fit();panel.move_to_front()
 func fit()->void:
@@ -41,6 +44,11 @@ func fit()->void:
  roles.fit()
 func close()->void:panel.hide();roles.panel.hide();mode=""
 func _process(_delta:float)->void:
+ if pop.card.visible and Time.get_ticks_msec()>=_business_at:
+  _business_at=Time.get_ticks_msec()+500
+  var step:Dictionary=preload("res://scripts/ui/city_creation_business_step.gd").describe(pop.demo,pop.target_house_id)
+  business_button.visible=not step.action.is_empty();business_button.text=step.action;business_button.tooltip_text=step.text
+  if business_button.visible:pop.status.text=step.text;pop.status.tooltip_text=step.text
  if (panel.visible or roles.panel.visible) and (pop.target_house_id.is_empty() and not roles.batch or not pop.demo.ui_layer.visible or pop.demo.tool not in [0,4] or pop.demo.gallery.panel.visible):close()
  if panel.visible and _target!=pop.target_house_id:close()
 func _input(event:InputEvent)->void:

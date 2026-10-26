@@ -1,6 +1,6 @@
 extends RefCounted
 ## Five shared morphs animate separate limbs without splitting the body draw.
-static func mesh(source:ArrayMesh)->ArrayMesh:
+static func mesh(source:ArrayMesh,role:String="resident")->ArrayMesh:
 	var arrays:Array=source.surface_get_arrays(0);var shapes:Array=[];var result:=ArrayMesh.new()
 	result.blend_shape_mode=Mesh.BLEND_SHAPE_MODE_NORMALIZED
 	for mode:int in [0,1,2,3,4]:
@@ -15,6 +15,8 @@ static func mesh(source:ArrayMesh)->ArrayMesh:
 				pivot=Vector3(sign_side*.045,.075,0);angle=(.56 if mode==0 else -.56)*sign_side if mode<2 else .03*sign_side
 			elif tag in [3,4,6,7]:
 				pivot=Vector3(sign_side*.11,.36,0);angle=(-.26 if mode==0 else .26)*sign_side if mode<2 else -.85 if tag in [4,6] else -.12
+				if mode==2 and role=="bakery":angle=-1.12
+				elif mode==2 and role in ["workshop","atelier","clockmaker"]:angle=-1.03 if tag in [4,6] else -.52
 			if tag in [4,6] and mode>=3:angle=-1.45 if mode==3 else -1.50
 			elif tag==5 and mode>=2:pivot=Vector3(0,.38,0);angle=.13
 			if tag==8:
@@ -43,13 +45,20 @@ static func mesh(source:ArrayMesh)->ArrayMesh:
 		palms.append(anchor/float(count))
 	result.set_meta("right_palms",palms);result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,shapes);return result
 static func _near(life,root:Node3D)->bool:
-	return root.visible and root.get_child(0).visible and (life.view_camera==null or (life.view_camera.global_position.distance_squared_to(root.global_position)<1600. and life.view_camera.is_position_in_frustum(root.global_position+Vector3.UP*.3)))
+	if not root.visible or not root.get_child(0).visible:return false
+	var camera:Camera3D=life.view_camera
+	if camera==null:return true
+	var near:bool=camera.size<=30. if camera.projection==Camera3D.PROJECTION_ORTHOGONAL else camera.global_position.distance_squared_to(root.global_position)<1600.
+	return near and camera.is_position_in_frustum(root.global_position+Vector3.UP*.3)
 static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bool=false,greeting:bool=false,cargo:Node3D=null)->void:
 	var body:Node3D=root.get_child(0);var skin:MeshInstance3D=body.get_child(0)
 	var phase:float=time*8.7+float(root.get_meta("citizen_index",0))*.73
 	var stride:float=sin(phase) if moving else 0.;var inspect:float=(.65+.2*sin(time*1.7)) if seated or working else .35 if root.get_meta("citizen_prop","") in ["cup","lantern"] else 0.
 	if cargo!=null and cargo.visible:inspect=maxf(inspect,.60)
 	var sip:float=.5+.5*sin(time*1.1)
+	if working:inspect=.46+.28*(.5+.5*sin(time*(3.8 if root.get_meta("citizen_role","")=="bakery" else 2.3)+phase*.15))
+	if seated:sip=smoothstep(.25,.85,sin(time*.82+float(root.get_meta("citizen_index",0))*2.1));inspect=.45
+	root.set_meta("visible_activity","tea_conversation" if seated else "kneading" if working and root.get_meta("citizen_role","")=="bakery" else "crafting" if working else "walking" if moving else "idle")
 	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
 		body.position.y=.28+sin(time*1.7)*.004 if seated else absf(stride)*.023

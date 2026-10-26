@@ -58,7 +58,7 @@ func _run() -> void:
 	_expect(repeatable, "identical world input reproduces every candidate and property")
 	_expect(unique, "final block ownership has neither duplicated nor missing boundary roots")
 	_expect(finite, "world candidate transforms and species are finite")
-	_expect(count > 10000 and count < 16000, "twenty-four blocks retain the saturated 0.52m two-to-three-child meadow density")
+	_expect(count > 8000 and count < 12000, "twenty-four blocks retain patchy two-to-three-child meadow with open short turf")
 	_expect(species_min < 0.15 and species_max > 0.85, "town includes broad-leaf and narrow-leaf stands")
 	_expect(height_min < 0.55 and height_max > 0.85, "actual transforms include short turf beneath tall stands")
 	var coherent := true

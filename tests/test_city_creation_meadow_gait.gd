@@ -45,4 +45,8 @@ func run()->void:
 			lower_hangs=lower_hangs or (at.y<-.06 and bent.y<.02 and bent.z-at.z>.06)
 		check(knees_forward and lower_hangs,"seated thighs turn forward and lower legs hang below knees "+role)
 		actor.free()
+	var actor:=Visual.person(0);root.add_child(actor);var camera:=Camera3D.new();root.add_child(camera);camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=10.;camera.position=Vector3(0,20,40);camera.look_at(Vector3.ZERO)
+	check(Gait._near({"view_camera":camera},actor),"orthographic close-up animates visible citizen despite camera rig retreat beyond40m")
+	camera.size=45.;check(not Gait._near({"view_camera":camera},actor),"wide orthographic view skips microscopic pose updates")
+	actor.free();camera.free()
 	print("MEADOW_GAIT ",JSON.stringify({"checks":count,"failures":failures,"ok":failures.is_empty()}));quit(0 if failures.is_empty() else 1)

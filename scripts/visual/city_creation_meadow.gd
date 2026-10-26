@@ -299,15 +299,15 @@ func _build_base_candidates(block: Vector2i) -> Array:
 			var mother := Vector2((float(x) + 0.5) * BASE_SPACING + jitter_x,
 				(float(z) + 0.5) * BASE_SPACING + jitter_z)
 			var patch := _patch_field(mother)
-			var density := 0.92 + patch * 0.08
+			var density := 0.62 + patch * 0.32
 			if float((bits >> 20) & 1023) / 1023.0 > density: continue
 			var yaw := _patch_yaw(mother)
 			var species := _species_field(mother)
 			var tint := dark.lerp(light, patch)
 			var rng := RandomNumberGenerator.new()
 			rng.seed = bits
-			var children := 3 if patch > 0.50 else 2
-			var tuft_height := lerpf(0.40, 0.96, smoothstep(0.20, 0.80, patch))
+			var children := 3 if patch > 0.64 else 2
+			var tuft_height := lerpf(0.32, 0.86, smoothstep(0.20, 0.80, patch))
 			for child in range(children):
 				# Irregular elliptical drifts replace identical left/right wings.
 				# The broad patch controls height, not an increased root count.
@@ -319,7 +319,7 @@ func _build_base_candidates(block: Vector2i) -> Array:
 				if child == 0: offset *= 0.18
 				var at := mother + offset.rotated(-yaw)
 				var height := tuft_height * rng.randf_range(0.90, 1.08)
-				var width := rng.randf_range(0.84, 1.10)*1.40
+				var width := rng.randf_range(0.84, 1.10)*1.18
 				var child_yaw := yaw + rng.randf_range(-0.14, 0.14)
 				var accent := child == 0 and patch > 0.62 and (bits & 255) < 22
 				var flower := (bits >> 8) % 3 != 0
