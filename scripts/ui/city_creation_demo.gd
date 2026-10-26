@@ -302,6 +302,7 @@ func _ready() -> void:
 	conductor_gesture.setup(self)
 	preload("res://scripts/ui/city_creation_house_rotation_input.gd").new().setup(self)
 	preload("res://scripts/visual/city_creation_street_wonders.gd").new().setup(self)
+	preload("res://scripts/visual/city_creation_waterfront_light.gd").new().setup(self)
 	get_meta("era_ceremony").bind()
 	_refresh_ui()
 	_message(Copy.OPENING_TOAST)

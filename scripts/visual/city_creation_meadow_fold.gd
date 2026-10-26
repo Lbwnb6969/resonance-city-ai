@@ -1,10 +1,10 @@
 extends RefCounted
 ## Opaque folded near blades share the original footprint, UV wind and LOD pool.
 static func blade(owner,s:SurfaceTool,index:int,folded:bool)->void:
-	var angle:float=[.02,1.59,3.10,4.69,.52,2.61,4.70][index]
+	var angle:float=[.08,.95,2.38,4.12,.45,2.05,3.65][index]
 	var height:float=[.16,.19,.17,.18,.22,.27,.245][index]
 	var reach:float=[.16,.17,.165,.175,.07,.06,.075][index]
-	var width:float=[.046,.050,.044,.048,.042,.044,.042][index]
+	var width:float=[.036,.039,.035,.037,.033,.034,.033][index]
 	var outward:=Vector3(cos(angle),0,sin(angle));var across:=Vector3(-sin(angle),0,cos(angle))
 	var root:Vector3=outward*.006;var outer:bool=index<4
 	if folded:_rounded(s,root,outward,across,height,reach,width,index);return
@@ -42,7 +42,8 @@ static func _rounded(s:SurfaceTool,root:Vector3,outward:Vector3,across:Vector3,h
 static func _center(root:Vector3,outward:Vector3,height:float,reach:float,t:float,index:int)->Vector3:
 	var bend:=pow(maxf(0.,(t-.45)/.55),2.)
 	var drop:=.36+.035*sin(index*1.7) if index<4 else .23+.025*cos(index*1.3)
-	return root+outward*reach*(pow(t,1.22)+.48*bend)+Vector3.UP*height*(sin(t*PI*.5)-drop*bend)
+	var across:=Vector3(-outward.z,0,outward.x)
+	return root+outward*reach*(pow(t,1.22)+.48*bend)+Vector3.UP*height*(sin(t*PI*.5)-drop*bend)+across*.018*bend*sin(index*2.1)
 static func base(s:SurfaceTool)->void:
 	for leaf in range(3):
 		var angle:float=.35+float(leaf)*TAU/3.;var out:=Vector3(cos(angle),0,sin(angle));var side:=Vector3(-sin(angle),0,cos(angle))

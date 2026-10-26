@@ -107,7 +107,7 @@ func _run() -> void:
 		normals_by_vertex[at] = normal
 		var tip := false
 		for blade in range(7):
-			var angle:float=[.02,1.59,3.10,4.69,.52,2.61,4.70][blade]
+			var angle:float=[.08,.95,2.38,4.12,.45,2.05,3.65][blade]
 			var outward:=Vector3(cos(angle),0,sin(angle))
 			var height:float=[.16,.19,.17,.18,.22,.27,.245][blade]
 			var reach:float=[.16,.17,.165,.175,.07,.06,.075][blade]

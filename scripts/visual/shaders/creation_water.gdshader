@@ -13,6 +13,7 @@ uniform float travel_ripple_time = 0.0;
 uniform float travel_ripple_strength = 0.0;
 uniform float season_rain=0.0;
 varying vec3 world_at;
+#include "res://scripts/visual/shaders/creation_water_lamps.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_meadow_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_shore_palette.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_travel_ripple.gdshaderinc"
@@ -71,7 +72,9 @@ void fragment() {
 	ALBEDO = mix(ground,water,water_cover);
 	float festival=festival_wave(distance(at,festival_origin))*water_cover;
 	ALBEDO=mix(ALBEDO,vec3(.95,.77,.35),festival*.56);
-	EMISSION=vec3(.58,.34,.08)*festival;
+	vec3 lamp_glint=waterfront_shimmer(at,depth,CAMERA_POSITION_WORLD)*night*water_cover;
+	ALBEDO+=lamp_glint*.55;
+	EMISSION=vec3(.58,.34,.08)*festival+lamp_glint*.35;
 	ROUGHNESS = mix(1.0,0.64,smoothstep(0.24,0.8,depth));
 	SPECULAR = mix(0.0,0.16,smoothstep(0.12,0.6,depth));
 }

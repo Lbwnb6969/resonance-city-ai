@@ -80,6 +80,8 @@ void fragment() {
 	// upper blade owns the full warm highlight instead of a bright rosette.
 	float reveal = smoothstep(0.04,0.94,tip)*detail*0.78;
 	vec3 albedo=mix(ground_linear,blade,reveal);
+	// Only wind-compressed tips catch the passing warm sheen; roots keep AO.
+	albedo*=vec3(1.0)+vec3(.06,.035,.006)*max(0.0,gust)*leaf;
 	ALBEDO=OUTPUT_IS_SRGB ? meadow_linear_to_srgb(albedo) : albedo;
 	AO = mix(0.98,1.0,smoothstep(0.0,0.55,tip)*detail);
 	AO_LIGHT_AFFECT = 0.30;

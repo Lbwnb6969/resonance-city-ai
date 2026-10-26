@@ -47,6 +47,7 @@ func _lamp(parent:Node3D,at:Vector3,stone:bool=false)->void:
 	var warm:Material=r._material(Color("e9bd6e"));warm.emission_enabled=true;warm.emission=Color("c68f47");warm.emission_energy_multiplier=.22
 	r._box(parent,Vector3(.11,.13,.11),at+Vector3.UP*.41,warm)
 	r._box(parent,Vector3(.20,.045,.20),at+Vector3.UP*.50,base)
+	parent.set_meta("water_lamp",at+Vector3.UP*.41)
 func _pier(row:Dictionary)->void:
 	var r=demo.town;var root:=_root("WatersidePier_"+str(row.house_id),row,Vector3(row.at.x,row.y,row.at.y),row.yaw)
 	var length:=float(row.length);var wood:Material=r._material(Color("98724f"));wood.roughness=.94

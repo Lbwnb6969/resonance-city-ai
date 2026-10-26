@@ -46,6 +46,9 @@ static func build(owner:Node3D,row:Dictionary)->Node3D:
 			pivot.set_meta("clock_hand",.018 if i==0 else .09)
 	return root
 static func _lighthouse(r,root:Node3D,cream:Material,gold:Material)->void:
+	var wick:Material=r._material(Color("e7bc73"));wick.emission_enabled=true;wick.emission=Color("e0a456");wick.emission_energy_multiplier=.35
+	r._cylinder(root,.105,.105,.16,Vector3(0,1.61,.07),wick,10)
+	root.set_meta("water_lamp",Vector3(0,1.61,.07))
 	r._cylinder(root,.27,.39,1.35,Vector3.UP*.77,cream,12)
 	for y:float in [.65,1.35]:
 		r._cylinder(root,.48,.50,.08,Vector3.UP*y,cream,24)
@@ -53,7 +56,8 @@ static func _lighthouse(r,root:Node3D,cream:Material,gold:Material)->void:
 		for i in range(8):r._cylinder(root,.012,.014,.17,Vector3(sin(i*TAU/8.)*.43,y+.08,cos(i*TAU/8.)*.43),gold,6)
 	for i in range(22):
 		var angle:=i*.53;var step:MeshInstance3D=r._box(root,Vector3(.17,.035,.12),Vector3(sin(angle)*.32,.18+i*.052,cos(angle)*.32),cream);step.rotation.y=angle
-	r._cylinder(root,.15,.24,.32,Vector3.UP*1.61,gold,8)
+	r._cylinder(root,.15,.24,.08,Vector3.UP*1.47,gold,8)
+	r._cylinder(root,.20,.18,.045,Vector3.UP*1.75,gold,8)
 	for x:float in [-.24,.24]:r._box(root,Vector3(.045,.62,.045),Vector3(x,2.02,0),gold)
 	var lintel:MeshInstance3D=r._box(root,Vector3(.56,.055,.07),Vector3(0,2.34,0),gold);lintel.rotation.z=-.18
 	r._box(root,Vector3(.55,.055,.07),Vector3(0,1.72,0),gold)
