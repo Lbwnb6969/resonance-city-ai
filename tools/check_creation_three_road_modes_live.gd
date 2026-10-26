@@ -1,23 +1,33 @@
 extends "res://tools/check_creation_music_experience_live.gd"
 var road_tool
+class FixtureInput extends Node:
+	func _input(event:InputEvent)->void:
+		if event.device!=92:get_viewport().set_input_as_handled()
+func isolate_input()->void:root.add_child(FixtureInput.new())
 func quiet()->void:
 	for name:String in ["inspiration_draft","vignette_journey"]:
 		var item=demo.get_meta(name);item.poll();item.set_process(false);item.paper.hide()
 func screen(at:Vector2)->Vector2:return demo.camera.unproject_position(Vector3(at.x,demo.state.ground_height(at),at.y))
 func motion(at:Vector2,alt:bool=false)->void:
-	var event:=InputEventMouseMotion.new();event.position=screen(at);event.global_position=event.position;event.alt_pressed=alt;root.push_input(event);await process_frame
+	var event:=InputEventMouseMotion.new();event.device=92;event.position=screen(at);event.global_position=event.position;event.alt_pressed=alt;root.push_input(event);await process_frame
 func button(at:Vector2,pressed:bool,index:int=MOUSE_BUTTON_LEFT)->void:
-	var event:=InputEventMouseButton.new();event.position=screen(at);event.global_position=event.position;event.pressed=pressed;event.button_index=index;root.push_input(event);await process_frame
+	var event:=InputEventMouseButton.new();event.device=92;event.position=screen(at);event.global_position=event.position;event.pressed=pressed;event.button_index=index;root.push_input(event);await process_frame
 func click_world(at:Vector2)->void:
 	await motion(at);await button(at,true);await button(at,false)
 func key(code:Key,ctrl:bool=false)->void:
 	for down:bool in [true,false]:
-		var event:=InputEventKey.new();event.keycode=code;event.physical_keycode=code;event.pressed=down;event.ctrl_pressed=ctrl;root.push_input(event);await process_frame
+		var event:=InputEventKey.new();event.device=92;event.keycode=code;event.physical_keycode=code;event.pressed=down;event.ctrl_pressed=ctrl;root.push_input(event);await process_frame
 func ui_click(control:Control)->void:
+	# The dock springs into place after changing city/tool. Aim at its settled
+	# real position instead of clicking a moving button between press/release.
+	var deadline:=Time.get_ticks_msec()+1200;var stable:=0;var previous:=control.get_global_rect()
+	while stable<3 and Time.get_ticks_msec()<deadline:
+		await process_frame;var current:=control.get_global_rect()
+		stable=stable+1 if current.position.distance_to(previous.position)<.05 and current.size.distance_to(previous.size)<.05 else 0;previous=current
 	var position:Vector2=control.get_global_rect().get_center()
-	var motion_event:=InputEventMouseMotion.new();motion_event.position=position;motion_event.global_position=position;root.push_input(motion_event);await process_frame
+	var motion_event:=InputEventMouseMotion.new();motion_event.device=92;motion_event.position=position;motion_event.global_position=position;root.push_input(motion_event);await process_frame
 	for down:bool in [true,false]:
-		var event:=InputEventMouseButton.new();event.position=position;event.global_position=position;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down;root.push_input(event);await process_frame
+		var event:=InputEventMouseButton.new();event.device=92;event.position=position;event.global_position=position;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down;root.push_input(event);await process_frame
 func exact(points:Array)->bool:
 	var saved:Array=demo.state.roads[-1].points
 	if saved.size()!=points.size():return false
@@ -34,6 +44,7 @@ func run()->void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();road_tool=demo.get_meta("road_tool")
+	isolate_input()
 	var voices:Array=[]
 	for player:AudioStreamPlayer in demo.music._players.values():voices.append(player.get_instance_id())
 	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:

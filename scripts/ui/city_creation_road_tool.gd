@@ -2,6 +2,7 @@ extends Node
 ## Three authoring modes share the exact State preview/commit pipeline.
 const Geometry=preload("res://scripts/world/city_creation_road_curve_geometry.gd")
 const Guide=preload("res://scripts/visual/city_creation_road_anchor_guide.gd")
+const Ruler=preload("res://scripts/world/city_creation_road_ruler.gd")
 var demo
 var guide:=Guide.new()
 var mode:=0
@@ -17,6 +18,9 @@ var locks:Array[Vector2]=[]
 var alt:=false
 var signature:Array=[]
 var valid:Dictionary={}
+var reference:Dictionary={}
+var ruler:Dictionary={}
+var reference_revision:=-1
 func setup(owner)->void:
 	demo=owner;name="RoadTool";demo.add_child(self);demo.set_meta("road_tool",self);guide.setup(demo)
 func active()->bool:return not phase.is_empty()
@@ -27,7 +31,7 @@ func set_mode(value:int)->void:
 	var options:OptionButton=demo.road_panel.find_child("RoadMode",true,false);options.select(mode)
 	demo.tactile_dock.refresh()
 func reset()->void:
-	phase="";pressed=false;dragged=false;raw.clear();locks.clear();control=Vector2.INF;signature.clear();valid.clear();guide.clear()
+	phase="";pressed=false;dragged=false;raw.clear();locks.clear();control=Vector2.INF;signature.clear();valid.clear();reference.clear();ruler.clear();guide.clear()
 	show_mode()
 func show_mode()->void:
 	var options:OptionButton=demo.road_panel.find_child("RoadMode",true,false)
@@ -65,16 +69,20 @@ func unhandled(event:InputEvent)->bool:
 		return false
 	var point:Vector2=demo._road_pointer_at()
 	if not active():
+		reference=Ruler.road_reference(demo.state,point);reference_revision=demo.state.revision
+		if mode>0 and not alt and not reference.is_empty():point=reference.at
 		start=point;tail=point;control=Vector2.INF;raw.assign([point]);locks.assign([point]);pressed=true;dragged=false
 		effective=1 if mode==0 and alt else mode;phase="control" if effective==2 else "pressed";demo.road_drawing=true;demo.road_draft_straight=effective==1;demo.road_locked_segments=0
 		update(true)
-	elif phase=="control":control=point;phase="end";signature.clear();update(true)
+	elif phase=="control":update(true);control=ruler.get("end",point);phase="end";signature.clear();update(true)
 	elif phase=="end":update(true);finish()
 	return true
 func release()->void:
 	update(true);pressed=false
 	if effective!=2 and dragged:finish();return
-	if phase=="pressed":effective=1;phase="end";signature.clear();show_mode();update(true)
+	if phase=="pressed":
+		if not alt and not reference.is_empty():start=reference.at;locks.assign([start])
+		effective=1;phase="end";signature.clear();show_mode();update(true)
 func update(_force:bool=false)->void:
 	if not active():return
 	if blocked() or demo.tool!=2:demo._cancel_draft();return
@@ -83,6 +91,9 @@ func update(_force:bool=false)->void:
 	var key:=[point,phase,effective,alt,demo.state.revision,demo.zoom]
 	if signature==key:return
 	signature=key
+	if reference_revision!=demo.state.revision:reference=Ruler.road_reference(demo.state,start);reference_revision=demo.state.revision
+	var precise:=effective==2 or effective==1 and not pressed and not dragged
+	ruler=Ruler.plan(start,control if effective==2 else Vector2.INF,point,reference,not alt) if precise else {}
 	var path:Array[Vector2]=[]
 	if effective==0:
 		if raw[-1].distance_to(point)>=.15:raw.append(point)
@@ -97,9 +108,10 @@ func update(_force:bool=false)->void:
 		if control.is_finite():path=Geometry.quadratic(start,control,point)
 		else:path.assign([start,point])
 		demo.road_points=path.duplicate()
+	if precise:path.assign(ruler.points)
 	demo.road_draft_straight=effective==1
-	valid=demo.state.preview_road(path,demo.road_style,"none" if alt else "soft",demo._selected_road_width())
-	if str(valid.upgrade_road_id).is_empty() and valid.points.size()>1 and (effective==2 and control.is_finite() or effective==1 and not dragged):
+	valid=demo.state.preview_road(path,demo.road_style,"none" if alt or precise else "soft",demo._selected_road_width())
+	if not precise and str(valid.upgrade_road_id).is_empty() and valid.points.size()>1 and (effective==2 and control.is_finite() or effective==1 and not dragged):
 		var resolved:Array[Vector2]=valid.points
 		# Endpoint assistance must not kink a supposedly precise line or move
 		# only the final sample of a quadratic curve.
@@ -115,6 +127,7 @@ func update(_force:bool=false)->void:
 	var tip:Vector2=demo.road_preview[-1] if not demo.road_preview.is_empty() else point
 	var text:=hint() if valid.ok or path.size()<2 else str(valid.message)
 	if valid.get("upgraded",false) or valid.get("no_op",false):text=str(valid.message)
+	guide.compass=ruler
 	guide.draw(anchors,tip,text)
 	demo.road_status.text=hint()
 func hint()->String:

@@ -109,3 +109,5 @@ M57：`check_creation_musical_toys_live.gd`真实P/V点击、12s源独奏、邻�
 M58：跨进程day1先从林水或用途浮窗回筑屋、收好手札后实际展开来信；day2新纪元从统一手札领取已经赚取的页，旧独立章程仍由旧档工具覆盖。默认长录仍约150秒，不把此段标成3分钟；`--resolutions`/`--phases`可定向跑所需旅程。
 
 M59：`tests/test_city_creation_road_curve_geometry.gd`核RDP/向心Catmull与精确二次曲线/数组存档；原生`check_creation_three_road_modes_live.gd -- --isolated-session --out-dir=res://验证记录/M59/complete`双尺寸真实三印章、定点/拖画/Tab/取消/升级/撤销，`test_city_creation_road_chain_live.gd`保留锁段与文本输入回归，输出首参数在`--`后（并带`--isolated-session`）。
+
+M60：`tests/test_city_creation_road_ruler.gd`核真实段切线/两侧角度/圆心半径/端点切线/非圆曲率。原生`check_creation_road_ruler_live.gd -- --isolated-session --out-dir=res://验证记录/M60/final`双尺寸Alt/相交罗盘/正圆与落地。三模工具等待UI真实位置稳定，device92隔离外部原生输入，仍经Viewport真实GUI点击，不直接调用选项方法。

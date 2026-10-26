@@ -1251,8 +1251,8 @@
         "id": "M60",
         "title": "夹角弧度罗盘与方向磁吸",
         "acceptance": "真实参考道路切线/法线、15度步进与强磁吸、Alt临时释放；地面金弧与角度/半径小印章，等臂时使用真实圆弧或如实标注曲率，避免把二次贝塞尔冒充正圆。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M60 Harness/doc+selftest8; road_ruler66/curve_geometry21/legacy375+27 PASS. Native final62 at1440/1024 PASS: actual oblique saved-segment projection/tangent,normal90deg and15deg stepping,strong2.5deg capture,heldAlt continuous88.1deg and restoration,two shared ground angle guides/vertex colors,exact5m equal-arm true-circle samples,two actual tangents,ordinary unequal Bezier midpoint curvature,infinite straight radius,frozenAlt88.4deg honest label,source removal/cache clearing,preview/commit exact/cold/UndoRedo. Native modes_isolated82 PASS with stable actual seal clicks/device92 fixture input; earlier missed UI hits retained. Original ten native PNGs inspected;Master3.204s peak.047760 zero clipping,12+4/6+2/personal bytes unchanged. No new schema or four main-file edits;M61 closure remains pending."
       },
       {
         "id": "M61",
