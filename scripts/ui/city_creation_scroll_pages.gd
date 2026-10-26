@@ -28,6 +28,7 @@ static func journal(widget:RefCounted,parent:Control)->void:
 	widget.next_label=label(demo,column,"",13)
 	widget.next_button=demo._button("",widget._follow_next);widget.next_button.name="NextJournalStep"
 	UI.primary(widget.next_button);column.add_child(widget.next_button)
+	widget.next_button.hide();widget.next_label.hide()
 	var chapters:=scroll(column,"Chapters")
 	widget.cards=VBoxContainer.new();widget.cards.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	widget.cards.add_theme_constant_override("separation",6);chapters.add_child(widget.cards)

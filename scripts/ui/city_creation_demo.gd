@@ -789,7 +789,7 @@ func _input(event: InputEvent) -> void:
 			elif event.keycode == KEY_S: save_city()
 			elif event.keycode == KEY_O: gallery.open_panel()
 			else: return
-		elif event.keycode >= KEY_1 and event.keycode <= KEY_9: select_tool(event.keycode - KEY_1)
+		elif event.keycode >= KEY_1 and event.keycode <= KEY_9: select_tool(2 if event.keycode==KEY_8 else event.keycode - KEY_1)
 		elif event.keycode == KEY_H: home_camera()
 		elif event.keycode == KEY_J: journal.open_panel()
 		elif event.keycode == KEY_L: ledger.open_panel()

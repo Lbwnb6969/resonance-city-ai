@@ -99,9 +99,9 @@ func refresh()->void:
 		button.modulate.a=.28 if button.disabled else 1.
 		button.active=tool==index or (index==0 and tool in [1,3]) or (index==5 and tool==6)
 		button.queue_redraw()
-	popup.visible=(bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or house_options)
+	popup.visible=tool!=7 and (bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or house_options)
 	nature_row.visible=tool in [5,6]
-	district_name_row.visible=tool==7
+	district_name_row.hide()
 	if not popup.visible:return
 	if tool in [0,1]:
 		var key:=[demo.state.get_instance_id(),demo.state.era_unlocks.duplicate()]

@@ -798,8 +798,7 @@ func natural_clusters()->Dictionary:
 	return _natural_cluster_rows
 
 func house_acoustic_style(house:Dictionary)->String:
-	if house.has("acoustic_style"):return str(house.acoustic_style)
-	return str(district_for_house(str(house.id)).get("style","warm"))
+	return preload("res://scripts/world/city_creation_spatial_voice.gd").style(self,house)
 
 func _inherit_cluster(house:Dictionary)->void:
 	var at:=Vector2(house.origin[0],house.origin[1]);var best:Dictionary={};var distance:=INF
@@ -811,7 +810,7 @@ func _inherit_cluster(house:Dictionary)->void:
 	if best.is_empty():return
 	var era:=house_era(best);var style:=house_acoustic_style(best)
 	if era!="pastoral":house.era_theme=era
-	if style!="warm":house.acoustic_style=style
+	if style!="warm" and (best.has("acoustic_style") or not automatic_neighborhoods):house.acoustic_style=style
 
 func set_cluster_style(house_id:String,style:String)->Dictionary:
 	if style not in DISTRICT_STYLES:return _fail("未知的聚落曲风")

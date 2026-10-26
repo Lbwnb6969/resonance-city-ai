@@ -36,7 +36,9 @@ func setup(owner:RefCounted,ring:RefCounted)->void:
  appearance_button=Button.new();appearance_button.name="HouseAppearance";appearance_button.text="外观";appearance_button.custom_minimum_size=Vector2(62,34);appearance_button.pressed.connect(func()->void:roles.panel.hide();show_page("appearance"));ring.action_island.add_child(appearance_button);ring.action_island.move_child(appearance_button,1)
  ring.extra_controls=[panel,roles.panel]
  business_button=preload("res://scripts/ui/city_creation_business_step.gd").inspector(pop)
+ preload("res://scripts/ui/city_creation_lean_inspector.gd").setup(self)
 func show_page(id:String)->void:
+ id=preload("res://scripts/ui/city_creation_lean_inspector.gd").page(self,id)
  mode=id;_target=pop.target_house_id;appearance.visible=id=="appearance";music.visible=id=="music";panel.show();pop.refresh();fit();panel.move_to_front()
 func fit()->void:
  panel.reset_size();var viewport:Vector2=pop.overlay.size;var house:Rect2=pop.ring.house_rect

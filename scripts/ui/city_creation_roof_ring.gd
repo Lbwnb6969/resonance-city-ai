@@ -71,8 +71,8 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 	for i in range(roles.size()):
 		var angle:=lerpf(PI*1.12,PI*1.88,float(i)/maxi(1,roles.size()-1))
 		roles[i].position=Vector2(width*.5+cos(angle)*radius-24.,150.+sin(angle)*65.-24.)
-	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-194.)*.5));left.size=Vector2(88,194)
-	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-176.)*.5));right.size=Vector2(88,176)
+	left.position=Vector2(0.,hole.position.y+maxf(0.,(clear_size.y-98.)*.5));left.size=Vector2(88,98)
+	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-112.)*.5));right.size=Vector2(88,112)
 	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,28)
 	rotation_hint.position=Vector2((width-76.)*.5,hole.end.y+44.);rotation_hint.size=Vector2(76,18)
 	action_island.size=action_island.get_combined_minimum_size();action_island.position=Vector2((width-action_island.size.x)*.5,hole.end.y+66.)

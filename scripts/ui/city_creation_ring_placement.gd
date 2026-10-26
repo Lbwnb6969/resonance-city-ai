@@ -22,7 +22,7 @@ static func fit(items:Array,house:Rect2,view:Rect2,neighbors:Array=[],reserved:A
 		var found:=false
 		for candidate:Vector2 in candidates:
 			var rect:=Rect2(candidate,size)
-			if item.name=="HouseStatusCapsule" and neighbors.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
+			if neighbors.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			if rect.intersects(house.grow(4.)) or occupied.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			item.global_position=candidate;occupied.append(rect);found=true;break
 		success=success and found

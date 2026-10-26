@@ -5,7 +5,7 @@ const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
 const Arch=preload("res://scripts/visual/city_creation_architecture.gd")
 const Pick=preload("res://scripts/visual/city_creation_roof_pick.gd")
 static func active(house:Dictionary,era:String)->bool:
-	return era=="pastoral" and not house.has("signature") and house.get("style","")!="round_tower"
+	return era=="pastoral" and not house.has("signature") and house.get("style","") not in ["timber","round_tower"]
 static func material(color:Color,kind:int=Wall.Kind.STONE)->Material:
 	return Wall.source(color,null,"component",kind)
 static func openings(r,job,frame,wall:Node3D,door:bool,lit:bool,width:float)->void:

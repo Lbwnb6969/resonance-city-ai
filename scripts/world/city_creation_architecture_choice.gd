@@ -12,7 +12,7 @@ static func choices(city, house: Dictionary) -> Array:
 	var era: String=city.house_era(house)
 	if era=="modern_eco": return ALPINE
 	if era=="clockwork": return CLOCKWORK
-	if era not in ["pastoral","renaissance"] or house.get("style","") in ["timber","round_tower"]: return []
+	if era not in ["pastoral","renaissance"]: return []
 	var result: Array=["portico","townhouse"]
 	var Neo=preload("res://scripts/visual/city_creation_neoclassical.gd")
 	if house.cells.any(func(c):return int(c.level)>0 and not Neo.corner_sides(city,house,c).is_empty()): result.append("oriel")
@@ -33,6 +33,8 @@ static func set_choice(city, id: String, key: String) -> Dictionary:
 	if city.houses[index].get("architecture","")==key:return {"ok":true,"no_op":true}
 	var before: Dictionary=city.snapshot()
 	if key=="":city.houses[index].erase("architecture")
-	else:city.houses[index].architecture=key
+	else:
+		city.houses[index].architecture=key
+		if key in NEO+RENAISSANCE and city.houses[index].get("style","") in ["timber","round_tower"]:city.houses[index].erase("style")
 	city._commit(before,"更换建筑原型")
 	return {"ok":true,"message":"已换为"+label(key)}

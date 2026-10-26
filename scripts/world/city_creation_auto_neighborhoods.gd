@@ -3,6 +3,7 @@ extends RefCounted
 ## links, local services and saved history remain real without painted strokes.
 static func refresh(city:RefCounted)->void:
 	if not city.automatic_neighborhoods:return
+	city.set_meta("spatial_voice",{})
 	var previous:Array=[];var manual:Array[Dictionary]=[]
 	for district:Dictionary in city.districts:
 		if district.has("auto_members"):previous.append(district)

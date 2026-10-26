@@ -6,7 +6,7 @@ const Towers=preload("res://scripts/world/city_creation_towers.gd")
 const Arrangement=preload("res://scripts/audio/city_creation_arrangement.gd")
 const Canon=preload("res://scripts/audio/city_creation_circular_canon.gd")
 static func signature(city:RefCounted)->int:
-	return hash([city.houses,city.roads,city.waters,city.plants,city.biome_seed,city.music_mode,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
+	return hash([city.houses,city.roads,city.waters,city.plants,city.biome_seed,city.music_mode,city.automatic_neighborhoods,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
 static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	var records:Dictionary={}
 	var daily:Array[String]=[]
@@ -41,7 +41,7 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		row.cluster_members=clusters[str(house.id)].members
 		row.cluster_order=clusters[str(house.id)].ordered_members
 		row.cluster_rank=row.cluster_order.find(str(house.id))
-		row.temperament=str(house.get("temperament","andante"))
+		row.temperament=preload("res://scripts/world/city_creation_spatial_voice.gd").motion(state,house)
 		row.rooms=0;row.upper_rooms=0;row.max_level=0
 		row.water_distance=state.water_clearance(row.position)
 		var biome:Dictionary=state.biome_bonus(str(house.id))

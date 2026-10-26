@@ -16,7 +16,7 @@ func derive(city: RefCounted,network: RefCounted) -> Array[Dictionary]:
 		var position := Vector2(float(house.origin[0]),float(house.origin[1]))
 		var district: Dictionary = city.district_at(position)
 		if district.is_empty(): continue
-		houses.append({"id":id,"position":position,"district":str(district.id),"style":str(district.style),
+		houses.append({"id":id,"position":position,"district":str(district.id),"style":city.house_acoustic_style(house),"era":city.house_era(house),
 			"port":str(network.connected_houses[id])})
 	houses.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return str(a.id)<str(b.id))
 	var best: Dictionary = {}
@@ -24,7 +24,7 @@ func derive(city: RefCounted,network: RefCounted) -> Array[Dictionary]:
 		var from: Dictionary = houses[first]
 		for second in range(first+1,houses.size()):
 			var to: Dictionary = houses[second]
-			if from.district==to.district or from.style==to.style: continue
+			if from.district==to.district or (from.style==to.style and (not city.automatic_neighborhoods or from.era==to.era)): continue
 			var planar: float = Vector2(from.position).distance_to(Vector2(to.position))
 			if planar>HOUSE_RANGE*reach: continue
 			# Each connected house has one selected real entrance/component.
@@ -68,6 +68,7 @@ func _district_id(city: RefCounted,at: Vector2) -> String:
 	return str(city.district_at(at).get("id",""))
 
 func _adjacency(city: RefCounted,route: Array[Vector3],from: String,to: String) -> Dictionary:
+	var automatic:bool=city.districts.any(func(d):return d.id==from and d.has("auto_members")) and city.districts.any(func(d):return d.id==to and d.has("auto_members"))
 	var gap:=0.0
 	var maximum:=0.0
 	var previous:=Vector2(route[0].x,route[0].z)
@@ -98,7 +99,7 @@ func _adjacency(city: RefCounted,route: Array[Vector3],from: String,to: String) 
 				if previous_id.is_empty(): maximum=maxf(maximum,gap+previous.distance_to(boundary))
 				gap=boundary.distance_to(point) if id.is_empty() else 0.0
 			maximum=maxf(maximum,gap)
-			if maximum>MAX_EMPTY_GAP+TIE_EPSILON: return {"valid":false,"empty_gap":maximum}
+			if maximum>MAX_EMPTY_GAP+TIE_EPSILON and not automatic: return {"valid":false,"empty_gap":maximum}
 			previous=point
 			previous_id=id
 	return {"valid":true,"empty_gap":maximum}
