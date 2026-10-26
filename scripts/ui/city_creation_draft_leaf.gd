@@ -25,16 +25,18 @@ const BRIEFS:={
 }
 static func make(draft:Node,id:String)->Button:
  var journey:Dictionary=draft.demo.state.harmony_journey
- var card:Dictionary=draft.Journey.cards()[id];var tier:=Rarity.tier(journey,id);var key:=Tactile.rarity_key(tier)
+ var card:Dictionary=draft.Journey.cards()[id];var tier:=1 if not draft.legacy_era.is_empty() else Rarity.tier(journey,id);var key:=Tactile.rarity_key(tier)
  var box:=PanelContainer.new();box.name="Leaf_"+id;box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.custom_minimum_size=Vector2(210,238)
  box.add_theme_stylebox_override("panel",Tactile.card_frame_style(key));draft.leaves.add_child(box)
  var column:=VBoxContainer.new();column.add_theme_constant_override("separation",12);box.add_child(column)
  var seal:=Label.new();seal.name="FamilySeal";seal.text=Family.card_badge(id,Family.owned(draft.demo.state));seal.add_theme_color_override("font_color",UI.GOLD);column.add_child(seal)
- var rarity:=Label.new();rarity.name="Rarity";rarity.text=str(Tactile.RARITY_PALETTE[key].title);rarity.add_theme_color_override("font_color",Tactile.RARITY_PALETTE[key].accent);rarity.add_theme_font_size_override("font_size",12);column.add_child(rarity)
+ var rarity:=Label.new();rarity.name="Rarity";rarity.text="旧城已得传承" if not draft.legacy_era.is_empty() else str(Tactile.RARITY_PALETTE[key].title);rarity.add_theme_color_override("font_color",Tactile.RARITY_PALETTE[key].accent);rarity.add_theme_font_size_override("font_size",12);column.add_child(rarity)
  var heading:=Label.new();heading.name="LeafTitle";heading.text=str(card.name).trim_suffix("章程").right(4);heading.add_theme_font_size_override("font_size",22);column.add_child(heading)
  var detail:=Label.new();detail.name="LeafBrief";detail.text=BRIEFS[id];detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.add_theme_font_size_override("font_size",14);detail.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail.add_theme_color_override("font_color",UI.MUTED);column.add_child(detail)
  var button:=Button.new();button.name="Choose_"+id;button.text="融入河湾" if id not in journey.traditions else "再读 · 研习%d"%(int(journey.ranks[id])+1);button.custom_minimum_size.y=34
  button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n"+Rarity.NAMES[tier]+("：共鸣收益增加25%" if tier==3 else "：共鸣收益增加12%" if tier==2 else "")+"\n重读共鸣收益每次增加2%，至多50%；选择可撤销。"
+ if not draft.legacy_era.is_empty():button.text="收录旧城传承";button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n这是旧城已赚取的时代选择，不消耗共鸣手札，不额外授予稀有度收益。可撤销。"
+ elif id in draft.demo.state.era_modifiers and id not in journey.traditions:button.text="研习此页";button.tooltip_text+="\n本城已有此章程，研习不会重复叠加章程效果。"
  box.tooltip_text=button.tooltip_text;detail.tooltip_text=button.tooltip_text;heading.tooltip_text=button.tooltip_text
  button.pressed.connect(draft.choose.bind(id));column.add_child(button)
  for control:Control in [box,button]:

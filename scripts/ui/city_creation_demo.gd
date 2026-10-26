@@ -2448,6 +2448,7 @@ func _refresh_concert() -> void:
 	_refresh_matinee()
 
 func _message(text_value: String) -> void:
+	if preload("res://scripts/ui/city_creation_reward_whisper.gd").submit(self,text_value):return
 	if toast == null: return
 	toast.text = text_value
 	toast.visible = true

@@ -213,7 +213,7 @@ func _choose_palette(index: int) -> void:
 
 func offer_era_choice(era:String)->void:
 	_era_prompt_target=era
-	era_prompt_pending=true
+	era_prompt_pending=false
 	refresh(false)
 
 func _create_score_cards()->void:

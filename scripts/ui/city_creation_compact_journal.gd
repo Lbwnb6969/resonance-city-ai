@@ -6,7 +6,7 @@ var score_open:Dictionary={}
 var _status:Dictionary={}
 var active:=""
 func create_scores(j)->void:
-	j.score_title=j.demo._label("时代章程 · 选一枚铭牌",14);j.cards.add_child(j.score_title)
+	j.score_title=j.demo._label("城市手札 · 已收录的传承",14);j.cards.add_child(j.score_title)
 	for i in range(j.demo.state.ScoreModifiers.ERAS.size()):
 		var era:String=j.demo.state.ScoreModifiers.ERAS[i]
 		var row:=VBoxContainer.new();row.name="ScoreCards_"+era;row.add_theme_constant_override("separation",4)
@@ -28,9 +28,6 @@ func chapter(j,index:int,card:VBoxContainer,title:Button)->void:
 func scores(j)->void:
 	if j.score_title==null:return
 	active=""
-	for era:String in j.score_cards:
-		if era in j.demo.state.era_unlocks and j.demo.state.ScoreModifiers.selected(j.demo.state,era).is_empty():active=era
-	if j._era_prompt_target in j.demo.state.era_unlocks and j.score_cards.has(j._era_prompt_target) and j.demo.state.ScoreModifiers.selected(j.demo.state,j._era_prompt_target).is_empty():active=j._era_prompt_target
 	j.score_title.visible=j.demo.state.era_unlocks.size()>1
 	for era:String in j.score_cards:
 		var selected:String=j.demo.state.ScoreModifiers.selected(j.demo.state,era)
@@ -38,8 +35,10 @@ func scores(j)->void:
 		var header:Button=row.get_child(0);var grid:Control=row.get_child(1)
 		header.text=("✓ " if not selected.is_empty() else "○ ")+j.demo.state.Eras.NAMES[j.demo.state.Eras.IDS.find(era)]
 		if not selected.is_empty():header.text+=" · "+str(j.demo.state.ScoreModifiers.CHOICES[selected].name).trim_suffix("章程")
+		header.disabled=true;header.mouse_filter=Control.MOUSE_FILTER_IGNORE;header.add_theme_color_override("font_disabled_color",UI.GOLD if not selected.is_empty() else UI.INK)
 		header.clip_text=true;header.tooltip_text=header.text;header.add_theme_color_override("font_color",UI.GOLD if not selected.is_empty() else UI.INK)
-		grid.visible=era==active or score_open.get(era,false)
+		grid.hide()
+		if selected.is_empty():header.text=j.demo.state.Eras.NAMES[j.demo.state.Eras.IDS.find(era)]+" · 建筑已解锁"
 		for b:Button in grid.get_children():
 			var id:String=str(b.name).trim_prefix("Score_")
 			b.disabled=not selected.is_empty() or j.demo.edit_pending() or j.demo.gallery.busy

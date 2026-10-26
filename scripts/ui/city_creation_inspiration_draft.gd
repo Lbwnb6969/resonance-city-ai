@@ -4,6 +4,8 @@ const Journey=preload("res://scripts/world/city_creation_harmony_journey.gd")
 const Rarity=preload("res://scripts/world/city_creation_draft_rarity.gd")
 const Receipts=preload("res://scripts/world/city_creation_harmony_receipts.gd")
 const UI=preload("res://scripts/ui/valley_ui_theme.gd")
+const Unified=preload("res://scripts/world/city_creation_unified_rewards.gd")
+var legacy_era:=""
 var demo:Node3D
 var paper:Panel
 var badge:Button
@@ -65,7 +67,8 @@ func chime()->void:
 func refresh(force:bool=false)->void:
 	var journey:Dictionary=demo.state.harmony_journey
 	if journey.is_empty():return
-	var remaining:=Journey.credits(journey)
+	var legacy:=Unified.pending(demo.state);legacy_era=legacy[0] if not legacy.is_empty() else ""
+	var remaining:=Journey.credits(journey)+legacy.size()
 	progress.max_value=Journey.xp_for_next_level(int(journey.harmony_level));progress.value=int(journey.harmony_xp)
 	badge.text="新卷待启 · %d"%remaining
 	badge.visible=remaining>0
@@ -73,34 +76,36 @@ func refresh(force:bool=false)->void:
 	badge.tooltip_text="新屋、真实出炉、茶聚、送装、心愿与和弦积累共鸣。\n已研习："+"、".join(Array(journey.traditions).map(func(id):return str(Journey.cards()[id].name)))
 	if remaining==0:paper.hide();signature=null;return
 	Rarity.ensure(journey)
-	reroll_button.text="翻卷 · %d"%Rarity.rerolls_left(journey);reroll_button.disabled=Rarity.rerolls_left(journey)<=0
-	footer.text=preload("res://scripts/ui/city_creation_draft_leaf.gd").footer(journey)
-	var key:=[journey.pending_draft.duplicate(),journey.ranks.duplicate(),journey.get("draft_rarities",{}).duplicate(),remaining]
+	reroll_button.visible=legacy_era.is_empty();reroll_button.text="翻卷 · %d"%Rarity.rerolls_left(journey);reroll_button.disabled=Rarity.rerolls_left(journey)<=0
+	footer.text="旧城已得权益 · 不消耗共鸣手札 · 可撤销" if not legacy_era.is_empty() else preload("res://scripts/ui/city_creation_draft_leaf.gd").footer(journey)
+	var key:=[journey.pending_draft.duplicate(),journey.ranks.duplicate(),journey.get("draft_rarities",{}).duplicate(),remaining,legacy_era]
 	if force or key!=signature:
 		signature=key;rebuild()
 	display()
 func display()->void:
 	var ceremony:bool=demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty()
 	var covered:bool=ceremony or demo.journal.scrollbook.visible or demo.gallery.panel.visible or demo.guide.panel.visible
-	badge.visible=not covered and Journey.credits(demo.state.harmony_journey)>0
-	paper.visible=not covered and not postponed and Journey.credits(demo.state.harmony_journey)>0
+	var waiting:bool=Journey.credits(demo.state.harmony_journey)>0 or not Unified.pending(demo.state).is_empty()
+	badge.visible=not covered and waiting
+	paper.visible=not covered and not postponed and waiting
 	if paper.visible:demo.toast.hide()
 func rebuild()->void:
 	for child:Node in leaves.get_children():leaves.remove_child(child);child.queue_free()
 	buttons.clear();var journey:Dictionary=demo.state.harmony_journey
 	title.text="灵感手札 · 择一页入城"
 	if int(journey.get("heritage_credit",0))==1 and Journey.choices_made(journey)==0:title.text="跨城传承 · 择一页入城"
-	for id:String in journey.pending_draft:buttons[id]=preload("res://scripts/ui/city_creation_draft_leaf.gd").make(self,id)
+	if not legacy_era.is_empty():title.text="旧城传承 · "+str(demo.state.Eras.NAMES[demo.state.Eras.IDS.find(legacy_era)])
+	for id:String in (Unified.cards(legacy_era) if not legacy_era.is_empty() else journey.pending_draft):buttons[id]=preload("res://scripts/ui/city_creation_draft_leaf.gd").make(self,id)
 	fit();fit.call_deferred()
 func reroll()->void:
-	if demo.edit_pending() or demo.gallery.busy:return
+	if demo.edit_pending() or demo.gallery.busy or not legacy_era.is_empty():return
 	var result:=Rarity.reroll(demo.state)
 	if result.ok:demo._after_edit(result,"history",false)
 	refresh(true)
 func choose(id:String)->void:
 	if demo.edit_pending() or demo.gallery.busy:return
 	Receipts.collect(demo.state)
-	var result:=Journey.choose(demo.state,id)
+	var result:=Unified.choose_legacy(demo.state,legacy_era,id) if not legacy_era.is_empty() else Journey.choose(demo.state,id)
 	if result.ok:demo._after_edit(result,"terrace",true)
 	refresh(true)
 func _process(delta:float)->void:
