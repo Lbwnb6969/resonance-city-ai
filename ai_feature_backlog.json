@@ -1183,8 +1183,8 @@
         "id": "RF08",
         "title": "连续编辑响应与最终验收",
         "acceptance": "针对真实读档/地形/连建/连续撤销等待定位优化，保留过程反馈；三门禁与独立原图/音频审查、旧档/跨进程/同步全完成后停止。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "RF08 PASS: chemistry_worker16 (deep edits, earned9m bridge/.65m stairs), chemistry_preview70, legacy375+27, Harness/doc; native edit16 and async_shapes41 including real tool cancellation/clear/no stale publication, original state/history/voices; before vs chemistry_worker measured. Independent critic PASS, no open P1/P2, scores8.0-8.5. No new recording under preceding user deferral; latest user permits future recordings when needed."
       }
     ]
   },

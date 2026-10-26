@@ -11,7 +11,13 @@ var left_at := 0.
 var heard := {}
 var cue_count := 0
 var prepare_ms := 0.
-func setup(owner: Node) -> void: demo = owner
+var planner=preload("res://scripts/ui/city_creation_chemistry_worker.gd").new()
+var pending:Dictionary={}
+var pending_age:=0.
+func _preview_ids()->Array:
+	return demo.town.preview.get_children().filter(func(node):return str(node.name)!="ChemistryGhost").map(func(node):return node.get_instance_id())
+func setup(owner: Node) -> void:
+	demo=owner;demo.tree_exiting.connect(planner.close)
 func building(candidate: Dictionary) -> void:
 	_update("house",candidate,[],0.,"")
 func stroke() -> void:
@@ -24,17 +30,26 @@ func stroke() -> void:
 func road(points: Array[Vector2], width: float, style: String, valid: bool) -> void:
 	_update("road",{"valid":valid},points,width,style)
 func _update(mode: String, candidate: Dictionary, points: Array[Vector2], width: float, style: String) -> void:
-	var key := str([demo.state.revision,mode,candidate,points,width,style])
+	var preview_ids:=_preview_ids()
+	var key := str([demo.state.get_instance_id(),demo.state.revision,mode,candidate,points,width,style,preview_ids])
 	if key != last_key:
-		var started := Time.get_ticks_usec()
-		rows = Plans.building(demo.state,candidate) if mode == "house" else Plans.road(demo.state,points,width,style,bool(candidate.valid))
-		prepare_ms = float(Time.get_ticks_usec()-started)/1000.
-		last_key = key; dwell = 0.
+		pending={"key":key,"mode":mode,"candidate":candidate.duplicate(true),"points":points.duplicate(),"width":width,"style":style,"preview_ids":preview_ids};pending_age=0.;rows=[]
+		if not candidate.get("valid",false):pending={}
+		last_key = key; dwell = 0.;prepare_ms=0.
 	if demo.town.preview.has_node("ChemistryGhost"):
 		var previous: Node = demo.town.preview.get_node("ChemistryGhost")
 		demo.town.preview.remove_child(previous); previous.queue_free()
-	Ghost.build(demo.town.preview,rows)
 func tick(delta: float) -> void:
+	var preview_mode:String="road" if demo.tool==2 else "house"
+	var ready:Dictionary=planner.poll()
+	if not ready.is_empty() and ready.key==last_key and ready.mode==preview_mode and ready.preview_ids==_preview_ids() and ready.state_id==demo.state.get_instance_id() and ready.revision==demo.state.revision and not demo.edit_pending() and demo.tool in [0,1,2]:
+		rows=ready.rows;prepare_ms=ready.ms;Ghost.build(demo.town.preview,rows)
+	if demo.tool not in [0,1,2]:pending.clear();last_key=""
+	if not pending.is_empty() and (pending.mode!=preview_mode or pending.preview_ids!=_preview_ids()):pending.clear();last_key=""
+	if not pending.is_empty():
+		pending_age+=delta
+		if pending_age>=.16 and not demo.edit_pending() and not planner.busy():planner.start(demo.state,pending);pending={}
+	if not pending.is_empty() or planner.busy():return
 	if not demo.town.preview.has_node("ChemistryGhost") or demo.tool not in [0,1,2]:
 		left_at += delta; dwell = 0.
 		if left_at > 1.: heard.clear(); last_key = ""; rows = []
