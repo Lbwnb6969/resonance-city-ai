@@ -109,6 +109,7 @@ func setup(owner,ui_root:Control)->void:
 	concert_button=_seal(actions,"audition","邀演",_invite);concert_button.custom_minimum_size=Vector2(76,42)
 	parade_button=_seal(actions,"music","绘巡游",func()->void:demo.conductor_gesture.arm(target_house_id));parade_button.custom_minimum_size=Vector2(76,42)
 	ring.setup(self)
+	var sample:=Button.new();sample.name="SampleHouseAppearance";sample.text="沿用此屋外观";sample.add_theme_font_size_override("font_size",12);sample.pressed.connect(_sample_appearance);ring.left.get_child(0).add_child(sample)
 
 func _hide_color_menus(picker:Node)->void:
 	# The expanded palette is a color wheel. Keep precise hex entry, sampling
@@ -159,7 +160,7 @@ func refresh()->void:
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
 	var architecture=preload("res://scripts/world/city_creation_architecture_choice.gd")
 	var available:Array=architecture.choices(demo.state,house);var selected:String=str(house.get("architecture",""))
-	architecture_button.caption=preload("res://scripts/ui/city_creation_prototype_caption.gd").caption(self,house);architecture_button.tooltip_text="当前原型 · "+architecture_button.caption+(" · 随房形自动生长" if selected.is_empty() else " · 手选")+"；点击轮换"
+	architecture_button.caption=preload("res://scripts/ui/city_creation_prototype_caption.gd").caption(self,house);architecture_button.tooltip_text="当前原型 · "+architecture_button.caption+(" · 随房形自动生长" if selected.is_empty() else " · 手选")+"；打开剪影册直接选择"
 	architecture_button.disabled=available.is_empty();architecture_button.queue_redraw()
 	architecture_button.kind="prototype/"+preload("res://scripts/ui/city_creation_prototype_stamp.gd").key(self,house)
 	var era:=str(house.get("era_theme","district"));era_button.caption=_era_name(era);era_button.tooltip_text="轮换到已开启时代；当前跟随街坊" if era=="district" else "轮换房屋时代风貌"
@@ -229,10 +230,12 @@ func _cycle_style()->void:
 	refresh()
 
 func _cycle_architecture()->void:
-	var house:Dictionary=demo.town._house_record(target_house_id)
-	var choices:Array=[""]+preload("res://scripts/world/city_creation_architecture_choice.gd").choices(demo.state,house)
-	var key:String=choices[posmod(choices.find(str(house.get("architecture","")))+1,choices.size())]
-	demo._after_edit(demo.state.set_house_architecture(target_house_id,key),"room",true,target_house_id);refresh()
+	preload("res://scripts/ui/city_creation_prototype_book.gd").obtain(demo).for_house(self)
+
+func _sample_appearance()->void:
+	var result:Dictionary=preload("res://scripts/world/city_creation_build_brush.gd").sample(demo.state,target_house_id)
+	demo._message(str(result.message))
+	if result.ok:close();demo.select_tool(0);demo.house_module_mode=false;demo.tactile_dock.house_options=true;demo.tactile_dock.active_tool=-1;demo.tactile_dock.refresh()
 
 func _set_palette(index:int)->void:
 	var result:Dictionary=demo.state.set_house_palette(target_house_id,index)

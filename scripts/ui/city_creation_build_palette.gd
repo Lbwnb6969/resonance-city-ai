@@ -16,9 +16,8 @@ static func setup(dock:RefCounted,parent:Control)->void:
  var refresh:=func()->void:
   var choice:=Brush.current(city)
   for id:String in eras:eras[id].active=id==choice.era
-  prototype.text=Brush.Architecture.label(str(choice.prototype))+" ›"
-  prototype.tooltip_text="点击轮换新屋原型：\n随形生长、"+"、".join(Brush.prototypes(str(choice.era)).map(func(id):return Brush.Architecture.label(id)))+"\n转角凸窗、内院连柱随加建形态，在选中屋的原型印章中选择。"
+  prototype.text=Brush.Architecture.label(str(choice.prototype))+" · 册"
+  prototype.tooltip_text="打开剪影原型册直接选择；新屋保留当前配色。\n转角凸窗、内院连柱按房形在选中屋的原型册选择。"
  for id:String in eras:eras[id].pressed.connect(func()->void:Brush.select(city,id);dock.demo.house_module_mode=false;refresh.call())
- prototype.pressed.connect(func()->void:
-  var choice:=Brush.current(city);var choices:Array=[""]+Brush.prototypes(str(choice.era));var index:=posmod(choices.find(str(choice.prototype))+1,choices.size());Brush.select(city,str(choice.era),str(choices[index]));dock.demo.house_module_mode=false;refresh.call())
+ prototype.pressed.connect(func()->void:preload("res://scripts/ui/city_creation_prototype_book.gd").obtain(dock.demo).for_brush(refresh))
  refresh.call()

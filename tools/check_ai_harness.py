@@ -33,7 +33,7 @@ def audit(root):
         digest = hashlib.sha256(json.dumps(contract, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         if digest != CONTRACT_SHA256:
             errors.append("任务契约被修改：id/title/description/verification_cmd 必须保留用户原文")
-        extension = data.get("ui_refactor", {}).get("rounds", [])
+        extension = data.get("ui_refactor", {}).get("rounds", []) + data.get("refinement", {}).get("rounds", [])
         for row in extension:
             if type(row.get("passes")) is not bool or not isinstance(row.get("verified_by"), str):
                 errors.append("UI补充轮次缺少有效状态/验证字段")
@@ -91,6 +91,11 @@ def main():
         done = sum(row["passes"] for row in extension)
         pending_ui = next((row["id"] for row in extension if not row["passes"]), "ALL_COMPLETED")
         print(f"UI_REFACTOR_AUDIT: {done}/{len(extension)} | Next up: {pending_ui}")
+    refinement = json.loads((ROOT / "ai_feature_backlog.json").read_text(encoding="utf-8")).get("refinement", {}).get("rounds", [])
+    if refinement:
+        done = sum(row["passes"] for row in refinement)
+        pending_refinement = next((row["id"] for row in refinement if not row["passes"]), "ALL_COMPLETED")
+        print(f"REFINEMENT_AUDIT: {done}/{len(refinement)} | Next up: {pending_refinement}")
     return 0
 
 
