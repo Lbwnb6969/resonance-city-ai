@@ -20,6 +20,7 @@ func run()->void:
  for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
   root.size=size;await create_timer(.26).timeout;await settle()
   demo.spatial_popover.open_for_house("h1");await create_timer(.25).timeout;await settle()
+  await click(demo.spatial_popover.inspector.appearance_button);await settle()
   var before:Dictionary=demo.state.snapshot();await click(demo.spatial_popover.architecture_button);await settle()
   var book:Node=demo.get_meta("prototype_book")
   check(book.panel.visible and demo.state.snapshot()==before,"native catalog opening does not mutate authoring")
@@ -32,7 +33,7 @@ func run()->void:
   await key(KEY_Z,true);check(demo.state.houses[0].architecture=="portico","native undo restores previous prototype")
   await key(KEY_Y,true);check(demo.state.houses[0].architecture=="rotunda","native redo restores direct choice")
   await key(KEY_Z,true)
-  var sample:Button=demo.spatial_popover.card.find_child("SampleHouseAppearance",true,false)
+  var sample:Button=demo.spatial_popover.inspector.panel.find_child("SampleHouseAppearance",true,false)
   before=demo.state.snapshot();await click(sample);await settle()
   check(Brush.current(demo.state).appearance.custom_colors==demo.state.houses[0].custom_colors and demo.state.snapshot()==before and demo.tactile_dock.popup.visible,"native sample adopts appearance without editing source")
   var entry:Button=demo.tactile_dock.bubble_rows.find_child("NewHousePrototype",true,false);await click(entry);await settle()

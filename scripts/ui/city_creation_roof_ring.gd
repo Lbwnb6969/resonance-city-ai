@@ -9,6 +9,7 @@ var rotation_hint:Label
 var action_island:Control
 var colors:PanelContainer
 var roles:Array=[]
+var extra_controls:Array=[]
 var hole:=Rect2()
 var house_rect:=Rect2()
 var _placement_key:Variant=null
@@ -74,8 +75,8 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 	right.position=Vector2(width-88.,hole.position.y+maxf(0.,(clear_size.y-176.)*.5));right.size=Vector2(88,176)
 	bottom.position=Vector2((width-300.)*.5,hole.end.y+12.);bottom.size=Vector2(300,28)
 	rotation_hint.position=Vector2((width-76.)*.5,hole.end.y+44.);rotation_hint.size=Vector2(76,18)
-	action_island.position=Vector2((width-90.)*.5,hole.end.y+66.);action_island.size=Vector2(90,42)
-	colors.visible=pop.color_panel.visible
+	action_island.size=action_island.get_combined_minimum_size();action_island.position=Vector2((width-action_island.size.x)*.5,hole.end.y+66.)
+	colors.visible=pop.color_panel.visible and pop.inspector==null
 	if colors.visible:
 		colors.size=Vector2(300,96)
 		colors.position=Vector2(clampf(origin.x+width+6.,10.,viewport.x-310.)-origin.x,clampf(origin.y+hole.end.y+10.,68.,viewport.y-colors.size.y-120.)-origin.y)
@@ -92,7 +93,7 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 		var dock:RefCounted=pop.demo.tactile_dock
 		if dock.bubble_rows.is_visible_in_tree():reserved.append(dock.bubble_rows.get_global_rect())
 		if dock.nature_row.is_visible_in_tree():reserved.append(dock.nature_row.get_global_rect())
-	var islands:=controls();var key:=[house_rect,viewport,neighbors,reserved,colors.visible,pop.card.scale,islands.map(func(item:Control)->Vector2:return item.size)]
+	var islands:=controls();var key:=[house_rect,viewport,neighbors,reserved,colors.visible,pop.card.scale,islands.map(func(item:Control)->Array:return [item.get_instance_id(),item.size])]
 	if key!=_placement_key:
 		placement_ok=preload("res://scripts/ui/city_creation_ring_placement.gd").fit(islands,house_rect,Rect2(Vector2(10,68),viewport-Vector2(20,188)),neighbors,reserved)
 		_placement_key=key;_placed.clear()
@@ -107,7 +108,7 @@ func follow(pop:RefCounted,house:Dictionary)->void:
 	hole=Rect2(house_rect.get_center()-clear_size*.5-pop.card.global_position,clear_size)
 	pop._last_position=pop.card.position
 func controls()->Array:
-	return [heading,left,right,bottom,rotation_hint,action_island]+roles+([colors] if colors.visible else [])
+	return ([heading,left,right,bottom,rotation_hint,action_island]+roles+extra_controls+([colors] if colors.visible else [])).filter(func(item:Control)->bool:return item.is_visible_in_tree())
 func status_caption(pop:RefCounted,house:Dictionary)->String:
 	var role:=str(house.get("role","residential"));var level:int=pop.demo.state.level_tier(str(house.id))
 	var family=preload("res://scripts/world/city_creation_prototype_resonance.gd")

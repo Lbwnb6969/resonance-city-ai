@@ -126,9 +126,10 @@ func _rebuild(tool:int)->void:
 		preload("res://scripts/ui/city_creation_build_palette.gd").setup(self,bubble_rows)
 	elif tool==4:
 		row=HBoxContainer.new();row.add_theme_constant_override("separation",GAP);row.alignment=BoxContainer.ALIGNMENT_CENTER;bubble_rows.add_child(row)
-		for role:String in ["residential","bakery","garden_cafe","workshop","atelier","clockmaker"]:
-			var button:=_seal(row,role if role!="residential" else "house",{"residential":"居所","bakery":"面包","garden_cafe":"茶座","workshop":"制琴","atelier":"书院","clockmaker":"钟表"}[role],"点房屋打开用途卡片")
-			button.pressed.connect(_life_role.bind(role))
+		var role_palette:Node=demo.get_meta("role_palette",null)
+		var selected:String=role_palette.paint_role if role_palette!=null else ""
+		var button:=_seal(row,"house" if selected.is_empty() else selected,"选用途" if selected.is_empty() else str(demo.spatial_popover.ROLE_LABELS[selected]),"打开共用用途选择器；连续点房安排用途")
+		button.name="BatchHousePurpose";button.pressed.connect(func()->void:demo.get_meta("role_palette").show_for(false))
 	for group:Array in TOOL_GROUPS.get(tool,[]):
 		var source:Control=parent.find_child(str(group[0]),true,false)
 		if source==null:continue

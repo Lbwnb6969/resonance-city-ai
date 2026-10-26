@@ -15,6 +15,7 @@ var root:Control
 var overlay:Control
 var card:Control
 var ring=preload("res://scripts/ui/city_creation_roof_ring.gd").new()
+var inspector:Node
 var name_field:LineEdit
 var tier:Label
 var status:Label
@@ -110,6 +111,7 @@ func setup(owner,ui_root:Control)->void:
 	parade_button=_seal(actions,"music","绘巡游",func()->void:demo.conductor_gesture.arm(target_house_id));parade_button.custom_minimum_size=Vector2(76,42)
 	ring.setup(self)
 	var sample:=Button.new();sample.name="SampleHouseAppearance";sample.text="沿用此屋外观";sample.add_theme_font_size_override("font_size",12);sample.pressed.connect(_sample_appearance);ring.left.get_child(0).add_child(sample)
+	inspector=preload("res://scripts/ui/city_creation_house_inspector.gd").new();inspector.setup(self,ring)
 
 func _hide_color_menus(picker:Node)->void:
 	# The expanded palette is a color wheel. Keep precise hex entry, sampling
@@ -124,7 +126,9 @@ func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
 	return button
 
 func open_for_house(house_id:String)->void:
+	if inspector!=null and inspector.roles.paint(house_id):return
 	if target_house_id!=house_id:
+		if inspector!=null:inspector.close()
 		target_house_id=house_id;name_field.release_focus();color_panel.hide()
 		card.scale=Vector2.ONE*.88;card.modulate.a=0.;card.show()
 		if _tween!=null and _tween.is_valid():_tween.kill()
@@ -134,6 +138,7 @@ func open_for_house(house_id:String)->void:
 	refresh()
 
 func close()->void:
+	if inspector!=null:inspector.close()
 	target_house_id="";card.hide();name_field.release_focus()
 
 func refresh()->void:

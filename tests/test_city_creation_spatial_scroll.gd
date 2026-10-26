@@ -9,6 +9,7 @@ class Host extends Node3D:
 	var journal:RefCounted
 	var signatures:RefCounted
 	var ledger:RefCounted
+	var tool:=0
 class Presenter extends RefCounted:
 	var calls:=0
 	func refresh()->void:calls+=1
