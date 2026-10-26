@@ -1,7 +1,7 @@
 extends RefCounted
 ## A new work owns fresh contexts. Keep the published city intact while the
 ## existing CPU workers and hidden GPU staging prepare its replacement.
-const STAGING_SLICE_MS:=24.0
+const STAGING_SLICE_MS:=65.0
 var town:Node3D
 var life:Node3D
 var stats:Dictionary={}
@@ -9,6 +9,7 @@ var stats:Dictionary={}
 func prepare(demo:Node3D,city:RefCounted,status:Callable)->void:
 	var began:=Time.get_ticks_usec()
 	town=demo.TownRenderer.new();town.name="OpeningTown";town.visible=false
+	town.set_meta("hidden_load",true)
 	town.set_process(false)
 	demo.add_child(town)
 	# Create layer infrastructure now; exact fields and geometry are prepared
@@ -37,6 +38,7 @@ func prepare(demo:Node3D,city:RefCounted,status:Callable)->void:
 		var total:int=town.budget_rebuild.tasks.size()
 		status.call("正在安放屋舍与花草……" if total>0 else "正在铺开街道与屋舍……")
 	stats.frames=frames
+	town.remove_meta("hidden_load")
 	stats.render=town.budget_rebuild.stats.duplicate(true)
 	status.call("街坊正在回到河湾……")
 	await demo.get_tree().process_frame

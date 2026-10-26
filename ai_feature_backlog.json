@@ -1203,8 +1203,8 @@
         "id": "M54",
         "title": "大城局部重建与冷加载优化",
         "acceptance": "依据当前实测定位局部重建签名/服务、草甸障碍空间桶及隐藏读档任务；正确失效与全量结果一致，记录真实响应，不强制文稿估算时限。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M54 Harness/doc PASS; ground_obstacle_bins232 with28900 visibility/edge comparisons, pebbles674, first_local_edit8, deferred_life22, local_road_profiles41, legacy375+27. Native same300 fixture before/final: open30.737→27.817s, house3.875→2.121s, road4.223→2.399s, water2.648→1.302s publication; six actual edit/Undo cold-service checks PASS; overview/local originals inspected. Hidden tasks1743→843. Road cold construction and180ms Life commit spike remain; no claimed0.8s/3x target, no audio change."
       },
       {
         "id": "M55",

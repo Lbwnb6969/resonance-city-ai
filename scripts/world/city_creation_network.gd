@@ -59,6 +59,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 		state._terrain_protection = snapshot.protection_cache
 	if snapshot.has("road_height_cache"):state._road_heights=snapshot.road_height_cache
 	prepared_cafe_context.restore_city(snapshot.get("cafe_context",{}),state)
+	preload("res://scripts/visual/city_creation_prepared_frontages.gd").prepare(state)
 	connected_houses = prior
 	var stage_started := Time.get_ticks_usec()
 	_build_graph()

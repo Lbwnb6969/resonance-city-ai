@@ -200,6 +200,8 @@ func _work(context: Node3D) -> Dictionary:
 	var stages: Dictionary = {}
 	stages.local_services=preload("res://scripts/visual/city_creation_local_service_cache.gd").prime(context)
 	var stage_start := Time.get_ticks_usec()
+	preload("res://scripts/visual/city_creation_prepared_frontages.gd").prepare(context.state)
+	stages.frontages=float(Time.get_ticks_usec()-stage_start)/1000.;stage_start=Time.get_ticks_usec()
 	context.water_field.prepare_update()
 	context.era_road_field.prepare(context.state)
 	var water := _prepare_water(context) if labels.has("waters") else {"changed":false,"fingerprint":context.water_fingerprint,"live":{},"changes":{},"contours":0,"prepare_ms":0.0}
@@ -445,10 +447,12 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 	stats.worker_stages = result.worker_stages
 	for change: Array in result.terrain_blocks: tasks.append(["terrain",change[0],change[1],change[2]])
 	for house: Dictionary in result.houses:
-		tasks.append(["house",house])
-		tasks.append(["house_merge",house])
-		tasks.append(["house_colors",house])
-		tasks.append(["house_resonance",house])
+		if bool(owner.get_meta("hidden_load",false)):tasks.append(["house_complete",house])
+		else:
+			tasks.append(["house",house])
+			tasks.append(["house_merge",house])
+			tasks.append(["house_colors",house])
+			tasks.append(["house_resonance",house])
 	for id: String in result.cafes.changes: tasks.append(["cafe",id,result.cafes.changes[id],result.cafes.live])
 	for id: String in result.courtyards.changes: tasks.append(["courtyard",id,result.courtyards.changes[id],result.courtyards.live])
 	for road: Dictionary in result.roads: tasks.append(["road",road,result.road_data[str(road.id)]])
@@ -466,6 +470,10 @@ func _begin_staging(owner: Node3D, result: Dictionary) -> void:
 
 func _step(task: Array) -> bool:
 	match str(task[0]):
+		"house_complete":
+			# Only the modal hidden load uses a larger per-house quantum. Resume
+			# this same task when a complex house needs more than one quantum.
+			return preload("res://scripts/visual/city_creation_hidden_house.gd").advance(staging,task[1])
 		"water_surface":
 			var node: MeshInstance3D = staging._triangles(staging.water_layer,task[2],Color.WHITE)
 			node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

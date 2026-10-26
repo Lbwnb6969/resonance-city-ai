@@ -48,11 +48,17 @@ func _run()->void:
 	var scene_started:=Time.get_ticks_usec()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=output+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
 	var chosen:Dictionary={"ok":true,"id":"large_town","title":"三百屋四时代","world":JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)),"view":{"focus":[0.,0.,0.],"zoom":94.,"yaw":.4,"pitch":.83,"evening":false,"light_phase":0}}
+	var open_started:=Time.get_ticks_usec()
 	await demo.gallery._open_chosen(chosen);demo.life.set_process(false)
+	var open_ms:float=(Time.get_ticks_usec()-open_started)/1000.
 	_check(demo.state.houses.size()==300 and not demo.gallery.busy,"three hundred authored four-era buildings restore through the actual complete-work loader")
 	print("LARGE_RENDER_READY")
 	if "--local-only" in OS.get_cmdline_user_args():
+		demo.get_meta("inspiration_draft").postponed=true;demo.get_meta("inspiration_draft").paper.hide()
+		await _capture("overview_300")
+	if "--local-only" in OS.get_cmdline_user_args():
 		var local:Dictionary=await preload("res://tools/fixtures/city_creation_local_town_edits_live.gd").run(demo,output)
+		FileAccess.open(output+"/local_scale_profile.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":local.ok,"open_ms":open_ms,"loading":demo.gallery.load_stats,"local":local},"\t"))
 		print("LOCAL_TOWN_EDITS ",JSON.stringify(local));quit(0 if local.ok else 1);return
 	if "--views-only" in OS.get_cmdline_user_args():
 		var views:Dictionary=await preload("res://tools/fixtures/city_creation_final_city_views.gd").capture(demo,output)

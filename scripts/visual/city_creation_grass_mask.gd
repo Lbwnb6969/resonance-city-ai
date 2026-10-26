@@ -32,13 +32,32 @@ var _bounds := Rect2()
 var _bins: Array[Bin] = []
 var _stats: Dictionary = {}
 
-func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = {}) -> void:
+func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = {}, obstacle_index:RefCounted=null) -> void:
 	var started := Time.get_ticks_usec()
 	_origin = Vector2(block) * BLOCK_SIZE
 	_bounds = Rect2(_origin, Vector2.ONE * BLOCK_SIZE)
 	_bins.clear()
 	for index in range(BIN_COUNT * BIN_COUNT):
 		_bins.append(Bin.new())
+	if obstacle_index!=null:obstacle_index.populate(self,block)
+	else:_collect_legacy(state,entrances_by_house)
+	var houses := 0
+	var roads := 0
+	var waters := 0
+	var max_segments := 0
+	for bin: Bin in _bins:
+		houses += bin.footprints.size()
+		for capsule: Capsule in bin.capsules:
+			if capsule.water:
+				waters += 1
+			else:
+				roads += 1
+		max_segments = maxi(max_segments, bin.capsules.size())
+	_stats = {"bins": _bins.size(), "house_references": houses, "road_segments": roads,
+		"water_segments": waters, "max_bin_segments": max_segments,
+		"setup_ms": float(Time.get_ticks_usec() - started) / 1000.0}
+
+func _collect_legacy(state:RefCounted,entrances_by_house:Dictionary)->void:
 	# Derived paving suppresses ground cover; authored tree/shrub visibility
 	# still belongs to State and remains independent of this grass-only mask.
 	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(state)
@@ -84,21 +103,6 @@ func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = 
 			var next := mini(index + 1, water.points.size() - 1)
 			var b := Vector2(float(water.points[next][0]), float(water.points[next][1]))
 			_add_segment(a, b, float(water.width) * 0.5, true)
-	var houses := 0
-	var roads := 0
-	var waters := 0
-	var max_segments := 0
-	for bin: Bin in _bins:
-		houses += bin.footprints.size()
-		for capsule: Capsule in bin.capsules:
-			if capsule.water:
-				waters += 1
-			else:
-				roads += 1
-		max_segments = maxi(max_segments, bin.capsules.size())
-	_stats = {"bins": _bins.size(), "house_references": houses, "road_segments": roads,
-		"water_segments": waters, "max_bin_segments": max_segments,
-		"setup_ms": float(Time.get_ticks_usec() - started) / 1000.0}
 
 func visible(at: Vector2, scale: float) -> bool:
 	if scale <= 0.0 or not _bounds.has_point(at) or not State.WORLD_RECT.has_point(at):

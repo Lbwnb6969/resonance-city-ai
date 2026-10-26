@@ -35,13 +35,12 @@ func prepare(city_state: RefCounted) -> void:
 		var cells: Array = []
 		for cell: Dictionary in house.cells:
 			if int(cell.level) == 0: cells.append([cell.x, cell.z, cell.kind])
-		geometry.append([house.id, house.origin, cells])
+		geometry.append([house.id, house.origin, cells,preload("res://scripts/world/city_creation_house_frame.gd").yaw(house)])
 	for road: Dictionary in city.roads: geometry.append([road.id, road.points, road.width,junctions.signature(str(road.id))])
 	for water: Dictionary in city.waters: geometry.append([water.id, water.points, water.width])
 	for road: Dictionary in city.roads: geometry.append(city.road_profile(road).signature)
 	if geometry == _geometry: return
 	_geometry = geometry.duplicate(true)
-	_record_cache.clear()
 	footprints.clear()
 	doors.clear()
 	segments.clear()
@@ -72,6 +71,8 @@ func prepare(city_state: RefCounted) -> void:
 	for road: Dictionary in city.roads: live[str(road.id)] = true
 	for id: String in _layout_cache.keys():
 		if not live.has(id): _layout_cache.erase(id)
+	for id:String in _record_cache.keys():
+		if not live.has(id):_record_cache.erase(id)
 
 func signature(road: Dictionary) -> Array:
 	# Fingerprint actual survivors, not every distant object. A changed doorway,
@@ -133,7 +134,7 @@ func build(_renderer: Node3D, road: Dictionary, parent: Node3D) -> Dictionary:
 
 func records(road: Dictionary) -> Array[Dictionary]:
 	var id := str(road.id)
-	var fingerprint := hash([road.points, road.width])
+	var fingerprint:int=preload("res://scripts/visual/city_creation_pebble_dependencies.gd").key(self,road)
 	var cached: Dictionary = _record_cache.get(id, {})
 	if cached.get("fingerprint", -1) == fingerprint: return cached.records
 	var result: Array[Dictionary] = []

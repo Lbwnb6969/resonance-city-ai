@@ -45,6 +45,7 @@ var elapsed_ms := 0.0
 var detail := 1.0
 var water_field: Texture2DArray
 var stage_ms: Dictionary = {}
+var obstacle_index:RefCounted
 var palace_centers: Array[Vector2]=[]
 var palace_flower_counts: Dictionary={}
 
@@ -80,10 +81,12 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 					var block:=Vector2i(x,z)
 					if WORLD_RECT.intersects(Rect2(Vector2(block)*BLOCK_SIZE,Vector2.ONE*BLOCK_SIZE)) and not candidates.has(block):candidates.append(block)
 	palace_centers=centers
+	obstacle_index=preload("res://scripts/visual/city_creation_ground_obstacle_bins.gd").new()
+	obstacle_index.prepare(state,entrances)
 	for block: Vector2i in candidates:
 		var stage_started := Time.get_ticks_usec()
 		var members: Array = visible_by_block.get(block, [])
-		var obstacles := _local_obstacles(block, entrances)
+		var obstacles:Array=obstacle_index.fingerprint(block)
 		var obstacle_fingerprint := hash(obstacles)
 		var height_bounds := Rect2(Vector2(block)*BLOCK_SIZE,Vector2.ONE*BLOCK_SIZE).grow(1.0)
 		var height_signature: int = state._ground_terrain.region_signature(height_bounds)
@@ -127,7 +130,7 @@ func rebuild(visible_by_block: Dictionary, dirty: Array[Vector2i], shared_masks:
 			query_state = query_masks[block]
 		else:
 			query_state = GrassMask.new()
-			query_state.setup(state,block,entrances)
+			query_state.setup(state,block,entrances,obstacle_index)
 		query_masks[block] = query_state
 		query_fingerprints[block] = obstacle_fingerprint
 		shared_masks[block] = query_state

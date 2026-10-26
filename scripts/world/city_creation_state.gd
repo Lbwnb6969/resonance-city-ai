@@ -2752,6 +2752,7 @@ func _validate_snapshot(data: Dictionary) -> Dictionary:
 
 
 func house_entrances(house_id: String) -> Array[Dictionary]:
+	if has_meta("prepared_frontages"):return preload("res://scripts/visual/city_creation_prepared_frontages.gd").read(self,house_id)
 	for house: Dictionary in houses:
 		if str(house.id)!=house_id: continue
 		var signature: Array=[house.origin.duplicate(),[],Rotation.Frame.yaw(house)]

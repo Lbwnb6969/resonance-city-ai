@@ -18,6 +18,8 @@ static func cold_services(demo)->bool:
 static func run(demo,out:String)->Dictionary:
 	var checks:Dictionary={};var operations:Array=[]
 	demo.life.set_process(false);demo.spatial_popover.close();demo.get_meta("inspiration_draft").poll();demo.get_meta("vignette_journey").poll()
+	# Keep the earned reward pending while photographing the actual edit.
+	demo.get_meta("inspiration_draft").postponed=true;demo.get_meta("inspiration_draft").paper.hide()
 	var base:Dictionary=demo.state.snapshot()
 	for kind:String in ["house","road","water"]:
 		var began:=Time.get_ticks_usec();var edit:Dictionary
