@@ -75,6 +75,7 @@ static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
 	var domes:Dictionary=parent.get_meta("dome_cells",{});var count:=0
 	for patch:Dictionary in r.building_context.roof_patches(str(house.id)):
 		if domes.has(str(patch.cell_id)):continue
+		patch=preload("res://scripts/visual/city_creation_organic_corners.gd").patch(r,house,patch,null)
 		var cell:Dictionary=house.cells.filter(func(c):return str(c.id)==str(patch.cell_id))[0]
 		var eave:float=float(house.get("base_y",0.))+(int(cell.level)+1)*1.7
 		var faces:Array[Vector3]=[]

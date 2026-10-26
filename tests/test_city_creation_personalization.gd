@@ -59,7 +59,7 @@ func run()->void:
 	check(score.largest_cluster==5 and score.targets.wood>-30.,"group enters shared lead")
 	var solo:=clean();solo.add_house(Vector2(-22,-8));data=Catalog.prepare(solo)
 	acoustic.evaluate(data.houses,[],[]);score=Emergence.evaluate(data.houses,acoustic,[],0,false)
-	check(score.targets.foundation==-60. and score.targets.wood==-60.,"single house leaves musical space")
+	check(score.lead_track=="wood" and score.targets.wood>-60. and score.secondary_track.is_empty() and Emergence.LEADS.filter(func(track):return float(score.targets[track])>-60.).size()==1,"single house keeps the existing first-home melody with one melodic voice")
 	var tram:Dictionary={"style":"tram"};var before:Array=Tracks.signature(choir_city,tram)
 	var h:Dictionary=choir_city.houses[0];result=choir_city.add_cell(str(h.id),0,0,1)
 	check(result.ok and Tracks.signature(choir_city,tram)==before,"upper module does not rebuild rail stops or wires")

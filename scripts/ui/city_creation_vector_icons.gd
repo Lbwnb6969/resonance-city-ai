@@ -12,6 +12,9 @@ static func draw_icon(canvas:CanvasItem,kind:String,center:Vector2,radius:float,
 	if kind.begins_with("prototype/"):
 		preload("res://scripts/ui/city_creation_prototype_stamp.gd").draw(canvas,kind.trim_prefix("prototype/"),center,radius,color,accent);return
 	match kind:
+		"leaf":
+			stroke(canvas,[Vector2(-.55,.65),Vector2(.05,.05),Vector2(.60,-.65)],center,radius,color)
+			stroke(canvas,[Vector2(-.30,.38),Vector2(-.65,-.10),Vector2(-.30,-.58),Vector2(.60,-.65),Vector2(.54,.14),Vector2(.04,.46),Vector2(-.30,.38)],center,radius,accent)
 		"palette":
 			canvas.draw_arc(center,.67*radius,.3,TAU-.3,28,color,1.7,true)
 			for i:int in range(4):

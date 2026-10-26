@@ -1562,7 +1562,10 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 			_house_cell_wall(job,job.current,HouseAssembly.DIRECTIONS[job.wall_index]);job.wall_index+=1
 			if job.wall_index==4:job.stage=HouseAssembly.Stage.CELL_ROOF
 		HouseAssembly.Stage.CELL_ROOF:
-			_house_cell_roof(job,job.current);job.current=null;job.cell_index+=1;job.stage=HouseAssembly.Stage.CELL_BASE
+			_house_cell_roof(job,job.current);job.stage=HouseAssembly.Stage.CELL_ORGANIC
+		HouseAssembly.Stage.CELL_ORGANIC:
+			if not preload("res://scripts/visual/city_creation_organic_corners.gd").step(self,job,job.current):return
+			job.current=null;job.cell_index+=1;job.stage=HouseAssembly.Stage.CELL_BASE
 		HouseAssembly.Stage.ERA_ROOF:
 			if job.era=="clockwork":
 				if job.clockwork_index<job.clockwork_roofs.size():
@@ -1856,7 +1859,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
 	craft.prepare_layout(self,house,frontages,arcades)
-	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),preload("res://scripts/world/city_creation_organic_form.gd").geometry_key(state,house),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
 	house_geometry_cache[id]={"dependency":dependency,"fingerprint":fingerprint}
 	return fingerprint
 
@@ -1908,6 +1911,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	var roof_info: Array = []
 	var dome_cells: Dictionary = parent.get_meta("dome_cells",{})
 	for patch: Dictionary in patches:
+		patch=preload("res://scripts/visual/city_creation_organic_corners.gd").patch(self,house,patch,parent)
 		if tower_ids.has(str(patch.cell_id)) or dome_cells.has(str(patch.cell_id)): continue
 		if patch.surface=="roof":
 			roofs.append_array(patch.vertices)

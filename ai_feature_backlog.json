@@ -1265,8 +1265,8 @@
         "id": "M62",
         "title": "圆角导角与有机微雕入口",
         "acceptance": "极简微雕循环/旧档默认/事务Undo；真实切去外露墙角并生成圆角/斜角/檐口，接原微法线AO合批及对应拾取碰撞，不在方盒外贴圆柱冒充圆角。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "M62 Harness/doc+selftest8; organic32/ancient29/rotation55/personalization67/legacy375+27 PASS. Actual GL accepted46: native roof selection and single seal cycle, true removed corner and cut eave rays, joined two-storey roof triangles,90deg yaw,color fast path,CtrlZ/Y,optional Schema19 JSON cold publication,unsupported rotunda dormant/clear/undo/reactivate,1440/1024 clear ring. Piecewise-affine original triangle subdivision forms3x30deg smooth round or45deg chamfer; walls/foundations/Greek massing/union eaves and actual convex/concave picking share the map,unchanged connected doors. Hidden assembly yields per component;single edit522ms,total corner CPU104.294ms spread over units6.943ms peak,observed edit p95 16.114ms/max41.087ms(reference only). Actual original4806tris40surfaces vs rounded7728/41;no false72tri/zero draw promise. Supported ordinary pastoral/renaissance shells;special domes/towers/arcades/villas/steam-glass/alpine silhouettes retained. Master3.072s peak.208862 zero clipping;fixed12+4/6+2,persave,original cells/numeric/research preserved. Old single-house-silence assertion updated to existing first-home melodic voice;production audio untouched."
       },
       {
         "id": "M63",

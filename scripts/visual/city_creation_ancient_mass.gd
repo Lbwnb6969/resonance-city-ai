@@ -44,6 +44,7 @@ static func roof(r,parent:Node3D,house:Dictionary,palette:Array,ancient)->bool:
 	r._box(node,Vector3(x*2-.03,.14,.52),Vector3(0,1.69,front-.12),mat).name="GreekSharedEntablature"
 	for i in range(int(x*2/.32)):
 		for k in range(3):r._box(node,Vector3(.02,.10,.025),Vector3(-x+.13+i*.32+k*.033,1.71,front+.151),mat)
+	preload("res://scripts/visual/city_creation_organic_corners.gd").mass_roof(r,node,house)
 	pick(node,house,house.cells[0]);parent.set_meta("ancient_roof_patches",1);parent.set_meta("ancient_temple",plan);return true
 static func rotunda(r,parent:Node3D,house:Dictionary,palette:Array,ancient)->bool:
 	if house.get("architecture","")!="rotunda" or house.cells.size()!=1:return false
