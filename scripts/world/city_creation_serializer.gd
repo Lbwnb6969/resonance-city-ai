@@ -75,7 +75,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for id:String in city.resonance_afterglow:
 		if float(city.resonance_afterglow[id])>former_limit*(2. if city.level_tier(id)>=5 else 1.):result.schema=city.PLANNING_SCHEMA;break
 	for house:Dictionary in city.houses:
-		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel") or house.has("bend_angle_deg") or house.has("bend_axis") or house.has("organic_manual"):result.schema=city.PERSONALIZATION_SCHEMA;break
+		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel") or house.has("bend_angle_deg") or house.has("bend_axis") or house.has("organic_manual") or house.has("overhang") or house.has("balcony_arc"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
 		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
@@ -208,6 +208,8 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		if house.has("bend_angle_deg"):house.bend_angle_deg=float(house.bend_angle_deg)
 		if house.has("bend_axis"):house.bend_axis=int(house.bend_axis)
 		if house.has("corner_bevel"):house.corner_bevel=int(house.corner_bevel)
+		for field:String in ["overhang","balcony_arc","organic_facade"]:
+			if house.has(field):house[field]=int(house[field])
 		if house.has("yaw"):house.yaw=float(house.yaw)
 		if house.has("base_y"): house.base_y=float(house.base_y)
 		house.name = house.get("name", "石榴巷%s号" % house.id.substr(1))
@@ -373,6 +375,12 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for house in data.houses:
 		if not house is Dictionary or not city._valid_id(house.get("id"), "h", ids):
 			return city._fail("城市存档房屋身份无效")
+		for field:String in ["overhang","balcony_arc"]:
+			if house.has(field) and (data.schema<city.PERSONALIZATION_SCHEMA or not preload("res://scripts/world/city_creation_balcony_plan.gd").valid(house[field])):return city._fail("外挑字段无效")
+		if int(house.get("overhang",0))>0 and int(house.get("balcony_arc",0))>0:return city._fail("外挑与阳台不能占同一立面")
+		if int(house.get("overhang",0))+int(house.get("balcony_arc",0))>0 and (not house.has("organic_facade") or not house.has("organic_cell_id")):return city._fail("外挑缺少宿主身份")
+		if house.has("organic_facade") and (not city._is_integer(house.organic_facade) or house.organic_facade<0 or house.organic_facade>3):return city._fail("微雕立面无效")
+		if house.has("organic_cell_id") and (not house.organic_cell_id is String or not house.get("cells",[]) is Array or not house.get("cells",[]).any(func(c):return c is Dictionary and str(c.get("id",""))==house.organic_cell_id)):return city._fail("微雕宿主无效")
 		if house.has("bend_axis") and (data.schema<city.PERSONALIZATION_SCHEMA or not city._is_integer(house.bend_axis) or house.bend_axis<0 or house.bend_axis>3):return city._fail("侧翼铰链字段无效")
 		if house.has("bend_angle_deg") and (data.schema<city.PERSONALIZATION_SCHEMA or not preload("res://scripts/world/city_creation_house_hinge.gd").valid(house.bend_angle_deg)):return city._fail("建筑折角字段无效")
 		if house.has("organic_manual") and (data.schema<city.PERSONALIZATION_SCHEMA or not house.organic_manual is bool):return city._fail("微雕手选字段无效")

@@ -14,6 +14,7 @@ static func set_angle(city,id:String,degrees:float)->Dictionary:
 	var house:Dictionary=city.houses[index]
 	if degrees!=0. and not supported(city,house):return city._fail("沿同一直线加建完整房间后可微折；此屋保留原型轮廓")
 	var candidate:=house.duplicate(true);candidate.organic_manual=true
+	for field:String in ["overhang","balcony_arc","organic_cell_id","organic_facade"]:candidate.erase(field)
 	if Hinge.layout(house).is_empty():candidate.erase("bend_angle_deg");candidate.erase("bend_axis")
 	else:candidate.bend_angle_deg=degrees;candidate.bend_axis=Hinge.axis_id(house);candidate.corner_bevel=2
 	if candidate==house:return {"ok":true,"no_op":true,"message":"微折 %.0f°"%degrees}

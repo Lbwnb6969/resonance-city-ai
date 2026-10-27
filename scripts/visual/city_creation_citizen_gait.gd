@@ -55,14 +55,16 @@ static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bo
 	var phase:float=time*8.7+float(root.get_meta("citizen_index",0))*.73
 	var stride:float=sin(phase) if moving else 0.;var inspect:float=(.65+.2*sin(time*1.7)) if seated or working else .35 if root.get_meta("citizen_prop","") in ["cup","lantern"] else 0.
 	if cargo!=null and cargo.visible:inspect=maxf(inspect,.60)
+	if root.get_meta("balcony_listening",false):inspect=.62
 	var sip:float=.5+.5*sin(time*1.1)
 	if working:inspect=.46+.28*(.5+.5*sin(time*(3.8 if root.get_meta("citizen_role","")=="bakery" else 2.3)+phase*.15))
 	if seated:sip=smoothstep(.25,.85,sin(time*.82+float(root.get_meta("citizen_index",0))*2.1));inspect=.45
-	root.set_meta("visible_activity","listening" if root.get_meta("solo_listening",false) and not moving else "tea_conversation" if seated else "kneading" if working and root.get_meta("citizen_role","")=="bakery" else "crafting" if working else "walking" if moving else "idle")
+	root.set_meta("visible_activity","listening" if (root.get_meta("solo_listening",false) or root.get_meta("balcony_listening",false)) and not moving else "tea_conversation" if seated else "kneading" if working and root.get_meta("citizen_role","")=="bakery" else "crafting" if working else "walking" if moving else "idle")
 	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
 		body.position.y=.28+sin(time*1.7)*.004 if seated else absf(stride)*.023
 		body.rotation=Vector3(-.055 if moving else .025*sin(time*1.3) if working else 0.,0.,sin(phase)*.035 if moving else 0.)
+	if root.get_meta("balcony_listening",false) and not moving:body.rotation.x=-.10
 	var prop:MeshInstance3D=body.get_node("HandProp")
 	if prop.visible:
 		prop.position=Vector3(.15,.27+inspect*.065-(.08 if seated else 0.),.10+inspect*.025);prop.rotation=Vector3(sin(phase-.45)*.10 if moving else -.12*inspect,0.,-stride*.075 if moving else sin(time*1.7)*.04)

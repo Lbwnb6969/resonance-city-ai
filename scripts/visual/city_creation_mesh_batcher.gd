@@ -86,6 +86,7 @@ func _append_instance(job: Dictionary, instance: MeshInstance3D) -> void:
 	var overlay: Material = instance.material_overlay
 	var state: Array = [instance.cast_shadow,instance.layers,instance.gi_mode,instance.ignore_occlusion_culling,0 if overlay==null else overlay.get_instance_id(),instance.visibility_range_begin,instance.visibility_range_end,instance.visibility_range_begin_margin,instance.visibility_range_end_margin,instance.visibility_range_fade_mode]
 	var transform: Transform3D = inverse*instance.global_transform
+	state.append(bool(instance.get_meta("balcony_rail",false)))
 	for index in range(source.get_surface_count()):
 		var colored: ArrayMesh
 		if not profile.is_empty(): colored = _colored_source(source,index,(material as StandardMaterial3D).albedo_color,stats)
@@ -122,6 +123,7 @@ func _install_batch(job: Dictionary, batch: Dictionary) -> void:
 	instance.visibility_range_begin=float(batch.state[5]);instance.visibility_range_end=float(batch.state[6])
 	instance.visibility_range_begin_margin=float(batch.state[7]);instance.visibility_range_end_margin=float(batch.state[8]);instance.visibility_range_fade_mode=int(batch.state[9])
 	instance.extra_cull_margin = float(batch.margin)
+	if bool(batch.state[10]):instance.set_meta("balcony_rail",true)
 	parent.add_child(instance)
 
 func _solid_profile(material: Material) -> Array:

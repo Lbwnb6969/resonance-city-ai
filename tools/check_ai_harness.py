@@ -13,7 +13,7 @@ CONTRACT_FIELDS = ("id", "title", "description", "verification_cmd")
 # M01～M12 实测行数 + 艺术品升华篇最多 10 行短委托；不得通过抬高上限容纳内联实现。
 GOD_FILE_LIMITS = {
     "scripts/visual/city_creation_renderer.gd": 3005,
-    "scripts/world/city_creation_state.gd": 2992,
+    "scripts/world/city_creation_state.gd": 2994,  # M64: overlap + removed-host prune delegates
     "scripts/ui/city_creation_demo.gd": 2504,
     "scripts/audio/city_creation_music.gd": 1800,
 }

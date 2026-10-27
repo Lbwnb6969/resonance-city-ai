@@ -78,6 +78,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 				if face.side==side: frame.origin-=Vector3(side.x,0,side.y)*float(face.retreat)
 				elif Vector2(face.side).dot(Vector2(side))==0: facade_width-=float(face.retreat)
 			var opening: Dictionary = Architecture.wall_opening(cuts,side) if level == 0 else {}
+			if preload("res://scripts/visual/city_creation_balcony_glow.gd").face(self,root,cell,side,surface,frame,windows):continue
 			if not opening.is_empty():
 				# Even a four-way arcade has warm afterglow: the lamp fits
 				# entirely on its wider structural pier, never across the hole.

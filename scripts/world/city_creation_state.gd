@@ -2629,6 +2629,7 @@ func _make_cell(x: int, z: int, level: int, kind: String) -> Dictionary:
 
 
 func _commit(before: Dictionary, label: String) -> void:
+	preload("res://scripts/world/city_creation_balcony_plan.gd").prune(self)
 	preload("res://scripts/world/city_creation_curve_hug.gd").after_placement(self,before,label)
 	if journey_checkpoint.get("concert",{}).get("grand_festival",false):_prune_missing_journeys()
 	AutoNeighborhoods.refresh(self)
@@ -2707,6 +2708,7 @@ func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
 
 
 func _pair_overlaps(first: Dictionary, second: Dictionary) -> bool:
+	if preload("res://scripts/world/city_creation_balcony_plan.gd").conflict(self,first,second):return true
 	if Rotation.Frame.transformed(first) or Rotation.Frame.transformed(second):return Rotation.Frame.overlaps(first,second)
 	for a in first.cells:
 		for b in second.cells:

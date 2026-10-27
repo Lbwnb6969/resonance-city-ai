@@ -20,6 +20,7 @@ class Cell extends RefCounted:
 var house:Dictionary
 var root:Node3D
 var hinge:Dictionary={}
+var balcony:Variant=null
 var hidden:=false
 var stage:int=Stage.CELL_BASE
 var cell_index:=0
