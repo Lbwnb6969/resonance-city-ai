@@ -1320,8 +1320,8 @@
         "id": "M69",
         "title": "地形分块共享边光影连续",
         "description": "地形脏块候选包含法线依赖halo，修复增量编辑漏更新邻块造成的16m边界明暗缝；增量结果与冷重绘一致。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 terrain_chunk_seams60: east/west/north/south and +/-corner raise/Undo/Redo,1980 shared samples per phase, incremental vertex/normal arrays equal independent cold meshes; initial_coverage7 (all36 blocks and subsequent <=4) and legacy375+27 PASS. Gate3 actual OpenGL/Dummy accepted --verify-seams29 PASS: real asynchronous transactions/UndoRedo and JSON cold new renderer at1440 side-light and1024night; shared normals .247003->0, ROI changed pixels5100/2370->0, GPU arrays byte-exact and original12long4short6bus2nature/player IDs/personal save retained. Actual3.065034s quiet empty-field Master peak.000457764 zero clips; not active-city music evidence. 100fps capped edit max10.134ms reference only. Candidate closed chunk ownership includes one .5m normal halo while region fingerprints suppress unchanged blocks. Independent three-round actual image/audio review8.4/10,noP1/P2, full-PNG difference0 in both accepted views, stored in M69/critic_m67_m69.md; M68 independent score8.2/P3 union tile bend retained. Backup before-m69; prepare/push tree proof follows."
       },
       {
         "id": "M70",

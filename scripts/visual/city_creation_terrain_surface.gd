@@ -46,8 +46,13 @@ func prepare_blocks() -> Array:
 		return changes
 	if regions.is_empty(): regions=[Terrain.LAND_RECT]
 	for region: Rect2 in regions:
-		var low := Vector2i(floori(region.position.x/BLOCK_SIZE),floori(region.position.y/BLOCK_SIZE))
-		var high := Vector2i(ceili(region.end.x/BLOCK_SIZE)-1,ceili(region.end.y/BLOCK_SIZE)-1)
+		# Normals read one vertex beyond the edited height range. Chunks share
+		# their edge vertices, so include both owners of a touched boundary.
+		var affected := region.grow(Terrain.STEP).intersection(Terrain.LAND_RECT)
+		var low := Vector2i(ceili(affected.position.x/BLOCK_SIZE)-1,ceili(affected.position.y/BLOCK_SIZE)-1)
+		var high := Vector2i(floori(affected.end.x/BLOCK_SIZE),floori(affected.end.y/BLOCK_SIZE))
+		low=low.max(Vector2i(Terrain.LAND_RECT.position/BLOCK_SIZE))
+		high=high.min(Vector2i(Terrain.LAND_RECT.end/BLOCK_SIZE)-Vector2i.ONE)
 		for z in range(low.y,high.y+1):
 			for x in range(low.x,high.x+1): candidates[Vector2i(x,z)]=true
 	for block: Vector2i in candidates:

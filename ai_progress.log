@@ -591,3 +591,9 @@
 - GATE3: resumed_verified OpenGL91 PASS；实际Master2.972154s零削波、个人档与原声部身份不变。
 - CRITIC: 独立10原图无P1/P2，P3庭院凹角瓦行弯曲保留；早期53绿碎瓦失败原图未删。
 - PERF/NEXT: 同哈希field中位4.342→1.975ms/3.897→1.660ms；提交同步后仅M69共享边法线。
+
+[SESSION_M69] 2026-10-27 COMPLETE：地形脏候选包含0.5m法线halo及共享边双所有者。
+- GATE1/2: Harness/doc；seams60/initial7/legacy375+27 PASS；每阶段1980共享样本0误差。
+- GATE3: accepted原生29 PASS；GPU数组与冷绘相等，侧光/夜景ROI5100/2370差像素降为0。
+- DATA: 实际空场Master3.065034s零削波；个人档/12长4短6总线2自然声不变；编辑峰10.134ms仅实测。
+- NEXT: 三轮独立原图复核、提交main同步后仅M70柔化后追加塑形增量。
