@@ -389,7 +389,7 @@ func _setup_life(prepared:Node3D=null) -> void:
 		life.setup(state)
 	else:life.show()
 	life.view_camera=camera
-	life.arrival_callback = func(_kind: String) -> void: music.record_life_activity("arrival","",Vector2(focus.x,focus.z))
+	life.arrival_callback = func(kind: String) -> void: preload("res://scripts/audio/city_creation_chamber_context.gd").arrival(self,kind)
 	life.concert_callback = _on_concert_event
 	life.production_callback = _on_bread_produced
 	life.wish_callback = _on_site_wish_completed

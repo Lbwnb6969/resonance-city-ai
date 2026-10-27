@@ -36,18 +36,22 @@ func tick(sites:Dictionary)->void:
 		if clock<float(event.due)-Grid.GRID:continue
 		pending.erase(event)
 		if clock>float(event.due)+.19:continue
-		var player:AudioStreamPlayer
-		for candidate:AudioStreamPlayer in music._effects:
-			if not candidate.playing:player=candidate;break
-		if player==null:continue
-		var plan:=Pluck.plan(demo.state,event.source,maxf(clock,float(event.due)),music.harmony_mode())
-		if plan.is_empty() or not music._edit_streams.has(plan.stream_key):continue
-		var stream:AudioStreamWAV=music._edit_streams[plan.stream_key]
-		music.play_effect_at(player,stream,plan.position,.8 if event.answer==0 else .62)
-		# Retain exact static pre-roll; the second bank answers four grid steps later.
-		player.play(maxf(0.,float(stream.get_meta("cue_preroll",0.))-(float(event.due)-clock)))
-		var serial:=int(player.get_meta("creation_voice_serial"))
-		voices.append({"site":event.site,"player":player,"stream":stream,"serial":serial})
-		var diagnostic:=event.duplicate();diagnostic.merge({"clock":clock,"position":plan.position,"era":plan.era_theme,"timbre":plan.timbre,"midi":plan.midi,"pan":music.spatial.map_pan(plan.position),"serial":serial,"stream":plan.stream_key})
-		events.append(diagnostic)
-		if events.size()>128:events.pop_front()
+		preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(music,"arch_echo",str(event.site)+"/"+str(event.answer),Vector2(sites[event.site].at),func():emit(event,sites))
+
+func emit(event:Dictionary,sites:Dictionary)->void:
+	var music=demo.music;var clock:=Grid.transport_clock(music)
+	if not sites.has(event.site) or not allowed(sites[event.site]):return
+	var player:AudioStreamPlayer
+	for candidate:AudioStreamPlayer in music._effects:
+		if not candidate.playing:player=candidate;break
+	if player==null:return
+	var plan:=Pluck.plan(demo.state,event.source,maxf(clock,float(event.due)),music.harmony_mode())
+	if plan.is_empty() or not music._edit_streams.has(plan.stream_key):return
+	var stream:AudioStreamWAV=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(music,music._edit_streams[plan.stream_key],int(event.answer))
+	music.play_effect_at(player,stream,plan.position,.8 if event.answer==0 else .62)
+	# Retain exact static pre-roll; the second bank answers four grid steps later.
+	var serial:=int(player.get_meta("creation_voice_serial"))
+	voices.append({"site":event.site,"player":player,"stream":stream,"serial":serial})
+	var diagnostic:=event.duplicate();diagnostic.merge({"clock":clock,"position":plan.position,"era":plan.era_theme,"timbre":plan.timbre,"midi":stream.get_meta("chamber_midi",plan.midi),"pan":music.spatial.map_pan(plan.position),"serial":serial,"stream":stream.get_meta("chamber_key",plan.stream_key)})
+	events.append(diagnostic)
+	if events.size()>128:events.pop_front()

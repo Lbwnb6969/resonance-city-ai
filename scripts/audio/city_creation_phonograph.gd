@@ -26,13 +26,15 @@ static func valid(value:Variant)->bool:
 		if row.bank=="original":
 			if row.key!=stem:return false
 		elif row.bank=="harmony":
-			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1]=="nocturne" and stem in Emergence.LEADS:continue
+			if preload("res://scripts/audio/city_creation_chamber_legato.gd").valid_key(str(row.key)) and stem in Emergence.LEADS+["concert"]:continue
+			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1] in ["chamber_counter_pastoral","chamber_counter_renaissance","chamber_counter_clockwork","chamber_counter_modern_eco"] and stem in Emergence.LEADS+["concert"]:continue
+			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1]=="nocturne" and stem in Emergence.LEADS+["concert"]:continue
 			if parts.size()!=2 or not parts[0].is_valid_int() or int(parts[0])<0 or int(parts[0])>=Palette.NAMES.size() or parts[1]!=stem or stem not in ["foundation","air","terrace","concert"]:return false
 		else:
 			if parts.size()==3:
 				if not parts[0].is_valid_int() or int(parts[0])<1 or int(parts[0])>=Palette.NAMES.size():return false
 			elif parts.size()!=2:return false
-			if parts[parts.size()-2]!=stem or parts[parts.size()-1] not in ["0","1","2"] or stem not in Emergence.LEADS:return false
+			if parts[parts.size()-2]!=stem or parts[parts.size()-1] not in ["0","1","2"] or stem not in Emergence.LEADS+["concert"]:return false
 	return true
 
 static func _number(v:Variant)->bool:return (v is float or v is int) and is_finite(float(v))
@@ -63,14 +65,7 @@ static func reconstruct(city:RefCounted,view:Dictionary)->Dictionary:
 	var score:=Emergence.evaluate(catalog.houses,acoustic,catalog.canon,0,int(view.get("light_phase",0))==2)
 	var mode:=Palette.for_city(city)
 	if mode<0:mode=int(score.preferred_mode)
-	var tracks:Dictionary={}
-	var camera_mix=preload("res://scripts/audio/city_creation_camera_orchestration.gd")
-	var nocturne:bool=int(view.get("light_phase",0))==2 or city.microclimate in ["sun_shower","starlight_fireflies"]
-	for stem:String in STEMS:
-		var bank:="variations" if stem in Emergence.LEADS else "harmony"
-		var key:=(stem+"/"+str(score.variant) if mode==0 else "%d/%s/%d"%[mode,stem,int(score.variant)]) if bank=="variations" else "%d/%s"%[mode,stem]
-		if nocturne and stem==str(score.get("lead_track","")):bank="harmony";key="%d/nocturne"%mode
-		tracks[stem]={"bank":bank,"key":key,"db":camera_mix.gain_for(score,stem,float(score.targets.get(stem,-60.)),float(view.get("zoom",25.)),nocturne)-2.}
+	var tracks:Dictionary=preload("res://scripts/audio/city_creation_chamber_roles.gd").reconstruction(city,view,catalog,acoustic,score,mode)
 	return {"version":1,"tracks":tracks,"position":0.,"mode":mode,"theme_pan":0.,"concert_pan":0.}
 
 func begin(music:Node,value:Dictionary)->Dictionary:
@@ -78,6 +73,7 @@ func begin(music:Node,value:Dictionary)->Dictionary:
 	var banks:=_banks(music)
 	for stem:String in STEMS:
 		var row:Dictionary=value.tracks[stem]
+		if row.bank=="harmony" and str(row.key).begins_with("chamber_legato/"):preload("res://scripts/audio/city_creation_chamber_legato.gd").materialize(music,str(row.key))
 		if not banks[row.bank].has(row.key):return {"ok":false,"message":"请先准备本地音乐声部库"}
 	if active:stop(music)
 	_resume={"players":{},"pan":music.spatial.report(),"filters":[]}

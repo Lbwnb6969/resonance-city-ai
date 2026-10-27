@@ -89,6 +89,7 @@ func _apply_life_orchestration()->void:
 		emergence.score.targets[family]=maxf(float(emergence.score.targets.get(family,-60.)),floor_db)
 	if is_instance_valid(life_source):life_source.state.Microclimate.music(emergence.score.targets,life_source.state.microclimate)
 	ClusterHarmony.Tide.conduct(self)
+	preload("res://scripts/audio/city_creation_chamber_roles.gd").prepare(self)
 
 func harmony_mode()->int:
 	return _biome_mode if _biome_mode>=0 else (-1 if concert_active else int(emergence.score.get("harmony_mode",0)))
@@ -184,9 +185,9 @@ func _tram_at_clock()->void:
 	var remote := false
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing:continue
-		play_effect_at(effect,_edit_streams[kind],event.position,.25 if remote else weight,remote)
+		play_effect_at(effect,preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[kind]),event.position,.25 if remote else weight,remote)
 		_tram_player=effect;_tram_cues+=1;_tram_last=clock
-		_tram_active=event.duplicate();_tram_active.merge({"phrase":phrase,"stream":_edit_streams[kind],"remote":remote,"gain_weight":.25 if remote else weight})
+		_tram_active=event.duplicate();_tram_active.merge({"phrase":phrase,"stream":preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[kind]),"remote":remote,"gain_weight":.25 if remote else weight})
 		_tram_pending={};break
 
 func tram_music_report()->Dictionary:
@@ -419,10 +420,10 @@ func _tower_at_phrase(phrase: int) -> void:
 	if candidates.is_empty(): return
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
-		_tower_source=candidates[posmod(int(phrase/2),candidates.size())]
+		_tower_source=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").select(self,candidates)
 		_tower_position=_nearest_tower(_tower_source)
 		_tower_player=effect
-		_tower_stream=_edit_streams["tower_bell_%d" % posmod(phrase,8)]
+		_tower_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams["tower_bell_%d" % posmod(phrase,8)])
 		_tower_remote=str(acoustic.zones.get(_tower_source,{}).get("zone","silent")) not in ["focus","linked"]
 		play_effect_at(effect,_tower_stream,_tower_position,.25 if _tower_remote else acoustic.weight(_tower_source),_tower_remote)
 		_tower_cues+=1
@@ -453,6 +454,7 @@ func queue_travel(actor_id: String, kind: String, source_id: String, at: Vector2
 		_travel_pending=event
 
 func _stepping_now(event: Dictionary, clock: float) -> void:
+	if not get_meta("chamber_dispatch",false):preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(self,"stepping",str(event.source_id),event.position,func():_stepping_now(event,_playback_clock()));return
 	# A real footfall answers immediately in the current chord. Crowds share
 	# one .48s spacing and construction/foreground phrases keep their voices.
 	if clock-_stepping_last<STEPPING_INTERVAL or not _travel_pending.is_empty(): return
@@ -464,7 +466,7 @@ func _stepping_now(event: Dictionary, clock: float) -> void:
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
 		_travel_player=effect
-		_travel_stream=_edit_streams[key]
+		_travel_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[key])
 		_travel_active=event.duplicate()
 		_travel_active.merge({"phrase":phrase,"duration":STEPPING_DURATION,"timbre":"water_marimba","note":note},true)
 		_travel_cooldowns[str(event.source_id)]=clock
@@ -507,7 +509,7 @@ func _travel_at_phrase(phrase: int) -> void:
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
 		_travel_player=effect
-		_travel_stream=_edit_streams[key]
+		_travel_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[key])
 		_travel_active=event
 		_travel_active["phrase"]=phrase
 		_travel_cooldowns[str(event.source_id)]=_playback_clock()
@@ -530,7 +532,7 @@ func _cafe_eligible(id: String) -> bool:
 
 func cafe_music_report() -> Dictionary:
 	var audible := _cafe_player!=null and _cafe_player.playing and _cafe_player.stream==_cafe_stream and _cafe_eligible(_cafe_source)
-	return {"source_id":_cafe_source if audible else "","audible":audible,"phrase":_cafe_phrase,"cues":_cafe_cues,"timbre":"flute","pool_size":_effects.size()}
+	return {"source_id":_cafe_source if audible else "","audible":audible,"phrase":_cafe_phrase,"cues":_cafe_cues,"timbre":_cafe_stream.get_meta("chamber_timbre","flute") if _cafe_stream!=null else "flute","pool_size":_effects.size()}
 
 
 func _cafe_at_phrase(phrase: int) -> void:
@@ -548,9 +550,9 @@ func _cafe_at_phrase(phrase: int) -> void:
 	if not _edit_streams.has(kind): return
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing: continue
-		_cafe_source=eligible[posmod(phrase,eligible.size())]
+		_cafe_source=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").select(self,eligible)
 		_cafe_player=effect
-		_cafe_stream=_edit_streams[kind]
+		_cafe_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[kind])
 		play_effect_at(effect,_cafe_stream,_house_music[_cafe_source].position,acoustic.focus_weight(_cafe_source)*CueGrid.zoom_attenuation(acoustic.zoom))
 		_cafe_cues+=1
 		return
@@ -979,6 +981,9 @@ func active_source() -> Dictionary:
 
 
 func target_gain_db(key: String, during_concert: bool) -> float:
+	return preload("res://scripts/audio/city_creation_chamber_roles.gd").gain(self,key,_legacy_target_gain_db(key,during_concert))
+
+func _legacy_target_gain_db(key: String, during_concert: bool) -> float:
 	if _grand_active():return _movement_gain(key,_concert_phrase())
 	if not concert_active and not emergence.score.is_empty():return preload("res://scripts/audio/city_creation_camera_orchestration.gd").gain(self,key,ClusterHarmony.Tide.gain(key,emergence.score,_playback_clock()))
 	if key=="modern_symphony":return -24.0 if during_concert else -21.0
@@ -1095,14 +1100,14 @@ func _signature_at_phrase(phrase: int) -> void:
 	if concert_active and str(_house_music.get(_concert_venue,{}).get("signature",""))=="music_academy":
 		source=_concert_venue;kind="quartet";weight=.25 if _remote_concert() else acoustic.weight(source)
 	elif not concert_active and posmod(phrase,2)==0:
-		for id: String in _house_music:
+		for id: String in preload("res://scripts/audio/city_creation_chamber_ornaments.gd").ordered(self,_house_music.keys()):
 			if _house_music[id].signature=="watermill" and acoustic.focus_weight(id)>0.0:source=id;kind="waterwheel";weight=acoustic.focus_weight(id);break
 	if source.is_empty() and posmod(phrase,2)==1:
 		var candidate: String=str(_source_for_phrase(_concert_phrase()).source_id) if concert_active else ""
 		if not concert_active and not concert_active and acoustic.zoom<=CueGrid.MAX_ZOOM:
 			var score:=0.0
 			for id: String in acoustic.focus_ids:
-				var current: float=float(_house_music[id].level_tier)+acoustic.focus_weight(id)*.2
+				var current: float=1./(1.+_listener_focus.distance_squared_to(_house_music[id].position))
 				if int(_house_music[id].level_tier)>=3 and current>score:score=current;candidate=id
 		if _house_music.has(candidate) and int(_house_music[candidate].level_tier)>=3:
 			source=candidate;kind="quality_flourish_%d"%int(_house_music[candidate].level_tier)
@@ -1116,7 +1121,7 @@ func _signature_at_phrase(phrase: int) -> void:
 	if not _edit_streams.has(key):return
 	for effect: AudioStreamPlayer in _effects:
 		if effect.playing:continue
-		var stream: AudioStreamWAV=_edit_streams[key]
+		var stream: AudioStreamWAV=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(self,_edit_streams[key])
 		play_effect_at(effect,stream,_house_music[source].position,weight,kind=="quartet" and _remote_concert())
 		_signature_active[effect.get_instance_id()]={"player":effect,"stream":stream,"kind":kind,"source_id":source,"phrase":phrase,"weight":weight}
 		break
@@ -1155,6 +1160,7 @@ func _play_quality_cue(house_id:String,tier:int)->bool:
 func _attention_trigger(category:String,payload:Dictionary)->bool:
 	if category=="pluck_arp":return _play_queued_house(payload)
 	if category=="quality_upgrade":return _play_quality_cue(str(payload.source_id),int(payload.tier))
+	if preload("res://scripts/audio/city_creation_chamber_ornaments.gd").route(self,category,payload):return false
 	var phrase:int=payload.phrase
 	if choir_mode and not concert_active and not Experience.allows(self,category):return false
 	match category:
@@ -1162,8 +1168,8 @@ func _attention_trigger(category:String,payload:Dictionary)->bool:
 		"waterwheel":
 			if phrase%2==0:_signature_at_phrase(phrase)
 		"cafe_flute":_cafe_at_phrase(phrase)
-		"bakery_cue":bakery_cues.at_phrase(phrase,1.125)
-		"district_reply":reply.at_phrase(phrase,1.5)
+		"bakery_cue":bakery_cues.at_phrase(phrase,preload("res://scripts/audio/city_creation_chamber_ornaments.gd").offset(self,1.125))
+		"district_reply":reply.at_phrase(phrase,preload("res://scripts/audio/city_creation_chamber_ornaments.gd").offset(self,1.5))
 		"tram_chime":_tram_at_clock()
 		"travel_crossing":_travel_at_phrase(phrase)
 		"quality_flourish":
@@ -1283,8 +1289,7 @@ func _process(delta: float) -> void:
 		_advance_concert_arrangement()
 		attention.step(_playback_clock(),_attention_trigger)
 		if concert_active:
-			_tower_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
-			_signature_at_phrase(_concert_loop*8+clampi(int(position/3.0),0,7))
+			preload("res://scripts/audio/city_creation_chamber_ornaments.gd").concert(self,_concert_loop*8+clampi(int(position/3.0),0,7))
 		if Experience.allows(self,"canon") and attention.allows("canon"):canon.step(_playback_clock(),.375)
 		else:canon.clear()
 	bakery_cues.report()

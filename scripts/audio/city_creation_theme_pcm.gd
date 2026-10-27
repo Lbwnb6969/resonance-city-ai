@@ -13,35 +13,7 @@ const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 ## Phrase-local motifs are baked once. Every bar has a short silent seam so
 ## a native WAV seek can change its texture without cutting an audible tail.
 static func render_variations(add_note:Callable,make_stream:Callable,chords:Array,leads:Array,mode:int=-1)->Dictionary:
-	var streams:Dictionary={};var notes:Dictionary={};var peaks:Dictionary={};var bytes:=0
-	var timbres:Dictionary={"wood":"wood","wood_deep":"air","wood_weave":"pluck","wood_market":"accordion","wood_sylvan":"flute","renaissance_fugue":"harpsichord","clockwork_waltz":"piano","modern_symphony":"felt_piano"}
-	for key:String in leads:
-		for variant in range(3):
-			var samples:=PackedFloat32Array();samples.resize(529200)
-			var events:Array[Dictionary]=[]
-			for bar in range(8):
-				var starts:Array=[.16,1.66] if variant==0 else ([.16,.91,1.66,2.41] if variant==1 else [.16,.535,.91,1.285,1.66,2.035,2.41])
-				if key=="clockwork_waltz":starts=[.16,1.16,2.16] if variant==0 else [.16,.66,1.16,1.66,2.16,2.53]
-				if key=="wood_sylvan" and variant==0:starts=[.32]
-				for i in range(starts.size()):
-					var degree:int=[0,2,1,2,0,1,2][posmod(i+bar,7)]
-					var midi:int=int(chords[bar][degree])+12+(12 if variant==2 and i%3==2 else 0)
-					if mode>=0:midi=Palette.quantize(midi,mode,bar)
-					var duration:float=minf(.95 if variant==0 else .48,2.88-float(starts[i]))
-					_emit(samples,events,add_note,bar*3.+float(starts[i]),duration,midi,.068 if variant==0 else .052,timbres[key],mode)
-				if variant>=1 and key in ["renaissance_fugue","modern_symphony"]:
-					_emit(samples,events,add_note,bar*3.+.38,1.60,int(chords[bar][0])+12,.022,"oboe" if key=="renaissance_fugue" else "warm_pad",mode)
-				if variant==2:
-					_emit(samples,events,add_note,bar*3.+1.34,1.30,int(chords[bar][1])+12,.022,"strings" if key=="renaissance_fugue" else "harp",mode)
-			var peak:=0.
-			for value:float in samples:peak=maxf(peak,absf(value))
-			var normalize:float=minf(1.,VARIATION_PEAK/maxf(.000001,peak))
-			if normalize<1.:
-				for i in range(samples.size()):samples[i]*=normalize
-				for event:Dictionary in events:event.gain*=normalize
-			var id:String="%s/%d"%[key,variant]
-			streams[id]=make_stream.call(samples,true);notes[id]=events;peaks[id]=peak*normalize;bytes+=samples.size()*2
-	return {"streams":streams,"notes":notes,"peaks":peaks,"bytes":bytes}
+	return preload("res://scripts/audio/city_creation_chamber_score.gd").variations(add_note,make_stream,chords,leads,mode,Palette)
 
 static func quantize(midi: int) -> int:
 	return midi + PENTATONIC_OFFSETS[posmod(midi, 12)]

@@ -5,6 +5,7 @@ static func nocturne(owner:Node)->bool:
 static func gain(owner:Node,key:String,base:float)->float:
 	return gain_for(owner.emergence.score,key,base,float(owner.acoustic.zoom),nocturne(owner))-float(owner.get_meta("solo_duck_db",0.))
 static func lead(score:Dictionary)->String:
+	if str(score.get("lead_track","")) in preload("res://scripts/audio/city_creation_harmonic_emergence.gd").LEADS:return str(score.lead_track)
 	var weights:Dictionary=score.get("weights",{})
 	var keys:Array=weights.keys()
 	keys.sort_custom(func(a:String,b:String)->bool:return a<b if is_equal_approx(float(weights[a]),float(weights[b])) else float(weights[a])>float(weights[b]))

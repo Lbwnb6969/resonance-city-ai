@@ -82,7 +82,7 @@ static func _wave(out:Dictionary,key:String,duration:float,events:Array,add:Call
 			var parts:=key.split("/")
 			if parts.size()>1 and parts[0].is_valid_int() and parts[-1].get_slice("_",parts[-1].get_slice_count("_")-1).is_valid_int() and not parts[-1].begins_with("stair_key"):
 				var beat:=int(parts[-1].get_slice("_",parts[-1].get_slice_count("_")-1))
-				if parts[-1].begins_with("travel_stepping"):beat=int(parts[-1].get_slice("_",2))
+				if parts[-1].begins_with("travel_stepping") or parts[-1].begins_with("chamber_sparkle"):beat=int(parts[-1].get_slice("_",2))
 				if parts.size()>2:beat=int(parts[-1])
 				event.midi=Grid.snap_to_chord_tone(int(event.midi),chords(int(parts[0]))[posmod(beat,8)])
 		add.call(samples,event.start,event.duration,event.midi,event.gain,event.timbre,looped)
@@ -93,6 +93,7 @@ static func _wave(out:Dictionary,key:String,duration:float,events:Array,add:Call
 		for i in range(samples.size()):samples[i]*=gain
 		for event:Dictionary in events:event.gain*=gain
 	out.streams[key]=make.call(samples,looped);out.notes[key]=events;out.peaks[key]=peak*gain
+	if looped and events.all(func(e):return e.has("layer")):out.streams[key].set_meta("chamber_layered",true)
 
 static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_edits:Dictionary,pitch_bank:Script,reply_bank:Script)->Dictionary:
 	var out:Dictionary={"streams":{},"notes":{},"peaks":{},"variations":{},"variation_notes":{},"variation_peaks":{}}
@@ -102,6 +103,8 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 		for key:String in variants.streams:
 			var id:String=key if mode==0 else "%d/%s"%[mode,key]
 			out.variations[id]=variants.streams[key];out.variation_notes[id]=variants.notes[key];out.variation_peaks[id]=variants.peaks[key]
+		for family:String in ["pastoral","renaissance","clockwork","modern_eco"]:
+			_wave(out,"%d/chamber_counter_%s"%[mode,family],24.,preload("res://scripts/audio/city_creation_chamber_score.gd").counter(family,progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd")),add,make,true)
 		for bed:String in ["foundation","air","terrace"]:
 			var events:Array=[]
 			for bar in range(8):
@@ -111,7 +114,7 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 					events.append(_note(bar*3.+.06,2.75,int(chord[0])-12,.048,"bass"))
 				elif bed=="air":events.append(_note(bar*3.+.75,1.85,quantize(int(chord[2])+24,mode,bar),.045,"air"))
 				else:events.append(_note(bar*3.+2.25,.60,quantize(int(chord[2])+24,mode,bar),.033,"bell"))
-			if bed in ["foundation","air"]:events=Chamber.bed(bed,progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd"))
+			events=Chamber.bed(bed,progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd")) if bed in ["foundation","air"] else preload("res://scripts/audio/city_creation_chamber_score.gd").counter("terrace",progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd"))
 			_wave(out,"%d/%s"%[mode,bed],24.,events,add,make,true)
 		_wave(out,"%d/nocturne"%mode,24.,Chamber.nocturne(progression,mode,load("res://scripts/audio/city_creation_harmonic_palette.gd")),add,make,true)
 		# Biome landmark tutti uses the same modal progression as the leads;
@@ -122,6 +125,12 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 			for i in range(4):tutti.append(_note(bar*3.+.15+float(i)*.6,.95,quantize(int(chord[i%chord.size()])+12,mode,bar),.055,"piano" if i%2==0 else "wood"))
 			for midi:int in chord:tutti.append(_note(bar*3.+.02,2.8,midi,.016,"strings"))
 		_wave(out,"%d/concert"%mode,24.,tutti,add,make,true)
+		for bar in range(8):
+			for ordinal in range(2):
+				var event:Dictionary=preload("res://scripts/audio/city_creation_chamber_score.gd").sparkle(progression[bar],ordinal)
+				var key:="%d/chamber_sparkle_%d_%d"%[mode,bar,ordinal]
+				_wave(out,key,.64,[event],add,make)
+				out.streams[key].set_meta("chamber_key",key);out.streams[key].set_meta("chamber_midi",event.midi);out.streams[key].set_meta("chamber_timbre",event.timbre)
 		for rank in range(14):
 			_wave(out,"%d/stair_key_%d"%[mode,rank],.42,[_note(0.,.38,stair_pitch(mode,rank),.072,"piano")],add,make)
 		var replies:Dictionary=reply_bank.render(progression,add,make)

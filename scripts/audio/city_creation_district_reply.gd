@@ -107,7 +107,7 @@ func _play(event: Dictionary, phrase: int, answer: bool) -> bool:
 		if effect.playing: continue
 		_clear_active()
 		_player=effect
-		_stream=_owner._edit_streams[key]
+		_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(_owner,_owner._edit_streams[key],1 if answer else 0)
 		_active=event.duplicate(true)
 		_active.merge(plan,true)
 		_active.merge({"phase":"answer" if answer else "call","generation":1 if answer else 0,
@@ -152,7 +152,8 @@ func at_phrase(absolute_phrase: int,offset_sec:float=0.) -> void:
 		if _pair_valid(_pairs[id]): eligible.append(id)
 	if eligible.is_empty(): return
 	eligible.sort()
-	var selected: Dictionary = _pairs[eligible[posmod(int(absolute_phrase/interval),eligible.size())]]
+	eligible.sort_custom(func(a:String,b:String):return minf(_owner._listener_focus.distance_squared_to(_pairs[a].from_position),_owner._listener_focus.distance_squared_to(_pairs[a].to_position))<minf(_owner._listener_focus.distance_squared_to(_pairs[b].from_position),_owner._listener_focus.distance_squared_to(_pairs[b].to_position)))
+	var selected: Dictionary = _pairs[eligible[0]]
 	var event := _direction(selected,absolute_phrase)
 	if _play(event,absolute_phrase,false): _pending=event
 	else: skipped+=1

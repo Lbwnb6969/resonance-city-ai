@@ -68,6 +68,7 @@ func queue(kind: String,shop_id: String,home_id: String="") -> bool:
 	# One pending phrase for the entire city. A purchase takes precedence over
 	# production; simultaneous batches/people never create an audible backlog.
 	if not _pending.is_empty() and str(_pending.kind)=="purchased" and kind=="baked":coalesced+=1;return true
+	if not _pending.is_empty() and str(_pending.kind)==kind and _owner._listener_focus.distance_squared_to(_pending.position)<_owner._listener_focus.distance_squared_to(event.position):coalesced+=1;return true
 	_pending=event
 	return true
 
@@ -83,7 +84,7 @@ func at_phrase(phrase: int,offset_sec:float=0.) -> void:
 	if not _owner._edit_streams.has(key): skipped+=1;return
 	for player: AudioStreamPlayer in _owner._effects:
 		if player.playing: continue
-		_player=player;_stream=_owner._edit_streams[key]
+		_player=player;_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(_owner,_owner._edit_streams[key])
 		_active=event.duplicate();_active.phrase=phrase;_active.stream_key=key
 		_owner.play_effect_at(player,_stream,event.position,_owner.acoustic.focus_weight(str(event.source_id))*(1.0-smoothstep(18.0,32.0,_owner.acoustic.zoom)))
 		cues+=1

@@ -40,6 +40,7 @@ static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)
 	if stair.get("kind","")!="stair" or not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",source,at):return false
 	var plan:={"house_id":"world/"+source,"stream_key":"stair_key_%d"%int(stair.rank),"position":at,"world_kind":"stair","source_id":source,"rank":int(stair.rank)}
 	if stair.has("degree"):plan.degree=int(stair.degree)
+	if not player_action:return preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(music,"stair",source,at,func():play_note(music,plan))
 	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
 
 static func play_note(music,plan:Dictionary)->bool:
@@ -74,6 +75,7 @@ static func play_note(music,plan:Dictionary)->bool:
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break
+	stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(music,stream)
 	music.play_effect_at(player,stream,plan.position,.75)
 	music.set_meta("world_pluck",{"kind":plan.world_kind,"source_id":plan.get("source_id",""),"at":plan.position,"clock":music._playback_clock(),"serial":player.get_meta("creation_voice_serial"),"stream_key":key,"mode":mode,"bar":bar,"octave_dyad":bool(stream.get_meta("octave_dyad",false))})
 	return true

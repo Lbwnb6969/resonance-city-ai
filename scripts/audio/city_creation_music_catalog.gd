@@ -9,6 +9,7 @@ static func signature(city:RefCounted)->int:
 	return hash([city.houses,city.roads,city.waters,city.plants,city.biome_seed,city.music_mode,city.automatic_neighborhoods,city.districts,city.musical_links,city.house_improvements,city.house_culture,city.house_clockwork,city.building_quality])
 static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 	var records:Dictionary={}
+	var legato_curves:Dictionary=preload("res://scripts/audio/city_creation_chamber_context.gd").curves(state.roads)
 	var daily:Array[String]=[]
 	var targets:Dictionary={}
 	var tower_count:=0
@@ -35,6 +36,7 @@ static func prepare(state:RefCounted,prepared_towers:Variant=null)->Dictionary:
 		records[str(house.id)] = {"position":Vector2(float(house.origin[0]),float(house.origin[1])),
 			"level_tier":state.level_tier(str(house.id)),"signature":str(house.get("signature","")),"era_theme":state.house_era(house),"culture":state.culture_level(str(house.id)),"mechanisms":state.mechanism_level(str(house.id)),"base_y":float(house.get("base_y",0.0)),"district_id":str(district.get("id","")),"style":state.house_acoustic_style(house),"improvement":int(state.improvement_level(str(house.id))),"role":str(house.role),"towers":count,"tower_positions":positions}
 		var row:Dictionary=records[str(house.id)]
+		row.organic_legato=preload("res://scripts/audio/city_creation_chamber_context.gd").house(state,house,legato_curves)
 		row.prototype=preload("res://scripts/world/city_creation_prototype_resonance.gd").prototype(state,house)
 		row.echo_radius_bonus=preload("res://scripts/world/city_creation_prototype_resonance.gd").echo_radius_bonus(row.prototype)
 		row.cluster_id=clusters[str(house.id)].id;row.cluster_size=clusters[str(house.id)].size

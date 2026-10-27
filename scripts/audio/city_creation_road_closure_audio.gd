@@ -19,7 +19,19 @@ func tick(ruler:Dictionary,at:Vector2)->void:
 	if clock-last_tick<.35:return
 	last_tick=clock;_play(at,false)
 func close(at:Vector2)->void:
-	if allowed():_play(at,true)
+	if not allowed():return
+	for ordinal in range(2):preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(demo.music,"road_closure",str(at)+"/"+str(ordinal),at,func():closure_note(at,ordinal))
+func closure_note(at:Vector2,ordinal:int)->void:
+	if not allowed():return
+	var music=demo.music;var clock:=Grid.transport_clock(music)
+	var stream:AudioStreamWAV=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(music,null,ordinal)
+	if stream==null:return
+	for player:AudioStreamPlayer in music._effects:
+		if player.playing:continue
+		music.play_effect_at(player,stream,at,.68)
+		events.append({"kind":"closure_ornament","clock":clock,"onset":Grid.quantize_cue_onset(clock),"midi":[stream.get_meta("chamber_midi")],"at":at,"voices":1,"ordinal":ordinal})
+		if events.size()>64:events.pop_front()
+		return
 func _play(at:Vector2,closure:bool)->void:
 	var music=demo.music;var clock:=Grid.transport_clock(music);var onset:=Grid.quantize_cue_onset(clock);var bar:=Grid.bar(clock)
 	var root:int=Palette.chords(maxi(0,music.harmony_mode()))[bar][0]+24

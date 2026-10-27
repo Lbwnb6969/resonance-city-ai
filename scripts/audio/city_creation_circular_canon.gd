@@ -122,6 +122,14 @@ func step(clock: float,offset_sec:float=0.)->void:
 	var planned:=slot(group,clock-offset_sec);planned.start_clock+=offset_sec
 	var id: String=planned.house_id
 	if _owner.acoustic.focus_weight(id)<=0.:skipped+=1;return
+	if not _owner.get_meta("chamber_dispatch",false):
+		preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(_owner,"canon",id,Vector2(_owner._house_music[id].position),func():_emit(planned,group,_owner._playback_clock()));return
+	_emit(planned,group,clock)
+
+func _emit(planned:Dictionary,group:Dictionary,clock:float)->void:
+	var current:=_selected()
+	if current.is_empty() or current.id!=group.id:return
+	var id:=str(planned.house_id);planned=planned.duplicate();planned.start_clock=clock
 	var plan:=Pitch.plan(_city,id,clock,_owner.harmony_mode())
 	if plan.is_empty() or not _owner._edit_streams.has(plan.stream_key):return
 	var selected: AudioStreamPlayer
@@ -129,11 +137,11 @@ func step(clock: float,offset_sec:float=0.)->void:
 		if not effect.playing:selected=effect;break
 	if selected==null:skipped+=1;return
 	clear()
-	_player=selected;_stream=_owner._edit_streams[plan.stream_key]
+	_player=selected;_stream=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(_owner,_owner._edit_streams[plan.stream_key])
 	_owner.play_effect_at(selected,_stream,plan.position,_owner.acoustic.focus_weight(id)*.72)
 	_voice_serial=int(selected.get_meta("creation_voice_serial",-1))
 	cues+=1
-	_active=plan.duplicate();_active.merge(planned,true)
+	_active=plan.duplicate();_active.midi=_stream.get_meta("chamber_midi",plan.midi);_active.merge(planned,true)
 	_active.merge({"ring_id":group.id,"members":group.members.duplicate(),"center":group.center,"serial":cues},true)
 
 func report()->Dictionary:
