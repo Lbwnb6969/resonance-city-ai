@@ -1,0 +1,290 @@
+{
+  "schema": 1,
+  "kind": "analysis_reference_not_runtime_preset",
+  "reference": {
+    "source_name": "Youzee Music - 齐马蓝.mp3",
+    "source_sha256": "426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65",
+    "seconds": 148.8,
+    "versions": {
+      "python": "3.12.10",
+      "librosa": "1.0.0",
+      "essentia": {
+        "essentia": "2.1-beta6-dev",
+        "essentia_git_sha": "v2.1_beta5-356-g673b6a14-dirty",
+        "extractor": "music 2.0"
+      },
+      "ffmpeg": "7.1-essentials_build-www.gyan.dev"
+    },
+    "bpm_librosa": 123.046875,
+    "bpm_essentia": 124.925949097,
+    "key_profiles": {
+      "key_edma": {
+        "strength": 0.776320517063,
+        "key": "E",
+        "scale": "major"
+      },
+      "key_krumhansl": {
+        "strength": 0.770060360432,
+        "key": "E",
+        "scale": "major"
+      },
+      "key_temperley": {
+        "strength": 0.762682318687,
+        "key": "E",
+        "scale": "major"
+      }
+    },
+    "chords_statistical_label": {
+      "chords_key": "B",
+      "chords_scale": "major"
+    },
+    "onset_rate": 3.17840695381,
+    "mean_frame_rms": 0.11555472016334534,
+    "centroid_hz": 489.74428968999683,
+    "rolloff_hz": 805.0861131867783,
+    "beat_intervals": {
+      "librosa": {
+        "count": 288,
+        "median_seconds": 0.48761904761904873,
+        "p10_seconds": 0.46439909297052095,
+        "p90_seconds": 0.48761904761904873
+      },
+      "essentia": {
+        "count": 297,
+        "median_seconds": 0.47601318379999213,
+        "p10_seconds": 0.47600555420000035,
+        "p90_seconds": 0.4992332454999939
+      }
+    }
+  },
+  "reference_12s_windows": [
+    {
+      "start_seconds": 0.0,
+      "end_seconds": 12.0,
+      "rms": 0.06243357243485493,
+      "centroid_hz": 493.73244247849965,
+      "rolloff_hz": 788.1277294638539
+    },
+    {
+      "start_seconds": 12.0,
+      "end_seconds": 24.0,
+      "rms": 0.08002973035009671,
+      "centroid_hz": 544.2990355026847,
+      "rolloff_hz": 893.1489512814313
+    },
+    {
+      "start_seconds": 24.0,
+      "end_seconds": 36.0,
+      "rms": 0.1264375188491296,
+      "centroid_hz": 582.4881136107152,
+      "rolloff_hz": 1000.2943382041827
+    },
+    {
+      "start_seconds": 36.0,
+      "end_seconds": 48.0,
+      "rms": 0.135077584622824,
+      "centroid_hz": 539.3108885886935,
+      "rolloff_hz": 976.0955161236702
+    },
+    {
+      "start_seconds": 48.0,
+      "end_seconds": 60.0,
+      "rms": 0.08868385384302327,
+      "centroid_hz": 650.9534079943936,
+      "rolloff_hz": 1055.7737838390262
+    },
+    {
+      "start_seconds": 60.0,
+      "end_seconds": 72.0,
+      "rms": 0.08581255840232108,
+      "centroid_hz": 651.7778941304422,
+      "rolloff_hz": 1061.0829454787233
+    },
+    {
+      "start_seconds": 72.0,
+      "end_seconds": 84.0,
+      "rms": 0.1486381364874275,
+      "centroid_hz": 432.4748323801189,
+      "rolloff_hz": 771.5300864361702
+    },
+    {
+      "start_seconds": 84.0,
+      "end_seconds": 96.0,
+      "rms": 0.14887179503886191,
+      "centroid_hz": 477.2603870489825,
+      "rolloff_hz": 861.6196770732591
+    },
+    {
+      "start_seconds": 96.0,
+      "end_seconds": 108.0,
+      "rms": 0.16290225700193423,
+      "centroid_hz": 251.98837828936107,
+      "rolloff_hz": 371.7080682573743
+    },
+    {
+      "start_seconds": 108.0,
+      "end_seconds": 120.0,
+      "rms": 0.15976572293798452,
+      "centroid_hz": 282.0547837561406,
+      "rolloff_hz": 413.4082882903343
+    },
+    {
+      "start_seconds": 120.0,
+      "end_seconds": 132.0,
+      "rms": 0.12490215891295936,
+      "centroid_hz": 404.9012329189265,
+      "rolloff_hz": 679.9619102846954
+    },
+    {
+      "start_seconds": 132.0,
+      "end_seconds": 144.0,
+      "rms": 0.10584050732301742,
+      "centroid_hz": 435.0296207400468,
+      "rolloff_hz": 656.2004163140716
+    },
+    {
+      "start_seconds": 144.0,
+      "end_seconds": 148.8,
+      "rms": 0.008894893144048309,
+      "centroid_hz": 815.8552888839349,
+      "rolloff_hz": 1134.2900815217392
+    }
+  ],
+  "game_measurements": [
+    {
+      "source_name": "day_andante_26m.wav",
+      "source_sha256": "52f5c875beeb915a5731b934a8b97b0f5521916ba23fe5dd98225493cdadac50",
+      "seconds": 47.09006802721088,
+      "versions": {
+        "python": "3.12.10",
+        "librosa": "1.0.0",
+        "essentia": {
+          "essentia": "2.1-beta6-dev",
+          "essentia_git_sha": "v2.1_beta5-356-g673b6a14-dirty",
+          "extractor": "music 2.0"
+        },
+        "ffmpeg": "7.1-essentials_build-www.gyan.dev"
+      },
+      "bpm_librosa": 123.046875,
+      "bpm_essentia": 79.9464263916,
+      "key_profiles": {
+        "key_edma": {
+          "strength": 0.885144948959,
+          "key": "G",
+          "scale": "major"
+        },
+        "key_krumhansl": {
+          "strength": 0.872386276722,
+          "key": "G",
+          "scale": "major"
+        },
+        "key_temperley": {
+          "strength": 0.849879384041,
+          "key": "G",
+          "scale": "major"
+        }
+      },
+      "chords_statistical_label": {
+        "chords_key": "G",
+        "chords_scale": "major"
+      },
+      "onset_rate": 1.01907193661,
+      "mean_frame_rms": 0.033280178904533386,
+      "centroid_hz": 659.2730736378234,
+      "rolloff_hz": 1119.9335104846907,
+      "beat_intervals": {
+        "librosa": {
+          "count": 91,
+          "median_seconds": 0.5108390022675735,
+          "p10_seconds": 0.4876190476190452,
+          "p90_seconds": 0.5108390022675735
+        },
+        "essentia": {
+          "count": 62,
+          "median_seconds": 0.754648208599999,
+          "p10_seconds": 0.7430381774999972,
+          "p90_seconds": 0.7662582397000008
+        }
+      }
+    },
+    {
+      "source_name": "night_largo_14m.wav",
+      "source_sha256": "138d7e077182f6d7a24bc4cb44c4ad2f4ca756202124f704b10c9881de18b6ae",
+      "seconds": 146.4714739229025,
+      "versions": {
+        "python": "3.12.10",
+        "librosa": "1.0.0",
+        "essentia": {
+          "essentia": "2.1-beta6-dev",
+          "essentia_git_sha": "v2.1_beta5-356-g673b6a14-dirty",
+          "extractor": "music 2.0"
+        },
+        "ffmpeg": "7.1-essentials_build-www.gyan.dev"
+      },
+      "bpm_librosa": 107.666015625,
+      "bpm_essentia": 79.9277114868,
+      "key_profiles": {
+        "key_edma": {
+          "strength": 0.756709337234,
+          "key": "G",
+          "scale": "major"
+        },
+        "key_krumhansl": {
+          "strength": 0.763498365879,
+          "key": "G",
+          "scale": "major"
+        },
+        "key_temperley": {
+          "strength": 0.769822001457,
+          "key": "G",
+          "scale": "major"
+        }
+      },
+      "chords_statistical_label": {
+        "chords_key": "G",
+        "chords_scale": "minor"
+      },
+      "onset_rate": 1.13323664665,
+      "mean_frame_rms": 0.02118154615163803,
+      "centroid_hz": 590.9950583257692,
+      "rolloff_hz": 991.308942024786,
+      "beat_intervals": {
+        "librosa": {
+          "count": 261,
+          "median_seconds": 0.5572789115646231,
+          "p10_seconds": 0.48761904761904873,
+          "p90_seconds": 0.6037188208616868
+        },
+        "essentia": {
+          "count": 194,
+          "median_seconds": 0.7546463011999975,
+          "p10_seconds": 0.7430343629999954,
+          "p90_seconds": 0.7546539306999989
+        }
+      }
+    }
+  ],
+  "tested_recipe": {
+    "houses": 5,
+    "night": true,
+    "zoom_m": 14,
+    "temperament": "largo",
+    "authored_bpm": 80,
+    "time_signature": "4/4",
+    "native_loop_seconds": 24,
+    "long_form_seconds": 144,
+    "existing_nocturne_primary_attacks_per_24s": 11
+  },
+  "conclusions": {
+    "soft_tonal_layering": "available via existing nightly orchestration",
+    "reference_like_pulse_and_density": "not reached by tested recipes",
+    "reference_like_longform": "six gain passages exist; not a transcription of reference structure",
+    "exact_melody_chords_instrumentation": "not determined by these descriptors"
+  },
+  "usage": "Reference for original event-level composition; no source audio, melody transcription, imported playback or new runtime mode.",
+  "boundaries": [
+    "BPM estimates retained separately; G/E key labels are estimates, not score truth.",
+    "Three key profiles are from one Essentia engine, not independent validation.",
+    "RMS is not LUFS; no global similarity percentage or subjective listening score."
+  ]
+}
