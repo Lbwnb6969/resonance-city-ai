@@ -50,6 +50,9 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     put(work, '参考资料/source.cs', b'public class Evidence {}\n'*40)
     put(work, '参考资料/large.bin', b'x'*5000)
     put(work, '参考资料/small.bin', b'y'*300)
+    put(work, 'UI/theme/a.gd', b'extends Control\n')
+    put(work, 'UI/theme/b.gd', b'extends Control\n')
+    put(work, 'UI/__pycache__/local.pyc', b'local cache')
     for directory in ['资产', '废弃', '验证记录', '.godot']:
         put(work, directory+'/excluded.txt', b'not published')
     full = module('sync_github_full')
@@ -76,6 +79,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     git(cloud, 'remote', 'add', 'ai-sync', remotes['ai-sync'])
     assert (cloud / '参考资料/source.cs').is_file()
     assert not (cloud / '资产').exists() and not (cloud / '.godot').exists()
+    assert (cloud / 'UI/theme/a.gd').is_file() and not (cloud / 'UI/__pycache__').exists()
     put(cloud, 'scripts/new_feature.gd', b'extends RefCounted\n')
     git(cloud, 'add', 'scripts/new_feature.gd')
     git(cloud, 'commit', '-m', 'cloud feature')

@@ -120,6 +120,25 @@ def checkpoint(label, commit):
     return tag
 
 
+def staging_paths(items, kept):
+    total, selected = collections.Counter(), collections.Counter()
+    for name in items:
+        for parent in Path(name).parents:
+            if parent == Path('.'):
+                continue
+            key = parent.as_posix()
+            total[key] += 1
+            if name in kept:
+                selected[key] += 1
+    covered = set()
+    for name in sorted(selected, key=lambda p: (p.count('/'), p)):
+        if selected[name] == total[name] and selected[name] > 1 and not any(p.as_posix() in covered for p in Path(name).parents):
+            covered.add(name)
+    leaves = {p for p in kept if not any(parent.as_posix() in covered for parent in Path(p).parents)}
+    targets = [':(top,literal)'+p for p in sorted(covered | leaves)]
+    return targets + [':(top,glob,exclude)**/__pycache__/**', ':(top,glob,exclude)**/*.pyc']
+
+
 def prepare():
     ready()
     git('fetch', '--no-tags', REMOTE, 'main')
@@ -131,13 +150,13 @@ def prepare():
     attr_blob = blob(attrs)
     attr_tree = git('mktree', data=f'100644 blob {attr_blob}\t.gitattributes\n'.encode()).decode().strip()
     index_env = dict(os.environ, GIT_INDEX_FILE=str(WORK / 'index'), GIT_ATTR_SOURCE=attr_tree)
-    paths = b'\0'.join(p.encode('utf-8') for p in sorted(kept))+b'\0'
+    paths = b'\0'.join(p.encode('utf-8') for p in staging_paths(items, kept))+b'\0'
     path_file = WORK / 'paths.nul'
     path_file.write_bytes(paths)
     git('read-tree', '--empty', env=index_env)
     print(json.dumps({'phase': 'stage', 'files': len(kept), 'input_bytes': sum(items[p][0] for p in kept),
                       'omitted_files': len(omitted)}, ensure_ascii=False), flush=True)
-    git('--literal-pathspecs', '-c', 'core.longpaths=true', 'add', '-f',
+    git('-c', 'core.longpaths=true', 'add', '-f',
         '--pathspec-from-file='+str(path_file), '--pathspec-file-nul', env=index_env)
     ignore = ('# Construction repository: user exclusions and rebuildable large caches.\n'
               +''.join('/'+d+'/\n' for d in sorted(EXCLUDED))
