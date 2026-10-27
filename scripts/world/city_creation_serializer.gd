@@ -77,7 +77,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for house:Dictionary in city.houses:
 		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel") or house.has("bend_angle_deg") or house.has("bend_axis") or house.has("organic_manual") or house.has("overhang") or house.has("balcony_arc"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
-		if road.has("sized"):result.schema=city.PERSONALIZATION_SCHEMA;break
+		if road.has("sized") or str(road.get("style","")) in preload("res://scripts/world/city_creation_road_paving.gd").NEW_STYLES:result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
@@ -515,6 +515,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 				var site: Dictionary=city.Roundabouts.site(city,Vector2(marker.center[0],marker.center[1]),float(marker.radius),data.houses,water_rows)
 				if not site.ok: return site
 		if road.has("style"):
+			if str(road.style) in preload("res://scripts/world/city_creation_road_paving.gd").NEW_STYLES and data.schema<city.PERSONALIZATION_SCHEMA:return city._fail("新铺装需要版本19存档")
 			if data.schema<city.ROAD_STYLE_SCHEMA: return city._fail("石板宽街需要新存档版本")
 			if not road.style is String or road.style not in city.ROAD_STYLES: return city._fail("城市存档道路样式无效")
 			if road.style in ["cobble","avenue","tram"] and data.schema<city.ROAD_NETWORK_SCHEMA: return city._fail("新道路样式需要新存档版本")

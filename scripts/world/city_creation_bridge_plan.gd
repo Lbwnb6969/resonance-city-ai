@@ -28,7 +28,7 @@ static func apply(city: RefCounted,road: Dictionary,samples: Array,stones: Array
 		var era: String=str(city.district_at(middle).get("era_theme","pastoral"))
 		var truss := era=="clockwork"
 		var modern := era=="modern_eco"
-		var classical := str(road.get("style","path")) in ["promenade","avenue","tram"] or era in ["renaissance","clockwork","modern_eco"]
+		var classical := str(road.get("style","path")) in ["promenade","avenue","tram","brick","fanstone"] or era in ["renaissance","clockwork","modern_eco"]
 		if not classical: continue
 		var stepping := false
 		for run: Dictionary in stones:

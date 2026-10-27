@@ -17,9 +17,9 @@ static func setup(demo:Node3D,root:Control)->void:
  option(demo.vegetation_panel,"BrushSize",["小笔刷 · 近庭","中笔刷 · 树群","大笔刷 · 林带"],1,func(i:int)->void:demo._cancel_draft();demo.vegetation_radius=[.8,1.4,2.4][i])
  demo.road_panel=panel(root,"RoadOptions")
  option(demo.road_panel,"RoadMode",["1 随手自由画","2 两点直路 / 拖拉折线","3 起点、控制点、终点曲路"],0,func(i:int)->void:demo.get_meta("road_tool").set_mode(i))
- option(demo.road_panel,"RoadSize",["原尺寸","窄路","标准","宽路"],0,func(i:int)->void:demo._cancel_draft();demo.road_size=i-1)
+ option(demo.road_panel,"RoadSize",["原尺寸","窄路","标准","宽路","宽街"],0,func(i:int)->void:demo._cancel_draft();demo.road_size=i-1)
  var promenade:=CheckButton.new();promenade.name="RoadPromenade";promenade.text="石板宽街 · 暖灯花箱"
- var styles:=option(demo.road_panel,"RoadStyle",["乡间小径 · 重描铺成灯街","石板灯街 · 1.75m","林荫大道 · 2.10m","叮当轨街 · 2.10m"],0,func(i:int)->void:demo._cancel_draft();demo.road_style=["path","promenade","avenue","tram"][i];promenade.set_pressed_no_signal(demo.road_style=="promenade"))
+ var styles:=option(demo.road_panel,"RoadStyle",preload("res://scripts/world/city_creation_road_paving.gd").CAPTIONS,0,func(i:int)->void:demo._cancel_draft();demo.road_style=preload("res://scripts/world/city_creation_road_paving.gd").UI_STYLES[i];promenade.set_pressed_no_signal(demo.road_style=="promenade"))
  promenade.toggled.connect(func(pressed:bool)->void:demo._cancel_draft();demo.road_style="promenade" if pressed else "path";styles.select(1 if pressed else 0));demo.road_panel.add_child(promenade)
  toggle(demo.road_panel,"RoadRoundabout","◎ 路口环岛广场",func(pressed:bool)->void:demo._cancel_draft();demo.road_roundabout=pressed)
  text(demo,demo.road_panel,"road_status","1自由画 · 2直路 · 3曲路 · Tab切换定点模式 · 重描原位升级")

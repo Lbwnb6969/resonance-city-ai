@@ -603,3 +603,9 @@
 - GATE3: 原生19 PASS；四笔编辑峰108～131→10.012～10.037ms，地形基线/优化后原图逐像素一致。
 - PERF/DATA: raw37249→81顶点、中位67.579→.163ms；实录2.972154s零削波，个人档/原声部不变。
 - LIMIT/NEXT: 首次smooth和Undo仍104～106ms；提交main同步后仅M71道路宽度/铺装。
+
+[SESSION_M71] 2026-10-27 COMPLETE：八道路圆章、四铺装表现与真实4.8m宽街。
+- GATE1/2: Harness/doc；paving235/personalization75/closure29/legacy375+27 PASS；原曲线和道路身份保持。
+- GATE3: verified原生41 PASS，真实选章/画路/预览、两尺寸UI/冷读及6mpond双拱桥，控制台零错。
+- VIS/PERF: 卵石最终散砌昼夜原图已看；同场shader p951.552/旧1.506/1.604ms仅记录，零逐石节点。
+- DATA/NEXT: 空桥Master2.972154s零削波、个人档/原声部不变；提交同步后仅M72独立街具。

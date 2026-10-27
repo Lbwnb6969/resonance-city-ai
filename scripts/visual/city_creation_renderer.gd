@@ -1018,6 +1018,7 @@ func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.2
 	if valid:
 		road_draft_field.update(self,points,width)
 		road_draft_field.material.set_shader_parameter("paved",style in ["promenade","avenue","tram"])
+		road_draft_field.material.set_shader_parameter("surface_pattern",preload("res://scripts/world/city_creation_road_paving.gd").code({"style":style}))
 	if samples.size() > 1:
 		var preview_started := Time.get_ticks_usec()
 		var extras: Array = []
@@ -2776,6 +2777,7 @@ func _subdivide_road(vertices: Array[Vector3]) -> Array[Vector3]:
 
 func _prepare_road_data(road: Dictionary) -> Dictionary:
 	var started := Time.get_ticks_usec()
+	var material_code:=preload("res://scripts/world/city_creation_road_paving.gd").code(road)
 	var samples: Array[Vector2] = _road_geometry(road).samples
 	var width := float(road.width)
 	var offsets := _road_offsets(samples,width)
@@ -2849,7 +2851,7 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 			# follows arc/across UVs; stone keeps world phase through bridgeheads.
 			var at:=Vector2(vertex.x,vertex.z)
 			var weight:Vector2=paving[at]
-			surface.set_color(Color(weight.x,weight.y,0,1))
+			surface.set_color(Color(weight.x,weight.y,material_code,1))
 			surface.set_uv(paving_uv[at])
 			surface.add_vertex(vertex)
 	surface.generate_normals()

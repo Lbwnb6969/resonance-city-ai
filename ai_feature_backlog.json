@@ -1334,8 +1334,8 @@
         "id": "M71",
         "title": "道路宽度与路面种类扩充",
         "description": "依现有路网、升级替换、转角桥岸与真实预览接口增加可辨认的道路断面与铺装，持久化宽度/路面选择，保持旧路及撤销重做。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 road_paving235 including8types*4widths/curve/preview/retraceID/noop/UndoRedo/Schema19/default/invalid old schema and actual4.8m picking; personalization75/closure29/legacy375+27 PASS. Gate3 verified41 actual OpenGL checks, clean console:8 wide curved roads and4 distinct close paving charts, day/side-light, native RoadStyle5+RoadSize4+two world clicks author4.8m brick with actual matching draft uniform,1440/1024 popup inside screen/cold JSON. Brick/fanstone real double-arch bridge with6m authored pond and4.8m true deck; first wood-only bridge miss and invalid7m fixture retained. Final cobble rounded Voronoi photo QA in profile/day+night, no per-stone nodes; world chart/micro normals and explicit new surfaces preserve choice across era blend. Same-process current/reference/current120-frame uncapped/vsync-off p951.552/1.506/1.604ms, observational only; final profile clean. Actual verified Master2.972154s peak.005493 zero clips is empty bridge/ambience, not full-city music; voice IDs/personal save retained. Earlier circle/regular-grid cobble candidates retained. Backup before-m71; main sync follows."
       },
       {
         "id": "M72",

@@ -7,8 +7,8 @@ const COVERAGE := 0.90
 const MIN_LENGTH_RATIO := 0.80
 const MAX_LENGTH_RATIO := 1.25
 const ALIGNMENT := 0.85
-const WIDTHS := {"path":1.25,"cobble":1.25,"promenade":1.75,"avenue":2.10,"tram":2.10}
-const NAMES := {"path":"乡间小径","cobble":"乡间小径","promenade":"石板灯街","avenue":"林荫大道","tram":"叮当轨街"}
+const WIDTHS := {"path":1.25,"cobble":1.25,"promenade":1.75,"avenue":2.10,"tram":2.10,"brick":1.75,"fanstone":2.10,"gravel":1.25}
+const NAMES := {"path":"乡间小径","cobble":"圆卵石路","promenade":"石板灯街","avenue":"林荫大道","tram":"叮当轨街","brick":"赤陶砖路","fanstone":"扇形铺石","gravel":"细碎石路"}
 
 static func width_for(style: String) -> float:
 	return float(WIDTHS[style])
@@ -81,7 +81,7 @@ static func _coverage(source: Array,target: Array,path_length: float) -> Diction
 	return {"fraction":covered/maxf(0.000001,total),"error":error/maxf(0.000001,covered)}
 
 static func sizes_for(style:String)->Array:
-	if style=="path":return [.8,1.25,1.8]
-	if style=="cobble":return [1.25,1.6,2.1]
-	if style=="tram":return [2.1,2.6,3.2]
-	return [1.6,2.1,3.2]
+	if style in ["path","gravel"]:return [.8,1.25,1.8,3.2]
+	if style=="cobble":return [1.25,1.6,2.1,4.8]
+	if style=="tram":return [2.1,2.6,3.2,4.8]
+	return [1.6,2.1,3.2,4.8]
