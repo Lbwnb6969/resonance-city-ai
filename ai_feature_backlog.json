@@ -1299,7 +1299,7 @@
     ]
   },
   "art_evolution": {
-    "authorization": "2026-10-27 用户 /goal：持续优化屋顶与其他纹理衔接、光影、性能和地形；覆盖M66旧停止点。逐轮实证优化，不重置旧成果。 同日用户追加：增加道路种类（宽度及可独立装饰）和古典建筑种类。",
+    "authorization": "2026-10-27 用户 /goal：持续优化屋顶与其他纹理衔接、光影、性能和地形；覆盖M66旧停止点。逐轮实证优化，不重置旧成果。 同日用户追加：增加道路种类（宽度及可独立装饰）和古典建筑种类。 2026-10-27 用户追加：镜头特别近时增加生活化音效。",
     "document": "文档/35_持续美术地形与性能精炼.md",
     "rounds": [
       {
@@ -1350,6 +1350,13 @@
         "description": "新增剪影与真实结构各异的古典原型，接入现有原型选择、配色、屋顶纹理/接触AO、真实拾取及冷读接口；核对加层与专用形态的适配边界。",
         "passes": true,
         "verified_by": "Gate1 Harness/doc PASS. Gate2 ancient_extensions51/architecture_choice63/ancient_architecture29/resonance_geometry79/build_brush107/legacy375+27 PASS. Two new Schema19 pastoral types ionic_stoa and roman_basilica, real Ionic spiral volutes/24flute Attic columns/open walkway, basilican nave/aisles/hollow apse/clerestory and real original resident entry arches. One/two floors, metric nondegenerate UV/up-facing normals, unchanged authored rooms/colors/IDs, exact full-prism JSON, partial upper and terrace fallback/UndoRedo/cold read, side-road fallback preserving original doors; special profiles explicitly exclude folding. Gate3 night_aligned GL/Dummy52 PASS clean console:4real one/two-floor houses/day/night, true roof/cell pick, physical column gap/Ionic column/each original basilica resident door/apse rays, actual owned tile recolor without root rebuild,37deg real rotated roof identity, production save_city disk JSON exact, partial upper/Undo,1024 native silhouette book clicks+two new world-click builds. Civic window rig now equals actual prebatch glass records; early generic floating night panes rejected and retained in refined. First low-precision JSON fixture miss and reversed stoa end-gable retained; source/cold-save and final geometry corrected. Actual3.157914s Masterpeak.231628 zero clips, capped100 p95/max10.062/10.346ms observational; original12long4short6bus2nature IDs/personal save retained. Original new type recipes only fit whole rectangular prisms; irregular/terraced/side-access basilica uses explicitly labelled free-form original shell, never drops saved cells/doors. New types not forced into other eras, bent profiles or special landmarks. Sources checked via Brave API: ASCSA stoa and Smarthistory architecture terms, own adapted geometry, no downloaded assets. Backup before-m73; main tree sync after commit."
+      },
+      {
+        "id": "M74",
+        "title": "超近景动作驱动的生活音效",
+        "description": "镜头拉近时，按实际可见居民脚步、举杯回落、面包操作与木工动作触发轻柔空间音效；距离淡入淡出、遮离视野停声、短槽限流及音乐优先，保持原声部池和存档。",
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 close_life_audio21/resonance_geometry79/legacy375+27 PASS. Actual Gait contact phase stamps for walking feet, sip lowering, kneading and wood craft; idle/other professions silent; fresh timestamp prevents stale reentry, smooth zoom10..18 and radius5.5m, actual frustum, one borrowed short voice with one idle slot reserved, serial ownership prevents stopping musical reuse. Seven mono22050 short PCM maxpeak.140015, local Foundation action/media provenance and original ceramic contacts; originals retained. Gate3 final OpenGL/WASAPI59 PASS: real simulation reaches walking/baking/crafting/seated tea without fabricated events, 21/2/3/2 sampled matching contacts, playback advances, actual four short-bus and Master captures 7.396..7.419s, Masterpeak.189911..218811 zero clipping. Far/offscreen suppression, actual busy contact rejection, fixed12long4short6bus2nature IDs and personal save unchanged. Capped100fps observation p95/max10.049/10.380ms. First capture harness interrupted for repeated PCM property access; retained, final captures completed. Runtime/package closure includes7WAV, portable bank preferred; no save schema or authored-state writes. Backup before-m74; dual GitHub synchronization follows current user roles: full origin <1GB, design ai-sync <100MB, assets external."
       }
     ]
   }

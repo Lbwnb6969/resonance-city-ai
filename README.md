@@ -35,6 +35,6 @@ Godot --headless --path . --script tools/bake_creation_portable_bank.gd
 
 ## 版本同步
 
-[GitHub main](https://github.com/Lbwnb6969/resonance-city-ai/tree/main) 保留文档、代码、示范数据、实际运行资源及精选算法参考，当前文件总量严格小于 **100MB**。本地完整参考资料、大型导出数据、原始美术与音频、截图和压缩原件不随GitHub发布，仍留在原路径；取消跟踪不删除或搬移本地文件。参考发布范围见 [参考资料说明](参考资料/README_GITHUB.md)。
+[完整施工库](https://github.com/Lbwnb6969/resonance-city/tree/main) 保留云端AI施工的工程、资源与参考源码，当前树控制在 **1GB** 内；[设计参考库](https://github.com/Lbwnb6969/resonance-city-ai/tree/main) 保留精简工程与精选参考，保持 **100MB** 内。有更新时两库都同步。根“废弃”“验证记录”“资产”排除，资产已外置；大文件省略清单随完整库发布，本地原件保留。操作见 [双库同步与云端施工](文档/37_双库同步与云端施工.md)，精简参考范围见 [参考资料说明](参考资料/README_GITHUB.md)。
 
 提交后运行 `python tools/sync_github_main.py prepare` 查看差异，再运行 `python tools/sync_github_main.py push`。工具保留历史备份、普通快进推送，并核对本地与远端完整Git文件树相同。

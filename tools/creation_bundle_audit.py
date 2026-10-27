@@ -15,6 +15,7 @@ PROVENANCE = (
     '资源/建筑参考/石砌街屋来源.md', '资源/自然参考/湿砂河岸来源.md',
     '资源/自然参考/层理岩壁来源.md', '资源/自然参考/睡莲/README.md',
     '资源/自然参考/环境声/README.md',
+    '资源/生活声/README.md', '资源/生活声/来源与处理.json',
 )
 REFERENCE_RECORDS = (
     '参考资料/Tiny-Glade逆向成品-v2/reports/reconstruction_grass2.md',
@@ -65,7 +66,11 @@ def runtime_dependencies():
                     pending.extend(p.relative_to(ROOT).as_posix() for p in target.glob('example_*.png'))
                 elif relative.rstrip('/') == '资源/自然参考/睡莲':
                     pending.extend('资源/自然参考/睡莲/' + leaf for leaf in ('叶.json', '花.json', '叶形.png', '花色.png'))
+                elif relative.rstrip('/') == '资源/生活声':
+                    pending.extend(p.relative_to(ROOT).as_posix() for p in target.glob('*.wav'))
                 continue
+            if relative == '资源/音乐/城市同步声部库.res' and (ROOT / '资源/音乐/城市同步声部库_轻量.res').is_file():
+                continue  # Production prefers the complete portable bank; raw PCM is rebuildable.
             # Save defaults are user://; a missing literal res:// dependency is
             # a genuine packaging problem, not an asset to silently skip.
             pending.append(relative)

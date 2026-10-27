@@ -9,6 +9,8 @@ import collections
 import datetime
 import json
 import subprocess
+import os
+from github_repository_roles import MANIFEST, design_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / '验证记录' / 'GitHub完整同步'
@@ -68,6 +70,23 @@ def tree_budget(ref):
                 largest_file_bytes=max(sizes, default=0))
 
 
+def design_tree(source, parent):
+    if not (ROOT / MANIFEST).is_file():
+        return value('rev-parse', source+'^{tree}')
+    current = files(source)
+    kept = design_paths(ROOT, current)
+    env = dict(os.environ, GIT_INDEX_FILE=str(ROOT / '.git/design-sync-index'))
+    subprocess.run(['git', 'read-tree', source], cwd=ROOT, env=env, check=True)
+    removed = b'\0'.join(p.encode() for p in sorted(set(current)-kept))+b'\0'
+    subprocess.run(['git', 'update-index', '--force-remove', '-z', '--stdin'],
+                   cwd=ROOT, env=env, input=removed, check=True)
+    # The full clone's ignore file belongs to origin; retain ai-sync's role rules.
+    ignore = git('show', parent+':.gitignore').stdout
+    oid = git('hash-object', '-w', '--stdin', data=ignore).stdout.decode().strip()
+    subprocess.run(['git', 'update-index', '--cacheinfo', '100644,'+oid+',.gitignore'], cwd=ROOT, env=env, check=True)
+    return subprocess.check_output(['git', 'write-tree'], cwd=ROOT, env=env).decode().strip()
+
+
 def backup(label, commit):
     day = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y%m%d')
     tag = f'backup/{label}-{day}-{commit[:8]}'
@@ -83,10 +102,10 @@ def prepare():
     clean()
     git('fetch', '--no-tags', REMOTE, BRANCH)
     source = value('rev-parse', 'HEAD')
-    budget = tree_budget(source)
     parent = value('rev-parse', 'FETCH_HEAD')
-    tree = value('rev-parse', source + '^{tree}')
-    current, previous = files(source), files(parent)
+    tree = design_tree(source, parent)
+    budget = tree_budget(tree)
+    current, previous = files(tree), files(parent)
     changes = dict(added=sorted(current.keys() - previous.keys()),
                    removed=sorted(previous.keys() - current.keys()),
                    updated=sorted(p for p in current.keys() & previous.keys() if current[p] != previous[p]))
@@ -94,7 +113,7 @@ def prepare():
     remote_backup = backup('github-before-main-sync', parent)
     if tree == value('rev-parse', parent + '^{tree}'):
         commit = parent
-    elif git('merge-base', '--is-ancestor', parent, source, check=False).returncode == 0:
+    elif tree == value('rev-parse', source+'^{tree}') and git('merge-base', '--is-ancestor', parent, source, check=False).returncode == 0:
         commit = source
     else:
         message = ('Sync complete project and twelve-phase development blueprint\n\n'
@@ -133,13 +152,15 @@ def push():
         raise RuntimeError('Fetched remote tree differs from the complete local tree.')
     # The tag preserves old history. Identical trees allow updating only HEAD:
     # --soft leaves every working file and index entry in place.
-    git('reset', '--soft', observed)
-    branch = value('symbolic-ref', '--short', 'HEAD')
-    git('branch', '--set-upstream-to=' + REMOTE + '/' + BRANCH, branch)
+    if value('rev-parse', 'HEAD^{tree}') == plan['tree']:
+        git('reset', '--soft', observed)
+        branch = value('symbolic-ref', '--short', 'HEAD')
+        git('branch', '--set-upstream-to=' + REMOTE + '/' + BRANCH, branch)
     clean()
     proof = dict(ok=True, local_commit=value('rev-parse', 'HEAD'), remote_commit=observed,
                  local_tree=value('rev-parse', 'HEAD^{tree}'), remote_tree=remote_tree,
                  tracked_files=plan['source_files'], local_history_backup=plan['local_backup'],
+                 design_tree=plan['tree'],
                  previous_remote_backup=plan['remote_backup'], **budget)
     save('verification.json', proof)
     print(json.dumps(proof, ensure_ascii=False, indent=2))

@@ -13,7 +13,7 @@ from creation_bundle_audit import ROOT, audit, run, sha, source_audit
 PROBE = Path('tests/creation_bundle_probe.gd')
 TEXTURE_SUFFIXES = {'.png', '.svg', '.jpg', '.jpeg', '.webp', '.bmp', '.tga', '.exr', '.hdr'}
 LICENSE_INPUTS = {
-    'Godot-MIT.txt': '资产/许可记录/Godot/LICENSE.txt',
+    'Godot-MIT.txt': '文档/许可记录/Godot/LICENSE.txt',
     'TinyGlade草地纹理来源.md': '资源/自然参考/README.md',
     'Foundation悬钟来源.md': '资源/建筑参考/README.md',
     'Foundation庭院喷泉来源.md': '资源/建筑参考/庭院喷泉来源.md',
@@ -22,6 +22,8 @@ LICENSE_INPUTS = {
     'Foundation湿砂河岸来源.md': '资源/自然参考/湿砂河岸来源.md',
     'Foundation层理岩壁来源.md': '资源/自然参考/层理岩壁来源.md',
     'TinyGlade睡莲来源.md': '资源/自然参考/睡莲/README.md',
+    'Foundation生活声来源.md': '资源/生活声/README.md',
+    '生活声加工记录.json': '资源/生活声/来源与处理.json',
 }
 
 

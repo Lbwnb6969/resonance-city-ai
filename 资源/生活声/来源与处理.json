@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "rate": 22050,
+  "assets": [
+    {
+      "file": "资源/生活声/step_a.wav",
+      "sha256": "9f6f1c3353678e46b5042fa90559619a00c4b87e5896675a97849fa972fc8888",
+      "rate": 22050,
+      "seconds": 0.28,
+      "peak": 0.1400146484375,
+      "source": "参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-audio-recovered/decoded/dlc/agriculture/audio/764675077.wav",
+      "source_sha256": "45cf79297d01e11c20fe614625fba58575d5845cd4a90451421725d790878207",
+      "source_event_id": 3908144014,
+      "source_media_id": 764675077,
+      "adaptation": "mono downmix, 22.05k resample, lowpass, leading trim, short fade and peak reduction"
+    },
+    {
+      "file": "资源/生活声/step_b.wav",
+      "sha256": "51a4dff049abe3d93af847d1c79538f0182efdf0e0f37ac2fc163d921ed5d233",
+      "rate": 22050,
+      "seconds": 0.20108843537414967,
+      "peak": 0.139984130859375,
+      "source": "参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-audio-recovered/decoded/dlc/agriculture/audio/1020841287.wav",
+      "source_sha256": "171b4ab3ad7547d30641ad2e8ff77b4addd949ff78b82ed78a0402d280bba600",
+      "source_event_id": 3908144014,
+      "source_media_id": 1020841287,
+      "adaptation": "mono downmix, 22.05k resample, lowpass, leading trim, short fade and peak reduction"
+    },
+    {
+      "file": "资源/生活声/wood_a.wav",
+      "sha256": "6a9b569b19a02e4ac698e6e81b3240c97b2300c239f47aba973b31bdc1fc61a3",
+      "rate": 22050,
+      "seconds": 0.22,
+      "peak": 0.120025634765625,
+      "source": "参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-audio-recovered/decoded/audio/core/155082037.wav",
+      "source_sha256": "dd7f55268186c5cee3fcad75cf7d8d9784d8ed4a4a14bd4e16ec155a519875a3",
+      "source_event_id": 1044131224,
+      "source_media_id": 155082037,
+      "adaptation": "mono downmix, 22.05k resample, lowpass, leading trim, short fade and peak reduction"
+    },
+    {
+      "file": "资源/生活声/wood_b.wav",
+      "sha256": "1b17b14094a72b255086aa75abbe320ea54439d248b77e6675296362471e656b",
+      "rate": 22050,
+      "seconds": 0.1819954648526077,
+      "peak": 0.120025634765625,
+      "source": "参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-audio-recovered/decoded/audio/core/880813907.wav",
+      "source_sha256": "b40a348bc8d10c53847548f4af83d9ff0d9694331278a3a60694865ace5c04a7",
+      "source_event_id": 1044131224,
+      "source_media_id": 880813907,
+      "adaptation": "mono downmix, 22.05k resample, lowpass, leading trim, short fade and peak reduction"
+    },
+    {
+      "file": "资源/生活声/bread.wav",
+      "sha256": "236ad8639806bead7f22e3ecf49307661034685bb722e6a23fd70139178aba82",
+      "rate": 22050,
+      "seconds": 0.48,
+      "peak": 0.1099853515625,
+      "source": "参考资料/Foundation逆向成品-2026-10-13/outputs/foundation-audio-recovered/decoded/audio/core/794140254.wav",
+      "source_sha256": "21017ee6d04394438f11dd90eb830a8785623f12a62453dd8e95a7bc58ce74a2",
+      "source_event_id": 4290601322,
+      "source_media_id": 794140254,
+      "adaptation": "mono downmix, 22.05k resample, lowpass, leading trim, short fade and peak reduction"
+    },
+    {
+      "file": "资源/生活声/cup_0.wav",
+      "sha256": "cba99e8da17ac99f27e95411dc31f75a84d4fb2e4ff04a890ca7f58500529376",
+      "rate": 22050,
+      "seconds": 0.3,
+      "peak": 0.0999755859375,
+      "source": "original procedural ceramic modal contact",
+      "source_event_id": null,
+      "adaptation": "three damped inharmonic modes; no reference recording"
+    },
+    {
+      "file": "资源/生活声/cup_1.wav",
+      "sha256": "af2895d2ff2dc221f281e47ae9896a2d435909f54efb89c8fb152f45ddfdb0ad",
+      "rate": 22050,
+      "seconds": 0.3,
+      "peak": 0.0999755859375,
+      "source": "original procedural ceramic modal contact",
+      "source_event_id": null,
+      "adaptation": "three damped inharmonic modes; no reference recording"
+    }
+  ]
+}

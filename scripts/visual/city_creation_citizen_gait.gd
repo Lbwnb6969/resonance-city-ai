@@ -60,6 +60,9 @@ static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bo
 	if working:inspect=.46+.28*(.5+.5*sin(time*(3.8 if root.get_meta("citizen_role","")=="bakery" else 2.3)+phase*.15))
 	if seated:sip=smoothstep(.25,.85,sin(time*.82+float(root.get_meta("citizen_index",0))*2.1));inspect=.45
 	root.set_meta("visible_activity","listening" if (root.get_meta("solo_listening",false) or root.get_meta("balcony_listening",false)) and not moving else "tea_conversation" if seated else "kneading" if working and root.get_meta("citizen_role","")=="bakery" else "crafting" if working else "walking" if moving else "idle")
+	var action:="cup" if seated else "step" if moving else "bread" if working and root.get_meta("citizen_role","")=="bakery" else "wood" if working and root.get_meta("citizen_role","")=="workshop" else ""
+	var contact:=time*.82+float(root.get_meta("citizen_index",0))*2.1 if seated else phase if moving else time*(3.8 if action=="bread" else 2.3)+phase*.15
+	root.set_meta("life_foley",{"kind":action,"time":time,"tick":floori((contact-(PI-.25 if seated else PI*.5))/(TAU if seated or not moving else PI))})
 	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
 		body.position.y=.28+sin(time*1.7)*.004 if seated else absf(stride)*.023

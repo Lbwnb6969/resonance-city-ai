@@ -909,6 +909,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_commit_click()
 
 func _process(delta: float) -> void:
+	preload("res://scripts/audio/city_creation_close_life_audio.gd").update(self,delta)
 	chemistry_brush.tick(delta)
 	strum_hold.update(self)
 	if gallery!=null and not gallery.preview_id.is_empty():gallery.tick_preview();return
