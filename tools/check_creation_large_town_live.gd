@@ -3,6 +3,9 @@ const Fixture=preload("res://tools/fixtures/city_creation_large_town_fixture.gd"
 const State=preload("res://scripts/world/city_creation_state.gd")
 const Scene=preload("res://scenes/city_creation.tscn")
 var output:="res://验证记录/M32/300"
+class IsolatedInput extends Node:
+	func _input(event:InputEvent)->void:
+		if event.device!=92:get_viewport().set_input_as_handled()
 var demo
 var checks:Array=[]
 var failures:Array[String]=[]
@@ -44,15 +47,24 @@ func _run()->void:
 	else:
 		city=Fixture.build(300,true)
 		FileAccess.open(fixture_path,FileAccess.WRITE).store_string(JSON.stringify(city.snapshot(),"",true,true))
+	if "--organic-profile" in OS.get_cmdline_user_args():
+		var organic:=preload("res://tools/fixtures/city_creation_seventh_scale_fixture.gd").prepare(city)
+		FileAccess.open(output+"/organic_authored_profile.json",FileAccess.WRITE).store_string(JSON.stringify(organic,"\t"))
+		FileAccess.open(fixture_path,FileAccess.WRITE).store_string(JSON.stringify(city.snapshot(),"",true,true))
 	print("LARGE_FIXTURE_READY ",city.houses.size())
 	var scene_started:=Time.get_ticks_usec()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=output+"/临时作品库";root.add_child(demo);demo.life.set_process(false)
+	root.add_child(IsolatedInput.new())
 	var chosen:Dictionary={"ok":true,"id":"large_town","title":"三百屋四时代","world":JSON.parse_string(JSON.stringify(city.snapshot(),"",true,true)),"view":{"focus":[0.,0.,0.],"zoom":94.,"yaw":.4,"pitch":.83,"evening":false,"light_phase":0}}
 	var open_started:=Time.get_ticks_usec()
 	await demo.gallery._open_chosen(chosen);demo.life.set_process(false)
 	var open_ms:float=(Time.get_ticks_usec()-open_started)/1000.
 	_check(demo.state.houses.size()==300 and not demo.gallery.busy,"three hundred authored four-era buildings restore through the actual complete-work loader")
 	print("LARGE_RENDER_READY")
+	if "--process-profile" in OS.get_cmdline_user_args():preload("res://tools/fixtures/city_creation_process_probe.gd").install(demo)
+	if "--ui-only" in OS.get_cmdline_user_args():
+		await _large_ui();await create_timer(3.).timeout
+		FileAccess.open(output+"/ui_only.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures},"\t"));quit(0 if failures.is_empty() else 1);return
 	if "--local-only" in OS.get_cmdline_user_args():
 		demo.get_meta("inspiration_draft").postponed=true;demo.get_meta("inspiration_draft").paper.hide()
 		await _capture("overview_300")
@@ -103,6 +115,8 @@ func _run()->void:
 	var cpu_metrics:=_metrics(cpu);var frames_metrics:=_metrics(frames)
 	print("PERFORMANCE_REFERENCE ",JSON.stringify({"life_cpu":cpu_metrics,"policy":"reference_only"}))
 	var edit_metrics:Dictionary=await _edit_large_city()
+	if "--terrain-only" in OS.get_cmdline_user_args():
+		FileAccess.open(output+"/terrain_probe.json",FileAccess.WRITE).store_string(JSON.stringify(edit_metrics,"\t"));quit(0 if failures.is_empty() else 1);return
 	var local:Dictionary=await preload("res://tools/fixtures/city_creation_local_town_edits_live.gd").run(demo,output)
 	_check(local.ok,"three hundred house local building road pond edits and undo match cold service computation")
 	await _large_ui()
@@ -150,11 +164,15 @@ func _edit_large_city()->Dictionary:
 	return {"audio_identity":{"unchanged":same_audio,"assigned_before":assigned_before,"assigned_after":assigned_after,"residents":demo.life.residents.size()},"result":result,"command_ms":command_ms,"latency_ms":latency,"frames":metrics,"height_before":before,"height_after":after,"height_delta":after-before,"pick":hit.get("position"),"budget":budget,"life_commit_stages":demo.life.budget_commit_stats.duplicate(true),"habitats":demo.town.wildlife.habitat_stats.duplicate(),"catchup_remaining":demo.life._budget_delta,"final_render_stats":rendered.duplicate(true),"terrain_blocks":demo.town.terrain_surface.stats.changed,"houses_rebuilt":demo.town.rebuild_stats.houses_changed,"roads_rebuilt":demo.town.rebuild_stats.roads_changed}
 
 func _click_at(at:Vector2)->void:
-	var motion:=InputEventMouseMotion.new();motion.position=at;root.push_input(motion);await process_frame
+	var motion:=InputEventMouseMotion.new();motion.device=92;motion.position=at;motion.global_position=at;root.push_input(motion);await process_frame
+	var hovered:=root.gui_get_hovered_control();print("NATIVE_POINTER ",at," -> ",hovered.get_path() if hovered!=null else "world")
 	for pressed:bool in [true,false]:
-		var event:=InputEventMouseButton.new();event.position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event);await process_frame
+		var event:=InputEventMouseButton.new();event.device=92;event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event);await process_frame
 	await _wait();await create_timer(.3).timeout
 
+func _dismiss_papers()->void:
+	var draft:Node=demo.get_meta("inspiration_draft");draft.poll()
+	if draft.paper.is_visible_in_tree():await _click_at(draft.paper.find_child("PostponeDraft",true,false).get_global_rect().get_center())
 func _large_ui()->void:
 	demo.life.set_process(false);demo.ui_layer.show();demo.select_tool(0)
 	var house:Dictionary=demo.state.houses[100];var id:=str(house.id);var top:=0
@@ -162,22 +180,26 @@ func _large_ui()->void:
 	var at:=Vector3(house.origin[0],float(house.get("base_y",0.))+(top+1)*demo.FLOOR+.2,house.origin[1])
 	var original:Dictionary=house.duplicate(true)
 	for resolution:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
-		root.size=resolution;demo.spatial_popover.close();demo.focus=Vector3(at.x,1.,at.z);demo.zoom=17.;demo.pitch=.85;demo._update_camera()
+		root.size=resolution;demo.spatial_popover.close();demo.spatial_popover.color_panel.hide();demo.focus=Vector3(at.x,1.,at.z);demo.zoom=17.;demo.pitch=.85;demo._update_camera()
 		for i in range(8):await process_frame
+		await _dismiss_papers()
 		await _click_at(demo.camera.unproject_position(at))
 		var pop=demo.spatial_popover
 		_check(pop.target_house_id==id and pop.card.is_visible_in_tree(),"real roof pointer opens the selected house in the three-hundred-house city at "+str(resolution))
 		_check(pop.role_buttons.size()==6 and not pop.concert_button.visible and not demo.place_panel.is_visible_in_tree(),"ordinary house keeps six life uses and the spatial inspector")
+		await _dismiss_papers()
 		await _click_at(pop.expand_button.get_global_rect().get_center())
+		print("PALETTE_STATE ",resolution," ",pop.color_panel.visible," ",pop.inspector.panel.visible," ",pop.inspector._target," ",pop.target_house_id," ",pop.expand_button.get_global_rect())
+		await _capture("expanded_palette_"+str(resolution.x))
 		_check(Rect2(Vector2.ZERO,Vector2(resolution)).encloses(pop.card.get_global_rect()) and pop.color_panel.is_visible_in_tree(),"expanded large-city color palette fits "+str(resolution))
 		var root_id:int=demo.town.house_roots[id].get_instance_id()
 		pop.wall_picker.color=Color("99c6d2");pop.roof_picker.color=Color("75436c")
-		await _click_at(pop.card.find_child("ApplyColors",true,false).get_global_rect().get_center())
-		_check(house.get("custom_colors",{}).get("roof","")=="75436c" and demo.town.house_roots[id].get_instance_id()==root_id,"actual apply button updates color without rebuilding the large-city house")
+		await _click_at(pop.color_panel.find_child("ApplyColors",true,false).get_global_rect().get_center())
+		_check(demo.town._house_record(id).get("custom_colors",{}).get("roof","")=="75436c" and demo.town.house_roots[id].get_instance_id()==root_id,"actual apply button updates color without rebuilding the large-city house")
 		for pressed:bool in [true,false]:
-			var key:=InputEventKey.new();key.keycode=KEY_Z;key.ctrl_pressed=true;key.pressed=pressed;root.push_input(key);await process_frame
+			var key:=InputEventKey.new();key.device=92;key.keycode=KEY_Z;key.ctrl_pressed=true;key.pressed=pressed;root.push_input(key);await process_frame
 		await _wait()
-		_check(house==original and demo.state.houses.size()==300,"real Ctrl+Z restores the exact authored house and keeps all three hundred buildings")
+		_check(demo.town._house_record(id)==original and demo.state.houses.size()==300,"real Ctrl+Z restores the exact authored house and keeps all three hundred buildings")
 		await _capture("large_city_roof_palette_"+str(resolution.x))
 	demo.spatial_popover.close();root.size=Vector2i(1440,900)
 

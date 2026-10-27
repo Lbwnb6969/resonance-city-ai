@@ -34,7 +34,7 @@ func check(ok:bool,label:String)->void:
 func stage(label:String)->void:print("LONG_JOURNEY_STAGE ",phase," ",label)
 func settle()->void:
 	var deadline:=Time.get_ticks_msec()+60000
-	while (demo.edit_pending() or demo._edit_ui_pending or demo.gallery.busy or demo.music._loading) and Time.get_ticks_msec()<deadline:await tree.process_frame
+	while (demo.edit_pending() or demo._edit_ui_pending or demo.gallery.busy or demo.music._loading or (demo.get_meta("vignette_journey").get_node_or_null("SiteSearch")!=null and demo.get_meta("vignette_journey").get_node("SiteSearch").worker!=null)) and Time.get_ticks_msec()<deadline:await tree.process_frame
 	for i in range(8):await tree.process_frame
 func look(at:Vector2,zoom:float=28.)->void:
 	demo.focus=Vector3(at.x,.7,at.y);demo.yaw=.34;demo.pitch=.85;demo.zoom=zoom;demo._update_camera()

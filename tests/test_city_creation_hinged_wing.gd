@@ -6,6 +6,8 @@ const Hug=preload("res://scripts/world/city_creation_curve_hug.gd")
 const Form=preload("res://scripts/world/city_creation_organic_form.gd")
 const MeshCut=preload("res://scripts/visual/city_creation_hinge_mesh.gd")
 const Mask=preload("res://scripts/visual/city_creation_grass_mask.gd")
+class PreviewRenderer extends RefCounted:
+	var state:RefCounted
 var checks:=0
 var failures:Array=[]
 func check(ok:bool,label:String)->void:
@@ -74,4 +76,12 @@ func run()->void:
 			if Geometry3D.segment_intersects_triangle(a,b,faces[i],faces[i+1],faces[i+2])!=null:hits+=1;break
 	check(hits==4 and faces.size()>box.get_faces().size(),"actual seam fan triangles seal the roof across the full opening")
 	var normals:PackedVector3Array=mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL];check(Array(normals).all(func(n:Vector3):return n.is_finite() and absf(n.length()-1.)<.0001),"rigid and wedge mesh normals remain finite unit vectors")
+	var preview_city:=State.new();preview_city.initialize_empty();preview_city.era_unlocks.assign(["pastoral","renaissance"]);preview_city.growth_memories.assign(["dawn"])
+	preload("res://scripts/world/city_creation_build_brush.gd").select(preview_city,"renaissance","townhouse")
+	var renderer:=PreviewRenderer.new();renderer.state=preview_city;var preview:=Node3D.new();var revision:int=preview_city.revision
+	preload("res://scripts/visual/city_creation_hinge_preview.gd").apply(renderer,preview,{"origin":[-25.,-12.],"base_y":0.},[{"id":"preview","x":0,"z":0,"level":0,"kind":"room"}])
+	var proposed:Dictionary=preview.get_meta("hinge_preview").house
+	check(proposed.cells.size()==1 and proposed.era_theme=="renaissance" and proposed.architecture=="townhouse","fresh Renaissance hinge preview populates the real room before seeding its architecture")
+	check(preview_city.houses.is_empty() and preview_city.revision==revision,"hovering the authoring brush never writes a real house or journal transaction")
+	preview.free()
 	print("HINGED_WING ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

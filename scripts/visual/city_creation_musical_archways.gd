@@ -17,7 +17,7 @@ func setup(owner)->void:
 func crossing(actor:String,kind:String,id:String,_at:Vector2)->void:
 	if kind=="bridge" and sites.has(id):echo.trigger(sites[id],actor,"walk")
 func _process(delta:float)->void:
-	if demo.edit_pending() or demo.gallery.busy or demo.life.last_revision!=demo.state.revision:echo.clear();return
+	if demo.music._loading or demo.music._players.concert.stream==null or demo.edit_pending() or demo.gallery.busy or demo.life.last_revision!=demo.state.revision:echo.clear();return
 	var key:=[demo.state.get_instance_id(),demo.state.revision,demo.life.get_instance_id()]
 	if epoch!=key:epoch=key;rebuild()
 	echo.tick(sites);timer+=delta

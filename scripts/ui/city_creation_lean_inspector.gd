@@ -8,7 +8,7 @@ static func setup(inspector:Node)->void:
  for button:Button in pop.swatches:button.reparent(right.get_child(0))
  pop.expand_button.reparent(right)
  for connection:Dictionary in pop.expand_button.pressed.get_connections():pop.expand_button.pressed.disconnect(connection.callable)
- pop.expand_button.pressed.connect(func()->void:inspector.show_page("appearance");pop.color_panel.show())
+ pop.expand_button.pressed.connect(func()->void:pop.color_panel.hide();pop._toggle_colors();inspector.show_page("appearance"))
  inspector.appearance_button.reparent(ring.heading.get_child(0));inspector.appearance_button.text="详情";inspector.appearance_button.custom_minimum_size=Vector2(44,30)
  inspector.purpose_button.reparent(inspector.appearance);inspector.appearance.move_child(inspector.purpose_button,0)
  preload("res://scripts/ui/city_creation_organic_stamp.gd").new().setup(pop)

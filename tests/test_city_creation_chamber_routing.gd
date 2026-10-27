@@ -65,6 +65,28 @@ func run()->void:
 	check(not log.has("invalid") and node.pending.is_empty(),"authoring revision cancels stale queued life sounds")
 	Ornaments.request(host,"actual_event","muted",Vector2(-25,-12),func():log.append("muted"));host.muted=true;node._process(.01)
 	check(node.pending.is_empty() and not log.has("muted"),"mute clears queued ornament candidates")
+	host.muted=false;host.clock=8.26
+	Ornaments.request(host,"single","close",Vector2(-25,-12),func():host._effects[0].set_meta("creation_voice_serial",int(host._effects[0].get_meta("creation_voice_serial",0))+1);log.append("single"))
+	Ornaments.request(host,"pair","fifth",Vector2(-24,-12),func():
+		for index in range(2):host._effects[index].set_meta("creation_voice_serial",int(host._effects[index].get_meta("creation_voice_serial",0))+1)
+		log.append("pair"),2)
+	node._process(.01);host.clock=8.64;node._process(.01)
+	check(node.played==1 and not log.has("pair"),"a two-note closure never overruns the one remaining global ornament slot")
+	host.clock=11.26;node._process(.01)
+	check(node.played==2 and log[-1]=="pair","the actual reserved pair waits for a full later bar budget")
+	host.clock=14.26
+	Ornaments.request(host,"district_reply","same_house",Vector2(-25,-12),func():host._effects[0].set_meta("creation_voice_serial",int(host._effects[0].get_meta("creation_voice_serial",0))+1);log.append("call"),1,"call")
+	node._process(.01);host.clock=16.5
+	check(Ornaments.request(host,"district_reply","same_house",Vector2(-25,-12),func():host._effects[0].set_meta("creation_voice_serial",int(host._effects[0].get_meta("creation_voice_serial",0))+1);log.append("answer"),1,"answer"),"a real answer is independently eligible even when both acoustic directions share the nearest candidate id")
+	host.clock=17.26;node._process(.01)
+	check(log[-1]=="answer","answer dispatch reaches the following actual bar without the call-source cooldown cancelling it")
+	var closure=preload("res://scripts/audio/city_creation_road_closure_audio.gd")
+	var fifths_ok:=true
+	for mode in range(10):
+		for chord:Array in Palette.chords(mode):
+			var pair:=closure.closure_notes(chord)
+			fifths_ok=fifths_ok and pair.size()==2 and pair[1]-pair[0] in [5,7] and pair.all(func(n):return n>=76 and n<=88 and chord.any(func(c):return posmod(int(c)-n,12)==0))
+	check(fifths_ok,"all eighty real chords have a high-register fifth or exact inversion without invented pitches")
 	for player:AudioStreamPlayer in host._effects:player.free()
 	reference.free();host.free()
 	print("CHAMBER_ROUTING ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

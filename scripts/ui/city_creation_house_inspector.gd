@@ -39,9 +39,9 @@ func setup(owner:RefCounted,ring:RefCounted)->void:
  preload("res://scripts/ui/city_creation_lean_inspector.gd").setup(self)
 func show_page(id:String)->void:
  id=preload("res://scripts/ui/city_creation_lean_inspector.gd").page(self,id)
- mode=id;_target=pop.target_house_id;appearance.visible=id=="appearance";music.visible=id=="music";panel.show();pop.refresh();fit();panel.move_to_front()
+ mode=id;_target=pop.target_house_id;appearance.visible=id=="appearance";music.visible=id=="music";panel.show();fit();pop.refresh();panel.move_to_front()
 func fit()->void:
- panel.reset_size();var viewport:Vector2=pop.overlay.size;var house:Rect2=pop.ring.house_rect
+ panel.reset_size();var viewport:Vector2=pop.overlay.get_viewport_rect().size;var house:Rect2=pop.ring.house_rect
  panel.position=Vector2(12. if house.get_center().x>viewport.x*.5 else viewport.x-panel.size.x-12.,90.)
  roles.fit()
 func close()->void:panel.hide();roles.panel.hide();mode=""

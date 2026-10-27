@@ -10,8 +10,9 @@ func allowed(row:Dictionary)->bool:
 	var music=demo.music
 	return not music.muted and not music.concert_active and not music._loading and not music.phonograph.active and music.acoustic.zoom<=30. and music.acoustic.point_weight(row.at)>0.
 func trigger(row:Dictionary,actor:String,kind:String)->bool:
+	if not allowed(row):return false
 	var music=demo.music;var clock:=Grid.transport_clock(music)
-	if not allowed(row) or clock-float(cooldowns.get(row.id,-INF))<6.:return false
+	if clock-float(cooldowns.get(row.id,-INF))<6.:return false
 	var banks:Array=row.banks
 	if banks.size()!=2 or str(banks[0]).is_empty() or str(banks[1]).is_empty():return false
 	for id:String in banks:

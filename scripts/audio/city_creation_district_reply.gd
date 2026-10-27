@@ -140,10 +140,12 @@ func at_phrase(absolute_phrase: int,offset_sec:float=0.) -> void:
 	var on_boundary := absf(fposmod(float(_owner._playback_clock()),3.0)-offset_sec)<=BOUNDARY_WINDOW
 	if not _pending.is_empty():
 		var pending := _pending
-		_pending={}
-		if absolute_phrase==int(pending.call_phrase)+1 and on_boundary:
-			if not _play(pending,absolute_phrase,true): skipped+=1
-		else: skipped+=1
+		var age:=absolute_phrase-int(pending.call_phrase)
+		# Nearest real-life candidates can occupy the next bar's two slots.
+		# Keep a completed question until its answer actually wins a later tail.
+		if age>3:_pending={};skipped+=1;return
+		if age>=1 and on_boundary:
+			if _play(pending,absolute_phrase,true):_pending={}
 		return
 	var interval:=2 if _owner._pluck_city!=null and "polyphonic_academy" in _owner._pluck_city.era_modifiers else 4
 	if posmod(absolute_phrase,interval)!=0 or not on_boundary: return

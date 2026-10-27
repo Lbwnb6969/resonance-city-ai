@@ -32,6 +32,7 @@ func fit()->void:
 	paper.size=Vector2(184,38) if folded else Vector2(286,170);paper.position=Vector2(16,paper.get_parent().size.y-(156. if folded else 332.))
 func replace()->void:
 	if demo.gallery.busy or demo.edit_pending():return
+	if not preload("res://scripts/world/city_creation_vignette_site_worker.gd").available(self,true):return
 	if Vignettes.offer(demo.state):wait_next=0.;refresh()
 func look_at()->void:
 	var quest:Dictionary=demo.state.harmony_journey.get("active_vignette",{})
@@ -43,7 +44,7 @@ func poll()->void:
 	var key:=[demo.state.get_instance_id(),demo.state._wish_epoch]
 	if key!=epoch:epoch=key;wait_next=0.
 	if demo.state.harmony_journey.get("active_vignette",{}).is_empty():
-		if wait_next<=0.:Vignettes.offer(demo.state)
+		if wait_next<=0. and preload("res://scripts/world/city_creation_vignette_site_worker.gd").available(self):Vignettes.offer(demo.state)
 	else:
 		var earned:=Vignettes.complete(demo.state,demo.life.connected_houses)
 		if not earned.is_empty():

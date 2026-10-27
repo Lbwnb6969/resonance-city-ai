@@ -17,7 +17,6 @@ static func solo(houses: Dictionary, acoustic: RefCounted, targets: Dictionary, 
 	sources[track] = best
 	return {"lead_track": track, "source_id": best}
 static func lift(owner: Node) -> float:
-	if owner.concert_active: return 0.
 	if str(owner.emergence.score.get("lead_track","")).is_empty() and not owner.acoustic.focus_ids.is_empty():
 		owner._daily_phrase=-1;owner.emergence.phrase=-1
 		owner._advance_daily_phrase(floori(owner._playback_clock()/3.))

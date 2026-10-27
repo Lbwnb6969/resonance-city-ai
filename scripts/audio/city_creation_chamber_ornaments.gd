@@ -55,16 +55,16 @@ static func route(owner:Node,category:String,payload:Dictionary)->bool:
 	var row:=candidate(owner,category)
 	if not row.is_empty():
 		var callback:=func():return owner._attention_trigger(category,{"phrase":floori(owner._playback_clock()/3.),"periodic":payload.get("periodic",false)})
-		request(owner,category,str(row.id),row.at,callback)
+		request(owner,category,str(row.id),row.at,callback,1,"answer" if category=="district_reply" and not owner.reply._pending.is_empty() else "call" if category=="district_reply" else "")
 	return true
-static func request(owner:Node,category:String,id:String,at:Vector2,callback:Callable)->bool:
+static func request(owner:Node,category:String,id:String,at:Vector2,callback:Callable,cost:int=1,phase:String="")->bool:
 	if owner.muted or owner._loading or owner.phonograph.active or not at.is_finite():return false
 	if owner.acoustic.point_weight(at)<=0. and category!="tower_bell":return false
-	var node=ensure(owner);var clock:=Grid.transport_clock(owner);var key:=category+"/"+id
+	var node=ensure(owner);var clock:=Grid.transport_clock(owner);var key:=category+"/"+id+("/"+phase if not phase.is_empty() else "")
 	if clock-float(node.seen.get(key,-INF))<3.:return false
 	var revision:int=owner._pluck_city.revision if owner._pluck_city!=null else -1
 	if node.pending.size()>=32 and not node.pending.has(key):return false
-	node.pending[key]={"category":category,"id":id,"at":at,"callback":callback,"queued":clock,"revision":revision}
+	node.pending[key]={"category":category,"id":id,"at":at,"callback":callback,"queued":clock,"revision":revision,"cost":cost}
 	return true
 static func offset(owner:Node,fallback:float)->float:return fposmod(owner._playback_clock(),3.) if owner.get_meta("chamber_dispatch",false) else fallback
 static func wave(owner:Node,original:AudioStreamWAV,variant:int=-1)->AudioStreamWAV:
@@ -91,7 +91,9 @@ func _process(_delta:float)->void:
 	var keys:Array=pending.keys()
 	keys.sort_custom(func(a:String,b:String):var da:float=owner._listener_focus.distance_squared_to(pending[a].at);var db:float=owner._listener_focus.distance_squared_to(pending[b].at);return a<b if is_equal_approx(da,db) else da<db)
 	for key:String in keys:
-		var row:Dictionary=pending[key];pending.erase(key)
+		var row:Dictionary=pending[key]
+		if played+int(row.get("cost",1))>2:continue
+		pending.erase(key)
 		if clock-float(seen.get(key,-INF))<3.:continue
 		var before:=serials(owner);var prior:Array=[]
 		for player:AudioStreamPlayer in owner._effects:prior.append(int(player.get_meta("creation_voice_serial",0)))

@@ -7,7 +7,7 @@ func simple_city(with_road:bool=true)->void:
 	demo.focus=Vector3(-25,.5,-16);demo.zoom=25.;demo.yaw=0.;demo.pitch=1.;demo._update_camera();await settle()
 func record_close(at:Vector2,path:String)->Dictionary:
 	var effect:=AudioEffectRecord.new();AudioServer.add_bus_effect(0,effect);effect.set_recording_active(true)
-	await click_world(at);await create_timer(1.3).timeout;effect.set_recording_active(false)
+	await click_world(at);await create_timer(3.4).timeout;effect.set_recording_active(false)
 	var wave:AudioStreamWAV=effect.get_recording();var saved:bool=wave!=null and wave.save_to_wav(path)==OK
 	for i in range(AudioServer.get_bus_effect_count(0)-1,-1,-1):
 		if AudioServer.get_bus_effect(0,i)==effect:AudioServer.remove_bus_effect(0,i)
@@ -32,7 +32,7 @@ func run()->void:
 		await alt_key(false);await motion(end);var preview:Array=demo.road_preview.duplicate()
 		facts["close_audio_"+str(size.x)]=await record_close(end,OUT+"/close_%d_Master.wav"%size.x)
 		await settle();check(demo.state.roads.size()==2 and exact(preview),"native closure publishes exact displayed segment with unchanged target")
-		check(road_tool.closure_audio.events.any(func(e):return e.kind=="perfect_fifth" and e.midi.size()==2 and e.midi[1]-e.midi[0]==7),"actual successful closure uses two existing voices for a seven semitone fifth")
+		check(road_tool.closure_audio.events.any(func(e):return e.kind in ["perfect_fifth","inverted_fifth"] and e.midi.size()==2 and absi(e.midi[1]-e.midi[0]) in [5,7] and e.midi.all(func(n):return n>=76 and n<=88)),"actual successful closure reserves two existing voices for a high-register chord fifth or its inversion")
 		check(not road_tool.active() and road_tool.guide.compass.is_empty(),"finished closure clears every transient halo")
 		# Both actual houses attach to the newly joined graph, not a visual-only line.
 		var x:Dictionary=demo.state.add_house(Vector2(-28,-11.55));var y:Dictionary=demo.state.add_house(Vector2(-24,-22.55))

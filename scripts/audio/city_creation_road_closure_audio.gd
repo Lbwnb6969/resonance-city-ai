@@ -20,18 +20,30 @@ func tick(ruler:Dictionary,at:Vector2)->void:
 	last_tick=clock;_play(at,false)
 func close(at:Vector2)->void:
 	if not allowed():return
-	for ordinal in range(2):preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(demo.music,"road_closure",str(at)+"/"+str(ordinal),at,func():closure_note(at,ordinal))
-func closure_note(at:Vector2,ordinal:int)->void:
+	preload("res://scripts/audio/city_creation_chamber_ornaments.gd").request(demo.music,"road_closure",str(at),at,func():closure_pair(at),2)
+static func closure_notes(chord:Array)->Array[int]:
+	var notes:Array[int]=[]
+	for midi in range(76,89):
+		if chord.any(func(n):return posmod(int(n)-midi,12)==0):notes.append(midi)
+	for gap in [7,5]:
+		for first:int in notes:
+			if first+gap in notes:return [first,first+gap]
+	return []
+func closure_pair(at:Vector2)->void:
 	if not allowed():return
 	var music=demo.music;var clock:=Grid.transport_clock(music)
-	var stream:AudioStreamWAV=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(music,null,ordinal)
-	if stream==null:return
+	var notes:=closure_notes(Palette.chords(maxi(0,music.harmony_mode()))[Grid.bar(clock)])
+	var free:Array[AudioStreamPlayer]=[]
 	for player:AudioStreamPlayer in music._effects:
-		if player.playing:continue
-		music.play_effect_at(player,stream,at,.68)
-		events.append({"kind":"closure_ornament","clock":clock,"onset":Grid.quantize_cue_onset(clock),"midi":[stream.get_meta("chamber_midi")],"at":at,"voices":1,"ordinal":ordinal})
-		if events.size()>64:events.pop_front()
-		return
+		if not player.playing:free.append(player)
+	if notes.size()!=2 or free.size()<2:return
+	for index in range(2):
+		var key:="house_pluck_harp_%d"%notes[index]
+		var stream:AudioStreamWAV=music._edit_streams[key].duplicate()
+		stream.set_meta("chamber_midi",notes[index]);stream.set_meta("chamber_key",key);stream.set_meta("chamber_timbre","harp")
+		music.play_effect_at(free[index],stream,at,.68)
+	events.append({"kind":"perfect_fifth" if notes[1]-notes[0]==7 else "inverted_fifth","clock":clock,"onset":Grid.quantize_cue_onset(clock),"midi":notes,"at":at,"voices":2})
+	if events.size()>64:events.pop_front()
 func _play(at:Vector2,closure:bool)->void:
 	var music=demo.music;var clock:=Grid.transport_clock(music);var onset:=Grid.quantize_cue_onset(clock);var bar:=Grid.bar(clock)
 	var root:int=Palette.chords(maxi(0,music.harmony_mode()))[bar][0]+24

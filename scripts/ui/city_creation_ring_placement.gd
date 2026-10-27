@@ -25,5 +25,13 @@ static func fit(items:Array,house:Rect2,view:Rect2,neighbors:Array=[],reserved:A
 			if neighbors.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			if rect.intersects(house.grow(4.)) or occupied.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):continue
 			item.global_position=candidate;occupied.append(rect);found=true;break
+		if not found:
+			# In a dense town every margin can contain a neighbouring roof.
+			# Keep controls reachable and prefer leaving the selected house clear.
+			var fallback:=clamp_at(desired,size,view)
+			for candidate:Vector2 in candidates:
+				var rect:=Rect2(candidate,size)
+				if not rect.intersects(house.grow(4.)) and not occupied.any(func(other:Rect2)->bool:return other.grow(3.).intersects(rect)):fallback=candidate;break
+			item.global_position=fallback;occupied.append(Rect2(fallback,size))
 		success=success and found
 	return success

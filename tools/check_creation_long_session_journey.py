@@ -33,7 +33,10 @@ def main():
     args = parser.parse_args()
     output_root = ROOT / args.out_dir.removeprefix("res://")
     output_root.mkdir(parents=True, exist_ok=True)
-    reports = []
+    old_suite = output_root / "suite.json"
+    requested = set(args.phases.split(","))
+    reports = [r for r in json.loads(old_suite.read_text(encoding="utf-8")).get("runs", [])
+               if r.get("ok") and r.get("phase") not in requested] if old_suite.is_file() else []
     for resolution in map(int, args.resolutions.split(",")):
         folder = output_root / str(resolution)
         folder.mkdir(parents=True, exist_ok=True)

@@ -3,13 +3,13 @@ const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const Hug=preload("res://scripts/world/city_creation_curve_hug.gd")
 const Cut=preload("res://scripts/visual/city_creation_hinge_mesh.gd")
 static func apply(renderer,root:Node3D,source:Dictionary,cells:Array,angle:float=INF)->void:
-	var host:=source.duplicate(true)
+	var host:=source.duplicate(true);var fresh:=not host.has("id")
 	if not host.has("id"):
 		host=renderer.state._new_stroke_house(Vector2(source.origin[0],source.origin[1]));host.base_y=source.get("base_y",0.)
-		preload("res://scripts/world/city_creation_build_brush.gd").apply(renderer.state,host)
 	if is_finite(angle):host.yaw=angle
 	for cell:Dictionary in cells:
 		if not host.cells.any(func(c):return int(c.x)==int(cell.x) and int(c.z)==int(cell.z) and int(c.level)==int(cell.level)):host.cells.append(cell)
+	if fresh:preload("res://scripts/world/city_creation_build_brush.gd").apply(renderer.state,host)
 	host=Hug.candidate(renderer.state,host)
 	var bend:=Frame.Hinge.angle(host)
 	if not is_zero_approx(bend):

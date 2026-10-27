@@ -19,12 +19,12 @@ static func run(c:RefCounted)->void:
 	c.check(int(c.demo.state.bakery_status("h1").produced)>=2 and c.demo.state.wish_rewards.get("h1",{}).get("water",0)==2 and latency<500.,"native_pond_immediate_first_bread")
 	c.details.first_bread_latency_ms=latency;await c.settle();await c.capture("首炉")
 	c.stage("真实林间小目标");var quest:Node=c.demo.get_meta("vignette_journey")
-	await c.postpone();c.demo.select_tool(0);await c.settle()
+	await c.postpone();c.demo.select_tool(0);await c.settle();quest.poll();await c.settle();quest.poll();await c.settle()
 	if quest.paper.get_meta("letter_folded",true):await c.click(quest.paper.find_child("FoldWoodlandLetter",true,false))
 	for i in range(5):
-		if c.demo.state.harmony_journey.active_vignette.get("id","")==Vignettes.IDS[3]:break
+		if c.demo.state.harmony_journey.get("active_vignette",{}).get("id","")==Vignettes.IDS[3]:break
 		await c.click(quest.paper.find_child("RefreshVignette",true,false))
-	c.check(c.demo.state.harmony_journey.active_vignette.get("id","")==Vignettes.IDS[3],"native_refresh_offers_local_workshop")
+	c.check(c.demo.state.harmony_journey.get("active_vignette",{}).get("id","")==Vignettes.IDS[3],"native_refresh_offers_local_workshop")
 	var results:Array=Builder.construct(c.demo.state)
 	for result:Dictionary in results:c.demo._after_edit(result,"plant")
 	await c.settle();quest.poll();c.demo.get_meta("inspiration_draft").poll()

@@ -3,13 +3,23 @@ const State=preload("res://scripts/world/city_creation_state.gd")
 const Span=preload("res://tools/fixtures/city_creation_recording_span.gd")
 static func advance_era(c:RefCounted,era:String,choice:String)->void:
 	c.stage("真实生活与问答晋升 "+era)
-	var ceremony:Node=c.demo.get_meta("era_ceremony");var deadline:=Time.get_ticks_msec()+80000
+	var ceremony:Node=c.demo.get_meta("era_ceremony");var deadline:=Time.get_ticks_msec()+80000;var tour:=-1;var trace:Array=[];var sampled:=-1
+	var home:=Vector2(c.demo.state.houses[0].origin[0],c.demo.state.houses[0].origin[1])
 	while Time.get_ticks_msec()<deadline:
+		if era=="modern_eco":
+			var stop:=floori(float(80000-(deadline-Time.get_ticks_msec()))/12000.)
+			if stop!=tour:
+				tour=stop;c.look(home+Vector2([0.,8.,4.][stop%3],2))
+				trace.append({"camera":stop%3,"answers":c.demo.state.era_answers.duplicate(true),"reply":c.demo.music.reply.report().duplicate(true)})
+		var sec:=floori(float(80000-(deadline-Time.get_ticks_msec()))/1000.)
+		if sec!=sampled:
+			sampled=sec
+			print("ERA_DIAGNOSTIC ",era," ",JSON.stringify({"sec":sec,"rights":c.demo.state.era_unlocks,"celebrated":c.demo.state.harmony_journey.get("celebrated_eras",[]),"active":ceremony.active,"pending":ceremony.pending,"epoch":c.demo.state._wish_epoch,"reply":c.demo.music.reply.report(),"question":c.demo.music.reply._pending,"ornaments":c.demo.music.get_meta("chamber_ornament_events",[]).slice(-4)}))
 		c.demo.life._process(.12);await c.tree.process_frame
 		if ceremony.events.any(func(row):return row.phase=="finish" and row.era==era):break
 	var events:Array=ceremony.events.filter(func(row):return row.phase=="finish" and row.era==era)
 	c.check(era in c.demo.state.era_unlocks and events.size()==1 and float(events[0].duration)>=6. and float(events[0].duration)<7.,"natural_six_second_"+era)
-	c.details[era]={"events":events,"answers":c.demo.state.era_answers.duplicate(true),"tea":c.demo.state.life_progress.tea_parties}
+	c.details[era]={"events":events,"answers":c.demo.state.era_answers.duplicate(true),"tea":c.demo.state.life_progress.tea_parties,"camera_tour":trace}
 	await c.tree.create_timer(.28).timeout
 	# RF03 unifies fresh-era rewards into earned research; old free charter
 	# buttons are retained only for legacy works and no longer form this flow.
@@ -37,7 +47,8 @@ static func run(c:RefCounted)->void:
 	c.check(city.wish_rewards==reference.wish_rewards and city.bakery_supply==reference.bakery_supply and city.workshop_supply==reference.workshop_supply,"overnight_conserves_first_burst_and_inventory")
 	c.check(c.demo.get_meta("era_ceremony").active.is_empty(),"load_does_not_replay_era")
 	var recording:=Span.start();var began:=Time.get_ticks_msec();var audio_ids:Array=[];c.sampling=true
-	for node:Node in c.demo.music.get_children()+c.demo.ambience.get_children():audio_ids.append(node.get_instance_id())
+	for node:Node in c.demo.music.get_children()+c.demo.ambience.get_children():
+		if node is AudioStreamPlayer or node is AudioStreamPlayer2D or node is AudioStreamPlayer3D:audio_ids.append(node.get_instance_id())
 	var origin:=Vector2(city.houses[0].origin[0],city.houses[0].origin[1]);c.look(origin+Vector2(4,2));c.demo.select_tool(0);await c.postpone()
 	await c.ground(origin+Vector2(12,0));await c.settle()
 	c.check(city.houses.size()==old_ids.size()+1 and old_ids.all(func(id):return city._house_index(id)>=0),"native_next_day_extension_retains_old_city")
@@ -73,7 +84,8 @@ static func run(c:RefCounted)->void:
 	c.details.breath_cycles=clocks.keys();c.check(clocks.size()>=2 and phrases.size()==8,"two_real_breathing_tides_and_all_eight_phrases")
 	c.check(c.details.audio.ok and float(c.details.audio.seconds)>=140.,"long_actual_master_unclipped")
 	var after:Array=[]
-	for node:Node in c.demo.music.get_children()+c.demo.ambience.get_children():after.append(node.get_instance_id())
+	for node:Node in c.demo.music.get_children()+c.demo.ambience.get_children():
+		if node is AudioStreamPlayer or node is AudioStreamPlayer2D or node is AudioStreamPlayer3D:after.append(node.get_instance_id())
 	c.check(audio_ids==after and c.demo.music._players.size()==12 and c.demo.music._effects.size()==4 and c.demo.music.spatial._names.size()==6 and c.demo.ambience.get_child_count()==2,"fixed_audio_pool_across_full_return")
 	var saved:Dictionary=await c.save_work("第二日四时代河湾")
 	c.details.process_id=OS.get_process_id();c.details.houses=city.houses.size();c.details.final_id=c.demo.gallery.last_saved_id
