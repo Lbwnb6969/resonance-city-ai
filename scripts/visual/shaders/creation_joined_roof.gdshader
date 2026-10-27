@@ -3,8 +3,7 @@ render_mode diffuse_burley, specular_disabled;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 uniform vec4 roof_color : source_color = vec4(0.73,0.44,0.33,1.0);
 varying vec3 roof_normal;
-varying vec3 roof_contour;
-varying vec3 roof_downhill;
+varying vec3 roof_at;
 
 float tile_hash(vec2 p) {
 	return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);
@@ -12,11 +11,7 @@ float tile_hash(vec2 p) {
 
 void vertex() {
 	roof_normal = safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);
-	vec3 contour=vec3(NORMAL.z,0.0,-NORMAL.x);
-	if(dot(contour,contour)<0.0001){contour=vec3(1.0,0.0,0.0);}
-	contour=safe_normalize(contour);
-	roof_contour=safe_normalize((MODEL_MATRIX*vec4(contour,0.0)).xyz);
-	roof_downhill=safe_normalize((MODEL_MATRIX*vec4(cross(contour,NORMAL),0.0)).xyz);
+	roof_at = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 }
 
 float pulse_integral(float x,float width){
@@ -29,8 +24,22 @@ float filtered_joint(float at,float width,float footprint){
 
 void fragment() {
 	vec3 normal=safe_normalize(roof_normal);
-	vec3 contour=safe_normalize(roof_contour);
-	vec3 downhill=safe_normalize(roof_downhill);
+	vec3 contour=vec3(normal.z,0.0,-normal.x);
+	if(dot(contour,contour)<0.0001){contour=vec3(1.0,0.0,0.0);}
+	contour=safe_normalize(contour);
+	vec3 downhill=safe_normalize(cross(contour,normal));
+	// Reconstruct the actual chart axes before staggering the tile coordinates.
+	// Dividing by the signed Jacobian first keeps tiny screen derivatives from
+	// shrinking under safe_normalize and preserves mirrored/rotated charts.
+	vec3 px=dFdx(roof_at), py=dFdy(roof_at);
+	vec2 ux=dFdx(UV), uy=dFdy(UV);
+	float determinant=ux.x*uy.y-ux.y*uy.x;
+	if(abs(determinant)>0.0000000001){
+		vec3 u=(px*uy.y-py*ux.y)/determinant;
+		vec3 v=(py*ux.x-px*uy.x)/determinant;
+		contour=safe_normalize(u-normal*dot(normal,u));
+		downhill=safe_normalize(v-normal*dot(normal,v)-contour*dot(contour,v));
+	}
 	vec2 tile=UV;
 	// Take derivatives before the discontinuous stagger, then integrate seams
 	// and barrel normals across the actual pixel footprint.

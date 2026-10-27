@@ -1,12 +1,15 @@
 extends RefCounted
 const Cut=preload("res://scripts/visual/city_creation_corner_mesh.gd")
+const RoofUV=preload("res://scripts/visual/city_creation_hinge_roof_uv.gd")
 static func at(vertex:Dictionary,plan:Dictionary)->float:return (Vector2(vertex.p.x,vertex.p.z)-Vector2(plan.pivot)).dot(plan.axis)
 static func moved(p:Vector3,plan:Dictionary)->Vector3:
 	var q:Vector2=Vector2(plan.pivot)+(Vector2(p.x,p.z)-Vector2(plan.pivot)).rotated(-float(plan.angle))
 	return Vector3(q.x,p.y,q.y)
 static func vertex(source:Dictionary,plan:Dictionary,wing:bool)->Dictionary:
 	if not wing:return source
-	var result:=source.duplicate(false);result.p=moved(source.p,plan);result.n=Basis(Vector3.UP,float(plan.angle))*source.n;return result
+	var result:=source.duplicate(false);result.p=moved(source.p,plan);result.n=Basis(Vector3.UP,float(plan.angle))*source.n
+	if source.has("roof_u"):result.uv=RoofUV.shifted(source,Vector3(result.p)-Vector3(source.p))
+	return result
 static func triangles(tri:Array,plan:Dictionary,owner_wing:bool)->Array:
 	var low:=INF;var high:=-INF
 	for v:Dictionary in tri:var d:=at(v,plan);low=minf(low,d);high=maxf(high,d)
@@ -37,18 +40,21 @@ static func triangles(tri:Array,plan:Dictionary,owner_wing:bool)->Array:
 				if (Vector3(face[1].p)-Vector3(face[0].p)).cross(Vector3(face[2].p)-Vector3(face[0].p)).dot(normal)>0.:face.reverse()
 				output.append(face)
 	return output
-static func build(source:Mesh,transform:Transform3D,plan:Dictionary,owner_wing:bool)->ArrayMesh:
+static func build(source:Mesh,transform:Transform3D,plan:Dictionary,owner_wing:bool,roof_surfaces:PackedInt32Array=PackedInt32Array())->ArrayMesh:
 	var result:=ArrayMesh.new();var inverse:=transform.affine_inverse();var normal_basis:=transform.basis.inverse().transposed()
 	for surface in range(source.get_surface_count()):
 		var arrays:=source.surface_get_arrays(surface);var positions:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX];var normals:PackedVector3Array=arrays[Mesh.ARRAY_NORMAL]
 		var uvs:PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV] if arrays[Mesh.ARRAY_TEX_UV]!=null else PackedVector2Array();var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR] if arrays[Mesh.ARRAY_COLOR]!=null else PackedColorArray()
 		var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX]!=null else PackedInt32Array()
+		var gradients:Array=RoofUV.field(arrays,transform) if surface in roof_surfaces else []
 		var tool:=SurfaceTool.new();tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 		for i in range(0,indices.size() if not indices.is_empty() else positions.size(),3):
 			var tri:Array=[]
 			for k in range(3):
 				var index:int=indices[i+k] if not indices.is_empty() else i+k
-				tri.append({"p":transform*positions[index],"n":normal_basis*normals[index],"uv":uvs[index] if not uvs.is_empty() else Vector2.ZERO,"color":colors[index] if not colors.is_empty() else Color.WHITE})
+				var vertex:={"p":transform*positions[index],"n":normal_basis*normals[index],"uv":uvs[index] if not uvs.is_empty() else Vector2.ZERO,"color":colors[index] if not colors.is_empty() else Color.WHITE}
+				if not gradients.is_empty():vertex.roof_u=gradients[index][0];vertex.roof_v=gradients[index][1]
+				tri.append(vertex)
 			for piece:Array in triangles(tri,plan,owner_wing):
 				for v:Dictionary in piece:
 					tool.set_normal((transform.basis.transposed()*Vector3(v.n)).normalized());tool.set_uv(v.uv)

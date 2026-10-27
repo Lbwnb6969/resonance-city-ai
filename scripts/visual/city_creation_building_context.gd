@@ -295,6 +295,7 @@ func _build_group(group: Array,group_id: String) -> Array:
 		var vertices: Array[Vector3] = [a,b,c,a,c,d]
 		if edge.side==Vector2i.LEFT or edge.side==Vector2i.DOWN: vertices = [a,c,b,a,d,c]
 		result.append({"house_id":edge.row.house_id,"cell_id":edge.row.cell_id,"vertices":vertices,"surface":"fascia","group_id":group_id,"base_y":base,"side":edge.side})
+	preload("res://scripts/visual/city_creation_joined_roof_coordinates.gd").assign(result,gable,bounds,func(p):return _point(p,base,line_bins,bounds) if gable.is_empty() else _gable_point(p,base,gable,bounds))
 	return result
 
 func _row_gable(group: Array) -> Dictionary:

@@ -5,7 +5,9 @@ extends RefCounted
 const Form=preload("res://scripts/world/city_creation_organic_form.gd")
 static func distance(at:Vector3,plane:Vector3)->float:return at.x*plane.x+at.z*plane.y-plane.z
 static func interpolate(a:Dictionary,b:Dictionary,t:float)->Dictionary:
-	return {"p":a.p.lerp(b.p,t),"n":a.n.lerp(b.n,t),"uv":a.uv.lerp(b.uv,t),"color":a.color.lerp(b.color,t)}
+	var result:={"p":a.p.lerp(b.p,t),"n":a.n.lerp(b.n,t),"uv":a.uv.lerp(b.uv,t),"color":a.color.lerp(b.color,t)}
+	if a.has("roof_u"):result.roof_u=a.roof_u.lerp(b.roof_u,t);result.roof_v=a.roof_v.lerp(b.roof_v,t)
+	return result
 static func half(poly:Array,plane:Vector3,sign_value:float)->Array:
 	var result:Array=[]
 	for i in range(poly.size()):
@@ -78,3 +80,12 @@ static func vertices(points:Array,sides:Array,value:int)->Array[Vector3]:
 			for k in range(1,poly.size()-1):
 				for vertex:Dictionary in [poly[0],poly[k],poly[k+1]]:result.append(Form.point(vertex.p,sides,value))
 	return result
+static func surface(points:Array,coordinates:PackedVector2Array,sides:Array,value:int)->Dictionary:
+	var result:Array[Vector3]=[];var uv:=PackedVector2Array()
+	for i in range(0,points.size(),3):
+		var tri:Array=[]
+		for k in range(3):tri.append({"p":points[i+k],"n":Vector3.UP,"uv":coordinates[i+k],"color":Color.WHITE})
+		for poly:Array in split(tri,sides,value):
+			for k in range(1,poly.size()-1):
+				for vertex:Dictionary in [poly[0],poly[k],poly[k+1]]:result.append(Form.point(vertex.p,sides,value));uv.append(vertex.uv)
+	return {"vertices":result,"coordinates":uv}

@@ -61,7 +61,10 @@ static func patch(renderer,house:Dictionary,source:Dictionary,parent:Node3D)->Di
 	var offset:Vector3=renderer._cell_position(house,cell);offset.y=0.
 	var local:Array=[]
 	for p:Vector3 in source.vertices:local.append(p-offset)
-	var result:=source.duplicate(false);var points:=Cut.vertices(local,sides,value)
+	var result:=source.duplicate(false);var points:Array
+	if source.has("coordinates"):
+		var cut:=Cut.surface(local,source.coordinates,sides,value);points=cut.vertices;result.coordinates=cut.coordinates
+	else:points=Cut.vertices(local,sides,value)
 	for i in range(points.size()):points[i]+=offset
 	result.vertices=points
 	if parent!=null and source.surface=="roof":

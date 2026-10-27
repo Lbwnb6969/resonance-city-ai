@@ -1,6 +1,7 @@
 extends RefCounted
 const Hinge=preload("res://scripts/world/city_creation_house_hinge.gd")
 const MeshCut=preload("res://scripts/visual/city_creation_hinge_mesh.gd")
+const RoofUV=preload("res://scripts/visual/city_creation_hinge_roof_uv.gd")
 static func extent(bounds:AABB,plan:Dictionary)->Vector2:
 	var a:=Vector2(bounds.position.x,bounds.position.z)-Vector2(plan.pivot);var b:=Vector2(bounds.end.x,bounds.end.z)-Vector2(plan.pivot)
 	return Vector2(minf(a.dot(plan.axis),b.dot(plan.axis)),maxf(a.dot(plan.axis),b.dot(plan.axis)))
@@ -32,9 +33,11 @@ static func step(job)->bool:
 		var began:=Time.get_ticks_usec();var node:Node3D=data.nodes[int(data.index)];var plan:Dictionary=data.plan
 		var transform:Transform3D=job.root.global_transform.affine_inverse()*node.global_transform;var wing:=owner_wing(job,node)
 		if node is MeshInstance3D:
-			var span:=extent(transform*node.get_aabb(),plan)
-			if span.x>=-.000001 and (span.y>.000001 or wing):rigid(job.root,node,plan);data.rigid+=1
-			elif span.y>=-.000001:node.mesh=MeshCut.build(node.mesh,transform,plan,wing);data.meshes+=1
+			var span:=extent(transform*node.get_aabb(),plan);var roof_surfaces:=RoofUV.surfaces(node)
+			if span.x>=-.000001 and (span.y>.000001 or wing):
+				if not roof_surfaces.is_empty():node.mesh=RoofUV.rigid(node.mesh,transform,plan,roof_surfaces)
+				rigid(job.root,node,plan);data.rigid+=1
+			elif span.y>=-.000001:node.mesh=MeshCut.build(node.mesh,transform,plan,wing,roof_surfaces);data.meshes+=1
 		elif node is CollisionShape3D:
 			var span:=extent(transform*node.shape.get_debug_mesh().get_aabb(),plan)
 			if span.x>=-.000001 and (span.y>.000001 or wing):rigid(job.root,node,plan)

@@ -1311,10 +1311,10 @@
       },
       {
         "id": "M68",
-        "title": "折翼屋面扫掠纹理衔接",
-        "description": "修复真实JoinedRoof折翼新增封顶三角UV面积为零，核对正负角/双轴/两层和实际原图。",
-        "passes": false,
-        "verified_by": ""
+        "title": "折翼与连排曲顶连续纹理及微法线光影",
+        "description": "修复真实JoinedRoof封顶三角UV面积为零及源屋面逐三角投影跳缝：gable整组弧长展开，L/U/庭院union连续面积校准，切角传递源UV，折翼共享梯度延伸，微法线沿真实纹理轴；保留几何、拾取和旧档。",
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc/selftest8 PASS. Gate2 hinge_roof_uv307 (all four signed axes incl two-storey, shared source chart, exact original faces/nonroof UV/batching), joined_buildings99 and legacy375+27 PASS. Gate3 resumed_verified actual OpenGL/Dummy --verify-uv91 PASS: +/-28deg X/Z two-storey, L/U/court, square/round towers, day/evening/night and1024, cold JSON/Undo and unchanged personal save/12long4short6bus. All actual roof triangles nondegenerate; source shared UV error0; union edge metric0.94415..1.10090. Actual2.972154s Master peak.127045 zero clipping; capped100 sample p95/max10.076/10.197ms is observation only. Independent resumed Critic viewed10 originals: no P1/P2, P3 union corner tile shapes retained. Prior rejected53-green/final/continuous_candidate and accepted91 retained. Gradient field exact binary oracle retained; optimization median full_source4.342->1.975ms, published3.897->1.660ms (see original bench for exact baseline); same-process shader profile retained without using stale Performance monitor as CPU proof."
       },
       {
         "id": "M69",

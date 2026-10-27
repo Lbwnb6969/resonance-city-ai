@@ -1902,6 +1902,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,house).is_empty():return
 	var roofs: Array[Vector3] = []
+	var roof_coordinates:=PackedVector2Array()
 	var fascia: Array[Vector3] = []
 	var gables: Array[Vector3] = []
 	var rims: Array[Vector3] = []
@@ -1918,6 +1919,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 		if tower_ids.has(str(patch.cell_id)) or dome_cells.has(str(patch.cell_id)): continue
 		if patch.surface=="roof":
 			roofs.append_array(patch.vertices)
+			roof_coordinates.append_array(patch.coordinates)
 			roof_info.append({"cell_id":patch.cell_id,"group_id":patch.group_id,"bounds":patch.bounds})
 		elif patch.surface=="gable":
 			gables.append_array(patch.vertices)
@@ -1928,7 +1930,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 			attic_windows.append(detail.window)
 		else: fascia.append_array(patch.vertices)
 	if not roofs.is_empty():
-		var mesh := _roof_surface(parent,roofs,palette[1])
+		var mesh := _roof_surface(parent,roofs,palette[1],roof_coordinates)
 		mesh.name="JoinedRoofSurface"
 		var key := "joined_roof/"+str(palette[1])
 		if not materials.has(key):

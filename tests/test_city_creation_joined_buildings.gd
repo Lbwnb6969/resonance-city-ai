@@ -109,7 +109,9 @@ func _run() -> void:
 	var u_ids: Array[String] = []
 	for offset: Vector2i in [Vector2i(-1,-1),Vector2i(0,-1),Vector2i(1,-1),Vector2i(-1,0),Vector2i(1,0),Vector2i(-1,1),Vector2i(1,1)]:
 		var id := _add(Vector2(-10,4)+Vector2(offset)*1.8)
-		if not id.is_empty(): u_ids.append(id)
+		if not id.is_empty():
+			u_ids.append(id)
+			_check(city.set_house_style(id,"timber").ok,"courtyard fixture explicitly uses the JoinedRoof architecture")
 	render.rebuild()
 	_check(u_ids.size()==7,"U courtyard uses seven actual public household additions")
 	var uncovered := true
