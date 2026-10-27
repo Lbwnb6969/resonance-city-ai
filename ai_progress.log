@@ -597,3 +597,9 @@
 - GATE3: accepted原生29 PASS；GPU数组与冷绘相等，侧光/夜景ROI5100/2370差像素降为0。
 - DATA: 实际空场Master3.065034s零削波；个人档/12长4短6总线2自然声不变；编辑峰10.134ms仅实测。
 - NEXT: 三轮独立原图复核、提交main同步后仅M70柔化后追加塑形增量。
+
+[SESSION_M70] 2026-10-27 COMPLETE：已有柔化后非smooth尾笔复用原场，严格前缀及水形等价。
+- GATE1/2: Harness/doc；append125/terrain13/seams60/legacy375+27 PASS；四数组与冷回放逐字节一致。
+- GATE3: 原生19 PASS；四笔编辑峰108～131→10.012～10.037ms，地形基线/优化后原图逐像素一致。
+- PERF/DATA: raw37249→81顶点、中位67.579→.163ms；实录2.972154s零削波，个人档/原声部不变。
+- LIMIT/NEXT: 首次smooth和Undo仍104～106ms；提交main同步后仅M71道路宽度/铺装。

@@ -1327,8 +1327,8 @@
         "id": "M70",
         "title": "柔化后追加塑形的局部增量性能",
         "description": "针对历史已有smooth时追加非smooth笔触的常见路径，减少全场顺序回放；保留撤销重做及冷回放的精确等价，记录同场CPU与实窗编辑帧时。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 terrain_append125: byte-exact raw/protected heights+offsets vs fresh JSON/replay across raise/lower/reset/plateau/natural/shore/worldfade/clamp, multiappend/replacement/removal/UndoRedo/water change/new smooth and detached worker; terrain13/seams60/legacy375+27 PASS. Same7-sample CPU median67.579->.163ms; raw candidate vertices37249->81, no fixed-time gate. Gate3 actual OpenGL/Dummy accepted19 PASS: same authored two-home history/real budget edits and UndoRedo/new renderer/cold JSON, ground pixel delta0 both incremental-vs-cold and independently baseline-vs-accepted full PNG. Four appended brush worker terrain161.707..189.909->6.146..6.252ms; edit max108.425..131.100->10.012..10.037ms in capped100 capture. Original smooth max104.057ms and Undo105.848ms still full replay, explicit boundary; Redo10.031ms. Master2.972154s peak.191132 zero clips; original voice IDs/personal save retained. Narrow append path requires exact unchanged prefix and water base and prior smooth/no new smooth; otherwise existing ordered replay. backup/before-m70; main sync after commit."
       },
       {
         "id": "M71",

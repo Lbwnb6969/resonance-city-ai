@@ -55,6 +55,7 @@ func copy_cache_from(source: RefCounted) -> void:
 func prepare_raw(waters: Array,water_clearance: Callable,strokes: Array = []) -> bool:
 	var signature := hash([waters,strokes])
 	if not raw_vertices.is_empty() and signature==_raw_signature: return false
+	if preload("res://scripts/world/city_creation_terrain_append.gd").apply(self,waters,water_clearance,strokes,signature):return true
 	var regions: Array = [LAND_RECT] if raw_vertices.is_empty() else _changed_water_bounds(waters)
 	if not raw_vertices.is_empty(): regions.append_array(_changed_stroke_bounds(strokes))
 	var rebuild_smoothed_field:=false
