@@ -77,7 +77,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	for house:Dictionary in city.houses:
 		if house.has("yaw") or house.has("custom_colors") or house.has("acoustic_style") or house.has("temperament") or house.has("architecture") or house.has("corner_bevel") or house.has("bend_angle_deg") or house.has("bend_axis") or house.has("organic_manual") or house.has("overhang") or house.has("balcony_arc"):result.schema=city.PERSONALIZATION_SCHEMA;break
 	for road:Dictionary in city.roads:
-		if road.has("sized") or str(road.get("style","")) in preload("res://scripts/world/city_creation_road_paving.gd").NEW_STYLES:result.schema=city.PERSONALIZATION_SCHEMA;break
+		if road.has("sized") or road.has("decoration") or str(road.get("style","")) in preload("res://scripts/world/city_creation_road_paving.gd").NEW_STYLES:result.schema=city.PERSONALIZATION_SCHEMA;break
 	for plant:Dictionary in city.plants:
 		if plant.kind not in ["olive","cypress","shrub"]:result.schema=city.PERSONALIZATION_SCHEMA;break
 	if city.automatic_neighborhoods:result.automatic_neighborhoods=true;result.schema=city.PERSONALIZATION_SCHEMA
@@ -506,6 +506,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	var grand_check:Dictionary=city.GrandFestival.validate(city,data)
 	if not grand_check.ok:return grand_check
 	for road in data.roads:
+		if road is Dictionary and road.has("decoration") and (data.schema<city.PERSONALIZATION_SCHEMA or not road.decoration is String or road.decoration not in preload("res://scripts/world/city_creation_road_decoration.gd").IDS):return city._fail("道路街具字段无效")
 		if not road is Dictionary or not city._valid_id(road.get("id"), "r", ids):
 			return city._fail("城市存档道路身份无效")
 		if road.has("roundabouts"):

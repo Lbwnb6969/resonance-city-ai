@@ -6,6 +6,7 @@ const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 const DIAMETER:=46.0
 const GAP:=6
 const OPTION_ICONS:Dictionary={
+	"RoadDecoration":["road","erase","lamp","garden_cafe","vegetation","garden_cafe"],
 	"RoadMode":["road","straight","road"],"RoadSize":["road","brush_small","brush_medium","brush_large","road"],"RoadStyle":["road","lamp","vegetation","rails","road","road","road","road"],
 	"RemovalMode":["erase","house"],"Species":["vegetation","cypress","shrub","vegetation","garden_cafe","garden_cafe","garden_cafe"],"PlantingMode":["brush_small","brush_large"],
 	"BrushSize":["brush_small","brush_medium","brush_large"],"WaterMode":["pond","water"],
@@ -16,7 +17,7 @@ const OPTION_ICONS:Dictionary={
 	"TerrainRadius":["brush_small","brush_medium","brush_large"]
 }
 const TOOL_GROUPS:Dictionary={
-	2:[["RoadMode","road",["随手画","直路","曲路"]],["RoadStyle","road",["小径","石板","林荫","轨街","卵石","砖路","扇石","碎石"]],["RoadSize","road",["原宽","窄路","标准","宽路","宽街"]],["RoadRoundabout","district",["环岛"]]],
+	2:[["RoadMode","road",["随手画","直路","曲路"]],["RoadStyle","road",["小径","石板","林荫","轨街","卵石","砖路","扇石","碎石"]],["RoadSize","road",["原宽","窄路","标准","宽路","宽街"]],["RoadDecoration","lamp",["原款","留白","路灯","花箱","树池","长椅"]],["RoadRoundabout","district",["环岛"]]],
 	3:[["RemovalMode","erase",["单元","整栋"]]],
 	5:[["PlantingMode","vegetation",["单株","成片"]],["Species","vegetation",["橄榄","柏树","灌木","金叶","粉花","白花","黄花"]],["BrushSize","vegetation",["小笔","中笔","大笔"]]],
 	6:[["WaterMode","water",["池塘","支渠"]],["WaterWidth","water",["1.8m","3.2m","5m"]]],

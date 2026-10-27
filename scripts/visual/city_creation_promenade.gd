@@ -56,7 +56,7 @@ func road_material() -> ShaderMaterial:
 	return materials.road
 
 func prepare(renderer,road: Dictionary) -> Array:
-	var style:=str(road.get("style","path"))
+	var style:=preload("res://scripts/world/city_creation_road_decoration.gd").style(road)
 	if style not in ["promenade","avenue","tram"]: return []
 	var profile: Dictionary = renderer.state.road_profile(road)
 	_prepare_clearance(renderer.state)
@@ -86,12 +86,14 @@ func prepare(renderer,road: Dictionary) -> Array:
 				if _clear(renderer.state,road,lamp_at,.20):
 					records.append({"kind":"lamp","at":lamp_at,"y":renderer.state.ground_height(lamp_at)+.025,"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
 				var flower_at := lamp_at+tangent*(.85 if side>0 else -.85)
-				if station%2==0 and _clear(renderer.state,road,flower_at,.45):
-					records.append({"kind":"flower","at":flower_at,"y":renderer.state.ground_height(flower_at)+.025,"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
+				var bench:bool=road.get("decoration","")=="benches"
+				if station%2==0 and _clear(renderer.state,road,flower_at,.65 if bench else .45) and (not bench or preload("res://scripts/visual/city_creation_road_furniture.gd").bench_fits(renderer.state,road,flower_at,atan2(tangent.x,tangent.y))):
+					records.append({"kind":"bench" if bench else "flower","at":flower_at,"y":renderer.state.ground_height(flower_at)+.025,"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
 				var tree_at:=at+normal*float(side)*(float(road.width)*.5+1.05)
 				if style=="avenue" and _clear(renderer.state,road,tree_at,.65):
 					records.append({"kind":"tree","at":tree_at,"y":renderer.state.ground_height(tree_at),"yaw":atan2(tangent.x,tangent.y),"arc":arc,"side":side})
 		arc+=SPACING;station+=1
+	records=preload("res://scripts/world/city_creation_road_decoration.gd").filter_records(records,road)
 	_cache[str(road.id)]=records
 	return records
 
@@ -221,6 +223,8 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 			_box(renderer,batches,origin,Vector3(.22,.09,.22),Vector3(0,2.12,0),metal)
 			_box(renderer,batches,origin,Vector3(.065,.15,.065),Vector3(0,2.23,0),metal)
 			lamps.append(origin+Vector3.UP*1.86);pools.append(origin+Vector3.UP*.018)
+		elif record.kind=="bench":
+			preload("res://scripts/visual/city_creation_road_furniture.gd").bench(self,renderer,batches,record,metal)
 		elif record.kind=="rail":
 			renderer._append_road_box(batches,Vector3(.055,.028,record.length),origin,metal,Vector3(record.pitch,record.yaw,0))
 		elif record.kind=="tree":

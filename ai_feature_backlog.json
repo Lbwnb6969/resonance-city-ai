@@ -1341,8 +1341,8 @@
         "id": "M72",
         "title": "独立道路装饰选择",
         "description": "把道路装饰与宽度/铺装分开选择，增加成套街灯、植栽或街具风格；对曲路/交叉口/桥岸保持几何净空与存档一致。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 decoration209/paving235/personalization75/legacy375+27 PASS. Independent six choices default-original/none/lamps/flowers/tree-pits/benches across paving, exact curve-ID/width/noop/one-history UndoRedo/cold JSON/Schema19 and atomic invalid rejection. New geometry bench rectangle edges clear own hairpin road; original-width0 furniture-only edits retain authored4.8m and sized metadata. Both bugs reproduced in M72_footprint_baseline.log before repair. Gate3 critic_fixed actual GL/Dummy131 PASS, clean console: real palette choices and native three-click curve,1440/1024 four-row bounds, all six production furniture sets, crossing clearance, hairpin footprint corner oracle and broad real arch bridge original-width replacement/Undo with equal walking-deck signature, cold JSON. Actual3.065034s Masterpeak.143372 zero clips with2homes, capped100 sample p95/max10.049/10.186ms observational only. Original voice IDs/personal save retained. Early first/resumed UI-obstructed fixture and nonexistent close() failed tool retained; no product bypass. Initial visible Original seal now maps explicit legacy; existing external API default empty retains old retrace behavior. Independent three-round Critic8.2: final actual originals/WAV decoded; M72 no openP1/P2, expanded bench bounds to full back +/-0.28m. Existing M70 smooth/Undo104..106ms P2 retained; P3 tree grass overlap, junction pointed paving, hard bridge-bank wall ends. Subjective listening unassessed; report M72/critic_m70_m72.md. Backup before-m72 and original handoff files in local M72/handoff_backup; main tree sync follows."
       },
       {
         "id": "M73",

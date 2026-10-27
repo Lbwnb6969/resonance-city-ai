@@ -25,7 +25,7 @@
    - 改动做好 Git 提交备份；清理先记录依赖闭包计划，再移入唯一 `废弃/`，不覆盖归档；四库原件、三套用户原件和个人作品完整保留。已经执行的一次性归档不重复搬移。
    - 个人 `user://` 存档与作品库不参与施工写入，验证使用隔离存档；外部API、撤销/重做与旧作品兼容必须保持。
    - CPU调度优先核对本地CS2定向源码；关键证据缺失时可用REA技能继续分析本地游戏文件。按本作轻经营需求实现分档模拟，收益以本作实测为准；大型导出留本地。
-   - 搜索使用原生联网搜索，不调用 Brave、EXA、Tavily 搜索 API；生图前读 `C:/Users/Administrator/Desktop/mIDDLEFILE/image_generate.md`。
+   - 搜索将 Brave、EXA、Tavily 作为并列首选，按任务适配度选择，需要交叉验证时组合使用（用户2026-10-27恢复搜索API）；生图前读 `C:/Users/Administrator/Desktop/mIDDLEFILE/image_generate.md`。
    - 交付说明改动、验证命令/结果和剩余风险；不扩大当前任务范围，不按脚本行数强拆。
 
 5. **GitHub版本一致性**：

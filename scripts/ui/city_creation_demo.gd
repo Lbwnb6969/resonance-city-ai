@@ -1266,7 +1266,7 @@ func _append_road_point(force: bool=false) -> void:
 			road_points=road_gesture.controls.duplicate()
 			if road_points[-1]!=p:road_points.append(p)
 		var curve_done:=Time.get_ticks_usec()
-		var check: Dictionary = state.preview_road(road_preview,road_style,"soft",_selected_road_width())
+		var check: Dictionary = state.preview_road(road_preview,road_style,"soft",_selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(self))
 		road_preview.assign(check.points)
 		var check_done:=Time.get_ticks_usec()
 		var porches: int = town.preview_road(road_preview,bool(check.ok),float(check.get("width",1.25)),bool(check.get("bridge",false)),str(check.get("style",road_style)))
@@ -1322,7 +1322,7 @@ func _finish_road() -> void:
 	if road_points.size() < 2:
 		_cancel_draft()
 		return
-	var result: Dictionary = state.add_road(road_preview,road_style,"none",_selected_road_width())
+	var result: Dictionary = state.add_road(road_preview,road_style,"none",_selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(self))
 	if result.ok: completed["road"] = true
 	if bool(result.get("no_op",false)):
 		_message(str(result.message))

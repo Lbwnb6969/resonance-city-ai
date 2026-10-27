@@ -11,6 +11,7 @@ var _cache:Dictionary={}
 var _cache_signatures:Dictionary={}
 var water_material:ShaderMaterial
 func prepare(renderer,road:Dictionary)->Dictionary:
+	if str(road.get("decoration","legacy"))!="legacy":return {"notes":[],"water":[],"gateways":[],"gardens":[]}
 	var city:RefCounted=renderer.state;var profile:Dictionary=city.road_profile(road);var samples:Array=profile.samples
 	renderer.promenade._prepare_clearance(city)
 	var junctions:RefCounted=renderer.road_junctions()

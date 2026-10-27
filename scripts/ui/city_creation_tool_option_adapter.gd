@@ -22,6 +22,7 @@ static func setup(demo:Node3D,root:Control)->void:
  var styles:=option(demo.road_panel,"RoadStyle",preload("res://scripts/world/city_creation_road_paving.gd").CAPTIONS,0,func(i:int)->void:demo._cancel_draft();demo.road_style=preload("res://scripts/world/city_creation_road_paving.gd").UI_STYLES[i];promenade.set_pressed_no_signal(demo.road_style=="promenade"))
  promenade.toggled.connect(func(pressed:bool)->void:demo._cancel_draft();demo.road_style="promenade" if pressed else "path";styles.select(1 if pressed else 0));demo.road_panel.add_child(promenade)
  toggle(demo.road_panel,"RoadRoundabout","◎ 路口环岛广场",func(pressed:bool)->void:demo._cancel_draft();demo.road_roundabout=pressed)
+ preload("res://scripts/ui/city_creation_road_decoration_ui.gd").setup(demo)
  text(demo,demo.road_panel,"road_status","1自由画 · 2直路 · 3曲路 · Tab切换定点模式 · 重描原位升级")
  demo.water_panel=panel(root,"WaterOptions")
  option(demo.water_panel,"WaterMode",["挖一片池塘","从水边引出支流"],0,func(i:int)->void:demo._cancel_draft();demo.water_kind=["pond","channel"][i])

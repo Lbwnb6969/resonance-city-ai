@@ -125,13 +125,13 @@ func update(_force:bool=false)->void:
 					if closed.shape.has(field):ruler[field]=closed.shape[field]
 				ruler.label=str(closed.label)+"\n"+intersection+str(closed.shape.label)
 	demo.road_draft_straight=effective==1
-	valid=demo.state.preview_road(path,demo.road_style,"none" if alt or precise else "soft",demo._selected_road_width())
+	valid=demo.state.preview_road(path,demo.road_style,"none" if alt or precise else "soft",demo._selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
 	if not precise and str(valid.upgrade_road_id).is_empty() and valid.points.size()>1 and (effective==2 and control.is_finite() or effective==1 and not dragged):
 		var resolved:Array[Vector2]=valid.points
 		# Endpoint assistance must not kink a supposedly precise line or move
 		# only the final sample of a quadratic curve.
 		path=Geometry.straight(resolved[0],resolved[-1]) if effective==1 else Geometry.quadratic(resolved[0],control,resolved[-1])
-		valid=demo.state.preview_road(path,demo.road_style,"none",demo._selected_road_width())
+		valid=demo.state.preview_road(path,demo.road_style,"none",demo._selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
 	demo.road_preview.assign(valid.points)
 	demo.town.preview_road(demo.road_preview,bool(valid.ok),float(valid.width),bool(valid.get("bridge",false)),str(valid.style))
 	demo.chemistry_brush.road(demo.road_preview,float(valid.width),str(valid.style),bool(valid.ok))
@@ -163,7 +163,7 @@ func finish()->void:
 	if not active():return
 	update(true)
 	if demo.road_preview.size()<2:demo._cancel_draft();return
-	var points:Array[Vector2]=demo.road_preview.duplicate();var result:Dictionary=demo.state.add_road(points,demo.road_style,"none",demo._selected_road_width())
+	var points:Array[Vector2]=demo.road_preview.duplicate();var result:Dictionary=demo.state.add_road(points,demo.road_style,"none",demo._selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
 	if result.ok and not result.get("no_op",false) and not closure.is_empty():closure_audio.close(points[-1])
 	demo._cancel_draft()
 	if result.ok:demo.completed["road"]=true
