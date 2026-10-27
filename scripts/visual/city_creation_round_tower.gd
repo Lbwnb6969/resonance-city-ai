@@ -12,6 +12,7 @@ const ROOF_HEIGHT := 1.35
 const RADIUS_POWER := 0.78
 const FLOOR := 1.7
 const DIRECTIONS := [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
+const RoofCoordinates=preload("res://scripts/visual/city_creation_roof_coordinates.gd")
 
 static func build(renderer,house: Dictionary) -> Node3D:
 	var plan: Dictionary = Plan.for_house(house,renderer.state.houses,renderer.state.roads)
@@ -105,7 +106,7 @@ static func build(renderer,house: Dictionary) -> Node3D:
 	var roof_center := Vector3(center.x,eave,center.y)
 	var vertices := roof_vertices(roof_center)
 	var color: Color = palette[1]
-	var roof: MeshInstance3D = renderer._roof_surface(root,vertices,color)
+	var roof: MeshInstance3D = renderer._roof_surface(root,vertices,color,RoofCoordinates.build(vertices,roof_center,true))
 	roof.name="RoundTowerRoof"
 	var roof_key := "round_tower_roof/"+str(color)
 	if not renderer.materials.has(roof_key):

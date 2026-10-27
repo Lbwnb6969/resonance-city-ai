@@ -33,7 +33,7 @@ def audit(root):
         digest = hashlib.sha256(json.dumps(contract, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         if digest != CONTRACT_SHA256:
             errors.append("任务契约被修改：id/title/description/verification_cmd 必须保留用户原文")
-        extension = data.get("ui_refactor", {}).get("rounds", []) + data.get("refinement", {}).get("rounds", []) + data.get("sixth_phase", {}).get("rounds", []) + data.get("seventh_phase", {}).get("rounds", [])
+        extension = data.get("ui_refactor", {}).get("rounds", []) + data.get("refinement", {}).get("rounds", []) + data.get("sixth_phase", {}).get("rounds", []) + data.get("seventh_phase", {}).get("rounds", []) + data.get("art_evolution", {}).get("rounds", [])
         for row in extension:
             if type(row.get("passes")) is not bool or not isinstance(row.get("verified_by"), str):
                 errors.append("UI补充轮次缺少有效状态/验证字段")
@@ -106,6 +106,11 @@ def main():
         done = sum(row["passes"] for row in seventh)
         pending_seventh = next((row["id"] for row in seventh if not row["passes"]), "ALL_COMPLETED")
         print(f"SEVENTH_PHASE_AUDIT: {done}/{len(seventh)} | Next up: {pending_seventh}")
+    evolution = json.loads((ROOT / "ai_feature_backlog.json").read_text(encoding="utf-8")).get("art_evolution", {}).get("rounds", [])
+    if evolution:
+        done = sum(row["passes"] for row in evolution)
+        pending_art = next((row["id"] for row in evolution if not row["passes"]), "ALL_COMPLETED")
+        print(f"ART_EVOLUTION_AUDIT: {done}/{len(evolution)} | Next up: {pending_art}")
     return 0
 
 

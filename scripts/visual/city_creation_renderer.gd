@@ -1410,8 +1410,8 @@ func _triangles(parent: Node3D, vertices: Array, color: Color) -> MeshInstance3D
 	parent.add_child(node)
 	return node
 
-func _roof_surface(parent:Node3D,vertices:Array,color:Color)->MeshInstance3D:
-	return RoofSurface.build(self,parent,vertices,color)
+func _roof_surface(parent:Node3D,vertices:Array,color:Color,coordinates:PackedVector2Array=PackedVector2Array())->MeshInstance3D:
+	return RoofSurface.build(self,parent,vertices,color,coordinates)
 
 func _quad(parent: Node3D, a: Vector3, b: Vector3, c: Vector3, d: Vector3, color: Color) -> MeshInstance3D:
 	return _triangles(parent,[a,b,c,a,c,d],color)

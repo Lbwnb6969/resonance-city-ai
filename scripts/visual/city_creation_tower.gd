@@ -13,6 +13,7 @@ const HEIGHT := 1.98
 const PROFILE := 0.62
 const SAMPLES := 20
 const SIDES := [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
+const RoofCoordinates=preload("res://scripts/visual/city_creation_roof_coordinates.gd")
 
 static func build(renderer,parent: Node3D,body: StaticBody3D,house: Dictionary,cell: Dictionary,palette: Array) -> Dictionary:
 	var ground: Vector3 = renderer._cell_position(house,cell)
@@ -35,7 +36,7 @@ static func build(renderer,parent: Node3D,body: StaticBody3D,house: Dictionary,c
 	var bell_top := center+Vector3.UP*0.78
 	var bell: Dictionary = _bell(renderer,parent,bell_top)
 	var roof := roof_vertices(center)
-	var cap: MeshInstance3D = renderer._roof_surface(parent,roof,roof_color)
+	var cap: MeshInstance3D = renderer._roof_surface(parent,roof,roof_color,RoofCoordinates.build(roof,center,false))
 	var roof_key := "joined_roof/"+str(roof_color)
 	if not renderer.materials.has(roof_key):
 		var material := ShaderMaterial.new()

@@ -1297,5 +1297,60 @@
         "verified_by": "M66 full33/34 audit20 actual accepted reports incl M59complete82 and M61modes82/ruler62; priorRF/Sixth retained. Harness/doc+selftest8; curve21/ruler66/closure29/corners32/hinge68/balcony47/score311/M56orchestration37/civic54/routing16/worker6/legacy375+27 PASS. Native stage10 actual25.728s peak.576233 zero clip/3546frames max1 lead;closure53 true chord fifth or inversion76..88 atomicallycost2;call-answer cooldown separate and3bar actual completed response. Stage gain0 special case removed via same measured PCM headroom. Loading archway null stream and new Renaissance empty preview cells fixed. Same300 four-era scene includes11rounded/11balconies/curve/298residents/281depart/900frames;local3edits+3undo equal cold services,real terrain/collision/history/audio IDs preserved. VignetteJourney main-thread8.892..9.138s search moved to exact isolated State snapshot worker with revision/epoch/era stale discard;same terrain maxframe9166.460->453.862ms(command439.3ms,budget1502.4ms retained),steady nearp9519.898/max27.862ms. Original300_final okfalse retained: only2 color UI failures superseded by300_ui_accepted12,then color_resize_final14 actual two-house picker initialization/roof-only preserves wall and1024screen bounds/real Apply hit. Ring cache ordering/no-free-space fallback and More original color initialization fixed from independent critique. Separate native PID32696->35476 day1=25/day2=91 pass:conserved inventory/cards/research,real3era answers,6.010/6.008/6.004s ceremonies,50houses/final work;actual148.236s Masterpeak.233765 zero clip/two72s breaths,not3minutes. Independent final19originals/11decodedWAV,scores8.6/8.6/8.3/7.7/8.5 avg8.34,no openP1/P2,subjective null. Final300Master25.170s peak.239868 zero clip. Original12+4/6+2/personal saves/numeric multipliers/repeat research/user source documents retained. Backup before-m66; final commit/main tree sync then stop authorized goal."
       }
     ]
+  },
+  "art_evolution": {
+    "authorization": "2026-10-27 用户 /goal：持续优化屋顶与其他纹理衔接、光影、性能和地形；覆盖M66旧停止点。逐轮实证优化，不重置旧成果。 同日用户追加：增加道路种类（宽度及可独立装饰）和古典建筑种类。",
+    "document": "文档/35_持续美术地形与性能精炼.md",
+    "rounds": [
+      {
+        "id": "M67",
+        "title": "曲面钟楼和圆塔屋瓦连续坐标",
+        "description": "以真实轮廓弧长代替每三角绝对位置投影，修复相邻轮廓环的瓦缝跳变；保持几何、拾取、配色和旧档。",
+        "passes": true,
+        "verified_by": "Gate1: python tools/check_ai_harness.py; python tools/check_doc_links.py; python -B tests/test_ai_harness.py (8 PASS). Gate2: Godot headless/Dummy tests/test_city_creation_roof_coordinates.gd (19 PASS; shared ring U/V zero error, metric arc error <1.2e-6m, translation invariant, original geometry and batching exact); legacy_roundtrip (375 PASS + 27 works). Gate3: GL/Dummy tools/check_creation_roof_seams_live.gd -- --isolated-session --out-dir=res://验证记录/M67/accepted (20 PASS; actual square/round roofs, daylight/evening/night/low view/1024 PNG, unchanged face hashes and authored city, cold JSON, voice identity and personal save). Master3.065s zero clipped samples; p95/max recorded in accepted/roof_seams.json. Baseline and superseded pre-direction final retained. This fixes tower charts; ordinary joined curved roofs remain a separate follow-up."
+      },
+      {
+        "id": "M68",
+        "title": "折翼屋面扫掠纹理衔接",
+        "description": "修复真实JoinedRoof折翼新增封顶三角UV面积为零，核对正负角/双轴/两层和实际原图。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M69",
+        "title": "地形分块共享边光影连续",
+        "description": "地形脏块候选包含法线依赖halo，修复增量编辑漏更新邻块造成的16m边界明暗缝；增量结果与冷重绘一致。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M70",
+        "title": "柔化后追加塑形的局部增量性能",
+        "description": "针对历史已有smooth时追加非smooth笔触的常见路径，减少全场顺序回放；保留撤销重做及冷回放的精确等价，记录同场CPU与实窗编辑帧时。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M71",
+        "title": "道路宽度与路面种类扩充",
+        "description": "依现有路网、升级替换、转角桥岸与真实预览接口增加可辨认的道路断面与铺装，持久化宽度/路面选择，保持旧路及撤销重做。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M72",
+        "title": "独立道路装饰选择",
+        "description": "把道路装饰与宽度/铺装分开选择，增加成套街灯、植栽或街具风格；对曲路/交叉口/桥岸保持几何净空与存档一致。",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M73",
+        "title": "古典建筑类型扩充",
+        "description": "新增剪影与真实结构各异的古典原型，接入现有原型选择、配色、屋顶纹理/接触AO、真实拾取及冷读接口；核对加层与专用形态的适配边界。",
+        "passes": false,
+        "verified_by": ""
+      }
+    ]
   }
 }
