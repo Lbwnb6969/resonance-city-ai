@@ -4,7 +4,7 @@ const Architecture=preload("res://scripts/world/city_creation_architecture_choic
 const Seed=preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd")
 static func prototypes(era:String)->Array:
  match era:
-  "pastoral":return ["portico","townhouse","rotunda"]
+  "pastoral":return ["portico","townhouse","rotunda"]+Architecture.ANCIENT.IDS
   "renaissance":return ["portico","townhouse","rotunda"]+Architecture.RENAISSANCE
   "clockwork":return Architecture.CLOCKWORK
   "modern_eco":return Architecture.ALPINE

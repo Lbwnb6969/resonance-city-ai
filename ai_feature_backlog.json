@@ -1348,8 +1348,8 @@
         "id": "M73",
         "title": "古典建筑类型扩充",
         "description": "新增剪影与真实结构各异的古典原型，接入现有原型选择、配色、屋顶纹理/接触AO、真实拾取及冷读接口；核对加层与专用形态的适配边界。",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 ancient_extensions51/architecture_choice63/ancient_architecture29/resonance_geometry79/build_brush107/legacy375+27 PASS. Two new Schema19 pastoral types ionic_stoa and roman_basilica, real Ionic spiral volutes/24flute Attic columns/open walkway, basilican nave/aisles/hollow apse/clerestory and real original resident entry arches. One/two floors, metric nondegenerate UV/up-facing normals, unchanged authored rooms/colors/IDs, exact full-prism JSON, partial upper and terrace fallback/UndoRedo/cold read, side-road fallback preserving original doors; special profiles explicitly exclude folding. Gate3 night_aligned GL/Dummy52 PASS clean console:4real one/two-floor houses/day/night, true roof/cell pick, physical column gap/Ionic column/each original basilica resident door/apse rays, actual owned tile recolor without root rebuild,37deg real rotated roof identity, production save_city disk JSON exact, partial upper/Undo,1024 native silhouette book clicks+two new world-click builds. Civic window rig now equals actual prebatch glass records; early generic floating night panes rejected and retained in refined. First low-precision JSON fixture miss and reversed stoa end-gable retained; source/cold-save and final geometry corrected. Actual3.157914s Masterpeak.231628 zero clips, capped100 p95/max10.062/10.346ms observational; original12long4short6bus2nature IDs/personal save retained. Original new type recipes only fit whole rectangular prisms; irregular/terraced/side-access basilica uses explicitly labelled free-form original shell, never drops saved cells/doors. New types not forced into other eras, bent profiles or special landmarks. Sources checked via Brave API: ASCSA stoa and Smarthistory architecture terms, own adapted geometry, no downloaded assets. Backup before-m73; main tree sync after commit."
       }
     ]
   }

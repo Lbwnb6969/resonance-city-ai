@@ -3,7 +3,7 @@ extends RefCounted
 const A=preload("res://scripts/visual/city_creation_architecture.gd")
 const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
 static func plan(house:Dictionary)->Dictionary:
-	if house.get("architecture","") in ["rotunda","townhouse"]:return {}
+	if house.get("architecture","") in ["rotunda","townhouse"] or preload("res://scripts/world/city_creation_ancient_extension_plan.gd").selected(house):return {}
 	var ground:Array=house.cells.filter(func(c):return int(c.level)==0 and c.kind=="room")
 	if ground.is_empty():return {}
 	var low:=Vector2i(ground[0].x,ground[0].z);var high:=low;var upper:=0;var terrace:=false

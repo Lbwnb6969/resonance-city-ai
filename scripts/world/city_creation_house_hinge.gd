@@ -4,6 +4,7 @@ const LIMIT:=28.
 const AXES:=[Vector2.RIGHT,Vector2.LEFT,Vector2.DOWN,Vector2.UP]
 static func valid(value:Variant)->bool:return (value is int or value is float) and is_finite(float(value)) and absf(float(value))<=LIMIT
 static func layout(house:Dictionary)->Dictionary:
+	if preload("res://scripts/world/city_creation_ancient_extension_plan.gd").selected(house):return {}
 	if house.has("signature") or house.get("style","")=="round_tower" or house.get("architecture","") in ["rotunda","peristyle","guildhall","venetian_loggia","belvedere_villa","iron_conservatory","twin_gable","pavilion","panorama"]:return {}
 	var along_x:=true;var along_z:=true;var columns:Dictionary={};var top:=-1
 	for cell:Dictionary in house.cells:

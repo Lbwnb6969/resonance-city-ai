@@ -2,6 +2,8 @@ extends RefCounted
 ## Front silhouettes follow the published recipe, including automatic old houses.
 const Choice=preload("res://scripts/world/city_creation_architecture_choice.gd")
 const PROFILES={
+	"ionic_stoa":[[-.98,.65],[-.98,-.42],[.98,-.42],[.98,.65]],
+	"roman_basilica":[[-.95,.65],[-.95,-.05],[-.42,-.05],[-.42,-.55],[0,-.85],[.42,-.55],[.42,-.05],[.95,-.05],[.95,.65]],
 	"portico":[[-.85,.6],[-.85,-.15],[0,-.75],[.85,-.15],[.85,.6]],
 	"townhouse":[[-.65,.65],[-.65,-.7],[.65,-.7],[.65,.65]],
 	"oriel":[[-.75,.65],[-.75,-.55],[.2,-.55],[.75,-.25],[.75,.65]],
@@ -22,7 +24,7 @@ const PROFILES={
 	"belvedere_villa":[[-.95,.65],[-.95,-.1],[-.5,-.1],[-.5,-.55],[0,-.9],[.5,-.55],[.5,-.1],[.95,-.1],[.95,.65]]}
 static func key(pop,house:Dictionary)->String:
 	var caption:String=preload("res://scripts/ui/city_creation_prototype_caption.gd").caption(pop,house)
-	for id:String in Choice.NEO+Choice.ALPINE+Choice.CLOCKWORK+Choice.RENAISSANCE:
+	for id:String in Choice.NEO+Choice.ALPINE+Choice.CLOCKWORK+Choice.RENAISSANCE+Choice.ANCIENT.IDS:
 		if Choice.label(id)==caption:return id
 	return str(house.get("architecture",""))
 static func line(canvas:CanvasItem,points:Array,at:Vector2,r:float,color:Color,width:float=1.5)->void:
@@ -35,6 +37,13 @@ static func draw(canvas:CanvasItem,key:String,at:Vector2,r:float,color:Color,gol
 	if key=="portico":line(canvas,[[-.88,-.12],[.88,-.12]],at,r,color,2.2)
 	if key=="rotunda":canvas.draw_arc(at+Vector2(0,-.1)*r,r*.67,PI,TAU,20,color,1.6,true)
 	match key:
+		"ionic_stoa":
+			for x:float in [-.75,-.25,.25,.75]:
+				line(canvas,[[x,-.24],[x,.55]],at,r,gold,1.2)
+				for side:float in [-1.,1.]:canvas.draw_arc(at+Vector2(x+side*.07,-.20)*r,.07*r,0,TAU*1.4,12,color,1.0,true)
+		"roman_basilica":
+			line(canvas,[[-.8,.4],[-.8,.10],[-.45,.10],[-.45,-.32],[.45,-.32],[.45,.10],[.8,.10],[.8,.4]],at,r,gold,1.2)
+			canvas.draw_arc(at+Vector2(0,.55)*r,r*.20,PI,TAU,12,gold,1.2,true)
 		"portico","guildhall","peristyle","rotunda","belvedere_villa":
 			for x:float in [-.55,0.,.55]:line(canvas,[[x,-.05],[x,.55]],at,r,gold,1.2)
 			line(canvas,[[-.75,-.15],[.75,-.15]],at,r,color)

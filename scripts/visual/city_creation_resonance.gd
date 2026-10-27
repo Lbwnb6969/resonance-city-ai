@@ -66,6 +66,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 		if not round_tower.is_empty(): continue
 		if str(cell.kind) != "room": continue
 		for side: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			if preload("res://scripts/visual/city_creation_civic_glow.gd").face(self,root,house,cell,side,surface,windows):continue
 			var neighbor: Dictionary = renderer._neighbor_cell(house,cell,side)
 			if not neighbor.is_empty() and str(neighbor.kind) == "room": continue
 			var cuts: Array = []

@@ -3,7 +3,7 @@ const A=preload("res://scripts/visual/city_creation_architecture.gd")
 const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
 const Villa=preload("res://scripts/visual/city_creation_ancient_villa.gd")
 static func temple(house:Dictionary)->Dictionary:
-	if house.get("architecture","") in ["rotunda","townhouse"] or house.cells.any(func(c):return int(c.level)!=0 or c.kind!="room"):return {}
+	if house.get("architecture","") in ["rotunda","townhouse"] or preload("res://scripts/world/city_creation_ancient_extension_plan.gd").selected(house) or house.cells.any(func(c):return int(c.level)!=0 or c.kind!="room"):return {}
 	var low:=Vector2i(house.cells[0].x,house.cells[0].z);var high:=low
 	for c:Dictionary in house.cells:low=Vector2i(mini(low.x,c.x),mini(low.y,c.z));high=Vector2i(maxi(high.x,c.x),maxi(high.y,c.z))
 	if house.cells.size()!=(high.x-low.x+1)*(high.y-low.y+1):return {}

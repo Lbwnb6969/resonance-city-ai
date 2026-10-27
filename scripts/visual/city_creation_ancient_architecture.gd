@@ -71,6 +71,7 @@ static func column(r,parent:Node3D,at:Vector3,height:float,radius:float,stone:Ma
 	r._cylinder(parent,radius*.8,radius*1.3,.10,at+Vector3.UP*(height-.12),stone,20).name="DoricEchinus"
 	r._box(parent,Vector3(radius*2.9,.08,radius*2.9),at+Vector3.UP*(height-.03),stone).name="DoricAbacus"
 static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
+	if preload("res://scripts/visual/city_creation_ancient_extensions.gd").roofs(r,parent,house,palette):return
 	if Mass.roof(r,parent,house,palette,load("res://scripts/visual/city_creation_ancient_architecture.gd")):return
 	var domes:Dictionary=parent.get_meta("dome_cells",{});var count:=0
 	for patch:Dictionary in r.building_context.roof_patches(str(house.id)):
@@ -89,6 +90,7 @@ static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
 	parent.set_meta("ancient_roof_patches",count)
 static func finish(r,parent:Node3D,house:Dictionary,plans:Array)->void:
 	parent.set_meta("ancient_architecture",{"order":"greek_doric_roman","saved_cells":house.cells.size()})
+	if preload("res://scripts/visual/city_creation_ancient_extensions.gd").finish(r,parent,house,parent.get_meta("palette_colors")):return
 	if Mass.rotunda(r,parent,house,parent.get_meta("palette_colors"),load("res://scripts/visual/city_creation_ancient_architecture.gd")):return
 	Mass.Villa.build(r,parent,house,parent.get_meta("palette_colors"),load("res://scripts/visual/city_creation_ancient_architecture.gd"))
 	for plan:Dictionary in plans:
