@@ -726,3 +726,9 @@
 - ROOF: 实际横排/纵排/L/U发现698个UV纵轴朝上三角；仅修正生产共享瓦片搭接微法线朝下坡，11代表样本GPU27 PASS，网格/UV/拾取保持；屋谷结构与弯曲仍待核对。
 - VERIFY: 原图同机位before/after各OpenGL/WASAPI91 PASS，七组几何/UV报告一致；legacy375+27、正式import、Harness/链接/资源审计PASS。最终PCM2.960544s峰.158875零削波，原池保持、听感未评。
 - NEXT: M83仍false，屋谷结构/UV弯曲、复杂路口/桥岸继续；M84～M86待办。本地提交后双库审阅同步并核树。
+
+[SESSION_M83_VALLEY_MESH] 2026-10-28 VERIFIED SUBSTEP：以生产曲面决定屋谷对角线/必要内部采样，不新增装饰天沟。
+- GEOMETRY: L/U四朝向2836单元，1013中点改善/0变差/286内部采样；最大中点误差8.9～9.5cm→4.8～7.2mm，非全曲面上界。共享边/作者身份保持，gable原三角路径不变。
+- CPU: valleys69/hingeUV307/context1540/legacy375+27、正式import、Harness/链接/13自测PASS；场景/原件不移除，备份before-m83-valley-20261028。
+- LIVE: OpenGL/WASAPI新44+原91 PASS；原生选择/UndoRedo/已发ID保留/远端实例与磁盘冷算顶点UV一致；昼夕夜/低角原图，PCM3.215964s峰.237213及2.972154s峰.143280零削波，听感未评。
+- NEXT: M83仍false，整体汇水/曲面UV、复杂路口/桥岸待核对，M84～M86保留；文档52，提交后双库审阅同步核树。

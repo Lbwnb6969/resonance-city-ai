@@ -222,6 +222,7 @@ func _build_group(group: Array,group_id: String) -> Array:
 				line_bins[key].append(edge)
 	var result: Array = []
 	var base := float(group[0].base_y)+(int(group[0].level)+1)*FLOOR+0.03
+	var sample:=func(p):return _point(p,base,line_bins,bounds) if gable.is_empty() else _gable_point(p,base,gable,bounds)
 	var point_cache: Dictionary = {}
 	var covered_bins: Dictionary = {}
 	var pieces: Array = []
@@ -264,7 +265,7 @@ func _build_group(group: Array,group_id: String) -> Array:
 				var b: Vector3 = points[ix+1][iz]
 				var c: Vector3 = points[ix+1][iz+1]
 				var d: Vector3 = points[ix][iz+1]
-				vertices.append_array([a,c,b,a,d,c])
+				vertices.append_array(preload("res://scripts/visual/city_creation_roof_quad.gd").vertices(a,b,c,d,sample) if gable.is_empty() else [a,c,b,a,d,c])
 		result.append({"house_id":domain.row.house_id,"cell_id":domain.row.cell_id,"vertices":vertices,"surface":"roof","group_id":group_id,"bounds":rect,"base_y":base,"roof_kind":"union" if gable.is_empty() else "gable"})
 	if not gable.is_empty():
 		for end: Dictionary in gable.ends:
@@ -295,7 +296,7 @@ func _build_group(group: Array,group_id: String) -> Array:
 		var vertices: Array[Vector3] = [a,b,c,a,c,d]
 		if edge.side==Vector2i.LEFT or edge.side==Vector2i.DOWN: vertices = [a,c,b,a,d,c]
 		result.append({"house_id":edge.row.house_id,"cell_id":edge.row.cell_id,"vertices":vertices,"surface":"fascia","group_id":group_id,"base_y":base,"side":edge.side})
-	preload("res://scripts/visual/city_creation_joined_roof_coordinates.gd").assign(result,gable,bounds,func(p):return _point(p,base,line_bins,bounds) if gable.is_empty() else _gable_point(p,base,gable,bounds))
+	preload("res://scripts/visual/city_creation_joined_roof_coordinates.gd").assign(result,gable,bounds,sample)
 	return result
 
 func _row_gable(group: Array) -> Dictionary:

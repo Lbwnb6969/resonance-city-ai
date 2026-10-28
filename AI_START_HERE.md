@@ -4,7 +4,7 @@
 
 本对话的新版50_m82_m86.md、51.md、52.md为当前设计来源；[融合总案](文档/50_空间驱动城建音乐与整合排期修订.md)统一冲突取舍、四功能区、完整母曲与城建分轨编配。旧蓝图有效的工程和兼容条款已并入[工程维护](文档/工程维护.md)，不再按历史排期施工。
 
-M75～M82技术验收完成；M83完成街具净空、共享风及屋瓦搭接微法线坡向子步，整项仍false。屋谷结构/UV弯曲、路口与桥岸继续待核对，M84～M86待办。云端完整树冷验通过后已恢复本地M83，不再沿用清理轮停止点。云端入口为python tools/check_creation_cloud.py --godot godot。
+M75～M82技术验收完成；M83完成街具净空、共享风、屋瓦搭接坡向与屋谷网格自适应采样子步，整项仍false。屋谷整体汇水/曲面UV、路口与桥岸继续待核对，M84～M86待办。云端完整树冷验后已恢复本地M83，不再沿用清理轮停止点。云端入口为python tools/check_creation_cloud.py --godot godot。
 
 代码入口：scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；State/API/序列化在scripts/world，表现与增量发布在scripts/visual，拍钟/谱面/换流在scripts/audio。正常新城initialize_free空地，initialize/initialize_empty仍为legacy配方API。
 
