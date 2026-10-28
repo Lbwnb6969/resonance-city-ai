@@ -46,6 +46,9 @@ def scan(root):
                 candidate(path, 'uid_without_source_script')
     dependencies = 0
     missing = []
+    tracked = subprocess.check_output(['git', 'ls-files', '-z'], cwd=root).decode('utf-8').split('\0')
+    canonical = {name.casefold(): name for name in tracked if name}
+    case_errors = []
     pattern = r'(?:preload\s*\(|load\s*\(|extends\s+|#include\s+)\s*["\x27](res://[^"\x27]+)'
     for folder in ('scripts', 'scenes', 'addons', 'tests', 'tools'):
         for path in (root / folder).rglob('*'):
@@ -57,6 +60,8 @@ def scan(root):
                 dependencies += 1
                 if not (root / name[6:]).exists():
                     missing.append([path.relative_to(root).as_posix(), name])
+                elif canonical.get(name[6:].casefold(), name[6:]) != name[6:]:
+                    case_errors.append([path.relative_to(root).as_posix(), name, canonical[name[6:].casefold()]])
     sources = []
     backlog = root / 'ai_feature_backlog.json'
     if backlog.exists():
@@ -78,10 +83,10 @@ def scan(root):
             history['git_recovery_commits'][commit] = result.returncode == 0
     docs = documents(root)
     total_links, errors = check_doc_links.check(docs, root)
-    return {'ok': not missing and not errors and all(x['ok'] for x in sources),
+    return {'ok': not missing and not case_errors and not errors and all(x['ok'] for x in sources),
             'documents': [p.relative_to(root).as_posix() for p in docs], 'document_links': total_links,
             'link_errors': [[str(p.relative_to(root)), n, target, reason] for p, n, target, reason in errors],
-            'resource_dependencies': dependencies, 'missing_resources': missing, 'source_hashes': sources,
+            'resource_dependencies': dependencies, 'missing_resources': missing, 'resource_case_errors': case_errors, 'source_hashes': sources,
             'previous_archive': history, 'cache_candidates': candidates,
             'candidate_bytes': sum(x['bytes'] for x in candidates),
             'kept_import_destinations': len(keep)}

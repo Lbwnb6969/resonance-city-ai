@@ -5,6 +5,7 @@
 | 任务 | 工具 |
 | --- | --- |
 | 任务/入口/文档审计 | check_ai_harness.py、check_doc_links.py、audit_creation_workspace.py（只读资源/来源/缓存盘点）、tests/test_ai_harness.py |
+| 云端/干净克隆施工检查 | check_creation_cloud.py --godot godot；无需本机原料/路径，输出每项日志与report.json |
 | 两库审阅后同步 | sync_github_all.py prepare，再push；完整库独立索引 |
 | 音库重建 | bake_creation_music_bank.gd，再bake_creation_portable_bank.gd |
 | M80特征→brief→原创谱面 | build_creation_music_study.py、music_reference_features.py、music_authored_score.py、verify_creation_music_study.py |

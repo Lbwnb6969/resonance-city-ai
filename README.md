@@ -19,6 +19,6 @@ Godot --headless --path . --script tools/bake_creation_portable_bank.gd
 
 [当前设计与排期](文档/50_空间驱动城建音乐与整合排期修订.md) · [工程维护](文档/工程维护.md) · [文档导航](文档/README.md) · [四库参考](文档/参考索引.md)
 
-旧蓝图的有效工程条款已合并，废弃原文、重复工程包及一次性工具移出工作树，保存在唯一本地废弃及Git历史；范围与恢复见[整理记录](文档/整理记录.md)。代码、运行资源、旧档兼容、许可证、四库原件与个人作品保留。
+旧蓝图的有效工程条款已合并，废弃原文、重复工程包及一次性工具已退出工作树；原归档目录的实际状态、现存新批次与Git恢复边界见[整理记录](文档/整理记录.md)。代码、运行资源、旧档兼容、许可证、四库原件与个人作品保留。
 
 [完整施工库](https://github.com/Lbwnb6969/resonance-city)与[精简设计库](https://github.com/Lbwnb6969/resonance-city-ai)有更新时一起同步；当前Git树分别小于1GB/100MB。提交后执行tools/sync_github_all.py prepare，审阅再push，流程见[双库同步](文档/37_双库同步与云端施工.md)。
