@@ -118,7 +118,7 @@ func _process(delta:float)->void:
 	if demo==null:return
 	elapsed+=delta;highlight_left=maxf(0.,highlight_left-delta)
 	var early:bool=demo.intuitive_guidance.stage not in ["","bridge","landmark"]
-	visible=not early and demo.state.harmony_journey.get("active_vignette",{}).is_empty() and demo.ui_layer.visible and not demo.camera_rig.strolling and not demo.edit_pending() and not demo.gallery.panel.visible and not demo.journal.panel.visible and not demo.guide.visible()
+	visible=bool(demo.state.creative_settings.get("guidance",false)) and not early and demo.state.harmony_journey.get("active_vignette",{}).is_empty() and demo.ui_layer.visible and not demo.camera_rig.strolling and not demo.edit_pending() and not demo.gallery.panel.visible and not demo.journal.panel.visible and not demo.guide.visible()
 	highlight.visible=visible and highlight_left>0.
 	if not visible:return
 	if offered_revision!=demo.state.revision:

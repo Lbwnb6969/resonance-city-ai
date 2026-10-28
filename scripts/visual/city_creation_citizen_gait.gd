@@ -63,6 +63,7 @@ static func pose(root:Node3D,time:float,moving:bool,seated:bool=false,working:bo
 	var action:="cup" if seated else "step" if moving else "bread" if working and root.get_meta("citizen_role","")=="bakery" else "wood" if working and root.get_meta("citizen_role","")=="workshop" else ""
 	var contact:=time*.82+float(root.get_meta("citizen_index",0))*2.1 if seated else phase if moving else time*(3.8 if action=="bread" else 2.3)+phase*.15
 	root.set_meta("life_foley",{"kind":action,"time":time,"tick":floori((contact-(PI-.25 if seated else PI*.5))/(TAU if seated or not moving else PI))})
+	if root.get_meta("bench_seated",false):root.set_meta("visible_activity","bench_rest");root.set_meta("life_foley",{"kind":"","time":time,"tick":0});sip=0.
 	skin.set_blend_shape_value(0,maxf(0.,stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(1,maxf(0.,-stride)*(1.-inspect) if not seated else 0.);skin.set_blend_shape_value(2,inspect if not seated else 0.);skin.set_blend_shape_value(3,1.-sip if seated else 0.);skin.set_blend_shape_value(4,sip if seated else 0.)
 	if not greeting:
 		body.position.y=.28+sin(time*1.7)*.004 if seated else absf(stride)*.023
@@ -92,7 +93,7 @@ static func _walking(root:Node3D,time:float)->bool:
 static func update(life)->void:
 	for row:Dictionary in life.residents:
 		if not _near(life,row.node):continue
-		pose(row.node,life.time,_walking(row.node,life.time),row.get("cafe_visit",{}).get("phase","")=="seated",false,life.greetings.active.has(str(row.home_id)))
+		pose(row.node,life.time,_walking(row.node,life.time),row.get("cafe_visit",{}).get("phase","")=="seated" or row.get("bench_visit",{}).get("phase","")=="seated",false,life.greetings.active.has(str(row.home_id)))
 	for row:Dictionary in life.bakery.workers:
 		if _near(life,row.node):pose(row.node,life.time,_walking(row.node,life.time),false,row.phase=="baking")
 	for row:Dictionary in life.workshop.workers:

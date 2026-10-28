@@ -15,7 +15,7 @@ var buttons:Dictionary={}
 var epoch:Variant=null
 var signature:Variant=null
 var elapsed:=0.
-var postponed:=false
+var postponed:=true
 var events:Array[Dictionary]=[]
 var progress:ProgressBar
 var cue_count:=0
@@ -46,12 +46,12 @@ func poll()->void:
 	if demo.gallery.busy or demo.edit_pending():return
 	var key:=[demo.state.get_instance_id(),demo.state._wish_epoch]
 	if key!=epoch:
-		epoch=key;signature=null;postponed=false;Receipts.initialize(demo.state)
+		epoch=key;signature=null;postponed=true;Receipts.initialize(demo.state)
 	var row:=Receipts.collect(demo.state)
 	if int(row.earned)>0:
 		events.append({"earned":row.earned,"events":row.events,"level":row.level})
 		if events.size()>128:events.pop_front()
-	if row.leveled_up:postponed=false;chime()
+	if row.leveled_up:chime()
 	refresh()
 func chime()->void:
 	if demo.music.muted or demo.music._loading:return

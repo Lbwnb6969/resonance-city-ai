@@ -4,6 +4,7 @@ var strolling := false
 var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
+var bench_view:=preload("res://scripts/ui/city_creation_bench_view.gd").new()
 var aura:=preload("res://scripts/visual/city_creation_stroll_glow.gd").new()
 var postcard_directory := "user://postcards"
 func collection_view(demo:Node3D)->Dictionary:
@@ -18,6 +19,7 @@ static func orthographic_distance(zoom:float,pitch:float)->float:
 	return maxf(maxf(42.,zoom*1.1),zoom*.5*cos(pitch)/sin(pitch)+12.)
 
 func toggle(demo: Node3D) -> void:
+	if not bench_view.seat_id.is_empty():bench_view.leave(demo);return
 	demo._cancel_draft()
 	strolling = not strolling
 	if strolling:
@@ -38,6 +40,7 @@ func toggle(demo: Node3D) -> void:
 	if demo.tactile_dock!=null:demo.tactile_dock.refresh()
 
 func update(demo: Node3D, delta: float) -> void:
+	if bench_view.update(demo):return
 	aura.update(demo,strolling)
 	if not strolling: return
 	if demo.gallery.panel.visible or demo.journal.panel.visible or demo.ledger.visible() or demo.guide.visible(): return

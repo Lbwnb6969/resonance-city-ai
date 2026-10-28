@@ -14,6 +14,7 @@ var epoch:Variant=null
 var elapsed:=0.
 var wait_next:=0.
 var completions:Array[Dictionary]=[]
+var look_until:=0
 func setup(owner:Node,parent:Control)->void:
 	demo=owner;name="VignetteJourney";demo.add_child(self);demo.set_meta("vignette_journey",self)
 	paper=PanelContainer.new();paper.name="WoodlandVignette";paper.theme=UI.make_theme();paper.custom_minimum_size.x=286;paper.add_theme_stylebox_override("panel",UI.panel(12));parent.add_child(paper)
@@ -38,6 +39,7 @@ func look_at()->void:
 	var quest:Dictionary=demo.state.harmony_journey.get("active_vignette",{})
 	if quest.is_empty():return
 	var at:=Vector2(quest.anchor[0],quest.anchor[1]);demo.focus=Vector3(at.x,demo.state.ground_height(at)+.7,at.y);demo._update_camera()
+	look_until=Time.get_ticks_msec()+8000
 func poll()->void:
 	if demo.gallery.busy or demo.edit_pending():return
 	Receipts.initialize(demo.state)
@@ -66,12 +68,11 @@ func refresh()->void:
 	var at:=Vector2(quest.anchor[0],quest.anchor[1]);marker.position=Vector3(at.x,demo.state.ground_height(at)+.06,at.y)
 func _process(delta:float)->void:
 	wait_next=maxf(0.,wait_next-delta);elapsed+=delta
-	var early:bool=demo.state.houses.size()<3 and demo.state.harmony_journey.get("completed_vignettes",{}).is_empty()
-	paper.visible=not early and not demo.gallery.panel.visible and not demo.journal.scrollbook.visible and not demo.guide.visible() and not demo.camera_rig.strolling and not demo.edit_pending()
+	paper.visible=false
 	if demo.has_meta("era_ceremony") and not demo.get_meta("era_ceremony").active.is_empty():paper.hide()
 	if demo.has_meta("inspiration_draft") and demo.get_meta("inspiration_draft").paper.visible:paper.hide()
 	if not demo.spatial_popover.target_house_id.is_empty():paper.hide()
 	if demo.tactile_dock!=null and demo.tactile_dock.popup.is_visible_in_tree():paper.hide()
-	marker.visible=paper.visible and not paper.get_meta("letter_folded",true) and not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
+	marker.visible=Time.get_ticks_msec()<look_until and not demo.guide.visible() and not demo.gallery.panel.visible and not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
 	marker.material_override.set_shader_parameter("metronome_strength",.55+.2*sin(Time.get_ticks_msec()*.0015))
 	if elapsed>=1.:elapsed=0.;poll()

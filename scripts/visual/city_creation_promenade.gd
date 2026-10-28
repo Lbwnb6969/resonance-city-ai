@@ -98,6 +98,7 @@ func prepare(renderer,road: Dictionary) -> Array:
 	return records
 
 func _clear(city,road: Dictionary,at: Vector2,radius: float) -> bool:
+	if city.PlacedLandmarks.occupies(city,at,radius):return false
 	if not city.WORLD_RECT.grow(-radius).has_point(at) or city.water_clearance(at)<radius+.45: return false
 	_prepare_clearance(city)
 	var candidates:Dictionary={}
@@ -138,7 +139,7 @@ func _prepare_clearance(city:RefCounted)->void:
 		var at:=Vector2(plant.position[0],plant.position[1])
 		_add_clearance({"kind":"plant","at":at,"radius":.55},Rect2(at,Vector2.ZERO).grow(.55))
 
-	_clearance_signature=hash([_clearance_records,city.waters,city.roads])
+	_clearance_signature=hash([_clearance_records,city.waters,city.roads,city.placed_landmarks])
 
 func _add_clearance(record:Dictionary,bounds:Rect2)->void:
 	var index:=_clearance_records.size();_clearance_records.append(record)

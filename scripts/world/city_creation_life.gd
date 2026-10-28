@@ -163,7 +163,7 @@ func _update_citizen_lod(delta:float)->void:
 		var point:Vector3=motion.point() if motion!=null else resident.node.position
 		var visible:=view_camera==null or view_camera.is_position_in_frustum(point+Vector3.UP*.35)
 		var ticket:Dictionary=tram.tickets.get(str(resident.home_id),{})
-		var scalar:bool=not visible and not resident.has("solo_listen") and not resident.has("balcony_visit") and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and not conductor_parade.owns(self,resident) and ticket.get("state","")!="onboard"
+		var scalar:bool=not visible and not resident.has("solo_listen") and not resident.has("balcony_visit") and not resident.has("bench_visit") and not resident.paused and resident.wait<=0. and str(resident.dwell_id).is_empty() and not resident.has("cafe_visit") and not conductor_parade.owns(self,resident) and ticket.get("state","")!="onboard"
 		if scalar:
 			if not resident.has("offscreen_motion"):resident.offscreen_motion=CitizenMotion.new(point,resident.node.rotation.y)
 			resident.node.get_child(0).visible=false;_lod_scalar_count+=1
@@ -439,6 +439,7 @@ func _tick_life(delta: float) -> void:
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
 	if preload("res://scripts/world/city_creation_balcony_visits.gd").tick(self,resident,delta):return
+	if preload("res://scripts/world/city_creation_bench_visits.gd").tick(self,resident,delta):return
 	if preload("res://scripts/world/city_creation_solo_listeners.gd").tick(self,resident,delta):return
 	if conductor_parade.owns(self,resident):return
 	if time<float(resident.get("greeting_until",-1.)):return
@@ -1239,6 +1240,7 @@ func _resident_checkpoint(resident: Dictionary) -> Dictionary:
 	var node: Node3D = resident.node
 	var result := {"home_id":str(resident.home_id),"position":[node.position.x,node.position.z],"yaw":node.rotation.y,"destination_id":str(resident.destination_id),"dwell_id":str(resident.dwell_id),"service_pending":str(resident.service_pending),"wait":float(resident.wait),"paused":bool(resident.paused),"phase":float(resident.phase),"stops":resident.stops.duplicate()}
 	preload("res://scripts/world/city_creation_balcony_visits.gd").checkpoint(resident,result)
+	preload("res://scripts/world/city_creation_bench_visits.gd").checkpoint(resident,result)
 	if resident.has("daily_snapshot"): result.daily_snapshot = resident.daily_snapshot.duplicate(true)
 	if resident.has("cafe_visit"): result.cafe_visit = resident.cafe_visit.duplicate(true)
 	return result

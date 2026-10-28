@@ -12,6 +12,7 @@ static func plans(life)->Dictionary:
 		life.set_meta("balcony_plans",result);life.set_meta("balcony_revision",life.state.revision)
 	return life.get_meta("balcony_plans",{})
 static func start(life,r:Dictionary)->bool:
+	if r.has("bench_visit"):return false
 	var reached_home:bool=str(r.destination_id)==str(r.home_id) and int(r.index)>=r.route.size()
 	if not (r.paused or reached_home) or r.wait>0. or r.has("daily_snapshot") or r.has("solo_listen") or r.has("cafe_visit") or not str(r.dwell_id).is_empty() or not life._concert.is_empty():return false
 	if life.time<float(r.get("balcony_next",6.)):return false

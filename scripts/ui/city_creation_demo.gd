@@ -757,6 +757,7 @@ func _input(event: InputEvent) -> void:
 			gallery.close_panel()
 			get_viewport().set_input_as_handled()
 		return
+	if camera_rig.bench_view.handle(self,event):get_viewport().set_input_as_handled();return
 	if has_meta("ground_landmark_tool") and get_meta("ground_landmark_tool").handle(event):get_viewport().set_input_as_handled();return
 	if has_meta("house_rotation_input") and get_meta("house_rotation_input").handle(event):
 		get_viewport().set_input_as_handled();return

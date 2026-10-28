@@ -77,6 +77,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 	column.add_child(footer)
 	preload("res://scripts/ui/city_creation_creation_options.gd").install(demo,column)
 	preload("res://scripts/ui/city_creation_music_preferences.gd").install(demo,column)
+	preload("res://scripts/ui/city_creation_city_letters.gd").install(demo,column)
 	panel.resized.connect(_fit)
 	_select_tab(0)
 	_fit()

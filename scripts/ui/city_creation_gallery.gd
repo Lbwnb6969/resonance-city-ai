@@ -158,6 +158,7 @@ func _open_chosen(chosen: Dictionary) -> void:
 		_load_phase("")
 		return
 	last_auto_id=str(kept.id)
+	demo.camera_rig.bench_view.leave(demo)
 	demo.life.set_process(false)
 	demo._cancel_draft()
 	panel.show()
