@@ -75,7 +75,8 @@ def design_tree(source, parent):
         return value('rev-parse', source+'^{tree}')
     current = files(source)
     kept = design_paths(ROOT, current)
-    env = dict(os.environ, GIT_INDEX_FILE=str(ROOT / '.git/design-sync-index'))
+    git_dir = Path(value('rev-parse', '--absolute-git-dir'))
+    env = dict(os.environ, GIT_INDEX_FILE=str(git_dir / 'design-sync-index'))
     subprocess.run(['git', 'read-tree', source], cwd=ROOT, env=env, check=True)
     removed = b'\0'.join(p.encode() for p in sorted(set(current)-kept))+b'\0'
     subprocess.run(['git', 'update-index', '--force-remove', '-z', '--stdin'],

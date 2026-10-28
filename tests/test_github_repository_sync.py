@@ -96,4 +96,28 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     paths = set(design.git('ls-tree', '-r', '--name-only', remote).stdout.decode().splitlines())
     assert 'scripts/new_feature.gd' in paths
     assert full.MANIFEST not in paths and not any(p.startswith('参考资料/') for p in paths)
-    print('DUAL_REPOSITORY_SYNC PASS: real full push, fresh cloud clone, reduced push, unchanged source HEAD/index; 1GB policy and omissions verified.')
+    # Cloud construction can use a linked worktree; its .git is a file.
+    linked = base / 'linked'
+    git(cloud, 'worktree', 'add', '-b', 'fixture-linked', str(linked))
+    put(linked, 'scripts/worktree_feature.gd', b'extends Node\n')
+    git(linked, 'add', 'scripts/worktree_feature.gd')
+    git(linked, 'commit', '-m', 'linked feature')
+    linked_head = git(linked, 'rev-parse', 'HEAD')
+    linked_git = Path(git(linked, 'rev-parse', '--absolute-git-dir'))
+    linked_index = (linked_git / 'index').read_bytes()
+    full.ROOT, full.OUT = linked, linked / '验证记录/full-proof'
+    full.prepare()
+    assert full.WORK == linked_git / 'full-sync'
+    full.push()
+    design.ROOT, design.OUT = linked, linked / '验证记录/design-proof'
+    design.prepare()
+    design.push()
+    assert git(linked, 'rev-parse', 'HEAD') == linked_head
+    assert (linked_git / 'index').read_bytes() == linked_index
+    assert git(cloud, 'rev-parse', 'HEAD') == cloud_head
+    assert (cloud / '.git/index').read_bytes() == cloud_index
+    assert git(linked, 'status', '--porcelain', '--untracked-files=no') == ''
+    for role in ['origin', 'ai-sync']:
+        remote_head = git(linked, 'ls-remote', role, 'refs/heads/main').split()[0]
+        assert 'scripts/worktree_feature.gd' in git(linked, 'ls-tree', '-r', '--name-only', remote_head).splitlines()
+    print('DUAL_REPOSITORY_SYNC PASS: real full/design pushes from clone and linked worktree; source HEAD/index preserved.')

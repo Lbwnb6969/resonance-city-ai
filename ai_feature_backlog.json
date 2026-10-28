@@ -1359,5 +1359,168 @@
         "verified_by": "Gate1 Harness/doc PASS. Gate2 close_life_audio21/resonance_geometry79/legacy375+27 PASS. Actual Gait contact phase stamps for walking feet, sip lowering, kneading and wood craft; idle/other professions silent; fresh timestamp prevents stale reentry, smooth zoom10..18 and radius5.5m, actual frustum, one borrowed short voice with one idle slot reserved, serial ownership prevents stopping musical reuse. Seven mono22050 short PCM maxpeak.140015, local Foundation action/media provenance and original ceramic contacts; originals retained. Gate3 final OpenGL/WASAPI59 PASS: real simulation reaches walking/baking/crafting/seated tea without fabricated events, 21/2/3/2 sampled matching contacts, playback advances, actual four short-bus and Master captures 7.396..7.419s, Masterpeak.189911..218811 zero clipping. Far/offscreen suppression, actual busy contact rejection, fixed12long4short6bus2nature IDs and personal save unchanged. Capped100fps observation p95/max10.049/10.380ms. First capture harness interrupted for repeated PCM property access; retained, final captures completed. Runtime/package closure includes7WAV, portable bank preferred; no save schema or authored-state writes. Backup before-m74; dual GitHub synchronization follows current user roles: full origin <1GB, design ai-sync <100MB, assets external."
       }
     ]
+  },
+  "holistic_integration": {
+    "title": "自由造城、城市演奏与成长整合",
+    "source_document": "文档/来源/20261028_共鸣之城_整合设计与施工.md",
+    "source_sha256": "544f2358f4091286fdb98eb0ebca07707faf64ff269ad1f07630ad2fc2626fb5",
+    "baseline_commit": "f72d2ae5007c83c527f0c7111bf089e3d92f439d",
+    "numbering": "原提案M74～M85顺延为M75～M86；已有M74生活音效完整保留",
+    "rounds": [
+      {
+        "id": "M75",
+        "source_id": "M74",
+        "title": "锁定快照、导入任务与建立真实基线",
+        "description": "消除两份源设计和当前代码之间的错位，避免施工Agent继续旧计划或误改完成状态。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": true,
+        "verified_by": "2026-10-28 M75: Harness与13项自测、文档链接、双远端clone/worktree发布夹具通过；Godot4.7.2 legacy375检查/27作品及chamber311通过；OpenGL基线72检查/8原图、300屋编辑与Undo/cold-services6检查；独立WAV292.850068s/44100Hz双声道/peak0.276825/零削波，原声部池保持。证据文档42与验证记录/M75。软件渲染发布延迟12.8～21.5秒为待优化基线，听感未评。"
+      },
+      {
+        "id": "M76",
+        "source_id": "M75",
+        "title": "自由创作政策与版本化存档",
+        "description": "新城直接使用四时代普通风貌和核心工具，同时保留旧城真实历史。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M75"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M77",
+        "source_id": "M76",
+        "title": "道路面板收敛与操作冲突清理",
+        "description": "保留现有全部能力，把常用控制收敛为可理解的一行。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M76"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M78",
+        "source_id": "M77",
+        "title": "一个主题的完整音乐垂直样板",
+        "description": "用一个原创主题证明“乐句、伴奏、连续基础层、安全切换、正式播放”成立，之后才复制到多风格。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M77"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M79",
+        "source_id": "M78",
+        "title": "三核心风格、144秒段落与城市控制",
+        "description": "城市空间与生活能够组织三种真正不同的音乐，而非换音色播放同一公式。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M78"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M80",
+        "source_id": "M79",
+        "title": "参考分析到原创谱材的可复现接口",
+        "description": "Agent可以使用现有分析结果提出设计、写谱、录音再修订，但不把统计数据冒充转录。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M79"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M81",
+        "source_id": "M80",
+        "title": "传世地标与真实留白微景",
+        "description": "取消新城自动屋顶冠冕，把奇观变成可选址的创作内容；微景不凭房屋旋转角度硬塞。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M80"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M82",
+        "source_id": "M81",
+        "title": "灵感、长椅与收藏共用现有循环",
+        "description": "让成长和欣赏服务玩家作品，避免新增三条支线。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M81"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M83",
+        "source_id": "M82",
+        "title": "按证据修补画面连续性",
+        "description": "修复关系最明显的接缝，避免用一层新装饰掩盖旧问题。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M82"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M84",
+        "source_id": "M83",
+        "title": "扩展其余三风格并控制内容规模",
+        "description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M83"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M85",
+        "source_id": "M84",
+        "title": "连续编辑、首启和缓存收口",
+        "description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M84"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      },
+      {
+        "id": "M86",
+        "source_id": "M85",
+        "title": "整合终验与交付",
+        "description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
+        "spec": "文档/40_分阶段施工与验收.md",
+        "depends_on": [
+          "M85"
+        ],
+        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "passes": false,
+        "verified_by": ""
+      }
+    ]
   }
 }

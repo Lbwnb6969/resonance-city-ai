@@ -50,10 +50,13 @@ def save(name, data):
 
 
 def ready():
+    global GIT, WORK
     if value('remote', 'get-url', REMOTE) != URL:
         raise RuntimeError('Full repository origin differs from the configured destination.')
     if value('status', '--porcelain', '--untracked-files=no'):
         raise RuntimeError('Commit authored project changes before preparing the full repository.')
+    GIT = Path(value('rev-parse', '--absolute-git-dir'))
+    WORK = GIT / 'full-sync'
     WORK.mkdir(parents=True, exist_ok=True)
 
 
