@@ -55,6 +55,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     put(work, '.mcp.json', b'{"machine":"not published"}')
     put(work, 'tools/probe.gd.uid', b'uid://generated')
     put(work, 'tests/probe.gd.uid', b'uid://generated')
+    put(work, 'tools/fixtures/nested.gd.uid', b'uid://generated')
     put(work, '资源/runtime.json', b'{"runtime":true}')
     put(work, 'UI/theme/a.gd', b'extends Control\n')
     put(work, 'UI/theme/b.gd', b'extends Control\n')
@@ -83,7 +84,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     assert '参考资料/large.bin' in manifest['omitted']
     tree_paths=set(full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0'))
     assert '资源/runtime.json' in tree_paths
-    assert not tree_paths & {'.mcp.json','tools/probe.gd.uid','tests/probe.gd.uid','参考资料/raw_export.json','参考资料/work/duplicate.cs'}
+    assert not tree_paths & {'.mcp.json','tools/probe.gd.uid','tests/probe.gd.uid','tools/fixtures/nested.gd.uid','参考资料/raw_export.json','参考资料/work/duplicate.cs'}
     assert '参考资料/raw_export.json' in manifest['omitted'] and '参考资料/small.bin' in manifest['omitted']
     full.push()
     assert git(work, 'ls-remote', 'origin', 'refs/heads/main').split()[0] == plan['commit']

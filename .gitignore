@@ -54,6 +54,8 @@
 # Rebuildable local PCM bank and generated standalone tool UIDs.
 /资源/音乐/城市同步声部库.res
 /tools/*.gd.uid
+/tools/**/*.gd.uid
+/tests/**/*.gd.uid
 /tools/audit_city_references.py
 
 # User phase-three source pack stays unchanged locally.

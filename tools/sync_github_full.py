@@ -172,7 +172,7 @@ def prepare():
         data=b'\0'.join(p.encode('utf-8') for p in sorted(kept))+b'\0', env=index_env)
     ignore = ('# Construction repository: user exclusions and rebuildable large caches.\n'
               +''.join('/'+d+'/\n' for d in sorted(EXCLUDED))
-              +'/.godot/\n/.mcp.json\n/tools/*.gd.uid\n/tests/*.gd.uid\n**/__pycache__/\n/资源/音乐/城市同步声部库.res\n')
+              +'/.godot/\n/.mcp.json\n/tools/**/*.gd.uid\n/tests/**/*.gd.uid\n**/__pycache__/\n/资源/音乐/城市同步声部库.res\n')
     prior = ROOT / MANIFEST
     if prior.is_file():
         previous = json.loads(prior.read_text(encoding='utf-8'))['omitted']
