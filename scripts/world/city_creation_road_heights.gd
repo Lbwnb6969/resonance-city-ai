@@ -7,7 +7,7 @@ const STEP_HEIGHT := 0.12
 const BIN_SIZE := 2.0
 const QUERY_BIN_SIZE := .5
 const Bridges := preload("res://scripts/world/city_creation_bridge_plan.gd")
-const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
+const Landings := preload("res://scripts/world/city_creation_road_landings.gd")
 const SteppingPlan := preload("res://scripts/world/city_creation_stepping_plan.gd")
 const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 var profiles: Dictionary = {}
@@ -152,42 +152,7 @@ func _build_flat_bins() -> void:
 		if uniform and not covers.is_empty():_flat_bins[key]={"y":y,"covers":covers}
 
 func _junctions(city: RefCounted) -> Dictionary:
-	var result: Dictionary = {}
-	var segments: Array = []
-	var bins: Dictionary = {}
-	var seen: Dictionary = {}
-	for road: Dictionary in city.roads:
-		for i in range(road.points.size()-1):
-			var a := Vector2(float(road.points[i][0]),float(road.points[i][1]))
-			var b := Vector2(float(road.points[i+1][0]),float(road.points[i+1][1]))
-			var segment := {"a":a,"b":b,"id":str(road.id),"width":float(road.width)}
-			var bounds := Rect2(a,Vector2.ZERO).expand(b)
-			var candidates: Dictionary = {}
-			for z in range(floori(bounds.position.y/4.0),floori(bounds.end.y/4.0)+1):
-				for x in range(floori(bounds.position.x/4.0),floori(bounds.end.x/4.0)+1):
-					var key := Vector2i(x,z)
-					for index: int in bins.get(key,[]): candidates[index]=true
-					if not bins.has(key): bins[key]=[]
-					bins[key].append(segments.size())
-			for index: int in candidates:
-				var other: Dictionary = segments[index]
-				if str(other.id)==str(road.id): continue
-				var intersection: Variant = Geometry2D.segment_intersects_segment(a,b,other.a,other.b)
-				if not intersection is Vector2: continue
-				var at: Vector2 = intersection
-				var ids: Array = [str(road.id),str(other.id)]
-				ids.sort()
-				var identity := str(ids)+str(at)
-				if seen.has(identity): continue
-				seen[identity]=true
-				var legacy := 0.055+0.185*(1.0-smoothstep(-0.05,0.65,float(city.water_clearance(at))))
-				var y := maxf(float(city._ground_terrain.raw_height_at(at))+0.075,legacy)
-				var landing := {"at":at,"y":y,"radius":maxf(float(road.width),float(other.width))*0.5+Junctions.EXTRA+0.45}
-				for id: String in ids:
-					if not result.has(id): result[id]=[]
-					result[id].append(landing)
-			segments.append(segment)
-	return result
+	return Landings.prepare(city)
 
 func _build(city: RefCounted,road: Dictionary,doors: Array,junctions: Array) -> Dictionary:
 	var samples: Array = []
