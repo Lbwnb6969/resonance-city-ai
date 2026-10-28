@@ -153,18 +153,13 @@ def prepare():
     attr_blob = blob(attrs)
     attr_tree = git('mktree', data=f'100644 blob {attr_blob}\t.gitattributes\n'.encode()).decode().strip()
     index_env = dict(os.environ, GIT_INDEX_FILE=str(WORK / 'index'), GIT_ATTR_SOURCE=attr_tree)
-    targets = staging_paths(items, kept)
-    path_file = WORK / 'paths.nul'
     git('read-tree', '--empty', env=index_env)
     print(json.dumps({'phase': 'stage', 'files': len(kept), 'input_bytes': sum(items[p][0] for p in kept),
                       'omitted_files': len(omitted)}, ensure_ascii=False), flush=True)
-    # Thousands of individual research paths make Git's pathspec matching
-    # quadratic. Bound each match set; preserve the cache exclusions per batch.
-    for offset in range(0, len(targets)-2, 256):
-        batch = targets[offset:min(offset+256, len(targets)-2)] + targets[-2:]
-        path_file.write_bytes(b'\0'.join(p.encode('utf-8') for p in batch)+b'\0')
-        git('-c', 'core.longpaths=true', 'add', '-f',
-            '--pathspec-from-file='+str(path_file), '--pathspec-file-nul', env=index_env)
+    # These are exact inventory files, not pathspecs. Feed them directly to
+    # the index so Git never scans the research tree for each match pattern.
+    git('-c', 'core.longpaths=true', 'update-index', '--add', '-z', '--stdin',
+        data=b'\0'.join(p.encode('utf-8') for p in sorted(kept))+b'\0', env=index_env)
     ignore = ('# Construction repository: user exclusions and rebuildable large caches.\n'
               +''.join('/'+d+'/\n' for d in sorted(EXCLUDED))
               +'/.godot/\n/资源/音乐/城市同步声部库.res\n')

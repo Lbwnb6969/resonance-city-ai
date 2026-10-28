@@ -60,7 +60,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     full.ROOT, full.GIT = work, work / '.git'
     full.WORK, full.OUT = work / '.git/full-sync', work / '验证记录/full-proof'
     full.URL, full.MAX_FILE, full.INPUT_BUDGET, full.MAX_BYTES = remotes['origin'], 4096, 4000, 10000
-    # Root leaves cannot collapse to a directory: exercise multiple real batches.
+    # Root leaves cannot collapse to a directory: exercise a long exact-file list.
     for index in range(257):
         put(work, f'batch-{index:03d}.txt', b'x')
     old_head = git(work, 'rev-parse', 'HEAD')
