@@ -710,3 +710,8 @@
 
 [SESSION_CLEANUP_NESTED_UID] 2026-10-28：发布前补查64个嵌套fixtures生成UID，先补计划/验路径再同批归档；递归忽略与真实双远端夹具通过。
 - TOTAL: 3188文件48196463字节逐件哈希一致；3389正式资源依赖零缺失、三份新来源仍逐字节一致；历史任务状态保持。
+
+[SESSION_FULL_REPO_AUDIT_20261028] VERIFIED：仅用origin/main 969c5a102的14263文件独立副本核对施工能力，未复制本机缓存/原素材/历史证据。
+- COLD: 首次import退出0无脚本错误；Harness/链接24文档113链接/13自测、legacy375+27/softwind8及OpenGL/WASAPI37 PASS，Master3.204354s峰.217621零削波。
+- BOUNDARY: 正式资源可用；Foundation源GLB/WAV、TG索引与本机游戏提取输入缺失，不能称全量原素材独立提取。225MB是当前树，不是全部Git历史。
+- DOCS: 完整移出/整合明细与冷验记录写入完整库施工核对；修正参考README旧蓝图断链，并纳入链接门禁，新版26文档119链接通过；双库同步后核树。
