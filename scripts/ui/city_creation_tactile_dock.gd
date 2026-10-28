@@ -34,6 +34,7 @@ var active_tool:=-1
 var house_options:=false
 var _house_palette_key:Variant=null
 var nature_row:HBoxContainer
+var road_palette
 const PRIMARY:=[0,2,4,5,8]
 const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
 
@@ -117,6 +118,8 @@ func _rebuild(tool:int)->void:
 	for child:Node in bubble_rows.get_children():
 		if child!=district_name_row:bubble_rows.remove_child(child);child.queue_free()
 	bindings.clear()
+	road_palette=null
+	if tool==2:road_palette=preload("res://scripts/ui/city_creation_compact_roads.gd").new();road_palette.setup(self,bubble_rows)
 	var row:HBoxContainer
 	var row_count:=0
 	if tool in [0,1]:
@@ -131,7 +134,7 @@ func _rebuild(tool:int)->void:
 		var selected:String=role_palette.paint_role if role_palette!=null else ""
 		var button:=_seal(row,"house" if selected.is_empty() else selected,"选用途" if selected.is_empty() else str(demo.spatial_popover.ROLE_LABELS[selected]),"打开共用用途选择器；连续点房安排用途")
 		button.name="BatchHousePurpose";button.pressed.connect(func()->void:demo.get_meta("role_palette").show_for(false))
-	for group:Array in TOOL_GROUPS.get(tool,[]):
+	for group:Array in ([] if tool==2 else TOOL_GROUPS.get(tool,[])):
 		var source:Control=parent.find_child(str(group[0]),true,false)
 		if source==null:continue
 		var count:int=source.item_count if source is OptionButton else 1
@@ -174,6 +177,7 @@ func _seal(row:Control,kind:String,caption:String,tooltip:String)->Button:
 	return button
 
 func _sync()->void:
+	if road_palette!=null:road_palette.sync()
 	for binding:Dictionary in bindings:
 		var button:Button=binding.button
 		if binding.type=="option":

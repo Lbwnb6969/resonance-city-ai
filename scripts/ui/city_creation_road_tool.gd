@@ -47,6 +47,8 @@ func input(event:InputEvent)->bool:
 		if event.ctrl_pressed or event.meta_pressed:return false
 		var focus:Control=demo.get_viewport().gui_get_focus_owner()
 		if focus is LineEdit or focus is TextEdit:return false
+		if event.keycode in [KEY_BRACKETLEFT,KEY_BRACKETRIGHT] and demo.tactile_dock.road_palette!=null and demo.tactile_dock.road_palette.opened.is_empty():
+			demo.tactile_dock.road_palette.step(1 if event.keycode==KEY_BRACKETRIGHT else -1);return true
 		if event.keycode in [KEY_1,KEY_2,KEY_3]:set_mode(event.keycode-KEY_1);return true
 		if event.keycode==KEY_R:set_mode(0 if mode==1 else 1);return true
 		if event.keycode==KEY_TAB and active() and not pressed:
@@ -91,8 +93,8 @@ func update(_force:bool=false)->void:
 	if blocked() or demo.tool!=2:demo._cancel_draft();return
 	var point:Vector2=demo._road_pointer_at();tail=point
 	if pressed and point.distance_to(start)>=.8:dragged=true
-	var key:=[point,phase,effective,alt,demo.state.revision,demo.zoom]
-	if signature==key:return
+	var key:=[point,phase,effective,alt,demo.state.revision,demo.zoom,demo._selected_road_width(),demo.road_style]
+	if signature==key and not _force:return
 	signature=key
 	if reference_revision!=demo.state.revision:reference=Ruler.road_reference(demo.state,start);reference_revision=demo.state.revision
 	var precise:=effective==2 or effective==1 and not pressed and not dragged

@@ -1401,8 +1401,8 @@
           "M76"
         ],
         "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
-        "passes": false,
-        "verified_by": ""
+        "passes": true,
+        "verified_by": "Gate1 Harness/doc PASS. Gate2 road_paving235/road_decoration209/legacy375+27 PASS on local Godot4.7.2. Gate3 tools/check_creation_compact_roads_live.gd final OpenGL/WASAPI90 PASS: real1024/1440 eight paving/six decoration clicks, one current-value row, wheel width versus world zoom, bracket active curve rebuild keeping anchors, Tab, exact preview/commit, native UndoRedo, disk cold read, right cancel without orbit/submit, focused text guard. Original screenshots inspected; final console clean after WeakRef ownership fix. Master3.204354s peak.000640869 zero clips on empty-road fixture; unchanged12long4short6bus2nature/personal save. Capped60 p95/max16.806/16.853ms reference only. No schema/audio-bank changes; historical direct23-seal probe assumption superseded by native menu test, original tools retained. Backup local-before-cloud-integration-20261028; details doc44; dual sync follows."
       },
       {
         "id": "M78",

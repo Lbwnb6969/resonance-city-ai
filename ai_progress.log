@@ -647,3 +647,9 @@
 - FIX: JSON整数规范化、补两用途菜单、Esc优先手册；旧Undo夹具失败保留并改为载入后先编辑，未隐藏失败。
 - DATA: Master26.842268s零削波，原12长4短6总线2自然/个人档保持；转换前备份可冷读，偏好/权益保留。
 - NEXT: 文档43；提交双库同步后连续进入M77，不等待新窗口；旧程序使用转换前备份。
+
+[SESSION_M77] 2026-10-28 COMPLETE：合入云端M75/M76，道路当前铺装/街具/宽度/更多单行。
+- GATE1/2: Harness/doc；paving235/decoration209/legacy375+27 PASS。
+- GATE3: final OpenGL/WASAPI90 PASS；两尺寸全部8/6选择、曲路改宽保点、精确提交/UndoRedo/冷读/右取消。
+- DATA: Master3.204354s零削波（空地自然底噪）；原音池/个人档保持，最终控制台零错；引用泄漏已修。
+- BACKUP/NEXT: local-before-cloud-integration-20261028；文档44，双库提交同步后M78。
