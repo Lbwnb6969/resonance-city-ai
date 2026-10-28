@@ -1,6 +1,8 @@
 shader_type spatial;
 render_mode specular_disabled;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_wind.gdshaderinc"
+uniform float wind_time_override=-1.;
 uniform vec2 touch_at=vec2(0.0);
 uniform float touch_time=10.0;
 uniform float season_gold=0.0;
@@ -24,12 +26,11 @@ vec3 leaf_micro_normal(vec3 world,vec3 n){
 }
 void vertex(){
 	vec3 world=(MODEL_MATRIX*vec4(VERTEX,1)).xyz;
-	float phase=world.x*.37+world.z*.29;
-	float gust=sin(TIME*1.19+phase)+.35*sin(TIME*2.31+phase*1.7);
+	float clock=wind_time_override<0.?TIME:wind_time_override;
 	float weight=COLOR.a*COLOR.a;
 	float touched=exp(-touch_time*3.0)*sin(touch_time*13.0)*(1.0-smoothstep(0.,2.5,length(world.xz-touch_at)));
-	VERTEX.x+=(touched*.10+gust*.047)*weight;
-	VERTEX.z+=(touched*.06+sin(TIME*.93+phase+1.2)*.033)*weight;
+	vec3 drift=creation_wind_offset(world.xz,clock,.047)+vec3(touched*.10,0.,touched*.06);
+	VERTEX+=inverse(mat3(MODEL_MATRIX))*drift*weight;
 	leaf_world=(MODEL_MATRIX*vec4(VERTEX,1)).xyz;
 	canopy_normal=safe_normalize(MODEL_NORMAL_MATRIX*NORMAL);leaf_height=COLOR.a;
 }

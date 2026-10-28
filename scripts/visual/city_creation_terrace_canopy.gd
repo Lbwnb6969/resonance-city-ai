@@ -41,6 +41,9 @@ static func build(renderer,node: Node3D,body: StaticBody3D,base: float,palette: 
 		cloth.append_array([a,c,b,a,d,c])
 	var mesh: MeshInstance3D=renderer._triangles(node,cloth,Color("e8d8ad"))
 	mesh.name="TerraceCanopyCloth"
+	var wind=preload("res://scripts/visual/city_creation_soft_wind.gd")
+	mesh.mesh=wind.weighted_mesh(mesh.mesh,true);mesh.material_override=wind.material(Color("e8d8ad"),true)
+	mesh.extra_cull_margin=.04
 	# Visible fabric has the real original terrace's picking identity. The original
 	# floor action and its existing support rule still decide the edit.
 	var shape:=CollisionShape3D.new();shape.name="CanopyPick"

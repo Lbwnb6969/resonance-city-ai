@@ -14,7 +14,7 @@ var _cache: Dictionary = {}
 var _cache_signatures:Dictionary={}
 var _clearance_signature:=0
 var _height_signatures:Dictionary={}
-var bud_mesh: SphereMesh
+var bud_mesh: Mesh
 const CLEARANCE_BIN_SIZE:=4.
 var _clearance_revision:=-1
 var _clearance_owner:WeakRef
@@ -203,7 +203,7 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 	var metal: Material=renderer._material(Color("3e5048"))
 	var stone: Material=renderer._material(Color("b7b19a"))
 	var soil: Material=renderer._material(Color("6d5b42"))
-	var green: Material=renderer._material(Color("5e805b"))
+	var green: Material=_flower_material(Color("5e805b"))
 	lamp_material()
 	var batches := {}
 	var lamps: Array[Vector3] = []
@@ -243,15 +243,16 @@ func install(renderer,parent: Node3D,records: Array) -> void:
 			for i in range(5):
 				var local := frame*Vector3(sin(i*2.4)*.11,.38+float(i%2)*.04,-.22+i*.11)
 				_bud(batches,origin+local,Vector3(.13,.16,.13),green)
-				_bud(batches,origin+local+Vector3.UP*.13,Vector3(.055,.045,.055),renderer._material(Color("d7a2a4") if i%2==0 else Color("eee0b7")))
+				_bud(batches,origin+local+Vector3.UP*.13,Vector3(.055,.045,.055),_flower_material(Color("d7a2a4") if i%2==0 else Color("eee0b7")))
 	for batch: Dictionary in batches.values():
 		var node := MeshInstance3D.new();node.mesh=batch.surface.commit();node.material_override=batch.material;root.add_child(node)
+		if batch.material is ShaderMaterial and batch.material.shader==preload("res://scripts/visual/city_creation_soft_wind.gd").WindShader:node.extra_cull_margin=.03
 	_glows(root,lamps,false);_glows(root,pools,true)
 	if not trees.is_empty():
 		var trunk:=CylinderMesh.new();trunk.bottom_radius=.10;trunk.top_radius=.065;trunk.height=1.65;trunk.radial_segments=8
 		_tree_batch(root,"AvenueTrunks",trunk,renderer._material(Color("75634b")),trees,Vector3(0,.9,0))
 		var crown:=SphereMesh.new();crown.radius=.65;crown.height=1.45;crown.radial_segments=10;crown.rings=4
-		_tree_batch(root,"AvenueCrowns",crown,green,trees,Vector3(0,2.0,0))
+		_tree_batch(root,"AvenueCrowns",crown,renderer._material(Color("5e805b")),trees,Vector3(0,2.0,0))
 	# New batches inherit the current shared light state immediately.
 	var saved_evening := evening;var saved_concert := concert;evening=not evening
 	set_light(saved_evening,saved_concert)
@@ -266,12 +267,18 @@ func _box(renderer,batches: Dictionary,origin: Vector3,size_value: Vector3,local
 
 func _bud(batches: Dictionary,at: Vector3,size_value: Vector3,material: Material) -> void:
 	if bud_mesh==null:
-		bud_mesh=SphereMesh.new();bud_mesh.radius=1.0;bud_mesh.height=2.0;bud_mesh.radial_segments=8;bud_mesh.rings=3
+		var sphere:=SphereMesh.new();sphere.radius=1.0;sphere.height=2.0;sphere.radial_segments=8;sphere.rings=3
+		bud_mesh=preload("res://scripts/visual/city_creation_soft_wind.gd").weighted_mesh(sphere)
 	var key := material.get_instance_id()
 	if not batches.has(key):
 		var surface := SurfaceTool.new();surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 		batches[key]={"surface":surface,"material":material}
 	batches[key].surface.append_from(bud_mesh,0,Transform3D(Basis.from_scale(size_value),at))
+
+func _flower_material(color:Color)->Material:
+	var key:="flower_"+color.to_html()
+	if not materials.has(key):materials[key]=preload("res://scripts/visual/city_creation_soft_wind.gd").material(color)
+	return materials[key]
 
 func _glows(root: Node3D,points: Array[Vector3],pool: bool) -> void:
 	if points.is_empty(): return

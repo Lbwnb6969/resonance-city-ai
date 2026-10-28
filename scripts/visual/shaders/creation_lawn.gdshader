@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode cull_disabled, depth_draw_opaque, diffuse_burley, specular_disabled;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_wind.gdshaderinc"
 uniform float detail = 1.0;
 uniform float meadow_time_override = -1.0;
 uniform sampler2D road_draft_field : filter_linear, repeat_disable;
@@ -35,10 +36,9 @@ void vertex() {
 	// Derived meadow retreats from the same shore as the exposed sand. The
 	// authored plants, CPU clumps and terrain stay intact and undo unchanged.
 	if (bank_sand_enabled) { edge_height *= smoothstep(.22,.85,shore_distance(world_at.xz)); }
-	vec2 wind = safe_normalize(vec2(0.82,0.57));
+	vec2 wind = CREATION_WIND_DIRECTION;
 	float wind_time = meadow_time_override < 0.0 ? TIME : meadow_time_override;
-	gust = sin(dot(world_at.xz,wind)*0.48-wind_time*1.15)*0.68
-		+ sin(world_at.x*0.73-world_at.z*0.38-wind_time*1.73)*0.32;
+	gust = creation_wind_gust(world_at.xz,wind_time);
 	vec3 push = vec3(INSTANCE_CUSTOM.r,0.0,INSTANCE_CUSTOM.g);
 	mat3 world_to_local = inverse(mat3(MODEL_MATRIX));
 	vec3 local_push = world_to_local*push;
