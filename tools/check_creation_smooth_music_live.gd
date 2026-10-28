@@ -55,7 +55,7 @@ func run()->void:
 	for i in range(AudioServer.get_bus_effect_count(0)-1,-1,-1):
 		if AudioServer.get_bus_effect(0,i)==recorder:AudioServer.remove_bus_effect(0,i)
 	check(swaps.size()>0 and deferred>30,"natural rich score requests variations and actually adopts at a later safe window")
-	check(swaps.all(func(row):return demo.music.Smooth.can_swap(float(row.clock),float(row.db))),"every actual swap occurs at cycle lead-in or with an already silent voice")
+	check(swaps.all(func(row):return (float(row.db)<=-45. or row.get("method")=="premixed" and float(row.get("boundary",-1.))>=float(row.clock))),"actual swaps are inaudible or use a prepared continuous buffer")
 	check(gain_dips==0,"pending sounding lead never receives the old forced -60dB hole")
 	check(peak>=.18 and peak<=.48 and clipped==0,"mastered warm-reverb settlement stays in healthy range without clipping")
 	facts.continuous={"start_clock":start_clock,"seconds":wave.get_length() if wave!=null else 0.,"peak":peak,"clipped_samples":clipped,"swaps":swaps,"deferred_frames":deferred,"forced_gain_dip_frames":gain_dips}

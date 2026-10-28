@@ -13,12 +13,20 @@ static func encode(source:AudioStreamWAV)->AudioStreamWAV:
 	var wave:=AudioStreamWAV.load_from_buffer(bytes,{"compress/mode":2})
 	for key:StringName in source.get_meta_list():wave.set_meta(key,source.get_meta(key))
 	wave.loop_mode=source.loop_mode;wave.loop_begin=source.loop_begin;wave.loop_end=source.loop_end
+	var expected:=source.instantiate_playback();var actual:=wave.instantiate_playback();var power:=0.;var error:=0.;var count:=0
+	for at:float in [0.,source.get_length()*.45,maxf(0.,source.get_length()-.05)]:
+		expected.start(at);actual.start(at)
+		var a:=expected.mix_audio(1.,1024);var b:=actual.mix_audio(1.,1024)
+		for i in range(a.size()):power+=a[i].x*a[i].x;error+=pow(a[i].x-b[i].x,2.);count+=1
+		expected.stop();actual.stop()
+	# Preserve difficult short transients exactly; resource budget is unchanged.
+	if source.get_length()<1. and (sqrt(error/maxi(1,count))>.001 or error>power*pow(10.,-4.2)):return source
 	return wave
 func build()->Dictionary:
 	var signature:=Cache.source_signature()
 	var original:Resource=ResourceLoader.load(Cache.PATH)
 	if original==null or original.get_meta("signature","")!=signature:return {"ok":false,"reason":"Bake the current original PCM bank first"}
-	var bank:Dictionary=original.get_meta("bank");var packed:Dictionary={};var converted:Dictionary={};var count:=0
+	var bank:Dictionary=original.get_meta("bank");var packed:Dictionary={};var converted:Dictionary={};var count:=0;var exact:=0
 	for group:String in ["streams","edits","variations","harmony"]:
 		packed[group]={}
 		for key:String in bank[group]:
@@ -26,10 +34,11 @@ func build()->Dictionary:
 			if not converted.has(id):
 				if source.format!=AudioStreamWAV.FORMAT_16_BITS:return {"ok":false,"reason":"Expected original 16-bit PCM"}
 				var wave:=encode(source)
-				if wave.format!=AudioStreamWAV.FORMAT_QOA or wave.mix_rate!=source.mix_rate or wave.stereo!=source.stereo or wave.get_length()!=source.get_length():return {"ok":false,"reason":"Encoded timing differs: "+key}
+				if wave.format not in [AudioStreamWAV.FORMAT_QOA,AudioStreamWAV.FORMAT_16_BITS] or wave.mix_rate!=source.mix_rate or wave.stereo!=source.stereo or wave.get_length()!=source.get_length():return {"ok":false,"reason":"Encoded timing differs: "+key}
+				if wave.format==AudioStreamWAV.FORMAT_16_BITS:exact+=1
 				converted[id]=wave;count+=1
 			packed[group][key]=converted[id]
-	packed.report=bank.report.duplicate(true);packed.report.bank_codec="qoa"
+	packed.report=bank.report.duplicate(true);packed.report.bank_codec="qoa";packed.report.exact_pcm_streams=exact
 	var resource:=Resource.new();resource.set_meta("signature",signature);resource.set_meta("bank",packed)
 	var temporary:="res://验证记录/便携音色_%d.res"%Time.get_ticks_usec()
 	var error:=ResourceSaver.save(resource,temporary,ResourceSaver.FLAG_COMPRESS)

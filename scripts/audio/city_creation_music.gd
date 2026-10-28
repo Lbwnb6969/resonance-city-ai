@@ -1277,7 +1277,7 @@ func _process(delta: float) -> void:
 		_clock_previous = restored_elapsed
 		_concert_clock_origin = 0.0
 	if _players.has("concert") and _players.concert.playing:
-		var position: float = _players.concert.get_playback_position()
+		var position: float = fposmod(_players.concert.get_playback_position(),SECONDS)
 		if position + 0.1 < _clock_previous:
 			_clock_cycles += 1
 		_clock_previous = position

@@ -175,4 +175,6 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 			var key:String=pitch_bank.stream_key(timbre,midi)
 			if legacy_edits.has(key) or out.streams.has(key):continue
 			_wave(out,key,.42,[_note(0.,.38,midi,.10,timbre)],add,make)
+	var sample:Dictionary=preload("res://scripts/audio/city_creation_pastoral_score.gd").bake(add,make,load("res://scripts/audio/city_creation_chamber_score.gd"),chords(0))
+	for field:String in ["streams","notes","peaks"]:out[field].merge(sample[field])
 	return out

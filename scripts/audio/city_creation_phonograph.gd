@@ -26,6 +26,7 @@ static func valid(value:Variant)->bool:
 		if row.bank=="original":
 			if row.key!=stem:return false
 		elif row.bank=="harmony":
+			if preload("res://scripts/audio/city_creation_score_sample_routing.gd").valid_key(str(row.key),stem):continue
 			if preload("res://scripts/audio/city_creation_chamber_legato.gd").valid_key(str(row.key)) and stem in Emergence.LEADS+["concert"]:continue
 			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1] in ["chamber_counter_pastoral","chamber_counter_renaissance","chamber_counter_clockwork","chamber_counter_modern_eco"] and stem in Emergence.LEADS+["concert"]:continue
 			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1]=="nocturne" and stem in Emergence.LEADS+["concert"]:continue

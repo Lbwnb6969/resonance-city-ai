@@ -2,7 +2,7 @@ extends RefCounted
 const Score=preload("res://scripts/audio/city_creation_chamber_score.gd")
 const Emergence=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 static func prepare(owner:Node)->Dictionary:
-	var cache_key:Array=[owner._daily_phrase,owner.acoustic.revision,owner.concert_active,owner.harmony_mode(),owner.night,owner._concert_phrase() if owner.concert_active else -1]
+	var cache_key:Array=[owner._daily_phrase,owner.acoustic.revision,owner.concert_active,owner.harmony_mode(),owner.night,owner._concert_phrase() if owner.concert_active else -1,owner.get_meta("legacy_score",false)]
 	if owner.get_meta("chamber_role_key",[])==cache_key:return owner.get_meta("chamber_roles",{})
 	owner.set_meta("chamber_role_key",cache_key)
 	var source:=str(owner.emergence.score.get("source_id",""));var leader:=str(owner.emergence.score.get("lead_track",""))
@@ -49,6 +49,7 @@ static func prepare(owner:Node)->Dictionary:
 			roles[key]={"layer":2,"id":"%d/chamber_counter_%s"%[mode,family],"bank":"harmony","active":winners.get(family,"")==key,"contributors":contributors.get(family,[])}
 		elif key in ["foundation","air","terrace"]:roles[key]={"layer":1 if key=="foundation" else 2,"id":"%d/%s"%[mode,key],"bank":"harmony","active":true}
 		else:roles[key]={"layer":0,"active":false}
+	preload("res://scripts/audio/city_creation_score_sample_routing.gd").apply(owner,roles,leader,mode,variant)
 	var result:={"lead_track":leader,"source_id":source,"roles":roles,"contributors":contributors,"mode":mode,"variant":variant}
 	owner.set_meta("chamber_roles",result);return result
 static func desired(owner:Node,key:String,original:String)->String:
@@ -60,6 +61,9 @@ static func gain(owner:Node,key:String,original:float)->float:
 	if row.is_empty():return original
 	if not row.get("active",true) or row.get("layer",0)==0:return -80.
 	var active:=str(owner._variation_active.get(key,""))
+	if owner._variation_pending.has(key) and not active.is_empty():
+		var melodic:bool=key in Emergence.LEADS+["concert"] and not "chamber_counter_" in active
+		if (int(row.get("layer",0))==3)==melodic:return original
 	if active!=str(row.get("id","")) and not (row.get("legato",false) and active==str(row.get("base_id",""))):return -80.
 	return original
 static func reconstruction(city:RefCounted,view:Dictionary,catalog:Dictionary,acoustic:RefCounted,score:Dictionary,mode:int)->Dictionary:

@@ -14,12 +14,13 @@ func run()->void:
 	check(not bank.is_empty() and bank.report.get("bank_codec","")=="qoa","complete portable bank matches current synthesis signature")
 	if bank.is_empty():quit(1);return
 	var original:=Cache.load_bank_at(Cache.PATH)
-	var count:=0;var samples:=0;var power:=0.;var errors:=0.;var maximum:=0.;var metadata_ok:=true;var finite:=true
+	var count:=0;var samples:=0;var power:=0.;var errors:=0.;var maximum:=0.;var metadata_ok:=true;var finite:=true;var diagnostics:Array=[]
 	for group:String in ["streams","edits","variations","harmony"]:
 		if not original.is_empty():check(bank[group].keys()==original[group].keys(),"complete original catalogue retained: "+group)
 		for key:String in bank[group]:
+			var prior_error:=errors;var prior_power:=power
 			var wave:AudioStreamWAV=bank[group][key]
-			metadata_ok=metadata_ok and wave.format==AudioStreamWAV.FORMAT_QOA and wave.mix_rate==22050 and wave.get_length()>0.
+			metadata_ok=metadata_ok and wave.format in [AudioStreamWAV.FORMAT_QOA,AudioStreamWAV.FORMAT_16_BITS] and wave.mix_rate==22050 and wave.get_length()>0.
 			var reference:AudioStreamWAV=original[group][key] if not original.is_empty() else null
 			if reference!=null:metadata_ok=metadata_ok and wave.stereo==reference.stereo and wave.get_length()==reference.get_length() and wave.loop_mode==reference.loop_mode and wave.loop_begin==reference.loop_begin and wave.loop_end==reference.loop_end
 			var playback:=wave.instantiate_playback()
@@ -36,12 +37,14 @@ func run()->void:
 				for frame:Vector2 in actual:finite=finite and frame.is_finite() and absf(frame.x)<1. and absf(frame.y)<1.
 				samples+=actual.size();playback.stop()
 			count+=1
-	check(bank.streams.size()==12 and bank.variations.size()==240 and count==3907,"all twelve stems, 240 variations and full short/modal catalogue ship together")
+			diagnostics.append({"key":group+"/"+key,"power":power-prior_power,"error":errors-prior_error})
+	check(bank.streams.size()==12 and bank.variations.size()==240 and count==4324 and bank.harmony.has("pastoral_breeze_v1/lead/0"),"twelve stems,240 legacy variations and seven versioned sample streams ship together")
 	check(metadata_ok,"native encoded lengths, sample rate and all loop endpoints remain exact")
 	check(finite,"every encoded stream decodes to finite unclipped audio at start, middle and tail")
 	var snr:=10.*log(power/errors)/log(10.) if errors>0. else 0.
+	diagnostics.sort_custom(func(a,b):return a.error>b.error)
 	if not original.is_empty():check(snr>40. and sqrt(errors/samples)<.001,"native sampled codec error stays below the music quality budget")
-	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"streams":count,"decoded_samples":samples,"reference_pcm":not original.is_empty(),"snr_db":snr,"rms_error":sqrt(errors/samples),"maximum_error":maximum}
+	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"streams":count,"decoded_samples":samples,"reference_pcm":not original.is_empty(),"snr_db":snr,"rms_error":sqrt(errors/samples),"maximum_error":maximum,"largest_errors":diagnostics.slice(0,10)}
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	FileAccess.open(output+"/portable_cpu.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true))
 	print("PORTABLE_CPU ",JSON.stringify(result));quit(0 if failures.is_empty() else 1)

@@ -14,24 +14,31 @@ func check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func wave()->AudioStreamWAV:
 	var result:=AudioStreamWAV.new();result.format=AudioStreamWAV.FORMAT_16_BITS;result.mix_rate=22050
-	result.data=PackedByteArray();result.data.resize(1058400);result.loop_mode=AudioStreamWAV.LOOP_FORWARD;result.loop_end=529200
+	var bytes:=PackedByteArray();bytes.resize(1058400);result.data=bytes;result.loop_mode=AudioStreamWAV.LOOP_FORWARD;result.loop_end=529200
 	return result
 func run()->void:
-	check(not Smooth.can_swap(4.5,-12.) and not Smooth.can_swap(23.95,-12.) and Smooth.can_swap(24.03,-12.) and Smooth.can_swap(5.,-46.),"sounding voices wait for cycle lead-in; silent voices may adopt immediately")
-	var owner:=ClockMusic.new();owner.set_process(false);root.add_child(owner)
+	var owner:=ClockMusic.new();root.add_child(owner);owner.set_process(false)
 	var a:=wave();var b:=wave()
 	for key:String in Music.STEMS:
-		var player:=AudioStreamPlayer.new();owner.add_child(player);player.stream=a;player.volume_db=-12.;owner._players[key]=player
+		var player:=AudioStreamPlayer.new();owner.add_child(player);player.stream=a;player.volume_db=-12.;player.play(4.5);owner._players[key]=player
 		if key in owner.HarmonicEmergence.LEADS:
 			owner._variation_streams[key+"/0"]=a;owner._variation_streams[key+"/1"]=b;owner._variation_active[key]=key+"/0"
 		elif key!="concert":owner._harmony_streams["0/"+key]=a;owner._variation_active[key]="0/"+key
 	for kind:String in ["room","terrace","road","erase","history","concert","arrival","bakery","craft","installed","tea"]:
 		for bar in range(8):owner._harmony_streams["0/edit/%s/%d"%[kind,bar]]=a
 	owner.emergence.score={"variant":1,"harmony_mode":0}
+	preload("res://scripts/audio/city_creation_chamber_roles.gd").prepare(owner)
+	owner.set_meta("chamber_roles",{}) # This fixture isolates stream transitions from source election.
 	Smooth.update(owner)
 	for key:String in owner.HarmonicEmergence.LEADS:check(owner._players[key].stream==a and owner._players[key].volume_db==-12.,"pending variant leaves actual stream and gain untouched: "+key)
-	owner.test_clock=24.03;Smooth.update(owner)
-	for key:String in owner.HarmonicEmergence.LEADS:check(owner._players[key].stream==b and owner._players[key].volume_db==-12.,"cycle swap preserves actual gain instead of a -60dB hole: "+key)
+	var transition:Node=owner.get_node("StreamTransition");transition.set_process(false)
+	for ignored in range(owner.HarmonicEmergence.LEADS.size()+3):
+		transition._process(0.)
+		if transition.worker!=null:
+			while transition.worker.is_alive():await process_frame
+			transition._process(0.)
+	owner.test_clock=6.2;transition._process(0.);Smooth.update(owner)
+	for key:String in owner.HarmonicEmergence.LEADS:check(owner._players[key].stream==b and owner._players[key].volume_db==-12.,"prepared swap completes with unchanged player gain: "+key)
 	owner.emergence.score.variant=0;owner.test_clock=25.;owner._players.wood.volume_db=-50.;Smooth.update(owner)
 	check(owner._players.wood.stream==a and owner._players.wood_weave.stream==b,"resting voice adopts while sounding neighbours wait")
 	var city:=State.new();city.initialize();owner._pluck_city=city
@@ -71,5 +78,5 @@ func run()->void:
 	check(reverbs==2 and AudioServer.bus_count-bus_before==6,"theme/concert reverb adds no voices or buses")
 	owner.spatial.close();check(AudioServer.bus_count==bus_before,"closing restores all foreign buses")
 	owner._pluck_city=null;city._undo.clear();city._redo.clear()
-	owner.queue_free();await process_frame
+	owner.queue_free();await process_frame;await create_timer(.15).timeout
 	print("SMOOTH_VARIATION ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)

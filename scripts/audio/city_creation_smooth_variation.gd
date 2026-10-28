@@ -1,7 +1,5 @@
 extends RefCounted
-## A requested timbre waits for the loop's silent lead-in; its gain keeps flowing.
-static func can_swap(clock:float,volume_db:float)->bool:
-	return volume_db<=-45. or fposmod(maxf(0.,clock),24.)<.12
+## Sounding waves use a prepared crossfade, independent of authored rests.
 static func update(owner:Node)->void:
 	if owner._variation_streams.is_empty():return
 	var chamber=preload("res://scripts/audio/city_creation_chamber_roles.gd");chamber.prepare(owner)
@@ -34,13 +32,10 @@ static func update(owner:Node)->void:
 			owner._variation_pending.erase(key);continue
 		owner._variation_pending[key]={"id":id,"requested_clock":clock}
 		var player:AudioStreamPlayer=owner._players[key]
-		var at_seam:bool=player.stream!=null and player.stream.get_meta("chamber_layered",false) and fposmod(clock,3.)<.12
-		if not (can_swap(clock,player.volume_db) or at_seam) or not chamber.can_lead(owner,key,id):continue
-		var gain:=player.volume_db
-		player.stream=owner._original_streams[key] if id=="original" else owner._variation_streams.get(id,owner._harmony_streams.get(id))
-		player.play(fposmod(clock,24.));player.volume_db=gain
-		player.set_meta("last_smooth_swap",{"clock":clock,"db":gain,"id":id})
-		owner._variation_active[key]=id;owner._variation_pending.erase(key);owner._variation_changed_usec=now
+		if not chamber.can_lead(owner,key,id):continue
+		var target:AudioStream=owner._original_streams.get(key) if id=="original" else owner._variation_streams.get(id,owner._harmony_streams.get(id))
+		if preload("res://scripts/audio/city_creation_stream_transition.gd").request(owner,key,id,target,clock):
+			owner._variation_pending.erase(key);owner._variation_changed_usec=now
 static func reverb(bus:int)->void:
 	var effect:=AudioEffectReverb.new()
 	effect.room_size=.36;effect.damping=.74;effect.wet=.13;effect.dry=.87;effect.hipass=.12

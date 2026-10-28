@@ -20,7 +20,7 @@ func _run() -> void:
 	var music := Music.new()
 	music.update_city(city)
 	var started := Time.get_ticks_usec()
-	var bank: Dictionary = music.BankCache.load_bank()
+	var bank: Dictionary = music.BankCache.load_bank_at(music.BankCache.PATH)
 	_check(not bank.is_empty(),"current production PCM bank is baked before validation")
 	if bank.is_empty():music.free();quit(1);return
 	var synthesis_ms := float(Time.get_ticks_usec()-started)/1000.0

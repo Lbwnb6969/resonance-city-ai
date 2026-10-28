@@ -10,7 +10,7 @@ static func fold(midi:int,layer:int)->int:
 	while midi>bounds.y:midi-=12
 	return midi
 static func note(at:float,duration:float,midi:int,gain:float,timbre:String,layer:int,extra:Dictionary={})->Dictionary:
-	var result:={"start":at,"duration":duration,"midi":fold(midi,layer),"gain":gain,"timbre":timbre,"layer":layer,"dyad":false,"suspension":false}
+	var result:={"start":at,"duration":duration,"midi":midi if extra.get("register_planned",false) else fold(midi,layer),"gain":gain,"timbre":timbre,"layer":layer,"role":"lead" if layer==3 else "foundation" if layer==1 else "sparkle" if layer==4 else "answer","dyad":false,"suspension":false}
 	result.merge(extra,true);return result
 static func anchor(chord:Array,bar:int,second:bool,palette:Script,mode:int)->int:
 	var degree:int=([0,2,1,0,1,2,0,0][bar] if not second else [2,1,2,1,2,1,1,0][bar])%chord.size()

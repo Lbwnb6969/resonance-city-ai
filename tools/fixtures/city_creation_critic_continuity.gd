@@ -23,6 +23,6 @@ static func capture(c,duration:float=52.)->Dictionary:
 		if AudioServer.get_bus_effect(0,i)==recorder:AudioServer.remove_bus_effect(0,i)
 	c.check(wav!=null and wav.save_to_wav(c.OUT+"/continuity_Master.wav")==OK,"real continuous52second recording")
 	c.check(swaps.size()>0 and deferred>0 and forced_dips==0,"real pending variations preserve sounding lead")
-	c.check(swaps.all(func(row):return demo.music.Smooth.can_swap(float(row.clock),float(row.db))),"actual adoption clocks satisfy shared swap rule")
+	c.check(swaps.all(func(row):return (float(row.db)<=-45. or row.get("method")=="premixed" and float(row.get("boundary",-1.))>=float(row.clock))),"actual adoption clocks satisfy shared swap rule")
 	var result:={"start_clock":started,"seconds":wav.get_length(),"swaps":swaps,"deferred_frames":deferred,"forced_gain_dip_frames":forced_dips,"wav":"continuity_Master.wav"}
 	FileAccess.open(c.OUT+"/continuity_events.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t",true,true));return result
