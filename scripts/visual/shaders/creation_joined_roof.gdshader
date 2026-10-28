@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
+#include "res://scripts/visual/shaders/creation_roof_layer_direction.gdshaderinc"
 uniform vec4 roof_color : source_color = vec4(0.73,0.44,0.33,1.0);
 varying vec3 roof_normal;
 varying vec3 roof_at;
@@ -40,6 +41,7 @@ void fragment() {
 		contour=safe_normalize(u-normal*dot(normal,u));
 		downhill=safe_normalize(v-normal*dot(normal,v)-contour*dot(contour,v));
 	}
+	downhill=roof_layer_downhill(downhill);
 	vec2 tile=UV;
 	// Take derivatives before the discontinuous stagger, then integrate seams
 	// and barrel normals across the actual pixel footprint.
