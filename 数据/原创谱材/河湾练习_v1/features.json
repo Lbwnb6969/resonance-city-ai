@@ -1,0 +1,229 @@
+{
+  "analysis_versions": {
+    "essentia": {
+      "essentia": "2.1-beta6-dev",
+      "essentia_git_sha": "v2.1_beta5-356-g673b6a14-dirty",
+      "extractor": "music 2.0"
+    },
+    "ffmpeg": "7.1-essentials_build-www.gyan.dev",
+    "librosa": "1.0.0",
+    "python": "3.12.10"
+  },
+  "beat_intervals": {
+    "origin": "measured",
+    "unit": "seconds",
+    "value": {
+      "essentia": {
+        "count": 297,
+        "median_seconds": 0.47601318379999213
+      },
+      "librosa": {
+        "count": 288,
+        "median_seconds": 0.48761904761904873
+      }
+    }
+  },
+  "chord_statistic": {
+    "origin": "estimated",
+    "sequence_inferred": false,
+    "value": {
+      "chords_key": "B",
+      "chords_scale": "major"
+    }
+  },
+  "estimated": {
+    "bpm_essentia": {
+      "method": "essentia",
+      "origin": "estimated",
+      "unit": "beats/minute",
+      "value": 124.925949097
+    },
+    "bpm_librosa": {
+      "method": "librosa",
+      "origin": "estimated",
+      "unit": "beats/minute",
+      "value": 123.046875
+    }
+  },
+  "inputs": [
+    {
+      "consumed": true,
+      "name": "summary.json",
+      "sha256": "6e954e0cd2c55c97e754129e2d40c36cfba89d540762768d6a6bd1de92513f20"
+    },
+    {
+      "consumed": true,
+      "name": "essentia.json",
+      "sha256": "77aa757cce37ae7ac73b5fd30e22347dee01482bf37fe50979d5fd4a45640797"
+    },
+    {
+      "consumed": true,
+      "name": "timeline.csv",
+      "sha256": "d620af0547bd840e38024f20869608754e6cb31bfc84d6a53cec0ef5bc67985a"
+    },
+    {
+      "consumed": true,
+      "name": "beats.csv",
+      "sha256": "16182372126174ed6a2f84f94356b73f2e8aa78eba553fc2e133b3ff29e10418"
+    }
+  ],
+  "key_profiles": {
+    "method": "essentia_three_profiles_same_engine",
+    "origin": "estimated",
+    "value": {
+      "key_edma": {
+        "key": "E",
+        "scale": "major",
+        "strength": 0.776320517063
+      },
+      "key_krumhansl": {
+        "key": "E",
+        "scale": "major",
+        "strength": 0.770060360432
+      },
+      "key_temperley": {
+        "key": "E",
+        "scale": "major",
+        "strength": 0.762682318687
+      }
+    }
+  },
+  "kind": "reference_features_not_transcription",
+  "measured": {
+    "centroid_hz": {
+      "method": "librosa_frame_statistics",
+      "origin": "measured",
+      "unit": "Hz",
+      "value": 489.74428968999683
+    },
+    "mean_frame_rms": {
+      "method": "librosa_frame_statistics",
+      "origin": "measured",
+      "unit": "linear_amplitude",
+      "value": 0.11555472016334534
+    },
+    "onset_rate": {
+      "method": "essentia",
+      "origin": "measured",
+      "unit": "onsets/second",
+      "value": 3.17840695381
+    },
+    "rolloff_hz": {
+      "method": "librosa_frame_statistics",
+      "origin": "measured",
+      "unit": "Hz",
+      "value": 805.0861131867783
+    }
+  },
+  "missing_values": [],
+  "schema": 1,
+  "source": {
+    "audio_verification": "source_hash_verified",
+    "name": "Youzee Music - 齐马蓝.mp3",
+    "seconds": 148.8,
+    "sha256": "426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65"
+  },
+  "unavailable": [
+    "melody_transcription",
+    "chord_sequence",
+    "stems",
+    "subjective_listening"
+  ],
+  "windows": {
+    "origin": "measured",
+    "unit": "source_seconds",
+    "values": [
+      {
+        "centroid_hz": 493.73244247849965,
+        "end_seconds": 12.0,
+        "rms": 0.06243357243485493,
+        "rolloff_hz": 788.1277294638539,
+        "start_seconds": 0.0
+      },
+      {
+        "centroid_hz": 544.2990355026845,
+        "end_seconds": 24.0,
+        "rms": 0.08002973035009671,
+        "rolloff_hz": 893.1489512814313,
+        "start_seconds": 12.0
+      },
+      {
+        "centroid_hz": 582.4881136107151,
+        "end_seconds": 36.0,
+        "rms": 0.1264375188491296,
+        "rolloff_hz": 1000.2943382041827,
+        "start_seconds": 24.0
+      },
+      {
+        "centroid_hz": 539.3108885886936,
+        "end_seconds": 48.0,
+        "rms": 0.135077584622824,
+        "rolloff_hz": 976.0955161236702,
+        "start_seconds": 36.0
+      },
+      {
+        "centroid_hz": 650.9534079943937,
+        "end_seconds": 60.0,
+        "rms": 0.08868385384302326,
+        "rolloff_hz": 1055.7737838390262,
+        "start_seconds": 48.0
+      },
+      {
+        "centroid_hz": 651.7778941304421,
+        "end_seconds": 72.0,
+        "rms": 0.08581255840232108,
+        "rolloff_hz": 1061.0829454787233,
+        "start_seconds": 60.0
+      },
+      {
+        "centroid_hz": 432.4748323801189,
+        "end_seconds": 84.0,
+        "rms": 0.14863813648742746,
+        "rolloff_hz": 771.5300864361702,
+        "start_seconds": 72.0
+      },
+      {
+        "centroid_hz": 477.2603870489825,
+        "end_seconds": 96.0,
+        "rms": 0.14887179503886191,
+        "rolloff_hz": 861.6196770732591,
+        "start_seconds": 84.0
+      },
+      {
+        "centroid_hz": 251.9883782893611,
+        "end_seconds": 108.0,
+        "rms": 0.16290225700193423,
+        "rolloff_hz": 371.7080682573743,
+        "start_seconds": 96.0
+      },
+      {
+        "centroid_hz": 282.0547837561406,
+        "end_seconds": 120.0,
+        "rms": 0.1597657229379845,
+        "rolloff_hz": 413.4082882903343,
+        "start_seconds": 108.0
+      },
+      {
+        "centroid_hz": 404.9012329189265,
+        "end_seconds": 132.0,
+        "rms": 0.12490215891295937,
+        "rolloff_hz": 679.9619102846954,
+        "start_seconds": 120.0
+      },
+      {
+        "centroid_hz": 435.02962074004677,
+        "end_seconds": 144.0,
+        "rms": 0.1058405073230174,
+        "rolloff_hz": 656.2004163140716,
+        "start_seconds": 132.0
+      },
+      {
+        "centroid_hz": 815.8552888839349,
+        "end_seconds": 148.8,
+        "rms": 0.008894893144048309,
+        "rolloff_hz": 1134.2900815217392,
+        "start_seconds": 144.0
+      }
+    ]
+  }
+}

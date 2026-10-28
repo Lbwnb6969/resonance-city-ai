@@ -54,7 +54,7 @@ static func capture(music:Node)->Dictionary:
 				if banks[bank][key]==player.stream:
 					found={"bank":bank,"key":key,"db":clampf(player.volume_db,-80.,0.)};break
 			if not found.is_empty():break
-		if found.is_empty():return {}
+		if found.is_empty() or str(found.get("key","")).begins_with("study1/"):return {}
 		tracks[stem]=found
 	var pans:Dictionary=music.spatial.report()
 	return {"version":1,"tracks":tracks,"position":fposmod(float(music._players.concert.get_playback_position()),24.),"mode":music.harmony_mode(),"theme_pan":pans.theme_pan,"concert_pan":pans.concert_pan}

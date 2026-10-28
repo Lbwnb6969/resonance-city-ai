@@ -62,7 +62,7 @@ static func gain(owner:Node,key:String,original:float)->float:
 	var row:Dictionary=owner.get_meta("chamber_roles",{}).get("roles",{}).get(key,{})
 	if row.is_empty():return original
 	if not row.get("active",true) or row.get("layer",0)==0:return -80.
-	if row.get("id","").begins_with("core1/") and row.get("role","") in ["foundation","pulse","answer"]:original=maxf(original,-19. if row.role=="foundation" else -24. if row.role=="pulse" else -28.)
+	if (row.get("id","").begins_with("core1/") or row.get("id","").begins_with("study1/")) and row.get("role","") in ["foundation","pulse","answer"]:original=maxf(original,-19. if row.role=="foundation" else -24. if row.role=="pulse" else -28.)
 	var active:=str(owner._variation_active.get(key,""))
 	if owner._variation_pending.has(key) and not active.is_empty():
 		var melodic:bool=key in Emergence.LEADS+["concert"] and not "chamber_counter_" in active
@@ -87,6 +87,7 @@ static func can_lead(owner:Node,key:String,id:String)->bool:
 		if other==key:continue
 		var current:=str(owner._variation_active.get(other,""))
 		if current.begins_with("core1/") and not current.ends_with("/lead"):continue
+		if current.begins_with("study1/") and not current.ends_with("/lead"):continue
 		if current.is_empty() or current=="original" or "chamber_counter_" in current or current.ends_with("/foundation") or current.ends_with("/air") or current.ends_with("/terrace"):continue
 		if owner._players[other].volume_db> -45.:return false
 	return true

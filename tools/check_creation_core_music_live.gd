@@ -69,6 +69,7 @@ func record_style(style:String)->void:
 	check(sections.size()==6 and materials.size()==3,"six passages and A/B/C plan "+style)
 	check(actual.any(func(id):return id.begins_with("core1/"+style+"/0/")) and actual.any(func(id):return id.begins_with("core1/"+style+"/1/")) and actual.any(func(id):return id.begins_with("core1/"+style+"/2/")),"all three authored families actually reach player "+style)
 	check(trace.all(func(row):return row.leads<=1 and row.pulses<=1),"one actual lead and primary pulse "+style)
+	check(trace.all(func(row):return row.plan.passage==posmod(floori(row.clock/24.),6) and row.roles.foundation.active==(row.plan.passage!=2) and row.roles.air.active==(row.plan.passage<3)),"actual role gates change at current transport boundary, independent of prepared stream IDs "+style)
 	check(trace.all(func(row):return str(row.voices.get(row.lead_track,{}).get("id","")).begins_with("core1/"+style+"/")),"fixed subject stays in requested preset while new material prepares "+style)
 	var max_drift:=0.;var monotonic:=true
 	for i in range(1,trace.size()):

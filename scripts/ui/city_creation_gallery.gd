@@ -91,7 +91,7 @@ func _capture(title: String, reason: String) -> Dictionary:
 	await RenderingServer.frame_post_draw
 	var image: Image=demo.get_viewport().get_texture().get_image()
 	demo._capture_journeys()
-	var mix:Dictionary=Phonograph.reconstruct(demo.state,_view()) if demo.music.muted or demo.music._loading else Phonograph.capture(demo.music)
+	var mix:Dictionary=Phonograph.reconstruct(demo.state,_view()) if demo.music.muted or demo.music._loading or demo.music.has_meta("authored_score") else Phonograph.capture(demo.music)
 	var result: Dictionary=library.save(title,demo.state.snapshot(),_view(),image,reason,mix)
 	demo.ui_layer.visible=ui_visible
 	demo.life.set_process(life_processing)

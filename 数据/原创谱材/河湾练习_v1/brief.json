@@ -1,0 +1,33 @@
+{
+  "directions": [
+    {
+      "origin": "authored",
+      "text": "Write a presentation, answer, development and D cadence"
+    },
+    {
+      "origin": "authored",
+      "text": "Leave real rests; keep one melodic owner and one pulse"
+    }
+  ],
+  "features_sha256": "f770b266cdc5464dea14b9921fdaa188b8588330ddd0e87543125b2cbf1bf257",
+  "kind": "authored_style_brief",
+  "limitations": [
+    "BPM/key are estimates",
+    "RMS is not LUFS",
+    "chords_key does not specify a progression",
+    "No melody, harmony sequence, stems or subjective judgment were extracted"
+  ],
+  "schema": 1,
+  "style": {
+    "origin": "authored",
+    "reason": "Explicit development choice; not a classifier result",
+    "value": "deep_flow"
+  },
+  "transport": {
+    "bars": 8,
+    "beats_per_bar": 4,
+    "bpm": 80,
+    "origin": "authored",
+    "reason": "Existing game clock retained"
+  }
+}

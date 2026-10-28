@@ -1,0 +1,134 @@
+{
+  "alignment": "Compare marked transport units; WAV zero is capture start, not theme start. Callback latency is unmeasured.",
+  "analysis": {
+    "estimated": {
+      "bpm_essentia": {
+        "method": "essentia",
+        "origin": "estimated",
+        "unit": "beats/minute",
+        "value": 79.9993057251
+      },
+      "bpm_librosa": {
+        "method": "librosa",
+        "origin": "estimated",
+        "unit": "beats/minute",
+        "value": 161.4990234375
+      }
+    },
+    "key_profiles": {
+      "method": "essentia_three_profiles_same_engine",
+      "origin": "estimated",
+      "value": {
+        "key_edma": {
+          "key": "G",
+          "scale": "major",
+          "strength": 0.766293823719
+        },
+        "key_krumhansl": {
+          "key": "G",
+          "scale": "major",
+          "strength": 0.75525611639
+        },
+        "key_temperley": {
+          "key": "G",
+          "scale": "major",
+          "strength": 0.735967576504
+        }
+      }
+    },
+    "measured": {
+      "centroid_hz": {
+        "method": "librosa_frame_statistics",
+        "origin": "measured",
+        "unit": "Hz",
+        "value": 374.44800461285445
+      },
+      "mean_frame_rms": {
+        "method": "librosa_frame_statistics",
+        "origin": "measured",
+        "unit": "linear_amplitude",
+        "value": 0.01434435322880745
+      },
+      "onset_rate": {
+        "method": "essentia",
+        "origin": "measured",
+        "unit": "onsets/second",
+        "value": 1.51999080181
+      },
+      "rolloff_hz": {
+        "method": "librosa_frame_statistics",
+        "origin": "measured",
+        "unit": "Hz",
+        "value": 350.1148198405207
+      }
+    },
+    "versions": {
+      "essentia": {
+        "essentia": "2.1-beta6-dev",
+        "essentia_git_sha": "v2.1_beta5-356-g673b6a14-dirty",
+        "extractor": "music 2.0"
+      },
+      "ffmpeg": "7.1-essentials_build-www.gyan.dev",
+      "librosa": "1.0.0",
+      "python": "3.12.10"
+    }
+  },
+  "audio_sha256": "93838d0bdb1874d415ff2583c1a427af193b6f3675b240336fff3a393a2aa354",
+  "checks": {
+    "actual_pcm_duration": true,
+    "actual_peak": true,
+    "actual_pooled_lead": true,
+    "actual_score_identity": true,
+    "four_inputs_consumed": true,
+    "multiple_units": true,
+    "nonempty": true,
+    "score_feature_hash": true,
+    "settled_audible": true,
+    "source_audio_hash": true,
+    "transport_and_pcm": true,
+    "transport_monotonic": true,
+    "unclipped": true,
+    "wall_and_pcm": true
+  },
+  "excluded_initialization_samples": 2,
+  "features_sha256": "f770b266cdc5464dea14b9921fdaa188b8588330ddd0e87543125b2cbf1bf257",
+  "observed_markers": [
+    {
+      "observed_transport_seconds": 3.3842177391052246,
+      "observed_wall_offset_seconds": 0.000205,
+      "section": 0,
+      "unit": 0
+    },
+    {
+      "observed_transport_seconds": 24.40988662838936,
+      "observed_wall_offset_seconds": 21.015957,
+      "section": 1,
+      "unit": 1
+    },
+    {
+      "observed_transport_seconds": 48.39609977602959,
+      "observed_wall_offset_seconds": 45.014993,
+      "section": 2,
+      "unit": 2
+    },
+    {
+      "observed_transport_seconds": 72.3939228951931,
+      "observed_wall_offset_seconds": 69.014035,
+      "section": 3,
+      "unit": 3
+    }
+  ],
+  "ok": true,
+  "pcm": {
+    "channels": 2,
+    "clipped_samples": 0,
+    "peak": 0.165985107421875,
+    "rate": 44100,
+    "seconds": 73.01514739229025
+  },
+  "score_sha256": "9e665dc742e9677b577c67a0519ae5053c0a7fa04af5118a090a33510407b6df",
+  "subjective_listening": null,
+  "transport_end_seconds": 76.3993649482727,
+  "transport_start_seconds": 3.3842177391052246,
+  "wall_seconds": 73.014241
+}
