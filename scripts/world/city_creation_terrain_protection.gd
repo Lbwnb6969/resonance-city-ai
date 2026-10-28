@@ -23,6 +23,7 @@ func build(city: RefCounted,road_profiles: Dictionary = {}) -> Array:
 	# Keep immutable layout records in their original order around road cuts:
 	# the height solver's floating-point accumulation stays exact.
 	var result: Array = _house_pads.duplicate()
+	for landmark:Dictionary in city.placed_landmarks:result.append({"id":landmark.id,"rect":load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark,-.1),"target_y":float(landmark.base_y)-.015,"transition":.15,"priority":3.})
 	for road: Dictionary in city.roads:
 		var profile: Dictionary = road_profiles.get(str(road.id),{})
 		var samples: Array = profile.get("samples",[])

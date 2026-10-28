@@ -5,16 +5,19 @@ const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
 const Contact=preload("res://scripts/visual/shaders/creation_contact.gdshader")
 const LegendaryPlan=preload("res://scripts/world/city_creation_legendary_wonder_plan.gd")
 const Legendary=preload("res://scripts/visual/city_creation_legendary_wonders.gd")
+const Ground=preload("res://scripts/visual/city_creation_placed_landmark_mesh.gd")
 var demo
 var epoch:Array=[]
 var layers:Array[Node3D]=[]
 var crowns:Array[Node3D]=[]
+var ground_landmarks:Array[Node3D]=[]
 var elapsed:=0.
 func setup(owner)->void:
 	demo=owner;name="StreetWonders";demo.add_child(self);demo.set_meta("street_wonders",self)
 func _process(delta:float)->void:
 	elapsed+=delta
 	for crown:Node3D in crowns:Legendary.animate(crown,elapsed)
+	for landmark:Node3D in ground_landmarks:Ground.animate(landmark,elapsed)
 	var city:RefCounted=demo.state
 	var key:=[city.get_instance_id(),city.revision,city._wish_epoch,LegendaryPlan.progress_key(city)]
 	if epoch==key or demo.life.last_revision!=city.revision:return
@@ -23,16 +26,22 @@ func rebuild(city:RefCounted)->void:
 	for layer:Node3D in layers:remove_child(layer);layer.queue_free()
 	layers.clear()
 	crowns.clear()
+	ground_landmarks.clear()
 	var plan:=Plan.derive(city)
-	for row:Dictionary in plan.piers:_pier(row)
-	for row:Dictionary in plan.pockets:_pocket(row)
-	for row:Dictionary in plan.fountains:_flowers(row,city)
-	for row:Dictionary in plan.loops:preload("res://scripts/visual/city_creation_loop_garden.gd").build(self,row)
+	var automatic:bool=city.creative_settings.get("presentation",{}).get("automatic_decoration",true)
+	if automatic:
+		for row:Dictionary in plan.piers:_pier(row)
+		for row:Dictionary in plan.pockets:_pocket(row)
+		for row:Dictionary in plan.fountains:_flowers(row,city)
+		for row:Dictionary in plan.loops:preload("res://scripts/visual/city_creation_loop_garden.gd").build(self,row)
 	var wonders:=LegendaryPlan.derive(city)
-	for row:Dictionary in wonders.monuments:layers.append(Legendary.memorial(self,row))
-	for row:Dictionary in wonders.crowns:
-		var crown:=Legendary.build(self,row)
-		if crown!=null:layers.append(crown);crowns.append(crown)
+	if automatic:
+		for row:Dictionary in wonders.monuments:layers.append(Legendary.memorial(self,row))
+		for row:Dictionary in wonders.crowns:
+			var crown:=Legendary.build(self,row)
+			if crown!=null:layers.append(crown);crowns.append(crown)
+	for row:Dictionary in city.placed_landmarks:
+		var node:=Ground.build(self,row);ground_landmarks.append(node);layers.append(node)
 	set_meta("legendary_plan",wonders)
 	set_meta("plan",plan)
 func _root(label:String,row:Dictionary,at:Vector3,yaw:float=0.)->Node3D:

@@ -97,7 +97,7 @@ func invalid_payloads()->void:
 		func(d):d.creative_settings.presentation.legacy_crowns=1,
 		func(d):d.placed_landmarks=[{"id":"l1","blueprint":"unknown"}],
 		func(d):d.next_landmark_id=2,
-		func(d):d.landmark_high_watermark=1,
+		func(d):d.landmark_high_watermark=-1,
 		func(d):d.houses[0].era_theme="unknown",
 		func(d):d.houses[0].role="unknown",
 		func(d):d.houses[0].origin=[NAN,0]
@@ -135,6 +135,7 @@ func migration()->void:
 	explicit_legacy.creative_settings.music={"mode":"quiet","style":"future_style","seed":56}
 	explicit_legacy.creative_settings.presentation.automatic_decoration=false
 	var choices:Dictionary=explicit_legacy.creative_settings.duplicate(true)
+	choices.presentation.legacy_crowns=false
 	check(Policy.convert(explicit_legacy,OUT+"/explicit_legacy.json").ok,"explicit Schema20 legacy policy can also convert with a verified backup")
 	check(explicit_legacy.creative_settings.music==choices.music and explicit_legacy.creative_settings.presentation==choices.presentation and explicit_legacy.creative_settings.guidance==choices.guidance,"conversion preserves existing authored preferences instead of resetting them")
 

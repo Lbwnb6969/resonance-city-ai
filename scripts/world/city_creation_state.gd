@@ -46,6 +46,7 @@ const SynergyBuffs := preload("res://scripts/world/city_creation_synergy_buffs.g
 const RegionalEcho := preload("res://scripts/world/city_creation_regional_echo.gd")
 const Eras := preload("res://scripts/world/city_creation_eras.gd")
 const CreationPolicy=preload("res://scripts/world/city_creation_creation_policy.gd")
+const PlacedLandmarks=preload("res://scripts/world/city_creation_placed_landmarks.gd")
 var creative_settings:Dictionary={}
 var placed_landmarks:Array[Dictionary]=[]
 var _next_landmark_id:=1;var _landmark_high_watermark:=0
@@ -1196,7 +1197,7 @@ func preview_water(points: Array[Vector2], width: float = 2.4, kind: String = "c
 		if points.size() < 2 or water_clearance(points[-1]) <= 0.0:
 			return {"ok": false, "message": "请将水渠拖到干地", "conflicts": []}
 	var conflicts := _water_conflicts(encoded, width, houses, roads)
-	return {"ok": conflicts.is_empty(), "message": "水岸可建" if conflicts.is_empty() else "水岸与现有%s冲突" % ("房屋" if conflicts[0].kind == "house" else "道路"), "conflicts": conflicts}
+	return {"ok": conflicts.is_empty(), "message": "水岸可建" if conflicts.is_empty() else "水岸与现有%s冲突" % {"house":"房屋","road":"道路","landmark":"传世地标"}.get(conflicts[0].kind,"建筑"), "conflicts": conflicts}
 
 
 func add_water(points: Array[Vector2], width: float = 2.4, kind: String = "channel") -> Dictionary:
@@ -1265,6 +1266,7 @@ func _validate_water_fields(water: Dictionary) -> Dictionary:
 
 func _water_conflicts(points: Array, width: float, house_rows: Array, road_rows: Array) -> Array[Dictionary]:
 	var conflicts: Array[Dictionary] = []
+	if is_same(house_rows,houses):conflicts.append_array(PlacedLandmarks.water_conflicts(self,points,width))
 	for house in house_rows:
 		for cell in house.cells:
 			var center := Vector2(float(house.origin[0]) + int(cell.x) * CELL_UNIT, float(house.origin[1]) + int(cell.z) * CELL_UNIT)
@@ -2486,6 +2488,7 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 	if not _valid_plant_fields(plant):
 		return false
 	var position := Vector2(float(plant.position[0]), float(plant.position[1]))
+	if PlacedLandmarks.occupies(self,position,.3):return false
 	var scale_value := float(plant.scale)
 	var clearance := GardenSpecies.clearance(str(plant.kind),scale_value)
 	if not WORLD_RECT.has_point(position):
@@ -2631,6 +2634,7 @@ func _validate_house(house: Dictionary) -> Dictionary:
 
 
 func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
+	if PlacedLandmarks.hits_house(self,candidate):return true
 	for house in houses:
 		if house.id == except_id:
 			continue
@@ -2748,6 +2752,7 @@ func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_ro
 
 
 func _validate_road_site(points: Array, width: float, house_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
+	if house_rows==null and PlacedLandmarks.stroke_conflicts(self,points,width*.5+.3):return _fail("道路需要避开传世地标")
 	var scene_houses: Array = houses if house_rows == null else house_rows
 	var scene_waters: Array = waters if water_rows == null else water_rows
 	var bridge_valid := _road_water_crossings(points, width, scene_waters)
@@ -2919,6 +2924,7 @@ func add_terrain_stroke(points: Array[Vector2],mode: String,radius: float = 3.5,
 	if natural: row.natural=true
 	var valid:=_validate_terrain_fields(row)
 	if not valid.ok: return valid
+	if PlacedLandmarks.stroke_conflicts(self,encoded,radius):return _fail("先移动传世地标，再调整它的地基")
 	if passes<1 or passes>2: return _fail("地形笔画层数无效")
 	var before:=snapshot()
 	# A ridge preset lays two existing-format layers in one undo transaction.

@@ -62,12 +62,11 @@ static func convert(city:RefCounted,path:String)->Dictionary:
 	var settings:Dictionary=city.creative_settings.duplicate(true);var revision:int=city.revision;var dirty:bool=city.dirty;var life_dirty:bool=city.life_progress_dirty
 	city.creative_settings=Save.defaults("free",1) if settings.is_empty() else settings.duplicate(true)
 	city.creative_settings.creation_policy="free";city.creative_settings.migration_version=1
-	# Conversion preserves the old derived roof display; M81 can explicitly
-	# convert it to placeable blueprints without inventing a ground entity.
-	if settings.is_empty():city.creative_settings.presentation.legacy_crowns=true
+	# Earned rights remain in the ledger; no ground entity is invented on conversion.
+	city.creative_settings.presentation.legacy_crowns=false
 	city.revision+=1;city.dirty=true
 	var saved:Dictionary=city.save_city(path)
 	if not saved.ok:
 		city.creative_settings=settings;city.revision=revision;city.dirty=dirty;city.life_progress_dirty=life_dirty
 		return saved
-	return {"ok":true,"message":"已开启自由创作；旧城与原文件备份已保留","path":path,"backup":backup,"original_backup":original}
+	return {"ok":true,"message":"已开启自由创作；屋顶冠冕转为待放置传世蓝图，权益与转换前原貌备份保留","path":path,"backup":backup,"original_backup":original}

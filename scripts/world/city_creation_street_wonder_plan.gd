@@ -13,7 +13,10 @@ static func derive(city:RefCounted)->Dictionary:
 	if cache.get("key",[])==key:return cache
 	var data:Dictionary={"key":key,"piers":[],"pockets":[],"fountains":[],"loops":[],"support":{}}
 	var obstacles:Dictionary={"boxes":[],"doors":[],"cafes":[],"gardens":[],"piers":[]}
+	for landmark:Dictionary in city.placed_landmarks:
+		obstacles.boxes.append(load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark))
 	var cafe_context:=Cafes.new()
+	var legacy:bool=city.creative_settings.get("creation_policy","legacy")=="legacy"
 	for house:Dictionary in city.houses:
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:obstacles.boxes.append(Frame.footprint(house,cell))
@@ -26,7 +29,8 @@ static func derive(city:RefCounted)->Dictionary:
 		if city.water_clearance(at)<=3.2:
 			var pier:=_pier(city,house,obstacles)
 			if not pier.is_empty():data.piers.append(pier);obstacles.piers.append(pier);data.support[id]=true
-		if absf(sin(Frame.yaw(house)*2.))>.25:
+		var roadside:bool=city.roads.any(func(road):return not road.get("bridge",false) and city._water_stroke_distance(at,road.points)-float(road.width)*.5<5.)
+		if absf(sin(Frame.yaw(house)*2.))>.25 if legacy else roadside:
 			var pocket:=_pocket(city,house,obstacles)
 			if not pocket.is_empty():data.pockets.append(pocket);obstacles.gardens.append(pocket.at);data.support[id]=true
 	for marker:Dictionary in city.Roundabouts.all(city.roads):
@@ -45,6 +49,9 @@ static func derive(city:RefCounted)->Dictionary:
 		loop.radius=sqrt(float(loop.area)/PI);data.loops.append(loop);obstacles.gardens.append(loop.center)
 		for house:Dictionary in city.houses:
 			if Frame.origin(house).distance_to(loop.center)<float(loop.radius)+6.5:data.support[str(house.id)]=true
+	for landmark:Dictionary in city.placed_landmarks:
+		for house:Dictionary in city.houses:
+			if Frame.distance(load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark),Frame.origin(house))<=6.5:data.support[str(house.id)]=true
 	city.set_meta("street_wonder_obstacles",obstacles)
 	city.set_meta("street_wonder_plan",data);return data
 static func memorial_socket(city:RefCounted,house:Dictionary,occupied:Array)->Dictionary:
@@ -101,6 +108,7 @@ static func _pocket(city:RefCounted,house:Dictionary,obstacles:Dictionary)->Dict
 		if int(cell.level)!=0:continue
 		for corner:Vector2 in [Vector2(1,1),Vector2(-1,1),Vector2(1,-1),Vector2(-1,-1)]:
 			var at:=Frame.center(house,cell)+Frame.direction(house,corner*1.45)
+			if city.CreationPolicy.is_free(city) and not city.roads.any(func(road):return not road.get("bridge",false) and city._water_stroke_distance(at,road.points)-float(road.width)*.5<3.5):continue
 			if not _clear(city,at,.59,obstacles):continue
 			var low:=INF;var high:=-INF
 			for i in range(8):

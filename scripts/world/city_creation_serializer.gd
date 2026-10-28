@@ -576,6 +576,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if not neighborhoods.ok:return neighborhoods
 	var movement:Dictionary=city.LandmarkMovement.validate(city,data)
 	if not movement.ok:return movement
+	var ground_landmarks:Dictionary=city.PlacedLandmarks.validate_geometry(city,data)
+	if not ground_landmarks.ok:return ground_landmarks
 	return {"ok": true, "message": ""}
 
 static func read(city: RefCounted, path: String) -> Dictionary:

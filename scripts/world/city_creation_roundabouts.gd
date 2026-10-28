@@ -31,6 +31,7 @@ static func preview(city: RefCounted,point: Vector2) -> Dictionary:
 					if crossing is Vector2 and point.distance_to(crossing)<nearest:
 						nearest=point.distance_to(crossing);selected={"owner_id":str(a.id),"center":crossing,"radius":RADIUS}
 	if selected.is_empty(): return {"ok":false,"message":"点击两条道路的真实交叉口"}
+	if city.PlacedLandmarks.occupies(city,selected.center,RADIUS+.4):return city._fail("环岛需要避开传世地标")
 	for marker: Dictionary in all(city.roads):
 		if marker.center.distance_to(selected.center)<RADIUS*2+.5: return {"ok":false,"message":"这里已邻近环岛广场"}
 	var valid:=site(city,selected.center,RADIUS,city.houses,city.waters)

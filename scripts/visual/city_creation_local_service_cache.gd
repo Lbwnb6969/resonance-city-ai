@@ -3,7 +3,7 @@ extends RefCounted
 const Frontage=preload("res://scripts/world/city_creation_frontage.gd")
 const Rules=preload("res://scripts/world/city_creation_tradition_rules.gd")
 static func rules(city)->int:
-	return hash([city.era_modifiers,city.harmony_journey.get("traditions",[]),city.biome_seed,city.districts,city.era_unlocks])
+	return hash([city.era_modifiers,city.harmony_journey.get("traditions",[]),city.biome_seed,city.districts,city.era_unlocks,city.placed_landmarks])
 static func capture(owner)->Dictionary:
 	var cafes:Dictionary={}
 	for id:String in owner.cafes.roots:

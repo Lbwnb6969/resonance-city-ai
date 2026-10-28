@@ -11,7 +11,9 @@ const TITLES:={"riverbank":"海神竖琴灯塔","highland":"天顶浑天仪歌�
 static func progress_key(city:RefCounted)->int:
 	return hash([city.harmony_journey.get("rarity_ranks",{}),city.harmony_journey.get("vignette_blessings",{}),city.harmony_journey.get("vignette_echoes",{})])
 static func unlocked(city:RefCounted)->Dictionary:
-	var result:Dictionary={};var journey:Dictionary=city.harmony_journey
+	return unlocked_journey(city.harmony_journey)
+static func unlocked_journey(journey:Dictionary)->Dictionary:
+	var result:Dictionary={}
 	for card:String in journey.get("rarity_ranks",{}):
 		if int(journey.rarity_ranks[card])==3 and card in journey.get("traditions",[]):result[Families.family_of(card)]=true
 	for id:String in journey.get("vignette_echoes",{}):
@@ -19,7 +21,7 @@ static func unlocked(city:RefCounted)->Dictionary:
 			if int(journey.vignette_echoes[id][poem])>=2 and poem in journey.get("vignette_blessings",{}).get(id,[]) and int(journey.get("completed_vignettes",{}).get(poem,0))>=2:result[POEMS[poem]]=true
 	return result
 static func derive(city:RefCounted)->Dictionary:
-	var key:=[city.revision,city._wish_epoch,progress_key(city)]
+	var key:=[city.revision,city._wish_epoch,progress_key(city),city.creative_settings.get("presentation",{})]
 	var cache:Dictionary=city.get_meta("legendary_wonder_plan",{})
 	if cache.get("key",[])==key:return cache
 	var result:Dictionary={"key":key,"monuments":[],"crowns":[],"unlocked":unlocked(city)}
@@ -41,6 +43,8 @@ static func derive(city:RefCounted)->Dictionary:
 		result.monuments.append({"house_id":str(house.id),"at":socket.at,"y":socket.y,"yaw":socket.yaw,"groups":groups})
 		# One tribute per poem across its recipients keeps large neighborhoods light.
 		if result.monuments.size()>=12:break
+	if city.creative_settings.get("creation_policy","legacy")=="free" and not city.creative_settings.presentation.legacy_crowns:
+		city.set_meta("legendary_wonder_plan",result);return result
 	for family:String in Families.FAMILIES:
 		if not result.unlocked.has(family):continue
 		var best:Dictionary={};var score:=-INF

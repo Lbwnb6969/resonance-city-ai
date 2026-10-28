@@ -373,6 +373,9 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 	# terrain triangles touching it, even when a grass root stays dry.
 	var rect := Rect2(Vector2(block) * BLOCK_SIZE, Vector2.ONE * BLOCK_SIZE).grow(1.0)
 	var relevant: Array = []
+	for landmark:Dictionary in state.placed_landmarks:
+		var fp:Variant=state.PlacedLandmarks.footprint(landmark)
+		if rect.intersects(Frame.bounds(fp)):relevant.append(["courtyard",fp])
 	for court: Dictionary in state.courtyard_plans():
 		for footprint:Variant in court.tiles:
 			if rect.intersects(Frame.bounds(footprint)): relevant.append(["courtyard",footprint])

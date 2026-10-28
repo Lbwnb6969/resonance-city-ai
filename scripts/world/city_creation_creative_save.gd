@@ -44,10 +44,7 @@ static func validate(city:RefCounted,data:Dictionary)->Dictionary:
 			if data.has(key):return city._fail("创作政策需要版本20存档")
 		return {"ok":true}
 	if not settings_valid(city,data.get("creative_settings")):return city._fail("创作政策或偏好字段无效")
-	if not data.get("placed_landmarks") is Array or not data.placed_landmarks.is_empty():return city._fail("地标实体尚未接入，不能丢弃或接受未知蓝图")
-	if not city._is_integer(data.get("next_landmark_id")) or data.next_landmark_id!=1:return city._fail("地标身份计数无效")
-	if not city._is_integer(data.get("landmark_high_watermark")) or data.landmark_high_watermark!=0:return city._fail("地标身份高水位无效")
-	return {"ok":true}
+	return preload("res://scripts/world/city_creation_placed_landmarks.gd").validate_fields(city,data)
 
 static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	var current:Dictionary=city.creative_settings
@@ -56,7 +53,6 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		if incoming.is_empty():incoming=current.duplicate(true)
 		incoming.creation_policy="free"
 		incoming.migration_version=maxi(int(current.migration_version),int(incoming.get("migration_version",0)))
-		if int(current.migration_version)==1:incoming.presentation.legacy_crowns=current.presentation.legacy_crowns
 	if not incoming.is_empty():
 		incoming.version=int(incoming.version);incoming.migration_version=int(incoming.migration_version);incoming.music.seed=int(incoming.music.seed)
 	city.creative_settings=incoming

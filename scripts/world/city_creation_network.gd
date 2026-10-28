@@ -49,6 +49,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.waters.assign(snapshot.waters)
 	state.districts.assign(snapshot.get("districts",[]))
 	state.terrain_strokes.assign(snapshot.get("terrain_strokes",[]))
+	state.placed_landmarks.assign(snapshot.get("placed_landmarks",[]));state.creative_settings=snapshot.get("creative_settings",{}).duplicate(true)
 	state.biome_seed=snapshot.get("biome_seed",{}).duplicate()
 	state.era_modifiers.assign(snapshot.get("era_modifiers",[]))
 	state.harmony_journey=snapshot.get("harmony_journey",{}).duplicate(true)
@@ -536,6 +537,7 @@ func _navigation_height(at: Vector2) -> float:
 	return state._road_heights.height_at(at,maxf(state._ground_terrain.raw_height_at(at)+0.075,legacy))
 
 func _attachment_crosses_wall(a: Vector2,b: Vector2) -> bool:
+	if state.PlacedLandmarks.stroke_conflicts(state,[[a.x,a.y],[b.x,b.y]],.14):return true
 	if _crosses_island(a,b): return true
 	var bounds := Rect2(a,Vector2.ZERO).expand(b)
 	var seen: Dictionary = {}

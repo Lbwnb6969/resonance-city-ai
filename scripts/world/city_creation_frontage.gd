@@ -199,6 +199,8 @@ static func exterior_route(house: Dictionary, from: Vector2, to: Vector2, city: 
 	var nearby := false
 	var candidates: Array[Vector2]=[from,to]
 	var obstacles:Array=[]
+	for landmark:Dictionary in city.placed_landmarks:
+		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark,.24);obstacles.append(fp);candidates.append_array(Frame.corners(Frame.grow(fp,.08)))
 	for row: Dictionary in city.houses:
 		for cell: Dictionary in row.cells:
 			if int(cell.level)!=0: continue

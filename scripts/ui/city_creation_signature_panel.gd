@@ -51,6 +51,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 		place.name = "PlaceSignature_" + id
 		card_col.add_child(place)
 		buttons[id] = place
+	preload("res://scripts/ui/city_creation_ground_landmark_tool.gd").setup(demo,column)
 	column.add_child(demo._button("回到街巷", func() -> void: panel.hide()))
 	panel.hide()
 	actions = HBoxContainer.new()

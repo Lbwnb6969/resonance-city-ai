@@ -649,6 +649,7 @@ func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
 
 func select_tool(index: int) -> void:
+	if has_meta("ground_landmark_tool"):get_meta("ground_landmark_tool").cancel()
 	strum_hold.cancel()
 	guided_hint=""
 	tool = index
@@ -756,6 +757,7 @@ func _input(event: InputEvent) -> void:
 			gallery.close_panel()
 			get_viewport().set_input_as_handled()
 		return
+	if has_meta("ground_landmark_tool") and get_meta("ground_landmark_tool").handle(event):get_viewport().set_input_as_handled();return
 	if has_meta("house_rotation_input") and get_meta("house_rotation_input").handle(event):
 		get_viewport().set_input_as_handled();return
 	if get_meta("road_tool").input(event):get_viewport().set_input_as_handled();return
@@ -1066,6 +1068,7 @@ func _plane_at(screen: Vector2, height: float) -> Vector2:
 	return Vector2(p.x, p.z)
 
 func _update_hover() -> void:
+	if has_meta("ground_landmark_tool") and get_meta("ground_landmark_tool").hover():return
 	if strum_hold.active():
 		town.clear_preview();preview_key="";candidate.clear();return
 	if signatures!=null and not signatures.placing.is_empty():

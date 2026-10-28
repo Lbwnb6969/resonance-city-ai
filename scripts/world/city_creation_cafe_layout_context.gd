@@ -46,7 +46,7 @@ func rebind_city(source:RefCounted,target:RefCounted)->void:
 func _context(city) -> Dictionary:
 	stats.context_queries+=1
 	var geometry:Array=Frontage.ground_geometry(city.houses)
-	var signature := hash([geometry,city.roads,city.waters])
+	var signature := hash([geometry,city.roads,city.waters,city.placed_landmarks])
 	var key: int = city.get_instance_id()
 	if _contexts.has(key) and _contexts[key].signature==signature:
 		_contexts[key].validated_revision=city.revision
@@ -59,6 +59,8 @@ func _context(city) -> Dictionary:
 	# A single current geometry snapshot owns all derived routing data. Progress,
 	# names and tea status never retain old visibility graphs or invalidate it.
 	var context := {"owner":weakref(city),"signature":signature,"validated_revision":city.revision,"footprints":[],"obstacles":[],"corners":{},"entries":[],"roads":[],"graphs":{}}
+	for landmark:Dictionary in city.placed_landmarks:
+		var fp:Variant=city.PlacedLandmarks.footprint(landmark);context.footprints.append(fp);context.obstacles.append(Frame.grow(fp,GUEST_RADIUS))
 	for row: Dictionary in city.houses:
 		var corners: Array[Vector2] = []
 		for cell: Dictionary in row.cells:
@@ -214,6 +216,7 @@ func _route(city, house: Dictionary, plan: Dictionary, from: Vector2, to: Vector
 	if context.graphs.has(graph_key): graph=context.graphs[graph_key]
 	else:
 		var core: Array[Vector2] = []
+		for landmark:Dictionary in city.placed_landmarks:core.append_array(Frame.corners(city.PlacedLandmarks.footprint(landmark,GUEST_RADIUS+.05)))
 		core.append_array(context.corners.get(str(house.get("id","")),[]))
 		for index in range(18): core.append(Vector2(plan.center)+Vector2(sin(index*TAU/18.0),cos(index*TAU/18.0))*1.40)
 		for other: Dictionary in other_plans:

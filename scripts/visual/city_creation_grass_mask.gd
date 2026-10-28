@@ -58,6 +58,10 @@ func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = 
 		"setup_ms": float(Time.get_ticks_usec() - started) / 1000.0}
 
 func _collect_legacy(state:RefCounted,entrances_by_house:Dictionary)->void:
+	for landmark:Dictionary in state.placed_landmarks:
+		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark)
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
 	# Derived paving suppresses ground cover; authored tree/shrub visibility
 	# still belongs to State and remains independent of this grass-only mask.
 	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(state)
