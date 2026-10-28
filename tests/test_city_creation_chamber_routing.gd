@@ -39,6 +39,8 @@ func run()->void:
 	var old_player:=AudioStreamPlayer.new();old_player.volume_db=-12.;music._players[leader]=old_player
 	check(not Roles.can_lead(music,"wood_sylvan",roles.roles.wood_sylvan.id),"incoming cantor waits while the old actual melody is audible")
 	old_player.volume_db=-46.;check(Roles.can_lead(music,"wood_sylvan",roles.roles.wood_sylvan.id),"handoff admits the new cantor after the old one has faded")
+	var pulse:=AudioStreamPlayer.new();pulse.volume_db=-20.;music._players.air=pulse;music._variation_active.air="core1/deep_flow/0/0/0/pulse"
+	check(Roles.can_lead(music,"wood_sylvan",roles.roles.wood_sylvan.id),"versioned primary pulse is not mistaken for another melody");pulse.free()
 	music._players.clear();old_player.free()
 	var curved:Array[Vector2]=[]
 	for i in range(25):var angle:=float(i)*PI/48.;curved.append(Vector2(-30,-12)+Vector2(cos(angle),sin(angle))*5.)

@@ -26,6 +26,7 @@ static func valid(value:Variant)->bool:
 		if row.bank=="original":
 			if row.key!=stem:return false
 		elif row.bank=="harmony":
+			if preload("res://scripts/audio/city_creation_core_score_cache.gd").valid_for(str(row.key),stem):continue
 			if preload("res://scripts/audio/city_creation_score_sample_routing.gd").valid_key(str(row.key),stem):continue
 			if preload("res://scripts/audio/city_creation_chamber_legato.gd").valid_key(str(row.key)) and stem in Emergence.LEADS+["concert"]:continue
 			if parts.size()==2 and parts[0].is_valid_int() and int(parts[0])>=0 and int(parts[0])<Palette.NAMES.size() and parts[1] in ["chamber_counter_pastoral","chamber_counter_renaissance","chamber_counter_clockwork","chamber_counter_modern_eco"] and stem in Emergence.LEADS+["concert"]:continue
@@ -74,6 +75,7 @@ func begin(music:Node,value:Dictionary)->Dictionary:
 	var banks:=_banks(music)
 	for stem:String in STEMS:
 		var row:Dictionary=value.tracks[stem]
+		if row.bank=="harmony" and str(row.key).begins_with("core1/") and not preload("res://scripts/audio/city_creation_core_score_cache.gd").request(music,str(row.key)):return {"ok":false,"message":"正在后台准备这份城市乐章，请稍候播放"}
 		if row.bank=="harmony" and str(row.key).begins_with("chamber_legato/"):preload("res://scripts/audio/city_creation_chamber_legato.gd").materialize(music,str(row.key))
 		if not banks[row.bank].has(row.key):return {"ok":false,"message":"请先准备本地音乐声部库"}
 	if active:stop(music)

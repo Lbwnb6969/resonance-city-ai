@@ -1,0 +1,20 @@
+extends "res://tools/check_creation_core_edges_live.gd"
+func run()->void:
+	OUT="res://验证记录/M79/relation_ab";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60;origin=Time.get_ticks_usec()
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input();quiet()
+	var city:=Fixture.fixture();city.creative_settings=city.CreationPolicy.Save.defaults();await show(city,Vector2(-26,-20),"只改道路关系的声部对照");quiet();preference("fixed","deep_flow");await observe(32.)
+	while fposmod(demo.music._playback_clock(),144.)>1.:await observe(.2)
+	await observe(.3)
+	var first:Dictionary=demo.music.get_meta("chamber_roles",{}).duplicate(true);var before:Dictionary=demo.state.snapshot()
+	await record_edge("A_connected",6.)
+	for id:String in ["r2","r3"]:await publish(demo.state.remove_road(id))
+	await observe(2.);var second:Dictionary=demo.music.get_meta("chamber_roles",{}).duplicate(true)
+	await record_edge("B_disconnected",6.)
+	var leader:String=first.lead_track
+	check(second.lead_track==leader and first.roles[leader].id==second.roles[leader].id,"same actual lead and exact theme material in both takes")
+	check(first.roles.foundation.id==second.roles.foundation.id and first.roles.air.id==second.roles.air.id,"same foundation and pulse sample phases")
+	check(first.roles.terrace.active and not second.roles.terrace.active,"only street relation withdraws real answer role in same P0")
+	check(before.houses==demo.state.snapshot().houses and before.creative_settings==demo.state.creative_settings,"houses and authored seed/preferences identical")
+	check(trace.all(func(row):return row.leads<=1 and row.pulses<=1),"controlled A/B has one melody/pulse")
+	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures,"trace":trace,"markers":marks,"before":first,"after":second},"\t",true,true))
+	print("CORE_RELATION_AB ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));demo.queue_free();await process_frame;await create_timer(.2).timeout;quit(0 if failures.is_empty() else 1)

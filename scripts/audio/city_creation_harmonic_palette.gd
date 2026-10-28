@@ -177,4 +177,11 @@ static func render(add:Callable,make:Callable,theme:Script,leads:Array,legacy_ed
 			_wave(out,key,.42,[_note(0.,.38,midi,.10,timbre)],add,make)
 	var sample:Dictionary=preload("res://scripts/audio/city_creation_pastoral_score.gd").bake(add,make,load("res://scripts/audio/city_creation_chamber_score.gd"),chords(0))
 	for field:String in ["streams","notes","peaks"]:out[field].merge(sample[field])
+	var core=load("res://scripts/audio/city_creation_core_scores.gd")
+	var cache=load("res://scripts/audio/city_creation_core_score_cache.gd")
+	for style:String in core.STYLES:
+		var bundle:Dictionary=core.bundle(style,0,0,0,add,make)
+		for role:String in bundle:
+			var id:String=cache.key(style,0,0,0,role);var row:Dictionary=bundle[role]
+			out.streams[id]=row.stream;out.notes[id]=row.notes;out.peaks[id]=row.peak
 	return out

@@ -38,7 +38,7 @@ func run()->void:
 				samples+=actual.size();playback.stop()
 			count+=1
 			diagnostics.append({"key":group+"/"+key,"power":power-prior_power,"error":errors-prior_error})
-	check(bank.streams.size()==12 and bank.variations.size()==240 and count==4324 and bank.harmony.has("pastoral_breeze_v1/lead/0"),"twelve stems,240 legacy variations and seven versioned sample streams ship together")
+	check(bank.streams.size()==12 and bank.variations.size()==240 and count==4336 and bank.harmony.has("pastoral_breeze_v1/lead/0") and bank.harmony.has("core1/deep_flow/0/0/0/lead"),"twelve stems,240 legacy variations,sample and minimal three-style catalogue ship together")
 	check(metadata_ok,"native encoded lengths, sample rate and all loop endpoints remain exact")
 	check(finite,"every encoded stream decodes to finite unclipped audio at start, middle and tail")
 	var snr:=10.*log(power/errors)/log(10.) if errors>0. else 0.

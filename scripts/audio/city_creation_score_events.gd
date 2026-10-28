@@ -1,7 +1,7 @@
 extends RefCounted
 ## Finite, bounded authored score contract; role never changes pooled layer.
 const ROLES:={"foundation":1,"pulse":2,"answer":2,"lead":3,"sparkle":4}
-const TIMBRES:=["flute","guitar","bass","horn","felt_nocturne","cello_harmonic"]
+const TIMBRES:=["flute","guitar","bass","horn","felt_nocturne","felt_piano","cello_harmonic"]
 static func valid(events:Array)->bool:
 	if events.is_empty() or events.size()>256:return false
 	for item:Variant in events:

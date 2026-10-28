@@ -3,6 +3,7 @@ const Score=preload("res://scripts/audio/city_creation_chamber_score.gd")
 const Emergence=preload("res://scripts/audio/city_creation_harmonic_emergence.gd")
 static func prepare(owner:Node)->Dictionary:
 	var cache_key:Array=[owner._daily_phrase,owner.acoustic.revision,owner.concert_active,owner.harmony_mode(),owner.night,owner._concert_phrase() if owner.concert_active else -1,owner.get_meta("legacy_score",false)]
+	cache_key.append(preload("res://scripts/audio/city_creation_core_orchestration.gd").key(owner))
 	if owner.get_meta("chamber_role_key",[])==cache_key:return owner.get_meta("chamber_roles",{})
 	owner.set_meta("chamber_role_key",cache_key)
 	var source:=str(owner.emergence.score.get("source_id",""));var leader:=str(owner.emergence.score.get("lead_track",""))
@@ -50,6 +51,7 @@ static func prepare(owner:Node)->Dictionary:
 		elif key in ["foundation","air","terrace"]:roles[key]={"layer":1 if key=="foundation" else 2,"id":"%d/%s"%[mode,key],"bank":"harmony","active":true}
 		else:roles[key]={"layer":0,"active":false}
 	preload("res://scripts/audio/city_creation_score_sample_routing.gd").apply(owner,roles,leader,mode,variant)
+	preload("res://scripts/audio/city_creation_core_orchestration.gd").apply(owner,roles,leader,mode)
 	var result:={"lead_track":leader,"source_id":source,"roles":roles,"contributors":contributors,"mode":mode,"variant":variant}
 	owner.set_meta("chamber_roles",result);return result
 static func desired(owner:Node,key:String,original:String)->String:
@@ -60,12 +62,13 @@ static func gain(owner:Node,key:String,original:float)->float:
 	var row:Dictionary=owner.get_meta("chamber_roles",{}).get("roles",{}).get(key,{})
 	if row.is_empty():return original
 	if not row.get("active",true) or row.get("layer",0)==0:return -80.
+	if row.get("id","").begins_with("core1/") and row.get("role","") in ["foundation","pulse","answer"]:original=maxf(original,-19. if row.role=="foundation" else -24. if row.role=="pulse" else -28.)
 	var active:=str(owner._variation_active.get(key,""))
 	if owner._variation_pending.has(key) and not active.is_empty():
 		var melodic:bool=key in Emergence.LEADS+["concert"] and not "chamber_counter_" in active
 		if (int(row.get("layer",0))==3)==melodic:return original
 	if active!=str(row.get("id","")) and not (row.get("legato",false) and active==str(row.get("base_id",""))):return -80.
-	return original
+	return original+float(row.get("gain_offset",0.))
 static func reconstruction(city:RefCounted,view:Dictionary,catalog:Dictionary,acoustic:RefCounted,score:Dictionary,mode:int)->Dictionary:
 	var context:Node=load("res://scripts/audio/city_creation_music.gd").new()
 	context._pluck_city=city;context._house_music=catalog.houses;context.acoustic=acoustic;context.emergence.score=score;context._biome_mode=mode;context._daily_phrase=0;context.night=int(view.get("light_phase",0))==2
@@ -83,6 +86,7 @@ static func can_lead(owner:Node,key:String,id:String)->bool:
 	for other:String in owner._players:
 		if other==key:continue
 		var current:=str(owner._variation_active.get(other,""))
+		if current.begins_with("core1/") and not current.ends_with("/lead"):continue
 		if current.is_empty() or current=="original" or "chamber_counter_" in current or current.ends_with("/foundation") or current.ends_with("/air") or current.ends_with("/terrace"):continue
 		if owner._players[other].volume_db> -45.:return false
 	return true
