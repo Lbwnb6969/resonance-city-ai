@@ -50,6 +50,12 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     put(work, '参考资料/source.cs', b'public class Evidence {}\n'*40)
     put(work, '参考资料/large.bin', b'x'*5000)
     put(work, '参考资料/small.bin', b'y'*300)
+    put(work, '参考资料/raw_export.json', b'{"bulk":"local only"}')
+    put(work, '参考资料/work/duplicate.cs', b'class Duplicate {}')
+    put(work, '.mcp.json', b'{"machine":"not published"}')
+    put(work, 'tools/probe.gd.uid', b'uid://generated')
+    put(work, 'tests/probe.gd.uid', b'uid://generated')
+    put(work, '资源/runtime.json', b'{"runtime":true}')
     put(work, 'UI/theme/a.gd', b'extends Control\n')
     put(work, 'UI/theme/b.gd', b'extends Control\n')
     put(work, 'UI/__pycache__/local.pyc', b'local cache')
@@ -75,6 +81,10 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     assert all(f'batch-{index:03d}.txt' in full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0') for index in [0, 255, 256])
     manifest = json.loads(full.git('show', plan['commit']+':'+full.MANIFEST))
     assert '参考资料/large.bin' in manifest['omitted']
+    tree_paths=set(full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0'))
+    assert '资源/runtime.json' in tree_paths
+    assert not tree_paths & {'.mcp.json','tools/probe.gd.uid','tests/probe.gd.uid','参考资料/raw_export.json','参考资料/work/duplicate.cs'}
+    assert '参考资料/raw_export.json' in manifest['omitted'] and '参考资料/small.bin' in manifest['omitted']
     full.push()
     assert git(work, 'ls-remote', 'origin', 'refs/heads/main').split()[0] == plan['commit']
     cloud = base / 'cloud'
@@ -84,7 +94,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     git(cloud, 'remote', 'add', 'ai-sync', remotes['ai-sync'])
     assert (cloud / '参考资料/source.cs').is_file()
     assert not (cloud / '资产').exists() and not (cloud / '.godot').exists()
-    assert (cloud / 'UI/theme/a.gd').is_file() and not (cloud / 'UI/__pycache__').exists()
+    assert not (cloud / 'UI').exists()
     put(cloud, 'scripts/new_feature.gd', b'extends RefCounted\n')
     git(cloud, 'add', 'scripts/new_feature.gd')
     git(cloud, 'commit', '-m', 'cloud feature')

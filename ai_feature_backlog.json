@@ -1478,7 +1478,7 @@
         "depends_on": [
           "M82"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
         "verified_by": "",
         "original_description": "修复关系最明显的接缝，避免用一层新装饰掩盖旧问题。",
@@ -1493,7 +1493,7 @@
         "depends_on": [
           "M83"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
         "verified_by": "",
         "original_description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
@@ -1508,7 +1508,7 @@
         "depends_on": [
           "M84"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
         "verified_by": "",
         "original_description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
@@ -1523,7 +1523,7 @@
         "depends_on": [
           "M85"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
         "verified_by": "",
         "original_description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
@@ -1548,5 +1548,7 @@
         "authorized": "用户明确要求继续施工并融合52.md；完整预设母曲与城建分轨编配，保留既有验收记录"
       }
     }
-  }
+  },
+  "current_design_document": "文档/50_空间驱动城建音乐与整合排期修订.md",
+  "historical_path_resolution": "文档/整理记录.md：历史任务定义中的旧路径保留原文，通过归档映射或Git历史恢复；不再是施工入口"
 }

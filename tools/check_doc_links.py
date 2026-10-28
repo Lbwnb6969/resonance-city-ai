@@ -99,7 +99,7 @@ def check(paths):
 
 
 def main():
-    paths = sorted(DOCS.rglob("*.md")) + [ROOT / name for name in ("PROJECT.md", "AI_START_HERE.md", "README.md", "tools/README.md", "AI资料/README.md")]
+    paths = sorted(DOCS.rglob("*.md")) + [ROOT / name for name in ("PROJECT.md", "AI_START_HERE.md", "README.md", "AGENTS.md", "tools/README.md")]
     total, errors = check(paths)
     for path, number, target, reason in errors:
         print(f"{path.relative_to(ROOT)}:{number}: {reason}: {target}")

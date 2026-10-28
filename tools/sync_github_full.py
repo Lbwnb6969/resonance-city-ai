@@ -21,15 +21,16 @@ WORK = GIT / 'full-sync'
 REMOTE = 'origin'
 URL = 'https://github.com/Lbwnb6969/resonance-city.git'
 REF = 'refs/full-sync/candidate'
-EXCLUDED = {'废弃', '验证记录', '资产'}
+EXCLUDED = {'废弃', '验证记录', '资产', '备份', 'UI', '新文档', 'AI资料'}
+LOCAL_ONLY_FILES = {'.mcp.json'}
 MAX_BYTES = 1_000_000_000
 INPUT_BUDGET = 930_000_000  # Leave room for the published omission manifest.
 MAX_FILE = 95_000_000
 MANIFEST = '数据/完整库省略清单.json'
-TEXT = {'.md', '.gd', '.gdshader', '.cs', '.lua', '.glsl', '.shader', '.py', '.c', '.h',
+TEXT = {'.md', '.gd', '.gdshader', '.gdshaderinc', '.cs', '.lua', '.glsl', '.shader', '.py', '.c', '.h',
         '.cpp', '.hpp', '.js', '.ts', '.sh', '.txt', '.cfg', '.ini', '.toml', '.xml',
         '.yaml', '.yml', '.html', '.svg', '.ps1', '.bat', '.cmd', '.tres', '.tscn',
-        '.json', '.csv', '.tsv'}
+        '.il', '.cil'}
 
 
 def git(*args, data=None, env=None):
@@ -69,7 +70,10 @@ def inventory():
         dirs[:] = [d for d in dirs if d not in {'.git', '__pycache__'}]
         for name in files:
             path = base / name
-            if name == '.git' or name.endswith('.pyc'):
+            relative = path.relative_to(ROOT)
+            if name == '.git' or name.endswith('.pyc') or relative.as_posix() in LOCAL_ONLY_FILES:
+                continue
+            if relative.parts[0] in {'tools', 'tests'} and name.endswith('.gd.uid'):
                 continue
             stat = path.stat()
             result[path.relative_to(ROOT).as_posix()] = [stat.st_size, stat.st_mtime_ns]
@@ -94,8 +98,14 @@ def selection(items):
             kept.add(path)
             total += size
         else:
+            if any(part in {'work', 'discarded', '备份', 'verified-il'} for part in Path(path).parts):
+                omitted[path] = [size, 'reference_work_snapshot_or_duplicate']
+                continue
             source = Path(path).suffix.lower() in TEXT and size <= 20_000_000
-            optional.append((0 if source else 1, size, path))
+            if not source:
+                omitted[path] = [size, 'reference_bulk_data_or_media_local_original']
+                continue
+            optional.append((0, size, path))
     if total > INPUT_BUDGET:
         raise RuntimeError('Required project inputs exceed the full repository budget.')
     for _, size, path in sorted(optional):
@@ -162,13 +172,14 @@ def prepare():
         data=b'\0'.join(p.encode('utf-8') for p in sorted(kept))+b'\0', env=index_env)
     ignore = ('# Construction repository: user exclusions and rebuildable large caches.\n'
               +''.join('/'+d+'/\n' for d in sorted(EXCLUDED))
-              +'/.godot/\n/资源/音乐/城市同步声部库.res\n')
+              +'/.godot/\n/.mcp.json\n/tools/*.gd.uid\n/tests/*.gd.uid\n**/__pycache__/\n/资源/音乐/城市同步声部库.res\n')
     prior = ROOT / MANIFEST
     if prior.is_file():
         previous = json.loads(prior.read_text(encoding='utf-8'))['omitted']
         omitted.update({p: facts for p, facts in previous.items() if p not in items})
     manifest = dict(policy='origin construction repository <1GB; ai-sync design repository <100MB',
-                    excluded_directories=sorted(EXCLUDED), omitted_cache_directories=['.godot', '__pycache__'],
+                    excluded_directories=sorted(EXCLUDED), excluded_files=sorted(LOCAL_ONLY_FILES),
+                    generated_uid_directories=['tools', 'tests'], omitted_cache_directories=['.godot', '__pycache__'],
                     input_budget_bytes=INPUT_BUDGET, limit_bytes=MAX_BYTES,
                     design_files=sorted(design_paths(ROOT, set(filter(None, git('ls-files', '-z').decode().split('\0'))))),
                     omitted=omitted)

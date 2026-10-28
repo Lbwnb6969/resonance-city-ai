@@ -102,7 +102,7 @@ def audit(root):
             errors.append(f"缺少入口文档: {name}")
             continue
         if path.stat().st_size >= 15_000:
-            errors.append(f"入口文档膨胀: {name} 必须 <15000 字节，历史数据归档至文档/24")
+            errors.append(f"入口文档膨胀: {name} 必须 <15000 字节，历史数据按文档/整理记录.md归档")
         if name != "AGENTS.md" and len(path.read_text(encoding="utf-8").splitlines()) > 120:
             errors.append(f"入口文档膨胀: {name} 必须 <=120 行")
     return errors, milestones

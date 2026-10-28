@@ -1,5 +1,5 @@
 extends SceneTree
-## Frozen authored city before/after, then real editing of a shared row roof.
+## Production authored city and real editing of a shared row roof.
 const Scene=preload("res://scenes/city_creation.tscn")
 const OUTPUT="res://验证记录/长屋山墙_2026-10-15"
 var demo: Node3D
@@ -90,14 +90,6 @@ func _run() -> void:
 	demo.ui_layer.visible=false
 	sampler=Sampler.new()
 	root.add_child(sampler)
-	if label=="before":
-		# Godot types a preloaded script instance by its exact script identity.
-		# The frozen renderer redirects only its Context preload to the old file.
-		demo.remove_child(demo.town)
-		demo.town.queue_free()
-		demo.town=load("res://备份/长屋山墙前_20261015/frozen_renderer.gd").new()
-		demo.add_child(demo.town)
-		demo.town.setup(demo.state)
 	demo.state.houses.clear()
 	demo.state.roads.clear()
 	demo.state.plants.clear()

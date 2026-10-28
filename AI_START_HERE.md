@@ -1,49 +1,22 @@
-# 《共鸣之城》整合施工入口
+# 《共鸣之城》施工入口
 
-用户2026-10-28要求按整合文档继续工程。先读 [PROJECT](PROJECT.md)、[日志末30行](ai_progress.log)、[唯一任务进度](ai_feature_backlog.json)，再读 [AGENTS](AGENTS.md)。
+先读[当前状态](PROJECT.md)、[日志末30行](ai_progress.log)、[唯一任务进度](ai_feature_backlog.json)与[施工约定](AGENTS.md)。
 
-## 当前任务
+本对话的新版50_m82_m86.md、51.md、52.md为当前设计来源；[融合总案](文档/50_空间驱动城建音乐与整合排期修订.md)统一冲突取舍、四功能区、完整母曲与城建分轨编配。旧蓝图有效的工程和兼容条款已并入[工程维护](文档/工程维护.md)，不再按历史排期施工。
 
-当前基线为完整库 `f72d2ae5007c83c527f0c7111bf089e3d92f439d`，历史M74已完成生活音效。本轮原提案M74～M85顺延为 **M75～M86**，保留全部旧定义与完成状态。M75～M82已完成技术验收；当前首项为M83按证据修补画面连续性。正式新城空地/free，经典旧城legacy，可从F1显式备份转换。Schema20扩展与原1～19兼容，历史权益不伪造。
+M75～M82技术验收完成；M83完成街具净空与共享风子步，整项仍false。屋谷/路口/桥岸尚未完成，M84～M86保留待办。当前用户要求此子步后清理旧资料和双库收尾，本轮不继续扩入M84。
 
-## 阅读与实现
+代码入口：scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；State/API/序列化在scripts/world，表现与增量发布在scripts/visual，拍钟/谱面/换流在scripts/audio。正常新城initialize_free空地，initialize/initialize_empty仍为legacy配方API。
 
-1. 最新授权以[50+51+52融合修订](文档/50_空间驱动城建音乐与整合排期修订.md)为准：四大功能区、原型自动用途、完整预设母曲与可见多区分轨档位/换器；[39 设计总纲](文档/39_项目适配设计总纲.md)、[40 施工验收](文档/40_分阶段施工与验收.md)、[41 审计取舍](文档/41_代码审计与两版取舍.md)保留未冲突规格与旧证据。原文在文档/来源，唯一进度仍为根backlog。
-2. [42 基线](文档/42_整合基线与施工记录.md)、[43 自由创作/迁移](文档/43_自由创作政策与版本化存档.md)记录命令、证据与接口。正常新城调用initialize_free；既有initialize/initialize_empty是legacy配方API。
-3. 旧设计26～35和来源包仍保留，但普通建造权限、减负、音乐谱材/切换与独立地标按本轮新规格实施。[文档37](文档/37_双库同步与云端施工.md)是当前双库流程，不能当作旧设计37删除。
-4. 入口 `scenes/city_creation.tscn` → `scripts/ui/city_creation_demo.gd`；状态/序列化在 `scripts/world/`，音频在 `scripts/audio/`，表现位于 `scripts/visual/`。新逻辑用职责明确的小模块，四主文件保留行数上限与短委托。
-
-## 每步验收
-
-- Harness能显示新任务的下一项，坏状态、缺证据、编号重复及跳过前置会失败；旧任务契约保持。
-- 相关CPU/旧档、真实OpenGL输入/原图/PCM按任务执行；录音长度读取实际WAV，记录transport与音库签名。
-- 没有实际听音能力时只报告技术结果，听感待验；需要品质判断时可按用户授权安排独立子代理。
-- 个人作品和源文档原件只读，fixture使用隔离存档。Schema20已经接入；四家族地标实体、身份高水位、事务与冷读已由M81接入。
-- 不增加音频资源预算，不伪造成就或生活事件，不以全绿测试替代实际体验。
+保留Schema1～20、真实历史权益、人工意图、Undo/Redo、个人作品与原12长4短6总线2自然声/唯一领唱。验证带--isolated-session及独立作品目录；没有真实听评就写听感待评。
 
 ```text
-python3 tools/check_ai_harness.py
-python3 tools/check_doc_links.py
-python3 -B tests/test_ai_harness.py
-/workspace/.cloud-resonance/bin/godot --headless --editor --path . --import
-/workspace/.cloud-resonance/bin/godot --headless --path . --audio-driver Dummy --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session
-/workspace/.cloud-resonance/bin/with-display godot --path . --rendering-method gl_compatibility --audio-driver Dummy --script tools/check_creation_integration_baseline_live.gd -- --isolated-session
+python tools/check_ai_harness.py
+python tools/check_doc_links.py
+python -B tests/test_ai_harness.py
+Godot --headless --path . --audio-driver Dummy --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session
 ```
 
-[旧入口归档](文档/来源/20261028_整合前_AI_START_HERE.txt)，[参考索引](文档/参考索引.md)，[双库同步](文档/37_双库同步与云端施工.md)。只将真实完成且验收充分的任务置为passes=true。
+Godot4.7.2，实窗使用gl_compatibility和实际音频驱动。相关CPU、旧档及一次实际实窗/原图/PCM构成最低充分验收；性能按体验，实测帧时不作硬门槛。
 
-用户要求连续逐轮推进，每项验收、提交、双库同步后直接进入下一项；只有真实阻塞才停下说明。
-
-M77本地验收与输入接口见 [道路紧凑控件](文档/44_道路紧凑控件与输入验证.md)。
-
-M78谱材、同播放器换流、实际录音与听感边界见 [单主题样板](文档/45_单主题谱材与连续换流.md)。
-
-M79三核心风格、实际双周期录音与存档偏好见 [城市乐章](文档/46_三核心风格与六段城市乐章.md)。
-
-M80双输入、严格JSON谱材、正式实录再分析与独立品质修正见 [谱材接口](文档/47_参考分析与原创谱材接口.md)。
-
-M81地面实体、选址/移动/回收、足迹消费者与旧城兼容见 [传世地标](文档/48_传世地标与真实留白.md)。
-
-M82来信、二阶样板、真实访椅/阳台静听与和弦收藏巡礼已技术验收，听感待评。见[文档49](文档/49_灵感长椅与收藏循环.md)。
-
-M83街具禁草子步已验证，整项仍在施工；屋谷/桥岸/风场继续点与真实证据见[文档52](文档/52_画面连续性修补与证据.md)。
+[资料导航](文档/README.md) · [本轮M83证据](文档/52_画面连续性修补与证据.md) · [整理范围与恢复](文档/整理记录.md) · [四库参考](文档/参考索引.md) · [双库流程](文档/37_双库同步与云端施工.md)
