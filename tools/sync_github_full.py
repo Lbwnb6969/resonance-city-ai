@@ -21,8 +21,10 @@ WORK = GIT / 'full-sync'
 REMOTE = 'origin'
 URL = 'https://github.com/Lbwnb6969/resonance-city.git'
 REF = 'refs/full-sync/candidate'
-EXCLUDED = {'废弃', '验证记录', '资产', '备份', 'UI', '新文档', 'AI资料'}
+EXCLUDED = {'废弃', '验证记录', '资产', '备份', 'UI', '新文档', 'AI资料', '.venv', '.pytest_cache', '.mypy_cache', '.ruff_cache'}
 LOCAL_ONLY_FILES = {'.mcp.json'}
+ANALYSIS_LOCAL_DIRS = {'.venv', 'work', 'input', 'results', 'deprecated', 'backups'}
+ANALYSIS_MEDIA = {'.mp3', '.wav', '.flac', '.m4a', '.ogg', '.opus', '.aac', '.aif', '.aiff', '.wma', '.mp4'}
 MAX_BYTES = 1_000_000_000
 INPUT_BUDGET = 930_000_000  # Leave room for the published omission manifest.
 MAX_FILE = 95_000_000
@@ -68,12 +70,17 @@ def inventory():
         if base == ROOT:
             dirs[:] = [d for d in dirs if d not in EXCLUDED | {'.godot'}]
         dirs[:] = [d for d in dirs if d not in {'.git', '__pycache__'}]
+        if base == ROOT / 'song-analysis':
+            dirs[:] = [d for d in dirs if d not in ANALYSIS_LOCAL_DIRS]
         for name in files:
             path = base / name
             relative = path.relative_to(ROOT)
             if name == '.git' or name.endswith('.pyc') or relative.as_posix() in LOCAL_ONLY_FILES:
                 continue
             if relative.parts[0] in {'tools', 'tests'} and name.endswith('.gd.uid'):
+                continue
+            if relative.parts[0] == 'song-analysis' and (path.suffix.lower() in ANALYSIS_MEDIA or
+                    relative.as_posix() == 'song-analysis/tools/essentia_streaming_extractor_music.exe'):
                 continue
             stat = path.stat()
             result[path.relative_to(ROOT).as_posix()] = [stat.st_size, stat.st_mtime_ns]
@@ -180,6 +187,8 @@ def prepare():
     manifest = dict(policy='origin construction repository <1GB; ai-sync design repository <100MB',
                     excluded_directories=sorted(EXCLUDED), excluded_files=sorted(LOCAL_ONLY_FILES),
                     generated_uid_directories=['tools', 'tests'], omitted_cache_directories=['.godot', '__pycache__'],
+                    analysis_local_directories=sorted(ANALYSIS_LOCAL_DIRS),
+                    analysis_media_extensions=sorted(ANALYSIS_MEDIA),
                     input_budget_bytes=INPUT_BUDGET, limit_bytes=MAX_BYTES,
                     design_files=sorted(design_paths(ROOT, set(filter(None, git('ls-files', '-z').decode().split('\0'))))),
                     omitted=omitted)

@@ -5,16 +5,16 @@
 
 # Original packages stay on disk; retain textual licensing evidence separately.
 /资产/
-/资产/01_原始素材/CC0_Kenney/
-/资产/01_原始素材/CC0_ambientCG/
-/资产/01_原始素材/OFL_Fonts/
-/资产/2.5D素材/
 
 # Reproducible local Demo bundles; retain build evidence and source in Git.
 /交付/
 
 # Local Python bytecode from evidence tooling.
-/tools/__pycache__/
+**/__pycache__/
+/.venv/
+/.pytest_cache/
+/.mypy_cache/
+/.ruff_cache/
 
 # Local archives, download caches and transient native compiler files.
 /备份/
@@ -25,7 +25,6 @@
 # already tracked documentation, selected algorithms and shaders are published.
 /参考资料/
 # Retired 2.5D outputs and the unused native extension stay in local archives.
-/AI资料/参考资料发布清单.json
 /资源/P0城市/
 /资源/Demo城市/
 /资源/精制河湾/
@@ -37,26 +36,19 @@
 /资源/首作声音路线/
 /资源/测试/
 /资源/着色器/
-/资产/02_加工中/
-/资产/03_入库/
-/资产/04_预览索引/
 /addons/city_audio/
 /native/city_audio/
 /数据/兼容规格/
-/AI资料/*.tmp
 
 # Standalone test scripts load by res:// path; editor-generated UIDs are not inputs.
-/tests/*.gd.uid
+/tests/**/*.gd.uid
 
 # Local UI reference checkout; adapted source lives in scripts/ui.
 /UI/
 
 # Rebuildable local PCM bank and generated standalone tool UIDs.
 /资源/音乐/城市同步声部库.res
-/tools/*.gd.uid
 /tools/**/*.gd.uid
-/tests/**/*.gd.uid
-/tools/audit_city_references.py
 
 # User phase-three source pack stays unchanged locally.
 /新新新文档/

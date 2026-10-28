@@ -66,12 +66,19 @@ def inline_links(raw):
                 yield number, target
 
 
-def check(paths):
+def maintained_paths(root=ROOT):
+    entries = ("PROJECT.md", "AI_START_HERE.md", "README.md", "AGENTS.md", "tools/README.md",
+               "参考资料/README_GITHUB.md", "song-analysis/README.md")
+    return sorted((root / "文档").rglob("*.md")) + sorted((root / "资源").rglob("*.md")) + [
+        root / name for name in entries if (root / name).is_file()]
+
+
+def check(paths, root=ROOT):
     errors = []
     cache = {}
     total = 0
     try:
-        tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT, stderr=subprocess.DEVNULL).decode("utf-8").split("\0")) - {""}
+        tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=root, stderr=subprocess.DEVNULL).decode("utf-8").split("\0")) - {""}
     except Exception:
         tracked = None
     published = set(tracked) if tracked is not None else None
@@ -88,7 +95,7 @@ def check(paths):
             destination = (path.parent / file).resolve() if file else path
             if not destination.exists():
                 errors.append((path, number, target, "missing file"))
-            elif published is not None and destination.is_relative_to(ROOT) and destination.relative_to(ROOT).as_posix() not in published:
+            elif published is not None and destination.is_relative_to(root) and destination.relative_to(root).as_posix() not in published:
                 errors.append((path, number, target, "target is local-only, absent from published Git tree"))
             elif fragment and destination.suffix.lower() == ".md":
                 if destination not in cache:
@@ -99,7 +106,7 @@ def check(paths):
 
 
 def main():
-    paths = sorted(DOCS.rglob("*.md")) + [ROOT / name for name in ("PROJECT.md", "AI_START_HERE.md", "README.md", "AGENTS.md", "tools/README.md", "参考资料/README_GITHUB.md")]
+    paths = maintained_paths()
     total, errors = check(paths)
     for path, number, target, reason in errors:
         print(f"{path.relative_to(ROOT)}:{number}: {reason}: {target}")
