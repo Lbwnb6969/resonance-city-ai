@@ -161,7 +161,7 @@ func legacy_interactions()->void:
 		await settle_edit()
 		var pop=demo.spatial_popover
 		check(pop.target_house_id==venue and pop.card.is_visible_in_tree() and Rect2(Vector2.ZERO,Vector2(resolution)).encloses(pop.card.get_global_rect()),"actual old venue roof opens its in-bounds compass at "+str(resolution))
-		check(not pop.concert_button.visible and pop.role_buttons.size()==6 and not pop.role_buttons.has("venue") and not demo.concert_button.is_visible_in_tree(),"legacy venue retains data without reintroducing ordinary manual-performance UI")
+		check(not pop.concert_button.visible and pop.role_buttons.values().filter(func(b):return b.visible).size()==6 and not pop.role_buttons.venue.visible and not demo.concert_button.is_visible_in_tree(),"legacy venue retains six visible purposes without reintroducing ordinary manual-performance UI")
 		await click(pop.role_buttons["bakery"]);await settle_edit()
 		check(demo.town._house_record(venue).role=="bakery","actual role seal converts a legacy venue through the normal transaction")
 		for pressed:bool in [true,false]:

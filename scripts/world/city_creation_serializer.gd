@@ -91,9 +91,11 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if not city.wish_rewards.is_empty():result.wish_rewards=city.wish_rewards.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
 	if not city.harmony_journey.is_empty():result.harmony_journey=city.harmony_journey.duplicate(true);result.schema=city.PERSONALIZATION_SCHEMA
 	city.WishFulfilment.write_snapshot(city,result)
+	city.CreationPolicy.Save.write(city,result)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
+	city.CreationPolicy.Save.apply(city,data,preserve_issued_ids)
 	city.biome_seed=data.get("biome_seed",{}).duplicate();city._biome_revision=-1;city._biome_bonuses={}
 	if not preserve_issued_ids:city.archive_unlocks.assign(data.get("archive_unlocks",[]))
 	city.music_mode=str(data.get("music_mode",""))
@@ -262,6 +264,8 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	return had_plants
 
 static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
+	var creative_check:Dictionary=city.CreationPolicy.Save.validate(city,data)
+	if not creative_check.ok:return creative_check
 	var progress: Variant = data.get("life_progress", {"purchases":0,"gatherings":0})
 	if not progress is Dictionary: return city._fail("城市存档生活进展无效")
 	for key in ["purchases", "gatherings", "concerts", "tea_parties", "tea_visits", "auto_concerts"]:
@@ -269,7 +273,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 			return city._fail("城市存档生活进展无效")
 	var journeys: Dictionary = city._validate_journey_checkpoint(data.get("journey_checkpoint",{}), data.get("houses"), progress)
 	if not journeys.ok: return journeys
-	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.PERSONALIZATION_SCHEMA:
+	if not city._is_integer(data.get("schema")) or int(data.schema)<city.SCHEMA or int(data.schema)>city.CreationPolicy.Save.SCHEMA:
 		return city._fail("不支持的城市存档版本")
 	var unlocks: Variant = data.get("era_unlocks", ["pastoral"])
 	if not unlocks is Array or unlocks.is_empty() or unlocks.size() > city.Eras.AVAILABLE_COUNT: return city._fail("时代解锁结构无效")
@@ -340,7 +344,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	for district in data.get("districts", []):
 		if not district is Dictionary or not city._valid_id(district.get("id"), "d", ids):
 			return city._fail("城市存档街坊身份无效")
-		if district.has("era_theme") and (data.schema < city.ERA_SCHEMA or district.era_theme not in unlocks): return city._fail("街坊时代尚未开启")
+		if district.has("era_theme") and (data.schema < city.ERA_SCHEMA or not city.CreationPolicy.data_can_build_era(data,district.era_theme)): return city._fail("街坊时代尚未开启")
 		var district_valid: Dictionary = city._validate_district_fields(district)
 		if not district_valid.ok:
 			return district_valid
@@ -409,10 +413,10 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if not house.get("name", "默认名字") is String or house.get("name", "默认名字").strip_edges().is_empty() or house.get("role", "residential") not in city.HOUSE_ROLES:
 			return city._fail("城市存档名字或用途无效")
 		if (house.get("role", "") == "atelier" or house.has("era_theme")) and data.schema < city.ERA_SCHEMA: return city._fail("时代房屋需要新存档版本")
-		if house.get("role", "") == "atelier" and not unlocks.has("renaissance"): return city._fail("书院尚未开启")
-		if house.get("role","")=="clockmaker" and (data.schema<city.CLOCKWORK_SCHEMA or not unlocks.has("clockwork")) and not (house.get("signature","")=="clockwork_depot" and city.Biomes.grants(data.get("biome_seed",{}),"clockwork_depot")):return city._fail("钟表工坊尚未开启")
-		if house.get("role","")=="symphony_hall" and (data.schema<city.MODERN_SCHEMA or not unlocks.has("modern_eco")) and not (house.get("signature","")=="floating_amphitheater" and city.Biomes.grants(data.get("biome_seed",{}),"floating_amphitheater")):return city._fail("交响音乐厅尚未开启")
-		if house.has("era_theme") and house.era_theme not in unlocks and not city.Biomes.grants(data.get("biome_seed",{}),str(house.get("signature",""))): return city._fail("房屋时代尚未开启")
+		if house.get("role", "") == "atelier" and not city.CreationPolicy.data_can_build_era(data,"renaissance"): return city._fail("书院尚未开启")
+		if house.get("role","")=="clockmaker" and (data.schema<city.CLOCKWORK_SCHEMA or not city.CreationPolicy.data_can_build_era(data,"clockwork")) and not (house.get("signature","")=="clockwork_depot" and city.Biomes.grants(data.get("biome_seed",{}),"clockwork_depot")):return city._fail("钟表工坊尚未开启")
+		if house.get("role","")=="symphony_hall" and (data.schema<city.MODERN_SCHEMA or not city.CreationPolicy.data_can_build_era(data,"modern_eco")) and not (house.get("signature","")=="floating_amphitheater" and city.Biomes.grants(data.get("biome_seed",{}),"floating_amphitheater")):return city._fail("交响音乐厅尚未开启")
+		if house.has("era_theme") and (house.era_theme not in city.Eras.IDS or (not city.CreationPolicy.data_can_build_era(data,house.era_theme) and not city.Biomes.grants(data.get("biome_seed",{}),str(house.get("signature",""))))): return city._fail("房屋时代尚未开启")
 		if house.has("signature") and data.schema<city.QUALITY_SCHEMA:return city._fail("地标需要新存档版本")
 		if house.has("custom_colors"):
 			var colors:Variant=house.custom_colors

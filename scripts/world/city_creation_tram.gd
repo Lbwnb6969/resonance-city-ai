@@ -137,7 +137,7 @@ func clear()->void:
 	_network_signature=null;_rail_signature=null
 
 func sync()->void:
-	var unlocked: bool=life.state.era_unlocks.has("clockwork")
+	var unlocked: bool=life.state.can_build_era("clockwork")
 	if _revision==life.state.revision and _unlocked==unlocked:
 		if life.state._transit_corridor_revision!=life.state.revision:_publish_corridor()
 		return

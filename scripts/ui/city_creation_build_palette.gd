@@ -10,7 +10,7 @@ static func setup(dock:RefCounted,parent:Control)->void:
  if not city.has_meta("new_house_brush"):Brush.select(city,"pastoral")
  var eras:Dictionary={}
  for i in range(city.Eras.IDS.size()):
-  var id:String=city.Eras.IDS[i];var button:=Seal.new();button.name="NewHouseEra_"+id;button.configure(["prototype/portico","prototype/venetian_loggia","clockmaker","vegetation"][i],44.);button.caption=["古典","文艺","蒸汽","生态"][i];button.disabled=id not in city.era_unlocks;button.modulate.a=.35 if button.disabled else 1.;row.add_child(button);eras[id]=button
+  var id:String=city.Eras.IDS[i];var button:=Seal.new();button.name="NewHouseEra_"+id;button.configure(["prototype/portico","prototype/venetian_loggia","clockmaker","vegetation"][i],44.);button.caption=["古典","文艺","蒸汽","生态"][i];button.disabled=not city.can_build_era(id);button.modulate.a=.35 if button.disabled else 1.;row.add_child(button);eras[id]=button
   button.tooltip_text=city.Eras.NAMES[i]+(" · 尚未解锁" if button.disabled else " · 用于接下来新造的房屋；旧屋留存")
  var prototype:=Button.new();prototype.name="NewHousePrototype";prototype.focus_mode=Control.FOCUS_NONE;prototype.custom_minimum_size=Vector2(145,34);prototype.add_theme_font_size_override("font_size",13);row.add_child(prototype)
  var refresh:=func()->void:

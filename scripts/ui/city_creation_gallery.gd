@@ -123,7 +123,7 @@ func open_example(id: String) -> void:
 func open_biome(id:String)->void:
 	if busy or demo.edit_pending():return
 	var city:RefCounted=demo.State.new()
-	var created:Dictionary=city.Biomes.create(city,id)
+	var created:Dictionary=city.CreationPolicy.initialize_biome(city,id)
 	if not created.ok:panel.set_status(str(created.message));return
 	preload("res://scripts/world/city_creation_heritage_draft.gd").grant(city,archive.awards)
 	var world:Dictionary=city.snapshot()

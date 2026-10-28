@@ -61,7 +61,7 @@ var weather_visual:Node3D
 var conductor_gesture:Node3D
 var wish_pins:Control
 var intuitive_guidance:Control
-var start_empty:=false
+var start_empty:=true
 var archive_persistence:=false
 var spatial_popover: RefCounted
 var journal: RefCounted
@@ -203,9 +203,9 @@ var _save_requested := false
 
 func _ready() -> void:
 	persistence = persistence and not "--isolated-session" in OS.get_cmdline_user_args()
-	state.initialize()
+	state.initialize_free(false)
 	chemistry_brush.setup(self)
-	if start_empty or (persistence and not FileAccess.file_exists(SAVE_PATH)):state.initialize_empty()
+	if start_empty or (persistence and not FileAccess.file_exists(SAVE_PATH)):state.initialize_free()
 	if "--creation-example" in OS.get_cmdline_user_args():
 		persistence = false
 		state.restore(JSON.parse_string(FileAccess.get_file_as_string("res://数据/创作河湾样例.json")))
@@ -308,7 +308,7 @@ func _ready() -> void:
 	preload("res://scripts/ui/city_creation_road_tool.gd").new().setup(self)
 	get_meta("era_ceremony").bind()
 	_refresh_ui()
-	_message(Copy.OPENING_TOAST)
+	_message("选择喜欢的风貌，在空地落下第一座房屋。" if state.CreationPolicy.is_free(state) else Copy.OPENING_TOAST)
 	if save_blocked: _message(Copy.SAVE_BLOCKED_TOAST)
 	if "--courtyard-example" in OS.get_cmdline_user_args():
 		focus=Vector3(10.5,0.7,-8.5)
@@ -1461,7 +1461,7 @@ func _refresh_district() -> void:
 	if district_panel == null or tool != 7: return
 	var district := _selected_district_row()
 	district_era_picker.disabled= district.is_empty()
-	for i in range(State.Eras.IDS.size()): district_era_picker.set_item_disabled(i,State.Eras.IDS[i] not in state.era_unlocks)
+	for i in range(State.Eras.IDS.size()): district_era_picker.set_item_disabled(i,not state.can_build_era(State.Eras.IDS[i]))
 	var current_era := str(district.get("era_theme","pastoral"))
 	district_era_picker.select(State.Eras.IDS.find(current_era))
 	district_era_picker.tooltip_text = Copy.ERA_LORE.get(current_era, "为当前街坊指定建筑与器乐时代风貌")
@@ -1759,12 +1759,12 @@ func _refresh_place() -> void:
 		if not place_name.has_focus(): place_name.text = str(house.get("name", "无名小屋"))
 		if not house_style_picker.get_popup().visible: house_style_picker.select(State.HOUSE_STYLES.find(str(house.get("style","classic"))))
 		var role := str(house.get("role", "residential"))
-		for i in range(State.Eras.IDS.size()): house_era_picker.set_item_disabled(i+1,State.Eras.IDS[i] not in state.era_unlocks)
+		for i in range(State.Eras.IDS.size()): house_era_picker.set_item_disabled(i+1,not state.can_build_era(State.Eras.IDS[i]))
 		house_era_picker.select(State.Eras.IDS.find(str(house.era_theme))+1 if house.has("era_theme") else 0)
 		house_style_picker.disabled=house.has("signature")
 		house_era_picker.disabled=house.has("signature")
 		for role_key: String in role_buttons:
-			role_buttons[role_key].disabled=(house.has("signature") and role_key!=role) or (role_key=="atelier" and not state.era_unlocks.has("renaissance")) or (role_key=="clockmaker" and not state.era_unlocks.has("clockwork")) or (role_key=="symphony_hall" and not state.era_unlocks.has("modern_eco"))
+			role_buttons[role_key].disabled=(house.has("signature") and role_key!=role) or not state.can_assign_role(role_key)
 		place_description.text = str(Copy.ROLE_DESCRIPTIONS.get(role, ""))
 		if str(house.get("style","classic"))=="round_tower": place_description.text+="\n独立房柱长出圆塔，向上加层就成望楼。"
 		var tier: int=state.level_tier(str(house.id))

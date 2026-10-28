@@ -45,6 +45,13 @@ const Prosperity := preload("res://scripts/world/city_creation_prosperity.gd")
 const SynergyBuffs := preload("res://scripts/world/city_creation_synergy_buffs.gd")
 const RegionalEcho := preload("res://scripts/world/city_creation_regional_echo.gd")
 const Eras := preload("res://scripts/world/city_creation_eras.gd")
+const CreationPolicy=preload("res://scripts/world/city_creation_creation_policy.gd")
+var creative_settings:Dictionary={}
+var placed_landmarks:Array[Dictionary]=[]
+var _next_landmark_id:=1;var _landmark_high_watermark:=0
+func initialize_free(empty:bool=true)->void:CreationPolicy.initialize(self,empty)
+func can_build_era(era:String)->bool:return CreationPolicy.can_build_era(self,era)
+func can_assign_role(role:String)->bool:return CreationPolicy.can_assign_role(self,role)
 const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
 const CLOCKWORK_SCHEMA := 15
@@ -175,6 +182,7 @@ func initialize_empty()->void:
 	revision+=1;_undo.clear();_redo.clear()
 
 func initialize() -> void:
+	CreationPolicy.Save.reset(self)
 	biome_seed={};_biome_revision=-1;_biome_bonuses={}
 	era_modifiers.clear();archive_unlocks.clear();music_mode="";harmony_journey.clear()
 	microclimate=""
@@ -533,9 +541,7 @@ func set_house_role(house_id: String, role: String) -> Dictionary:
 	if houses[index].has("signature") and role!=Signatures.ROLES[str(houses[index].signature)]:return _fail("地标保持专属用途")
 	if role not in HOUSE_ROLES:
 		return _fail("未知的建筑用途")
-	if role == "atelier" and not era_unlocks.has("renaissance"): return _fail("建成14座房屋，完成茶聚与跨区问答，开启文艺复兴书院")
-	if role=="clockmaker" and not era_unlocks.has("clockwork"):return _fail("28屋与两时代街坊开启钟表工坊")
-	if role=="symphony_hall" and not era_unlocks.has("modern_eco"):return _fail("50屋与三时代共鸣开启交响音乐厅")
+	if not can_assign_role(role):return _fail("这个用途所属时代尚未开启，可在手册中开启自由创作")
 	if houses[index].role == role:
 		return {"ok": true, "message": "建筑用途未变"}
 	var before := snapshot()
@@ -823,7 +829,7 @@ func set_cluster_style(house_id:String,style:String)->Dictionary:
 	return {"ok":true,"message":"整片聚落已换上共同曲风"}
 
 func set_cluster_era(house_id:String,era:String)->Dictionary:
-	if era not in era_unlocks:return _fail("这个时代尚未开启")
+	if not can_build_era(era):return _fail("这个时代尚未开启")
 	var group:Dictionary=natural_clusters().get(house_id,{})
 	if group.is_empty():return _fail("房屋不存在")
 	var before:=snapshot()
@@ -846,7 +852,7 @@ func record_district_answer(from_id: String,to_id: String,from_era: String="",to
 	var pair:=_canonical_musical_link(from_id,to_id)
 	var changed:=false
 	if pair not in district_answers:district_answers.append(pair);changed=true
-	if from_era in era_unlocks and to_era in era_unlocks and from_era!=to_era:
+	if can_build_era(from_era) and can_build_era(to_era) and from_era!=to_era:
 		var evidence:Dictionary=pair.duplicate()
 		evidence.from_era=from_era if pair.from==from_id else to_era
 		evidence.to_era=to_era if pair.to==to_id else from_era
@@ -968,7 +974,7 @@ func culture_level(house_id: String) -> int:
 func set_district_era(district_id: String, era: String) -> Dictionary:
 	var index := _district_index(district_id)
 	if index < 0: return _fail("街坊不存在")
-	if era not in era_unlocks: return _fail("这个时代尚未开启")
+	if not can_build_era(era): return _fail("这个时代尚未开启")
 	if str(districts[index].get("era_theme", "pastoral")) == era: return {"ok":true,"message":"街坊风貌未变"}
 	var before := snapshot()
 	if era == "pastoral": districts[index].erase("era_theme")
@@ -980,7 +986,7 @@ func set_house_era(house_id: String, era: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index < 0: return _fail("房屋不存在")
 	if houses[index].has("signature"):return _fail("地标保留专属时代风貌")
-	if era != "district" and era not in era_unlocks: return _fail("这个时代尚未开启")
+	if era != "district" and not can_build_era(era): return _fail("这个时代尚未开启")
 	var before := snapshot()
 	if era == "district": houses[index].erase("era_theme")
 	else: houses[index].era_theme = era
@@ -1474,6 +1480,7 @@ func redo() -> Dictionary:
 	return {"ok": true, "message": "已重做：" + entry.label,"appearance_house_ids":appearance}
 
 func _appearance_delta(target: Dictionary) -> Array[String]:
+	if not CreationPolicy.Save.appearance_compatible(self,target):return []
 	# History can restore just colors when every authored spatial field agrees.
 	# Keep the already published road/height caches and daily-life progress.
 	var changed: Array[String]=[]

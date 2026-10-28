@@ -30,7 +30,7 @@ func run()->void:
 		if arg.begins_with("--out-dir="):output=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	root.size=Vector2i(1440,900);Engine.max_fps=100
-	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=output+"/作品";root.add_child(demo);demo.life.set_process(false)
+	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=false;demo.collection_directory=output+"/作品";root.add_child(demo);demo.life.set_process(false)
 	await settle()
 	var original:Dictionary=demo.state.snapshot();var id:=str(demo.state.houses[0].id)
 	var pop=demo.spatial_popover
@@ -48,7 +48,7 @@ func run()->void:
 		for button:Button in demo.tool_buttons:
 			if button.is_visible_in_tree():primary.append(button.caption)
 		check(primary==["筑屋","修路","烟火","林水","地形"],"five-core palette keeps the consolidated life entry and contextual roof actions")
-		check(not pop.role_buttons.has("venue") and not pop.concert_button.visible,"ordinary house has daily uses without a concert task")
+		check(pop.role_buttons.values().filter(func(b):return b.visible).size()==(8 if demo.state.CreationPolicy.is_free(demo.state) else 6) and not pop.concert_button.visible,"ordinary purposes follow creation policy without a forced concert task")
 		await click(pop.expand_button)
 		check(pop.color_panel.is_visible_in_tree(),"expanded palette opens")
 		check(Rect2(Vector2.ZERO,Vector2(resolution)).encloses(pop.card.get_global_rect()),"expanded card fits screen")

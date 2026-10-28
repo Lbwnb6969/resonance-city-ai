@@ -186,7 +186,7 @@ func _large_ui()->void:
 		await _click_at(demo.camera.unproject_position(at))
 		var pop=demo.spatial_popover
 		_check(pop.target_house_id==id and pop.card.is_visible_in_tree(),"real roof pointer opens the selected house in the three-hundred-house city at "+str(resolution))
-		_check(pop.role_buttons.size()==6 and not pop.concert_button.visible and not demo.place_panel.is_visible_in_tree(),"ordinary house keeps six life uses and the spatial inspector")
+		_check(pop.role_buttons.values().filter(func(b):return b.visible).size()==(8 if demo.state.CreationPolicy.is_free(demo.state) else 6) and not pop.concert_button.visible and not demo.place_panel.is_visible_in_tree(),"ordinary purpose count follows creation policy and keeps the spatial inspector")
 		await _dismiss_papers()
 		await _click_at(pop.expand_button.get_global_rect().get_center())
 		print("PALETTE_STATE ",resolution," ",pop.color_panel.visible," ",pop.inspector.panel.visible," ",pop.inspector._target," ",pop.target_house_id," ",pop.expand_button.get_global_rect())

@@ -35,7 +35,7 @@ static func _validate_regional_trips(data:Dictionary,issued:int)->Dictionary:
 				var voice:Variant=row.get(side+"_voice")
 				if not voice is String:return _fail("跨区交流声部身份无效")
 				var parts:PackedStringArray=voice.split(":")
-				if parts.size()!=2 or parts[0] not in data.get("era_unlocks",["pastoral"]) or parts[1] not in ["warm","deep","weave","market","sylvan"]:return _fail("跨区交流声部身份无效")
+				if parts.size()!=2 or not preload("res://scripts/world/city_creation_creation_policy.gd").data_can_build_era(data,parts[0]) or parts[1] not in ["warm","deep","weave","market","sylvan"]:return _fail("跨区交流声部身份无效")
 				if row.get(side+"_region") not in ["west","east","highland","garden"]:return _fail("跨区交流地形身份无效")
 			if int(str(row.from).substr(1))>=int(str(row.to).substr(1)) or row in seen:return _fail("跨区交流履历重复或未规范排序")
 			if field=="regional_replies" and {"from":row.from,"to":row.to} not in data.get("district_answers",[]):return _fail("区域复调缺少真实完成的街坊问答")

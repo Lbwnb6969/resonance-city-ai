@@ -1029,7 +1029,7 @@ func invite_conductor_movement(venue_id:String,sequence:Array[String],stroke:Arr
 	var snapshot:Dictionary=state.snapshot()
 	var path_rows:Array=[]
 	for at:Vector2 in stroke:path_rows.append([at.x,at.y])
-	snapshot.schema=state.PERSONALIZATION_SCHEMA
+	snapshot.schema=maxi(int(snapshot.schema),state.PERSONALIZATION_SCHEMA)
 	snapshot.journey_checkpoint={"concert":{"landmark_movement":true,"source":"manual","duration":24.,"venue_id":venue_id,"movement_order":sequence,"conductor":true,"conductor_path":path_rows}}
 	var valid:Dictionary=state.LandmarkMovement.validate(state,snapshot)
 	if not valid.ok:return valid

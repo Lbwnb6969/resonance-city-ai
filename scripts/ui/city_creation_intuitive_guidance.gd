@@ -42,11 +42,15 @@ func setup(owner,ui_root:Control)->void:
 	_rebuild()
 
 func tool_available(index:int)->bool:
+	if demo.state.CreationPolicy.is_free(demo.state):return index>=0 and index<=8
 	return index in available or index==0
 
 func _rebuild()->void:
 	_revision=demo.state.revision;_timer=0.
 	target_house_id="";suggested_role="";target_points.clear();stage=""
+	if demo.state.CreationPolicy.is_free(demo.state) and not demo.state.creative_settings.guidance:
+		for child:Node in markers.get_children():markers.remove_child(child);child.queue_free()
+		demo.tactile_dock.refresh();return
 	var count:int=demo.state.houses.size()
 	var roles:Dictionary={};var homes:Array[Dictionary]=[];var connected:=0
 	for house:Dictionary in demo.state.houses:

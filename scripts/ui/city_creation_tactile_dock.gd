@@ -105,7 +105,7 @@ func refresh()->void:
 	district_name_row.hide()
 	if not popup.visible:return
 	if tool in [0,1]:
-		var key:=[demo.state.get_instance_id(),demo.state.era_unlocks.duplicate()]
+		var key:=[demo.state.get_instance_id(),demo.state.CreationPolicy.eras(demo.state)]
 		if key!=_house_palette_key:_house_palette_key=key;active_tool=-1
 	if active_tool!=tool:
 		active_tool=tool

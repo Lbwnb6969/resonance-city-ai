@@ -95,7 +95,6 @@ func setup(owner,ui_root:Control)->void:
 	var roles:=GridContainer.new();roles.name="RoofCompassRoles";roles.columns=4
 	roles.add_theme_constant_override("h_separation",4);roles.add_theme_constant_override("v_separation",4);column.add_child(roles)
 	for role:String in ROLE_LABELS:
-		if role in ["venue","symphony_hall"]:continue
 		var role_button:=_seal(roles,str(ROLE_GLYPHS[role]),str(ROLE_LABELS[role]),_set_role.bind(role))
 		role_button.name="Role_"+role;role_button.custom_minimum_size=Vector2(88,46)
 		role_buttons[role]=role_button
@@ -158,7 +157,7 @@ func refresh()->void:
 	for role:String in role_buttons:
 		var button:Button=role_buttons[role]
 		button.active=str(house.get("role","residential"))==role
-		button.disabled=(house.has("signature") and role!=str(house.get("role",""))) or (role=="atelier" and not demo.state.era_unlocks.has("renaissance")) or (role=="clockmaker" and not demo.state.era_unlocks.has("clockwork")) or (role=="symphony_hall" and not demo.state.era_unlocks.has("modern_eco"))
+		button.disabled=(house.has("signature") and role!=str(house.get("role",""))) or not demo.state.can_assign_role(role)
 		button.modulate.a=.42 if button.disabled else 1.;button.queue_redraw()
 	var style_key:=str(house.get("style","classic"));var style_index:int=demo.State.HOUSE_STYLES.find(style_key)
 	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
@@ -256,7 +255,7 @@ func _cycle_cluster_style()->void:
 func _cycle_era()->void:
 	var house:Dictionary=demo.town._house_record(target_house_id)
 	if house.is_empty() or house.has("signature"):return
-	var choices:Array=demo.state.era_unlocks
+	var choices:Array=demo.state.CreationPolicy.eras(demo.state)
 	var next:String=choices[posmod(choices.find(demo.state.house_era(house))+1,choices.size())]
 	demo._after_edit(demo.state.set_house_era(target_house_id,next),"room",true,target_house_id);refresh()
 

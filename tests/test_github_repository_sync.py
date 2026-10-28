@@ -53,6 +53,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     put(work, 'UI/theme/a.gd', b'extends Control\n')
     put(work, 'UI/theme/b.gd', b'extends Control\n')
     put(work, 'UI/__pycache__/local.pyc', b'local cache')
+    put(work, 'song-analysis/analyze.py', b'print("portable analysis fixture")\n')
     for directory in ['资产', '废弃', '验证记录', '.godot']:
         put(work, directory+'/excluded.txt', b'not published')
     full = module('sync_github_full')
@@ -95,6 +96,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     remote = git(cloud, 'ls-remote', 'ai-sync', 'refs/heads/main').split()[0]
     paths = set(design.git('ls-tree', '-r', '--name-only', remote).stdout.decode().splitlines())
     assert 'scripts/new_feature.gd' in paths
+    assert 'song-analysis/analyze.py' in paths
     assert full.MANIFEST not in paths and not any(p.startswith('参考资料/') for p in paths)
     # Cloud construction can use a linked worktree; its .git is a file.
     linked = base / 'linked'

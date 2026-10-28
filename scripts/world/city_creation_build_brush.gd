@@ -10,7 +10,7 @@ static func prototypes(era:String)->Array:
   "modern_eco":return Architecture.ALPINE
  return []
 static func select(city:RefCounted,era:String,prototype:String="")->bool:
- if era not in city.era_unlocks or (not prototype.is_empty() and prototype not in prototypes(era)):return false
+ if not city.can_build_era(era) or (not prototype.is_empty() and prototype not in prototypes(era)):return false
  var brush:=current(city).duplicate(true);brush.era=era;brush.prototype=prototype
  if not prototype.is_empty() and era in ["pastoral","renaissance"] and brush.get("appearance",{}).get("style","") in ["timber","round_tower"]:brush.appearance.style="classic"
  city.set_meta("new_house_brush",brush);return true
@@ -19,7 +19,7 @@ static func current(city:RefCounted)->Dictionary:
 static func apply(city:RefCounted,house:Dictionary)->void:
  if city.has_meta("new_house_brush"):
   var brush:=current(city)
-  if brush.era in city.era_unlocks:house.era_theme=brush.era
+  if city.can_build_era(brush.era):house.era_theme=brush.era
   for field:String in brush.get("appearance",{}):house[field]=brush.appearance[field].duplicate(true) if brush.appearance[field] is Dictionary else brush.appearance[field]
   Seed.seed_new(city,house)
   if not str(brush.prototype).is_empty() and brush.prototype in Architecture.choices(city,house):house.architecture=brush.prototype

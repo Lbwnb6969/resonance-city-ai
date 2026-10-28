@@ -66,7 +66,7 @@ static func validate_answers(city:RefCounted,data:Dictionary,issued:Dictionary)-
 		var ids:Dictionary={}
 		for side:String in ["from","to"]:
 			if not city._valid_id(row.get(side),"d",ids) or int(row[side].substr(1))>int(issued.get("district",0)):return city._fail("时代共鸣街坊身份无效")
-			if row.get(side+"_era") not in data.get("era_unlocks",["pastoral"]):return city._fail("时代共鸣风貌尚未开启")
+			if not city.CreationPolicy.data_can_build_era(data,row.get(side+"_era")):return city._fail("时代共鸣风貌尚未开启")
 		if row.from==row.to or row.from_era==row.to_era or row in seen:return city._fail("时代共鸣记录重复或缺少跨时代问答")
 		var pair:Dictionary=city._canonical_musical_link(row.from,row.to)
 		if row.from!=pair.from or row.to!=pair.to or pair not in data.get("district_answers",[]):return city._fail("时代共鸣缺少对应的完整街坊问答")
@@ -76,8 +76,10 @@ static func validate_answers(city:RefCounted,data:Dictionary,issued:Dictionary)-
 
 static func journal(city: RefCounted) -> String:
 	var lines: PackedStringArray = []
+	var free:bool=city.CreationPolicy.is_free(city)
+	if free:lines.append("四时代普通风貌已开放 · 下列为城市成长纪念")
 	var renaissance_goal: String="房屋 %d/14 · 茶聚 %d/1 · 跨区问答 %d/1" % [mini(city.houses.size(),RENAISSANCE_HOUSES),mini(int(city.life_progress.tea_parties),1),mini(city.district_answers.size(),1)]
 	var goals := ["自由建造与街坊生活", renaissance_goal, "28屋 · 两种时代街坊", "50屋 · 贯通三时代共鸣"]
 	for i in range(IDS.size()):
-		lines.append(("✓ " if city.era_unlocks.has(IDS[i]) else "○ ") + "时代 %s · " % [i+1] + NAMES[i] + (" · 已开启" if city.era_unlocks.has(IDS[i]) else " · " + goals[i]))
+		lines.append(("✓ " if city.era_unlocks.has(IDS[i]) else "○ ") + "时代 %s · " % [i+1] + NAMES[i] + ((" · 已纪念" if free else " · 已开启") if city.era_unlocks.has(IDS[i]) else " · " + goals[i]))
 	return "\n".join(lines)

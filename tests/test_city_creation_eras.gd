@@ -24,7 +24,7 @@ static func fixture()->RefCounted:
 	return city
 func _run()->void:
 	var old:=State.new(); old.initialize()
-	_check(old.era_unlocks==["pastoral"] and not old.set_house_role("h2","atelier").ok,"new town starts with pastoral rights and locked atelier")
+	_check(old.era_unlocks==["pastoral"] and not old.set_house_role("h2","atelier").ok,"legacy recipe keeps pastoral rights and locked atelier independently of the free entry")
 	var city:=fixture()
 	_check(city.era_unlocks==["pastoral","renaissance"] and city.houses[1].role=="atelier","legacy earned renaissance rights and sixth role survive stricter new-town milestones")
 	var points: Array[Vector2]=[Vector2(-14,-2)]

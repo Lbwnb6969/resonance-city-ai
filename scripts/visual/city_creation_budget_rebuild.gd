@@ -104,7 +104,7 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city.houses.assign(snapshot.houses);city.roads.assign(snapshot.roads)
 	city.plants.assign(snapshot.plants);city.waters.assign(snapshot.waters)
 	city.terrain_strokes.assign(snapshot.terrain)
-	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","building_quality","era_unlocks","era_modifiers","harmony_journey","biome_seed","music_mode","automatic_neighborhoods","revision"])
+	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","building_quality","era_unlocks","creative_settings","placed_landmarks","era_modifiers","harmony_journey","biome_seed","music_mode","automatic_neighborhoods","revision"])
 	context.state = city
 	# Frontage records are immutable. A changed signature replaces its entry;
 	# the worker owns the map and never writes the published city's records.
