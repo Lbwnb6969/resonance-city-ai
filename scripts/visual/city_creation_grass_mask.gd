@@ -62,8 +62,10 @@ func _collect_legacy(state:RefCounted,entrances_by_house:Dictionary)->void:
 		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark)
 		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
 		for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
-	# Derived paving suppresses ground cover; authored tree/shrub visibility
-	# still belongs to State and remains independent of this grass-only mask.
+	# Ground solids suppress grass only; authored tree/shrub visibility stays separate.
+	for fp:Variant in preload("res://scripts/visual/city_creation_street_furniture_footprints.gd").plans(state):
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
 	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(state)
 	for pocket:Dictionary in wonders.pockets:_add_segment(pocket.at,pocket.at,float(pocket.radius),false)
 	for pier:Dictionary in wonders.piers:_add_segment(pier.start,pier.end,.46,false)

@@ -35,6 +35,8 @@ func prepare(city:RefCounted,entrances:Dictionary)->void:
 	meadow={};masks={};entries=0
 	for landmark:Dictionary in city.placed_landmarks:
 		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark);_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
+	for fp:Variant in preload("res://scripts/visual/city_creation_street_furniture_footprints.gd").plans(city):
+		_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
 	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(city)
 	for pocket:Dictionary in wonders.pockets:_capsule(pocket.at,pocket.at,float(pocket.radius),false)
 	for pier:Dictionary in wonders.piers:_capsule(pier.start,pier.end,.46,false)

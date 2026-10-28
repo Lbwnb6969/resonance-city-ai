@@ -1473,54 +1473,75 @@
         "id": "M83",
         "source_id": "M82",
         "title": "按证据修补画面连续性",
-        "description": "修复关系最明显的接缝，避免用一层新装饰掩盖旧问题。",
-        "spec": "文档/40_分阶段施工与验收.md",
+        "description": "按实际证据修屋谷、路口、街具草遮罩、桥岸与共享风场；同机位和增量/冷算验收。",
+        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
         "depends_on": [
           "M82"
         ],
-        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
-        "verified_by": ""
+        "verified_by": "",
+        "original_description": "修复关系最明显的接缝，避免用一层新装饰掩盖旧问题。",
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
       },
       {
         "id": "M84",
         "source_id": "M83",
         "title": "扩展其余三风格并控制内容规模",
-        "description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
-        "spec": "文档/40_分阶段施工与验收.md",
+        "description": "先实现四大功能区、原型自动绑定合法用途、街景质变、空间激活、35%灵感收益和L功能区总谱；再以可见不同区分别贡献foundation/pulse/answer/唯一lead，验证跨区共屏及下一安全小节合奏。精修4+4曲式、整句三态琶音与三音回答，补齐六原创风格，验证全调式/144秒/缓存/听感。保留人工意图、旧档、真实历史和音频预算。",
+        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
         "depends_on": [
           "M83"
         ],
-        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
-        "verified_by": ""
+        "verified_by": "",
+        "original_description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
       },
       {
         "id": "M85",
         "source_id": "M84",
         "title": "连续编辑、首启和缓存收口",
-        "description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
-        "spec": "文档/40_分阶段施工与验收.md",
+        "description": "依据实际阶段耗时裁剪自由城全源寻路和逐椅预热，采用连通分量、就近漫步/懒加载路径与局部dirty范围；验证300屋连续编辑、首启与缓存，不采用固定耗时门禁。",
+        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
         "depends_on": [
           "M84"
         ],
-        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
-        "verified_by": ""
+        "verified_by": "",
+        "original_description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
       },
       {
         "id": "M86",
         "source_id": "M85",
         "title": "整合终验与交付",
-        "description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
-        "spec": "文档/40_分阶段施工与验收.md",
+        "description": "完成修订后的五条玩家旅程、相关CPU与375旧档/27作品、实窗/原图/PCM和独立品质验收，提交并核对双库；如实区分技术结果和实际听感。",
+        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
         "depends_on": [
           "M85"
         ],
-        "verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50对应任务及文档40未冲突的相关CPU、隔离旧档与实窗/实录验收",
         "passes": false,
-        "verified_by": ""
+        "verified_by": "",
+        "original_description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
       }
-    ]
+    ],
+    "supplemental_design": {
+      "document": "文档/50_空间驱动城建音乐与整合排期修订.md",
+      "source": "文档/来源/20261028_四大功能区与去模拟人生化_50_m82_m86.md",
+      "source_sha256": "65e63d7fcc9654746bdce1f518f73640e1d17a1360360ba27c2867ff9c589501",
+      "authorized": "用户2026-10-28选择按新方向适配排期并继续施工，随后指定改用Downloads新版50_m82_m86.md；保留M82已完成记录",
+      "previous_source": "文档/来源/20261028_去模拟人生化_回归城建音乐本源与M82_M86终极大师设计总案.md",
+      "previous_source_sha256": "49855380f460604e4df57e0792a6cc28c23a31665582b4fbccaf86f6c1798083",
+      "integrated_addendum": {
+        "source": "文档/来源/20261028_音乐与城建深度重审_51.md",
+        "source_sha256": "2583691cb9fff75b6e1c2724be7ab97c134801bf7c81db7515fb323cd3e5f2ca",
+        "authorized": "用户明确要求这一篇也融合"
+      }
+    }
   }
 }
