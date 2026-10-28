@@ -28,6 +28,8 @@ func refresh()->void:
 	if demo.life.last_revision!=city.revision:return
 	var scenery:Node3D=demo.get_meta("street_wonders")
 	var key:Array=[demo.town.get_instance_id(),city.get_instance_id(),city.revision,scenery.epoch,scenery.layers.size()]
+	var samples:Node3D=demo.get_node_or_null("TraditionScenery/SecondStudyScenery")
+	key.append([samples.get_instance_id(),samples.visible] if samples!=null else [])
 	if epoch!=key:
 		epoch=key;_collect(scenery)
 	_select_targets()
@@ -50,6 +52,10 @@ func _collect(scenery:Node3D)->void:
 	sources.clear();candidates.clear()
 	for node:Node3D in scenery.layers:
 		if node.has_meta("water_lamp"):sources.append(node.to_global(node.get_meta("water_lamp")))
+	var samples:Node3D=demo.get_node_or_null("TraditionScenery/SecondStudyScenery")
+	if samples!=null and samples.visible:
+		for node:Node3D in samples.get_children():
+			if node.has_meta("water_lamp"):sources.append(node.to_global(node.get_meta("water_lamp")))
 	for house:Dictionary in demo.state.houses:
 		var id:=str(house.id)
 		if not demo.town.house_roots.has(id):continue

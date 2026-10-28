@@ -73,6 +73,7 @@ func _nearest_water(city:RefCounted,at:Vector2)->Vector2:
 			if distance<best:best=distance;result=point
 	return result
 func _rebuild(city:RefCounted)->void:
+	preload("res://scripts/visual/city_creation_inspiration_sample_scenery.gd").rebuild(self)
 	for child:Node in ornaments.get_children():ornaments.remove_child(child);child.queue_free()
 	lamps.clear()
 	if Rules.has(city,"lantern_bridge_echo"):

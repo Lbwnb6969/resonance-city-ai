@@ -17,6 +17,7 @@ static func start(life,r:Dictionary)->bool:
 	if not (r.paused or reached_home) or r.wait>0. or r.has("daily_snapshot") or r.has("solo_listen") or r.has("cafe_visit") or not str(r.dwell_id).is_empty() or not life._concert.is_empty():return false
 	if life.time<float(r.get("balcony_next",6.)):return false
 	var host:=str(r.home_id);var available:=plans(life)
+	if life.get_meta("player_bench","")=="balcony/"+host:return false
 	if not available.has(host) or not life.connected_houses.has(host):return false
 	var row:Dictionary=available[host];var entrance:Dictionary=life.selected_entrances.get(host,{})
 	if entrance.is_empty() or str(entrance.cell_id)!=str(row.plan.lower.id) or Vector2i(entrance.side)!=row.plan.side:return false

@@ -24,7 +24,7 @@ static func context(owner:Node,source:String)->Dictionary:
 	var living:=false
 	for event:Dictionary in owner._life_activity.values():
 		if event.source_id==source and float(event.until)>owner._playback_clock():living=true
-	return {"source":source,"era":str(row.get("era_theme","pastoral")),"district":str(row.get("district_id","")),"water":float(row.get("water_distance",999.)),"height":float(row.get("base_y",0.)),"night":owner.night,"strolling":owner.attention_strolling,"living":living,"peers":peers,"houses":owner._house_music.size()}
+	return {"source":source,"era":str(row.get("era_theme","pastoral")),"district":str(row.get("district_id","")),"water":float(row.get("water_distance",999.)),"height":float(row.get("base_y",0.)),"night":owner.night,"strolling":owner.attention_strolling,"living":living,"peers":peers,"houses":owner._house_music.size(),"inspiration":preload("res://scripts/world/city_creation_inspiration_samples.gd").for_source(city,source) if city!=null else ""}
 static func candidate(ctx:Dictionary,prefs:Dictionary)->Dictionary:
 	if prefs.mode=="fixed":return {"style":prefs.style,"reason":"玩家固定风格"}
 	if prefs.mode=="quiet":return {"style":"felt_nocturne","reason":"玩家安静模式"}
@@ -45,4 +45,5 @@ static func choose(previous:Dictionary,ctx:Dictionary,prefs:Dictionary,clock:flo
 	state.response=bool(ctx.living) or not ctx.peers.is_empty();state.context=ctx;state.seed=prefs.seed
 	state.density="thin" if passage in [2,5] else "solo" if passage==4 else "full"
 	state.pulse=passage not in [3,4,5] and prefs.mode!="quiet";state.foundation=not (passage==2 or prefs.mode=="quiet")
+	preload("res://scripts/world/city_creation_inspiration_samples.gd").latch(state,ctx,cycle)
 	return state

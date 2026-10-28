@@ -33,6 +33,8 @@ static func make(draft:Node,id:String)->Button:
  var rarity:=Label.new();rarity.name="Rarity";rarity.text="旧城已得传承" if not draft.legacy_era.is_empty() else str(Tactile.RARITY_PALETTE[key].title);rarity.add_theme_color_override("font_color",Tactile.RARITY_PALETTE[key].accent);rarity.add_theme_font_size_override("font_size",12);column.add_child(rarity)
  var heading:=Label.new();heading.name="LeafTitle";heading.text=str(card.name).trim_suffix("章程").right(4);heading.add_theme_font_size_override("font_size",22);column.add_child(heading)
  var detail:=Label.new();detail.name="LeafBrief";detail.text=BRIEFS[id];detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.add_theme_font_size_override("font_size",14);detail.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail.add_theme_color_override("font_color",UI.MUTED);column.add_child(detail)
+ if id=="lantern_bridge_echo":detail.text+="\n二阶：栈桥小灯与柔和回答。"
+ elif id=="arcade_market":detail.text+="\n二阶：爱奥尼柱廊细藤与交织回答。"
  var button:=Button.new();button.name="Choose_"+id;button.text="融入河湾" if id not in journey.traditions else "再读 · 研习%d"%(int(journey.ranks[id])+1);button.custom_minimum_size.y=34
  button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n"+Rarity.NAMES[tier]+("：共鸣收益增加25%" if tier==3 else "：共鸣收益增加12%" if tier==2 else "")+"\n重读共鸣收益每次增加2%，至多50%；选择可撤销。"
  if not draft.legacy_era.is_empty():button.text="收录旧城传承";button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n这是旧城已赚取的时代选择，不消耗共鸣手札，不额外授予稀有度收益。可撤销。"

@@ -14,7 +14,7 @@ static func apply(owner:Node,roles:Dictionary,leader:String,mode:int)->void:
 	var upcoming:=Plan.choose(plan,ctx,prefs,clock+3.5)
 	var ids:Dictionary={};var ready:=true
 	for role:String in Cache.ROLES:
-		var id:=Cache.key(upcoming.style,upcoming.material,mode,upcoming.color,role,upcoming.seed);ids[role]=id
+		var id:=Cache.key(upcoming.style,upcoming.answer_material if role=="answer" else upcoming.material,mode,upcoming.color,role,upcoming.seed);ids[role]=id
 		ready=Cache.request(owner,id) and ready
 	if not ready:
 		plan.waiting="后台准备谱材，保留当前乐句"
@@ -45,6 +45,7 @@ static func dynamics(roles:Dictionary,leader:String,plan:Dictionary)->void:
 		roles[stem].gain_offset=-4. if plan.density=="thin" else 0.
 	roles.foundation.active=plan.foundation;roles.air.active=plan.pulse
 	roles.terrace.active=(plan.response or plan.passage in [1,3]) and plan.passage!=5
+	if plan.get("inspiration","")!="" and plan.passage not in [4,5]:roles.terrace.active=true;roles.terrace.gain_offset-=3.
 static func key(owner:Node)->Array:
 	var city=owner._pluck_city
 	return [floori(owner._playback_clock()/3.),floori((owner._playback_clock()+3.5)/3.),city.get_instance_id() if city!=null else 0,city.revision if city!=null else -1,Plan.preferences(city),owner.attention_strolling,owner._life_activity]

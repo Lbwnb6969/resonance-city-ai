@@ -45,6 +45,7 @@ func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	panel.preview_requested.connect(play_work)
 	panel.stop_requested.connect(stop_preview)
 	panel.mode_requested.connect(choose_mode)
+	panel.chord_tour_requested.connect(func(id:String)->void:demo.camera_rig.tour.start(demo,id))
 
 func open_panel() -> void:
 	if busy or demo.edit_pending():
@@ -141,6 +142,7 @@ func _open_chosen(chosen: Dictionary) -> void:
 		panel.set_status(str(chosen.message))
 		return
 	_load_phases={};_load_phase("validate")
+	demo.camera_rig.tour.stop(demo)
 	var city:RefCounted=demo.State.new()
 	var restored:Dictionary=city.restore(chosen.world)
 	if not restored.ok:

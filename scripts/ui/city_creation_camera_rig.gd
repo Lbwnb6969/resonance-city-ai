@@ -5,9 +5,11 @@ var saved: Dictionary = {}
 var postcard_busy := false
 var last_postcard := ""
 var bench_view:=preload("res://scripts/ui/city_creation_bench_view.gd").new()
+var tour:=preload("res://scripts/ui/city_creation_chord_tour.gd").new()
 var aura:=preload("res://scripts/visual/city_creation_stroll_glow.gd").new()
 var postcard_directory := "user://postcards"
 func collection_view(demo:Node3D)->Dictionary:
+	if tour.active:return tour.collection_view(demo)
 	# A street-level look can tilt beyond the authored overview camera range.
 	# Collections reopen the creative view kept when entering the stroll.
 	var at:Vector3=saved.focus if strolling and not saved.is_empty() else demo.focus
@@ -40,6 +42,7 @@ func toggle(demo: Node3D) -> void:
 	if demo.tactile_dock!=null:demo.tactile_dock.refresh()
 
 func update(demo: Node3D, delta: float) -> void:
+	if tour.update(demo,delta):return
 	if bench_view.update(demo):return
 	aura.update(demo,strolling)
 	if not strolling: return

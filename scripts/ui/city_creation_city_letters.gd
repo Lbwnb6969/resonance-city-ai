@@ -7,6 +7,7 @@ var demo
 var summary:Label
 var claim:Button
 var stamp:Array=[]
+var sample_cursor:=0
 static func install(owner:Node3D,parent:Control)->void:
 	var node=load("res://scripts/ui/city_creation_city_letters.gd").new();node.demo=owner;parent.add_child(node);owner.set_meta("city_letters",node)
 func _ready()->void:
@@ -14,6 +15,7 @@ func _ready()->void:
 	var view:=Button.new();view.name="ReadCityLetters";view.text="查看来信与心愿";view.pressed.connect(read_letters);add_child(view)
 	claim=Button.new();claim.name="OpenPendingDraft";claim.text="翻开待选手札";claim.pressed.connect(open_draft);add_child(claim)
 	var look:=Button.new();look.text="定位来信空地";look.pressed.connect(locate);add_child(look)
+	preload("res://scripts/ui/city_creation_inspiration_sample_controls.gd").install(self)
 func wishes()->Array:
 	var pins:Node=demo.ui_layer.get_child(0).get_node_or_null("CitizenWishPins")
 	return pins.offers() if pins!=null else []
@@ -24,7 +26,8 @@ func read_letters()->void:
 		var template:=Vignettes.template(str(quest.id));lines.append("\n"+str(template.title)+"\n"+str(template.prompt))
 	else:lines.append("\n当前没有待办来信，继续随意造城。")
 	for row:Dictionary in wishes().slice(0,6):lines.append("· "+str(row.house_id)+"："+str(row.caption)+"，选中这栋建筑可查看与调整。")
-	lines.append("\n指向道路长椅按B，可坐下听城；Esc或V回到原视角。")
+	lines.append("\n指向道路长椅或可达阳台按B，可停下听城；Esc或V回到原视角。")
+	lines.append("\n二阶手札\n"+preload("res://scripts/world/city_creation_inspiration_samples.gd").describe(demo.state))
 	demo.guide.body.text="\n".join(lines)
 func open_draft()->void:
 	if not demo.has_meta("inspiration_draft"):return

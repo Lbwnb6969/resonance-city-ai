@@ -10,6 +10,7 @@ signal biome_requested(id:String)
 signal preview_requested(id:String)
 signal stop_requested
 signal mode_requested(mode:String)
+signal chord_tour_requested(id:String)
 signal close_requested
 
 var title_input: LineEdit

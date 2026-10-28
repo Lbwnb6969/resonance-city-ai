@@ -43,6 +43,8 @@ func enqueue(era:String)->void:
 	if era in demo.state.harmony_journey.celebrated_eras:
 		demo.journal.offer_era_choice(era);return
 	demo.state.harmony_journey.celebrated_eras.append(era);demo.state.dirty=true;demo.state.life_progress_dirty=true
+	if demo.state.CreationPolicy.is_free(demo.state):
+		demo.save_delay=3.;demo.journal.offer_era_choice(era);events.append({"phase":"inscribed","era":era});return
 	pending.append(era);demo.save_delay=3.
 	if not demo.edit_pending():demo._refresh_place();demo._refresh_district();demo.journal.refresh(false)
 func bell()->void:
