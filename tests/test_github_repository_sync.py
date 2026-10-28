@@ -60,6 +60,9 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     full.ROOT, full.GIT = work, work / '.git'
     full.WORK, full.OUT = work / '.git/full-sync', work / '验证记录/full-proof'
     full.URL, full.MAX_FILE, full.INPUT_BUDGET, full.MAX_BYTES = remotes['origin'], 4096, 4000, 10000
+    # Root leaves cannot collapse to a directory: exercise multiple real batches.
+    for index in range(257):
+        put(work, f'batch-{index:03d}.txt', b'x')
     old_head = git(work, 'rev-parse', 'HEAD')
     old_index = (work / '.git/index').read_bytes()
     old_ignore = (work / '.gitignore').read_bytes()
@@ -69,6 +72,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     assert git(work, 'rev-parse', 'HEAD') == old_head
     plan = json.loads((full.OUT / 'plan.json').read_text(encoding='utf-8'))
     assert '参考资料/source.cs' in full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0')
+    assert all(f'batch-{index:03d}.txt' in full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0') for index in [0, 255, 256])
     manifest = json.loads(full.git('show', plan['commit']+':'+full.MANIFEST))
     assert '参考资料/large.bin' in manifest['omitted']
     full.push()

@@ -4,9 +4,9 @@
 
 ## 基线与进度
 
-- 实际施工基线：完整库 `f72d2ae5007c83c527f0c7111bf089e3d92f439d`。本地原 `work` 分支是早期水岸版；续建在独立 `codex/holistic-integration` 工作树，原有改动保留。
+- 实际施工基线：完整库 `f72d2ae5007c83c527f0c7111bf089e3d92f439d`。云端续建使用 `codex/holistic-integration`；本机 `codex/city-creation-p0` 已快进合入双库M75/M76，原件与大型资料保持。
 - 当前代码已完成 M01～M74、UI01～04、RF01～08。已有 M74 是超近景生活音效，因此附件提案 M74～M85 顺延为 **M75～M86**。旧任务定义与历史证据保持。
-- 唯一进度源：[根backlog](ai_feature_backlog.json) 的 `holistic_integration.rounds`。M75基线与M76自由创作政策已完成。正常新城从空地开始，四时代、八用途与核心画具可选；旧城保留经典规则，可在F1手册中显式备份转换。下一项M77整理道路面板与输入。
+- 唯一进度源：[根backlog](ai_feature_backlog.json) 的 `holistic_integration.rounds`。M75基线、M76自由创作政策与M77道路紧凑面板已完成。正常新城从空地开始，四时代、八用途与核心画具可选；旧城保留经典规则，可在F1手册中显式备份转换。下一项M78单主题音乐垂直样板。
 - 新增Schema20独立扩展承载政策/偏好与地标预留字段；Schema1～19仍可读且缺省legacy，正式新城free。转换先备份，Undo不撤回转换；历史纪念、库存、手札保持真实。
 
 ## 施工规格
