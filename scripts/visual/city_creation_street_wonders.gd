@@ -19,6 +19,9 @@ func _process(delta:float)->void:
 	for crown:Node3D in crowns:Legendary.animate(crown,elapsed)
 	for landmark:Node3D in ground_landmarks:Ground.animate(landmark,elapsed)
 	var city:RefCounted=demo.state
+	# A reused Life route generation can advance before its spatial publication.
+	# Keep the previous scenery until the same revision's region graph is ready.
+	if city.CreationPolicy.is_free(city) and city._region_network_revision!=city.revision:return
 	var key:=[city.get_instance_id(),city.revision,city._wish_epoch,LegendaryPlan.progress_key(city)]
 	if epoch==key or demo.life.last_revision!=city.revision:return
 	epoch=key;rebuild(city)
@@ -34,6 +37,7 @@ func rebuild(city:RefCounted)->void:
 		for row:Dictionary in plan.pockets:_pocket(row)
 		for row:Dictionary in plan.fountains:_flowers(row,city)
 		for row:Dictionary in plan.loops:preload("res://scripts/visual/city_creation_loop_garden.gd").build(self,row)
+		for row:Dictionary in preload("res://scripts/world/city_creation_water_lantern_plan.gd").derive(city):preload("res://scripts/visual/city_creation_water_lantern.gd").build(self,row)
 	var wonders:=LegendaryPlan.derive(city)
 	if automatic:
 		for row:Dictionary in wonders.monuments:layers.append(Legendary.memorial(self,row))

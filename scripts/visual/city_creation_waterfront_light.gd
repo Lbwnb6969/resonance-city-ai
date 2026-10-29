@@ -12,6 +12,7 @@ var material:ShaderMaterial
 var surface:QuadMesh
 var targets:Array[Dictionary]=[]
 var candidates:Array[Dictionary]=[]
+var lamp_materials:Array[ShaderMaterial]=[]
 
 func setup(owner)->void:
 	demo=owner;name="WaterfrontLight";demo.add_child(self);demo.set_meta("waterfront_light",self)
@@ -32,6 +33,7 @@ func refresh()->void:
 	key.append([samples.get_instance_id(),samples.visible] if samples!=null else [])
 	if epoch!=key:
 		epoch=key;_collect(scenery)
+	for lamp:ShaderMaterial in lamp_materials:lamp.set_shader_parameter("lantern_night",1. if demo.light_phase==2 else .35 if demo.light_phase==1 else 0.)
 	_select_targets()
 	_bind_lamps()
 	var low:=1.-smoothstep(.24,.35,float(demo.pitch))
@@ -49,9 +51,10 @@ func refresh()->void:
 	set_meta("diagnostics",{"lamps":sources.size(),"veils":veils.size(),"strength":strength,"phase":demo.light_phase})
 
 func _collect(scenery:Node3D)->void:
-	sources.clear();candidates.clear()
+	sources.clear();candidates.clear();lamp_materials.clear()
 	for node:Node3D in scenery.layers:
 		if node.has_meta("water_lamp"):sources.append(node.to_global(node.get_meta("water_lamp")))
+		if node.has_meta("market_water_lamp_material"):lamp_materials.append(node.get_meta("market_water_lamp_material"))
 	var samples:Node3D=demo.get_node_or_null("TraditionScenery/SecondStudyScenery")
 	if samples!=null and samples.visible:
 		for node:Node3D in samples.get_children():
