@@ -56,10 +56,12 @@ func visible() -> bool:
 	return panel.visible
 
 func refresh() -> void:
+	preload("res://scripts/ui/city_creation_functional_ledger.gd").caption(self)
 	if not panel.visible: return
 	var now: int = Time.get_ticks_msec()
 	if now - _last_refresh < 500: return
 	_last_refresh = now
+	if preload("res://scripts/ui/city_creation_functional_ledger.gd").refresh(self):return
 	var capsules=preload("res://scripts/ui/city_creation_life_capsules.gd")
 	capsules.refresh(self)
 	var progress:Dictionary=demo.state.life_progress

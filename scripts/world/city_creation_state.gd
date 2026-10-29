@@ -53,6 +53,7 @@ var _next_landmark_id:=1;var _landmark_high_watermark:=0
 func initialize_free(empty:bool=true)->void:CreationPolicy.initialize(self,empty)
 func can_build_era(era:String)->bool:return CreationPolicy.can_build_era(self,era)
 func can_assign_role(role:String)->bool:return CreationPolicy.can_assign_role(self,role)
+func functional_zones()->Dictionary:return preload("res://scripts/world/city_creation_functional_zones.gd").for_city(self)
 const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
 const CLOCKWORK_SCHEMA := 15
@@ -183,6 +184,7 @@ func initialize_empty()->void:
 	revision+=1;_undo.clear();_redo.clear()
 
 func initialize() -> void:
+	remove_meta("functional_zones")
 	CreationPolicy.Save.reset(self)
 	biome_seed={};_biome_revision=-1;_biome_bonuses={}
 	era_modifiers.clear();archive_unlocks.clear();music_mode="";harmony_journey.clear()

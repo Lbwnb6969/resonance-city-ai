@@ -1,0 +1,40 @@
+extends "res://tools/check_creation_prototype_roles_live.gd"
+const SpatialFixture=preload("res://tools/fixtures/city_creation_functional_zones_fixture.gd")
+func refresh_page()->void:
+	demo.ledger._last_refresh=-500;demo.ledger.refresh();await create_timer(.3).timeout
+func run()->void:
+	OUT="res://验证记录/M84/spatial_zones_20261029/live"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
+	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input()
+	var voices:=pool();var fixture:=SpatialFixture.build();check(fixture.ok,"public spatial sources")
+	await show(fixture.city,Vector2(-23,-18),"功能区空间");quiet();demo.life.set_process(false)
+	demo.focus=Vector3(-23.,.5,-19);demo.zoom=27.;demo.pitch=.75;demo.yaw=.1;demo._update_camera();await settle()
+	var report:Dictionary=demo.state.functional_zones();var authored:Dictionary=demo.state.snapshot();var initial:=meshes()
+	check(report.network_ready and report.zones.all(func(z):return z.active),"actual published scene activates four spatial kinds")
+	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+		root.size=size;await key(KEY_L);await refresh_page()
+		check(demo.ledger.visible() and demo.ledger.body.visible and demo.ledger.button.text=="功能区与总谱 · L","native L opens actual free-city spatial page "+str(size.x))
+		for kind:String in ["栖居庭院","水岸市集茶座","百工钟楼匠造","卫城礼乐圣殿"]:check(kind in demo.ledger.body.text,"published page exposes "+kind)
+		check(not "采购" in demo.ledger.body.text and not "库存" in demo.ledger.body.text and demo.ledger.rows.is_empty(),"free page has no mandatory business progression")
+		await capture("ledger_"+str(size.x));demo.ledger.scroll.scroll_vertical=10000;await refresh_page();await capture("ledger_bottom_"+str(size.x))
+		check(demo.ledger.scrollbook.get_global_rect().end.y<=size.y,"page fits viewport "+str(size.x))
+		await key(KEY_ESCAPE);check(not demo.ledger.visible(),"native Escape closes spatial page")
+	check(demo.state.snapshot()==authored,"reading both sizes creates no author or historical writes")
+	var changed:Dictionary=demo.state.remove_road("r1");demo._after_edit(changed,"history");await settle();quiet();demo.life.set_process(false)
+	check(changed.ok and not demo.state.functional_zones().houses.h3.connected,"actual road removal deactivates workshop spatial membership")
+	await key(KEY_L);await refresh_page();check("门前尚未接路" in demo.ledger.body.text,"real page withdraws spatial activation on road removal");await capture("disconnected");await key(KEY_ESCAPE)
+	await key(KEY_Z,true);await settle();quiet();demo.life.set_process(false)
+	check(demo.state.functional_zones()==report and meshes()==initial,"native Undo restores independent zone evidence and installed arrays")
+	await key(KEY_Y,true);await settle();quiet();demo.life.set_process(false);check(not demo.state.functional_zones().houses.h3.connected,"native Redo withdraws zone again")
+	await key(KEY_Z,true);await settle();quiet();demo.life.set_process(false)
+	var saved:Dictionary=demo.state.snapshot();var file:=FileAccess.open(OUT+"/work.json",FileAccess.WRITE);file.store_string(JSON.stringify(saved,"",true,true));file.close()
+	var cold:=State.new();check(cold.restore(JSON.parse_string(FileAccess.get_file_as_string(OUT+"/work.json"))).ok,"actual isolated disk read")
+	await show(cold,Vector2(-23,-18),"功能区冷读");quiet();demo.life.set_process(false)
+	check(demo.state.functional_zones()==report and meshes()==initial,"cold graph and renderer match incremental spatial/mesh output")
+	facts.master=await Probe.record(OUT+"/Master.wav",3.2);check(facts.master.ok and pool()==voices,"original audio pool and actual unclipped PCM")
+	var legacy:=State.new();legacy.initialize();await show(legacy,Vector2(-6,-1),"经典账本");quiet();demo.life.set_process(false)
+	await key(KEY_L);await refresh_page();check(demo.ledger.button.text=="生活账本 · L" and demo.ledger.guide_button.visible and not demo.state.functional_zones().enabled,"switching to classic restores original ledger and guide");await capture("classic_ledger");await key(KEY_ESCAPE)
+	check(demo.ledger.paper.find_child("FourFamilySeals",true,false).visible and demo.ledger.paper.get_meta("workshop_leaves").visible,"classic family and actual business leaves restored after free page")
+	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save unchanged")
+	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts,"spatial":report};FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"));print("FUNCTIONAL_ZONES_LIVE ",JSON.stringify(result));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

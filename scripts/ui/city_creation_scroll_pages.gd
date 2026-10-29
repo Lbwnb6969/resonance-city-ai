@@ -37,7 +37,7 @@ static func journal(widget:RefCounted,parent:Control)->void:
 	widget.refresh(false)
 static func ledger(widget:RefCounted,parent:Control)->void:
 	var demo:Node3D=widget.demo;var column:=base(widget,parent,"ledger","LifeLedger")
-	var heading:=HBoxContainer.new();column.add_child(heading);label(demo,heading,"生活账本",19)
+	var heading:=HBoxContainer.new();column.add_child(heading);label(demo,heading,"生活账本",19).name="LedgerHeading"
 	widget.close_button=demo._button("合卷",widget.close_panel);widget.close_button.name="CloseLedger";heading.add_child(widget.close_button)
 	widget.close_button.focus_mode=Control.FOCUS_ALL
 	widget.guide_button=demo._button("经营手札 · F1",func()->void:demo.guide.open_panel(1))
@@ -51,7 +51,7 @@ static func ledger(widget:RefCounted,parent:Control)->void:
 	widget.body.selection_enabled=true;widget.body.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	widget.body.add_theme_font_size_override("normal_font_size",14);widget.body.add_theme_color_override("default_color",UI.INK)
 	widget.body.add_theme_constant_override("line_separation",5);entries.add_child(widget.body);widget.body.hide()
-	label(demo,column,"库存与成绩只记实际完成的日常。",12)
+	label(demo,column,"空间与记录，随作品保留。",12)
 static func landmarks(widget:RefCounted,parent:Control)->VBoxContainer:
 	widget.scrollbook=Book.obtain(widget.demo,parent)
 	widget.panel=PanelContainer.new();widget.panel.name="SignatureCatalog"

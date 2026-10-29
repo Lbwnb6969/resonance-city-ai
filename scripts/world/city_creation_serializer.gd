@@ -95,6 +95,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
+	city.remove_meta("functional_zones")
 	city.CreationPolicy.Save.apply(city,data,preserve_issued_ids)
 	city.biome_seed=data.get("biome_seed",{}).duplicate();city._biome_revision=-1;city._biome_bonuses={}
 	if not preserve_issued_ids:city.archive_unlocks.assign(data.get("archive_unlocks",[]))
