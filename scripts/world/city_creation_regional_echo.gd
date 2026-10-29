@@ -33,7 +33,15 @@ static func prepare(city:RefCounted,network:RefCounted)->Dictionary:
 	for link:Dictionary in city.musical_links:links[str(link.from)+":"+str(link.to)]=true
 	var house_components:Dictionary={}
 	for id:String in network.connected_houses:house_components[id]=network.component_of[str(network.connected_houses[id])]
-	return {"nodes":nodes,"links":links,"house_components":house_components}
+	var road_components:Dictionary={}
+	for start:String in network.road_edges:
+		for owners:Array in network.road_edges[start].values():
+			for id:String in owners:
+				if not road_components.has(id):road_components[id]=[]
+				var component:String=network.component_of[start]
+				if not road_components[id].has(component):road_components[id].append(component)
+	for values:Array in road_components.values():values.sort()
+	return {"nodes":nodes,"links":links,"house_components":house_components,"road_components":road_components}
 
 static func _region(city:RefCounted,house:Dictionary,tree_bins:Dictionary)->String:
 	if float(house.get("base_y",0.))>=1.2:return "highland"

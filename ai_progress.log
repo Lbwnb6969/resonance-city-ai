@@ -820,3 +820,23 @@
 - LIFECYCLE: 同槽/实际换流跟随、实测peak界与120/150ms增益包络；结束/Esc不停止长轨，经典短槽保持，修复旧独奏进入母曲时的撤回边界，四主文件净改动0。
 - VERIFY: 新CPU15/原musical_toys14/旧谱23/旧档375+27及GL/WASAPI31 PASS43.233s；实际无居民/工人来源、12秒自然结束、原生P/Esc、逐帧唯一领唱、池/个人档保持。
 - CRITIC/NEXT: 三子步独立审查及入口增量复核无未解决新增P1/P2；Master12.074376s峰.343689零削波，听感未评。公开仍限mode0，全局原子换段/跨小节提示/多档空间编配待办，M84仍false；干净完整库工作树，文档53。
+
+[DESIGN_V7_1_ADOPTED] 2026-10-29 文档54成为实际施工规格；V7来源原样保留，入口/工程维护/M84～M86未完成定义已接续。
+- FIX: 分离旧收益/新stage、内陆廊街非水岸、准确18ID、旧任务领取、内部version3校验及连续母曲先行；保留复音共享和声及原领唱独奏最新证据。
+- SCOPE: 仅文档/任务元数据，不改游戏或passes/verified_by；未操作Git/GitHub，施工前文件副本在验证记录V7施工定稿批次。
+- NEXT: 四类空间契约夹具与courtyard只读stage/evidence；原正式+35%/收据保持，默认连续多档音乐仍待施工，听感待评。
+- VERIFY: Harness通过，55处本地链接有效、18卡ID准确、V7来源哈希一致；历史任务/全部验收状态未改。独立文档审查P2（独奏停点过时）已修复复核关闭，无新增游戏/听评结论。
+
+[SESSION_M84_V7_COURTYARD_CONTRACT] 2026-10-29 VERIFIED SUBSTEP：按文档54新增只读spaces，闭合地面房环/真实内域/合法通口/同分量派生trait、cluster、district；原zones/active收益分离。
+- VERIFY: CPU77、功能区71/正式收益46、旧档375+27、GL/WASAPI28 PASS；原生L/Esc/CtrlZ/Y、旋转/远端连接/在途/冷读/实际网格、池/个人档保持。
+- EVIDENCE: 验证记录/M84/courtyard_contract_20261029，实际Master3.204354s/44100双声道峰.200806零削波，原图已核、听感未评；Harness13与本地链接168通过，四主文件净改0。
+- NEXT: 仅闭合房环首步，半围合cluster/窄巷/复杂界面与另三类契约待施工；未验收换段8文件逐哈希封存废弃。M84仍false，不操作Git/GitHub；文档53。
+
+[SESSION_M84_V7_HALF_ENCLOSURE] 2026-10-29 VERIFIED SUBSTEP：单体真实三面墙凹口/干地/开口派生cluster，未接路仍保留局部空间；不授district/Warm，旧收益分离。
+- VERIFY: CPU83/5.056s、闭合庭院78、正式收益46、旧档375+27、GL/WASAPI30/34.988s PASS；四朝向/内域占用/水域/堵口/装饰开关/Undo/冷读、原池与个人档保持。
+- EVIDENCE: 验证记录/M84/half_enclosure_20261029；昼夕夜及两窗口原图已核，Master3.204354s峰.232849零削波、听感未评；四主文件净改0，导入正常退出；Harness13/本地链接170通过。
+- NEXT: 窄巷/多来源公共界面与其他三类契约继续待办；下个子步后独立Critic。替换前逐文件封存废弃，M84仍false，不提交或发布Git/GitHub；文档53。
+
+[SYNC_V7_SPATIAL_REQUESTED] 2026-10-29 用户明确要求同步双库；本次恢复Git备份与普通快进发布。
+- SCOPE: 文档54/V7来源、庭院闭合与半围合已验收实现/工具/接续进度；窄巷未落盘，M84～M86仍false，原主观听评边界保持。
+- PRESERVE: 旧提案删除前版本保留Git备份及废弃逐文件SHA；个人作品/验证媒体/废弃/外置资产不发布。两库prepare审阅预算/增删后push，结果见本地同步verification记录。

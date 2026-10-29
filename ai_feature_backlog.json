@@ -1487,47 +1487,65 @@
       {
         "id": "M84",
         "source_id": "M83",
-        "title": "扩展其余三风格并控制内容规模",
-        "description": "先实现四大功能区/原型合法用途自动绑定/街景/空间激活/35%灵感/L总谱，再写定完整144秒母曲与四职责多档分谱。可见功能区分别贡献同一母曲的foundation/pulse/answer/唯一lead之tier、乐器与演奏法，下一安全小节进入；围合暖垫与4个百分点混响、曲路Legato尾音+25%、跨岸Canon、地标P4华彩。精修4+4曲式/整句三态琶音/三音回答/夜曲暖簇后补齐六首母曲，验证全部10调式/同曲跨区A/B实录/换流/6包24流缓存/M80旧谱面兼容；保留人工意图、旧档真实历史与音频预算。",
-        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+        "title": "空间契约、连续母曲与跨区多档编配",
+        "description": "按文档54先四类空间契约夹具与courtyard阶段派生，分离旧收益和新stage，保留正式+35%与历史权益；清理free自动任务并保留手动领取。复用田园基础谱、单音/复音和声及原领唱独奏证据，先全局原子换段/跨小节/六段连续接续，再内部version3多档、默认跨区配器与Legato/Warm/Canon/P4；三核心后补六曲、十调式与真实听评，18卡按真实ID逐项映射，不锁基础声部。保留M80/schema1、version2与原音频池。",
+        "spec": "文档/54_V7_最终施工改造总案.md",
         "depends_on": [
           "M83"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
         "passes": false,
         "verified_by": "",
         "original_description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
-        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "pre_v7_definition": {
+          "title": "扩展其余三风格并控制内容规模",
+          "description": "先实现四大功能区/原型合法用途自动绑定/街景/空间激活/35%灵感/L总谱，再写定完整144秒母曲与四职责多档分谱。可见功能区分别贡献同一母曲的foundation/pulse/answer/唯一lead之tier、乐器与演奏法，下一安全小节进入；围合暖垫与4个百分点混响、曲路Legato尾音+25%、跨岸Canon、地标P4华彩。精修4+4曲式/整句三态琶音/三音回答/夜曲暖簇后补齐六首母曲，验证全部10调式/同曲跨区A/B实录/换流/6包24流缓存/M80旧谱面兼容；保留人工意图、旧档真实历史与音频预算。",
+          "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+          "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收"
+        }
       },
       {
         "id": "M85",
         "source_id": "M84",
-        "title": "连续编辑、首启和缓存收口",
-        "description": "依据实际阶段耗时裁剪自由城全源寻路和逐椅预热，采用连通分量、就近漫步/懒加载路径与局部dirty范围；验证300屋连续编辑、首启与缓存，不采用固定耗时门禁。",
-        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+        "title": "消费者裁剪与大城连续编辑减负",
+        "description": "按文档54同机分阶段测量free/legacy的图、座椅、来源/服务对、首个懒路径、几何发布及320短声表成本；核对消费者后裁free无用经营预热，保留真实漫步/座椅/回家与legacy经营。验证300屋连续编辑、远端连接、换城/冷读与音频连续，不以查询次数推断整体复杂度，不设固定帧率或提速承诺。",
+        "spec": "文档/54_V7_最终施工改造总案.md",
         "depends_on": [
           "M84"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
         "passes": false,
         "verified_by": "",
         "original_description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
-        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "pre_v7_definition": {
+          "title": "连续编辑、首启和缓存收口",
+          "description": "依据实际阶段耗时裁剪自由城全源寻路和逐椅预热，采用连通分量、就近漫步/懒加载路径与局部dirty范围；验证300屋连续编辑、首启与缓存，不采用固定耗时门禁。",
+          "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+          "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收"
+        }
       },
       {
         "id": "M86",
         "source_id": "M85",
-        "title": "整合终验与交付",
-        "description": "完成修订后的五条玩家旅程、相关CPU与375旧档/27作品、实窗/原图/PCM和独立品质验收，提交并核对双库；如实区分技术结果和实际听感。",
-        "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+        "title": "五旅程与实际声画品质终验",
+        "description": "按文档54完成空地小城、空间同曲A/B、经典旧档/显式转换、静听收藏恢复及300屋长听五旅程；相关CPU/API、旧档375检查/27作品基线、实窗原图/实际PCM和独立上下文审查，真实听评与技术证据分开。保留历史权益、人工意图和两类地标；按用户要求不以Git/GitHub同步为完成条件。",
+        "spec": "文档/54_V7_最终施工改造总案.md",
         "depends_on": [
           "M85"
         ],
-        "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
         "passes": false,
         "verified_by": "",
         "original_description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
-        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
+        "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收",
+        "pre_v7_definition": {
+          "title": "整合终验与交付",
+          "description": "完成修订后的五条玩家旅程、相关CPU与375旧档/27作品、实窗/原图/PCM和独立品质验收，提交并核对双库；如实区分技术结果和实际听感。",
+          "spec": "文档/50_空间驱动城建音乐与整合排期修订.md",
+          "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收"
+        }
       }
     ],
     "supplemental_design": {
@@ -1547,6 +1565,15 @@
         "source_sha256": "1571054579a72ab530d8a1fa9258a4990cf596fdf42101ff2a98d0fe402fe838",
         "authorized": "用户明确要求继续施工并融合52.md；完整预设母曲与城建分轨编配，保留既有验收记录"
       }
+    },
+    "current_construction_spec": {
+      "document": "文档/54_V7_最终施工改造总案.md",
+      "source": "文档/来源/20261029_resonance_city_v7_审阅原稿.md",
+      "source_sha256": "38f8cc6f003e86cc908b174a9f36add1765ca81cf2dfa43877608b41737d3232",
+      "adopted": "用户2026-10-29要求V7最终优化作为实际施工改造版本；不改历史完成状态。",
+      "next_step": "庭院闭合房环与单体半围合局部来源已受测；继续窄巷/多来源公共界面，再扩其他三类空间契约；旧收益/收据不变。",
+      "supersedes": "文档50及V3—V6冲突的产品规格和剩余排期；历史证据保持。",
+      "git_policy": "不操作Git/GitHub，除非用户另行要求。"
     }
   },
   "current_design_document": "文档/50_空间驱动城建音乐与整合排期修订.md",

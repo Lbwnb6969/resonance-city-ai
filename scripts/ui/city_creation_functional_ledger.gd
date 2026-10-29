@@ -25,7 +25,7 @@ static func refresh(widget:RefCounted)->bool:
 	if not widget.body.has_meta("before_functional_ledger"):widget.body.set_meta("before_functional_ledger",widget.body.visible)
 	widget.body.show();widget.rows.clear()
 	var report:Dictionary=widget.demo.state.functional_zones()
-	var lines:=PackedStringArray(["[b]城市的四大功能区[/b]", "接通门前小路，让空间相互呼应。"])
+	var lines:=PackedStringArray(["[b]城市的空间[/b]", "特色来自建筑，成区还需真实公共空间。"])
 	if not report.network_ready:lines.append("道路正在更新，空间激活待道路发布。")
 	var benefits:Dictionary=widget.demo.state.functional_benefits()
 	if not benefits.artisan_sources.is_empty():lines.append("灵感积累 +35% · 百工匠造")
@@ -33,6 +33,15 @@ static func refresh(widget:RefCounted)->bool:
 	for peers:Array in benefits.mutual.values():pairs+=peers.size()
 	if pairs>0:lines.append("水岸与栖居互哺 · %d 组沿路邻里"%(pairs/2))
 	for chord:String in widget.demo.state.synergy_buffs().active_chords:lines.append("♫ "+str(widget.demo.state.SynergyBuffs.CHORD_NAMES[chord]))
+	lines.append("\n[b]庭院空间[/b]")
+	for space:Dictionary in report.spaces:
+		var names:Array=[]
+		for id:String in space.members:names.append(Safe.safe(str(widget.demo.state.houses[widget.demo.state._house_index(id)].name)))
+		var stage:String={"trait":"特色","cluster":"局部空间","district":"成区"}[space.stage]
+		var detail:String="真实院落 · 公共通口已接通" if space.eligibility.district else "真实院落 · 等待道路发布" if space.eligibility.reason=="network_waiting" else "真实院落 · 院内入口尚未接通公共路网" if space.eligibility.reason=="portal_disconnected" else "真实院落 · 需要通向院内的公共入口" if space.stage=="cluster" else "居住体量 · 尚无已验证院落"
+		if space.evidence.geometry=="half_enclosure":detail="半围合 · "+("留有可进入的干地" if space.evidence.open_access else "开口通路受阻")+(" · 道路待更新" if not report.network_ready else "")
+		lines.append("%s · %s\n%s"%["、".join(names),stage,detail])
+	lines.append("\n[b]原有用途与连接[/b]\n接路记录保留原权益，不等同于成区。")
 	for kind:String in Zones.NAMES:
 		var zones:Array=report.zones.filter(func(z):return z.kind==kind);var active:int=zones.filter(func(z):return z.active).size()
 		lines.append("\n[b]%s[/b] · 已接路 %d / %d 处"%[Zones.NAMES[kind],active,zones.size()])
