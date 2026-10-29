@@ -24,6 +24,7 @@ static func apply(city:RefCounted,house:Dictionary)->void:
   Seed.seed_new(city,house)
   if not str(brush.prototype).is_empty() and brush.prototype in Architecture.choices(city,house):house.architecture=brush.prototype
  else:Seed.seed_new(city,house)
+ preload("res://scripts/world/city_creation_prototype_role_seed.gd").apply(city,house)
 static func align_selected_era(city:RefCounted,house:Dictionary)->void:
  if house.has("architecture") and house.architecture not in Architecture.choices(city,house):house.erase("architecture")
 static func sample(city:RefCounted,id:String)->Dictionary:
