@@ -6,8 +6,12 @@ var request_data:Dictionary={}
 var city_id:=0
 var revision:=-1
 static func request(owner:Node,path:String)->Dictionary:
+	return _request_data(owner,Document.read(path))
+static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
+	if mode!=0:return {"ok":false,"message":"母曲试听目前使用D大调；其他调式须先接通交互短声的共享和声"}
+	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
+static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	if owner._pluck_city==null:return {"ok":false,"message":"请先打开用于预览的城市"}
-	var data:=Document.read(path)
 	if not data.ok:return data
 	var node:=owner.get_node_or_null("AuthoredScore")
 	if node==null:node=load("res://scripts/audio/city_creation_authored_score.gd").new();node.name="AuthoredScore";owner.add_child(node)
