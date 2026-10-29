@@ -2,6 +2,7 @@ extends RefCounted
 ## All six ascending notes already exist in the pooled house-pluck bank.
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 const Pitch=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
+const Harmony=preload("res://scripts/audio/city_creation_score_harmony.gd")
 static func advance(owner:Node,now_usec:int)->int:
 	var city_id:int=owner._pluck_city.get_instance_id() if owner._pluck_city!=null else 0
 	var previous:Dictionary=owner.get_meta("construction_walk",{})
@@ -11,12 +12,13 @@ static func advance(owner:Node,now_usec:int)->int:
 static func plan(owner:Node,base:Dictionary,step:int)->Dictionary:
 	if base.is_empty():return base
 	var result:=base.duplicate();var bar:=Palette.Grid.bar(Palette.Grid.transport_clock(owner))
-	var chord:Array=Palette.chords(maxi(0,owner.harmony_mode()))[bar]
+	var harmony:=Harmony.current(owner,Palette.Grid.transport_clock(owner));var chord:Array=harmony.chord
 	var tones:Array[int]=[]
 	for note in range(60,97):
 		if Palette.Grid.snap_to_chord_tone(note,chord)==note:tones.append(note)
 	var midi:int=tones[step]
 	result.midi=midi;result.bar=bar;result.construction_step=step
+	if not harmony.signature.is_empty():result.harmony_signature=harmony.signature
 	result.stream_key=Pitch.stream_key(str(result.timbre),midi)
 	return result
 static func house(owner:Node,id:String)->bool:
@@ -28,7 +30,7 @@ static func house(owner:Node,id:String)->bool:
 	return owner.attention.enqueue_pluck_arpeggio(row,owner._playback_clock())
 static func replan(owner:Node,queued:Dictionary)->Dictionary:
 	var base:=Pitch.plan(owner._pluck_city,str(queued.house_id),owner._playback_clock(),owner.harmony_mode())
-	return plan(owner,base,int(queued.construction_step)) if queued.has("construction_step") else base
+	return plan(owner,base,int(queued.construction_step)) if queued.has("construction_step") else Harmony.pluck(owner,base,Palette.Grid.transport_clock(owner))
 static func edit(owner:Node,kind:String)->void:
 	if kind in ["room","road","terrain","house","terrace","erase","remove"]:owner.attention.notify_sculpt_action(owner._playback_clock())
 	if owner.muted or owner._loading:return

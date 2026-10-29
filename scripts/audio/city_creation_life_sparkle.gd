@@ -14,6 +14,7 @@ static func play(owner:Node,payload:Dictionary)->bool:
 	if free.size()<2:helper.skipped_busy+=1;return false
 	var clock:float=owner.CueGrid.transport_clock(owner)
 	var plan:Dictionary=Pitch.plan(demo.state,str(payload.source_id),clock,owner.harmony_mode())
+	plan=preload("res://scripts/audio/city_creation_score_harmony.gd").pluck(owner,plan,clock)
 	if plan.is_empty() or not owner._edit_streams.has(plan.stream_key):return false
 	var player:AudioStreamPlayer=free[-1];var stream:AudioStreamWAV=owner._edit_streams[plan.stream_key]
 	var at:=Vector2(actor.global_position.x,actor.global_position.z)
@@ -21,6 +22,6 @@ static func play(owner:Node,payload:Dictionary)->bool:
 	var serial:=int(player.get_meta("creation_voice_serial",0))
 	helper.active={"player":player,"stream":stream,"serial":serial,"node":actor,"kind":payload.kind,"gain":strength,"base_db":player.volume_db-linear_to_db(strength)}
 	helper.counts[payload.kind]=int(helper.counts.get(payload.kind,0))+1
-	helper.events.append({"kind":payload.kind,"policy":"musical","source_id":payload.source_id,"actor_id":actor.get_instance_id(),"contact_tick":payload.tick,"life_time":demo.life.time,"zoom":demo.zoom,"gain":strength,"at":at,"serial":serial,"player_id":player.get_instance_id(),"stream_id":stream.get_instance_id(),"stream_key":plan.stream_key,"midi":plan.midi,"timbre":plan.timbre,"bar":plan.bar,"mode":owner.harmony_mode(),"clock":clock})
+	helper.events.append({"kind":payload.kind,"policy":"musical","source_id":payload.source_id,"actor_id":actor.get_instance_id(),"contact_tick":payload.tick,"life_time":demo.life.time,"zoom":demo.zoom,"gain":strength,"at":at,"serial":serial,"player_id":player.get_instance_id(),"stream_id":stream.get_instance_id(),"stream_key":plan.stream_key,"midi":plan.midi,"timbre":plan.timbre,"bar":plan.bar,"mode":owner.harmony_mode(),"clock":clock,"harmony_signature":plan.get("harmony_signature","")})
 	if helper.events.size()>48:helper.events.pop_front()
 	return true

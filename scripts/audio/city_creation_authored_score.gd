@@ -44,6 +44,8 @@ static func discard(owner:Node,data:Dictionary)->void:
 	for role:String in ["lead","foundation","pulse","answer"]:
 		var id:="study1/"+str(data.signature)+"/"+role;owner._harmony_streams.erase(id);owner.audio_report.get("harmony_notes",{}).erase(id)
 	owner.remove_meta("authored_score")
+	if owner._pluck_city!=null and data.get("city",0)==owner._pluck_city.get_instance_id() and owner._biome_mode==int(data.get("document",{}).get("harmony_mode",-2)):
+		owner._biome_mode=preload("res://scripts/audio/city_creation_harmonic_palette.gd").for_city(owner._pluck_city)
 func _process(_delta:float)->void:
 	if worker==null or worker.is_alive():return
 	var data:Dictionary=worker.wait_to_finish();worker=null;var owner:=get_parent()
@@ -54,6 +56,6 @@ func _process(_delta:float)->void:
 		var id:="study1/"+str(request_data.signature)+"/"+role
 		owner._harmony_streams[id]=data[role].stream;owner.audio_report.get_or_add("harmony_notes",{})[id]=data[role].notes
 	owner._biome_mode=int(request_data.document.harmony_mode)
-	owner.set_meta("authored_score",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision});owner.remove_meta("chamber_role_key")
+	owner.set_meta("authored_score",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[])});owner.remove_meta("chamber_role_key")
 func _exit_tree()->void:
 	if worker!=null:worker.wait_to_finish();worker=null

@@ -29,4 +29,5 @@ static func section(index:int,mode:int=0)->Dictionary:
 	var result:=Document.validate(doc)
 	if result.ok:
 		result.signature=JSON.stringify(doc,"",true,true).sha256_text();result.master_signature=master.signature;result.section=index
+		result.harmony=source.harmony.map(func(chord):return chord.map(func(midi):return Core.map_pitch(int(midi),mode)))
 	return result

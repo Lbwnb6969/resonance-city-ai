@@ -32,7 +32,8 @@ static func play(music,queued:Dictionary)->bool:
 		if city.water_clearance(at)>=-.12:return false
 	if music.acoustic.point_weight(at)<=0.:return false
 	var midi:=Sequence.pitch(maxi(0,music.harmony_mode()),int(queued.strum_step))
-	midi=Pitch.Palette.Grid.snap_to_chord_tone(midi,Pitch.Palette.chords(maxi(0,music.harmony_mode()))[Pitch.Palette.Grid.bar(Pitch.Palette.Grid.transport_clock(music))])
+	var harmony:=preload("res://scripts/audio/city_creation_score_harmony.gd").current(music,Pitch.Palette.Grid.transport_clock(music))
+	midi=Pitch.Palette.Grid.snap_to_chord_tone(midi,harmony.chord)
 	var timbre:="marimba" if kind=="water" else "harp"
 	var stream:=_stream(music,midi,timbre);var player:AudioStreamPlayer=music._effects[0]
 	if kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").at_pitch(music,stream,midi)
@@ -41,6 +42,7 @@ static func play(music,queued:Dictionary)->bool:
 	music.play_effect_at(player,stream,at,.8)
 	var event:={"kind":kind,"source_id":queued.source_id,"at":at,"midi":midi,"played_timbre":timbre,"step":queued.strum_step,"clock":music._playback_clock(),"serial":int(music.get_meta("held_strum_serial",0))+1,"voice_serial":player.get_meta("creation_voice_serial"),"stream_key":"held/"+str(midi)}
 	event.player_id=player.get_instance_id()
+	event.harmony_signature=harmony.signature
 	event.octave_dyad=bool(stream.get_meta("octave_dyad",false))
 	event.held_epoch=queued.held_epoch.duplicate()
 	music.set_meta("held_strum_serial",event.serial);music.set_meta("held_strum",event)
