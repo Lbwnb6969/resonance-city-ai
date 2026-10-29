@@ -19,6 +19,8 @@ def main():
     parser.add_argument('--out-dir', type=Path)
     parser.add_argument('--geometry', action='store_true',
                         help='Also run the current M83 roof, junction and bridge CPU regressions.')
+    parser.add_argument('--check-remote', action='store_true',
+                        help='Also verify this checkout against live origin/main without fetching or changing it.')
     args = parser.parse_args()
     godot = shutil.which(args.godot)
     if not godot:
@@ -33,7 +35,8 @@ def main():
         ('engine', [godot, '--version']),
         ('harness', [sys.executable, 'tools/check_ai_harness.py']),
         ('links', [sys.executable, 'tools/check_doc_links.py']),
-        ('workspace', [sys.executable, 'tools/audit_creation_workspace.py', '--out', str(out / 'workspace.json')]),
+        ('workspace', [sys.executable, 'tools/audit_creation_workspace.py', '--out', str(out / 'workspace.json'),
+                       *(['--check-remote'] if args.check_remote else [])]),
         ('harness_tests', [sys.executable, '-B', 'tests/test_ai_harness.py']),
         ('import', [godot, '--headless', '--editor', '--path', '.', '--import']),
     ]

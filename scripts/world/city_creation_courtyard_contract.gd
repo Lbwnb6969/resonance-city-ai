@@ -28,6 +28,8 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 		roads.sort()
 		rows.append({"kind":"courtyard","stage":"district" if eligible else "cluster","members":court.members.duplicate(),"source_ids":Array(court.members)+cells+roads+[court.id],"component":components[0] if connected else "","connected":connected,"evidence":{"geometry":"closed_ground_ring","court_id":court.id,"residential":homes,"usable_tiles":court.tiles.size(),"area_m2":court.tiles.size()*3.24,"public_portals":portals,"network":"ready" if report.network_ready else "waiting"},"eligibility":{"district":eligible,"warm":eligible,"reason":"qualified" if eligible else "network_waiting" if not report.network_ready else "public_portal_missing" if portals.is_empty() else "portal_disconnected"}})
 		for id:String in homes:covered[id]=true
+	var lanes:Array=preload("res://scripts/world/city_creation_lane_contract.gd").derive(city,report,water_distance)
+	rows.append_array(lanes)
 	for house:Dictionary in city.houses:
 		if covered.has(house.id) or house.role!="residential":continue
 		var open_courts:Array=preload("res://scripts/world/city_creation_open_courts.gd").for_house(city,house,water_distance,open_context)
@@ -35,6 +37,7 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 			var member:Dictionary=report.houses[house.id]
 			rows.append({"kind":"courtyard","stage":"cluster","members":[house.id],"source_ids":[house.id]+court.cells+[court.id],"component":member.component,"connected":member.connected,"evidence":{"geometry":"half_enclosure","pocket_id":court.id,"polygon":court.polygon,"wall_segments":court.wall_segments,"mouths":court.mouths,"usable_tiles":court.usable_tiles,"area_m2":court.area_m2,"open_access":court.open_access,"network":"ready" if report.network_ready else "waiting"},"eligibility":{"district":false,"warm":false,"reason":"half_enclosure"}})
 		if not open_courts.is_empty():continue
+		if lanes.any(func(lane):return house.id in lane.members):continue
 		var cells:Array=[]
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0 and cell.kind=="room":cells.append(cell.id)

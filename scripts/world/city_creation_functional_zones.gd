@@ -16,7 +16,7 @@ static func for_city(city:RefCounted)->Dictionary:
 	var key:Array=[city.revision,city._region_network_revision]
 	var cached:Dictionary=city.get_meta("functional_zones",{})
 	if cached.get("key",[])==key:return cached.value
-	var result:={"enabled":city.CreationPolicy.is_free(city),"network_ready":ready,"houses":{},"zones":[],"spaces":[],"space_contracts":{"courtyard":"closed_ring_and_single_half","waterfront":"pending","artisan":"pending","civic":"pending"}}
+	var result:={"enabled":city.CreationPolicy.is_free(city),"network_ready":ready,"houses":{},"zones":[],"spaces":[],"space_contracts":{"courtyard":"closed_ring_single_half_and_lane","waterfront":"pending","artisan":"pending","civic":"pending"}}
 	if not result.enabled:return result
 	var components:Dictionary=city._region_network.get("house_components",{}) if ready else {}
 	var footprints:Dictionary={}

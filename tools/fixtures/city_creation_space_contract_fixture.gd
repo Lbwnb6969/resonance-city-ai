@@ -29,3 +29,21 @@ static func other_kinds()->Array:
 		if row[0]=="waterfront":ok=city.add_water([ORIGIN+Vector2(0,-5)] as Array[Vector2],2.,"pond").ok and ok
 		result.append({"kind":row[0],"city":city,"ok":ok,"contract":"pending"})
 	return result
+
+static func lane(width:float=2.6,yaw:float=0.,two_houses:bool=false,road:bool=true)->Dictionary:
+	var city:=State.new();city.initialize_free();var ok:=true
+	var rows:Array=[[Vector2.ZERO,0.,2 if two_houses else 1],[Vector2(0.,width+1.8),PI,2]]
+	if not two_houses:rows.append([Vector2(1.8,0.),0.,1])
+	# Opposite house rotates about its first cell, so extend it in negative X.
+	rows[1][0]=Vector2(1.8,width+1.8)
+	for row:Array in rows:
+		var cells:Array=[]
+		for x in range(row[2]):cells.append({"x":x,"z":0,"level":0,"kind":"room"})
+		var at:Vector2=ORIGIN+Vector2(row[0]).rotated(-yaw)
+		var built:Dictionary=city.add_house_stroke(at,cells);ok=ok and built.ok
+		if built.ok:ok=city.rotate_house(city.houses[-1].id,yaw+float(row[1])).ok and ok
+	if road:
+		var points:Array[Vector2]=[]
+		for at:Vector2 in [Vector2(-2.,(width+1.8)*.5),Vector2(4.,(width+1.8)*.5)]:points.append(ORIGIN+at.rotated(-yaw))
+		ok=city.add_road(points,"path","none").ok and ok
+	return {"city":city,"ok":ok}

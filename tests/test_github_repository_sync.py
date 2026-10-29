@@ -65,7 +65,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
                  'deprecated/old.exe', 'backups/source.py', 'tools/essentia_streaming_extractor_music.exe', 'loose.wav']:
         put(work, 'song-analysis/'+name, b'local analysis data')
     put(work, 'song-analysis/config/essentia.yaml', b'outputFrames: 0\n')
-    for directory in ['资产', '废弃', '验证记录', '.godot']:
+    for directory in ['资产', '废弃', '验证记录', '.godot', 'work']:
         put(work, directory+'/excluded.txt', b'not published')
     full = module('sync_github_full')
     full.ROOT, full.GIT = work, work / '.git'
@@ -88,6 +88,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     assert '参考资料/large.bin' in manifest['omitted']
     tree_paths=set(full.git('ls-tree', '-rz', '--name-only', plan['tree']).decode().split('\0'))
     assert '资源/runtime.json' in tree_paths
+    assert not any(path.startswith('work/') for path in tree_paths)
     assert {p for p in tree_paths if p.startswith('song-analysis/')} == {'song-analysis/analyze.py','song-analysis/config/essentia.yaml'}
     assert not tree_paths & {'.mcp.json','tools/probe.gd.uid','tests/probe.gd.uid','tools/fixtures/nested.gd.uid','参考资料/raw_export.json','参考资料/work/duplicate.cs'}
     assert '参考资料/raw_export.json' in manifest['omitted'] and '参考资料/small.bin' in manifest['omitted']
