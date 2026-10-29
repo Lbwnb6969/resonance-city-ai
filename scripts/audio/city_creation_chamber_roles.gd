@@ -17,6 +17,8 @@ static func prepare(owner:Node)->Dictionary:
 	if leader not in Emergence.LEADS and leader!="concert":
 		var row:Dictionary=owner._house_music.get(source,{})
 		leader=owner.ClusterHarmony.Tide.track(row) if not row.is_empty() else ""
+	var solo:=preload("res://scripts/audio/city_creation_score_solo.gd").context(owner)
+	if not solo.is_empty():source=str(solo.source);leader=str(solo.stem)
 	if not owner.concert_active and not leader.is_empty():
 		owner.emergence.score.lead_track=leader;owner.emergence.score.source_id=source;owner.emergence.score.source_ids[leader]=source
 		owner.emergence.score.targets[leader]=maxf(float(owner.emergence.score.targets.get(leader,-60.)),-13.5)

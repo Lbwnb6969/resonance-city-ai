@@ -11,7 +11,7 @@ func run()->void:
 	await show(city,Vector2(-21,-15),"田园母曲逐段试听");quiet();demo.life.set_process(false)
 	var saved:Dictionary=demo.state.snapshot();var rendered:Dictionary={};var auditions:Array=[]
 	check(demo.music.audio_report.get("bank_source")=="precompiled","formal existing bank signature remains valid")
-	check(not Import.request_master(demo.music,0,4).ok,"unfinished solo and transition integration remains explicitly guarded")
+	check(not Import.request_master(demo.music,0,4).ok,"unfinished global transition and boundary cues remain explicitly guarded")
 	for p in range(6):
 		var data:=Master.section(p);var requested:=Import.request_master(demo.music,p);check(requested.ok,"real master section queues synth "+str(p))
 		check(await wait_for(func():return demo.music.get_meta("authored_score",{}).get("signature","")==data.signature,60000),"worker publishes actual section "+str(p))

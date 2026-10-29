@@ -34,7 +34,7 @@ func run()->void:
 	await show(city,Vector2(-23,-17),"母曲复音提示");quiet();demo.life.set_process(false);demo.zoom=24.;demo.pitch=.95;demo._update_camera();demo.select_tool(4)
 	var saved:Dictionary=demo.state.snapshot();var originals:Dictionary=demo.music._harmony_streams.duplicate();facts.modes=[]
 	check(demo.music.audio_report.get("bank_source")=="precompiled","original formal bank and signature remain valid")
-	check(not Import.request_master(demo.music,0,4).ok,"public multi-mode guard remains while solo and transitions are unfinished")
+	check(not Import.request_master(demo.music,0,4).ok,"public multi-mode guard remains while global transitions and boundary cues are unfinished")
 	for mode in [4,8,0]:
 		var data:=Master.section(0,mode);var started:=Time.get_ticks_msec()
 		check(Import._request_data(demo.music,data).ok,"existing production worker queues long roles plus short catalogue "+str(mode))

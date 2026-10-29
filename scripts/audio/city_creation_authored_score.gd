@@ -10,7 +10,7 @@ var revision:=-1
 static func request(owner:Node,path:String)->Dictionary:
 	return _request_data(owner,Document.read(path))
 static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
-	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成独奏与换段的和声接续"}
+	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成全局换段与跨小节提示的和声接续"}
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
 static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	if owner._pluck_city==null:return {"ok":false,"message":"请先打开用于预览的城市"}
@@ -48,6 +48,7 @@ static func discard(owner:Node,data:Dictionary)->void:
 	Cues.retire(owner)
 	for role:String in ["lead","foundation","pulse","answer"]:
 		var id:="study1/"+str(data.signature)+"/"+role;owner._harmony_streams.erase(id);owner.audio_report.get("harmony_notes",{}).erase(id)
+		owner.audio_report.get("harmony_peaks",{}).erase(id)
 	owner.remove_meta("authored_score")
 	if owner._pluck_city!=null and data.get("city",0)==owner._pluck_city.get_instance_id() and owner._biome_mode==int(data.get("document",{}).get("harmony_mode",-2)):
 		owner._biome_mode=preload("res://scripts/audio/city_creation_harmonic_palette.gd").for_city(owner._pluck_city)
@@ -62,6 +63,7 @@ func _process(_delta:float)->void:
 	for role:String in ROLES:
 		var id:="study1/"+str(request_data.signature)+"/"+role
 		owner._harmony_streams[id]=data[role].stream;owner.audio_report.get_or_add("harmony_notes",{})[id]=data[role].notes
+		owner.audio_report.get_or_add("harmony_peaks",{})[id]=data[role].peak
 	owner._biome_mode=int(request_data.document.harmony_mode)
 	owner.set_meta("authored_score",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[])});owner.remove_meta("chamber_role_key")
 func _exit_tree()->void:

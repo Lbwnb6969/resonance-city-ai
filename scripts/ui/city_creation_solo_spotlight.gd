@@ -2,6 +2,7 @@ extends Node3D
 ## Twelve seconds of one real source, using one of the existing short players.
 const Gather=preload("res://scripts/world/city_creation_solo_listeners.gd")
 const Tide=preload("res://scripts/audio/city_creation_phrase_tide.gd")
+const ScoreSolo=preload("res://scripts/audio/city_creation_score_solo.gd")
 var demo
 var held_p:=false
 var source:=""
@@ -19,6 +20,7 @@ var particles:Array[MeshInstance3D]=[]
 var roof:=Vector3.ZERO
 var events:Array[Dictionary]=[]
 var listeners:Array[String]=[]
+var _score_voice:Dictionary={}
 func setup(owner)->void:
 	demo=owner;name="SoloSpotlight";demo.add_child(self);demo.set_meta("solo_spotlight",self)
 	var material:=StandardMaterial3D.new();material.albedo_color=Color("d8b45d");material.emission_enabled=true;material.emission=Color("b28c33");material.emission_energy_multiplier=.5
@@ -38,6 +40,8 @@ func eligible(id:String)->bool:
 	if not str(h.get("signature","")).is_empty():return true
 	for crown:Node3D in demo.get_meta("street_wonders").crowns:
 		if str(crown.get_meta("plan").house_id)==id:return true
+	if ScoreSolo.enabled(demo.music) and demo.state.CreationPolicy.is_free(demo.state):
+		return demo.life.house_connected(id) and str(h.role) in ["bakery","workshop","atelier","clockmaker","garden_cafe"]
 	if not demo.life.house_connected(id):return false
 	if str(h.role)=="garden_cafe":return demo.life.cafe_status(id).phase=="tea"
 	if str(h.role) not in ["bakery","workshop","atelier","clockmaker"]:return false
@@ -57,11 +61,15 @@ func handle_input(event:InputEvent)->bool:
 	return start(id)
 func start(id:String)->bool:
 	if _blocked() or not eligible(id):return false
+	var chosen:=ScoreSolo.voice(demo.music)
+	if chosen.get("pending",false):return false
 	var available:AudioStreamPlayer
-	for effect:AudioStreamPlayer in demo.music._effects:
-		if not effect.playing or effect==player:available=effect;break
+	if not chosen.is_empty():available=chosen.player
+	else:
+		for effect:AudioStreamPlayer in demo.music._effects:
+			if not effect.playing or effect==player:available=effect;break
 	if available==null:return false
-	cancel("replace");source=id;player=available
+	cancel("replace");source=id;player=available;_score_voice=chosen
 	epoch=[demo.state.get_instance_id(),demo.state.revision,demo.life.get_instance_id()]
 	track=Tide.track(demo.music._house_music[id]);mode=-2
 	started=demo.music._playback_clock();ends=started+12.;focus_tracking=true
@@ -76,6 +84,7 @@ func start(id:String)->bool:
 	events.append({"kind":"start","source":id,"clock":started,"ends":ends,"track":track,"listeners":listeners.duplicate()})
 	return true
 func _adopt()->void:
+	if ScoreSolo.adopt(self):return
 	var next:=maxi(0,demo.music.harmony_mode())
 	if next==mode:return
 	mode=next;var key:="%s/2"%track if mode==0 else "%d/%s/2"%[mode,track]
@@ -87,7 +96,7 @@ func _adopt()->void:
 	player.play(fposmod(demo.music._playback_clock(),24.))
 func cancel(reason:String="finished")->void:
 	if not active():return
-	if is_instance_valid(player) and player.stream==stream and int(player.get_meta("creation_voice_serial",-1))==serial:player.stop()
+	if not ScoreSolo.release(self) and is_instance_valid(player) and player.stream==stream and int(player.get_meta("creation_voice_serial",-1))==serial:player.stop()
 	if is_instance_valid(demo.life):Gather.clear(demo.life)
 	demo.music.set_meta("solo_duck_db",0.)
 	events.append({"kind":reason,"source":source,"clock":demo.music._playback_clock(),"duration":demo.music._playback_clock()-started})
@@ -99,10 +108,12 @@ func _process(delta:float)->void:
 	var music=demo.music;var clock:float=music._playback_clock()
 	if epoch!=[demo.state.get_instance_id(),demo.state.revision,demo.life.get_instance_id()] or _blocked():cancel("context");return
 	if clock>=ends:cancel();return
+	if not ScoreSolo.follow(self):cancel("context");return
 	if player.stream!=stream or int(player.get_meta("creation_voice_serial",-1))!=serial:cancel("voice_replaced");return
 	_adopt()
 	var envelope:=minf(smoothstep(0.,.12,clock-started),smoothstep(0.,.15,ends-clock))
-	player.volume_db=linear_to_db(.18/pcm_peak*maxf(.0001,envelope))
+	if _score_voice.is_empty():player.volume_db=linear_to_db(.18/pcm_peak*maxf(.0001,envelope))
+	else:ScoreSolo.gain(self,clock)
 	if focus_tracking:
 		var blend:=1.-exp(-delta*3.2)
 		if demo.camera_rig.strolling:
@@ -114,4 +125,4 @@ func _process(delta:float)->void:
 		var age:=fposmod(elapsed+float(i)*.13,1.6);var angle:=float(i)*2.39996+age*.35
 		particles[i].position=roof+Vector3(cos(angle)*(.28+age*.12),age*.55,sin(angle)*(.28+age*.12));particles[i].rotation.y=demo.yaw;particles[i].visible=age<1.3
 func report()->Dictionary:
-	return {"active":active(),"source":source,"started":started,"ends":ends,"track":track,"mode":mode,"pcm_peak":pcm_peak,"output_peak":.18,"listeners":listeners.duplicate(),"events":events.duplicate(true)}
+	return {"active":active(),"source":source,"started":started,"ends":ends,"track":track,"mode":mode,"pcm_peak":pcm_peak,"output_peak":.18,"shared_master":not _score_voice.is_empty(),"listeners":listeners.duplicate(),"events":events.duplicate(true)}
