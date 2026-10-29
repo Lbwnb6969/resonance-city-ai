@@ -8,6 +8,7 @@ static func row(text:String,action:String="",tool:int=-1,target:String="",comman
 static func describe(demo,id:String)->Dictionary:
  var city:RefCounted=demo.state;var life:Node3D=demo.life;var at:int=city._house_index(id)
  if at<0:return row("")
+ if city.CreationPolicy.is_free(city):return preload("res://scripts/ui/city_creation_free_spatial_guidance.gd").inspector(city,id)
  var h:Dictionary=city.houses[at];var role:=str(h.role)
  if role not in NAMES:return row("")
  if not life.house_connected(id):return row("门前尚未接路，先接通店家与居所。","到门前接路",2,id)
@@ -42,6 +43,7 @@ static func describe(demo,id:String)->Dictionary:
 static func act(demo,id:String)->void:
  var step:=describe(demo,id)
  if step.action.is_empty():return
+ if step.command=="spatial_ledger":demo.spatial_popover.close();demo.ledger.open_panel();return
  if demo.ledger.visible():demo.ledger.close_panel()
  if step.command=="open":
   var h:Dictionary=demo.state.houses[demo.state._house_index(id)]

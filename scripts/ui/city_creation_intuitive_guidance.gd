@@ -48,9 +48,8 @@ func tool_available(index:int)->bool:
 func _rebuild()->void:
 	_revision=demo.state.revision;_timer=0.
 	target_house_id="";suggested_role="";target_points.clear();stage=""
-	if demo.state.CreationPolicy.is_free(demo.state) and not demo.state.creative_settings.guidance:
-		for child:Node in markers.get_children():markers.remove_child(child);child.queue_free()
-		demo.tactile_dock.refresh();return
+	if demo.state.CreationPolicy.is_free(demo.state):
+		preload("res://scripts/ui/city_creation_free_spatial_guidance.gd").apply(self);return
 	var count:int=demo.state.houses.size()
 	var roles:Dictionary={};var homes:Array[Dictionary]=[];var connected:=0
 	for house:Dictionary in demo.state.houses:
@@ -180,6 +179,7 @@ func update_guidance(delta:float)->void:
 	bubble.visible=Rect2(Vector2(12,112),screen-Vector2(24,250)).encloses(bubble.get_rect()) and not demo.edit_pending() and demo.spatial_popover.target_house_id.is_empty()
 
 func _apply_suggestion()->void:
+	if demo.state.CreationPolicy.is_free(demo.state):return
 	if target_house_id.is_empty() or demo.edit_pending():return
 	var id:=target_house_id
 	demo._after_edit(demo.state.set_house_role(id,suggested_role),"room",true,id)
