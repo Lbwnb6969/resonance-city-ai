@@ -83,6 +83,8 @@ def design_tree(source, parent):
                    cwd=ROOT, env=env, input=removed, check=True)
     # The full clone's ignore file belongs to origin; retain ai-sync's role rules.
     ignore = git('show', parent+':.gitignore').stdout
+    if b'/work/' not in ignore.splitlines():
+        ignore = ignore.rstrip(b'\n') + b'\n/work/\n'
     oid = git('hash-object', '-w', '--stdin', data=ignore).stdout.decode().strip()
     subprocess.run(['git', 'update-index', '--cacheinfo', '100644,'+oid+',.gitignore'], cwd=ROOT, env=env, check=True)
     return subprocess.check_output(['git', 'write-tree'], cwd=ROOT, env=env).decode().strip()

@@ -43,7 +43,7 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 			for pieces:Array in runs:
 				var row:=_row(city,report,road,index,a,direction,normal,pieces,entrances,obstacles,water_distance)
 				if not row.is_empty():result.append(row)
-	return result
+	return preload("res://scripts/world/city_creation_lane_continuity.gd").join(result,city,report,obstacles,water_distance)
 
 static func _straight_runs(raw:Array)->Array[Vector2]:
 	# Ignore extra samples on the exact same straight street; preserve bends,

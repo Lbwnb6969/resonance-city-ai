@@ -116,6 +116,7 @@ with tempfile.TemporaryDirectory(prefix='city-dual-sync-') as temporary:
     assert git(cloud, 'status', '--porcelain', '--untracked-files=no') == ''
     remote = git(cloud, 'ls-remote', 'ai-sync', 'refs/heads/main').split()[0]
     paths = set(design.git('ls-tree', '-r', '--name-only', remote).stdout.decode().splitlines())
+    assert '/work/' in git(cloud, 'show', remote+':.gitignore').splitlines()
     assert 'scripts/new_feature.gd' in paths
     assert 'song-analysis/analyze.py' in paths
     assert full.MANIFEST not in paths and not any(p.startswith('参考资料/') for p in paths)
