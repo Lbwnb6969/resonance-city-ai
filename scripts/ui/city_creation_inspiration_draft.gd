@@ -59,6 +59,7 @@ func chime()->void:
 	var mode:int=demo.music.harmony_mode();var phrase:int=demo.music.CueGrid.bar(demo.music.CueGrid.transport_clock(demo.music))
 	var midi:int=Pluck.Palette.pitch(mode,phrase,2,1) if mode>=0 else Pluck.pitch(phrase,2,1)
 	midi=demo.music.CueGrid.snap_to_chord_tone(midi,Pluck.Palette.chords(maxi(0,mode))[phrase])
+	midi=preload("res://scripts/audio/city_creation_score_harmony.gd").note(demo.music,midi,demo.music.CueGrid.transport_clock(demo.music))
 	var key:String=Pluck.stream_key("harp",midi)
 	if not demo.music._edit_streams.has(key):return
 	for effect:AudioStreamPlayer in demo.music._effects:

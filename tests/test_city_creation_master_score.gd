@@ -8,7 +8,7 @@ func check(ok:bool,label:String)->void:
 func _initialize()->void:
 	var master:=Master.read();check(not master.is_empty() and master.bars*4.*.75==144.,"written complete 144-second container")
 	for part:Dictionary in master.sections:check(range(8).all(func(b):return part.harmony[b].map(func(n):return int(n))==Master.Palette.chords(0)[b]),"audition and interaction share actual D-major harmony")
-	check(not preload("res://scripts/audio/city_creation_authored_score.gd").request_master(null,0,4).ok,"live unsupported shared harmony rejected before synth")
+	check(not preload("res://scripts/audio/city_creation_authored_score.gd").request_master(null,0,4).ok,"unfinished solo and transition integration remains guarded before synth")
 	for mode in range(10):
 		for p in range(6):
 			var data:=Master.section(p,mode);check(data.ok,"public schema1 compatible section "+str([p,mode]))

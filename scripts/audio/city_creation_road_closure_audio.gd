@@ -1,6 +1,6 @@
 extends RefCounted
 const Grid=preload("res://scripts/audio/city_creation_cue_grid.gd")
-const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
+const Harmony=preload("res://scripts/audio/city_creation_score_harmony.gd")
 var demo
 var last_tick:=-INF
 var mark:=""
@@ -32,7 +32,7 @@ static func closure_notes(chord:Array)->Array[int]:
 func closure_pair(at:Vector2)->void:
 	if not allowed():return
 	var music=demo.music;var clock:=Grid.transport_clock(music)
-	var notes:=closure_notes(Palette.chords(maxi(0,music.harmony_mode()))[Grid.bar(clock)])
+	var notes:=closure_notes(Harmony.current(music,clock).chord)
 	var free:Array[AudioStreamPlayer]=[]
 	for player:AudioStreamPlayer in music._effects:
 		if not player.playing:free.append(player)
@@ -45,8 +45,8 @@ func closure_pair(at:Vector2)->void:
 	events.append({"kind":"perfect_fifth" if notes[1]-notes[0]==7 else "inverted_fifth","clock":clock,"onset":Grid.quantize_cue_onset(clock),"midi":notes,"at":at,"voices":2})
 	if events.size()>64:events.pop_front()
 func _play(at:Vector2,closure:bool)->void:
-	var music=demo.music;var clock:=Grid.transport_clock(music);var onset:=Grid.quantize_cue_onset(clock);var bar:=Grid.bar(clock)
-	var root:int=Palette.chords(maxi(0,music.harmony_mode()))[bar][0]+24
+	var music=demo.music;var clock:=Grid.transport_clock(music);var onset:=Grid.quantize_cue_onset(clock)
+	var root:int=Harmony.current(music,clock).chord[0]+24
 	var notes:Array[int]=[root]
 	if closure:notes.append(root+7)
 	var free:Array[AudioStreamPlayer]=[]

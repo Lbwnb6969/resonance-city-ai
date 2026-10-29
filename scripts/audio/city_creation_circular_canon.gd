@@ -131,6 +131,7 @@ func _emit(planned:Dictionary,group:Dictionary,clock:float)->void:
 	if current.is_empty() or current.id!=group.id:return
 	var id:=str(planned.house_id);planned=planned.duplicate();planned.start_clock=clock
 	var plan:=Pitch.plan(_city,id,clock,_owner.harmony_mode())
+	plan=preload("res://scripts/audio/city_creation_score_harmony.gd").pluck(_owner,plan,_owner.CueGrid.transport_clock(_owner))
 	if plan.is_empty() or not _owner._edit_streams.has(plan.stream_key):return
 	var selected: AudioStreamPlayer
 	for effect: AudioStreamPlayer in _owner._effects:

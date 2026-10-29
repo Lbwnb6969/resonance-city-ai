@@ -2,6 +2,9 @@ extends RefCounted
 ## Read-only, owner-local harmony for short notes; never stored on the city.
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 const Pitch=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
+static func note(owner:Node,midi:int,clock:float)->int:
+	var harmony:=current(owner,clock)
+	return midi if harmony.signature.is_empty() else Palette.Grid.snap_to_chord_tone(midi,harmony.chord)
 static func current(owner:Node,clock:float)->Dictionary:
 	var bar:=Palette.Grid.bar(clock);var data:Dictionary=owner.get_meta("authored_score",{})
 	var city:RefCounted=owner._pluck_city

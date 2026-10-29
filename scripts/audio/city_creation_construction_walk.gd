@@ -11,13 +11,12 @@ static func advance(owner:Node,now_usec:int)->int:
 	return step
 static func plan(owner:Node,base:Dictionary,step:int)->Dictionary:
 	if base.is_empty():return base
-	var result:=base.duplicate();var bar:=Palette.Grid.bar(Palette.Grid.transport_clock(owner))
-	var harmony:=Harmony.current(owner,Palette.Grid.transport_clock(owner));var chord:Array=harmony.chord
+	var result:=base.duplicate();var harmony:=Harmony.current(owner,Palette.Grid.transport_clock(owner));var chord:Array=harmony.chord
 	var tones:Array[int]=[]
 	for note in range(60,97):
 		if Palette.Grid.snap_to_chord_tone(note,chord)==note:tones.append(note)
 	var midi:int=tones[step]
-	result.midi=midi;result.bar=bar;result.construction_step=step
+	result.midi=midi;result.bar=harmony.bar;result.construction_step=step
 	if not harmony.signature.is_empty():result.harmony_signature=harmony.signature
 	result.stream_key=Pitch.stream_key(str(result.timbre),midi)
 	return result

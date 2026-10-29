@@ -70,9 +70,9 @@ static func play_note(music,plan:Dictionary)->bool:
 		stream=music._edit_streams[key]
 		if plan.world_kind=="stair":
 			var raw:=preload("res://scripts/audio/city_creation_harmonic_palette.gd").stair_pitch(mode,int(key.get_slice("_",2)))
-			var midi:int=music.CueGrid.snap_to_chord_tone(raw,preload("res://scripts/audio/city_creation_harmonic_palette.gd").chords(mode)[bar])
+			var midi:int=music.CueGrid.snap_to_chord_tone(raw,preload("res://scripts/audio/city_creation_score_harmony.gd").current(music,music.CueGrid.transport_clock(music)).chord)
 			stream=music._edit_streams["house_pluck_piano_%d"%midi]
-	if plan.world_kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").at_pitch(music,stream,music.CueGrid.snap_to_chord_tone(preload("res://scripts/audio/city_creation_harmonic_palette.gd").stair_pitch(mode,int(key.get_slice("_",2))),preload("res://scripts/audio/city_creation_harmonic_palette.gd").chords(mode)[bar]))
+	if plan.world_kind=="stair":stream=preload("res://scripts/audio/city_creation_octave_dyad.gd").at_pitch(music,stream,music.CueGrid.snap_to_chord_tone(preload("res://scripts/audio/city_creation_harmonic_palette.gd").stair_pitch(mode,int(key.get_slice("_",2))),preload("res://scripts/audio/city_creation_score_harmony.gd").current(music,music.CueGrid.transport_clock(music)).chord))
 	var player:AudioStreamPlayer=music._effects[0]
 	for candidate:AudioStreamPlayer in music._effects:
 		if not candidate.playing:player=candidate;break

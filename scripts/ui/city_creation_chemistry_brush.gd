@@ -62,6 +62,7 @@ func tick(delta: float) -> void:
 		var bar := int(demo.music._playback_clock()/3.)%8
 		var mode: int = demo.music.harmony_mode()
 		var midi: int = Pluck.Palette.pitch(mode,bar,band,1) if mode >= 0 else Pluck.pitch(bar,band,1)
+		midi=preload("res://scripts/audio/city_creation_score_harmony.gd").note(demo.music,midi,demo.music.CueGrid.transport_clock(demo.music))
 		var key := Pluck.stream_key("harp",midi)
 		if not demo.music._edit_streams.has(key): continue
 		for effect: AudioStreamPlayer in demo.music._effects:

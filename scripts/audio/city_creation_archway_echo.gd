@@ -47,6 +47,7 @@ func emit(event:Dictionary,sites:Dictionary)->void:
 		if not candidate.playing:player=candidate;break
 	if player==null:return
 	var plan:=Pluck.plan(demo.state,event.source,maxf(clock,float(event.due)),music.harmony_mode())
+	plan=preload("res://scripts/audio/city_creation_score_harmony.gd").pluck(music,plan,clock)
 	if plan.is_empty() or not music._edit_streams.has(plan.stream_key):return
 	var stream:AudioStreamWAV=preload("res://scripts/audio/city_creation_chamber_ornaments.gd").wave(music,music._edit_streams[plan.stream_key],int(event.answer))
 	music.play_effect_at(player,stream,plan.position,.8 if event.answer==0 else .62)
