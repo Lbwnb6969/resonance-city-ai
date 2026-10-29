@@ -45,13 +45,22 @@ static func apply(city: RefCounted,road: Dictionary,samples: Array,stones: Array
 			var gap := INF
 			for index in range(first,last+1): gap=minf(gap,Vector2(samples[index].xz).distance_to(junction.at))
 			deck=minf(deck,maxf(base,float(junction.y)+maxf(0.0,gap-float(junction.radius)-.5)*GRADE))
-		for sample: Dictionary in samples:
-			var gap := maxf(0.0,maxf(low-float(sample.distance),float(sample.distance)-high))
-			sample.y=maxf(float(sample.y),deck-gap*GRADE)
 		var run: Dictionary={"id":str(road.id)+("/truss/" if truss else "/modern_arch/" if modern else "/double_arch/")+str(first),"start":low,"end":high,"deck_y":deck,"width":float(road.width),"arch_count":1 if truss or modern else 2,"samples":samples}
 		if truss:run.family="clockwork_truss"
 		if modern:run.family="modern_single_arch"
 		result.append(run)
+	# Resolve every deck from the original profile before applying approaches.
+	# A neighbouring bridge's ramp must not slope through another flat deck
+	# while its arch/truss and collision still use that run's deck_y.
+	for sample: Dictionary in samples:
+		var height: float=sample.y
+		for run: Dictionary in result:
+			var gap := maxf(float(run.start)-float(sample.distance),float(sample.distance)-float(run.end))
+			if gap<=0.0:
+				height=float(run.deck_y)
+				break
+			height=maxf(height,float(run.deck_y)-gap*GRADE)
+		sample.y=height
 	return result
 
 static func _point(samples: Array,arc: float) -> Dictionary:

@@ -25,17 +25,24 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 			blockers.append(Frame.footprint(house,cell,.30))
 		for entry: Dictionary in renderer.house_entrances(str(house.id)): doors.append([entry.wall_at,entry.at])
 	for index in range(points.size()-1):
-		if samples[index].bridge or samples[index+1].bridge: continue
+		var interval:Dictionary=preload("res://scripts/visual/city_creation_bridge_bank_interval.gd").clip(profile,samples[index],samples[index+1])
+		if interval.is_empty():continue
 		if bool(samples[index].get("stepping",false)) or bool(samples[index+1].get("stepping",false)): continue
+		var p0:Vector2=points[index] if interval.low==0. else points[index].lerp(points[index+1],interval.low)
+		var p1:Vector2=points[index+1] if interval.high==1. else points[index].lerp(points[index+1],interval.high)
+		var offset0:Vector2=offsets[index] if interval.low==0. else offsets[index].lerp(offsets[index+1],interval.low)
+		var offset1:Vector2=offsets[index+1] if interval.high==1. else offsets[index].lerp(offsets[index+1],interval.high)
+		if interval.low_normal!=Vector2.ZERO:offset0=interval.low_normal*float(road.width)*.5
+		if interval.high_normal!=Vector2.ZERO:offset1=interval.high_normal*float(road.width)*.5
 		for side: int in [-1,1]:
-			var outward0 := offsets[index].normalized()*float(side)
-			var outward1 := offsets[index+1].normalized()*float(side)
-			var edge0 := points[index]+offsets[index]*float(side)
-			var edge1 := points[index+1]+offsets[index+1]*float(side)
+			var outward0 := offset0.normalized()*float(side)
+			var outward1 := offset1.normalized()*float(side)
+			var edge0 := p0+offset0*float(side)
+			var edge1 := p1+offset1*float(side)
 			var terrain0: float=renderer.state.raw_terrain_height(edge0+outward0*1.15)
 			var terrain1: float=renderer.state.raw_terrain_height(edge1+outward1*1.15)
-			var y0: float=renderer.state.street_height(points[index])
-			var y1: float=renderer.state.street_height(points[index+1])
+			var y0: float=renderer.state.street_height(p0)
+			var y1: float=renderer.state.street_height(p1)
 			var delta := (terrain0+terrain1-y0-y1)*0.5
 			if absf(delta)<=THRESHOLD: continue
 			var cut := delta>0.0
@@ -43,14 +50,17 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 			# walls carry the deck itself and descend into the natural slope.
 			var a := edge0+outward0*(0.72 if cut else 0.10)
 			var b := edge1+outward1*(0.72 if cut else 0.10)
-			if not _clear(renderer,a,b,str(road.id),blockers,doors): continue
+			if not _clear(renderer,a,b,str(road.id),blockers,doors,interval.bank): continue
+			var outer0 := a+outward0*THICKNESS
+			var outer1 := b+outward1*THICKNESS
 			var low0: float=minf(renderer.state.ground_height(a),renderer.state.raw_terrain_height(a))-0.12
 			var low1: float=minf(renderer.state.ground_height(b),renderer.state.raw_terrain_height(b))-0.12
+			if interval.bank:
+				low0=minf(low0,minf(renderer.state.ground_height(outer0),renderer.state.raw_terrain_height(outer0))-.12)
+				low1=minf(low1,minf(renderer.state.ground_height(outer1),renderer.state.raw_terrain_height(outer1))-.12)
 			var top0 := maxf(y0+0.10,terrain0+0.08) if cut else y0+0.04
 			var top1 := maxf(y1+0.10,terrain1+0.08) if cut else y1+0.04
 			low0=minf(low0,y0-0.12);low1=minf(low1,y1-0.12)
-			var outer0 := a+outward0*THICKNESS
-			var outer1 := b+outward1*THICKNESS
 			var v := [Vector3(a.x,low0,a.y),Vector3(b.x,low1,b.y),Vector3(b.x,top1,b.y),Vector3(a.x,top0,a.y),
 				Vector3(outer0.x,low0,outer0.y),Vector3(outer1.x,low1,outer1.y),Vector3(outer1.x,top1,outer1.y),Vector3(outer0.x,top0,outer0.y)]
 			var flip := Vector3(b.x-a.x,0,b.y-a.y).cross(Vector3(outward0.x,0,outward0.y)).y<0.0
@@ -60,9 +70,9 @@ static func prepare(renderer, road: Dictionary, profile: Dictionary) -> Dictiona
 			sections.append({"kind":"cut" if cut else "fill","a":a,"b":b,"top_a":top0,"top_b":top1,"bottom_a":low0,"bottom_b":low1,"road_y_a":y0,"road_y_b":y1})
 	return {"faces":faces,"sections":sections}
 
-static func _clear(renderer,a: Vector2,b: Vector2,road_id: String,blockers:Array,doors: Array) -> bool:
+static func _clear(renderer,a: Vector2,b: Vector2,road_id: String,blockers:Array,doors: Array,bank:bool=false) -> bool:
 	for at: Vector2 in [a,(a+b)*0.5,b]:
-		if renderer.state.water_clearance(at)<0.15 or renderer._inside_other_road(at,road_id): return false
+		if (not bank and renderer.state.water_clearance(at)<0.15) or renderer._inside_other_road(at,road_id): return false
 		for rect:Variant in blockers:
 			if Frame.contains(rect,at): return false
 		for entry: Array in doors:

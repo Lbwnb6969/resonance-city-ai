@@ -738,3 +738,22 @@
 - CPU: grades27/junction42(451样本)/heightqueries27/streetdeps14/bridge9/legacy375+27、import/Harness/链接/13自测PASS；命令/实际耗时及范围在文档52和junction_20261028。
 - LIVE: OpenGL/WASAPI82 PASS，1146铺装采样0孔洞0重复、16原图；原生UndoRedo/远端实例/只读预览/磁盘冷读与增量数组SHA相同。PCM3.169524s峰.001007零削波，原音池保持，听感未评。
 - NEXT: M83仍false，整体汇水/曲面UV、桥岸及其余几何待核对；M84～M86保持。按用户要求提交并审阅/同步双库、核远端树。
+
+[SESSION_LINUX_M83_ADJACENT_BRIDGES] 2026-10-29 VERIFIED SUBSTEP：恢复Linux4.7.2云端施工并修相邻异风貌桥面，不勾整体M83。
+- FIX: 两公开池塘/同一路/桁架+石桥，旧顺序引坡侵入前桥，剖面差1.82/15.54cm并随绘路方向变化；先定全部deck再派生桥外引坡，作者/约束/存档保持。
+- CPU: 新36项在旧实现稳定失败、修复后PASS；bridge9/truss6/junction27/queries27/deps14/modern329/legacy375+27及八步云端、Harness/13自测/链接通过。
+- LIVE: Linux软件OpenGL/PulseAudio方向27、屋谷44、桥18 PASS；桥349实际顶点差15.50cm→浮点误差，原生UndoRedo/远端实例/磁盘冷读一致；同机位昼夕夜/低角原图已核。
+- BOUNDARY: 虚拟PCM非物理设备/听评，慢帧使请求3.2s实际录成64.12s及桥47.09s，独立回读零削波；失败取样保留，包装器增加运行错误/超时/服务失败检测，详文档52。
+- NEXT: M83仍false，整体汇水/曲面UV及其余桥岸继续，M84～86保持。代码已本地提交；自动审核拒绝主分支推送及开发分支上传，远端未更改，已导出补丁，GitHub发布待用户明确授权。
+
+[SESSION_M83_MODERN_BRIDGE_COVERAGE] 2026-10-29 VERIFIED SUBSTEP：补齐现代单拱/石拱相邻桥覆盖，不改生产几何或勾M83。
+- CPU: 两桥型组合各四间距/正反向共72项PASS；完整云端13步117.482秒通过，含legacy375+27、UV307及相关几何。
+- LIVE: 软件OpenGL/PulseAudio18项308.989秒通过，349顶点差1.19e-8米；原生UndoRedo/远端实例/磁盘冷读一致，昼夜低角原图已核。
+- PCM: 独立回读40.936780秒/peak.040253/零削波；请求3.2秒慢帧偏差仍在，虚拟输出/听感边界保持，失败启动记录保留。
+- PUBLISH/NEXT: 完整库main85f8c655已由GitHub应用上传并fetch核树；原省略清单保留。精简库因额外目标未授权被自动审核拒绝，未上传；M83整体汇水/曲面UV及其余桥岸继续，M84～86待办。
+
+[SESSION_M83_CLOSED_BANKS] 2026-10-29 VERIFIED：石桥接岸挡墙补齐，M83真实收口，保留历史任务与原始失败证据。
+- FIX: 直/斜桥原最大57/92cm断口→浮点误差；石桥陆侧裁剪/同向法线/内外墙脚埋入，开拱与避让保持；真实混合桥型湿段不造墙。
+- CPU: 桥岸55含真实Jolt拾取、屋面图32/16例11558顶点；完整Linux15步214.455s含legacy375+27/UV307/屋谷69/路口27/混桥72全部PASS。
+- LIVE: 斜桥OpenGL/PulseAudio18 PASS493.437s，原生UndoRedo/远端实例/磁盘冷算六网格SHA一致；原图已独立核，PCM53.905125s峰.008331零削波，虚拟输出/听感边界保持。
+- REVIEW/NEXT: 独立Critic的miter/异桥型/P1反向法线均修复，最终无P1/P2；屋谷保留连续曲面，不虚构天沟或水力验收。M83=true，M84～86待办；提交后审阅双库发布计划。

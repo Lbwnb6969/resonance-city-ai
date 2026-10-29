@@ -1479,8 +1479,8 @@
           "M82"
         ],
         "verification_cmd": "python tools/check_ai_harness.py && python tools/check_doc_links.py；执行文档50及工程维护对应的相关CPU、隔离旧档与实窗/实录验收",
-        "passes": false,
-        "verified_by": "",
+        "passes": true,
+        "verified_by": "2026-10-29 M83 closure: doc52 retains real street-furniture49/GL38, wind8/GL37, roof slopeGPU27/fullUVGL91, valleys69/UV307/LinuxGL44, junction27/GL82, mixed bridges72/two GL18 evidence. Final Linux Godot4.7.2 cloud --geometry15 steps PASS214.455s including legacy375 checks/27works; new roof graph32 checks/16cases/11558 vertices no tested closed basins (20um nonascending tolerance, not hydraulic simulation), bank55 checks/five actual layouts20contacts maxXZ2.384e-7m/verticalgap0, real Jolt wall picking and mixed-bridge/walkway negatives. Final diagonal OpenGL/PulseAudio18 PASS493.437s: native CtrlZ/Y, actual bank sculpt, distant node retained, disk cold/incremental six stable mesh hashes equal, original pool/personal save unchanged. Independent original straight before/after and diagonal day/night/low images reviewed; open arches/no new broken faces. Actual virtual Master53.905125s/44100 stereo/peak.008331/zero clips independently decoded; requested3.2s slow-frame drift retained, no physical output/listening claim. Independent critic P2 bank miter/mixed eligibility and intermediate P1 normal sign repaired; final no unresolved P1/P2. Continuous roof curve/tile bend retained on evidence; no invented flashing. Interrupted takes are not passes. M84-86 remain pending.",
         "original_description": "修复关系最明显的接缝，避免用一层新装饰掩盖旧问题。",
         "original_verification_cmd": "python3 tools/check_ai_harness.py && python3 tools/check_doc_links.py；执行文档40对应任务的相关CPU、隔离旧档及实窗/实录验收"
       },

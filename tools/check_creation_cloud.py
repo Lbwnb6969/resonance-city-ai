@@ -17,6 +17,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--godot', default=os.environ.get('GODOT_BIN', 'godot'))
     parser.add_argument('--out-dir', type=Path)
+    parser.add_argument('--geometry', action='store_true',
+                        help='Also run the current M83 roof, junction and bridge CPU regressions.')
     args = parser.parse_args()
     godot = shutil.which(args.godot)
     if not godot:
@@ -39,6 +41,15 @@ def main():
                          ('roof_uv', 'tests/test_city_creation_hinge_roof_uv.gd')]:
         checks.append((name, [godot, '--headless', '--path', '.', '--audio-driver', 'Dummy',
                               '--script', script, '--', '--isolated-session']))
+    if args.geometry:
+        for name, extra in [('roof_valleys', ['--verify-valleys']),
+                            ('roof_drainage', ['--verify-drainage']),
+                            ('junction_grades', ['--verify-grades']),
+                            ('bridge_surface', []), ('truss_bridge', []), ('bridge_grades', []),
+                            ('bridge_banks', ['--verify-banks'])]:
+            checks.append((name, [godot, '--headless', '--path', '.', '--audio-driver', 'Dummy',
+                                  '--script', 'tests/test_city_creation_' + name + '.gd',
+                                  '--', '--isolated-session', *extra]))
     report = {'ok': False, 'platform': sys.platform, 'root': str(ROOT), 'checks': [],
               'scope': 'Portable import, code/resource/source audits and isolated CPU regressions; '
                        'headless Dummy does not validate GPU, actual audio or listening.'}
