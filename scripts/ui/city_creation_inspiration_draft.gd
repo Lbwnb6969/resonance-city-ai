@@ -49,7 +49,7 @@ func poll()->void:
 		epoch=key;signature=null;postponed=true;Receipts.initialize(demo.state)
 	var row:=Receipts.collect(demo.state)
 	if int(row.earned)>0:
-		events.append({"earned":row.earned,"events":row.events,"level":row.level})
+		events.append({"earned":row.earned,"events":row.events,"level":row.level,"inspiration_multiplier":row.spatial.inspiration_multiplier,"artisan_sources":row.spatial.artisan_sources.duplicate()})
 		if events.size()>128:events.pop_front()
 	if row.leveled_up:chime()
 	refresh()

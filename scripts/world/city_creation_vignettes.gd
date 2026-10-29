@@ -90,9 +90,9 @@ static func complete(city:RefCounted,connected:Dictionary)->Dictionary:
 			echoes[house][id]=2
 		journey.vignette_echoes=echoes
 	journey.active_vignette={}
-	var xp:=int(ceil(float(template(id).reward_xp)*(1.5 if tier==2 else 1.)));city.HarmonyJourney.add_harmony_xp(journey,xp,74001,city.era_unlocks)
+	var xp:=int(ceil(float(template(id).reward_xp)*(1.5 if tier==2 else 1.)));var awarded:Dictionary=preload("res://scripts/world/city_creation_functional_benefits.gd").award_xp(city,float(xp))
 	city.dirty=true;city.life_progress_dirty=true
-	return {"id":id,"members":status.members,"xp":xp,"serial":quest.serial,"tier":tier}
+	return {"id":id,"members":status.members,"xp":awarded.earned,"serial":quest.serial,"tier":tier}
 static func production(city:RefCounted,id:String)->float:
 	return 1.+.1*Array(city.harmony_journey.get("vignette_blessings",{}).get(id,[])).size()
 static func walking(city:RefCounted,id:String)->float:

@@ -44,7 +44,7 @@ static func encore(demo:Node3D,id:String,ambient:bool=false)->bool:
 	var now:float=demo.life.time
 	if now<float(city.get_meta("encore_next",0.)):return false
 	Receipts.initialize(city);city.harmony_journey.receipts[key]=count
-	city.HarmonyJourney.add_harmony_xp(city.harmony_journey,25,74001,city.era_unlocks)
+	preload("res://scripts/world/city_creation_functional_benefits.gd").award_xp(city,25.)
 	city.dirty=true;city.life_progress_dirty=true;city.set_meta("encore_next",now+18.)
 	var members:Array=city.natural_clusters().get(id,{}).get("members",[id])
 	demo.get_meta("juice_feedback").enqueue({"kind":"encore","source":id,"members":members,"label":"街坊返场" if ambient else "再来一曲"})

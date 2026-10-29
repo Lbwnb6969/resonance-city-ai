@@ -56,6 +56,7 @@ static func evaluate(city:RefCounted)->Dictionary:
 	var expansion:=1.0+.12*clampi(large_groups-1,0,5)
 	var sites:=Sites.evaluate(city)
 	var chords:=_chords(city,districts,members,sites)
+	if city.CreationPolicy.is_free(city):chords=preload("res://scripts/world/city_creation_functional_benefits.gd").chords(city,chords)
 	var counterpart:=1.3 if "chrono_counterpoint" in chords.active else 1.
 	for house:Dictionary in city.houses:
 		var id:=str(house.id);var did:String=members[id];var labels:PackedStringArray=[]

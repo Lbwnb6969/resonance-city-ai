@@ -1,0 +1,50 @@
+extends "res://tools/check_creation_functional_zones_live.gd"
+const Receipts=preload("res://scripts/world/city_creation_harmony_receipts.gd")
+func xp_total()->int:
+	var journey:Dictionary=demo.state.harmony_journey;var total:=int(journey.harmony_xp)
+	for level in range(1,int(journey.harmony_level)):total+=demo.state.HarmonyJourney.xp_for_next_level(level)
+	return total
+func poll_progress()->void:
+	var draft:Node=demo.get_meta("inspiration_draft");draft.postponed=true;draft.set_process(true)
+	await create_timer(.65).timeout;draft.set_process(false);draft.paper.hide()
+func run()->void:
+	OUT="res://验证记录/M84/spatial_benefits_20261029/live"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
+	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
+	demo=Scene.instantiate();demo.persistence=false;demo.archive_persistence=true;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input()
+	var voices:=pool();var fixture:=SpatialFixture.build();check(fixture.ok,"real spatial fixture")
+	await show(fixture.city,Vector2(-23,-18),"空间互哺与灵感");quiet();demo.life.set_process(false);await poll_progress()
+	check(is_equal_approx(demo.state.functional_benefits().inspiration_multiplier,1.35),"published actual workshop supplies active 35 percent")
+	check("h5" in demo.state.functional_benefits().mutual.h6,"actual distant same-component market support")
+	demo.focus=Vector3(-23,.5,-19);demo.zoom=27.;demo._update_camera()
+	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
+		root.size=size;await key(KEY_L);await refresh_page()
+		check(demo.ledger.visible() and "+35%" in demo.ledger.body.text and "互哺" in demo.ledger.body.text and "蒸汽花房圆舞曲" in demo.ledger.body.text,"native L presents actual bonus mutuality and chord at "+str(size.x))
+		await capture("benefits_"+str(size.x));await key(KEY_ESCAPE)
+	var before:=xp_total();var draft:Node=demo.get_meta("inspiration_draft");var events_before:int=draft.events.size()
+	SpatialFixture.Brush.select(demo.state,"pastoral","townhouse")
+	for i in range(10):
+		var added:Dictionary=demo.state.add_house(Vector2(-35.+i*3.,16.));check(added.ok,"public new home for actual inspiration")
+		demo._after_edit(added,"room");await settle();demo.life.set_process(false);await poll_progress()
+	check(xp_total()-before==27,"production inspiration timer really grants 27 XP from ten ordinary 2 XP homes")
+	var observed:Array=draft.events.slice(events_before)
+	check(observed.size()==10 and observed.all(func(e):return is_equal_approx(e.inspiration_multiplier,1.35) and e.artisan_sources==["h3"]),"every actual new UI income event audits multiplier and exact physical source")
+	var earned:=xp_total();var initial:=meshes()
+	await key(KEY_Z,true);await settle();demo.life.set_process(false);await poll_progress()
+	await key(KEY_Y,true);await settle();demo.life.set_process(false);await poll_progress()
+	check(xp_total()==earned and meshes()==initial and Receipts.collect(demo.state).earned==0,"native house UndoRedo restores arrays without re-awarding actual XP")
+	var archive:Dictionary=demo.gallery.archive.observe(demo.state)
+	check(archive.ok and "clockwork_waltz" in demo.gallery.archive.chords and "pastoral_triad" in demo.gallery.archive.chords,"isolated actual collection owns observed real spatial chords")
+	var removed:Dictionary=demo.state.remove_road("r1");demo._after_edit(removed,"history");await settle();demo.life.set_process(false);await poll_progress()
+	check(removed.ok and demo.state.functional_benefits().inspiration_multiplier==1. and not "clockwork_waltz" in demo.state.synergy_buffs().active_chords,"actual road removal withdraws multiplier and current chord")
+	await key(KEY_L);await refresh_page();check(not "+35%" in demo.ledger.body.text,"native L withdraws bonus after road removal");await capture("bonus_withdrawn");await key(KEY_ESCAPE)
+	check("clockwork_waltz" in demo.gallery.archive.chords,"withdrawn live condition preserves earned archive right")
+	await key(KEY_Z,true);await settle();demo.life.set_process(false);await poll_progress()
+	check(is_equal_approx(demo.state.functional_benefits().inspiration_multiplier,1.35) and xp_total()==earned,"native road Undo restores live benefit without farming XP")
+	var saved:Dictionary=demo.state.snapshot();var expected:Dictionary=demo.state.functional_benefits();var file:=FileAccess.open(OUT+"/work.json",FileAccess.WRITE);file.store_string(JSON.stringify(saved,"",true,true));file.close()
+	var cold:=State.new();check(cold.restore(JSON.parse_string(FileAccess.get_file_as_string(OUT+"/work.json"))).ok,"actual disk Schema20 read")
+	await show(cold,Vector2(-23,-18),"空间收益冷读");quiet();demo.life.set_process(false);await poll_progress()
+	check(demo.state.functional_benefits()==expected and xp_total()==earned and Receipts.collect(demo.state).earned==0,"independent cold graph restores sources and earned XP without replay")
+	facts.master=await Probe.record(OUT+"/Master.wav",3.2);check(facts.master.ok and pool()==voices,"actual production PCM and original bounded pool")
+	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save unchanged")
+	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts,"income_events":observed,"construction_xp":27,"benefits":expected};FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("FUNCTIONAL_BENEFITS_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

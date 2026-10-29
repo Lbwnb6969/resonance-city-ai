@@ -27,6 +27,12 @@ static func refresh(widget:RefCounted)->bool:
 	var report:Dictionary=widget.demo.state.functional_zones()
 	var lines:=PackedStringArray(["[b]城市的四大功能区[/b]", "接通门前小路，让空间相互呼应。"])
 	if not report.network_ready:lines.append("道路正在更新，空间激活待道路发布。")
+	var benefits:Dictionary=widget.demo.state.functional_benefits()
+	if not benefits.artisan_sources.is_empty():lines.append("灵感积累 +35% · 百工匠造")
+	var pairs:=0
+	for peers:Array in benefits.mutual.values():pairs+=peers.size()
+	if pairs>0:lines.append("水岸与栖居互哺 · %d 组沿路邻里"%(pairs/2))
+	for chord:String in widget.demo.state.synergy_buffs().active_chords:lines.append("♫ "+str(widget.demo.state.SynergyBuffs.CHORD_NAMES[chord]))
 	for kind:String in Zones.NAMES:
 		var zones:Array=report.zones.filter(func(z):return z.kind==kind);var active:int=zones.filter(func(z):return z.active).size()
 		lines.append("\n[b]%s[/b] · 已接路 %d / %d 处"%[Zones.NAMES[kind],active,zones.size()])

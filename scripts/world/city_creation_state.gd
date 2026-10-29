@@ -54,6 +54,7 @@ func initialize_free(empty:bool=true)->void:CreationPolicy.initialize(self,empty
 func can_build_era(era:String)->bool:return CreationPolicy.can_build_era(self,era)
 func can_assign_role(role:String)->bool:return CreationPolicy.can_assign_role(self,role)
 func functional_zones()->Dictionary:return preload("res://scripts/world/city_creation_functional_zones.gd").for_city(self)
+func functional_benefits()->Dictionary:return preload("res://scripts/world/city_creation_functional_benefits.gd").for_city(self)
 const ERA_SCHEMA := 13
 const QUALITY_SCHEMA := 14
 const CLOCKWORK_SCHEMA := 15
@@ -926,6 +927,7 @@ func _invalidate_regional_echo()->void:
 func prepare_regional_echo(network:RefCounted)->void:
 	var started:=Time.get_ticks_usec()
 	_region_network=RegionalEcho.prepare(self,network);_region_network_revision=revision;_invalidate_regional_echo()
+	if CreationPolicy.is_free(self):_synergy_revision=-1
 	regional_prepare_ms=float(Time.get_ticks_usec()-started)/1000.
 
 func regional_echo()->Dictionary:
