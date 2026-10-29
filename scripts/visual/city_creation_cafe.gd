@@ -28,19 +28,20 @@ func setup(parent: Node3D) -> void:
 func prepare(renderer) -> Dictionary:
 	var live := {}
 	var changes := {}
+	var market:Dictionary=preload("res://scripts/world/city_creation_market_frontages.gd").prepare(renderer.state)
 	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(renderer.state.houses)
-	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters,preload("res://scripts/world/city_creation_tradition_rules.gd").has(renderer.state,"garden_salons")])
+	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters,market,preload("res://scripts/world/city_creation_tradition_rules.gd").has(renderer.state,"garden_salons")])
 	for house: Dictionary in renderer.state.houses:
-		if str(house.get("role",""))!="garden_cafe": continue
+		if str(house.get("role",""))!="garden_cafe" and not market.has(str(house.id)): continue
 		var id := str(house.id)
 		live[id]=true
 		if placement_inputs.get(id,-1)==geometry_signature: continue
 		var plan: Dictionary = layout_api.layout(renderer.state,id)
 		var extras := _extras(renderer.state,plan,id)
-		var signature := hash([plan,extras])
+		var signature := hash([plan,extras,market.get(id,[])])
 		placement_inputs[id]=geometry_signature
 		if fingerprints.get(id,-1)==signature: continue
-		changes[id]={"plan":plan,"extras":extras,"fingerprint":signature}
+		changes[id]={"plan":plan,"extras":extras,"market":market.get(id,[]),"fingerprint":signature}
 	return {"live":live,"changes":changes}
 
 func install(renderer, prepared: Dictionary, statuses: Dictionary = {}) -> void:
@@ -57,6 +58,7 @@ func install(renderer, prepared: Dictionary, statuses: Dictionary = {}) -> void:
 		fingerprints[id]=row.fingerprint
 		build_count+=1
 		if not row.plan.is_empty(): _build(root,row.plan,row.extras)
+		preload("res://scripts/visual/city_creation_market_frontages.gd").build(renderer,root,row.get("market",[]))
 	for id: String in roots.keys():
 		if not prepared.live.has(id):
 			_remove(id)
