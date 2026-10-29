@@ -24,13 +24,15 @@ static func join(rows:Array,city:RefCounted,report:Dictionary,obstacles:Array,wa
 			if not evidence.wall_segments.has(wall):evidence.wall_segments.append(wall)
 		for entry:Dictionary in row.evidence.public_entries:
 			if not evidence.public_entries.has(entry):evidence.public_entries.append(entry)
+		for entry:Dictionary in row.evidence.rejected_entries:
+			if not evidence.rejected_entries.has(entry):evidence.rejected_entries.append(entry)
 		var served:Array=[]
 		for entry:Dictionary in evidence.public_entries:
 			if not served.has(entry.house_id):served.append(entry.house_id)
 		var published:Array=city._region_network.get("road_components",{}).get(evidence.road_id,[]) if report.network_ready else []
 		var eligible:bool=merged.connected and merged.component in published and served.size()==merged.members.size()
 		merged.stage="district" if eligible else "cluster"
-		merged.eligibility={"district":eligible,"warm":false,"reason":"qualified" if eligible else "network_waiting" if not report.network_ready else "public_entry_missing" if served.size()!=merged.members.size() else "street_disconnected"}
+		merged.eligibility={"district":eligible,"warm":false,"reason":"qualified" if eligible else "network_waiting" if not report.network_ready else "height_access_missing" if evidence.rejected_entries.any(func(e):return not served.has(e.house_id)) else "public_entry_missing" if served.size()!=merged.members.size() else "street_disconnected"}
 		result[-1]=merged
 	return result
 

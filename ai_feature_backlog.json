@@ -1493,7 +1493,7 @@
         "depends_on": [
           "M83"
         ],
-        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py、python tools/check_doc_links.py及每轮双库发布/版本核验。",
         "passes": false,
         "verified_by": "",
         "original_description": "六种风格在主题、织体和段落上不同，而不是六个名称套同一生成公式。",
@@ -1514,7 +1514,7 @@
         "depends_on": [
           "M84"
         ],
-        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py、python tools/check_doc_links.py及每轮双库发布/版本核验。",
         "passes": false,
         "verified_by": "",
         "original_description": "新音乐与地标不破坏目前已优化的连续编辑，处理已有真实停顿。",
@@ -1535,7 +1535,7 @@
         "depends_on": [
           "M85"
         ],
-        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py及不调用Git的文档链接检查。",
+        "verification_cmd": "执行文档54对应行为的最低充分CPU/API、隔离旧档、必要实窗/原图/PCM与真实听评；python tools/check_ai_harness.py、python tools/check_doc_links.py及每轮双库发布/版本核验。",
         "passes": false,
         "verified_by": "",
         "original_description": "验证玩家从创建城市到再打开作品的完整流程，而不只验单模块。",
@@ -1571,7 +1571,7 @@
       "source": "文档/来源/20261029_resonance_city_v7_审阅原稿.md",
       "source_sha256": "38f8cc6f003e86cc908b174a9f36add1765ca81cf2dfa43877608b41737d3232",
       "adopted": "用户2026-10-29要求V7最终优化作为实际施工改造版本；不改历史完成状态。",
-      "next_step": "庭院闭合房环、单体半围合和连续窄巷首轮来源已受测；共线采样/斜向双屋/混合来源及同成员缓弯连续界面通过，继续坡地等复杂公共界面和其他三类契约；旧收益/收据不变。",
+      "next_step": "庭院闭合房环、单体半围合和连续窄巷首轮来源已受测；共线采样/斜向双屋/混合来源及同成员缓弯连续界面通过，普通入口高差支撑CPU113/实窗通过，缺支撑保留cluster，同高地可成区；其他立面/复杂界面与另三类契约待办，下一子步独立Critic；旧收益/收据不变。",
       "supersedes": "文档50及V3—V6冲突的产品规格和剩余排期；历史证据保持。",
       "git_policy": "用户已明确要求每轮验证后提交并推送完整库/精简库，核对两库远端树及当前施工版本；不强推。"
     }

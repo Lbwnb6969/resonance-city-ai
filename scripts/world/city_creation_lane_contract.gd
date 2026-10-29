@@ -93,7 +93,7 @@ static func _row(city:RefCounted,report:Dictionary,road:Dictionary,index:int,a:V
 			if not sources.has(wall.cell_id):sources.append(wall.cell_id);walls.append(wall)
 	if members.size()<2:return {}
 	members.sort();sources.append_array(members);sources.sort()
-	var entries:Array=[];var served:Array=[];var components:Array=[]
+	var entries:Array=[];var rejected:Array=[];var served:Array=[];var components:Array=[]
 	var lo:float=pieces[0].lo;var hi:float=pieces[-1].hi
 	for id:String in members:
 		var component:String=report.houses[id].component
@@ -107,9 +107,13 @@ static func _row(city:RefCounted,report:Dictionary,road:Dictionary,index:int,a:V
 			if entry.active and entry.road_id!=road.id:continue
 			var path:={"center":(target+Vector2(entry.at))*.5,"angle":-delta.angle(),"half":Vector2(maxf(delta.length()*.5,EPS),.35)}
 			if obstacles.any(func(o):return Frame.boxes_overlap(path,o)) or float(water_distance.call(path))<.05:continue
-			entries.append({"house_id":id,"cell_id":entry.cell_id,"road_id":road.id,"at":entry.at,"street_at":target})
+			var house:Dictionary=city.houses[city._house_index(id)]
+			var access:Dictionary=preload("res://scripts/world/city_creation_entry_height.gd").assess(city,house,entry,target,road)
+			var record:={"house_id":id,"cell_id":entry.cell_id,"road_id":road.id,"at":entry.at,"street_at":target,"height_access":access}
+			if not access.ok:rejected.append(record);continue
+			entries.append(record)
 			if not served.has(id):served.append(id)
 	var connected:bool=report.network_ready and components.size()==1 and members.all(func(id):return report.houses[id].connected)
 	var published:Array=city._region_network.get("road_components",{}).get(road.id,[]) if report.network_ready else []
 	var eligible:bool=connected and components[0] in published and served.size()==members.size()
-	return {"kind":"courtyard","stage":"district" if eligible else "cluster","members":members,"source_ids":sources,"component":components[0] if connected else "","connected":connected,"evidence":{"geometry":"narrow_lane","road_id":road.id,"segment":index-1,"from":a+direction*lo,"to":a+direction*hi,"wall_segments":walls,"width_min":widths.min(),"width_max":widths.max(),"public_entries":entries,"usable_strips":pieces.map(func(p):return p.polygon),"network":"ready" if report.network_ready else "waiting"},"eligibility":{"district":eligible,"warm":false,"reason":"qualified" if eligible else "network_waiting" if not report.network_ready else "public_entry_missing" if served.size()!=members.size() else "street_disconnected"}}
+	return {"kind":"courtyard","stage":"district" if eligible else "cluster","members":members,"source_ids":sources,"component":components[0] if connected else "","connected":connected,"evidence":{"geometry":"narrow_lane","road_id":road.id,"segment":index-1,"from":a+direction*lo,"to":a+direction*hi,"wall_segments":walls,"width_min":widths.min(),"width_max":widths.max(),"public_entries":entries,"rejected_entries":rejected,"usable_strips":pieces.map(func(p):return p.polygon),"network":"ready" if report.network_ready else "waiting"},"eligibility":{"district":eligible,"warm":false,"reason":"qualified" if eligible else "network_waiting" if not report.network_ready else "height_access_missing" if rejected.any(func(e):return not served.has(e.house_id)) else "public_entry_missing" if served.size()!=members.size() else "street_disconnected"}}
