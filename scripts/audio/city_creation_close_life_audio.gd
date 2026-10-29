@@ -44,11 +44,12 @@ func _tail(demo,delta:float,allowed:bool)->void:
 	var strength:=_weight(demo,active.node) if allowed else 0.
 	if is_instance_valid(active.node) and active.node.get_meta("life_foley",{}).get("kind","")!=active.kind:strength=0.
 	active.gain=lerpf(float(active.gain),strength,1.-exp(-maxf(0.,delta)*20.))
-	active.player.volume_linear=db_to_linear(GAIN_DB)*float(active.gain)
+	active.player.volume_linear=db_to_linear(float(active.get("base_db",GAIN_DB)))*float(active.gain)
 	if float(active.gain)<.001:active.player.stop();active.clear()
 func tick(demo,delta:float)->void:
 	elapsed+=maxf(0.,delta)
-	var key:Array=[demo.state.get_instance_id(),demo.life.get_instance_id()]
+	var musical:bool=demo.state.CreationPolicy.is_free(demo.state)
+	var key:Array=[demo.state.get_instance_id(),demo.life.get_instance_id(),musical]
 	if key!=epoch:stop();epoch=key
 	var allowed:=_allowed(demo);_tail(demo,delta,allowed)
 	if not allowed or demo.zoom>=OUT_ZOOM:
@@ -75,6 +76,10 @@ func tick(demo,delta:float)->void:
 	if contacts.is_empty() or elapsed<next_sound:return
 	contacts.sort_custom(func(a,b):return a.rank>b.rank)
 	if _owned() and active.player.playing:skipped_busy+=1;return
+	if musical:
+		var event:Dictionary=contacts[0]
+		if demo.music.attention.enqueue_life_sparkle({"world_kind":"life_sparkle","life_actor":weakref(event.node),"life_demo":weakref(demo),"life_helper":weakref(self),"epoch":epoch.duplicate(),"source_id":event.id,"kind":event.kind,"tick":event.tick},demo.music._playback_clock()):next_sound=elapsed+.30
+		return
 	# At least one short remains free for an edit, pluck or musical response.
 	var free:Array=demo.music._effects.filter(func(player):return not player.playing)
 	if free.size()<2:skipped_busy+=1;return

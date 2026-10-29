@@ -44,6 +44,7 @@ static func queue_stair(music,source:String,at:Vector2,player_action:bool=false)
 	return music.attention.enqueue_pluck_arpeggio(plan,music._playback_clock(),player_action)
 
 static func play_note(music,plan:Dictionary)->bool:
+	if plan.has("life_actor"):return preload("res://scripts/audio/city_creation_life_sparkle.gd").play(music,plan)
 	if plan.has("strum_step"):return preload("res://scripts/audio/city_creation_strum_arpeggio.gd").play(music,plan)
 	if music.muted or music.concert_active or music.acoustic.point_weight(plan.position)<=0.:return false
 	if plan.world_kind=="stair" and (not music.travel_source_gate.is_valid() or not music.travel_source_gate.call("stair",plan.source_id,plan.position)):return false

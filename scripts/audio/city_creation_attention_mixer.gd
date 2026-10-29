@@ -41,6 +41,7 @@ func allows(category:String)->bool:
 
 func enqueue_pluck_arpeggio(plan:Dictionary,clock_sec:float,player_action:bool=true)->bool:
 	if plan.is_empty():return false
+	_arp_queue.assign(_arp_queue.filter(func(p):return not p.has("life_actor")))
 	if player_action:notify_sculpt_action(clock_sec)
 	if not _arp_queue.is_empty() and _arp_queue[-1].stream_key==plan.stream_key and _arp_queue[-1].house_id==plan.house_id:
 		stats.coalesced+=1;return true
@@ -61,6 +62,12 @@ func schedule_event(category:String,payload:Dictionary,clock_sec:float,min_coold
 	_events[key]={"category":category,"payload":payload.duplicate(),"due":due,"queued_at":clock_sec,"cooldown":min_cooldown}
 	return true
 
+func enqueue_life_sparkle(plan:Dictionary,clock_sec:float)->bool:
+	if current_mode==Mode.SCULPTING or _arp_queue.size()>=MAX_ARP_QUEUE:return false
+	if _arp_queue.any(func(p):return not p.has("life_actor")):return false
+	if _arp_queue.any(func(p):return p.has("life_actor")):return false
+	var item:=plan.duplicate();item.queued_at=clock_sec;_arp_queue.append(item);return true
+
 func clear()->void:
 	_arp_queue.clear();_events.clear();_cooldowns.clear();_last_slot=-1
 
@@ -75,6 +82,7 @@ func step(clock_sec:float,trigger:Callable)->void:
 		if clock_sec>=float(_cooldowns[key]):_cooldowns.erase(key)
 	while not _arp_queue.is_empty():
 		var plan:Dictionary=_arp_queue.pop_front()
+		if plan.has("life_actor") and current_mode==Mode.SCULPTING:continue
 		if clock_sec-float(plan.queued_at)>1.2:continue
 		if allows("pluck_arp") and bool(trigger.call("pluck_arp",plan)):stats.plucks+=1;return
 	for key:String in _events.keys():

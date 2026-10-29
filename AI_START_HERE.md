@@ -4,7 +4,7 @@
 
 本对话的新版50_m82_m86.md、51.md、52.md为当前设计来源；[融合总案](文档/50_空间驱动城建音乐与整合排期修订.md)统一冲突取舍、四功能区、完整母曲与城建分轨编配。旧蓝图有效的工程和兼容条款已并入[工程维护](文档/工程维护.md)，不再按历史排期施工。
 
-M75～M83技术验收完成；M83证据索引与屋谷保留结论见文档52。当前M84已完成自由城新屋指定原型的合法用途默认子步，见[施工记录](文档/53_功能区与母曲编配施工记录.md)；四功能区空间派生与L入口子步已通过，空间互哺/两和弦与实际+35%收益已通过子步，继续声音政策与街景，再做完整母曲分轨；M84～M86待办。云端入口python tools/check_creation_cloud.py --godot godot --geometry，包含15步与桥岸拾取回归。
+M75～M83技术验收完成；M83证据索引与屋谷保留结论见文档52。当前M84已完成自由城新屋指定原型的合法用途默认子步，见[施工记录](文档/53_功能区与母曲编配施工记录.md)；四功能区空间派生与L入口子步已通过，空间互哺/两和弦与实际+35%收益已通过子步，自由城近景乐器/经典写实政策已通过子步，继续街景与其余权益，再做完整母曲分轨；M84～M86待办。云端入口python tools/check_creation_cloud.py --godot godot --geometry，包含15步与桥岸拾取回归。
 
 代码入口：scenes/city_creation.tscn → scripts/ui/city_creation_demo.gd；State/API/序列化在scripts/world，表现与增量发布在scripts/visual，拍钟/谱面/换流在scripts/audio。正常新城initialize_free空地，initialize/initialize_empty仍为legacy配方API。
 
