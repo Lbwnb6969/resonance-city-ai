@@ -2,8 +2,12 @@ extends "res://tools/check_creation_score_playback_live.gd"
 const Whole=preload("res://scripts/audio/city_creation_master_performance.gd")
 func run()->void:
 	OUT="res://验证记录/M84/continuous_master_20261030/live_initial"
+	var content_id:="baseline";var compare:=false;var render_report:="res://验证记录/M84/composition_ab_20261030/render_final/render.json"
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+		elif arg.begins_with("--content-id="):content_id=arg.trim_prefix("--content-id=")
+		elif arg=="--compare-baseline":compare=true
+		elif arg.begins_with("--render-report="):render_report=arg.trim_prefix("--render-report=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
 	var began:=Time.get_ticks_msec();var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input();var original_pool:=pool()
@@ -13,7 +17,7 @@ func run()->void:
 	await show(city,Vector2(-24,-20),"连续144秒母曲");quiet();demo.life.set_process(false);demo.select_tool(4);demo.zoom=17.;demo._update_camera()
 	var saved:Dictionary=demo.state.snapshot();var normal_mix:Dictionary=demo.music.phonograph.capture(demo.music)
 	check(demo.music.audio_report.get("bank_source")=="precompiled","original formal bank remains current without a PCM rebuild")
-	var prepared:=Import.request_master_continuous(demo.music)
+	var prepared:=Import.request_master_continuous(demo.music,0,content_id)
 	check(prepared.ok,"public complete master API queues one original six-section performance")
 	check(await wait_for(func():return demo.music.get_meta("authored_score_ready",{}).get("duration",0.)==144.,60000),"actual complete four-role long score and short bank prepare")
 	check(not demo.music.has_meta("authored_score"),"full score preparation does not announce unplayed harmony")
@@ -29,6 +33,14 @@ func run()->void:
 	check(not node.scheduled.is_empty(),"four actual players receive one common premix")
 	if node.scheduled.is_empty():demo.queue_free();await process_frame;quit(1);return
 	var boundary:float=node.scheduled.boundary;var record:=Span.start();var trace:Array=[];var markers:Array=[];var completed:Dictionary={};var issued:Dictionary={}
+	if compare:
+		var materials:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(render_report));var reference:Dictionary=materials.performances.filter(func(row):return row.id==content_id)[0]
+		var actual:Dictionary={}
+		for stem:String in node.stems:
+			var role:=str(node.stems[stem]).get_slice("/",2);var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(node.scheduled.targets[stem].data);actual[role]=hash.finish().hex_encode()
+		check(reference.roles.keys().all(func(role):return actual.get(role,"")==reference.roles[role].pcm_sha256),"all four actual candidate player waves equal the rendered comparison material")
+		facts.actual_pcm_sha256=actual
+	facts.content_id=content_id
 	var target_streams:Dictionary=node.scheduled.targets.duplicate();var stable:Dictionary={};var edited:=false;var undone:=false;var solo_started:=false;var solo_checked:=false;var edit_history:Dictionary={};var next_sample:=boundary-.5
 	var solo=demo.get_meta("solo_spotlight");var wall_deadline:=Time.get_ticks_msec()+200000
 	while demo.music.CueGrid.transport_clock(demo.music)<boundary+146. and Time.get_ticks_msec()<wall_deadline:
@@ -82,6 +94,13 @@ func run()->void:
 	check(Playback.cursor(demo.music).is_empty(),"phonograph never advertises current mother harmony")
 	await create_timer(.25).timeout;demo.music.phonograph.stop(demo.music);await process_frame
 	check(absf(Playback.cursor(demo.music).score_position-resumed.score_position)<.08,"phonograph restores actual position within the 144-second work")
+	if compare:
+		var comparison:=Span.start();var expected:=Whole.prepare(0,"baseline")
+		check(Import.request_master_continuous(demo.music,0,"baseline").ok,"public A/B selection requests preserved baseline on the same city")
+		check(await wait_for(func():return demo.music.get_meta("authored_score",{}).get("signature","")==expected.signature,60000),"candidate-to-baseline transition commits the selected source signature")
+		check(await wait_for(func():return node.scheduled.is_empty(),3000),"A/B transition returns to stable original voices")
+		check(Playback.cursor(demo.music).content_id=="baseline" and demo.music.get_meta("authored_score").master_signature==Whole.Master.read().signature,"actual A playback names original content rather than candidate metadata")
+		facts.ab_pcm=Span.finish(comparison,OUT+"/candidate_to_baseline_Master.wav");check(facts.ab_pcm.ok,"actual speaker PCM across B to A remains audible and unclipped")
 	var old_document:=Import.Document.read("res://数据/原创谱材/河湾练习_v1/score.json");var handover:=Span.start()
 	check(Import.request(demo.music,"res://数据/原创谱材/河湾练习_v1/score.json").ok,"original external M80 request can replace a complete performance")
 	check(await wait_for(func():return demo.music.get_meta("authored_score",{}).get("signature","")==old_document.signature,60000),"actual 144-second to schema1 handover reaches common safe boundary")

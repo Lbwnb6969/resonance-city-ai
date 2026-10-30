@@ -1,27 +1,29 @@
 extends RefCounted
 ## The existing version2 base score, played as one 144-second four-role loop.
 const Master=preload("res://scripts/audio/city_creation_master_score.gd")
+const Background=preload("res://scripts/audio/city_creation_background_flute.gd")
+const Catalog=preload("res://scripts/audio/city_creation_master_catalog.gd")
 const Cues=preload("res://scripts/audio/city_creation_score_cue_bank.gd")
 const Transition=preload("res://scripts/audio/city_creation_stream_transition.gd")
 const RATE:=22050
 const SECONDS:=144.
 static func dsp_signature()->String:
 	var parts:PackedStringArray=[preload("res://scripts/audio/city_creation_bank_cache.gd").source_signature()]
-	for path:String in ["res://scripts/audio/city_creation_master_performance.gd","res://scripts/audio/city_creation_master_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
+	for path:String in ["res://scripts/audio/city_creation_master_performance.gd","res://scripts/audio/city_creation_master_score.gd","res://scripts/audio/city_creation_master_catalog.gd","res://scripts/audio/city_creation_background_flute.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
 	return "|".join(parts).sha256_text()
-static func prepare(mode:int)->Dictionary:
-	var sections:Array=[];var events:Array=[];var master:=Master.read()
+static func prepare(mode:int,content_id:String="baseline")->Dictionary:
+	var sections:Array=[];var events:Array=[];var master:=Catalog.read(content_id)
 	if master.is_empty():return {"ok":false,"message":"母曲容器无效"}
 	var dsp:=dsp_signature()
 	for p in range(6):
-		var data:=Master.section(p,mode)
+		var data:=Catalog.section(content_id,p,mode)
 		if not data.ok:return data
 		if data.master_signature!=master.signature:return {"ok":false,"message":"母曲来源已改变，请重新准备"}
 		sections.append({"signature":data.signature,"harmony":data.harmony})
 		for original:Dictionary in data.events:
 			var note:=original.duplicate(true);note.start+=p*24.;events.append(note)
-	var signature:=JSON.stringify(["master_performance1",master.signature,mode,dsp]).sha256_text()
-	return {"ok":true,"signature":signature,"master_signature":master.signature,"dsp_signature":dsp,"duration":SECONDS,"sections":sections,"events":events,"harmony":sections[0].harmony,"section":0,"document":{"id":"pastoral_master2_complete","harmony_mode":mode,"bars":48}}
+	var signature:=JSON.stringify(["master_performance1",master.signature,mode,dsp,content_id]).sha256_text()
+	return {"ok":true,"signature":signature,"master_signature":master.signature,"content_id":content_id,"render_profile":Catalog.CONTENTS[content_id].get("render_profile","original"),"dsp_signature":dsp,"duration":SECONDS,"sections":sections,"events":events,"harmony":sections[0].harmony,"section":0,"document":{"id":Catalog.CONTENTS[content_id].document_id,"harmony_mode":mode,"bars":48}}
 static func context(city:RefCounted)->Array:
 	return [city.music_mode,hash(city.biome_seed)]
 static func valid(owner:Node,data:Dictionary)->bool:
@@ -29,16 +31,20 @@ static func valid(owner:Node,data:Dictionary)->bool:
 	if city==null or data.get("city",0)!=city.get_instance_id():return false
 	return data.get("content_context",[])==context(city) if data.get("duration",24.)==SECONDS else data.get("revision",-1)==city.revision
 static func source_valid(data:Dictionary)->bool:
-	return Master.read().get("signature","")==data.master_signature and dsp_signature()==data.dsp_signature
+	return Catalog.read(str(data.get("content_id","baseline"))).get("signature","")==data.master_signature and dsp_signature()==data.dsp_signature
 static func render(data:Dictionary,synth:Node)->Dictionary:
 	var out:Dictionary={}
 	for role:String in ["lead","foundation","pulse","answer"]:
 		var notes:Array=data.events.filter(func(e):return e.role==role).duplicate(true)
 		var samples:=PackedFloat32Array();samples.resize(roundi(SECONDS*RATE))
-		for note:Dictionary in notes:synth._add_harmony_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,true)
+		var background:bool=data.get("render_profile","")==Background.ID and role=="lead"
+		for note:Dictionary in notes:
+			if background and note.timbre=="flute":Background.add(samples,note)
+			else:synth._add_harmony_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,true)
 		var peak:=0.
 		for value:float in samples:peak=maxf(peak,absf(value))
 		var scale:=minf(1.,.18/maxf(.000001,peak))
+		if background:scale*=db_to_linear(Background.LEAD_GAIN_DB)
 		if scale<1.:
 			for i in range(samples.size()):samples[i]*=scale
 			for note:Dictionary in notes:note.gain*=scale

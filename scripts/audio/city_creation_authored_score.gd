@@ -12,9 +12,9 @@ static func request(owner:Node,path:String)->Dictionary:
 static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
 	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成全局换段与跨小节提示的和声接续"}
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
-static func request_master_continuous(owner:Node,mode:int=0)->Dictionary:
-	if mode!=0:return {"ok":false,"message":"连续母曲目前仅开放已验证的D大调基础谱"}
-	return _request_data(owner,preload("res://scripts/audio/city_creation_master_performance.gd").prepare(mode))
+static func request_master_continuous(owner:Node,mode:int=0,content_id:String="baseline")->Dictionary:
+	if mode!=0:return {"ok":false,"message":"连续母曲目前仅开放D大调，其他调式尚未完成作曲与播放验证"}
+	return _request_data(owner,preload("res://scripts/audio/city_creation_master_performance.gd").prepare(mode,content_id))
 static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	if owner._pluck_city==null:return {"ok":false,"message":"请先打开用于预览的城市"}
 	if not data.ok:return data
@@ -88,7 +88,7 @@ func _process(_delta:float)->void:
 		owner.audio_report.get_or_add("harmony_peaks",{})[id]=data[role].peak
 	owner.set_meta("authored_score_ready",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[]),"short_cues":data.get("short_cues",{}),"section":request_data.get("section",-1),"master_signature":request_data.get("master_signature","")});owner.remove_meta("chamber_role_key")
 	var ready:Dictionary=owner.get_meta("authored_score_ready")
-	for key:String in ["duration","sections","dsp_signature","content_context"]:
+	for key:String in ["duration","sections","dsp_signature","content_context","content_id","render_profile"]:
 		if request_data.has(key):ready[key]=request_data[key]
 	if data.has("section_cues"):ready.section_cues=data.section_cues
 	preload("res://scripts/audio/city_creation_score_playback.gd").ensure(owner)

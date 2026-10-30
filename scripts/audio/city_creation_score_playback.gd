@@ -53,7 +53,7 @@ static func cursor(owner:Node)->Dictionary:
 	var clock:float=preload("res://scripts/audio/city_creation_cue_grid.gd").transport_clock(owner)
 	var data:=at(owner,clock)
 	if data.is_empty():return {}
-	return {"signature":data.signature,"master_signature":data.get("master_signature",""),"section":data.get("section",-1),"clock":clock,"position":position_at(owner,clock),"score_position":WholeScore.position(owner,clock,data),"duration":data.get("duration",24.),"section_signature":data.get("section_signature",data.signature),"bar":bar_at(owner,clock),"global_bar":int(data.get("section",0))*8+bar_at(owner,clock),"mode":int(data.document.harmony_mode),"harmony":data.get("harmony",[])}
+	return {"signature":data.signature,"content_id":data.get("content_id",""),"render_profile":data.get("render_profile","original"),"master_signature":data.get("master_signature",""),"section":data.get("section",-1),"clock":clock,"position":position_at(owner,clock),"score_position":WholeScore.position(owner,clock,data),"duration":data.get("duration",24.),"section_signature":data.get("section_signature",data.signature),"bar":bar_at(owner,clock),"global_bar":int(data.get("section",0))*8+bar_at(owner,clock),"mode":int(data.document.harmony_mode),"harmony":data.get("harmony",[])}
 static func resolve_cue(owner:Node,wave:AudioStreamWAV,clock:float)->AudioStreamWAV:
 	var data:=at(owner,clock)
 	if data.is_empty():return wave
