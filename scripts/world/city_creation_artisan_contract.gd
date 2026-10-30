@@ -5,13 +5,12 @@ const Height=preload("res://scripts/world/city_creation_entry_height.gd")
 const BODIES:=["sawtooth_atrium","iron_conservatory","twin_gable"]
 const HALF_WIDTH:=.9 # One existing room frontage, not a zone score.
 const DEPTH:=1.8
+const Obstacles=preload("res://scripts/world/city_creation_public_space_obstacles.gd")
 
 static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->Array:
-	var result:Array=[];var obstacles:Array=[]
+	var result:Array=[];var geometry:=Obstacles.collect(city)
 	for house:Dictionary in city.houses:
-		for cell:Dictionary in house.cells:obstacles.append(Frame.footprint(house,cell))
-	for landmark:Dictionary in city.placed_landmarks:obstacles.append(city.PlacedLandmarks.footprint(landmark))
-	for house:Dictionary in city.houses:
+		var obstacles:=Obstacles.for_source(geometry,house.id)
 		var member:Dictionary=report.houses[house.id]
 		if member.prototype not in BODIES and member.prototype!="clock_turret":continue
 		var courts:Array=[];var entries:Array=[];var rejected:Array=[];var sources:Array=[house.id]

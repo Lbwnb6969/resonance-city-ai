@@ -5,13 +5,12 @@ const Height=preload("res://scripts/world/city_creation_entry_height.gd")
 const Terrain=preload("res://scripts/world/city_creation_terrain.gd")
 const MAX_WATER:=5.2
 const HALF_FACE:=.35 # Existing ordinary doorway/public approach width.
+const Obstacles=preload("res://scripts/world/city_creation_public_space_obstacles.gd")
 
 static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->Array:
-	var result:Array=[];var obstacles:Array=[]
+	var result:Array=[];var geometry:=Obstacles.collect(city)
 	for house:Dictionary in city.houses:
-		for cell:Dictionary in house.cells:obstacles.append(Frame.footprint(house,cell))
-	for landmark:Dictionary in city.placed_landmarks:obstacles.append(city.PlacedLandmarks.footprint(landmark))
-	for house:Dictionary in city.houses:
+		var obstacles:=Obstacles.for_source(geometry,house.id)
 		var member:Dictionary=report.houses[house.id]
 		if member.water_distance>MAX_WATER and member.prototype not in ["venetian_loggia","peristyle"]:continue
 		var faces:Array=[];var entries:Array=[];var rejected:Array=[];var sources:Array=[house.id]

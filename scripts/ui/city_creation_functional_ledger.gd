@@ -36,7 +36,9 @@ static func refresh(widget:RefCounted)->bool:
 	lines.append("\n[b]场所空间[/b]")
 	for space:Dictionary in report.spaces:
 		var names:Array=[]
-		for id:String in space.members:names.append(Safe.safe(str(widget.demo.state.houses[widget.demo.state._house_index(id)].name)))
+		for id:String in space.members:
+			var index:int=widget.demo.state._house_index(id)
+			names.append(Safe.safe(str(widget.demo.state.houses[index].name) if index>=0 else str(widget.demo.state.PlacedLandmarks.Legacy.TITLES[widget.demo.state.PlacedLandmarks.row(widget.demo.state,id).blueprint])))
 		var stage:String={"trait":"特色","cluster":"局部空间","district":"成区"}[space.stage]
 		var detail:String="真实院落 · 公共通口已接通" if space.eligibility.district else "真实院落 · 等待道路发布" if space.eligibility.reason=="network_waiting" else "真实院落 · 院内入口尚未接通公共路网" if space.eligibility.reason=="portal_disconnected" else "真实院落 · 需要通向院内的公共入口" if space.stage=="cluster" else "居住体量 · 尚无已验证院落"
 		if space.evidence.geometry=="half_enclosure":detail="半围合 · "+("留有可进入的干地" if space.evidence.open_access else "开口通路受阻")+(" · 道路待更新" if not report.network_ready else "")

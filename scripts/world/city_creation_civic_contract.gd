@@ -7,13 +7,12 @@ const Ground=preload("res://scripts/world/city_creation_artisan_contract.gd")
 const BODIES:=["ionic_stoa","roman_basilica","rotunda","guildhall"]
 const START:=.85 # Outside the shipped .71m stoa walkway and .755m rotunda stair.
 const DEPTH:=1.8 # One room-sized public forecourt beyond the actual portico.
+const Obstacles=preload("res://scripts/world/city_creation_public_space_obstacles.gd")
 
 static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->Array:
-	var result:Array=[];var obstacles:Array=[]
+	var result:Array=[];var geometry:=Obstacles.collect(city)
 	for house:Dictionary in city.houses:
-		for cell:Dictionary in house.cells:obstacles.append(Frame.footprint(house,cell))
-	for landmark:Dictionary in city.placed_landmarks:obstacles.append(city.PlacedLandmarks.footprint(landmark))
-	for house:Dictionary in city.houses:
+		var obstacles:=Obstacles.for_source(geometry,house.id)
 		var member:Dictionary=report.houses[house.id];var prototype:String=member.prototype
 		if prototype not in BODIES or not Civic.eligible(city,house):continue
 		# Only the renaissance renderer installs PedimentedGuildhall.
@@ -31,7 +30,7 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 			var shift:Vector2=tangent*(offset/.9)
 			var start:Vector2=entry.wall_at+normal*START+shift;var end:Vector2=start+normal*DEPTH
 			var box:={"polygon":PackedVector2Array([start-tangent,start+tangent,end+tangent,end-tangent])}
-			var approach:={"polygon":PackedVector2Array([entry.wall_at+normal*.18-tangent*(.35/.9),entry.wall_at+normal*.18+tangent*(.35/.9),end+tangent*(.35/.9),end-tangent*(.35/.9)])}
+			var approach:={"polygon":PackedVector2Array([entry.wall_at+normal*(.10 if prototype=="ionic_stoa" else .18)-tangent*(.35/.9),entry.wall_at+normal*(.10 if prototype=="ionic_stoa" else .18)+tangent*(.35/.9),end+tangent*(.35/.9),end-tangent*(.35/.9)])}
 			if obstacles.any(func(o):return Frame.boxes_overlap(box,o) or Frame.boxes_overlap(approach,o)):continue
 			if float(water_distance.call(box))<.05 or float(water_distance.call(approach))<.05:continue
 			if not Ground._usable_ground(city,start,end,tangent):continue
