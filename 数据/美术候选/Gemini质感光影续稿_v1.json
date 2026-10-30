@@ -1,0 +1,159 @@
+{
+  "kind": "art_continuation_review_catalog",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "sources": [
+    {
+      "path": "文档/来源/20261030_Gemini_美术质感光影_续稿.txt",
+      "bytes": 9810,
+      "sha256": "963c91ec5018c57837413bc7d426b18f9de12fe84ece71e3c6df73f8af55c42d"
+    },
+    {
+      "path": "文档/来源/20261030_Gemini_美术质感光影_配套补丁.txt",
+      "bytes": 6250,
+      "sha256": "b698ecbcab9579ea46be905f923101e43595e65883b1bbf90cb833e5c1f82ff8"
+    }
+  ],
+  "review": "文档/59_美术质感光影续稿审阅与施工映射.md",
+  "received_scope": "P2 expected-visual continuation, P3, parameter table and three companion patches; earlier art manuscript not received",
+  "source_snippets": {
+    "environment": "extends RefCounted\r\n## Shared three-phase light rig; light changes never rebuild geometry or PCM.\r\nvar environment: Environment\r\nvar sky_material: ProceduralSkyMaterial\r\nvar sun: DirectionalLight3D\r\nvar view_pitch := 0.8\r\nvar current_phase := 0\r\n\r\nfunc setup(parent: Node3D) -> void:\r\n\tvar world := WorldEnvironment.new()\r\n\tworld.name = \"ValleyEnvironment\"\r\n\tenvironment = Environment.new()\r\n\tsky_material = ProceduralSkyMaterial.new()\r\n\tvar sky := Sky.new()\r\n\tsky.sky_material = sky_material\r\n\tenvironment.background_mode = Environment.BG_COLOR\r\n\tenvironment.sky = sky\r\n\tenvironment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY\r\n\tenvironment.ambient_light_sky_contribution = 0.52\r\n\tenvironment.ssao_enabled = true\r\n\tenvironment.ssao_radius = 0.75\r\n\tenvironment.ssao_intensity = 1.15\r\n\tenvironment.ssao_power = 1.25\r\n\tenvironment.ssao_detail = 0.5\r\n\tenvironment.ssao_light_affect = 0.14\r\n\tenvironment.tonemap_mode = Environment.TONE_MAPPER_FILMIC\r\n\tenvironment.tonemap_white = 2.35\r\n\tworld.environment = environment\r\n\tparent.add_child(world)\r\n\tsun = DirectionalLight3D.new()\r\n\tsun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS\r\n\tsun.directional_shadow_split_1 = 0.26\r\n\tsun.directional_shadow_blend_splits = true\r\n\tsun.shadow_normal_bias = 1.15\r\n\tsun.shadow_opacity = 0.82\r\n\tsun.shadow_blur = 1.1\r\n\tsun.shadow_enabled = true\r\n\tsun.directional_shadow_max_distance = 92.0\r\n\tsun.shadow_bias = 0.018\r\n\tparent.add_child(sun)\r\n\tapply(0)\r\n\r\nfunc apply(phase: int) -> void:\r\n\tcurrent_phase = clampi(phase, 0, 2)\r\n\t# [sky_top, sky_horizon, bg_color, sun_color, sun_energy, amb_energy, exposure, sun_rot, amb_color, white, shadow_op]\r\n\tvar row: Array = [\r\n\t\t[\"5892c4\", \"e6dec8\", \"d0e0dc\", \"fff4e0\", 1.12, 0.44, 0.80, Vector3(-48, -36, 0), \"bfd4e6\", 2.35, 0.82],\r\n\t\t[\"435f8c\", \"eb9e78\", \"b59b94\", \"ffae68\", 1.02, 0.38, 0.86, Vector3(-19, -52, 0), \"8a86a6\", 2.20, 0.80],\r\n\t\t[\"101c2e\", \"1e3148\", \"152436\", \"6484b0\", 0.22, 0.20, 1.02, Vector3(-42,  28, 0), \"22334d\", 1.95, 0.70]\r\n\t][current_phase]\r\n\tsky_material.sky_top_color = Color(row[0])\r\n\tsky_material.sky_horizon_color = Color(row[1])\r\n\tsky_material.ground_horizon_color = Color(row[1]).darkened(0.16)\r\n\tsky_material.ground_bottom_color = Color(\"6e7464\").darkened(0.50 if current_phase == 2 else 0.0)\r\n\tenvironment.background_color = Color(row[2])\r\n\tenvironment.ambient_light_color = Color(row[8])\r\n\tenvironment.ambient_light_energy = row[5]\r\n\tenvironment.tonemap_exposure = row[6]\r\n\tenvironment.tonemap_white = row[9]\r\n\tsun.light_color = Color(row[3])\r\n\tsun.light_energy = row[4]\r\n\tsun.rotation_degrees = row[7]\r\n\tsun.shadow_opacity = row[10]\r\n\tset_view(view_pitch)\r\n\r\nfunc set_view(pitch: float) -> void:\r\n\tview_pitch = pitch\r\n\tvar low := 1.0 - smoothstep(0.18, 0.55, pitch)\r\n\t# 常驻轻度远景空气透视，拉开 80m 建造区、河湾与 160m 远山的空间层次\r\n\tenvironment.fog_enabled = true\r\n\tenvironment.fog_mode = Environment.FOG_MODE_DEPTH\r\n\tenvironment.fog_depth_begin = lerpf(38.0, 22.0, low)\r\n\tenvironment.fog_depth_end = lerpf(225.0, 145.0, low)\r\n\tenvironment.fog_depth_curve = 1.85\r\n\tvar haze_colors := [Color(\"cadbe0\"), Color(\"cfa092\"), Color(\"182638\")]\r\n\tenvironment.fog_light_color = haze_colors[current_phase]\r\n\tenvironment.fog_light_energy = [0.52, 0.60, 0.45][current_phase]\r\n\tenvironment.fog_sky_affect = 0.0",
+    "wall_material_source": "extends RefCounted\r\nconst WallShader := preload(\"res://scripts/visual/shaders/creation_wall.gdshader\")\r\nenum Kind { PLASTER, STONE, TERRACOTTA, SLATE, CANTILEVER, TIMBER, METAL }\r\n\r\nstatic func source(color: Color, texture: Texture2D = null, style: String = \"classic\", kind: int = Kind.PLASTER) -> StandardMaterial3D:\r\n\tvar material := StandardMaterial3D.new()\r\n\tmaterial.albedo_color = color\r\n\tmaterial.albedo_texture = texture\r\n\tmaterial.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS\r\n\tmaterial.texture_repeat = true\r\n\tif style == \"stone\" and texture != null:\r\n\t\tmaterial.uv1_scale = Vector3(0.68, 0.68, 0.68)\r\n\tmaterial.roughness = 0.96 if style == \"stone\" else (0.62 if kind == Kind.TIMBER else (0.38 if kind == Kind.METAL else 0.90))\r\n\tmaterial.cull_mode = BaseMaterial3D.CULL_DISABLED if style == \"stone\" else BaseMaterial3D.CULL_BACK\r\n\tmaterial.set_meta(\"creation_wall\", true)\r\n\tmaterial.set_meta(\"creation_wall_style\", style)\r\n\tmaterial.set_meta(\"creation_surface_kind\", kind)\r\n\treturn material",
+    "window_glass_helper": "func _window_glass_material(seed_value: int) -> StandardMaterial3D:\r\n\tvar variant := posmod(seed_value, 4)\r\n\tvar key := \"window_glass_%d\" % variant\r\n\tif materials.has(key):\r\n\t\treturn materials[key]\r\n\tvar tints := [\r\n\t\tColor(\"355256\"),\r\n\t\tColor(\"2f4b52\"),\r\n\t\tColor(\"3b5759\"),\r\n\t\tColor(\"324d4e\")\r\n\t]\r\n\tvar mat := WallMaterial.source(tints[variant], null, \"component\", WallMaterial.Kind.SLATE)\r\n\tmat.roughness = 0.22\r\n\tmaterials[key] = mat\r\n\treturn mat",
+    "folded_grass_rounded": "    static func _rounded(s: SurfaceTool, root: Vector3, outward: Vector3, across: Vector3, height: float, reach: float, width: float, index: int) -> void:\r\n        var steps := 4\r\n        var t_vals := [0.0, 0.28, 0.58, 0.84, 1.0]\r\n        var w_vals := [0.42, 0.95, 1.0, 0.58, 0.0]\r\n        var ridge_lift := 0.22 # 叶脉中央隆起比例，形成左右受光分明的 V 型折面\r\n        for i in range(steps):\r\n            var t0: float = t_vals[i]\r\n            var t1: float = t_vals[i + 1]\r\n            var c0 := _center(root, outward, height, reach, t0, index)\r\n            var c1 := _center(root, outward, height, reach, t1, index)\r\n            var tangent := (c1 - c0).normalized()\r\n            var up_axis := across.cross(tangent).normalized()\r\n            var w0: float = width * w_vals[i]\r\n            var w1: float = width * w_vals[i + 1]\r\n            var r0 := c0 + up_axis * (w0 * ridge_lift)\r\n            var r1 := c1 + up_axis * (w1 * ridge_lift)\r\n            var l0 := c0 - across * w0\r\n            var l1 := c1 - across * w1\r\n            var rt0 := c0 + across * w0\r\n            var rt1 := c1 + across * w1\r\n            var n_left := (up_axis * 0.78 - across * 0.62).normalized()\r\n            var n_right := (up_axis * 0.78 + across * 0.62).normalized()\r\n            # 左半叶面与右半叶面沿着中央叶脉 r0-r1 折合，斜阳下形成清晰的立体明暗脊线\r\n            for tri: Array in [[l0, r0, r1, n_left], [l0, r1, l1, n_left], [r0, rt0, rt1, n_right], [r0, rt1, r1, n_right]]:\r\n                var n: Vector3 = tri[3]\r\n                for k in range(3):\r\n                    var p: Vector3 = tri[k]\r\n                    s.set_normal(n)\r\n                    s.set_color(Color.WHITE)\r\n                    s.set_uv(Vector2(float(index + 1), clampf(p.y / height, 0.0, 1.0)))\r\n                    s.add_vertex(p)"
+  },
+  "source_parameter_rows": [
+    {
+      "module": "**全局环境光**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "`tonemap_exposure` (昼/夕/夜)",
+      "claimed_old": "`0.64 / 0.76 / 1.08`",
+      "proposed_start": "**`0.80 / 0.86 / 1.02`**",
+      "claimed_effect": "解除日间灰暗欠曝，拉开受光与背光明暗对比"
+    },
+    {
+      "module": "**全局环境光**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "`tonemap_white`",
+      "claimed_old": "`1.85`",
+      "proposed_start": "**`2.35`**",
+      "claimed_effect": "保护高曝光下暖白石灰墙的抹刀细节不过曝死白"
+    },
+    {
+      "module": "**全局环境光**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "日间 `ambient_light_color`",
+      "claimed_old": "`#f2ead8` (暖米白)",
+      "proposed_start": "**`#bfd4e6` (微冷天青)**",
+      "claimed_effect": "建立“暖阳受光 vs 冷青背光”的水彩体积感"
+    },
+    {
+      "module": "**全局环境光**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "夕照 `ambient_light_color`",
+      "claimed_old": "`#e1d5c8` (暖灰)",
+      "proposed_start": "**`#8a86a6` (暮光冷紫)**",
+      "claimed_effect": "衬托 `#ffae68` 金珀斜阳与暖窗灯光"
+    },
+    {
+      "module": "**全局环境光**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "夜间 `ambient_light_energy`",
+      "claimed_old": "`0.34`",
+      "proposed_start": "**`0.20`** (`#22334d`)",
+      "claimed_effect": "压暗夜空底色，凸显万家灯火、路灯与水面灯影"
+    },
+    {
+      "module": "**太阳阴影**",
+      "file": "`city_creation_environment.gd`",
+      "parameter": "`shadow_bias` / `normal_bias`",
+      "claimed_old": "`0.025 / 1.50`",
+      "proposed_start": "**`0.018 / 1.15`**",
+      "claimed_effect": "消除窗楣、檐口、石阶的阴影脱离（Peter-panning）"
+    },
+    {
+      "module": "**建筑墙体**",
+      "file": "`creation_wall.gdshader`",
+      "parameter": "`render_mode` 高光模式",
+      "claimed_old": "`specular_disabled`",
+      "proposed_start": "**`specular_schlick_ggx`**",
+      "claimed_effect": "恢复石材、木材、陶瓦、板岩、铜铁的真实光泽差异"
+    },
+    {
+      "module": "**建筑墙体**",
+      "file": "`creation_wall.gdshader`",
+      "parameter": "`surface_kind` 枚举范围",
+      "claimed_old": "`0..4` (5类共用噪点)",
+      "proposed_start": "**`0..6` (新增木材5、金属6)**",
+      "claimed_effect": "分离灰泥横纹、石缝凹槽、顺纹木纤维与古铜绿锈"
+    },
+    {
+      "module": "**建筑门窗**",
+      "file": "`city_creation_renderer.gd`",
+      "parameter": "玻璃面局部 Z 坐标",
+      "claimed_old": "`z = 0.14` (凸出墙外)",
+      "proposed_start": "**`z = 0.048` (内退窗框内)**",
+      "claimed_effect": "形成真实 `6cm` 窗洞深槽阴影与微外开百叶立体感"
+    },
+    {
+      "module": "**陶瓦屋顶**",
+      "file": "`creation_joined_roof.gdshader`",
+      "parameter": "筒瓦曲率 `across` / 瓦槽 `overlap`",
+      "claimed_old": "`0.19 / 0.14`",
+      "proposed_start": "**`0.32 / 0.26`** + 窑变云斑",
+      "claimed_effect": "强化瓦垄立体感，远景保留手工窑变色块不糊成平板"
+    },
+    {
+      "module": "**树冠叶片**",
+      "file": "`creation_foliage.gdshader`",
+      "parameter": "`light()` 漫反射项",
+      "claimed_old": "`ALBEDO * wrapped` (平方Bug)",
+      "proposed_start": "**`vec3(wrapped)` + 天光冷补光**",
+      "claimed_effect": "修复树冠死黑发闷，恢复阳光橄榄绿与叶缘琥珀透光"
+    },
+    {
+      "module": "**草甸色彩**",
+      "file": "`creation_meadow_palette.gdshaderinc`",
+      "parameter": "`grass_low / mid / high`",
+      "claimed_old": "`#406e45/#58814a/#70944f`",
+      "proposed_start": "**`#3d6136/#618242/#879e4f`**",
+      "claimed_effect": "消除冷蓝绿塑料感，与橄榄树、暖白石墙融入同色域"
+    },
+    {
+      "module": "**草甸网格**",
+      "file": "`city_creation_meadow_fold.gd`",
+      "parameter": "近景单簇三角形数",
+      "claimed_old": "`896` (8×8封闭管)",
+      "proposed_start": "**`98` (4段V型折脊叶)**",
+      "claimed_effect": "削减 89% 草地三角面，消除远景闪烁并强化叶脉明暗"
+    },
+    {
+      "module": "**石板道路**",
+      "file": "`creation_promenade.gdshader`",
+      "parameter": "法线与粗糙度",
+      "claimed_old": "纯平 `NORMAL`, `R=0.93`",
+      "proposed_start": "**`paving_normal` + 石缝青苔**",
+      "claimed_effect": "斜光下呈现真实石块边缘倒角高光与石缝微湿苔痕"
+    },
+    {
+      "module": "**河流水体**",
+      "file": "`creation_water.gdshader`",
+      "parameter": "深水 `ROUGHNESS` / `SPECULAR`",
+      "claimed_old": "`0.64 / 0.16` (哑光绿漆)",
+      "proposed_start": "**`0.11 / 0.72` + 砂床折射**",
+      "claimed_effect": "岸边清澈见底透出卵石砂床，河心映射清亮天光与波光"
+    }
+  ],
+  "disposition": {
+    "environment": "A/B starting parameters; no measured visual result",
+    "wall_material_source": "Blocked until shader, physical material fields, routing, cache/profile and recoloring all agree",
+    "window_glass_helper": "Rejected as direct patch: routes glass through slate wall shader",
+    "folded_grass_rounded": "Geometry experiment only; topology, normals, AABB, mask and LOD evidence required"
+  },
+  "unresolved": [
+    "earlier main manuscript and referenced full shaders/facade patch",
+    "renderer-version and actual viewport capability evidence",
+    "fixed-scene day/dusk/night and low-angle A/B",
+    "resource production specifications and actual frame/geometry measurements"
+  ]
+}

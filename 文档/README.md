@@ -11,6 +11,7 @@
 | M83/M84技术证据 | [52](52_画面连续性修补与证据.md) / [53](53_功能区与母曲编配施工记录.md) |
 | 双库预算、审阅与发布 | [37](37_双库同步与云端施工.md) |
 | Gemini三稿作曲审阅、候选谱与施工接入 | [58审阅映射](58_原创室内乐作曲审阅与施工映射.md)，`python tools/review_music_continuation.py --report 验证记录/音乐作曲续稿审阅_20261030/continuation_audit.json` |
+| 美术质感/光影续稿与补丁审阅 | [59审阅映射](59_美术质感光影续稿审阅与施工映射.md)，`python tools/review_art_continuation.py --report 验证记录/美术续稿审阅_20261030/static_review.json` |
 | 参考算法与提取边界 | [参考索引](参考索引.md) / [完整库施工核对](完整库施工核对.md) |
 | 归档与恢复 | [整理记录](整理记录.md) / [归档映射](归档映射.json) |
 

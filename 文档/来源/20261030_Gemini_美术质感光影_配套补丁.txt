@@ -1,0 +1,128 @@
+附：3 处配套 GDScript 落地方案补丁（直接替换对应函数）
+补丁 1：三态冷暖光影与全视角空气透视（scripts/visual/city_creation_environment.gd）
+对应 P0 阶段，直接替换 setup、apply 与 set_view，修复日间过暗曝光、建立“暖受光 vs 冷落影”对比，并让远山空气雾在常规营造视角常驻生效：
+code
+Gdscript
+# scripts/visual/city_creation_environment.gd
+extends RefCounted
+## Shared three-phase light rig; light changes never rebuild geometry or PCM.
+var environment: Environment
+var sky_material: ProceduralSkyMaterial
+var sun: DirectionalLight3D
+var view_pitch := 0.8
+var current_phase := 0
+
+func setup(parent: Node3D) -> void:
+	var world := WorldEnvironment.new()
+	world.name = "ValleyEnvironment"
+	environment = Environment.new()
+	sky_material = ProceduralSkyMaterial.new()
+	var sky := Sky.new()
+	sky.sky_material = sky_material
+	environment.background_mode = Environment.BG_COLOR
+	environment.sky = sky
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	environment.ambient_light_sky_contribution = 0.52
+	environment.ssao_enabled = true
+	environment.ssao_radius = 0.75
+	environment.ssao_intensity = 1.15
+	environment.ssao_power = 1.25
+	environment.ssao_detail = 0.5
+	environment.ssao_light_affect = 0.14
+	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	environment.tonemap_white = 2.35
+	world.environment = environment
+	parent.add_child(world)
+	sun = DirectionalLight3D.new()
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+	sun.directional_shadow_split_1 = 0.26
+	sun.directional_shadow_blend_splits = true
+	sun.shadow_normal_bias = 1.15
+	sun.shadow_opacity = 0.82
+	sun.shadow_blur = 1.1
+	sun.shadow_enabled = true
+	sun.directional_shadow_max_distance = 92.0
+	sun.shadow_bias = 0.018
+	parent.add_child(sun)
+	apply(0)
+
+func apply(phase: int) -> void:
+	current_phase = clampi(phase, 0, 2)
+	# [sky_top, sky_horizon, bg_color, sun_color, sun_energy, amb_energy, exposure, sun_rot, amb_color, white, shadow_op]
+	var row: Array = [
+		["5892c4", "e6dec8", "d0e0dc", "fff4e0", 1.12, 0.44, 0.80, Vector3(-48, -36, 0), "bfd4e6", 2.35, 0.82],
+		["435f8c", "eb9e78", "b59b94", "ffae68", 1.02, 0.38, 0.86, Vector3(-19, -52, 0), "8a86a6", 2.20, 0.80],
+		["101c2e", "1e3148", "152436", "6484b0", 0.22, 0.20, 1.02, Vector3(-42,  28, 0), "22334d", 1.95, 0.70]
+	][current_phase]
+	sky_material.sky_top_color = Color(row[0])
+	sky_material.sky_horizon_color = Color(row[1])
+	sky_material.ground_horizon_color = Color(row[1]).darkened(0.16)
+	sky_material.ground_bottom_color = Color("6e7464").darkened(0.50 if current_phase == 2 else 0.0)
+	environment.background_color = Color(row[2])
+	environment.ambient_light_color = Color(row[8])
+	environment.ambient_light_energy = row[5]
+	environment.tonemap_exposure = row[6]
+	environment.tonemap_white = row[9]
+	sun.light_color = Color(row[3])
+	sun.light_energy = row[4]
+	sun.rotation_degrees = row[7]
+	sun.shadow_opacity = row[10]
+	set_view(view_pitch)
+
+func set_view(pitch: float) -> void:
+	view_pitch = pitch
+	var low := 1.0 - smoothstep(0.18, 0.55, pitch)
+	# 常驻轻度远景空气透视，拉开 80m 建造区、河湾与 160m 远山的空间层次
+	environment.fog_enabled = true
+	environment.fog_mode = Environment.FOG_MODE_DEPTH
+	environment.fog_depth_begin = lerpf(38.0, 22.0, low)
+	environment.fog_depth_end = lerpf(225.0, 145.0, low)
+	environment.fog_depth_curve = 1.85
+	var haze_colors := [Color("cadbe0"), Color("cfa092"), Color("182638")]
+	environment.fog_light_color = haze_colors[current_phase]
+	environment.fog_light_energy = [0.52, 0.60, 0.45][current_phase]
+	environment.fog_sky_affect = 0.0
+补丁 2：建筑六材质枚举扩充（scripts/visual/city_creation_wall_material.gd）
+对应 P1 阶段，在 WallMaterial.Kind 中正式加入 TIMBER = 5 与 METAL = 6，保持原有 profile 索引位置完全兼容（tests/test_city_creation_component_material.gd 中检查的 profile[9] 与 profile[10] 不变）：
+code
+Gdscript
+# scripts/visual/city_creation_wall_material.gd
+extends RefCounted
+const WallShader := preload("res://scripts/visual/shaders/creation_wall.gdshader")
+enum Kind { PLASTER, STONE, TERRACOTTA, SLATE, CANTILEVER, TIMBER, METAL }
+
+static func source(color: Color, texture: Texture2D = null, style: String = "classic", kind: int = Kind.PLASTER) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	material.albedo_texture = texture
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	material.texture_repeat = true
+	if style == "stone" and texture != null:
+		material.uv1_scale = Vector3(0.68, 0.68, 0.68)
+	material.roughness = 0.96 if style == "stone" else (0.62 if kind == Kind.TIMBER else (0.38 if kind == Kind.METAL else 0.90))
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED if style == "stone" else BaseMaterial3D.CULL_BACK
+	material.set_meta("creation_wall", true)
+	material.set_meta("creation_wall_style", style)
+	material.set_meta("creation_surface_kind", kind)
+	return material
+(其余 apply、profile、merged 方法保持原文件不变，确保 test_city_creation_component_material.gd 100% 通过)
+补丁 3：内凹窗洞的吹制玻璃材质生成函数（scripts/visual/city_creation_renderer.gd）
+对应 P2 阶段，在 city_creation_renderer.gd 中添加 _window_glass_material(seed_value: int) 辅助方法（供上文 3.1 节改造后的 _facade() 调用）。它标记了 creation_wall 以维持 MeshBatcher 合批，并通过低粗糙度与微调色差赋予日间窗户清透的蓝绿天光反射感：
+code
+Gdscript
+# 添加至 scripts/visual/city_creation_renderer.gd (_material 函数下方)
+func _window_glass_material(seed_value: int) -> StandardMaterial3D:
+	var variant := posmod(seed_value, 4)
+	var key := "window_glass_%d" % variant
+	if materials.has(key):
+		return materials[key]
+	var tints := [
+		Color("355256"),
+		Color("2f4b52"),
+		Color("3b5759"),
+		Color("324d4e")
+	]
+	var mat := WallMaterial.source(tints[variant], null, "component", WallMaterial.Kind.SLATE)
+	mat.roughness = 0.22
+	materials[key] = mat
+	return mat

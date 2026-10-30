@@ -1,0 +1,97 @@
+（接上文 P2 → 2. 预期视觉变化）
+
+  - 建筑立面彻底摆脱“外贴纸感”，每个窗口在日间都有扎实的上楣投射暗影与微蓝天光反射，两侧外旋 14° 的百叶窗在墙面上拉出灵动的斜影；
+  - 到了夕照与星夜，整条街的窗户不再是一模一样的扁平橘黄块，而是呈现出“下亮上柔的室内台灯漫射 + 十字窗棂剪影 + 逐户冷暖明暗呼吸”的万家灯火感；
+  - 石板大道（Promenade / Avenue / Tram）在低角度阳光下浮现出真实的石块边缘倒角高光与石缝微湿青苔，与建筑墙根的返潮苔痕连成一体。
+
+3.  工程不变量守卫：
+      - 窗框与百叶窗均作为 wall 子节点在 _merge_meshes(root) 中按既有 MeshBatcher 合并，不新增
+        StaticBody3D 或
+        CollisionShape3D，保证射线拾取（_ray_hit）、门前接路判定（Frontage.terminal）与存档快照 100%
+        保持原样。
+      - 对窗框/百叶窗使用的颜色严格从 HouseColors._colors(p) 既有 27 色配方表中取值（如
+        p[2]、p[2].lightened(0.13)、Color("d5c5a4")），确保
+        try_update_house_colors() 零重建快速换色路径不回退。
+4.  验证命令：
+      - Godot --path . --rendering-method gl_compatibility --audio-driver WASAPI
+        --script tools/check_creation_bridge_lighting_live.gd --
+        --isolated-session（核验 02_houses_day、04_evening、05_night 与
+        07_path_blended_material 原图及剪裁像素统计）【待实窗图证核验】。
+
+P3：清透折射水体、湿水线与折面草甸减负（水岸质感与帧率双赢）
+
+1.  修改文件：
+      - scripts/visual/shaders/creation_water.gdshader（降低深水 ROUGHNESS 至 0.11、提高
+        SPECULAR 至 0.72；利用 bank_sand 与水波法线偏移实现浅滩卵石砂床折射透底，叠加波峰阳光闪烁点列）。
+      - scripts/visual/city_creation_meadow_fold.gd &
+        scripts/visual/shaders/creation_lawn.gdshader（将近景 _rounded 的 8环×8扇区
+        封闭管体改为 4段双坡折脊叶片 Cambered V-Blade，将单簇三角形从 896 降至 98，并将 blade_world_normal
+        法线权重从 0.20 提升至 0.45）。
+2.  具体几何改法代码（scripts/visual/city_creation_meadow_fold.gd）：
+      - 保持 blade() 与 base() 的函数签名、UV 编码（UV.x = index + 1, UV.y = tip_weight）及
+        GrassMask 禁草边界完全不变，仅用带中央叶脉折脊的双坡面替代冗余封闭圆管：
+    # scripts/visual/city_creation_meadow_fold.gd :: _rounded() 替换为轻量立体折脊叶
+    static func _rounded(s: SurfaceTool, root: Vector3, outward: Vector3, across: Vector3, height: float, reach: float, width: float, index: int) -> void:
+        var steps := 4
+        var t_vals := [0.0, 0.28, 0.58, 0.84, 1.0]
+        var w_vals := [0.42, 0.95, 1.0, 0.58, 0.0]
+        var ridge_lift := 0.22 # 叶脉中央隆起比例，形成左右受光分明的 V 型折面
+        for i in range(steps):
+            var t0: float = t_vals[i]
+            var t1: float = t_vals[i + 1]
+            var c0 := _center(root, outward, height, reach, t0, index)
+            var c1 := _center(root, outward, height, reach, t1, index)
+            var tangent := (c1 - c0).normalized()
+            var up_axis := across.cross(tangent).normalized()
+            var w0: float = width * w_vals[i]
+            var w1: float = width * w_vals[i + 1]
+            var r0 := c0 + up_axis * (w0 * ridge_lift)
+            var r1 := c1 + up_axis * (w1 * ridge_lift)
+            var l0 := c0 - across * w0
+            var l1 := c1 - across * w1
+            var rt0 := c0 + across * w0
+            var rt1 := c1 + across * w1
+            var n_left := (up_axis * 0.78 - across * 0.62).normalized()
+            var n_right := (up_axis * 0.78 + across * 0.62).normalized()
+            # 左半叶面与右半叶面沿着中央叶脉 r0-r1 折合，斜阳下形成清晰的立体明暗脊线
+            for tri: Array in [[l0, r0, r1, n_left], [l0, r1, l1, n_left], [r0, rt0, rt1, n_right], [r0, rt1, r1, n_right]]:
+                var n: Vector3 = tri[3]
+                for k in range(3):
+                    var p: Vector3 = tri[k]
+                    s.set_normal(n)
+                    s.set_color(Color.WHITE)
+                    s.set_uv(Vector2(float(index + 1), clampf(p.y / height, 0.0, 1.0)))
+                    s.add_vertex(p)
+3.  预期视觉与性能变化：
+      - 水岸质变：河水告别“不透明绿油漆”，岸边 0 ~ 0.45m
+        清澈透出暖色砂石河床与水底焦散，河心反射出天空与夕阳色温，临水桥墩、石岸与栈桥木桩底部呈现真实的深色湿润水线；
+      - 草甸质感与减负双赢：单屋场景草地三角形从 707 万降至约 78 万（削减近 89% 顶点负载），彻底消除中距离管体亚像素摩尔纹闪烁，同时因
+        blade_world_normal 权重提高到 0.45，近景草叶的中央叶脉折脊反而比原先更立体、更具水彩绒毛光泽。
+4.  验证命令：
+      - Godot --headless --path . --audio-driver Dummy --script
+        tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session（375
+        项检查 / 27 份作品快照回读零破坏）。
+      - Godot --path . --rendering-method gl_compatibility --audio-driver WASAPI
+        --script tools/check_creation_meadow_palette_live.gd --
+        --isolated-session（核验草甸 MultiMesh AABB 包容性、禁草净空与实窗帧时）【待实窗图证核验】。
+
+五、 核心改造参数速查总表（供施工直接对表）
+
+| 模块        | 文件路径                                  | 参数 / 变量名                      | 旧值                         | **新方案起点值**                    | 视觉作用                           |
+| :-------- | :------------------------------------ | :---------------------------- | :------------------------- | :---------------------------- | :----------------------------- |
+| **全局环境光** | `city_creation_environment.gd`        | `tonemap_exposure` (昼/夕/夜)    | `0.64 / 0.76 / 1.08`       | **`0.80 / 0.86 / 1.02`**      | 解除日间灰暗欠曝，拉开受光与背光明暗对比           |
+| **全局环境光** | `city_creation_environment.gd`        | `tonemap_white`               | `1.85`                     | **`2.35`**                    | 保护高曝光下暖白石灰墙的抹刀细节不过曝死白          |
+| **全局环境光** | `city_creation_environment.gd`        | 日间 `ambient_light_color`      | `#f2ead8` (暖米白)            | **`#bfd4e6` (微冷天青)**          | 建立“暖阳受光 vs 冷青背光”的水彩体积感         |
+| **全局环境光** | `city_creation_environment.gd`        | 夕照 `ambient_light_color`      | `#e1d5c8` (暖灰)             | **`#8a86a6` (暮光冷紫)**          | 衬托 `#ffae68` 金珀斜阳与暖窗灯光         |
+| **全局环境光** | `city_creation_environment.gd`        | 夜间 `ambient_light_energy`     | `0.34`                     | **`0.20`** (`#22334d`)        | 压暗夜空底色，凸显万家灯火、路灯与水面灯影          |
+| **太阳阴影**  | `city_creation_environment.gd`        | `shadow_bias` / `normal_bias` | `0.025 / 1.50`             | **`0.018 / 1.15`**            | 消除窗楣、檐口、石阶的阴影脱离（Peter-panning） |
+| **建筑墙体**  | `creation_wall.gdshader`              | `render_mode` 高光模式            | `specular_disabled`        | **`specular_schlick_ggx`**    | 恢复石材、木材、陶瓦、板岩、铜铁的真实光泽差异        |
+| **建筑墙体**  | `creation_wall.gdshader`              | `surface_kind` 枚举范围           | `0..4` (5类共用噪点)            | **`0..6` (新增木材5、金属6)**        | 分离灰泥横纹、石缝凹槽、顺纹木纤维与古铜绿锈         |
+| **建筑门窗**  | `city_creation_renderer.gd`           | 玻璃面局部 Z 坐标                    | `z = 0.14` (凸出墙外)          | **`z = 0.048` (内退窗框内)**       | 形成真实 `6cm` 窗洞深槽阴影与微外开百叶立体感     |
+| **陶瓦屋顶**  | `creation_joined_roof.gdshader`       | 筒瓦曲率 `across` / 瓦槽 `overlap`  | `0.19 / 0.14`              | **`0.32 / 0.26`** + 窑变云斑      | 强化瓦垄立体感，远景保留手工窑变色块不糊成平板        |
+| **树冠叶片**  | `creation_foliage.gdshader`           | `light()` 漫反射项                | `ALBEDO * wrapped` (平方Bug) | **`vec3(wrapped)` + 天光冷补光**   | 修复树冠死黑发闷，恢复阳光橄榄绿与叶缘琥珀透光        |
+| **草甸色彩**  | `creation_meadow_palette.gdshaderinc` | `grass_low / mid / high`      | `#406e45/#58814a/#70944f`  | **`#3d6136/#618242/#879e4f`** | 消除冷蓝绿塑料感，与橄榄树、暖白石墙融入同色域        |
+| **草甸网格**  | `city_creation_meadow_fold.gd`        | 近景单簇三角形数                      | `896` (8×8封闭管)             | **`98` (4段V型折脊叶)**            | 削减 89% 草地三角面，消除远景闪烁并强化叶脉明暗     |
+| **石板道路**  | `creation_promenade.gdshader`         | 法线与粗糙度                        | 纯平 `NORMAL`, `R=0.93`      | **`paving_normal` + 石缝青苔**    | 斜光下呈现真实石块边缘倒角高光与石缝微湿苔痕         |
+| **河流水体**  | `creation_water.gdshader`             | 深水 `ROUGHNESS` / `SPECULAR`   | `0.64 / 0.16` (哑光绿漆)       | **`0.11 / 0.72` + 砂床折射**      | 岸边清澈见底透出卵石砂床，河心映射清亮天光与波光       |
+
