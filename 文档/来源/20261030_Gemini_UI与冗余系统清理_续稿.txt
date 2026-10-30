@@ -1,0 +1,252 @@
+  - 底部居中 TactileDock：五大营造画具圆章（1 筑屋 · 2 修路 · 3 水岸 · 4 林木 · 5 地形）+ ↶ 撤销 / ↷ 重做。撤掉
+    free 模式下的“烟火（用途）”按钮；地标选址并入 [筑屋] 子气泡。
+  - 底部单行
+    WhisperKeycapBar：随当前画具与上下文切换的一句话操作轻语（熟练操作后自动半透明淡出），彻底取消顶部常驻催建横幅（GuideWhisper）与地面催建金圈。
+  - 房屋/地标选中态（SpatialBuildingPopover · 环绕建筑的净空罗盘）：
+      - 顶部胶囊：建筑名称（可改名）+ 原型/地标身份标签（移除 ★ 1～5 品质星级与 [详情] 二级抽屉按钮）。
+      - 左翼（形制）：[时代风貌]
+        轮换、[屋式与原型]（整合灰泥/木构/石砌/圆塔与当前风貌可选原型剪影）、[微雕]（直墙/圆角/斜切/外挑/飘窗/阳台/侧翼微折，滚轮微调、右键随路）。
+      - 右翼（色彩）：4 枚基础色标、[吸管（沿用此屋外观）]、[更多]（展开墙面/屋顶自由色轮与 6 枚已开放珍藏饰色）。
+      - 底部状态与动作岛：单行安静的空间与声部归因说明（无 +35%、无 互哺、无 FirstBusinessStep 催建按钮）；动作岛提供
+        [加建]、[♫ 独奏]（一键触发 12 秒聚焦独奏，无需记忆 P+点击），地标额外显示 [奏乐章] / [移动] / [回收]。
+  - 空间与音乐说明入口：《城市总谱》（L 键或点击左上角五线谱）：
+      - 顶部控制区：演奏模式（自动轮替 / 固定风格 / 安静）、母曲选择（田园晨风 / 深流低语 / 静夜毛毡 等已接通曲目）、河湾调式（地貌原声 /
+        宫商河韵·C宫五声 / 印象水光·F大七）、以及 [显示/收起自动街景] 开关。
+      - 中部四声部编制：实时展示
+        Foundation（低音/暖垫）、Pulse（拨弦/摇曳/流水）、Answer（静默/接腔/卡农）、Lead（主奏/抒情/华彩）
+        正在发声的乐器与来源建筑（点击可移動镜头定位；准备中则标“下一小节汇入”）。
+      - 底部成型场所微景：仅列出已成型的庭院、窄巷、水岸、百工与礼乐场所及其声画贡献，彻底移除旧 原有用途与连接（report.zones）
+        重复列表与内部工程报错枚举。
+  - 作品收藏入口：《作品收藏馆》（Ctrl+O）：
+      - 顶部操作：当前作品命名 + [收藏这一刻] + [开启新河湾 · 六大声学地貌]。
+      - 页签 1《我的作品》：不可变作品版本卡片（封面图、保存时间、X 座房屋 · Y 个房间，在 free 作品下隐藏无意义的 0 场演出 计数）+
+        [打开这座河湾] + [♫ 留声机回放]。
+      - 页签 2《示范河湾与声学图鉴》：18 座官方示范河湾 + 跨城和弦留痕与 [巡礼]（12 秒 ChordTour）+ 名胜留痕（原第 3
+        页签的“当前河湾调式切换”迁回 L 总谱页）。
+
+2. 精简后的界面与信息架构图
+
+《共鸣之城》精简后 UI 与信息架构（Free 默认模式）
+│
+├─ 【常驻主界面 HUD】（零催促横幅、零经营飞章，>93% 画面留白）
+│   ├─ 左上：乐谱丝带 (ScoreRibbonHUD)
+│   │   ├─ 呼吸五线谱 + 当前母曲/段落名 ── [点击 / 按 L] ──► 打开《城市总谱》
+│   │   ├─ [作品收藏] 圆章 (Ctrl+O)
+│   │   ├─ [营造手札] 圆章 (F1)
+│   │   └─ [旧卷待启] 徽章 (仅当 credits > 0 或有未完旧来信时显示，领完即隐)
+│   ├─ 右上：日晷与漫步栏 (SundialHUD)
+│   │   └─ [晴昼/夕照/星夜] · [四时风物] · [静音] · [漫步 V (含长椅/阳台静听 B)] · [明信片 F12]
+│   ├─ 底部居中：五大营造画具栏 (TactileDock)
+│   │   ├─ [1 筑屋] ── 新屋四风貌 | 屋式与原型册 | 地标选址(4传世+6名胜) | 房间/露台/拆除
+│   │   ├─ [2 修路] ── 铺装材质(8种) | 街具(6种) | 路宽(滚轮/[/]) | 画法(随手/直路/曲路/环岛)
+│   │   ├─ [3 水岸] ── 池塘 / 引水支渠 | 宽度(1.8m / 3.2m / 5m)
+│   │   ├─ [4 林木] ── 单株 / 成片 | 树种与花丛(7种) | 笔刷尺寸
+│   │   ├─ [5 地形] ── 草丘 / 洼地 / 台地 / 露岩 / 柔坡 / 还原 | 半径与自然轮廓
+│   │   └─ [↶ 撤销] / [↷ 重做]
+│   └─ 底部窄条：键帽轻语 (WhisperKeycapBar)
+│       └─ 单行当前画具上下文操作提示（无顶部 GuideWhisper 双重叠字）
+│
+├─ 【上下文选中态：净空屋顶罗盘】(SpatialBuildingPopover · 房屋与地面地标共用)
+│   ├─ 顶部：名称编辑框 + 建筑原型/地标简称
+│   ├─ 左翼：[时代风貌] · [屋式与原型册 (含灰泥/木构/石砌/圆塔)] · [有机微雕]
+│   ├─ 右翼：[4枚基础色标] · [沿用此屋外观] · [更多配色 (自由色轮 + 6枚珍藏饰色)]
+│   ├─ 底部状态：单行空间与声部状态（如“水畔圆廊 · 正在贡献竖琴流水伴奏”）
+│   └─ 动作岛：[加建] · [♫ 独奏 (12秒聚焦倾听)] · (地标专属)[奏乐章 / 移动 / 旋转 / 回收]
+│
+├─ 【轻量侧边卷轴：《城市总谱》】(L 键 / 点击左上五线谱 · 非模态，不暂停世界)
+│   ├─ 1. 城市乐章与调式控制：模式(自动/固定/安静) · 母曲切换 · 调式(原声/C宫五声/F大七)
+│   ├─ 2. 四声部实时编制：Foundation / Pulse / Answer / Lead 当前分谱、乐器与来源定位
+│   ├─ 3. 已成型场所微景：庭院 / 窄巷 / 水岸 / 百工 / 礼乐（点击定位镜头）
+│   └─ 4. 自动街景开关：一键显示/收起派生微景（栈桥小灯/柱廊细藤/水岸布篷/浮灯）
+│
+├─ 【模态面板 A：《作品收藏馆》】(Ctrl+O)
+│   ├─ 顶部：作品命名 + [收藏这一刻] + [开启新河湾 · 六大声学地貌]
+│   ├─ 页签 1：我的作品（版本卡片 + 打开 + 留声机回放）
+│   └─ 页签 2：示范河湾与声学图鉴（18示范城 + 5和弦12秒巡礼 + 历史留痕）
+│
+└─ 【模态面板 B：《营造手札》】(F1 / J)
+    ├─ 页签 1：营造手势与快捷键速查
+    ├─ 页签 2：空间成景与室内乐编配指南
+    └─ 页签 3：历史权益与旧城转换（按 J 直达：已得18手札/旧章程/旧来信手动继续与领取/开启自由创作）
+
+3. 三段改造前后的具体操作流程对比
+
+流程一：营造水岸街区，听见声部变化并切换母曲与调式
+
+  - 改造前（Before · 6 步跨 3 个面板，伴随后台伪经营打断）：
+    1.  玩家点 [筑屋] 在河岸建起两栋“水畔圆廊（venetian_loggia）”；后台 WaterfrontRoleSeed 偷偷将第一栋设为
+        bakery（面包坊）、第二栋设为 garden_cafe（茶座）。
+    2.  屏幕上方 GuideWhisper 横幅催促：“沿屋门接通小路……”。玩家修路并添一栋民居后，Life 立即派出面包师揉面、买面包、坐茶座。
+    3.  数秒后，上方不断弹出 Toast：“☕ 2位街坊在花下喝完一盏茶”“♫
+        共鸣品质 2/5”，房屋外墙被自动挂上门垫与花盆，金色飞章射向左上角五线谱。
+    4.  玩家按 L 想看音乐变化，却先看到 +35%、水岸与栖居互哺 · 1 组、场所空间 诊断码、以及底下又重复一遍的
+        原有用途与连接，真正的《当前合奏》只有末尾 3 行。
+    5.  玩家想把母曲固定为《深流》：必须关掉 L，按 F1 打开帮助手册，在底部小字栏连点 MusicPreferenceMode 与
+        MusicPreferenceStyle。
+    6.  玩家还想把调式换成《C宫五声》：必须关掉 F1，按 Ctrl+O 打开《作品收藏》，切到第 3
+        个页签《留声机与名胜图鉴》，滚到底部点击“宫商河韵 · C宫五声”，再关掉收藏馆。
+  - 改造后（After · 3 步原位闭环，零打扰）：
+    1.  玩家在 [筑屋] 选水畔圆廊落笔，房屋保持纯粹建筑身份，不被偷改用途，无后台揉面/品质弹窗与飞章打扰。
+    2.  用 [修路] 接通沿岸街道，水岸空间契约自动成立，岸边自然派生布篷与浮灯；下一小节安全边界，竖琴流水（Pulse:
+        Flowing）平顺汇入母曲。
+    3.  玩家点击左上角五线谱（或按 L）打开《城市总谱》：一眼看见 Pulse · 流水拨弦 ←
+        石榴巷1号，并在同一面板顶部直接点选切换为《深流低语》与《C宫五声》。
+
+流程二：单屋造型微调、切换木构/圆塔、放置传世地标与 12 秒独奏静听
+
+  - 改造前（Before · 按钮被藏、面板套娃、地标割裂）：
+    1.  玩家点选房屋打开 RoofCompassRing：顶部挂着 ★ 3 星级，底部挂着 [看功能区] 或 [安排面包坊] 按钮。
+    2.  玩家想把房屋改为“木构”或“圆塔望楼”，在罗盘上找不到入口（被 lean_inspector.gd 的
+        pop.style_button.hide() 隐藏）。
+    3.  点击顶部 [详情] 弹出右侧 HouseDetailSheet；点击里面的 [用途] 弹出底部 HouseRolePalette；点击左翼
+        [原型] 又弹出右侧 PrototypeBook——改一栋房子要开关 4 个不同位置的面板。
+    4.  想放置“海神竖琴灯塔”：需去左上角点 [名胜] 印章，在左侧抽屉滑过 6 座旧屋式地标才能找到；放好后再点击该灯塔，右上角突然冒出一个粗糙的
+        GroundLandmarkActions 按钮框。
+    5.  想听 12 秒独奏：必须记住按住键盘 P 再左键点击房屋（且在 free 连续母曲下若该屋是 residential 还会因
+        SoloSpotlight.eligible 的角色限制而失败！）。
+  - 改造后（After · 单一净空罗盘，一步直达）：
+    1.  点选房屋，净空罗盘展开：无 ★ 星级、无经营催促按钮；左翼直接调整
+        [时代]、[屋式与原型]（灰泥/木构/石砌/圆塔与时代原型合一）、[微雕]；右翼直接换色或吸管取色。
+    2.  点击罗盘底部动作岛的 [♫ 独奏] 按钮（任意有效声部房屋均可触发），镜头自动轻柔聚焦屋顶、附近漫步居民驻足倾听 12 秒。
+    3.  在底部 [筑屋 -> 地标] 直接选取并放置地标；点击已放置的地面地标同样呼出上方净空罗盘（移动/旋转/独奏/回收），交互完全统一。
+
+流程三：老玩家在转换城/旧档中查阅历史权益并领取旧手札与来信
+
+  - 改造前（Before · 3 处重复入口、后台每 0.5 秒空转轮询）：
+    1.  即使已截止成长（growth_cutoff），InspirationDraft._process 仍每 0.5 秒调用
+        Receipts.collect -> take_events 遍历全城计数器。
+    2.  同一个“待选手札与旧来信”同时出现在：左上角 [保留手札] 徽章、左侧 J（手记） 抽屉的 HistoricalTasks、以及
+        F1（帮助手册） 底部的 CityLetters。
+    3.  点开 J 页的 [查看已得手札与历史权益]，界面直接打印 小数0.350000 等内部调试账本文字。
+  - 改造后（After · 平时静默休眠，一处查阅兑现）：
+    1.  新自由城无待领权益时，InspirationDraft 完全休眠不轮询，左上角零多余徽章。
+    2.  若打开带有未领 credits 或未完 active_vignette 的旧城/转换城，左上角浮现 [旧卷待启]
+        徽章，点击即可直接翻开三张保留手札完成选择（支持翻卷与 Undo）。
+    3.  按 J 或 F1 -> [历史权益与旧城转换]，可在同一页面清晰查阅已收录的 18 张手札卡片、历史和弦留痕并手动继续/领取旧来信（隐藏 6
+        位小数余量展示，底层字段原值保留）。
+
+三、 逐项清理表与依赖追踪
+
+1. 全局 UI 与系统清理决策总表
+
+| 序号     | 检查项 / 模块                                                                                           | 关键源码路径 (`scripts/...`)                                                                                                                                                              | 决定                       | 决定理由与依赖处理                                                                                                                                 |
+| :----- | :------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **01** | **新屋自动贴经营用途种子**<br>`PrototypeRoleSeed` / `WaterfrontRoleSeed`                                      | `world/city_creation_prototype_role_seed.gd`<br>`world/city_creation_waterfront_role_seed.gd`<br>`world/city_creation_build_brush.gd`                                               | **停止新产生**                | 阻断 `free` 模式后台自动生成面包坊/工坊/茶座的源头；`BuildBrush.apply` 在 `free` 下不再调用该种子，新屋保持 `residential`。保留脚本供旧测试或显式兼容调用。                                   |
+| **02** | **Free 后台经营与品质考核**<br>`Bakery` / `Workshop` / `Cafe`买面包前置 / `Matinee` / `Quality`                  | `world/city_creation_life.gd`<br>`world/city_creation_network.gd`<br>`world/city_creation_quality.gd`<br>`visual/city_creation_quality_visual.gd`                                   | **迁移后退场**<br>(仅限 `free`) | `free` 下停止工匠派单、买面包品茶前置、巡演轮询与 Lv.1～5 品质检定；`Network.prepare` 跳过 `free` 下的店家配对预热。`legacy` 模式完整保留。                                            |
+| **03** | **首秀心愿与返场加点轮询**<br>`WishFulfilment` / `CivicSupply` / `DebutEncore`                                | `world/city_creation_wish_fulfilment.gd`<br>`world/city_creation_civic_supply.gd`<br>`world/city_creation_debut_encore.gd`                                                          | **停止新产生**<br>(仅限 `free`) | `free` 下在 `Life._tick_life` 与 `JuiceFeedback._process` 中停止调用 `site_wishes.poll()` 与 `Debut.tick()`，消除隐藏的首炉爆竹、返场飞章与无效收据写入。                 |
+| **04** | **成长收据 0.5s 周期采集**<br>`InspirationDraft.poll` -\> `Receipts.collect`                               | `ui/city_creation_inspiration_draft.gd`<br>`world/city_creation_harmony_receipts.gd`                                                                                                | **停止新产生 / 移到次级入口**       | 已有 `growth_cutoff` 的城市在 `poll()` 中停止调用 `Receipts.collect`，防止后台每 0.5s 扫描全城并将 `state.dirty` 标脏；仅在存在待兑现 `credits` / `Unified.pending` 时显示徽章。 |
+| **05** | **四类场所几何契约**<br>`courtyard` / `waterfront` / `artisan` / `civic`                                   | `world/city_creation_functional_zones.gd`<br>`world/city_creation_*_contract.gd`                                                                                                    | **保留 + 改成自动派生**          | 保留全部几何、净空、高差与连通分量判定，作为母曲四声部编配与自动街景的后台权威输入；前台不再暴露 `trait/cluster/district` 阶段名与失败诊断码。                                                      |
+| **06** | **旧功能区列表 (`report.zones`) 与水岸栖居互哺 (`mutual`)**                                                     | `world/city_creation_functional_zones.gd`<br>`world/city_creation_functional_benefits.gd`<br>`ui/city_creation_functional_ledger.gd`<br>`ui/city_creation_free_spatial_guidance.gd` | **迁移后退场**                | `report.zones` 与 `report.spaces` 在 `L` 页重复；`benefits.mutual` 无独立声画消费者。从 `L` 页与房屋卡片移除二者展示。                                                 |
+| **07** | **百工 +35% 灵感加成**<br>`inspiration_multiplier`                                                       | `world/city_creation_functional_benefits.gd`<br>`ui/city_creation_free_spatial_guidance.gd`<br>`ui/city_creation_functional_ledger.gd`                                              | **停止新产生 / 移到次级入口**       | `free` 日常已无新 XP，从房屋选中态与 `L` 页撤除 `+35%` 显示；底层 `_award_recorded_xp` 保留 1.35 倍率供转换瞬間及唯一旧来信兑现使用，说明留存於历史权益页。                                   |
+| **08** | **五类建筑和弦与区域回响**<br>`SynergyBuffs` / `RegionalEcho` / `expansion_multiplier`                        | `world/city_creation_synergy_buffs.gd`<br>`world/city_creation_regional_echo.gd`<br>`ui/city_creation_score_ribbon.gd`                                                              | **移到次级入口**               | 撤除 `free` 日常界面的和弦生产/步速倍率文案与顶部家族收集目标；保留底层计算供 `AcousticArchive`（跨城图鉴）、`ChordTour`（12秒巡礼）与 `legacy` 模式使用。                                    |
+| **09** | **飞章动效与经营轻语聚合**<br>`JuiceFeedback` / `JuiceFlight` / `RewardWhisper`                               | `ui/city_creation_juice_feedback.gd`<br>`ui/city_creation_juice_flight.gd`<br>`ui/city_creation_reward_whisper.gd`                                                                  | **停止新产生**<br>(仅限 `free`) | `free` 下停用 3D 金弧、2D 飞章撞击五线谱与“河湾添了回响 · 品质 · 茶叙”聚合弹窗；仅保留落笔时的建筑微弹跳（`animate_house_bounce`）与拨奏涟漪。                                             |
+| **10** | **顶部常驻催建横幅与地面金圈**<br>`IntuitiveGuidance` / `FreeSpatialGuidance.apply`                             | `ui/city_creation_intuitive_guidance.gd`<br>`ui/city_creation_free_spatial_guidance.gd`                                                                                             | **重做 / 合并**              | 停用 `free_spatial_guidance.hint()` 催促凑齐百工/水岸的顶部横幅与地面金圈；操作提示统一归入底部单行 `WhisperKeycapBar`。                                                    |
+| **11** | **底部画具栏与“烟火”画具**<br>`TactileDock` / `RolePalette`                                                  | `ui/city_creation_tactile_dock.gd`<br>`ui/city_creation_build_palette.gd`<br>`ui/city_creation_role_palette.gd`                                                                     | **重做 / 合并**              | `free` 底部主栏改为 `筑屋 · 修路 · 水岸 · 林木 · 地形`；撤下常驻的 `Tool 4 (烟火/批量贴用途)`；地标选址并入 `筑屋` 子栏。                                                          |
+| **12** | **选中单屋罗盘与多级子面板**<br>`SpatialPopover` / `LeanInspector` / `PrototypeBook` / `GroundLandmarkActions` | `ui/city_creation_spatial_popover.gd`<br>`ui/city_creation_lean_inspector.gd`<br>`ui/city_creation_house_inspector.gd`<br>`ui/city_creation_ground_landmark_tool.gd`                | **重做 / 合并**              | 移除 `★` 星级与 `FirstBusinessStep`；恢复被隐藏的 `style_button`（灰泥/木构/石砌/圆塔）并与原型选择合并；底部动作岛直接提供 `[加建]` 与 `[♫ 独奏]`；地面地标共用此罗盘。                          |
+| **13** | **左侧三页签卷轴 (`J / 名胜 / L`) 与 `F1` 底部控件**                                                             | `ui/city_creation_paper_scroll.gd`<br>`ui/city_creation_functional_ledger.gd`<br>`ui/city_creation_guide_panel.gd`<br>`ui/city_creation_music_preferences.gd`                       | **合并 / 重做**              | `L` 独立为《城市总谱》（合入 `MusicPreferences`、调式切换与自动街景开关）；`名胜` 并入 `筑屋`；`J` 的历史来信与 18 卡权益合入 `F1 -> 历史权益` 页签。                                        |
+| **14** | **居民点景与个人聆听体验**<br>漫步 `V` / 长椅与阳台静听 `B` / 独奏 `SoloSpotlight` / 拨奏 `P`                              | `ui/city_creation_bench_view.gd`<br>`ui/city_creation_sitting_targets.gd`<br>`ui/city_creation_solo_spotlight.gd`<br>`ui/city_creation_strum_hold.gd`                               | **保留 + 优化入口**            | 四项体验均复用现有相机与短期声槽，真实自然；修复 `SoloSpotlight.eligible` 在 `free` 下的角色限制，并在房屋罗盘直接提供 `[♫ 独奏]` 按钮。                                                 |
+| **15** | **作品收藏、留声机与明信片**<br>`Gallery` / `Phonograph` / `PostcardStamp`                                     | `ui/city_creation_gallery.gd`<br>`ui/city_creation_gallery_panel.gd`<br>`ui/city_creation_postcard_stamp.gd`                                                                        | **保留 + 合并**              | 保留不可变版本收藏、地貌开局、留声机回放与明信片；将误放在收藏馆第 3 页签的“当前城市调式选择”迁回 `L` 总谱页，去掉作品卡片上的 `演出场次` 统计。                                                           |
+
+2. 三大专项技术核查：防漏算、防误删、防重复
+
+专项核查一：彻底阻断“界面隐藏了但后台继续算”的调用链
+
+1.  demo.gd:_process() 中的每 0.5 秒 UI 账本刷新（第 450～468 行）：
+      - 现状：即使 place_panel 永久隐藏，且处于 free 模式，demo._process 仍每 0.5 秒调用
+        life.summary()、_refresh_concert()、_refresh_district()、_refresh_bakeries()、_refresh_workshops()、_refresh_cafes()、_refresh_household()。其中
+        _refresh_bakeries() 会遍历全城面包坊调用 life.bakery_status()，_refresh_workshops()
+        会遍历全城工坊调用 life.workshop_status() 与 town.update_craft_progress()。
+      - 切断位置：在 demo.gd 的 life_ui_timer 分支与 _refresh_place() 中，当
+        state.CreationPolicy.is_free(state) 为真时，跳过
+        _refresh_bakeries()、_refresh_workshops()、_refresh_cafes()、_refresh_household()
+        的周期状态机拉取；炊烟与已存旧装饰仅在建筑几何变更（_after_edit / 读档发布）时按静态数据同步一次。
+2.  life.gd:_tick_life() 中的每 0.5 秒品质哈希与规则扫描（第 232～241 行）：
+      - 现状：每 0.5 秒计算 hash([state.revision, state.Quality.data(state)]) 并分批调用
+        _refresh_quality -> Quality.refresh -> Quality.amenity（内含
+        courtyard_plans() 与道路距离扫描）。
+      - 切断位置：在 Life._tick_life() 中，当 state.CreationPolicy.is_free(state)
+        为真时，直接跳过 _quality_timer 与 _quality_cursor 分支。
+3.  inspiration_draft.gd:_process() 中的每 0.5 秒收据差分（第 34～41、97～100 行）：
+      - 现状：每 0.5 秒运行 poll() -> Receipts.collect(demo.state) ->
+        Receipts.take_events(demo.state) ->
+        Receipts.counters(demo.state)，遍历所有房屋、库存、和弦与收据字典。
+      - 切断位置：当 demo.state.harmony_journey.has("growth_cutoff") 为真时，poll() 直接跳过
+        Receipts.collect(demo.state)；当同时满足 Journey.credits(journey) == 0 and
+        Unified.pending(demo.state).is_empty() 时，将 InspirationDraft 的
+        set_process(false)，仅在切城/读档/旧来信领取信号时唤醒检查一次。
+
+专项核查二：严禁误删的 free 与 legacy 共用底层依赖
+
+1.  隐藏的公开 API 适配节点（house_adapter.gd 与 tool_option_adapter.gd）：
+      - Place、HouseStyle、HouseEra、RoadOptions、RoadMode、RoadStyle、RoadSize、RoadDecoration、RoadRoundabout、VegetationOptions、WaterOptions、DistrictOptions、TerrainOptions
+        等控件被 TactileDock.bindings 与全部既有自动化测试脚本直接按名称索引。必须保留这两个 Adapter
+        脚本及其完整节点树与信号绑定。
+2.  道路连通图与区域网络发布（network.gd -> state.prepare_regional_echo）：
+      - FunctionalZones.for_city 依赖 city._region_network 中的
+        house_components、road_components 与 road_spans（由
+        RegionalEcho.prepare(self, network) 生成）。因此，在 free 模式下裁剪 RegionalEcho
+        的前台显示时，绝不能删除 state.prepare_regional_echo(network) 中的连通分量与路段归属提取逻辑！
+3.  茶座几何布局（cafe_layout_context.gd）与长椅路径附着（bench_seats.gd）：
+      - 虽然 free
+        停掉了“买面包→凑两人→坐6秒喝茶加余韵”的经营状态机，但水岸/街角的茶座桌椅渲染（visual/city_creation_cafe.gd）、茶座净空防穿模校验（placed_landmarks.gd:site）、以及居民/玩家按
+        B 静听的入座路径仍然依赖 CafeLayoutContext.layout() 与
+        Network._attachments_for_planar()。保留几何布局计算，仅停掉 Cafe.try_visit /
+        complete_tea 经营逻辑。
+
+专项核查三：消除“同一资格反复奖励或重复弹提示”
+
+1.  空间成区与和弦的双重提示：
+      - 现状：当玩家在 free 下接通水岸与居住区时，既改变了 FunctionalZones（在 L 页更新 spaces 与 zones），又通过
+        FunctionalBenefits.chords() 激活了 pastoral_triad，进而触发
+        JuiceFeedback.detector.collect() 播放房屋弹跳、金弧和飞章，并在 ScoreRibbon 和 L
+        页同时显示“水岸与栖居互哺”和“♫ 晨光田园三和弦”。
+      - 清理方案：free 下停用 JuiceFeedback 的和弦飞章，并在 L 页撤除 mutual
+        与旧和弦名，使一次空间成型只对应一次空间短音反馈 +
+        母曲对应声部合流。
+2.  新屋落笔时的多重文字提示：
+      - 现状：每次点地造房，demo._after_edit 都会调用 _message("新房屋已建成") 弹出顶部 Toast，同时顶部还有
+        GuideWhisper，底部还有 WhisperKeycapBar。
+      - 清理方案：在 demo._after_edit 中，常规成功建造/扩建/修路/种树（已有即时 3D 动效与清脆落笔音）不再弹出顶部文字
+        Toast；Toast 仅保留给保存成功、加载/转换提示、明信片生成及操作冲突/错误原因。
+
+3. “+35%、余韵、步速/产出/生产倍率、旧任务与成长权益”三维迁移与验证矩阵
+
+| 清理对象                                                                                | ① 数据记录（存档字段与校验）                                                                                                                                                                  | ② 现行运行效果（Runtime）                                                                                                                                                     | ③ 玩家可见入口（UI）                                                                                                  | 迁移实施与验证方法                                                                                                                 |
+| :---------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------ |
+| **+35% 百工加成**<br>(`FunctionalBenefits`)                                             | 不改动存档结构；保留 `harmony_xp`、`harmony_level`、`xp_remainder` 字段及 `HarmonyValidation` 的 `[0, 1)` 范围校验。                                                                                  | **Free**：日常 `award_xp` 因 `growth_cutoff` 恒返回 0；仅在 `GrowthTransition.settle`（转换瞬间）及 `Vignettes.complete`（兑现截止前遗留来信）调用 `_award_recorded_xp` 时乘 `1.35`。                  | 从 `free_spatial_guidance.gd`（房屋胶囊）和 `functional_ledger.gd`（`L` 页）移除 `+35%` 文案；仅在 `F1 -> 历史权益` 页当存在未领旧来信时显示说明。 | 用带未领旧来信的转换档测试：连接百工前庭后领取来信，断言 `earned == int(xp * 1.35 + remainder)`；日常 `L` 页与房屋卡片断言不含 `"+35%"` 字符串。                       |
+| **共鸣余韵**<br>(`resonance_afterglow`)                                                 | 保留 `state.resonance_afterglow` 字典及 `SaveValidation` 中的上限校验（含 `lasting_resonance`、`twilight_tea_pavilion`、植物宫与 Lv.5 倍率）。                                                          | **Legacy**：照常计时并加速烘焙/匠作 25%。<br>**Free**：停止 `advance_resonance_afterglow` 倒计时与新余韵发放；夜间暖窗由空间与声部直接驱动。                                                                   | `free` 下不显示余韵秒数；`legacy` 下照常显示。旧档转 `free` 时原字典数值原样冻结保留，不清零、不触发校验失败。                                           | 读取含 `resonance_afterglow`（含 `>180s` 样本）的 Schema 15～20 存档，验证冷读、转换、保存与 Undo 100% 通过。                                        |
+| **步速 / 产出 / 生产倍率**<br>(`ScoreModifiers` / `SynergyBuffs` / `Prosperity` / `Biomes`) | 保留 `era_modifiers`、`harmony_journey.traditions`、`biome_seed`、`microclimate`、`workshop_yield_remainder` 字段与校验。                                                                    | **Legacy**：照常计算所有倍率。<br>**Free**：因停用后台生产，生产与产出倍率自然休眠；市民漫步采用基础舒适步速。                                                                                                    | `free` 下全面撤除 UI 上的“生产+25%”“步速+15%”“每炉+1份”等功利词条，四时风物与地标仅展示声画描述。                                                | 在 `legacy` 档断言 `site_production_multiplier` 与 `walking_multiplier` 数值不变；在含 `workshop_yield_remainder = 0.5` 的旧档验证冷读与保存通过。 |
+| **旧任务与心愿**<br>(`active_vignette` / `wish_rewards` / `first_blessing_burst`)         | 保留 `harmony_journey` 中的 `vignette_serial`、`active_vignette`、`completed_vignettes`、`vignette_blessings`、`vignette_echoes` 及 `wish_rewards`、`first_blessing_burst` 校验。             | **Legacy**：照常自动派单与结算。<br>**Free**：`WishPins`、`VignetteJourney`、`WishFulfilment`、`DebutEncore` 全部停止后台轮询；已获 `vignette_blessings` 街角纪念碑（`legendary_wonder_plan.gd`）保留渲染。 | 将 `HistoricalTasks` 与 `CityLetters` 合并入 `F1 -> 历史权益` 页签（按 `J` 直达）；若有遗留 `active_vignette` 可在此手动点击检查/领取一次。      | 验证新 `free` 城与个人作品打开时 0 派单、0 后台 `SiteSearch` 线程；验证带未完来信的转换城可手动定位与一次性领取奖励。                                                  |
+| **18 张手札、4 章节纪念、5 和弦与两类地标**                                                         | 保留 18 个原 ID、`ranks`、`rarity_ranks`、`pending_draft`、`draft_rarities`、`draft_serial`、`heritage_credit`、`growth_memories`、`signature_unlocks`、`archive_unlocks`、`placed_landmarks`。 | **Free**：4 时代、6 珍藏饰色、2 额外调式、4 地面地标、6 屋式地标、栈桥小灯、爱奥尼长馆细藤、石阶琴键、9m 云廊全部直接可用，不伪造历史获得记录；旧待选邀约（`credits > 0`）仍可兑现。                                                           | 6 座屋式地标与 4 座地面地标并入底部 `[筑屋 -> 地标]`；5 和弦留痕与 `[巡礼]` 保存在收藏馆图鉴；18 卡历史记录收拢在 `F1 -> 历史权益` 页（隐藏 6 位小数余量显示）。           | 分别对新 `free`、旧 `free`（带多 `credits` 且缺 `draft_rarities`）、转换城与 `legacy` 城运行选卡、翻卷、地标放置、调式切换、Undo/Redo 与磁盘冷读测试。                |
+
+四、 分批施工顺序和验收
+
+为严格遵守工程维护规范（每轮推进一个可验证子步，demo/state/renderer/music 四主文件每轮只加 ≤8 行委托，不触碰个人 user://
+目录），建议按以下 四个施工批次 依次落地：
+
+| 批次                                                        | 施工范围与核心改动文件                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 依赖关系                               | 最低充分验收证据（CPU + 隔离旧档 + 实窗 GL/PCM）                                                                                                                                                                                                                                                                                 |
+| :-------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **第一批：立即清理**<br>斩断 Free 后台幽灵经营、空转轮询与飞章弹窗                  | 1\. `world/city_creation_build_brush.gd`（`free` 下停调 `PrototypeRoleSeed`）<br>2\. `world/city_creation_life.gd` & `network.gd`（`free` 下跳过 `bakery/workshop/matinee/quality/site_wishes` 及店家配对预热）<br>3\. `ui/city_creation_inspiration_draft.gd`（`growth_cutoff` 下停调 `Receipts.collect`）<br>4\. `ui/city_creation_juice_feedback.gd` & `reward_whisper.gd`（`free` 下停飞章与经营聚合弹窗）<br>5\. `ui/city_creation_solo_spotlight.gd`（修复 `free` 下 `eligible` 对经营 `role` 的限制）<br>6\. `world/city_creation_tradition_rules.gd`（`free` 下开放 9.0m 云廊跨距） | 无前置依赖，可立即独立施工；不破坏任何现有 UI 节点结构。     | 1\. **CPU 回归**：新 `free` 城建造各类原型房屋，断言 `role == "residential"`，运行 60s 无工匠生成、无品质弹窗、无飞章、空闲时 `state.dirty` 不被 `Receipts.collect` 标脏。<br>2\. **旧档与 Legacy 回归**：`test_city_creation_legacy_roundtrip.gd` 及既有 375 项 CPU / 27 作品集全绿。<br>3\. **M85 减负实测**：300 屋 `free` 城记录 `origins_ms`、`pairs_ms`、`home_stops_ms` 耗时下降对比。 |
+| **第二批：空间与总谱合并**<br>重构《城市总谱（L）》、撤除双轨列表/互哺/+35% 与顶部催建横幅     | 1\. `ui/city_creation_functional_ledger.gd`（移除 `+35%`、`mutual`、旧 `report.zones`；合入 `MusicPreferences`、调式切换与自动街景开关；展示四声部编制与成型微景定位）<br>2\. `ui/city_creation_score_ribbon.gd`（点击五线谱直开 `L` 总谱）<br>3\. `ui/city_creation_free_spatial_guidance.gd` & `intuitive_guidance.gd`（停用催凑四区的顶部 `GuideWhisper` 横幅）<br>4\. `ui/city_creation_demo.gd`（常规落笔不再弹顶部文字 `Toast`）                                                                                                                                                                         | 依赖第一批后台静默清理完成；对接 M84 母曲声部状态接口。     | 1\. **CPU / API 测试**：验证 `L` 页切换音乐模式（`auto/fixed/quiet`）、风格、调式（`gong_pentatonic` / `impressionist_major7`）及自动街景开关均正确写入 State 且支持 Undo/冷读。<br>2\. **实窗 GL 原图**：截取 `free` 主界面与 `L` 总谱页原图，验证 \>93% 视口留白、无顶部催建横幅、无 `+35%` 与重复列表。                                                                                      |
+| **第三批：画具与选屋罗盘重做**<br>底部五大画具归位、单屋罗盘去账本化、地标交互统一             | 1\. `ui/city_creation_tactile_dock.gd` & `build_palette.gd`（底部改为 `筑屋/修路/水岸/林木/地形`，撤下 `free` 常驻 `烟火`，`筑屋` 整合地标选址）<br>2\. `ui/city_creation_spatial_popover.gd`、`lean_inspector.gd`、`house_inspector.gd`（隐藏 `★ tier` 与 `FirstBusinessStep`；恢复 `style_button` 木构/石砌/圆塔并与原型合并；动作岛加入 `[♫ 独奏]`）<br>3\. `ui/city_creation_ground_landmark_tool.gd`（地面地标选中态接入统一空间胶囊，撤除右上角 `GroundLandmarkActions`）                                                                                                                                           | 依赖第一批 `SoloSpotlight.eligible` 修复。 | 1\. **实窗 GL 交互与原图**：测试底部五大画具切换、选屋罗盘切换木构/圆塔/原型/微雕/配色、点击 `[♫ 独奏]` 触发 12 秒聚焦独奏并录制 PCM 验证无爆音。<br>2\. **边界布局测试**：在屏幕四角与密集街区选中房屋/地面地标，验证 `RingPlacement` 零遮挡、零越界。                                                                                                                                                      |
+| **第四批：次级入口收口与终验**<br>净化 `F1` 与收藏馆 `Ctrl+O`，收拢历史权益，执行五旅程实玩 | 1\. `ui/city_creation_guide_panel.gd`、`scroll_pages.gd`、`free_journal.gd`、`historical_tasks.gd`、`growth_rights_page.gd`、`city_letters.gd`（撤除 `F1` 底部重复控件，合流为 `F1 -> 历史权益与旧城转换` 页签，`J` 键直达；隐藏 6 位小数余量显示）<br>2\. `ui/city_creation_gallery_panel.gd` & `archive_collection.gd`（移除重复的调式按钮，精简作品卡片统计与图鉴文案）                                                                                                                                                                                                                                | 依赖第二、三批入口迁移完毕。                     | 1\. **四类城市全链路核验**：新 `free`、既有 `free`、显式转换城（含未领 `credits` 与旧来信）、`legacy` 城逐一验证领取、转换回滚、Undo 与冷读。<br>2\. **五旅程实玩与听评（对接 M86）**：按下列动态验证清单完成实机录制与独立审查。                                                                                                                                                                 |
+
+附：需在实机实玩中重点验证的动态体验场景（不作静态臆测）
+
+以下四项体验缺乏静态代码层面的动态证据，必须在施工落地后通过真实实窗（gl_compatibility + 物理音频设备监听）验证并微调参数：
+
+1.  撤除飞章与顶部通知后，“空间成景 → 声部合流”的可感知度验证：
+      - 验证场景：在安静的新自由城中，当玩家闭合一座四合院落或拉通一条水岸长廊时，完全去掉 JuiceFlight 飞章与文字 Toast
+        后，仅靠即时落笔音 + 空间成立短动机 + 下一小节安全边界的声部（Warm / Flowing）汇入 +
+        左上角五线谱微光，玩家能否清晰感知“我的这一笔改变了城市音乐”？若视觉归因偏弱，只微调建筑窗户或水岸浮灯的柔和呼吸光效，绝不恢复飞章轰炸。
+2.  屋式（灰泥/木构/石砌/圆塔）与时代原型合并后的单屋罗盘尺寸验证：
+      - 验证场景：在 1440×900 默认窗口及密集街区（相邻房屋间距
+        <3.6m）中选中单屋，实测左翼合入屋式与原型选择后的浮层尺寸，确认其不会遮挡当前选中屋本体或底部
+        TactileDock。
+3.  自由模式下茶座与长椅的无前置入座节奏验证：
+      - 验证场景：解除 free 模式下“必须先买面包、凑齐 2～3
+        人才能坐茶座”的限制后，实测漫步市民按需坐入茶座与道路长椅的频率与停留时长（当前长椅为 8 秒、冷却 35
+        秒），确保街景既生动自然，又不会让所有市民同时坐死在椅子上，且不抢占玩家按 B 键静听的空位。
+4.  300 屋大城连续编辑与切城的端到端体感验证：
+      - 验证场景：在同机 300 屋规模下，实测裁剪掉 free 模式后台经营与店家配对预热后，连续画路、框选拆屋、旋转房屋以及从 Ctrl+O
+        切换另一座大城时的真实输入等待与音频连续性（确认 PCM 零断续、零咔哒声）。

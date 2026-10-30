@@ -1,0 +1,147 @@
+《共鸣之城》UI与冗余系统清理重构总案
+
+审阅基线：本地快照 HEAD fa02904394815fc9ef270615a9f21dcf78d830aa（北京时间 20261030_223914）
+设计目标：让玩家轻松自由造城、听见可归因的空间音乐变化、安静欣赏并收藏作品；把一切分散注意力、制造功课、后台空转或重复表达的机制与UI彻底做减法，同时100%保护历史作品、已获权益与Schema 1～20存档兼容。
+
+一、 关键问题与取舍
+
+通过对全部 scripts/ui、scripts/world、scripts/audio 与 scripts/visual
+源码的穿透核查，当前版本虽然在文档层面确立了“自由造城、空间驱动室内乐”的方向，且已实装了成长截止事务（growth_cutoff）与来信停派（WishPins
+/ VignetteJourney 的 sync_context() 门控），但在实际运行代码中仍存在五大结构性冗余与割裂。
+
+作为主设计师与重构负责人，我做出以下
+五项核心取舍决定（凡涉及修改《文档54（V7.1总案）》或《文档56》现行过渡规则之处，均显式标明替代关系、影响与制作成本）：
+
+1. 斩断自由模式（free）下的“幽灵经营与自动贴用途”，市民回归纯粹点景与静听
+
+  - 代码事实与病灶：
+    1.  新建房屋被偷偷改为经营店铺：city_creation_build_brush.gd:apply() 在 free 模式下调用
+        city_creation_prototype_role_seed.gd 与
+        city_creation_waterfront_role_seed.gd，根据玩家所选建筑原型或距水距离，自动把新屋的 house.role
+        篡改为 "bakery"、"workshop"、"garden_cafe"、"atelier"、"clockmaker" 或 "venue"。
+    2.  后台全量运行经营、送装与品质晋升：city_creation_life.gd 全文没有任何一处 CreationPolicy.is_free
+        判断。一旦房屋带有上述 role，life.gd
+        每帧照常派生面包师与工匠、要求买过面包才能坐茶座、每秒轮询自动巡演（matinee.tick）、每0.5秒检定一次建筑品质晋升（_refresh_quality），并在后台运行
+        wish_fulfilment.gd 与 debut_encore.gd。
+    3.  持续打断创作并污染建筑外观：后台工匠完成生产或送装后，demo.gd 的
+        _on_cafe_event、_on_craft_event、_on_quality_changed、
+        _on_site_wish_completed 照常触发，不仅频繁弹出“☕ 2位街坊喝完一盏茶”“♫ 收到书院送来的艺术挂毯”“♫
+        共鸣品质 2/5”等通知，还通过 quality_visual.gd 与 craft.gd
+        往玩家精心设计的建筑立面上强行挂载迎宾石垫、铁艺花箱、铜风铃、彩窗与金色圆环，并在 Network.prepare()
+        中消耗大量无意义的店家配对寻路时间（origins_ms / pairs_ms）。
+  - 取舍决定（修改《文档54》第1/3/8节过渡规则）：
+      - 替代规则：废除“free 模式下新建原型自动写入经营 role 种子”及“free
+        模式下继续运行烘焙/匠作/买面包品茶/品质Lv.1～5晋升”的现行实现。
+      - 新规则：
+        1.  停止自动贴用途（停止新产生）：free 模式下新建普通房屋一律保持 role =
+            "residential"。建筑的空间属性完全由真实几何与原型直接派生，不再靠篡改
+            house.role 驱动。
+        2.  关停 free 后台经营与品质考核（迁移后退场）：free 模式下，life.gd 停止
+            bakery、workshop、matinee、_refresh_quality、site_wishes、debut_encore
+            及 cafe
+            的买面包前置校验；市民保留街道漫步、相遇问候（greetings）、长椅小憩（bench_visits）、阳台远眺（balcony_visits）、独奏驻足（solo_listeners）与有轨电车（tram）。
+        3.  保护历史与 legacy：legacy 模式100%保留完整经营；旧档/转换城已有的库存、收据及已安装的
+            house_improvements / building_quality 外观原样保留渲染，但 free 不再后台新增经营装饰。
+      - 制作成本与影响：低成本（在 build_brush、life、network、demo 入口加清晰门控），直接消除 free
+        模式的经营弹窗干扰，并大幅降低 300 屋大城编辑时的后台寻路预热开销。
+
+2. 四类功能区（Functional Zones）从“前台考核账本”退居为“后台声画派生契约”，砍掉双轨列表与“互哺”
+
+  - 代码事实与病灶：
+    1.  两套空间分类在 L 页重复刷屏：city_creation_functional_ledger.gd 同时渲染新 V7 的
+        [b]场所空间[/b]（report.spaces，含 trait / cluster / district 三级及
+        "height_access_missing" 等生硬诊断）和旧 M84.1 的
+        [b]原有用途与连接[/b]（report.zones），把同一批房子按两套标准重复列了两遍。
+    2.  顶部横幅仍在按固定顺序催凑四区：city_creation_free_spatial_guidance.gd:hint() 在 free
+        模式下依然依次催促玩家：“先接通所有屋门 → 去造钟楼/工坊原型（凑 artisan）→ 去沿水添敞廊（凑 waterfront）”。
+    3.  “水岸与栖居互哺（benefits.mutual）”毫无实际体验支撑：追查全库消费者，benefits.mutual 除了在房屋卡片和 L
+        页打印文字、以及在 free 下借壳激活旧 pastoral_triad 名字外，没有任何独立的音频或视觉消费者。
+  - 取舍决定（修改《文档54》第4.1/4.3/6节呈现规则）：
+      - 替代规则：取消将 trait / cluster / district 三级工程阶段、内部失败原因枚举、旧 report.zones 列表及
+        benefits.mutual（互哺）暴露给玩家前台的做法。
+      - 新规则：
+        1.  四类空间契约改为纯后台自动派生（改成自动派生）：保留
+            courtyard_contract、waterfront_contract、artisan_contract、civic_contract、landmark_contract
+            的全部几何与可达性判定，作为**驱动母曲四声部（Warm / Sway / Flowing / Echo / Canon /
+            Lyrical / Virtuoso）与沿岸街景（布篷/茶伞/浮灯）**的唯一空间引擎。
+        2.  撤除旧 report.zones 与 mutual（迁移后退场）：从 L 页与房屋卡片彻底移除旧 report.zones
+            列表与“水岸与栖居互哺”字样。
+        3.  取消顶部催建四区横幅（重做）：停用 free_spatial_guidance.hint() 的凑四区催促逻辑。
+      - 制作成本与影响：极低成本（纯 UI 层与 FunctionalBenefits 裁剪），不影响任何空间契约 CPU
+        测试夹具，彻底消除“做规划局作业”的压迫感。
+
+3. 全面撤下自由模式前台的“+35%、生产/步速倍率、余韵倒计时与五和弦功利配方”
+
+  - 代码事实与病灶：
+    1.  无效的 +35% 刷屏：free 模式接通 growth_cutoff 后，普通造房、生产与和弦均不再产生新 XP（award_xp
+        直接返回 0）。FunctionalBenefits 的百工 +35%（inspiration_multiplier
+        \= 1.35）仅对“旧城转换前恰好留有一封未完成来信、且在转换后手动完成领取”这一种极端历史边界有效，却依然常驻在每栋百工房屋的选中胶囊与
+        L 页首屏。
+    2.  五类建筑和弦（SynergyBuffs）与区域回响（RegionalEcho）的数值功利化：它们的前台文案全部围绕“生产提速25%～40%、步速提升25%、工艺产出+50%、送装+30%、添30秒余韵”，在
+        free 下既无经营意义，又与母曲四声部编配体系形成概念冲突。
+    3.  飞章（JuiceFlight）与轻语（RewardWhisper）的重复轰炸：达成和弦或地标范围时，juice_feedback.gd
+        发射 3D 金弧与 2D 飞章撞击左上角五线谱，同时 reward_whisper.gd 弹出汇总条，干扰视听。
+  - 取舍决定（修改《文档54》第4.3节呈现规则）：
+      - 替代规则：修改《文档54》第4.3节关于“free日常界面继续显示+35%与五和弦动态通知”的约定。
+      - 新规则：
+        1.  底层计算与存档字段 100%
+            保留：synergy_buffs.gd、functional_benefits.gd、resonance_afterglow
+            等数据结构与 SaveValidation 保持原样，供旧来信结算、跨城图鉴（AcousticArchive）与收藏馆 12
+            秒和弦巡礼（ChordTour）调用。
+        2.  free 日常前台全面退场（移到次级入口 / 停止前台反馈）：从房屋卡片、L 页与日常 HUD 撤下
+            +35%、生产/步速倍率、余韵秒数与五和弦配方；free 下停用
+            juice_flight.gd 飞章与 reward_whisper.gd；五和弦的收录状态与 12
+            秒巡礼统一归入收藏馆图鉴与历史权益页。
+      - 制作成本与影响：低成本，彻底拔除数值功利心，让玩家专注在空间美感与音乐变化本身。
+
+4. 选中单屋（RoofCompass）去账本化，恢复被误藏的屋式选择并扁平化层级
+
+  - 代码事实与病灶：
+    1.  选中房屋时顶部显示 ★ 1～5 品质星级（tier），底部显示 FirstBusinessStep 催促按钮（“到门前接路”或跳去 L
+        页的“看功能区”）。
+    2.  city_creation_lean_inspector.gd:setup() 第 5 行执行了
+        pop.style_button.hide()，导致玩家在罗盘上无法切换灰泥/木构/石砌/圆塔（HOUSE_STYLES）！
+    3.  点击 [详情] 弹出侧边栏 HouseDetailSheet，再点 [用途] 弹出第 3 个面板 HouseRolePalette；点 [原型]
+        又弹出第 4 个面板 PrototypeBook；而选中地面传世地标（lm1..4）时，却在屏幕右上角单独弹出一个简陋的
+        GroundLandmarkActions 面板（ground_landmark_tool.gd:18），交互极其割裂。
+  - 取舍决定（重做 / 合并）：
+    1.  移除 ★ 星级与经营动作按钮：free 下隐藏 tier 星级与 FirstBusinessStep。
+    2.  恢复屋式选择并收敛子面板：在罗盘左翼直接提供风貌时代、屋式与原型（将灰泥/木构/石砌/圆塔与当时代原型整合在同一轻量面板内）、有机微雕（圆角/斜切/外挑/阳台/微折）；右翼提供
+        4 色标 + 吸管（沿用此屋外观）+ 扩展色轮/6 珍藏色。
+    3.  底部动作岛直达 [加建] 与 [♫ 独奏]：新增显式的 [♫ 独奏] 按钮（直接调用 solo_spotlight.start，并解除
+        SoloSpotlight.eligible 在 free 下对旧经营 role 的限制）。
+    4.  地面地标共用空间罗盘：取消右上角孤立的 GroundLandmarkActions，选中地面地标时同样使用锚定于建筑上方的空间胶囊（移动 /
+        旋转 90° / ♫ 独奏 / 回收）。
+
+5. 重构主界面（HUD）与四大面板：底部五大画具归位、音乐控制合流进《城市总谱（L）》、解构 F1
+
+  - 代码事实与病灶：
+    1.  底部 Dock 未落实水木分离且保留了无用的“烟火”画具：city_creation_tactile_dock.gd 的 PRIMARY :=
+        [0, 2, 4, 5, 8] 仍是 筑屋 / 修路 / 烟火(批量贴用途) / 林水 / 地形。
+    2.  音乐设置被拆散在三个无关面板：母曲模式/曲目选择塞在 F1（帮助手册）
+        底部（music_preferences.gd），河湾调式选择（C宫五声/F大七）塞在
+        Ctrl+O（作品收藏） 的第 3 个页签底部（gallery_panel.gd:344），而 L（总谱） 里却只能看 3
+        行静态字，完全不能调音乐！
+    3.  左侧三页签抽屉（RiverPaperScroll）与 F1 严重冗余：J（手记） 在 free 下被 free_journal.gd
+        掏空后只剩两个历史文本展开按钮；名胜 页签把 6 座旧屋式地标和 4 座新地面地标上下堆在一起；F1 底部则塞满了
+        CreationOptions、MusicPreferences、CityLetters、InspirationSampleControls
+        四排杂项按钮。
+  - 取舍决定（合并 / 重做）：
+    1.  底部 Dock 確立真正的五大营造画具：筑屋 | 修路 | 水岸 | 林木 | 地形（撤下 free 主栏的 烟火 用途刷；将地标名胜并入 筑屋
+        子栏）。
+    2.  升级《城市总谱（L / 点击左上五线谱）》：将
+        MusicPreferences（自动/固定/安静、母曲切换）、河湾调式（原声/C宫五声/F大七）与
+        自动街景显示开关 全部合流进 L 页，与四声部实时编制、已成型场所微景共同构成唯一的空间声学总控台。
+    3.  取消 free 下的三页签抽屉，净化 F1 与 Ctrl+O：历史手札、旧章程与未完成旧来信统一归入 F1 -> [历史权益与旧城转换]
+        页签（按 J 键在 free 下直接打开此页）。
+
+二、 精简后的玩家体验与 UI 结构
+
+1. 四大核心界面最终保留内容
+
+  - 默认主界面（Main HUD · 保持 >93% 3D 视口留白）：
+      - 左上角 ScoreRibbonHUD：动态呼吸五线谱 + 当前母曲与段落名（点击五线谱或按 L 展开《城市总谱》）+ 2 枚常驻圆章（[作品收藏
+        Ctrl+O]、[营造手札 F1]）。仅当旧城有未领手札额度或未完来信时，旁侧才浮现 [旧卷待启] 徽章。
+      - 右上角 SundialHUD：[光线三态]、[四时风物]（去掉生产加成文案，仅留诗意与声画变化）、[声音静音]、[街头漫步 V]、[明信片
+        F12]。
+      - 
