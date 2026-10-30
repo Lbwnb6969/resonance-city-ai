@@ -2,7 +2,7 @@ extends RefCounted
 ## One temporary short catalogue, rendered off-thread from the original ledger.
 const Grid=preload("res://scripts/audio/city_creation_cue_grid.gd")
 static func templates(owner:Node,mode:int)->Dictionary:
-	var out:={};var prefix:=str(mode)+"/";var original:Dictionary=owner.get_meta("score_cue_originals",{})
+	var out:={};var keys:Dictionary={};var prefix:=str(mode)+"/";var original:Dictionary=owner.get_meta("score_cue_originals",{})
 	for key:String in owner._harmony_streams:
 		if not key.begins_with(prefix):continue
 		var wave:AudioStreamWAV=original.get(key,owner._harmony_streams[key])
@@ -15,10 +15,21 @@ static func templates(owner:Node,mode:int)->Dictionary:
 		if not tail.is_valid_int() or int(tail)<0 or int(tail)>7:continue
 		var notes:Array=owner.audio_report.get("harmony_notes",{}).get(key,[])
 		if notes.is_empty():continue
+		keys[wave.get_instance_id()]=key
 		out[key]={"bar":int(tail),"seconds":wave.get_length()-float(wave.get_meta("cue_preroll",0.)),"notes":notes.duplicate(true),"metadata":{}}
 		for field:String in ["chamber_key","chamber_midi","chamber_timbre"]:
 			if wave.has_meta(field):out[key].metadata[field]=wave.get_meta(field)
+	owner.set_meta("score_cue_keys",keys)
 	return out
+static func key_at(key:String,mode:int,bar:int)->String:
+	if key.is_empty():return key
+	var parts:=key.split("/");parts[0]=str(mode)
+	if parts.size()>2:parts[-1]=str(bar)
+	else:
+		var body:=parts[1].split("_")
+		body[-2 if parts[1].begins_with("chamber_sparkle_") or parts[1].begins_with("travel_stepping_") else -1]=str(bar)
+		parts[1]="_".join(body)
+	return "/".join(parts)
 static func render(templates:Dictionary,harmony:Array,signature:String,synth:Node)->Dictionary:
 	var out:={}
 	for key:String in templates:

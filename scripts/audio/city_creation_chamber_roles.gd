@@ -54,6 +54,8 @@ static func prepare(owner:Node)->Dictionary:
 		else:roles[key]={"layer":0,"active":false}
 	preload("res://scripts/audio/city_creation_score_sample_routing.gd").apply(owner,roles,leader,mode,variant)
 	preload("res://scripts/audio/city_creation_core_orchestration.gd").apply(owner,roles,leader,mode)
+	if owner.has_meta("authored_score_stem"):
+		leader=str(owner.get_meta("authored_score_stem"));owner.emergence.score.lead_track=leader
 	var result:={"lead_track":leader,"source_id":source,"roles":roles,"contributors":contributors,"mode":mode,"variant":variant}
 	owner.set_meta("chamber_roles",result);return result
 static func desired(owner:Node,key:String,original:String)->String:

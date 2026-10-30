@@ -116,11 +116,13 @@ func _pcm_midi(report:Dictionary)->int:
 		track="concert"
 		var grand:Dictionary=demo.music.grand_festival_report()
 		if bool(grand.active):track={"pastoral":"wood","renaissance":"renaissance_fugue","clockwork":"clockwork_waltz","modern_eco":"modern_symphony","tutti":"concert"}[str(grand.era)]
+	var cursor:=preload("res://scripts/audio/city_creation_score_playback.gd").cursor(demo.music)
+	if not cursor.is_empty():track=str(demo.music.get_meta("authored_score_stem",track))
 	if not demo.music._players.has(track):return -1
 	var player:AudioStreamPlayer=demo.music._players[track]
-	var variant:=str(demo.music._variation_active.get(track,"original"))
-	var notes:Array=demo.music.audio_report.get("theme_notes",{}).get(track,[]) if variant=="original" else demo.music.audio_report.get("variation_notes",{}).get(variant,[])
-	var at:=fposmod(player.get_playback_position()+AudioServer.get_time_since_last_mix(),24.)
+	var variant:=str(demo.music._variation_active.get(track,"original")) if cursor.is_empty() else "study1/"+str(cursor.signature)+"/lead"
+	var notes:Array=demo.music.audio_report.get("theme_notes",{}).get(track,[]) if variant=="original" else demo.music.audio_report.get("variation_notes",{}).get(variant,demo.music.audio_report.get("harmony_notes",{}).get(variant,[]))
+	var at:float=cursor.position if not cursor.is_empty() else fposmod(player.get_playback_position()+AudioServer.get_time_since_last_mix(),24.)
 	var nearest:=INF;var note:=-1
 	for row:Dictionary in notes:
 		var age:=fposmod(at-float(row.start),24.)

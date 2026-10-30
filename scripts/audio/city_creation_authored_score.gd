@@ -34,37 +34,50 @@ static func valid_key(id:String,stem:String)->bool:
 	if parts[2]=="lead":return stem in preload("res://scripts/audio/city_creation_harmonic_emergence.gd").LEADS+["concert"]
 	return parts[2] in ["foundation","pulse","answer"] and stem=={"foundation":"foundation","pulse":"air","answer":"terrace"}[parts[2]]
 static func apply(owner:Node,roles:Dictionary,leader:String)->bool:
-	var data:Dictionary=owner.get_meta("authored_score",{})
+	var data:Dictionary=owner.get_meta("authored_score_ready",owner.get_meta("authored_score",{}))
 	if data.is_empty():return false
 	if owner._pluck_city==null or data.city!=owner._pluck_city.get_instance_id():discard(owner,data);return false
 	if data.revision!=owner._pluck_city.revision:
 		owner._biome_mode=preload("res://scripts/audio/city_creation_harmonic_palette.gd").for_city(owner._pluck_city);discard(owner,data);return false
+	leader=str(owner.get_meta("authored_score_stem",leader));owner.set_meta("authored_score_stem",leader)
 	for stem:String in roles:roles[stem].active=false
 	for pair:Array in [[leader,"lead"],["foundation","foundation"],["air","pulse"],["terrace","answer"]]:
 		var id:="study1/"+str(data.signature)+"/"+str(pair[1]);var stem:String=pair[0]
-		roles[stem].merge({"id":id,"base_id":id,"bank":"harmony","legato":false,"role":pair[1],"preset":data.document.id,"active":true,"gain_offset":0.},true)
+		roles[stem].merge({"id":id,"base_id":id,"bank":"harmony","legato":false,"role":pair[1],"preset":data.document.id,"active":true,"gain_offset":0.,"layer":3 if pair[1]=="lead" else 1 if pair[1]=="foundation" else 2},true)
 	return true
 static func discard(owner:Node,data:Dictionary)->void:
+	var ready:Dictionary=owner.get_meta("authored_score_ready",{})
+	var active:Dictionary=owner.get_meta("authored_score",{})
+	if not ready.is_empty():release(owner,ready)
+	if not active.is_empty():release(owner,active)
 	Cues.retire(owner)
+	owner.remove_meta("chamber_role_key")
+	owner.remove_meta("authored_score_ready")
+	var playback:=owner.get_node_or_null("ScorePlayback")
+	if playback!=null:playback.cancel(true)
+	release(owner,data)
+	owner.remove_meta("authored_score")
+	owner.remove_meta("authored_score_stem")
+	if owner._pluck_city!=null and data.get("city",0)==owner._pluck_city.get_instance_id() and owner._biome_mode==int(data.get("document",{}).get("harmony_mode",-2)):
+		owner._biome_mode=preload("res://scripts/audio/city_creation_harmonic_palette.gd").for_city(owner._pluck_city)
+static func release(owner:Node,data:Dictionary)->void:
+	if data.is_empty():return
 	for role:String in ["lead","foundation","pulse","answer"]:
 		var id:="study1/"+str(data.signature)+"/"+role;owner._harmony_streams.erase(id);owner.audio_report.get("harmony_notes",{}).erase(id)
 		owner.audio_report.get("harmony_peaks",{}).erase(id)
-	owner.remove_meta("authored_score")
-	if owner._pluck_city!=null and data.get("city",0)==owner._pluck_city.get_instance_id() and owner._biome_mode==int(data.get("document",{}).get("harmony_mode",-2)):
-		owner._biome_mode=preload("res://scripts/audio/city_creation_harmonic_palette.gd").for_city(owner._pluck_city)
+
 func _process(_delta:float)->void:
 	if worker==null or worker.is_alive():return
 	var data:Dictionary=worker.wait_to_finish();worker=null;var owner:=get_parent()
 	if owner._pluck_city==null or city_id!=owner._pluck_city.get_instance_id() or revision!=owner._pluck_city.revision:return
-	var prior:Dictionary=owner.get_meta("authored_score",{})
-	if not prior.is_empty():discard(owner,prior)
-	if data.has("short_cues"):Cues.install(owner,data.short_cues)
-	else:owner._harmony_streams=owner._harmony_streams.duplicate()
+	var prior:Dictionary=owner.get_meta("authored_score_ready",{})
+	if not prior.is_empty() and prior.get("signature","")!=owner.get_meta("authored_score",{}).get("signature",""):release(owner,prior)
+	owner._harmony_streams=owner._harmony_streams.duplicate()
 	for role:String in ROLES:
 		var id:="study1/"+str(request_data.signature)+"/"+role
 		owner._harmony_streams[id]=data[role].stream;owner.audio_report.get_or_add("harmony_notes",{})[id]=data[role].notes
 		owner.audio_report.get_or_add("harmony_peaks",{})[id]=data[role].peak
-	owner._biome_mode=int(request_data.document.harmony_mode)
-	owner.set_meta("authored_score",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[])});owner.remove_meta("chamber_role_key")
+	owner.set_meta("authored_score_ready",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[]),"short_cues":data.get("short_cues",{}),"section":request_data.get("section",-1),"master_signature":request_data.get("master_signature","")});owner.remove_meta("chamber_role_key")
+	preload("res://scripts/audio/city_creation_score_playback.gd").ensure(owner)
 func _exit_tree()->void:
 	if worker!=null:worker.wait_to_finish();worker=null

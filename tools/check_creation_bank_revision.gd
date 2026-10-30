@@ -17,5 +17,5 @@ func run() -> void:
 			var a: AudioStreamWAV = old[group][key]; var b: AudioStreamWAV = current[group][key]
 			if a.data!=b.data or a.format!=b.format or a.mix_rate!=b.mix_rate or a.stereo!=b.stereo or a.loop_mode!=b.loop_mode or a.loop_begin!=b.loop_begin or a.loop_end!=b.loop_end: failures.append(key)
 			compared += 1
-	var result := {"ok":failures.is_empty() and compared==3907,"compared":compared,"failures":failures}
+	var result := {"ok":failures.is_empty() and compared==["streams","edits","variations","harmony"].reduce(func(n,g):return n+old[g].size(),0),"compared":compared,"failures":failures}
 	print("BANK_REVISION ",JSON.stringify(result)); quit(0 if result.ok else 1)

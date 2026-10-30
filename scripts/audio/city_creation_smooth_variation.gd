@@ -3,6 +3,7 @@ extends RefCounted
 static func update(owner:Node)->void:
 	if owner._variation_streams.is_empty():return
 	var chamber=preload("res://scripts/audio/city_creation_chamber_roles.gd");chamber.prepare(owner)
+	preload("res://scripts/audio/city_creation_score_playback.gd").update(owner)
 	var now:=Time.get_ticks_usec();var clock:float=owner._playback_clock()
 	var mode:=maxi(0,owner.harmony_mode());var bar:=posmod(floori(clock/3.),8)
 	var seeded:bool=owner._biome_mode>=0
@@ -19,6 +20,7 @@ static func update(owner:Node)->void:
 	var keys:Array=owner.HarmonicEmergence.LEADS+["foundation","air","terrace"]
 	keys.append("concert")
 	for key:String in keys:
+		if preload("res://scripts/audio/city_creation_score_playback.gd").owns(owner,key):continue
 		var id:="original"
 		if key=="concert":
 			if seeded:id="%d/concert"%mode

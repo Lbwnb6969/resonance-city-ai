@@ -9,6 +9,7 @@ class Owner extends Node:
 	var _clock:=0.
 	var _players:Dictionary={}
 	var concert_active:=false
+	var phonograph:Dictionary={"active":false}
 	func harmony_mode()->int:return mode
 	func _playback_clock()->float:return _clock
 var checks:=0

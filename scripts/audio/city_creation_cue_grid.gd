@@ -40,9 +40,10 @@ static func play(owner:Node,player:AudioStreamPlayer,stream:AudioStreamWAV,at:Ve
 		if other!=player and other.playing:active+=1
 	player.volume_db=owner.SHORT_GAIN_DB+linear_to_db(duck_gain_for_cue(clampf(weight,0.,1.),active))
 	player.set_meta("creation_voice_serial",int(player.get_meta("creation_voice_serial",0))+1)
-	player.stream=stream
 	var clock:=transport_clock(owner)
 	var onset:=quantize_cue_onset(clock)
+	stream=preload("res://scripts/audio/city_creation_score_playback.gd").resolve_cue(owner,stream,onset)
+	player.stream=stream
 	var preroll:float=stream.get_meta("cue_preroll",0.)
 	player.play(maxf(0.,preroll-(onset-clock)))
 	var report:Array=owner.get_meta("cue_grid_events",[])
