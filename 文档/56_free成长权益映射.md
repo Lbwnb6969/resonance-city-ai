@@ -6,7 +6,7 @@
 
 | 原字段/来源 | 现有语义与迁移约定 |
 | --- | --- |
-| harmony_xp / harmony_level / xp_remainder | 保存完整整数与小数余量。停止新XP前明确截止边界与余量处理；不默认折成credit、不清零、不补发虚构事件。未截止城当前累计规则继续；显式转换已截止城保存原余量，停止普通新加点，旧来信按凭据兑现。 |
+| harmony_xp / harmony_level / xp_remainder | 保存完整整数与小数余量。停止新XP前明确截止边界与余量处理；不默认折成credit、不清零、不补发虚构事件。legacy当前累计规则继续；正式free入口已截止城保存原余量，停止普通新加点，旧来信按凭据兑现。 |
 | credits | 由等级-1+heritage_credit-已选rank总数派生；不另建计数器。旧余额与传承credit继续经原入口领取。 |
 | pending_draft / draft_rarities / draft_serial | 原三张邀约、稀有度与序号保持；查看不重抽、不创建邀约、不调用Rarity.ensure。后续停止新抽池时仍须可领旧邀约。 |
 | traditions / ranks / rarity_ranks | 18个原ID保留；章程兼看era_modifiers，旧城无journey的章程不能丢失，也不能补写研习阶数。 |
@@ -61,11 +61,11 @@ J手记“查看已得手札与历史权益”读取原账本，显示已有记�
 
 只读映射需证明空城不初始化邀约、18个ID不丢失、旧无journey章程保留、旧阶数/稀有度/原三张邀约/credit一致；跨Schema20冷读、Undo/Redo、换城和实际入口保持。受测样本明确区分合成历史格式夹具与公开建造实际赚取的奖励。
 
-新XP/新抽池的退出须另完成：列全新事件计点入口（Receipts.collect、来信完成、家族真实事件及直接award_xp等）、明确新旧城切换时间边界、既有小数/未到阈值余量和未领旧任务奖励、保留旧邀约/翻卷规则、显式转换前可回读备份、Undo不可重刷/回退政策、legacy继续经营、基础外观与音乐不被剩余旧卡锁住。当前仅显式转换链已通过，不能视作四种城市全部切换完成。
+新XP/新抽池的退出须另完成：列全新事件计点入口（Receipts.collect、来信完成、家族真实事件及直接award_xp等）、明确新旧城切换时间边界、既有小数/未到阈值余量和未领旧任务奖励、保留旧邀约/翻卷规则、显式转换前可回读备份、Undo不可重刷/回退政策、legacy继续经营、基础外观与音乐不被剩余旧卡锁住。四类城市的正式入口已接通，消费者呈现与最终整体验收仍继续。
 
-## 切换实施契约（2026-10-30源码核对，显式转换已接通）
+## 切换实施契约（2026-10-30正式入口已接通）
 
-本节将上述条件落到实际入口与行为边界。显式legacy转换已接通下述截止事务，技术证据见53；新自由城/既有free自动迁移未接通，仍沿原累计。下表按原机制与最终目标列示，不表示所有入口已完成；不能以显式转换子步代替成长退场全验收。迁移先接通内容权限，再停止新收益。
+本节将上述条件落到实际入口与行为边界。显式legacy转换、新自由城/六地貌以及既有free的正式文件/收藏打开已接通下述截止事务，技术证据见53；legacy继续原累计。下表按原机制与最终目标列示，具体通过范围见本节后续入口边界，不能以入口子步代替成长退场全部消费者和最终验收。迁移先接通内容权限，再停止新收益。
 
 ### 事件与邀约入口
 
@@ -90,8 +90,8 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 
 | 城市 | 生效点与数据处理 |
 | --- | --- |
-| 新自由城 | 迁移实现上线后State.initialize_free/CreationPolicy.initialize_biome建立无普通成长的新城。可有空账本，不创建免费邀约、等级补偿或传承credit。 |
-| 已有自由城 | 作品通过完整读取校验后、任何collect/首演/返场/UI奖励轮询前切换。先以原真实计数和规则结算已发生但尚未采集的差额，再登记截止状态；切换前写独立备份并回读。失败保留原城，不发布半迁移城。 |
+| 新自由城 | 已接通：State.initialize_free/CreationPolicy.initialize_biome直接登记new_free起点，零XP/等级1/零credit，不创建免费邀约、等级补偿或传承credit。 |
+| 已有自由城 | 已接通：State.load_city与Gallery._open_chosen先完整校验独立候选，在Life/奖励轮询前备份回读、派生原真实道路图、结算旧差额并登记migrated_free；哈希截止副本成功发布后才切城。重复打开同一原件复用该副本，失败原城保持。 |
 | legacy显式转换城 | 已接通：沿CreationPolicy.convert的转换前原貌/目标原件备份并回读，在政策改free前以原legacy公式结算真实旧差额，保存growth_cutoff/version1/source=converted_legacy；保存失败恢复完整原journey、政策/版本/dirty，原legacy继续。 |
 | legacy未转换城 | 不创建free截止状态；原XP、抽池、经营、章程、成长和存档校验继续。 |
 
@@ -121,12 +121,22 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 
 ### 已接通的显式转换边界
 
-harmony_journey.growth_cutoff为独立三字段记录：version=1、source枚举、vignette为空或原id/serial/claimed凭据。HarmonyValidation严格核对字段、枚举、原来信/已完成状态；Serializer要求Schema20/free，converted_legacy必须对应migration_version1。新字段缺省不代表已截止，旧schema/legacy不能携带截止记录。新自由城与旧free自动入口将复用该记录，目前不在初始化或普通读取中隐式迁移。
+harmony_journey.growth_cutoff为独立三字段记录：version=1、source枚举、vignette为空或原id/serial/claimed凭据。HarmonyValidation严格核对字段、枚举、原来信/已完成状态；Serializer要求Schema20/free，converted_legacy必须对应migration_version1。新字段缺省不代表已截止，旧schema/legacy不能携带截止记录。new_free额外要求零旧成长余额/传承credit/来信序号，不能把有效旧余额改标为新起点；已截止的直接铭牌API也要求原legacy_charter收据。新城直接登记；旧free只在正式打开迁移，原始快照校验/列表/回放不产生迁移I/O。
 
 GrowthTransition复用HarmonyReceipts.take_events的原真实差额和倍率，再通过FunctionalBenefits的受控旧奖励计算保留余量与等级；只在真实差额跨出第一个正credit且原pending空时建立三张待兑现卡，不调用Rarity.ensure。零差额不消耗余量。转换只为真实已解锁且未选章程初始化原Unified收据，不因free可用风貌授予历史。
 
 截止后普通FunctionalBenefits.award_xp和纯字典Journey.add_harmony_xp均不加点或生成邀约；普通collect仍记录真实经营收据，Heritage不新授额度。原credits仍可逐笔兑现，只有主动翻开/选择才补旧缺稀有度元数据；选择在增加rank前确定原邀请slot，避免多credit错位。几何/翻卷Undo保留当前邀约，选择Undo读取该slot最新已付翻卷记录，不新建保底/序号或退还预算。原来信在真实条件达标且id+serial与截止凭据吻合时，沿原入口一次发XP/祝福/回响并标已领；普通加点API没有“旧奖励”旁路参数。
 
 原无journey城建立真实基线，不凭已有屋补XP；原有整数/小数、多credit、pending顺序/稀有度/序号、旧rank及真实库存保持。四主文件净改0。本子步的77项CPU与36项实际GL仅证明显式转换链，四种城市完整验收仍按下列范围继续。
+
+### 新城与既有free的正式打开边界
+
+新城和六地貌在CreationPolicy初始化时建立真实基线并登记new_free，普通XP和Heritage均不能创建新额度。原无截止字段的Schema20 free由GrowthOpening处理：State.load_city覆盖继续档与公开文件入口；Gallery在候选restore后、archive继承与当前城checkpoint之前迁移，任何失败都不发布候选。State.restore/Serializer.read/Collection.read仍为只读校验/工作线程与预览工具，不启动迁移，不把解析历史数据当成正式切城。
+
+旧free候选先独立保存原城市并严格回读；有源文件时另留原文件字节副本。只调用原Network道路图与区域派生，不启动Life/生产/首演/任务，再以原公式结算真实差额和当前正式+35%。迁移结果按规范化原世界SHA256存为独立截止副本，带内容哈希和原貌备份引用；暂存回读通过后原子发布，坏副本拒绝，不悄悄重结算。收藏JSON/封面保持原字节，原版本继续遵循既有不可变版本语义；编辑后保存的新版本包含已消费旧权益，正常重开不复发。
+
+备份引用相对于作品目录并限定在废弃/成长截止/来源哈希/批次内；移动整个收藏目录后仍可验证原貌和打开同一截止副本。正式文件打开不覆写原始文件；后续正常保存继续沿原独立备份机制。IO失败/哈希失败/发布失败均保留当前State、输入与镜头，原件和失败暂存不删除。原Snapshot只读API不用于绕过正式打开发布live城。
+
+入口技术证据为117项CPU与31项实际GL，含旧多额度/缺rarity/旧来信、原图+35%、整目录移动与失败保留；此前显式转换77/GL36边界保持。传统等级提示和其他直接消费者继续核对，M84不因本节勾通过，未声明所有18卡新表现、300屋首次迁移耗时或听感完成。
 
 实施验收至少覆盖：无历史的新free、旧free带小数与多credit、同城未领来信和旧章程、转换失败回滚及legacy对照；API绕过UI、Undo/Redo、重复冷读/换城与存档拒绝坏截止字段；无旧卡的新free实际使用已迁内容并冷读，旧作品原权益仍可到达。CPU验证后补相关原生领取/选择输入、原图和PCM，未实际听评继续标待评。文档盘点不运行游戏、不计为运行验收。

@@ -23,10 +23,11 @@ static func initialize(city:RefCounted,empty:bool=true)->void:
 	if empty:city.initialize_empty()
 	else:city.initialize()
 	city.creative_settings=Save.defaults()
+	preload("res://scripts/world/city_creation_growth_transition.gd").begin_new(city)
 
 static func initialize_biome(city:RefCounted,id:String,day:String="")->Dictionary:
 	var result:Dictionary=city.Biomes.create(city,id,day)
-	if result.ok:city.creative_settings=Save.defaults()
+	if result.ok:city.creative_settings=Save.defaults();preload("res://scripts/world/city_creation_growth_transition.gd").begin_new(city)
 	return result
 
 static func set_preferences(city:RefCounted,patch:Dictionary)->Dictionary:

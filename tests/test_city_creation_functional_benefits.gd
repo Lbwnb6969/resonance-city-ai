@@ -10,7 +10,7 @@ func check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func _initialize()->void:run.call_deferred()
 func run()->void:
-	var fixture:=Fixture.build();var city:RefCounted=fixture.city;check(fixture.ok,"actual four spatial kinds")
+	var fixture:=Fixture.build(preload("res://tools/fixtures/city_creation_pre_cutoff_free.gd").fresh());var city:RefCounted=fixture.city;check(fixture.ok,"actual four spatial kinds in a frozen pre-cutoff free city")
 	Receipts.initialize(city);var historical:Dictionary=city.snapshot()
 	check(city.functional_benefits().inspiration_multiplier==1. and not "clockwork_waltz" in city.synergy_buffs().active_chords,"unpublished graph grants no spatial rights")
 	var life:=Life.new();root.add_child(life);life.set_process(false);life.setup(city)

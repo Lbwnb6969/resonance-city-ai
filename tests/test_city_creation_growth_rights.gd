@@ -47,16 +47,16 @@ func run()->void:
 	check(row.chords.filter(func(c):return c.recorded).size()==1 and not row.chords[0].active,"past receipt does not confer current qualification")
 	classic.era_modifiers.clear();row=read_unchanged(classic)
 	check(row.legacy_invitations==["renaissance"],"unclaimed existing charter receipt remains accessible")
-	var city:=State.new();city.initialize_free();Receipts.initialize(city)
+	var city:=preload("res://tools/fixtures/city_creation_pre_cutoff_free.gd").fresh();Receipts.initialize(city)
 	for z:int in range(8):
 		for x:int in range(7):
 			if city.houses.size()<50:check(city.add_house(Vector2(-36+x*4.,-36+z*4.)).ok,"real authored home")
-	check(Receipts.collect(city).earned==100,"existing earning rule remains operative pending migration")
+	check(Receipts.collect(city).earned==100,"actual pre-cutoff free history retains original earning formula")
 	row=read_unchanged(city);check(row.credits==1 and row.pending.size()==3,"actual earned invitation copied without reroll")
 	var first:String=row.pending[0];row.pending.clear();check(city.harmony_journey.pending_draft.size()==3,"report arrays do not alias original offer")
 	check(Journey.choose(city,first).ok,"actual old claim entry still works")
 	row=read_unchanged(city);check(row.cards.size()==1 and row.cards[0].id==first and row.credits==0,"claimed right appears once")
-	var house:=city.add_house(Vector2(-36,-1));check(house.ok and city.undo().ok and city.redo().ok,"real geometry Undo/Redo")
+	var house:Dictionary=city.add_house(Vector2(-36,-1));check(house.ok and city.undo().ok and city.redo().ok,"real geometry Undo/Redo")
 	check(read_unchanged(city).cards==row.cards,"geometry history cannot lose owned right")
 	var result:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"elapsed_seconds":(Time.get_ticks_msec()-began)/1000.}
 	print("GROWTH_RIGHTS ",JSON.stringify(result));quit(0 if failures.is_empty() else 1)

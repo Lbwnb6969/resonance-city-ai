@@ -12,10 +12,12 @@ func check(ok:bool,label:String)->void:
 func records(city)->Dictionary:
 	return {"journey":city.harmony_journey.duplicate(true),"eras":city.era_unlocks.duplicate(),"signatures":city.signature_unlocks.duplicate(),"archive":city.archive_unlocks.duplicate(),"life":city.life_progress.duplicate(true)}
 func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):out=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
 	var city:=Fixture.fresh();var initial:=records(city);var before:Dictionary=city.snapshot();var rows:=Samples.plans(city)
 	check(rows.size()==3 and rows.filter(func(r):return r.kind=="pier_lantern").size()==2 and rows.filter(func(r):return r.kind=="column_vines").size()==1,"zero-history public construction derives two real piers and one Ionic stoa")
-	check(Samples.IDS.all(func(id):return Samples.rank(city,id)==0) and city.harmony_journey.is_empty(),"no card, rank or rarity is supplied by fixture")
+	check(Samples.IDS.all(func(id):return Samples.rank(city,id)==0) and city.harmony_journey.traditions.is_empty() and city.harmony_journey.harmony_xp==0 and city.harmony_journey.pending_draft.is_empty(),"new cutoff fixture supplies no card, rank, rarity, XP or invitation")
 	check(city.snapshot()==before and records(city)==initial,"planning is read-only across all historical ledgers")
 	var cold:=State.new()
 	check(city.save_city(out+"/new_free.json").ok and cold.load_city(out+"/new_free.json").ok and Samples.plans(cold)==rows and records(cold)==initial,"unearned expressions survive actual Schema20 disk reconstruction")
@@ -36,11 +38,12 @@ func run()->void:
 	var presentation:Dictionary=city.creative_settings.presentation.duplicate();presentation.automatic_decoration=false
 	check(city.CreationPolicy.set_preferences(city,{"presentation":presentation}).ok and Samples.plans(city)==rows and records(city)==initial,"appearance switch preserves actual music anchors and all earned records")
 	check(city.undo().ok and city.creative_settings.presentation.automatic_decoration and Samples.plans(city)==rows,"appearance Undo restores explicit choice")
-	var classic:=State.new();check(classic.restore(before).ok,"same geometry restored for legacy comparison");classic.creative_settings={}
+	var classic:=Fixture.fresh(false);var classic_before:=records(classic);check(classic.houses==city.houses and classic.waters==city.waters,"same public construction from real legacy entry")
 	check(Samples.plans(classic).is_empty(),"unconverted legacy keeps original appearance and no spatial variation")
 	var converted:Dictionary=classic.CreationPolicy.convert(classic,out+"/converted.json")
-	check(converted.ok and Samples.plans(classic)==rows and records(classic)==initial,"explicit conversion opens existing expressions without historical cards")
-	var backup:=State.new();check(backup.load_city(converted.backup).ok and not backup.CreationPolicy.is_free(backup) and Samples.plans(backup).is_empty() and records(backup)==initial,"conversion backup cold reads exact legacy rights and appearance")
+	var converted_rights:=records(classic);converted_rights.erase("journey");var initial_rights:=initial.duplicate(true);initial_rights.erase("journey")
+	check(converted.ok and Samples.plans(classic)==rows and converted_rights==initial_rights and classic.harmony_journey.ranks.is_empty() and classic.harmony_journey.harmony_xp==0 and classic.harmony_journey.pending_draft.is_empty(),"explicit cutoff conversion opens existing expressions without historical cards or reward")
+	var backup:=State.new();check(backup.load_city(converted.backup).ok and not backup.CreationPolicy.is_free(backup) and Samples.plans(backup).is_empty() and records(backup)==classic_before,"conversion backup cold reads exact original legacy rights and appearance")
 	var earned:RefCounted=preload("res://tests/test_city_creation_inspiration_samples.gd").fixture();var earned_records:=records(earned);var earned_rows:=Samples.plans(earned)
 	check(not earned_rows.is_empty() and Samples.IDS.all(func(card):return Samples.rank(earned,card)==2),"historically earned two-study fixture retains original ranks")
 	var prefs:Dictionary=earned.creative_settings.presentation.duplicate();prefs.automatic_decoration=false;earned.CreationPolicy.set_preferences(earned,{"presentation":prefs})

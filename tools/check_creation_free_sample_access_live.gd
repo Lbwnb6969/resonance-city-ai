@@ -46,7 +46,7 @@ func run()->void:
 		check(Samples.for_source(demo.state,row.house_id)=="" and demo.get_node("TraditionScenery/SecondStudyScenery").get_child_count()<rows.size(),"actual support removal retires model and future music eligibility "+card)
 		await key(KEY_Z,true);await settle();quiet();check(Samples.plans(demo.state)==rows,"native Undo restores geometry with no earned card "+card)
 		await show(cold,Vector2(row.position.x,row.position.z),"微景冷读");quiet();check(demo.state.houses==saved.houses and Samples.plans(demo.state)==rows,"cold scene republishes exact real support "+card)
-	var classic:RefCounted=SampleFixture.fresh();classic.creative_settings={};await show(classic,Vector2(-22,-15),"经典原貌");quiet()
+	var classic:RefCounted=SampleFixture.fresh(false);await show(classic,Vector2(-22,-15),"经典原貌");quiet()
 	check(demo.get_node("TraditionScenery/SecondStudyScenery").get_child_count()==0,"unconverted legacy actual scene retains original appearance")
 	var converted:Dictionary=demo.state.CreationPolicy.convert(demo.state,OUT+"/converted.json");demo._after_edit(converted,"history");await settle();quiet()
 	check(converted.ok and demo.get_node("TraditionScenery/SecondStudyScenery").get_child_count()==3 and Samples.IDS.all(func(id):return Samples.rank(demo.state,id)==0),"explicit conversion publishes spatial scenery without synthetic cards")

@@ -1565,6 +1565,7 @@ func choose_era_modifier(id:String)->Dictionary:
 	if not ScoreModifiers.CHOICES.has(id):return _fail("乐章铭牌无效")
 	var era:String=ScoreModifiers.CHOICES[id].era
 	if era not in era_unlocks:return _fail("这个时代尚未开启")
+	if not preload("res://scripts/world/city_creation_growth_cutoff.gd").charter_available(self,era):return _fail("自由创作仅保留截止前已获得的铭牌邀约")
 	if not ScoreModifiers.selected(self,era).is_empty():return _fail("这个时代已选择铭牌，可撤销后重新选择")
 	var before:=snapshot()
 	era_modifiers.append(id)
@@ -2113,10 +2114,7 @@ func _validate_craft_supply(data: Dictionary, issued_house: int) -> Dictionary:
 
 
 func load_city(path: String = DEFAULT_PATH) -> Dictionary:
-	var result := _read_snapshot(path)
-	if not result.ok:
-		return result
-	return restore(result.data)
+	return preload("res://scripts/world/city_creation_growth_opening.gd").load_into(self,path)
 
 func set_journey_checkpoint(data: Dictionary) -> Dictionary:
 	var check := _validate_journey_checkpoint(data)

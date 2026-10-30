@@ -26,6 +26,7 @@ var current_title := "未命名河湾"
 var last_saved_id := ""
 var last_opened_id := ""
 var last_auto_id := ""
+var growth_opening:Dictionary={}
 
 func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	demo=owner
@@ -142,11 +143,14 @@ func _open_chosen(chosen: Dictionary) -> void:
 		panel.set_status(str(chosen.message))
 		return
 	_load_phases={};_load_phase("validate")
-	demo.camera_rig.tour.stop(demo)
 	var city:RefCounted=demo.State.new()
 	var restored:Dictionary=city.restore(chosen.world)
 	if not restored.ok:
 		_load_phase("");panel.set_status(str(restored.message));return
+	growth_opening=preload("res://scripts/world/city_creation_growth_opening.gd").ensure(city,library.directory,str(chosen.get("path","")))
+	if not growth_opening.ok:
+		_load_phase("");panel.set_status(str(growth_opening.message));return
+	demo.camera_rig.tour.stop(demo)
 	_load_phase("archive")
 	city.apply_archive_unlocks(archive.awards)
 	stop_preview()

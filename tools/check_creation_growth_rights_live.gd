@@ -24,7 +24,7 @@ func run()->void:
 	check(page.detail.visible and page.last_report.cards.is_empty() and page.last_report.credits==0,"native rights page reads empty free city")
 	check(demo.state.snapshot()==before,"opening J and rights cannot mutate empty city rewards")
 	await capture("empty_rights");await key(KEY_ESCAPE)
-	city=State.new();city.initialize_free();Receipts.initialize(city)
+	city=preload("res://tools/fixtures/city_creation_pre_cutoff_free.gd").fresh();Receipts.initialize(city)
 	for z:int in range(8):
 		for x:int in range(7):
 			if city.houses.size()<50:check(city.add_house(Vector2(-36+x*4.,-36+z*4.)).ok,"real authored house")

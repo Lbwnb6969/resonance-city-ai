@@ -2,6 +2,8 @@ extends RefCounted
 ## Persisted boundary, independent of creative policy migration_version.
 const SOURCES:=["new_free","migrated_free","converted_legacy"]
 const Catalog=preload("res://scripts/world/city_creation_vignette_catalog.gd")
+static func charter_available(city:RefCounted,era:String)->bool:
+	return not city.harmony_journey.has("growth_cutoff") or int(city.harmony_journey.receipts.get("legacy_charter/"+era,0))>0
 static func record(journey:Dictionary,source:String)->void:
 	var quest:Dictionary=journey.get("active_vignette",{})
 	var claim:Dictionary={} if quest.is_empty() else {"id":quest.id,"serial":quest.serial,"claimed":false}
@@ -14,6 +16,10 @@ static func valid(journey:Dictionary)->bool:
 	if not value is Dictionary or value.size()!=3 or not integer(value.get("version")) or value.version!=1 or value.get("source") not in SOURCES:return false
 	var claim:Variant=value.get("vignette");var active:Variant=journey.get("active_vignette",{})
 	if not claim is Dictionary or not active is Dictionary:return false
+	if value.source=="new_free":
+		if int(journey.harmony_level)!=1 or int(journey.harmony_xp)!=0 or float(journey.get("xp_remainder",0.))!=0. or int(journey.get("heritage_credit",0))!=0 or int(journey.get("vignette_serial",0))!=0:return false
+		for key:String in journey.receipts:
+			if key.begins_with("legacy_charter/") and int(journey.receipts[key])>0:return false
 	if claim.is_empty():return active.is_empty()
 	if value.source=="new_free":return false
 	if claim.size()!=3 or not claim.get("claimed") is bool or not integer(claim.get("serial")) or claim.serial<1:return false

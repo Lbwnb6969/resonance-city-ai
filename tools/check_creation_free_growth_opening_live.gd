@@ -1,0 +1,72 @@
+extends "res://tools/check_creation_placed_landmarks_live.gd"
+const Historical=preload("res://tools/fixtures/city_creation_pre_cutoff_free.gd")
+const Receipts=preload("res://scripts/world/city_creation_harmony_receipts.gd")
+const Journey=Receipts.Journey
+const AudioProbe=preload("res://tools/fixtures/city_creation_audio_probe.gd")
+func old_work()->RefCounted:
+	var city:=Historical.fresh();Receipts.initialize(city)
+	for i in range(50):assert(city.add_house(Vector2(-35+(i%10)*3.,-35+(i/10)*3.)).ok)
+	assert(Receipts.collect(city).earned==100)
+	assert(city.add_house(Vector2(-35,-14)).ok and city.add_house(Vector2(-32,-14)).ok)
+	return city
+func make_work(city:RefCounted,title:String)->Dictionary:
+	var cover:=Image.create(24,24,false,Image.FORMAT_RGBA8);cover.fill(Color.DARK_GREEN)
+	return demo.gallery.library.save(title,city.snapshot(),{"focus":[-25.,.8,-25.],"yaw":.25,"pitch":.8,"zoom":24.,"evening":false,"light_phase":0},cover)
+func collection_card(id:String)->void:
+	demo.gallery.open_panel();await settle()
+	if demo.gallery.panel._biomes_selected:await ui_click(demo.gallery.panel.biome_button);await settle()
+	demo.gallery.panel.tabs.current_tab=0;await settle();await reveal(demo.gallery.panel.open_buttons[id])
+func run()->void:
+	OUT="res://验证记录/M84/free_growth_opening_20261030/live"
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
+	var began:=Time.get_ticks_msec();var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input();quiet();var voices:=pool()
+	check(demo.state.houses.is_empty() and demo.state.harmony_journey.growth_cutoff.source=="new_free","actual initial scene starts with zero-growth free boundary")
+	demo.focus=Vector3(-25,.8,-12);demo.zoom=18.;demo._update_camera();await settle();await click_world(Vector2(-25,-12));await settle();quiet()
+	check(demo.state.houses.size()==1 and demo.state.harmony_journey.harmony_xp==0 and Journey.credits(demo.state.harmony_journey)==0,"native new free construction cannot mint XP or invitation")
+	await capture("new_free_no_growth")
+	var old:=old_work();var original:Dictionary=old.snapshot();var work:=make_work(old,"旧自由城原件")
+	check(work.ok,"immutable pre-cutoff free source saved through actual collection API")
+	var original_bytes:=FileAccess.get_file_as_bytes(work.path);await collection_card(work.id)
+	check(not DirAccess.dir_exists_absolute(demo.collection_directory.path_join("成长截止")),"native collection listing performs no migration writes")
+	await ui_click(demo.gallery.panel.preview_buttons[work.id]);await settle()
+	check(demo.gallery.preview_id==work.id and not DirAccess.dir_exists_absolute(demo.collection_directory.path_join("成长截止")),"native phonograph preview leaves old source and cutoff storage untouched")
+	await ui_click(demo.gallery.panel.stop_button);await settle();await capture("old_collection_before_open")
+	var failed:=Historical.fresh();failed.add_house(Vector2(10,10));var rejected:=make_work(failed,"发布失败保留原城")
+	var canonical:=State.new();canonical.restore(demo.gallery.library.read(rejected.id).world);var source:=JSON.stringify(canonical.snapshot(),"\t",true,true).sha256_text()
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(demo.collection_directory.path_join("成长截止").path_join(source+".json")))
+	await collection_card(rejected.id);var retained:Dictionary=demo.state.snapshot();var retained_view:Array=[demo.focus,demo.zoom,demo.yaw,demo.pitch];var live_state:RefCounted=demo.state
+	await ui_click(demo.gallery.panel.open_buttons[rejected.id]);await settle()
+	check(not demo.gallery.growth_opening.ok and demo.state==live_state and demo.state.snapshot()==retained and [demo.focus,demo.zoom,demo.yaw,demo.pitch]==retained_view and not demo.gallery.busy,"native late migration publication failure preserves current state, view and ready input")
+	await capture("failed_open_retains_current");await collection_card(work.id);await ui_click(demo.gallery.panel.open_buttons[work.id]);await settle();quiet()
+	check(demo.gallery.last_opened_id==work.id and demo.state.harmony_journey.growth_cutoff.source=="migrated_free" and demo.gallery.growth_opening.earned==4 and not demo.gallery.growth_opening.cached,"native old-free opening settles exact original difference before publication")
+	check(demo.state.harmony_journey.harmony_xp==4 and Journey.credits(demo.state.harmony_journey)==1 and demo.state.harmony_journey.pending_draft==original.harmony_journey.pending_draft,"first live polls cannot replace invitation or settle post-publication events")
+	check(FileAccess.get_file_as_bytes(work.path)==original_bytes and demo.gallery.library.read(work.id).world==original,"original immutable envelope and historical world remain unchanged after opening")
+	var read:Dictionary=demo.state.Serializer.read(demo.state,demo.gallery.growth_opening.backup);var backup:=State.new();check(read.ok and backup.restore(read.data).ok and backup.snapshot()==original,"actual independent pre-migration backup cold validates original world")
+	await capture("old_free_migrated");var first:Dictionary=demo.state.harmony_journey.duplicate(true)
+	await collection_card(work.id);await ui_click(demo.gallery.panel.open_buttons[work.id]);await settle();quiet()
+	check(demo.gallery.growth_opening.cached and demo.gallery.growth_opening.earned==0 and demo.state.harmony_journey==first,"native repeated original open uses recorded boundary without another settlement")
+	var added:Dictionary=demo.state.add_house(Vector2(-29,-14));demo._after_edit(added,"room");await settle();quiet()
+	check(added.ok and demo.state.harmony_journey.harmony_xp==4 and Journey.credits(demo.state.harmony_journey)==1,"real construction after opening remains outside historical settlement")
+	await key(KEY_Z,true);await settle();quiet();await key(KEY_Y,true);await settle();quiet();check(demo.state.harmony_journey.harmony_xp==4 and demo.state.harmony_journey.has("growth_cutoff"),"native old-work edit history retains cutoff")
+	for size:Vector2i in [Vector2i(1024,768),Vector2i(1440,900)]:
+		root.size=size;await settle();await key(KEY_F1);await settle();var letters:Node=demo.get_meta("city_letters")
+		check(not letters.claim.disabled and Rect2(Vector2.ZERO,Vector2(size)).encloses(letters.claim.get_global_rect()),"retained old invitation remains reachable "+str(size.x))
+		await ui_click(letters.claim);await settle();var draft:Node=demo.get_meta("inspiration_draft")
+		check(draft.paper.visible and draft.buttons.keys()==first.pending_draft,"native old invitation preserves exact original cards "+str(size.x));await capture("old_invitation_"+str(size.x));draft.postponed=true;draft.paper.hide()
+	await key(KEY_F1);await settle();await ui_click(demo.get_meta("city_letters").claim);await settle();var draft:Node=demo.get_meta("inspiration_draft");await ui_click(draft.buttons[first.pending_draft[0]]);await settle();quiet()
+	check(Journey.credits(demo.state.harmony_journey)==0 and demo.state.harmony_journey.harmony_xp==4,"native original historical credit can still be consumed without new XP")
+	var claimed:Dictionary=demo.state.harmony_journey.duplicate(true);var version:=make_work(demo.state,"迁移后已领权益")
+	check(version.ok,"actual cutoff version with consumed old credit saved")
+	await collection_card(version.id);await ui_click(demo.gallery.panel.open_buttons[version.id]);await settle();quiet()
+	check(not demo.gallery.growth_opening.migrated and demo.state.harmony_journey==claimed,"native newer cutoff version cold opens without restoring consumed credit")
+	var pcm:Dictionary=await AudioProbe.record(OUT+"/Master.wav",3.2);check(pcm.ok,"actual production Master recording after old work publication")
+	demo.gallery.open_panel();await settle();await ui_click(demo.gallery.panel.biome_button);await settle();await reveal(demo.gallery.panel.biome_buttons.sunny_banks);await ui_click(demo.gallery.panel.biome_buttons.sunny_banks);await settle();quiet()
+	check(demo.state.biome_seed.get("id")=="sunny_banks" and demo.state.harmony_journey.growth_cutoff.source=="new_free" and Journey.credits(demo.state.harmony_journey)==0 and demo.state.harmony_journey.pending_draft.is_empty(),"native actual new biome starts stopped without heritage offer")
+	await capture("new_biome_no_reward_pool")
+	check(DisplayServer.get_name()!="headless" and AudioServer.get_driver_name()=="WASAPI" and pool()==voices,"actual NVIDIA OpenGL/WASAPI and original bounded voice pool")
+	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal continue-save byte identical")
+	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"elapsed_seconds":(Time.get_ticks_msec()-began)/1000.,"master":pcm,"bank_signature":demo.music.BankCache.source_signature()}
+	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t",true,true));print("FREE_GROWTH_OPENING_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)
