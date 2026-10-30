@@ -114,7 +114,7 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 | --- | --- |
 | 四类独立地标 | LegendaryWonderPlan.unlocked_journey继续只表示虹彩已得卡或真实二阶回响历史。PlacedLandmarks.available_blueprints已为free独立派生四类基础可用权限，GroundLandmarkTool按钮、preview和validate_geometry共用；无卡目录点击/API/冷读已受测，见53，不伪造rarity/echoes。四类唯一性、实地净空及身份验证保持。旧屋式Signatures六地标独立核对，不能用四类开放覆盖它的旧资格。 |
 | 六种奖励饰色 | ArchiveRewards.finish_available已区分free六饰色基础可用与legacy原四章纪念/两项图鉴资格；State、Journal/SpatialPopover和Serializer共用。新free实际六色选择/Undo/逐色磁盘冷读、转换和原四基础色回归已受测，见53；原纪念/图鉴保持真实。压缩顶点色编码与重合配方的重建回退已修，不向获得账本补写记录。 |
-| 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery入口仍依赖图鉴。已接通的gong_pentatonic/impressionist_major7须逐条核对实际音频消费者；未接通的十调式扩展不以放宽枚举冒充完成，不能生成假的图鉴大奖。 |
+| 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery已区分free基础可用与legacy原图鉴资格；只开放原gong_pentatonic/impressionist_major7两枚举。原生选择、实际core分轨mode8/9、建造短cue、量化点屋音、Undo/冷读/转换和忙碌门禁已受测，见53；未生成图鉴大奖。其余规划调式/六首母曲全调式仍按音乐批次验收，不以此子步冒充完成。 |
 | 四时代普通风貌 | CreationPolicy.can_build_era/eras/data_can_build_era已区分free可用与era_unlocks历史。保持既有开放，不重跑解锁；Eras.refresh、时代仪式及Unified旧章程不能因可用性开放补造历史。 |
 | 二阶样板与微景 | InspirationSamples.plans仍以lantern_bridge_echo/arcade_market的rank>=2派生灯/藤与后续回答材料。基础表达改为实际空间及明确外观选择后才能退出free获得前置；保留旧rank和原人工开关，不把所有18卡承诺为已完成免费外观。其余TraditionScenery/LegendaryWonderPlan纪念、家族消费者按本表逐ID继续迁，不补造真实事件。 |
 

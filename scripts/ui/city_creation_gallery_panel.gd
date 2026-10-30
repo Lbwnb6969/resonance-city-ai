@@ -27,6 +27,7 @@ var stop_button:Button
 var _archive_data:Dictionary={"chords":[],"landmarks":[],"performances":[],"awards":[]}
 var _archive_rewards:Array=[]
 var _music_mode:=""
+var _archive_free:=false
 var _playing_id:=""
 var _playing_title:=""
 var _playing_mode:=""
@@ -205,7 +206,7 @@ func set_busy(value: bool) -> void:
 	biome_button.disabled=value
 	for seed_button:Button in biome_buttons.values():seed_button.disabled=value
 	for b:Button in preview_buttons.values():b.disabled=value or not bool(b.get_meta("valid",false))
-	for id:String in mode_buttons:mode_buttons[id].disabled=value or (id!="" and not preload("res://scripts/world/city_creation_archive_rewards.gd").mode_available(id,_archive_rewards))
+	for id:String in mode_buttons:mode_buttons[id].disabled=value or (id!="" and not preload("res://scripts/world/city_creation_archive_rewards.gd").mode_available(id,_archive_rewards,_archive_free))
 	title_input.editable = not value
 	for index in range(tabs.tab_count): tabs.set_tab_disabled(index, value)
 	for id: String in open_buttons:
@@ -385,8 +386,8 @@ func _button(text: String) -> Button:
 	button.custom_minimum_size.y = 40
 	return button
 
-func refresh_archive(data:Dictionary,rewards:Array,mode:String)->void:
-	_archive_data=data.duplicate(true);_archive_rewards=rewards.duplicate();_music_mode=mode
+func refresh_archive(data:Dictionary,rewards:Array,mode:String,free:bool=false)->void:
+	_archive_data=data.duplicate(true);_archive_rewards=rewards.duplicate();_music_mode=mode;_archive_free=free
 	if is_node_ready() and tabs.current_tab==2 and not _biomes_selected:_render_items()
 
 func set_playing(id:String,title:String,mode:String)->void:
@@ -409,13 +410,14 @@ func _render_archive()->void:
 	var rewards=preload("res://scripts/world/city_creation_archive_rewards.gd")
 	for id:String in rewards.IDS:
 		var earned:bool=id in _archive_rewards
-		var text:String=("历次河湾收录声学和弦 %d / 5。解锁青瓷与黛瓦、C宫五声。"%_archive_data.get("chords",[]).size()) if id=="five_chords" else "完成一次至少100屋、四时代参与的24秒地标盛典。解锁月石与鸢尾、F大七调式。"
+		var text:String=("历次河湾收录声学和弦 %d / 5。"%_archive_data.get("chords",[]).size()) if id=="five_chords" else "完成一次至少100屋、四时代参与的24秒地标盛典。"
+		text+=("自由创作已可选择对应饰色与调式；图鉴保留真实记录。" if _archive_free else "解锁青瓷与黛瓦、C宫五声。" if id=="five_chords" else "解锁月石与鸢尾、F大七调式。")
 		_archive_card(("✓ " if earned else "○ ")+str(rewards.NAMES[id]),text)
 	var modes:=_archive_card("为当前河湾选择调式","按下一枚唱片，新的建造、日常合奏与地标乐章一起换调。")
 	for id:String in ["","gong_pentatonic","impressionist_major7"]:
 		var b:=_button(("✓ " if id==_music_mode else "")+str(rewards.MODE_NAMES.get(id,"地貌原声")))
 		b.name="Mode_"+("automatic" if id.is_empty() else id)
-		b.disabled=_busy or (not id.is_empty() and not rewards.mode_available(id,_archive_rewards))
+		b.disabled=_busy or (not id.is_empty() and not rewards.mode_available(id,_archive_rewards,_archive_free))
 		b.tooltip_text="用于当前河湾" if not b.disabled else "达成对应图鉴成就后解锁"
 		b.pressed.connect(func()->void:
 			if not _busy:mode_requested.emit(id))

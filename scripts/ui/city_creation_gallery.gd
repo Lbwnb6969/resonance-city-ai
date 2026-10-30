@@ -70,7 +70,7 @@ func _refresh() -> void:
 	var result: Dictionary=library.entries()
 	panel.refresh(result.get("items",[]))
 	panel.refresh_examples(Examples.entries())
-	panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode)
+	panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode,demo.state.CreationPolicy.is_free(demo.state))
 	panel.set_status("每次收藏都是新的版本，之前的作品会一直保留。" if result.ok else str(result.message))
 
 func _set_busy(value: bool) -> void:
@@ -235,7 +235,7 @@ func observe_archive(completed:Dictionary={})->void:
 	if not result.ok:
 		panel.set_status(str(result.message));return
 	demo.state.apply_archive_unlocks(archive.awards)
-	if result.get("changed",false):panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode)
+	if result.get("changed",false):panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode,demo.state.CreationPolicy.is_free(demo.state))
 	for id:String in result.get("earned",[]):demo._message("声学图鉴 · "+str(archive.Rewards.NAMES[id])+" · 新饰色与调式已可选")
 
 func choose_mode(mode:String)->void:
@@ -243,7 +243,7 @@ func choose_mode(mode:String)->void:
 	stop_preview()
 	var stairs:bool=preload("res://scripts/world/city_creation_stair_keys.gd").enabled(demo.state)
 	demo._after_edit(demo.state.set_music_mode(mode),"terrace",stairs)
-	panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode)
+	panel.refresh_archive(archive.summary(),demo.state.archive_unlocks,demo.state.music_mode,demo.state.CreationPolicy.is_free(demo.state))
 
 func play_work(id:String)->void:
 	if busy or demo.edit_pending() or demo.music._loading:return

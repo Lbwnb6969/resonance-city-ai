@@ -667,7 +667,7 @@ func apply_archive_unlocks(ids:Array)->void:
 		if id in ArchiveRewards.IDS and id not in archive_unlocks:archive_unlocks.append(id);dirty=true
 
 func set_music_mode(mode:String)->Dictionary:
-	if mode!="" and not ArchiveRewards.mode_available(mode,archive_unlocks):return _fail("这个调式尚未在图鉴中解锁")
+	if mode!="" and not ArchiveRewards.mode_available(mode,archive_unlocks,CreationPolicy.is_free(self)):return _fail("这个调式尚未在图鉴中解锁")
 	if mode==music_mode:return {"ok":true,"no_op":true,"message":"调式未变"}
 	var before:=snapshot();music_mode=mode;_commit(before,"选择河湾调式")
 	return {"ok":true,"message":"已选择"+str(ArchiveRewards.MODE_NAMES.get(mode,"地貌原声"))}
