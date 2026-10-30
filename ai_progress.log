@@ -926,3 +926,9 @@
 - VERIFY：Harness、43文档190链接、3703资源引用/来源哈希PASS；52/53/56正文保持，全部功能passes/verified_by不变，删除计划与覆盖映射见本轮验证记录。
 - SCOPE：只整合生效规则/导航和删除失效文档，不变更游戏功能；已完成子步不重做。按37审阅双库同一删除集并核树。
 - CRITIC：整合与直接删除两阶段独立复核无阻断；来源/正文保持措辞修正，原件恢复通过源提交核实。
+
+[SESSION_M84_GROWTH_CUTOVER_CONTRACT] 2026-10-30 DOC ONLY：56明确XP/邀约全部入口、四种城市截止、旧余量/多credit/原来信延期领取及转换失败回滚；运行规则保持。
+- GATES：先迁独立地标UI/API/冷读等基础权限，再停收益；历史获得记录分离，未接通调式不冒充完成。
+- CRITIC：周期第三项独立审查，1项P2结算触发ensure副作用已修，复核无剩余P1/P2；API名称纠正。
+- VERIFY：Harness、43文档190链接、3703资源/来源核验PASS；全部passes/verified_by及运行目录与备份基线一致，不重跑游戏。
+- EVIDENCE：验证记录/M84/growth_cutover_contract_20261030；Git备份backup/before-growth-cutover-contract-20261030；M84～M86仍false，按37双库发布核树。
