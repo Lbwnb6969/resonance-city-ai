@@ -1,10 +1,15 @@
 extends RefCounted
-## Authored ground entities. Earned blueprints remain in the existing journey ledger.
+## Free build access is separate from historical earned blueprint records.
 const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 const Legacy=preload("res://scripts/world/city_creation_legendary_wonder_plan.gd")
 const SIZES:={"riverbank":Vector2(3.6,3.6),"highland":Vector2(5.,4.4),"courtyard":Vector2(4.8,4.8),"artisan":Vector2(3.8,3.8)}
 const HEIGHTS:={"riverbank":5.6,"highland":3.6,"courtyard":3.8,"artisan":6.2}
 const FIELDS:=["id","blueprint","position","yaw","base_y"]
+static func available_blueprints(settings:Dictionary,journey:Dictionary)->Dictionary:
+	if settings.get("creation_policy","legacy")!="free":return Legacy.unlocked_journey(journey)
+	var result:Dictionary={}
+	for family:String in SIZES:result[family]=true
+	return result
 static func position(row:Dictionary)->Vector2:return Vector2(row.position[0],row.position[1])
 static func footprint(row:Dictionary,margin:float=0.)->Dictionary:return {"center":position(row)+Vector2(0,.27).rotated(-float(row.yaw)),"half":Vector2(SIZES[row.blueprint])*.5+Vector2(0,.27)+Vector2.ONE*margin,"angle":float(row.yaw)}
 static func entrance(row:Dictionary)->Vector2:return position(row)+Vector2(0,SIZES[row.blueprint].y*.5+1.).rotated(-float(row.yaw))
@@ -74,7 +79,7 @@ static func site(city:RefCounted,item:Dictionary,except_id:String="")->Dictionar
 static func preview(city:RefCounted,blueprint:String,at:Vector2,yaw:float=0.,moving:String="")->Dictionary:
 	if blueprint not in SIZES or not is_finite(at.x) or not is_finite(at.y) or not is_finite(yaw):return city._fail("地标蓝图或位置无效")
 	if not city.CreationPolicy.is_free(city):return city._fail("先备份转换为自由创作，再放置传世蓝图")
-	if not Legacy.unlocked(city).has(blueprint):return city._fail("这张传世蓝图尚未获得")
+	if not available_blueprints(city.creative_settings,city.harmony_journey).has(blueprint):return city._fail("这张传世蓝图尚未获得")
 	if not moving.is_empty() and row(city,moving).get("blueprint","")!=blueprint:return city._fail("移动地标身份无效")
 	for other:Dictionary in city.placed_landmarks:
 		if other.blueprint==blueprint and other.id!=moving:return city._fail("每张传世蓝图限一处，可移动已有地标")
@@ -114,7 +119,7 @@ static func validate_fields(city:RefCounted,data:Dictionary)->Dictionary:
 	return {"ok":true}
 static func validate_geometry(city:RefCounted,data:Dictionary)->Dictionary:
 	if data.get("placed_landmarks",[]).is_empty():return {"ok":true}
-	var rights:=Legacy.unlocked_journey(data.get("harmony_journey",{}))
+	var rights:=available_blueprints(data.get("creative_settings",{}),data.get("harmony_journey",{}))
 	for item:Dictionary in data.placed_landmarks:
 		if not rights.has(item.blueprint):return city._fail("地标蓝图尚未获得")
 	var copy=load("res://scripts/world/city_creation_state.gd").new()

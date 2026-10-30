@@ -112,7 +112,7 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 
 | 内容 | 当前入口/消费者及迁移要求 |
 | --- | --- |
-| 四类独立地标 | LegendaryWonderPlan.unlocked_journey仍要求虹彩已得卡或真实二阶回响；GroundLandmarkTool按钮、PlacedLandmarks.preview和validate_geometry均消费此权利。free需另派生基础可用蓝图，三处及冷读一致，不伪造rarity/echoes；四类唯一性、实地净空及身份验证保持。旧屋式Signatures六地标独立核对，不能用四类开放覆盖它的旧资格。 |
+| 四类独立地标 | LegendaryWonderPlan.unlocked_journey继续只表示虹彩已得卡或真实二阶回响历史。PlacedLandmarks.available_blueprints已为free独立派生四类基础可用权限，GroundLandmarkTool按钮、preview和validate_geometry共用；无卡目录点击/API/冷读已受测，见53，不伪造rarity/echoes。四类唯一性、实地净空及身份验证保持。旧屋式Signatures六地标独立核对，不能用四类开放覆盖它的旧资格。 |
 | 六种奖励饰色 | State.finish_available、ArchiveRewards.finish_available、Journal/SpatialPopover选择器和Serializer房屋finish校验仍依赖四章纪念或两项图鉴。free基础可用性要贯穿选择、提交、Undo和冷读；原纪念/图鉴保持真实。原四种基础配色本已开放。 |
 | 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery入口仍依赖图鉴。已接通的gong_pentatonic/impressionist_major7须逐条核对实际音频消费者；未接通的十调式扩展不以放宽枚举冒充完成，不能生成假的图鉴大奖。 |
 | 四时代普通风貌 | CreationPolicy.can_build_era/eras/data_can_build_era已区分free可用与era_unlocks历史。保持既有开放，不重跑解锁；Eras.refresh、时代仪式及Unified旧章程不能因可用性开放补造历史。 |

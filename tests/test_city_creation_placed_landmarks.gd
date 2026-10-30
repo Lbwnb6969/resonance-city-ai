@@ -26,7 +26,7 @@ func run()->void:
 	var converted:Dictionary=legacy.CreationPolicy.convert(legacy,"res://验证记录/M81/units/converted.json");var old_reader:=State.new()
 	check(converted.ok and old_reader.load_city(converted.get("backup","")).ok and Legend.derive(old_reader).crowns.size()==4,"conversion preserves a real cold-loadable original crown city backup")
 	check(Legend.unlocked(legacy).size()==4 and Legend.derive(legacy).crowns.is_empty() and legacy.placed_landmarks.is_empty(),"conversion presents permanent blueprints without automatic ground occupation")
-	var pristine:Dictionary=city.snapshot();var denied:=State.new();denied.initialize_free();check(not Plan.place(denied,"riverbank",Vector2(-40,-28)).ok,"free creation does not manufacture an earned blueprint")
+	var pristine:Dictionary=city.snapshot();var fresh:=State.new();fresh.initialize_free();check(Plan.place(fresh,"riverbank",empty_site(fresh,"riverbank")).ok and Legend.unlocked(fresh).is_empty(),"free access places a landmark without manufacturing historical earned rights")
 	var locations:Dictionary={}
 	for family:String in Plan.SIZES:
 		var at:=empty_site(city,family);check(is_finite(at.x),"find actual clear site "+family)

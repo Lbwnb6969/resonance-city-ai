@@ -37,12 +37,12 @@ func _process(_delta:float)->void:
 	if not selected.is_empty() and Plan.row(demo.state,selected).is_empty():selected=""
 	refresh()
 func refresh()->void:
-	var free:bool=demo.state.CreationPolicy.is_free(demo.state);var rights:=Legacy.unlocked(demo.state)
+	var free:bool=demo.state.CreationPolicy.is_free(demo.state);var rights:=Plan.available_blueprints(demo.state.creative_settings,demo.state.harmony_journey)
 	for id:String in buttons:
 		var placed:bool=demo.state.placed_landmarks.any(func(row):return row.blueprint==id)
 		buttons[id].disabled=not free or not rights.has(id) or placed
 		buttons[id].text=Legacy.TITLES[id]+(" · 已落位" if placed else " · 免费选址" if rights.has(id) else " · 尚未获得蓝图")
-	status.text="已获蓝图不会因回收实体而失去。Q/E旋转，点击空地放置，Esc取消。" if free else "经典旧城保留屋顶原貌；F1备份转换后，已有权益成为待放置蓝图。"
+	status.text="四类地标均可自由选址，每类限一处。Q/E旋转，点击空地放置，Esc取消；回收后可重新放置。" if free else "经典旧城保留屋顶原貌；F1备份转换后可自由选址，历史权益保留。"
 	selection.visible=not selected.is_empty()
 	if selection.visible:selection_title.text=Legacy.TITLES[Plan.row(demo.state,selected).blueprint]
 func toggle_automatic()->void:
