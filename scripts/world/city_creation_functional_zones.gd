@@ -62,6 +62,8 @@ static func for_city(city:RefCounted)->Dictionary:
 			result.zones.append({"id":kind+":"+str(members[0]),"kind":kind,"members":members,"active":result.houses[id].connected,"component":result.houses[id].component})
 	result.spaces=preload("res://scripts/world/city_creation_courtyard_contract.gd").derive(city,result,func(box):return _water_distance(city,box))
 	result.spaces.append_array(preload("res://scripts/world/city_creation_waterfront_contract.gd").derive(city,result,func(box):return _water_distance(city,box)))
+	result.spaces.append_array(preload("res://scripts/world/city_creation_artisan_contract.gd").derive(city,result,func(box):return _water_distance(city,box)))
+	result.space_contracts.artisan="workshop_forecourt"
 	city.set_meta("functional_zones",{"key":key,"value":result});return result
 
 static func _adjacent(a:Array,b:Array)->bool:
