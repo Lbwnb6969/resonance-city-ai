@@ -36,12 +36,13 @@ func _ready()->void:
 	description.add_theme_font_size_override("font_size",13);add_child(description)
 	guidance=CheckBox.new();guidance.name="OptionalCreationGuidance";guidance.text="教学提示";guidance.toggled.connect(_guidance_changed);add_child(guidance)
 	convert_button=Button.new();convert_button.name="EnableFreeCreation";convert_button.text="开启自由创作"
-	convert_button.tooltip_text="先备份此城，再开放普通风貌、用途与画具；历史纪念、手札和旧展示保留。"
+	convert_button.tooltip_text="先备份并结算已发生的共鸣，再开放普通风貌、用途与画具。转换后不再新增经营共鸣；原手札额度、邀约和旧来信奖励仍可领取。"
 	convert_button.pressed.connect(_convert);add_child(convert_button);refresh()
 
 func refresh()->void:
 	var free:=Policy.is_free(demo.state)
 	description.text="自由创作 · 四时代与画具已开放" if free else "经典成长 · 风貌随城市逐步开启"
+	if demo.state.harmony_journey.has("growth_cutoff"):description.text="自由创作 · 基础画具开放，旧权益保留"
 	guidance.disabled=not free
 	guidance.set_pressed_no_signal(bool(demo.state.creative_settings.get("guidance",true)))
 	guidance.tooltip_text="可随时打开或收起建造建议；所有基础画具始终可用。" if free else "经典成长保留原引导；开启自由创作后可单独选择教学提示。"

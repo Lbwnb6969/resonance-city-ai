@@ -75,8 +75,9 @@ func refresh(force:bool=false)->void:
 	badge.visible=remaining>0
 	badge.position=Vector2(24,64);badge.custom_minimum_size=Vector2(116,28)
 	badge.tooltip_text="新屋、真实出炉、茶聚、送装、心愿与和弦积累共鸣。\n已研习："+"、".join(Array(journey.traditions).map(func(id):return str(Journey.cards()[id].name)))
+	if journey.has("growth_cutoff"):badge.tooltip_text="保留的手札额度与旧城传承仍可领取；基础营造与音乐自由使用。"
 	if remaining==0:paper.hide();signature=null;return
-	Rarity.ensure(journey)
+	if force or not journey.has("growth_cutoff"):Rarity.ensure(journey)
 	reroll_button.visible=legacy_era.is_empty();reroll_button.text="翻卷 · %d"%Rarity.rerolls_left(journey);reroll_button.disabled=Rarity.rerolls_left(journey)<=0
 	footer.text="旧城已得权益 · 不消耗共鸣手札 · 可撤销" if not legacy_era.is_empty() else preload("res://scripts/ui/city_creation_draft_leaf.gd").footer(journey)
 	var key:=[journey.pending_draft.duplicate(),journey.ranks.duplicate(),journey.get("draft_rarities",{}).duplicate(),remaining,legacy_era]

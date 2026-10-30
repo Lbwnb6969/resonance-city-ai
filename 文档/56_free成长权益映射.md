@@ -6,7 +6,7 @@
 
 | 原字段/来源 | 现有语义与迁移约定 |
 | --- | --- |
-| harmony_xp / harmony_level / xp_remainder | 保存完整整数与小数余量。停止新XP前明确截止边界与余量处理；不默认折成credit、不清零、不补发虚构事件。当前累计规则继续。 |
+| harmony_xp / harmony_level / xp_remainder | 保存完整整数与小数余量。停止新XP前明确截止边界与余量处理；不默认折成credit、不清零、不补发虚构事件。未截止城当前累计规则继续；显式转换已截止城保存原余量，停止普通新加点，旧来信按凭据兑现。 |
 | credits | 由等级-1+heritage_credit-已选rank总数派生；不另建计数器。旧余额与传承credit继续经原入口领取。 |
 | pending_draft / draft_rarities / draft_serial | 原三张邀约、稀有度与序号保持；查看不重抽、不创建邀约、不调用Rarity.ensure。后续停止新抽池时仍须可领旧邀约。 |
 | traditions / ranks / rarity_ranks | 18个原ID保留；章程兼看era_modifiers，旧城无journey的章程不能丢失，也不能补写研习阶数。 |
@@ -14,7 +14,7 @@
 | receipts | 原单调计数保留，包括基线、已收取事件、翻卷次数/保底和旧和弦。存在正数只证明有记录，不能推断必曾领取XP、听过或当前仍成立。 |
 | active_vignette / completed_vignettes / echoes | 原来信手动继续/领取；旧奖励和回响继续。free不再派新来信；此处不替换原完成入口。 |
 | growth_memories / archive_unlocks / eras | 既有纪念、饰色、收藏与时代记录保持。基础工具/母曲不能重新锁进图鉴。旧未完成章节的后续处理仍需明确。 |
-| 百工正式+35% | 当前真实连接的百工来源通过FunctionalBenefits计算，仍正式生效；源撤回时当前收益撤回，旧收据继续保留。停止新收益事件须另验收。 |
+| 百工正式+35% | 当前真实连接的百工来源通过FunctionalBenefits计算，仍正式生效；源撤回时当前收益撤回，旧收据继续保留。显式转换截止后不再给普通新事件加点，仍保留当前正式资格并用于真实旧来信奖励；其他入口待接。 |
 
 J手记“查看已得手札与历史权益”读取原账本，显示已有记录、待领额度、原邀约、已得卡原条件/阶数/稀有度，以及建筑和弦当前资格与历史记录。只列已得卡和已成立/有记录的和弦，不展示未收集清单或完成比例。它不发奖励、不登记新发现、不改保存格式。F1原领取、空间微景说明/定位及装饰开关继续，旧二阶记录独立保留。
 
@@ -61,11 +61,11 @@ J手记“查看已得手札与历史权益”读取原账本，显示已有记�
 
 只读映射需证明空城不初始化邀约、18个ID不丢失、旧无journey章程保留、旧阶数/稀有度/原三张邀约/credit一致；跨Schema20冷读、Undo/Redo、换城和实际入口保持。受测样本明确区分合成历史格式夹具与公开建造实际赚取的奖励。
 
-新XP/新抽池的退出须另完成：列全新事件计点入口（Receipts.collect、来信完成、家族真实事件及直接award_xp等）、明确新旧城切换时间边界、既有小数/未到阈值余量和未领旧任务奖励、保留旧邀约/翻卷规则、显式转换前可回读备份、Undo不可重刷/回退政策、legacy继续经营、基础外观与音乐不被剩余旧卡锁住。当前映射不声称此切换已完成。
+新XP/新抽池的退出须另完成：列全新事件计点入口（Receipts.collect、来信完成、家族真实事件及直接award_xp等）、明确新旧城切换时间边界、既有小数/未到阈值余量和未领旧任务奖励、保留旧邀约/翻卷规则、显式转换前可回读备份、Undo不可重刷/回退政策、legacy继续经营、基础外观与音乐不被剩余旧卡锁住。当前仅显式转换链已通过，不能视作四种城市全部切换完成。
 
-## 切换实施契约（2026-10-30源码核对，待实现）
+## 切换实施契约（2026-10-30源码核对，显式转换已接通）
 
-本节将上述条件落到实际入口与行为边界。它不改变当前累计规则，不表示成长退场已经通过。迁移先接通内容权限，再停止新收益；每个子步独立验证，不能先关获得途径再补基础内容。
+本节将上述条件落到实际入口与行为边界。显式legacy转换已接通下述截止事务，技术证据见53；新自由城/既有free自动迁移未接通，仍沿原累计。下表按原机制与最终目标列示，不表示所有入口已完成；不能以显式转换子步代替成长退场全验收。迁移先接通内容权限，再停止新收益。
 
 ### 事件与邀约入口
 
@@ -84,7 +84,7 @@ J手记“查看已得手札与历史权益”读取原账本，显示已有记�
 | world/city_creation_unified_rewards.gd：initialize/pending/choose_legacy | pending并非只读，会初始化已解锁时代的旧章程收据 | 切换时识别真实旧章程资格并保存；后续新增free风貌可用性不能伪造旧章程收据；已有待领入口继续 |
 | ui/city_creation_inspiration_draft.gd：poll/refresh/choose/display | 每0.5秒collect；refresh会pending/ensure；choose再collect；升级可触发提示音 | 无待领旧权益时不显示成长提示；有历史待领时保留F1入口、原选择/翻卷；不能靠隐藏badge代替上游停发 |
 
-collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可结算奖励；百工+35%在正式切换前保持，旧来信延期领取仍按实际领取时的真实空间资格及原倍率计算，不冻结或补造百工来源。普通新收益关闭后不将+35%冒充新生产加速，也不删除其当前空间资格或历史记录。
+collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可结算奖励；百工+35%当前正式资格保持，已截止转换城的旧来信延期领取仍按实际领取时的真实空间资格及原倍率计算，不冻结或补造百工来源。普通新收益关闭后不将+35%冒充新生产加速，也不删除其当前空间资格或历史记录。
 
 ### 四种城市与切换时刻
 
@@ -92,7 +92,7 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 | --- | --- |
 | 新自由城 | 迁移实现上线后State.initialize_free/CreationPolicy.initialize_biome建立无普通成长的新城。可有空账本，不创建免费邀约、等级补偿或传承credit。 |
 | 已有自由城 | 作品通过完整读取校验后、任何collect/首演/返场/UI奖励轮询前切换。先以原真实计数和规则结算已发生但尚未采集的差额，再登记截止状态；切换前写独立备份并回读。失败保留原城，不发布半迁移城。 |
-| legacy显式转换城 | 沿CreationPolicy.convert的转换前原貌/目标原件备份路径，在政策改free前结算真实旧差额并登记同一截止状态；保存失败回滚本轮全部账本变化，原legacy继续。 |
+| legacy显式转换城 | 已接通：沿CreationPolicy.convert的转换前原貌/目标原件备份并回读，在政策改free前以原legacy公式结算真实旧差额，保存growth_cutoff/version1/source=converted_legacy；保存失败恢复完整原journey、政策/版本/dirty，原legacy继续。 |
 | legacy未转换城 | 不创建free截止状态；原XP、抽池、经营、章程、成长和存档校验继续。 |
 
 截止状态采用独立、显式版本化且严格校验的数据，不复用creation_policy或migration_version=1来推断成长已迁；原migration_version表示已有转换，不能让所有旧free作品被当成已经结算。新字段的兼容、来源与枚举校验随实现交付，Schema1～19仍缺省legacy，Schema20旧free进入上述一次迁移。没有真实待采集事件就不发XP；没有journey时建立基线不凭当前房屋倒补历史。
@@ -118,5 +118,15 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 | 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery已区分free基础可用与legacy原图鉴资格；只开放原gong_pentatonic/impressionist_major7两枚举。原生选择、实际core分轨mode8/9、建造短cue、量化点屋音、Undo/冷读/转换和忙碌门禁已受测，见53；未生成图鉴大奖。其余规划调式/六首母曲全调式仍按音乐批次验收，不以此子步冒充完成。 |
 | 四时代普通风貌 | CreationPolicy.can_build_era/eras/data_can_build_era已区分free可用与era_unlocks历史。保持既有开放，不重跑解锁；Eras.refresh、时代仪式及Unified旧章程不能因可用性开放补造历史。 |
 | 二阶样板与微景 | InspirationSamples.plans已将free栈桥小灯/柔和回答、田园爱奥尼长馆边柱细藤/交织回答与rank历史分离；无卡实际几何/原生F1说明、定位、显示开关/原回答播放器/磁盘冷读受测，见53。支撑撤回即撤未来资格，音乐沿原24秒乐句锁存；收起自动装饰仅隐藏模型，音乐与旧rank/rarity保持。legacy原貌不变，不推广所有桥/所有柱廊，也不把18卡全部承诺为已有免费外观。其余真实经营/纪念消费者按本表保留；新表现按54逐空间批次接续，不补造真实事件。 |
+
+### 已接通的显式转换边界
+
+harmony_journey.growth_cutoff为独立三字段记录：version=1、source枚举、vignette为空或原id/serial/claimed凭据。HarmonyValidation严格核对字段、枚举、原来信/已完成状态；Serializer要求Schema20/free，converted_legacy必须对应migration_version1。新字段缺省不代表已截止，旧schema/legacy不能携带截止记录。新自由城与旧free自动入口将复用该记录，目前不在初始化或普通读取中隐式迁移。
+
+GrowthTransition复用HarmonyReceipts.take_events的原真实差额和倍率，再通过FunctionalBenefits的受控旧奖励计算保留余量与等级；只在真实差额跨出第一个正credit且原pending空时建立三张待兑现卡，不调用Rarity.ensure。零差额不消耗余量。转换只为真实已解锁且未选章程初始化原Unified收据，不因free可用风貌授予历史。
+
+截止后普通FunctionalBenefits.award_xp和纯字典Journey.add_harmony_xp均不加点或生成邀约；普通collect仍记录真实经营收据，Heritage不新授额度。原credits仍可逐笔兑现，只有主动翻开/选择才补旧缺稀有度元数据；选择在增加rank前确定原邀请slot，避免多credit错位。几何/翻卷Undo保留当前邀约，选择Undo读取该slot最新已付翻卷记录，不新建保底/序号或退还预算。原来信在真实条件达标且id+serial与截止凭据吻合时，沿原入口一次发XP/祝福/回响并标已领；普通加点API没有“旧奖励”旁路参数。
+
+原无journey城建立真实基线，不凭已有屋补XP；原有整数/小数、多credit、pending顺序/稀有度/序号、旧rank及真实库存保持。四主文件净改0。本子步的77项CPU与36项实际GL仅证明显式转换链，四种城市完整验收仍按下列范围继续。
 
 实施验收至少覆盖：无历史的新free、旧free带小数与多credit、同城未领来信和旧章程、转换失败回滚及legacy对照；API绕过UI、Undo/Redo、重复冷读/换城与存档拒绝坏截止字段；无旧卡的新free实际使用已迁内容并冷读，旧作品原权益仍可到达。CPU验证后补相关原生领取/选择输入、原图和PCM，未实际听评继续标待评。文档盘点不运行游戏、不计为运行验收。

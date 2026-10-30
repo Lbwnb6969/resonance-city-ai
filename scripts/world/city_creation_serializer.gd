@@ -286,6 +286,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if data.has("biome_seed") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.Biomes.valid(data.biome_seed)):return city._fail("声学地貌存档无效")
 	if data.has("microclimate") and (data.schema<city.PERSONALIZATION_SCHEMA or data.microclimate not in city.Microclimate.IDS):return city._fail("四时风物存档无效")
 	if data.has("harmony_journey") and (data.schema<19 or not city.HarmonyJourney.validate(data.harmony_journey,unlocks)):return city._fail("河湾共鸣手札存档无效")
+	if Dictionary(data.get("harmony_journey",{})).has("growth_cutoff") and not city.CreationPolicy.data_is_free(data):return city._fail("成长截止记录需要自由创作版本20")
+	if data.get("harmony_journey",{}).get("growth_cutoff",{}).get("source")=="converted_legacy" and data.creative_settings.migration_version!=1:return city._fail("经典转换截止来源与政策不一致")
 	if data.has("era_modifiers") and (data.schema<city.PERSONALIZATION_SCHEMA or not city.ScoreModifiers.valid(data.era_modifiers,unlocks,data.get("harmony_journey",{}) if data.get("harmony_journey",{}) is Dictionary else {})):return city._fail("时代乐章铭牌存档无效")
 	for id:String in data.get("harmony_journey",{}).get("traditions",[]):
 		if city.ScoreModifiers.CHOICES.has(id) and id not in data.get("era_modifiers",[]):return city._fail("手札与时代章程不一致")

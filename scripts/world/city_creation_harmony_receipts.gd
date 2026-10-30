@@ -30,6 +30,11 @@ static func initialize(city:RefCounted)->void:
 	city.harmony_journey=Journey.default_state();city.harmony_journey.receipts=counters(city);city.harmony_journey.receipts["school_receipts_baseline"]=1
 	city.dirty=true;city.life_progress_dirty=true
 static func collect(city:RefCounted)->Dictionary:
+	var pending:=take_events(city)
+	var result:=Spatial.award_xp(city,pending.amount)
+	result.events=pending.events
+	return result
+static func take_events(city:RefCounted)->Dictionary:
 	initialize(city)
 	var journey:Dictionary=city.harmony_journey;var earned:=0;var events:Dictionary={}
 	var current_counts:=counters(city)
@@ -42,7 +47,5 @@ static func collect(city:RefCounted)->Dictionary:
 		var xp:int=int({"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30,"civic":30}.get(kind,0))*delta+preload("res://scripts/world/city_creation_tradition_synergy.gd").bonus_xp(city,key,delta)
 		earned+=xp;events[kind]=int(events.get(kind,0))+delta
 	var repeat_count:int=Journey.choices_made(journey)-journey.traditions.size()
-	var result:=Spatial.award_xp(city,earned*(1.+minf(.5,repeat_count*.02))*Journey.Rarity.xp_multiplier(journey))
-	result.events=events
 	if earned>0:city.dirty=true;city.life_progress_dirty=true
-	return result
+	return {"amount":earned*(1.+minf(.5,repeat_count*.02))*Journey.Rarity.xp_multiplier(journey),"events":events}

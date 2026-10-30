@@ -51,6 +51,23 @@ static func ensure(journey:Dictionary)->void:
 	if cached.is_empty():receipts["prismatic_drought"]=0 if prism else pity+1
 	journey.draft_rarities=offered
 static func tier(journey:Dictionary,id:String)->int:return int(journey.get("draft_rarities",{}).get(id,1))
+static func restore_recorded_offer(journey:Dictionary)->void:
+	# Choice history can return to an already visited credit; its newest paid
+	# reroll stays authoritative. Never create metadata while restoring history.
+	if journey.get("pending_draft",[]).is_empty():return
+	var slot:=1
+	for rank:Variant in journey.ranks.values():slot+=int(rank)
+	var receipts:Dictionary=journey.receipts;var serial:=int(receipts.get("draft_slot/"+str(slot),0))
+	if serial<1:return
+	var version:=int(receipts.get("rerolls/"+str(serial),0));var prefix:="draft_offer/%d/%d/"%[serial,version];var pending:Array=[];var tiers:Dictionary={}
+	for i in range(3):
+		for key:String in receipts:
+			if key.begins_with(prefix+str(i)+"/"):
+				var id:=key.get_slice("/",4);var tier_key:="draft_tier/%d/%d/%s"%[serial,version,id]
+				if not receipts.has(tier_key):return
+				pending.append(id);tiers[id]=receipts[tier_key];break
+	if pending.size()!=3:return
+	journey.pending_draft=pending;journey.draft_serial=serial;journey.draft_rarities=tiers
 static func chosen(journey:Dictionary,id:String)->void:
 	ensure(journey)
 	var ranks:Dictionary=journey.get("rarity_ranks",{})

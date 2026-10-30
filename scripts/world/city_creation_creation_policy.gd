@@ -61,6 +61,7 @@ static func convert(city:RefCounted,path:String)->Dictionary:
 		original=folder.path_join("原文件.json")
 		if DirAccess.copy_absolute(absolute,original)!=OK or FileAccess.get_sha256(absolute)!=FileAccess.get_sha256(original):return city._fail("原文件备份失败，当前城市保留")
 	var settings:Dictionary=city.creative_settings.duplicate(true);var revision:int=city.revision;var dirty:bool=city.dirty;var life_dirty:bool=city.life_progress_dirty
+	preload("res://scripts/world/city_creation_growth_transition.gd").settle(city,"converted_legacy")
 	city.creative_settings=Save.defaults("free",1) if settings.is_empty() else settings.duplicate(true)
 	city.creative_settings.creation_policy="free";city.creative_settings.migration_version=1
 	# Earned rights remain in the ledger; no ground entity is invented on conversion.
@@ -69,5 +70,6 @@ static func convert(city:RefCounted,path:String)->Dictionary:
 	var saved:Dictionary=city.save_city(path)
 	if not saved.ok:
 		city.creative_settings=settings;city.revision=revision;city.dirty=dirty;city.life_progress_dirty=life_dirty
+		city.harmony_journey=before.get("harmony_journey",{}).duplicate(true)
 		return saved
 	return {"ok":true,"message":"已开启自由创作；屋顶冠冕转为待放置传世蓝图，权益与转换前原貌备份保留","path":path,"backup":backup,"original_backup":original}

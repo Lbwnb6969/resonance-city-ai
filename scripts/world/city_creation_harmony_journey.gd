@@ -29,13 +29,17 @@ static func credits(journey:Dictionary)->int:
 static func refresh_draft(journey:Dictionary,unlocks:Array=["pastoral"])->void:
 	if credits(journey)<=0:journey.pending_draft=[]
 	elif Array(journey.get("pending_draft",[])).is_empty():journey.pending_draft=roll_inspiration_draft(journey,choices_made(journey)+1,74001,unlocks)
-	Rarity.ensure(journey)
+	if not journey.has("growth_cutoff"):Rarity.ensure(journey)
 static func add_harmony_xp(journey:Dictionary,amount:int,rng_seed:int=74001,unlocks:Array=["pastoral"])->Dictionary:
+	if journey.has("growth_cutoff"):return {"leveled_up":false,"level":journey.harmony_level,"journey":journey,"seed":rng_seed}
+	var result:=_advance_xp(journey,amount,rng_seed)
+	refresh_draft(journey,unlocks)
+	return result
+static func _advance_xp(journey:Dictionary,amount:int,rng_seed:int=74001)->Dictionary:
 	var level:=int(journey.harmony_level)
 	journey.harmony_xp=int(journey.harmony_xp)+maxi(0,amount)
 	while int(journey.harmony_xp)>=xp_for_next_level(int(journey.harmony_level)):
 		journey.harmony_xp=int(journey.harmony_xp)-xp_for_next_level(int(journey.harmony_level));journey.harmony_level=int(journey.harmony_level)+1
-	refresh_draft(journey,unlocks)
 	return {"leveled_up":int(journey.harmony_level)>level,"level":journey.harmony_level,"journey":journey,"seed":rng_seed}
 static func roll_inspiration_draft(journey:Dictionary,level:int,rng_seed:int,unlocks:Array=["pastoral"])->Array[String]:
 	var fresh:Array[String]=[];var owned:Array[String]=[];var pool:=cards()
@@ -51,6 +55,7 @@ static func roll_inspiration_draft(journey:Dictionary,level:int,rng_seed:int,unl
 	return picked
 static func choose_inspiration(journey:Dictionary,card_id:String,unlocks:Array=["pastoral"])->bool:
 	if credits(journey)<=0 or card_id not in journey.get("pending_draft",[]):return false
+	Rarity.ensure(journey)
 	if card_id not in journey.traditions:journey.traditions.append(card_id)
 	journey.ranks[card_id]=int(journey.ranks.get(card_id,0))+1;Rarity.chosen(journey,card_id);journey.pending_draft=[];refresh_draft(journey,unlocks);return true
 static func choose(city:RefCounted,id:String)->Dictionary:
@@ -68,7 +73,7 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		var earned:Dictionary=city.harmony_journey.duplicate(true)
 		var changed:bool=target.get("ranks",{})!=earned.get("ranks",{}) or target.get("traditions",[])!=earned.get("traditions",[])
 		for field:String in ["traditions","ranks"]:earned[field]=target.get(field,[] if field=="traditions" else {}).duplicate(true)
-		if changed or target.get("pending_draft",[]).size()==3:
+		if changed or (not earned.has("growth_cutoff") and target.get("pending_draft",[]).size()==3):
 			earned.pending_draft=target.get("pending_draft",[]).duplicate()
 			for field:String in ["draft_rarities","draft_serial"]:
 				if target.has(field):earned[field]=target[field]
@@ -77,6 +82,7 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 			if target.has("rarity_ranks"):earned.rarity_ranks=target.rarity_ranks.duplicate()
 			else:earned.erase("rarity_ranks")
 		target=earned;refresh_draft(target,city.era_unlocks)
+		if changed and target.has("growth_cutoff"):Rarity.restore_recorded_offer(target)
 	if not target.is_empty():
 		for field:String in ["harmony_xp","harmony_level"]:target[field]=int(target[field])
 		if target.has("heritage_credit"):target.heritage_credit=int(target.heritage_credit)
@@ -89,6 +95,9 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		if not target.get("active_vignette",{}).is_empty():
 			for field:String in ["serial","house_floor","plant_floor","tier"]:
 				if target.active_vignette.has(field):target.active_vignette[field]=int(target.active_vignette[field])
+		if target.has("growth_cutoff"):
+			target.growth_cutoff.version=int(target.growth_cutoff.version)
+			if not target.growth_cutoff.vignette.is_empty():target.growth_cutoff.vignette.serial=int(target.growth_cutoff.vignette.serial)
 		for key:String in target.get("completed_vignettes",{}):target.completed_vignettes[key]=int(target.completed_vignettes[key])
 	for row:Dictionary in target.get("vignette_echoes",{}).values():
 		for id:String in row:row[id]=int(row[id])

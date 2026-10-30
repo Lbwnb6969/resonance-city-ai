@@ -3,6 +3,7 @@ extends RefCounted
 const Scores=preload("res://scripts/world/city_creation_score_modifiers.gd")
 static func initialize(city:RefCounted)->void:
  if city.harmony_journey.is_empty():return
+ if city.harmony_journey.has("growth_cutoff"):return
  var receipts:Dictionary=city.harmony_journey.receipts
  if receipts.has("unified_rewards/v1"):return
  for era:String in Scores.ERAS:

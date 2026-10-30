@@ -118,7 +118,8 @@ func migration()->void:
 	if not result.ok:print("CONVERSION_FAILURE ",JSON.stringify(result))
 	check(result.ok and Policy.is_free(city) and city.creative_settings.migration_version==1,"explicit conversion succeeds only after verified backup")
 	if not result.ok:return
-	check(city._undo.size()==history and same_history(before,city.snapshot()),"conversion preserves geometry history and all earned ledgers")
+	var expected:Dictionary=before.duplicate(true);expected.harmony_journey=city.harmony_journey.duplicate(true)
+	check(city._undo.size()==history and same_history(expected,city.snapshot()) and city.harmony_journey.harmony_xp==0 and city.harmony_journey.harmony_level==1 and city.harmony_journey.traditions.is_empty() and city.harmony_journey.growth_cutoff.source=="converted_legacy","conversion preserves geometry/history and records a zero-reward cutoff for a city without prior journey")
 	check(FileAccess.get_file_as_bytes(result.original_backup)==original_file,"original file retained byte-for-byte")
 	var old_reader:=State.new();check(old_reader.load_city(result.backup).ok and old_reader.snapshot()==before and not Policy.is_free(old_reader),"pre-conversion authored city backup is a real cold-loadable legacy save")
 	var reader:=State.new();check(reader.load_city(path).ok and Policy.is_free(reader) and cold(reader),"converted target cold loads as free without fake history")

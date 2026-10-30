@@ -75,6 +75,8 @@ static func complete(city:RefCounted,connected:Dictionary)->Dictionary:
 	var status:=candidates(city,connected);var quest:Dictionary=city.harmony_journey.get("active_vignette",{})
 	if quest.is_empty() or status.count<status.needed or status.members.is_empty():return {}
 	var journey:Dictionary=city.harmony_journey;var id:String=quest.id
+	var stopped:=journey.has("growth_cutoff")
+	if stopped and not preload("res://scripts/world/city_creation_growth_cutoff.gd").pending(journey,quest):return {}
 	if not str(status.get("court","")).is_empty():journey.receipts["vignette/court/"+str(status.court)]=1
 	var tier:=2 if int(journey.get("completed_vignettes",{}).get(id,0))>0 else 1
 	if not str(status.get("feature","")).is_empty():journey.receipts["vignette/feature/"+str(status.feature)]=1
@@ -91,7 +93,10 @@ static func complete(city:RefCounted,connected:Dictionary)->Dictionary:
 			echoes[house][id]=2
 		journey.vignette_echoes=echoes
 	journey.active_vignette={}
-	var xp:=int(ceil(float(template(id).reward_xp)*(1.5 if tier==2 else 1.)));var awarded:Dictionary=preload("res://scripts/world/city_creation_functional_benefits.gd").award_xp(city,float(xp))
+	var xp:=int(ceil(float(template(id).reward_xp)*(1.5 if tier==2 else 1.)))
+	var Benefits=preload("res://scripts/world/city_creation_functional_benefits.gd")
+	var awarded:Dictionary=Benefits._award_recorded_xp(city,float(xp)) if stopped else Benefits.award_xp(city,float(xp))
+	if stopped:journey.growth_cutoff.vignette.claimed=true
 	city.dirty=true;city.life_progress_dirty=true
 	return {"id":id,"members":status.members,"xp":awarded.earned,"serial":quest.serial,"tier":tier}
 static func production(city:RefCounted,id:String)->float:

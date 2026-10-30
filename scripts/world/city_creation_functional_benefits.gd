@@ -2,10 +2,17 @@ extends RefCounted
 ## Current spatial rights; earned receipts remain owned by HarmonyReceipts.
 const CHORDS:=["pastoral_triad","clockwork_waltz"]
 static func award_xp(city:RefCounted,amount:float)->Dictionary:
+	if city.harmony_journey.has("growth_cutoff"):return {"earned":0,"leveled_up":false,"level":city.harmony_journey.harmony_level,"spatial":for_city(city)}
+	return _award(city,amount,false)
+static func _award_recorded_xp(city:RefCounted,amount:float)->Dictionary:
+	if amount<=0.:return {"earned":0,"leveled_up":false,"level":city.harmony_journey.harmony_level,"spatial":for_city(city)}
+	return _award(city,amount,true)
+static func _award(city:RefCounted,amount:float,preserve_offer:bool)->Dictionary:
 	var spatial:=for_city(city);var journey:Dictionary=city.harmony_journey
 	var exact:float=amount*float(spatial.inspiration_multiplier)+float(journey.get("xp_remainder",0.))
 	journey.xp_remainder=exact-floor(exact)
-	var result:Dictionary=city.HarmonyJourney.add_harmony_xp(journey,int(exact),74001,city.era_unlocks)
+	var result:Dictionary=city.HarmonyJourney._advance_xp(journey,int(exact)) if preserve_offer else city.HarmonyJourney.add_harmony_xp(journey,int(exact),74001,city.era_unlocks)
+	if preserve_offer and city.HarmonyJourney.credits(journey)>0 and journey.pending_draft.is_empty():journey.pending_draft=city.HarmonyJourney.roll_inspiration_draft(journey,city.HarmonyJourney.choices_made(journey)+1,74001,city.era_unlocks)
 	result.earned=int(exact);result.spatial=spatial;return result
 
 static func for_city(city:RefCounted)->Dictionary:
