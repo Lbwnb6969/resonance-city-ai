@@ -44,6 +44,7 @@ static func refresh(widget:RefCounted)->bool:
 		if space.eligibility.reason=="height_access_missing":detail="连续窄巷 · 门前高差尚无可用接续"
 		if space.kind=="waterfront":detail="面水公共界面 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "附近尚无真实水域" if space.eligibility.reason=="water_missing" else "尚无可用的面水公共界面" if space.eligibility.reason=="shore_face_missing" else "入口接续尚待验证" if space.eligibility.reason=="entry_support_unverified" else "面水通路地形受阻" if space.eligibility.reason=="ground_access_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通面水公共道路")
 		if space.kind=="artisan":detail="百工前庭 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "钟楼特色尚无已验证作业体量" if space.eligibility.reason=="work_body_missing" else "尚无可用的干地前庭" if space.eligibility.reason=="forecourt_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通公共道路")
+		if space.kind=="civic":detail="礼乐前场 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "柱脚阻挡公共入口" if space.eligibility.reason=="column_obstruction" else "尚无可用的干地前场" if space.eligibility.reason=="forecourt_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通公共道路")
 		lines.append("%s · %s\n%s"%["、".join(names),stage,detail])
 	lines.append("\n[b]原有用途与连接[/b]\n接路记录保留原权益，不等同于成区。")
 	for kind:String in Zones.NAMES:

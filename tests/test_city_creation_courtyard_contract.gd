@@ -56,7 +56,7 @@ func run()->void:
 	check(view(single)[0].stage=="trait" and single.functional_zones().zones[0].active,"legacy active remains separate from district")
 	for fixture:Dictionary in Fixture.other_kinds():
 		check(fixture.ok,"public next-kind fixture "+fixture.kind);network(fixture.city)
-		check(fixture.city.functional_zones().space_contracts[fixture.kind]==({"waterfront":"public_shore_face","artisan":"workshop_forecourt"}.get(fixture.kind,"pending")),"current other-kind contract scope "+fixture.kind)
+		check(fixture.city.functional_zones().space_contracts[fixture.kind]==({"waterfront":"public_shore_face","artisan":"workshop_forecourt","civic":"cultural_forecourt"}.get(fixture.kind,"pending")),"current other-kind contract scope "+fixture.kind)
 	var mixed:=preload("res://tools/fixtures/city_creation_functional_zones_fixture.gd").build();check(mixed.ok,"mixed real legacy spatial layout");network(mixed.city)
 	var old:Dictionary=mixed.city.snapshot();var benefits:Dictionary=mixed.city.functional_benefits()
 	check(benefits.inspiration_multiplier==1.35 and benefits.artisan_sources==["h3"],"formal global +35% keeps old source")
