@@ -155,7 +155,7 @@ func update_guidance(delta:float)->void:
 	_pulse+=delta;_timer+=delta
 	if not demo.edit_pending() and (demo.state.revision!=_revision or _timer>1.5):_rebuild()
 	var hidden:bool=not demo.ui_layer.visible or demo.camera_rig.strolling or demo.gallery.panel.visible or demo.journal.panel.visible or demo.guide.visible() or demo.ledger.visible()
-	hidden=hidden or not demo.state.harmony_journey.get("active_vignette",{}).is_empty()
+	hidden=hidden or (not demo.state.CreationPolicy.is_free(demo.state) and not demo.state.harmony_journey.get("active_vignette",{}).is_empty())
 	visible=not hidden;markers.visible=not hidden and not demo.edit_pending() and not stage.is_empty()
 	if banner.text!=_hint_text:_hint_text=banner.text;_hint_age=0.
 	_hint_age+=delta

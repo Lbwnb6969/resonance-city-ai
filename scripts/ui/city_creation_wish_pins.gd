@@ -10,6 +10,20 @@ var highlight:MeshInstance3D
 var highlight_left:=0.
 var target:Dictionary={}
 var offered_revision:=-1
+var context:Array=[]
+
+func sync_context()->bool:
+	if demo==null:return true
+	var free:bool=demo.state.CreationPolicy.is_free(demo.state)
+	var key:=[demo.state.get_instance_id(),demo.state._wish_epoch,free]
+	if key!=context:
+		context=key;retire();elapsed=0. if free else 18.;offered_revision=-1
+	return free
+
+func retire()->void:
+	for pin:Dictionary in pins:pin.button.queue_free()
+	pins.clear();target.clear();highlight_left=0.;hide()
+	if highlight!=null:highlight.hide()
 
 func setup(owner,ui_root:Control)->void:
 	demo=owner;name="CitizenWishPins";mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -20,6 +34,7 @@ func setup(owner,ui_root:Control)->void:
 	preload("res://scripts/ui/city_creation_vignette_journey.gd").new().setup(owner,ui_root)
 
 func offers()->Array[Dictionary]:
+	if sync_context():return []
 	var result:Array[Dictionary]=[];var groups:Dictionary=demo.state.natural_clusters()
 	for house:Dictionary in demo.state.houses:
 		var id:=str(house.id);var at:=Vector2(house.origin[0],house.origin[1])
@@ -77,6 +92,7 @@ func _site(origin:Vector2,kind:String)->Vector2:
 	return Vector2.INF
 
 func refresh()->void:
+	if sync_context():retire();return
 	for pin:Dictionary in pins:pin.button.queue_free()
 	pins.clear()
 	var used:Dictionary={}
@@ -92,6 +108,7 @@ func refresh()->void:
 	offered_revision=demo.state.revision
 
 func _activate(row:Dictionary)->void:
+	if sync_context():return
 	var current:=offers().filter(func(r):return r.house_id==row.house_id and r.kind==row.kind)
 	if current.is_empty():refresh();return
 	row=current[0];target=row.duplicate()
@@ -116,6 +133,7 @@ func _activate(row:Dictionary)->void:
 
 func _process(delta:float)->void:
 	if demo==null:return
+	if sync_context():elapsed=0.;return
 	elapsed+=delta;highlight_left=maxf(0.,highlight_left-delta)
 	var early:bool=demo.intuitive_guidance.stage not in ["","bridge","landmark"]
 	visible=bool(demo.state.creative_settings.get("guidance",false)) and not early and demo.state.harmony_journey.get("active_vignette",{}).is_empty() and demo.ui_layer.visible and not demo.camera_rig.strolling and not demo.edit_pending() and not demo.gallery.panel.visible and not demo.journal.panel.visible and not demo.guide.visible()

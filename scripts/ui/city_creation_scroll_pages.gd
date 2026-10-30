@@ -32,6 +32,7 @@ static func journal(widget:RefCounted,parent:Control)->void:
 	var chapters:=scroll(column,"Chapters")
 	widget.cards=VBoxContainer.new();widget.cards.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	widget.cards.add_theme_constant_override("separation",6);chapters.add_child(widget.cards)
+	preload("res://scripts/ui/city_creation_historical_tasks.gd").install(demo,widget.cards)
 	widget._create_score_cards()
 	label(demo,column,"纪念随城保存，营建没有期限。",12)
 	widget.refresh(false)

@@ -77,6 +77,7 @@ func close_panel() -> void:
 	demo.preview_key = ""
 
 func refresh(notify: bool = true) -> void:
+	if preload("res://scripts/ui/city_creation_free_journal.gd").refresh(self):return
 	_refresh_score_cards()
 	if era_prompt_pending and not demo.edit_pending() and not demo.gallery.busy:
 		era_prompt_pending=false

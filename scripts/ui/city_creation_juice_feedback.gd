@@ -31,6 +31,12 @@ func mark(kind:String)->void:
 	dirty=true
 func clear()->void:
 	chains.clear();arcs.clear();flight.clear()
+func cancel_task_feedback()->void:
+	chains.assign(chains.filter(func(chain):return chain.event.kind not in ["wish","vignette"]))
+	arcs.clear()
+	for row:Dictionary in flight.slots:
+		if row.kind in ["wish","vignette"]:row.clock=-100.;row.arrived=true
+	flight.queue_redraw()
 func enqueue(event:Dictionary)->void:
 	var ids:=Events.sequence(demo.state,str(event.source),event.members)
 	ids=preload("res://scripts/visual/city_creation_prototype_activity.gd").extend(demo,event,ids)

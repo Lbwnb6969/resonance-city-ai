@@ -10,6 +10,7 @@ static func clear_plot(city:RefCounted,origin:Vector2,offsets:Array)->bool:
 		if absf(at.x)>33. or absf(at.y)>33. or not city.validate_add_house(at).ok:return false
 	return true
 static func proposals(city:RefCounted)->Dictionary:
+	if city.CreationPolicy.is_free(city):return {}
 	var key:=[city.revision,city._wish_epoch,city.era_unlocks.duplicate()]
 	var cached:Dictionary=city.get_meta("vignette_proposal_cache",{})
 	if cached.get("key",[])==key:return cached.rows.duplicate()
@@ -17,6 +18,7 @@ static func proposals(city:RefCounted)->Dictionary:
 	city.set_meta("vignette_proposal_cache",{"key":key,"rows":rows})
 	return rows.duplicate()
 static func _derive_proposals(city:RefCounted)->Dictionary:
+	if city.CreationPolicy.is_free(city):return {}
 	var result:Dictionary={};var origin:=center(city);var places:Array[Vector2]=[]
 	for z:int in range(-28,29,4):
 		for side:float in [-1.,1.]:places.append(Vector2(city.river_x(z)+side*5.8,z))

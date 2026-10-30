@@ -32,7 +32,7 @@ func run()->void:
 	check(demo.state.harmony_journey.ranks==ranks and demo.state.harmony_journey.harmony_xp==xp and Receipts.collect(demo.state).earned==0,"geometry Undo keeps selected card and cannot farm earned inspiration")
 	check(demo.state.save_city(OUT+"/claimed.json").ok,"claimed state saves to isolated disk")
 	var cold:=State.new();check(cold.load_city(OUT+"/claimed.json").ok and cold.harmony_journey==demo.state.harmony_journey and Receipts.collect(cold).earned==0,"claimed state cold loads without replaying rewards")
-	root.size=Vector2i(1440,900);demo.guide.open_panel();await settle();await ui_click(letters.get_child(1));await settle();await capture("sample_manual_1440")
+	root.size=Vector2i(1440,900);demo.guide.open_panel();await settle();await ui_click(letters.get_node("ReadSecondStudy"));await settle();await capture("sample_manual_1440")
 	check(demo.guide.body.text.contains("二阶") and demo.guide.body.text.contains("柱廊"),"manual explains the two samples and their real requirements")
 	await key(KEY_ESCAPE)
 	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"earned_xp":paid.earned,"selected":id}

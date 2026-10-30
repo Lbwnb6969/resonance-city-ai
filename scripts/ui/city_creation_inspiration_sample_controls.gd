@@ -1,6 +1,8 @@
 extends RefCounted
 const Samples=preload("res://scripts/world/city_creation_inspiration_samples.gd")
 static func install(letters)->void:
+	var help:=Button.new();help.name="ReadSecondStudy";help.text="查看已保留的手札外观说明";letters.add_child(help)
+	help.pressed.connect(func()->void:letters.demo.guide.body.text="二阶手札\n"+Samples.describe(letters.demo.state))
 	var row:=HBoxContainer.new();row.name="SecondStudyControls";letters.add_child(row)
 	var locate:=Button.new();locate.name="LocateSecondStudy";locate.text="定位二阶手札外观";locate.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(locate)
 	locate.pressed.connect(func()->void:

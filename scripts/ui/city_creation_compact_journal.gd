@@ -46,6 +46,7 @@ func scores(j)->void:
 	layout(j)
 func layout(j)->void:
 	var order:Array=[j.score_title]
+	if j.demo.has_meta("historical_tasks"):order.push_front(j.demo.get_meta("historical_tasks"))
 	if not active.is_empty():order.append(j.score_cards[active])
 	var current:=-1
 	for i in range(j.rows.size()):

@@ -8,6 +8,7 @@ static func template(id:String)->Dictionary:
 		if row.id==id:return row
 	return {}
 static func offer(city:RefCounted,preferred:String="")->bool:
+	if city.CreationPolicy.is_free(city):return false
 	var available:=Sites.proposals(city)
 	if available.is_empty():return false
 	var journey:Dictionary=city.harmony_journey;var serial:=int(journey.get("vignette_serial",0))+1

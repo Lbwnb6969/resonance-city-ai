@@ -6,9 +6,13 @@ var worker:Thread
 var journey:Node
 var requested:Array=[]
 var manual:=false
-static func key(city:RefCounted)->Array:return [city.get_instance_id(),city.revision,city._wish_epoch,city.era_unlocks.duplicate()]
+static func key(city:RefCounted)->Array:return [city.get_instance_id(),city.revision,city._wish_epoch,city.era_unlocks.duplicate(),city.CreationPolicy.is_free(city)]
+static func invalidate(owner:Node)->void:
+	var node=owner.get_node_or_null("SiteSearch")
+	if node!=null:node.manual=false;node.requested=[]
 static func available(owner:Node,replace:bool=false)->bool:
 	var city:RefCounted=owner.demo.state
+	if city.CreationPolicy.is_free(city):invalidate(owner);return false
 	var cached:Dictionary=city.get_meta("vignette_proposal_cache",{})
 	if cached.get("key",[])==[city.revision,city._wish_epoch,city.era_unlocks.duplicate()]:return true
 	var node=owner.get_node_or_null("SiteSearch")
@@ -25,7 +29,9 @@ func _process(_delta:float)->void:
 	var result:Dictionary=worker.wait_to_finish();worker=null
 	var city:RefCounted=journey.demo.state
 	if requested!=key(city):
-		if manual:available(journey,true)
+		var retry:bool=manual and requested.size()==5 and requested[0]==city.get_instance_id() and requested[2]==city._wish_epoch and not city.CreationPolicy.is_free(city)
+		manual=false
+		if retry:available(journey,true)
 		return
 	if result.ok:city.set_meta("vignette_proposal_cache",{"key":[city.revision,city._wish_epoch,city.era_unlocks.duplicate()],"rows":result.rows})
 	if manual and result.ok and not journey.demo.edit_pending() and not journey.demo.gallery.busy:manual=false;journey.replace.call_deferred()

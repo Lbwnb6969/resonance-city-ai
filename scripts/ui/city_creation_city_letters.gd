@@ -20,6 +20,8 @@ func wishes()->Array:
 	var pins:Node=demo.ui_layer.get_child(0).get_node_or_null("CitizenWishPins")
 	return pins.offers() if pins!=null else []
 func read_letters()->void:
+	if demo.state.CreationPolicy.is_free(demo.state):
+		demo.guide.close_panel();demo.journal.open_panel();demo.get_meta("historical_tasks").open_history();return
 	var lines:PackedStringArray=["城中来信与心愿","\n手札可以稍后再选。"]
 	var quest:Dictionary=demo.state.harmony_journey.get("active_vignette",{})
 	if not quest.is_empty():
@@ -37,6 +39,7 @@ func locate()->void:
 	demo.guide.close_panel();demo.get_meta("vignette_journey").look_at()
 func _process(_delta:float)->void:
 	if not is_visible_in_tree():return
+	get_node("ReadCityLetters").text="历史来信 · 手记" if demo.state.CreationPolicy.is_free(demo.state) else "查看来信与心愿"
 	var key:Array=[demo.state.get_instance_id(),demo.state.revision,demo.state.harmony_journey]
 	if key==stamp:return
 	stamp=key.duplicate(true)
