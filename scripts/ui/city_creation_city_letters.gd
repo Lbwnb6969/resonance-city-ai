@@ -29,7 +29,7 @@ func read_letters()->void:
 	else:lines.append("\n当前没有待办来信，继续随意造城。")
 	for row:Dictionary in wishes().slice(0,6):lines.append("· "+str(row.house_id)+"："+str(row.caption)+"，选中这栋建筑可查看与调整。")
 	lines.append("\n指向道路长椅或可达阳台按B，可停下听城；Esc或V回到原视角。")
-	lines.append("\n二阶手札\n"+preload("res://scripts/world/city_creation_inspiration_samples.gd").describe(demo.state))
+	lines.append("\n空间微景与手札记录\n"+preload("res://scripts/world/city_creation_inspiration_samples.gd").describe(demo.state))
 	demo.guide.body.text="\n".join(lines)
 func open_draft()->void:
 	if not demo.has_meta("inspiration_draft"):return

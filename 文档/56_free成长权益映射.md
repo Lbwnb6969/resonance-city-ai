@@ -16,7 +16,7 @@
 | growth_memories / archive_unlocks / eras | 既有纪念、饰色、收藏与时代记录保持。基础工具/母曲不能重新锁进图鉴。旧未完成章节的后续处理仍需明确。 |
 | 百工正式+35% | 当前真实连接的百工来源通过FunctionalBenefits计算，仍正式生效；源撤回时当前收益撤回，旧收据继续保留。停止新收益事件须另验收。 |
 
-J手记“查看已得手札与历史权益”读取原账本，显示已有记录、待领额度、原邀约、已得卡原条件/阶数/稀有度，以及建筑和弦当前资格与历史记录。只列已得卡和已成立/有记录的和弦，不展示未收集清单或完成比例。它不发奖励、不登记新发现、不改保存格式。F1原领取、二阶外观说明/定位及装饰开关继续。
+J手记“查看已得手札与历史权益”读取原账本，显示已有记录、待领额度、原邀约、已得卡原条件/阶数/稀有度，以及建筑和弦当前资格与历史记录。只列已得卡和已成立/有记录的和弦，不展示未收集清单或完成比例。它不发奖励、不登记新发现、不改保存格式。F1原领取、空间微景说明/定位及装饰开关继续，旧二阶记录独立保留。
 
 ## 18张手札：现有消费者与迁移去向
 
@@ -28,7 +28,7 @@ J手记“查看已得手札与历史权益”读取原账本，显示已有记�
 | sylvan_luthier_guild | TraditionRules两树琴社；ScoreModifiers工坊制作；首炉消费者沿真实良木条件 | 真实树/作业空间表达，未实现新的免费替代前保留旧效果 |
 | twilight_tea_pavilion | ScoreModifiers茶叙/演出余韵；TraditionScenery真实消耗后的金音 | 点景保留真实事件约束，不用假茶聚支撑free表现 |
 | stone_step_carillon | TraditionRules石阶阈值0.65米；ScoreModifiers台地步速 | 石阶空间与音乐反馈按真实高程迁移，旧步速保持 |
-| lantern_bridge_echo | 活水半径、临水制作、过桥步速、TraditionScenery桥灯；InspirationSamples二阶栈桥小灯/柔和回答 | 已有二阶表达独立记录，不冒充新基础母曲或所有栈桥默认开放 |
+| lantern_bridge_echo | 活水半径、临水制作、过桥步速、TraditionScenery桥灯；InspirationSamples二阶栈桥小灯/柔和回答 | 原二阶表达已为free按真实临水栈桥派生，无需卡/rank；历史半径/制作/步速权益保持，不推广到所有桥型 |
 | courtyard_canon_spring | ScoreModifiers围院成员制作；Courtyards喷泉随律参数 | 围合Warm/Canon待音乐批次接入，不能将旧卡当新Canon已实现 |
 | hearth_neighbors | Cafe实际服务距离40米；面包制作 | 退出free服务前置前保留旧经营权益；真实漫步仍保留 |
 | garden_salons | Cafe花簇几何；茶席时长 | 迁为可选真实茶席外观候选，旧生产/时长效果保持 |
@@ -36,7 +36,7 @@ J手记“查看已得手札与历史权益”读取原账本，显示已有记�
 | illuminated_atelier | TraditionEconomy真实送画附赠文化层；画室制作 | 已安装装饰保持，不补造送画记录，不直接把未得彩窗授予旧城 |
 | brass_orchard | TraditionRules.chime_wave既有风铃传播；钟坊制作 | 真实声音/空间消费者分别迁移，不能把水岸Flowing写成已有作用 |
 | cloud_gallery | TraditionRules空廊9米；TraditionEconomy共享品质；生产 | 真实跨接几何保留人工控制，禁止后台自动穿屋或改桥 |
-| arcade_market | Travel/Life真实连拱通行茶韵；InspirationSamples二阶爱奥尼柱廊细藤/交织回答 | 实际连拱表达与服务历史分开；已有二阶保留 |
+| arcade_market | Travel/Life真实连拱通行茶韵；InspirationSamples二阶爱奥尼柱廊细藤/交织回答 | free原细藤/回答仅在田园爱奥尼长馆真实边柱生效，无需卡/rank；旧连拱通行/茶韵与二阶记录保留，不推广全部柱廊 |
 | polyphonic_academy | State画室送画距离无限但仍路网可达；DistrictReply问答间隔2乐句 | 原问答与完整母曲分谱分开；不将其直接重命名为跨岸Canon |
 | hydraulic_guild | TraditionEconomy真实临水每三批赠礼入库；临水制作 | 停free经营消费者前保留实物/计数，不用虚构stock补外观 |
 | tram_promenade | Tram轨旁8米/坡道速度；茶席/生产消费者 | 原轨街交通和作者内容保留；新装饰电车仍是独立候选 |
@@ -117,6 +117,6 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 | 六种奖励饰色 | ArchiveRewards.finish_available已区分free六饰色基础可用与legacy原四章纪念/两项图鉴资格；State、Journal/SpatialPopover和Serializer共用。新free实际六色选择/Undo/逐色磁盘冷读、转换和原四基础色回归已受测，见53；原纪念/图鉴保持真实。压缩顶点色编码与重合配方的重建回退已修，不向获得账本补写记录。 |
 | 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery已区分free基础可用与legacy原图鉴资格；只开放原gong_pentatonic/impressionist_major7两枚举。原生选择、实际core分轨mode8/9、建造短cue、量化点屋音、Undo/冷读/转换和忙碌门禁已受测，见53；未生成图鉴大奖。其余规划调式/六首母曲全调式仍按音乐批次验收，不以此子步冒充完成。 |
 | 四时代普通风貌 | CreationPolicy.can_build_era/eras/data_can_build_era已区分free可用与era_unlocks历史。保持既有开放，不重跑解锁；Eras.refresh、时代仪式及Unified旧章程不能因可用性开放补造历史。 |
-| 二阶样板与微景 | InspirationSamples.plans仍以lantern_bridge_echo/arcade_market的rank>=2派生灯/藤与后续回答材料。基础表达改为实际空间及明确外观选择后才能退出free获得前置；保留旧rank和原人工开关，不把所有18卡承诺为已完成免费外观。其余TraditionScenery/LegendaryWonderPlan纪念、家族消费者按本表逐ID继续迁，不补造真实事件。 |
+| 二阶样板与微景 | InspirationSamples.plans已将free栈桥小灯/柔和回答、田园爱奥尼长馆边柱细藤/交织回答与rank历史分离；无卡实际几何/原生F1说明、定位、显示开关/原回答播放器/磁盘冷读受测，见53。支撑撤回即撤未来资格，音乐沿原24秒乐句锁存；收起自动装饰仅隐藏模型，音乐与旧rank/rarity保持。legacy原貌不变，不推广所有桥/所有柱廊，也不把18卡全部承诺为已有免费外观。其余真实经营/纪念消费者按本表保留；新表现按54逐空间批次接续，不补造真实事件。 |
 
 实施验收至少覆盖：无历史的新free、旧free带小数与多credit、同城未领来信和旧章程、转换失败回滚及legacy对照；API绕过UI、Undo/Redo、重复冷读/换城与存档拒绝坏截止字段；无旧卡的新free实际使用已迁内容并冷读，旧作品原权益仍可到达。CPU验证后补相关原生领取/选择输入、原图和PCM，未实际听评继续标待评。文档盘点不运行游戏、不计为运行验收。

@@ -28,7 +28,7 @@ func open_rights()->void:
 		var status:="研习%d阶"%row.rank if row.rank>0 else "旧城章程"
 		if row.rarity>0:status+=" · "+str(Journey.Rarity.NAMES[row.rarity])
 		lines.append("%s · %s\n%s"%[row.name,status,row.text])
-		if row.sample:lines.append("已保留二阶外观与回答；在F1可查看说明、定位或收起装饰。")
+		if row.sample:lines.append("原二阶记录保留；自由创作的微景与回答按真实空间启用。在F1可查看、定位或收起装饰。")
 	lines.append("\n建筑和弦 · 当前空间与既有收录分别保留")
 	for row:Dictionary in last_report.chords:
 		if row.active or row.recorded:lines.append(row.name+" · "+("当前成立" if row.active else "当前未成立")+(" · 已有记录" if row.recorded else ""))

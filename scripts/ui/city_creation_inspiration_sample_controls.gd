@@ -1,13 +1,13 @@
 extends RefCounted
 const Samples=preload("res://scripts/world/city_creation_inspiration_samples.gd")
 static func install(letters)->void:
-	var help:=Button.new();help.name="ReadSecondStudy";help.text="查看已保留的手札外观说明";letters.add_child(help)
-	help.pressed.connect(func()->void:letters.demo.guide.body.text="二阶手札\n"+Samples.describe(letters.demo.state))
+	var help:=Button.new();help.name="ReadSecondStudy";help.text="查看空间微景与手札记录";letters.add_child(help)
+	help.pressed.connect(func()->void:letters.demo.guide.body.text="空间微景\n"+Samples.describe(letters.demo.state))
 	var row:=HBoxContainer.new();row.name="SecondStudyControls";letters.add_child(row)
-	var locate:=Button.new();locate.name="LocateSecondStudy";locate.text="定位二阶手札外观";locate.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(locate)
+	var locate:=Button.new();locate.name="LocateSecondStudy";locate.text="定位栈桥小灯 / 柱廊细藤";locate.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(locate)
 	locate.pressed.connect(func()->void:
 		var demo=letters.demo;var plans:=Samples.plans(demo.state)
-		if plans.is_empty():demo.guide.body.text=Samples.describe(demo.state)+"\n\n本城还没有符合条件的二阶外观位置。";return
+		if plans.is_empty():demo.guide.body.text=Samples.describe(demo.state)+"\n\n本城还没有符合条件的临水栈桥或田园爱奥尼长馆。";return
 		var plan:Dictionary=plans[posmod(letters.sample_cursor,plans.size())];letters.sample_cursor+=1
 		demo.guide.close_panel()
 		if demo.camera_rig.strolling:demo.home_camera()

@@ -45,5 +45,5 @@ func run()->void:
 	var legacy:=State.new();legacy.restore(before);legacy.creative_settings={}
 	check(Samples.plans(legacy).is_empty(),"classic old city retains original appearance by default")
 	city.harmony_journey.ranks[Samples.IDS[0]]=1;city.harmony_journey.ranks[Samples.IDS[1]]=1
-	check(Samples.plans(city).is_empty(),"rank1 does not claim second study effects")
+	check(Samples.plans(city)==rows and Samples.rank(city,Samples.IDS[0])==1,"free spatial expressions do not require or invent rank2")
 	print("INSPIRATION_SAMPLES ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)
