@@ -30,6 +30,7 @@ static func make(draft:Node,id:String)->Button:
  box.add_theme_stylebox_override("panel",Tactile.card_frame_style(key));draft.leaves.add_child(box)
  var column:=VBoxContainer.new();column.add_theme_constant_override("separation",12);box.add_child(column)
  var seal:=Label.new();seal.name="FamilySeal";seal.text=Family.card_badge(id,Family.owned(draft.demo.state));seal.add_theme_color_override("font_color",UI.GOLD);column.add_child(seal)
+ if journey.has("growth_cutoff"):seal.text="原有邀约 · "+str(Family.FAMILIES[Family.family_of(id)].name)
  var rarity:=Label.new();rarity.name="Rarity";rarity.text="旧城已得传承" if not draft.legacy_era.is_empty() else str(Tactile.RARITY_PALETTE[key].title);rarity.add_theme_color_override("font_color",Tactile.RARITY_PALETTE[key].accent);rarity.add_theme_font_size_override("font_size",12);column.add_child(rarity)
  var heading:=Label.new();heading.name="LeafTitle";heading.text=str(card.name).trim_suffix("章程").right(4);heading.add_theme_font_size_override("font_size",22);column.add_child(heading)
  var detail:=Label.new();detail.name="LeafBrief";detail.text=BRIEFS[id];detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.add_theme_font_size_override("font_size",14);detail.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail.add_theme_color_override("font_color",UI.MUTED);column.add_child(detail)
@@ -37,6 +38,7 @@ static func make(draft:Node,id:String)->Button:
  elif id=="arcade_market":detail.text+="\n自由创作按田园爱奥尼长馆显示细藤与交织回答，无需二阶。"
  var button:=Button.new();button.name="Choose_"+id;button.text="融入河湾" if id not in journey.traditions else "再读 · 研习%d"%(int(journey.ranks[id])+1);button.custom_minimum_size.y=34
  button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n"+Rarity.NAMES[tier]+("：共鸣收益增加25%" if tier==3 else "：共鸣收益增加12%" if tier==2 else "")+"\n重读共鸣收益每次增加2%，至多50%；选择可撤销。"
+ if journey.has("growth_cutoff"):button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n原有稀有度与研习记录保留；普通营造不再积累新共鸣。选择可撤销。"
  if not draft.legacy_era.is_empty():button.text="收录旧城传承";button.tooltip_text=str(card.name)+"\n"+str(card.text)+"\n这是旧城已赚取的时代选择，不消耗共鸣手札，不额外授予稀有度收益。可撤销。"
  elif id in draft.demo.state.era_modifiers and id not in journey.traditions:button.text="研习此页";button.tooltip_text+="\n本城已有此章程，研习不会重复叠加章程效果。"
  box.tooltip_text=button.tooltip_text;detail.tooltip_text=button.tooltip_text;heading.tooltip_text=button.tooltip_text
@@ -46,6 +48,7 @@ static func make(draft:Node,id:String)->Button:
   control.mouse_exited.connect(func()->void:box.add_theme_stylebox_override("panel",Tactile.card_frame_style(key)))
  return button
 static func footer(journey:Dictionary)->String:
+ if journey.has("growth_cutoff"):return "原邀约与已用翻卷记录保留 · 选择可撤销"
  if 3 in journey.get("draft_rarities",{}).values():return "虹彩已在本卷 · 选择可撤销"
  var drought:=int(journey.receipts.get("prismatic_drought",0))
  return "下一卷必有虹彩 · 选择可撤销" if drought>=2 else "已连空%d卷 · 三卷内必有虹彩"%drought

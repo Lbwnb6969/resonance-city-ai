@@ -14,7 +14,7 @@ static func inspector(city:RefCounted,id:String)->Dictionary:
 		result.text+=" · 门前尚未接路。";result.action="到门前接路";result.tool=2;return result
 	result.text+=" · 门前已接路。"
 	var benefits:Dictionary=city.functional_benefits()
-	if id in benefits.artisan_sources:result.text+=" 全城灵感积累 +35%（不叠加）。"
+	if id in benefits.artisan_sources:result.text+=" 百工正式权益 +35%：原待领奖励适用，不叠加。" if city.harmony_journey.has("growth_cutoff") else " 全城灵感积累 +35%（不叠加）。"
 	if not benefits.mutual.get(id,[]).is_empty():result.text+=" 与沿路邻里互哺。"
 	result.action="看功能区";result.command="spatial_ledger"
 	return result
@@ -26,7 +26,7 @@ static func hint(city:RefCounted)->Dictionary:
 	var active:Array=[]
 	for zone:Dictionary in report.zones:
 		if zone.active and zone.kind not in active:active.append(zone.kind)
-	if "artisan" not in active:return {"stage":"spatial","text":"试试钟楼或工坊原型，接路后获得灵感加成。"}
+	if "artisan" not in active:return {"stage":"spatial","text":"试试钟楼或工坊原型，看看门前如何接上小路。"}
 	if "waterfront" not in active:return {"stage":"spatial","text":"沿水添一座敞廊，让水岸与栖居互相呼应。"}
 	return {"stage":"wander","text":"空间已相连，按 L 看功能区；继续造城或坐下观景。"}
 static func apply(guide:Control)->void:

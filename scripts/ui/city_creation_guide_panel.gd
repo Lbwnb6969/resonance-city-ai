@@ -93,6 +93,7 @@ func _fit() -> void:
 
 func _select_tab(index: int) -> void:
 	_current_tab = clampi(index, 0, Copy.GUIDE_TABS.size() - 1)
+	tabs.set_tab_title(1,"空间与权益" if demo.state.CreationPolicy.is_free(demo.state) else Copy.GUIDE_TABS[1])
 	if body != null:
 		body.text = preload("res://scripts/ui/city_creation_creation_options.gd").guide_text(demo,_current_tab,Copy.guide_tab_text(_current_tab))
 

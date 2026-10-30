@@ -71,7 +71,7 @@ func refresh(force:bool=false)->void:
 	var legacy:=Unified.pending(demo.state);legacy_era=legacy[0] if not legacy.is_empty() else ""
 	var remaining:=Journey.credits(journey)+legacy.size()
 	progress.max_value=Journey.xp_for_next_level(int(journey.harmony_level));progress.value=int(journey.harmony_xp)
-	badge.text="新卷待启 · %d"%remaining
+	badge.text=("保留手札 · %d" if journey.has("growth_cutoff") else "新卷待启 · %d")%remaining
 	badge.visible=remaining>0
 	badge.position=Vector2(24,64);badge.custom_minimum_size=Vector2(116,28)
 	badge.tooltip_text="新屋、真实出炉、茶聚、送装、心愿与和弦积累共鸣。\n已研习："+"、".join(Array(journey.traditions).map(func(id):return str(Journey.cards()[id].name)))
@@ -95,7 +95,9 @@ func rebuild()->void:
 	for child:Node in leaves.get_children():leaves.remove_child(child);child.queue_free()
 	buttons.clear();var journey:Dictionary=demo.state.harmony_journey
 	title.text="灵感手札 · 择一页入城"
+	if journey.has("growth_cutoff"):title.text="原有手札 · 择一页入城"
 	if int(journey.get("heritage_credit",0))==1 and Journey.choices_made(journey)==0:title.text="跨城传承 · 择一页入城"
+	if journey.has("growth_cutoff") and int(journey.get("heritage_credit",0))==1 and Journey.choices_made(journey)==0:title.text="已得传承 · 择一页入城"
 	if not legacy_era.is_empty():title.text="旧城传承 · "+str(demo.state.Eras.NAMES[demo.state.Eras.IDS.find(legacy_era)])
 	for id:String in (Unified.cards(legacy_era) if not legacy_era.is_empty() else journey.pending_draft):buttons[id]=preload("res://scripts/ui/city_creation_draft_leaf.gd").make(self,id)
 	fit();fit.call_deferred()

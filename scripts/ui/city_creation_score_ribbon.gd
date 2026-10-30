@@ -15,6 +15,8 @@ var audible:=false
 var staff_points:Array[PackedVector2Array]=[]
 var _lit_notes:=0
 var level_label:Label
+var labels:VBoxContainer
+var _family_signature:Array=[]
 var juice_energy:=0.
 var juice_hits:=0
 var _redraw_age:=0.
@@ -33,7 +35,7 @@ func setup(owner:Node3D,parent:Control)->void:
 	staff=Control.new();staff.name="LiveStaff";staff.custom_minimum_size=Vector2(44,30)
 	staff.mouse_filter=Control.MOUSE_FILTER_PASS;staff.draw.connect(_draw_staff);row.add_child(staff)
 	staff.tooltip_text="共鸣之城 · 河湾的乐谱随正在听见的声音呼吸"
-	var labels:=VBoxContainer.new();labels.add_theme_constant_override("separation",0)
+	labels=VBoxContainer.new();labels.add_theme_constant_override("separation",0)
 	labels.size_flags_horizontal=Control.SIZE_EXPAND_FILL;labels.custom_minimum_size.x=42;row.add_child(labels)
 	for label:Label in [demo.subtitle_label,demo.info]:
 		label.reparent(labels);label.custom_minimum_size=Vector2.ZERO
@@ -56,7 +58,8 @@ func setup(owner:Node3D,parent:Control)->void:
 	parent.resized.connect(_fit);_fit();refresh()
 
 func _fit()->void:
-	size=Vector2(minf(336.,get_parent().size.x-254.),38)
+	var width:=208.+21.*_active_chords.size() if demo.state.CreationPolicy.is_free(demo.state) else 336.
+	size=Vector2(minf(width,get_parent().size.x-254.),38)
 
 func refresh()->void:
 	demo.subtitle_label.tooltip_text=demo.subtitle_label.text
@@ -64,16 +67,26 @@ func refresh()->void:
 	var family=preload("res://scripts/world/city_creation_tradition_synergy.gd")
 	var view:Dictionary=family.for_city(demo.state)
 	var active:Array=view.capstones
-	level_label.text="Lv.%d"%int(demo.state.harmony_journey.get("harmony_level",1))
+	var free:bool=demo.state.CreationPolicy.is_free(demo.state)
+	labels.visible=not free
+	level_label.text="" if free else "Lv.%d"%int(demo.state.harmony_journey.get("harmony_level",1))
 	tooltip_text=demo.subtitle_label.text+"\n"+demo.info.text
-	if active==_active_chords and chords.get_child_count()>0:return
+	var signature:Array=[free,active]
+	if signature==_family_signature:return
+	_family_signature=signature.duplicate(true)
 	_active_chords=active.duplicate()
+	_fit()
 	for child:Node in chords.get_children():chords.remove_child(child);child.queue_free()
 	for id:String in family.FAMILIES:
+		if free and id not in active:continue
 		var seal:=Seal.new();seal.name="Chord_"+id;seal.configure({"riverbank":"water","highland":"terrain","courtyard":"district","artisan":"workshop"}[id],18.)
 		seal.active=id in active;seal.modulate.a=1. if seal.active else .32
-		seal.tooltip_text=str(family.FAMILIES[id].name)+(" · 冠冕已亮" if seal.active else " · 静候共鸣")
-		seal.pressed.connect(func()->void:demo.guide.open_panel(2));chords.add_child(seal)
+		seal.tooltip_text=str(family.FAMILIES[id].name)+(" · 已得手札权益 · J手记" if free else " · 冠冕已亮" if seal.active else " · 静候共鸣")
+		seal.pressed.connect(open_history if free else func()->void:demo.guide.open_panel(2));chords.add_child(seal)
+func open_history()->void:
+	demo.journal.open_panel()
+	var page:Node=demo.get_meta("growth_rights_page");page.open_rights()
+	demo.journal.cards.get_parent().ensure_control_visible.call_deferred(page.read)
 
 func _process(_delta:float)->void:
 	juice_energy=move_toward(juice_energy,0.,_delta*4.)
@@ -82,8 +95,9 @@ func _process(_delta:float)->void:
 	if _redraw_age<1./30.:return
 	_redraw_age=0.
 	var journey:Dictionary=demo.state.harmony_journey
-	level_label.text="Lv.%d"%int(journey.get("harmony_level",1))
-	_lit_notes=clampi(floori(float(journey.get("harmony_xp",0))/preload("res://scripts/world/city_creation_harmony_journey.gd").xp_for_next_level(int(journey.get("harmony_level",1)))*5.),0,5)
+	var free:bool=demo.state.CreationPolicy.is_free(demo.state)
+	level_label.text="" if free else "Lv.%d"%int(journey.get("harmony_level",1))
+	_lit_notes=0 if free else clampi(floori(float(journey.get("harmony_xp",0))/preload("res://scripts/world/city_creation_harmony_journey.gd").xp_for_next_level(int(journey.get("harmony_level",1)))*5.),0,5)
 	var report:Dictionary=demo.resonance_snapshot
 	var pluck:Dictionary=report.get("pluck",{})
 	audible=not demo.music.muted and (bool(report.get("audible",false)) or bool(pluck.get("audible",false)))

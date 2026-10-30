@@ -18,6 +18,7 @@ func open_rights()->void:
 	last_report=Rights.report(demo.state)
 	context=key()
 	var lines:=PackedStringArray(["已有记录 · 等级%d · 营造点%d"%[last_report.level,last_report.xp],"待选手札%d · 旧城传承邀约%d"%[last_report.credits,last_report.legacy_invitations.size()],"待选内容可在手札 · F1中翻开。"])
+	if demo.state.harmony_journey.has("growth_cutoff"):lines[0]="历史余量 · 等级%d · 营造点%d · 小数%.6f\n普通营造不再积累新共鸣；原待领权益保留。"%[last_report.level,last_report.xp,last_report.xp_remainder]
 	if not last_report.pending.is_empty():
 		var titles:Array=[]
 		for id:String in last_report.pending:titles.append(str(Journey.cards()[id].name))
@@ -33,7 +34,7 @@ func open_rights()->void:
 	for row:Dictionary in last_report.chords:
 		if row.active or row.recorded:lines.append(row.name+" · "+("当前成立" if row.active else "当前未成立")+(" · 已有记录" if row.recorded else ""))
 	if not last_report.chords.any(func(row):return row.active or row.recorded):lines.append("本城暂无成立或收录的建筑和弦。")
-	if last_report.inspiration_multiplier>1.:lines.append("百工正式营造点收益 +35% · 当前来源成立")
+	if last_report.inspiration_multiplier>1.:lines.append("百工正式营造点收益 +35% · 当前来源成立"+("；用于原待领奖励，普通新事件不加点。" if demo.state.harmony_journey.has("growth_cutoff") else ""))
 	lines.append("查看不会领取奖励；历史收录不会替代当前空间条件。")
 	detail.text="\n".join(lines);detail.show()
 func key()->Array:

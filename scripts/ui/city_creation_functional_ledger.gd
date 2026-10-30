@@ -28,7 +28,7 @@ static func refresh(widget:RefCounted)->bool:
 	var lines:=PackedStringArray(["[b]城市的空间[/b]", "特色来自建筑，成区还需真实公共空间。"])
 	if not report.network_ready:lines.append("道路正在更新，空间激活待道路发布。")
 	var benefits:Dictionary=widget.demo.state.functional_benefits()
-	if not benefits.artisan_sources.is_empty():lines.append("灵感积累 +35% · 百工匠造")
+	if not benefits.artisan_sources.is_empty():lines.append("百工正式权益 +35% · 原待领奖励适用" if widget.demo.state.harmony_journey.has("growth_cutoff") else "灵感积累 +35% · 百工匠造")
 	var pairs:=0
 	for peers:Array in benefits.mutual.values():pairs+=peers.size()
 	if pairs>0:lines.append("水岸与栖居互哺 · %d 组沿路邻里"%(pairs/2))
