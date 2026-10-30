@@ -15,6 +15,7 @@ func _ready()->void:
 	read=demo._button("查看／领取旧来信",open_history);read.name="ReadHistoricalTask";add_child(read)
 	detail=demo._label("",12);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.hide();add_child(detail)
 	locate=demo._button("继续这封来信 · 定位",look_at);locate.name="ContinueHistoricalTask";locate.hide();add_child(locate)
+	preload("res://scripts/ui/city_creation_growth_rights_page.gd").install(demo,self)
 func key()->Array:
 	return [demo.state.get_instance_id(),demo.state._wish_epoch,demo.state.revision,demo.state.CreationPolicy.is_free(demo.state),demo.state.harmony_journey.get("active_vignette",{}).get("serial",0),demo.state.harmony_journey.get("completed_vignettes",{})]
 func open_history()->void:
