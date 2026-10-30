@@ -1,5 +1,7 @@
 # 《共鸣之城》施工入口
 
+设计增补：[声画合一融合定稿](文档/55_声画合一设计融合.md)采纳室内乐箱庭主干，free数值成长退出为待迁移目标；旧正式权益保持，12印章/精确音频回放不作为已实现或本期硬要求。当前未提交free任务施工仍待验收，首步顺序不变。
+
 先读[当前状态](PROJECT.md)、[日志末30行](ai_progress.log)、[唯一任务进度](ai_feature_backlog.json)与[施工约定](AGENTS.md)。
 
 本地/云端交接先运行 `python tools/audit_creation_workspace.py --check-remote`，只读核对实时origin/main、当前HEAD及V7.1来源。版本落后先核对未提交改动；不自动reset/覆盖，也不把未提交或未推送的本地施工当成云端已有内容。
