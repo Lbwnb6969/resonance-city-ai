@@ -53,7 +53,7 @@ static func cursor(owner:Node)->Dictionary:
 	var clock:float=preload("res://scripts/audio/city_creation_cue_grid.gd").transport_clock(owner)
 	var data:=at(owner,clock)
 	if data.is_empty():return {}
-	return {"signature":data.signature,"content_id":data.get("content_id",""),"render_profile":data.get("render_profile","original"),"master_signature":data.get("master_signature",""),"section":data.get("section",-1),"clock":clock,"position":position_at(owner,clock),"score_position":WholeScore.position(owner,clock,data),"duration":data.get("duration",24.),"section_signature":data.get("section_signature",data.signature),"bar":bar_at(owner,clock),"global_bar":int(data.get("section",0))*8+bar_at(owner,clock),"mode":int(data.document.harmony_mode),"harmony":data.get("harmony",[])}
+	return {"signature":data.signature,"content_id":data.get("content_id",""),"orchestration":data.get("orchestration",{}),"declared_silence":data.get("declared_silence",[]),"render_profile":data.get("render_profile","original"),"master_signature":data.get("master_signature",""),"section":data.get("section",-1),"clock":clock,"position":position_at(owner,clock),"score_position":WholeScore.position(owner,clock,data),"duration":data.get("duration",24.),"section_signature":data.get("section_signature",data.signature),"bar":bar_at(owner,clock),"global_bar":int(data.get("section",0))*8+bar_at(owner,clock),"mode":int(data.document.harmony_mode),"harmony":data.get("harmony",[])}
 static func resolve_cue(owner:Node,wave:AudioStreamWAV,clock:float)->AudioStreamWAV:
 	var data:=at(owner,clock)
 	if data.is_empty():return wave
@@ -76,7 +76,7 @@ func advance(owner:Node)->void:
 	if sounding.get("duration",24.)==144.:owner._biome_mode=int(sounding.document.harmony_mode)
 	if not scheduled.is_empty():
 		if at(owner,float(scheduled.boundary)).is_empty():scheduled.clear();stems.clear();return
-		if clock>=float(scheduled.boundary) and owner.get_meta("authored_score",{}).get("signature","")!=scheduled.data.signature and scheduled.data.get("duration",24.)==144. and not WholeScore.source_valid(scheduled.data):
+		if clock>=float(scheduled.boundary) and owner.get_meta("authored_score",{}).get("signature","")!=scheduled.data.signature and (scheduled.data.get("duration",24.)==144. or scheduled.data.get("internal_version",0)==3) and not WholeScore.source_valid(scheduled.data):
 			preload("res://scripts/audio/city_creation_authored_score.gd").discard(owner,scheduled.data);return
 		if clock>=float(scheduled.boundary) and owner.get_meta("authored_score",{}).get("signature","")!=scheduled.data.signature:
 			Cues.retire(owner);Cues.install(owner,scheduled.data.get("short_cues",{}))
@@ -101,7 +101,7 @@ func advance(owner:Node)->void:
 		var waves:Dictionary=worker.wait_to_finish();worker=null
 		var ready:Dictionary=owner.get_meta("authored_score_ready",{})
 		var valid:bool=ready.get("signature","")==job.data.signature and WholeScore.valid(owner,ready)
-		if valid and ready.get("duration",24.)==144. and not WholeScore.source_valid(ready):
+		if valid and (ready.get("duration",24.)==144. or ready.get("internal_version",0)==3) and not WholeScore.source_valid(ready):
 			preload("res://scripts/audio/city_creation_authored_score.gd").discard(owner,ready);job={};return
 		for key:String in job.old:valid=valid and owner._players[key].stream==job.old[key]
 		AudioServer.lock()

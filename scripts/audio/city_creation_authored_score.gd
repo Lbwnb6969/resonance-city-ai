@@ -9,6 +9,8 @@ var city_id:=0
 var revision:=-1
 static func request(owner:Node,path:String)->Dictionary:
 	return _request_data(owner,Document.read(path))
+static func request_internal(owner:Node,section:int=0,selection:Dictionary={})->Dictionary:
+	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_score.gd").select(section,selection))
 static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
 	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成全局换段与跨小节提示的和声接续"}
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
@@ -79,6 +81,7 @@ func _process(_delta:float)->void:
 	if request_data.get("duration",24.)==144.:
 		if request_data.content_context!=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city) or not preload("res://scripts/audio/city_creation_master_performance.gd").source_valid(request_data):return
 	elif revision!=owner._pluck_city.revision:return
+	if request_data.get("internal_version",0)==3 and not preload("res://scripts/audio/city_creation_internal_score.gd").source_valid(request_data):return
 	var prior:Dictionary=owner.get_meta("authored_score_ready",{})
 	if not prior.is_empty() and prior.get("signature","")!=owner.get_meta("authored_score",{}).get("signature",""):release(owner,prior)
 	owner._harmony_streams=owner._harmony_streams.duplicate()
@@ -88,7 +91,7 @@ func _process(_delta:float)->void:
 		owner.audio_report.get_or_add("harmony_peaks",{})[id]=data[role].peak
 	owner.set_meta("authored_score_ready",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[]),"short_cues":data.get("short_cues",{}),"section":request_data.get("section",-1),"master_signature":request_data.get("master_signature","")});owner.remove_meta("chamber_role_key")
 	var ready:Dictionary=owner.get_meta("authored_score_ready")
-	for key:String in ["duration","sections","dsp_signature","content_context","content_id","render_profile"]:
+	for key:String in ["duration","sections","dsp_signature","content_context","content_id","render_profile","internal_version","orchestration","declared_silence"]:
 		if request_data.has(key):ready[key]=request_data[key]
 	if data.has("section_cues"):ready.section_cues=data.section_cues
 	preload("res://scripts/audio/city_creation_score_playback.gd").ensure(owner)

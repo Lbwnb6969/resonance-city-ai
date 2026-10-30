@@ -71,6 +71,13 @@ document.querySelector('#switch').onclick=async()=>{const next=current===a?b:a;c
         page = page.replace('同一组四角色音色与固定混音', '同一份续接谱与三个原伴奏声部；B2延缓笛声起音、减弱上方泛音，领奏相对伴奏降低3 dB')
         page = page.replace('游戏默认谱保持原版。', '游戏默认音乐未切换。')
         page = page.replace('待听评：起句与呼吸、P2留白、P3推进、P4高点、P5回收和重复聆听的疲劳。B的回答声部仍沿用表格中的重复型；不把结构合法当作听感通过。', '上轮反馈：原B略好，但两版仍不足，需要更钝、更像背景音乐。此轮请比较起音、尖亮感、伴奏比例与反复听的疲劳；B2尚待听评。')
+    if args.b_id == 'pastoral_cross_p0_v3':
+        page = page.replace('A · 原基础谱', '原 B · P0八小节').replace('B · 续接编配候选一', '文档混编 · P0八小节')
+        page = page.replace('同一组四角色音色与固定混音', '文档58续稿104事件：低音/圆号/弦乐暖垫、竖琴推进、钢片琴回答与原长笛领奏；共四条角色流')
+        page = page.replace('游戏默认谱保持原版。', '仅八小节开发试听，未接真实空间来源或游戏默认音乐。')
+        page = page.replace('P0 0:00 · P1 0:24 · P2 0:48 · P3 1:12 · P4 1:36 · P5 2:00', 'P0 0:00—0:24 · 后五段尚未写定此配器')
+        page = page.replace('143.99', '23.99')
+        page = page.replace('待听评：起句与呼吸、P2留白、P3推进、P4高点、P5回收和重复聆听的疲劳。B的回答声部仍沿用表格中的重复型；不把结构合法当作听感通过。', '这是作曲候选目录的混编原音符与原音色实试，未沿用被否定的B2笛声参数。请比较暖垫厚度、领奏突出程度与整体疲劳，尚无听感通过结论。')
     (args.output_dir / 'listen.html').write_text(page, encoding='utf-8')
     print(json.dumps(report, ensure_ascii=False))
 
