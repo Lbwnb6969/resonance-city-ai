@@ -559,6 +559,8 @@ func _cafe_at_phrase(phrase: int) -> void:
 
 
 func _playback_clock() -> float:
+	var authored:=preload("res://scripts/audio/city_creation_score_playback.gd").clock(self)
+	if authored>=0.:return authored
 	if _players.has("concert") and _players.concert.stream_paused:return _clock_cycles*SECONDS+_clock_previous
 	if not _players.has("concert") or not _players.concert.playing:
 		return 0.0

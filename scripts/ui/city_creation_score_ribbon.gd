@@ -122,10 +122,10 @@ func _pcm_midi(report:Dictionary)->int:
 	var player:AudioStreamPlayer=demo.music._players[track]
 	var variant:=str(demo.music._variation_active.get(track,"original")) if cursor.is_empty() else "study1/"+str(cursor.signature)+"/lead"
 	var notes:Array=demo.music.audio_report.get("theme_notes",{}).get(track,[]) if variant=="original" else demo.music.audio_report.get("variation_notes",{}).get(variant,demo.music.audio_report.get("harmony_notes",{}).get(variant,[]))
-	var at:float=cursor.position if not cursor.is_empty() else fposmod(player.get_playback_position()+AudioServer.get_time_since_last_mix(),24.)
+	var at:float=cursor.score_position if not cursor.is_empty() else fposmod(player.get_playback_position()+AudioServer.get_time_since_last_mix(),24.)
 	var nearest:=INF;var note:=-1
 	for row:Dictionary in notes:
-		var age:=fposmod(at-float(row.start),24.)
+		var age:=fposmod(at-float(row.start),float(cursor.duration) if not cursor.is_empty() else 24.)
 		if age<float(row.duration) and age<nearest:nearest=age;note=int(row.midi)
 	return note
 

@@ -9,7 +9,7 @@ static func current(owner:Node,clock:float)->Dictionary:
 	var onset:=Palette.Grid.quantize_cue_onset(clock)
 	var bar:=Palette.Grid.bar(clock);var data:=preload("res://scripts/audio/city_creation_score_playback.gd").at(owner,onset)
 	var city:RefCounted=owner._pluck_city
-	if city!=null and data.get("city",0)==city.get_instance_id() and data.get("revision",-1)==city.revision and data.get("harmony",[]).size()==8:
+	if city!=null and not data.is_empty() and data.get("harmony",[]).size()==8:
 		bar=preload("res://scripts/audio/city_creation_score_playback.gd").bar_at(owner,onset)
 		return {"chord":data.harmony[bar],"bar":bar,"mode":int(data.document.harmony_mode),"signature":str(data.signature)}
 	return {"chord":Palette.chords(maxi(0,owner.harmony_mode()))[bar],"bar":bar,"mode":owner.harmony_mode(),"signature":""}

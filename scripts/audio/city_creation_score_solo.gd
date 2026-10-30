@@ -2,7 +2,7 @@ extends RefCounted
 ## Spotlight the sounding mother lead, without replaying or duplicating it.
 static func enabled(owner:Node)->bool:
 	var data:Dictionary=owner.get_meta("authored_score",{});var city:RefCounted=owner._pluck_city
-	return city!=null and data.get("harmony",[]).size()==8 and data.get("city",0)==city.get_instance_id() and data.get("revision",-1)==city.revision
+	return data.get("harmony",[]).size()==8 and preload("res://scripts/audio/city_creation_master_performance.gd").valid(owner,data)
 static func voice(owner:Node)->Dictionary:
 	var data:Dictionary=owner.get_meta("authored_score",{})
 	if data.get("harmony",[]).size()!=8:return {}
@@ -15,7 +15,7 @@ static func voice(owner:Node)->Dictionary:
 	return {"player":player,"stem":stem,"peak":float(owner.audio_report.get("harmony_peaks",{}).get(id,.18)),"signature":data.signature}
 static func context(owner:Node)->Dictionary:
 	var data:Dictionary=owner.get_meta("score_solo",{});var city:RefCounted=owner._pluck_city
-	return data if city!=null and data.get("city",0)==city.get_instance_id() and data.get("revision",-1)==city.revision and owner.get_meta("authored_score",{}).get("harmony",[]).size()==8 else {}
+	return data if city!=null and data.get("city",0)==city.get_instance_id() and (owner.get_meta("authored_score",{}).get("duration",24.)==144. or data.get("revision",-1)==city.revision) and enabled(owner) else {}
 static func adopt(solo:Node)->bool:
 	if solo._score_voice.is_empty():return false
 	var owner:Node=solo.demo.music;var choice:Dictionary=solo._score_voice
