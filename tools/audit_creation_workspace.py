@@ -48,6 +48,26 @@ def design_inventory(root, backlog):
             if row.get('passes') is False and row.get('spec') != current['document']:
                 errors.append(row['id'] + ' pending spec differs from the adopted construction document')
     sources = []
+    def adopted_entries(value):
+        if isinstance(value, dict):
+            yield value
+            for child in value.values():
+                yield from adopted_entries(child)
+        elif isinstance(value, list):
+            for child in value:
+                yield from adopted_entries(child)
+
+    # Include every reviewed addendum/continuation, not only the original V7.
+    adopted = list(adopted_entries(current))
+    entries.extend(row for row in adopted if 'source' in row and 'source_sha256' in row)
+    for row in adopted:
+        for key in ('document', 'candidate', 'continuation_catalog'):
+            if key in row and not (root / row[key]).is_file():
+                errors.append('adopted ' + key + ' is missing: ' + row[key])
+        if 'candidate_sha256' in row and (root / row['candidate']).is_file():
+            if hashlib.sha256((root / row['candidate']).read_bytes()).hexdigest() != row['candidate_sha256']:
+                errors.append('adopted candidate hash differs: ' + row['candidate'])
+    entries = list({(row['source'], row['source_sha256']): row for row in entries}.values())
     for entry in entries:
         path = root / entry['source']
         sources.append({'path': entry['source'], 'ok': path.is_file() and

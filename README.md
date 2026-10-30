@@ -17,7 +17,7 @@ Godot --headless --path . --script tools/bake_creation_music_bank.gd
 Godot --headless --path . --script tools/bake_creation_portable_bank.gd
 ```
 
-[当前设计与排期](文档/54_V7_最终施工改造总案.md) · [工程维护](文档/工程维护.md) · [文档导航](文档/README.md) · [四库参考](文档/参考索引.md)
+[当前产品规格](文档/54_V7_最终施工改造总案.md) · [工程维护](文档/工程维护.md) · [文档导航](文档/README.md) · [四库参考](文档/参考索引.md)
 
 旧蓝图的有效工程条款已合并，废弃原文、重复工程包及一次性工具已退出工作树；原归档目录的实际状态、现存新批次与Git恢复边界见[整理记录](文档/整理记录.md)。代码、运行资源、旧档兼容、许可证、四库原件与个人作品保留。
 

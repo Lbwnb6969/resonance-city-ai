@@ -1,0 +1,1059 @@
+{
+  "kind": "music_comfort_partial_candidate",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "source": "文档/来源/20261030_Gemini_背景音乐柔和配器与长听品质_原稿.txt",
+  "source_sha256": "e93362d9e7ec6510b8367c4e70fd07ff5143351c7344311863a381bef3a42f4a",
+  "review": "文档/63_背景音乐柔和配器与长听审阅及施工映射.md",
+  "received_end": "3.6 panning row truncated; no final implementation/listening chapter received",
+  "coordinate": "Section-local beats; 80 BPM, 0.75 seconds/beat; global_bar retained",
+  "timbre_normalization": "P0 explicit role timbres; abbreviated P2 roles inherit P0 solely for catalog context, not approved instrumentation",
+  "sections": {
+    "P0": [
+      {
+        "beat": 0.0,
+        "beats": 1.75,
+        "midi": 38,
+        "gain": 0.032,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 0.5,
+        "beats": 0.85,
+        "midi": 57,
+        "gain": 0.02,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 1.5,
+        "beats": 0.85,
+        "midi": 62,
+        "gain": 0.018,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 0.0,
+        "beats": 1.0,
+        "midi": 62,
+        "gain": 0.048,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 1.0,
+        "beats": 0.5,
+        "midi": 64,
+        "gain": 0.044,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 1.5,
+        "beats": 1.0,
+        "midi": 66,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 2.75,
+        "beats": 0.75,
+        "midi": 57,
+        "gain": 0.014,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 3.5,
+        "beats": 0.5,
+        "midi": 54,
+        "gain": 0.013,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 176,
+        "global_bar": 1
+      },
+      {
+        "beat": 4.0,
+        "beats": 1.75,
+        "midi": 47,
+        "gain": 0.031,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 4.5,
+        "beats": 0.85,
+        "midi": 54,
+        "gain": 0.019,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 5.5,
+        "beats": 1.0,
+        "midi": 59,
+        "gain": 0.017,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 4.0,
+        "beats": 1.5,
+        "midi": 66,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 5.5,
+        "beats": 0.5,
+        "midi": 64,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 6.0,
+        "beats": 1.0,
+        "midi": 62,
+        "gain": 0.044,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 177,
+        "global_bar": 2
+      },
+      {
+        "beat": 8.0,
+        "beats": 1.75,
+        "midi": 43,
+        "gain": 0.032,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 8.5,
+        "beats": 0.85,
+        "midi": 55,
+        "gain": 0.02,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 9.5,
+        "beats": 0.85,
+        "midi": 59,
+        "gain": 0.018,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 10.5,
+        "beats": 1.0,
+        "midi": 62,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 8.0,
+        "beats": 1.25,
+        "midi": 67,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 9.25,
+        "beats": 0.75,
+        "midi": 66,
+        "gain": 0.044,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 10.0,
+        "beats": 1.0,
+        "midi": 62,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 178,
+        "global_bar": 3
+      },
+      {
+        "beat": 12.0,
+        "beats": 2.0,
+        "midi": 45,
+        "gain": 0.032,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 12.5,
+        "beats": 0.85,
+        "midi": 57,
+        "gain": 0.019,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 13.5,
+        "beats": 1.0,
+        "midi": 61,
+        "gain": 0.017,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 12.0,
+        "beats": 1.0,
+        "midi": 64,
+        "gain": 0.045,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 13.0,
+        "beats": 1.25,
+        "midi": 61,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 14.5,
+        "beats": 1.0,
+        "midi": 57,
+        "gain": 0.015,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 179,
+        "global_bar": 4
+      },
+      {
+        "beat": 16.0,
+        "beats": 1.75,
+        "midi": 38,
+        "gain": 0.032,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 16.5,
+        "beats": 0.85,
+        "midi": 57,
+        "gain": 0.02,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 17.5,
+        "beats": 0.85,
+        "midi": 62,
+        "gain": 0.018,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 16.0,
+        "beats": 1.0,
+        "midi": 66,
+        "gain": 0.048,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 17.0,
+        "beats": 0.5,
+        "midi": 69,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 17.5,
+        "beats": 1.0,
+        "midi": 74,
+        "gain": 0.048,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 18.75,
+        "beats": 0.75,
+        "midi": 62,
+        "gain": 0.014,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 19.5,
+        "beats": 0.5,
+        "midi": 57,
+        "gain": 0.013,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 180,
+        "global_bar": 5
+      },
+      {
+        "beat": 20.0,
+        "beats": 1.75,
+        "midi": 47,
+        "gain": 0.031,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 20.5,
+        "beats": 0.85,
+        "midi": 54,
+        "gain": 0.019,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 21.5,
+        "beats": 1.0,
+        "midi": 59,
+        "gain": 0.017,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 20.0,
+        "beats": 1.5,
+        "midi": 71,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 21.5,
+        "beats": 0.5,
+        "midi": 69,
+        "gain": 0.043,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 22.0,
+        "beats": 1.0,
+        "midi": 66,
+        "gain": 0.044,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 181,
+        "global_bar": 6
+      },
+      {
+        "beat": 24.0,
+        "beats": 1.5,
+        "midi": 43,
+        "gain": 0.032,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 26.0,
+        "beats": 1.25,
+        "midi": 45,
+        "gain": 0.028,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 24.5,
+        "beats": 0.85,
+        "midi": 55,
+        "gain": 0.019,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 26.5,
+        "beats": 0.85,
+        "midi": 57,
+        "gain": 0.018,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 24.0,
+        "beats": 1.0,
+        "midi": 64,
+        "gain": 0.045,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 25.0,
+        "beats": 0.75,
+        "midi": 66,
+        "gain": 0.044,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 26.0,
+        "beats": 1.0,
+        "midi": 64,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 182,
+        "global_bar": 7
+      },
+      {
+        "beat": 28.0,
+        "beats": 2.5,
+        "midi": 38,
+        "gain": 0.033,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 183,
+        "global_bar": 8
+      },
+      {
+        "beat": 28.5,
+        "beats": 0.85,
+        "midi": 57,
+        "gain": 0.018,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 183,
+        "global_bar": 8
+      },
+      {
+        "beat": 29.5,
+        "beats": 1.25,
+        "midi": 64,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 183,
+        "global_bar": 8
+      },
+      {
+        "beat": 28.0,
+        "beats": 2.0,
+        "midi": 62,
+        "gain": 0.046,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 183,
+        "global_bar": 8
+      },
+      {
+        "beat": 30.25,
+        "beats": 1.0,
+        "midi": 57,
+        "gain": 0.013,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 183,
+        "global_bar": 8
+      }
+    ],
+    "P2": [
+      {
+        "beat": 0.0,
+        "beats": 2.25,
+        "midi": 43,
+        "gain": 0.026,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 192,
+        "global_bar": 17
+      },
+      {
+        "beat": 1.0,
+        "beats": 1.25,
+        "midi": 59,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 192,
+        "global_bar": 17
+      },
+      {
+        "beat": 0.5,
+        "beats": 2.0,
+        "midi": 66,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 192,
+        "global_bar": 17
+      },
+      {
+        "beat": 4.0,
+        "beats": 2.25,
+        "midi": 42,
+        "gain": 0.025,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 193,
+        "global_bar": 18
+      },
+      {
+        "beat": 5.0,
+        "beats": 1.5,
+        "midi": 57,
+        "gain": 0.014,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 193,
+        "global_bar": 18
+      },
+      {
+        "beat": 8.0,
+        "beats": 2.25,
+        "midi": 40,
+        "gain": 0.026,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 194,
+        "global_bar": 19
+      },
+      {
+        "beat": 9.0,
+        "beats": 1.25,
+        "midi": 59,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 194,
+        "global_bar": 19
+      },
+      {
+        "beat": 8.5,
+        "beats": 1.5,
+        "midi": 64,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 194,
+        "global_bar": 19
+      },
+      {
+        "beat": 10.0,
+        "beats": 1.25,
+        "midi": 62,
+        "gain": 0.04,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 194,
+        "global_bar": 19
+      },
+      {
+        "beat": 12.0,
+        "beats": 2.5,
+        "midi": 50,
+        "gain": 0.025,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 195,
+        "global_bar": 20
+      },
+      {
+        "beat": 13.5,
+        "beats": 1.25,
+        "midi": 64,
+        "gain": 0.015,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 195,
+        "global_bar": 20
+      },
+      {
+        "beat": 16.0,
+        "beats": 2.25,
+        "midi": 43,
+        "gain": 0.026,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 196,
+        "global_bar": 21
+      },
+      {
+        "beat": 17.0,
+        "beats": 1.25,
+        "midi": 62,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 196,
+        "global_bar": 21
+      },
+      {
+        "beat": 16.5,
+        "beats": 1.5,
+        "midi": 67,
+        "gain": 0.043,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 196,
+        "global_bar": 21
+      },
+      {
+        "beat": 18.0,
+        "beats": 1.25,
+        "midi": 66,
+        "gain": 0.041,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 196,
+        "global_bar": 21
+      },
+      {
+        "beat": 20.0,
+        "beats": 2.25,
+        "midi": 47,
+        "gain": 0.025,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 197,
+        "global_bar": 22
+      },
+      {
+        "beat": 21.0,
+        "beats": 1.5,
+        "midi": 54,
+        "gain": 0.014,
+        "role": "answer",
+        "layer": 2,
+        "timbre": "cello_harmonic",
+        "source_line": 197,
+        "global_bar": 22
+      },
+      {
+        "beat": 24.0,
+        "beats": 2.25,
+        "midi": 40,
+        "gain": 0.026,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 198,
+        "global_bar": 23
+      },
+      {
+        "beat": 25.0,
+        "beats": 1.25,
+        "midi": 55,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 198,
+        "global_bar": 23
+      },
+      {
+        "beat": 24.5,
+        "beats": 2.0,
+        "midi": 64,
+        "gain": 0.042,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 198,
+        "global_bar": 23
+      },
+      {
+        "beat": 28.0,
+        "beats": 2.5,
+        "midi": 45,
+        "gain": 0.028,
+        "role": "foundation",
+        "layer": 1,
+        "timbre": "bass",
+        "source_line": 199,
+        "global_bar": 24
+      },
+      {
+        "beat": 28.5,
+        "beats": 1.25,
+        "midi": 62,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 199,
+        "global_bar": 24
+      },
+      {
+        "beat": 30.0,
+        "beats": 1.25,
+        "midi": 61,
+        "gain": 0.016,
+        "role": "pulse",
+        "layer": 2,
+        "timbre": "guitar",
+        "source_line": 199,
+        "global_bar": 24
+      },
+      {
+        "beat": 28.0,
+        "beats": 2.0,
+        "midi": 61,
+        "gain": 0.041,
+        "role": "lead",
+        "layer": 3,
+        "timbre": "flute",
+        "source_line": 199,
+        "global_bar": 24
+      }
+    ]
+  },
+  "raw_harmony_cells": {
+    "P0": [
+      {
+        "global_bar": 1,
+        "source_line": 176,
+        "raw_harmony_cell": "**Dadd9**<br>`[50,54,57,64]`"
+      },
+      {
+        "global_bar": 2,
+        "source_line": 177,
+        "raw_harmony_cell": "**Bm7**<br>`[47,50,54,57]`"
+      },
+      {
+        "global_bar": 3,
+        "source_line": 178,
+        "raw_harmony_cell": "**Gmaj7**<br>`[43,47,50,54]`"
+      },
+      {
+        "global_bar": 4,
+        "source_line": 179,
+        "raw_harmony_cell": "**A6**<br>`[45,49,52,54]`"
+      },
+      {
+        "global_bar": 5,
+        "source_line": 180,
+        "raw_harmony_cell": "**Dadd9**<br>`[50,54,57,64]`"
+      },
+      {
+        "global_bar": 6,
+        "source_line": 181,
+        "raw_harmony_cell": "**Bm7**<br>`[47,50,54,57]`"
+      },
+      {
+        "global_bar": 7,
+        "source_line": 182,
+        "raw_harmony_cell": "**Gmaj7**<br>`[43,47,50,54]`"
+      },
+      {
+        "global_bar": 8,
+        "source_line": 183,
+        "raw_harmony_cell": "**Dadd9**<br>`[50,54,57,64]`"
+      }
+    ],
+    "P2": [
+      {
+        "global_bar": 17,
+        "source_line": 192,
+        "raw_harmony_cell": "**Gmaj7**<br>`[43,47,50,54]`"
+      },
+      {
+        "global_bar": 18,
+        "source_line": 193,
+        "raw_harmony_cell": "**F\\#m7**<br>`[42,49,52,57]`"
+      },
+      {
+        "global_bar": 19,
+        "source_line": 194,
+        "raw_harmony_cell": "**Em7**<br>`[40,47,50,55]`"
+      },
+      {
+        "global_bar": 20,
+        "source_line": 195,
+        "raw_harmony_cell": "**Dadd9**<br>`[50,54,57,64]`"
+      },
+      {
+        "global_bar": 21,
+        "source_line": 196,
+        "raw_harmony_cell": "**Gmaj7**<br>`[43,47,50,54]`"
+      },
+      {
+        "global_bar": 22,
+        "source_line": 197,
+        "raw_harmony_cell": "**Bm7**<br>`[47,50,54,57]`"
+      },
+      {
+        "global_bar": 23,
+        "source_line": 198,
+        "raw_harmony_cell": "**Em7**<br>`[40,47,50,55]`"
+      },
+      {
+        "global_bar": 24,
+        "source_line": 199,
+        "raw_harmony_cell": "**A6sus4 → A6**<br>`[45,50,52,54]`"
+      }
+    ]
+  },
+  "statistics": {
+    "P0": {
+      "events": 53,
+      "lead_events": 21,
+      "answer_events": 6,
+      "lead_beats_union": 21.0,
+      "lead_fraction": 0.65625,
+      "lead_midi_range": [
+        61,
+        74
+      ],
+      "lead_silent_global_bars": []
+    },
+    "P2": {
+      "events": 24,
+      "lead_events": 7,
+      "answer_events": 2,
+      "lead_beats_union": 11.5,
+      "lead_fraction": 0.359375,
+      "lead_midi_range": [
+        61,
+        67
+      ],
+      "lead_silent_global_bars": [
+        18,
+        20,
+        22
+      ]
+    }
+  },
+  "raw_timbre_parameter_rows": [
+    {
+      "source_line": 312,
+      "raw_cells": [
+        "**`flute`**<br>(田园主奏)",
+        "起音 `55ms` 偏慢导致短音发虚；`t=0` 满幅颤音；高音区 2/3 次谐波无衰减，A5 以上发尖。",
+        "Attack: **`42ms`** (正弦平方柔化起音)<br>Sustain: `0.92 + 0.08*exp(-t*2.0)`<br>Release: **`140ms`**",
+        "• `vib = 0.011 * vib_env * sin(TAU * 4.8 * t)`<br>• $H_1 = 1.0$<br>• $H_2 = 0.065 \\cdot \\text{reg\\_atten}$<br>• $H_3 = 0.014 \\cdot \\text{reg\\_atten}^2$<br>• 叠加极微弱起音气声（前 `35ms` 带通噪声 `0.004`）",
+        "消除高音长笛的“电子哨音感”与满幅颤音眩晕感，中音区温润如木笛。"
+      ]
+    },
+    {
+      "source_line": 313,
+      "raw_cells": [
+        "**`cello_harmonic`**<br>(百工/田园应答)",
+        "**严重缺陷**：$H_1=0.30, H_2=0.65, H_4=0.11$，基波弱、高八度泛音极强，实响窜上 A5–A6 抢主奏！",
+        "Attack: **`65ms`** (慢弓擦弦渐入)<br>Release: **`220ms`**",
+        "• **反转修复谐波权重**：<br>  $H_1 = \\mathbf{0.74}$<br>  $H_2 = \\mathbf{0.22} \\cdot \\exp(-t \\cdot 2.8) \\cdot \\text{reg\\_atten}$<br>  $H_3 = \\mathbf{0.04} \\cdot \\exp(-t \\cdot 5.0)$（取消 $H_4$！）<br>• `vib = 0.008 * vib_env * sin(TAU * 4.3 * t)`",
+        "让 `cello_harmonic` 真正回到 `D4–A4` 温润大提琴泛音本位，不再高八度刺耳抢戏。"
+      ]
+    },
+    {
+      "source_line": 314,
+      "raw_cells": [
+        "**`guitar`** & **`harp`**<br>(Pulse 伴奏)",
+        "起音仅 `4ms`（瞬态过硬，密集琶音时像指甲敲桌）；3/4/5 次谐波偏亮。",
+        "Attack: **`7.5ms`** (`guitar`) / **`6.5ms`** (`harp`)<br>Decay: `exp(-t * 3.4)`<br>Release: **`160ms`**",
+        "• `guitar`: $H_1=1.0$, $H_2=0.26 e^{-5.5t}$, $H_3=0.09 e^{-8.5t} \\cdot \\text{reg\\_atten}$, $H_5=0.018 e^{-15t}$（原 `.34/.18/.055` 降暗）<br>• `harp`: $H_1=1.0$, $H_2=0.20 e^{-5.5t}$, $H_3=0.06 e^{-9.5t} \\cdot \\text{reg\\_atten}$（取消 $H_4$）",
+        "柔化拨弦字头瞬态，消除 `Flowing` 密集流水时的“塑料颗粒感”。"
+      ]
+    },
+    {
+      "source_line": 315,
+      "raw_cells": [
+        "**`felt_piano`** & **`felt_nocturne`**<br>(深流/夜曲主奏)",
+        "`felt_nocturne` 含固定 `437/683Hz` 金属敲击项；高音区不够棉柔。",
+        "Attack: **`16ms`** (`felt_piano`) / **`24ms`** (`felt_nocturne`)<br>Decay: `exp(-t * 1.65)`<br>Release: **`200ms`**",
+        "• $H_1=1.0$, $H_2=0.11 e^{-6.5t} \\cdot \\text{reg\\_atten}$, $H_3=0.018 e^{-10t} \\cdot \\text{reg\\_atten}^2$<br>• **重写木槌软毛毡触键声**：将原 `437/683Hz` 金属正弦替换为低频木质共鸣 `(sin(TAU*142.*t)+0.5*sin(TAU*218.*t)) * 0.005 * exp(-t*55.) * reg_atten`",
+        "彻底去掉玩具钢片感，还原真正温暖、带木槌低频呼吸的毛毡钢琴。"
+      ]
+    },
+    {
+      "source_line": 316,
+      "raw_cells": [
+        "**`bass`** / **`horn`** / **`strings`**<br>(Foundation 暖垫)",
+        "三者 $H_2$ 均较强（`.14/.19/.22`），在 `120–250 Hz` 叠加时二次谐波严重淤积发闷。",
+        "• `bass`: Attack `35ms`, Decay `exp(-t*1.2)`, Release `280ms`<br>• `horn`: Attack `110ms`, Release `260ms`<br>• `strings`: Attack `150ms`, Release `280ms`",
+        "• `bass`: $H_1=0.92, H_2=0.18 e^{-2.5t}, H_3=0.03 e^{-5t}$（加入自然拨弦/揉弦衰减，避免死板方波式持续）<br>• `horn`: $H_1=1.0, H_2=0.13 \\cdot \\text{reg\\_atten}, H_3=0.035 \\cdot \\text{reg\\_atten}$<br>• `strings`: $H_1=1.0, H_2=0.14 \\cdot \\text{reg\\_atten}, H_3=0.05 \\cdot \\text{reg\\_atten}^2$（取消 $H_4$，颤音降至 `0.012 * vib_env`）",
+        "清理 `150–350 Hz` 谐波淤积，使 `Warm` 暖垫清澈、包裹而不轰头。"
+      ]
+    },
+    {
+      "source_line": 317,
+      "raw_cells": [
+        "**`harpsichord`** & **`oboe`** & **`accordion`**<br>(连拱/百工)",
+        "`harpsichord` 起音 `3ms` 且 2/3/4/6 次谐波无时间衰减，像蜂鸣器；`oboe` 谐波过强。",
+        "• `harpsichord`: Attack **`8.5ms`**, Decay `exp(-t*4.2)`, Release `130ms`<br>• `oboe`: Attack **`60ms`**, Release `170ms`",
+        "• `harpsichord`: 为高次谐波加上快速包络衰减：$H_1=1.0, H_2=0.28 e^{-4.5t}, H_3=0.12 e^{-7t} \\cdot \\text{reg\\_atten}, H_4=0.05 e^{-11t} \\cdot \\text{reg\\_atten}^2$（**删除 $H_6$**！）<br>• `oboe`: $H_1=0.85, H_2=0.26 \\cdot \\text{reg\\_atten}, H_3=0.12 \\cdot \\text{reg\\_atten}^2, H_5=0.025 \\cdot \\text{reg\\_atten}^3$",
+        "将羽管键琴与双簧管改造为柔和的古典鲁特羽管键琴与英国管（English Horn）质感，不再扎耳。"
+      ]
+    },
+    {
+      "source_line": 318,
+      "raw_cells": [
+        "**`celesta`** / **`bell`** / **`songbird`**<br>(点缀与短音)",
+        "起音 `4ms`、`bell` 三次泛音亮、`songbird` 频率过高。",
+        "• `celesta`: Attack **`9ms`**, Decay `exp(-t*4.8)`<br>• `bell`: Attack **`22ms`**, Decay `exp(-t*2.4)`",
+        "• `celesta`: $H_1=1.0, H_2=0.14 e^{-9t} \\cdot \\text{reg\\_atten}$（**删除 $H_4=0.085$**！）<br>• `bell`: $H_1=1.0, H_2=0.12 e^{-4t}, H_3=0.06 e^{-8t} \\cdot \\text{reg\\_atten}$（将原 `.18` 的持续三次泛音改为快速衰减）",
+        "钢片琴与钟声化为圆润的木槌铜铃，绝不刺破母曲声场。"
+      ]
+    }
+  ],
+  "unresolved": [
+    "P0 summary claims 16.5 beats/5 Answer; actual tables 21/6",
+    "P2 summary claims 6 Lead,9.5 beats,22 events; actual 7,11.5,24",
+    "P2 global progression and Bar22 differ; final sus4 resolution lacks timed harmony",
+    "P4/P5 prose conflicts with range/rest/harmony declarations; full six-section v3 absent",
+    "All DSP/mix/sample claims require versioned routing, actual audio and listening review"
+  ]
+}

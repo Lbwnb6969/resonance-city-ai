@@ -640,5 +640,24 @@
   ],
   "archive_last_checked": "2026-10-28",
   "archive_present_at_last_check": false,
-  "archive_status": "Original archive directory absent at second audit; tracked files recoverable via commits; untracked archive contents not proven recoverable."
+  "archive_status": "Original archive directory absent at second audit; tracked files recoverable via commits; untracked archive contents not proven recoverable.",
+  "music_doc_closure_20261031": {
+    "backup_tag": "backup/before-music-doc-consolidation-20261030_234930",
+    "source_head": "90d8cc4f62846dedd8d43b773909171c6861c793",
+    "committed_missing_docs_source": "55a13cddbd71c872e95eb6b1138a0be22429b51a",
+    "archive_relative": "废弃/音乐融合与入口收口_20261030_234930",
+    "proof_relative": "验证记录/音乐融合与入口收口_20261030_234930/archive_proof.json",
+    "retired": [
+      {
+        "path": "文档/Gemini_音乐作曲委托.md",
+        "sha256": "ceab3e77ea8af5b943422bd03df4c24a9ee1de4d1137098078b07c1a456fac63",
+        "replacement": [
+          "文档/54_V7_最终施工改造总案.md",
+          "文档/58_原创室内乐作曲审阅与施工映射.md",
+          "文档/63_背景音乐柔和配器与长听审阅及施工映射.md"
+        ]
+      }
+    ],
+    "policy": "其余文档为备份后原位精简，整理记录保留旧全文；历史映射、来源原稿与实际证据保持。"
+  }
 }
