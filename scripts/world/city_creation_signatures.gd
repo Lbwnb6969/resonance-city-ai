@@ -5,6 +5,8 @@ const NAMES := {"bell_keep":"古钟瞭望塔","watermill":"河湾大水车磨坊
 const ROLES := {"bell_keep":"venue","watermill":"bakery","music_academy":"venue","botanical_palace":"garden_cafe","clockwork_depot":"clockmaker","floating_amphitheater":"symphony_hall"}
 const GOALS := {"bell_keep":"10座普通房屋与1座跨河桥 · 步速+15%、聚焦+3米","watermill":"累计出炉24份面包 · 每炉+1份、烘焙缩时20%","music_academy":"文艺复兴开启，两个街坊完成器乐问答 · 38米覆盖与全城接力","botanical_palace":"8桌真实茶聚与120株玩家植物 · 余韵180秒、周围双倍野花","clockwork_depot":"第三时代与30米宽街/轨街 · 接轨发车，车速+20%","floating_amphitheater":"第四时代与三章河湾手记 · 水岸四时代交响盛典"}
 const LOCAL_EFFECTS:={"bell_keep":"16米回响圈：工坊送装与返程提速25%。","watermill":"同岸18米工坊带：生产提速35%；磨坊每出炉3炉，从库存赠粮给最多2户缺粮邻里。","music_academy":"同街坊学院区：制琴坊与书院每批产量翻倍，完整问答的余韵奖励翻倍。","botanical_palace":"14米翡翠花海圈：双倍野花、自然景观条件满足，品茶效率+40%。","clockwork_depot":"沿连通轨街两侧6米：跨区消费、赴演与送装可享轨交直达；总站线路单车运力6→24人。","floating_amphitheater":"盛典落幕后：全城余韵中的房屋立即检定晋升资格，金色声浪与窗光延续12秒。"}
+static func available(city:RefCounted,kind:String)->bool:
+	return kind in IDS and (city.CreationPolicy.is_free(city) or kind in city.signature_unlocks)
 
 static func planted_count(city: RefCounted)->int:
 	var count := 0
@@ -65,7 +67,7 @@ static func wheel_plan(city: RefCounted, house: Dictionary) -> Dictionary:
 
 static func preview(city: RefCounted, kind: String, at: Vector2, moving: String="") -> Dictionary:
 	if kind not in IDS:return city._fail("未知的地标名胜")
-	if kind not in city.signature_unlocks:return city._fail("先达成里程碑："+GOALS[kind])
+	if not available(city,kind):return city._fail("先达成里程碑："+GOALS[kind])
 	if not is_finite(at.x) or not is_finite(at.y):return city._fail("地标位置无效")
 	for house: Dictionary in city.houses:
 		if house.get("signature","")==kind and str(house.id)!=moving:return city._fail("这座地标已放置，可选中后移动或回收")
@@ -125,10 +127,11 @@ static func validate(city: RefCounted,data: Dictionary,issued: Dictionary) -> Di
 	if "clockwork_depot" in unlocks and not city.Biomes.grants(data.get("biome_seed",{}),"clockwork_depot") and not data.get("era_unlocks",[]).has("clockwork"):return city._fail("电车总站缺少第三时代里程碑")
 	if "floating_amphitheater" in unlocks and not city.Biomes.grants(data.get("biome_seed",{}),"floating_amphitheater") and (int(data.schema)<city.MODERN_SCHEMA or not data.get("era_unlocks",[]).has("modern_eco") or data.get("growth_memories",[]).size()<3):return city._fail("水上剧场缺少第四时代与三章手记")
 	var placed:= {}
+	var free:bool=city.CreationPolicy.data_is_free(data)
 	for house: Dictionary in data.houses:
 		if not house.has("signature"):continue
 		var kind: Variant=house.signature
-		if kind not in IDS or kind not in unlocks or placed.has(kind):return city._fail("地标未解锁或重复放置")
+		if kind not in IDS or (not free and kind not in unlocks) or placed.has(kind):return city._fail("地标未解锁或重复放置")
 		placed[kind]=true
 		var expected:=cells(kind)
 		# Original four-ground-cell mills keep their authored structure.

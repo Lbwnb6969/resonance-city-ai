@@ -12,6 +12,7 @@ var actions: HBoxContainer
 var placing: String = ""
 var moving_id: String = ""
 var preview_key: Array = []
+var intro:Label
 
 func setup(owner: Node3D, parent: Control) -> void:
 	demo = owner
@@ -22,7 +23,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 	demo.gallery_button.get_parent().add_child(button)
 	var column:VBoxContainer=preload("res://scripts/ui/city_creation_scroll_pages.gd").landmarks(self,parent)
 	column.add_child(demo._label("地标名胜 · 每座限一处", 18))
-	var intro: Label = demo._label("里程碑达成即可免费选址落位，赋予全城持久声学与生活增益。", 13)
+	intro = demo._label("", 13)
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	intro.custom_minimum_size.x = 0
 	intro.add_theme_color_override("font_color", UI.MUTED)
@@ -69,11 +70,14 @@ func open_panel() -> void:
 	refresh()
 
 func refresh() -> void:
+	var free:bool=demo.state.CreationPolicy.is_free(demo.state)
+	intro.text="自由创作可直接选择六座地标；每座限一处，沿岸构件仍需合适水岸。历史里程碑保留。" if free else "里程碑达成即可免费选址落位，赋予全城持久声学与生活增益。"
+	button.tooltip_text="六座地标可自由选址；每座限一处，可随时移位或回收。" if free else "达成城市与音乐里程碑后，可免费营建六座独占地标名胜（每座限一处，可随时移位或回收）"
 	var placed := {}
 	for house: Dictionary in demo.state.houses:
 		if house.has("signature"): placed[str(house.signature)] = str(house.id)
 	for id: String in buttons:
-		var earned: bool = id in demo.state.signature_unlocks
+		var earned: bool = demo.state.Signatures.available(demo.state,id)
 		var is_placed: bool = placed.has(id)
 		buttons[id].disabled = not earned or is_placed
 		buttons[id].text = "已在河湾 · 可选中移动" if is_placed else "免费选址" if earned else "里程碑尚未达成"
@@ -90,6 +94,7 @@ func refresh() -> void:
 				buttons[id].add_theme_color_override("font_disabled_color", Color("9b9f8c"))
 		var goal:String=demo.state.Signatures.GOALS[id]
 		if demo.state.Biomes.grants(demo.state.biome_seed,id):goal="地貌赠礼 · 可免费营建" if id==str(demo.state.Biomes.profile(demo.state.biome_seed).gift) else "林间秘境 · 已提前解锁"
+		if free:goal="自由选址 · 原里程碑已记录" if id in demo.state.signature_unlocks else "自由选址 · 历史里程碑未记录"
 		labels[id].text = goal+("\n"+str(demo.state.Signatures.LOCAL_EFFECTS[id]) if demo.state.Signatures.LOCAL_EFFECTS.has(id) else "")
 	var selected: Dictionary = demo.town._house_record(demo.selected_house)
 	actions.visible = selected.has("signature")
@@ -99,7 +104,7 @@ func _move_selected() -> void:
 	if house.has("signature"): begin(str(house.signature), str(house.id))
 
 func begin(kind: String, moving: String = "") -> void:
-	if demo.edit_pending() or kind not in demo.state.signature_unlocks: return
+	if demo.edit_pending() or not demo.state.Signatures.available(demo.state,kind): return
 	demo.select_tool(4)
 	panel.hide()
 	demo.selected_house = ""

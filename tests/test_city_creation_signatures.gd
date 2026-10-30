@@ -108,7 +108,7 @@ func _run()->void:
 	var snapshot: Dictionary=city.snapshot();var copy:=State.new()
 	var saved_json:=JSON.stringify(snapshot,"",true,true)
 	var loaded: Dictionary=copy.restore(JSON.parse_string(saved_json))
-	_check(snapshot.schema==17 and loaded.ok and _saved_equal(copy.snapshot(),snapshot),"three placed landmarks, service milestones and all persistent evidence roundtrip within JSON numeric precision: "+str(loaded))
+	_check(snapshot.schema==city.PERSONALIZATION_SCHEMA and snapshot.has("harmony_journey") and loaded.ok and _saved_equal(copy.snapshot(),snapshot),"three placed landmarks, actual journey ledger and all persistent evidence roundtrip within JSON numeric precision: "+str(loaded))
 	var loaded_before: Dictionary=copy.snapshot()
 	var bad: Dictionary=snapshot.duplicate(true);bad.houses[-1].signature="bell_keep"
 	_check(not copy.restore(bad).ok and copy.snapshot()==loaded_before,"duplicate forged landmark is rejected atomically")

@@ -112,7 +112,8 @@ collect中的重复研习倍率和Rarity.xp_multiplier也只作用于真实可�
 
 | 内容 | 当前入口/消费者及迁移要求 |
 | --- | --- |
-| 四类独立地标 | LegendaryWonderPlan.unlocked_journey继续只表示虹彩已得卡或真实二阶回响历史。PlacedLandmarks.available_blueprints已为free独立派生四类基础可用权限，GroundLandmarkTool按钮、preview和validate_geometry共用；无卡目录点击/API/冷读已受测，见53，不伪造rarity/echoes。四类唯一性、实地净空及身份验证保持。旧屋式Signatures六地标独立核对，不能用四类开放覆盖它的旧资格。 |
+| 四类独立地标 | LegendaryWonderPlan.unlocked_journey继续只表示虹彩已得卡或真实二阶回响历史。PlacedLandmarks.available_blueprints已为free独立派生四类基础可用权限，GroundLandmarkTool按钮、preview和validate_geometry共用；无卡目录点击/API/冷读已受测，见53，不伪造rarity/echoes。四类唯一性、实地净空及身份验证保持。旧屋式六地标另行保留自身固定结构与历史资格，见下一行。 |
+| 旧屋式六地标 | Signatures.available已将free基础可建与signature_unlocks历史分离；名胜目录/begin、公开preview/place、Schema20冷读已受测。free不需要经营或时代里程碑，但原历史解锁数组仍严格校验；legacy沿原资格。水车轮缘入水、舞台伸水、唯一性、固定角色/房间结构和稳定身份保持，不与四类独立地标混为一套。 |
 | 六种奖励饰色 | ArchiveRewards.finish_available已区分free六饰色基础可用与legacy原四章纪念/两项图鉴资格；State、Journal/SpatialPopover和Serializer共用。新free实际六色选择/Undo/逐色磁盘冷读、转换和原四基础色回归已受测，见53；原纪念/图鉴保持真实。压缩顶点色编码与重合配方的重建回退已修，不向获得账本补写记录。 |
 | 两个额外调式及其余规划调式 | ArchiveRewards.mode_available/validate、State.set_music_mode及Gallery已区分free基础可用与legacy原图鉴资格；只开放原gong_pentatonic/impressionist_major7两枚举。原生选择、实际core分轨mode8/9、建造短cue、量化点屋音、Undo/冷读/转换和忙碌门禁已受测，见53；未生成图鉴大奖。其余规划调式/六首母曲全调式仍按音乐批次验收，不以此子步冒充完成。 |
 | 四时代普通风貌 | CreationPolicy.can_build_era/eras/data_can_build_era已区分free可用与era_unlocks历史。保持既有开放，不重跑解锁；Eras.refresh、时代仪式及Unified旧章程不能因可用性开放补造历史。 |

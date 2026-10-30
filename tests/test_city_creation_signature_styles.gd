@@ -25,6 +25,7 @@ func _styles(panel:RefCounted)->Dictionary:
 func _run()->void:
 	var owner:=Owner.new();owner.state=State.new();owner.town=Town.new();owner.add_child(owner.town);root.add_child(owner)
 	var panel:=SignaturePanel.new();panel.demo=owner;panel.actions=HBoxContainer.new();root.add_child(panel.actions)
+	panel.intro=Label.new();panel.button=Button.new();root.add_child(panel.intro);root.add_child(panel.button)
 	for id:String in owner.state.Signatures.IDS:
 		var button:=Button.new();var label:=Label.new();root.add_child(button);root.add_child(label);panel.buttons[id]=button;panel.labels[id]=label
 	panel.refresh();var initial:=_styles(panel)
@@ -42,5 +43,5 @@ func _run()->void:
 	_check(_styles(panel)[id]!=placed[id] and not panel.buttons[id].disabled,"removing the landmark restores available primary placement styling")
 	for button:Button in panel.buttons.values():button.queue_free()
 	for label:Label in panel.labels.values():label.queue_free()
-	panel.actions.queue_free();owner.queue_free();await process_frame
+	panel.actions.queue_free();panel.intro.queue_free();panel.button.queue_free();owner.queue_free();await process_frame
 	print("SIGNATURE_STYLES ",JSON.stringify({"ok":failures.is_empty(),"checks":checks,"failures":failures}));quit(0 if failures.is_empty() else 1)
