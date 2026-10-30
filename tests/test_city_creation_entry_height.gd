@@ -50,7 +50,7 @@ func run()->void:
 	var modern:=Fixture.build("mismatch");check(modern.ok and modern.city.set_house_era("h1","modern_eco").ok,"public alternate modern facade")
 	network(modern.city);var modern_entries:Array=modern.city.house_entrances("h1")
 	var deferred:=Access.assess(modern.city,modern.city.houses[0],modern_entries[0],Vector2(-28,-17.8),modern.city.roads[0])
-	check(deferred.kind=="existing_modern_facade" and deferred.scope=="unchanged" and not deferred.has("step_count"),"modern doors never borrow nonexistent classical stone steps")
+	check(deferred.kind=="modern_ground_door" and deferred.step_count==0 and not deferred.active_steps,"modern doors never borrow nonexistent classical stone steps")
 	var arch:=Fixture.Base.courtyard("ring","portal");check(arch.ok,"public existing through-arch layout");network(arch.city)
 	var portal:Dictionary=arch.city.house_entrances("h1").filter(func(e):return e.get("passage",false))[0]
 	deferred=Access.assess(arch.city,arch.city.houses[0],portal,portal.at,arch.city.roads[0])

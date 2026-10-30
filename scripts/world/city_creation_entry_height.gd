@@ -5,18 +5,26 @@ const Frontage=preload("res://scripts/world/city_creation_frontage.gd")
 const Roads=preload("res://scripts/world/city_creation_road_heights.gd")
 const EPS:=.002
 const SAMPLE:=.04
+const MODERN_SILL_DROP:=.18 # Doorway allowance; road treads still use STEP_HEIGHT.
 
 static func assess(city:RefCounted,house:Dictionary,entry:Dictionary,target:Vector2,road:Dictionary)->Dictionary:
 	# Through arches keep their existing road-floor semantics in this batch.
 	if entry.get("passage",false):return {"ok":true,"kind":"existing_passage","scope":"unchanged"}
-	if not entry.active and city.house_era(house)=="modern_eco":return {"ok":true,"kind":"existing_modern_facade","scope":"unchanged"}
+	var modern:bool=not entry.active and city.house_era(house)=="modern_eco"
+	# The terrace variant has its own terrain-supported exterior deck.
+	# Keep that separate geometry explicit until its entire approach is covered.
+	if modern and preload("res://scripts/world/city_creation_alpine_plan.gd").kind_for(house)==2:return {"ok":true,"kind":"existing_modern_deck","scope":"unchanged"}
 	var plan:Dictionary=Frontage.porch_plan(city,house,entry) if entry.active else {}
 	var profile:Dictionary=city.road_profile(road)
 	var start:Vector2=entry.wall_at+Frame.normal(entry)*.18
 	var previous:=_surface(city,house,entry,start,road,profile,plan)
-	var top:float=float(house.get("base_y",0.))+(.15 if entry.active else .105)
-	var result:={"ok":false,"kind":"ordinary_door","sill_y":top,"street_y":city.street_height(target),"active_steps":bool(entry.active),"step_count":int(plan.get("count",0)),"max_rise":0.,"max_grade":0.,"samples":0,"reason":"door_buried"}
+	var top:float=float(house.get("base_y",0.))+(.15 if entry.active or modern else .105)
+	var result:={"ok":false,"kind":"modern_ground_door" if modern else "ordinary_door","sill_y":top,"street_y":city.street_height(target),"active_steps":bool(entry.active),"step_count":int(plan.get("count",0)),"max_rise":0.,"max_grade":0.,"samples":0,"reason":"door_buried"}
 	if float(previous.y)>top+EPS:result.blocked_at=start;return _diagnostic(result)
+	# Modern facades have a .15m room plinth, no classical exterior steps.
+	# The existing facade coping tops out at .18m; a larger drop has no step.
+	if modern and top-float(previous.y)>MODERN_SILL_DROP+EPS:
+		result.reason="unsupported_sill_drop";result.blocked_at=start;return _diagnostic(result)
 	var count:=maxi(1,ceili(start.distance_to(target)/SAMPLE));var last:=start
 	for i in range(1,count+1):
 		var at:=start.lerp(target,float(i)/count);var surface:=_surface(city,house,entry,at,road,profile,plan)
@@ -50,7 +58,7 @@ static func _surface(city:RefCounted,house:Dictionary,entry:Dictionary,at:Vector
 		for i in range(count):
 			var center:=.18+i*.23;var top:=base+.15-i*rise/count
 			if absf(along-center)<=.145+EPS and lateral<=.47+i*.045+EPS and top>=float(result.y):result={"y":top,"kind":"porch_step"}
-	else:
+	elif city.house_era(house)!="modern_eco":
 		for row:Array in [[.3,.27,.48,.105],[.55,.34,.52,.0445]]:
 			if absf(along-float(row[0]))<=float(row[1])+EPS and lateral<=float(row[2])+EPS and base+float(row[3])>=float(result.y):result={"y":base+float(row[3]),"kind":"door_step"}
 	return result

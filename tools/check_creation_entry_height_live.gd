@@ -38,17 +38,19 @@ func height_geometry(row:Dictionary)->void:
 		var deck:=installed_deck(entry.street_at,float(entry.height_access.street_y));check(is_finite(deck),"actual road triangle under projected entry")
 		maximum=maxf(maximum,absf(deck-float(entry.height_access.street_y)))
 		var sill:=installed_sill(entry)
-		if is_finite(sill):sills+=1;check(absf(sill-float(entry.height_access.sill_y))<.002,"actual door-step top equals sampled support")
-	check(maximum<.002 and sills==4,"four actual door steps and road mesh heights match spatial evidence")
+		if is_finite(sill):sills+=1;check(absf(sill-float(entry.height_access.sill_y))<.002,"actual sill top equals sampled support")
+	check(maximum<.002 and sills==4,"four actual sills and road mesh heights match spatial evidence")
 	facts.get_or_add("height_geometry",[]).append({"road_gap":maximum,"sills":sills})
+func build_fixture(kind:String)->Dictionary:return SlopeFixture.build(kind)
+func output_directory()->String:return "res://验证记录/M84/slope_entry_20261029/live"
 func run()->void:
-	OUT="res://验证记录/M84/slope_entry_20261029/live"
+	OUT=output_directory()
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
 	var began:=Time.get_ticks_msec();var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input()
-	var voices:=pool();var f:=SlopeFixture.build("mismatch");check(f.ok,"real low/high houses and same road")
+	var voices:=pool();var f:=build_fixture("mismatch");check(f.ok,"real low/high houses and same road")
 	await show(f.city,Vector2(-27,-18),"坡地入口");quiet();demo.life.set_process(false)
 	demo.focus=Vector3(-27.,1.2,-17.8);demo.zoom=18.;demo.pitch=.75;demo.yaw=1.15;demo._update_camera();await settle()
 	var report:Dictionary=demo.state.functional_zones();var initial:=meshes();var roads:=road_meshes();var authored:Dictionary=demo.state.snapshot()
@@ -71,7 +73,7 @@ func run()->void:
 	var cold:=State.new();check(cold.restore(JSON.parse_string(FileAccess.get_file_as_string(path))).ok,"independent slope disk restore")
 	await show(cold,Vector2(-27,-18),"坡地冷读");quiet();demo.life.set_process(false)
 	check(demo.state.functional_zones()==report and meshes()==initial and road_meshes()==roads,"cold terrain/road/support diagnosis equals incremental publication")
-	var high:=SlopeFixture.build("high");check(high.ok,"real shared plateau houses")
+	var high:=build_fixture("high");check(high.ok,"real shared plateau houses")
 	await show(high.city,Vector2(-27,-18),"可达高地入口");quiet();demo.life.set_process(false)
 	check(lane_rows().size()==1 and lane_rows()[0].eligibility.district and demo.state.houses.all(func(h):return h.base_y>=1.5),"actual matching high entries remain a district")
 	height_geometry(lane_rows()[0]);await key(KEY_L);await refresh_page();check("两侧入口与公共路网已接通" in demo.ledger.body.text,"native L distinguishes usable high plateau");await capture("high_ledger");await key(KEY_ESCAPE)

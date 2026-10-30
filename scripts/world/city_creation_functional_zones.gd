@@ -16,7 +16,7 @@ static func for_city(city:RefCounted)->Dictionary:
 	var key:Array=[city.revision,city._region_network_revision]
 	var cached:Dictionary=city.get_meta("functional_zones",{})
 	if cached.get("key",[])==key:return cached.value
-	var result:={"enabled":city.CreationPolicy.is_free(city),"network_ready":ready,"houses":{},"zones":[],"spaces":[],"space_contracts":{"courtyard":"closed_ring_single_half_and_lane","waterfront":"pending","artisan":"pending","civic":"pending"}}
+	var result:={"enabled":city.CreationPolicy.is_free(city),"network_ready":ready,"houses":{},"zones":[],"spaces":[],"space_contracts":{"courtyard":"closed_ring_single_half_and_lane","waterfront":"public_shore_face","artisan":"pending","civic":"pending"}}
 	if not result.enabled:return result
 	var components:Dictionary=city._region_network.get("house_components",{}) if ready else {}
 	var footprints:Dictionary={}
@@ -61,6 +61,7 @@ static func for_city(city:RefCounted)->Dictionary:
 			members.sort()
 			result.zones.append({"id":kind+":"+str(members[0]),"kind":kind,"members":members,"active":result.houses[id].connected,"component":result.houses[id].component})
 	result.spaces=preload("res://scripts/world/city_creation_courtyard_contract.gd").derive(city,result,func(box):return _water_distance(city,box))
+	result.spaces.append_array(preload("res://scripts/world/city_creation_waterfront_contract.gd").derive(city,result,func(box):return _water_distance(city,box)))
 	city.set_meta("functional_zones",{"key":key,"value":result});return result
 
 static func _adjacent(a:Array,b:Array)->bool:

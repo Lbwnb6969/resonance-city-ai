@@ -12,7 +12,7 @@ func check(ok:bool,label:String)->void:
 func network(city:RefCounted)->void:
 	var life:=Life.new();root.add_child(life);life.set_process(false);life.setup(city);life.free()
 func view(city:RefCounted)->Array:
-	var before:Dictionary=city.snapshot();var rows:Array=city.functional_zones().spaces
+	var before:Dictionary=city.snapshot();var rows:Array=city.functional_zones().spaces.filter(func(s):return s.kind=="courtyard")
 	check(before==city.snapshot(),"space query cannot write author data/receipts")
 	return rows
 func run()->void:
@@ -56,7 +56,7 @@ func run()->void:
 	check(view(single)[0].stage=="trait" and single.functional_zones().zones[0].active,"legacy active remains separate from district")
 	for fixture:Dictionary in Fixture.other_kinds():
 		check(fixture.ok,"public next-kind fixture "+fixture.kind);network(fixture.city)
-		check(fixture.city.functional_zones().space_contracts[fixture.kind]=="pending","other-kind acceptance stays pending "+fixture.kind)
+		check(fixture.city.functional_zones().space_contracts[fixture.kind]==("public_shore_face" if fixture.kind=="waterfront" else "pending"),"current other-kind contract scope "+fixture.kind)
 	var mixed:=preload("res://tools/fixtures/city_creation_functional_zones_fixture.gd").build();check(mixed.ok,"mixed real legacy spatial layout");network(mixed.city)
 	var old:Dictionary=mixed.city.snapshot();var benefits:Dictionary=mixed.city.functional_benefits()
 	check(benefits.inspiration_multiplier==1.35 and benefits.artisan_sources==["h3"],"formal global +35% keeps old source")
