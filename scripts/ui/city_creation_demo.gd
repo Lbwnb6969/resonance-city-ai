@@ -1555,6 +1555,7 @@ func _after_edit(result: Dictionary, kind: String, rebuild_geometry: bool=true, 
 			var update: Dictionary=town.try_update_house_colors(id)
 			applied=applied and bool(update.applied)
 			color_ms+=float(update.get("elapsed_ms",0.0))
+		if not applied:rebuild_geometry=true
 		if applied:
 			# Only color fields changed, so existing metre heights, courtyard
 			# plans and routes remain the published truth for this revision.

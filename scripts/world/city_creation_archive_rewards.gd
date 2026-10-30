@@ -4,10 +4,11 @@ const NAMES:={"five_chords":"五和弦手札","century_symphony":"百屋跨时�
 const MODE_NAMES:={"gong_pentatonic":"宫商河韵 · C宫五声","impressionist_major7":"印象水光 · F大七"}
 const MODES:={"gong_pentatonic":"five_chords","impressionist_major7":"century_symphony"}
 const FINISHES:={"river_jade":"five_chords","opal":"century_symphony"}
+const Growth=preload("res://scripts/world/city_creation_growth.gd")
 static func heritage_available(rewards:Array)->bool:
 	return rewards.any(func(id):return id in IDS)
-static func finish_available(id:String,memories:Array,rewards:Array)->bool:
-	return FINISHES[id] in rewards if FINISHES.has(id) else id in memories
+static func finish_available(id:String,memories:Array,rewards:Array,free:bool=false)->bool:
+	return Growth.FINISHES.has(id) and (free or (FINISHES[id] in rewards if FINISHES.has(id) else id in memories))
 static func mode_available(id:String,rewards:Array)->bool:
 	return MODES.has(id) and MODES[id] in rewards
 static func validate(data:Dictionary)->Dictionary:

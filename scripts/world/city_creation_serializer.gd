@@ -406,7 +406,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if house.has("finish"):
 			if data.schema<city.JOURNAL_SCHEMA: return city._fail("饰色作品需要新存档版本")
 			if not house.finish is String or not Growth.FINISHES.has(house.finish): return city._fail("城市存档房屋饰色无效")
-			if not city.ArchiveRewards.finish_available(house.finish,memories,data.get("archive_unlocks",[])):return city._fail("城市存档房屋饰色尚未获得")
+			if not city.ArchiveRewards.finish_available(house.finish,memories,data.get("archive_unlocks",[]),city.CreationPolicy.data_is_free(data)):return city._fail("城市存档房屋饰色尚未获得")
 		if house.has("style"):
 			if data.schema<city.BUILDING_SCHEMA: return city._fail("建筑样式作品需要新存档版本")
 			if not house.style is String or house.style not in city.HOUSE_STYLES: return city._fail("城市存档建筑样式无效")

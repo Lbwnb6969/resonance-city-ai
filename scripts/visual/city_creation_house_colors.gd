@@ -4,6 +4,9 @@ extends RefCounted
 ## indices, resources, picking bodies and natural-world caches stay in place.
 const Styles := preload("res://scripts/visual/city_creation_house_styles.gd")
 const FINISHES := ["dawn","tide","festival","nocturne","river_jade","opal"]
+static func vertex_color(color:Color)->int:
+	# ArrayMesh COLOR stores truncated UNORM8 channels; Color.to_abgr32 rounds.
+	return int(color.r*255.) | (int(color.g*255.)<<8) | (int(color.b*255.)<<16) | (int(color.a*255.)<<24)
 
 
 static func _palette(renderer,index: int) -> Array:
@@ -45,7 +48,8 @@ static func _colors(p: Array) -> Array[Color]:
 		p[1].darkened(0.20),p[1].darkened(0.04),p[1].lightened(0.09),p[1].lightened(0.17),p[1].lightened(0.10),
 		p[2].lightened(0.13),p[2].darkened(0.20),stone,stone.lightened(0.12),stone.darkened(0.08),
 		p[0].lerp(Color("e7d9b9"),.5),p[0].lerp(Color("e6d8b8"),.48),p[0].lerp(Color("e4d5b5"),.45),p[2].darkened(.42),p[1].lightened(.09),
-		p[0].lerp(Color("c9c5ae"),0.72),p[0].lerp(Color.WHITE,0.60),tower,tower.darkened(0.18)]
+		p[0].lerp(Color("c9c5ae"),0.72),p[0].lerp(Color.WHITE,0.60),tower,tower.darkened(0.18),
+		p[0].lerp(Color("d9c7a2"),.55),p[2].lerp(Color("94724e"),.35)]
 
 
 static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->bool:
@@ -60,12 +64,17 @@ static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->b
 			palettes.append(_colors(base))
 		palettes.append(_colors(era_palette(renderer,house,base_palette(renderer,house),house.has("custom_colors"))))
 		var current: int = _index(house)
-		var lookup := {}
-		for index in range(palettes[current].size()): lookup[palettes[current][index].to_abgr32()] = index
+		var lookup:Dictionary={};var vertex_lookup:Dictionary={};var ambiguities:Array=[]
+		for index in range(palettes[current].size()):
+			for vertex:bool in [false,true]:
+				var table:Dictionary=vertex_lookup if vertex else lookup
+				var key:int=vertex_color(palettes[current][index]) if vertex else palettes[current][index].to_abgr32()
+				if table.has(key):ambiguities.append({"a":table[key],"b":index,"vertex":vertex})
+				table[key]=index
 		var buffers: Array = []
 		var material_rows: Array = []
 		var style_rows: Array = []
-		job={"palettes":palettes,"current":current,"lookup":lookup,"buffers":buffers,"materials":material_rows,
+		job={"palettes":palettes,"current":current,"lookup":lookup,"vertex_lookup":vertex_lookup,"ambiguities":ambiguities,"buffers":buffers,"materials":material_rows,
 			"style_rows":style_rows,"bytes":0,"elapsed_us":0,"nodes":root.find_children("*","MeshInstance3D",true,false),"cursor":0}
 		root.set_meta("house_color_pending",job)
 	while job.cursor<job.nodes.size():
@@ -82,7 +91,7 @@ static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->b
 	job.elapsed_us+=Time.get_ticks_usec()-started
 	var elapsed:float=float(job.elapsed_us)/1000.
 	root.set_meta("house_color_cache",{"authoring":_authoring(house),"buffers":job.buffers,"materials":job.materials,
-		"style_rows":job.style_rows,"palettes":job.palettes,"index":job.current,"bytes":job.bytes,
+		"style_rows":job.style_rows,"palettes":job.palettes,"ambiguities":job.ambiguities,"index":job.current,"bytes":job.bytes,
 		"custom_colors":house.get("custom_colors",{}).duplicate(),"prepare_ms":elapsed,"warmup_ms":0.,"upload_bytes":0})
 	root.set_meta("house_color_prepare",{"prepare_ms":elapsed,"warmup_ms":0.,"bytes":job.bytes,"upload_bytes":0,"surfaces":job.buffers.size(),"variants":job.palettes.size()})
 	root.remove_meta("house_color_pending")
@@ -122,7 +131,7 @@ static func _prepare_mesh(renderer,node:MeshInstance3D,job:Dictionary)->void:
 		vertex_recipes.resize(count)
 		var changes := 0
 		for vertex in range(count):
-			vertex_recipes[vertex] = int(lookup.get(original[vertex].to_abgr32(),-1))
+			vertex_recipes[vertex] = int(job.vertex_lookup.get(original[vertex].to_abgr32(),-1))
 			if vertex_recipes[vertex] >= 0: changes += 1
 		if changes == 0: continue
 		var raw: Dictionary = RenderingServer.mesh_get_surface(mesh.get_rid(),surface)
@@ -151,13 +160,19 @@ static func apply(renderer,root: Node3D,house: Dictionary) -> bool:
 		cache.custom_colors=house.custom_colors.duplicate()
 	elif index == int(cache.index): return true
 	var colors: Array = cache.palettes[index]
+	# Compressed source colors can merge distinct recipes. Rebuild this house
+	# when the target separates them; inferring a recipe would recolor it wrong.
+	for pair:Dictionary in cache.ambiguities:
+		var a:int=vertex_color(colors[pair.a]) if pair.vertex else colors[pair.a].to_abgr32()
+		var b:int=vertex_color(colors[pair.b]) if pair.vertex else colors[pair.b].to_abgr32()
+		if a!=b:return false
 	for buffer: Dictionary in cache.buffers:
 		var mesh: ArrayMesh = buffer.mesh
 		if buffer.variants[index].is_empty():
 			var bytes:PackedByteArray=buffer.source.duplicate()
 			for vertex:int in range(buffer.recipes.size()):
 				var recipe:int=buffer.recipes[vertex]
-				if recipe>=0:bytes.encode_u32(int(buffer.offset)+vertex*int(buffer.stride),colors[recipe].to_abgr32())
+				if recipe>=0:bytes.encode_u32(int(buffer.offset)+vertex*int(buffer.stride),vertex_color(colors[recipe]))
 			buffer.variants[index]=bytes
 		mesh.surface_update_attribute_region(int(buffer.surface),0,buffer.variants[index])
 	for row: Dictionary in cache.materials:

@@ -10,11 +10,12 @@ static func eras(city:RefCounted)->Array:return ERAS.duplicate() if is_free(city
 static func can_assign_role(city:RefCounted,role:String)->bool:
 	return role in city.HOUSE_ROLES and (not ROLE_ERAS.has(role) or can_build_era(city,ROLE_ERAS[role]))
 
+static func data_is_free(data:Dictionary)->bool:
+	var settings:Variant=data.get("creative_settings",{})
+	return data.get("schema",0)==Save.SCHEMA and settings is Dictionary and settings.get("creation_policy")=="free"
 static func data_can_build_era(data:Dictionary,era:Variant)->bool:
 	if not era is String or era not in ERAS:return false
-	var settings:Variant=data.get("creative_settings",{})
-	var free:bool=data.get("schema",0)==Save.SCHEMA and settings is Dictionary and settings.get("creation_policy")=="free"
-	return free or era in data.get("era_unlocks",["pastoral"])
+	return data_is_free(data) or era in data.get("era_unlocks",["pastoral"])
 
 static func initialize(city:RefCounted,empty:bool=true)->void:
 	# Retain initialize()/initialize_empty() as legacy recipe APIs. Production

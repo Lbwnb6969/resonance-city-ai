@@ -660,7 +660,7 @@ func set_house_temperament(house_id:String,temperament:String)->Dictionary:
 
 
 func finish_available(finish:String)->bool:
-	return ArchiveRewards.finish_available(finish,growth_memories,archive_unlocks)
+	return ArchiveRewards.finish_available(finish,growth_memories,archive_unlocks,CreationPolicy.is_free(self))
 
 func apply_archive_unlocks(ids:Array)->void:
 	for id:String in ids:

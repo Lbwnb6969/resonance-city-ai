@@ -195,7 +195,7 @@ func refresh_palette() -> void:
 			house = row
 			break
 	if house.is_empty(): return
-	var signature: Array = [house.id, house.palette, house.get("finish", ""), demo.state.growth_memories.duplicate(),demo.state.archive_unlocks.duplicate()]
+	var signature: Array = [house.id, house.palette, house.get("finish", ""), demo.state.growth_memories.duplicate(),demo.state.archive_unlocks.duplicate(),demo.state.CreationPolicy.is_free(demo.state)]
 	if signature == _palette_signature or picker.get_popup().visible: return
 	_palette_signature = signature.duplicate(true)
 	picker.clear()
