@@ -9,6 +9,7 @@ static func active(house:Dictionary,era:String)->bool:
 static func material(color:Color,kind:int=Wall.Kind.STONE)->Material:
 	return Wall.source(color,null,"component",kind)
 static func openings(r,job,frame,wall:Node3D,door:bool,lit:bool,width:float)->void:
+	if wall.has_meta("recessed_facade"):preload("res://scripts/visual/city_creation_recessed_openings.gd").build(r,job,frame,wall,lit);return
 	if door:
 		r._facade(wall,job.palette,true,int(job.house.get("seed",0)),lit,width);return
 	var stone:Material=material(job.palette[0].lerp(Color("e7d9b9"),.5))

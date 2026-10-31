@@ -924,6 +924,7 @@ func set_evening(value: bool) -> void:
 
 
 func set_light_phase(phase: int) -> void:
+	preload("res://scripts/visual/city_creation_facade_glass.gd").phase(self,phase)
 	light_phase = phase
 	set_evening(phase>=1)
 	wildlife.set_night(phase==2)
@@ -1752,7 +1753,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		else: wall.get_node("ArchWallSurface").material_override=walls
 		_box(wall,Vector3(UNIT+0.07,0.11,0.20),Vector3(0,FLOOR-0.06,0.02),trim)
 		return
-	if era!="modern_eco":_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
+	if era!="modern_eco" and not preload("res://scripts/visual/city_creation_recessed_facade.gd").shell(self,job,frame,wall,direction,wall_width,wall_center):_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
 	if not cuts.is_empty() or not retreats.is_empty():
 		_cell_box_shape(body,Vector3(wall_width,FLOOR,0.13),wall.transform*(wall_center+Vector3(0,FLOOR*0.5,0)),wall.rotation.y)
 	_box(wall,Vector3(wall_width+0.04,0.12,0.20),wall_center+Vector3(0,0.12,0.02),_material(Color("c7b797")))

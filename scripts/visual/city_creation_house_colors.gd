@@ -105,6 +105,7 @@ static func _prepare_mesh(renderer,node:MeshInstance3D,job:Dictionary)->void:
 	var material_rows:Array=job.materials
 	if node.mesh == null:return
 	var material: Material = node.material_override
+	if material!=null and material.has_meta("creation_facade_glass"):return
 	if material is StandardMaterial3D:
 		var recipe: int = lookup.get(material.albedo_color.to_abgr32(),-1)
 		if recipe >= 0 and not material.vertex_color_use_as_albedo:
