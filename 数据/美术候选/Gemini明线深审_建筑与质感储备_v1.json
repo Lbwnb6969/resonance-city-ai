@@ -1,0 +1,149 @@
+{
+  "kind": "bright_line_supplement_candidate",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "source": "文档/来源/20261031_Gemini_明线深审与储备补充_原稿.txt",
+  "source_sha256": "a86f7cc9a72fb4de1c8e1bcabfd4f378d23e92162f2bce1fbec70db10b3cc46d",
+  "review": "文档/65_明暗双线与AI储备审阅及施工映射.md",
+  "prototype_rows": [
+    {
+      "id": "windmill_granary",
+      "source_line": 196,
+      "raw": "| **1. 古典田园**<br>(`pastoral`)    | **`windmill_granary`**<br>风车磨坊谷仓       | $\\ge 2$ 层或圆塔基底；屋顶伸出四片木骨帆布风车翼（随共享 `TIME` 缓慢优雅旋转），墙脚堆放麦袋与木桶。 | 自动关联 `bakery`（烘焙批次 `+1`）        | 归属 `belvedere_terrace`；贡献木笛与温暖低音。              |"
+    },
+    {
+      "id": "brook_boathouse",
+      "source_line": 197,
+      "raw": "| **1. 古典田园**<br>(`pastoral`)    | **`brook_boathouse`**<br>溪畔木船坞         | 临水（$\\le 5.2\\text{m}$）单层/双层；向水面挑出半敞开木构船棚，棚下系一叶随水波微晃的小木舟。    | 自动关联 `garden_cafe`（临水茶席）        | 归属 `echo_arcade`；强化竖琴 `Flowing` 水波权重。          |"
+    },
+    {
+      "id": "dovecote_gable",
+      "source_line": 198,
+      "raw": "| **1. 古典田园**<br>(`pastoral`)    | **`dovecote_gable`**<br>白鸽塔楼居          | 带高耸锥形石板小尖顶与一圈白鸽栖孔，屋檐下悬木质饲料台。                               | `residential`（自带花园舒适度加成）        | 增加近景自然林鸟与竖琴泛音亲和度。                              |"
+    },
+    {
+      "id": "stepped_guildhouse",
+      "source_line": 199,
+      "raw": "| **2. 文艺复兴**<br>(`renaissance`) | **`stepped_guildhouse`**<br>阶梯山墙行会     | 沿街立面呈佛兰德斯/北意式阶梯状退台山墙，山墙顶端立小型锻铁十字风标，底层带宽拱橱窗。                | 自动关联 `atelier`（丹青画室）            | 归属 `chamber_atelier`；贡献鲁特琴式吉他与暖弦。              |"
+    },
+    {
+      "id": "observatory_cupola",
+      "source_line": 200,
+      "raw": "| **2. 文艺复兴**<br>(`renaissance`) | **`observatory_cupola`**<br>八角观星书院     | $\\ge 2$ 层顶部屋面升起铜绿色八角小穹顶与黄铜浑天仪环，设弧形露台栏杆。                    | 自动关联 `venue` / `atelier`        | 归属 `belvedere_terrace`；夜间强化星夜毛毡与大提琴。           |"
+    },
+    {
+      "id": "loggia_fountain_court",
+      "source_line": 201,
+      "raw": "| **2. 文艺复兴**<br>(`renaissance`) | **`loggia_fountain_court`**<br>壁泉敞廊院   | 侧墙嵌入半圆形石雕壁泉（Wall Fountain），水流吐入半月形石盆。                      | 自动关联 `garden_cafe`              | 即使在内陆无河处，也为周围 $8\\text{m}$ 提供局部活水与竖琴声源！         |"
+    },
+    {
+      "id": "brass_orangery",
+      "source_line": 202,
+      "raw": "| **3. 蒸汽钟表**<br>(`clockwork`)   | **`brass_orangery`**<br>黄铜穹顶橘园         | 铸铁肋架与弧面透光玻璃交织的半圆拱温室，四角立黄铜排气短柱，内植柠檬树。                       | 自动关联 `garden_cafe` / `workshop` | 归属 `echo_arcade`；贡献清透钢片琴与竖琴泛音。                 |"
+    },
+    {
+      "id": "carillon_belfry",
+      "source_line": 203,
+      "raw": "| **3. 蒸汽钟表**<br>(`clockwork`)   | **`carillon_belfry`**<br>排钟八音阁         | 开放式双层木石钟架，悬挂 5 枚大小渐变的黄铜排钟（随 80BPM 节拍极轻微摆动）。                | 自动关联 `clockmaker`               | 归属 `belvedere_terrace`；在 `Answer` 轨贡献温润木槌排钟音色。 |"
+    },
+    {
+      "id": "gantry_workshop",
+      "source_line": 204,
+      "raw": "| **3. 蒸汽钟表**<br>(`clockwork`)   | **`gantry_workshop`**<br>悬臂木作坊         | 二层山墙外挑木质滑轮吊臂与绳索，门前摆放木料堆与工作台。                               | 自动关联 `workshop`（制琴工坊）           | 归属 `chamber_atelier`；贡献木琴（`marimba`）轻快律动。      |"
+    },
+    {
+      "id": "cascading_terrace_home",
+      "source_line": 205,
+      "raw": "| **4. 现代生态**<br>(`modern_eco`)  | **`cascading_terrace_home`**<br>层叠退台绿居 | 每层向后退缩半格并形成铺满垂吊植物的屋顶花园，带原木格栅遮阳棚。                           | `residential`（天然具备 `★3` 花园条件）   | 归属 `belvedere_terrace`；贡献毛毡钢琴与暖垫。              |"
+    },
+    {
+      "id": "cantilever_tea_deck",
+      "source_line": 206,
+      "raw": "| **4. 现代生态**<br>(`modern_eco`)  | **`cantilever_tea_deck`**<br>悬挑亲水茶台    | 临水或高崖边向外悬挑 `1.4m` 的斜撑原木观景平台，配极简布伞与玻璃护栏。                    | 自动关联 `garden_cafe`              | 归属 `echo_arcade`；强化 `deep_flow` 舟歌气质。          |"
+    },
+    {
+      "id": "acoustic_shell_pavilion",
+      "source_line": 207,
+      "raw": "| **4. 现代生态**<br>(`modern_eco`)  | **`acoustic_shell_pavilion`**<br>木壳声学亭 | 弧形层压木肋构成的扇贝状半露天声学小剧场，前场自带弧形木坐阶。                            | 自动关联 `symphony_hall` / `venue`  | 归属 `civic`；提供 `cantabile` 抒情重奏加成。              |"
+    }
+  ],
+  "palette_candidate_ids": [
+    "tuscany_ochre",
+    "delft_cobalt",
+    "kyoto_moss",
+    "provence_lavender",
+    "alpine_larch",
+    "venetian_terrazzo"
+  ],
+  "window_layers_raw": [
+    {
+      "source_line": 103,
+      "raw": "| **1. 内凹窗槽背板 + 玻璃面**<br>*(Recessed Glass Pane)* | **`-0.042m`**<br>*(向墙体内部退入 4.2cm)*               | 宽 $w$、高 $h$ 的双三角面片（不穿透内墙，但外框包边形成 4.2cm 真实深槽）。                                                                | **独立玻璃材质** `GlassMaterial.for_phase(light_phase)`（**严禁标记 `creation_wall` 混入板岩合批！**）     |"
+    },
+    {
+      "source_line": 104,
+      "raw": "| **2. 四周内凹窗套框**<br>*(Window Jamb & Mullion)*    | **`-0.042m` 至 `+0.018m`**                        | 厚 `0.035m` 的四边窗套立框 + 十字/竖向中梃（Mullion），连接外墙面与内凹玻璃。                                                            | `WallMaterial`（古典/文艺复兴用暖白石材 `STONE`，田园/钟表用深胡桃木 `TIMBER=5`）；内壁顶点写入 `AO = 0.62`，天然形成深邃折影！ |"
+    },
+    {
+      "source_line": 105,
+      "raw": "| **3. 挑出上楣石与下窗台**<br>*(Lintel & Window Sill)*   | **`+0.055m`** (上楣)<br>**`+0.068m`** (下窗台)        | • 上楣：高 `0.07m`，向两侧各挑出 `0.04m`（文艺复兴风貌带半圆拱券石）；<br>• 下窗台：厚 `0.05m`，向外挑出 `0.068m`（当房屋升至 `★3+` 时，窗台上方自动生长陶土花箱！）。  | `WallMaterial`（`STONE` 或 `TERRACOTTA`）；窗台下方紧贴的墙面顶点写入 `AO = 0.70` 接触阴影。                  |"
+    },
+    {
+      "source_line": 106,
+      "raw": "| **4. 微旋木百叶窗**<br>*(Angled Wooden Shutters)*    | **`+0.022m`**<br>*(外旋 $14^\\circ \\sim 18^\\circ$)* | 在 `pastoral` 与 `renaissance` 住宅窗两侧生成宽 $0.42w$ 的薄木百叶板，绕窗框外缘向两侧外旋 $\\pm(14^\\circ + 4^\\circ \\sin(\\text{seed}))$。 | `WallMaterial`（`TIMBER=5`，取房屋配色板中的点缀木色），打破立面的机械平直感。                                     |"
+    }
+  ],
+  "specular_patch_raw": "// 在 light() 函数末尾补齐 Blinn-Phong / GGX 柔化高光项（兼容 gl_compatibility）：\nvec3 half_dir = normalize(LIGHT + VIEW);\nfloat ndoth = max(dot(NORMAL, half_dir), 0.0);\nfloat ndotl = max(dot(NORMAL, LIGHT), 0.0);\n// roughness 由顶点/材质属性传入：灰泥 0.90，陶瓦 0.68，木材 0.76，金属 0.36\nfloat shininess = mix(96.0, 6.0, clamp(ROUGHNESS, 0.1, 1.0));\nfloat spec_Factor = pow(ndoth, shininess) * ndotl * (1.0 - ROUGHNESS * 0.75) * SPECULAR_AMOUNT;\nSPECULAR_LIGHT += LIGHT_COLOR * ATTENUATION * spec_Factor * 0.35;",
+  "morphology_slot_rows_raw": [
+    {
+      "source_line": 171,
+      "raw": "[1. 屋顶天窗]   [2. 烟囱群落]   [3. 窗拱与百叶] [4. 山墙与檐口] [5. 门廊与微景]"
+    },
+    {
+      "source_line": 172,
+      "raw": " (Dormer Slot)  (Chimney Slot)  (Fenestration)  (Gable/Cornice) (Porch/Clutter)"
+    },
+    {
+      "source_line": 173,
+      "raw": " • 0: 无天窗     • 0: 单筒陶囱   • 0: 方窗木百叶 • 0: 朴素挑檐   • 0: 青石踏步"
+    },
+    {
+      "source_line": 174,
+      "raw": " • 1: 三角老虎窗 • 1: 双联石壁炉 • 1: 半圆石拱窗 • 1: 阶梯山墙   • 1: 木梁瓦棚廊"
+    },
+    {
+      "source_line": 175,
+      "raw": " • 2: 弧顶牛眼窗 • 2: 阶梯砖烟囱 • 2: 威尼斯双拱 • 2: 悬鱼木山花 • 2: 铁艺玻璃雨棚"
+    },
+    {
+      "source_line": 176,
+      "raw": " • 3: 采光平天窗 • 3: 黄铜蒸汽管 • 3: 工业格栅窗 • 3: 齿状古典檐 • 3: 垂藤花架廊"
+    }
+  ],
+  "stages_raw": [
+    {
+      "source_line": 249,
+      "raw": "| **Batch M1**<br>*(明线经营回归)*        | **激活自由城治愈经营与数值循环（兼顾旧测试）**                    | • `scripts/world/city_creation_creation_policy.gd`<br>• `scripts/world/city_creation_functional_benefits.gd`<br>• `scripts/ui/city_creation_score_ribbon.gd`<br>• `scripts/ui/city_creation_free_spatial_guidance.gd`              | 1\\. 既有 `growth_conversion` (77项) 与 `growth_opening` (117项) 保持 100% PASS；<br>2\\. 开启 `cozy_progression` 的自由城实窗验证：新建面包坊/茶座/工坊自动运转、产出 XP、升 `Lv`、点亮 `+35%` 与 `★1..5` 星级，且全程零催建弹窗。 |"
+    },
+    {
+      "source_line": 250,
+      "raw": "| **Batch M2**<br>*(Tiny Glade 质感)* | **补齐文档 `59` 缺页：内凹立体窗洞、独立玻璃材质、墙面高光与树冠着色修复**   | • `scripts/visual/city_creation_window_relief.gd` *(新增)*<br>• `scripts/visual/city_creation_glass_material.gd` *(新增)*<br>• `scripts/visual/shaders/creation_wall.gdshader`<br>• `scripts/visual/shaders/creation_foliage.gdshader` | 1\\. 昼/夕/夜三态同机位 1440×900 实窗原图对比：窗户具 4.2cm 内凹折影、日间反射天光、夜间透出暖灯（不再是板岩灰块），树冠背光通透青翠无死黑；<br>2\\. 增量建造与磁盘冷读网格数组 SHA256 100% 一致。                                                       |"
+    },
+    {
+      "source_line": 251,
+      "raw": "| **Batch M3**<br>*(AI 变种语法树)*      | **实装五维建筑变种形态（天窗/烟囱/窗拱/山墙/门廊）与罗盘 `[🎲细节]` 按钮** | • `scripts/world/city_creation_morphology_variants.gd` *(新增)*<br>• `scripts/ui/city_creation_spatial_popover.gd`                                                                                                                   | 1\\. CPU 验证：同原型不同 `seed` 自动派生不同烟囱/天窗/门廊组合，占地与门前接路判定零回归，Undo/Redo 与 `Schema 20` 读写完全一致；<br>2\\. 实窗点击 `[🎲细节]` 按钮即时切换外观并带弹性动效。                                                    |"
+    },
+    {
+      "source_line": 252,
+      "raw": "| **Batch M4**<br>*(AI 储备扩充)*       | **按第 4.2/4.3 节管线扩充新建筑原型、新珍藏色板与新植物物种**        | • `city_creation_architecture_choice.gd`<br>• `city_creation_garden_species.gd`<br>• `city_creation_growth.gd` (`FINISHES`)                                                                                                        | 每新增一批原型或色板，自动运行 `UNORM8` 色板无碰撞测试、Jolt 射线拾取测试与 375 项旧档回归测试。                                                                                                                   |"
+    }
+  ],
+  "unresolved": [
+    "cozy_progression is a second draft name, not a second runtime switch",
+    "do not change house.seed to reroll new details or assume unchanged old appearance",
+    "recessed glass needs real wall openings; shared materials do not guarantee unchanged draw calls",
+    "Blinn-Phong candidate is not GGX, COLOR.a has no automatic AO binding",
+    "12 prototype labels do not imply support for geometry/roles/sound, old candidate aliases require consolidation",
+    "UNORM8 base-color spacing does not prove all 27 derived recipe identities or a universal fast path"
+  ]
+}
