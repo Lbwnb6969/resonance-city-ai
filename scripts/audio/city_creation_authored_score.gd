@@ -9,8 +9,8 @@ var city_id:=0
 var revision:=-1
 static func request(owner:Node,path:String)->Dictionary:
 	return _request_data(owner,Document.read(path))
-static func request_internal(owner:Node,section:int=0,selection:Dictionary={})->Dictionary:
-	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_score.gd").select(section,selection))
+static func request_internal(owner:Node,section:int=0,selection:Dictionary={},content_id:String="pastoral_cross_p0_v3")->Dictionary:
+	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_score.gd").select(section,selection,content_id))
 static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
 	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成全局换段与跨小节提示的和声接续"}
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
@@ -32,8 +32,9 @@ static func render(data:Dictionary)->Dictionary:
 	var synth=load("res://scripts/audio/city_creation_music.gd").new();var score=load("res://scripts/audio/city_creation_chamber_score.gd");var out:={}
 	if data.get("duration",24.)==144.:
 		out=preload("res://scripts/audio/city_creation_master_performance.gd").render(data,synth);synth.free();return out
+	var add:Callable=preload("res://scripts/audio/city_creation_comfort_profile.gd").add if data.get("render_profile","")=="comfort_warm_v1" else synth._add_harmony_note
 	for role:String in ROLES:
-		out[role]=score.render(data.events.filter(func(e):return e.role==role),synth._add_harmony_note,synth._pcm_stream)
+		out[role]=score.render(data.events.filter(func(e):return e.role==role),add,synth._pcm_stream)
 	if data.has("cue_templates"):out.short_cues=Cues.render(data.cue_templates,data.harmony,str(data.signature),synth)
 	synth.free();return out
 static func valid_key(id:String,stem:String)->bool:
