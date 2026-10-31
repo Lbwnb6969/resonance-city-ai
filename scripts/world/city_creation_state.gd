@@ -38,6 +38,7 @@ const Roundabouts := preload("res://scripts/world/city_creation_roundabouts.gd")
 const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
 const TerrainProtection := preload("res://scripts/world/city_creation_terrain_protection.gd")
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
+const TerrainTarget := preload("res://scripts/world/city_creation_terrain_target_plan.gd")
 const RoadHeights := preload("res://scripts/world/city_creation_road_heights.gd")
 const Growth := preload("res://scripts/world/city_creation_growth.gd")
 const Courtyards := preload("res://scripts/world/city_creation_courtyards.gd")
@@ -2917,7 +2918,12 @@ func _validate_terrain_fields(stroke: Dictionary) -> Dictionary:
 	if not stroke.get("points") is Array or stroke.points.is_empty(): return _fail("地形笔画为空")
 	for point in stroke.points:
 		if not _valid_point(point) or not WORLD_RECT.has_point(Vector2(float(point[0]),float(point[1]))): return _fail("请在河湾草地内塑形")
-	return {"ok":true}
+	return TerrainTarget.Rules.validate(self,stroke)
+
+func plan_terrain_target(points:Array[Vector2],radius:float,target_y:float,natural:bool=false)->Dictionary:
+	return TerrainTarget.create(self,points,radius,target_y,natural)
+func apply_terrain_target(plan:Dictionary)->Dictionary:
+	return TerrainTarget.commit(self,plan)
 
 func add_terrain_stroke(points: Array[Vector2],mode: String,radius: float = 3.5,strength: float = 0.65,passes: int = 1,natural: bool = false) -> Dictionary:
 	var encoded: Array=[]

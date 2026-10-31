@@ -1,5 +1,6 @@
 extends RefCounted
 const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
+const TargetRules=preload("res://scripts/world/city_creation_terrain_target_rules.gd")
 ## Shared CPU terrain for visible mesh, ground picking and planted roots.
 ## Tiny Glade recovered_stair_terrain.py / VA 0x14140ce00 establishes one
 ## sampled height field; terrain_derivative/000.comp derives real metre slopes.
@@ -60,9 +61,9 @@ func prepare_raw(waters: Array,water_clearance: Callable,strokes: Array = []) ->
 	if not raw_vertices.is_empty(): regions.append_array(_changed_stroke_bounds(strokes))
 	var rebuild_smoothed_field:=false
 	for row: Dictionary in _previous_strokes:
-		if str(row.get("mode",""))=="smooth": rebuild_smoothed_field=true
+		if str(row.get("mode",""))=="smooth" or TargetRules.targeted(row): rebuild_smoothed_field=true
 	for row: Dictionary in strokes:
-		if str(row.get("mode",""))=="smooth": rebuild_smoothed_field=true
+		if str(row.get("mode",""))=="smooth" or TargetRules.targeted(row): rebuild_smoothed_field=true
 	# A blur is an ordered field operation. Rebuild its source, then replay
 	# later strokes in history order instead of blurring future sculpt edits.
 	if rebuild_smoothed_field: regions=[LAND_RECT]
@@ -70,7 +71,7 @@ func prepare_raw(waters: Array,water_clearance: Callable,strokes: Array = []) ->
 	var first_smooth := -1
 	for i in range(strokes.size()):
 		var row: Dictionary = strokes[i]
-		if str(row.mode)=="smooth":
+		if str(row.mode)=="smooth" or TargetRules.targeted(row):
 			first_smooth = i
 			break
 		_bin_rows(_stroke_bins,row,_stroke_bounds(row))
@@ -312,6 +313,9 @@ func _sculpt_stroke(buffer: PackedFloat32Array,terrain_offsets: PackedFloat32Arr
 			var fade := smoothstep(0.35,1.5,float(water_clearance.call(at)))*smoothstep(0.0,0.75,edge)
 			if fade<=0.0: continue
 			var index := z*COLUMNS+x
+			if TargetRules.targeted(row):
+				var target:=TargetRules.height(float(buffer[index])-float(terrain_offsets[index]),float(buffer[index]),row,weight,fade)
+				terrain_offsets[index]+=target-float(buffer[index]);buffer[index]=target;continue
 			# Offset includes all earlier blur changes. Reset and clamping act on
 			# that current field, using the same water/world-edge fade as sculpt.
 			var value := float(terrain_offsets[index])/fade

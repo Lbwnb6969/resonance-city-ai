@@ -13,7 +13,7 @@ const OPTION_ICONS:Dictionary={
 	"WaterWidth":["brush_small","brush_medium","brush_large"],"DistrictWidth":["brush_small","brush_medium","brush_large"],
 	"DistrictStyle":["sundial_day","water","workshop","bakery","vegetation"],
 	"DistrictEra":["house","terrace","clockmaker","vegetation"],
-	"TerrainMode":["raise","lower","undo","terrain","plateau","water"],
+	"TerrainMode":["raise","lower","undo","plateau","water"],
 	"TerrainRadius":["brush_small","brush_medium","brush_large"]
 }
 const TOOL_GROUPS:Dictionary={
@@ -22,7 +22,7 @@ const TOOL_GROUPS:Dictionary={
 	5:[["PlantingMode","vegetation",["单株","成片"]],["Species","vegetation",["橄榄","柏树","灌木","金叶","粉花","白花","黄花"]],["BrushSize","vegetation",["小笔","中笔","大笔"]]],
 	6:[["WaterMode","water",["池塘","支渠"]],["WaterWidth","water",["1.8m","3.2m","5m"]]],
 	7:[["DistrictWidth","district",["小庭","街坊","宽园"]],["DistrictStyle","district",["暖庭","深流","织机","市集","林间"]],["DistrictEra","district",["古典","中世","工业","现代"]],["DistrictAdaptive","district",["随用途"]],["DistrictReply","audition",["对答"]],["DistrictLinkMode","district",["连街坊"]]],
-	8:[["TerrainMode","terrain",["草丘","洼地","还原","露岩","台地","柔坡"]],["TerrainRadius","terrain",["2m","3.5m","5m"]],["NaturalContour","vegetation",["自然"]]]
+	8:[["TerrainMode","terrain",["草丘","洼地","还原","定高","柔坡"]],["TerrainRadius","terrain",["2m","3.5m","5m"]],["NaturalContour","vegetation",["自然"]]]
 }
 var demo
 var parent:Control
@@ -35,6 +35,7 @@ var house_options:=false
 var _house_palette_key:Variant=null
 var nature_row:HBoxContainer
 var road_palette
+var target_options
 const PRIMARY:=[0,2,4,5,8]
 const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
 
@@ -71,6 +72,7 @@ func _setup(owner:Node,parent_control:Control)->void:
 		if old!=null:old.reparent(legacy);old.hide()
 	popup=Control.new();popup.name="ToolBubbles";popup.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	popup.mouse_filter=Control.MOUSE_FILTER_IGNORE;parent.add_child(popup)
+	target_options=preload("res://scripts/ui/city_creation_terrain_target_options.gd").setup(self)
 	nature_row=HBoxContainer.new();nature_row.name="NatureModes";nature_row.add_theme_constant_override("separation",GAP)
 	for mode:int in range(3):
 		var button:=_seal(nature_row,["vegetation","pond","water"][mode],["林木","池塘","溪渠"][mode],"栽种林木" if mode==0 else "挖掘睡莲池塘" if mode==1 else "引水溪渠")
@@ -104,7 +106,7 @@ func refresh()->void:
 	popup.visible=tool!=7 and (bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or house_options)
 	nature_row.visible=tool in [5,6]
 	district_name_row.hide()
-	if not popup.visible:return
+	if not popup.visible:target_options.panel.hide();return
 	if tool in [0,1]:
 		var key:=[demo.state.get_instance_id(),demo.state.CreationPolicy.eras(demo.state)]
 		if key!=_house_palette_key:_house_palette_key=key;active_tool=-1
@@ -195,6 +197,7 @@ func _sync()->void:
 			button.caption=("原 " if index==0 else "")+str(width)+"m"
 			button.tooltip_text="道路宽度 · "+str(width)+"米"
 		button.queue_redraw()
+	_position_popup()
 
 func _position_popup()->void:
 	if not is_instance_valid(popup) or not popup.visible or active_tool<0:return
@@ -211,6 +214,7 @@ func _position_popup()->void:
 		var nature_size:=nature_row.get_combined_minimum_size();nature_row.size=nature_size
 		nature_row.position=Vector2(clampf(anchor.get_center().x-nature_size.x*.5,12.,maxf(12.,bounds.x-nature_size.x-12.)),maxf(12.,bubble_rows.position.y-nature_size.y-8.))
 		if demo.journal.scrollbook.visible:nature_row.position.x=maxf(demo.journal.scrollbook.size.x+12.,nature_row.position.x)
+	target_options.refresh(self)
 
 func _nature_mode(mode:int)->void:
 	if mode==0:demo.select_tool(5)

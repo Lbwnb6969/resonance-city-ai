@@ -37,7 +37,7 @@ python tools/audit_creation_workspace.py --check-remote
 ## 不可破坏的边界
 
 - 自由营造、手作质感、可关闭轻量经营是明线；音乐是独立暗线，不由经营、等级、接路或库存解锁基础音乐。
-- 保留旧 `growth_cutoff`、旧权益、legacy、Schema 1～20、M80 外部 Schema1、旧 v2、个人作品、Undo/Redo 和 `house.seed` 外观。
+- 保留旧 `growth_cutoff`、旧权益、legacy、Schema 1～21（新定高才写21）、M80 外部 Schema1、旧 v2、个人作品、Undo/Redo 和 `house.seed` 外观。
 - 新成长只用版本化单一政策/新账期；不建 `prosperity_enabled` 与 `cozy_progression` 双开关，不回放历史事件发奖。
 - 运行预算保持 12 长轨、4 短槽、6 总线、2 自然声、唯一 `layer=3` 领唱；新音色/profile 必须有来源签名、缓存、回退和实证。
 - 原曲、stem、模型和图片留在外置资产；候选数据不等于可运行内容，不把整曲直接挂入常驻播放池。

@@ -86,7 +86,7 @@ func invalid_payloads()->void:
 	var city:=State.new();city.initialize_free();city.add_house(Vector2(-25,-20));var original:Dictionary=city.snapshot()
 	var mutations:Array[Callable]=[
 		func(d):d.schema=19,
-		func(d):d.schema=21,
+		func(d):d.schema=Policy.Save.LATEST_SCHEMA+1,
 		func(d):d.erase("creative_settings"),
 		func(d):d.creative_settings.version=2,
 		func(d):d.creative_settings.creation_policy="unlocked",

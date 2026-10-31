@@ -1,11 +1,11 @@
 extends RefCounted
 ## One terrain gesture stays a preview until its actual mouse release.
 const UI = preload("res://scripts/ui/valley_ui_theme.gd")
-const MODES := ["raise", "lower", "reset", "rock", "plateau", "smooth"]
+const MODES := ["raise", "lower", "reset", "plateau", "smooth"]
 const RADII := [2.0, 3.5, 5.0]
 const POINT_SPACING := 0.35
 const STRENGTH := 0.65
-const HINT := "拖出草丘与洼地，再柔化陡峭坡肩。\n房屋、小路、内院和聚会处留平地。\nShift 临时压低，Esc 取消。"
+const HINT := "拖出草丘与洼地，再柔化坡肩。\n定高台地扩宽时沿用同一高度。\n屋基、路床与内院保留；Shift 压低，Esc 取消。"
 var demo: Node3D
 var panel: PanelContainer
 var mode_picker: OptionButton
@@ -20,6 +20,12 @@ var draft_radius := 3.5
 var draft_strength := STRENGTH
 var draft_passes := 1
 var draft_natural := false
+var height_controls:VBoxContainer
+var target_picker:SpinBox
+var sample_picker:CheckBox
+var status:Label
+var draft_target:=1.2
+var target_plan:Dictionary={}
 
 
 func setup(owner: Node3D, parent: Control) -> void:
@@ -39,17 +45,15 @@ func setup(owner: Node3D, parent: Control) -> void:
 	mode_picker = OptionButton.new()
 	mode_picker.name = "TerrainMode"
 	mode_picker.focus_mode = Control.FOCUS_NONE
-	mode_picker.tooltip_text = "选择地形塑形方式：草丘、洼地、还原、露岩、平顶台地或柔化缓坡"
-	for label: String in ["抬高 · 草丘", "压低 · 洼地", "还原 · 原地貌", "露岩 · 草丘", "平顶 · 台地", "柔化 · 缓坡"]:
+	mode_picker.tooltip_text = "塑造草丘、洼地、定高台地或柔化坡肩；陡坡自然露岩"
+	for label: String in ["抬高 · 草丘", "压低 · 洼地", "还原 · 原地貌", "定高 · 台地", "柔化 · 缓坡"]:
 		mode_picker.add_item(label)
 	mode_picker.item_selected.connect(func(index: int) -> void:
 		demo._cancel_draft()
 		mode = MODES[index]
 		natural_picker.disabled = mode in ["reset", "smooth"]
-		if mode == "rock":
-			radius = 2.0
-			radius_picker.select(0)
-		elif mode == "plateau":
+		height_controls.visible=mode=="plateau"
+		if mode == "plateau":
 			radius = 3.5
 			radius_picker.select(1))
 	column.add_child(mode_picker)
@@ -72,6 +76,15 @@ func setup(owner: Node3D, parent: Control) -> void:
 	natural_picker.focus_mode = Control.FOCUS_NONE
 	natural_picker.toggled.connect(func(_enabled: bool) -> void: demo._cancel_draft())
 	column.add_child(natural_picker)
+	height_controls=VBoxContainer.new();height_controls.name="TargetHeightOptions";column.add_child(height_controls)
+	height_controls.add_child(demo._label("台地绝对高度（米）",14))
+	target_picker=SpinBox.new();target_picker.name="TerrainTargetHeight";target_picker.min_value=-.5;target_picker.max_value=3.5;target_picker.step=.05;target_picker.value=1.2
+	target_picker.tooltip_text="固定世界高度，0米为河湾坐标基准；不是每次增加这个高度"
+	target_picker.get_line_edit().text_submitted.connect(func(_text):target_picker.get_line_edit().release_focus())
+	target_picker.value_changed.connect(func(_v):demo._cancel_draft());height_controls.add_child(target_picker)
+	sample_picker=CheckBox.new();sample_picker.name="SampleTerrainHeight";sample_picker.text="改用起笔处地面高度";sample_picker.focus_mode=Control.FOCUS_NONE
+	sample_picker.toggled.connect(func(enabled):target_picker.editable=not enabled;demo._cancel_draft());height_controls.add_child(sample_picker)
+	status=demo._label("",13);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;status.custom_minimum_size.x=250;height_controls.add_child(status);height_controls.hide()
 	var description: Label = demo._label(HINT, 14)
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.custom_minimum_size.x = 250
@@ -98,11 +111,12 @@ func _can_target() -> bool:
 func begin(shift_pressed: bool) -> void:
 	if not _can_target(): return
 	drawing = true
-	draft_mode = "lower" if shift_pressed else ("raise" if mode == "rock" else mode)
-	draft_strength = 1.0 if mode in ["rock", "plateau"] and not shift_pressed else STRENGTH
-	draft_passes = 2 if mode in ["rock", "plateau"] and not shift_pressed else 1
+	draft_mode = "lower" if shift_pressed else mode
+	draft_strength = STRENGTH
+	draft_passes = 1
 	draft_radius = radius
 	draft_natural = natural_picker.button_pressed and draft_mode in ["raise", "lower", "plateau"]
+	draft_target=demo.state.ground_height(demo._ground_at(demo.pointer)) if sample_picker.button_pressed else target_picker.value
 	points.clear()
 	append_point()
 
@@ -125,15 +139,18 @@ func hover() -> void:
 		return
 	var at: Vector2 = demo._ground_at(demo.pointer)
 	var single: Array[Vector2] = [at]
-	var hover_mode := "lower" if demo.removal_shift or Input.is_key_pressed(KEY_SHIFT) else ("raise" if mode == "rock" else mode)
+	var hover_mode := "lower" if demo.removal_shift or Input.is_key_pressed(KEY_SHIFT) else mode
 	_preview(single, radius, hover_mode, natural_picker.button_pressed and hover_mode in ["raise", "lower", "plateau"])
 
 
 func _preview(stroke: Array[Vector2], brush_radius: float, brush_mode: String, natural: bool = false) -> void:
-	var key := str(["terrain", stroke, brush_radius, brush_mode, natural])
+	var target:float=draft_target if drawing else demo.state.ground_height(stroke[0]) if sample_picker.button_pressed else target_picker.value
+	var key := str(["terrain", stroke, brush_radius, brush_mode, natural,target,demo.state.revision])
 	if demo.preview_key == key: return
 	demo.preview_key = key
-	demo.town.show_terrain_brush(stroke, brush_radius, brush_mode, natural)
+	target_plan=demo.state.plan_terrain_target(stroke,brush_radius,target,natural) if brush_mode=="plateau" else {}
+	status.text=str(target_plan.get("message",""))
+	demo.town.show_terrain_brush(stroke, brush_radius, brush_mode, natural,target_plan)
 
 
 func finish() -> void:
@@ -148,12 +165,17 @@ func finish() -> void:
 	var stroke_strength := draft_strength
 	var stroke_passes := draft_passes
 	var stroke_natural := draft_natural
+	var planned:=target_plan
 	cancel()
 	demo.preview_key = ""
 	demo.town.clear_preview()
-	if not stroke.is_empty(): demo._after_edit(demo.state.add_terrain_stroke(stroke, stroke_mode, stroke_radius, stroke_strength, stroke_passes, stroke_natural), "terrain")
+	if not stroke.is_empty():
+		var result:Dictionary=await preload("res://scripts/ui/city_creation_terrain_target_commit.gd").apply(demo,planned) if stroke_mode=="plateau" else demo.state.add_terrain_stroke(stroke,stroke_mode,stroke_radius,stroke_strength,stroke_passes,stroke_natural)
+		demo._after_edit(result,"terrain")
 
 
 func cancel() -> void:
 	drawing = false
 	points.clear()
+	target_plan={}
+	if status!=null:status.text=""

@@ -1,4 +1,5 @@
 extends RefCounted
+const TargetRules=preload("res://scripts/world/city_creation_terrain_target_rules.gd")
 ## Continue an ordered smoothed field only when its entire source history and
 ## water base are intact. Replacements, Undo and new blur passes use cold replay.
 static func apply(terrain,waters:Array,clearance:Callable,strokes:Array,signature:int)->bool:
@@ -7,8 +8,8 @@ static func apply(terrain,waters:Array,clearance:Callable,strokes:Array,signatur
 	var smoothed:=false
 	for i in range(previous.size()):
 		if previous[i]!=strokes[i]:return false
-		if previous[i].mode=="smooth":smoothed=true
-	if not smoothed:return false
+		if previous[i].mode=="smooth" or TargetRules.targeted(previous[i]):smoothed=true
+	if not smoothed and not strokes.slice(previous.size()).any(func(row):return TargetRules.targeted(row)):return false
 	for i in range(previous.size(),strokes.size()):
 		if strokes[i].mode=="smooth":return false
 	var next:PackedFloat32Array=terrain.raw_vertices.duplicate()
