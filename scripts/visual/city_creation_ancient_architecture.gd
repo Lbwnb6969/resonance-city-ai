@@ -83,7 +83,7 @@ static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
 		for p:Vector3 in patch.vertices:faces.append(Vector3(p.x,eave+(p.y-eave)*.48,p.z))
 		var tile:bool=patch.surface=="roof"
 		var color:Color=palette[1] if tile else palette[0].lerp(Color("e4d5b5"),.45)
-		var mesh:MeshInstance3D=Wall.apply(r._triangles(parent,faces,color),Wall.Kind.TERRACOTTA if tile else Wall.Kind.STONE)
+		var mesh:MeshInstance3D=preload("res://scripts/visual/city_creation_ancient_roof_finish.gd").surface(r,parent,patch,faces,color,tile)
 		mesh.name="AncientLowTileRoof" if tile else "AncientPedimentTympanum"
 		var body:=StaticBody3D.new();parent.add_child(body);body.set_meta("house_id",house.id);body.set_meta("cell_id",cell.id);body.set_meta("cell",cell)
 		var shape:=ConcavePolygonShape3D.new();shape.backface_collision=true;shape.set_faces(mesh.mesh.get_faces());var collider:=CollisionShape3D.new();collider.shape=shape;body.add_child(collider);count+=1

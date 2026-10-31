@@ -29,7 +29,7 @@ static func build(r,parent:Node3D,house:Dictionary,palette:Array,ancient)->void:
 	r._box(node,Vector3(half*2,.13,.72),Vector3(0,1.59,(back+front)*.5),cream).name="VillaContinuousEntablature"
 	var eave:=1.76;var ridge:=eave+minf(.50,half*.28)
 	var faces:Array[Vector3]=[Vector3(-half,eave,back),Vector3(-half,eave,front),Vector3(0,ridge,front),Vector3(-half,eave,back),Vector3(0,ridge,front),Vector3(0,ridge,back),Vector3(0,ridge,back),Vector3(0,ridge,front),Vector3(half,eave,front),Vector3(0,ridge,back),Vector3(half,eave,front),Vector3(half,eave,back)]
-	var roof:MeshInstance3D=r._triangles(node,faces,palette[1]);roof.material_override=tile;roof.name="VillaProjectingTerracottaRoof"
+	var roof:MeshInstance3D=preload("res://scripts/visual/city_creation_ancient_roof_finish.gd").tiles(r,node,faces,palette[1]);roof.name="VillaProjectingTerracottaRoof"
 	var ped:=Node3D.new();node.add_child(ped);ped.position.z=front
 	var tympanum:MeshInstance3D=r._triangles(ped,A._extrude(PackedVector2Array([Vector2(-half,eave),Vector2(half,eave),Vector2(0,ridge)]),.10),cream.albedo_color);tympanum.material_override=cream;tympanum.name="VillaDoricFullPediment"
 	for side:float in [-1.,1.]:

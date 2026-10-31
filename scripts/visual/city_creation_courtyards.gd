@@ -81,9 +81,10 @@ func prepare(renderer: Node3D) -> Dictionary:
 func _paving(state: RefCounted,plan: Dictionary) -> Dictionary:
 	var data := {"vertices":PackedVector3Array(),"normals":PackedVector3Array(),
 		"colors":PackedColorArray(),"indices":PackedInt32Array(),"stones":0}
+	preload("res://scripts/visual/city_creation_courtyard_mortar.gd").append(state,data,plan,_patch,_patch_has_planter)
 	var planters: Array = plan.get("planters",[])
 	for tile:Variant in plan.tiles:
-		# Open seams between authored tiles leave drainage/soil visible.
+		# Recessed mineral bedding remains visible between the raised stones.
 		var bounds:Rect2=Frame.rect(tile).grow(-.014)
 		for row in range(floori(bounds.position.y/COURSE),ceili(bounds.end.y/COURSE)):
 			var stagger := STONE*0.5 if posmod(row,2)==1 else 0.0
@@ -113,14 +114,14 @@ func _touches_planter(patch: Rect2,planters: Array) -> bool:
 		if closest.distance_squared_to(center)<=pow(float(planter.radius),2.0): return true
 	return false
 
-func _patch(state: RefCounted,data: Dictionary,bounds: Rect2,tint: Color,tile:Variant=null) -> void:
+func _patch(state: RefCounted,data: Dictionary,bounds: Rect2,tint: Color,tile:Variant=null,lift:float=FLOOR_LIFT) -> void:
 	var a := bounds.position
 	var c := bounds.end
 	var corners := [a,Vector2(c.x,a.y),c,Vector2(a.x,c.y)]
 	var positions: Array[Vector3] = []
 	for design:Vector2 in corners:
 		var at:Vector2=design if not tile is Dictionary else Vector2(tile.center)+design.rotated(-float(tile.angle))
-		positions.append(Vector3(at.x,float(state.ground_height(at))+FLOOR_LIFT,at.y))
+		positions.append(Vector3(at.x,float(state.ground_height(at))+lift,at.y))
 	var dx := ((positions[1].y-positions[0].y)+(positions[2].y-positions[3].y))*0.5/bounds.size.x
 	var dz := ((positions[3].y-positions[0].y)+(positions[2].y-positions[1].y))*0.5/bounds.size.y
 	var normal := Vector3(-dx,1.0,-dz).normalized()

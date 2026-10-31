@@ -10,7 +10,7 @@ static func temple(house:Dictionary)->Dictionary:
 	return {"center":Vector2(house.origin[0],house.origin[1])+Vector2(low+high)*.9,"width":(high.x-low.x+1)*1.8,"depth":(high.y-low.y+1)*1.8}
 static func stone(color:Color)->Material:return Wall.source(color,null,"component",Wall.Kind.STONE)
 static func mesh(r,parent:Node3D,faces:Array,color:Color,name:String,kind:int=Wall.Kind.STONE)->MeshInstance3D:
-	var m:MeshInstance3D=Wall.apply(r._triangles(parent,faces,color),kind);m.name=name;return m
+	var m:MeshInstance3D=preload("res://scripts/visual/city_creation_ancient_roof_finish.gd").tiles(r,parent,faces,color) if kind==Wall.Kind.TERRACOTTA else Wall.apply(r._triangles(parent,faces,color),kind);m.name=name;return m
 static func pick(parent:Node3D,house:Dictionary,cell:Dictionary)->void:
 	var body:=StaticBody3D.new();parent.add_child(body);body.set_meta("house_id",house.id);body.set_meta("cell_id",cell.id);body.set_meta("cell",cell)
 	for m:MeshInstance3D in parent.find_children("*","MeshInstance3D",true,false):
