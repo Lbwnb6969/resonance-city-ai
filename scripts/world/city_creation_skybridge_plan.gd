@@ -64,7 +64,7 @@ static func adjacency_signature(city:RefCounted,house:Dictionary)->Array:
 	if city.house_era(house)!="modern_eco":return []
 	var bounds:=Rect2(Vector2(house.origin[0],house.origin[1]),Vector2.ZERO)
 	for cell:Dictionary in house.cells:bounds=bounds.expand(_center(house,cell))
-	var result:Array=[]
+	var result:Array=[city.terrain_policy]
 	for other:Dictionary in city.houses:
 		for cell:Dictionary in other.cells:
 			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),Frame.yaw(other),city.house_era(other)]);break

@@ -133,6 +133,7 @@ func _capture_published_surface()->void:
 	# the new live terrain on the main thread before the worker can start.
 	state.prepare_ground_height()
 	var frozen:=State.new();frozen.revision=state.revision
+	frozen.terrain_policy=state.terrain_policy;frozen.creative_settings=state.creative_settings.duplicate(true)
 	frozen.waters.assign(state.waters.duplicate(true))
 	frozen._ground_terrain.vertices=state._ground_terrain.vertices
 	frozen._ground_terrain.raw_vertices=state._ground_terrain.raw_vertices
@@ -214,6 +215,7 @@ func begin_budget_sync() -> bool:
 		"snapshot":{"houses":state.houses.duplicate(true),"roads":state.roads.duplicate(true),"waters":state.waters.duplicate(true),"districts":state.districts.duplicate(true),"terrain_strokes":state.terrain_strokes.duplicate(true),"ground_cache":terrain_seed,"protection_cache":protection_seed,"road_height_cache":road_seed},
 		"prior":connected_houses.duplicate(),"actors":actors}
 	_budget_request.snapshot["cafe_layouts"]=cafe.layouts.duplicate(true)
+	_budget_request.snapshot["terrain_policy"]=state.terrain_policy;_budget_request.snapshot["creative_settings"]=state.creative_settings.duplicate(true)
 	_budget_request.snapshot["cafe_context"]=cafe.layout_api.snapshot_city(state)
 	_budget_request.snapshot["network_reuse"]=preload("res://scripts/visual/city_creation_local_service_cache.gd").network_seed(_network)
 	_budget_request.snapshot["biome_seed"]=state.biome_seed.duplicate()
@@ -553,6 +555,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 
 func _signature() -> Array:
 	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate(),state.harmony_journey.get("traditions",[]).duplicate()]
+	result.append(state.terrain_policy)
 	if "arcade_market" in state.era_modifiers:
 		for house:Dictionary in state.houses:result.append([house.id,str(house.get("style","classic")),state.house_era(house),house.cells.duplicate(true)])
 	# Only finite-support edits which can change walking or an activity need
@@ -1257,6 +1260,7 @@ func checkpoint() -> Dictionary:
 	if not _relay.is_empty():
 		result.schema=2
 		result.relay=_relay.duplicate(true)
+	Cafe.TerrainVisits.write(cafe,result)
 	return result
 
 func restore_checkpoint(data: Dictionary) -> void:

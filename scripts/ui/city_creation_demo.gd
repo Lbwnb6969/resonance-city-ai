@@ -1010,6 +1010,7 @@ func _process(delta: float) -> void:
 		elif district_link_drawing: _preview_district_link()
 		elif district_drawing: _append_district_point()
 		elif _edit_pending and tool not in [0,1]: pass
+		elif get_meta("terrain_policy_preview",false):get_meta("terrain_policy_ui").keep_preview()
 		elif not ui_layer.visible:
 			town.clear_preview()
 			preview_key = ""

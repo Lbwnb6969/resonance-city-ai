@@ -124,6 +124,7 @@ static func validate_geometry(city:RefCounted,data:Dictionary)->Dictionary:
 		if not rights.has(item.blueprint):return city._fail("地标蓝图尚未获得")
 	var copy=load("res://scripts/world/city_creation_state.gd").new()
 	for key:String in ["houses","roads","waters","plants","terrain_strokes","placed_landmarks"]:copy.get(key).assign(data.get(key,[]).duplicate(true))
+	copy.terrain_policy=int(data.get("terrain_policy",1));copy.creative_settings=data.get("creative_settings",{}).duplicate(true)
 	copy.revision=1
 	for item:Dictionary in copy.placed_landmarks:
 		var valid:=site(copy,item,str(item.id))

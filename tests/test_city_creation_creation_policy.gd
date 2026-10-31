@@ -30,7 +30,7 @@ func cold(city:RefCounted)->bool:
 func free_city()->void:
 	var production=Scene.instantiate();check(production.start_empty,"normal new-city scene defaults to an empty parcel");production.free()
 	var city:=State.new();city.initialize_free()
-	check(Policy.is_free(city) and city.houses.is_empty() and city.snapshot().schema==20,"explicit new-city entry creates an empty free Schema20 city")
+	check(Policy.is_free(city) and city.houses.is_empty() and city.snapshot().schema==23 and city.terrain_policy==2,"explicit new-city entry creates an empty free city with versioned activity terrain")
 	check(city.era_unlocks==["pastoral"] and city.era_answers.is_empty() and city.growth_memories.is_empty(),"free construction invents no historical era or life progress")
 	check(Policy.ERAS==city.Eras.IDS and Policy.eras(city)==city.Eras.IDS,"all four ordinary eras available independently of achievements")
 	for i in range(Policy.ERAS.size()):

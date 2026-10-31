@@ -4,6 +4,7 @@ const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 ## Shared, immutable garden furniture. Real life drives prebuilt cup/bubble
 ## visibility; a status refresh never allocates geometry or invents residents.
 const Layout = preload("res://scripts/world/city_creation_cafe_layout.gd")
+const Surface=preload("res://scripts/world/city_creation_activity_surface.gd")
 const CafeShader = preload("res://scripts/visual/shaders/creation_cafe.gdshader")
 const WOOD := Color("987457")
 const CREAM := Color("f0dfb2")
@@ -31,6 +32,7 @@ func prepare(renderer) -> Dictionary:
 	var market:Dictionary=preload("res://scripts/world/city_creation_market_frontages.gd").prepare(renderer.state)
 	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(renderer.state.houses)
 	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters,market,preload("res://scripts/world/city_creation_tradition_rules.gd").has(renderer.state,"garden_salons")])
+	if Surface.enabled(renderer.state):geometry_signature=hash([geometry_signature,Surface.stamp(renderer.state)])
 	for house: Dictionary in renderer.state.houses:
 		if str(house.get("role",""))!="garden_cafe" and not market.has(str(house.id)): continue
 		var id := str(house.id)
@@ -38,10 +40,11 @@ func prepare(renderer) -> Dictionary:
 		if placement_inputs.get(id,-1)==geometry_signature: continue
 		var plan: Dictionary = layout_api.layout(renderer.state,id)
 		var extras := _extras(renderer.state,plan,id)
-		var signature := hash([plan,extras,market.get(id,[])])
+		var extra_y:Dictionary=Surface.decorate(renderer.state,extras,float(plan.get("base_y",0.)))
+		var signature := hash([plan,extras,extra_y,market.get(id,[])])
 		placement_inputs[id]=geometry_signature
 		if fingerprints.get(id,-1)==signature: continue
-		changes[id]={"plan":plan,"extras":extras,"market":market.get(id,[]),"fingerprint":signature}
+		changes[id]={"plan":plan,"extras":extras,"extra_y":extra_y,"market":market.get(id,[]),"fingerprint":signature}
 	return {"live":live,"changes":changes}
 
 func install(renderer, prepared: Dictionary, statuses: Dictionary = {}) -> void:
@@ -57,7 +60,7 @@ func install(renderer, prepared: Dictionary, statuses: Dictionary = {}) -> void:
 		roots[id]=root
 		fingerprints[id]=row.fingerprint
 		build_count+=1
-		if not row.plan.is_empty(): _build(root,row.plan,row.extras)
+		if not row.plan.is_empty(): _build(root,row.plan,row.extras,row.get("extra_y",{}))
 		preload("res://scripts/visual/city_creation_market_frontages.gd").build(renderer,root,row.get("market",[]))
 	for id: String in roots.keys():
 		if not prepared.live.has(id):
@@ -92,6 +95,7 @@ func _extras(city, plan: Dictionary, id: String) -> Dictionary:
 		var point := center+Vector2(sin(angle),cos(angle))*1.70
 		var radius := 0.35 if result.has("flowers") else 0.34
 		if not layout_api.clear(city,point,radius): continue
+		if Surface.enabled(city) and Surface.support(city,point,radius).is_empty():continue
 		# Keep every guest's actual outward approach and seat aisle open.
 		var free := true
 		for path: Array in paths:
@@ -104,7 +108,7 @@ func _extras(city, plan: Dictionary, id: String) -> Dictionary:
 		if result.size()==(3 if doubled else 2): break
 	return result
 
-func _build(root: Node3D, plan: Dictionary, extras: Dictionary) -> void:
+func _build(root: Node3D, plan: Dictionary, extras: Dictionary,extra_y:Dictionary={}) -> void:
 	var center: Vector2=plan.center
 	var transform := Transform3D(Basis(Vector3.UP,float(plan.yaw)),Vector3(center.x,0.08,center.y))
 	_batch(root,"GardenTable",[transform],"table")
@@ -115,7 +119,7 @@ func _build(root: Node3D, plan: Dictionary, extras: Dictionary) -> void:
 	_batch(root,"ThreeChairs",chairs,"chair")
 	for name: String in extras:
 		var at: Vector2=extras[name]
-		_batch(root,name.capitalize(),[Transform3D(Basis.IDENTITY,Vector3(at.x,0.08,at.y))],"flowers" if name=="flowers_extra" else name)
+		_batch(root,name.capitalize(),[Transform3D(Basis.IDENTITY,Vector3(at.x,0.08+float(extra_y.get(name,0.)),at.y))],"flowers" if name=="flowers_extra" else name)
 	for index in range(3):
 		var seat: Vector2 = plan.seats[index]
 		var cup := center+(seat-center).normalized()*0.31

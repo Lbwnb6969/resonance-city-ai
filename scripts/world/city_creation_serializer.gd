@@ -94,11 +94,13 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	city.CreationPolicy.Save.write(city,result)
 	if city.TerrainTarget.Rules.has_target(city.terrain_strokes):result.schema=city.TerrainTarget.Rules.SCHEMA
 	if city.TerrainTarget.Rules.has_version(city.terrain_strokes,city.TerrainTarget.Rules.Smooth.VERSION):result.schema=city.TerrainTarget.Rules.Smooth.SCHEMA
+	if city.TerrainPolicy.enabled(city) or city.journey_checkpoint.has("cafe_terrain"):result.schema=city.TerrainPolicy.SCHEMA;result.terrain_policy=city.terrain_policy
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
 	city.remove_meta("functional_zones")
 	city.CreationPolicy.Save.apply(city,data,preserve_issued_ids)
+	city.terrain_policy=int(data.get("terrain_policy",1))
 	city.biome_seed=data.get("biome_seed",{}).duplicate();city._biome_revision=-1;city._biome_bonuses={}
 	if not preserve_issued_ids:city.archive_unlocks.assign(data.get("archive_unlocks",[]))
 	city.music_mode=str(data.get("music_mode",""))
@@ -174,6 +176,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		city.journey_checkpoint = data.get("journey_checkpoint",{}).duplicate(true)
 		if not city.journey_checkpoint.is_empty():
 			city.journey_checkpoint.schema = int(city.journey_checkpoint.schema)
+			if city.journey_checkpoint.has("cafe_terrain"):city.journey_checkpoint.cafe_terrain.version=int(city.journey_checkpoint.cafe_terrain.version)
 			if city.journey_checkpoint.has("relay"):
 				city.journey_checkpoint.relay.index = int(city.journey_checkpoint.relay.index)
 				city.journey_checkpoint.relay.concerts_before = int(city.journey_checkpoint.relay.concerts_before)
@@ -271,6 +274,8 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	var creative_check:Dictionary=city.CreationPolicy.Save.validate(city,data)
 	if not creative_check.ok:return creative_check
+	var policy_check:Dictionary=city.TerrainPolicy.validate(city,data)
+	if not policy_check.ok:return policy_check
 	var progress: Variant = data.get("life_progress", {"purchases":0,"gatherings":0})
 	if not progress is Dictionary: return city._fail("城市存档生活进展无效")
 	for key in ["purchases", "gatherings", "concerts", "tea_parties", "tea_visits", "auto_concerts"]:

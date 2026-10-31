@@ -10,6 +10,7 @@ const DOMAINS := ["houses", "roads", "waters", "terrain", "plants"]
 static func snapshot(state: RefCounted) -> Dictionary:
 	return {
 		"revision": int(state.revision),
+		"terrain_policy":state.terrain_policy,
 		"houses": state.houses.duplicate(true),
 		"roads": state.roads.duplicate(true),
 		"waters": state.waters.duplicate(true),
@@ -21,6 +22,7 @@ static func diff(previous: Dictionary, current: Dictionary) -> Dictionary:
 	var labels: Array[String] = []
 	var counts: Dictionary = {}
 	var bounds: Array[Dictionary] = []
+	if previous.get("terrain_policy",1)!=current.get("terrain_policy",1):labels.append("terrain");counts.terrain=1;bounds.append({"domain":"terrain","old":preload("res://scripts/world/city_creation_bounds.gd").LAND_RECT,"new":preload("res://scripts/world/city_creation_bounds.gd").LAND_RECT})
 	for domain: String in DOMAINS:
 		var old_rows: Array = previous.get(domain, [])
 		var new_rows: Array = current.get(domain, [])

@@ -1,7 +1,7 @@
 extends RefCounted
 ## Schema20 extension. Historical ledgers remain validated by their original owners.
 const SCHEMA:=20
-const LATEST_SCHEMA:=22
+const LATEST_SCHEMA:=23
 const VERSION:=1
 const FIELDS:=["creative_settings","placed_landmarks","next_landmark_id","landmark_high_watermark"]
 const SETTING_FIELDS:=["version","creation_policy","migration_version","guidance","music","presentation"]
@@ -10,6 +10,7 @@ static func defaults(policy:String="free",migration:int=0)->Dictionary:
 	return {"version":VERSION,"creation_policy":policy,"migration_version":migration,"guidance":policy=="legacy","music":{"mode":"auto","style":"","seed":74001},"presentation":{"automatic_decoration":true,"legacy_crowns":policy=="legacy"}}
 
 static func reset(city:RefCounted)->void:
+	city.terrain_policy=1
 	city.creative_settings={};city.placed_landmarks.clear();city._next_landmark_id=1;city._landmark_high_watermark=0
 	if city.has_meta("new_house_brush"):city.remove_meta("new_house_brush")
 

@@ -154,7 +154,7 @@ void fragment() {
 func refresh_habitats(renderer: Node3D = null) -> void:
 	if state == null:
 		return
-	var geometry:=hash([state.houses,state.roads,state.waters,state.districts,state.terrain_strokes])
+	var geometry:=hash([state.terrain_policy,state.houses,state.roads,state.waters,state.districts,state.terrain_strokes])
 	if _porch_geometry!=geometry:_porch_habitats.clear();_porch_geometry=geometry
 	_perches.clear()
 	_nectars.clear()

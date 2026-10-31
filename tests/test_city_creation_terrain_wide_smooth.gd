@@ -22,7 +22,9 @@ func curvature(city:RefCounted,at:Vector2)->float:
 	return total
 func public_case(free:bool)->void:
 	var city:=State.new()
-	if free:city.initialize_free()
+	if free:
+		city.initialize_free();var old_format:Dictionary=city.snapshot();old_format.erase("terrain_policy");old_format.schema=20
+		city.restore(old_format)
 	else:city.initialize_empty()
 	var at:=Vector2(-24,-12);var p:Array[Vector2]=[at]
 	check(city.add_terrain_stroke(p,"raise",3.,.8,1,true).ok,"old organic raise")
@@ -110,6 +112,6 @@ func run()->void:
 	flat.add_house(Vector2(-24,-12));flat.add_terrain_stroke([Vector2(-24,-12)] as Array[Vector2],"raise",1.,.8);flat.prepare_ground_height()
 	var hidden:=flat.plan_terrain_smooth([Vector2(-24,-12)] as Array[Vector2],1.)
 	check(hidden.ok and hidden.changed_vertices>0 and hidden.candidate.ground_height(Vector2(-24,-12))==flat.ground_height(Vector2(-24,-12)),"raw changes under a protected foundation are retained in the plan")
-	check(flat.apply_terrain_target(hidden).ok and flat.snapshot().schema==22,"hidden raw edit is not discarded as a false no-op")
+	check(flat.apply_terrain_target(hidden).ok and flat.snapshot().schema==23,"new free schema23 retains hidden raw edits instead of a false no-op")
 	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"facts":facts,"seconds":(Time.get_ticks_msec()-began)/1000.}
 	FileAccess.open(OUT+"/cpu.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("TERRAIN_WIDE_SMOOTH ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)

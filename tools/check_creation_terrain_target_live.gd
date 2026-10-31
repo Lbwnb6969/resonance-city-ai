@@ -25,7 +25,7 @@ func run()->void:
 		if not str(action).begins_with("ui_"):continue
 		for event:InputEvent in InputMap.action_get_events(action):
 			var native:InputEvent=event.duplicate();native.device=92;InputMap.action_add_event(action,native)
-	var city:=State.new();city.initialize_free();var at:=Vector2(-24,-12)
+	var city:=State.new();city.initialize_free();var historical:Dictionary=city.snapshot();historical.erase("terrain_policy");historical.schema=20;city.restore(historical);var at:=Vector2(-24,-12)
 	check(city.add_terrain_stroke([at] as Array[Vector2],"raise",3.,.6).ok,"old raised terrain fixture")
 	check(city.add_house(Vector2(-29,-17)).ok,"protected house fixture")
 	check(city.add_road([Vector2(-31,-15),Vector2(-19,-15)] as Array[Vector2],"path","none").ok,"road bed fixture")

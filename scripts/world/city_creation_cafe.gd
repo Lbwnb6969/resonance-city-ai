@@ -1,6 +1,8 @@
 extends RefCounted
 ## Foundation-style visit: bought bread, walk, occupy a real seat, then finish.
 const Layout := preload("res://scripts/world/city_creation_cafe_layout.gd")
+const TerrainVisits=preload("res://scripts/world/city_creation_cafe_terrain_visits.gd")
+var terrain_resume:Dictionary={}
 var layout_api:RefCounted=Layout.create_context()
 const DURATION := 6.0
 const SPEED := 0.83
@@ -15,6 +17,7 @@ func _init(owner: Node3D) -> void:
 	life = owner
 
 func clear() -> void:
+	terrain_resume.clear()
 	groups.clear()
 	layouts.clear()
 	_status_parameters.clear()
@@ -43,6 +46,7 @@ func sync() -> void:
 	layout_api.warm_seats(life.state,entries)
 	sync_stats.warm_us=Time.get_ticks_usec()-began;began=Time.get_ticks_usec()
 	for id in groups.keys():
+		if (previous.get(id,{})!=layouts.get(id,{}) or terrain_resume.has(id)) and TerrainVisits.replan(self,str(id),previous.get(id,{})):continue
 		if not layouts.has(id) or layouts[id].is_empty() or previous.get(id, {}) != layouts[id] or not life.connected_houses.has(id):
 			_cancel(str(id), previous.get(id, {}))
 			continue
@@ -80,6 +84,7 @@ func status(id: String) -> Dictionary:
 	result.phase = "no_space" if layouts[id].is_empty() else "waiting"
 	if not groups.has(id): return result
 	var group: Dictionary = groups[id]
+	if TerrainVisits.paused(self,id):result.phase="no_space";result.participants=group.participants.duplicate();result.invited=group.participants.size();result.elapsed=float(terrain_resume[id].elapsed)*time_scale;result.terrain_suspended=true;return result
 	result.participants = group.participants.duplicate()
 	result.invited = group.participants.size()
 	result.elapsed = float(group.elapsed)*time_scale
@@ -113,6 +118,7 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 	var pastoral:bool=not reached.is_empty() and life.state.shares_chord(str(resident.home_id),reached,"pastoral_triad")
 	for id in layouts:
 		if layouts[id].is_empty() or not life.connected_houses.has(id): continue
+		if terrain_resume.get(id,{}).get("phase","")=="tea":continue
 		if pastoral and not life.state.chord_together([str(resident.home_id),reached,str(id)],"pastoral_triad"):continue
 		var group: Dictionary = groups.get(id, {"phase":"waiting","participants":[]})
 		if group.phase != "waiting" or group.participants.size() >= 3: continue
@@ -185,6 +191,7 @@ func street_attachment(point: Vector3, finish: String) -> Array[Vector3]:
 
 func tick(delta: float) -> void:
 	for id in groups.keys():
+		if TerrainVisits.paused(self,str(id)):continue
 		if not groups.has(id): continue
 		var group: Dictionary = groups[id]
 		var was_tea: bool = group.phase == "tea"
@@ -207,6 +214,7 @@ func tick(delta: float) -> void:
 		if not groups.has(id): continue
 		if group.participants.is_empty():
 			groups.erase(id)
+			terrain_resume.erase(str(id))
 			continue
 		if was_tea:
 			# Keep the existing normalized 0..6 saved progress; only real time changes.
@@ -228,7 +236,7 @@ func tick(delta: float) -> void:
 			if int(current.arrived) >= 2 and current.arrived == current.invited:
 				preload("res://scripts/world/city_creation_civic_supply.gd").receive(life,str(id),true)
 				group.phase = "tea"
-				group.elapsed = 0.0
+				group.elapsed = TerrainVisits.resume_time(self,str(id))
 
 func _walk(resident: Dictionary, delta: float) -> bool:
 	if life.get("tram")!=null and life.tram.intercept(resident,delta):return false
@@ -291,6 +299,7 @@ func _restore_daily(resident: Dictionary, exit_first: bool, canceled_plan: Dicti
 	life._resume(resident)
 
 func _cancel(id: String, canceled_plan: Dictionary = {}) -> void:
+	terrain_resume.erase(id)
 	if not groups.has(id): return
 	var homes: Array = groups[id].participants.duplicate()
 	groups.erase(id)
@@ -306,6 +315,7 @@ func checkpoint() -> Array:
 
 func restore(data: Dictionary) -> void:
 	groups.clear()
+	if TerrainVisits.restore(self,data):return
 	var saved_people := {}
 	for entry: Dictionary in data.get("residents", []):
 		if entry.has("cafe_visit"): saved_people[str(entry.home_id)] = entry

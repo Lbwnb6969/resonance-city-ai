@@ -10,7 +10,7 @@ python tools/audit_creation_workspace.py --check-remote
 
 ## 当前施工首步
 
-以实时 `PROJECT.md` 为准。当前 M84 优先处理美术样板：V 折脊草叶的近远 LOD 轮廓、门窗真实内凹/窗套厚度/独立玻璃路由、昼夕夜和增量/冷算一致性。音乐的领奏仍有“奇怪、抢耳”反馈，P0/P2 技术通过不等于听感通过，不切默认。
+当前首步与已通过子步只查实时 `PROJECT.md` 和 backlog。音乐的真实听评、整体美术与动态验收独立保留；技术验证通过不替代品质通过，未获听评不切默认。
 
 ## 生效顺序
 
@@ -37,7 +37,7 @@ python tools/audit_creation_workspace.py --check-remote
 ## 不可破坏的边界
 
 - 自由营造、手作质感、可关闭轻量经营是明线；音乐是独立暗线，不由经营、等级、接路或库存解锁基础音乐。
-- 保留旧 `growth_cutoff`、旧权益、legacy、Schema 1～22（定高21/宽核柔化22）、M80 外部 Schema1、旧 v2、个人作品、Undo/Redo 和 `house.seed` 外观。
+- 保留旧 `growth_cutoff`、旧权益、legacy、Schema 1～23（定高21/宽核22/街景地形23）、M80 外部 Schema1、旧 v2、个人作品、Undo/Redo 和 `house.seed` 外观。
 - 新成长只用版本化单一政策/新账期；不建 `prosperity_enabled` 与 `cozy_progression` 双开关，不回放历史事件发奖。
 - 运行预算保持 12 长轨、4 短槽、6 总线、2 自然声、唯一 `layer=3` 领唱；新音色/profile 必须有来源签名、缓存、回退和实证。
 - 原曲、stem、模型和图片留在外置资产；候选数据不等于可运行内容，不把整曲直接挂入常驻播放池。

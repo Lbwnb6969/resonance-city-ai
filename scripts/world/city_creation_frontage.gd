@@ -245,6 +245,7 @@ static func exterior_route(house: Dictionary, from: Vector2, to: Vector2, city: 
 	return result
 
 static func _dry_leg(a: Vector2,b: Vector2,obstacles:Array,city: RefCounted) -> bool:
+	if not preload("res://scripts/world/city_creation_activity_surface.gd").walkable(city,a,b):return false
 	for obstacle:Variant in obstacles:
 		if Frame.segment(obstacle,a,b): return false
 	for step in range(ceili(a.distance_to(b)/0.12)+1):

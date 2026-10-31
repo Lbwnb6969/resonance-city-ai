@@ -14,7 +14,7 @@ func run()->void:
 	root.size=Vector2i(1440,900);Engine.max_fps=60;var began:=Time.get_ticks_msec()
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works_"+str(began);root.add_child(demo);await settle();isolate_input();var voices:=pool()
-	var at:=Vector2(15,20);var city:=State.new();city.initialize_free()
+	var at:=Vector2(15,20);var city:=State.new();city.initialize_free();var historical:Dictionary=city.snapshot();historical.erase("terrain_policy");historical.schema=20;city.restore(historical)
 	check(city.apply_terrain_target(city.plan_terrain_target([at] as Array[Vector2],3.5,1.5)).ok,"public v2 plateau fixture")
 	check(city.add_terrain_stroke([at+Vector2(2,0)] as Array[Vector2],"raise",1.5,1.).ok,"steep local authored shoulder")
 	check(city.add_house(at+Vector2(-5,-4)).ok,"protected house fixture")

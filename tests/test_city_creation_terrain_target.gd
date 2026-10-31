@@ -12,7 +12,9 @@ func cold_equal(city:RefCounted,label:String)->void:
 	for field:String in ["raw_vertices","raw_offsets","vertices","offsets"]:check(city._ground_terrain.get(field)==cold._ground_terrain.get(field),label+" exact "+field)
 func run_case(free:bool)->void:
 	var city:=State.new()
-	if free:city.initialize_free()
+	if free:
+		city.initialize_free();var old_format:Dictionary=city.snapshot();old_format.erase("terrain_policy");old_format.schema=20
+		city.restore(old_format)
 	else:city.initialize_empty()
 	var at:=Vector2(-24,-12);var points:Array[Vector2]=[at]
 	check(city.add_terrain_stroke(points,"raise",3.,.6).ok,"old raise prefix")

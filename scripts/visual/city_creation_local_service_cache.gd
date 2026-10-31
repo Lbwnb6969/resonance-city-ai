@@ -3,7 +3,7 @@ extends RefCounted
 const Frontage=preload("res://scripts/world/city_creation_frontage.gd")
 const Rules=preload("res://scripts/world/city_creation_tradition_rules.gd")
 static func rules(city)->int:
-	return hash([city.era_modifiers,city.harmony_journey.get("traditions",[]),city.biome_seed,city.districts,city.era_unlocks,city.placed_landmarks])
+	return hash([city.terrain_policy,city.era_modifiers,city.harmony_journey.get("traditions",[]),city.biome_seed,city.districts,city.era_unlocks,city.placed_landmarks])
 static func capture(owner)->Dictionary:
 	var cafes:Dictionary={}
 	for id:String in owner.cafes.roots:
@@ -47,7 +47,7 @@ static func prime(context)->Dictionary:
 		var id:String=house.id
 		if touches(house_bounds(house),regions):continue
 		if prior.get("blessings",{}).has(id):context.state._site_blessings[id]=prior.blessings[id];stats.blessings_reused+=1
-		if house.get("role","")=="garden_cafe" and not dirty.has(id) and prior.get("cafes",{}).has(id):
+		if house.get("role","")=="garden_cafe" and not context.state.TerrainPolicy.enabled(context.state) and not dirty.has(id) and prior.get("cafes",{}).has(id):
 			context.cafes.placement_inputs[id]=geometry_signature;stats.cafes_reused+=1
 			reused_cafes[id]=true
 	context.state._prosperity_revision=context.state.revision

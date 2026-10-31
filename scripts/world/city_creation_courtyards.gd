@@ -188,7 +188,7 @@ func _make_obstacles(city: RefCounted) -> Dictionary:
 				var gathering := wall+Frame.normal(entry)*2.2
 				result.gatherings.append([gathering,gathering,3.0])
 		if str(house.role)=="garden_cafe":
-			var layout := cafes.layout(city,str(house.id))
+			var layout:Dictionary = cafes.planar_layout(city,str(house.id)) if city.TerrainPolicy.enabled(city) else cafes.layout(city,str(house.id))
 			if not layout.is_empty():
 				result.gatherings.append([layout.center,layout.center,3.0])
 				result.gatherings.append([layout.entrance,layout.center,1.2])

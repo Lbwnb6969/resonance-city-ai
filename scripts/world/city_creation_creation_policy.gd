@@ -12,7 +12,8 @@ static func can_assign_role(city:RefCounted,role:String)->bool:
 
 static func data_is_free(data:Dictionary)->bool:
 	var settings:Variant=data.get("creative_settings",{})
-	return (data.get("schema",0)==Save.SCHEMA or data.get("schema",0)==21 or data.get("schema",0)==Save.LATEST_SCHEMA) and settings is Dictionary and settings.get("creation_policy")=="free"
+	var schema:Variant=data.get("schema",0)
+	return (schema is int or schema is float) and schema>=Save.SCHEMA and schema<=Save.LATEST_SCHEMA and schema==floor(float(schema)) and settings is Dictionary and settings.get("creation_policy")=="free"
 static func data_can_build_era(data:Dictionary,era:Variant)->bool:
 	if not era is String or era not in ERAS:return false
 	return data_is_free(data) or era in data.get("era_unlocks",["pastoral"])
@@ -23,11 +24,12 @@ static func initialize(city:RefCounted,empty:bool=true)->void:
 	if empty:city.initialize_empty()
 	else:city.initialize()
 	city.creative_settings=Save.defaults()
+	city.terrain_policy=city.TerrainPolicy.VERSION
 	preload("res://scripts/world/city_creation_growth_transition.gd").begin_new(city)
 
 static func initialize_biome(city:RefCounted,id:String,day:String="")->Dictionary:
 	var result:Dictionary=city.Biomes.create(city,id,day)
-	if result.ok:city.creative_settings=Save.defaults();preload("res://scripts/world/city_creation_growth_transition.gd").begin_new(city)
+	if result.ok:city.creative_settings=Save.defaults();city.terrain_policy=city.TerrainPolicy.VERSION;preload("res://scripts/world/city_creation_growth_transition.gd").begin_new(city)
 	return result
 
 static func set_preferences(city:RefCounted,patch:Dictionary)->Dictionary:

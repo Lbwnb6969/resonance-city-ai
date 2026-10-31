@@ -100,6 +100,7 @@ func select(active: bool) -> void:
 
 
 func _can_target() -> bool:
+	if demo.get_meta("terrain_policy_preview",false):return false
 	if demo.tool != 8 or not demo.ui_layer.visible or demo.edit_pending(): return false
 	if demo.gallery != null and (demo.gallery.busy or demo.gallery.panel.visible): return false
 	var viewport := demo.get_viewport()
@@ -133,6 +134,7 @@ func append_point() -> void:
 
 
 func hover() -> void:
+	if demo.get_meta("terrain_policy_preview",false):return
 	if not _can_target():
 		demo.town.clear_preview()
 		demo.preview_key = ""
@@ -175,6 +177,7 @@ func finish() -> void:
 
 
 func cancel() -> void:
+	if demo.has_meta("terrain_policy_ui"):demo.get_meta("terrain_policy_ui").cancel()
 	drawing = false
 	points.clear()
 	target_plan={}

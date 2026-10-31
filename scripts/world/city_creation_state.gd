@@ -39,6 +39,8 @@ const Junctions := preload("res://scripts/world/city_creation_junctions.gd")
 const TerrainProtection := preload("res://scripts/world/city_creation_terrain_protection.gd")
 const Terrain := preload("res://scripts/world/city_creation_terrain.gd")
 const TerrainTarget := preload("res://scripts/world/city_creation_terrain_target_plan.gd")
+const TerrainPolicy := preload("res://scripts/world/city_creation_terrain_policy.gd")
+var terrain_policy:=1
 const RoadHeights := preload("res://scripts/world/city_creation_road_heights.gd")
 const Growth := preload("res://scripts/world/city_creation_growth.gd")
 const Courtyards := preload("res://scripts/world/city_creation_courtyards.gd")
@@ -1131,6 +1133,7 @@ func street_height(position: Vector2) -> float:
 	var road_y:float=_road_heights.height_at(position,NAN)
 	if not is_nan(road_y):return road_y
 	var legacy := 0.055+0.185*(1.0-smoothstep(-0.05,0.65,water_clearance(position)))
+	if TerrainPolicy.enabled(self):return TerrainPolicy.walk_height(self,position)
 	return maxf(_ground_terrain.height_at(position)+0.075,legacy)
 
 func _prepare_raw_height() -> void:
@@ -2147,7 +2150,7 @@ func _prune_missing_journeys() -> void:
 			if not existing.has(home): valid = false
 		if valid: retained_cafes.append(group)
 		else: canceled_cafes[group.cafe_id] = true
-	if journey_checkpoint.has("cafe_groups"): journey_checkpoint.cafe_groups = retained_cafes
+	if journey_checkpoint.has("cafe_groups"): journey_checkpoint.cafe_groups = retained_cafes;TerrainPolicy.Visits.prune(journey_checkpoint)
 	var concert: Dictionary = journey_checkpoint.concert
 	var cancel_concert := false
 	if concert.get("phase", "idle") != "idle":
@@ -2903,7 +2906,7 @@ func _validate_cafe_journeys(data: Dictionary, homes: Dictionary) -> Dictionary:
 			if group.phase == "tea" and visit.phase != "seated" or group.phase == "leaving" and visit.phase != "leaving": return _fail("茶座聚会阶段不符")
 		if group.phase == "tea" and group.participants.size() < 2 or group.phase != "tea" and group.elapsed != 0: return _fail("茶座聚会驻留无效")
 	if grouped.size() != cafe_homes.size(): return _fail("茶座访客缺少真实聚会")
-	return {"ok":true}
+	return TerrainPolicy.Visits.validate(data)
 
 
 func _validate_matinee(data: Dictionary, issued: Dictionary) -> Dictionary:
@@ -2926,6 +2929,9 @@ func apply_terrain_target(plan:Dictionary)->Dictionary:
 	return TerrainTarget.commit(self,plan)
 func plan_terrain_smooth(points:Array[Vector2],radius:float,strength:float=.65)->Dictionary:
 	return TerrainTarget.create_smooth(self,points,radius,strength)
+func plan_terrain_policy()->Dictionary:
+	return TerrainPolicy.plan(self)
+func apply_terrain_policy(plan:Dictionary)->Dictionary:return TerrainPolicy.commit(self,plan)
 
 func add_terrain_stroke(points: Array[Vector2],mode: String,radius: float = 3.5,strength: float = 0.65,passes: int = 1,natural: bool = false) -> Dictionary:
 	var encoded: Array=[]

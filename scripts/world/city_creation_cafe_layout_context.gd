@@ -9,6 +9,10 @@ const CHAIR_RADIUS := 0.29
 const GUEST_RADIUS := 0.14
 var _cache: Dictionary = {}
 var _contexts: Dictionary = {}
+const Surface=preload("res://scripts/world/city_creation_activity_surface.gd")
+var terrain_aware:=true
+func planar_layout(city,id:String)->Dictionary:
+	var planar=get_script().new();planar.terrain_aware=false;return planar.layout(city,id)
 var stats:Dictionary={"layout_hits":0,"layout_misses":0,"warm_hits":0,"warm_misses":0,"context_queries":0}
 
 func snapshot_city(city:RefCounted)->Dictionary:
@@ -47,6 +51,7 @@ func _context(city) -> Dictionary:
 	stats.context_queries+=1
 	var geometry:Array=Frontage.ground_geometry(city.houses)
 	var signature := hash([geometry,city.roads,city.waters,city.placed_landmarks])
+	if terrain_aware and Surface.enabled(city):signature=hash([signature,Surface.stamp(city)])
 	var key: int = city.get_instance_id()
 	if _contexts.has(key) and _contexts[key].signature==signature:
 		_contexts[key].validated_revision=city.revision
@@ -75,6 +80,9 @@ func _context(city) -> Dictionary:
 	for road: Dictionary in city.roads:
 		for index in range(1,road.points.size()):
 			context.roads.append([Vector2(road.points[index-1][0],road.points[index-1][1]),Vector2(road.points[index][0],road.points[index][1]),float(road.width)*0.5])
+	if terrain_aware and Surface.enabled(city):
+		for court:Dictionary in city.courtyard_plans():
+			if not court.fountain.is_empty():context.footprints.append(Rect2(Vector2(court.fountain.at)-Vector2.ONE*.9,Vector2.ONE*1.8));context.obstacles.append(context.footprints[-1])
 	_contexts[key]=context
 	return context
 
@@ -117,6 +125,7 @@ func layout(city, id: String) -> Dictionary:
 					if not _clear(city,context,seat,CHAIR_RADIUS+0.05): valid = false
 				if not valid: continue
 				var plan := {"center":at,"seats":seats,"entrance":Vector2(door.at),"yaw":yaw,"cell_id":str(entry.cell_id),"side":entry.side,"base_y":float(house.get("base_y",0.0))}
+				if terrain_aware and Surface.enabled(city) and not Surface.fit(city,plan):continue
 				for seat: Vector2 in seats:
 					if _route(city,house,plan,door.at,seat,occupied,context).is_empty(): valid = false
 				if not valid: continue
@@ -280,6 +289,7 @@ func _route(city, house: Dictionary, plan: Dictionary, from: Vector2, to: Vector
 	return result
 
 func _leg(city, plan: Dictionary, a: Vector2, b: Vector2, from: Vector2, to: Vector2, obstacles: Array, other_plans: Array) -> bool:
+	if terrain_aware and not Surface.walkable(city,a,b):return false
 	if not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(a) or not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(b): return false
 	for obstacle:Variant in obstacles:
 		if Frame.segment(obstacle,a,b):return false

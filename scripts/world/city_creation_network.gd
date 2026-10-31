@@ -53,6 +53,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.biome_seed=snapshot.get("biome_seed",{}).duplicate()
 	state.era_modifiers.assign(snapshot.get("era_modifiers",[]))
 	state.harmony_journey=snapshot.get("harmony_journey",{}).duplicate(true)
+	state.terrain_policy=int(snapshot.get("terrain_policy",1))
 	if snapshot.has("ground_cache"):
 		# The request owns this cache; it was copied before starting the thread.
 		state._ground_terrain = snapshot.ground_cache
@@ -530,6 +531,7 @@ func _exterior_route_from_position(point: Vector3, finish: String) -> Array[Vect
 	return best
 
 func _navigation_height(at: Vector2) -> float:
+	if state.TerrainPolicy.enabled(state):return state.street_height(at)
 	for marker: Dictionary in _roundabout_markers:
 		if at.distance_to(marker.center)<=marker.radius: return state._ground_terrain.raw_height_at(marker.center)+.075
 	var clearance: float = state.water_clearance(at)

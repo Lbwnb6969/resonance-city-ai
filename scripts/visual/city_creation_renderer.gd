@@ -2994,3 +2994,5 @@ func _roads_touch(road: Dictionary, other: Dictionary) -> bool:
 func show_terrain_brush(points: Array[Vector2],radius: float,mode: String,natural: bool=false,plan:Dictionary={}) -> void:
 	clear_preview()
 	TerrainPreview.build(self,points,radius,mode,natural,plan)
+func show_terrain_policy(plan:Dictionary)->void:
+	clear_preview();TerrainPreview._target_surface(self,plan)

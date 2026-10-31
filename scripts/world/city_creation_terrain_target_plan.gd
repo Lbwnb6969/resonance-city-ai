@@ -1,7 +1,7 @@
 extends RefCounted
 const Rules=preload("res://scripts/world/city_creation_terrain_target_rules.gd")
 static func signature(city:RefCounted)->int:
-	return hash([city.houses,city.roads,city.waters,city.terrain_strokes,city.placed_landmarks,city.districts,city.creative_settings])
+	return hash([city.terrain_policy,city.houses,city.roads,city.waters,city.terrain_strokes,city.placed_landmarks,city.districts,city.creative_settings])
 static func create(city:RefCounted,points:Array[Vector2],radius:float,target_y:float,natural:bool=false)->Dictionary:
 	var began:=Time.get_ticks_usec();var encoded:Array=[]
 	for at:Vector2 in points:encoded.append([at.x,at.y])

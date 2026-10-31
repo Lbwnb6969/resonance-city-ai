@@ -8,7 +8,7 @@ const Shape = preload("res://scripts/world/city_creation_chemistry_shapes.gd")
 
 static func fork(source: RefCounted) -> RefCounted:
 	var city := State.new()
-	for field: String in ["houses","roads","plants","waters","terrain_strokes","districts","biome_seed","era_unlocks","creative_settings","placed_landmarks","harmony_journey","era_modifiers","music_mode","revision"]:
+	for field: String in ["houses","roads","plants","waters","terrain_strokes","terrain_policy","districts","biome_seed","era_unlocks","creative_settings","placed_landmarks","harmony_journey","era_modifiers","music_mode","revision"]:
 		city.set(field,source.get(field).duplicate() if source.get(field) is Array or source.get(field) is Dictionary else source.get(field))
 	city._frontage_cache = source._frontage_cache.duplicate()
 	city._ground_terrain.copy_cache_from(source._ground_terrain)

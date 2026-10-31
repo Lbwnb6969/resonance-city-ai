@@ -30,6 +30,7 @@ func adopt_prepared(source: RefCounted) -> bool:
 
 func sync(city: RefCounted) -> void:
 	var signature: Array = []
+	signature.append(city.terrain_policy)
 	signature.append(city.biome_seed.duplicate())
 	signature.append(city.era_modifiers.duplicate())
 	signature.append(preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(city))

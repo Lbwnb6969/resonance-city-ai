@@ -45,7 +45,7 @@ func _prepare_layout(city: RefCounted) -> void:
 	# Layout depends on buildings, doors, roads and water, not sculpted height.
 	# Road beds still use this revision's newly computed profile in build().
 	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(city.houses,true)
-	var signature := hash([geometry,city.roads,city.waters])
+	var signature := hash([geometry,city.roads,city.waters,city.terrain_policy])
 	if signature==_layout_signature: return
 	var result: Array = []
 	for house: Dictionary in city.houses:
@@ -58,10 +58,10 @@ func _prepare_layout(city: RefCounted) -> void:
 		for entry: Dictionary in city.house_entrances(str(house.id)):
 			var end: Vector2 = entry.wall_at+Frame.normal(entry)*0.65
 			result.append({"id":str(house.id)+str(entry.cell_id)+str(entry.side),"a":Vector2(entry.wall_at),"b":end,"radius":0.42,"target_y":target,"transition":0.25,"priority":3.0})
-			if str(house.get("role",""))=="venue":
+			if str(house.get("role",""))=="venue" and not city.TerrainPolicy.enabled(city):
 				var gathering: Vector2 = entry.wall_at+Frame.normal(entry)*2.2
 				result.append({"id":"venue"+str(house.id)+str(entry.cell_id)+str(entry.side),"a":gathering,"b":gathering,"radius":3.0,"target_y":target})
-		if str(house.get("role",""))=="garden_cafe":
+		if str(house.get("role",""))=="garden_cafe" and not city.TerrainPolicy.enabled(city):
 			var plan: Dictionary = cafes.layout(city,str(house.id))
 			if not plan.is_empty():
 				var cafe_target := float(plan.get("base_y",house.get("base_y",0.0)))-0.02
