@@ -49,6 +49,7 @@ void light(){
 	float wrapped=clamp((ndl+.36)/1.36,0.,1.);
 	float edge=pow(1.0-abs(dot(safe_normalize(NORMAL),safe_normalize(VIEW))),2.0);
 	float transmitted=pow(max(-ndl,0.),1.5)*transmission_strength*(.55+edge*.45);
-	vec3 amber=mix(ALBEDO,vec3(.94,.66,.25),.42);
-	DIFFUSE_LIGHT+=(ALBEDO*wrapped+amber*transmitted)*LIGHT_COLOR*ATTENUATION/3.14159265;
+	// GLES applies ALBEDO after custom light(). Use relative transmission color.
+	vec3 transmission_tint=mix(vec3(1.0),vec3(1.15,.98,.68),.42);
+	DIFFUSE_LIGHT+=(vec3(wrapped)+transmission_tint*transmitted)*LIGHT_COLOR*ATTENUATION/3.14159265;
 }

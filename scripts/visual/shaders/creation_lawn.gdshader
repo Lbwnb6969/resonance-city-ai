@@ -60,7 +60,7 @@ void fragment() {
 	EMISSION=window_ground_bounce(world_at.xz);
 	float leaf = smoothstep(0.12,0.92,tip)*detail;
 	vec3 turf_normal = meadow_normal(world_at.xz);
-	vec3 soft_normal = safe_normalize(mix(turf_normal,safe_normalize(blade_world_normal),leaf*0.20)
+	vec3 soft_normal = safe_normalize(mix(turf_normal,safe_normalize(blade_world_normal),leaf*0.35)
 		+ vec3(0.82,0.0,0.57)*gust*leaf*0.035);
 	NORMAL = safe_normalize((VIEW_MATRIX*vec4(soft_normal,0.0)).xyz);
 	vec3 ground = meadow_contact_color(world_at.xz,shore_ground(world_at.xz,meadow_color(clump_world_at,grass_low.rgb,grass_high.rgb)));
@@ -73,12 +73,14 @@ void fragment() {
 	vec3 tip_lift=vec3(0.05,0.06,0.01);
 	// The authored lift is an sRGB color, not .05 units of linear radiance.
 	if (OUTPUT_IS_SRGB) { tip_lift=meadow_srgb_to_linear(tip_lift); }
-	vec3 sun_tip_tone=ground_linear*vec3(1.18,1.25,0.92)+tip_lift;
+	vec3 sun_tip_tone=ground_linear*vec3(1.06,1.08,0.97)+tip_lift;
 	vec3 blade=mix(root_tone,sun_tip_tone,smoothstep(0.08,0.92,tip))*seed_tint;
 	blade*=mix(vec3(1.0),vec3(0.985,1.0,0.985),species);
 	// Keep a shared ground base through the broad outer leaves; only the
 	// upper blade owns the full warm highlight instead of a bright rosette.
-	float reveal = smoothstep(0.04,0.94,tip)*detail*0.78;
+	// Retain close blade relief while merging distant tufts into the meadow.
+	float resolved=1.0-smoothstep(.018,.09,length(fwidth(world_at.xz)));
+	float reveal = smoothstep(0.04,0.94,tip)*detail*mix(.28,.58,resolved);
 	vec3 albedo=mix(ground_linear,blade,reveal);
 	// Only wind-compressed tips catch the passing warm sheen; roots keep AO.
 	albedo*=vec3(1.0)+vec3(.06,.035,.006)*max(0.0,gust)*leaf;
