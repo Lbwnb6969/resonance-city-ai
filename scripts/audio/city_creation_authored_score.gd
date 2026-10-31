@@ -11,6 +11,11 @@ static func request(owner:Node,path:String)->Dictionary:
 	return _request_data(owner,Document.read(path))
 static func request_internal(owner:Node,section:int=0,selection:Dictionary={},content_id:String="pastoral_cross_p0_v3")->Dictionary:
 	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_score.gd").select(section,selection,content_id))
+static func request_affinity(owner:Node)->Dictionary:
+	var data:=preload("res://scripts/audio/city_creation_internal_score.gd").select(0,{"foundation":"cross","lead":"base","pulse":"base","answer":"mute"},"pastoral_comfort_p0_p2_v1")
+	if not data.ok:return data
+	data.affinity_preview=true;data.signature=(str(data.signature)+"/affinity_preview1").sha256_text()
+	return _request_data(owner,data)
 static func request_master(owner:Node,section:int,mode:int=0)->Dictionary:
 	if mode!=0:return {"ok":false,"message":"母曲公开试听目前使用D大调；其他调式须先完成全局换段与跨小节提示的和声接续"}
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_score.gd").section(section,mode))
@@ -23,7 +28,7 @@ static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	var node:=owner.get_node_or_null("AuthoredScore")
 	if node==null:node=load("res://scripts/audio/city_creation_authored_score.gd").new();node.name="AuthoredScore";owner.add_child(node)
 	if node.worker!=null:return {"ok":false,"message":"上一份谱材仍在准备"}
-	if data.get("duration",24.)==144.:data.content_context=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city)
+	if data.get("duration",24.)==144. or data.get("affinity_preview",false):data.content_context=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city,bool(data.get("affinity_preview",false)))
 	if data.has("harmony"):data.cue_templates=Cues.templates(owner,int(data.document.harmony_mode))
 	node.city_id=owner._pluck_city.get_instance_id();node.revision=owner._pluck_city.revision;node.request_data=data
 	var copied:Dictionary=data.duplicate(true);node.worker=Thread.new();node.worker.start(func():return render(copied))
@@ -79,8 +84,8 @@ func _process(_delta:float)->void:
 	if worker==null or worker.is_alive():return
 	var data:Dictionary=worker.wait_to_finish();worker=null;var owner:=get_parent()
 	if owner._pluck_city==null or city_id!=owner._pluck_city.get_instance_id():return
-	if request_data.get("duration",24.)==144.:
-		if request_data.content_context!=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city) or not preload("res://scripts/audio/city_creation_master_performance.gd").source_valid(request_data):return
+	if request_data.get("duration",24.)==144. or request_data.get("affinity_preview",false):
+		if request_data.content_context!=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city,bool(request_data.get("affinity_preview",false))) or not preload("res://scripts/audio/city_creation_master_performance.gd").source_valid(request_data):return
 	elif revision!=owner._pluck_city.revision:return
 	if request_data.get("internal_version",0)==3 and not preload("res://scripts/audio/city_creation_internal_score.gd").source_valid(request_data):return
 	var prior:Dictionary=owner.get_meta("authored_score_ready",{})
@@ -92,7 +97,7 @@ func _process(_delta:float)->void:
 		owner.audio_report.get_or_add("harmony_peaks",{})[id]=data[role].peak
 	owner.set_meta("authored_score_ready",{"signature":request_data.signature,"document":request_data.document,"city":city_id,"revision":revision,"harmony":request_data.get("harmony",[]),"short_cues":data.get("short_cues",{}),"section":request_data.get("section",-1),"master_signature":request_data.get("master_signature","")});owner.remove_meta("chamber_role_key")
 	var ready:Dictionary=owner.get_meta("authored_score_ready")
-	for key:String in ["duration","sections","dsp_signature","content_context","content_id","render_profile","internal_version","orchestration","declared_silence"]:
+	for key:String in ["duration","sections","dsp_signature","content_context","content_id","render_profile","internal_version","orchestration","declared_silence","affinity_preview"]:
 		if request_data.has(key):ready[key]=request_data[key]
 	if data.has("section_cues"):ready.section_cues=data.section_cues
 	preload("res://scripts/audio/city_creation_score_playback.gd").ensure(owner)

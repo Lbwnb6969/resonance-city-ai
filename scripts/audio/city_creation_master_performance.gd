@@ -24,12 +24,14 @@ static func prepare(mode:int,content_id:String="baseline")->Dictionary:
 			var note:=original.duplicate(true);note.start+=p*24.;events.append(note)
 	var signature:=JSON.stringify(["master_performance1",master.signature,mode,dsp,content_id]).sha256_text()
 	return {"ok":true,"signature":signature,"master_signature":master.signature,"content_id":content_id,"render_profile":Catalog.CONTENTS[content_id].get("render_profile","original"),"dsp_signature":dsp,"duration":SECONDS,"sections":sections,"events":events,"harmony":sections[0].harmony,"section":0,"document":{"id":Catalog.CONTENTS[content_id].document_id,"harmony_mode":mode,"bars":48}}
-static func context(city:RefCounted)->Array:
-	return [city.music_mode,hash(city.biome_seed)]
+static func context(city:RefCounted,affinity:bool=false)->Array:
+	var result:Array=[city.music_mode,hash(city.biome_seed)]
+	if affinity:result.append(city.creative_settings.get("music",{}).duplicate(true))
+	return result
 static func valid(owner:Node,data:Dictionary)->bool:
 	var city:RefCounted=owner._pluck_city
 	if city==null or data.get("city",0)!=city.get_instance_id():return false
-	return data.get("content_context",[])==context(city) if data.get("duration",24.)==SECONDS else data.get("revision",-1)==city.revision
+	return data.get("content_context",[])==context(city,bool(data.get("affinity_preview",false))) if data.get("duration",24.)==SECONDS or data.get("affinity_preview",false) else data.get("revision",-1)==city.revision
 static func source_valid(data:Dictionary)->bool:
 	if data.get("internal_version",0)==3:return preload("res://scripts/audio/city_creation_internal_score.gd").source_valid(data)
 	return Catalog.read(str(data.get("content_id","baseline"))).get("signature","")==data.master_signature and dsp_signature()==data.dsp_signature

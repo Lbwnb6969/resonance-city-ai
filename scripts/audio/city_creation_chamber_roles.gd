@@ -72,7 +72,7 @@ static func gain(owner:Node,key:String,original:float)->float:
 		var melodic:bool=key in Emergence.LEADS+["concert"] and not "chamber_counter_" in active
 		if (int(row.get("layer",0))==3)==melodic:return original
 	if active!=str(row.get("id","")) and not (row.get("legato",false) and active==str(row.get("base_id",""))):return -80.
-	return original+float(row.get("gain_offset",0.))
+	return original+float(row.get("gain_offset",0.))+preload("res://scripts/audio/city_creation_affinity_preview.gd").gain(owner,key)
 static func reconstruction(city:RefCounted,view:Dictionary,catalog:Dictionary,acoustic:RefCounted,score:Dictionary,mode:int)->Dictionary:
 	var context:Node=load("res://scripts/audio/city_creation_music.gd").new()
 	context._pluck_city=city;context._house_music=catalog.houses;context.acoustic=acoustic;context.emergence.score=score;context._biome_mode=mode;context._daily_phrase=0;context.night=int(view.get("light_phase",0))==2
