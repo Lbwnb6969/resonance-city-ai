@@ -1,0 +1,41 @@
+{
+  "kind": "reference_atmosphere_original_rebuild_candidate",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "source_audio": {
+    "path": "C:/Users/Administrator/Desktop/mIDDLEFILE/music/blau.mp3",
+    "sha256": "426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65",
+    "duration_seconds": 148.8,
+    "analysis": {
+      "librosa_bpm": 123.046875,
+      "essentia_bpm": 124.925949097,
+      "essentia_key": "E major",
+      "key_strength": 0.776320517063,
+      "spectral_centroid_mean_hz": 489.74428969,
+      "rms_mean": 0.11555472016334534
+    },
+    "distribution": "local_reference_only",
+    "stem_distribution": "forbidden_without_explicit_relicense"
+  },
+  "gemini_source": "文档/来源/20261031_Gemini_blau_氛围与制作工作包_原稿.txt",
+  "gemini_source_sha256": "90f141cd03ab20842d0d437346030210313c32fac134426c707b6e4d87479cec",
+  "candidate_profile": {
+    "id": "blue_underflow_v1",
+    "sections": ["P0", "P2"],
+    "layers": ["felt_keys", "breathing_pad", "muted_pluck", "warm_sub", "filtered_pulse"],
+    "transport_bpm": "inherit_current_score",
+    "runtime_ready": false,
+    "license": "original_rebuild_required"
+  },
+  "asset_policy": {
+    "recreate": ["MIDI/events", "DSP profile", "procedural noise", "authorized or CC0 samples"],
+    "reference_only": ["source mp3", "separated stems", "source reverb tails", "sample-level waveform"],
+    "required_records": ["source hash", "author/AI batch", "license scope", "cache signature", "approval evidence"]
+  },
+  "unresolved": [
+    "no original melody or stem license is recorded",
+    "no new game integration, PCM render, or perceptual listening pass has been performed",
+    "Gemini key/BPM/organology statements are creative references, not measurements",
+    "profile must remain optional and cannot lock basic music or depend on business/road access"
+  ]
+}

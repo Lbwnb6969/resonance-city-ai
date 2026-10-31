@@ -1086,3 +1086,8 @@
 - CORRECT：候选不等于已运行；P0/P2需重算统计/半音/伴唱，玻璃须真实墙洞，Shader片段需编译，原seed不得重掷，12原型/6色板/奖励数字不自动注册或授予。
 - VERIFY：review_progressive_reserve PASS，Harness 52/52；文档链接待新文件纳入Git后复核。本轮未跑Godot、实窗、PCM或人工听评，M84～M86保持false。
 - NEXT：施工首步仍按PROJECT当前音乐切片听评；随后依66顺序做窗材质、母型/插槽和新账期，过验证再扩下一批；参考包重制时加入66文档/候选/工具，AI参考包仍本地不发布。
+[SESSION_BLAU_ATMOSPHERE_REFERENCE] 2026-10-31 DOC/CATALOG ONLY：本地分析blau.mp3 148.80s，源SHA426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65；librosa/Essentia BPM123.046875/124.925949，E major strength.7763，频谱质心均值489.7Hz，RMS均值.11555。Gemini拆解原稿10130字节SHA90f141cd03ab20842d0d437346030210313c32fac134426c707b6e4d87479cec原样入库。
+- ADOPT：新增67映射与blue_underflow_v1原创重制候选，抽取毛毡钢琴/呼吸弦垫/低通拨弦/温暖低频/气泡与慢滤波机制，继承当前80BPM运输与6总线/12长轨/4短槽/2自然声/唯一layer3预算。
+- CORRECT：Gemini的116-118BPM、G#小调/B大调和具体乐器只作创作参考；原MP3和分离stem未经明确改编/再发行授权不进运行库、发布树或AI精简包，改用原创DSP/MIDI/程序化或已许可素材。
+- VERIFY：本地song-analysis联合报告成功，review_blau_atmosphere待提交后运行；未做stem分离、未跑Godot、未做PCM/人工听评，候选runtime_ready=false。
+- NEXT：完成67静态校验后继续M84当前P0/P2听评；通过后按67做16小节原创氛围切片和未接路慢过渡样板，不把参考曲替代当前首曲品质闭环。
