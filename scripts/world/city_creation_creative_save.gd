@@ -1,7 +1,7 @@
 extends RefCounted
 ## Schema20 extension. Historical ledgers remain validated by their original owners.
 const SCHEMA:=20
-const LATEST_SCHEMA:=21
+const LATEST_SCHEMA:=22
 const VERSION:=1
 const FIELDS:=["creative_settings","placed_landmarks","next_landmark_id","landmark_high_watermark"]
 const SETTING_FIELDS:=["version","creation_policy","migration_version","guidance","music","presentation"]
@@ -40,7 +40,7 @@ static func settings_valid(city:RefCounted,value:Variant)->bool:
 
 static func validate(city:RefCounted,data:Dictionary)->Dictionary:
 	if not city._is_integer(data.get("schema")) or data.schema<1 or data.schema>LATEST_SCHEMA:return city._fail("不支持的城市存档版本")
-	if data.schema<SCHEMA or (data.schema==LATEST_SCHEMA and not data.has("creative_settings")):
+	if data.schema<SCHEMA or (data.schema>SCHEMA and not data.has("creative_settings")):
 		for key:String in FIELDS:
 			if data.has(key):return city._fail("创作政策需要版本20存档")
 		return {"ok":true}

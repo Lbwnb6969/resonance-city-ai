@@ -93,6 +93,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	city.WishFulfilment.write_snapshot(city,result)
 	city.CreationPolicy.Save.write(city,result)
 	if city.TerrainTarget.Rules.has_target(city.terrain_strokes):result.schema=city.TerrainTarget.Rules.SCHEMA
+	if city.TerrainTarget.Rules.has_version(city.terrain_strokes,city.TerrainTarget.Rules.Smooth.VERSION):result.schema=city.TerrainTarget.Rules.Smooth.SCHEMA
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
@@ -189,6 +190,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 		stroke.radius=float(stroke.radius)
 		stroke.strength=float(stroke.strength)
 		if city.TerrainTarget.Rules.targeted(stroke):stroke.terrain_version=int(stroke.terrain_version);stroke.target_y=float(stroke.target_y)
+		if city.TerrainTarget.Rules.Smooth.targeted(stroke):stroke.terrain_version=int(stroke.terrain_version);stroke.kernel_radius=float(stroke.kernel_radius)
 		for i in range(stroke.points.size()):
 			var point:=Vector2(float(stroke.points[i][0]),float(stroke.points[i][1]))
 			stroke.points[i]=[point.x,point.y]
@@ -334,7 +336,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	if data.get("schema")==city.SCHEMA and not data.get("terrain_strokes",[]).is_empty(): return city._fail("地形作品需要新存档版本")
 	for stroke in data.get("terrain_strokes",[]):
 		if not stroke is Dictionary: return city._fail("城市存档地形笔画无效")
-		if stroke.has("terrain_version") and data.schema<city.TerrainTarget.Rules.SCHEMA:return city._fail("定高台地需要版本21存档")
+		if stroke.has("terrain_version") and data.schema<city.TerrainTarget.Rules.schema_for(stroke):return city._fail("地形规则需要对应的新存档版本")
 		if stroke.get("mode")=="plateau" and data.schema<city.PLATEAU_SCHEMA: return city._fail("台地作品需要新存档版本")
 		if stroke.get("mode")=="smooth" and data.schema<city.TERRAIN_SMOOTH_SCHEMA: return city._fail("地形柔化作品需要新存档版本")
 		if stroke.has("natural") and data.schema<city.TERRAIN_CONTOUR_SCHEMA: return city._fail("自然轮廓作品需要新存档版本")

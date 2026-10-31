@@ -148,7 +148,7 @@ func _preview(stroke: Array[Vector2], brush_radius: float, brush_mode: String, n
 	var key := str(["terrain", stroke, brush_radius, brush_mode, natural,target,demo.state.revision])
 	if demo.preview_key == key: return
 	demo.preview_key = key
-	target_plan=demo.state.plan_terrain_target(stroke,brush_radius,target,natural) if brush_mode=="plateau" else {}
+	target_plan=demo.state.plan_terrain_target(stroke,brush_radius,target,natural) if brush_mode=="plateau" else demo.state.plan_terrain_smooth(stroke,brush_radius) if brush_mode=="smooth" else {}
 	status.text=str(target_plan.get("message",""))
 	demo.town.show_terrain_brush(stroke, brush_radius, brush_mode, natural,target_plan)
 
@@ -170,7 +170,7 @@ func finish() -> void:
 	demo.preview_key = ""
 	demo.town.clear_preview()
 	if not stroke.is_empty():
-		var result:Dictionary=await preload("res://scripts/ui/city_creation_terrain_target_commit.gd").apply(demo,planned) if stroke_mode=="plateau" else demo.state.add_terrain_stroke(stroke,stroke_mode,stroke_radius,stroke_strength,stroke_passes,stroke_natural)
+		var result:Dictionary=await preload("res://scripts/ui/city_creation_terrain_target_commit.gd").apply(demo,planned) if stroke_mode in ["plateau","smooth"] else demo.state.add_terrain_stroke(stroke,stroke_mode,stroke_radius,stroke_strength,stroke_passes,stroke_natural)
 		demo._after_edit(result,"terrain")
 
 

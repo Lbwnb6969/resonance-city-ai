@@ -64,7 +64,8 @@ static func _target_surface(renderer,plan:Dictionary)->void:
 	var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.cull_mode=BaseMaterial3D.CULL_DISABLED;material.no_depth_test=true;material.albedo_color=Color(.80,.72,.46,.18)
 	mesh.material_override=material;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	mesh.set_meta("target_y",plan.row.target_y);renderer.preview.add_child(mesh)
+	if plan.row.has("target_y"):mesh.set_meta("target_y",plan.row.target_y)
+	renderer.preview.add_child(mesh)
 
 static func _ribbon(surface: SurfaceTool,outline: PackedVector2Array,state: RefCounted) -> void:
 	# Sample long straight edges too: each vertex follows the same published

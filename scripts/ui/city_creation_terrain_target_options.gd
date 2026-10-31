@@ -10,8 +10,10 @@ static func setup(dock)->RefCounted:
 	return options
 func refresh(dock)->void:
 	var brush=dock.demo.terrain_brush
-	panel.visible=dock.active_tool==8 and brush.mode=="plateau"
+	panel.visible=dock.active_tool==8 and brush.mode in ["plateau","smooth"]
 	brush.height_controls.visible=panel.visible
 	if not panel.visible:return
+	brush.target_picker.visible=brush.mode=="plateau";brush.sample_picker.visible=brush.mode=="plateau";brush.height_controls.get_child(0).visible=brush.mode=="plateau"
+	if brush.status.text.is_empty() and brush.mode=="smooth":brush.status.text="柔化坡肩 · 1.5米邻域\n屋基、内院和路床保留"
 	panel.size=panel.get_combined_minimum_size();var bounds:Vector2=dock.parent.get_viewport_rect().size
 	panel.position=Vector2(clampf(dock.bubble_rows.position.x,12.,maxf(12.,bounds.x-panel.size.x-12.)),maxf(12.,dock.bubble_rows.position.y-panel.size.y-8.))

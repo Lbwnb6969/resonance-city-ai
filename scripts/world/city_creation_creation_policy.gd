@@ -12,7 +12,7 @@ static func can_assign_role(city:RefCounted,role:String)->bool:
 
 static func data_is_free(data:Dictionary)->bool:
 	var settings:Variant=data.get("creative_settings",{})
-	return (data.get("schema",0)==Save.SCHEMA or data.get("schema",0)==Save.LATEST_SCHEMA) and settings is Dictionary and settings.get("creation_policy")=="free"
+	return (data.get("schema",0)==Save.SCHEMA or data.get("schema",0)==21 or data.get("schema",0)==Save.LATEST_SCHEMA) and settings is Dictionary and settings.get("creation_policy")=="free"
 static func data_can_build_era(data:Dictionary,era:Variant)->bool:
 	if not era is String or era not in ERAS:return false
 	return data_is_free(data) or era in data.get("era_unlocks",["pastoral"])

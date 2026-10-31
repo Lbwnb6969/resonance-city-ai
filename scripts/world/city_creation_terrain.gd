@@ -326,6 +326,8 @@ func _sculpt_stroke(buffer: PackedFloat32Array,terrain_offsets: PackedFloat32Arr
 			buffer[index]+=delta
 
 func _smooth_stroke(buffer: PackedFloat32Array,terrain_offsets: PackedFloat32Array,row: Dictionary,water_clearance: Callable) -> void:
+	if TargetRules.Smooth.targeted(row):
+		TargetRules.Smooth.apply(self,buffer,terrain_offsets,row,water_clearance);return
 	# One local cross-blur pass softens a sculpted shoulder without changing
 	# its broad form. Shore water and the editable-world edge remain untouched.
 	var source := buffer.duplicate()

@@ -2924,6 +2924,8 @@ func plan_terrain_target(points:Array[Vector2],radius:float,target_y:float,natur
 	return TerrainTarget.create(self,points,radius,target_y,natural)
 func apply_terrain_target(plan:Dictionary)->Dictionary:
 	return TerrainTarget.commit(self,plan)
+func plan_terrain_smooth(points:Array[Vector2],radius:float,strength:float=.65)->Dictionary:
+	return TerrainTarget.create_smooth(self,points,radius,strength)
 
 func add_terrain_stroke(points: Array[Vector2],mode: String,radius: float = 3.5,strength: float = 0.65,passes: int = 1,natural: bool = false) -> Dictionary:
 	var encoded: Array=[]
