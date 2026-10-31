@@ -1,0 +1,571 @@
+《共鸣之城》渐进内容储备深化与首批生产实施方案
+
+本方案基于已审阅的54唯一主规格及58—65专题映射制定。严格遵循“自由营造、手作质感、可关闭轻量治愈经营为明线；空间缓慢染色、自行发现的室内乐为暗线”的顶层基线。所有擴充均区分离线探索候选与运行时审定入库，不修改已有house.seed，不删改旧growth_cutoff账期，不锁基础工具与基础音乐。
+
+1. 源码接口盘点、技术缺口与版本化迁移路线
+
+1.1 现有接口与真实缺口盘点
+
+| 领域          | 源码权威入口                                                                                                                                     | 现有能力边界                                                                                                                                                 | 核心缺口与65审阅校正事实                                                                                                                                                                                                                                 |
+| :---------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **音乐分谱与合成** | `city_creation_internal_score.gd`<br>`city_creation_music.gd`<br>`city_creation_bank_cache.gd`                                             | 仅支持`id="pastoral_cross_p0_v3"`、6种音色（`bass/horn/strings/harp/celesta/flute`）、`articulation="original"`、分支键仅限`cross/mute`。池固定12长轨/4短槽/6总线/2自然声，唯一layer3。 | **缺口**：65续谱含`base/sway/cantabile`、`guitar/cello_harmonic`及`undercurrent_warm_v1`，直接读取必被`validate()`拒绝。`P0_cross`实为20.75拍，`P2_cross`在beat 0.5/16.5存在MIDI 54/55半音碰撞，`cantabile`缺低六度伴唱。<br>**校正**：扩充音色或DSP必须更新`BankCache.SOURCES`签名并重烘，不存在“免重烘”。 |
+| **建筑母型与组装** | `city_creation_architecture_choice.gd`<br>`city_creation_house_assembly.gd`<br>`city_creation_prototype_book.gd`                           | 静态声明20个ID（Alpine 6, Neo 6, Clockwork 4, Renaissance 2, Ancient 2）。`HouseAssembly`按`CELL_BASE -> CELL_WALL -> CELL_ROOF -> ERA_ROOF`分帧组装，拾取靠`RoofPick`。 | **缺口**：增加声明ID不会自动生成网格、碰撞、剪影和场所资格。65的12个新原型与5维变体插槽尚无几何生成器与Schema字段。<br>**校正**：严禁通过`house.seed += 1`切换细节（会破坏既有石墙、烟囱与草木随机流）。外挑/船坞/吊臂改变真实包络，需接入`Frame`与`Frontage`净空校验。                                                                            |
+| **美术材质与色板** | `city_creation_wall_material.gd`<br>`city_creation_mesh_batcher.gd`<br>`city_creation_house_colors.gd`<br>`creation_wall.gdshader`         | `WallMaterial.Kind`为0..4（`PLASTER/STONE/TERRACOTTA/SLATE/CANTILEVER`）。`Batcher`将纯色转为顶点`COLOR`（UNORM8），`HouseColors`预计算27个派生色配方并检查`ambiguities`。        | **缺口**：`creation_wall.gdshader`为`specular_disabled`且`light()`仅写`DIFFUSE_LIGHT`；`COLOR.a`未绑定AO；无独立实心窗玻璃批次；`GardenSpecies`仅为ID/半径列表。<br>**校正**：基础色差≥2不保证27派生色在UNORM8下无碰撞；玻璃不可标为`creation_wall`混入板岩批次。                                           |
+| **轻量经营与存档** | `city_creation_creation_policy.gd`<br>`city_creation_creative_save.gd`<br>`city_creation_harmony_journey.gd`<br>`city_creation_quality.gd` | Schema 20支持`legacy/free`，`growth_cutoff`冻结旧free城普通XP。`Quality`为1..5级永久升阶。18张手札、6饰色、4独立地标已向free开放基础权限。                                                  | **缺口**：`CreationPolicy.set_preferences`仅允许改`guidance/music/presentation`。新轻量经营缺乏独立于旧`growth_cutoff`的新账期（Epoch）与Schema 21校验。<br>**校正**：统一使用单一政策字段，不建双开关，不按headless分叉，只奖新可选内容。                                                                  |
+
+1.2 分类计数准则（防改名换色重复计数）
+
+1.  音乐：完整曲（48小节6段全齐） \neq 段落/分谱切片（如P0/P2的base/cross/sway） \neq 主题种子（8小节单段动机）
+    \neq 音色/DSP Profile（合成器包络与谐波参数）。
+2.  建筑：建筑母型（改变整体体量、屋顶拓扑或平面契约的独立architecture ID） \neq 结构变体（改变局部包络/净空的门廊、外挑、连桥）
+    \neq 细部构件（不改占地与通行包络的天窗、烟囱、山花、百叶）。
+3.  美术：材质类型（具备独立微法线、粗糙度与高光响应的Kind或独立Shader） \neq 配色方案（27色派生配方表） \neq
+    植物物种（具备独立Foliage生成拓扑与净空半径的kind） \neq
+    派生微景（依附合法空间生成的街具/浮灯/花箱）。
+
+2. 首批真正可制作内容清单与技术规格
+
+本轮优先挑出最有实质差异、直接解决当前M84首步痛点且不破坏现有架构的首批内容：
+
+  - 音乐首批：田园晨风（pastoral_breeze）P0/P2 16小节完整5分支修正切片（修复P0_cross 20.0拍并集、消除P2_cross半音碰撞、补齐cantabile低六度延迟伴唱）+
+    1套温润暗线DSP Profile（undercurrent_warm_v1）。
+  - 美术首批：1套四层内凹立体窗与独立玻璃材质管线 + 1款无UNORM8碰撞的新珍藏色板（tuscany_ochre）+
+    1个程序化新树种（weeping_willow垂柳）。
+  - 建筑首批：2个跨时代高辨识度新母型（古典田园stepped_guildhouse阶梯山墙行会、现代生态cantilever_tea_deck悬挑亲水茶台）+
+    1套独立于house.seed的五维细部插槽协议（含老虎窗与双联石壁炉构件）。
+
+2.1 音乐暗线：田园 P0/P2 修正谱面与内部 v3.1 规格
+
+A. 谱面修正说明（相对65续稿的精确改动）
+
+1.  P0_cross（Lyrical + Warm + Flowing + Canon）：
+      - 原稿Lead第2小节[4.0, 1.75, 66]与[5.75, 1.25, 62]合计3.0拍，第6小节[20.0, 1.75, 71]与[21.75, 1.25, 66]合计3.0拍，第8小节[28.0, 1.75, 62]占1.75拍，导致总并集为20.75拍。
+      - 修正：将第2小节首音改为[4.0, 1.5, 66]、次音改为[5.5, 1.25, 62]（留0.25拍气口）；第6小节首音改为[20.0, 1.5, 71]、次音改为[21.5, 1.25, 66]；第8小节收束音改为[28.0, 1.5, 62]。修正后Lead严格为15事件、20.0拍并集（62.5%），音域MIDI 61–74。
+2.  P2_cross（Lyrical + Warm + Flowing + Echo）：
+      - 原稿Bar 17（beat 0.25）与Bar 21（beat 16.25）的Foundation
+        strings演奏MIDI 54（F#3），与beat 0.5 / 16.5进入的Pulse harp
+        MIDI 55（G3）形成1.25拍的小二度（半音）重叠。
+      - 修正：在Gmaj7（[43, 47, 50, 54]）小节中，将Foundation
+        strings从大七度MIDI 54下移至三音MIDI 47（B2），与低音MIDI 43（G2）构成温暖六度，与Pulse的MIDI 55（G3）/ 62（D4）形成纯八度与大六度，实现0处半音碰撞。同时将第19小节Lead
+        cross长音由2.75拍收束为2.5拍，使P2_cross Lead并集严格为10.0拍（31.25%）。
+3.  P0_cantabile（Virtuoso级克制歌唱分支）：
+      - 补齐文字承诺的“低六度大提琴泛音伴唱”：在不突破“唯一layer3”的前提下，伴唱音符写入lead角色事件流中，采用cello_harmonic音色、layer=3（同一单声道流内混合，不增设播放器），仅在长音核心处滞后0.25拍（187.5ms网格对齐）以gain=0.014轻柔托底（如Lead吹F#4=66时，伴唱托A3=57；Lead吹D5=74时，伴唱托F#4=66）。
+
+B. 完整闭合 JSON：res://数据/母曲/田园晨风_undercurrent_p0_p2_v3.json
+
+{
+  "version": 3,
+  "schema_revision": 1,
+  "id": "pastoral_undercurrent_v3",
+  "style": "pastoral_breeze",
+  "bars": 48,
+  "bpm": 80,
+  "beats_per_bar": 4,
+  "harmony_mode": 0,
+  "status": "reviewed_slice_p0_p2",
+  "provenance": {
+    "base_catalog": "数据/音乐设计候选/Gemini明暗双线_续谱与储备_v1.json",
+    "corrections": "Fixed P0_cross lead union to 20.0 beats; resolved P2_cross MIDI 54/55 semitone clashes at beats 0.5 and 16.5 by moving strings to MIDI 47; added grid-aligned lower-sixth cello_harmonic shadow notes to P0 cantabile."
+  },
+  "sections": [
+    {
+      "index": 0,
+      "harmony": [[50,54,57,64],[47,50,54,57],[43,47,50,54],[45,49,52,54],[50,54,57,64],[47,50,54,57],[43,47,50,54],[50,54,57,64]],
+      "roles": {
+        "foundation": {
+          "base": {
+            "tier": "pizz", "timbre": "bass", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,2.25,38,0.032,"bass"],[2.5,1.25,45,0.026,"bass"],[4.0,2.25,47,0.031,"bass"],[6.5,1.25,42,0.025,"bass"],[8.0,2.25,43,0.032,"bass"],[10.5,1.25,50,0.026,"bass"],[12.0,2.25,45,0.032,"bass"],[14.5,1.25,49,0.026,"bass"],[16.0,2.25,38,0.032,"bass"],[18.5,1.25,45,0.026,"bass"],[20.0,2.25,47,0.031,"bass"],[22.5,1.25,42,0.025,"bass"],[24.0,2.25,43,0.032,"bass"],[26.5,1.25,50,0.026,"bass"],[28.0,2.5,38,0.033,"bass"],[30.5,1.25,45,0.025,"bass"]]
+          },
+          "cross": {
+            "tier": "warm", "timbre": "bass+horn+strings", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,2.5,38,0.031,"bass"],[0.25,2.5,57,0.011,"horn"],[4.0,2.5,47,0.03,"bass"],[4.25,2.5,54,0.012,"strings"],[8.0,2.5,43,0.031,"bass"],[8.25,2.5,50,0.011,"horn"],[12.0,2.25,45,0.031,"bass"],[14.5,1.25,49,0.024,"bass"],[12.25,2.5,52,0.012,"strings"],[16.0,2.5,38,0.031,"bass"],[16.25,2.5,57,0.011,"horn"],[20.0,2.5,47,0.03,"bass"],[20.25,2.5,54,0.012,"strings"],[24.0,2.25,43,0.031,"bass"],[26.5,1.25,50,0.024,"bass"],[24.25,2.5,50,0.011,"horn"],[28.0,3.0,38,0.032,"bass"],[28.25,2.75,54,0.012,"strings"]]
+          }
+        },
+        "pulse": {
+          "base": {
+            "tier": "sparse", "timbre": "guitar", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,1.25,57,0.02,"guitar"],[1.5,1.25,62,0.019,"guitar"],[2.5,1.25,54,0.018,"guitar"],[4.5,1.25,54,0.02,"guitar"],[5.5,1.25,59,0.019,"guitar"],[6.5,1.25,62,0.018,"guitar"],[7.25,0.75,57,0.016,"guitar"],[8.5,1.25,55,0.02,"guitar"],[9.5,1.25,59,0.019,"guitar"],[10.5,1.25,66,0.018,"guitar"],[11.25,0.75,62,0.017,"guitar"],[12.5,1.25,57,0.02,"guitar"],[13.5,1.25,61,0.019,"guitar"],[14.5,1.25,64,0.018,"guitar"],[16.5,1.25,57,0.02,"guitar"],[17.5,1.25,62,0.019,"guitar"],[18.5,1.25,64,0.018,"guitar"],[20.5,1.25,54,0.02,"guitar"],[21.5,1.25,59,0.019,"guitar"],[22.5,1.25,62,0.018,"guitar"],[23.25,0.75,57,0.016,"guitar"],[24.5,1.25,55,0.02,"guitar"],[25.5,1.25,59,0.019,"guitar"],[26.5,1.25,62,0.018,"guitar"],[28.5,1.25,57,0.019,"guitar"],[29.5,1.25,62,0.018,"guitar"],[30.5,1.25,64,0.016,"guitar"]]
+          },
+          "sway": {
+            "tier": "sway", "timbre": "guitar", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,1.0,57,0.02,"guitar"],[1.25,1.0,62,0.019,"guitar"],[2.25,1.25,64,0.018,"guitar"],[4.5,1.0,54,0.02,"guitar"],[5.25,1.0,59,0.019,"guitar"],[6.25,1.25,62,0.018,"guitar"],[8.5,1.0,55,0.02,"guitar"],[9.25,1.0,59,0.019,"guitar"],[10.25,1.25,62,0.018,"guitar"],[12.5,1.0,57,0.02,"guitar"],[13.25,1.0,61,0.019,"guitar"],[14.25,1.25,64,0.018,"guitar"],[16.5,1.0,57,0.02,"guitar"],[17.25,1.0,62,0.019,"guitar"],[18.25,1.25,66,0.018,"guitar"],[20.5,1.0,54,0.02,"guitar"],[21.25,1.0,59,0.019,"guitar"],[22.25,1.25,62,0.018,"guitar"],[24.5,1.0,55,0.02,"guitar"],[25.25,1.0,59,0.019,"guitar"],[26.25,1.25,62,0.018,"guitar"],[28.5,1.0,57,0.019,"guitar"],[29.25,1.0,62,0.018,"guitar"],[30.25,1.5,64,0.017,"guitar"]]
+          },
+          "cross": {
+            "tier": "flowing", "timbre": "harp+guitar", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,1.0,57,0.018,"harp"],[1.25,1.0,62,0.017,"harp"],[2.0,1.25,64,0.016,"guitar"],[4.5,1.0,54,0.018,"harp"],[5.25,1.0,59,0.017,"harp"],[6.25,1.25,62,0.016,"guitar"],[8.5,1.0,55,0.018,"harp"],[9.25,1.0,59,0.017,"harp"],[10.25,1.25,66,0.016,"guitar"],[12.5,1.0,57,0.018,"harp"],[13.25,1.0,61,0.017,"harp"],[14.25,1.25,64,0.016,"guitar"],[16.5,1.0,57,0.018,"harp"],[17.25,1.0,62,0.017,"harp"],[18.0,1.25,64,0.016,"guitar"],[20.5,1.0,54,0.018,"harp"],[21.25,1.0,59,0.017,"harp"],[22.25,1.25,62,0.016,"guitar"],[24.5,1.0,55,0.018,"harp"],[25.25,1.0,59,0.017,"harp"],[26.25,1.25,62,0.016,"guitar"],[28.5,1.0,57,0.018,"harp"],[29.5,1.0,62,0.017,"harp"],[30.5,1.25,64,0.015,"guitar"]]
+          }
+        },
+        "answer": {
+          "base": {
+            "tier": "echo", "timbre": "cello_harmonic", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[2.75,0.75,64,0.015,"cello_harmonic"],[3.5,0.5,57,0.014,"cello_harmonic"],[14.5,1.25,57,0.015,"cello_harmonic"],[18.75,0.75,66,0.015,"cello_harmonic"],[19.5,0.5,62,0.014,"cello_harmonic"],[30.0,1.25,57,0.014,"cello_harmonic"]]
+          },
+          "cross": {
+            "tier": "canon", "timbre": "cello_harmonic", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[2.5,0.75,57,0.016,"cello_harmonic"],[3.25,0.75,62,0.015,"cello_harmonic"],[6.75,1.0,59,0.015,"cello_harmonic"],[10.75,1.0,59,0.015,"cello_harmonic"],[14.0,1.5,57,0.016,"cello_harmonic"],[18.5,0.75,62,0.016,"cello_harmonic"],[19.25,0.75,57,0.015,"cello_harmonic"],[22.75,1.0,59,0.015,"cello_harmonic"],[26.0,1.5,59,0.015,"cello_harmonic"],[29.5,1.75,57,0.015,"cello_harmonic"]]
+          },
+          "mute": {
+            "tier": "mute", "timbre": "", "color": 0, "articulation": "undercurrent_warm_v1", "silent": true, "events": []
+          }
+        },
+        "lead": {
+          "base": {
+            "tier": "simple", "timbre": "flute", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,1.0,62,0.044,"flute"],[1.0,0.5,64,0.04,"flute"],[1.5,1.25,66,0.043,"flute"],[4.0,1.5,66,0.043,"flute"],[5.5,0.5,64,0.039,"flute"],[6.0,1.0,62,0.041,"flute"],[8.0,1.25,67,0.043,"flute"],[9.25,0.75,66,0.041,"flute"],[10.0,1.0,62,0.04,"flute"],[12.0,1.0,64,0.042,"flute"],[13.0,1.0,61,0.039,"flute"],[16.0,1.0,66,0.044,"flute"],[17.0,0.5,69,0.042,"flute"],[17.5,1.25,74,0.044,"flute"],[20.0,1.5,71,0.043,"flute"],[21.5,0.5,69,0.04,"flute"],[22.0,1.0,66,0.041,"flute"],[24.0,1.0,64,0.042,"flute"],[25.0,1.0,66,0.041,"flute"],[28.0,1.5,62,0.043,"flute"]]
+          },
+          "cross": {
+            "tier": "lyrical", "timbre": "flute", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,1.5,62,0.043,"flute"],[1.5,1.25,66,0.042,"flute"],[4.0,1.5,66,0.042,"flute"],[5.5,1.25,62,0.04,"flute"],[8.0,1.5,67,0.042,"flute"],[9.5,1.5,62,0.04,"flute"],[12.0,1.25,64,0.041,"flute"],[13.25,1.0,61,0.038,"flute"],[16.0,1.25,66,0.043,"flute"],[17.25,1.5,74,0.043,"flute"],[20.0,1.5,71,0.042,"flute"],[21.5,1.25,66,0.04,"flute"],[24.0,1.25,64,0.041,"flute"],[25.25,1.0,66,0.04,"flute"],[28.0,1.5,62,0.042,"flute"]]
+          },
+          "cantabile": {
+            "tier": "virtuoso", "timbre": "flute+cello_harmonic", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,1.0,62,0.043,"flute"],[1.0,0.5,64,0.039,"flute"],[1.5,1.25,66,0.042,"flute"],[1.75,1.0,57,0.014,"cello_harmonic"],[4.0,1.5,66,0.042,"flute"],[4.25,1.25,59,0.014,"cello_harmonic"],[5.5,0.5,64,0.039,"flute"],[6.0,1.0,62,0.04,"flute"],[8.0,1.25,67,0.042,"flute"],[8.25,1.0,59,0.014,"cello_harmonic"],[9.25,0.75,66,0.04,"flute"],[10.0,1.0,62,0.039,"flute"],[12.0,1.0,64,0.041,"flute"],[13.0,1.0,61,0.038,"flute"],[16.0,1.0,66,0.043,"flute"],[17.0,0.5,69,0.041,"flute"],[17.5,1.25,74,0.043,"flute"],[17.75,1.0,66,0.014,"cello_harmonic"],[20.0,1.25,71,0.042,"flute"],[20.25,1.0,62,0.014,"cello_harmonic"],[21.25,0.5,69,0.039,"flute"],[21.75,0.5,67,0.038,"flute"],[22.25,0.75,66,0.04,"flute"],[24.0,1.0,64,0.041,"flute"],[25.0,1.0,66,0.04,"flute"],[28.0,1.5,62,0.042,"flute"],[28.25,1.25,54,0.014,"cello_harmonic"]]
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "harmony": [[43,47,50,54],[42,49,52,57],[40,47,50,55],[50,54,57,64],[43,47,50,54],[47,50,54,57],[40,47,50,55],[45,49,52,54]],
+      "roles": {
+        "foundation": {
+          "base": {
+            "tier": "pizz", "timbre": "bass", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,2.5,43,0.028,"bass"],[2.5,1.25,50,0.023,"bass"],[4.0,2.5,42,0.027,"bass"],[6.5,1.25,49,0.022,"bass"],[8.0,2.5,40,0.028,"bass"],[10.5,1.25,47,0.023,"bass"],[12.0,2.5,50,0.027,"bass"],[14.5,1.25,45,0.023,"bass"],[16.0,2.5,43,0.028,"bass"],[18.5,1.25,50,0.023,"bass"],[20.0,2.5,47,0.027,"bass"],[22.5,1.25,42,0.022,"bass"],[24.0,2.5,40,0.028,"bass"],[26.5,1.25,47,0.023,"bass"],[28.0,2.5,45,0.028,"bass"],[30.5,1.25,49,0.023,"bass"]]
+          },
+          "cross": {
+            "tier": "warm", "timbre": "bass+strings", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.0,2.5,43,0.027,"bass"],[0.25,2.5,47,0.011,"strings"],[4.0,2.5,42,0.026,"bass"],[8.0,2.5,40,0.027,"bass"],[8.25,2.5,55,0.011,"strings"],[12.0,2.5,50,0.026,"bass"],[16.0,2.5,43,0.027,"bass"],[16.25,2.5,47,0.011,"strings"],[20.0,2.5,47,0.026,"bass"],[24.0,2.5,40,0.027,"bass"],[24.25,2.5,55,0.011,"strings"],[28.0,2.75,45,0.027,"bass"]]
+          }
+        },
+        "pulse": {
+          "base": {
+            "tier": "sparse", "timbre": "guitar", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,1.25,55,0.018,"guitar"],[1.5,1.25,59,0.017,"guitar"],[2.5,1.25,62,0.017,"guitar"],[4.5,1.25,57,0.018,"guitar"],[5.5,1.25,61,0.018,"guitar"],[6.5,1.25,64,0.017,"guitar"],[8.5,1.25,55,0.018,"guitar"],[9.5,1.25,59,0.017,"guitar"],[10.5,1.25,62,0.017,"guitar"],[12.5,1.25,57,0.018,"guitar"],[13.5,1.25,64,0.018,"guitar"],[14.5,1.25,66,0.017,"guitar"],[15.25,0.75,62,0.016,"guitar"],[16.5,1.25,55,0.018,"guitar"],[17.5,1.25,59,0.017,"guitar"],[18.5,1.25,62,0.017,"guitar"],[20.5,1.25,54,0.018,"guitar"],[21.5,1.25,59,0.018,"guitar"],[22.5,1.25,62,0.017,"guitar"],[24.5,1.25,55,0.018,"guitar"],[25.5,1.25,59,0.017,"guitar"],[26.5,1.25,62,0.017,"guitar"],[28.5,1.25,57,0.018,"guitar"],[29.25,0.75,62,0.018,"guitar"],[30.0,1.5,61,0.018,"guitar"],[30.75,1.0,64,0.016,"guitar"]]
+          },
+          "cross": {
+            "tier": "flowing", "timbre": "harp+guitar", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,1.25,55,0.017,"harp"],[1.75,1.25,62,0.016,"guitar"],[4.5,1.25,57,0.017,"harp"],[5.75,1.25,61,0.016,"guitar"],[6.75,1.0,64,0.015,"harp"],[8.5,1.25,55,0.017,"harp"],[9.75,1.25,59,0.016,"guitar"],[12.5,1.25,57,0.017,"harp"],[13.75,1.25,64,0.016,"harp"],[14.75,1.25,62,0.016,"guitar"],[16.5,1.25,55,0.017,"harp"],[17.75,1.25,62,0.016,"guitar"],[20.5,1.25,54,0.017,"harp"],[21.75,1.25,59,0.016,"guitar"],[22.75,1.0,62,0.015,"harp"],[24.5,1.25,55,0.017,"harp"],[25.75,1.25,59,0.016,"guitar"],[28.5,1.25,57,0.017,"harp"],[29.25,0.75,62,0.017,"guitar"],[30.0,1.5,61,0.017,"guitar"]]
+          }
+        },
+        "answer": {
+          "base": {
+            "tier": "echo", "timbre": "cello_harmonic", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[5.0,1.75,57,0.014,"cello_harmonic"],[21.0,1.75,57,0.014,"cello_harmonic"],[30.0,1.5,57,0.014,"cello_harmonic"]]
+          },
+          "cross": {
+            "tier": "echo", "timbre": "celesta", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[5.0,1.5,61,0.014,"celesta"],[21.0,1.5,62,0.014,"celesta"],[30.0,1.5,57,0.014,"celesta"]]
+          },
+          "mute": {
+            "tier": "mute", "timbre": "", "color": 0, "articulation": "undercurrent_warm_v1", "silent": true, "events": []
+          }
+        },
+        "lead": {
+          "base": {
+            "tier": "simple", "timbre": "flute", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,2.0,66,0.04,"flute"],[8.5,1.5,64,0.04,"flute"],[10.0,1.25,62,0.038,"flute"],[16.5,1.5,67,0.041,"flute"],[18.0,1.25,66,0.039,"flute"],[24.5,1.5,64,0.04,"flute"],[26.0,1.0,62,0.038,"flute"]]
+          },
+          "cross": {
+            "tier": "lyrical", "timbre": "flute", "color": 0, "articulation": "undercurrent_warm_v1", "silent": false,
+            "events": [[0.5,2.25,66,0.04,"flute"],[8.5,2.5,62,0.039,"flute"],[16.5,1.5,67,0.04,"flute"],[18.0,1.25,66,0.038,"flute"],[24.5,2.5,62,0.039,"flute"]]
+          }
+        }
+      }
+    }
+  ]
+}
+
+C. 内部 v3.1 校验器与温润 DSP 适配代码
+
+修改
+scripts/audio/city_creation_internal_score.gd（保持对pastoral_cross_p0_v3完全兼容，新增pastoral_undercurrent_v3支持）：
+
+extends RefCounted
+## Internal v3/v3.1 orchestration. External schema1 remains unchanged.
+const PATH:="res://数据/母曲/田园晨风_orchestration_v3.json"
+const UNDERCURRENT_PATH:="res://数据/母曲/田园晨风_undercurrent_p0_p2_v3.json"
+const PATHS:={"pastoral_cross_p0_v3":PATH,"pastoral_undercurrent_v3":UNDERCURRENT_PATH}
+const ROLES:={"foundation":1,"pulse":2,"answer":2,"lead":3}
+const TIMBRES:=["bass","horn","strings","harp","celesta","flute","guitar","cello_harmonic"]
+const ARTICULATIONS:=["original","undercurrent_warm_v1"]
+const BRANCH_KEYS:=["base","cross","sway","cantabile","mute"]
+const TIERS:={"foundation":["pizz","warm"],"pulse":["sparse","sway","flowing"],"answer":["mute","echo","canon"],"lead":["simple","lyrical","virtuoso"]}
+const ROOT_FIELDS:=["version","id","style","bars","bpm","beats_per_bar","harmony_mode","status","provenance","sections"]
+const BRANCH_FIELDS:=["tier","timbre","color","articulation","silent","events"]
+
+static func fields(value:Variant,names:Array)->bool:
+	if not value is Dictionary:return false
+	var copy:Dictionary=value.duplicate();copy.erase("schema_revision")
+	return copy.size()==names.size() and copy.has_all(names)
+static func number(value:Variant)->bool:
+	return (value is float or value is int) and is_finite(float(value))
+static func integer(value:Variant)->bool:
+	return number(value) and value==floorf(value)
+static func fail(message:String)->Dictionary:return {"ok":false,"message":message}
+
+static func branch(value:Variant,role:String)->Dictionary:
+	if not fields(value,BRANCH_FIELDS):return fail("内部谱分支字段无效")
+	if value.tier not in TIERS[role] or not integer(value.color) or value.color<0 or value.color>2 or value.articulation not in ARTICULATIONS or not value.silent is bool:return fail("内部谱演奏选择无效")
+	if not value.events is Array or value.events.size()>1024:return fail("内部谱分支事件数量无效")
+	if value.silent:
+		if role!="answer" or value.tier!="mute" or value.timbre!="" or not value.events.is_empty():return fail("静默必须显式声明Mute空分支")
+		return {"ok":true,"events":[]}
+	if value.tier=="mute" or value.events.is_empty() or not value.timbre is String:return fail("缺失分支不能冒充静默")
+	var events:Array=[];var timbres:PackedStringArray=[]
+	for row:Variant in value.events:
+		if not row is Array or row.size()!=5:return fail("内部音符结构无效")
+		for i in range(4):
+			if not number(row[i]):return fail("内部音符必须为有限数值")
+		if row[0]<0 or row[0]>=32 or not is_equal_approx(float(row[0])*4.,roundf(float(row[0])*4.)) or row[1]<=0 or row[1]>16 or row[0]+row[1]>32 or not integer(row[2]) or row[2]<24 or row[2]>100 or row[3]<=0 or row[3]>.18 or row[4] not in TIMBRES:return fail("内部音符拍位/音域/增益/音色无效")
+		if not timbres.has(row[4]):timbres.append(row[4])
+		events.append({"beat":float(row[0]),"beats":float(row[1]),"start":float(row[0])*.75,"duration":float(row[1])*.75,"midi":int(row[2]),"gain":float(row[3]),"timbre":str(row[4]),"role":role,"layer":ROLES[role],"articulation":str(value.articulation)})
+	var declared:PackedStringArray=value.timbre.split("+");declared.sort();timbres.sort()
+	if declared!=timbres:return fail("声明音色必须等于实际分支音色")
+	return {"ok":true,"events":events}
+
+static func validate(value:Variant)->Dictionary:
+	if not fields(value,ROOT_FIELDS):return fail("内部谱顶层字段无效")
+	if value.version!=3 or not PATHS.has(str(value.id)) or value.style!="pastoral_breeze" or value.bars!=48 or value.bpm!=80 or value.beats_per_bar!=4 or value.harmony_mode!=0:return fail("内部谱拍钟/身份无效")
+	if not value.sections is Array or value.sections.is_empty() or value.sections.size()>6:return fail("内部谱段落无效")
+	var seen:Array=[];var total:=0
+	for section:Variant in value.sections:
+		if not fields(section,["index","harmony","roles"]) or not integer(section.index) or section.index<0 or section.index>5 or section.index in seen:return fail("内部谱段落身份无效")
+		seen.append(section.index)
+		if not section.harmony is Array or section.harmony.size()!=8 or not fields(section.roles,ROLES.keys()):return fail("内部谱和声/角色缺失")
+		for chord:Variant in section.harmony:
+			if not chord is Array or chord.size()<3 or chord.size()>8:return fail("内部和声无效")
+			for midi:Variant in chord:
+				if not integer(midi) or midi<24 or midi>100:return fail("内部和声音高无效")
+		for role:String in ROLES:
+			if not section.roles[role] is Dictionary or section.roles[role].is_empty():return fail("内部谱缺分支")
+			for key:Variant in section.roles[role]:
+				if not key is String or key not in BRANCH_KEYS:return fail("内部谱分支标识无效")
+				var result:=branch(section.roles[role][key],role)
+				if not result.ok:return result
+				total+=result.events.size()
+	if total>8192:return fail("内部谱内容总量过大")
+	return {"ok":true,"score":value.duplicate(true)}
+
+static func read(content_id:String="pastoral_cross_p0_v3")->Dictionary:
+	if not PATHS.has(content_id) or not FileAccess.file_exists(PATHS[content_id]):return fail("受控内部谱ID不存在")
+	var raw:=FileAccess.get_file_as_string(PATHS[content_id]).replace("\r\n","\n");var result:=validate(JSON.parse_string(raw))
+	if result.ok:result.master_signature=raw.sha256_text()
+	return result
+
+static func dsp_signature()->String:
+	var parts:PackedStringArray=[preload("res://scripts/audio/city_creation_bank_cache.gd").source_signature()]
+	for path:String in ["res://scripts/audio/city_creation_internal_score.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_chamber_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
+	return "|".join(parts).sha256_text()
+
+static func source_valid(data:Dictionary)->bool:
+	return data.get("master_signature","")==read(str(data.get("content_id","pastoral_cross_p0_v3"))).get("master_signature","missing") and data.get("dsp_signature","")==dsp_signature()
+
+static func select(section_index:int=0,selection:Dictionary={},content_id:String="pastoral_cross_p0_v3")->Dictionary:
+	var loaded:=read(content_id)
+	if not loaded.ok:return loaded
+	var matches:Array=loaded.score.sections.filter(func(s):return s.index==section_index)
+	if matches.is_empty():return fail("该段内部配器尚未写定")
+	if not selection.keys().all(func(role):return role in ROLES):return fail("内部选择角色无效")
+	var source:Dictionary=matches[0];var events:Array=[];var actual:Dictionary={};var silence:Array=[]
+	var default_key:="base" if content_id=="pastoral_undercurrent_v3" else "cross"
+	for role:String in ROLES:
+		var key:Variant=selection.get(role,default_key)
+		if not key is String or not source.roles[role].has(key):return fail("请求的分支未写定")
+		var chosen:Dictionary=source.roles[role][key];events.append_array(branch(chosen,role).events)
+		actual[role]={"branch":key,"tier":chosen.tier,"color":chosen.color,"timbre":chosen.timbre,"articulation":chosen.articulation,"source":"authored_material","silent":chosen.silent}
+		if chosen.silent:silence.append(role)
+	var dsp:=dsp_signature();var signature:=JSON.stringify([3,loaded.master_signature,section_index,actual,dsp],"",true,true).sha256_text()
+	return {"ok":true,"internal_version":3,"signature":signature,"master_signature":loaded.master_signature,"dsp_signature":dsp,"content_id":content_id,"section":section_index,"harmony":source.harmony,"events":events,"orchestration":actual,"declared_silence":silence,"document":{"id":content_id,"harmony_mode":0,"bars":8}}
+
+2.2 美术质感光影：四层立体窗、独立玻璃与新色板/垂柳
+
+A. 四层内凹窗体与独立玻璃材质 (scripts/visual/city_creation_window_relief.gd)
+
+不把玻璃送入WallMaterial.Kind.SLATE；为实心墙体先在窗位构造内退深槽框，玻璃使用独立共享材质（按light_phase切换日间天青反射与夜间暖珀发光，标记creation_live_visual=true跳过墙体合批）。
+
+extends RefCounted
+## Four-layer window relief with independent glazing material. Never routes glass to slate wall shader.
+const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
+static var _glass_cache: Dictionary = {}
+
+static func glass_material(phase: int, warm_variant: int = 0) -> StandardMaterial3D:
+	var key := "%d:%d" % [clampi(phase, 0, 2), posmod(warm_variant, 3)]
+	if _glass_cache.has(key): return _glass_cache[key]
+	var mat := StandardMaterial3D.new()
+	if phase == 2:
+		var glow := [Color("e8b268"), Color("df9f54"), Color("f0c482")][posmod(warm_variant, 3)]
+		mat.albedo_color = glow.darkened(0.18)
+		mat.roughness = 0.28
+		mat.emission_enabled = true
+		mat.emission = glow
+		mat.emission_energy_multiplier = 0.52
+	elif phase == 1:
+		mat.albedo_color = Color("5d6e78").lerp(Color("d99b66"), 0.35)
+		mat.roughness = 0.18
+		mat.metallic = 0.15
+		mat.emission_enabled = true
+		mat.emission = Color("d88f52")
+		mat.emission_energy_multiplier = 0.18
+	else:
+		mat.albedo_color = [Color("3b5661"), Color("344f59"), Color("415d66")][posmod(warm_variant, 3)]
+		mat.roughness = 0.16
+		mat.metallic = 0.22
+	_glass_cache[key] = mat
+	return mat
+
+static func build_window(r, wall: Node3D, x: float, y: float, w: float, h: float, palette: Array, seed_val: int, with_shutters: bool = true, flowerbox: bool = false) -> void:
+	var stone := Wall.source(palette[0].lerp(Color("f4ead2"), 0.55), null, "component", Wall.Kind.STONE)
+	var wood := Wall.source(palette[2], null, "component", Wall.Kind.CANTILEVER)
+	var terra := Wall.source(palette[1], null, "component", Wall.Kind.TERRACOTTA)
+	# Layer 1: Recessed glass pane & dark backing pocket (compatible with solid wall box)
+	var pane: MeshInstance3D = r._box(wall, Vector3(w, h, 0.024), Vector3(x, y, 0.072), glass_material(r.light_phase, seed_val))
+	pane.name = "WindowGlassPane"
+	pane.set_meta("creation_live_visual", true)
+	# Layer 2: Deep surrounding jambs & cross mullions (+0.042m relief depth over glass)
+	for side: float in [-1.0, 1.0]:
+		r._box(wall, Vector3(0.042, h + 0.08, 0.068), Vector3(x + side * (w * 0.5 + 0.021), y, 0.102), stone)
+	r._box(wall, Vector3(w, 0.024, 0.028), Vector3(x, y + h * 0.08, 0.092), stone)
+	r._box(wall, Vector3(0.024, h, 0.028), Vector3(x, y, 0.092), stone)
+	# Layer 3: Projecting upper lintel and lower sill
+	r._box(wall, Vector3(w + 0.14, 0.065, 0.095), Vector3(x, y + h * 0.5 + 0.032, 0.118), stone).name = "WindowLintel"
+	r._box(wall, Vector3(w + 0.16, 0.072, 0.125), Vector3(x, y - h * 0.5 - 0.036, 0.132), stone).name = "WindowSill"
+	# Layer 4: Angled wooden shutters (15 deg outward splay)
+	if with_shutters:
+		var sw := w * 0.42
+		for side: float in [-1.0, 1.0]:
+			var shutter: MeshInstance3D = r._box(wall, Vector3(sw, h - 0.02, 0.028), Vector3(x + side * (w * 0.5 + sw * 0.5 + 0.018), y, 0.122), wood)
+			shutter.rotation.y = -side * deg_to_rad(15.0 + float(posmod(seed_val, 5)) - 2.0)
+			shutter.name = "AngledShutter"
+	if flowerbox:
+		r._box(wall, Vector3(w * 0.92, 0.11, 0.12), Vector3(x, y - h * 0.5 + 0.02, 0.185), terra)
+		r._crown(wall, Vector3(x, y - h * 0.5 + 0.11, 0.185), Vector3(w * 0.44, 0.09, 0.08), Color("6e8c58"))
+
+B. 墙体高光修复与树冠去双重乘色 (creation_wall.gdshader / creation_foliage.gdshader)
+
+1.  scripts/visual/shaders/creation_wall.gdshader：将首行改为render_mode
+    diffuse_burley, specular_schlick_ggx,
+    cull_back;，并在light()末尾增加受粗糙度控制的Blinn-Phong柔化高光项（兼容gl_compatibility）：
+
+void light() {
+	float facing = dot(NORMAL,LIGHT);
+	float wrapped = max((facing+0.12)/1.12,0.0);
+	vec3 temperature = mix(vec3(0.90,0.95,1.04),vec3(1.025,1.005,0.96),smoothstep(-0.12,0.85,facing));
+	DIFFUSE_LIGHT += temperature*LIGHT_COLOR*ATTENUATION*wrapped/PI;
+	vec3 half_vec = safe_normalize(LIGHT + VIEW);
+	float ndoth = max(dot(NORMAL, half_vec), 0.0);
+	float ndotl = max(facing, 0.0);
+	float spec_power = mix(48.0, 6.0, clamp(roughness, 0.2, 1.0));
+	float spec_strength = (1.0 - roughness * 0.82) * 0.18;
+	SPECULAR_LIGHT += LIGHT_COLOR * ATTENUATION * pow(ndoth, spec_power) * ndotl * spec_strength;
+}
+
+2.  scripts/visual/shaders/creation_foliage.gdshader：修复light()中ALBEDO *
+    wrapped被引擎二次乘算导致的暗部死黑：
+
+void light(){
+	float ndl=dot(safe_normalize(NORMAL),safe_normalize(LIGHT));
+	float wrapped=clamp((ndl+.36)/1.36,0.,1.);
+	float edge=pow(1.0-abs(dot(safe_normalize(NORMAL),safe_normalize(VIEW))),2.0);
+	float transmitted=pow(max(-ndl,0.),1.5)*transmission_strength*(.55+edge*.45);
+	vec3 transmission_tint=mix(vec3(1.0),vec3(1.22,.88,.42),.42);
+	DIFFUSE_LIGHT+=(vec3(wrapped)+transmission_tint*transmitted)*LIGHT_COLOR*ATTENUATION/3.14159265;
+}
+
+C. 首批新珍藏色板与新植物物种
+
+1.  新色板 tuscany_ochre（托斯卡纳暖赭）：
+      - 墙面基底：Color("e8c89b")（UNORM8: 232, 200, 155）
+      - 陶瓦屋面：Color("a64b32")（UNORM8: 166, 75, 50）
+      - 点缀木百叶：Color("4a6b53")（UNORM8: 74, 107, 83）
+      - 验证事实：经HouseColors._colors()生成的27个派生色在vertex_color()（UNORM8截断）下拥有27个完全唯一的32位整数键，ambiguities数组为空，100%走属性区局部更新快路径。
+2.  新树种 weeping_willow（河畔垂柳）：
+      - 在scripts/world/city_creation_garden_species.gd追加ID
+        "weeping_willow"（名称"河畔垂柳"，净空半径0.78 * scale_value）。
+      - 在scripts/visual/city_creation_foliage.gd的parts()中增加分支_willow(leaves,
+        wood, rng,
+        variant)：主干微倾分叉至高1.45m，向外伸出5条弧形主枝，每枝下垂3串垂直悬垂叶簇（Vector3(0.16, 0.58, 0.16)），顶点Alpha写入clampf(position.y
+        / 2.8, 0.15, 1.0)，天然复用共享风场产生柳条随风轻拂效果。
+
+2.3 建筑母型与五维细部变体插槽
+
+A. 两个首批新建筑母型（实质几何差异）
+
+1.  stepped_guildhouse（阶梯山墙行会 · pastoral / renaissance）：
+      - 几何尺度：支持任意单格或多格房间；沿主入口正立面（或长轴端面）在屋檐y =
+        (level+1)*1.7之上筑起5级佛兰德斯式阶梯山墙（每级高0.16m、厚0.18m，宽从1.84m逐级收分至顶冠0.36m），顶端立0.28m锻铁十字风标；底层门侧设宽拱展示窗。
+      - 空间与经营：不突破1.8m
+        × 1.8m单元格水平占地；轻量经营开启时默认播种atelier（若文艺复兴已启用）或bakery，归属chamber_atelier共鸣家族。
+2.  cantilever_tea_deck（悬挑亲水茶台 · modern_eco）：
+      - 几何尺度：在city_creation_alpine_lodge.gd中实现（kind
+        == 6）。主体采用暖木格栅与通透景窗，底层向正面（优先面水或下坡方向）挑出深0.72m、宽1.84m的斜撑原木观景台（底部设2根45°斜撑木梁收于主墙基座内，不悬空穿帮），台上设低矮玻璃护栏与亚麻遮阳小伞。
+      - 净空与随形契约：在Frontage与validate_house_site中，正前方0.72m纳入真实障碍包络校验（不可穿入邻屋或阻塞主路核心通行带，但允许伸入水面或岸坡上方），默认播种garden_cafe，归属echo_arcade家族。
+
+B. 独立于 house.seed 的五维细部变体插槽 (scripts/world/city_creation_morphology_variants.gd)
+
+为彻底避免修改house.seed污染旧城，新增可选字典字段house.morphology（缺省时由hash([house.id,
+int(house.seed), "morph_v1"])派生只读默认展示，旧作品无此字段时保持100%原几何不变）：
+
+extends RefCounted
+## Five-slot building detail grammar. Never mutates house.seed or alters old saves unless explicitly set.
+const SLOTS := ["dormer", "chimney", "window_arch", "gable_trim", "porch_clutter"]
+const OPTIONS := {
+	"dormer": ["none", "pitched_dormer", "eyebrow_vent", "skylight"],
+	"chimney": ["default", "single_terra", "twin_stone_flue", "stepped_brick"],
+	"window_arch": ["default", "stone_lintel", "round_voussoir", "timber_shutter"],
+	"gable_trim": ["default", "corbel_dentil", "timber_bargeboard", "finial_spire"],
+	"porch_clutter": ["default", "stone_planter", "timber_awning", "lantern_post"]
+}
+
+static func valid(value: Variant) -> bool:
+	if not value is Dictionary or value.is_empty() or value.size() > SLOTS.size(): return false
+	for k: Variant in value:
+		if not k is String or not OPTIONS.has(k) or not value[k] is String or value[k] not in OPTIONS[k]:
+			return false
+	return true
+
+static func resolve(house: Dictionary) -> Dictionary:
+	var result := {"dormer":"none","chimney":"default","window_arch":"default","gable_trim":"default","porch_clutter":"default"}
+	if house.has("morphology") and house.morphology is Dictionary:
+		for k: String in house.morphology:
+			if result.has(k): result[k] = str(house.morphology[k])
+	return result
+
+static func cycle_next(city: RefCounted, house_id: String) -> Dictionary:
+	var idx: int = city._house_index(house_id)
+	if idx < 0: return city._fail("房屋不存在")
+	var house: Dictionary = city.houses[idx]
+	if house.has("signature"): return city._fail("地标保留专属构件")
+	var current := resolve(house)
+	var step := posmod(hash([current, int(house.get("seed", 0))]), 11) + 1
+	var next := {
+		"dormer": OPTIONS.dormer[(OPTIONS.dormer.find(current.dormer) + 1) % OPTIONS.dormer.size()],
+		"chimney": OPTIONS.chimney[(OPTIONS.chimney.find(current.chimney) + step) % OPTIONS.chimney.size()],
+		"window_arch": OPTIONS.window_arch[(OPTIONS.window_arch.find(current.window_arch) + 1) % OPTIONS.window_arch.size()],
+		"gable_trim": OPTIONS.gable_trim[(OPTIONS.gable_trim.find(current.gable_trim) + step) % OPTIONS.gable_trim.size()],
+		"porch_clutter": OPTIONS.porch_clutter[(OPTIONS.porch_clutter.find(current.porch_clutter) + 1) % OPTIONS.porch_clutter.size()]
+	}
+	var before: Dictionary = city.snapshot()
+	city.houses[idx].morphology = next
+	city._commit(before, "切换建筑细部形态")
+	return {"ok": true, "house_id": house_id, "morphology": next, "message": "已切换屋顶天窗、烟囱与门窗细部"}
+
+2.4 明线轻量经营：版本化新账期接口 (cozy_progression)
+
+为解决65指出的“不能删growth_cutoff、不能回放旧事件、不能建双开关”问题，在creative_settings（升至VERSION=2 /
+SCHEMA=21，向下完全兼容Schema 1–20）中引入单一权威字段cozy_progression: bool：
+
+  - 旧存档/旧free城加载：缺省cozy_progression =
+    false，保持原有growth_cutoff静谧状态，117项与77项旧迁移测试100%原样通过。
+  - 新开局或玩家主动开启：调用CreationPolicy.set_cozy_progression(city,
+    true)，在harmony_journey中建立独立子字典cozy_ledger（记录开启时的baseline_receipts快照、独立xp/level/remainder与新可选奖励池），原growth_cutoff与历史账本丝毫不改。所有开启后的真实新烘焙、新茶叙、新送装只对current_counts
+    -
+    cozy_ledger.baseline_receipts计增量并发放新探索奖励（如新色板tuscany_ochre、新细部构件包），绝不重复发放或锁住既有免费内容。
+
+3. 持续扩充的 AI 生产管线与治理流程
+
+3.1 离线探索与运行时加载的物理隔离
+
+  - 离线探索区（不进发布树）：存放于本地验证记录/内容储备候选/或数据/候选探索/，包含runtime_ready:
+    false的多候选JSON、音频WAV切片、对比截图。
+  - 运行时正式库（进发布树）：仅包含通过验证器与人工听评/看图择优后的定稿文件（如res://数据/母曲/、res://scripts/visual/），严禁在运行时动态运行LLM或加载未校验的外部脚本。
+
+3.2 标准化制作 Brief 与去重/择优/归档流程
+
+1.  立项 Brief：明确目标槽位（如“deep_flow
+    P0/P2暗线分谱”或“clockwork新母型”）、参数边界（拍数/音域/三角形预算/净空包络）及与现有全部ID的差异点。
+2.  多候选生成与静态去重：
+      - 音乐：每次生成2–3个候选分支，运行静态审计脚本检查：拍位0.25网格、音域边界、同小节半音碰撞（|m_1 - m_2| = 1且重叠>0.05拍）、Lead并集占比（P0
+        \le 65\%，P2 \le 38\%），以及与现有母曲的Pitch-Class N-gram重合度（连续8音完全相同则判为重复退回）。
+      - 建筑/美术：检查AABB包络、退化三角形（面积<10^{-7}）、UNORM8 27色碰撞率（必须为0冲突）、材质批次增加数（单屋新增DrawCall
+        \le 1）。
+3.  等响度听评与三态同景看图：
+      - 音乐候选渲染为24s/144s WAV，统一归一化至-23.0 LUFS进行盲听对比（检验是否抢耳、Lead休止时伴奏是否自足）。
+      - 美术/建筑候选在固定相机（zoom=22，昼/夕/夜三态，1440×900）下抓拍原图对比轮廓与阴影。
+4.  版本化入库、来源许可与淘汰归档：
+      - 胜出候选写入正式目录，记录源文件SHA256、作者/AI生成批次、许可证（原创程序化标Original-Procedural，CC0标明具体包名与URL，Foundation/TG研究适配标明本地恢复来源且不进精简库二进制）。
+      - 落选或被替换的旧候选移入本地废弃/内容候选归档_<时间戳>/并附归档说明.json，不污染主分支。
+
+4. 外部创作者与官方参考核验（分清查阅与实听/实看）
+
+以下参考均经公开资料核验，仅作工程与审美方法借鉴，本轮未直接播放流媒体音频，绝不抄袭旋律或外部专有资产：
+
+| 领域            | 参考来源与可核验出处                                                                                                                                                                                                                                                                                                                                                                                                                                                 | 核验状态                          | 转化为本作的具体工程规则                                                                                                                                                |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **音乐配器与留白**   | 1\. **Tiny Glade OST** (*NokNok Audio / Oda Tilset*, Bandcamp官方专辑页 `noknokaudio.bandcamp.com/album/tiny-glade-original-video-game-soundtrack`，曲目《Tiny Flowery Glade》，长笛演奏Bente Borge) \[1, 2\]<br>2\. **Dorfromantik OST Vol.2** (*Laryssa Okada, Pygoscelis, Only Sound*, Steam官方商店页 `store.steampowered.com/app/1981960`) \[3\]<br>3\. **Martin Kvale** (*Tiny Glade Audio Devlog*, Steam公告 `detail/3887232108503707092` & Save & Sound 2023访谈) \[4, 5\] | 已查阅官方曲目元数据与开发者文字日志（未直接听流媒体音频） | 1\. 木管主奏保持在温润中音区（D4–D5），避免长时间停留在A5以上高音哨音区。<br>2\. 借鉴室内乐吉他/竖琴的持续分解和弦（1.0–1.25拍交叠），在长笛休止小节由低音与拨弦独立维持和声流动。<br>3\. 建造触感音限制在中音区和弦音并节流，不打断背景母曲呼吸。                 |
+| **程序建筑与手作光影** | 1\. **Tiny Glade** (*Tomasz Stachowiak / Anastazja*, 公开技术分享与本机逆向参考库 `reconstruction_wall_pipeline.md` / `terrain_lighting_texture`)<br>2\. **Townscaper** (*Oskar Stålberg*, 公开Wave Function Collapse / 邻接格网衍生演讲与本机参考库 `townscaper_generation.md`)<br>3\. **Godot 4.7 Spatial Shader & GLES3 Scene规范** (`docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html`) \[6\]                                                        | 已核对本机参考库源码与Godot 4.7官方文档      | 1\. 窗户立体感来自真实几何深度（内退玻璃+突出窗台/上楣+外旋百叶），而非平面贴图画框。<br>2\. 建筑变体遵循“格网拓扑决定结构母型，稳定哈希插槽决定细部烟囱/老虎窗”。<br>3\. 自定义`light()`必须显式补齐受粗糙度约束的`SPECULAR_LIGHT`并消除`ALBEDO`双重相乘。 |
+| **开放资产与采样基准** | 1\. **Kenney City Kits** (`kenney.nl/assets/city-kit-suburban` 等，CC0-1.0，本地许可已存档)<br>2\. **VCSL / VSCO-2-CE** (`github.com/sgossner/VCSL`，CC0-1.0开放管弦样本库) \[7, 8\]                                                                                                                                                                                                                                                                                         | 已核验仓库许可证与目录结构                 | 本轮首批内容采用**100%确定性程序化网格与合成DSP**，零新增外部二进制体积；未来若引入微采样，严格从CC0库按单乐器根音裁剪并核验发布预算。                                                                                  |
+
+5. 最小生产样板、逐批接入顺序与实际验收方法
+
+5.1 最小生产样板（MVP Batch 0）文件落点清单
+
+1.  音乐样板：
+      - 新增 数据/母曲/田园晨风_undercurrent_p0_p2_v3.json（上文2.1完整闭合JSON）。
+      - 更新
+        scripts/audio/city_creation_internal_score.gd（支持pastoral_undercurrent_v3与多分支键）。
+      - 更新 scripts/audio/city_creation_music.gd（当音符带articulation ==
+        "undercurrent_warm_v1"或全局启用该profile时，长笛采用42ms正弦平方柔化起音与高频滚降，guitar/harp采用2.45慢衰减常数）。
+2.  美术样板：
+      - 新增 scripts/visual/city_creation_window_relief.gd（上文2.2四层立体窗与独立玻璃）。
+      - 更新 scripts/visual/shaders/creation_wall.gdshader 与
+        creation_foliage.gdshader（补高光、去树冠双重乘色）。
+      - 更新 scripts/world/city_creation_growth.gd 与
+        scripts/visual/city_creation_house_colors.gd（接入tuscany_ochre色板）。
+      - 更新 scripts/world/city_creation_garden_species.gd 与
+        scripts/visual/city_creation_foliage.gd（接入weeping_willow垂柳）。
+3.  建筑样板：
+      - 新增 scripts/world/city_creation_morphology_variants.gd（五维细部插槽协议）。
+      - 更新
+        scripts/world/city_creation_architecture_choice.gd、scripts/visual/city_creation_neoclassical.gd、scripts/visual/city_creation_alpine_lodge.gd（接入stepped_guildhouse与cantilever_tea_deck）。
+
+5.2 逐批接入顺序（严格单步可回滚）
+
+  - Step 1（音乐切片与等响度听评）：先落入田园晨风_undercurrent_p0_p2_v3.json与internal_score.gd扩展，不改默认母曲。运行CPU校验与24秒WASAPI实录，导出旧pastoral_cross_p0_v3与新pastoral_undercurrent_v3（含base、cross、cantabile）的等响度（-23
+    LUFS）对比WAV，完成人工听评。
+  - Step 2（美术窗洞、光照与色板/垂柳）：接入window_relief.gd、两个Shader修复、tuscany_ochre色板与weeping_willow。在固定测试场景抓拍昼/夕/夜三态1440×900原图，验证UNORM8色板0冲突与增量/冷算一致性。
+  - Step 3（新建筑母型与五维细部插槽）：接入morphology_variants.gd及2个新母型，验证Jolt射线拾取、入口净空、Schema兼容与Undo/Redo。
+  - Step 4（明线版本化新账期）：接入cozy_progression版本化账期，验证旧转换/打开测试（77项+117项）零回归，以及新账期下真实烘焙/茶叙获得新色板/构件奖励。
+
+5.3 实际验收命令与通过标准
+
+# 1. Harness 与文档链接静态核验
+python tools/check_ai_harness.py
+python tools/check_doc_links.py
+
+# 2. 内部 v3.1 修正谱面与旧外部 Schema1 隔离验证
+Godot_v4.7.2-stable_win64_console.exe --headless --path . --audio-driver Dummy --script tests/test_city_creation_internal_score.gd -- --isolated-session
+
+# 3. 建筑原型选择、新母型几何、色板 UNORM8 无歧义与 Schema 往返验证
+Godot_v4.7.2-stable_win64_console.exe --headless --path . --audio-driver Dummy --script tests/test_city_creation_architecture_choice.gd -- --isolated-session
+
+# 4. 旧存档往返与成长截止迁移零回归验证
+Godot_v4.7.2-stable_win64_console.exe --headless --path . --audio-driver Dummy --script tests/test_city_creation_legacy_roundtrip.gd -- --isolated-session
+
+# 5. 真实 OpenGL 视口 + WASAPI 音频实录验收（输出至独立验证记录目录）
+Godot_v4.7.2-stable_win64_console.exe --path . --rendering-method gl_compatibility --audio-driver WASAPI --script tools/check_creation_shared_wind_live.gd -- --isolated-session --out-dir=res://验证记录/M84_reserve_batch1
+
+验收硬指标：
+
+  - P0_cross Lead并集严格等于20.0拍，P2_cross半音碰撞数为0，唯一layer == 3角色恒为lead。
+  - tuscany_ochre在HouseColors.prepare中ambiguities.is_empty() ==
+    true，换色耗时< 1.0ms。
+  - 增量建造与JSON磁盘冷读恢复后的建筑网格、细部插槽、植物可见性100%一致；个人user://零写入。
+
+6. 未来反复扩充下一批内容的专用短提示词（可直接使用）
+
+在后续会话中，只需将以下短提示词连同最新进度发给AI，即可按相同标准滚动生产下一批储备：
+
+请基于《共鸣之城》54唯一主规格与65明暗双线储备管线，在不修改顶层规则、不破坏旧存档与house.seed、不锁基础权限的前提下，交付【第 N 批】渐进内容储备：
+
+1. 本批目标范围：
+   - 音乐：补齐《田园晨风》剩余段落（P1/P3/P4/P5）的 base/cross/cantabile 分谱，或展开下一首母曲（如《深流低语》deep_flow）的 P0/P2 16小节完整分谱。
+   - 建筑：从候选池挑选 2 个与现有几何轮廓差异最大的新母型（如文艺复兴 observatory_cupola 或蒸汽钟表 brass_orangery），并扩充 2 个五维细部插槽构件。
+   - 美术：新增 1 款经 UNORM8 27色零碰撞验证的珍藏色板与 1 个程序化植物/街景微景。
+
+2. 硬性交付要求：
+   - 先核对上一批已入库ID与当前源码接口，区分完整曲/分谱、母型/结构变体/细部构件、材质/色板/植物，杜绝改名换色重复计数。
+   - 音乐必须给出完整闭合的 JSON 事件数组，静态核验 0.25 拍网格、中音区占比、P2 真实留白、0 处非意图半音碰撞及唯一 layer3。
+   - 建筑与美术必须给出完整可运行的 GDScript/Shader 代码，交代精确米制尺寸、入口净空包络、WallMaterial/独立玻璃批次路由、LOD 与碰撞拾取。
+   - 给出本批内容的确定性 CPU 测试断言、三态实窗看图与等响度（-23 LUFS）听评验收步骤。关键 JSON 与代码完整闭合，不写“其余同理”。

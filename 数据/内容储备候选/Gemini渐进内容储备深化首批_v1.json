@@ -1,0 +1,45 @@
+{
+  "kind": "progressive_content_reserve_batch_candidate",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "source": "文档/来源/20261031_Gemini_渐进内容储备深化与首批生产_原稿.txt",
+  "source_sha256": "e86d256c9898c76216633a304d82486608a2657a67ab16eca1b8d7ce91125f89",
+  "review": "文档/66_渐进内容储备深化与首批生产实施审阅及施工映射.md",
+  "batch": {
+    "music": {
+      "id": "pastoral_undercurrent_v3_1_slice",
+      "sections": ["P0", "P2"],
+      "branches": ["base", "cross", "cantabile"],
+      "profile": "undercurrent_warm_v1",
+      "runtime_ready": false,
+      "required_corrections": ["P0_cross lead union exactly 20.0 beats", "P2_cross semitone overlap count 0", "delayed lower-sixth companion under unique layer 3", "source signature and cache re-bake"]
+    },
+    "visual": {
+      "window_layers": ["recessed_glass", "jamb_mullion", "lintel_sill", "angled_shutter"],
+      "palette": "tuscany_ochre",
+      "plant": "weeping_willow",
+      "runtime_ready": false,
+      "required_checks": ["real wall opening", "independent glass batch", "UNORM8 recipe ambiguity", "day/dusk/night reference", "incremental versus cold-read geometry"]
+    },
+    "architecture": {
+      "mother_types": ["stepped_guildhouse", "cantilever_tea_deck"],
+      "morphology_slots": ["dormer", "chimney", "window_arch", "gable_trim", "porch_clutter"],
+      "runtime_ready": false,
+      "required_checks": ["frontage clearance", "Jolt pickup", "LOD", "schema and undo", "old seed and appearance stability"]
+    },
+    "cozy_progression": {
+      "policy_field": "cozy_progression",
+      "ledger": "cozy_ledger",
+      "runtime_ready": false,
+      "required_checks": ["old growth_cutoff preserved", "new receipts namespace", "no historical replay", "close/reopen idempotence", "legacy and Schema 1-20 round trip"]
+    }
+  },
+  "unresolved": [
+    "full 48-bar song and P1/P3/P4/P5 are absent",
+    "current runtime v3 does not accept every new ID, articulation, timbre or branch key",
+    "shader snippets need compile and image evidence",
+    "prototype labels do not imply geometry, role, sound or quality support",
+    "candidate XP, quality and reward numbers require real event mapping",
+    "no new listening, render, or game acceptance was performed for this catalog"
+  ]
+}
