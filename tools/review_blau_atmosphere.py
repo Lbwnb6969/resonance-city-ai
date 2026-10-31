@@ -33,6 +33,7 @@ def main() -> None:
         'runtime_ready': False,
         'source_audio_distribution': audio['distribution'],
         'stem_distribution': audio['stem_distribution'],
+        'asset_register_required': True,
         'game_run': False,
         'listening_pass': False,
         'license_cleared': False,

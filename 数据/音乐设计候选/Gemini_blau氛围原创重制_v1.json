@@ -14,8 +14,8 @@
       "spectral_centroid_mean_hz": 489.74428969,
       "rms_mean": 0.11555472016334534
     },
-    "distribution": "local_reference_only",
-    "stem_distribution": "forbidden_without_explicit_relicense"
+    "distribution": "user_authorized_ai_original_candidate",
+    "stem_distribution": "allowed_after_generation_terms_and_asset_register"
   },
   "gemini_source": "文档/来源/20261031_Gemini_blau_氛围与制作工作包_原稿.txt",
   "gemini_source_sha256": "90f141cd03ab20842d0d437346030210313c32fac134426c707b6e4d87479cec",
@@ -28,9 +28,10 @@
     "license": "original_rebuild_required"
   },
   "asset_policy": {
+    "candidate_assets": ["source mp3", "felt piano stem", "pad stem", "sub/pulse stem", "foley/transition stem"],
     "recreate": ["MIDI/events", "DSP profile", "procedural noise", "authorized or CC0 samples"],
-    "reference_only": ["source mp3", "separated stems", "source reverb tails", "sample-level waveform"],
-    "required_records": ["source hash", "author/AI batch", "license scope", "cache signature", "approval evidence"]
+    "hold_until_terms_checked": ["separated stems", "source reverb tails", "sample-level waveform"],
+    "required_records": ["source hash", "author/AI tool and batch", "third-party sample declaration", "license scope", "cache signature", "approval evidence"]
   },
   "unresolved": [
     "no original melody or stem license is recorded",

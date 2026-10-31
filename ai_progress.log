@@ -1091,3 +1091,5 @@
 - CORRECT：Gemini的116-118BPM、G#小调/B大调和具体乐器只作创作参考；原MP3和分离stem未经明确改编/再发行授权不进运行库、发布树或AI精简包，改用原创DSP/MIDI/程序化或已许可素材。
 - VERIFY：本地song-analysis联合报告成功，review_blau_atmosphere待提交后运行；未做stem分离、未跑Godot、未做PCM/人工听评，候选runtime_ready=false。
 - NEXT：完成67静态校验后继续M84当前P0/P2听评；通过后按67做16小节原创氛围切片和未接路慢过渡样板，不把参考曲替代当前首曲品质闭环。
+[SESSION_BLAU_ASSET_AUTHORIZATION] 2026-10-31：用户确认blau为其AI创作歌曲并授权项目使用相关资产。67已改为用户授权AI原创候选：原MP3已复制到外置资产目录C:/Users/Administrator/Desktop/mIDDLEFILE/资产/音乐/blau/blau_source.mp3，源/暂存SHA均为426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65，并生成blau_asset_manifest.json。
+- BOUNDARY：授权确认不代替生成工具条款登记；generation_tool/batch/third_party_samples/distribution_terms待补，stem在登记与切片/循环/混音验收前runtime_ready=false，不进入发布树或精简包。
