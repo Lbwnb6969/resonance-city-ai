@@ -271,7 +271,7 @@ func _work(context: Node3D) -> Dictionary:
 	stages.structures_and_roads = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stage_start = Time.get_ticks_usec()
 	var masks := {}
-	var visual_blocks := _changed_visual_blocks(context,terrain_blocks,houses,roads,context.state.waters if bool(water.get("changed",false)) else [])
+	var visual_blocks := _changed_visual_blocks(context,terrain_blocks,houses,roads,context.state.waters if bool(water.get("changed",false)) else [],changes)
 	context._rebuild_vegetation(masks,visual_blocks,true)
 	stages.vegetation = float(Time.get_ticks_usec()-stage_start)/1000.0
 	stages.meadow = {"elapsed_ms":context.meadow.elapsed_ms,"stages":context.meadow.stage_ms.duplicate()}
@@ -307,7 +307,7 @@ func _work(context: Node3D) -> Dictionary:
 	stages.background = float(Time.get_ticks_usec()-stage_start)/1000.0
 	return {"houses":houses,"roads":roads,"road_data":road_data,"pebbles":pebbles,"cafes":cafes,"courtyards":courts,"terrain_blocks":terrain_blocks,"water":water,"background_changed":background_changed,"music_catalog":music_catalog,"worker_ms":float(Time.get_ticks_usec()-start)/1000.0,"worker_stages":stages}
 
-func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Array, roads: Array, waters: Array) -> Array[Vector2i]:
+func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Array, roads: Array, waters: Array, changes: Dictionary = {}) -> Array[Vector2i]:
 	var result: Dictionary = {}
 	var add_bounds := func(bounds: Rect2) -> void:
 		var low := Vector2i(floori(bounds.position.x / context.VEGETATION_BLOCK_SIZE), floori(bounds.position.y / context.VEGETATION_BLOCK_SIZE))
@@ -316,6 +316,9 @@ func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Arra
 			for z in range(low.y-1,high.y+2):
 				var block := Vector2i(x,z)
 				if Rect2(Vector2(block)*context.VEGETATION_BLOCK_SIZE,Vector2.ONE*context.VEGETATION_BLOCK_SIZE).intersects(context.EDITABLE_WORLD_RECT): result[block]=true
+	# Removed/moved obstacles have no current record: include their old extent.
+	for row:Dictionary in changes.get("bounds",[]):
+		if row.domain in ["houses","roads","waters"] and Rect2(row.old).has_area():add_bounds.call(Rect2(row.old).grow(1.5))
 	for change: Array in terrain_blocks:
 		add_bounds.call(Rect2(change[1]).grow(1.0))
 	for house: Dictionary in houses:

@@ -87,7 +87,7 @@ func _run() -> void:
 			patch_max = maxf(patch_max, patch)
 	_expect(smooth_direction and patch_max - patch_min > 0.5, "continuous broad direction/density field varies across town")
 	var mesh: Mesh = meadow._mesh("lawn")
-	_expect(mesh.get_faces().size() / 3 == 908, "seven folded leaves and basal trefoil share one near mesh")
+	_expect(mesh.get_faces().size() / 3 == 110, "seven V-folded leaves omit collapsed tip faces and retain basal trefoil")
 	_expect(meadow._mesh("lawn_lod").get_faces().size()/3 == 20, "far mesh retains two leaves from each ring")
 	_expect(mesh == meadow._mesh("lawn") and mesh == meadow._mesh("grass"), "lawn and fringe share one cached ribbon mesh")
 	var arrays: Array = mesh.surface_get_arrays(0)
@@ -97,13 +97,21 @@ func _run() -> void:
 	var high_tips := 0
 	var tip_directions := {}
 	var continuous_normals := true
+	var creases:=0;var finite_faces:=true;var aligned_faces:=true;var face_ids:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
+	for face in range(0,face_ids.size(),3):
+		var a:Vector3=arrays[Mesh.ARRAY_VERTEX][face_ids[face]];var b:Vector3=arrays[Mesh.ARRAY_VERTEX][face_ids[face+1]];var c:Vector3=arrays[Mesh.ARRAY_VERTEX][face_ids[face+2]]
+		var area:Vector3=(c-a).cross(b-a)
+		finite_faces=finite_faces and area.is_finite() and area.length()>1e-8
+		if arrays[Mesh.ARRAY_TEX_UV][face_ids[face]].x>0.:
+			for offset in range(3):aligned_faces=aligned_faces and area.normalized().dot(arrays[Mesh.ARRAY_NORMAL][face_ids[face+offset]])>0.
+	_expect(finite_faces and aligned_faces,"all actual V triangles have area and clockwise front normals agree with each face")
 	var normals_by_vertex := {}
 	for index in range(arrays[Mesh.ARRAY_VERTEX].size()):
 		var at: Vector3 = arrays[Mesh.ARRAY_VERTEX][index]
 		var uv: Vector2 = arrays[Mesh.ARRAY_TEX_UV][index]
 		var normal: Vector3 = arrays[Mesh.ARRAY_NORMAL][index]
 		continuous_normals = continuous_normals and normal.is_normalized() and normal.is_finite()
-		if normals_by_vertex.has(at): continuous_normals = continuous_normals and normal.is_equal_approx(normals_by_vertex[at])
+		if normals_by_vertex.has(at) and not normal.is_equal_approx(normals_by_vertex[at]):creases+=1
 		normals_by_vertex[at] = normal
 		var tip := false
 		for blade in range(7):
@@ -120,7 +128,7 @@ func _run() -> void:
 			else: high_tips += 1
 			tip_directions[Vector2i(signf(at.x),signf(at.z))] = true
 	_expect(tips == 7 and low_tips == 4 and high_tips == 3 and tip_directions.size() >= 3, "seven actual tapered tips retain four low outer and three higher inner leaves")
-	_expect(continuous_normals, "curved leaf normals have no lighting seam at duplicated triangle vertices")
+	_expect(continuous_normals and creases>0, "all normals finite and normalized; deliberate ridge keeps distinct slope normals")
 	var legal := true
 	var custom_matches := true
 	var soft_edge := 0

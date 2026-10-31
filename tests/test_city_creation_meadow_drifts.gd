@@ -87,7 +87,7 @@ func _run() -> void:
 	_expect(continuous and patch_max - patch_min > 0.5, "nonperiodic world field is continuous with visible broad patch amplitude")
 	var mesh: Mesh = meadow._mesh("lawn")
 	_expect(mesh == meadow._mesh("grass"), "lawn and woodland fringe share the same cached mesh")
-	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 908, "folded leaves and basal trefoil share one draw surface per meadow block")
+	_expect(mesh.get_surface_count() == 1 and mesh.get_faces().size() / 3 == 110, "folded leaves and basal trefoil share one draw surface per meadow block")
 	var radius := 0.0
 	var geometry_finite := true
 	var normals_up := true
