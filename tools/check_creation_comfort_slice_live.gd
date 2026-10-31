@@ -4,7 +4,7 @@ var reference_report:="res://验证记录/M84/comfort_slice_20261031/render/rend
 const Internal=preload("res://scripts/audio/city_creation_internal_score.gd")
 func reference(section:int)->Dictionary:
 	var performances:Array=JSON.parse_string(FileAccess.get_file_as_string(reference_report)).performances
-	var identity:="P%d_cross%s"%[section,"_felt" if content.ends_with("_v2") else ""]
+	var identity:="P%d_cross%s"%[section,"_felt" if content in ["pastoral_comfort_p0_p2_v2","pastoral_comfort_p0_p2_c1"] else ""]
 	return performances.filter(func(row):return row.id==identity)[0]
 func run()->void:
 	OUT="res://验证记录/M84/comfort_slice_20261031/live"

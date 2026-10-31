@@ -1,8 +1,8 @@
 extends RefCounted
 ## Partial internal v3 orchestration. External schema1 remains unchanged.
 const PATH:="res://数据/母曲/田园晨风_orchestration_v3.json"
-const CONTENTS:={"pastoral_cross_p0_v3":PATH,"pastoral_comfort_p0_p2_v1":"res://数据/母曲/田园晨风_comfort_p0_p2_v1.json","pastoral_comfort_p0_p2_v2":"res://数据/母曲/田园晨风_comfort_p0_p2_v2.json"}
-const PROFILES:={"pastoral_comfort_p0_p2_v1":"comfort_warm_v1","pastoral_comfort_p0_p2_v2":"comfort_felt_v2"}
+const CONTENTS:={"pastoral_cross_p0_v3":PATH,"pastoral_comfort_p0_p2_v1":"res://数据/母曲/田园晨风_comfort_p0_p2_v1.json","pastoral_comfort_p0_p2_v2":"res://数据/母曲/田园晨风_comfort_p0_p2_v2.json","pastoral_comfort_p0_p2_c1":"res://数据/母曲/田园晨风_comfort_p0_p2_c1.json"}
+const PROFILES:={"pastoral_comfort_p0_p2_v1":"comfort_warm_v1","pastoral_comfort_p0_p2_v2":"comfort_felt_v2","pastoral_comfort_p0_p2_c1":"comfort_felt_v2"}
 const ROLES:={"foundation":1,"pulse":2,"answer":2,"lead":3}
 const TIMBRES:=["bass","horn","strings","harp","celesta","flute","guitar","cello_harmonic","felt_piano"]
 const TIERS:={"foundation":["pizz","warm"],"pulse":["sparse","sway","flowing"],"answer":["mute","echo","canon"],"lead":["simple","lyrical","virtuoso"]}
