@@ -4,7 +4,7 @@
 
 ## 依据与交接
 
-- 先读ai_progress.log末30行、[施工入口](AI_START_HERE.md)、[当前状态](PROJECT.md)与ai_feature_backlog.json。唯一进度为holistic_integration，保留M75～M86编号、历史任务定义和真实证据。
+- 先读唯一入口[AI_START_HERE.md](AI_START_HERE.md)、[当前状态](PROJECT.md)与[AGENTS约定](AGENTS.md)。backlog只读取`holistic_integration.current_construction_spec`、首个未通过轮次和`next_step`；ai_progress.log只按入口需要读取末30行，不加载整份日志、来源原稿或历史材料。唯一进度为holistic_integration，保留M75～M86编号、历史任务定义和真实证据。
 - 产品统一按[文档54整合版](文档/54_V7_最终施工改造总案.md)，权益按[56](文档/56_free成长权益映射.md)，工程按[工程维护](文档/工程维护.md)。专题采用/冲突顺序见[施工入口](AI_START_HERE.md)：65更新明线经营/新账期/扩库与续谱，66收口首批生产和候选边界，67收口参考曲氛围的原创重制与许可边界，68收口四首氛围资产的测量/分层/分批接入，覆盖旧free一律退场目标；音乐64覆盖声音门槛/显线/过渡，63校正品质/DSP、58保谱材；UI61统一60布局，地形水岸62物理规则保持。旧50、V3～V6和原稿保留历史，不按旧排期重做。
 - 交接先用tools/audit_creation_workspace.py --check-remote核对实时origin/main、HEAD、规格/来源与脏工作区；版本差异先查树，不reset覆盖。不把未提交或未推送内容当作云端已有。
 - 已通过子步与下一步只在PROJECT/backlog/日志维护，不在本文件复制验收流水。每轮仅做首个未通过任务的可验证子步。
