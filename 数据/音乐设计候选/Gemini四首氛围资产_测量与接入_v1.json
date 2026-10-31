@@ -1,0 +1,15 @@
+{
+  "kind": "four_song_atmosphere_asset_catalog",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "source": "文档/来源/20261031_Gemini_四首新古典氛围拆解_原稿.txt",
+  "source_sha256": "abf1cdd0ea376a07213f2d5e050ae6457f53d240c988dba3f218ff17517b5f8a",
+  "songs": [
+    {"id":"coastal_wind_v1","file":"jz.mp3","staged":"资产/音乐/coastal_wind/coastal_wind_source.mp3","sha256":"e6ed6bcb966fa79d8d10d5646c971401a699f0bb14a01f1b503f61d11a1d32e0","duration_seconds":238.07052154195011,"bpm":[129.199,129.835],"key":"C major","layers":["felt_keys_coast","wind_foley","shore_wash","warm_swell_pad"]},
+    {"id":"cello_elegy_v1","file":"novel.mp3","staged":"资产/音乐/cello_elegy/cello_elegy_source.mp3","sha256":"c909ee15cc5d628905b3bfa2b241cff4f715bdc9ba23b789652c1a2b7ee7c3c9","duration_seconds":211.96,"bpm":[117.454,115.554],"key":"E major","layers":["cello_solo_roisin","chamber_long","spiccato_cell"]},
+    {"id":"fifth_space_v1","file":"paris.mp3","staged":"资产/音乐/fifth_space/fifth_space_source.mp3","sha256":"c93a282618e68a2560fa98d4753902305d22858ac80ebb768e4563713f3139d2","duration_seconds":435.1249886621315,"bpm":[112.347,112.094],"key":"C major","layers":["low_drone","pizzicato_dialogue","orchestral_swell"]},
+    {"id":"warm_6_8_v1","file":"star.mp3","staged":"资产/音乐/warm_6_8/warm_6_8_source.mp3","sha256":"a2aa90a65d5c72b73cd4a2315c2fa049d853eec845092235be4556b1993c92c6","duration_seconds":298.32,"bpm":[143.555,143.965],"key":"Bb major","layers":["felt_lullaby","cello_wrap","chamber_bloom"]}
+  ],
+  "asset_policy":{"user_authorized":true,"runtime_admission":"manifest_and_terms_then_slice_loop_mix_listen","full_song_runtime":false,"third_party_samples":"must_declare"},
+  "unresolved":["generation tool and distribution terms are not recorded","stems are not separated","no game integration or perceptual listening pass","all four profiles remain runtime_ready=false"]
+}
