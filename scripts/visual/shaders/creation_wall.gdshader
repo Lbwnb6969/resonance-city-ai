@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode diffuse_burley, specular_disabled, cull_back;
+render_mode diffuse_burley, specular_schlick_ggx, cull_back;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 
 uniform vec4 albedo_color : source_color = vec4(1.0);
@@ -10,6 +10,8 @@ uniform vec2 uv_offset = vec2(0.0);
 uniform float world_base_y = 0.0;
 uniform float story_height = 1.7;
 uniform float roughness = 0.93;
+uniform float metallic = 0.0;
+uniform float specular = 0.5;
 uniform float micro_normal_strength = 0.022;
 uniform int surface_kind = 0;
 uniform vec2 component_bounds = vec2(0.0,1.7);
@@ -65,12 +67,21 @@ void fragment() {
 	float fine = 1.0-smoothstep(0.018,0.070,footprint);
 	float detail = 1.0-smoothstep(0.09,0.28,footprint);
 	vec3 x = paper(world_at.yz,fine), y = paper(world_at.xz,fine), z = paper(world_at.xy,fine);
+	if (surface_kind == 5) {
+		// Vertical joinery: long fibres on the side, end grain on horizontal cuts.
+		x=paper_noise(vec2(world_at.y*1.2,world_at.z*36.0));x.yz*=vec2(1.2,36.0);
+		y=paper_noise(world_at.xz*18.0);y.yz*=18.0;
+		z=paper_noise(vec2(world_at.x*36.0,world_at.y*1.2));z.yz*=vec2(36.0,1.2);
+		x=mix(vec3(.5,0.,0.),x,fine);y=mix(vec3(.5,0.,0.),y,fine);z=mix(vec3(.5,0.,0.),z,fine);
+	}
 	float grain = dot(vec3(x.x,y.x,z.x),weights);
 	vec3 gradient = vec3(0.0,x.yz)*weights.x + vec3(y.y,0.0,y.z)*weights.y + vec3(z.yz,0.0)*weights.z;
 	gradient -= normal*dot(gradient,normal);
 	vec3 perturbed = safe_normalize(normal-gradient*micro_normal_strength*detail);
 	NORMAL = safe_normalize((VIEW_MATRIX * vec4(perturbed,0.0)).xyz);
 	float pigment = surface_kind == 2 ? 0.065 : (surface_kind == 3 ? 0.05 : 0.035);
+	if (surface_kind == 5) { pigment=.14; }
+	if (surface_kind == 6) { pigment=.045; }
 	base *= 1.0+(grain-0.5)*pigment*detail;
 	base *= mix(vec3(1.0),vec3(1.012,1.0,0.975),grain*0.35*detail);
 
@@ -96,12 +107,7 @@ void fragment() {
 	ALBEDO = base*mix(vec3(0.91,0.95,1.0),vec3(1.0),cavity)*mix(0.96,1.0,cavity);
 	AO = cavity;
 	AO_LIGHT_AFFECT = 0.40;
-	ROUGHNESS = roughness;
-}
-
-void light() {
-	float facing = dot(NORMAL,LIGHT);
-	float wrapped = max((facing+0.12)/1.12,0.0);
-	vec3 temperature = mix(vec3(0.90,0.95,1.04),vec3(1.025,1.005,0.96),smoothstep(-0.12,0.85,facing));
-	DIFFUSE_LIGHT += temperature*LIGHT_COLOR*ATTENUATION*wrapped/PI;
+	ROUGHNESS = clamp(roughness+(grain-.5)*detail*(surface_kind==5 ? .10 : (surface_kind==6 ? .06 : 0.)),0.04,1.0);
+	METALLIC = metallic;
+	SPECULAR = specular;
 }
