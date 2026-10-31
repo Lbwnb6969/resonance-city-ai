@@ -38,6 +38,7 @@ static func render(data:Dictionary)->Dictionary:
 	if data.get("duration",24.)==144.:
 		out=preload("res://scripts/audio/city_creation_master_performance.gd").render(data,synth);synth.free();return out
 	var add:Callable=preload("res://scripts/audio/city_creation_comfort_profile.gd").add if data.get("render_profile","")=="comfort_warm_v1" else synth._add_harmony_note
+	if data.get("render_profile","")=="comfort_felt_v2":add=preload("res://scripts/audio/city_creation_felt_profile.gd").add
 	for role:String in ROLES:
 		out[role]=score.render(data.events.filter(func(e):return e.role==role),add,synth._pcm_stream)
 	if data.has("cue_templates"):out.short_cues=Cues.render(data.cue_templates,data.harmony,str(data.signature),synth)

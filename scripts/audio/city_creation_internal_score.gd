@@ -1,9 +1,10 @@
 extends RefCounted
 ## Partial internal v3 orchestration. External schema1 remains unchanged.
 const PATH:="res://数据/母曲/田园晨风_orchestration_v3.json"
-const CONTENTS:={"pastoral_cross_p0_v3":PATH,"pastoral_comfort_p0_p2_v1":"res://数据/母曲/田园晨风_comfort_p0_p2_v1.json"}
+const CONTENTS:={"pastoral_cross_p0_v3":PATH,"pastoral_comfort_p0_p2_v1":"res://数据/母曲/田园晨风_comfort_p0_p2_v1.json","pastoral_comfort_p0_p2_v2":"res://数据/母曲/田园晨风_comfort_p0_p2_v2.json"}
+const PROFILES:={"pastoral_comfort_p0_p2_v1":"comfort_warm_v1","pastoral_comfort_p0_p2_v2":"comfort_felt_v2"}
 const ROLES:={"foundation":1,"pulse":2,"answer":2,"lead":3}
-const TIMBRES:=["bass","horn","strings","harp","celesta","flute","guitar","cello_harmonic"]
+const TIMBRES:=["bass","horn","strings","harp","celesta","flute","guitar","cello_harmonic","felt_piano"]
 const TIERS:={"foundation":["pizz","warm"],"pulse":["sparse","sway","flowing"],"answer":["mute","echo","canon"],"lead":["simple","lyrical","virtuoso"]}
 const ROOT_FIELDS:=["version","id","style","bars","bpm","beats_per_bar","harmony_mode","status","provenance","sections"]
 const BRANCH_FIELDS:=["tier","timbre","color","articulation","silent","events"]
@@ -16,7 +17,7 @@ static func integer(value:Variant)->bool:
 static func fail(message:String)->Dictionary:return {"ok":false,"message":message}
 static func branch(value:Variant,role:String)->Dictionary:
 	if not fields(value,BRANCH_FIELDS):return fail("内部谱分支字段无效")
-	if value.tier not in TIERS[role] or not integer(value.color) or value.color<0 or value.color>2 or value.articulation not in ["original","comfort_warm_v1"] or not value.silent is bool:return fail("内部谱演奏选择无效")
+	if value.tier not in TIERS[role] or not integer(value.color) or value.color<0 or value.color>2 or value.articulation not in ["original","comfort_warm_v1","comfort_felt_v2"] or not value.silent is bool:return fail("内部谱演奏选择无效")
 	if not value.events is Array or value.events.size()>1024:return fail("内部谱分支事件数量无效")
 	if value.silent:
 		if role!="answer" or value.tier!="mute" or value.timbre!="" or not value.events.is_empty():return fail("静默必须显式声明Mute空分支")
@@ -52,7 +53,7 @@ static func validate(value:Variant)->Dictionary:
 				if not key is String or key not in ["base","cross","mute"]:return fail("内部谱分支标识无效")
 				var result:=branch(section.roles[role][key],role)
 				if not result.ok:return result
-				if section.roles[role][key].articulation!=("comfort_warm_v1" if value.id=="pastoral_comfort_p0_p2_v1" else "original"):return fail("配器身份与音色版本不符")
+				if section.roles[role][key].articulation!=PROFILES.get(value.id,"original"):return fail("配器身份与音色版本不符")
 				total+=result.events.size()
 	if total>8192:return fail("内部谱内容总量过大")
 	return {"ok":true,"score":value.duplicate(true)}
@@ -63,7 +64,7 @@ static func read(content_id:String="pastoral_cross_p0_v3")->Dictionary:
 	return result
 static func dsp_signature()->String:
 	var parts:PackedStringArray=[preload("res://scripts/audio/city_creation_bank_cache.gd").source_signature()]
-	for path:String in ["res://scripts/audio/city_creation_internal_score.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_chamber_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd","res://scripts/audio/city_creation_comfort_profile.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
+	for path:String in ["res://scripts/audio/city_creation_internal_score.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_chamber_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd","res://scripts/audio/city_creation_comfort_profile.gd","res://scripts/audio/city_creation_felt_profile.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
 	return "|".join(parts).sha256_text()
 static func source_valid(data:Dictionary)->bool:
 	return data.get("master_signature","")==read(str(data.get("content_id","pastoral_cross_p0_v3"))).get("master_signature","missing") and data.get("dsp_signature","")==dsp_signature()
@@ -81,4 +82,4 @@ static func select(section_index:int=0,selection:Dictionary={},content_id:String
 		actual[role]={"branch":key,"tier":chosen.tier,"color":chosen.color,"timbre":chosen.timbre,"articulation":chosen.articulation,"source":"authored_material","silent":chosen.silent}
 		if chosen.silent:silence.append(role)
 	var dsp:=dsp_signature();var signature:=JSON.stringify([3,loaded.master_signature,section_index,actual,dsp],"",true,true).sha256_text()
-	return {"ok":true,"internal_version":3,"signature":signature,"master_signature":loaded.master_signature,"dsp_signature":dsp,"render_profile":"comfort_warm_v1" if content_id=="pastoral_comfort_p0_p2_v1" else "original","content_id":content_id,"section":section_index,"harmony":source.harmony,"events":events,"orchestration":actual,"declared_silence":silence,"document":{"id":content_id,"harmony_mode":0,"bars":8}}
+	return {"ok":true,"internal_version":3,"signature":signature,"master_signature":loaded.master_signature,"dsp_signature":dsp,"render_profile":PROFILES.get(content_id,"original"),"content_id":content_id,"section":section_index,"harmony":source.harmony,"events":events,"orchestration":actual,"declared_silence":silence,"document":{"id":content_id,"harmony_mode":0,"bars":8}}
