@@ -7,12 +7,16 @@ import json
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_REFERENCE = ROOT.parent / 'AI参考包' / '共鸣之城_Gemini参考_精简_20261030_152222.txt'
+REFERENCE_DIR = ROOT.parent / 'AI参考包'
+LEGACY_REFERENCE = REFERENCE_DIR / '共鸣之城_Gemini参考_精简_20261030_152222.txt'
 DOCS = [
     '文档/58_原创室内乐作曲审阅与施工映射.md',
     '文档/63_背景音乐柔和配器与长听审阅及施工映射.md',
     '文档/64_音乐暗线重构审阅与施工映射.md',
     '文档/65_明暗双线与AI储备审阅及施工映射.md', 'PROJECT.md', 'AI_START_HERE.md',
+    '文档/66_渐进内容储备深化与首批生产实施审阅及施工映射.md',
+    '文档/67_blau氛围参考与原创资产重制审阅及施工映射.md',
+    '文档/68_四首新古典氛围资产与暗线接入审阅及施工映射.md',
     '文档/54_V7_最终施工改造总案.md', '文档/56_free成长权益映射.md',
     '文档/工程维护.md', '文档/53_功能区与母曲编配施工记录.md',
     '文档/Demo快速开始.md', 'project.godot',
@@ -39,12 +43,19 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def latest_reference():
+    candidates = sorted(REFERENCE_DIR.glob('共鸣之城_渐进内容储备_代码文档参考_*.txt'))
+    if candidates:
+        return candidates[-1]
+    return LEGACY_REFERENCE
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--reference', type=Path, default=DEFAULT_REFERENCE)
-    parser.add_argument('--out-dir', type=Path, default=ROOT.parent / 'AI参考包')
+    parser.add_argument('--reference', type=Path, help='旧参考包；省略时选择本地最新渐进内容储备包')
+    parser.add_argument('--out-dir', type=Path, default=REFERENCE_DIR)
     args = parser.parse_args()
-    reference = args.reference.resolve()
+    reference = (args.reference or latest_reference()).resolve()
     original = reference.read_bytes()
     stamp = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime('%Y%m%d_%H%M%S')
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -72,7 +83,7 @@ def main():
         f'快照：{stamp}（北京时间）；Git HEAD：{head}',
         f'旧包：{reference.name}；SHA256：{sha(original)}；原件保持。',
         '用途：具体作曲、逐小节谱面与空间编配设计；不是可运行工程或听感证明。',
-        '事实优先级：PROJECT/最近验收日志说明状态；54为整合规格，58/63/64/65为谱材、品质、暗线与双线续谱审阅，56为权益；源码说明实现。',
+        '事实优先级：PROJECT/最近验收日志说明状态；54为整合规格，58/63/64/65/66/67/68为谱材、品质、暗线、扩库与资产审阅，56为权益；源码说明实现。',
         '旧55/57已并入54，不沿用旧包停止点；M84～M86未整体验收，各源码是否未提交以本包dirty_paths为准。',
         '工作区快照不等于远端已发布，谱面合法/PCM零削波不等于已经听评。',
         '相较旧包聚焦音乐，省略State/Demo/Renderer/Life巨型主文件及大量非音乐源码；不删除本地工程。',
