@@ -60,6 +60,6 @@ func change_policy()->void:
 		paths.text="";paths.hide()
 	refresh();demo.journal.refresh(false)
 func default_path()->String:
-	return demo.SAVE_PATH if demo.persistence else demo.collection_directory.path_join("经营副本").path_join(Crypto.new().generate_random_bytes(16).hex_encode()+".json")
+	return preload("res://scripts/ui/city_creation_new_city.gd").path_for(demo,true)
 func _process(_delta:float)->void:
 	if is_visible_in_tree():refresh()

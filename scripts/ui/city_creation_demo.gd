@@ -260,6 +260,7 @@ func _ready() -> void:
 	if persistence and FileAccess.file_exists(SAVE_PATH):
 		var loaded: Dictionary = state.load_city(SAVE_PATH)
 		if not loaded.ok: save_blocked = true
+	preload("res://scripts/ui/city_creation_new_city.gd").startup(self)
 	_setup_world()
 	town = TownRenderer.new()
 	town.name = "Town"
@@ -310,6 +311,7 @@ func _ready() -> void:
 	_refresh_ui()
 	_message("选择喜欢的风貌，在空地落下第一座房屋。" if state.CreationPolicy.is_free(state) else Copy.OPENING_TOAST)
 	if save_blocked: _message(Copy.SAVE_BLOCKED_TOAST)
+	preload("res://scripts/ui/city_creation_new_city.gd").notify(self)
 	if "--courtyard-example" in OS.get_cmdline_user_args():
 		focus=Vector3(10.5,0.7,-8.5)
 		zoom=20.0

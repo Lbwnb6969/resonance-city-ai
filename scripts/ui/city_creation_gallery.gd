@@ -128,6 +128,8 @@ func open_biome(id:String)->void:
 	var created:Dictionary=city.CreationPolicy.initialize_biome(city,id)
 	if not created.ok:panel.set_status(str(created.message));return
 	preload("res://scripts/world/city_creation_heritage_draft.gd").grant(city,archive.awards)
+	var opening:Dictionary=preload("res://scripts/ui/city_creation_new_city.gd").begin(city,demo)
+	if not opening.ok:panel.set_status(str(opening.message));return
 	var world:Dictionary=city.snapshot()
 	var checked:Dictionary=city._validate_snapshot(world)
 	if not checked.ok:panel.set_status(str(checked.message));return
