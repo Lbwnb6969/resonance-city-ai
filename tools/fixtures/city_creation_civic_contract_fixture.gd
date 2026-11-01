@@ -3,6 +3,7 @@ const Base=preload("res://tools/fixtures/city_creation_space_contract_fixture.gd
 const ORIGIN=Base.ORIGIN
 static func build(kind:String="ionic_stoa",yaw:float=0.,road:bool=true)->Dictionary:
 	var city:=Base.State.new();city.initialize_free();var ok:=true
+	if not city.begin_progression_epoch("res://验证记录/礼乐用途夹具/"+Crypto.new().generate_random_bytes(16).hex_encode()+".json").ok:return {"city":city,"ok":false}
 	var prototype:String=kind if kind in ["ionic_stoa","roman_basilica","rotunda"] else "townhouse" if kind in ["label","high","guildhall"] else "ionic_stoa"
 	if kind in ["high","plateau"]:ok=city.add_terrain_stroke([ORIGIN+Vector2(1.8,1.5).rotated(-yaw)] as Array[Vector2],"plateau",6.,1.,2).ok and ok
 	ok=Base.Brush.select(city,"renaissance" if kind=="guildhall" else "pastoral",prototype) and ok

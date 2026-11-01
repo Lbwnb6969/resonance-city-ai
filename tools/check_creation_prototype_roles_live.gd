@@ -15,11 +15,15 @@ func meshes()->Dictionary:
 	return result
 func run()->void:
 	OUT="res://验证记录/M84/prototype_roles_20261029/live"
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	if not OS.get_cmdline_user_args().has("--isolated-session") or not OUT.begins_with("res://验证记录/") or DirAccess.dir_exists_absolute(OUT):push_error("new isolated evidence directory required");quit(1);return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input()
 	var voices:=pool();var city:=State.new();city.initialize_free()
 	await show(city,Vector2(-22,-15),"原型用途");quiet()
+	check(demo.state.begin_progression_epoch(OUT+"/active.json").ok,"explicit active account enables prototype defaults")
 	var cases:Array=[["clockwork","clock_turret","clockmaker"],["pastoral","ionic_stoa","venue"],["modern_eco","twin_gable","workshop"],["pastoral","rotunda","atelier"]]
 	for i in range(cases.size()):
 		var row:Array=cases[i];var before:Dictionary=demo.state.snapshot();var count:int=demo.state._undo.size()

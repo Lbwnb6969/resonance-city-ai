@@ -3,6 +3,7 @@ const Base=preload("res://tools/fixtures/city_creation_space_contract_fixture.gd
 const ORIGIN=Base.ORIGIN
 static func build(kind:String="workshop",yaw:float=0.,road:bool=true)->Dictionary:
 	var city:=Base.State.new();city.initialize_free()
+	if not city.begin_progression_epoch("res://验证记录/百工用途夹具/"+Crypto.new().generate_random_bytes(16).hex_encode()+".json").ok:return {"city":city,"ok":false}
 	var prototype:String="clock_turret" if kind=="clock" else "townhouse" if kind=="label" else "sawtooth_atrium"
 	var ok:bool=Base.Brush.select(city,"pastoral" if kind=="label" else "clockwork",prototype)
 	ok=city.add_house_stroke(ORIGIN,[{"x":0,"z":0,"level":0,"kind":"room"}]).ok and ok

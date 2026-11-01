@@ -9,6 +9,7 @@ const ROLES := {
 }
 static func apply(city:RefCounted, house:Dictionary)->void:
 	if not city.CreationPolicy.is_free(city) or house.has("signature"):return
+	if not city.cozy_progression.get("enabled",false):return
 	var role:String=ROLES.get(str(house.get("architecture","")), "")
 	if role.is_empty():role=preload("res://scripts/world/city_creation_waterfront_role_seed.gd").role_for(city,house)
 	if not role.is_empty() and city.can_assign_role(role):house.role=role
