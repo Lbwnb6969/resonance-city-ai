@@ -1,7 +1,8 @@
 extends RefCounted
 ## Schema20 extension. Historical ledgers remain validated by their original owners.
 const SCHEMA:=20
-const LATEST_SCHEMA:=23
+const LATEST_SCHEMA:=24
+const Progression=preload("res://scripts/world/city_creation_progression_ledger.gd")
 const VERSION:=1
 const FIELDS:=["creative_settings","placed_landmarks","next_landmark_id","landmark_high_watermark"]
 const SETTING_FIELDS:=["version","creation_policy","migration_version","guidance","music","presentation"]
@@ -10,6 +11,7 @@ static func defaults(policy:String="free",migration:int=0)->Dictionary:
 	return {"version":VERSION,"creation_policy":policy,"migration_version":migration,"guidance":policy=="legacy","music":{"mode":"auto","style":"","seed":74001},"presentation":{"automatic_decoration":true,"legacy_crowns":policy=="legacy"}}
 
 static func reset(city:RefCounted)->void:
+	city.cozy_progression.clear()
 	city.terrain_policy=1
 	city.creative_settings={};city.placed_landmarks.clear();city._next_landmark_id=1;city._landmark_high_watermark=0
 	if city.has_meta("new_house_brush"):city.remove_meta("new_house_brush")
@@ -41,6 +43,8 @@ static func settings_valid(city:RefCounted,value:Variant)->bool:
 
 static func validate(city:RefCounted,data:Dictionary)->Dictionary:
 	if not city._is_integer(data.get("schema")) or data.schema<1 or data.schema>LATEST_SCHEMA:return city._fail("不支持的城市存档版本")
+	var progression:Dictionary=Progression.validate(city,data)
+	if not progression.ok:return progression
 	if data.schema<SCHEMA or (data.schema>SCHEMA and not data.has("creative_settings")):
 		for key:String in FIELDS:
 			if data.has(key):return city._fail("创作政策需要版本20存档")
@@ -49,6 +53,7 @@ static func validate(city:RefCounted,data:Dictionary)->Dictionary:
 	return preload("res://scripts/world/city_creation_placed_landmarks.gd").validate_fields(city,data)
 
 static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
+	Progression.apply(city,data,history)
 	var current:Dictionary=city.creative_settings
 	var incoming:Dictionary=data.get("creative_settings",{}).duplicate(true)
 	if history and current.get("creation_policy","")=="free":

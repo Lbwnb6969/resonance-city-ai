@@ -95,6 +95,7 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if city.TerrainTarget.Rules.has_target(city.terrain_strokes):result.schema=city.TerrainTarget.Rules.SCHEMA
 	if city.TerrainTarget.Rules.has_version(city.terrain_strokes,city.TerrainTarget.Rules.Smooth.VERSION):result.schema=city.TerrainTarget.Rules.Smooth.SCHEMA
 	if city.TerrainPolicy.enabled(city) or city.journey_checkpoint.has("cafe_terrain"):result.schema=city.TerrainPolicy.SCHEMA;result.terrain_policy=city.terrain_policy
+	city.CreationPolicy.Save.Progression.write(city,result)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:

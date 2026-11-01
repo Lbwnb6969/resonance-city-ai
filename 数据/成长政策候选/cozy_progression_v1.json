@@ -3,13 +3,78 @@
   "runtime_ready": false,
   "target_schema": 24,
   "policy_key": "cozy_progression",
-  "policy_fields": ["version", "enabled", "epoch_id", "started_at", "origin_sha256", "inflight_policy", "level", "xp", "xp_remainder", "baseline", "receipts"],
+  "policy_fields": [
+    "version",
+    "enabled",
+    "epoch_id",
+    "started_at",
+    "origin_sha256",
+    "inflight_policy",
+    "level",
+    "xp",
+    "xp_remainder",
+    "baseline",
+    "receipts"
+  ],
   "version": 1,
   "inflight_policy": "pause",
-  "counter_kinds": ["tea", "house", "bread", "craft", "wish", "chord", "tea_house", "bake", "delivery", "civic"],
-  "historical_counter_aliases": {"batch_count": "bake", "delivery_count": "delivery", "debut": "wish", "civic_received": "civic"},
-  "level_threshold": {"base": 100, "step": 65},
-  "preserve": ["harmony_journey", "growth_memories", "archive_unlocks", "era_unlocks", "era_modifiers", "wish_rewards", "life_progress", "bakery_supply", "workshop_supply", "journey_checkpoint"],
-  "runtime_prerequisites": ["validated_source_snapshot", "verified_backup_and_readback", "new_policy_schema_gate", "single_event_award_route", "disable_settlement_then_pause", "undo_preserves_earned_epoch", "life_worker_and_direct_api_consumers", "journal_current_vs_historical_ledgers", "isolated_save_and_real_input_verification"],
-  "boundary": "Offline contract candidate only. Current Godot schema remains 23. Event XP/rates, rewards and runtime consumers are not enabled."
+  "counter_kinds": [
+    "tea",
+    "house",
+    "bread",
+    "craft",
+    "wish",
+    "chord",
+    "tea_house",
+    "bake",
+    "delivery",
+    "civic"
+  ],
+  "historical_counter_aliases": {
+    "batch_count": "bake",
+    "delivery_count": "delivery",
+    "debut": "wish",
+    "civic_received": "civic"
+  },
+  "level_threshold": {
+    "base": 100,
+    "step": 65
+  },
+  "preserve": [
+    "harmony_journey",
+    "growth_memories",
+    "archive_unlocks",
+    "era_unlocks",
+    "era_modifiers",
+    "wish_rewards",
+    "life_progress",
+    "bakery_supply",
+    "workshop_supply",
+    "journey_checkpoint"
+  ],
+  "runtime_prerequisites": [
+    "validated_source_snapshot",
+    "verified_backup_and_readback",
+    "new_policy_schema_gate",
+    "single_event_award_route",
+    "disable_settlement_then_pause",
+    "undo_preserves_earned_epoch",
+    "life_worker_and_direct_api_consumers",
+    "journal_current_vs_historical_ledgers",
+    "isolated_save_and_real_input_verification"
+  ],
+  "boundary": "Schema24 first-epoch backup/save/accounting API is implemented. runtime_ready=false still applies to the full enable/pause/UI/default-entry feature. Normal initialize_free remains on schema23 with its old cutoff. Offline preview hashes never authorize runtime writes.",
+  "runtime_implementation": {
+    "schema": 24,
+    "scope": "explicit_first_epoch_accounting_api",
+    "entry": "CityCreationState.begin_progression_epoch(path)",
+    "enabled_by_default": false,
+    "pending": [
+      "disable_and_resume_transaction",
+      "life_and_worker_pause_consumers",
+      "journal_current_and_historical_ui",
+      "new_city_default_entry",
+      "optional_new_rewards"
+    ]
+  }
 }

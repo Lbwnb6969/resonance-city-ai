@@ -3,6 +3,8 @@ extends RefCounted
 const Journey=preload("res://scripts/world/city_creation_harmony_journey.gd")
 const Spatial=preload("res://scripts/world/city_creation_functional_benefits.gd")
 const Counters=preload("res://scripts/world/city_creation_receipt_counters.gd")
+const Rewards=preload("res://scripts/world/city_creation_receipt_rewards.gd")
+const Progression=preload("res://scripts/world/city_creation_progression_ledger.gd")
 static func counters(city:RefCounted)->Dictionary:
 	return Counters.current(city)
 static func initialize(city:RefCounted)->void:
@@ -14,9 +16,11 @@ static func initialize(city:RefCounted)->void:
 	city.harmony_journey=Journey.default_state();city.harmony_journey.receipts=counters(city);city.harmony_journey.receipts["school_receipts_baseline"]=1
 	city.dirty=true;city.life_progress_dirty=true
 static func collect(city:RefCounted)->Dictionary:
+	var progression:=Progression.collect(city)
 	var pending:=take_events(city)
 	var result:=Spatial.award_xp(city,pending.amount)
 	result.events=pending.events
+	result.progression=progression
 	return result
 static func take_events(city:RefCounted)->Dictionary:
 	initialize(city)
@@ -28,8 +32,7 @@ static func take_events(city:RefCounted)->Dictionary:
 		journey.receipts[key]=maxi(current,int(journey.receipts.get(key,0)))
 		if delta==0:continue
 		var kind:=key.get_slice("/",0)
-		var xp:int=int({"tea":8,"house":2,"bread":2,"craft":10,"wish":24,"chord":30,"civic":30}.get(kind,0))*delta+preload("res://scripts/world/city_creation_tradition_synergy.gd").bonus_xp(city,key,delta)
+		var xp:int=Rewards.event_xp(city,key,delta)
 		earned+=xp;events[kind]=int(events.get(kind,0))+delta
-	var repeat_count:int=Journey.choices_made(journey)-journey.traditions.size()
 	if earned>0:city.dirty=true;city.life_progress_dirty=true
-	return {"amount":earned*(1.+minf(.5,repeat_count*.02))*Journey.Rarity.xp_multiplier(journey),"events":events}
+	return {"amount":Rewards.scale(journey,earned),"events":events}

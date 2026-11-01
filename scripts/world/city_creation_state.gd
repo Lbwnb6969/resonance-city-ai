@@ -18,6 +18,8 @@ var era_modifiers:Array[String]=[]
 const CivicSupply=preload("res://scripts/world/city_creation_civic_supply.gd")
 const HarmonyJourney=preload("res://scripts/world/city_creation_harmony_journey.gd")
 var harmony_journey:Dictionary={}
+var cozy_progression:Dictionary={}
+func begin_progression_epoch(path:String)->Dictionary:return preload("res://scripts/world/city_creation_progression_opening.gd").begin(self,path)
 var biome_seed:Dictionary={}
 var _biome_revision:=-1
 var _biome_bonuses:Dictionary={}
