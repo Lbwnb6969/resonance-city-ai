@@ -38,7 +38,8 @@ static func settings_valid(city:RefCounted,value:Variant)->bool:
 	if music.mode=="fixed" and music.style.is_empty():return false
 	if not city._is_integer(music.get("seed")) or music.seed<0 or music.seed>2147483647:return false
 	var presentation:Variant=value.presentation
-	if not presentation is Dictionary or presentation.size()!=2:return false
+	if not presentation is Dictionary or presentation.size() not in [2,3]:return false
+	if presentation.size()==3 and not presentation.get("flowering_vines") is bool:return false
 	return presentation.get("automatic_decoration") is bool and presentation.get("legacy_crowns") is bool
 
 static func validate(city:RefCounted,data:Dictionary)->Dictionary:

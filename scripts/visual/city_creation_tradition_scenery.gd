@@ -10,6 +10,7 @@ var ornaments:Node3D
 var motes:Array[Dictionary]=[]
 var lamps:Array[MeshInstance3D]=[]
 var revision:=-1
+var appearance_key:Array=[]
 var elapsed:=0.
 var emitted:=0
 var ripple_left:=0.
@@ -34,8 +35,9 @@ func _process(delta:float)->void:
 	if changed:
 		epoch=next_epoch;counters.clear();revision=-1;ripple_left=0.
 		for row:Dictionary in motes:row.left=0.;row.node.hide()
-	if revision!=city.revision:
-		revision=city.revision;_rebuild(city)
+	var next_appearance:=preload("res://scripts/world/city_creation_flowering_vines.gd").key(city)
+	if revision!=city.revision or appearance_key!=next_appearance:
+		revision=city.revision;appearance_key=next_appearance;_rebuild(city)
 	for house:Dictionary in city.houses if Rules.has(city,"warm_hearth_ballad") or Rules.has(city,"twilight_tea_pavilion") else []:
 		var id:=str(house.id)
 		var values:=[int(city.bakery_supply.get(id,{}).get("produced",0)),int(city.cafe_credits.get(id,{}).get("spent",0))]
