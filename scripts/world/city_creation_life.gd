@@ -12,6 +12,7 @@ const State=preload("res://scripts/world/city_creation_state.gd")
 var _published_surface:RefCounted
 var view_camera:Camera3D
 var worker_lod=preload("res://scripts/world/city_creation_worker_lod.gd").new(self)
+var quiet_walk=preload("res://scripts/world/city_creation_quiet_walk.gd").new(self)
 var _visual_lod_cursor:=0
 var _lod_scalar_count:=0
 var _lod_visible_count:=0
@@ -312,6 +313,7 @@ func cancel_budget_sync() -> void:
 		_budget_worker = null
 
 func _exit_tree() -> void:
+	quiet_walk.clear()
 	if _budget_thread != null:
 		_budget_thread.wait_to_finish()
 		_budget_thread = null
@@ -321,6 +323,7 @@ func setup(city: RefCounted, defer_sync:bool=false) -> void:
 	cancel_budget_sync()
 	var fresh := state != city
 	if state != city:
+		quiet_walk.clear()
 		conductor_parade.clear()
 		if tram!=null:tram.clear()
 		if bakery != null: bakery.clear()
@@ -365,7 +368,9 @@ func _process(delta: float) -> void:
 	if state == null: return
 	if EconomyPause.paused(state):
 		if state.revision!=last_revision and not _budget_hold and not budget_sync_pending():_sync()
+		quiet_walk.tick(delta)
 		return
+	quiet_walk.clear()
 	if has_meta("progression_resume_delta"):
 		remove_meta("progression_resume_delta");delta=0.
 	if _budget_hold or budget_sync_pending():
