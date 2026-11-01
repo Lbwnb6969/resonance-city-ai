@@ -71,6 +71,7 @@ func run()->void:
 	check(city.HarmonyJourney.choose(city,city.harmony_journey.pending_draft[0]).ok and city.HarmonyJourney.credits(city.harmony_journey)==0 and city.cozy_progression==earned,"claiming one actual historical invitation spends only its old credit")
 	spatial_checks()
 	math_checks()
+	fractional_checkpoint_backup()
 	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save bytes unchanged")
 	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"seconds":(Time.get_ticks_msec()-began)/1000.,"scope":"First-epoch backup/save/accounting regression; toggle UI and normal new-city entry not switched"}
 	FileAccess.open(out+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("PROGRESSION_EPOCH ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)
@@ -112,3 +113,14 @@ func math_checks()->void:
 	var policy:={"level":1,"xp":0};Ledger._advance(policy,Ledger.MAX_INTEGER)
 	var steps:int=policy.level-1;var spent:int=steps*100+65*steps*(steps-1)/2
 	check(spent+int(policy.xp)==Ledger.MAX_INTEGER and policy.xp<Ledger.threshold(policy.level),"large exact counter settles without a linear level-up loop")
+func fractional_checkpoint_backup()->void:
+	var city:=State.new();city.initialize_free();check(city.add_house(Vector2(-25,-12)).ok,"real house for fractional resident checkpoint")
+	var checkpoint:={"schema":1,"concert":{},"residents":[{"home_id":"h1","destination_id":"h1","stops":["h1"],"position":[-25.,-12.],"phase":1.7*9,"wait":0.,"yaw":0.,"paused":true,"dwell_id":"","service_pending":""}]}
+	check(city.set_journey_checkpoint(checkpoint).ok,"valid live-style phase retains its pre-JSON final bits")
+	var source:=JSON.stringify(city.snapshot(),"\t",true,true);var path:=out+"/fractional_checkpoint.json"
+	check(city.save_city(path).ok,"original checkpoint is written before opening")
+	var raw:=FileAccess.get_file_as_bytes(path);var opened:Dictionary=city.begin_progression_epoch(path)
+	check(opened.ok,"backed-up epoch accepts actual non-round binary resident phase")
+	check(FileAccess.get_file_as_string(opened.get("backup",""))==source and city.cozy_progression.get("origin_sha256")==source.sha256_text(),"exact original bytes and source hash remain immutable despite JSON float decoding")
+	check(FileAccess.get_file_as_bytes(opened.get("original_backup",""))==raw,"raw target archive preserves its exact pre-epoch bytes")
+	var cold:=State.new();check(cold.load_city(path).ok and cold.cozy_progression.epoch_id==city.cozy_progression.epoch_id and cold.journey_checkpoint.residents[0].phase==JSON.parse_string(source).journey_checkpoint.residents[0].phase,"cold checkpoint agrees with normal validated JSON decoding")
