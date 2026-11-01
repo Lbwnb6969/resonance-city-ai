@@ -11,6 +11,8 @@ static func request(owner:Node,path:String)->Dictionary:
 	return _request_data(owner,Document.read(path))
 static func request_internal(owner:Node,section:int=0,selection:Dictionary={},content_id:String="pastoral_cross_p0_v3")->Dictionary:
 	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_score.gd").select(section,selection,content_id))
+static func request_internal_continuous(owner:Node,content_id:String,selection:Dictionary={})->Dictionary:
+	return _request_data(owner,preload("res://scripts/audio/city_creation_internal_performance.gd").prepare(content_id,selection))
 static func request_affinity(owner:Node)->Dictionary:
 	var data:=preload("res://scripts/audio/city_creation_internal_score.gd").select(0,{"foundation":"cross","lead":"base","pulse":"base","answer":"mute"},"pastoral_comfort_p0_p2_v1")
 	if not data.ok:return data
@@ -27,6 +29,8 @@ static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	if not data.ok:return data
 	var node:=owner.get_node_or_null("AuthoredScore")
 	if node==null:node=load("res://scripts/audio/city_creation_authored_score.gd").new();node.name="AuthoredScore";owner.add_child(node)
+	var reused:=preload("res://scripts/audio/city_creation_score_request_reuse.gd").find(owner,node,data)
+	if not reused.is_empty():return reused
 	if node.worker!=null:return {"ok":false,"message":"上一份谱材仍在准备"}
 	if data.get("duration",24.)==144. or data.get("affinity_preview",false):data.content_context=preload("res://scripts/audio/city_creation_master_performance.gd").context(owner._pluck_city,bool(data.get("affinity_preview",false)))
 	if data.has("harmony"):data.cue_templates=Cues.templates(owner,int(data.document.harmony_mode))

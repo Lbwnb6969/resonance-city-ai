@@ -64,7 +64,7 @@ static func read(content_id:String="pastoral_cross_p0_v3")->Dictionary:
 	return result
 static func dsp_signature()->String:
 	var parts:PackedStringArray=[preload("res://scripts/audio/city_creation_bank_cache.gd").source_signature()]
-	for path:String in ["res://scripts/audio/city_creation_internal_score.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_chamber_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd","res://scripts/audio/city_creation_comfort_profile.gd","res://scripts/audio/city_creation_felt_profile.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
+	for path:String in ["res://scripts/audio/city_creation_score_request_reuse.gd","res://scripts/audio/city_creation_pcm_crossfade.gd","res://scripts/audio/city_creation_internal_score.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_chamber_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd","res://scripts/audio/city_creation_comfort_profile.gd","res://scripts/audio/city_creation_felt_profile.gd","res://scripts/audio/city_creation_internal_performance.gd","res://scripts/audio/city_creation_master_performance.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
 	return "|".join(parts).sha256_text()
 static func source_valid(data:Dictionary)->bool:
 	return data.get("master_signature","")==read(str(data.get("content_id","pastoral_cross_p0_v3"))).get("master_signature","missing") and data.get("dsp_signature","")==dsp_signature()

@@ -9,7 +9,7 @@ const RATE:=22050
 const SECONDS:=144.
 static func dsp_signature()->String:
 	var parts:PackedStringArray=[preload("res://scripts/audio/city_creation_bank_cache.gd").source_signature()]
-	for path:String in ["res://scripts/audio/city_creation_master_performance.gd","res://scripts/audio/city_creation_master_score.gd","res://scripts/audio/city_creation_master_catalog.gd","res://scripts/audio/city_creation_background_flute.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
+	for path:String in ["res://scripts/audio/city_creation_score_request_reuse.gd","res://scripts/audio/city_creation_pcm_crossfade.gd","res://scripts/audio/city_creation_master_performance.gd","res://scripts/audio/city_creation_master_score.gd","res://scripts/audio/city_creation_master_catalog.gd","res://scripts/audio/city_creation_background_flute.gd","res://scripts/audio/city_creation_score_playback.gd","res://scripts/audio/city_creation_authored_score.gd","res://scripts/audio/city_creation_score_cue_bank.gd"]:parts.append(FileAccess.get_file_as_string(path).replace("\r\n","\n").sha256_text())
 	return "|".join(parts).sha256_text()
 static func prepare(mode:int,content_id:String="baseline")->Dictionary:
 	var sections:Array=[];var events:Array=[];var master:=Catalog.read(content_id)
@@ -43,6 +43,7 @@ static func render(data:Dictionary,synth:Node)->Dictionary:
 		var background:bool=data.get("render_profile","")==Background.ID and role=="lead"
 		for note:Dictionary in notes:
 			if background and note.timbre=="flute":Background.add(samples,note)
+			elif data.get("render_profile","")=="comfort_felt_v2":preload("res://scripts/audio/city_creation_felt_profile.gd").add(samples,note.start,note.duration,note.midi,note.gain,note.timbre,true)
 			else:synth._add_harmony_note(samples,note.start,note.duration,note.midi,note.gain,note.timbre,true)
 		var peak:=0.
 		for value:float in samples:peak=maxf(peak,absf(value))
@@ -75,24 +76,26 @@ static func view(owner:Node,data:Dictionary,clock:float)->Dictionary:
 	if data.get("duration",24.)!=SECONDS:return data
 	var result:=data.duplicate();var section:=posmod(floori((position(owner,clock,data)+2./RATE+.0000001)/24.),6)
 	result.section=section;result.harmony=data.sections[section].harmony;result.section_signature=data.sections[section].signature
+	for field:String in ["orchestration","declared_silence"]:
+		if data.sections[section].has(field):result[field]=data.sections[section][field]
 	result.short_cues=data.section_cues[section]
 	return result
 static func transition(data:Dictionary,key:String)->AudioStreamWAV:
-	var decoder:=Transition.new();var old_wave:AudioStreamWAV=data.old[key];var old:PackedFloat32Array;var old_bytes:=old_wave.data
-	if old_wave.format==AudioStreamWAV.FORMAT_16_BITS:
-		old.resize(old_bytes.size()/2)
-		for i in range(old.size()):old[i]=old_bytes.decode_s16(i*2)/32768.
-	else:old=decoder.decode(old_wave)
-	decoder.free()
+	var old_wave:AudioStreamWAV=data.old[key]
 	var target:AudioStreamWAV=data.targets[key];var target_bytes:=target.data;var frames:=target_bytes.size()/2
 	var intro:=roundi((data.boundary-data.cycle)*RATE);var count:=roundi(Transition.FADE*RATE)
 	var old_offset:=roundi((float(data.old_positions[key])-float(data.start_local))*RATE)
 	var target_origin:=0 if data.data.get("duration",24.)==SECONDS else roundi(fposmod(float(data.boundary),24.)*RATE)
-	var bytes:=PackedByteArray();bytes.resize((intro+frames)*2)
-	for i in range(intro+frames):
-		var weight:=smoothstep(0.,1.,float(i-intro)/count)
-		var value:=lerpf(old[posmod(i+old_offset,old.size())],target_bytes.decode_s16(posmod(i-intro+target_origin,frames)*2)/32768.,weight)
-		bytes.encode_s16(i*2,clampi(roundi(value*32768.),-32768,32767))
+	var bytes:PackedByteArray
+	if old_wave.format==AudioStreamWAV.FORMAT_16_BITS:
+		bytes=preload("res://scripts/audio/city_creation_pcm_crossfade.gd").render(old_wave.data,target_bytes,intro,old_offset,target_origin,count)
+	else:
+		var decoder:=Transition.new();var old:=decoder.decode(old_wave);decoder.free()
+		bytes.resize((intro+frames)*2)
+		for i in range(intro+frames):
+			var weight:=smoothstep(0.,1.,float(i-intro)/count)
+			var value:=lerpf(old[posmod(i+old_offset,old.size())],target_bytes.decode_s16(posmod(i-intro+target_origin,frames)*2)/32768.,weight)
+			bytes.encode_s16(i*2,clampi(roundi(value*32768.),-32768,32767))
 	var wave:=AudioStreamWAV.new();wave.mix_rate=RATE;wave.format=AudioStreamWAV.FORMAT_16_BITS;wave.data=bytes
 	wave.loop_mode=AudioStreamWAV.LOOP_FORWARD;wave.loop_begin=intro;wave.loop_end=intro+frames
 	wave.set_meta("transition",true);wave.set_meta("master_offset",float(intro-target_origin)/RATE);wave.set_meta("previous_master_offset",-float(old_offset)/RATE)

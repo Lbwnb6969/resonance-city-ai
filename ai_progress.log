@@ -1206,3 +1206,33 @@
 - VERIFY：CPU436/57.792s、NVIDIA GL/WASAPI54/177.017s、旧档375/27作品、Harness13/295链接通过；首轮JSON数值类型断言失败保留，修断言后cpu_retry通过。
 - PCM：28份离线WAV含四份144秒顺序串联核字节，零削波；实窗显式P4→P5→P0/完整P5循环/Mute/原生P/实际四轨/池/作者与个人档保持，四主文件净改0。
 - NEXT：接B/C自动144秒开发试听、真实P5末小节→P0首小节/跨界短声，再做空间多档；新增段及整首听感待评，默认不切、M84～M86false；证据53及验证记录/M84/comfort_p5_20261101。
+
+[SESSION_COMFORT_CONTINUOUS_WIP] 2026-11-01 M84：新增内部v3自动144秒接口施工，未发布；CPU107/63.893s、旧连续25/6.326s、旧档375/27作品、Harness13及295链接通过。
+- GL：首次88检查/341.611s中4项C→B接替失败；C整轮/首尾/跨界短声/建造Undo/独奏/M80等其余受测通过，不把整轮报告标绿。
+- DIAG：定点诊断首次脚本类型推断错误后已修；C约69秒进入稳定，B诊断未形成完成报告，保留未通过取样，原因尚未定论。
+- USER：用户要求暂不开游戏直至明确要求；已核对无Godot进程，后续只做代码/静态/文档，不启动引擎验证。
+- NEXT：先静态收口等待阶段/证据边界并保留本地Git施工备份；C→B与完整最终GL仍待用户允许启动后验证，M84～M86false，不发布未验收运行变更。
+
+[SESSION_PCM_COPY_STATIC_WIP] 2026-11-01 M84：用户禁启动游戏/Godot保持；本地预混优化为s16区段复制，仅150ms淡化逐样本，保留旧非PCM回退/loop/offset，两个DSP签名覆盖新模块。
+- MODEL：Python数学模型400随机+4组既有PCM输入逐字节一致/6.963985s，不是GDScript或引擎性能实测；新增Godot oracle测试未执行，旧CPU107不继承为当前通过。
+- PROBE：接替按render/premix/scheduled/stable及预约边界落盘；120秒仅诊断观察预算，C→B根因和修复结果仍待运行验证。
+- CRITIC：独立静态复核新旧公式/回退/签名/loop与offset/oracle/阶段记录无新增阻断；Harness13/295链接/diff通过，未启动引擎。
+- NEXT：保留本地Git施工备份，不发布未验收运行变更；等待用户明确允许启动后执行CPU逐字节和GL复验，M84～M86false，证据53及验证记录/M84/pcm_copy_20261101。
+
+[SESSION_FULL_REQUEST_REUSE_STATIC_WIP] 2026-11-01 M84：用户禁启动Godot保持；完整144秒同签名请求在worker/ready/active三阶段复用，待安装目标优先，跳过重复短声表/线程/合成，四主文件净改0。
+- BOUNDARY：不同繁忙请求保留原报忙；短段/M80/亲和度旧路径不合并；换城/改意图/留声机或音乐会不误复用，两个DSP签名覆盖新模块。
+- STATIC：gdtoolkit4.5.0/Lark1.2.2解析10份施工脚本/1.124115s通过，仅语法文法非Godot类型/执行；工具隔离在验证记录，不是运行依赖。
+- VERIFY：Harness13/文档链接/资源来源/diff静态检查；新增Godot请求状态测试及PCM oracle未执行，旧CPU/GL不继承为当前通过。
+- NEXT：本地Git备份，不发布未验收代码；C→B原因/修复及请求生命周期待用户明确允许启动后实测，M84～M86false，证据53及验证记录/M84/request_reuse_20261101。
+
+[SESSION_PROGRESSION_CONTRACT_STATIC] 2026-11-01 M84：按65做单一cozy_progression离线候选/只读预览；独立新账期、同epoch启停、pause提案与旧账摘要，不修改运行Schema23/旧cutoff/经营。
+- VERIFY：15项Python契约测试通过；18份Schema1—17打包legacy只盘点/阻断激活，原字节不变；Python编译及Harness/链接/来源静态检查按输出通过。
+- CONTRACT：首次零新XP/空新receipts，高水位保Redo旧身份；再启用跳过停用期计数、保新账收益，已启用no_op不吞活跃事件；关闭要求正式结算后重做预览及备份事务。
+- BOUNDARY：Schema24/runtime_ready=false候选，无源档Godot完整校验、计数适配/发奖/Life/UI/迁移IO/奖励；报告仅写新验证记录，不碰个人作品。
+- NEXT：核正式计数/单一发奖/备份消费者；不开Godot，音乐待验施工保留，M84～M86false，仅本地Git备份；证据65第10节及验证记录/M84/progression_contract_20261101。
+
+[SESSION_COUNTERS_AND_RUNTIME_RESUME] 2026-11-01 M84：用户已允许按需开游戏；抽出原样共享计数入口并补历史别名/缺席高水位，Schema24仍候选、无新经营启停/发奖。
+- VERIFY：Python契约18/计数CPU12/旧空间收益46；PCM582/请求复用16/完整B-C107(41.278s)/旧v2连续25(3.953s)/旧档375(27作品)通过；Harness13及文档链接按输出通过。
+- LIVE：NVIDIA OpenGL/WASAPI88(283.017s)全过，原C→B四失败全过；C整轮/首尾/7跨界/Undo/P独奏/留声机/M80/切城丢弃受测；B只整首入场接替/PCM哈希。
+- PCM：三份156.793/44.989/5.631s零削波，C→B阶段render34.744s/premix34.754→34.837s/stable44.853s；不作唯一根因或听评通过，未切默认。
+- NEXT：按65接新账期统一发奖/结算与备份事务、启停消费者；已验开发接口按37双库发布，M84～M86false；证据53/65及验证记录/M84/comfort_resume_20261101、progression_counters_20261101。
