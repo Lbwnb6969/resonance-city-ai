@@ -6,6 +6,8 @@ const FIELDS:=["version","enabled","epoch_id","started_at","origin_sha256","infl
 const Counters=preload("res://scripts/world/city_creation_receipt_counters.gd")
 const Rewards=preload("res://scripts/world/city_creation_receipt_rewards.gd")
 const Spatial=preload("res://scripts/world/city_creation_functional_benefits.gd")
+const Pause=preload("res://scripts/world/city_creation_economy_pause.gd")
+static func paused(city:RefCounted)->bool:return Pause.paused(city)
 static func integer(value:Variant)->bool:
 	return (value is int or value is float) and is_finite(float(value)) and value>=0 and value<=MAX_INTEGER and float(value)==floorf(float(value))
 static func hash_id(value:Variant)->bool:
@@ -38,9 +40,13 @@ static func validate(city:RefCounted,data:Dictionary)->Dictionary:
 static func write(city:RefCounted,data:Dictionary)->void:
 	if city.cozy_progression.is_empty():return
 	data.cozy_progression=city.cozy_progression.duplicate(true);data.schema=SCHEMA
+	if not data.cozy_progression.enabled:skip_counts(city,data.cozy_progression)
 static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	# Geometry history never revokes an epoch, its enabled state or earned receipts.
-	if history and not city.cozy_progression.is_empty():return
+	if history and not city.cozy_progression.is_empty():
+		if not city.cozy_progression.enabled:skip_counts(city,city.cozy_progression)
+		_merge_baseline(city.cozy_progression,data.get("cozy_progression",{}))
+		return
 	city.cozy_progression=data.get("cozy_progression",{}).duplicate(true)
 	if city.cozy_progression.is_empty():return
 	for key:String in ["version","started_at","level","xp"]:city.cozy_progression[key]=int(city.cozy_progression[key])
@@ -49,6 +55,17 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	city.cozy_progression.xp_remainder=float(city.cozy_progression.xp_remainder)
 static func create(city:RefCounted,source:String,epoch:String)->Dictionary:
 	return {"version":1,"enabled":true,"epoch_id":epoch,"started_at":int(Time.get_unix_time_from_system()),"origin_sha256":source,"inflight_policy":"pause","level":1,"xp":0,"xp_remainder":0.,"baseline":Counters.baseline(city),"receipts":{}}
+static func _merge_baseline(policy:Dictionary,other:Dictionary)->void:
+	if other.get("epoch_id","")!=policy.epoch_id:return
+	for key:String in other.get("baseline",{}):policy.baseline[key]=maxi(int(policy.baseline.get(key,0)),int(other.baseline[key]))
+static func skip_counts(city:RefCounted,policy:Dictionary)->void:
+	var counts:=Counters.baseline(city)
+	for key:String in policy.receipts:counts[key]=maxi(int(counts.get(key,0)),int(policy.receipts[key]))
+	for key:String in counts:policy.baseline[key]=maxi(int(policy.baseline.get(key,0)),int(counts[key]))
+	# Latest history snapshots carry prior off-period high water without a history scan.
+	for stack:Array in [city._undo,city._redo]:
+		if stack.is_empty():continue
+		for side:String in ["before","after"]:_merge_baseline(policy,stack.back()[side].get("cozy_progression",{}))
 static func _advance(policy:Dictionary,total:int)->void:
 	var cost:int=threshold(int(policy.level));var low:=0;var high:=mini(int(total/cost)+1,int(sqrt(total*2./65.))+2)
 	while low<high:
@@ -61,7 +78,10 @@ static func collect(city:RefCounted)->Dictionary:
 	if city.cozy_progression.is_empty():return {}
 	var policy:Dictionary=city.cozy_progression
 	var result:={"ok":true,"earned":0,"leveled_up":false,"level":policy.level,"events":{},"epoch_id":policy.epoch_id}
-	if not policy.enabled:return result
+	if not policy.enabled:
+		var skipped:Dictionary=policy.duplicate(true);skip_counts(city,skipped)
+		if skipped!=policy:city.cozy_progression=skipped;city.dirty=true;city.life_progress_dirty=true
+		return result
 	var next:Dictionary={};var raw:=0.
 	var counts:=Counters.current(city)
 	for key:String in counts:

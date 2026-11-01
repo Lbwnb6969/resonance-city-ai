@@ -54,6 +54,7 @@ static func amenity(city: RefCounted, house: Dictionary) -> bool:
 	return false
 
 static func refresh(city: RefCounted, connected: Dictionary, workplaces: Dictionary, first:int=0, count:int=-1) -> Array[Dictionary]:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(city):return []
 	var result: Array[Dictionary]=[]
 	var ledger:=data(city)
 	for index in range(first,city.houses.size() if count<0 else mini(city.houses.size(),first+count)):

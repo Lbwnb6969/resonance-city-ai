@@ -34,6 +34,9 @@ func _work_elapsed(row: Dictionary,now: float)->float:
 func elapsed(worker: Dictionary)->float:
 	var row: Dictionary=worker.get("worker_work",{})
 	return _work_elapsed(row,life.time) if not row.is_empty() else float(worker.elapsed)
+func checkpoint_sample(worker:Dictionary)->Dictionary:
+	var motion:RefCounted=worker.get("worker_motion")
+	return {"point":position(worker),"yaw":motion.yaw if motion!=null else worker.node.rotation.y,"elapsed":elapsed(worker)}
 func _settle_work(worker: Dictionary)->void:
 	var row: Dictionary=worker.get("worker_work",{})
 	if row.is_empty():return

@@ -1242,3 +1242,9 @@
 - VERIFY：CPU90/1.911s，真实百工1.35小数链及故意晚发布失败保原件/当前城；GL13/4.239s原生建造/Ctrl-Z/Ctrl-Y/冷读通过；旧收益46/政策107/旧档375(27作品)通过。
 - BOUNDARY：只有首次账期数据与结算核心；关闭/同epoch恢复、Life/worker暂停、J/UI/默认新城及新奖励待接，完整政策runtime_ready=false；未做新音乐PCM/听评，M84～M86false。
 - NEXT：按65接关闭前结算与恢复基线/在途消费者，再接J/UI及正式新开局；源验证后按37双库发布，证据65第10.2节及验证记录/M84/progression_epoch_20261101。
+
+[SESSION_PROGRESSION_PAUSE] 2026-11-01 M84：首次账期/启停事务/在途暂停三项合审收口；关闭候选先结算、恢复同epoch高水位、独立备份回读保存后发布，Schema24保持。
+- VERIFY：CPU55/3.838s、GL17/5.717s原生active/off/resumed建造与Undo/Redo/冷读通过；首次账期90/2.308s、旧Workshop45/WorkerLOD20/旧档375(27作品)通过。
+- DATA：只读checkpoint不flush/不发失败事务奖励，旧货物/worker/权益保留；新店恢复派工，停用历史缺席ID不补发；State9操作guard为数据完整性例外，不挤入结构校验。
+- CRITIC：5项发现已修并复核无阻断，所有失败/诊断保留；经济Life当前整体冻结，静谧漫步/J分账/启停UI/正式新城默认仍待，runtime_ready=false及M84～M86false。
+- NEXT：转J分账/启停交互与静谧漫步，再正式新开局默认；按37双库发布，证据65第10.3节及验证记录/M84/progression_pause_20261101，未重跑音乐PCM/听评。

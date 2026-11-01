@@ -54,6 +54,7 @@ func status(venue_id: String) -> Dictionary:
 	return {"enabled":enabled,"phase":phase,"ready":ready,"required":2,"cooldown":float(life.state.matinee_cooldown),"completed":int(row.get("completed", 0)),"sponsors":int(row.get("sponsors", 0)),"source":str(concert.get("source", "manual"))}
 
 func tick(delta: float) -> void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	elapsed += delta
 	if elapsed < 1.0: return
 	elapsed = fmod(elapsed, 1.0)

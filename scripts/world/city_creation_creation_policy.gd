@@ -5,6 +5,7 @@ const ERAS:=["pastoral","renaissance","clockwork","modern_eco"]
 const ROLE_ERAS:={"atelier":"renaissance","clockmaker":"clockwork","symphony_hall":"modern_eco"}
 
 static func is_free(city:RefCounted)->bool:return city.creative_settings.get("creation_policy", "legacy")=="free"
+static func set_progression_enabled(city:RefCounted,enabled:Variant,path:String)->Dictionary:return preload("res://scripts/world/city_creation_progression_toggle.gd").set_enabled(city,enabled,path)
 static func can_build_era(city:RefCounted,era:String)->bool:return era in ERAS and (is_free(city) or era in city.era_unlocks)
 static func eras(city:RefCounted)->Array:return ERAS.duplicate() if is_free(city) else city.era_unlocks.duplicate()
 static func can_assign_role(city:RefCounted,role:String)->bool:

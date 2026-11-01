@@ -9,6 +9,7 @@ static func same_geometry(city:RefCounted,houses:Array,roads:Array)->bool:
 			if city.houses[i].get(field)!=houses[i].get(field):return false
 	return true
 static func observe(life:Node3D,baseline:bool=false)->void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	var city:RefCounted=life.state;var key:=[city.get_instance_id(),city._wish_epoch]
 	var view:Dictionary=city.get_meta("civic_debut",{})
 	if baseline or view.get("epoch",[])!=key:
@@ -38,6 +39,7 @@ static func progress(city:RefCounted,id:String)->int:
 	return int(city.bakery_supply.get(id,{}).get("produced",0))+int(city.workshop_supply.get(id,{}).get("produced",0))+int(city.cafe_progress.get(id,{}).get("groups",0))
 static func encore(demo:Node3D,id:String,ambient:bool=false)->bool:
 	var city:RefCounted=demo.state
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(city):return false
 	if Supply.status(city,id).tier<1:return false
 	var count:=progress(city,id);var key:="encore_progress/"+id
 	if count<=int(city.harmony_journey.get("receipts",{}).get(key,0)):return false

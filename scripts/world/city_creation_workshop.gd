@@ -45,6 +45,7 @@ func sync() -> void:
 		var transit: Dictionary = life.state.workshop_status(str(worker.workshop_id)).transit
 		if refund_orphans and not transit.is_empty() and str(transit.home_id) != str(worker.home_id): life.state.return_craft(str(worker.workshop_id))
 		_replan(worker)
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	var ids: Array = life._roles.keys()
 	ids.sort()
 	for shop: String in ids:
@@ -226,6 +227,7 @@ func _art_order(worker: Dictionary,kind: String="art") -> Dictionary:
 	return _recipient_cache[shop]
 
 func tick(delta: float) -> void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	if life.profile_tick:life.tick_profile.workshop_site=0;life.tick_profile.workshop_produce=0;life.tick_profile.workshop_callback=0
 	if life.profile_tick:life.tick_profile.workshop_slow_jobs=[]
 	for worker: Dictionary in workers:
@@ -372,12 +374,14 @@ func status(id: String) -> Dictionary:
 		break
 	return result
 
-func checkpoint() -> Array[Dictionary]:
+func checkpoint(publish:bool=true) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for worker: Dictionary in workers:
-		life.worker_lod.flush(worker)
+		if publish:life.worker_lod.flush(worker)
 		var node: Node3D = worker.node
 		result.append({"home_id":str(worker.home_id), "workshop_id":str(worker.workshop_id), "target_id":str(worker.target_id), "phase":str(worker.phase), "resume_phase":str(worker.resume_phase if worker.phase == "paused" else worker.phase), "elapsed":float(worker.elapsed), "deliveries":int(worker.deliveries), "position":[node.position.x,node.position.z], "yaw":node.rotation.y})
+		if not publish:
+			var sample:Dictionary=life.worker_lod.checkpoint_sample(worker);result.back().position=[sample.point.x,sample.point.z];result.back().yaw=sample.yaw;result.back().elapsed=sample.elapsed
 	return result
 
 func restore(data: Variant) -> void:

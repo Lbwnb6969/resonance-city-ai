@@ -63,6 +63,7 @@ func reset_if_loaded() -> void:
 	epoch = life.state._wish_epoch
 	observe(true)
 func poll(immediate: bool = false) -> void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	reset_if_loaded()
 	if not immediate and life.last_revision != life.state.revision: return
 	if life.last_revision == life.state.revision and observed_revision != life.state.revision: remember_geometry()

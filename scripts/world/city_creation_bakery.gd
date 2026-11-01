@@ -28,6 +28,7 @@ func sync() -> void:
 		occupied_homes[worker.home_id] = true
 		occupied_shops[worker.bakery_id] = true
 		_replan(worker)
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	var shops: Array = life._roles.keys()
 	shops.sort()
 	for shop: String in shops:
@@ -121,6 +122,7 @@ func _replan(worker: Dictionary) -> void:
 	worker.index = 0
 
 func tick(delta: float) -> void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	for worker: Dictionary in workers:
 		if not life.worker_lod.before(worker,delta,["walking","returning"]):continue
 		var phase := str(worker.phase)
@@ -214,12 +216,14 @@ func status(id: String) -> Dictionary:
 		break
 	return result
 
-func checkpoint() -> Array[Dictionary]:
+func checkpoint(publish:bool=true) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for worker: Dictionary in workers:
-		life.worker_lod.flush(worker)
+		if publish:life.worker_lod.flush(worker)
 		var node: Node3D = worker.node
 		result.append({"home_id":str(worker.home_id),"bakery_id":str(worker.bakery_id),"position":[node.position.x,node.position.z],"yaw":node.rotation.y,"phase":str(worker.phase),"resume_phase":str(worker.resume_phase if worker.phase == "paused" else worker.phase),"elapsed":float(worker.elapsed),"batches":int(worker.batches)})
+		if not publish:
+			var sample:Dictionary=life.worker_lod.checkpoint_sample(worker);result.back().position=[sample.point.x,sample.point.z];result.back().yaw=sample.yaw;result.back().elapsed=sample.elapsed
 	return result
 
 func restore(data: Variant) -> void:

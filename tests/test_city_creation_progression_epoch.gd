@@ -72,7 +72,7 @@ func run()->void:
 	spatial_checks()
 	math_checks()
 	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save bytes unchanged")
-	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"seconds":(Time.get_ticks_msec()-began)/1000.,"scope":"Explicit first-epoch backup/save/accounting API; normal new-city entry, toggle UI and Life pause consumers not switched"}
+	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"seconds":(Time.get_ticks_msec()-began)/1000.,"scope":"First-epoch backup/save/accounting regression; toggle UI and normal new-city entry not switched"}
 	FileAccess.open(out+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("PROGRESSION_EPOCH ",JSON.stringify(report));quit(0 if failures.is_empty() else 1)
 func validation(city:RefCounted)->void:
 	var source:Dictionary=city.snapshot();var before:Dictionary=city.snapshot();var cases:Array=[]

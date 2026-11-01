@@ -1780,6 +1780,7 @@ func set_bakery_open(house_id: String, opened: bool) -> Dictionary:
 
 
 func produce_bread(house_id: String, quantity: int) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	var capacity := bakery_capacity(house_id)
 	var current := bakery_status(house_id)
 	if capacity == 0 or not current.open or quantity <= 0 or quantity > capacity - int(current.stock):
@@ -1816,6 +1817,7 @@ func _mill_batch(house_id:String)->void:
 
 
 func serve_bread(house_id: String, home_id: String = "") -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	var current := bakery_status(house_id)
 	if bakery_capacity(house_id) == 0 or int(current.stock) <= 0:
 		return false
@@ -1846,6 +1848,7 @@ func has_matinee_credit(home_id: String) -> bool:
 	return int(row.get("earned", 0)) > int(row.get("spent", 0))
 
 func reserve_matinee(venue_id: String, sponsors: Array) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	var index := _house_index(venue_id)
 	if not matinee_pending.is_empty() or matinee_cooldown > 0.0 or index < 0 or houses[index].role not in ["venue","symphony_hall"] or not houses[index].get("auto_matinee", false) or sponsors.size() < 2: return false
 	var seen := {}
@@ -1858,6 +1861,7 @@ func reserve_matinee(venue_id: String, sponsors: Array) -> bool:
 	return true
 
 func complete_matinee(venue_id: String, sponsors: Array) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	if matinee_pending.get("venue_id", "") != venue_id or matinee_pending.get("sponsors", []) != sponsors or sponsors.size() < 2: return false
 	for home in sponsors:
 		if not has_matinee_credit(str(home)): return false
@@ -1886,6 +1890,7 @@ func _touch_matinee() -> void:
 
 
 func complete_tea(cafe_id: String, homes: Array) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	var cafe_index := _house_index(cafe_id)
 	if cafe_index < 0 or houses[cafe_index].role != "garden_cafe" or homes.size() < 2 or homes.size() > 3: return false
 	var unique := {}
@@ -1977,6 +1982,7 @@ func festival_ready_venues() -> Array[String]:
 
 ## Only a completed performance consumes its prepared gift and issues demand.
 func record_concert_completion(venue_id: String) -> float:
+	if CreationPolicy.Save.Progression.paused(self):return 0.
 	var index := _house_index(venue_id)
 	if index>=0 and houses[index].get("signature","") in Signatures.IDS and houses[index].role not in ["venue","symphony_hall"]:
 		life_progress.concerts=int(life_progress.concerts)+1
@@ -2005,6 +2011,7 @@ func set_workshop_open(house_id: String, opened: bool) -> Dictionary:
 
 
 func produce_craft(house_id: String, quantity: int) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	var status := workshop_status(house_id)
 	if not status.open or quantity <= 0 or quantity > status.capacity - status.stock: return false
 	workshop_supply[house_id] = WishFulfilment.keep_burst(workshop_supply,house_id,{"stock":status.stock + quantity,"produced":status.produced + quantity,"delivered":status.delivered,"transit":status.transit})
@@ -2030,6 +2037,7 @@ func _valid_craft_assignment(shop_id: String, home_id: String, target_id: String
 
 
 func reserve_craft(shop_id: String, home_id: String, target_id: String, kind: String = "upgrade") -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	if not _valid_craft_assignment(shop_id, home_id, target_id): return false
 	if kind not in ["upgrade", "festival", "art", "musicbox"]: return false
 	if not _craft_kind_compatible(shop_id,kind): return false
@@ -2054,6 +2062,7 @@ func reserve_craft(shop_id: String, home_id: String, target_id: String, kind: St
 
 
 func complete_craft(shop_id: String, home_id: String, target_id: String) -> bool:
+	if CreationPolicy.Save.Progression.paused(self):return false
 	if not _valid_craft_assignment(shop_id, home_id, target_id): return false
 	var status := workshop_status(shop_id)
 	if status.transit.get("home_id", "") != home_id or status.transit.get("target_id", "") != target_id: return false

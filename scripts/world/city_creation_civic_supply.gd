@@ -67,6 +67,7 @@ static func tea_speed(city:RefCounted,id:String)->float:
 	var row:=status(city,id);var groups:=int(city.cafe_progress.get(id,{}).get("groups",0))
 	return float(row.tempo_mult)*(1.4 if row.tier==2 and int(city.harmony_journey.get("receipts",{}).get("civic_meal/"+id,0))==groups+1 else 1.)
 static func receive(life:Node3D,target:String,food:bool)->bool:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return false
 	bind(life);var city:RefCounted=life.state;var row:=status(city,target)
 	if row.tier==0:return false
 	var receipts:Dictionary=city.harmony_journey.get("receipts",{})

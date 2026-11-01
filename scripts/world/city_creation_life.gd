@@ -1,5 +1,6 @@
 class_name CityCreationLife
 extends Node3D
+const EconomyPause=preload("res://scripts/world/city_creation_economy_pause.gd")
 const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## Small, purposeful daily trips on the real continuous street graph.
 const UNIT := 1.8
@@ -335,6 +336,7 @@ func setup(city: RefCounted, defer_sync:bool=false) -> void:
 		_resonance_signature.clear()
 		_wake_house_ids.clear()
 	state = city
+	EconomyPause.bind(self,city)
 	if fresh:
 		site_wishes=State.WishFulfilment.new(self)
 		_quality_inputs=null;_quality_cursor=-1
@@ -361,6 +363,11 @@ func _read_progress() -> void:
 
 func _process(delta: float) -> void:
 	if state == null: return
+	if EconomyPause.paused(state):
+		if state.revision!=last_revision and not _budget_hold and not budget_sync_pending():_sync()
+		return
+	if has_meta("progression_resume_delta"):
+		remove_meta("progression_resume_delta");delta=0.
 	if _budget_hold or budget_sync_pending():
 		_budget_delta += delta
 		return
@@ -373,6 +380,7 @@ func _process(delta: float) -> void:
 	_budget_catching_up = false
 
 func _tick_life(delta: float) -> void:
+	if EconomyPause.paused(state):return
 	var sampled:=Time.get_ticks_usec() if profile_tick else 0
 	if profile_tick:tick_profile.height=0;tick_profile.travel=0;tick_profile.cafe_attempts=0;tick_profile.quality_rules=0;tick_profile.quality_callback=0
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
@@ -658,6 +666,7 @@ func _sync_people() -> void:
 	var shops: Array[String] = []
 	var venues: Array[String] = []
 	var homes: Array[String] = []
+	var economy_paused:=EconomyPause.paused(state);var retained_homes:=EconomyPause.retained_homes(state)
 	current_population = 0
 	var concert_invalid := false
 	for house: Dictionary in state.houses:
@@ -681,7 +690,8 @@ func _sync_people() -> void:
 		var previous_stops: Array = resident.get("stops", [])
 		var stops: Array[String] = [home]
 		var stage_started := Time.get_ticks_usec()
-		if _network.prepared_home_stops.has(home):
+		if economy_paused and not retained_homes.has(home):pass
+		elif _network.prepared_home_stops.has(home):
 			stops.assign(_network.prepared_home_stops[home]);stop_hits+=1
 		elif connected_houses.has(home):
 			stop_misses+=1
@@ -970,6 +980,7 @@ func start_relay(venue_id: String) -> Dictionary:
 	return {"ok":true,"message":"庆典从这里出发，沿小路在 %d 座演奏庭依次奏响。" % venues.size()}
 
 func invite_concert(venue_id: String, automatic: bool = false, landmark: bool = false) -> Dictionary:
+	if EconomyPause.paused(state):return {"ok":false,"message":"经营已暂停，保留当前邀约与在途进度。"}
 	flush_citizens()
 	if _budget_hold or budget_sync_pending(): return {"ok":false,"message":"街道正在接合，完成后再邀请。"}
 	if state.revision != last_revision and not budget_sync_pending(): _sync()
@@ -1248,15 +1259,21 @@ func _resident_checkpoint(resident: Dictionary) -> Dictionary:
 	if resident.has("cafe_visit"): result.cafe_visit = resident.cafe_visit.duplicate(true)
 	return result
 
-func checkpoint() -> Dictionary:
-	flush_citizens()
+func checkpoint(reconcile:bool=true) -> Dictionary:
+	if reconcile:flush_citizens()
 	# Manual save may follow an edit before the next process frame.
-	if state.revision != last_revision and not budget_sync_pending(): _sync()
+	if reconcile and state.revision != last_revision and not budget_sync_pending(): _sync()
 	var people: Array[Dictionary] = []
-	for resident: Dictionary in residents: people.append(_resident_checkpoint(resident))
+	for resident: Dictionary in residents:
+		var row:=_resident_checkpoint(resident)
+		if not reconcile and not resident.has("balcony_visit") and not resident.has("bench_visit"):
+			var point:=citizen_position(resident);row.position=[point.x,point.z]
+			var motion:RefCounted=resident.get("offscreen_motion")
+			if motion!=null:row.yaw=motion.yaw
+		people.append(row)
 	var concert := _concert.duplicate(true)
 	if not concert.is_empty(): concert.wake_house_ids = _wake_house_ids.keys()
-	var result := {"schema":1,"residents":people,"concert":concert,"bakery_workers":bakery.checkpoint(),"workshop_workers":workshop.checkpoint(),"cafe_groups":cafe.checkpoint()}
+	var result := {"schema":1,"residents":people,"concert":concert,"bakery_workers":bakery.checkpoint(reconcile),"workshop_workers":workshop.checkpoint(reconcile),"cafe_groups":cafe.checkpoint()}
 	if not _relay.is_empty():
 		result.schema=2
 		result.relay=_relay.duplicate(true)
@@ -1341,7 +1358,7 @@ func restore_checkpoint(data: Dictionary) -> void:
 
 func _restore_paused_home(home: String, saved: Dictionary) -> bool:
 	if str(_roles.get(home, "")) != "residential" or str(saved.get("destination_id", "")) != home or not str(saved.get("dwell_id", "")).is_empty() or not str(saved.get("service_pending", "")).is_empty() or saved.has("daily_snapshot"): return false
-	if connected_houses.has(home):
+	if connected_houses.has(home) and not EconomyPause.paused(state):
 		for destination: String in _roles:
 			if _roles[destination] in ["bakery", "venue"] and connected_houses.has(destination) and not _route(str(connected_houses[home]), str(connected_houses[destination])).is_empty(): return false
 	var resident: Dictionary = {}
@@ -1419,6 +1436,7 @@ func house_connected(id: String) -> bool:
 	return connected_houses.has(id)
 
 func record_travel(actor_id: String, from: Vector2, to: Vector2) -> void:
+	if EconomyPause.paused(state):return
 	if _budget_hold or budget_sync_pending(): return
 	var started:=Time.get_ticks_usec() if profile_tick else 0
 	for event: Dictionary in travel.observe(actor_id,from,to,time):

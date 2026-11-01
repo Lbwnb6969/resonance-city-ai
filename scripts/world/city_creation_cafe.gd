@@ -110,6 +110,7 @@ func _resident(home: String) -> Dictionary:
 	return {}
 
 func try_visit(resident: Dictionary, reached: String = "") -> bool:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return false
 	if resident.has("cafe_visit") or resident.has("daily_snapshot") or not life._concert.is_empty() or not life.state.has_cafe_credit(str(resident.home_id)): return false
 	var selected := ""
 	var selected_seat := -1
@@ -190,6 +191,7 @@ func street_attachment(point: Vector3, finish: String) -> Array[Vector3]:
 	return empty
 
 func tick(delta: float) -> void:
+	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	for id in groups.keys():
 		if TerrainVisits.paused(self,str(id)):continue
 		if not groups.has(id): continue

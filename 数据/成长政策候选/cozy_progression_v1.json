@@ -63,18 +63,18 @@
     "journal_current_vs_historical_ledgers",
     "isolated_save_and_real_input_verification"
   ],
-  "boundary": "Schema24 first-epoch backup/save/accounting API is implemented. runtime_ready=false still applies to the full enable/pause/UI/default-entry feature. Normal initialize_free remains on schema23 with its old cutoff. Offline preview hashes never authorize runtime writes.",
+  "boundary": "Schema24 first-epoch and backed-up pause/resume APIs are implemented, with independent accounting and frozen economic Life time/workers. runtime_ready=false still covers quiet wandering, UI and default-entry integration. Normal initialize_free remains schema23 with the old cutoff. Offline preview hashes never authorize runtime writes.",
   "runtime_implementation": {
     "schema": 24,
-    "scope": "explicit_first_epoch_accounting_api",
+    "scope": "first_epoch_toggle_and_economic_freeze_api",
     "entry": "CityCreationState.begin_progression_epoch(path)",
     "enabled_by_default": false,
     "pending": [
-      "disable_and_resume_transaction",
-      "life_and_worker_pause_consumers",
+      "quiet_wandering_adapter",
       "journal_current_and_historical_ui",
       "new_city_default_entry",
       "optional_new_rewards"
-    ]
+    ],
+    "toggle_entry": "CreationPolicy.set_progression_enabled(city, enabled, path)"
   }
 }
