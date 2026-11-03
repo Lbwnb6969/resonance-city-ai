@@ -45,6 +45,7 @@ static func seams(city, house: Dictionary, cell: Dictionary, direction: Vector2i
 	for index in range(2):
 		var target := at+Vector2(direction)*1.8*(-1. if index==0 else 1.)
 		for other: Dictionary in city.houses:
+			if preload("res://scripts/world/city_creation_acoustic_shell.gd").active(city,other):continue
 			if str(other.id)!=str(house.id) and (not is_zero_approx(Frame.yaw(house)) or not is_zero_approx(Frame.yaw(other))):continue
 			if city.house_era(other)!="modern_eco" or absf(float(other.get("base_y",0.))-float(house.get("base_y",0.)))>.002: continue
 			if kind_for(other)!=kind_for(house) or front(city,other)!=direction: continue

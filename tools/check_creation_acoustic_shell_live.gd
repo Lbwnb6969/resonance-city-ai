@@ -1,0 +1,47 @@
+extends "res://tools/check_creation_stepped_guildhouse_live.gd"
+const ShellPlan=preload("res://scripts/world/city_creation_acoustic_shell.gd")
+const ShellFixture=preload("res://tests/test_city_creation_acoustic_shell.gd")
+func shell_focus()->void:
+	demo.focus=Vector3(-27.1,.8,-19.1);demo.zoom=7.5;demo.pitch=.52;demo.yaw=.55;demo._update_camera()
+func shell_stage()->Node3D:return demo.town.house_roots.h1.find_child("TimberAcousticHall",true,false)
+func shell_physics()->void:
+	await physics_frame;var stage:Node3D=shell_stage();var plan:Dictionary=demo.town.house_roots.h1.get_meta("acoustic_shell");var space:PhysicsDirectSpaceState3D=demo.town.get_world_3d().direct_space_state;var clear:=0
+	for x:float in [-.6,0.,.6]:
+		for y:float in [.55,1.1]:
+			var hit:Dictionary=space.intersect_ray(PhysicsRayQueryParameters3D.create(stage.to_global(Vector3(x,y,float(plan.depth)*.5+.15)),stage.to_global(Vector3(x,y,float(plan.depth)*.5-.35)),1));clear+=int(hit.is_empty())
+	check(clear==6,"actual six front-mouth Jolt rays enter the open hall without a hidden full-room collider")
+	var floor:Dictionary=space.intersect_ray(PhysicsRayQueryParameters3D.create(stage.to_global(Vector3(.3,.5,1.)),stage.to_global(Vector3(.3,.05,1.)),1));check(not floor.is_empty() and floor.collider.get_meta("house_id","")=="h1","actual stage remains a solid original-house floor")
+	var p:=ShellPlan.point(plan,.65);var hit:Dictionary=space.intersect_ray(PhysicsRayQueryParameters3D.create(stage.to_global(Vector3(.15,p.x+.45,p.y)),stage.to_global(Vector3(.15,p.x-.40,p.y)),1));check(not hit.is_empty() and hit.collider.get_meta("house_id","")=="h1" and hit.collider.has_meta("cell_id"),"actual curved canopy resolves to its original top-room identity")
+	facts.physics={"mouth_rays":6,"clear":clear,"floor":not floor.is_empty(),"curve":not hit.is_empty()}
+func shell_roof_edit()->void:
+	demo.select_tool(0);demo.spatial_popover.open_for_house("h1");await settle();var button:Button=demo.spatial_popover.root.find_child("ExtendHouse",true,false);check(button!=null and button.is_visible_in_tree(),"original Add Building action remains available on the acoustic shell");await ui_click(button);await settle();quiet()
+	var plan:Dictionary=demo.town.house_roots.h1.get_meta("acoustic_shell");var p:=ShellPlan.point(plan,.65);var pointer:Vector2=demo.camera.unproject_position(shell_stage().to_global(Vector3(.15,p.x,p.y)))
+	var event:=InputEventMouseMotion.new();event.device=92;event.position=pointer;event.global_position=pointer;root.push_input(event);await process_frame;await process_frame;var before:Dictionary=demo.state.snapshot()
+	for down:bool in [true,false]:
+		var click:=InputEventMouseButton.new();click.device=92;click.position=pointer;click.global_position=pointer;click.button_index=MOUSE_BUTTON_LEFT;click.pressed=down;root.push_input(click);await process_frame
+	await settle();quiet();check(demo.state.houses.size()==1 and demo.state.houses[0].cells.size()==before.houses[0].cells.size()+1 and demo.state.houses[0].architecture==ShellPlan.ID and demo.state.houses[0].seed==before.houses[0].seed,"real curved-roof click adds an authored upper room to the same house")
+	check(not ShellPlan.active(demo.state,demo.state.houses[0]) and shell_stage()==null and "随房形保留" in demo.town.house_roots.h1.get_meta("prototype_caption",""),"partial new upper room keeps its choice and honestly uses existing shape rendering")
+	await key(KEY_Z,true);await settle();quiet();check(demo.state.houses==before.houses and shell_stage()!=null,"native Ctrl-Z restores the exact open hall and original room arrangement");demo.house_module_mode=false;demo.select_tool(2)
+func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	if not OS.get_cmdline_user_args().has("--isolated-session") or not OUT.begins_with("res://验证记录/") or DirAccess.dir_exists_absolute(OUT):quit(1);return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60;var began:=Time.get_ticks_msec();var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH)
+	demo=Scene.instantiate();demo.persistence=false;demo.start_empty=true;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input()
+	var city:RefCounted=ShellFixture.fixture(2,2,1,"pavilion");await show(city,Vector2(-27.1,-19.1),"现代木壳声学亭");quiet();shell_focus();await settle();var original:Dictionary=demo.state.snapshot();var before:=arrays();facts.before=counts()
+	await native_prototype(ShellPlan.ID);shell_focus();await settle();var expected:Dictionary=original.houses[0].duplicate(true);expected.architecture=ShellPlan.ID;check(demo.state.houses[0]==expected and arrays()!=before,"actual modern silhouette card only changes explicit author choice and real geometry")
+	check(shell_stage()!=null and demo.town.house_roots.h1.get_meta("prototype_caption","")=="现代木壳声学亭","original selected-house caption reports the actual new open hall")
+	await shell_physics();facts.after=counts();var rig:Node3D=demo.town.house_roots.h1.find_child("ResonanceVisualPivot",true,false);check(rig!=null and rig.find_children("*","MeshInstance3D",true,false).all(func(mesh):return mesh.material_override is ShaderMaterial and mesh.material_override.shader==demo.town.resonance.GlowShader),"hard timber structure stays outside musical response motion")
+	check(demo.town.resonance.rigs.h1.mesh.get_meta("windows",[]).is_empty(),"open shell never paints fictitious ordinary windows onto its empty mouth")
+	demo.set_process(false);demo.town.clear_preview()
+	for phase in range(3):demo._set_light_phase(phase);await settle();await capture("shell_phase_"+str(phase))
+	demo.set_process(true);await shell_roof_edit();shell_focus();await settle()
+	var uncolored:=arrays();demo._after_edit(demo.state.set_house_colors("h1",Color("c9bca1"),Color("547e87")),"colors");await settle();quiet();var colored:=arrays();check(colored!=uncolored,"actual shell user palette publishes changed GPU appearance");check(demo.state.save_city(OUT+"/shell.json").ok,"ordinary atomic save preserves the explicit prototype and user color")
+	var cold:=State.new();check(cold.load_city(OUT+"/shell.json").ok,"actual shell cold-reads using the existing world format");await show(cold,Vector2(-27.1,-19.1),"木壳冷读");quiet();shell_focus();await settle();check(arrays()==colored,"actual incremental curved timber colors and geometry equal independent cold GPU arrays")
+	var road:Dictionary=demo.state.add_road([Vector2(-32,-20),Vector2(-29.45,-20)] as Array[Vector2],"path","none");check(road.ok,"real street approaches the side of the existing shell");demo._after_edit(road,"road");await settle();quiet();var plan:=ShellPlan.for_house(demo.state,demo.state.houses[0]);check(plan.front==Vector2i.LEFT and demo.state.house_entrances("h1").all(func(e):return e.side==Vector2i.LEFT),"published real road rotates the open mouth and all actual entrance ports together");await shell_physics()
+	var aligned:=arrays();var after:Dictionary=demo.state.snapshot();var reader:=State.new();check(reader.restore(JSON.parse_string(JSON.stringify(after))).ok,"street-aligned shell snapshot remains valid");await show(reader,Vector2(-27.1,-19.1),"入口朝向冷读");quiet();shell_focus();await settle();check(arrays()==aligned,"road-oriented incremental hall and independent cold rebuild use identical GPU geometry")
+	preload("res://scripts/world/city_creation_build_brush.gd").select(demo.state,"modern_eco","chalet");var placed:Dictionary=demo.state.add_house_stroke(Vector2(-24.4,-20),[{"x":0,"z":0,"level":0,"kind":"room"},{"x":0,"z":0,"level":1,"kind":"room"}]);demo._after_edit(placed,"room");await settle();quiet();check(placed.ok and neighbor_roof_complete("h2"),"new shell never clips away the nine sampled ordinary adjacent roof surfaces")
+	var adjacent:=arrays();after=demo.state.snapshot();var neighbor:=State.new();check(neighbor.restore(after).ok,"shell and ordinary adjacent house preserve exact author state");await show(neighbor,Vector2(-27.1,-19.1),"相邻屋顶冷读");quiet();shell_focus();await settle();check(arrays()==adjacent,"actual ordinary neighboring roof and shell incremental GPU arrays equal independent cold rebuild");await capture("shell_adjacent")
+	root.size=Vector2i(1024,768);demo.select_tool(0);demo.spatial_popover.open_for_house("h1");var book:Node=Book.obtain(demo);book.for_house(demo.spatial_popover);await settle();book.grid.get_parent().ensure_control_visible(book.buttons[ShellPlan.ID]);await settle();check(book.buttons[ShellPlan.ID].is_visible_in_tree() and not book.buttons[ShellPlan.ID].disabled and book.panel.get_global_rect().encloses(book.buttons[ShellPlan.ID].get_global_rect()),"actual new card remains selectable inside the original 1024 prototype scrollbook");await capture("shell_card_1024");await key(KEY_ESCAPE)
+	check(demo.state.snapshot()==after and not demo.persistence and personal==FileAccess.get_file_as_bytes(State.DEFAULT_PATH),"isolated UI preview and test works preserve personal data and author world")
+	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"seconds":(Time.get_ticks_msec()-began)/1000.,"facts":facts,"works":demo.collection_directory};FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("ACOUSTIC_SHELL_LIVE ",JSON.stringify({"ok":report.ok,"checks":checks,"failures":failures,"seconds":report.seconds}));demo.queue_free();await process_frame;quit(0 if report.ok else 1)

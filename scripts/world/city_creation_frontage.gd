@@ -18,6 +18,7 @@ static func ground_geometry(houses:Array,include_overhangs:bool=false)->Array:
 		for cell:Dictionary in house.cells:
 			if int(cell.level)==0:cells.append(cell);ground[Vector2i(cell.x,cell.z)]=true
 		var row:Array=[house.id,house.origin,cells,house.get("role",""),float(house.get("base_y",0.)),Frame.yaw(house),Frame.Hinge.key(house)]
+		if preload("res://scripts/world/city_creation_acoustic_shell.gd").selected(house):row.append(preload("res://scripts/world/city_creation_acoustic_shell.gd").frontage_key(house))
 		if include_overhangs:
 			# Courtyard paving/fountains also avoid elevated terrace footprints.
 			# Repeated floors over an existing footprint add no new obstruction.
@@ -115,7 +116,7 @@ static func entrances(house: Dictionary, roads: Array, houses: Array = []) -> Ar
 				if not approach_clear(house,wall_at,at,houses): continue
 				outside.append({"cell_id":str(cell.get("id","")),"cell_x":int(cell.x),"cell_z":int(cell.z),"side":side,"outward":Frame.direction(house,Vector2(side),cell),"wall_at":wall_at,"at":at,"clearance_at":wall_at+Frame.direction(house,Vector2(side),cell)*0.65,"active":false,"road_id":""})
 				return outside
-	return outside
+	return preload("res://scripts/world/city_creation_acoustic_shell.gd").entrances(house,roads,outside)
 
 static func approach_clear(house: Dictionary, wall_at: Vector2, at: Vector2, houses: Array) -> bool:
 	for other: Dictionary in houses:

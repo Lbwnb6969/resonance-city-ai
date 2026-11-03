@@ -2742,6 +2742,7 @@ func house_entrances(house_id: String) -> Array[Dictionary]:
 	for house: Dictionary in houses:
 		if str(house.id)!=house_id: continue
 		var signature: Array=[house.origin.duplicate(),[],Rotation.Frame.yaw(house),Rotation.Frame.Hinge.key(house)]
+		if preload("res://scripts/world/city_creation_acoustic_shell.gd").selected(house):signature.append(preload("res://scripts/world/city_creation_acoustic_shell.gd").frontage_key(house).duplicate(true))
 		for cell: Dictionary in house.cells:
 			if int(cell.level)==0:
 				signature[1].append([str(cell.id),int(cell.x),int(cell.z),str(cell.kind)])

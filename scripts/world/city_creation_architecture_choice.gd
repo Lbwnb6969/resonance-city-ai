@@ -1,7 +1,7 @@
 extends RefCounted
 ## Optional Schema19 choices leave old works and their automatic recipes intact.
 const ALPINE=["chalet","pavilion","terrace","panorama","twin_gable","green_lodge"]
-const MODERN_EXTRAS=["cantilever_tea_deck"]
+const MODERN_EXTRAS=["cantilever_tea_deck","timber_acoustic_shell"]
 const PASTORAL_EXTRAS=["creek_boathouse"]
 const NEO=["portico","townhouse","oriel","peristyle","rotunda","guildhall","recessed_townhouse"]
 const CLOCKWORK=["sawtooth_atrium","clock_turret","iron_conservatory","guild_arcade"]
@@ -32,6 +32,7 @@ static func choices(city, house: Dictionary) -> Array:
 		if not ANCIENT.rectangle(house).is_empty():result.append_array(ANCIENT.IDS)
 	return result
 static func label(key: String) -> String:
+	if key=="timber_acoustic_shell":return "现代木壳声学亭"
 	if key=="creek_boathouse":return "溪畔木船坞"
 	if key=="corner_loggia_tower":return "街角双向连拱望楼"
 	if key=="cantilever_tea_deck":return "悬挑亲水茶台"

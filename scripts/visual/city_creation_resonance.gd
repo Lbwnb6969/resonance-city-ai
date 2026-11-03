@@ -64,6 +64,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 		var level := int(cell.level)
 		top = maxf(top,at.y+(level+1)*FLOOR+0.65)
 		if not round_tower.is_empty(): continue
+		if root.has_meta("acoustic_shell"):continue
 		if str(cell.kind) != "room": continue
 		for side: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
 			if house.get("architecture","")=="stepped_guildhouse" and preload("res://scripts/visual/city_creation_stepped_guildhouse.gd").glow(self,root,cell,side,surface,windows):continue

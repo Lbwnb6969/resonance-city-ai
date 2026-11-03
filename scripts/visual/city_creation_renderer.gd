@@ -1664,7 +1664,7 @@ func _house_cell_base(job:HouseAssembly,cell:Dictionary)->HouseAssembly.Cell:
 	# unprotected slope even when the interior terrain has been levelled.
 	var footing_bottom := Highland.footing(self,house,cell) if level==0 else y
 	var footing_pieces: Array = Architecture.floor_pieces(cuts) if not cuts.is_empty() else [Rect2(-UNIT*0.5,-UNIT*0.5,UNIT,UNIT)]
-	if cuts.is_empty() and not preload("res://scripts/visual/city_creation_balcony_shell.gd").base(self,job,node,body,cell,footing_bottom):
+	if cuts.is_empty() and not preload("res://scripts/visual/city_creation_acoustic_shell.gd").base(self,job,node,body,cell,footing_bottom) and not preload("res://scripts/visual/city_creation_balcony_shell.gd").base(self,job,node,body,cell,footing_bottom):
 		var top := y+(0.18 if terrace else FLOOR)
 		_cell_box_shape(body,Vector3(core.size.x,top-footing_bottom,core.size.y),Vector3(core.get_center().x,(top+footing_bottom)*0.5,core.get_center().y))
 		_box(node,Vector3(UNIT,y+0.15-footing_bottom,UNIT),Vector3(0,(y+0.15+footing_bottom)*0.5,0),_material(Color("c7b995")))
@@ -1731,7 +1731,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 	wall.position = Vector3(direction.x*UNIT*0.5,y,direction.y*UNIT*0.5)
 	wall.rotation.y = atan2(float(direction.x),float(direction.y))
 	node.add_child(wall)
-	if preload("res://scripts/visual/city_creation_balcony_shell.gd").wall(self,job,frame,wall,direction):return
+	if preload("res://scripts/visual/city_creation_acoustic_shell.gd").wall(self,job) or preload("res://scripts/visual/city_creation_balcony_shell.gd").wall(self,job,frame,wall,direction):return
 	if retreats.has(direction):
 		var outer := Node3D.new()
 		outer.name="Arcade_%d_%d" % [direction.x,direction.y]
@@ -1787,7 +1787,7 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		job.role_prop_added = true
 
 func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
-	if preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(state,job.house):return
+	if preload("res://scripts/world/city_creation_acoustic_shell.gd").active(state,job.house) or preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(state,job.house):return
 	if preload("res://scripts/visual/city_creation_balcony_shell.gd").ceiling(self,job,frame):return
 	if Classical.Ancient.active(job.house,job.era):return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,job.house):return

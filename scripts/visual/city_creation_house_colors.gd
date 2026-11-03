@@ -50,7 +50,7 @@ static func _colors(p: Array) -> Array[Color]:
 		p[0].lerp(Color("e7d9b9"),.5),p[0].lerp(Color("e6d8b8"),.48),p[0].lerp(Color("e4d5b5"),.45),p[2].darkened(.42),p[1].lightened(.09),
 		p[0].lerp(Color("c9c5ae"),0.72),p[0].lerp(Color.WHITE,0.60),tower,tower.darkened(0.18),
 		p[0].lerp(Color("d9c7a2"),.55),p[2].lerp(Color("94724e"),.35),p[0].lerp(Color("ecdfc5"),.7),
-		p[0].lerp(Color("e8ddbd"),.65),p[0].lerp(Color("b7ac96"),.6),p[0].lerp(Color("e7d9bd"),.3)]
+		p[0].lerp(Color("e8ddbd"),.65),p[0].lerp(Color("b7ac96"),.6),p[0].lerp(Color("e7d9bd"),.3),p[1].lerp(p[2],.74)]
 
 
 static func prepare(renderer,root:Node3D,house:Dictionary,budget_ms:float=0.)->bool:

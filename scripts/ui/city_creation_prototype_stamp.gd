@@ -2,6 +2,7 @@ extends RefCounted
 ## Front silhouettes follow the published recipe, including automatic old houses.
 const Choice=preload("res://scripts/world/city_creation_architecture_choice.gd")
 const PROFILES={
+	"timber_acoustic_shell":[[-.94,.65],[-.94,.38],[-.88,.05],[-.68,-.38],[-.30,-.70],[.25,-.84],[.88,-.85],[.88,.65],[-.94,.65]],
 	"creek_boathouse":[[-.88,.60],[-.88,-.20],[-.42,-.70],[.03,-.20],[.03,.28],[.90,.28],[.90,.60],[-.88,.60]],
 	"corner_loggia_tower":[[-.92,.65],[-.92,.14],[-.48,.14],[-.48,-.58],[0,-.94],[.48,-.58],[.48,.14],[.92,.14],[.92,.65],[-.92,.65]],
 	"cantilever_tea_deck":[[-.85,.55],[-.85,-.2],[-.20,-.65],[.45,-.3],[.45,.15],[.95,.15],[.95,.45],[.45,.45],[.45,.65],[-.85,.65]],
@@ -42,6 +43,9 @@ static func draw(canvas:CanvasItem,key:String,at:Vector2,r:float,color:Color,gol
 	if key=="portico":line(canvas,[[-.88,-.12],[.88,-.12]],at,r,color,2.2)
 	if key=="rotunda":canvas.draw_arc(at+Vector2(0,-.1)*r,r*.67,PI,TAU,20,color,1.6,true)
 	match key:
+		"timber_acoustic_shell":
+			line(canvas,[[-.72,.38],[-.63,-.04],[-.36,-.37],[.06,-.54],[.63,-.58]],at,r,gold,1.2)
+			line(canvas,[[-.78,.45],[.80,.45]],at,r,gold,2.)
 		"creek_boathouse":
 			line(canvas,[[.06,.28],[.35,-.20],[.64,.28]],at,r,gold,1.2)
 			line(canvas,[[.16,.45],[.35,.53],[.56,.45]],at,r,gold,1.5)

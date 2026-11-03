@@ -20,6 +20,7 @@ static func terrace(renderer,node:Node3D,cell:Dictionary,cells:Array,y:float,p:A
 		var rail:MeshInstance3D=renderer._box(node,Vector3(.035,.54,1.9) if side.x!=0 else Vector3(1.9,.54,.035),Vector3(side.x*.99,y+.50,side.y*.99),renderer._material(Color.WHITE))
 		rail.material_override=renderer.conservatory.ensure_material();rail.set_meta("creation_live_visual",true)
 static func prepare(city:RefCounted,house:Dictionary)->Dictionary:
+	if preload("res://scripts/world/city_creation_acoustic_shell.gd").active(city,house):return {"roofs":[],"bridges":[]}
 	var roofs:Array=[]
 	for cell:Dictionary in house.cells:
 		if cell.kind!="room":continue
