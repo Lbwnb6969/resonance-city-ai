@@ -8,6 +8,8 @@ var generation:Variant=null
 var last_slot:=-1
 var bar:=-1
 var played:=0
+static func free_city(owner:Node)->bool:
+	return owner._pluck_city!=null and owner._pluck_city.CreationPolicy.is_free(owner._pluck_city)
 static func ensure(owner:Node)->Node:
 	var node:=owner.get_node_or_null("ChamberOrnaments")
 	if node==null:node=load("res://scripts/audio/city_creation_chamber_ornaments.gd").new();node.name="ChamberOrnaments";owner.add_child(node)
@@ -51,6 +53,7 @@ static func candidate(owner:Node,category:String)->Dictionary:
 		elif category=="quality_flourish" and (int(row.get("level_tier",1))>=3 or int(row.get("mechanisms",0))>0) and owner.acoustic.focus_weight(id)>0.:ids.append(id)
 	return nearest(owner,ids)
 static func route(owner:Node,category:String,payload:Dictionary)->bool:
+	if free_city(owner):return true
 	if owner.get_meta("chamber_dispatch",false):return false
 	var row:=candidate(owner,category)
 	if not row.is_empty():
@@ -58,6 +61,7 @@ static func route(owner:Node,category:String,payload:Dictionary)->bool:
 		request(owner,category,str(row.id),row.at,callback,1,"answer" if category=="district_reply" and not owner.reply._pending.is_empty() else "call" if category=="district_reply" else "")
 	return true
 static func request(owner:Node,category:String,id:String,at:Vector2,callback:Callable,cost:int=1,phase:String="")->bool:
+	if free_city(owner):return false
 	if owner.muted or owner._loading or owner.phonograph.active or not at.is_finite():return false
 	if owner.acoustic.point_weight(at)<=0. and category!="tower_bell":return false
 	var node=ensure(owner);var clock:=Grid.transport_clock(owner);var key:=category+"/"+id+("/"+phase if not phase.is_empty() else "")
@@ -77,6 +81,7 @@ static func concert(owner:Node,phrase:int)->void:
 	route(owner,"quality_flourish" if phrase%2==1 else "waterwheel",{"phrase":phrase})
 func _process(_delta:float)->void:
 	var owner:=get_parent()
+	if free_city(owner):pending.clear();return
 	if owner._loading or owner.muted or owner.phonograph.active:pending.clear();return
 	var revision:int=owner._pluck_city.revision if owner._pluck_city!=null else -1
 	var clock:=Grid.transport_clock(owner);var current:=floori(clock/3.)

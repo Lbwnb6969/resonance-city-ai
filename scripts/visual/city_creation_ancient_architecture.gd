@@ -82,6 +82,7 @@ static func roofs(r,parent:Node3D,house:Dictionary,palette:Array)->void:
 		var eave:float=float(house.get("base_y",0.))+(int(cell.level)+1)*1.7
 		var faces:Array[Vector3]=[]
 		for p:Vector3 in patch.vertices:faces.append(Vector3(p.x,eave+(p.y-eave)*.48,p.z))
+		preload("res://scripts/visual/city_creation_gable_trim.gd").prepare_part(parent,patch.merged({"vertices":faces,"height":float(patch.get("height",0.))*.48,"base_y":eave+(float(patch.base_y)-eave)*.48},true),{},domes)
 		var tile:bool=patch.surface=="roof"
 		var color:Color=palette[1] if tile else palette[0].lerp(Color("e4d5b5"),.45)
 		var mesh:MeshInstance3D=preload("res://scripts/visual/city_creation_ancient_roof_finish.gd").surface(r,parent,patch,faces,color,tile)

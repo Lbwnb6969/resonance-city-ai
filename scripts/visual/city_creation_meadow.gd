@@ -373,9 +373,14 @@ func _local_obstacles(block: Vector2i, entrances_by_house: Dictionary = {}) -> A
 	# terrain triangles touching it, even when a grass root stays dry.
 	var rect := Rect2(Vector2(block) * BLOCK_SIZE, Vector2.ONE * BLOCK_SIZE).grow(1.0)
 	var relevant: Array = []
-	for landmark:Dictionary in state.placed_landmarks:
-		var fp:Variant=state.PlacedLandmarks.footprint(landmark)
+	for plaza:Dictionary in preload("res://scripts/world/city_creation_plaza_loops.gd").plans(state):
+		var fp:Variant={"polygon":plaza.polygon}
 		if rect.intersects(Frame.bounds(fp)):relevant.append(["courtyard",fp])
+	for fp:Variant in preload("res://scripts/world/city_creation_boathouse_plan.gd").ground_masks(state):
+		if rect.intersects(Frame.bounds(fp)):relevant.append(["courtyard",fp])
+	for landmark:Dictionary in state.placed_landmarks:
+		for fp:Variant in preload("res://scripts/world/city_creation_landmark_vegetation.gd").footprints(landmark):
+			if rect.intersects(Frame.bounds(fp)):relevant.append(["courtyard",fp])
 	for fp:Variant in preload("res://scripts/visual/city_creation_street_furniture_footprints.gd").plans(state):
 		if rect.intersects(Frame.bounds(fp)):relevant.append(["courtyard",fp])
 	for court: Dictionary in state.courtyard_plans():

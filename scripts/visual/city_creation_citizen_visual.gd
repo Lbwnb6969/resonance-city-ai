@@ -60,6 +60,10 @@ static func prop_mesh(kind:String)->ArrayMesh:
 	else:
 		_box(s,Vector3(.045,.045,.14),Vector3(-.025,-.035,-.065),skin);_sphere(s,Vector3.ONE*.03,Vector3(0,-.035,-.015),skin)
 	match kind:
+		"skewer":
+			_box(s,Vector3(.018,.018,.30),Vector3.ZERO,wood)
+			for z:float in [-.08,0.,.08]:
+				_box(s,Vector3(.085,.065,.065),Vector3(0,.02,z),Color("b9703d"));_box(s,Vector3(.06,.008,.014),Vector3(0,.056,z),Color("e3b67a"))
 		"bread":
 			_box(s,Vector3(.19,.08,.14),Vector3.ZERO,wood)
 			for x:float in [-.075,0.,.075]:_sphere(s,Vector3(.042,.032,.065),Vector3(x,.06,0),gold)

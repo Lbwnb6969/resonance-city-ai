@@ -29,6 +29,13 @@ func setup(owner:RefCounted,ring:RefCounted)->void:
  pop.expand_button.reparent(palette)
  var sample:Control=ring.left.find_child("SampleHouseAppearance",true,false);sample.reparent(appearance)
  pop.color_panel.reparent(appearance)
+ preload("res://scripts/ui/city_creation_window_details.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_dormer_choices.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_chimney_choices.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_gable_trim_choices.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_porch_choices.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_skybridge_choices.gd").new().setup(pop,appearance)
+ preload("res://scripts/ui/city_creation_detail_status.gd").new().setup(pop,appearance)
  music=VBoxContainer.new();music.name="HouseMusicDetails";music.add_theme_constant_override("separation",5);column.add_child(music)
  for button:Button in [pop.choir_button,pop.temperament_button,pop.concert_button,pop.parade_button]:button.reparent(music)
  ring.left.hide();ring.right.hide();ring.colors.hide();panel.hide()
@@ -38,6 +45,7 @@ func setup(owner:RefCounted,ring:RefCounted)->void:
  business_button=preload("res://scripts/ui/city_creation_business_step.gd").inspector(pop)
  preload("res://scripts/ui/city_creation_lean_inspector.gd").setup(self)
 func show_page(id:String)->void:
+ pop.demo.journal.scrollbook.close_all()
  id=preload("res://scripts/ui/city_creation_lean_inspector.gd").page(self,id)
  mode=id;_target=pop.target_house_id;appearance.visible=id=="appearance";music.visible=id=="music";panel.show();fit();pop.refresh();panel.move_to_front()
 func fit()->void:

@@ -5,3 +5,6 @@
 /文档/来源/** -text
 文档/许可记录/CityKits/*/License.txt -text -diff
 文档/许可记录/CityKits/*/official-page.html -text -diff
+
+# User music prompt source hashes preserve exact source bytes.
+/数据/音乐制作/提示词来源/** -text -whitespace

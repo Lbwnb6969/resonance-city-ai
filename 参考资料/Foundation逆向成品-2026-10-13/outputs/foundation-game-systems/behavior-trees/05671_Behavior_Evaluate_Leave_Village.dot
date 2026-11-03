@@ -1,8 +1,0 @@
-digraph behavior {
-  rankdir=TB;
-  n0 [label="Sequencer",shape=doubleoctagon];
-  n1 [label="PlaCAgentNodeEvaluateVillagerLeaveVillage",shape=box];
-  n2 [label="986bd4c8-b2d5-4d37-bf82-87e5bbec89fb",shape=box];
-  n0 -> n1 [label="0"];
-  n0 -> n2 [label="1"];
-}

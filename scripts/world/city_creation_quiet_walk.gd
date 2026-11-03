@@ -15,6 +15,14 @@ func _init(owner:Node3D)->void:life=owner
 func clear()->void:
 	for home:String in actors:_release(actors[home])
 	actors.clear();context.clear();stamp.clear();clock=0.
+func resume_idle()->void:
+	# Only idle homes adopt presentation; real visits/cargo retain their frozen positions.
+	for resident:Dictionary in life.residents:
+		var actor:Dictionary=actors.get(str(resident.home_id),{})
+		if actor.is_empty() or not resident.paused:continue
+		resident.node.position=actor.node.position;resident.node.rotation.y=actor.node.rotation.y
+		resident.erase("idle_walk")
+	clear()
 func _release(actor:Dictionary)->void:
 	if is_instance_valid(actor.body):actor.body.visible=actor.body_visible
 	actor.node.hide();actor.node.queue_free()
@@ -67,13 +75,15 @@ func tick(delta:float)->void:
 		actor.body.hide();actor.node.show()
 		if life.view_camera!=null and not life.view_camera.is_position_in_frustum(actor.node.global_position+Vector3.UP*.35):continue
 		var moving:=_advance(actor,step)
-		Gait.pose(actor.node,clock,moving);stats.poses+=1
+		Gait.pose(actor.node,clock,moving,not str(actor.get("ghat_rest","")).is_empty());stats.poses+=1
 		if moving:stats.moves+=1
 func _advance(actor:Dictionary,delta:float)->bool:
 	if actor.wait>0.:actor.wait=maxf(0.,actor.wait-delta);return false
+	actor.erase("ghat_rest")
 	var distance:=delta*SPEED;var moving:=false
 	for transition in range(8):
 		if actor.index>=actor.route.size():
+			if preload("res://scripts/world/city_creation_ghat_network.gd").rest(life,actor):return false
 			var key:=Routes.next_key(life.graph,life.positions,actor.current,actor.previous,actor.origin,actor.seed,actor.turn)
 			if key.is_empty():actor.wait=1.5;return moving
 			actor.previous=actor.current;actor.current=key;actor.turn+=1
@@ -84,7 +94,7 @@ func _advance(actor:Dictionary,delta:float)->bool:
 		var offset:=Routes.planar(target)-Routes.planar(actor.node.position);var length:=offset.length()
 		if length<=.0001:actor.index+=1;continue
 		var stride:=minf(distance,length);var point:=Routes.planar(actor.node.position)+offset/length*stride
-		actor.node.position=Vector3(point.x,life.state.street_height(point)+.10,point.y)
+		actor.node.position=Vector3(point.x,preload("res://scripts/world/city_creation_ghat_network.gd").walk_height(life,point)+.10,point.y)
 		actor.node.rotation.y=atan2(offset.x,offset.y);moving=moving or stride>0.;distance-=stride
 		if stride>=length:actor.index+=1
 		if distance<=0.:return moving

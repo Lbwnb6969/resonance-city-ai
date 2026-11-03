@@ -122,7 +122,7 @@ func try_visit(resident: Dictionary, reached: String = "") -> bool:
 		if terrain_resume.get(id,{}).get("phase","")=="tea":continue
 		if pastoral and not life.state.chord_together([str(resident.home_id),reached,str(id)],"pastoral_triad"):continue
 		var group: Dictionary = groups.get(id, {"phase":"waiting","participants":[]})
-		if group.phase != "waiting" or group.participants.size() >= 3: continue
+		if group.phase != "waiting" or group.participants.size() >= layouts[id].seats.size(): continue
 		var occupied := {}
 		for home in group.participants:
 			var guest := _resident(str(home))
@@ -165,6 +165,7 @@ func can_wait_after_bread(resident:Dictionary,bakery:String)->bool:
 
 func _approach(point: Vector3, id: String, seat: int) -> Array[Vector3]:
 	var empty: Array[Vector3] = []
+	if seat<0 or not layouts.has(id) or seat>=layouts[id].seats.size():return empty
 	if not life.connected_houses.has(id): return empty
 	var route: Array[Vector3] = life._route_from_position(point, str(life.connected_houses[id]))
 	if route.is_empty(): return empty
@@ -332,6 +333,7 @@ func restore(data: Dictionary) -> void:
 				continue
 			var entry: Dictionary = saved_people[home]
 			var visit: Dictionary = entry.cafe_visit
+			if valid and (int(visit.seat)<0 or int(visit.seat)>=layouts[id].seats.size()):valid=false
 			var point := Vector3(float(entry.position[0]), life.state.street_height(Vector2(entry.position[0], entry.position[1])) + 0.10, float(entry.position[1]))
 			if not valid: continue
 			var route: Array[Vector3] = []

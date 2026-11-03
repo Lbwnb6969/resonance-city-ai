@@ -188,7 +188,7 @@ func _build(city: RefCounted,road: Dictionary,doors: Array,junctions: Array) -> 
 			if gap>=nearest: continue
 			nearest = gap
 			arc = float(samples[i].distance)+point.distance_to(a)
-		if arc>=0.0: anchors.append({"distance":arc,"y":float(door.y),"house_id":str(door.house_id)})
+		if arc>=0.0: anchors.append({"distance":arc,"y":preload("res://scripts/world/city_creation_upper_stoop.gd").anchor_y(city,door,samples,arc),"house_id":str(door.house_id)})
 	var flat_intervals := _flat_anchor_intervals(anchors)
 	for sample: Dictionary in samples:
 		if sample.bridge: continue
@@ -248,7 +248,7 @@ func _build(city: RefCounted,road: Dictionary,doors: Array,junctions: Array) -> 
 	var elevated := not treads.is_empty()
 	for sample: Dictionary in samples:
 		if absf(float(sample.y)-0.055)>0.001: elevated=true;break
-	return {"id":str(road.id),"width":float(road.width),"samples":samples,"treads":treads,"stepping_runs":stepping_runs,"bridge_runs":bridge_runs,"elevated":elevated,"signature":hash([road.width,samples,treads,stepping_runs,bridge_runs])}
+	return {"id":str(road.id),"width":float(road.width),"samples":samples,"treads":treads,"stepping_runs":stepping_runs,"stepping_cuts":preload("res://scripts/world/city_creation_stepping_surface.gd").cuts(stepping_runs,float(road.width)),"bridge_runs":bridge_runs,"elevated":elevated,"signature":hash([road.width,samples,treads,stepping_runs,bridge_runs])}
 
 func _flat_anchor_intervals(anchors: Array) -> Array[Dictionary]:
 	# Membership is independent of the road sample. Keep the original nested
@@ -358,3 +358,31 @@ func height_at(at: Vector2,fallback: float) -> float:
 	for tread: Dictionary in best.treads:
 		if arc>=float(tread.s0)-0.000001 and arc<=float(tread.s1)+0.000001: return float(tread.y)
 	return lerpf(float(a.y),float(b.y),ratio)
+
+func surface_at(at:Vector2)->Dictionary:
+	# Match height_at's nearest-road order and boundary tolerances. Only the
+	# tread under this sample grants stair clearance to an entry corridor.
+	var small:=Vector2i(floori(at.x/QUERY_BIN_SIZE),floori(at.y/QUERY_BIN_SIZE))
+	var nearest:=INF;var best:Dictionary={};var closest:=Vector2.ZERO
+	for row:Dictionary in _query_bins.get(small,[]):
+		var point:=Geometry2D.get_closest_point_to_segment(at,row.a,row.b)
+		var gap:=at.distance_squared_to(point)
+		if gap>float(row.radius)*float(row.radius) or gap>=nearest:continue
+		nearest=gap;best=row;closest=point
+	if best.is_empty():return {}
+	var selected:Dictionary=profiles[best.road]
+	var a:Dictionary=selected.samples[int(best.index)];var b:Dictionary=selected.samples[int(best.index)+1]
+	var delta:Vector2=best.b-best.a
+	var ratio:=clampf((closest-Vector2(best.a)).dot(delta)/delta.length_squared(),0.,1.)
+	var arc:=lerpf(float(a.distance),float(b.distance),ratio)
+	var result:={"y":lerpf(float(a.y),float(b.y),ratio),"kind":"road","road_id":best.road,"arc":arc}
+	if preload("res://scripts/world/city_creation_stepping_surface.gd").in_cut(selected.stepping_cuts,at):
+		result.merge(preload("res://scripts/world/city_creation_stepping_surface.gd").support(selected.stepping_runs,at))
+	for stepping:Dictionary in best.stepping_runs:
+		if arc>=float(stepping.start)-.00001 and arc<=float(stepping.end)+.00001:
+			result.y=SteppingPlan.crossing_height(stepping,arc)
+			return result
+	for tread:Dictionary in best.treads:
+		if arc>=float(tread.s0)-.000001 and arc<=float(tread.s1)+.000001:
+			result.y=float(tread.y);result.kind="road_steps";return result
+	return result

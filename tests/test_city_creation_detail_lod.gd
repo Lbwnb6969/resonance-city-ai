@@ -10,6 +10,7 @@ func _check(ok:bool,label:String)->void:
 	if not ok:failures.append(label);push_error(label)
 func _run()->void:
 	var renderer:=Renderer.new();root.add_child(renderer)
+	for node:Node in [renderer.shore,renderer.lilypads,renderer.wildlife]:renderer.add_child(node)
 	var group:=Node3D.new();renderer.add_child(group)
 	for end:float in [0.,Lod.FLOWERBOX,Lod.FLOWERBOX]:
 		var mesh:MeshInstance3D=renderer._box(group,Vector3.ONE,Vector3(end,0,0),renderer._material(Color.WHITE))
@@ -30,7 +31,7 @@ func _run()->void:
 	var street:=Node3D.new();renderer.add_child(street);var result:Dictionary=renderer.path_pebbles.build(renderer,city.roads[0],street)
 	_check(result.instances>0 and street.get_child_count()>0,"actual authored street produces physical pebble batches")
 	var fingerprints:Array=[]
-	for mesh:MultiMeshInstance3D in street.get_children():fingerprints.append([mesh.multimesh.instance_count,hash(mesh.multimesh.buffer),mesh.multimesh.mesh]);_check(mesh.visibility_range_end==Lod.PEBBLES,"actual pebble batch has calibrated native range")
+	for mesh:MultiMeshInstance3D in street.get_children():fingerprints.append([mesh.multimesh.instance_count,hash(mesh.multimesh.buffer),mesh.multimesh.mesh,mesh.multimesh.visible_instance_count]);_check(mesh.visibility_range_end==Lod.PEBBLES,"actual pebble batch has calibrated native range")
 	renderer.path_pebbles.set_view_scale(60.)
 	var hidden:=true
 	for mesh:MultiMeshInstance3D in street.get_children():hidden=hidden and mesh.multimesh.visible_instance_count==0
@@ -38,7 +39,7 @@ func _run()->void:
 	var new_street:=Node3D.new();renderer.add_child(new_street);renderer.path_pebbles.build(renderer,city.roads[0],new_street)
 	_check(new_street.get_child(0).multimesh.visible_instance_count==0,"newly installed far-view pebble batches start without GPU submission")
 	renderer.path_pebbles.set_view_scale(12.);var restored:=true;var index:=0
-	for mesh:MultiMeshInstance3D in street.get_children():restored=restored and mesh.multimesh.visible_instance_count==-1 and fingerprints[index]==[mesh.multimesh.instance_count,hash(mesh.multimesh.buffer),mesh.multimesh.mesh];index+=1
+	for mesh:MultiMeshInstance3D in street.get_children():restored=restored and fingerprints[index]==[mesh.multimesh.instance_count,hash(mesh.multimesh.buffer),mesh.multimesh.mesh,mesh.multimesh.visible_instance_count];index+=1
 	_check(restored and city.snapshot()==before,"returning close restores identical instances mesh buffers and all authored identity")
 	var smoke:=Node3D.new();renderer.add_child(smoke);renderer.bakery_smoke.build(smoke,Vector3.ZERO)
 	_check(smoke.get_node("BakerySmoke").visibility_range_end==Lod.SMOKE and not smoke.get_node("BakerySmoke").visible,"oven smoke keeps its real work visibility while gaining GPU culling")

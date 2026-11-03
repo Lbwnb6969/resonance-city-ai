@@ -3,6 +3,8 @@ extends RefCounted
 const Sequence=preload("res://scripts/audio/city_creation_strum_sequence.gd")
 const Pitch=preload("res://scripts/audio/city_creation_pitch_pluck.gd")
 static func _stream(music,midi:int,timbre:String)->AudioStreamWAV:
+	var candidate:=preload("res://scripts/audio/city_creation_game_music_harmony.gd").node(music)
+	if candidate!=null:return candidate.cues.wave(timbre,midi)
 	var key:=Pitch.stream_key(timbre,midi)
 	if music._edit_streams.has(key):return music._edit_streams[key]
 	var cache:Dictionary=music.get_meta("strum_pcm",{})

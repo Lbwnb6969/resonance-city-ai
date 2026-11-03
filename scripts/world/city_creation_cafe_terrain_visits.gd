@@ -24,9 +24,10 @@ static func prune(data:Dictionary)->void:
 	if data.cafe_terrain.groups.is_empty():data.erase("cafe_terrain")
 static func replan(cafe,id:String,old:Dictionary)->bool:
 	var life=cafe.life
-	if not life.state.TerrainPolicy.enabled(life.state) and not cafe.terrain_resume.has(id):return false
 	var h:int=life.state._house_index(id)
 	if h<0 or life.state.houses[h].role!="garden_cafe":return false
+	var deck_change:bool=life.state.CreationPolicy.is_free(life.state) and (old.has("tea_deck") or life.state.houses[h].get("architecture","")=="cantilever_tea_deck")
+	if not life.state.TerrainPolicy.enabled(life.state) and not cafe.terrain_resume.has(id) and not deck_change:return false
 	var group:Dictionary=cafe.groups[id];var layout:Dictionary=cafe.layouts.get(id,{})
 	var intent:Dictionary=cafe.terrain_resume.get(id,{"phase":group.phase,"elapsed":group.elapsed,"suspended":false}).duplicate(true)
 	var routes:Dictionary={};var valid:bool=not layout.is_empty() and life.connected_houses.has(id)
@@ -34,6 +35,7 @@ static func replan(cafe,id:String,old:Dictionary)->bool:
 	for home:String in group.participants:
 		var resident:Dictionary=cafe._resident(home)
 		if resident.is_empty() or not resident.has("cafe_visit"):return false
+		if valid and intent.phase!="leaving" and int(resident.cafe_visit.seat)>=layout.seats.size():valid=false;stationary=false
 		if valid and (not life.connected_houses.has(home) or life._route(str(life.connected_houses[home]),str(life.connected_houses[id])).is_empty()):valid=false;stationary=false
 		if stationary and Vector2(resident.node.position.x,resident.node.position.z).distance_to(layout.seats[int(resident.cafe_visit.seat)])>.15:stationary=false
 	if stationary:

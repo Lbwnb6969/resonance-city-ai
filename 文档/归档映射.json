@@ -659,5 +659,16 @@
       }
     ],
     "policy": "其余文档为备份后原位精简，整理记录保留旧全文；历史映射、来源原稿与实际证据保持。"
+  },
+  "three_directory_cleanup_20261103": {
+    "archive_relative": "废弃/三目录整理_20261103_132235",
+    "backup_tag": "backup/three-folders-20261103_132235",
+    "files": 4243,
+    "bytes": 47763408308,
+    "moved_manifest": "验证记录/三目录整理_20261103_132235/moves.jsonl",
+    "moved_manifest_sha256": "40ac887e383181bf877eee5bc0333ba73100ced9bbf54b5b9708b33fac8ffe04",
+    "scratch_manifest": "验证记录/三目录整理_20261103_132235/scratch_archive.json",
+    "retained_verification": "验证记录/三目录整理_20261103_132235/retained_verification.json",
+    "policy": "42 completed separation stages archived; originals, delivery stems and active game packages retained. Reproduction needs a new version directory or restoration. Raw large logs have lossless gzip equivalents; all moved files SHA verified. Only this batch assessed for disposal, not older archives."
   }
 }

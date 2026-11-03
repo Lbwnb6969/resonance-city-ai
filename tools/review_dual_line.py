@@ -9,8 +9,8 @@ import re
 from review_music_undercurrent import union
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = [('文档/来源/20261031_Gemini_明暗双线与AI储备_原稿.txt',
-            'b5d54dd41cdd6c11d559fc7167bc179e5d7c948a7d68f2e2aef6d20cc5e78a74'),
+SOURCES = [('文档/来源/20261031_Gemini_明暗双线与AI储备_删项摘录.txt',
+            'fc00c8443fc7be72ca53b3cf4e10586fb05bbedd6aa2e5369cf344e124ffe2f9'),
            ('文档/来源/20261031_Gemini_音乐暗线重构_续稿1.txt',
             'f3c0f1e2f11310ffaa00013a789a1bd12cc70163c11a35d2b88fa2060d57ae03')]
 DEST = '数据/音乐设计候选/Gemini明暗双线_续谱与储备_v1.json'

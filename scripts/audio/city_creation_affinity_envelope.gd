@@ -10,7 +10,7 @@ var _latched:=false
 var _missing_since:=-1.
 var _city:=0
 var _last_clock:=-1.
-func step(facts:Dictionary,clock:float,delta:float)->Dictionary:
+func step(facts:Dictionary,clock:float,delta:float,allow_observation:bool=true)->Dictionary:
 	if _city!=facts.city or clock<_last_clock:
 		_city=facts.city;value=0.;_candidate="";_established=[];_latched=false;_missing_since=-1.;_since=clock
 	_last_clock=clock
@@ -19,6 +19,7 @@ func step(facts:Dictionary,clock:float,delta:float)->Dictionary:
 	var desired:bool=float(facts.enclosure)>=(.35 if _latched and same else .55) and not ids.is_empty()
 	var candidate:String=JSON.stringify(ids) if desired else ""
 	if candidate!=_candidate:_candidate=candidate;_since=clock
+	if not allow_observation:_since=clock
 	var recover:bool=same and _missing_since>=0. and clock-_missing_since<TAIL and value>0.
 	if desired and (clock-_since>=OBSERVE or same and _latched or recover):
 		_latched=true;_missing_since=-1.;_established=ids.duplicate()

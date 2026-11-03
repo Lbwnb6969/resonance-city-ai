@@ -106,11 +106,15 @@ static func install(renderer,root:Node3D,house:Dictionary,data:Dictionary)->void
 	var row:Dictionary=data
 	var center:Vector2=data.center
 	var array_mesh:=ArrayMesh.new();array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
-	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=Wall.source(Color("45585c"), null, "component", Wall.Kind.SLATE)
+	var color:=Color("45585c")
+	if house.get("architecture","")=="recessed_townhouse":color=renderer.HouseColors.era_palette(renderer,house,renderer.HouseColors.base_palette(renderer,house),house.has("custom_colors"))[1]
+	var mesh:=MeshInstance3D.new();mesh.mesh=array_mesh;mesh.material_override=Wall.source(color, null, "component", Wall.Kind.SLATE)
 	mesh.material_override.cull_mode=BaseMaterial3D.CULL_DISABLED;root.add_child(mesh);mesh.name="ClockworkMansard_"+str(row.cell.id)
+	if house.get("architecture","")=="recessed_townhouse":mesh.set_meta("creation_detail_roof",true);mesh.set_meta("creation_detail_cell",str(row.cell.id))
 	var body:=StaticBody3D.new();body.set_meta("house_id",str(house.id));body.set_meta("cell_id",str(row.cell.id));body.set_meta("cell",row.cell.duplicate(true))
 	preload("res://scripts/visual/city_creation_roof_pick.gd").attach(body,array_mesh.get_aabb(),"MansardPick")
 	root.add_child(body)
+	if preload("res://scripts/world/city_creation_architecture_variants.gd").dormer_supported(renderer.state,house) and not preload("res://scripts/world/city_creation_architecture_variants.gd").dormer(house).is_empty():return
 	var copper: Material=renderer._material(Color("b3975e"),.7)
 	for side: Vector2 in [Vector2.UP,Vector2.DOWN]:
 		var at:=center+side*.68

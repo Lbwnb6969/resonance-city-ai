@@ -1,0 +1,813 @@
+{
+  "historical_source": "五首参考曲_提示词依据_20261102.json",
+  "historical_source_sha256": "c391bc2eb37e2d31de788cec534f9fdfe84ca756f66f1e4f74773424a3f5c44e",
+  "project_local": {
+    "date": "2026-11-02",
+    "purpose": "Five reference palettes and original Lyria prompts",
+    "measurement": "Reuse successful SHA-matched librosa + Essentia results; independently reaggregate timeline windows and inspect five overview images",
+    "listening": "No new human listening assessment; qualitative source descriptions attributed to prior user-supplied Gemini briefs",
+    "external_results": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/补充成果/reference_prompt_20261102",
+    "sources_unchanged": true,
+    "songs": [
+      {
+        "name": "blau",
+        "source": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/原曲/blau.mp3",
+        "source_sha256": "426c33f54081cc56b8881fda94c83826fe2160188c836a5fd2ff99334a85cf65",
+        "analysis_summary": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/results/20261031-122735-487940/001_blau/summary.json",
+        "duration_seconds": 148.8,
+        "bpm_librosa": 123.046875,
+        "essentia": {
+          "bpm": 124.925949097,
+          "beats_count": 297,
+          "onset_rate": 3.17840695381,
+          "danceability": 1.03717112541,
+          "key": "E",
+          "scale": "major",
+          "key_strength": 0.776320517063,
+          "tuning_frequency_hz": 434.193115234,
+          "average_loudness": 0.860051095486,
+          "dynamic_complexity": 3.51410961151
+        },
+        "centroid_hz": 489.74428968999683,
+        "key_profiles": {
+          "key_edma": {
+            "strength": 0.776320517063,
+            "key": "E",
+            "scale": "major"
+          },
+          "key_krumhansl": {
+            "strength": 0.770060360432,
+            "key": "E",
+            "scale": "major"
+          },
+          "key_temperley": {
+            "strength": 0.762682318687,
+            "key": "E",
+            "scale": "major"
+          }
+        },
+        "windows_15s": [
+          {
+            "start": 0,
+            "end": 15,
+            "rms": 0.06668017413749226,
+            "centroid_hz": 524.4842572965654
+          },
+          {
+            "start": 15,
+            "end": 30,
+            "rms": 0.09229954873065016,
+            "centroid_hz": 519.2378632841104
+          },
+          {
+            "start": 30,
+            "end": 45,
+            "rms": 0.13807849767956656,
+            "centroid_hz": 574.5535813661804
+          },
+          {
+            "start": 45,
+            "end": 60,
+            "rms": 0.09708683304024768,
+            "centroid_hz": 630.2139525089855
+          },
+          {
+            "start": 60,
+            "end": 75,
+            "rms": 0.09724716727244581,
+            "centroid_hz": 608.463952645108
+          },
+          {
+            "start": 75,
+            "end": 90,
+            "rms": 0.15251463210526317,
+            "centroid_hz": 423.06912896611647
+          },
+          {
+            "start": 90,
+            "end": 105,
+            "rms": 0.15446833242274244,
+            "centroid_hz": 367.277360421654
+          },
+          {
+            "start": 105,
+            "end": 120,
+            "rms": 0.16053350163467492,
+            "centroid_hz": 277.84674017153685
+          },
+          {
+            "start": 120,
+            "end": 135,
+            "rms": 0.12407411665789474,
+            "centroid_hz": 412.4098729204669
+          },
+          {
+            "start": 135,
+            "end": 148.8,
+            "rms": 0.06887953271229916,
+            "centroid_hz": 565.89834997318
+          }
+        ],
+        "analysis_summary_sha256": "c045e77de636dc649b9a72374681742e8d910c84c49624d8d1f2c1bf3e9bbec7",
+        "overview_png_sha256": "eece66e2d14022ee682e4b9e34aa9db6ffe38648185374091653aa0a016ec2cc",
+        "listening_approved": false,
+        "runtime_ready": false
+      },
+      {
+        "name": "jz",
+        "source": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/原曲/jz.mp3",
+        "source_sha256": "e6ed6bcb966fa79d8d10d5646c971401a699f0bb14a01f1b503f61d11a1d32e0",
+        "analysis_summary": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/results/20261031-130348-352308/001_jz/summary.json",
+        "duration_seconds": 238.07052154195011,
+        "bpm_librosa": 129.19921875,
+        "essentia": {
+          "bpm": 129.834823608,
+          "beats_count": 479,
+          "onset_rate": 2.76370954514,
+          "danceability": 0.945520937443,
+          "key": "C",
+          "scale": "major",
+          "key_strength": 0.849068880081,
+          "tuning_frequency_hz": 439.745910645,
+          "average_loudness": 0.132811710238,
+          "dynamic_complexity": 7.18249177933
+        },
+        "centroid_hz": 749.6842470266176,
+        "key_profiles": {
+          "key_edma": {
+            "strength": 0.849068880081,
+            "key": "C",
+            "scale": "major"
+          },
+          "key_krumhansl": {
+            "strength": 0.85156929493,
+            "key": "C",
+            "scale": "major"
+          },
+          "key_temperley": {
+            "strength": 0.845402777195,
+            "key": "C",
+            "scale": "major"
+          }
+        },
+        "windows_15s": [
+          {
+            "start": 0,
+            "end": 15,
+            "rms": 0.01818300886888545,
+            "centroid_hz": 899.9839911692903
+          },
+          {
+            "start": 15,
+            "end": 30,
+            "rms": 0.030650924163312693,
+            "centroid_hz": 875.5833122001388
+          },
+          {
+            "start": 30,
+            "end": 45,
+            "rms": 0.03811143823374613,
+            "centroid_hz": 854.3377806101685
+          },
+          {
+            "start": 45,
+            "end": 60,
+            "rms": 0.03887505807894737,
+            "centroid_hz": 930.040197174711
+          },
+          {
+            "start": 60,
+            "end": 75,
+            "rms": 0.07172788803250774,
+            "centroid_hz": 797.1817317876174
+          },
+          {
+            "start": 75,
+            "end": 90,
+            "rms": 0.08707440011609908,
+            "centroid_hz": 722.8511800113741
+          },
+          {
+            "start": 90,
+            "end": 105,
+            "rms": 0.09530343808513932,
+            "centroid_hz": 766.812875846476
+          },
+          {
+            "start": 105,
+            "end": 120,
+            "rms": 0.05311537400758514,
+            "centroid_hz": 731.228944708683
+          },
+          {
+            "start": 120,
+            "end": 135,
+            "rms": 0.027635488154643967,
+            "centroid_hz": 748.0200308209154
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "rms": 0.017526256673421052,
+            "centroid_hz": 831.0543142925839
+          },
+          {
+            "start": 150,
+            "end": 165,
+            "rms": 0.02193020459427245,
+            "centroid_hz": 550.0153833990032
+          },
+          {
+            "start": 165,
+            "end": 180,
+            "rms": 0.037798871505417955,
+            "centroid_hz": 456.49409045547503
+          },
+          {
+            "start": 180,
+            "end": 195,
+            "rms": 0.015945125406950464,
+            "centroid_hz": 724.1586380256524
+          },
+          {
+            "start": 195,
+            "end": 210,
+            "rms": 0.05365408680495355,
+            "centroid_hz": 705.0530785896052
+          },
+          {
+            "start": 210,
+            "end": 225,
+            "rms": 0.055374745489164094,
+            "centroid_hz": 744.2928125225036
+          },
+          {
+            "start": 225,
+            "end": 238.07052154195011,
+            "rms": 0.05840622225932505,
+            "centroid_hz": 644.2994372311529
+          }
+        ],
+        "analysis_summary_sha256": "1994060700191daeb403f23c834f71d46bfc10967e97fd87fdbeab4b1a4fc572",
+        "overview_png_sha256": "0467ec9c471b95d5ed2339f4bc9dd17d8123900c261d04323256872c98124ab6",
+        "listening_approved": false,
+        "runtime_ready": false
+      },
+      {
+        "name": "novel",
+        "source": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/原曲/novel.mp3",
+        "source_sha256": "c909ee15cc5d628905b3bfa2b241cff4f715bdc9ba23b789652c1a2b7ee7c3c9",
+        "analysis_summary": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/results/20261031-130455-263574/001_novel/summary.json",
+        "duration_seconds": 211.96,
+        "bpm_librosa": 117.45383522727273,
+        "essentia": {
+          "bpm": 115.553749084,
+          "beats_count": 420,
+          "onset_rate": 2.05212903023,
+          "danceability": 0.969997167587,
+          "key": "E",
+          "scale": "major",
+          "key_strength": 0.641681432724,
+          "tuning_frequency_hz": 434.193115234,
+          "average_loudness": 0.506199359894,
+          "dynamic_complexity": 6.45363426208
+        },
+        "centroid_hz": 978.2910378845697,
+        "key_profiles": {
+          "key_edma": {
+            "strength": 0.641681432724,
+            "key": "E",
+            "scale": "major"
+          },
+          "key_krumhansl": {
+            "strength": 0.645237743855,
+            "key": "E",
+            "scale": "major"
+          },
+          "key_temperley": {
+            "strength": 0.644948363304,
+            "key": "E",
+            "scale": "major"
+          }
+        },
+        "windows_15s": [
+          {
+            "start": 0,
+            "end": 15,
+            "rms": 0.04298225286278251,
+            "centroid_hz": 749.9544093875
+          },
+          {
+            "start": 15,
+            "end": 30,
+            "rms": 0.0552903924009288,
+            "centroid_hz": 622.4639232285145
+          },
+          {
+            "start": 30,
+            "end": 45,
+            "rms": 0.0726893719613003,
+            "centroid_hz": 586.6265225002182
+          },
+          {
+            "start": 45,
+            "end": 60,
+            "rms": 0.05914703680340558,
+            "centroid_hz": 914.3891078434822
+          },
+          {
+            "start": 60,
+            "end": 75,
+            "rms": 0.08845645280804953,
+            "centroid_hz": 808.3012161740987
+          },
+          {
+            "start": 75,
+            "end": 90,
+            "rms": 0.07486256148916409,
+            "centroid_hz": 848.3848085991057
+          },
+          {
+            "start": 90,
+            "end": 105,
+            "rms": 0.06141396072291022,
+            "centroid_hz": 1051.6851813598298
+          },
+          {
+            "start": 105,
+            "end": 120,
+            "rms": 0.11044696223219815,
+            "centroid_hz": 1020.2732731002872
+          },
+          {
+            "start": 120,
+            "end": 135,
+            "rms": 0.13387806938235297,
+            "centroid_hz": 870.507169134979
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "rms": 0.14215538691795665,
+            "centroid_hz": 1015.4990334137541
+          },
+          {
+            "start": 150,
+            "end": 165,
+            "rms": 0.14306084162848295,
+            "centroid_hz": 1207.996145253202
+          },
+          {
+            "start": 165,
+            "end": 180,
+            "rms": 0.09515427380572754,
+            "centroid_hz": 1029.55157795093
+          },
+          {
+            "start": 180,
+            "end": 195,
+            "rms": 0.020485450430804953,
+            "centroid_hz": 1090.7420103464044
+          },
+          {
+            "start": 195,
+            "end": 210,
+            "rms": 0.008651278119760061,
+            "centroid_hz": 1529.0697662974287
+          },
+          {
+            "start": 210,
+            "end": 211.96,
+            "rms": 2.4631843288235294e-05,
+            "centroid_hz": 3643.0819699208114
+          }
+        ],
+        "analysis_summary_sha256": "c0a3a828e8e3ab825226d079ae67070b9a49b4b5dd1be65ed9cc83a0ec6adcbb",
+        "overview_png_sha256": "66fe81c84301603e32278516f97ee75f40dd9655dfb36034896e7556876bc019",
+        "listening_approved": false,
+        "runtime_ready": false
+      },
+      {
+        "name": "paris",
+        "source": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/原曲/paris.mp3",
+        "source_sha256": "c93a282618e68a2560fa98d4753902305d22858ac80ebb768e4563713f3139d2",
+        "analysis_summary": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/results/20261031-130601-711472/001_paris/summary.json",
+        "duration_seconds": 435.1249886621315,
+        "bpm_librosa": 112.34714673913044,
+        "essentia": {
+          "bpm": 112.093544006,
+          "beats_count": 915,
+          "onset_rate": 1.20190668106,
+          "danceability": 0.866021156311,
+          "key": "C",
+          "scale": "major",
+          "key_strength": 0.608156323433,
+          "tuning_frequency_hz": 437.971466064,
+          "average_loudness": 0.0529730468988,
+          "dynamic_complexity": 8.74362659454
+        },
+        "centroid_hz": 767.1254455990896,
+        "key_profiles": {
+          "key_edma": {
+            "strength": 0.608156323433,
+            "key": "C",
+            "scale": "major"
+          },
+          "key_krumhansl": {
+            "strength": 0.617313325405,
+            "key": "C",
+            "scale": "major"
+          },
+          "key_temperley": {
+            "strength": 0.630363762379,
+            "key": "C",
+            "scale": "major"
+          }
+        },
+        "windows_15s": [
+          {
+            "start": 0,
+            "end": 15,
+            "rms": 0.011697848661240025,
+            "centroid_hz": 500.3362454217588
+          },
+          {
+            "start": 15,
+            "end": 30,
+            "rms": 0.016309527220588236,
+            "centroid_hz": 539.7558391656851
+          },
+          {
+            "start": 30,
+            "end": 45,
+            "rms": 0.03422761440479877,
+            "centroid_hz": 713.2874852167887
+          },
+          {
+            "start": 45,
+            "end": 60,
+            "rms": 0.06041008602941178,
+            "centroid_hz": 872.2672653859506
+          },
+          {
+            "start": 60,
+            "end": 75,
+            "rms": 0.06590437109287926,
+            "centroid_hz": 951.9509563938384
+          },
+          {
+            "start": 75,
+            "end": 90,
+            "rms": 0.04004865334427245,
+            "centroid_hz": 985.1380733369189
+          },
+          {
+            "start": 90,
+            "end": 105,
+            "rms": 0.009541719461609907,
+            "centroid_hz": 625.7603373122405
+          },
+          {
+            "start": 105,
+            "end": 120,
+            "rms": 0.019354229925077397,
+            "centroid_hz": 673.2045647122717
+          },
+          {
+            "start": 120,
+            "end": 135,
+            "rms": 0.033125180573065016,
+            "centroid_hz": 419.3246359181795
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "rms": 0.04143586426006192,
+            "centroid_hz": 389.129870274787
+          },
+          {
+            "start": 150,
+            "end": 165,
+            "rms": 0.05273853339938081,
+            "centroid_hz": 561.0721019857282
+          },
+          {
+            "start": 165,
+            "end": 180,
+            "rms": 0.07240153309597523,
+            "centroid_hz": 709.8210052559641
+          },
+          {
+            "start": 180,
+            "end": 195,
+            "rms": 0.0570090419006192,
+            "centroid_hz": 1078.4658090565915
+          },
+          {
+            "start": 195,
+            "end": 210,
+            "rms": 0.006172802262770898,
+            "centroid_hz": 911.9706066455245
+          },
+          {
+            "start": 210,
+            "end": 225,
+            "rms": 0.0044893365479721364,
+            "centroid_hz": 909.3980882065097
+          },
+          {
+            "start": 225,
+            "end": 240,
+            "rms": 0.06887527416735294,
+            "centroid_hz": 665.3243517226823
+          },
+          {
+            "start": 240,
+            "end": 255,
+            "rms": 0.08341265654334366,
+            "centroid_hz": 735.4183632987013
+          },
+          {
+            "start": 255,
+            "end": 270,
+            "rms": 0.09451372270743034,
+            "centroid_hz": 970.0126771882109
+          },
+          {
+            "start": 270,
+            "end": 285,
+            "rms": 0.09843212451083591,
+            "centroid_hz": 1233.605071125275
+          },
+          {
+            "start": 285,
+            "end": 300,
+            "rms": 0.07347558142724457,
+            "centroid_hz": 960.7937847400962
+          },
+          {
+            "start": 300,
+            "end": 315,
+            "rms": 0.05471785354798762,
+            "centroid_hz": 947.769977262517
+          },
+          {
+            "start": 315,
+            "end": 330,
+            "rms": 0.028489733285448918,
+            "centroid_hz": 685.0912331864217
+          },
+          {
+            "start": 330,
+            "end": 345,
+            "rms": 0.022936259536687306,
+            "centroid_hz": 952.5710642854744
+          },
+          {
+            "start": 345,
+            "end": 360,
+            "rms": 0.03168690261996904,
+            "centroid_hz": 1023.5439241203038
+          },
+          {
+            "start": 360,
+            "end": 375,
+            "rms": 0.05803174736996904,
+            "centroid_hz": 812.9407497086539
+          },
+          {
+            "start": 375,
+            "end": 390,
+            "rms": 0.04407803052631579,
+            "centroid_hz": 650.6093502551902
+          },
+          {
+            "start": 390,
+            "end": 405,
+            "rms": 0.020010219451857585,
+            "centroid_hz": 576.2605847210982
+          },
+          {
+            "start": 405,
+            "end": 420,
+            "rms": 0.01140819725495356,
+            "centroid_hz": 384.353880854331
+          },
+          {
+            "start": 420,
+            "end": 435,
+            "rms": 0.0034751568567641714,
+            "centroid_hz": 814.5850297545973
+          }
+        ],
+        "analysis_summary_sha256": "9f5fc492a6d4b5c6b840fde2e8a0b2e31d0904fbc3d935a6fe2de2e278efb1ae",
+        "overview_png_sha256": "76208de1d7fd3f835d988a06c02b83e913a484c443198ef92609b5ecdb0ab2ce",
+        "listening_approved": false,
+        "runtime_ready": false
+      },
+      {
+        "name": "star",
+        "source": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/原曲/star.mp3",
+        "source_sha256": "a2aa90a65d5c72b73cd4a2315c2fa049d853eec845092235be4556b1993c92c6",
+        "analysis_summary": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/参考分析/results/20261031-130455-333433/001_star/summary.json",
+        "duration_seconds": 298.32,
+        "bpm_librosa": 143.5546875,
+        "essentia": {
+          "bpm": 143.964797974,
+          "beats_count": 649,
+          "onset_rate": 2.27591466904,
+          "danceability": 1.04684281349,
+          "key": "Bb",
+          "scale": "major",
+          "key_strength": 0.706050515175,
+          "tuning_frequency_hz": 440.763122559,
+          "average_loudness": 0.274547606707,
+          "dynamic_complexity": 5.61352586746
+        },
+        "centroid_hz": 981.2645649111555,
+        "key_profiles": {
+          "key_edma": {
+            "strength": 0.706050515175,
+            "key": "Bb",
+            "scale": "major"
+          },
+          "key_krumhansl": {
+            "strength": 0.695451378822,
+            "key": "Bb",
+            "scale": "major"
+          },
+          "key_temperley": {
+            "strength": 0.678432822227,
+            "key": "D",
+            "scale": "minor"
+          }
+        },
+        "windows_15s": [
+          {
+            "start": 0,
+            "end": 15,
+            "rms": 0.037825753367162616,
+            "centroid_hz": 792.1395568689716
+          },
+          {
+            "start": 15,
+            "end": 30,
+            "rms": 0.039513654020123835,
+            "centroid_hz": 771.6034787171083
+          },
+          {
+            "start": 30,
+            "end": 45,
+            "rms": 0.037608847371517026,
+            "centroid_hz": 812.8227101515088
+          },
+          {
+            "start": 45,
+            "end": 60,
+            "rms": 0.04290689586068111,
+            "centroid_hz": 789.0484306255246
+          },
+          {
+            "start": 60,
+            "end": 75,
+            "rms": 0.04404227733591331,
+            "centroid_hz": 914.1358125161711
+          },
+          {
+            "start": 75,
+            "end": 90,
+            "rms": 0.055918014033281734,
+            "centroid_hz": 862.43586549477
+          },
+          {
+            "start": 90,
+            "end": 105,
+            "rms": 0.06615116409287926,
+            "centroid_hz": 845.9553740515205
+          },
+          {
+            "start": 105,
+            "end": 120,
+            "rms": 0.05505527415634675,
+            "centroid_hz": 869.6019875116125
+          },
+          {
+            "start": 120,
+            "end": 135,
+            "rms": 0.06164407563467492,
+            "centroid_hz": 991.0110166132655
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "rms": 0.06541302759597524,
+            "centroid_hz": 1052.4408079057905
+          },
+          {
+            "start": 150,
+            "end": 165,
+            "rms": 0.07393864344427244,
+            "centroid_hz": 1008.1437324096545
+          },
+          {
+            "start": 165,
+            "end": 180,
+            "rms": 0.08833435768266254,
+            "centroid_hz": 919.752570996814
+          },
+          {
+            "start": 180,
+            "end": 195,
+            "rms": 0.09311078389164087,
+            "centroid_hz": 950.2258336916323
+          },
+          {
+            "start": 195,
+            "end": 210,
+            "rms": 0.11443212710835912,
+            "centroid_hz": 957.8431743352961
+          },
+          {
+            "start": 210,
+            "end": 225,
+            "rms": 0.1285005185851393,
+            "centroid_hz": 1023.8809305959103
+          },
+          {
+            "start": 225,
+            "end": 240,
+            "rms": 0.1268164557012384,
+            "centroid_hz": 1086.669776452199
+          },
+          {
+            "start": 240,
+            "end": 255,
+            "rms": 0.03423748917182662,
+            "centroid_hz": 906.7541322324987
+          },
+          {
+            "start": 255,
+            "end": 270,
+            "rms": 0.03261889331811146,
+            "centroid_hz": 879.7729436513159
+          },
+          {
+            "start": 270,
+            "end": 285,
+            "rms": 0.035550072982817336,
+            "centroid_hz": 857.2674487102389
+          },
+          {
+            "start": 285,
+            "end": 298.32,
+            "rms": 0.004474220852992976,
+            "centroid_hz": 2503.4399355696546
+          }
+        ],
+        "analysis_summary_sha256": "52a01094c552b55995baac6b4d6baf06c7753f0601ab34c2952578441f383ca5",
+        "overview_png_sha256": "f60669966e8e641095af62204ac128e3bd74f0559ebc4e642076ad2a2fc71247",
+        "listening_approved": false,
+        "runtime_ready": false
+      }
+    ],
+    "clap_status": "not_completed_download_interrupted; not used as evidence",
+    "commands": [
+      "python tools/analyze_reference_palette.py --root C:/Users/Administrator/Desktop/mIDDLEFILE/music --output C:/Users/Administrator/Desktop/mIDDLEFILE/music/work/reference_prompt_20261102",
+      "python -m py_compile tools/analyze_reference_palette.py",
+      "python tools/check_ai_harness.py",
+      "python tools/check_doc_links.py"
+    ],
+    "limitations": [
+      "Tempo estimates are not meter/downbeat annotations",
+      "Key profiles are algorithm outputs, not chord transcription",
+      "Creative prompts do not guarantee timing, source fidelity or stems",
+      "Instrument and emotion wording uses attributed prior briefs; no new independent audio-language inference or human listening",
+      "Generated prompt fidelity remains untested until new audio is produced"
+    ],
+    "clap_attempt": {
+      "model": "laion/clap-htsat-unfused",
+      "expected_weight_bytes": 614525833,
+      "complete_downloaded_chunks": 21,
+      "complete_chunk_bytes": 346090377,
+      "inference_executed": false,
+      "archive": "备份/五首参考曲提示词_20261102/CLAP下载未完成_分析工具原稿.py"
+    },
+    "verification": {
+      "sources_unchanged": "5/5 SHA256 matched before and after",
+      "analysis_reused": "5/5 successful source-SHA-matched summaries",
+      "overview_inspected": 5,
+      "prompt_blocks": 5,
+      "prompt_word_counts": [
+        154,
+        160,
+        160,
+        167,
+        160
+      ],
+      "harness": "52/52 PASS; holistic 9/12, M84 still next",
+      "document_links": "79 documents / 424 local links; 3 pre-existing missing JSON references, no new errors",
+      "game_executed": false,
+      "new_music_generated": false
+    }
+  }
+}

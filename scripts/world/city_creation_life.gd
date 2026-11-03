@@ -370,7 +370,7 @@ func _process(delta: float) -> void:
 		if state.revision!=last_revision and not _budget_hold and not budget_sync_pending():_sync()
 		quiet_walk.tick(delta)
 		return
-	quiet_walk.clear()
+	quiet_walk.resume_idle()
 	if has_meta("progression_resume_delta"):
 		remove_meta("progression_resume_delta");delta=0.
 	if _budget_hold or budget_sync_pending():
@@ -453,6 +453,7 @@ func _tick_life(delta: float) -> void:
 	if profile_tick:tick_profile.tail=Time.get_ticks_usec()-sampled
 
 func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_trams: bool)->void:
+	if preload("res://scripts/world/city_creation_idle_walk.gd").tick(self,resident,delta):return
 	if preload("res://scripts/world/city_creation_balcony_visits.gd").tick(self,resident,delta):return
 	if preload("res://scripts/world/city_creation_bench_visits.gd").tick(self,resident,delta):return
 	if preload("res://scripts/world/city_creation_solo_listeners.gd").tick(self,resident,delta):return
@@ -509,7 +510,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 		var service := str(resident.service_pending)
 		# An empty shelf retains a completed visit until real bread arrives.
 		if service == "bakery" and not state.serve_bread(reached, str(resident.home_id)): return
-		if service == "bakery":resident.visual_bread=true
+		if service == "bakery":resident.visual_bread=true;resident.visual_food="skewer" if state.Grillhouse.active(state,reached) else "bread"
 		if service == "bakery" and purchase_callback.is_valid(): purchase_callback.call(reached,str(resident.home_id))
 		resident.dwell_id = ""
 		resident.service_pending = ""
@@ -568,7 +569,8 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 
 func _signature() -> Array:
 	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate(),state.harmony_journey.get("traditions",[]).duplicate()]
-	result.append(state.terrain_policy)
+	result.append([state.terrain_policy,preload("res://scripts/world/city_creation_stair_keys.gd").minimum_rise(state)])
+	if state.houses.any(func(h):return h.get("architecture","")=="cantilever_tea_deck"):result.append(preload("res://scripts/world/city_creation_tea_deck_plan.gd").all(state).duplicate(true))
 	if "arcade_market" in state.era_modifiers:
 		for house:Dictionary in state.houses:result.append([house.id,str(house.get("style","classic")),state.house_era(house),house.cells.duplicate(true)])
 	# Only finite-support edits which can change walking or an activity need
@@ -638,7 +640,7 @@ func _signature() -> Array:
 			if int(cell.level) == 0:
 				# A terrace can cover a neighboring door even without adding a room.
 				entrances.append([int(cell.x), int(cell.z),str(cell.kind)])
-		result.append([str(house.id), house.origin.duplicate(), str(house.get("role", "residential")),float(house.get("base_y",0.0)), entrances,Frame.yaw(house),Frame.Hinge.key(house)])
+		result.append([str(house.id), house.origin.duplicate(), str(house.get("role", "residential")),house.get("food_kind",""),float(house.get("base_y",0.0)), entrances,Frame.yaw(house),Frame.Hinge.key(house)])
 	return result
 
 func _sync() -> void:
@@ -929,7 +931,7 @@ func _arrive(resident: Dictionary) -> void:
 		_pause_at_home(resident)
 		return
 	var role := str(_roles[reached])
-	if reached==str(resident.home_id):resident.erase("visual_bread")
+	if reached==str(resident.home_id):resident.erase("visual_bread");resident.erase("visual_food")
 	resident.dwell_id = reached
 	if resident.has("daily_snapshot"):
 		resident.service_pending = "concert"
@@ -1260,6 +1262,7 @@ func _resident_checkpoint(resident: Dictionary) -> Dictionary:
 	var result := {"home_id":str(resident.home_id),"position":[node.position.x,node.position.z],"yaw":node.rotation.y,"destination_id":str(resident.destination_id),"dwell_id":str(resident.dwell_id),"service_pending":str(resident.service_pending),"wait":float(resident.wait),"paused":bool(resident.paused),"phase":float(resident.phase),"stops":resident.stops.duplicate()}
 	preload("res://scripts/world/city_creation_balcony_visits.gd").checkpoint(resident,result)
 	preload("res://scripts/world/city_creation_bench_visits.gd").checkpoint(resident,result)
+	preload("res://scripts/world/city_creation_idle_walk.gd").checkpoint(resident,result)
 	if resident.has("daily_snapshot"): result.daily_snapshot = resident.daily_snapshot.duplicate(true)
 	if resident.has("cafe_visit"): result.cafe_visit = resident.cafe_visit.duplicate(true)
 	return result
@@ -1271,7 +1274,7 @@ func checkpoint(reconcile:bool=true) -> Dictionary:
 	var people: Array[Dictionary] = []
 	for resident: Dictionary in residents:
 		var row:=_resident_checkpoint(resident)
-		if not reconcile and not resident.has("balcony_visit") and not resident.has("bench_visit"):
+		if not reconcile and not resident.has("balcony_visit") and not resident.has("bench_visit") and not resident.get("idle_walk",{}).get("cooldown",false):
 			var point:=citizen_position(resident);row.position=[point.x,point.z]
 			var motion:RefCounted=resident.get("offscreen_motion")
 			if motion!=null:row.yaw=motion.yaw

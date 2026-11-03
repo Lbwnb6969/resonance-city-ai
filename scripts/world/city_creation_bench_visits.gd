@@ -45,7 +45,7 @@ static func tick(life,r:Dictionary,delta:float)->bool:
 	if index>=path.size():
 		if visit.phase=="leaving":release(life,r)
 		else:
-			visit.phase="seated";r.node.get_child(0).position.y=.28;r.node.rotation.y=atan2(seat.face.x,seat.face.y);r.node.set_meta("bench_seated",true);Gait.pose(r.node,life.time,false,true)
+			visit.phase="seated";r.node.get_child(0).position.y=float(seat.get("body_offset",.28));r.node.rotation.y=atan2(seat.face.x,seat.face.y);r.node.set_meta("bench_seated",true);Gait.pose(r.node,life.time,false,true)
 	return true
 static func checkpoint(r:Dictionary,result:Dictionary)->void:
 	if not r.has("bench_visit"):return

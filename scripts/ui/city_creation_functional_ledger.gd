@@ -1,19 +1,29 @@
 extends RefCounted
 ## Free-city L page consumes the same geometry report used by later orchestration.
-const Zones=preload("res://scripts/world/city_creation_functional_zones.gd")
 const Safe=preload("res://scripts/ui/city_creation_life_capsules.gd")
+static func open_records(widget:RefCounted)->void:
+	if not widget.demo.state.CreationPolicy.is_free(widget.demo.state):widget.demo.guide.open_panel(1);return
+	widget.demo.journal.open_panel()
+	var page:Node=widget.demo.get_meta("growth_rights_page");page.open_rights()
+	var city:RefCounted=widget.demo.state;var epoch:int=city._wish_epoch
+	# Wait for the expanded text to contribute its real height to the scroll.
+	await widget.demo.get_tree().process_frame;await widget.demo.get_tree().process_frame
+	if widget.demo.state!=city or city._wish_epoch!=epoch or not widget.demo.journal.panel.visible or not page.detail.visible:return
+	var scroll:ScrollContainer=widget.demo.journal.cards.get_parent()
+	scroll.scroll_vertical+=roundi(page.read.get_global_rect().position.y-scroll.get_global_rect().position.y)
 static func caption(widget:RefCounted)->void:
 	var free:bool=widget.demo.state.CreationPolicy.is_free(widget.demo.state)
-	widget.button.text="功能区与总谱 · L" if free else "生活账本 · L"
+	widget.button.text="城市总谱 · L" if free else "生活账本 · L"
 	widget.button.tooltip_text="查看实际空间与当前合奏 · L" if free else "查看真实库存与已发生的日常 · L"
 	widget.scrollbook.tabs.ledger.text="总谱" if free else "账本"
 static func refresh(widget:RefCounted)->bool:
 	var free:bool=widget.demo.state.CreationPolicy.is_free(widget.demo.state)
 	var heading:Label=widget.paper.find_child("LedgerHeading",true,false)
-	heading.text="功能区与总谱" if free else "生活账本";widget.guide_button.visible=not free
+	heading.text="城市总谱" if free else "生活账本";widget.guide_button.show()
+	widget.guide_button.text="查看经营与历史权益 · J" if free else "经营手札 · F1"
 	var entries:Node=widget.scroll.get_child(0)
 	for child:Control in entries.get_children():
-		if child==widget.body:continue
+		if child==widget.body or child.name=="MusicTrialControls":continue
 		if free:
 			if not child.has_meta("before_functional_ledger"):child.set_meta("before_functional_ledger",child.visible)
 			child.hide()
@@ -27,12 +37,6 @@ static func refresh(widget:RefCounted)->bool:
 	var report:Dictionary=widget.demo.state.functional_zones()
 	var lines:=PackedStringArray(["[b]城市的空间[/b]", "特色来自建筑，成区还需真实公共空间。"])
 	if not report.network_ready:lines.append("道路正在更新，空间激活待道路发布。")
-	var benefits:Dictionary=widget.demo.state.functional_benefits()
-	if not benefits.artisan_sources.is_empty():lines.append("百工正式权益 +35% · 原待领奖励适用" if widget.demo.state.harmony_journey.has("growth_cutoff") else "灵感积累 +35% · 百工匠造")
-	var pairs:=0
-	for peers:Array in benefits.mutual.values():pairs+=peers.size()
-	if pairs>0:lines.append("水岸与栖居互哺 · %d 组沿路邻里"%(pairs/2))
-	for chord:String in widget.demo.state.synergy_buffs().active_chords:lines.append("♫ "+str(widget.demo.state.SynergyBuffs.CHORD_NAMES[chord]))
 	lines.append("\n[b]场所空间[/b]")
 	for space:Dictionary in report.spaces:
 		var names:Array=[]
@@ -47,20 +51,13 @@ static func refresh(widget:RefCounted)->bool:
 		if space.kind=="waterfront":detail="面水公共界面 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "附近尚无真实水域" if space.eligibility.reason=="water_missing" else "尚无可用的面水公共界面" if space.eligibility.reason=="shore_face_missing" else "入口接续尚待验证" if space.eligibility.reason=="entry_support_unverified" else "面水通路地形受阻" if space.eligibility.reason=="ground_access_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通面水公共道路")
 		if space.kind=="artisan":detail="百工前庭 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "钟楼特色尚无已验证作业体量" if space.eligibility.reason=="work_body_missing" else "尚无可用的干地前庭" if space.eligibility.reason=="forecourt_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通公共道路")
 		if space.kind=="civic":detail="礼乐前场 · "+("入口与公共路网已接通" if space.eligibility.district else "等待道路发布" if space.eligibility.reason=="network_waiting" else "柱脚阻挡公共入口" if space.eligibility.reason=="column_obstruction" else "尚无可用的干地前场" if space.eligibility.reason=="forecourt_missing" else "门前高差尚无可用接续" if space.eligibility.reason=="height_access_missing" else "入口尚未接通公共道路")
+		if space.evidence.geometry=="paved_plaza":names=["扇石广场" if space.evidence.paving=="fan_stone" else "砖石广场"];detail="真实闭合路环 · 基础铺装，未绑定经营或居民"
 		lines.append("%s · %s\n%s"%["、".join(names),stage,detail])
-	lines.append("\n[b]原有用途与连接[/b]\n接路记录保留原权益，不等同于成区。")
-	for kind:String in Zones.NAMES:
-		var zones:Array=report.zones.filter(func(z):return z.kind==kind);var active:int=zones.filter(func(z):return z.active).size()
-		lines.append("\n[b]%s[/b] · 已接路 %d / %d 处"%[Zones.NAMES[kind],active,zones.size()])
-		for zone:Dictionary in zones:
-			var titles:Array=[]
-			for id:String in zone.members:
-				var house:Dictionary=widget.demo.state.houses[widget.demo.state._house_index(id)]
-				titles.append(Safe.safe(str(house.name)))
-			lines.append(("● " if zone.active else "○ ")+"、".join(titles)+(" · 空间已接通" if zone.active else " · 门前尚未接路"))
 	var plan:Dictionary=widget.demo.music.get_meta("orchestration_plan",{})
 	lines.append("\n[b]当前合奏[/b]")
-	if plan.is_empty():lines.append("落下第一间房屋，静候初吟。")
+	var trial:=preload("res://scripts/ui/city_creation_music_trial_caption.gd").lines(widget.demo.music)
+	if not trial.is_empty():lines.append_array(trial)
+	elif plan.is_empty():lines.append("落下第一间房屋，静候初吟。")
 	else:
 		var style:String={"pastoral_breeze":"庭院微风","felt_nocturne":"毡琴夜曲","deep_flow":"低音深流"}.get(str(plan.get("style","")),"当前主题")
 		lines.append("%s · 第%d段 / 六段"%[style,int(plan.get("passage",0))+1])

@@ -10,10 +10,10 @@ static func set_enabled(city:RefCounted,value:bool)->Dictionary:
 	if value and not unlocked(city):return city._fail("新账期等级2后可选开花紫藤")
 	var prefs:Dictionary=city.creative_settings.get("presentation",{}).duplicate(true);prefs.flowering_vines=value
 	return city.CreationPolicy.set_preferences(city,{"presentation":prefs})
-static func clear(city:RefCounted,point:Vector3,host:String)->bool:
+static func clear(city:RefCounted,point:Vector3,host:String,margin:float=.08)->bool:
 	var at:=Vector2(point.x,point.z)
 	for road:Dictionary in city.roads:
-		if city._water_stroke_distance(at,road.points)<float(road.width)*.5+.08:return false
+		if city._water_stroke_distance(at,road.points)<float(road.width)*.5+margin:return false
 	for house:Dictionary in city.houses:
 		if str(house.id)==host:continue
 		for cell:Dictionary in house.cells:
@@ -21,7 +21,7 @@ static func clear(city:RefCounted,point:Vector3,host:String)->bool:
 			var polygon:PackedVector2Array=Frame.corners(Frame.footprint(house,cell))
 			if Geometry2D.is_point_in_polygon(at,polygon):return false
 			for i in range(polygon.size()):
-				if at.distance_to(Geometry2D.get_closest_point_to_segment(at,polygon[i],polygon[(i+1)%polygon.size()]))<.08:return false
+				if at.distance_to(Geometry2D.get_closest_point_to_segment(at,polygon[i],polygon[(i+1)%polygon.size()]))<margin:return false
 	return true
 static func plans(city:RefCounted)->Array[Dictionary]:
 	var result:Array[Dictionary]=[]

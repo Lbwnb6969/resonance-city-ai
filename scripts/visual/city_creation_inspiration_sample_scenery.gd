@@ -33,3 +33,5 @@ static func rebuild(owner)->void:
 		# Use the project's shared material merging, micro-normal and contact shading.
 		renderer._merge_meshes(node)
 	preload("res://scripts/visual/city_creation_flowering_vines_mesh.gd").build(owner,root)
+	preload("res://scripts/visual/city_creation_paired_bridge_lamps_mesh.gd").build(owner,root)
+	preload("res://scripts/visual/city_creation_window_pennants_mesh.gd").build(owner,root)

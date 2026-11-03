@@ -39,6 +39,8 @@ var route_counting := false
 var route_cache_stats := {"hits":0,"misses":0,"invalid":0}
 var prepare_stats: Dictionary = {}
 var _roundabout_markers: Array[Dictionary]=[]
+var _upper_entries:Dictionary={}
+var ghat_seats:Dictionary={}
 
 func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary]) -> RefCounted:
 	var started := Time.get_ticks_usec()
@@ -204,6 +206,8 @@ func _build_graph() -> void:
 	# pipeline; rebuilding it here duplicated 37k samples on every edit.
 	state._prepare_raw_height()
 	state._road_heights.prepare(state)
+	_upper_entries.clear()
+	for house:Dictionary in state.houses:_upper_entries[str(house.id)]=preload("res://scripts/world/city_creation_upper_stoop.gd").entries(state,house,true)
 	prepare_stats["road_profiles"]=state._road_heights.stats.duplicate()
 	prepare_stats["ground_ms"] = float(Time.get_ticks_usec()-ground_started)/1000.0
 	var prior := connected_houses.duplicate()
@@ -280,7 +284,8 @@ func _build_graph() -> void:
 				bins[bin].append(index)
 	for house: Dictionary in state.houses:
 		var candidates: Array[Dictionary] = []
-		for entrance: Dictionary in state.house_entrances(str(house.id)):
+		var entries:Array=state.house_entrances(str(house.id))+_upper_entries[str(house.id)]
+		for entrance: Dictionary in entries:
 			var best_distance := 0.82
 			var best_segment := -1
 			var best := Vector2.ZERO
@@ -300,12 +305,17 @@ func _build_graph() -> void:
 					best_segment=index
 					best=nearest
 			if best_segment<0: continue
+			if not entrance.get("upper_stoop",false) and _upper_entries[str(house.id)].any(func(e):return e.road_id==segments[best_segment].get("road_id","")):continue
 			segments[best_segment].splits.append(best)
 			# A side porch has a real outside walking leg, never a house-internal
 			# connector between otherwise disconnected roads.
 			var target: Vector2 = entrance.at if entrance.active and (entrance.side!=Vector2i(0,1) or Frame.transformed(house)) else best
+			if entrance.get("upper_stoop",false):target=entrance.wall_at+entrance.outward*.12
 			if target.distance_to(best)>0.0005:
-				door_links.append({"a":best,"b":target,"splits":[best,target]})
+				var splits:Array=[best,target]
+				if entrance.get("upper_stoop",false):
+					for step in range(1,int(entrance.count)):splits.append(target.lerp(best,float(step)/int(entrance.count)))
+				door_links.append({"a":best,"b":target,"splits":splits})
 			candidates.append({"key":_key(target),"entrance":entrance,"distance":best_distance})
 		ports[str(house.id)]=candidates
 	segments.append_array(door_links)
@@ -375,6 +385,7 @@ func _build_graph() -> void:
 			connected_houses[house_id]=best.key
 			selected_entrances[house_id]=best.entrance
 	component_of = components
+	preload("res://scripts/world/city_creation_ghat_network.gd").attach(self)
 	_build_attachment_index()
 
 func _build_attachment_index() -> void:
@@ -531,6 +542,12 @@ func _exterior_route_from_position(point: Vector3, finish: String) -> Array[Vect
 	return best
 
 func _navigation_height(at: Vector2) -> float:
+	var ghat_y:float=preload("res://scripts/world/city_creation_ghat_network.gd").height(self,at)
+	if not is_nan(ghat_y):return ghat_y
+	for entries:Array in _upper_entries.values():
+		for entry:Dictionary in entries:
+			var y:=preload("res://scripts/world/city_creation_upper_stoop.gd").height(entry,at)
+			if is_finite(y):return y
 	if state.TerrainPolicy.enabled(state):return state.street_height(at)
 	for marker: Dictionary in _roundabout_markers:
 		if at.distance_to(marker.center)<=marker.radius: return state._ground_terrain.raw_height_at(marker.center)+.075

@@ -26,6 +26,7 @@ static func request_master_continuous(owner:Node,mode:int=0,content_id:String="b
 	return _request_data(owner,preload("res://scripts/audio/city_creation_master_performance.gd").prepare(mode,content_id))
 static func _request_data(owner:Node,data:Dictionary)->Dictionary:
 	if owner._pluck_city==null:return {"ok":false,"message":"请先打开用于预览的城市"}
+	if owner.get_node_or_null("GameMusicPlayer")!=null:return {"ok":false,"message":"请先结束当前候选试听"}
 	if not data.ok:return data
 	var node:=owner.get_node_or_null("AuthoredScore")
 	if node==null:node=load("res://scripts/audio/city_creation_authored_score.gd").new();node.name="AuthoredScore";owner.add_child(node)

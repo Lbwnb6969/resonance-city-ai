@@ -16,9 +16,13 @@ static func plans(city:RefCounted)->Dictionary:
 			for i in range(1,road.points.size()):
 				var at:=Geometry2D.get_closest_point_to_segment(record.at,Vector2(road.points[i-1][0],road.points[i-1][1]),Vector2(road.points[i][0],road.points[i][1]))
 				if at.distance_squared_to(record.at)<best:best=at.distance_squared_to(record.at);seats[id].street=at
+	seats.merge(preload("res://scripts/world/city_creation_water_ghat.gd").seats(city))
 	city.set_meta("bench_seat_plan",{"key":key,"seats":seats});return seats
 static func occupied(life,id:String)->bool:
 	if life.get_meta("player_bench","")==id:return true
+	for actor:Dictionary in life.quiet_walk.actors.values():
+		if actor.get("ghat_rest","")==id:return true
+	if life.residents.any(func(r):return r.get("idle_walk",{}).get("ghat_rest","")==id):return true
 	return life.residents.any(func(r):return r.get("bench_visit",{}).get("seat","")==id)
 static func clear_leg(city:RefCounted,a:Vector2,b:Vector2)->bool:
 	if city.PlacedLandmarks.stroke_conflicts(city,[[a.x,a.y],[b.x,b.y]],.16):return false
@@ -29,6 +33,7 @@ static func clear_leg(city:RefCounted,a:Vector2,b:Vector2)->bool:
 		if city.water_clearance(a.move_toward(b,i*.15))<.14:return false
 	return true
 static func approach(life,point:Vector3,seat:Dictionary)->Array[Vector3]:
+	if seat.has("ghat"):return preload("res://scripts/world/city_creation_water_ghat.gd").approach(life,point,seat)
 	var result:Array[Vector3]=[];var best:=INF;var projected:Dictionary=life._network._attachments_for_planar(seat.street)
 	for component:String in projected:
 		for link:Dictionary in projected[component]:

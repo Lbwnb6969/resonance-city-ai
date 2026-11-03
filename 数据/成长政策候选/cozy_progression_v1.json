@@ -63,17 +63,17 @@
     "journal_current_vs_historical_ledgers",
     "isolated_save_and_real_input_verification"
   ],
-  "boundary": "Schema24 epoch, backed-up pause/resume, independent quiet presentation, J current/history UI and production new-town defaults are implemented. Low-level initialize_free retains schema23/cutoff compatibility; existing works never auto-open epochs. Optional flowering vines use earned new-epoch level 2 and an explicit author preference. runtime_ready=false retains broader policy/content acceptance; offline proposals never authorize runtime writes.",
+  "boundary": "Schema24 epochs, pause/resume, quiet presentation, J current/history UI, production new-town defaults and two optional earned-level-2 appearances are implemented. Low-level initialize_free and existing works keep prior semantics. Flowering vines and paired stone-bridge lamps default off and use independent author preferences. runtime_ready=false retains broader policy/content acceptance; offline proposals never authorize runtime writes.",
   "runtime_implementation": {
     "schema": 24,
-    "scope": "epoch_toggle_quiet_ui_new_town_defaults_and_optional_flowering_vines",
+    "scope": "epoch_toggle_quiet_ui_new_town_defaults_and_two_optional_appearances",
     "entry": "CityCreationState.begin_progression_epoch(path)",
     "enabled_by_default": true,
     "pending": [
-      "paired_bridge_lamps_variant",
       "broader_policy_and_content_acceptance"
     ],
     "toggle_entry": "CreationPolicy.set_progression_enabled(city, enabled, path)",
-    "appearance_entry": "scripts/world/city_creation_flowering_vines.gd"
+    "appearance_entry": "scripts/world/city_creation_flowering_vines.gd",
+    "paired_appearance_entry": "scripts/world/city_creation_paired_bridge_lamps.gd"
   }
 }

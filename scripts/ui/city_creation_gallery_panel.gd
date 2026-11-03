@@ -36,6 +36,9 @@ var scroll: ScrollContainer
 var grid: GridContainer
 var status_label: Label
 var empty_label: Label
+var source_filter:HBoxContainer
+var source_selection:=0
+var source_buttons:Array[Button]=[]
 var tabs: TabBar
 var footer: Label
 var _items: Array = []
@@ -136,6 +139,10 @@ func _ready() -> void:
 		scroll.scroll_vertical = 0
 		_render_items())
 	body.add_child(tabs)
+	source_filter=HBoxContainer.new();source_filter.name="WorkSourceFilter";body.add_child(source_filter)
+	for title:String in ["全部作品","手动收藏","自动备份"]:
+		var button:=_button(title);button.toggle_mode=true;button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;source_filter.add_child(button);source_buttons.append(button);button.pressed.connect(_filter_source.bind(source_buttons.size()-1))
+	source_buttons[0].set_pressed_no_signal(true)
 	playback_row=HBoxContainer.new();playback_row.add_theme_constant_override("separation",12);body.add_child(playback_row)
 	var record:Control=preload("res://scripts/ui/city_creation_phonograph_badge.gd").new();playback_row.add_child(record)
 	var playing:=VBoxContainer.new();playing.size_flags_horizontal=Control.SIZE_EXPAND_FILL;playback_row.add_child(playing)
@@ -203,6 +210,7 @@ func set_busy(value: bool) -> void:
 	if save_button == null: return
 	save_button.disabled = value
 	close_button.disabled = value
+	for button:Button in source_buttons:button.disabled=value
 	biome_button.disabled=value
 	for seed_button:Button in biome_buttons.values():seed_button.disabled=value
 	for b:Button in preview_buttons.values():b.disabled=value or not bool(b.get_meta("valid",false))
@@ -212,6 +220,12 @@ func set_busy(value: bool) -> void:
 	for id: String in open_buttons:
 		var button: Button = open_buttons[id]
 		button.disabled = value or not bool(button.get_meta("valid", false))
+
+func _filter_source(index:int)->void:
+	if _busy:return
+	source_selection=index
+	for i in range(source_buttons.size()):source_buttons[i].set_pressed_no_signal(i==index)
+	scroll.scroll_vertical=0;_render_items()
 
 func _request_save() -> void:
 	if not _busy: save_requested.emit(title_input.text.strip_edges())
@@ -242,12 +256,14 @@ func _render_items() -> void:
 	cards.clear()
 	open_buttons.clear()
 	biome_buttons.clear();preview_buttons.clear();mode_buttons.clear()
+	source_filter.visible=not _biomes_selected and tabs.current_tab==0
 	if _biomes_selected:
 		_render_biomes();return
 	if tabs.current_tab==2:
 		_render_archive();return
-	var visible_items: Array = _examples if _examples_selected else _items
+	var visible_items: Array = _examples if _examples_selected else _items.filter(func(item):return source_selection==0 or (str(item.get("reason",""))=="manual" if source_selection==1 else str(item.get("reason",""))!="manual"))
 	empty_label.text = "示范河湾正在准备。" if _examples_selected else "这里会留下你造过的河湾。\n为当前作品起名，收藏第一张风景。"
+	if not _examples_selected and source_selection>0:empty_label.text="还没有手动收藏。" if source_selection==1 else "还没有自动备份。"
 	empty_label.visible = visible_items.is_empty()
 	footer.text = "从示范河湾出发，添上自己的变化，再收藏这一刻。" if _examples_selected else "打开其他作品前，会自动留存当前河湾。\n每次收藏都留下一个新版本，可以随时回来继续造。"
 	for item: Dictionary in visible_items:
@@ -355,12 +371,12 @@ func _render_biomes()->void:
 func _cover(path: String) -> Texture2D:
 	if path.is_empty(): return null
 	if not _covers.has(path):
-		if FileAccess.file_exists(path):
+		if path.begins_with("res://") and ResourceLoader.exists(path):
+			# Built-in covers use Godot's imported texture remap in editor and export.
+			_covers[path] = load(path)
+		elif FileAccess.file_exists(path):
 			var image := Image.load_from_file(path)
 			if image != null and not image.is_empty(): _covers[path] = ImageTexture.create_from_image(image)
-		elif path.begins_with("res://") and ResourceLoader.exists(path):
-			# Exported built-in covers use Godot's imported texture remap.
-			_covers[path] = load(path)
 	return _covers.get(path)
 
 func _date(saved_at: int) -> String:

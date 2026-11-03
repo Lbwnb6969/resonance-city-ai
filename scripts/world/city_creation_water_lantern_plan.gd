@@ -5,28 +5,35 @@ const Street=preload("res://scripts/world/city_creation_street_wonder_plan.gd")
 const Terrain=preload("res://scripts/world/city_creation_terrain.gd")
 const RADIUS:=.30
 const INSET:=.44
+const Festival=preload("res://scripts/world/city_creation_festival_scenery.gd")
 static func derive(city:RefCounted)->Array[Dictionary]:
 	var rows:Array[Dictionary]=[]
 	if not city.CreationPolicy.is_free(city) or not city.creative_settings.presentation.automatic_decoration:return rows
 	var zones:Dictionary=city.functional_zones()
 	if not zones.network_ready:return rows
 	var piers:Array=Street.derive(city).piers;var houses:Array=city.houses.duplicate()
+	var insets:Array=[INSET,.60,.76] if Festival.enabled(city) else [INSET]
+	var offsets:Array=[0.,-1.,1.] if Festival.enabled(city) else [0.]
 	houses.sort_custom(func(a,b):return str(a.id)<str(b.id))
 	for house:Dictionary in houses:
 		var zone:Dictionary=zones.houses[house.id]
-		if house.has("signature") or not zone.connected or zone.water_distance>5.2:continue
+		if house.has("signature") or (not zone.connected and not Festival.enabled(city)) or zone.water_distance>5.2:continue
 		var candidates:Array[Dictionary]=[]
 		for cell:Dictionary in house.cells:
 			if int(cell.level)!=0 or cell.kind!="room":continue
 			var from:=Frame.center(house,cell);var bank:float=city.river_x(from.y);var side:=signf(from.x-bank)
-			candidates.append({"at":Vector2(bank+side*(city.RIVER_HALF_WIDTH-INSET),from.y),"water_id":"river","cell_id":str(cell.id)})
+			for inset:float in insets:
+				for offset:float in offsets:candidates.append({"at":Vector2(bank+side*(city.RIVER_HALF_WIDTH-inset),from.y+offset),"water_id":"river","cell_id":str(cell.id)})
 			for water:Dictionary in city.waters:
 				var radius:float=float(water.width)*.5
 				if radius<INSET:continue
 				for i in range(maxi(1,water.points.size()-1)):
 					var j:=mini(i+1,water.points.size()-1);var a:=Vector2(water.points[i][0],water.points[i][1]);var b:=Vector2(water.points[j][0],water.points[j][1])
 					var near:=Geometry2D.get_closest_point_to_segment(from,a,b)
-					candidates.append({"at":near+(from-near).normalized()*(radius-INSET),"water_id":str(water.id),"cell_id":str(cell.id)})
+					for inset:float in insets:
+						if radius<inset:continue
+						var normal:Vector2=(from-near).normalized();var tangent:=Vector2(-normal.y,normal.x)
+						for offset:float in offsets:candidates.append({"at":near+normal*(radius-inset)+tangent*offset,"water_id":str(water.id),"cell_id":str(cell.id)})
 		for row:Dictionary in candidates:
 			row.house_id=str(house.id);row.y=Terrain.WATER_LEVEL+.01
 			row.distance=Frame.distance(Frame.footprint(house,house.cells.filter(func(c):return str(c.id)==row.cell_id)[0]),row.at)

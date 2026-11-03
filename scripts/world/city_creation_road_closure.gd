@@ -16,10 +16,10 @@ static func target(city:RefCounted,raw:Vector2,path:Array[Vector2])->Dictionary:
 	if path.size()>3 and length>6. and raw.distance_to(path[0])<=best:
 		result={"at":path[0],"axis":(path[1]-path[0]).normalized(),"owner":"self","segment":0,"self":true}
 	return result
-static func resolve(city:RefCounted,path:Array[Vector2],raw:Vector2,control:Vector2,mode:int)->Dictionary:
+static func resolve(city:RefCounted,path:Array[Vector2],raw:Vector2,control:Vector2,mode:int,selected:Dictionary={})->Dictionary:
 	var result:Dictionary={"points":path.duplicate(),"closure":{},"control":control,"label":""}
 	if path.size()<2:return result
-	var hit:=target(city,raw,path)
+	var hit:=target(city,raw,path) if selected.is_empty() else selected.duplicate()
 	if hit.is_empty():return result
 	var a:=path[0];var end:Vector2=hit.at
 	if a.distance_to(end)<.2 and path.size()<4:return result
@@ -37,10 +37,11 @@ static func resolve(city:RefCounted,path:Array[Vector2],raw:Vector2,control:Vect
 		# At an equal-arm lock this remains a true circular arc; otherwise use
 		# the exact endpoint/control, without reapplying independent angle snaps.
 		var curve:=Ruler.curve(a,adjusted,end,false)
-		if absf(a.distance_to(adjusted)-adjusted.distance_to(end))<.6:
+		if hit.get("kind","")!="door" and absf(a.distance_to(adjusted)-adjusted.distance_to(end))<.6:
 			var circle:=Ruler.curve(a,adjusted,end,true)
 			if circle.circle:
-				var on_target:bool=Vector2(circle.end).distance_to(end)<.0001 if hit.self else Vector2(circle.end).distance_to(Geometry2D.get_closest_point_to_segment(circle.end,hit.a,hit.b))<.0001
+				var fixed:bool=hit.self or hit.get("kind","") in ["endpoint","intersection"]
+				var on_target:bool=Vector2(circle.end).distance_to(end)<.0001 if fixed else Vector2(circle.end).distance_to(Geometry2D.get_closest_point_to_segment(circle.end,hit.a,hit.b))<.0001
 				if on_target and raw.distance_to(circle.end)<=RANGE:curve=circle;hit.at=circle.end
 		points.assign(curve.points)
 		result.shape=curve

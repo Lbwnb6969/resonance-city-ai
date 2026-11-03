@@ -19,7 +19,8 @@ static func polygon(center: Vector2,radius: float) -> PackedVector2Array:
 	for i in range(SIDES): points.append(center+Vector2.from_angle(float(i)*TAU/SIDES)*radius)
 	return points
 
-static func preview(city: RefCounted,point: Vector2) -> Dictionary:
+static func route_radius(marker:Dictionary)->float:return ROUTE_RADIUS if is_equal_approx(float(marker.radius),RADIUS) else (float(marker.radius)+INNER_RADIUS)*.5
+static func preview(city: RefCounted,point: Vector2,radius:float=RADIUS) -> Dictionary:
 	var selected: Dictionary={};var nearest:=1.1
 	for first in range(city.roads.size()):
 		var a: Dictionary=city.roads[first]
@@ -29,12 +30,12 @@ static func preview(city: RefCounted,point: Vector2) -> Dictionary:
 				for j in range(b.points.size()-1):
 					var crossing: Variant=Geometry2D.segment_intersects_segment(Vector2(a.points[i][0],a.points[i][1]),Vector2(a.points[i+1][0],a.points[i+1][1]),Vector2(b.points[j][0],b.points[j][1]),Vector2(b.points[j+1][0],b.points[j+1][1]))
 					if crossing is Vector2 and point.distance_to(crossing)<nearest:
-						nearest=point.distance_to(crossing);selected={"owner_id":str(a.id),"center":crossing,"radius":RADIUS}
+						nearest=point.distance_to(crossing);selected={"owner_id":str(a.id),"center":crossing,"radius":radius}
 	if selected.is_empty(): return {"ok":false,"message":"点击两条道路的真实交叉口"}
-	if city.PlacedLandmarks.occupies(city,selected.center,RADIUS+.4):return city._fail("环岛需要避开传世地标")
+	if city.PlacedLandmarks.occupies(city,selected.center,radius+.4):return city._fail("环岛需要避开传世地标")
 	for marker: Dictionary in all(city.roads):
-		if marker.center.distance_to(selected.center)<RADIUS*2+.5: return {"ok":false,"message":"这里已邻近环岛广场"}
-	var valid:=site(city,selected.center,RADIUS,city.houses,city.waters)
+		if marker.center.distance_to(selected.center)<float(marker.radius)+radius+.5: return {"ok":false,"message":"这里已邻近环岛广场"}
+	var valid:=site(city,selected.center,radius,city.houses,city.waters)
 	valid.merge(selected)
 	return valid
 
@@ -58,6 +59,7 @@ static func routing_roads(roads: Array) -> Array:
 		for i in range(road.points.size()-1): segments.append({"id":road.id,"a":Vector2(road.points[i][0],road.points[i][1]),"b":Vector2(road.points[i+1][0],road.points[i+1][1]),"width":float(road.width)})
 	for marker: Dictionary in markers:
 		var center: Vector2=marker.center
+		var route_radius:=route_radius(marker)
 		var kept: Array=[];var angles: Array[float]=[]
 		for i in range(SIDES): angles.append(float(i)*TAU/SIDES)
 		for segment: Dictionary in segments:
@@ -66,7 +68,7 @@ static func routing_roads(roads: Array) -> Array:
 			if length2<.000001: continue
 			var relative:=a-center
 			var projection:=relative.dot(direction)/length2
-			var discriminant:=projection*projection-(relative.length_squared()-ROUTE_RADIUS*ROUTE_RADIUS)/length2
+			var discriminant:=projection*projection-(relative.length_squared()-route_radius*route_radius)/length2
 			if discriminant<=0.0: kept.append(segment);continue
 			var t0:=maxf(0.0,-projection-sqrt(discriminant));var t1:=minf(1.0,-projection+sqrt(discriminant))
 			if t0>=t1: kept.append(segment);continue
@@ -75,13 +77,13 @@ static func routing_roads(roads: Array) -> Array:
 				var p:=a+direction*float(part[0]);var q:=a+direction*float(part[1])
 				kept.append({"id":segment.id,"a":p,"b":q,"width":segment.width})
 				for endpoint: Vector2 in [p,q]:
-					if absf(endpoint.distance_to(center)-ROUTE_RADIUS)<.0001: angles.append(fposmod((endpoint-center).angle(),TAU))
+					if absf(endpoint.distance_to(center)-route_radius)<.0001: angles.append(fposmod((endpoint-center).angle(),TAU))
 		angles.sort()
 		var unique: Array[float]=[]
 		for angle: float in angles:
 			if unique.is_empty() or angle-unique[-1]>.00001: unique.append(angle)
 		for i in range(unique.size()):
-			kept.append({"id":marker.owner_id,"a":center+Vector2.from_angle(unique[i])*ROUTE_RADIUS,"b":center+Vector2.from_angle(unique[(i+1)%unique.size()])*ROUTE_RADIUS,"width":1.0})
+			kept.append({"id":marker.owner_id,"a":center+Vector2.from_angle(unique[i])*route_radius,"b":center+Vector2.from_angle(unique[(i+1)%unique.size()])*route_radius,"width":1.0})
 		segments=kept
 	var result: Array=[]
 	for segment: Dictionary in segments: result.append({"id":segment.id,"points":[[segment.a.x,segment.a.y],[segment.b.x,segment.b.y]],"width":segment.width})

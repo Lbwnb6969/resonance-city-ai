@@ -2,7 +2,7 @@ extends RefCounted
 ## Read-only real counters shared by the old ledger and future epoch baselines.
 const Spatial=preload("res://scripts/world/city_creation_functional_benefits.gd")
 const ALIASES:={"batch_count":"bake","delivery_count":"delivery","debut":"wish","civic_received":"civic"}
-const KINDS:=["tea","house","bread","craft","wish","chord","tea_house","bake","delivery","civic"]
+const KINDS:=["space_cluster","space_district","tea","house","bread","craft","wish","chord","tea_house","bake","delivery","civic"]
 static func current(city:RefCounted)->Dictionary:
 	var result:Dictionary={"tea":int(city.life_progress.tea_parties)}
 	for house:Dictionary in city.houses:result["house/"+str(house.id)]=1
@@ -43,4 +43,4 @@ static func recognized(key:String)->bool:
 	if key.is_empty() or key.length()>256:return false
 	for character:String in key:
 		if character.unicode_at(0)<32:return false
-	return key=="tea" or (key.get_slice("/",0) in KINDS and key.contains("/") and not key.trim_prefix(key.get_slice("/",0)+"/").is_empty())
+	return key in ["tea","house_peak","cell_peak"] or (key.get_slice("/",0) in KINDS and key.contains("/") and not key.trim_prefix(key.get_slice("/",0)+"/").is_empty())

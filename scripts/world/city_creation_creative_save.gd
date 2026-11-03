@@ -1,16 +1,20 @@
 extends RefCounted
 ## Schema20 extension. Historical ledgers remain validated by their original owners.
 const SCHEMA:=20
-const LATEST_SCHEMA:=24
+const LATEST_SCHEMA:=34
 const Progression=preload("res://scripts/world/city_creation_progression_ledger.gd")
 const VERSION:=1
 const FIELDS:=["creative_settings","placed_landmarks","next_landmark_id","landmark_high_watermark"]
 const SETTING_FIELDS:=["version","creation_policy","migration_version","guidance","music","presentation"]
 
 static func defaults(policy:String="free",migration:int=0)->Dictionary:
-	return {"version":VERSION,"creation_policy":policy,"migration_version":migration,"guidance":policy=="legacy","music":{"mode":"auto","style":"","seed":74001},"presentation":{"automatic_decoration":true,"legacy_crowns":policy=="legacy"}}
+	return {"version":VERSION,"creation_policy":policy,"migration_version":migration,"guidance":policy=="legacy","music":{"mode":"auto","style":"","seed":74001},"presentation":{"automatic_decoration":true,"legacy_crowns":policy=="legacy","window_pennants":false}}
 
 static func reset(city:RefCounted)->void:
+	city.plaza_loops.clear()
+	city.remove_meta("tea_deck_plans")
+	city.remove_meta("boathouse_plans")
+	city.remove_meta("grill_supply")
 	city.cozy_progression.clear()
 	city.terrain_policy=1
 	city.creative_settings={};city.placed_landmarks.clear();city._next_landmark_id=1;city._landmark_high_watermark=0
@@ -23,10 +27,12 @@ static func write(city:RefCounted,result:Dictionary)->void:
 	result.next_landmark_id=city._next_landmark_id;result.landmark_high_watermark=city._landmark_high_watermark
 
 static func settings_valid(city:RefCounted,value:Variant)->bool:
-	if not value is Dictionary or value.size()!=SETTING_FIELDS.size():return false
+	if not value is Dictionary:return false
+	if not city._is_integer(value.get("version")) or int(value.version) not in [VERSION,2]:return false
+	if value.size()!=SETTING_FIELDS.size()+(1 if value.version==2 else 0):return false
+	if value.version==2 and not preload("res://scripts/world/city_creation_creative_prompts.gd").valid(value.get("inspiration")):return false
 	for key:String in SETTING_FIELDS:
 		if not value.has(key):return false
-	if not city._is_integer(value.version) or value.version!=VERSION:return false
 	if value.creation_policy not in ["legacy","free"] or not value.guidance is bool:return false
 	if not city._is_integer(value.migration_version) or int(value.migration_version) not in [0,1]:return false
 	if value.migration_version==1 and value.creation_policy!="free":return false
@@ -38,8 +44,10 @@ static func settings_valid(city:RefCounted,value:Variant)->bool:
 	if music.mode=="fixed" and music.style.is_empty():return false
 	if not city._is_integer(music.get("seed")) or music.seed<0 or music.seed>2147483647:return false
 	var presentation:Variant=value.presentation
-	if not presentation is Dictionary or presentation.size() not in [2,3]:return false
-	if presentation.size()==3 and not presentation.get("flowering_vines") is bool:return false
+	if not presentation is Dictionary or presentation.size()<2 or presentation.size()>7:return false
+	for field:Variant in presentation:
+		if field not in ["automatic_decoration","legacy_crowns","flowering_vines","paired_bridge_lamps","window_pennants","shallow_stair_keys","festival_bunting_and_lights"] or not presentation[field] is bool:return false
+	if presentation.has("shallow_stair_keys") and (value.creation_policy!="free" or not presentation.shallow_stair_keys):return false
 	return presentation.get("automatic_decoration") is bool and presentation.get("legacy_crowns") is bool
 
 static func validate(city:RefCounted,data:Dictionary)->Dictionary:
@@ -70,10 +78,11 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	city._landmark_high_watermark=maxi(city._landmark_high_watermark,watermark) if history else watermark
 
 static func appearance_compatible(city:RefCounted,target:Dictionary)->bool:
+	if city.plaza_loops!=target.get("plaza_loops",[]):return false
 	if city.placed_landmarks!=target.get("placed_landmarks",[]):return false
 	var expected:Dictionary=target.get("creative_settings",{})
 	# Old geometry history predates this extension; it cannot revoke conversion.
 	if expected.is_empty():return true
-	for key:String in ["guidance","music","presentation"]:
+	for key:String in ["guidance","music","presentation","inspiration"]:
 		if city.creative_settings.get(key)!=expected.get(key):return false
 	return true

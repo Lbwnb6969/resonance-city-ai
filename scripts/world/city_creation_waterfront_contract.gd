@@ -10,6 +10,8 @@ const Obstacles=preload("res://scripts/world/city_creation_public_space_obstacle
 static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->Array:
 	var result:Array=[];var geometry:=Obstacles.collect(city)
 	for house:Dictionary in city.houses:
+		var deck:Dictionary=preload("res://scripts/world/city_creation_tea_deck_public.gd").derive(city,report,house)
+		if not deck.is_empty():result.append(deck);continue
 		var obstacles:=Obstacles.for_source(geometry,house.id)
 		var member:Dictionary=report.houses[house.id]
 		if member.water_distance>MAX_WATER and member.prototype not in ["venetian_loggia","peristyle"]:continue
@@ -26,9 +28,10 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 				var box:={"polygon":PackedVector2Array([start-tangent,start+tangent,end+tangent,end-tangent])}
 				if obstacles.any(func(o):return Frame.boxes_overlap(box,o)) or float(water_distance.call(box))<.05:continue
 				if city.water_clearance(shore.wet)>=0. or city.ground_height(shore.wet)>Terrain.WATER_LEVEL+.005:continue
-				var face:={"cell_id":entry.cell_id,"wall_at":entry.wall_at,"bank":shore.bank,"wet_at":shore.wet,"water_id":shore.water_id,"polygon":box.polygon}
+				var face:={"cell_id":entry.cell_id,"wall_at":entry.wall_at,"bank":shore.bank,"wet_at":shore.wet,"water_id":shore.water_id,"water_ids":shore.water_ids,"polygon":box.polygon}
 				if not faces.has(face):faces.append(face)
-				if not sources.has(shore.water_id):sources.append(shore.water_id)
+				for id:String in shore.water_ids:
+					if not sources.has(id):sources.append(id)
 				for road:Dictionary in city.roads:
 					if entry.active and entry.road_id!=road.id:continue
 					for i in range(1,road.points.size()):
@@ -39,13 +42,25 @@ static func derive(city:RefCounted,report:Dictionary,water_distance:Callable)->A
 						var patch:=_street_patch(a,b,float(road.width),box.polygon)
 						if patch.is_empty() or obstacles.any(func(o):return Frame.boxes_overlap(patch,o)) or float(water_distance.call(patch))<.05:continue
 						var access:=Height.assess(city,house,entry,at,road)
-						var ground:=_open_ground(city,at,shore.bank,road)
-						var row:={"house_id":house.id,"cell_id":entry.cell_id,"road_id":road.id,"water_id":shore.water_id,"at":entry.at,"street_at":at,"height_access":access,"ground_access":ground}
+						var shore_access:=preload("res://scripts/world/city_creation_shore_approach.gd").assess(city,at,shore.bank,road)
+						var ground:bool=shore_access.ok
+						var row:={"house_id":house.id,"cell_id":entry.cell_id,"road_id":road.id,"water_id":shore.water_id,"at":entry.at,"street_at":at,"height_access":access,"ground_access":ground,"shore_access":shore_access}
 						if not access.ok or access.get("scope","")=="unchanged" or not ground:
 							if not rejected.has(row):rejected.append(row)
 							continue
 						if not entries.has(row):entries.append(row)
 						if not sources.has(road.id):sources.append(road.id)
+		if entries.is_empty():
+			var extra_faces:=preload("res://scripts/world/city_creation_side_shore_access.gd").faces(city,house,obstacles,water_distance)
+			for face:Dictionary in extra_faces:
+				if not faces.has(face):faces.append(face)
+				for id:String in face.water_ids:
+					if not sources.has(id):sources.append(id)
+			if report.network_ready:
+				var side_access:=preload("res://scripts/world/city_creation_side_shore_access.gd").derive(city,house,member,faces,geometry,water_distance)
+				entries.append_array(side_access.entries);rejected.append_array(side_access.rejected)
+				for id:String in side_access.sources:
+					if not sources.has(id):sources.append(id)
 		var published:Dictionary=city._region_network.get("road_components",{}) if report.network_ready else {}
 		var eligible:bool=member.connected and entries.any(func(e):return member.component in published.get(e.road_id,[]))
 		var reason:="qualified" if eligible else "network_waiting" if not report.network_ready else "water_missing" if member.water_distance>MAX_WATER else "shore_face_missing" if faces.is_empty() else "entry_support_unverified" if entries.is_empty() and rejected.any(func(e):return e.height_access.get("scope","")=="unchanged") else "ground_access_missing" if entries.is_empty() and rejected.any(func(e):return not e.ground_access) else "height_access_missing" if entries.is_empty() and not rejected.is_empty() else "public_entry_missing"
@@ -60,29 +75,7 @@ static func _street_patch(a:Vector2,b:Vector2,width:float,face:PackedVector2Arra
 	return {"polygon":polygons[0]} if not polygons.is_empty() else {}
 
 static func _open_ground(city:RefCounted,street:Vector2,bank:Vector2,road:Dictionary)->bool:
-	# The .65m street-height bank envelope stays outside this public walk test.
-	var direction:=(bank-street).normalized();var end:=bank-direction*.65
-	if (end-street).dot(direction)<=0.:return true
-	var tangent:=Vector2(-direction.y,direction.x);var count:=maxi(1,ceili(street.distance_to(end)/.12))
-	for side:float in [-HALF_FACE,0.,HALF_FACE]:
-		var previous:=0.;var was_road:=false
-		for i in range(count+1):
-			var at:=street.lerp(end,float(i)/count)+tangent*side
-			var on_road:bool=city._water_stroke_distance(at,road.points)<=float(road.width)*.5
-			var y:float=city.street_height(at) if on_road else city.ground_height(at)
-			var allowed:float=Height.Roads.MAX_GRADE*street.distance_to(end)/count+.002
-			if on_road or was_road:allowed+=Height.Roads.STEP_HEIGHT
-			if i>0 and absf(y-previous)>allowed:return false
-			previous=y;was_road=on_road
-	return true
+	return preload("res://scripts/world/city_creation_shore_approach.gd").assess(city,street,bank,road).ok
 
 static func _shores(city:RefCounted,from:Vector2)->Array:
-	var side:=signf(from.x-city.river_x(from.y));var bank:=Vector2(city.river_x(from.y)+side*city.RIVER_HALF_WIDTH,from.y)
-	var result:Array=[{"bank":bank,"wet":bank-Vector2(side*.6,0),"water_id":"river"}]
-	for water:Dictionary in city.waters:
-		var radius:float=float(water.width)*.5
-		for i in range(maxi(1,water.points.size()-1)):
-			var a:=Vector2(water.points[i][0],water.points[i][1]);var j:=mini(i+1,water.points.size()-1);var b:=Vector2(water.points[j][0],water.points[j][1])
-			var near:=Geometry2D.get_closest_point_to_segment(from,a,b);var direction:=(from-near).normalized()
-			result.append({"bank":near+direction*radius,"wet":near+direction*maxf(0.,radius-.6),"water_id":water.id})
-	return result
+	return preload("res://scripts/world/city_creation_shore_boundary.gd").candidates(city,from)

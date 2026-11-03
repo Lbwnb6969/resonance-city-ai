@@ -55,18 +55,11 @@ static func _faces(stone: Dictionary,index: int)->Array[Vector3]:
 	var result: Array[Vector3]=[]
 	var rings: Array=[]
 	var at: Vector2=stone.at
-	var axis: Vector2=stone.axis
-	var cross_axis:=Vector2(-axis.y,axis.x)
-	var along:=float(stone.radius_along)
-	var across:=float(stone.radius_cross)
 	for ring in range(3):
 		var vertices: Array[Vector3]=[]
 		var radius:=.86 if ring==0 or ring==2 else 1.0
 		var y:=float(stone.y)+(-.15 if ring==0 else (-.04 if ring==1 else 0.0))
-		for side in range(10):
-			var angle:=TAU*float(side)/10.0
-			var variation:=.96+.035*sin(float(side)*2.7+float(index)*1.3)
-			var p:=at+(axis*cos(angle)*along+cross_axis*sin(angle)*across)*radius*variation
+		for p:Vector2 in preload("res://scripts/world/city_creation_stepping_surface.gd").ring(stone,index,radius):
 			vertices.append(Vector3(p.x,y,p.y))
 		rings.append(vertices)
 	for side in range(10):

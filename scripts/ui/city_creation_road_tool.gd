@@ -3,7 +3,7 @@ extends Node
 const Geometry=preload("res://scripts/world/city_creation_road_curve_geometry.gd")
 const Guide=preload("res://scripts/visual/city_creation_road_anchor_guide.gd")
 const Ruler=preload("res://scripts/world/city_creation_road_ruler.gd")
-const Closure=preload("res://scripts/world/city_creation_road_closure.gd")
+const Endpoints=preload("res://scripts/world/city_creation_road_endpoint_plan.gd")
 var demo
 var guide:=Guide.new()
 var mode:=0
@@ -24,8 +24,14 @@ var ruler:Dictionary={}
 var reference_revision:=-1
 var closure:Dictionary={}
 var closure_audio=preload("res://scripts/audio/city_creation_road_closure_audio.gd").new()
+var trim=preload("res://scripts/ui/city_creation_road_trim_tool.gd").new()
 func setup(owner)->void:
 	demo=owner;closure_audio.demo=owner;name="RoadTool";demo.add_child(self);demo.set_meta("road_tool",self);guide.setup(demo)
+	preload("res://scripts/ui/city_creation_shallow_stair_control.gd").new().setup(demo)
+	preload("res://scripts/ui/city_creation_water_ghat_control.gd").new().setup(demo)
+	preload("res://scripts/ui/city_creation_roundabout_width.gd").new().setup(demo)
+	preload("res://scripts/ui/city_creation_plaza_control.gd").new().setup(demo)
+	trim.setup(owner)
 func active()->bool:return not phase.is_empty()
 func blocked()->bool:
 	return demo.camera_rig.strolling or demo.gallery.busy or demo.gallery.panel.visible or demo.guide.visible() or demo.ledger.visible() or demo.journal.panel.visible or demo.strum_hold.active()
@@ -34,12 +40,14 @@ func set_mode(value:int)->void:
 	var options:OptionButton=demo.road_panel.find_child("RoadMode",true,false);options.select(mode)
 	demo.tactile_dock.refresh()
 func reset()->void:
+	trim.cancel()
 	phase="";pressed=false;dragged=false;raw.clear();locks.clear();control=Vector2.INF;signature.clear();valid.clear();reference.clear();ruler.clear();guide.clear()
 	closure.clear();closure_audio.mark="";show_mode()
 func show_mode()->void:
 	var options:OptionButton=demo.road_panel.find_child("RoadMode",true,false)
 	options.select(effective if active() else mode);demo.tactile_dock._sync()
 func input(event:InputEvent)->bool:
+	if trim.input(event):return true
 	if active() and (demo.tool!=2 or blocked()):demo._cancel_draft()
 	if demo.tool!=2 or blocked():return false
 	if event is InputEventWithModifiers:alt=event.alt_pressed
@@ -58,6 +66,8 @@ func input(event:InputEvent)->bool:
 		demo.pointer=event.position;release();return true
 	return false
 func unhandled(event:InputEvent)->bool:
+	if demo.get_meta("roundabout_width_control").unhandled(event):return true
+	if trim.unhandled(event):return true
 	if demo.tool!=2 or blocked():return false
 	if event is InputEventMouseMotion:
 		if active():demo.pointer=event.position;alt=event.alt_pressed;update();return true
@@ -75,7 +85,8 @@ func unhandled(event:InputEvent)->bool:
 	var point:Vector2=demo._road_pointer_at()
 	if not active():
 		reference=Ruler.road_reference(demo.state,point);reference_revision=demo.state.revision
-		if mode>0 and not alt and not reference.is_empty():point=reference.at
+		point=Endpoints.start(demo.state,point,not alt,demo._selected_road_width())
+		reference=Ruler.road_reference(demo.state,point)
 		start=point;tail=point;control=Vector2.INF;raw.assign([point]);locks.assign([point]);pressed=true;dragged=false
 		effective=1 if mode==0 and alt else mode;phase="control" if effective==2 else "pressed";demo.road_drawing=true;demo.road_draft_straight=effective==1;demo.road_locked_segments=0
 		update(true)
@@ -86,7 +97,6 @@ func release()->void:
 	update(true);pressed=false
 	if effective!=2 and dragged:finish();return
 	if phase=="pressed":
-		if not alt and not reference.is_empty():start=reference.at;locks.assign([start])
 		effective=1;phase="end";signature.clear();show_mode();update(true)
 func update(_force:bool=false)->void:
 	if not active():return
@@ -114,26 +124,17 @@ func update(_force:bool=false)->void:
 		else:path.assign([start,point])
 		demo.road_points=path.duplicate()
 	if precise:path.assign(ruler.points)
-	closure={}
-	if not alt and (effective!=2 or control.is_finite()):
-		var closed:=Closure.resolve(demo.state,path,point,control,effective if precise else 0)
-		closure=closed.closure
-		if not closure.is_empty():
-			path.assign(closed.points);ruler=Ruler.plan(start,closed.control if effective==2 else Vector2.INF,path[-1],reference,false)
-			ruler.closure=closure;ruler.label=str(closed.label)+("\n"+str(ruler.label) if not str(ruler.label).is_empty() else "")
-			if closed.has("shape"):
-				var intersection:="θ %.1f°\n"%ruler.intersection.degrees if ruler.has("intersection") else ""
-				for field:String in ["circle","radius","center","points","turn"]:
-					if closed.shape.has(field):ruler[field]=closed.shape[field]
-				ruler.label=str(closed.label)+"\n"+intersection+str(closed.shape.label)
+	var planned:=Endpoints.plan(demo.state,path,point,control,effective,locks if effective==1 and dragged else [],not alt and (effective!=2 or control.is_finite()),demo._selected_road_width(),demo.road_style,preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
+	closure=planned.closure;valid=planned.valid
+	if not closure.is_empty():
+		ruler=Ruler.plan(start,planned.control if effective==2 else Vector2.INF,planned.points[-1],reference,false)
+		ruler.closure=closure;ruler.label=str(planned.label)+("\n"+str(ruler.label) if not str(ruler.label).is_empty() else "")
+		if planned.has("shape"):
+			for field:String in ["circle","radius","center","points","turn"]:
+				if planned.shape.has(field):ruler[field]=planned.shape[field]
+			var intersection:="θ %.1f°\n"%ruler.intersection.degrees if ruler.has("intersection") else ""
+			ruler.label=str(planned.label)+"\n"+intersection+str(planned.shape.label)
 	demo.road_draft_straight=effective==1
-	valid=demo.state.preview_road(path,demo.road_style,"none" if alt or precise else "soft",demo._selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
-	if not precise and str(valid.upgrade_road_id).is_empty() and valid.points.size()>1 and (effective==2 and control.is_finite() or effective==1 and not dragged):
-		var resolved:Array[Vector2]=valid.points
-		# Endpoint assistance must not kink a supposedly precise line or move
-		# only the final sample of a quadratic curve.
-		path=Geometry.straight(resolved[0],resolved[-1]) if effective==1 else Geometry.quadratic(resolved[0],control,resolved[-1])
-		valid=demo.state.preview_road(path,demo.road_style,"none",demo._selected_road_width(),preload("res://scripts/world/city_creation_road_decoration.gd").selected(demo))
 	demo.road_preview.assign(valid.points)
 	demo.town.preview_road(demo.road_preview,bool(valid.ok),float(valid.width),bool(valid.get("bridge",false)),str(valid.style))
 	demo.chemistry_brush.road(demo.road_preview,float(valid.width),str(valid.style),bool(valid.ok))

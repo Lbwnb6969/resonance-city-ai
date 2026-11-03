@@ -493,6 +493,7 @@ func update_bakery_supply(statuses: Dictionary) -> void:
 		if not statuses.has(id): continue
 		live[id] = true
 		if house_roots.has(id): BakerySmoke.update(house_roots[id],statuses[id])
+		if preload("res://scripts/visual/city_creation_grillhouse.gd").supply(self,house,statuses[id]):continue
 		var count := mini(3,int(statuses[id].stock))
 		var fingerprint := hash([count,house.origin,house.cells,house.get("base_y",0.0),_frontage_signature(house)])
 		if bread_fingerprints.get(id,-1)==fingerprint:
@@ -582,7 +583,8 @@ func _rebuild_vegetation(shared_masks: Dictionary = {}, forced_blocks: Array[Vec
 	if (vegetation_layer == null and not record_only) or state == null:
 		return
 	var plants: Array = state.get("plants") if state.get("plants") is Array else []
-	var obstacles: Array = [state.roads, _water_records()]
+	var obstacles: Array = [state.roads, _water_records(),state.placed_landmarks,state.plaza_loops,preload("res://scripts/world/city_creation_tea_deck_plan.gd").all(state)]
+	obstacles.append(preload("res://scripts/world/city_creation_boathouse_plan.gd").all(state))
 	for house: Dictionary in state.houses:
 		var ground: Array = []
 		for cell: Dictionary in house.cells:
@@ -767,7 +769,10 @@ func _frontage_signature(house: Dictionary) -> Array:
 	return _frontage_views[id]
 
 func _derive_frontage_signature(house:Dictionary)->Array:
-	var result: Array = []
+	var result: Array = preload("res://scripts/world/city_creation_porch_sites.gd").signature(state,house)
+	if house.get("architecture","")=="cantilever_tea_deck":result.append(preload("res://scripts/world/city_creation_tea_deck_plan.gd").find(state,str(house.id)))
+	if house.get("architecture","")=="creek_boathouse":result.append(preload("res://scripts/world/city_creation_boathouse_plan.gd").find(state,str(house.id)))
+	if state.Grillhouse.active_house(house):result.append(preload("res://scripts/visual/city_creation_grillhouse.gd").signature(self,house))
 	for entrance: Dictionary in house_entrances(str(house.id)):
 		result.append([entrance.cell_id,entrance.side,entrance.active,entrance.get("passage",false),entrance.get("wall_at",Vector2.ZERO),Frontage.porch_plan(state,house,entrance) if entrance.active else {}])
 	result.append(house_passages(str(house.id)))
@@ -1051,6 +1056,7 @@ func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.2
 		var runs: Array = SteppingPlan.for_road(state,stepping_road)
 		stepping_count = Stepping.preview(self,preview,runs,Color(0.46,0.68,0.66,0.72))
 	preview.set_meta("stepping_previews",stepping_count)
+	if valid:preload("res://scripts/visual/city_creation_shore_road_preview.gd").show(self,points,width,style)
 	for point: Vector2 in [points[0],points[-1]]:
 		var radius:=width*.5+(.15 if valid else 0.)
 		_cylinder(preview,radius,radius,0.012,Vector3(point.x,_street_height(point)+0.013,point.y),road_draft_field.material if valid else _material(color),24)
@@ -1072,6 +1078,7 @@ func preview_road(points: Array[Vector2], valid: bool = true, width: float = 1.2
 					arches[[house.id,cell.id]] = passage
 					for side: Vector2i in passage.sides:
 						if not Frontage.exposed(house,cell,side): continue
+						if passage.get("profile","")=="wide_lintel":preload("res://scripts/visual/city_creation_wide_passage_wall.gd").preview(self,house,passage,side,color);continue
 						var wall := Node3D.new()
 						wall.name = "ArchPreview"
 						wall.position = Vector3(passage.center.x+side.x*UNIT*0.5,float(house.get("base_y",0.0)),passage.center.y+side.y*UNIT*0.5)
@@ -1406,7 +1413,7 @@ func _triangles(parent: Node3D, vertices: Array, color: Color) -> MeshInstance3D
 	surface.index()
 	var node := MeshInstance3D.new()
 	node.mesh = surface.commit()
-	var mat := _material(color)
+	var mat := _material(color).duplicate() as StandardMaterial3D
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	node.material_override = mat
 	parent.add_child(node)
@@ -1480,7 +1487,7 @@ func _prepare_house_assembly(house:Dictionary)->Dictionary:
 		flower_plan=ConservatoryPlan.for_house(state,house)
 		arcade_faces=ArcadePlan.for_house(state,house)
 	if not flower_plan.is_empty():canopy={}
-	var entrances:Array=house_entrances(str(house.id));var passages:Array=house_passages(str(house.id))
+	var entrances:Array=preload("res://scripts/world/city_creation_upper_stoop.gd").with_ground(state,house,house_entrances(str(house.id)));var passages:Array=house_passages(str(house.id))
 	var tower_ids:Dictionary={}
 	for tower:Dictionary in building_context.tower_cells(str(house.id)):tower_ids[str(tower.id)]=true
 	if house.get("signature","")=="bell_keep":tower_ids[str(house.cells[-1].id)]=true
@@ -1544,6 +1551,8 @@ func _advance_house_assembly(job:HouseAssembly,budget_ms:float)->bool:
 		job.stats.part_peaks[label]=maxf(float(job.stats.part_peaks.get(label,0.)),ms)
 		units+=1
 	if job.stage!=HouseAssembly.Stage.DONE:return false
+	preload("res://scripts/visual/city_creation_tea_deck.gd").build(self,job.root,job.house)
+	preload("res://scripts/visual/city_creation_house_finish.gd").build(self,job.root,job.house)
 	preload("res://scripts/world/city_creation_house_frame.gd").apply(job.root,job.house)
 	job.root.set_meta("house_assembly",job.stats)
 	return true
@@ -1589,7 +1598,7 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 			job.stage=HouseAssembly.Stage.DOMES
 		HouseAssembly.Stage.DOMES:
 			Renaissance.build(self,job.root,job.house,job.domes)
-			preload("res://scripts/visual/city_creation_terracotta_skylights.gd").build(self,job.root,job.house,job.palette);job.stage=HouseAssembly.Stage.CONSERVATORY
+			preload("res://scripts/visual/city_creation_roof_details.gd").build(self,job.root,job.house,job.palette);job.stage=HouseAssembly.Stage.CONSERVATORY
 		HouseAssembly.Stage.CONSERVATORY:
 			if not job.flower_plan.is_empty():conservatory.build(self,job.root,job.house,job.flower_plan)
 			job.stage=HouseAssembly.Stage.SIGNATURE
@@ -1604,7 +1613,7 @@ func _house_assembly_unit(job:HouseAssembly)->void:
 		HouseAssembly.Stage.SMOKE:
 			preload("res://scripts/visual/city_creation_balcony_shell.gd").build(self,job)
 			var points:Array=job.root.get_meta("chimneys",[])
-			if str(job.house.get("role","residential"))=="bakery" and not points.is_empty():bakery_smoke.build(job.root,points[0])
+			if str(job.house.get("role","residential"))=="bakery" and not state.Grillhouse.active_house(job.house) and not points.is_empty():bakery_smoke.build_roof(job.root,points)
 			job.stage=HouseAssembly.Stage.BEND
 		HouseAssembly.Stage.BEND:
 			if preload("res://scripts/visual/city_creation_hinge_assembly.gd").step(job):job.stage=HouseAssembly.Stage.DONE
@@ -1753,31 +1762,32 @@ func _house_cell_wall(job:HouseAssembly,frame:HouseAssembly.Cell,direction:Vecto
 		else: wall.get_node("ArchWallSurface").material_override=walls
 		_box(wall,Vector3(UNIT+0.07,0.11,0.20),Vector3(0,FLOOR-0.06,0.02),trim)
 		return
-	if era!="modern_eco" and not preload("res://scripts/visual/city_creation_recessed_facade.gd").shell(self,job,frame,wall,direction,wall_width,wall_center):_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
+	if (era!="modern_eco" or house.get("architecture","")=="recessed_townhouse") and not preload("res://scripts/visual/city_creation_recessed_facade.gd").shell(self,job,frame,wall,direction,wall_width,wall_center):_box(wall,Vector3(wall_width,FLOOR,0.13),wall_center+Vector3(0,FLOOR*0.5,0),walls)
 	if not cuts.is_empty() or not retreats.is_empty():
 		_cell_box_shape(body,Vector3(wall_width,FLOOR,0.13),wall.transform*(wall_center+Vector3(0,FLOOR*0.5,0)),wall.rotation.y)
 	_box(wall,Vector3(wall_width+0.04,0.12,0.20),wall_center+Vector3(0,0.12,0.02),_material(Color("c7b797")))
 	_box(wall,Vector3(wall_width+0.07,0.11,0.20),wall_center+Vector3(0,FLOOR-0.06,0.02),trim)
-	var entrance: Dictionary = doors.get([str(cell.id),direction],{}) if level == 0 else {}
+	var entrance: Dictionary = doors.get([str(cell.id),direction],{})
 	var door := not entrance.is_empty()
 	var active := door and bool(entrance.active)
 	var principal: bool = door and not primary.is_empty() and primary.cell_id == str(cell.id) and primary.side == direction
 	if door:
 		wall.name = "Entrance_%d_%d" % [direction.x,direction.y]
 		wall.set_meta("entrance",entrance.duplicate(true))
-	if era=="modern_eco":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette,house,cell,direction)
+	if era=="modern_eco" and house.get("architecture","")!="recessed_townhouse":Modern.facade(self,wall,door,int(house.get("seed",0))+x*17+z*31+level*7,palette,house,cell,direction)
 	else:Classical.openings(self,job,frame,wall,door,active,wall_width)
 	if era in ["pastoral","renaissance"] and not house.has("signature"):Classical.facade(self,job,frame,wall,direction,door,wall_width)
 	elif era == "renaissance" and house.has("signature"): Renaissance.facade(self,wall,door,level>0)
 	elif era=="clockwork":Clockwork.facade(self,wall,door,level>0)
 	preload("res://scripts/visual/city_creation_street_rhythm.gd").decorate(self,job,frame,wall,direction,wall_width)
 	if wall_width>=UNIT-.01 and era!="modern_eco" and not Classical.Ancient.active(house,era): HouseStyles.build_details(self,wall,palette,door,style,int(house.get("seed",0))+x*17+z*31+level*7)
-	if active: _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
+	if active and not entrance.get("upper_stoop",false): _door_porch(wall,retreats.has(direction) or (principal and str(house.get("role","residential")) == "bakery"),Frontage.porch_plan(state,house,entrance))
 	if principal and not job.role_prop_added:
-		_role_frontage(wall,str(house.get("role","residential")))
+		if not state.Grillhouse.active_house(house):_role_frontage(wall,str(house.get("role","residential")))
 		job.role_prop_added = true
 
 func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
+	if preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(state,job.house):return
 	if preload("res://scripts/visual/city_creation_balcony_shell.gd").ceiling(self,job,frame):return
 	if Classical.Ancient.active(job.house,job.era):return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,job.house):return
@@ -1830,7 +1840,7 @@ func _house_cell_roof(job:HouseAssembly,frame:HouseAssembly.Cell)->void:
 		front_open = front_open or front.is_empty() or str(front.get("kind","")) != "room" or not _at(cells,x+column,z-1,level+1).is_empty()
 		back_open = back_open or back.is_empty() or str(back.get("kind","")) != "room" or not _at(cells,x+column,z+1,level+1).is_empty()
 	var bakery:=str(house.get("role","residential"))=="bakery"
-	_roof(roof,y+FLOOR,palette[1],int(house.get("seed",0))+x*13+z*19,span,front_open,back_open,bakery)
+	_roof(roof,y+FLOOR,palette[1],int(house.get("seed",0))+x*13+z*19,span,front_open,back_open,bakery,house)
 	if bakery:
 		root.set_meta("chimneys",[p+roof.position+Vector3(0.4,y+FLOOR+0.99,-0.45)])
 
@@ -1849,7 +1859,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var influence:Rect2=_house_dependency_bounds[id].grow(10.)
 	for row:Dictionary in state.houses:
 		if influence.intersects(_house_dependency_bounds[str(row.id)],true):nearby.append(row)
-	var dependency:int=hash([house,nearby,_house_dependency_global,state.house_era(house),building_context.signature(id),state._ground_terrain.region_signature(influence)])
+	var dependency:int=hash([house,nearby,_house_dependency_global,state.house_era(house),building_context.signature(id),state._ground_terrain.region_signature(influence),preload("res://scripts/world/city_creation_porch_sites.gd").signature(state,house)])
 	var cached:Dictionary=house_geometry_cache.get(id,{})
 	if cached.get("dependency") == dependency and craft.layouts.has(id) and quality_visual.geometry_signatures.has(id):
 		_frontage_signature(house)
@@ -1864,7 +1874,7 @@ func _house_geometry_fingerprint(house: Dictionary) -> int:
 	var frontages:=_frontage_signature(house)
 	quality_visual.prepare_geometry(self,house,frontages,arcades)
 	craft.prepare_layout(self,house,frontages,arcades)
-	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),preload("res://scripts/world/city_creation_organic_form.gd").geometry_key(state,house),preload("res://scripts/world/city_creation_house_hinge.gd").key(house),house.get("seed",0),house.get("role","residential"),frontages,building_context.signature(str(house.id)),TerraceCanopy.choose(state.houses,house)])
+	var fingerprint:int=hash([house.get("signature",""),state.AmphitheaterPlan.for_house(state,house),state.Signatures.wheel_plan(state,house) if house.get("signature","")=="watermill" else {},state.house_era(house),house.origin,house.cells,house.get("base_y",0.0),footings,highland.contact_plan(self,house,footings).signature,RoundTowerPlan.for_house(house,state.houses,state.roads),ConservatoryPlan.for_house(state,house),Clockwork.adjacency_signature(state,house),Modern.Plan.adjacency_signature(state,house),arcades,house.get("style","classic"),house.get("architecture",""),house.get("architecture_variant",{}),house.get("food_kind",""),preload("res://scripts/world/city_creation_organic_form.gd").geometry_key(state,house),preload("res://scripts/world/city_creation_house_hinge.gd").key(house),house.get("seed",0),house.get("role","residential"),frontages,preload("res://scripts/world/city_creation_upper_stoop.gd").entries(state,house),building_context.signature(str(house.id)),preload("res://scripts/visual/city_creation_dormer_sites.gd").foreign_signature(state,house),TerraceCanopy.choose(state.houses,house)])
 	house_geometry_cache[id]={"dependency":dependency,"fingerprint":fingerprint}
 	return fingerprint
 
@@ -1900,6 +1910,7 @@ func _structural_joined(house: Dictionary) -> bool:
 	return false
 
 func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
+	if preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(state,house):return
 	if Classical.Ancient.active(house,state.house_era(house)):Classical.Ancient.roofs(self,parent,house,palette);return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(state,house):return
 	if not preload("res://scripts/world/city_creation_neoclassical_civic_plan.gd").guild(state,house).is_empty():return
@@ -1917,7 +1928,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	var roof_info: Array = []
 	var dome_cells: Dictionary = parent.get_meta("dome_cells",{})
 	for patch: Dictionary in patches:
-		patch=preload("res://scripts/visual/city_creation_organic_corners.gd").patch(self,house,patch,parent)
+		patch=preload("res://scripts/visual/city_creation_organic_corners.gd").patch(self,house,patch,parent);preload("res://scripts/visual/city_creation_gable_trim.gd").prepare_part(parent,patch,tower_ids,dome_cells)
 		if tower_ids.has(str(patch.cell_id)) or dome_cells.has(str(patch.cell_id)): continue
 		if patch.surface=="roof":
 			roofs.append_array(patch.vertices)
@@ -1950,7 +1961,7 @@ func _joined_roofs(parent: Node3D, house: Dictionary, palette: Array) -> void:
 	parent.set_meta("attic_windows",attic_windows)
 	parent.set_meta("roof_patches",roof_info)
 	var chimneys: Array[Vector3] = []
-	for cell: Dictionary in house.cells:
+	for cell: Dictionary in [] if preload("res://scripts/world/city_creation_architecture_variants.gd").chimney_active(state,house) else house.cells:
 		if tower_ids.has(str(cell.id)) or dome_cells.has(str(cell.id)): continue
 		if str(cell.kind)!="room" or not _neighbor_cell(house,cell,Vector2i.ZERO,1).is_empty(): continue
 		if str(house.get("role","residential"))!="bakery" and posmod(int(house.get("seed",0))+int(cell.x)*13+int(cell.z)*19,4)!=0: continue
@@ -2163,7 +2174,7 @@ func _facade(wall: Node3D, palette: Array, door: bool, seed_value: int, active: 
 				_box(wall,Vector3(0.43,0.13,0.13),Vector3(x,0.65,0.25),_material(Color("ae7256")))
 				_cylinder(wall,0.20,0.16,0.12,Vector3(x,0.75,0.25),_material(Color("78936a")))
 
-func _roof(node: Node3D, y: float, roof_color: Color, seed_value: int, span: int = 1, front_open: bool = true, back_open: bool = true, force_chimney: bool = false) -> void:
+func _roof(node: Node3D, y: float, roof_color: Color, seed_value: int, span: int = 1, front_open: bool = true, back_open: bool = true, force_chimney: bool = false,owner_house:Dictionary={}) -> void:
 	var half := UNIT*span*0.5+0.12
 	var half_z := UNIT*0.5+0.12
 	var eave := y+0.03
@@ -2174,8 +2185,8 @@ func _roof(node: Node3D, y: float, roof_color: Color, seed_value: int, span: int
 	var d := Vector3(-half,eave,half_z)
 	var r0 := Vector3(0,ridge,-half_z)
 	var r1 := Vector3(0,ridge,half_z)
-	_quad(node,a,d,r1,r0,roof_color.darkened(0.04))
-	_quad(node,r0,r1,c,b,roof_color.lightened(0.09))
+	_quad(node,a,d,r1,r0,roof_color.darkened(0.04)).set_meta("creation_tiled_roof",true)
+	_quad(node,r0,r1,c,b,roof_color.lightened(0.09)).set_meta("creation_tiled_roof",true)
 	if front_open: _triangles(node,[a,r0,b],Color("e9d9b7"))
 	if back_open: _triangles(node,[d,c,r1],Color("e9d9b7"))
 	var edge := _material(roof_color.darkened(0.20))
@@ -2186,8 +2197,8 @@ func _roof(node: Node3D, y: float, roof_color: Color, seed_value: int, span: int
 		for course in range(1,5):
 			var t := float(course)/5.0
 			var strip := _box(node,Vector3(0.024,0.024,half_z*2.01),Vector3(side*half*t,ridge+(eave-ridge)*t+0.012,0),_material(roof_color.lightened(0.10)))
-			strip.rotation.z = side*atan2(ridge-eave,half)
-	if force_chimney or posmod(seed_value,4) == 0:
+			strip.rotation.z = side*atan2(ridge-eave,half);strip.set_meta("creation_tiled_roof",true)
+	if (force_chimney or posmod(seed_value,4) == 0) and not preload("res://scripts/world/city_creation_architecture_variants.gd").chimney_active(state,owner_house):
 		_box(node,Vector3(0.24,0.57,0.26),Vector3(0.4,y+0.57,-0.45),_material(Color("e0cbaa")))
 		_box(node,Vector3(0.31,0.09,0.33),Vector3(0.4,y+0.89,-0.45),_material(Color("b67d61")))
 		_box(node,Vector3(0.18,0.025,0.18),Vector3(0.4,y+0.942,-0.45),_material(Color("4f5951")))
@@ -2716,9 +2727,9 @@ func _prepare_road_layout() -> void:
 	for road: Dictionary in state.roads:
 		live[road.id] = true
 		var geometry := _road_geometry(road)
-		var outline_key := hash([geometry.fingerprint,state._junctions.signature(str(road.id))])
+		var outline_key := hash([geometry.fingerprint,state._junctions.signature(str(road.id)),preload("res://scripts/world/city_creation_water_ghat.gd").plans(state,road)])
 		if road_outline_fingerprints.get(road.id,-1) != outline_key or not road_outlines.has(road.id):
-			road_outlines[road.id] = _road_contours(geometry.samples,float(road.width),state._junctions.additions(str(road.id)))
+			road_outlines[road.id] = preload("res://scripts/world/city_creation_water_ghat.gd").outlines(state,road,_road_contours(geometry.samples,float(road.width),state._junctions.additions(str(road.id))))
 			road_outline_fingerprints[road.id] = outline_key
 		var radius := float(road.width)*0.5+0.07
 		for segment: Dictionary in geometry.segments:
@@ -2789,11 +2800,7 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 		if int(str(other.id).substr(1)) < int(str(road.id).substr(1)) and _roads_touch(road,other): cuts.append(road_outlines[other.id])
 	var profile: Dictionary = state.road_profile(road)
 	var stepping_runs: Array=profile.get("stepping_runs",[])
-	var stepping_cuts: Array=[]
-	for run: Dictionary in stepping_runs:
-		var line: Array[Vector2]=[]
-		for point: Vector2 in run.points: line.append(point)
-		stepping_cuts.append(_stroke_contours(line,width*.5+.24))
+	var stepping_cuts: Array=profile.stepping_cuts
 	cuts.append_array(stepping_cuts)
 	var stairs := RoadStairs.prepare(self,road,profile,cuts)
 	# Adjacent tread masks form one floor cut; keep the individual tread
@@ -2898,6 +2905,7 @@ func _prepare_road_data(road: Dictionary) -> Dictionary:
 	rebuild_stats["road_mesh_ms"] = float(rebuild_stats.get("road_mesh_ms",0.0))+float(Time.get_ticks_usec()-started)/1000.0
 	var adjunct_started:=Time.get_ticks_usec()
 	var earthworks:Dictionary=RoadEarthworks.prepare(self,road,profile)
+	earthworks.shore_bed=preload("res://scripts/visual/city_creation_shore_road_bed.gd").prepare(self,road,arrays)
 	rebuild_stats["road_earthworks_ms"]=float(rebuild_stats.get("road_earthworks_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
 	var roundabouts:Array=RoundaboutVisual.prepare(self,road)
 	rebuild_stats["road_roundabouts_ms"]=float(rebuild_stats.get("road_roundabouts_ms",0.))+float(Time.get_ticks_usec()-adjunct_started)/1000.;adjunct_started=Time.get_ticks_usec()
@@ -2938,11 +2946,10 @@ func _install_road_data(road: Dictionary, data: Dictionary, parent: Node3D) -> N
 	root.set_meta("soft_edge",path_edge.install(self,data.edge,root))
 	RoadStairs.install(self,root,data.stairs,road)
 	RoadEarthworks.install(self,root,data.earthworks,road)
+	preload("res://scripts/visual/city_creation_shore_road_bed.gd").install(self,root,data.earthworks.shore_bed,road)
 	RoundaboutVisual.install(self,root,data.roundabouts)
 	Stepping.install(self,root,data.get("stepping_runs",[]),road)
-	promenade.install(self,root,data.promenade)
-	era_streets.install(self,root,data.get("era_streets",{"notes":[],"water":[],"gateways":[]}))
-	Bridges.install(self,root,data.get("bridges",{"faces":[]}),road)
+	preload("res://scripts/visual/city_creation_road_finish.gd").install(self,root,road,data)
 	TramTracks.install(self,root,data.tram)
 	_update_road_pebbles(road,root)
 	return root

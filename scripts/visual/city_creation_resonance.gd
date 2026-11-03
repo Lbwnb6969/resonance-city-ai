@@ -46,7 +46,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	root.add_child(pivot)
 	# Static mesh batches move independently of the stable picking bodies.
 	for child: Node in root.get_children():
-		if child is MeshInstance3D and not root.get_meta("structural_joined",false): child.reparent(pivot,true)
+		if child is MeshInstance3D and not root.get_meta("rigid_architecture",false) and not root.get_meta("structural_joined",false) and not root.has_meta("tea_deck") and not root.get_meta("roof_detail",{}).get("active",false) and not root.get_meta("chimney_detail",{}).get("active",false) and not root.get_meta("gable_trim",{}).get("active",false) and not root.get_meta("porch_detail",{}).get("active",false): child.reparent(pivot,true)
 	var rig := MeshInstance3D.new()
 	rig.name = "ResonanceVisualRig"
 	var surface := SurfaceTool.new()
@@ -66,6 +66,8 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 		if not round_tower.is_empty(): continue
 		if str(cell.kind) != "room": continue
 		for side: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			if house.get("architecture","")=="stepped_guildhouse" and preload("res://scripts/visual/city_creation_stepped_guildhouse.gd").glow(self,root,cell,side,surface,windows):continue
+			if house.get("architecture","")=="recessed_townhouse" and preload("res://scripts/visual/city_creation_layered_windows.gd").glow(self,root,cell,side,surface,windows):continue
 			if preload("res://scripts/visual/city_creation_civic_glow.gd").face(self,root,house,cell,side,surface,windows):continue
 			var neighbor: Dictionary = renderer._neighbor_cell(house,cell,side)
 			if not neighbor.is_empty() and str(neighbor.kind) == "room": continue
@@ -143,6 +145,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	_tri(surface,[note_frame*Vector3(0.02,0.36,0),note_frame*Vector3(0.23,0.27,0),note_frame*Vector3(0.02,0.24,0)],5)
 	# Smoke originates only from an actual generated chimney, not empty roof.
 	for cell: Dictionary in house.cells:
+		if root.has_meta("chimney_detail"):break
 		if not round_tower.is_empty(): break
 		if root.get_meta("joined_roof",false): break
 		var level := int(cell.level)
@@ -158,7 +161,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 		var chimney: Vector3 = renderer._cell_position(house,cell)+Vector3(float(span-1)*UNIT*0.5+0.4,(level+1)*FLOOR+0.99,-0.45)
 		for puff in range(3):
 			_panel(surface,Transform3D.IDENTITY,chimney+Vector3(0,puff*0.12,0),Vector2(0.19,0.22),6,float(puff)/3.0)
-	for chimney: Vector3 in root.get_meta("chimneys",[]):
+	for chimney: Vector3 in [] if root.has_meta("chimney_detail") else root.get_meta("chimneys",[]):
 		for puff in range(3):
 			_panel(surface,Transform3D.IDENTITY,chimney+Vector3(0,puff*0.12,0),Vector2(0.19,0.22),6,float(puff)/3.0)
 	# Attic panes share this same per-house response surface and uniforms.
@@ -195,6 +198,7 @@ func build(renderer, house: Dictionary, root: Node3D) -> void:
 	arc.custom_aabb = AABB(Vector3(-22,-1,-19),Vector3(44,21,38))
 	root.add_child(arc);arc.set_as_top_level(true);arc.global_transform=Transform3D.IDENTITY
 	var row := {"root":root,"pivot":pivot,"mesh":rig,"material":material,"arc":arc,"arc_material":arc_material,"anchor":Frame.world3(house,Vector3(center.x,top+0.10,center.z)),"base_y":center.y,"height":maxf(FLOOR,top-center.y),"weight":0.0,"afterglow":0.0,"level_tier":renderer.state.level_tier(id),"inhabited":str(house.get("role",""))=="residential"}
+	row.fixed_window_geometry=(house.get("architecture","")=="recessed_townhouse" and root.get_meta("structural_joined",false)) or root.has_meta("tea_deck") or root.get_meta("roof_detail",{}).get("active",false) or root.get_meta("chimney_detail",{}).get("active",false) or root.get_meta("gable_trim",{}).get("active",false) or root.get_meta("porch_detail",{}).get("active",false)
 	material.set_shader_parameter("pluck_base_y",center.y)
 	material.set_shader_parameter("pluck_height",float(row.height))
 	rigs[id] = row
@@ -279,7 +283,7 @@ func update(snapshot: Dictionary) -> void:
 		material.set_shader_parameter("festival_ready",1.0 if ready else 0.0)
 		_apply_pluck(id,row,last_pluck)
 		row.mesh.visible = float(material.get_shader_parameter("salon_pulse"))>0. or weight > 0.0 or glow > 0.0 or ready or float(row.pluck_strength)>0.0 or night_glow>0.0 or float(row.get("harmony",0.0))>0.0
-		row.pivot.scale.y = 1.0+0.02*pulse*lead
+		row.pivot.scale.y = 1.0 if row.fixed_window_geometry else 1.0+0.02*pulse*lead
 		row.weight = weight
 		row.afterglow = glow
 		row.festival_ready = ready

@@ -31,6 +31,7 @@ func update(mode:String)->void:
 	if active and clock>=next_anchor:_anchors();next_anchor=clock+1.
 	motes.visible=strength>.001;ink.set_shader_parameter("strength",strength);ink.set_shader_parameter("elapsed",maxf(0.,clock-started));ink.set_shader_parameter("season",maxi(0,index))
 	caption.visible=strength>.02 and not demo.spatial_popover.card.visible and not demo.journal.scrollbook.visible
+	if demo.has_meta("batch_edit") and demo.get_meta("batch_edit").panel.visible:caption.hide()
 	if caption.visible:caption.text=Moment.TITLES[index]+"\n"+Moment.POEMS[index];caption.modulate.a=strength
 	set_meta("diagnostics",{"index":index,"phase":demo.light_phase,"strength":strength,"start":started,"anchors":motes.multimesh.visible_instance_count if motes.multimesh!=null else 0})
 func _anchors()->void:

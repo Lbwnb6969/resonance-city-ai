@@ -4,6 +4,7 @@ const SCHEMA:=24
 const MAX_INTEGER:=9007199254740991
 const FIELDS:=["version","enabled","epoch_id","started_at","origin_sha256","inflight_policy","level","xp","xp_remainder","baseline","receipts"]
 const Counters=preload("res://scripts/world/city_creation_receipt_counters.gd")
+const Epoch=preload("res://scripts/world/city_creation_epoch_counters.gd")
 const Rewards=preload("res://scripts/world/city_creation_receipt_rewards.gd")
 const Spatial=preload("res://scripts/world/city_creation_functional_benefits.gd")
 const Pause=preload("res://scripts/world/city_creation_economy_pause.gd")
@@ -31,15 +32,15 @@ static func valid(value:Variant)->bool:
 	var remainder:Variant=value.xp_remainder
 	return (remainder is int or remainder is float) and is_finite(float(remainder)) and remainder>=0 and remainder<1 and counts_valid(value.baseline) and counts_valid(value.receipts)
 static func validate(city:RefCounted,data:Dictionary)->Dictionary:
-	if data.has("prosperity_enabled") and (data.schema==SCHEMA or data.has("cozy_progression")):return city._fail("经营政策只接受单一版本化账期")
+	if data.has("prosperity_enabled") and (data.schema>=SCHEMA or data.has("cozy_progression")):return city._fail("经营政策只接受单一版本化账期")
 	if not data.has("cozy_progression"):
 		return city._fail("版本24缺少经营账期") if data.schema==SCHEMA else {"ok":true}
 	var settings:Variant=data.get("creative_settings",{});var journey:Variant=data.get("harmony_journey",{})
-	if data.schema!=SCHEMA or not settings is Dictionary or settings.get("creation_policy")!="free" or not journey is Dictionary or not journey.has("growth_cutoff"):return city._fail("新经营账期需要版本24及既有自由创作截止")
+	if data.schema<SCHEMA or not settings is Dictionary or settings.get("creation_policy")!="free" or not journey is Dictionary or not journey.has("growth_cutoff"):return city._fail("新经营账期需要版本24及既有自由创作截止")
 	return {"ok":true} if valid(data.cozy_progression) else city._fail("经营账期字段或计数无效")
 static func write(city:RefCounted,data:Dictionary)->void:
 	if city.cozy_progression.is_empty():return
-	data.cozy_progression=city.cozy_progression.duplicate(true);data.schema=SCHEMA
+	data.cozy_progression=city.cozy_progression.duplicate(true);data.schema=maxi(int(data.schema),SCHEMA)
 	if not data.cozy_progression.enabled:skip_counts(city,data.cozy_progression)
 static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 	# Geometry history never revokes an epoch, its enabled state or earned receipts.
@@ -54,12 +55,12 @@ static func apply(city:RefCounted,data:Dictionary,history:bool)->void:
 		for key:String in city.cozy_progression[field]:city.cozy_progression[field][key]=int(city.cozy_progression[field][key])
 	city.cozy_progression.xp_remainder=float(city.cozy_progression.xp_remainder)
 static func create(city:RefCounted,source:String,epoch:String)->Dictionary:
-	return {"version":1,"enabled":true,"epoch_id":epoch,"started_at":int(Time.get_unix_time_from_system()),"origin_sha256":source,"inflight_policy":"pause","level":1,"xp":0,"xp_remainder":0.,"baseline":Counters.baseline(city),"receipts":{}}
+	return {"version":1,"enabled":true,"epoch_id":epoch,"started_at":int(Time.get_unix_time_from_system()),"origin_sha256":source,"inflight_policy":"pause","level":1,"xp":0,"xp_remainder":0.,"baseline":Epoch.baseline(city),"receipts":{}}
 static func _merge_baseline(policy:Dictionary,other:Dictionary)->void:
 	if other.get("epoch_id","")!=policy.epoch_id:return
 	for key:String in other.get("baseline",{}):policy.baseline[key]=maxi(int(policy.baseline.get(key,0)),int(other.baseline[key]))
 static func skip_counts(city:RefCounted,policy:Dictionary)->void:
-	var counts:=Counters.baseline(city)
+	var counts:=Epoch.baseline(city)
 	for key:String in policy.receipts:counts[key]=maxi(int(counts.get(key,0)),int(policy.receipts[key]))
 	for key:String in counts:policy.baseline[key]=maxi(int(policy.baseline.get(key,0)),int(counts[key]))
 	# Latest history snapshots carry prior off-period high water without a history scan.
@@ -83,13 +84,13 @@ static func collect(city:RefCounted)->Dictionary:
 		if skipped!=policy:city.cozy_progression=skipped;city.dirty=true;city.life_progress_dirty=true
 		return result
 	var next:Dictionary={};var raw:=0.
-	var counts:=Counters.current(city)
+	var counts:=Epoch.current(city)
 	for key:String in counts:
 		var high:int=maxi(int(policy.baseline.get(key,0)),int(policy.receipts.get(key,0)))
 		var delta:int=maxi(0,int(counts[key])-high)
 		if delta==0:continue
 		if next.is_empty():next=policy.duplicate(true)
-		next.receipts[key]=int(counts[key]);raw+=Rewards.event_xp(city,key,delta)
+		next.receipts[key]=int(counts[key]);raw+=Epoch.event_xp(city,key,delta)
 		var kind:=key.get_slice("/",0);result.events[kind]=int(result.events.get(kind,0))+delta
 	if next.is_empty():return result
 	var exact:float=Rewards.scale(city.harmony_journey,raw)*float(Spatial.for_city(city).inspiration_multiplier)+float(policy.xp_remainder)

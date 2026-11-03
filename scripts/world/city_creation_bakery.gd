@@ -27,6 +27,11 @@ func sync() -> void:
 			continue
 		occupied_homes[worker.home_id] = true
 		occupied_shops[worker.bakery_id] = true
+		var recipe:bool=life.state.Grillhouse.active(life.state,str(worker.bakery_id))
+		if worker.get("grilling",false)!=recipe:
+			life.worker_lod.flush(worker)
+			if str(worker.resume_phase if worker.phase=="paused" else worker.phase)=="baking":worker.elapsed=0.;worker.batches=0
+			worker.grilling=recipe
 		_replan(worker)
 	if preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state):return
 	var shops: Array = life._roles.keys()
@@ -58,7 +63,7 @@ func _new_worker(home: String, shop: String) -> Dictionary:
 	preload("res://scripts/visual/city_creation_citizen_visual.gd").identify(node,"bakery")
 	life.add_child(node)
 	node.position = _target(home) if life.connected_houses.has(home) else _door_position(home)
-	return {"node":node,"home_id":home,"bakery_id":shop,"phase":"walking","resume_phase":"walking","elapsed":0.0,"batches":0,"route":[],"index":0}
+	return {"node":node,"home_id":home,"bakery_id":shop,"phase":"walking","resume_phase":"walking","elapsed":0.0,"batches":0,"route":[],"index":0,"grilling":life.state.Grillhouse.active(life.state,shop)}
 
 func _connected(worker: Dictionary) -> bool:
 	return life.connected_houses.has(worker.home_id) and life.connected_houses.has(worker.bakery_id) and not life._route(str(life.connected_houses[worker.home_id]),str(life.connected_houses[worker.bakery_id])).is_empty()
@@ -200,6 +205,7 @@ func _walk(worker: Dictionary, delta: float) -> void:
 
 func status(id: String) -> Dictionary:
 	var result: Dictionary = life.state.bakery_status(id).duplicate(true)
+	result.economy_paused=preload("res://scripts/world/city_creation_economy_pause.gd").paused(life.state)
 	result.afterglow_remaining = life.state.afterglow_remaining(id)
 	result.production_multiplier = life.state.production_multiplier(id)
 	result.bonus = result.afterglow_remaining > 0.0
@@ -212,7 +218,7 @@ func status(id: String) -> Dictionary:
 		result.duration = REST_DURATION if str(worker.resume_phase if worker.phase == "paused" else worker.phase) == "resting" else BAKE_DURATION
 		result.batches = int(worker.batches)
 		for house: Dictionary in life.state.houses:
-			if str(house.id) == str(worker.home_id): result.worker_name = str(house.name) + "的面包师"
+			if str(house.id) == str(worker.home_id): result.worker_name = str(house.name) + ("的烤肉师" if life.state.Grillhouse.active(life.state,id) else "的面包师")
 		break
 	return result
 

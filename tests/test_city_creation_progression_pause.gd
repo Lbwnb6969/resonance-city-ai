@@ -46,7 +46,7 @@ func run()->void:
 	check(city.add_house(Vector2(-25,12)).ok,"uncollected real construction before disabling")
 	life.checkpoint();var worker_id:int=life.workshop.workers[0].node.get_instance_id()
 	var closed:=set_enabled(city,false,"closed")
-	check(closed.ok and not closed.no_op and closed.earned>0 and city.cozy_progression.receipts.get("house/h8",0)==1,"disable settles pending real events before freezing")
+	check(closed.ok and not closed.no_op and closed.earned>0 and city.cozy_progression.receipts.get("house_peak",0)==city.houses.size(),"disable settles pending real events before freezing")
 	check(city.cozy_progression.epoch_id==epoch.epoch_id and city.cozy_progression.started_at==epoch.started_at and city.cozy_progression.origin_sha256==epoch.origin_sha256,"disable retains the epoch identity and original source")
 	check(FileAccess.file_exists(closed.get("backup","")) and city.Serializer.read(city,closed.backup).ok,"disable creates a readable immutable active-state backup")
 	check(city.harmony_journey.harmony_level==old.harmony_level and city.harmony_journey.pending_draft==old.pending_draft and city.harmony_journey.growth_cutoff==old.growth_cutoff,"disable never settles ordinary events into historical XP or offers")
@@ -143,7 +143,7 @@ func failed_active_capture()->void:
 	city.produce_craft("h2",city.workshop_status("h2").capacity);life.site_wishes.arm("h2","tree")
 	for at:Vector2 in [Vector2(-26,-25),Vector2(-29,-25),Vector2(-23,-25)]:city.place_plant(at,"olive")
 	life._sync()
-	check(city.wish_rewards.is_empty() and life.site_wishes.pending.has("h2"),"real good-wood full shelf retains an unfulfilled craft promise")
+	check(city.wish_rewards.is_empty() and not life.site_wishes.pending.has("h2"),"free policy does not arm an automatic first-craft promise")
 	var artisan:Dictionary=life.workshop.workers[0]
 	check(city.reserve_craft("h2",artisan.home_id,artisan.home_id),"real reservation creates room for the postponed craft")
 	life.workshop._replan(artisan);city.set_house_name("h2","只读抓取失败保留");city.set_journey_checkpoint(life.checkpoint(false))
@@ -152,8 +152,8 @@ func failed_active_capture()->void:
 	var before:Dictionary=city.snapshot();var pending:Dictionary=life.site_wishes.pending.duplicate(true);var bytes:=FileAccess.get_file_as_bytes(path)
 	var failed:Dictionary=city.CreationPolicy.set_progression_enabled(city,false,path)
 	check(not failed.ok and city.snapshot()==before and life.site_wishes.pending==pending and FileAccess.get_file_as_bytes(path)==bytes,"failed active close cannot grant a deferred wish or mutate live State while capturing its checkpoint")
-	life.site_wishes.poll(true)
-	check(city.wish_rewards.has("h2") and city.workshop_status("h2").stock==city.workshop_status("h2").capacity,"positive control: ordinary poll really fulfills that same pending promise")
+	var stock_before_poll:int=city.workshop_status("h2").stock;life.site_wishes.poll(true)
+	check(city.wish_rewards.is_empty() and city.workshop_status("h2").stock==stock_before_poll,"free silent policy keeps ordinary wish polling from inventing a reward")
 	life.free()
 func deleted_job()->void:
 	var city:=fixture();var life:=life_for(city);city.begin_progression_epoch(out+"/deleted_job_first.json");set_enabled(city,false,"deleted_job_closed")

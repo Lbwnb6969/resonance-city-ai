@@ -68,8 +68,6 @@ static func site(city:RefCounted,item:Dictionary,except_id:String="")->Dictionar
 		if other.id!=except_id and Frame.boxes_overlap(Frame.grow(fp,.3),footprint(other)):return city._fail("地标足迹重叠")
 		if other.id!=except_id and Frame.distance(fp,entrance(other))<.65:return city._fail("请留出地标入口")
 		if other.id!=except_id and Frame.distance(footprint(other),entrance(item))<.65:return city._fail("地标入口需要通向净空")
-	for plant:Dictionary in city.plants:
-		if city.vegetation_visible(plant) and (Frame.distance(fp,Vector2(plant.position[0],plant.position[1]))<.3 or entrance(item).distance_to(Vector2(plant.position[0],plant.position[1]))<.65):return city._fail("请先移动或移除足迹与入口内的植物")
 	var cafes=load("res://scripts/world/city_creation_cafe_layout_context.gd").new()
 	for house:Dictionary in city.houses:
 		if house.role!="garden_cafe":continue
@@ -85,7 +83,10 @@ static func preview(city:RefCounted,blueprint:String,at:Vector2,yaw:float=0.,mov
 		if other.blueprint==blueprint and other.id!=moving:return city._fail("每张传世蓝图限一处，可移动已有地标")
 	var item:={"id":moving,"blueprint":blueprint,"position":[at.x,at.y],"yaw":wrapf(yaw,-PI,PI),"base_y":0.}
 	var valid:=site(city,item,moving)
-	if valid.ok:item.base_y=valid.base_y;valid.entity=item
+	if valid.ok:
+		item.base_y=valid.base_y;valid.entity=item
+		valid.affected_plants=preload("res://scripts/world/city_creation_landmark_vegetation.gd").affected(city,item)
+		if not valid.affected_plants.is_empty():valid.message="将暂时隐退 %d 株植物；移走地标后恢复"%valid.affected_plants.size()
 	return valid
 static func place(city:RefCounted,blueprint:String,at:Vector2,yaw:float=0.,moving:String="")->Dictionary:
 	var valid:=preview(city,blueprint,at,yaw,moving)

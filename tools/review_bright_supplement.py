@@ -6,8 +6,8 @@ import json
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = '文档/来源/20261031_Gemini_明线深审与储备补充_原稿.txt'
-HASH = 'a86f7cc9a72fb4de1c8e1bcabfd4f378d23e92162f2bce1fbec70db10b3cc46d'
+SOURCE = '文档/来源/20261031_Gemini_明线深审与储备补充_删项摘录.txt'
+HASH = '5e15c951cc11733946590bd0bfc3091599e45f21c78f45384fb482ec05f624aa'
 DEST = '数据/美术候选/Gemini明线深审_建筑与质感储备_v1.json'
 
 

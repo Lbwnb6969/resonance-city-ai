@@ -125,6 +125,7 @@ func _seal(parent:Control,glyph:String,caption:String,action:Callable)->Button:
 	return button
 
 func open_for_house(house_id:String)->void:
+	if demo.has_meta("batch_edit"):demo.get_meta("batch_edit").close()
 	if inspector!=null and inspector.roles.paint(house_id):return
 	if target_house_id!=house_id:
 		if inspector!=null:inspector.close()
@@ -160,7 +161,8 @@ func refresh()->void:
 		button.disabled=(house.has("signature") and role!=str(house.get("role",""))) or not demo.state.can_assign_role(role)
 		button.modulate.a=.42 if button.disabled else 1.;button.queue_redraw()
 	var style_key:=str(house.get("style","classic"));var style_index:int=demo.State.HOUSE_STYLES.find(style_key)
-	style_button.caption=["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
+	style_button.caption="屋式·"+["灰泥","木构","石砌","圆塔"][maxi(0,style_index)]
+	style_button.tooltip_text="地标保留专属屋式" if house.has("signature") else "此屋屋式 · 直接选择灰泥、木构、石砌或圆塔；手选原型保留，实际外观按适配规则出现。"
 	style_button.disabled=house.has("signature");style_button.queue_redraw()
 	var architecture=preload("res://scripts/world/city_creation_architecture_choice.gd")
 	var available:Array=architecture.choices(demo.state,house);var selected:String=str(house.get("architecture",""))

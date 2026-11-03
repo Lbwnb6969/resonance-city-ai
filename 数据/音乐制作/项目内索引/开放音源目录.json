@@ -1,0 +1,162 @@
+{
+  "historical_source": "开放音源目录.json",
+  "historical_source_sha256": "fbb9236a2a4ada54d9ace5cc68836879a7d0a0f4a6ed507a2069400091f0b88f",
+  "project_local": {
+    "version": 1,
+    "local_root": "D:/GODOT/GODOTPRO/共鸣之城/数据/音乐资产/开放音源_20261101",
+    "status": "downloaded_and_technical_probes_passed_not_listening_approved",
+    "runtime_ready": false,
+    "asset_manifest_sha256": "41a6bca820a17a84e15e2c2de441b737c4ab0cf4ddacf3e2d33bff0ba6353f4d",
+    "libraries": [
+      {
+        "id": "VSCO-2-CE",
+        "source": "https://github.com/sgossner/VSCO-2-CE",
+        "commits": [
+          "6dd651d55dde97fd4028699be9d4481f26917891"
+        ],
+        "license": "CC0-1.0",
+        "attribution": "Sam Gossner, Simon Dalzell; sample editing Elan Hickler/Soundemote",
+        "scope": "selected SFZ and complete referenced samples",
+        "file_count": 707,
+        "bytes": 686687821,
+        "sfz_files": [
+          "音源/VSCO-2-CE/CelloEns-KS.sfz",
+          "音源/VSCO-2-CE/CelloEnsPizz.sfz",
+          "音源/VSCO-2-CE/CelloEnsSpic.sfz",
+          "音源/VSCO-2-CE/CelloEnsSusVib-Quiet.sfz",
+          "音源/VSCO-2-CE/CelloEnsSusVib.sfz",
+          "音源/VSCO-2-CE/CelloEnsTrem.sfz",
+          "音源/VSCO-2-CE/Clarinet-KS.sfz",
+          "音源/VSCO-2-CE/ClarinetStac.sfz",
+          "音源/VSCO-2-CE/ClarinetSus.sfz",
+          "音源/VSCO-2-CE/Flute-KS.sfz",
+          "音源/VSCO-2-CE/FluteExpVib.sfz",
+          "音源/VSCO-2-CE/FluteStac.sfz",
+          "音源/VSCO-2-CE/FluteSusNV.sfz",
+          "音源/VSCO-2-CE/FluteSusVib.sfz",
+          "音源/VSCO-2-CE/Harp.sfz",
+          "音源/VSCO-2-CE/SViolin-KS.sfz",
+          "音源/VSCO-2-CE/SViolinPizz.sfz",
+          "音源/VSCO-2-CE/SViolinSpic.sfz",
+          "音源/VSCO-2-CE/SViolinTrem.sfz",
+          "音源/VSCO-2-CE/SViolinVib-Quiet.sfz",
+          "音源/VSCO-2-CE/SViolinVib.sfz",
+          "音源/VSCO-2-CE/ViolaEns-KS.sfz",
+          "音源/VSCO-2-CE/ViolaEnsPizz.sfz",
+          "音源/VSCO-2-CE/ViolaEnsSpic.sfz",
+          "音源/VSCO-2-CE/ViolaEnsSusVib-Quiet.sfz",
+          "音源/VSCO-2-CE/ViolaEnsSusVib.sfz",
+          "音源/VSCO-2-CE/ViolaEnsTrem.sfz"
+        ],
+        "runtime_ready": false
+      },
+      {
+        "id": "VCSL",
+        "source": "https://github.com/sgossner/VCSL",
+        "commits": [
+          "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+          "dfcf4a4918771eee884b96ad4493de82ef84daf6"
+        ],
+        "license": "CC0-1.0",
+        "attribution": "Versilian Studios LLC",
+        "scope": "selected SFZ and complete referenced samples",
+        "file_count": 165,
+        "bytes": 231935540,
+        "sfz_files": [
+          "音源/VCSL/Idiophones/Struck Idiophones/Glockenspiel.sfz",
+          "音源/VCSL/Idiophones/Struck Idiophones/Marimba.sfz",
+          "音源/VCSL/Idiophones/Struck Idiophones/Vibraphone - Bowed.sfz",
+          "音源/VCSL/Idiophones/Struck Idiophones/Vibraphone - Hard Mallets.sfz",
+          "音源/VCSL/Idiophones/Struck Idiophones/Vibraphone - Keyswitch.sfz",
+          "音源/VCSL/Idiophones/Struck Idiophones/Vibraphone - Soft Mallets.sfz",
+          "音源/VCSL/Chordophones/Composite Chordophones/Folk Harp.sfz"
+        ],
+        "runtime_ready": false
+      },
+      {
+        "id": "SalamanderGrandPiano",
+        "source": "https://github.com/sfzinstruments/SalamanderGrandPiano",
+        "commits": [
+          "3382bf9496bba2486f5ab0de55a264d1dfc38404"
+        ],
+        "license": "CC-BY-3.0",
+        "attribution": "Alexander Holm; SFZ remapping kinwie; retuning Markus Fiedler",
+        "scope": "full instrument mapping and sample set",
+        "file_count": 667,
+        "bytes": 748451231,
+        "sfz_files": [
+          "音源/SalamanderGrandPiano/Salamander Grand Piano V3.sfz"
+        ],
+        "runtime_ready": false
+      }
+    ],
+    "tools": {
+      "sfizz": {
+        "version": "1.2.3",
+        "source": "https://github.com/sfztools/sfizz/releases/tag/1.2.3",
+        "exe": "制作工具/sfizz-1.2.3-win64/bin/Release/sfizz_render.exe",
+        "archive_sha256": "7431cbe9b7f2e71a9ff4b12fbbe82c766dbf75b1eedecca627e7506cb06a9fcc",
+        "license": "BSD-2-Clause; preserve bundled dependency notices"
+      }
+    },
+    "ambience": [
+      {
+        "source": "https://opengameart.org/content/forest-ambience",
+        "download": "https://opengameart.org/sites/default/files/Forest_Ambience.mp3",
+        "license": "CC0-1.0",
+        "author": "TinyWorlds",
+        "bytes": 716670,
+        "sha256": "9850aa1d0d5d66bd9c5daf8bb77c6d852e01f2f4de22f283bd5621e8bed13b75",
+        "runtime_ready": false
+      },
+      {
+        "source": "https://opengameart.org/content/sea-and-river-wave-sounds",
+        "download": "https://opengameart.org/sites/default/files/VistulaShort_0.mp3",
+        "author": "RandomMind",
+        "license": "CC0-1.0",
+        "sha256": "8c24607e41edd6f018ec3582a07e5a8dbc57347276339cb68440951a0fb4cfb1",
+        "bytes": 12004407,
+        "runtime_ready": false
+      }
+    ],
+    "verification": {
+      "hash_files": 1539,
+      "sfz_count": 35,
+      "sample_references": 1736,
+      "missing_references": 0,
+      "source_samples": 1472,
+      "bytes": 1667074592,
+      "probe_count": 6,
+      "probe_roles": [
+        "cello ensemble",
+        "flute",
+        "marimba",
+        "piano",
+        "folk harp"
+      ],
+      "format": "48000 Hz stereo PCM16",
+      "technical_ok": true,
+      "listening_status": "not_evaluated",
+      "sfz_all_opcodes_all_notes_all_velocities_verified": false
+    },
+    "additional_candidates": [
+      {
+        "name": "FreePats Upright Piano KW",
+        "url": "https://github.com/freepats/upright-piano-KW",
+        "license": "CC0-1.0 confirmed by upstream README",
+        "status": "not_downloaded_next_candidate"
+      },
+      {
+        "name": "FreePats Spanish Classical Guitar",
+        "url": "https://github.com/freepats/spanish-classical-guitar",
+        "license": "CC0-1.0 confirmed by upstream README",
+        "status": "not_downloaded_next_candidate"
+      },
+      {
+        "name": "Karoryfer Bigcat Cello",
+        "url": "https://github.com/sfzinstruments/karoryfer-bigcat.cello",
+        "status": "supplied README URL returned 404; repository identity and license unverified; not_downloaded"
+      }
+    ]
+  }
+}

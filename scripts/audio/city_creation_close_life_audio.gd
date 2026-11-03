@@ -48,8 +48,8 @@ func _tail(demo,delta:float,allowed:bool)->void:
 	if float(active.gain)<.001:active.player.stop();active.clear()
 func tick(demo,delta:float)->void:
 	elapsed+=maxf(0.,delta)
-	var musical:bool=demo.state.CreationPolicy.is_free(demo.state)
-	var key:Array=[demo.state.get_instance_id(),demo.life.get_instance_id(),musical]
+	var policy:String=str(demo.state.creative_settings.get("creation_policy","legacy"))
+	var key:Array=[demo.state.get_instance_id(),demo.life.get_instance_id(),policy]
 	if key!=epoch:stop();epoch=key
 	var allowed:=_allowed(demo);_tail(demo,delta,allowed)
 	if not allowed or demo.zoom>=OUT_ZOOM:
@@ -76,10 +76,6 @@ func tick(demo,delta:float)->void:
 	if contacts.is_empty() or elapsed<next_sound:return
 	contacts.sort_custom(func(a,b):return a.rank>b.rank)
 	if _owned() and active.player.playing:skipped_busy+=1;return
-	if musical:
-		var event:Dictionary=contacts[0]
-		if demo.music.attention.enqueue_life_sparkle({"world_kind":"life_sparkle","life_actor":weakref(event.node),"life_demo":weakref(demo),"life_helper":weakref(self),"epoch":epoch.duplicate(),"source_id":event.id,"kind":event.kind,"tick":event.tick},demo.music._playback_clock()):next_sound=elapsed+.30
-		return
 	# At least one short remains free for an edit, pluck or musical response.
 	var free:Array=demo.music._effects.filter(func(player):return not player.playing)
 	if free.size()<2:skipped_busy+=1;return

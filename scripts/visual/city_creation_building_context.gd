@@ -22,6 +22,7 @@ var _joined: Dictionary = {}
 var _cache: Dictionary = {}
 var tower_cells_by_house: Dictionary = {}
 var stats: Dictionary = {}
+var party_joints: Dictionary = {}
 
 func copy_cache_from(source: RefCounted) -> void:
 	# Derived topology is immutable between authored house/road changes. Share it
@@ -35,12 +36,14 @@ func copy_cache_from(source: RefCounted) -> void:
 	_cache = source._cache.duplicate(false)
 	tower_cells_by_house = source.tower_cells_by_house.duplicate(false)
 	stats = source.stats.duplicate(true)
+	party_joints = source.party_joints.duplicate(false)
 
 func prepare(houses: Array, roads: Array = []) -> void:
 	var started := Time.get_ticks_usec()
 	_rows.clear(); _bins.clear(); _by_key.clear()
 	_patches.clear(); _signatures.clear(); _joined.clear()
 	tower_cells_by_house = Towers.derive(houses,roads)
+	party_joints = preload("res://scripts/visual/city_creation_party_joints.gd").derive(houses)
 	var ordered := houses.duplicate()
 	ordered.sort_custom(func(a,b): return str(a.id).naturalnocasecmp_to(str(b.id)) < 0)
 	for house: Dictionary in ordered:
@@ -53,12 +56,16 @@ func prepare(houses: Array, roads: Array = []) -> void:
 		# an axis-aligned roof group. Its final derived identity dirties this
 		# house in both synchronous and worker publication paths.
 		_signatures[str(house.id)].append(["tower_cells",tower_ids])
+		_signatures[str(house.id)].append(["party_joints",party_joints[str(house.id)]])
 		var cells: Array = house.cells.duplicate()
+		var roof_family:String="stepped_guildhouse" if preload("res://scripts/world/city_creation_stepped_guildhouse.gd").authored(house) else ""
+		if preload("res://scripts/world/city_creation_corner_loggia.gd").authored(house):roof_family="corner_loggia_tower"
 		cells.sort_custom(func(a,b): return str(a.id).naturalnocasecmp_to(str(b.id)) < 0)
 		for cell: Dictionary in cells:
 			var center := Vector2(float(house.origin[0])+int(cell.x)*UNIT,float(house.origin[1])+int(cell.z)*UNIT)
 			var row := {"deformed":not is_zero_approx(preload("res://scripts/world/city_creation_house_hinge.gd").angle(house)),"yaw":float(house.get("yaw",0.)),"house_id":str(house.id),"cell_id":str(cell.id),"cell":cell.duplicate(true),"center":center,"level":int(cell.level),"base_y":float(house.get("base_y",0.0)),"key":str(house.id)+":"+str(cell.id)}
 			_rows.append(row)
+			row["roof_family"]=roof_family
 			_by_key[row.key] = row
 			var bin := _bin(center,row.level)
 			if not _bins.has(bin): _bins[bin] = []
@@ -91,7 +98,7 @@ func prepare(houses: Array, roads: Array = []) -> void:
 			group.append(row)
 			for side: Vector2i in SIDES:
 				var other := _neighbor_row(row,side,0,true)
-				if not other.is_empty() and tops.has(other.key) and not visited.has(other.key): queue.append(other)
+				if not other.is_empty() and other.roof_family==row.roof_family and tops.has(other.key) and not visited.has(other.key): queue.append(other)
 		group.sort_custom(func(a,b): return a.key.naturalnocasecmp_to(b.key)<0)
 		var group_key: String = group[0].key
 		var signature: Array = []
@@ -131,7 +138,9 @@ func tower_cells(house_id: String) -> Array:
 	return tower_cells_by_house.get(house_id,[])
 
 func _record(row: Dictionary) -> Array:
-	return [row.house_id,row.cell_id,row.center,row.level,str(row.cell.kind),row.base_y,row.yaw,row.deformed]
+	var result:Array=[row.house_id,row.cell_id,row.center,row.level,str(row.cell.kind),row.base_y,row.yaw,row.deformed]
+	if not str(row.roof_family).is_empty():result.append(row.roof_family)
+	return result
 
 func _bin(center: Vector2,level: int) -> Vector3i:
 	return Vector3i(floori(center.x/UNIT),level,floori(center.y/UNIT))

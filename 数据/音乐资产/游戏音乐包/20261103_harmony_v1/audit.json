@@ -1,0 +1,442 @@
+{
+  "ok": true,
+  "catalog_sha256": "6271797ec9ac2781ec7e1dabf86e25f0a6c9cb89f372b16d2dd214ea311b2627",
+  "source_count": 61,
+  "layer_count": 226,
+  "kinds": {
+    "music": 57,
+    "note_study_pending_pitch_and_cuts": 2,
+    "ambience_pending_loop_and_listening": 2
+  },
+  "packs": [
+    {
+      "source_id": "01a8ed354b835f12df7a7671a83f150ca249abfabbc2d7be757d1fe65b520e5d",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.49993896484375,
+      "reduction_rms_ratio_bound": 0.17999249096353948
+    },
+    {
+      "source_id": "41eb46deae028be4e50d15d0a2576303c52b1d64690e12162745dfec6df5b44f",
+      "layers": 1,
+      "full_endpoint_max_error": 0.0,
+      "any_gain_peak_bound": 0.5,
+      "reduction_rms_ratio_bound": 0.0
+    },
+    {
+      "source_id": "b6f52a110a0af1901181af9f06aace39a5b52d20942a4226dea56ecd4186bc02",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.52545166015625,
+      "reduction_rms_ratio_bound": 0.11484784184076927
+    },
+    {
+      "source_id": "90a277ed169c5e895da22110f8c6947026792d3ae489b44f9d7aeb80faeebca2",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.499969482421875,
+      "reduction_rms_ratio_bound": 0.12024744685958295
+    },
+    {
+      "source_id": "bce5a2416e254a2d61dc7b5a801b516d8d731df85f44acb006e7c4850b326ed5",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.504180908203125,
+      "reduction_rms_ratio_bound": 0.10523540955627439
+    },
+    {
+      "source_id": "e1f82908d73abd0d725eb6171d8ea0565077d56852fe7fc5e8323180bad9822a",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.50543212890625,
+      "reduction_rms_ratio_bound": 0.11803790774516455
+    },
+    {
+      "source_id": "63b4d6819dad065edf3a849b475e7dd0de140600d90169a936d594b9f859473d",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.50006103515625,
+      "reduction_rms_ratio_bound": 0.1799960680323293
+    },
+    {
+      "source_id": "bcaf1a13910f33f9a3dcbf3e993c675fecc34ee7e02eb567614aca1a9caa25ed",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.49993896484375,
+      "reduction_rms_ratio_bound": 0.1550705208220247
+    },
+    {
+      "source_id": "1070b2492cbe6553297f353d8003460bbe6511b5dae1118fbe14ad112938ec07",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.51397705078125,
+      "reduction_rms_ratio_bound": 0.1597363085837
+    },
+    {
+      "source_id": "c194a9a9d01b186e25c244902254b9fe6a0e9a5c78f7b954dfb720e5875c7b76",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.499969482421875,
+      "reduction_rms_ratio_bound": 0.17999127688158376
+    },
+    {
+      "source_id": "745c986623de307a6ca19c4615d9c554415a0631f9d03fabb6a6d55e6cec25a6",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.49993896484375,
+      "reduction_rms_ratio_bound": 0.15972237735179382
+    },
+    {
+      "source_id": "553cf9787956e896fe1d26fcf4defceff8a7306bade7feecc5b76c0b561a0177",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.500152587890625,
+      "reduction_rms_ratio_bound": 0.10416370514859843
+    },
+    {
+      "source_id": "299dfc96194530c13263077f844e3870280b9b3c7ac1cf3e026a5e245f5871ac",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.512176513671875,
+      "reduction_rms_ratio_bound": 0.0979640003927162
+    },
+    {
+      "source_id": "c8dfc3fb53e4c719865007379808f8860a90c25f72789855ba5074947a25226f",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.51470947265625,
+      "reduction_rms_ratio_bound": 0.17908061806340803
+    },
+    {
+      "source_id": "6281a35da5928a5381800ef4ff0e6fc3ab62e6b8351802396992f526d19b00e8",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5201416015625,
+      "reduction_rms_ratio_bound": 0.17934343907809971
+    },
+    {
+      "source_id": "fc6dd428265f6f13de1686bc3f984b288f70e6ef33d6d769b99f7e8c6def9c4b",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.522552490234375,
+      "reduction_rms_ratio_bound": 0.11871623891708764
+    },
+    {
+      "source_id": "94effa99ebd29f680d37dd824d5f110d888ddaf558f5c2114985837943a8f894",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.526580810546875,
+      "reduction_rms_ratio_bound": 0.15854828216460154
+    },
+    {
+      "source_id": "dc0817dd28c07ff3ca19f4ee024db155a969fad3648077f3090a8c028fd9f388",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.50103759765625,
+      "reduction_rms_ratio_bound": 0.1304721182492616
+    },
+    {
+      "source_id": "1a0e9068ba1a1e61cb3fb121690a456b02b83baeada8a8ac141d078a8a70dca2",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.52276611328125,
+      "reduction_rms_ratio_bound": 0.16144214206879318
+    },
+    {
+      "source_id": "3528f0d8681b2a567e1f3bee1c8e35130c92ccda44f58e1d1fbdc4f764fdbced",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.562225341796875,
+      "reduction_rms_ratio_bound": 0.1079192514079825
+    },
+    {
+      "source_id": "be35cfacbc0666a140f6d06f25eea110a0298365999ac5958e53bccd8bcd5be0",
+      "layers": 1,
+      "full_endpoint_max_error": 0.0,
+      "any_gain_peak_bound": 0.5,
+      "reduction_rms_ratio_bound": 0.0
+    },
+    {
+      "source_id": "55c50201dc3016f73a8c28da60ada9b855933b6fbae33978df835d90cc23c936",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5152587890625,
+      "reduction_rms_ratio_bound": 0.11678144898253884
+    },
+    {
+      "source_id": "1aad98352b8efa3f62f47726fd846c29b047e8865f8aae326e5ae1bb6f1797db",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5186767578125,
+      "reduction_rms_ratio_bound": 0.10075861926762698
+    },
+    {
+      "source_id": "b0f8656af3e02f097b6d87b6a0a839d7e772c21a9cb1603f940fc6482377b435",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.504669189453125,
+      "reduction_rms_ratio_bound": 0.16045235519899076
+    },
+    {
+      "source_id": "046e57c4629a21e2e1b229722c21aaafe72a298a061e5dcbf5781897ab22d414",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.49993896484375,
+      "reduction_rms_ratio_bound": 0.1799938240510249
+    },
+    {
+      "source_id": "200d0c73687ac128abe1851289d99d803f66d4f9afcf7c580287b8cad77b1d70",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.523712158203125,
+      "reduction_rms_ratio_bound": 0.16609244777202928
+    },
+    {
+      "source_id": "090b1413d9fd5daf8582d6fbdd43b83bd758211431b595d3b7aa79fed87722a8",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.529144287109375,
+      "reduction_rms_ratio_bound": 0.10955495914693443
+    },
+    {
+      "source_id": "a0fd001c88648ab88ed3d57c7c885e6a2a22a55d0e77e6fe3ac3801371edc8e8",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.52764892578125,
+      "reduction_rms_ratio_bound": 0.16289884256226303
+    },
+    {
+      "source_id": "b159dc46cb24b2b5d11b8b718beda1e287687ac22d46d89b2d4ae6ebf24dc033",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.527801513671875,
+      "reduction_rms_ratio_bound": 0.16607347824454965
+    },
+    {
+      "source_id": "7177074b57f9d88b853463cd3d519b60b9e8ca1d47d62bab56375712c7fcbc3e",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.514495849609375,
+      "reduction_rms_ratio_bound": 0.15663561923113278
+    },
+    {
+      "source_id": "1e19b421b76c9722dbd55fb6abc676cae5eceba7794bc1822a82ced1a122f544",
+      "layers": 1,
+      "full_endpoint_max_error": 0.0,
+      "any_gain_peak_bound": 0.499969482421875,
+      "reduction_rms_ratio_bound": 0.0
+    },
+    {
+      "source_id": "731cecdd3a4f8a07c479da2fd6fb10d1a310470e2faa36c804dd1d79388114d6",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.520751953125,
+      "reduction_rms_ratio_bound": 0.15152732710930938
+    },
+    {
+      "source_id": "78ffef6c0a20ae696f619797a7c53bf99611a527e537a8e78994f4137fe54d0e",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.500244140625,
+      "reduction_rms_ratio_bound": 0.1112843212690117
+    },
+    {
+      "source_id": "55c96560592aea0c72af4c477174fd3bdba14008e5b8a170880272d3314ae797",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5003662109375,
+      "reduction_rms_ratio_bound": 0.10910830727359513
+    },
+    {
+      "source_id": "6892f862cb20fcc17edf922d08c7cbf1ee4d58deeb164ef882004a86cc9574e3",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5093994140625,
+      "reduction_rms_ratio_bound": 0.17998643720645288
+    },
+    {
+      "source_id": "748684bae8b59355d3aa51a1bde4aa525d3977303c1457f07fbba849cbd2a1c1",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5147705078125,
+      "reduction_rms_ratio_bound": 0.11834263616138686
+    },
+    {
+      "source_id": "f0581fbb40a74cf7d480a9e131e7987ee7e700bbf116ac77af1b87c2b7a8515a",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.523834228515625,
+      "reduction_rms_ratio_bound": 0.16127738154262536
+    },
+    {
+      "source_id": "c4a650192f8d52c0b35e72add7d4ba5a60cbc2e83a9349451398e23ba965de7d",
+      "layers": 1,
+      "full_endpoint_max_error": 0.0,
+      "any_gain_peak_bound": 0.5,
+      "reduction_rms_ratio_bound": 0.0
+    },
+    {
+      "source_id": "7541c967ad244fe84e80447bc4ec8d407e8a6f08315cb61d7dcaf1b747c2e8f1",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.4305419921875,
+      "reduction_rms_ratio_bound": 0.10581228974237367
+    },
+    {
+      "source_id": "7dffeb68ac91e4702d78789406ebd16673ff66f3c999ddc264cdd414a4b0c691",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.500244140625,
+      "reduction_rms_ratio_bound": 0.15138287410093879
+    },
+    {
+      "source_id": "d005db9a2b3761a402d8b0deafbe3f1f7226a6f17a11da32984f661c82d2bb5c",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.49993896484375,
+      "reduction_rms_ratio_bound": 0.1345772178461867
+    },
+    {
+      "source_id": "a0a98d7244bec5f83c594d2bf9b063134c457717d0b35f0232e83ffb9f13f8cf",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5242919921875,
+      "reduction_rms_ratio_bound": 0.12226090438766478
+    },
+    {
+      "source_id": "eae0e7319629c7507dbdb7e6a567ef4507051d7780fc934d663bcaa1e60241cf",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.500030517578125,
+      "reduction_rms_ratio_bound": 0.15296606194610488
+    },
+    {
+      "source_id": "c4834ad5249f5412b8adb395ebb710681333c5a18840e19e9ed21b93e2deb583",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.522186279296875,
+      "reduction_rms_ratio_bound": 0.09889618844172736
+    },
+    {
+      "source_id": "82e7649382b57276c77e5b7b83f9f69a7a737d89b985ae5e4dedec0037d7e725",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.504608154296875,
+      "reduction_rms_ratio_bound": 0.15157564250506464
+    },
+    {
+      "source_id": "7ae28dd8cac95364d4c4a795ae98bc590f868338201ac1035d35210d6501802d",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.50787353515625,
+      "reduction_rms_ratio_bound": 0.15662900232479957
+    },
+    {
+      "source_id": "1bbe2dac0d27ea6333bbb146f657089fed1a8f0ffb8fb9b58a3b9333e28ada80",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.53094482421875,
+      "reduction_rms_ratio_bound": 0.15607076861540892
+    },
+    {
+      "source_id": "536f44fce3e04d0c71777cd2e963dab908b0a701e9912074ab38dca6c026b2de",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.523773193359375,
+      "reduction_rms_ratio_bound": 0.14515051164960854
+    },
+    {
+      "source_id": "674b920a3a8d64dce5592f8921c19f9fc5bfdc7c9ed4524feb83a9ac3d67eb9e",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.54290771484375,
+      "reduction_rms_ratio_bound": 0.1687872324504198
+    },
+    {
+      "source_id": "b0607682c39b837a29ccfaa715a2bb56f5a7336804e617d9d36ef1f30dc2010e",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5115966796875,
+      "reduction_rms_ratio_bound": 0.12930435722118716
+    },
+    {
+      "source_id": "f47617e77233fb47257279b3ee3d8e8f23eb769e0f5fda539fa28c579704f4eb",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.532745361328125,
+      "reduction_rms_ratio_bound": 0.1638754308701251
+    },
+    {
+      "source_id": "b71b5f1a2da63ecbc5ca7c4e01ba15d5ff6c994e8f5e9618f6c38a3fdae12dc7",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.50543212890625,
+      "reduction_rms_ratio_bound": 0.13031246760407933
+    },
+    {
+      "source_id": "cbdccc72de6d14a8c9fcd77ff0679d49725e7e87abff431cc4670f82cc318c0a",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.499908447265625,
+      "reduction_rms_ratio_bound": 0.17507567405359512
+    },
+    {
+      "source_id": "483daa585133ec997c7ee388c0a636341cebc20f4734e2b2911eba9b489e2904",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.523162841796875,
+      "reduction_rms_ratio_bound": 0.12500497466682572
+    },
+    {
+      "source_id": "112e76a675f7f86a31e25523c6b425567c18fc912515cda3cafec0c43714da6f",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.506622314453125,
+      "reduction_rms_ratio_bound": 0.1368785320799348
+    },
+    {
+      "source_id": "8902e7b714ff362c4e8af2076548833753ccbae3924714612c436382fa331423",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.510528564453125,
+      "reduction_rms_ratio_bound": 0.17254400393962221
+    },
+    {
+      "source_id": "a09cc7ff2311fe090db97c8dfaabce0846ae70c44e40a1c74f648112f5959a68",
+      "layers": 3,
+      "full_endpoint_max_error": 6.103515625e-05,
+      "any_gain_peak_bound": 0.5146484375,
+      "reduction_rms_ratio_bound": 0.15408544776016805
+    },
+    {
+      "source_id": "7826d21cd45dd34589c8c0bfb3b1ca1cdc12754b6f0b168a0e53e33113c7bced",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5794677734375,
+      "reduction_rms_ratio_bound": 0.17995382182145322
+    },
+    {
+      "source_id": "e97e2e417e3ab32e76f32d9cdc3534922fb683b451e7970ab30b59b446b9c1fb",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5057373046875,
+      "reduction_rms_ratio_bound": 0.10834323332591607
+    },
+    {
+      "source_id": "715ba27fd9bc8f462a7984df23752ff067cdbd21062c1837f832e4955d9cea7f",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.521392822265625,
+      "reduction_rms_ratio_bound": 0.15165386198440997
+    },
+    {
+      "source_id": "49ee59e292839273c4e670972fcc4da30a5304574db46e410ecf690387bc42e8",
+      "layers": 4,
+      "full_endpoint_max_error": 9.1552734375e-05,
+      "any_gain_peak_bound": 0.5184326171875,
+      "reduction_rms_ratio_bound": 0.17091537754949754
+    }
+  ],
+  "listening_approved": false,
+  "seconds": 35.453
+}

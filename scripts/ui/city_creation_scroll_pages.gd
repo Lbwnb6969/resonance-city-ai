@@ -42,7 +42,7 @@ static func ledger(widget:RefCounted,parent:Control)->void:
 	var heading:=HBoxContainer.new();column.add_child(heading);label(demo,heading,"生活账本",19).name="LedgerHeading"
 	widget.close_button=demo._button("合卷",widget.close_panel);widget.close_button.name="CloseLedger";heading.add_child(widget.close_button)
 	widget.close_button.focus_mode=Control.FOCUS_ALL
-	widget.guide_button=demo._button("经营手札 · F1",func()->void:demo.guide.open_panel(1))
+	widget.guide_button=demo._button("经营手札 · F1",func()->void:preload("res://scripts/ui/city_creation_functional_ledger.gd").open_records(widget))
 	widget.guide_button.name="OpenGuideFromLedger";column.add_child(widget.guide_button)
 	widget.scroll=scroll(column,"LedgerScroll")
 	var entries:=VBoxContainer.new();entries.size_flags_horizontal=Control.SIZE_EXPAND_FILL;entries.add_theme_constant_override("separation",10);widget.scroll.add_child(entries)

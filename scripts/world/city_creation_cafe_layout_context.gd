@@ -10,6 +10,7 @@ const GUEST_RADIUS := 0.14
 var _cache: Dictionary = {}
 var _contexts: Dictionary = {}
 const Surface=preload("res://scripts/world/city_creation_activity_surface.gd")
+const Deck=preload("res://scripts/world/city_creation_tea_deck_plan.gd")
 var terrain_aware:=true
 func planar_layout(city,id:String)->Dictionary:
 	var planar=get_script().new();planar.terrain_aware=false;return planar.layout(city,id)
@@ -51,6 +52,7 @@ func _context(city) -> Dictionary:
 	stats.context_queries+=1
 	var geometry:Array=Frontage.ground_geometry(city.houses)
 	var signature := hash([geometry,city.roads,city.waters,city.placed_landmarks])
+	if city.houses.any(func(h):return h.get("architecture","")==Deck.ID):signature=hash([signature,Deck.all(city)])
 	if terrain_aware and Surface.enabled(city):signature=hash([signature,Surface.stamp(city)])
 	var key: int = city.get_instance_id()
 	if _contexts.has(key) and _contexts[key].signature==signature:
@@ -80,6 +82,9 @@ func _context(city) -> Dictionary:
 	for road: Dictionary in city.roads:
 		for index in range(1,road.points.size()):
 			context.roads.append([Vector2(road.points[index-1][0],road.points[index-1][1]),Vector2(road.points[index][0],road.points[index][1]),float(road.width)*0.5])
+	for deck:Dictionary in Deck.all(city):
+		for floor_rect:Rect2 in deck.floors:context.footprints.append(Deck.shape(deck,floor_rect))
+		for rail:Dictionary in deck.rails:context.obstacles.append(Frame.grow(rail,GUEST_RADIUS))
 	if terrain_aware and Surface.enabled(city):
 		for court:Dictionary in city.courtyard_plans():
 			if not court.fountain.is_empty():context.footprints.append(Rect2(Vector2(court.fountain.at)-Vector2.ONE*.9,Vector2.ONE*1.8));context.obstacles.append(context.footprints[-1])
@@ -98,6 +103,9 @@ func layout(city, id: String) -> Dictionary:
 		if str(row.get("role",""))=="garden_cafe" and str(row.id)<id:
 			var earlier := layout(city,str(row.id))
 			if not earlier.is_empty(): occupied.append(earlier)
+	if not Deck.find(city,id).is_empty():
+		var deck_plan:Dictionary=preload("res://scripts/world/city_creation_tea_deck_cafe.gd").layout(self,city,house,occupied,context)
+		_cache[key]={"signature":signature,"value":deck_plan.duplicate(true)};return deck_plan
 	var entries: Array = city.house_entrances(id)
 	var door: Dictionary = {}
 	for entry: Dictionary in entries:
@@ -225,6 +233,7 @@ func _route(city, house: Dictionary, plan: Dictionary, from: Vector2, to: Vector
 	if context.graphs.has(graph_key): graph=context.graphs[graph_key]
 	else:
 		var core: Array[Vector2] = []
+		core.append_array(plan.get("route_points",[]))
 		for landmark:Dictionary in city.placed_landmarks:core.append_array(Frame.corners(city.PlacedLandmarks.footprint(landmark,GUEST_RADIUS+.05)))
 		core.append_array(context.corners.get(str(house.get("id","")),[]))
 		for index in range(18): core.append(Vector2(plan.center)+Vector2(sin(index*TAU/18.0),cos(index*TAU/18.0))*1.40)
@@ -289,20 +298,21 @@ func _route(city, house: Dictionary, plan: Dictionary, from: Vector2, to: Vector
 	return result
 
 func _leg(city, plan: Dictionary, a: Vector2, b: Vector2, from: Vector2, to: Vector2, obstacles: Array, other_plans: Array) -> bool:
-	if terrain_aware and not Surface.walkable(city,a,b):return false
+	if terrain_aware and not Surface.walkable(city,a,b,plan.has("tea_deck")):return false
 	if not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(a) or not city.WORLD_RECT.grow(-GUEST_RADIUS).has_point(b): return false
 	for obstacle:Variant in obstacles:
 		if Frame.segment(obstacle,a,b):return false
 	var center: Vector2 = plan.center
-	if center.distance_to(Geometry2D.get_closest_point_to_segment(center,a,b))<TABLE_RADIUS+GUEST_RADIUS: return false
+	if center.distance_to(Geometry2D.get_closest_point_to_segment(center,a,b))<float(plan.get("table_radius",TABLE_RADIUS))+GUEST_RADIUS: return false
 	for seat: Vector2 in plan.seats:
 		if seat.distance_to(from)<0.31 or seat.distance_to(to)<0.31: continue
-		if seat.distance_to(Geometry2D.get_closest_point_to_segment(seat,a,b))<CHAIR_RADIUS+GUEST_RADIUS: return false
+		if seat.distance_to(Geometry2D.get_closest_point_to_segment(seat,a,b))<float(plan.get("chair_radius",CHAIR_RADIUS))+GUEST_RADIUS: return false
 	for other: Dictionary in other_plans:
 		var table:Vector2=other.center
-		if table.distance_to(Geometry2D.get_closest_point_to_segment(table,a,b))<TABLE_RADIUS+GUEST_RADIUS: return false
+		if table.distance_to(Geometry2D.get_closest_point_to_segment(table,a,b))<float(other.get("table_radius",TABLE_RADIUS))+GUEST_RADIUS: return false
 		for seat:Vector2 in other.seats:
-			if seat.distance_to(Geometry2D.get_closest_point_to_segment(seat,a,b))<CHAIR_RADIUS+GUEST_RADIUS: return false
+			if seat.distance_to(Geometry2D.get_closest_point_to_segment(seat,a,b))<float(other.get("chair_radius",CHAIR_RADIUS))+GUEST_RADIUS: return false
 	for step in range(ceili(a.distance_to(b)/0.12)+1):
-		if city.water_clearance(a.move_toward(b,step*0.12))<=GUEST_RADIUS: return false
+		var p:=a.move_toward(b,step*.12)
+		if city.water_clearance(p)<=GUEST_RADIUS and Deck.floor_support(city,p,GUEST_RADIUS).is_empty():return false
 	return true

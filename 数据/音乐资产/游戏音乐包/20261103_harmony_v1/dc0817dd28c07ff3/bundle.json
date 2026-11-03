@@ -1,0 +1,255 @@
+{
+  "schema": "city_adaptive_music_v1",
+  "source_id": "dc0817dd28c07ff3ca19f4ee024db155a969fad3648077f3090a8c028fd9f388",
+  "name": "Wakeup [20261102].mp3",
+  "kind": "music",
+  "kind_evidence": "filename intent; human confirmation pending",
+  "frames": 1313280,
+  "sample_rate": 44100,
+  "channels": 2,
+  "full_mix": {
+    "path": "res://数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/wakeup/stems/full_mix.wav",
+    "sha256": "3a7dc3b99430fe51f5527813667356e1294528dc99ce91d56a49410bd99be5b6",
+    "rms": 0.07321742922067642,
+    "rms_relative_to_master_db": 0.0,
+    "peak": 0.5,
+    "role": "unassigned"
+  },
+  "common_gain": 1.0,
+  "source_group": "woodwind_plus_remaining_six",
+  "group_selection": "minimum measured reconstruction error; not a listening preference",
+  "layers": [
+    {
+      "id": "core",
+      "path": "res://数据/音乐资产/游戏音乐包/20261103_v1/dc0817dd28c07ff3/core.wav",
+      "sha256": "0767602609c297b2bba25ba97a9399c33548df2854a87e2d2836271bf59e0b10",
+      "min_gain": 1.0,
+      "max_gain": 1.0
+    },
+    {
+      "id": "body",
+      "path": "res://数据/音乐资产/游戏音乐包/20261103_v1/dc0817dd28c07ff3/body.wav",
+      "sha256": "a7a7273190604abc70a3ef5caa2bb410f2ebfd7802f3d5d01b8d6f72a763df49",
+      "min_gain": 0.35,
+      "max_gain": 1.0
+    },
+    {
+      "id": "motion",
+      "path": "res://数据/音乐资产/游戏音乐包/20261103_v1/dc0817dd28c07ff3/motion.wav",
+      "sha256": "6d36e94201dddc278050ce4d412b28737d2682f7df78e3c5cb33ce440275c719",
+      "min_gain": 0.35,
+      "max_gain": 1.0
+    },
+    {
+      "id": "detail",
+      "path": "res://数据/音乐资产/游戏音乐包/20261103_v1/dc0817dd28c07ff3/detail.wav",
+      "sha256": "5572864d98c9325411c47793c9f03d4768184942f4410c408b0564362e05c176",
+      "min_gain": 0.35,
+      "max_gain": 1.0
+    }
+  ],
+  "descriptors": {
+    "body": {
+      "source_slot": "guitar",
+      "source_sha256": "8af15763df875fb08ed70bbdd47890492e57f7161610949f3068778eb2457fb5",
+      "source_scale_down": 0.17136522178994582,
+      "features": {
+        "rms": 0.05981627062938179,
+        "centroid_below_5512_hz": 710.2189333268126,
+        "low_band_fraction": 0.2987402512127678,
+        "high_band_fraction": 0.10054259417525963,
+        "active_fraction": 0.8333333333333334,
+        "positive_envelope_change": 0.08283336353015086,
+        "crest": 8.380867958068848,
+        "envelope": [
+          0.08295032690541489,
+          0.0787805167975633,
+          0.10079381722376167,
+          0.09975614297744269,
+          0.08084316344586236,
+          0.08930325783241422,
+          0.0622984215991005,
+          0.08621669092017437,
+          0.07727439063169744,
+          0.06500501972082749,
+          0.06186259307341808,
+          0.06734866094603172,
+          0.06414920235642561,
+          0.05093751295162257,
+          0.0462952003782628,
+          0.04355430683907266,
+          0.03185988159953941,
+          0.019708980247082016,
+          0.008069479412576063,
+          0.004760971904406729,
+          0.025183621759130085,
+          0.04901261955361856,
+          0.08857194370975154,
+          0.06835774946403976,
+          0.0237529667160354,
+          0.0203473316503713,
+          0.012193826380270152,
+          0.006691099833272477,
+          0.000964199464040452,
+          0.00046938907907686763
+        ]
+      },
+      "role_listening_confirmed": false
+    },
+    "motion": {
+      "source_slot": "woodwinds",
+      "source_sha256": "dc4598851d6472f383e69d6c4e07955536c98a287a1faddb363638d14469de32",
+      "source_scale_down": 0.35,
+      "features": {
+        "rms": 0.005784259331297955,
+        "centroid_below_5512_hz": 1143.6870028571245,
+        "low_band_fraction": 0.05696651443316286,
+        "high_band_fraction": 0.14396426496730166,
+        "active_fraction": 0.2,
+        "positive_envelope_change": 0.18941799291965378,
+        "crest": 14.89933967590332,
+        "envelope": [
+          2.0683739226811222e-05,
+          1.5904274399041923e-05,
+          1.6007511317304324e-05,
+          1.9209431348938337e-05,
+          1.6217548335661826e-05,
+          1.763221212322256e-05,
+          2.028866173708931e-05,
+          9.135963334267943e-05,
+          0.00031420532584900757,
+          0.000632112189781437,
+          1.8195136738392156e-05,
+          1.8463018953909476e-05,
+          2.1039063744947288e-05,
+          1.8754677808929084e-05,
+          6.6245066732011955e-06,
+          2.059395019629364e-05,
+          0.0002700329524102387,
+          0.018095940661744452,
+          0.017673865127390147,
+          0.003045650063693355,
+          1.9407942737161165e-05,
+          2.4826221115561407e-05,
+          0.013081645975589432,
+          0.012906511753566389,
+          0.0029648849873526455,
+          0.00040767290255816567,
+          2.154515158265605e-05,
+          2.157673967908725e-05,
+          2.1588237032785046e-05,
+          2.1532059964121948e-05
+        ]
+      },
+      "role_listening_confirmed": false
+    },
+    "detail": {
+      "source_slot": "other",
+      "source_sha256": "ddf7e5ccc01060568ce1f57bb2c3a84bc014029932d3467a8cb40675275998a9",
+      "source_scale_down": 0.35,
+      "features": {
+        "rms": 0.023888065855235986,
+        "centroid_below_5512_hz": 922.2955456807161,
+        "low_band_fraction": 0.14274400702073564,
+        "high_band_fraction": 0.1652739216431751,
+        "active_fraction": 0.26666666666666666,
+        "positive_envelope_change": 0.1605024609062159,
+        "crest": 8.880069732666016,
+        "envelope": [
+          0.00036621252334954896,
+          0.00036529374256787187,
+          0.00036685044380259005,
+          0.0003638815085204179,
+          0.00036466281374848345,
+          0.00036551290059307843,
+          0.0003640822885936092,
+          0.0003645679412239582,
+          0.0003636789626420028,
+          0.00036358800090180313,
+          0.0003625591661663063,
+          0.0003636563150782553,
+          0.0003849220503040118,
+          0.00037466320611878324,
+          0.00037101764230854214,
+          0.0003721927928880668,
+          0.0006451372092244401,
+          0.02865125156800773,
+          0.053527965361389894,
+          0.05569559201146043,
+          0.08410445151901051,
+          0.04339080020214782,
+          0.003988300532209333,
+          0.03140966543423017,
+          0.0155887294277505,
+          0.0006230933477708599,
+          0.00039950099533019284,
+          0.00035339523570260327,
+          0.00035811105865897675,
+          0.000361267152502978
+        ]
+      },
+      "role_listening_confirmed": false
+    }
+  },
+  "color_depth_scale": 1.0,
+  "presets": {
+    "original": {
+      "core": 1.0,
+      "body": 1.0,
+      "motion": 1.0,
+      "detail": 1.0
+    },
+    "open": {
+      "core": 1.0,
+      "body": 0.35,
+      "motion": 0.35,
+      "detail": 0.35
+    },
+    "courtyard": {
+      "core": 1.0,
+      "body": 1.0,
+      "motion": 0.45,
+      "detail": 0.45
+    },
+    "flowing": {
+      "core": 1.0,
+      "body": 0.45,
+      "motion": 1.0,
+      "detail": 0.45
+    },
+    "handcrafted": {
+      "core": 1.0,
+      "body": 0.45,
+      "motion": 0.45,
+      "detail": 1.0
+    }
+  },
+  "controls": {
+    "warm": "body",
+    "flow": "motion",
+    "craft": "detail"
+  },
+  "timeline": {
+    "path": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/dc0817dd28c07ff3/timeline.json",
+    "sha256": "b8d1d9dbaa8873a1f489ce9f08f324778ba057b786920162f4c0a96ff6875ffb"
+  },
+  "operations": {
+    "gain_slew_seconds": 3.2,
+    "source_loss_tail_seconds": 6.0,
+    "same_source_only": true,
+    "shared_clock_required": true,
+    "pitch_shift_allowed": false,
+    "time_stretch_allowed": false,
+    "automatic_cuts_allowed": false,
+    "loop_enabled": false
+  },
+  "evidence": {
+    "full_endpoint_max_error": 9.1552734375e-05,
+    "quantization_limit": 0.000152587890625,
+    "all_gain_combinations_peak_bound": 0.50103759765625,
+    "maximum_reduction_rms_ratio_bound": 0.1304865003834744,
+    "semantic_roles_confirmed": false
+  },
+  "runtime_ready": false,
+  "listening_approved": false
+}

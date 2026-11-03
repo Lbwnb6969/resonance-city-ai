@@ -96,9 +96,19 @@ static func snapshot(city: RefCounted) -> Dictionary:
 	if city.TerrainTarget.Rules.has_version(city.terrain_strokes,city.TerrainTarget.Rules.Smooth.VERSION):result.schema=city.TerrainTarget.Rules.Smooth.SCHEMA
 	if city.TerrainPolicy.enabled(city) or city.journey_checkpoint.has("cafe_terrain"):result.schema=city.TerrainPolicy.SCHEMA;result.terrain_policy=city.terrain_policy
 	city.CreationPolicy.Save.Progression.write(city,result)
+	preload("res://scripts/world/city_creation_architecture_variants.gd").write(city,result)
+	city.Grillhouse.write(city,result)
+	preload("res://scripts/world/city_creation_skybridge_span.gd").write(city,result)
+	preload("res://scripts/world/city_creation_shallow_stair_keys.gd").write(city,result)
+	preload("res://scripts/world/city_creation_water_ghat.gd").write(city,result)
+	preload("res://scripts/world/city_creation_roundabout_width.gd").write(city,result)
+	preload("res://scripts/world/city_creation_plaza_loops.gd").write(city,result)
 	return result
 
 static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: bool) -> bool:
+	city.plaza_loops.assign(data.get("plaza_loops",[]))
+	city.remove_meta("tea_deck_plans")
+	city.remove_meta("boathouse_plans")
 	city.remove_meta("functional_zones")
 	city.CreationPolicy.Save.apply(city,data,preserve_issued_ids)
 	city.terrain_policy=int(data.get("terrain_policy",1))
@@ -188,6 +198,7 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 			for worker in city.journey_checkpoint.get("workshop_workers", []):
 				worker.deliveries = int(worker.deliveries)
 	city.houses.assign(data.houses.duplicate(true))
+	city.Grillhouse.apply(city,data,preserve_issued_ids)
 	city.roads.assign(data.roads.duplicate(true))
 	city.terrain_strokes.assign(data.get("terrain_strokes",[]).duplicate(true))
 	for stroke: Dictionary in city.terrain_strokes:
@@ -216,6 +227,9 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 	city._next_district_id = int(data.get("next_district_id", 1))
 	# JSON numbers enter as floats; restore the authoritative integer fields.
 	for house in city.houses:
+		if house.has("skybridge_span"):house.skybridge_span={"version":1,"meters":9}
+		if house.has("architecture_variant"):
+			preload("res://scripts/world/city_creation_architecture_variants.gd").normalize(house.architecture_variant)
 		if house.has("bend_angle_deg"):house.bend_angle_deg=float(house.bend_angle_deg)
 		if house.has("bend_axis"):house.bend_axis=int(house.bend_axis)
 		if house.has("corner_bevel"):house.corner_bevel=int(house.corner_bevel)
@@ -275,6 +289,8 @@ static func apply_data(city: RefCounted, data: Dictionary, preserve_issued_ids: 
 static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 	var creative_check:Dictionary=city.CreationPolicy.Save.validate(city,data)
 	if not creative_check.ok:return creative_check
+	var ghat_check:Dictionary=preload("res://scripts/world/city_creation_water_ghat.gd").validate(city,data)
+	if not ghat_check.ok:return ghat_check
 	var policy_check:Dictionary=city.TerrainPolicy.validate(city,data)
 	if not policy_check.ok:return policy_check
 	var progress: Variant = data.get("life_progress", {"purchases":0,"gatherings":0})
@@ -338,6 +354,14 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		return city._fail("城市存档水域结构无效")
 	if not data.get("houses") is Array or not data.get("roads") is Array:
 		return city._fail("城市存档结构无效")
+	var variants:Dictionary=preload("res://scripts/world/city_creation_architecture_variants.gd").validate(city,data)
+	if not variants.ok:return variants
+	var spans:Dictionary=preload("res://scripts/world/city_creation_skybridge_span.gd").validate(city,data)
+	if not spans.ok:return spans
+	var shallow:Dictionary=preload("res://scripts/world/city_creation_shallow_stair_keys.gd").validate(city,data)
+	if not shallow.ok:return shallow
+	var food:Dictionary=city.Grillhouse.validate(city,data)
+	if not food.ok:return food
 	if not data.get("terrain_strokes",[]) is Array: return city._fail("城市存档地形结构无效")
 	if data.get("schema")==city.SCHEMA and not data.get("terrain_strokes",[]).is_empty(): return city._fail("地形作品需要新存档版本")
 	for stroke in data.get("terrain_strokes",[]):
@@ -530,7 +554,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if road.has("roundabouts"):
 			if data.schema<city.ROAD_NETWORK_SCHEMA or not road.roundabouts is Array: return city._fail("环岛存档版本或结构无效")
 			for marker: Variant in road.roundabouts:
-				if not marker is Dictionary or marker.size()!=2 or not city._valid_point(marker.get("center")) or not city._is_number(marker.get("radius")) or not is_equal_approx(float(marker.radius),city.Roundabouts.RADIUS): return city._fail("环岛位置或半径无效")
+				if not marker is Dictionary or marker.size()!=2 or not city._valid_point(marker.get("center")) or not city._is_number(marker.get("radius")) or not preload("res://scripts/world/city_creation_roundabout_width.gd").valid(city,data,marker): return city._fail("环岛位置或半径无效")
 				var site: Dictionary=city.Roundabouts.site(city,Vector2(marker.center[0],marker.center[1]),float(marker.radius),data.houses,water_rows)
 				if not site.ok: return site
 		if road.has("style"):
@@ -553,6 +577,8 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		for point in road.points:
 			if not city._valid_point(point):
 				return city._fail("城市存档道路位置无效")
+	var plaza_check:Dictionary=preload("res://scripts/world/city_creation_plaza_loops.gd").validate(city,data)
+	if not plaza_check.ok:return plaza_check
 	if data.has("plants"):
 		if not data.plants is Array:
 			return city._fail("城市存档植被结构无效")
@@ -581,7 +607,7 @@ static func validate(city: RefCounted, data: Dictionary) -> Dictionary:
 		if not site.ok:
 			return site
 	for road in data.roads:
-		var site: Dictionary = city._validate_road_site(road.points, float(road.width), data.houses, water_rows)
+		var site: Dictionary = city._validate_road_site(road.points, float(road.width), data.houses, water_rows, data.roads)
 		if not site.ok:
 			return site
 		if road.get("bridge", false) != site.bridge:

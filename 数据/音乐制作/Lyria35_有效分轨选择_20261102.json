@@ -1,0 +1,1389 @@
+{
+  "schema": "curated_stem_selection_v1",
+  "source_curation": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\curation_v2\\curation.json",
+  "source_curation_sha256": "4f1cb6bca6b4979eec4fc16e8378618ada40efd824efe4e0af9477c25374c3e2",
+  "policy": {
+    "relative_rms_db": -36,
+    "max_active_second_relative_db": -24,
+    "peak_dbfs": -28,
+    "union_rms_limit_db": -34,
+    "union_local_limit_db": -20,
+    "window_reference_floor_ratio": 0.1
+  },
+  "totals": {
+    "kept": 210,
+    "excluded": 37,
+    "silent": 0,
+    "protected_sparse_or_combined": 1
+  },
+  "sources_unchanged": 19,
+  "stem_hashes_verified": 247,
+  "songs": [
+    {
+      "name": "Pastoral Riverside Dawn Chamber Music.mp3",
+      "source_sha256": "01a8ed354b835f12df7a7671a83f150ca249abfabbc2d7be757d1fe65b520e5d",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -74.03376845954949,
+                "relative_rms_db": -53.91413061755636,
+                "peak_dbfs": -42.14419939295737,
+                "max_active_second_relative_db": -34.59042889910867,
+                "active_seconds": 0,
+                "seconds": 147,
+                "crest_db": 31.889568917652312
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -73.71658370541704,
+                "relative_rms_db": -53.5969458634239,
+                "peak_dbfs": -48.09720449320938,
+                "max_active_second_relative_db": -34.56881660995982,
+                "active_seconds": 0,
+                "seconds": 147,
+                "crest_db": 25.619379358842377
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -68.02473693386348,
+            "relative_rms_db": -47.90509909187034,
+            "peak_dbfs": -42.3155242695736,
+            "max_active_second_relative_db": -28.577280571946623,
+            "active_seconds": 0,
+            "seconds": 147,
+            "crest_db": 25.709212516476576
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -75.02904929279177,
+                "relative_rms_db": -54.90941145079863,
+                "peak_dbfs": -53.78750264517783,
+                "max_active_second_relative_db": -35.31452934129712,
+                "active_seconds": 0,
+                "seconds": 147,
+                "crest_db": 21.241546731123808
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -70.08784033093224,
+                "relative_rms_db": -49.96820248893911,
+                "peak_dbfs": -41.74630281861858,
+                "max_active_second_relative_db": -35.28088996410868,
+                "active_seconds": 1,
+                "seconds": 147,
+                "crest_db": 28.34153753228007
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -67.16791646906802,
+            "relative_rms_db": -47.048278627074886,
+            "peak_dbfs": -41.58574575837924,
+            "max_active_second_relative_db": -29.29748180273927,
+            "active_seconds": 1,
+            "seconds": 147,
+            "crest_db": 25.582171136926185
+          }
+        }
+      }
+    },
+    {
+      "name": "Acoustic Instrument Sampling Session.mp3",
+      "source_sha256": "41eb46deae028be4e50d15d0a2576303c52b1d64690e12162745dfec6df5b44f",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -83.56726273513507,
+                "relative_rms_db": -62.95289252875497,
+                "peak_dbfs": -58.48770655866438,
+                "max_active_second_relative_db": -44.39790728760024,
+                "active_seconds": 0,
+                "seconds": 182,
+                "crest_db": 25.079555947440987
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -83.56726273513507,
+            "relative_rms_db": -62.95289252875497,
+            "peak_dbfs": -58.48770655866438,
+            "max_active_second_relative_db": -44.39790728760024,
+            "active_seconds": 0,
+            "seconds": 182,
+            "crest_db": 25.079555947440987
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -81.51527558007176,
+                "relative_rms_db": -60.90090537369165,
+                "peak_dbfs": -55.50174490930949,
+                "max_active_second_relative_db": -42.32540129712733,
+                "active_seconds": 0,
+                "seconds": 182,
+                "crest_db": 26.01353120383485
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -81.51527558007176,
+            "relative_rms_db": -60.90090537369165,
+            "peak_dbfs": -55.50174490930949,
+            "max_active_second_relative_db": -42.32540129712733,
+            "active_seconds": 0,
+            "seconds": 182,
+            "crest_db": 26.01353120383485
+          }
+        }
+      }
+    },
+    {
+      "name": "Comforting Neoclassical Chamber Music.mp3",
+      "source_sha256": "b6f52a110a0af1901181af9f06aace39a5b52d20942a4226dea56ecd4186bc02",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.08249810324689,
+                "relative_rms_db": -50.76104605593055,
+                "peak_dbfs": -52.80777343136036,
+                "max_active_second_relative_db": -31.841925625883203,
+                "active_seconds": 0,
+                "seconds": 148,
+                "crest_db": 18.274725064169456
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -71.08249810324689,
+            "relative_rms_db": -50.76104605593055,
+            "peak_dbfs": -52.80777343136036,
+            "max_active_second_relative_db": -31.841925625883203,
+            "active_seconds": 0,
+            "seconds": 148,
+            "crest_db": 18.274725064169456
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.57007036881211,
+                "relative_rms_db": -51.24861832149577,
+                "peak_dbfs": -53.78750264517783,
+                "max_active_second_relative_db": -31.926007404092132,
+                "active_seconds": 0,
+                "seconds": 148,
+                "crest_db": 17.78256764488098
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -71.57007036881211,
+            "relative_rms_db": -51.24861832149577,
+            "peak_dbfs": -53.78750264517783,
+            "max_active_second_relative_db": -31.926007404092132,
+            "active_seconds": 0,
+            "seconds": 148,
+            "crest_db": 17.78256764488098
+          }
+        }
+      }
+    },
+    {
+      "name": "Joyful Chamber Ensemble Celebration.mp3",
+      "source_sha256": "90a277ed169c5e895da22110f8c6947026792d3ae489b44f9d7aeb80faeebca2",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 150,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 150,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Minimalist Botanical Chamber Composition.mp3",
+      "source_sha256": "bce5a2416e254a2d61dc7b5a801b516d8d731df85f44acb006e7c4850b326ed5",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -66.61673169706701,
+                "relative_rms_db": -46.412671265918604,
+                "peak_dbfs": -32.48940675940058,
+                "max_active_second_relative_db": -27.18255561253804,
+                "active_seconds": 2,
+                "seconds": 149,
+                "crest_db": 34.1273246098161
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -66.61673169706701,
+            "relative_rms_db": -46.412671265918604,
+            "peak_dbfs": -32.48940675940058,
+            "max_active_second_relative_db": -27.18255561253804,
+            "active_seconds": 2,
+            "seconds": 149,
+            "crest_db": 34.1273246098161
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 149,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Minimalist Chamber Music Composition.mp3",
+      "source_sha256": "e1f82908d73abd0d725eb6171d8ea0565077d56852fe7fc5e8323180bad9822a",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -64.85962489689102,
+                "relative_rms_db": -44.72472362070153,
+                "peak_dbfs": -37.24474842368748,
+                "max_active_second_relative_db": -27.89523037686813,
+                "active_seconds": 6,
+                "seconds": 174,
+                "crest_db": 27.614876416521103
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -64.85962489689102,
+            "relative_rms_db": -44.72472362070153,
+            "peak_dbfs": -37.24474842368748,
+            "max_active_second_relative_db": -27.89523037686813,
+            "active_seconds": 6,
+            "seconds": 174,
+            "crest_db": 27.614876416521103
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -64.06057763151848,
+                "relative_rms_db": -43.92567635532899,
+                "peak_dbfs": -33.51943775171039,
+                "max_active_second_relative_db": -28.24458117182695,
+                "active_seconds": 6,
+                "seconds": 174,
+                "crest_db": 30.541140244146487
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -64.06057763151848,
+            "relative_rms_db": -43.92567635532899,
+            "peak_dbfs": -33.51943775171039,
+            "max_active_second_relative_db": -28.24458117182695,
+            "active_seconds": 6,
+            "seconds": 174,
+            "crest_db": 30.541140244146487
+          }
+        }
+      }
+    },
+    {
+      "name": "Misty River Instrumental Chamber Music.mp3",
+      "source_sha256": "63b4d6819dad065edf3a849b475e7dd0de140600d90169a936d594b9f859473d",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -73.58946118471202,
+                "relative_rms_db": -53.40464207357678,
+                "peak_dbfs": -61.68172341601461,
+                "max_active_second_relative_db": -33.45951025030194,
+                "active_seconds": 0,
+                "seconds": 151,
+                "crest_db": 11.907737777217715
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.65391578719192,
+                "relative_rms_db": -51.46909667605669,
+                "peak_dbfs": -37.86471823986845,
+                "max_active_second_relative_db": -33.69357250786318,
+                "active_seconds": 1,
+                "seconds": 151,
+                "crest_db": 33.78919761433466
+              }
+            },
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -72.48709960340341,
+                "relative_rms_db": -52.30228049226817,
+                "peak_dbfs": -44.59785251903888,
+                "max_active_second_relative_db": -33.521863941615294,
+                "active_seconds": 0,
+                "seconds": 151,
+                "crest_db": 27.88924711468689
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -63.64299243420901,
+            "relative_rms_db": -43.45817332307377,
+            "peak_dbfs": -37.76168156733971,
+            "max_active_second_relative_db": -24.066473153199887,
+            "active_seconds": 3,
+            "seconds": 151,
+            "crest_db": 25.881310968037337
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -74.56001098322506,
+                "relative_rms_db": -54.375191872089815,
+                "peak_dbfs": -62.35019852575361,
+                "max_active_second_relative_db": -34.56115458038625,
+                "active_seconds": 0,
+                "seconds": 151,
+                "crest_db": 12.209811883103203
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -74.1098769939668,
+                "relative_rms_db": -53.92505788283156,
+                "peak_dbfs": -47.574587356066225,
+                "max_active_second_relative_db": -34.4949636027386,
+                "active_seconds": 0,
+                "seconds": 151,
+                "crest_db": 26.535289857896345
+              }
+            },
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.04441719867546,
+                "relative_rms_db": -50.85959808754023,
+                "peak_dbfs": -40.48176482250891,
+                "max_active_second_relative_db": -31.316571876068625,
+                "active_seconds": 1,
+                "seconds": 151,
+                "crest_db": 30.562652555356383
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -64.3807295735091,
+            "relative_rms_db": -44.19591046237386,
+            "peak_dbfs": -39.912438823679985,
+            "max_active_second_relative_db": -24.98085453693224,
+            "active_seconds": 1,
+            "seconds": 151,
+            "crest_db": 24.468290444472117
+          }
+        }
+      }
+    },
+    {
+      "name": "Neoclassical Coastal Chamber Music.mp3",
+      "source_sha256": "bcaf1a13910f33f9a3dcbf3e993c675fecc34ee7e02eb567614aca1a9caa25ed",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 151,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 151,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Nocturnal Chamber Music Composition.mp3",
+      "source_sha256": "1070b2492cbe6553297f353d8003460bbe6511b5dae1118fbe14ad112938ec07",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 147,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 147,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Pastoral Chamber Music Composition.mp3",
+      "source_sha256": "c194a9a9d01b186e25c244902254b9fe6a0e9a5c78f7b954dfb720e5875c7b76",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -70.23416586318663,
+                "relative_rms_db": -50.00968321572421,
+                "peak_dbfs": -55.04043882793561,
+                "max_active_second_relative_db": -30.084516051731924,
+                "active_seconds": 0,
+                "seconds": 145,
+                "crest_db": 15.193727122777755
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -69.52345663014515,
+                "relative_rms_db": -49.2989739826827,
+                "peak_dbfs": -44.03165429181129,
+                "max_active_second_relative_db": -30.084516051731924,
+                "active_seconds": 0,
+                "seconds": 145,
+                "crest_db": 25.491802427999485
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -63.97504235110286,
+            "relative_rms_db": -43.75055970364042,
+            "peak_dbfs": -43.57980402222377,
+            "max_active_second_relative_db": -24.0639161384523,
+            "active_seconds": 0,
+            "seconds": 145,
+            "crest_db": 20.39523832310944
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -68.08605246248925,
+                "relative_rms_db": -47.86156981502681,
+                "peak_dbfs": -42.110336232568464,
+                "max_active_second_relative_db": -31.062804596590144,
+                "active_seconds": 0,
+                "seconds": 145,
+                "crest_db": 25.975715915562695
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -68.08605246248925,
+            "relative_rms_db": -47.86156981502681,
+            "peak_dbfs": -42.110336232568464,
+            "max_active_second_relative_db": -31.062804596590144,
+            "active_seconds": 0,
+            "seconds": 145,
+            "crest_db": 25.975715915562695
+          }
+        }
+      }
+    },
+    {
+      "name": "Pastoral Chamber Trio Composition.mp3",
+      "source_sha256": "745c986623de307a6ca19c4615d9c554415a0631f9d03fabb6a6d55e6cec25a6",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -68.30382806091218,
+                "relative_rms_db": -48.0897325014397,
+                "peak_dbfs": -42.3155242695736,
+                "max_active_second_relative_db": -29.30655742428207,
+                "active_seconds": 0,
+                "seconds": 179,
+                "crest_db": 25.98830383864053
+              }
+            },
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -68.10167353249096,
+                "relative_rms_db": -47.88757797301847,
+                "peak_dbfs": -33.865637111834005,
+                "max_active_second_relative_db": -29.429982732529886,
+                "active_seconds": 1,
+                "seconds": 179,
+                "crest_db": 34.23603584902351
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -62.75885364801851,
+            "relative_rms_db": -42.54475808854603,
+            "peak_dbfs": -33.63331120606478,
+            "max_active_second_relative_db": -23.35776161040647,
+            "active_seconds": 4,
+            "seconds": 179,
+            "crest_db": 29.125542248462025
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -67.03818667775761,
+                "relative_rms_db": -46.824091118285125,
+                "peak_dbfs": -34.745973691521485,
+                "max_active_second_relative_db": -29.93067550305082,
+                "active_seconds": 3,
+                "seconds": 179,
+                "crest_db": 32.29221249286176
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -67.03818667775761,
+            "relative_rms_db": -46.824091118285125,
+            "peak_dbfs": -34.745973691521485,
+            "max_active_second_relative_db": -29.93067550305082,
+            "active_seconds": 3,
+            "seconds": 179,
+            "crest_db": 32.29221249286176
+          }
+        }
+      }
+    },
+    {
+      "name": "Renaissance Chamber Music Composition.mp3",
+      "source_sha256": "553cf9787956e896fe1d26fcf4defceff8a7306bade7feecc5b76c0b561a0177",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -88.34948185306058,
+                "relative_rms_db": -67.99091504592707,
+                "peak_dbfs": -62.35019852575361,
+                "max_active_second_relative_db": -57.45969682895868,
+                "active_seconds": 0,
+                "seconds": 149,
+                "crest_db": 25.999283500855498
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -85.75525285187362,
+                "relative_rms_db": -65.39668604474012,
+                "peak_dbfs": -61.68172341601461,
+                "max_active_second_relative_db": -52.522775834597496,
+                "active_seconds": 0,
+                "seconds": 149,
+                "crest_db": 24.07352918102127
+              }
+            },
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.80714935124554,
+                "relative_rms_db": -51.448582544112035,
+                "peak_dbfs": -36.68417395168262,
+                "max_active_second_relative_db": -34.88899742936625,
+                "active_seconds": 2,
+                "seconds": 149,
+                "crest_db": 35.12297587156623
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -71.3011255836607,
+            "relative_rms_db": -50.94255877652719,
+            "peak_dbfs": -36.73863111839208,
+            "max_active_second_relative_db": -34.84437900875509,
+            "active_seconds": 2,
+            "seconds": 149,
+            "crest_db": 34.5624945031601
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -88.38427789456871,
+                "relative_rms_db": -68.0257110874352,
+                "peak_dbfs": -62.70477386496224,
+                "max_active_second_relative_db": -56.65292587555756,
+                "active_seconds": 0,
+                "seconds": 149,
+                "crest_db": 25.67950363326615
+              }
+            },
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -80.54365455867281,
+                "relative_rms_db": -60.18508775153929,
+                "peak_dbfs": -45.059976904585774,
+                "max_active_second_relative_db": -46.61465062672944,
+                "active_seconds": 0,
+                "seconds": 149,
+                "crest_db": 35.483677654019054
+              }
+            },
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -73.20604079290416,
+                "relative_rms_db": -52.84747398577065,
+                "peak_dbfs": -42.3155242695736,
+                "max_active_second_relative_db": -35.30445971160786,
+                "active_seconds": 0,
+                "seconds": 149,
+                "crest_db": 30.8905162021327
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -71.94601814664581,
+            "relative_rms_db": -51.5874513395123,
+            "peak_dbfs": -42.3155242695736,
+            "max_active_second_relative_db": -35.241832281998704,
+            "active_seconds": 1,
+            "seconds": 149,
+            "crest_db": 29.630494135490007
+          }
+        }
+      }
+    },
+    {
+      "name": "Renaissance Chamber Pavane Trio.mp3",
+      "source_sha256": "299dfc96194530c13263077f844e3870280b9b3c7ac1cf3e026a5e245f5871ac",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 177,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 177,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Serene Ecological City Soundscape.mp3",
+      "source_sha256": "c8dfc3fb53e4c719865007379808f8860a90c25f72789855ba5074947a25226f",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 152,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 152,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Soulful Cello Chamber Composition.mp3",
+      "source_sha256": "6281a35da5928a5381800ef4ff0e6fc3ab62e6b8351802396992f526d19b00e8",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 149,
+            "crest_db": -240.0
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "bass": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -60.496833711892194,
+                "relative_rms_db": -40.04158251967784,
+                "peak_dbfs": -31.85448953932916,
+                "max_active_second_relative_db": -24.286598873598404,
+                "active_seconds": 10,
+                "seconds": 149,
+                "crest_db": 28.642344327949402
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -60.496833711892194,
+            "relative_rms_db": -40.04158251967784,
+            "peak_dbfs": -31.85448953932916,
+            "max_active_second_relative_db": -24.286598873598404,
+            "active_seconds": 10,
+            "seconds": 149,
+            "crest_db": 28.642344327949402
+          }
+        }
+      }
+    },
+    {
+      "name": "Sunlight on Still Water.mp3",
+      "source_sha256": "fc6dd428265f6f13de1686bc3f984b288f70e6ef33d6d769b99f7e8c6def9c4b",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -66.58960623720682,
+                "relative_rms_db": -46.279247656576956,
+                "peak_dbfs": -30.54674189382732,
+                "max_active_second_relative_db": -24.00194308062879,
+                "active_seconds": 2,
+                "seconds": 145,
+                "crest_db": 36.04286450768417
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -66.58960623720682,
+            "relative_rms_db": -46.279247656576956,
+            "peak_dbfs": -30.54674189382732,
+            "max_active_second_relative_db": -24.00194308062879,
+            "active_seconds": 2,
+            "seconds": 145,
+            "crest_db": 36.04286450768417
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {},
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -240.0,
+            "relative_rms_db": -240.0,
+            "peak_dbfs": -240.0,
+            "max_active_second_relative_db": -240.0,
+            "active_seconds": 0,
+            "seconds": 145,
+            "crest_db": -240.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Tranquil Chinese Chamber Music Composition.mp3",
+      "source_sha256": "94effa99ebd29f680d37dd824d5f110d888ddaf558f5c2114985837943a8f894",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -73.65542254117904,
+                "relative_rms_db": -53.22146227977782,
+                "peak_dbfs": -46.50236473578853,
+                "max_active_second_relative_db": -35.68921863920246,
+                "active_seconds": 0,
+                "seconds": 147,
+                "crest_db": 27.153058399770362
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -73.65542254117904,
+            "relative_rms_db": -53.22146227977782,
+            "peak_dbfs": -46.50236473578853,
+            "max_active_second_relative_db": -35.68921863920246,
+            "active_seconds": 0,
+            "seconds": 147,
+            "crest_db": 27.153058399770362
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -71.11702968559078,
+                "relative_rms_db": -50.68306942418956,
+                "peak_dbfs": -36.72044076695198,
+                "max_active_second_relative_db": -35.61518802616527,
+                "active_seconds": 1,
+                "seconds": 147,
+                "crest_db": 34.3965889428843
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -71.11702968559078,
+            "relative_rms_db": -50.68306942418956,
+            "peak_dbfs": -36.72044076695198,
+            "max_active_second_relative_db": -35.61518802616527,
+            "active_seconds": 1,
+            "seconds": 147,
+            "crest_db": 34.3965889428843
+          }
+        }
+      }
+    },
+    {
+      "name": "Wakeup.mp3",
+      "source_sha256": "dc0817dd28c07ff3ca19f4ee024db155a969fad3648077f3090a8c028fd9f388",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "drums"
+          ],
+          "excluded": {
+            "piano": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -68.37407862196898,
+                "relative_rms_db": -45.66635826784285,
+                "peak_dbfs": -58.26779887263511,
+                "max_active_second_relative_db": -25.931307620401945,
+                "active_seconds": 0,
+                "seconds": 30,
+                "crest_db": 10.1062794758165
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -68.37407862196898,
+            "relative_rms_db": -45.66635826784285,
+            "peak_dbfs": -58.26779887263511,
+            "max_active_second_relative_db": -25.931307620401945,
+            "active_seconds": 0,
+            "seconds": 30,
+            "crest_db": 10.1062794758165
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "other",
+            "vocals",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "drums": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -68.5083682361129,
+                "relative_rms_db": -45.80064788198679,
+                "peak_dbfs": -59.42763781218885,
+                "max_active_second_relative_db": -26.04398470510307,
+                "active_seconds": 0,
+                "seconds": 30,
+                "crest_db": 9.080730482615673
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -68.5083682361129,
+            "relative_rms_db": -45.80064788198679,
+            "peak_dbfs": -59.42763781218885,
+            "max_active_second_relative_db": -26.04398470510307,
+            "active_seconds": 0,
+            "seconds": 30,
+            "crest_db": 9.080730482615673
+          }
+        }
+      }
+    },
+    {
+      "name": "Woodland Chamber Folk Instrumental.mp3",
+      "source_sha256": "1a0e9068ba1a1e61cb3fb121690a456b02b83baeada8a8ac141d078a8a70dca2",
+      "groups": {
+        "coarse_six": {
+          "kept": [
+            "bass",
+            "drums",
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -72.29273894785833,
+                "relative_rms_db": -52.14304619572356,
+                "peak_dbfs": -40.56623118965063,
+                "max_active_second_relative_db": -31.763791118852318,
+                "active_seconds": 1,
+                "seconds": 148,
+                "crest_db": 31.726507103715736
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -72.29273894785833,
+            "relative_rms_db": -52.14304619572356,
+            "peak_dbfs": -40.56623118965063,
+            "max_active_second_relative_db": -31.763791118852318,
+            "active_seconds": 1,
+            "seconds": 148,
+            "crest_db": 31.726507103715736
+          }
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": [
+            "woodwinds",
+            "bass",
+            "drums",
+            "other",
+            "guitar",
+            "piano"
+          ],
+          "excluded": {
+            "vocals": {
+              "decision": "exclude_negligible",
+              "measurement": {
+                "rms_dbfs": -70.12482809366637,
+                "relative_rms_db": -49.975135341531605,
+                "peak_dbfs": -38.62237421184374,
+                "max_active_second_relative_db": -31.60609988256345,
+                "active_seconds": 3,
+                "seconds": 148,
+                "crest_db": 31.502453998607308
+              }
+            }
+          },
+          "safe_mix_gain": 1.0,
+          "removed_contribution": {
+            "rms_dbfs": -70.12482809366637,
+            "relative_rms_db": -49.975135341531605,
+            "peak_dbfs": -38.62237421184374,
+            "max_active_second_relative_db": -31.60609988256345,
+            "active_seconds": 3,
+            "seconds": 148,
+            "crest_db": 31.502453998607308
+          }
+        }
+      }
+    }
+  ],
+  "spatial_preview": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\spatial_preview_v1\\bundle_manifest.json",
+  "runtime_ready": false,
+  "listening_approved": false
+}

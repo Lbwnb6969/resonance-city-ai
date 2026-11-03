@@ -1,0 +1,49 @@
+{
+  "scope": "music only",
+  "folders": [
+    {
+      "folder": "数据/音乐资产",
+      "decision": "retain_and_index",
+      "reason": "现用原曲、分轨、音源、参考分析与历史成果实体；仅本地，gdignore/gitignore。",
+      "small_metadata_files": null
+    },
+    {
+      "folder": "数据/音乐制作",
+      "decision": "retain_and_index",
+      "reason": "当前总目录、提示词原稿、路径映射；旧元数据保留历史，新项目内索引供查找。",
+      "small_metadata_files": 10
+    },
+    {
+      "folder": "数据/母曲",
+      "decision": "retain_and_index",
+      "reason": "正式代码直接读取的内部谱材；原路径保留。",
+      "small_metadata_files": 14
+    },
+    {
+      "folder": "数据/原创谱材",
+      "decision": "retain_and_index",
+      "reason": "M80/schema1与旧档验证输入；原路径保留。",
+      "small_metadata_files": 4
+    },
+    {
+      "folder": "数据/音乐参考",
+      "decision": "retain_and_index",
+      "reason": "历史测量特征；原路径保留，通过总入口说明。",
+      "small_metadata_files": 2
+    },
+    {
+      "folder": "数据/音乐设计候选",
+      "decision": "retain_and_index",
+      "reason": "历史设计提案，不作为现用歌单；保留以供追溯。",
+      "small_metadata_files": 4
+    }
+  ],
+  "archived_drop": "废弃/音乐整合_20261103/原始投递_歌曲-lyria",
+  "preexisting_missing_files": [
+    "数据/作曲候选/Gemini音乐续稿_素材目录_v1.json",
+    "数据/作曲候选/田园晨风_Gemini表格草案_v1.json",
+    "数据/作曲候选/Gemini柔和长听_部分谱与参数_v1.json"
+  ],
+  "missing_file_policy": "Preexisting working-tree deletions left intact; no reset/restore of another session edits.",
+  "no_runtime_data_moved": true
+}

@@ -2,10 +2,14 @@ extends RefCounted
 ## Front silhouettes follow the published recipe, including automatic old houses.
 const Choice=preload("res://scripts/world/city_creation_architecture_choice.gd")
 const PROFILES={
+	"creek_boathouse":[[-.88,.60],[-.88,-.20],[-.42,-.70],[.03,-.20],[.03,.28],[.90,.28],[.90,.60],[-.88,.60]],
+	"corner_loggia_tower":[[-.92,.65],[-.92,.14],[-.48,.14],[-.48,-.58],[0,-.94],[.48,-.58],[.48,.14],[.92,.14],[.92,.65],[-.92,.65]],
+	"cantilever_tea_deck":[[-.85,.55],[-.85,-.2],[-.20,-.65],[.45,-.3],[.45,.15],[.95,.15],[.95,.45],[.45,.45],[.45,.65],[-.85,.65]],
 	"ionic_stoa":[[-.98,.65],[-.98,-.42],[.98,-.42],[.98,.65]],
 	"roman_basilica":[[-.95,.65],[-.95,-.05],[-.42,-.05],[-.42,-.55],[0,-.85],[.42,-.55],[.42,-.05],[.95,-.05],[.95,.65]],
 	"portico":[[-.85,.6],[-.85,-.15],[0,-.75],[.85,-.15],[.85,.6]],
 	"townhouse":[[-.65,.65],[-.65,-.7],[.65,-.7],[.65,.65]],
+	"recessed_townhouse":[[-.65,.65],[-.65,-.7],[.65,-.7],[.65,.65]],
 	"oriel":[[-.75,.65],[-.75,-.55],[.2,-.55],[.75,-.25],[.75,.65]],
 	"peristyle":[[-.9,.65],[-.9,-.4],[-.3,-.4],[-.3,.25],[.3,.25],[.3,-.4],[.9,-.4],[.9,.65]],
 	"rotunda":[[-.8,.65],[-.8,-.15],[-.55,-.6],[0,-.8],[.55,-.6],[.8,-.15],[.8,.65]],
@@ -21,10 +25,11 @@ const PROFILES={
 	"iron_conservatory":[[-.9,.65],[-.9,-.05],[-.55,-.55],[0,-.8],[.55,-.55],[.9,-.05],[.9,.65]],
 	"guild_arcade":[[-.95,.65],[-.95,-.5],[.95,-.5],[.95,.65]],
 	"venetian_loggia":[[-.95,.65],[-.95,-.55],[-.3,-.55],[0,-.85],[.3,-.55],[.95,-.55],[.95,.65]],
+	"stepped_guildhouse":[[-.9,.65],[-.9,-.12],[-.65,-.12],[-.65,-.38],[-.4,-.38],[-.4,-.64],[-.17,-.64],[-.17,-.90],[.17,-.90],[.17,-.64],[.4,-.64],[.4,-.38],[.65,-.38],[.65,-.12],[.9,-.12],[.9,.65]],
 	"belvedere_villa":[[-.95,.65],[-.95,-.1],[-.5,-.1],[-.5,-.55],[0,-.9],[.5,-.55],[.5,-.1],[.95,-.1],[.95,.65]]}
 static func key(pop,house:Dictionary)->String:
 	var caption:String=preload("res://scripts/ui/city_creation_prototype_caption.gd").caption(pop,house)
-	for id:String in Choice.NEO+Choice.ALPINE+Choice.CLOCKWORK+Choice.RENAISSANCE+Choice.ANCIENT.IDS:
+	for id:String in Choice.NEO+Choice.ALPINE+Choice.MODERN_EXTRAS+Choice.CLOCKWORK+Choice.RENAISSANCE+Choice.ANCIENT.IDS+Choice.PASTORAL_EXTRAS:
 		if Choice.label(id)==caption:return id
 	return str(house.get("architecture",""))
 static func line(canvas:CanvasItem,points:Array,at:Vector2,r:float,color:Color,width:float=1.5)->void:
@@ -37,6 +42,19 @@ static func draw(canvas:CanvasItem,key:String,at:Vector2,r:float,color:Color,gol
 	if key=="portico":line(canvas,[[-.88,-.12],[.88,-.12]],at,r,color,2.2)
 	if key=="rotunda":canvas.draw_arc(at+Vector2(0,-.1)*r,r*.67,PI,TAU,20,color,1.6,true)
 	match key:
+		"creek_boathouse":
+			line(canvas,[[.06,.28],[.35,-.20],[.64,.28]],at,r,gold,1.2)
+			line(canvas,[[.16,.45],[.35,.53],[.56,.45]],at,r,gold,1.5)
+		"corner_loggia_tower":
+			for x:float in [-.30,0.,.30]:
+				canvas.draw_arc(at+Vector2(x,-.25)*r,r*.11,PI,TAU,10,gold,1.2,true)
+				line(canvas,[[x-.11,-.25],[x-.11,.06]],at,r,gold,1.2)
+			line(canvas,[[-.40,.06],[.40,.06]],at,r,gold,1.2)
+		"recessed_townhouse":
+			for x:float in [-.32,.32]:
+				for y:float in [-.42,.17]:
+					line(canvas,[[x-.16,y],[x+.16,y],[x+.16,y+.33],[x-.16,y+.33],[x-.16,y]],at,r,gold,2.)
+					line(canvas,[[x-.10,y+.06],[x+.10,y+.06],[x+.10,y+.27]],at,r,color,1.)
 		"ionic_stoa":
 			for x:float in [-.75,-.25,.25,.75]:
 				line(canvas,[[x,-.24],[x,.55]],at,r,gold,1.2)

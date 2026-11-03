@@ -4,15 +4,16 @@ const Architecture=preload("res://scripts/world/city_creation_architecture_choic
 const Seed=preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd")
 static func prototypes(era:String)->Array:
  match era:
-  "pastoral":return ["portico","townhouse","rotunda"]+Architecture.ANCIENT.IDS
-  "renaissance":return ["portico","townhouse","rotunda"]+Architecture.RENAISSANCE
-  "clockwork":return Architecture.CLOCKWORK
-  "modern_eco":return Architecture.ALPINE
+  "pastoral":return ["portico","townhouse","recessed_townhouse","rotunda"]+Architecture.ANCIENT.IDS+Architecture.PASTORAL_EXTRAS
+  "renaissance":return ["portico","townhouse","recessed_townhouse","rotunda"]+Architecture.RENAISSANCE
+  "clockwork":return Architecture.CLOCKWORK+["recessed_townhouse"]
+  "modern_eco":return Architecture.ALPINE+Architecture.MODERN_EXTRAS+["recessed_townhouse"]
  return []
 static func select(city:RefCounted,era:String,prototype:String="")->bool:
  if not city.can_build_era(era) or (not prototype.is_empty() and prototype not in prototypes(era)):return false
  var brush:=current(city).duplicate(true);brush.era=era;brush.prototype=prototype
- if not prototype.is_empty() and era in ["pastoral","renaissance"] and brush.get("appearance",{}).get("style","") in ["timber","round_tower"]:brush.appearance.style="classic"
+ if prototype!="recessed_townhouse":preload("res://scripts/world/city_creation_architecture_variants.gd").clear_windows(brush.get("appearance",{}))
+ if not prototype.is_empty() and (era in ["pastoral","renaissance"] or prototype=="recessed_townhouse") and brush.get("appearance",{}).get("style","") in ["timber","round_tower"]:brush.appearance.style="classic"
  city.set_meta("new_house_brush",brush);return true
 static func current(city:RefCounted)->Dictionary:
  return city.get_meta("new_house_brush",{"era":"pastoral","prototype":""})
@@ -34,7 +35,7 @@ static func sample(city:RefCounted,id:String)->Dictionary:
  var structural:=prototype not in prototypes(era) and not prototype.is_empty()
  select(city,era,"" if structural else prototype)
  var appearance:Dictionary={"style":house.get("style","classic"),"palette":int(house.get("palette",0))}
- for field:String in ["finish","custom_colors"]:
+ for field:String in ["finish","custom_colors","architecture_variant"]:
   if house.has(field):appearance[field]=house[field].duplicate(true) if house[field] is Dictionary else house[field]
  var brush:=current(city);brush.appearance=appearance;brush.source_id=id
  return {"ok":true,"message":"已沿用时代、材质与配色；此原型需加建后选择。" if structural else "已沿用此屋外观，接下来新造的房屋持续使用。"}

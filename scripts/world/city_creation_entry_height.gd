@@ -38,6 +38,8 @@ static func assess(city:RefCounted,house:Dictionary,entry:Dictionary,target:Vect
 		previous=surface;last=at
 	if absf(float(previous.y)-float(result.street_y))>Roads.STEP_HEIGHT+EPS:
 		result.reason="steps_miss_street";result.blocked_at=target;return _diagnostic(result)
+	result.corridor=preload("res://scripts/world/city_creation_entry_corridor.gd").assess(city,house,entry,target,road,func(at:Vector2)->Dictionary:return _surface(city,house,entry,at,road,profile,plan))
+	if not result.corridor.ok:result.reason=result.corridor.reason;return _diagnostic(result)
 	result.ok=true;result.reason="supported";return _diagnostic(result)
 
 static func _diagnostic(result:Dictionary)->Dictionary:
@@ -49,8 +51,11 @@ static func _diagnostic(result:Dictionary)->Dictionary:
 static func _surface(city:RefCounted,house:Dictionary,entry:Dictionary,at:Vector2,road:Dictionary,profile:Dictionary,plan:Dictionary)->Dictionary:
 	var result:={"y":city.ground_height(at),"kind":"ground"}
 	if city._water_stroke_distance(at,road.points)<=float(road.width)*.5+EPS:
-		var y:float=city.street_height(at)
-		if y>=float(result.y):result={"y":y,"kind":"road_steps" if not profile.treads.is_empty() else "road"}
+		var surface:Dictionary=city._road_heights.surface_at(at)
+		var y:float=surface.get("top_y",city.street_height(at))
+		if not surface.is_empty() and not surface.get("supported",true):
+			if city.water_clearance(at)<.05:result={"y":y,"kind":"road_gap"}
+		elif not surface.is_empty() and y>=float(result.y):result={"y":y,"kind":surface.kind}
 	var relative:Vector2=at-Vector2(entry.wall_at);var along:=relative.dot(Frame.normal(entry));var lateral:=absf(relative.cross(Frame.normal(entry)))
 	var base:float=house.get("base_y",0.)
 	if entry.active:

@@ -651,6 +651,7 @@ func _check(key: String) -> String:
 	return "●" if completed.has(key) else "○"
 
 func select_tool(index: int) -> void:
+	if has_meta("batch_edit"):get_meta("batch_edit").close()
 	if has_meta("ground_landmark_tool"):get_meta("ground_landmark_tool").cancel()
 	strum_hold.cancel()
 	guided_hint=""
@@ -729,6 +730,7 @@ func home_camera() -> void:
 	_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if preload("res://scripts/ui/city_creation_water_crossing_input.gd").active(self):return
 	if get_meta("solo_spotlight").handle_input(event):get_viewport().set_input_as_handled();return
 	if strum_hold.handle_input(self,event):
 		get_viewport().set_input_as_handled();return
@@ -760,6 +762,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		return
 	if camera_rig.tour.handle(self,event):get_viewport().set_input_as_handled();return
+	if has_meta("batch_edit") and get_meta("batch_edit").handle(event):get_viewport().set_input_as_handled();return
 	if camera_rig.bench_view.handle(self,event):get_viewport().set_input_as_handled();return
 	if has_meta("ground_landmark_tool") and get_meta("ground_landmark_tool").handle(event):get_viewport().set_input_as_handled();return
 	if has_meta("house_rotation_input") and get_meta("house_rotation_input").handle(event):
@@ -827,6 +830,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if preload("res://scripts/ui/city_creation_water_crossing_input.gd").active(self):return
 	if gallery!=null and gallery.busy:return
 	if guide!=null and guide.visible(): return
 	if camera_rig.strolling:
@@ -1073,6 +1077,8 @@ func _plane_at(screen: Vector2, height: float) -> Vector2:
 	return Vector2(p.x, p.z)
 
 func _update_hover() -> void:
+	if has_meta("batch_edit") and get_meta("batch_edit").blocks_hover():return
+	if has_meta("road_trim_tool") and get_meta("road_trim_tool").update():return
 	if has_meta("ground_landmark_tool") and get_meta("ground_landmark_tool").hover():return
 	if strum_hold.active():
 		town.clear_preview();preview_key="";candidate.clear();return
@@ -1370,10 +1376,11 @@ func _append_water_point() -> void:
 		_show_water_preview(water_points)
 
 func _show_water_preview(points: Array[Vector2]) -> void:
+	if preload("res://scripts/ui/city_creation_water_crossing_input.gd").preview(self,points):return
 	var check: Dictionary = state.preview_water(points, water_width, water_kind)
 	water_status.text = str(check.message) if not str(check.message).is_empty() else "松开留下水岸；Esc 取消。"
 	if water_kind == "channel" and not water_drawing:
-		water_status.text = "从已有河水或池塘起笔，拖向空地。"
+		water_status.text = "从已有河水或池塘起笔，可闭环或接回水域。"
 	var names: Array[String] = []
 	for conflict: Dictionary in check.get("conflicts",[]):
 		names.append(str(conflict.get("name",conflict.id)))
@@ -1381,6 +1388,7 @@ func _show_water_preview(points: Array[Vector2]) -> void:
 	town.preview_water(points, water_width, bool(check.ok), check.get("conflicts",[]))
 
 func _finish_water() -> void:
+	if preload("res://scripts/ui/city_creation_water_crossing_input.gd").finish(self):return
 	water_drawing = false
 	if water_points.is_empty():
 		_cancel_draft()
@@ -1703,6 +1711,7 @@ func _cancel_draft() -> void:
 	vegetation_points.clear()
 	water_drawing = false
 	water_points.clear()
+	preload("res://scripts/ui/city_creation_water_crossing_input.gd").cancel(self)
 	district_drawing = false
 	district_points.clear()
 	district_start_id = ""

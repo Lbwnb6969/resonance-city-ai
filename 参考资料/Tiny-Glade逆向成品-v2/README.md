@@ -13,7 +13,16 @@
 | 原生项目源码归属 | 7559函数/10162896B，对应全部保留私有源码行 | 伪代码批量导出进行中；质量逐项保留 |
 | 屋顶瓦片 | 圆形高层＋矩形低层独立Python源码 | 3722旧records、额外真实快照912 records全bit exact |
 | 屋顶运行 | 动画、SparseWriter push/page增长、GPU gravity | GPU1542更新；height误差≤9.54e-7，rotation≤2half最小ULP |
-| 墙/楼梯 | 完整横竖planner、world门窗/拱洞、地形、实景raycaster | 84+175+116+90组第二阶段原程序比对；完整实例装配进行中 |
+| 墙/楼梯 | 完整横竖planner、world门窗/拱洞、地形、实景raycaster；新增 WindowCutLists 原生返回 ABI、状态 hash、结构化 WoodenPlank/Gable 记录、shader flags/seed/jitter、gable remap/skew、窗口列表打包、弯墙 helper 与 planner→实例提交桥接层 | 84+175+116+90组第二阶段原程序比对；桥接层50项确定性检查通过；原生材质选择/随机字段最终路由仍未闭合 |
+| BoardWallSpace ABI | original/expanded shape payload、wall length、expanded length、0.125 remap offset 的 68-byte 输出布局 | 8项确定性检查通过；ShapeParameters expand/as_curve2 的完整 shape 变换仍未闭合 |
+| ShapeParameters | rectangle/circle shape expand、曲线 dispatch、circle 0.2 容差、采样数量和点域、rectangle 闭合点域、Curve2 弧长/u_values | 16项确定性检查通过；Curve2 内部 Rust 分配路径仍由原生证据约束 |
+| Grass2 build-draws | 130/190世界域采样、plant/水样本分组、地形高度比例，以及大世界边缘/路径/水面/theme 门控与 exemplar 选择 | 15项确定性检查通过；GPU atomic、barrier、活跃列表竞争和最终栅格解析仍由原SPIR-V/调度证据约束 |
+| Grass2 removal/dispatch | removal RG8 mask、path/water/rocky/foliage/building/garden 门控、active indirect dispatch 参数 | 8项确定性检查通过；card-splats GPU depth/visibility 竞争仍未闭合 |
+| Nani cull-and-bucket | packed instance 解码、四侧面+深度球体剔除、上一帧可见性传播、1024 深度桶、filtered instance/meta/histogram | 9项确定性检查通过；GPU atomic 追加顺序仍未闭合 |
+| Nani draw lists | merge window atlas histogram、`DrawIndexedIndirectCommand` 字段和 instance indirection 生成 | 7项确定性检查通过；GPU workgroup/atomic command 分配先后仍未闭合 |
+| Nani histogram/sort | 深度桶 prefix、sorted instance packed 值、mesh 计数和 instance indirection | 8项确定性检查通过；GPU 同桶 atomic 追加顺序仍未闭合 |
+| Nani end-to-end | cull → bucket prefix → sorted instance → merge-window draw command 的端到端数据链 | 8项确定性检查通过；GPU dispatch/atomic 时序仍未闭合 |
+| Nani dispatch args | filtered/merge/prefix/two-pass dispatch 参数和 indirect draw dispatch 转换 | 8项确定性检查通过 |
 | 资源 | 621完整DDS、504descriptor、完整植被结构与packed字段 | 6146层/mip原指令验证；24prefab目录继承 |
 | 资源ID | AssetRecipeId/Hash128/TextureOpts、Ready/无prefix文件源 | 19完整纹理recipe原代码验证；Windows prefix进一步还原中 |
 | Shader | 670完整GLSL，555distinct全部compile | host接口670/670一致；最终SPIR-V scalar-layout profile验证全通过 |
@@ -25,6 +34,17 @@
 
 - [屋顶独立源码](reports/reconstruction_roof.md)、[动画/缓冲与GPU](reports/reconstruction_roof_runtime.md)。
 - [墙/楼梯初步内核](reports/reconstruction_wall_stairs.md)、[完整planner/真实碰撞链](reports/reconstruction_wall_pipeline.md)。
+- [墙构造提交桥接层](reports/reconstruction_wall_constructor.md)。
+- [BoardWallSpace output ABI](reports/reconstruction_board_wall_space.md)。
+- [ShapeParameters expansion](reports/reconstruction_shape_parameters.md)。
+- [Grass2 CPU draw handoff](reports/reconstruction_grass2_draws.md)。
+- [Grass2 build-draws sampling reference](reports/reconstruction_grass2_sampling.md)。
+- [Grass2 removal mask and dispatch](reports/reconstruction_grass2_removal.md)。
+- [Nani cull-and-bucket reference](reports/reconstruction_nani_cull.md)。
+- [Nani draw-list reference](reports/reconstruction_nani_draws.md)。
+- [Nani histogram and sort reference](reports/reconstruction_nani_sort.md)。
+- [Nani end-to-end pipeline](reports/reconstruction_nani_pipeline.md)。
+- [Nani dispatch arguments](reports/reconstruction_nani_dispatch.md)。
 - [完整资源语义与recipe](reports/reconstruction_resources.md)。
 - [全部着色器源码与验证](reports/reconstruction_shaders.md)，最终模块索引在 reconstruction/shader_source_index.json。
 - [全量音频PCM](reports/reconstruction_audio_pcm.md)、[Studio事件及bank关联](reports/reconstruction_audio_studio.md)。

@@ -2,7 +2,7 @@ extends RefCounted
 ## Faces of the actual planar road graph, including segment-interior junctions.
 const Stroke=preload("res://scripts/world/city_creation_stroke.gd")
 const BIN:=8.
-static func faces(roads:Array)->Array[Dictionary]:
+static func faces(roads:Array,min_area:float=28.,max_area:float=220.)->Array[Dictionary]:
 	var segments:Array[Dictionary]=[];var bins:Dictionary={}
 	for road:Dictionary in roads:
 		var points:Array[Vector2]=[]
@@ -61,7 +61,7 @@ static func faces(roads:Array)->Array[Dictionary]:
 			var area:=0.;var center:=Vector2.ZERO
 			for i in range(poly.size()):
 				var p:=poly[i];var q:=poly[(i+1)%poly.size()];var cross:=p.cross(q);area+=cross;center+=(p+q)*cross
-			if area<56.-.0001 or area>440.+.0001:continue
+			if area<min_area*2.-.0001 or area>max_area*2.+.0001:continue
 			center/=3.*area
 			if not Geometry2D.is_point_in_polygon(center,poly):continue
 			members.sort();result.append({"center":center,"area":area*.5,"polygon":poly,"owner_id":members[0],"owners":members})

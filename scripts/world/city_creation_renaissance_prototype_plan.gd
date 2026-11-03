@@ -1,7 +1,8 @@
 extends RefCounted
 ## Only new construction seeds a context choice; loading an old work never does.
-const KINDS=["venetian_loggia","belvedere_villa"]
+const KINDS=["venetian_loggia","belvedere_villa","corner_loggia_tower"]
 static func active(city,house:Dictionary)->bool:
+	if house.get("architecture","")=="corner_loggia_tower":return preload("res://scripts/world/city_creation_corner_loggia.gd").active(city,house)
 	return city.house_era(house)=="renaissance" and house.get("architecture","") in KINDS and not house.has("signature")
 static func seed_new(city,house:Dictionary)->void:
 	if city.house_era(house)!="renaissance" or house.has("architecture") or house.get("style","") in ["timber","round_tower"]:return

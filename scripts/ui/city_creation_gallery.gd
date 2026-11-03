@@ -49,6 +49,7 @@ func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	panel.chord_tour_requested.connect(func(id:String)->void:demo.camera_rig.tour.start(demo,id))
 
 func open_panel() -> void:
+	if demo.has_meta("batch_edit"):demo.get_meta("batch_edit").close()
 	if busy or demo.edit_pending():
 		demo._message("小路接合完成后，就能收藏这座河湾。")
 		return
@@ -56,6 +57,7 @@ func open_panel() -> void:
 	demo.orbiting=false
 	demo.panning=false
 	demo.town.clear_preview()
+	demo.journal.scrollbook.close_all();demo.spatial_popover.close()
 	panel.show()
 	panel.title_input.text="" if current_title=="未命名河湾" else current_title
 	_refresh()
@@ -81,22 +83,26 @@ func _set_busy(value: bool) -> void:
 func _view() -> Dictionary:
 	return demo.camera_rig.collection_view(demo)
 
-func _capture(title: String, reason: String) -> Dictionary:
+func _capture(title: String, reason: String, is_current:Callable=Callable()) -> Dictionary:
 	# A real viewport image without UI, not an artist-created thumbnail. Pause
 	# actors for this one capture frame so the saved checkpoint matches it.
 	stop_preview()
 	var life_processing: bool=demo.life.is_processing()
+	var capture_city:RefCounted=demo.state;var capture_life:Node=demo.life
 	demo.life.set_process(false)
 	var ui_visible: bool=demo.ui_layer.visible
 	demo.ui_layer.visible=false
 	demo.town.clear_preview()
 	await RenderingServer.frame_post_draw
+	if demo.state!=capture_city or demo.life!=capture_life or (is_current.is_valid() and not is_current.call()):
+		demo.ui_layer.visible=ui_visible
+		return {"ok":false,"message":"收藏会话已取消"}
 	var image: Image=demo.get_viewport().get_texture().get_image()
 	demo._capture_journeys()
 	var mix:Dictionary=Phonograph.reconstruct(demo.state,_view()) if demo.music.muted or demo.music._loading or demo.music.has_meta("authored_score") else Phonograph.capture(demo.music)
 	var result: Dictionary=library.save(title,demo.state.snapshot(),_view(),image,reason,mix)
 	demo.ui_layer.visible=ui_visible
-	demo.life.set_process(life_processing)
+	capture_life.set_process(life_processing)
 	return result
 
 func save_work(title: String) -> void:

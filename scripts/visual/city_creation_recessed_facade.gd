@@ -3,14 +3,20 @@ extends RefCounted
 const Rhythm=preload("res://scripts/visual/city_creation_street_rhythm.gd")
 const HALF:=.065
 static func shell(r,job,frame,wall:Node3D,direction:Vector2i,width:float,center:Vector3)->bool:
-	if not r.Classical.Ancient.active(job.house,job.era) or width<1.4 or not center.is_zero_approx():return false
-	var door:bool=frame.level==0 and job.doors.has([str(frame.cell.id),direction])
+	var layered:=preload("res://scripts/visual/city_creation_layered_windows.gd").eligible(job,width,center)
+	var guild:=int(frame.level)==0 and preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(r.state,job.house)
+	if (not layered and not guild and not r.Classical.Ancient.active(job.house,job.era)) or width<1.4 or (not guild and not center.is_zero_approx()):return false
+	var door:bool=job.doors.has([str(frame.cell.id),direction])
+	if (layered or guild) and door:return false
 	var holes:Array=[]
 	if door:holes.append({"x":0.,"radius":.25,"bottom":.18,"spring":1.32,"arched":false})
+	elif layered:holes=preload("res://scripts/visual/city_creation_layered_windows.gd").holes(frame.level,job.house,frame.cell,direction,wall.has_meta("arcade_recess"))
+	elif guild:holes=[{"x":center.x,"radius":.42,"bottom":.60,"spring":.99,"arched":true}];wall.set_meta("guild_shop_window",true)
 	else:
 		var rhythm:=Rhythm.opening(r,job.house,frame.cell,wall);wall.set_meta("street_openings",rhythm)
 		for x:float in rhythm.positions:holes.append({"x":x,"radius":float(rhythm.radius),"bottom":.60,"spring":.99,"arched":true})
 	var plan:={"version":1,"door":door,"width":width,"height":1.7,"holes":holes,"thickness":HALF*2.}
+	if guild:plan["center_x"]=center.x
 	var mesh:MeshInstance3D=r._triangles(wall,faces(plan),job.palette[0]);mesh.material_override=job.walls;mesh.name="RecessedFacadeShell"
 	if job.style=="stone":r._stone_arch_surface(mesh,job.walls)
 	wall.set_meta("recessed_facade",plan)
@@ -38,7 +44,7 @@ static func edge(out:Array[Vector3],a:Vector2,b:Vector2)->void:
 	var p:=Vector3(a.x,a.y,-HALF);var q:=Vector3(b.x,b.y,-HALF);var u:=Vector3(a.x,a.y,HALF);var v:=Vector3(b.x,b.y,HALF)
 	out.append_array([p,q,v,p,v,u])
 static func faces(plan:Dictionary)->Array[Vector3]:
-	var out:Array[Vector3]=[];var xs:Array=[-float(plan.width)*.5,float(plan.width)*.5]
+	var out:Array[Vector3]=[];var center:float=plan.get("center_x",0.);var xs:Array=[center-float(plan.width)*.5,center+float(plan.width)*.5]
 	for hole:Dictionary in plan.holes:
 		for p:Vector2 in outline(hole):
 			if not xs.any(func(x):return absf(float(x)-p.x)<.000001):xs.append(p.x)
@@ -51,7 +57,7 @@ static func faces(plan:Dictionary)->Array[Vector3]:
 		else:
 			band(out,x0,x1,0.,0.,selected.bottom,selected.bottom)
 			band(out,x0,x1,top(selected,x0),top(selected,x1),plan.height,plan.height)
-	var outer:=PackedVector2Array([Vector2(-plan.width*.5,0),Vector2(plan.width*.5,0),Vector2(plan.width*.5,plan.height),Vector2(-plan.width*.5,plan.height)])
+	var outer:=PackedVector2Array([Vector2(center-plan.width*.5,0),Vector2(center+plan.width*.5,0),Vector2(center+plan.width*.5,plan.height),Vector2(center-plan.width*.5,plan.height)])
 	for i in range(outer.size()):edge(out,outer[i],outer[(i+1)%outer.size()])
 	for hole:Dictionary in plan.holes:
 		var points:=outline(hole)

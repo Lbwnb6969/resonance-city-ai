@@ -11,7 +11,7 @@ func colors()->Array:
 				for value:Color in values:result[value.to_html()]=true
 	var keys:Array=result.keys();keys.sort();return keys
 func select_house()->void:
-	await ui_click(demo.tool_buttons[4]);await click_world(Vector2(-25,-12));await settle()
+	await ui_click(demo.tool_buttons[0]);await click_world(Vector2(-25,-12));await settle()
 	check(demo.spatial_popover.target_house_id=="h1","native world click selects actual house")
 func open_colors()->void:
 	if not demo.spatial_popover.card.is_visible_in_tree():await select_house()

@@ -35,8 +35,8 @@ func _process(delta:float)->void:
 	if changed:
 		epoch=next_epoch;counters.clear();revision=-1;ripple_left=0.
 		for row:Dictionary in motes:row.left=0.;row.node.hide()
-	var next_appearance:=preload("res://scripts/world/city_creation_flowering_vines.gd").key(city)
-	if revision!=city.revision or appearance_key!=next_appearance:
+	var next_appearance:=preload("res://scripts/world/city_creation_flowering_vines.gd").key(city)+preload("res://scripts/world/city_creation_paired_bridge_lamps.gd").key(city)+preload("res://scripts/world/city_creation_window_pennants.gd").key(city)
+	if (revision!=city.revision or appearance_key!=next_appearance) and not demo.edit_pending():
 		revision=city.revision;appearance_key=next_appearance;_rebuild(city)
 	for house:Dictionary in city.houses if Rules.has(city,"warm_hearth_ballad") or Rules.has(city,"twilight_tea_pavilion") else []:
 		var id:=str(house.id)

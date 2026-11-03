@@ -121,6 +121,7 @@ static func install(renderer,parent: Node3D,data: Dictionary,road: Dictionary) -
 		var mesh: MeshInstance3D=renderer._triangles(root,faces,{"faces":Color("ada991"),"stones":Color("d7cdb1"),"caps":Color("e3d6b8"),"lamps":Color("ffd791")}[part])
 		mesh.name=part
 		if part=="lamps": mesh.material_override=renderer.promenade.lamp_material()
+		else: preload("res://scripts/visual/city_creation_wet_stone.gd").bridge(renderer,mesh)
 	var body := StaticBody3D.new()
 	body.name="BridgeGroundPick"
 	body.collision_layer=2

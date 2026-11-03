@@ -48,9 +48,9 @@ func apply(phase: int) -> void:
 	# daylight below clipping so plaster grain and cornices survive the sun.
 	# Warm direct light and cooler sky fill retain readable shaded facades.
 	var row: Array = [
-		["78a8c8","efe3cc","d8e2dc","fff1dc",0.95,0.44,0.64,Vector3(-46,-34,0),"bfd4e6"],
-		["5d7ea6","f0bfa0","b9a698","ffc18e",0.78,0.38,0.76,Vector3(-22,-48,0),"8a86a6"],
-		["182738","2c4257","1e2f40","6b82a8",0.28,0.34,1.08,Vector3(-38,25,0),"a6b9d3"]
+		["78a8c8","efe3cc","d8e2dc","fff1dc",0.95,0.44,0.72,Vector3(-46,-34,0),"bfd4e6"],
+		["5d7ea6","f0bfa0","b9a698","ffc18e",0.78,0.38,0.81,Vector3(-22,-48,0),"8a86a6"],
+		["182738","2c4257","1e2f40","6b82a8",0.28,0.34,1.04,Vector3(-38,25,0),"a6b9d3"]
 	][phase]
 	sky_material.sky_top_color = Color(row[0])
 	sky_material.sky_horizon_color = Color(row[1])
@@ -62,6 +62,7 @@ func apply(phase: int) -> void:
 	environment.ambient_light_sky_contribution = .65 if phase == 2 else .52
 	environment.ambient_light_energy = row[5]
 	environment.tonemap_exposure = row[6]
+	environment.tonemap_white = [2.10,2.05,1.95][phase]
 	sun.light_color = Color(row[3])
 	sun.light_energy = row[4]
 	sun.rotation_degrees = row[7]

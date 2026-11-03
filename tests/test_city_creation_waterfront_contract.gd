@@ -23,7 +23,7 @@ func run()->void:
 			network(city);var result:=rows(city);var row:Dictionary=result.filter(func(s):return s.members==["h1"])[0]
 			check(row.eligibility.district==(kind=="shore"),"physical face, water and entry determine district "+kind)
 			if kind=="shore":
-				check(row.members==["h1"] and row.stage=="district" and row.evidence.shore_faces.size()==3 and row.evidence.public_entries.size()==3,"single compound long house qualifies without a second owner")
+				check(row.members==["h1"] and row.stage=="district" and row.evidence.shore_faces.size()==3 and not row.evidence.public_entries.is_empty() and row.evidence.public_entries.size()+row.evidence.rejected_entries.size()==3,"single compound long house qualifies with every shore entrance measured")
 				check(row.source_ids.has("w1") and row.source_ids.has("r1") and row.source_ids.has(city.houses[0].cells[0].id),"actual water, road, body and cell sources")
 				check(row.evidence.public_entries.all(func(e):return e.height_access.kind=="ordinary_door" and e.height_access.ok),"all projected entries have measured support")
 			else:check(not result.any(func(s):return s.eligibility.flowing),"no full Flowing eligibility from an inland label, rear water or wall")

@@ -1,8 +1,0 @@
-digraph behavior {
-  rankdir=TB;
-  n0 [label="Setup Status Subtree",shape=box];
-  n1 [label="Execute Subtree",shape=box];
-  n2 [label="Sequencer",shape=doubleoctagon];
-  n2 -> n0 [label="0"];
-  n2 -> n1 [label="1"];
-}

@@ -17,7 +17,7 @@ func handle(demo,event:InputEvent)->bool:
 		var ray:=PhysicsRayQueryParameters3D.create(demo.camera.global_position,point,1)
 		if not demo.get_world_3d().direct_space_state.intersect_ray(ray).is_empty():continue
 		best=distance;chosen=id
-	if chosen.is_empty():demo._message("指向空闲的道路长椅或可达阳台，再按 B 静听。");return true
+	if chosen.is_empty():demo._message("指向空闲长椅、可达阳台或亲水石埠干阶，再按 B 静听。");return true
 	enter(demo,chosen);return true
 func enter(demo,id:String)->bool:
 	var seat:Dictionary=Targets.plans(demo).get(id,{})

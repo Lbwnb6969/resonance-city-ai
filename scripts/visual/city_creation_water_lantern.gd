@@ -7,7 +7,7 @@ static func build(owner:Node3D,row:Dictionary)->void:
 	var basket:=Wall.source(Color("9b7250"),null,"component",Wall.Kind.CANTILEVER)
 	# Reuse the production paper micro-normal/contact-AO shader with opaque light.
 	if glow_shader==null:
-		glow_shader=Shader.new();glow_shader.code=Wall.WallShader.code.replace("uniform float roughness","uniform float lantern_night=0.;\nuniform float roughness").replace("ROUGHNESS = roughness;","ROUGHNESS = roughness;\nEMISSION=ALBEDO*lantern_night*.9;")
+		glow_shader=Shader.new();glow_shader.code=Wall.WallShader.code.replace("uniform float roughness","uniform float lantern_night=0.;\nuniform float roughness").replace("ROUGHNESS = clamp(","EMISSION=ALBEDO*lantern_night*.9;\n\tROUGHNESS = clamp(")
 	var glow:=Wall.merged(Wall.source(Color("ffcc70"),null,"component",Wall.Kind.STONE),row.y,1.7,glow_shader,Vector2(row.y+.04,row.y+.23));glow.set_shader_parameter("albedo_color",Color("ffcc70"))
 	r._cylinder(root,.07,.055,.13,Vector3(0,.13,0),glow,10)
 	r._cylinder(root,.23,.26,.06,Vector3(0,.02,0),basket,16)

@@ -34,8 +34,8 @@ func run()->void:
 	var id:String=f.groups.venetian_loggia[0];var prior:Dictionary=city.houses[city._house_index(id)].duplicate(true)
 	check(city.set_house_architecture(id,"belvedere_villa").ok and city.undo().ok and city.houses[city._house_index(id)]==prior,"public choice and undo")
 	check(city.redo().ok and city.houses[city._house_index(id)].architecture=="belvedere_villa","redo full choice")
-	var blank:=Fixture.State.new();var all:Array=Choice.NEO+Choice.ALPINE+Choice.CLOCKWORK+Choice.RENAISSANCE
-	check(all.size()==18 and all.all(func(k):return Choice.valid(k) and Choice.label(k)!="随形生长"),"eighteen stable IDs with actual labels")
+	var blank:=Fixture.State.new();var all:Array=Choice.NEO+Choice.ALPINE+Choice.CLOCKWORK+Choice.RENAISSANCE+Choice.PASTORAL_EXTRAS
+	check(all.size()==22 and all.all(func(k):return Choice.valid(k) and Choice.label(k)!="随形生长"),"twenty-two stable core IDs including the explicit corner-loggia and boathouse recipes")
 	# New public construction inside a real earned Renaissance district.
 	var district:Dictionary=city.add_district([Vector2(-29,11),Vector2(-8,11)] as Array[Vector2],8.)
 	check(district.ok and city.set_district_era(district.district_id,"renaissance").ok,"earned era district")

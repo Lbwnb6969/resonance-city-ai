@@ -3,6 +3,7 @@ extends RefCounted
 const Palette=preload("res://scripts/audio/city_creation_harmonic_palette.gd")
 static func enabled(_city:RefCounted)->bool:
 	return true
+static func minimum_rise(city:RefCounted)->float:return preload("res://scripts/world/city_creation_shallow_stair_keys.gd").minimum_rise(city)
 
 static func voice_rank(mode:int,degree:int)->int:
 	mode=maxi(0,mode)

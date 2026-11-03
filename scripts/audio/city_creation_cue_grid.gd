@@ -25,6 +25,9 @@ static func prepare_short_bank(edits:Dictionary,harmony:Dictionary)->void:
 			prefix.append_array(stream.data);stream.data=prefix
 			stream.set_meta("cue_preroll",GRID)
 static func transport_clock(owner:Node)->float:
+	var candidate:=preload("res://scripts/audio/city_creation_game_music_harmony.gd").position(owner)
+	if candidate>=0.:return candidate
+	if preload("res://scripts/audio/city_creation_free_music_route.gd").holds(owner):return owner._playback_clock()
 	var reference:AudioStreamWAV=owner._players.concert.stream
 	if owner.get_meta("cue_clock_stream",0)!=reference.get_instance_id():
 		var probe:=reference.instantiate_playback()

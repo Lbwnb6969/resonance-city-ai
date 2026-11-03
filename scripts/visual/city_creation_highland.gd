@@ -16,23 +16,11 @@ var _blockers:Dictionary={}
 const BIN:=4.0
 const STONE := preload("res://资源/建筑参考/石砌街屋.png")
 
-static func masonry_material(renderer,tone: Color) -> StandardMaterial3D:
+static func masonry_material(renderer,tone: Color) -> ShaderMaterial:
 	# Foundation's recovered rustic wall albedo, shared with the stone houses.
 	# World metres keep the masonry continuous through courses and extensions;
 	# per-box UVs would restart/stretch the image on each 24cm course.
-	var key := "highland_masonry_"+tone.to_html()
-	if not renderer.materials.has(key):
-		var material := StandardMaterial3D.new()
-		material.albedo_color=tone.lightened(0.40)
-		material.albedo_texture=STONE
-		material.uv1_triplanar=true
-		material.uv1_world_triplanar=true
-		material.uv1_scale=Vector3(.72,.72,.72)
-		material.texture_filter=BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-		material.texture_repeat=true
-		material.roughness=.96
-		renderer.materials[key]=material
-	return renderer.materials[key]
+	return preload("res://scripts/visual/city_creation_wet_stone.gd").material(renderer,tone.lightened(.40),STONE)
 
 static func footing(renderer,house: Dictionary,cell: Dictionary) -> float:
 	var center: Vector3 = renderer._cell_position(house,cell)

@@ -11,10 +11,13 @@ static func wall_opening(passages: Array, side: Vector2i) -> Dictionary:
 	for passage: Dictionary in passages:
 		var axis: Vector2i = passage.axis
 		if side != axis and side != -axis: continue
-		return {"offset":float(passage.offset)*float(side.y-side.x),"half_width":float(passage.half_width)}
+		var opening:={"offset":float(passage.offset)*float(side.y-side.x),"half_width":float(passage.half_width)}
+		if passage.has("profile"):opening.profile=passage.profile
+		return opening
 	return {}
 
 static func build_wall(renderer: Node3D, wall: Node3D, body: StaticBody3D, opening: Dictionary, color: Color, trim: Color) -> void:
+	if opening.get("profile","")=="wide_lintel":preload("res://scripts/visual/city_creation_wide_passage_wall.gd").build(renderer,wall,body,opening,color,trim,_extrude);return
 	var offset := float(opening.offset)
 	var radius := float(opening.half_width)
 	var polygons: Array[PackedVector2Array] = []
@@ -41,6 +44,7 @@ static func build_wall(renderer: Node3D, wall: Node3D, body: StaticBody3D, openi
 	wall.set_meta("arch_clear_height",SPRING+RISE)
 
 static func build_rim(renderer: Node3D, wall: Node3D, opening: Dictionary, color: Color, preview: bool) -> void:
+	if opening.get("profile","")=="wide_lintel":preload("res://scripts/visual/city_creation_wide_passage_wall.gd").rim(renderer,wall,opening,color,preview);return
 	var offset := float(opening.offset)
 	var radius := float(opening.half_width)
 	var thickness := 0.075

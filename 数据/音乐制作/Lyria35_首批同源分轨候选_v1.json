@@ -1,0 +1,315 @@
+{
+  "schema": "lyria_stem_bundle_v1",
+  "kind": "lyria_offline_separated_stem_candidate",
+  "draft_format": 1,
+  "runtime_ready": false,
+  "listening_status": "not_evaluated",
+  "status": "instrument_candidates_pending_listening",
+  "design_doc": "文档/音乐制作批次/Lyria35_同源分轨与Godot接入施工方案_v1.md",
+  "prompt_doc": "文档/音乐制作批次/Lyria35_全场景提示词库_v1.md",
+  "batch_scope_policy": {
+    "active_batch_limit": "all_19_source_songs_offline_one_song_first_for_game_integration",
+    "selected_first_song_id": "ly35_river_dawn",
+    "selected_spatial_variation": "courtyard_enclosure_to_bed_warmth",
+    "fallback_target": "full_mix_then_precompiled_bank"
+  },
+  "source_id": "ly35_river_dawn",
+  "version": "v1",
+  "style": "pastoral_breeze",
+  "external_batch_root": "C:/Users/Administrator/Desktop/mIDDLEFILE/资产/音乐/制作批次/lyria35/ly35_river_dawn/v1",
+  "source_audio": {
+    "origin_inventory_path": "D:/GODOT/Music/Pastoral Riverside Dawn Chamber Music.mp3",
+    "origin_bytes": 3527641,
+    "staged_path": "source/original_source.mp3",
+    "sha256": "01a8ed354b835f12df7a7671a83f150ca249abfabbc2d7be757d1fe65b520e5d",
+    "read_only_protection": true
+  },
+  "generation_provenance": {
+    "generator": "Google Lyria 3.5",
+    "prompt_id": "01_ly35_river_dawn",
+    "prompt_doc_section": "文档/音乐制作批次/Lyria35_全场景提示词库_v1.md#01",
+    "license_and_usage": "User-generated AI candidate for Resonance City; final terms check required before distribution",
+    "physical_guarantees_disclaimer": [
+      "No native multi-stem output",
+      "No guaranteed locked BPM",
+      "No guaranteed exact duration",
+      "No guaranteed seamless loop"
+    ]
+  },
+  "separation_provenance": {
+    "tool_script": "tools/separate_music.py",
+    "runtime_root": "C:/Users/Administrator/Desktop/mIDDLEFILE/资产/工具/audio-separator",
+    "stage2_instrument_separation": {
+      "candidate_models": [
+        "htdemucs_6s.yaml",
+        "htdemucs_ft.yaml"
+      ],
+      "availability_status": "inference_completed_pending_listening",
+      "fallback_if_bleed_or_watery_artifacts": "keep_full_mix_or a same-beat-map reconstructed bed",
+      "rejection_gates": {
+        "require_identical_frame_count": true,
+        "forbid_independent_stem_normalization": true,
+        "forbid_independent_stem_trim_or_stretch": true,
+        "solo_bed_listening_gate": "pending_human_evaluation",
+        "lead_transient_and_bleed_gate": "pending_human_evaluation",
+        "sum_vs_full_mix_gate": "pending_human_evaluation"
+      },
+      "selected_model": "htdemucs_6s.yaml",
+      "report": "separation/stage2_instruments/report.json"
+    },
+    "historical_vocal_probe": {
+      "model": "model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+      "purpose": "historical_tool_probe_only_not_part_of_instrument_pipeline",
+      "report": "separation/stage1_bsroformer/report.json",
+      "required": false
+    },
+    "instrument_pipeline": {
+      "source_kind": "instrumental_confirmed_by_user",
+      "vocal_separation_required": false,
+      "coarse_model": "htdemucs_6s.yaml",
+      "target_model": "17_HP-Wind_Inst-UVR.pth",
+      "remaining_model": "htdemucs_6s.yaml",
+      "role_mapping": "pending_review_of_individual_instrument_candidates"
+    }
+  },
+  "audio_format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "working_subtype": "FLOAT",
+    "delivery_subtype": "PCM_16",
+    "total_frames": 6470784,
+    "duration_seconds": 146.72979591836736,
+    "common_input_gain": 0.2587616710324376,
+    "bypass_legacy_inverse_peak_lift": true
+  },
+  "timeline": {
+    "clock_authority": "pending_manual_beat_confirmation",
+    "nominal_bpm_intent": 80.0,
+    "nominal_time_signature": [
+      4,
+      4
+    ],
+    "nominal_key_intent": "D major",
+    "preroll_frames": null,
+    "beat_map_file": "timeline/beat_map.json",
+    "beat_map_sha256": "3c348d39173ba4bf67503db2d389baa2903ec9dac5ebfb5d8ac9917ca6b2e163",
+    "sections_harmony_file": "timeline/sections_harmony.json",
+    "sections_harmony_sha256": "555013d1b08d8f45976d14cff010b6c18bc2ef1c725e5149ffab87fa57d15c82",
+    "loop_region": {
+      "mode": "approved_phrase_boundary_or_natural_tail",
+      "loop_start_frame": null,
+      "loop_end_frame": null,
+      "crossfade_frames": null,
+      "seam_listening_approved": false
+    }
+  },
+  "stems": {
+    "full_mix": {
+      "role": "full_mix",
+      "layer": 3,
+      "pooled_player_slot": "wood",
+      "bus": "Theme",
+      "file": "instrument_review_v2/full_mix.wav",
+      "sha256": "c305260683805b78de8d2db1950db9509fc12e5a386e3ab484325839e004a2f6",
+      "required": true
+    },
+    "bed": {
+      "role": "foundation",
+      "layer": 1,
+      "pooled_player_slot": "foundation",
+      "bus": "Theme",
+      "file": "stems/bed.wav",
+      "sha256": null,
+      "required": false
+    },
+    "lead": {
+      "role": "lead",
+      "layer": 3,
+      "pooled_player_slot": "wood",
+      "bus": "Theme",
+      "file": "stems/lead.wav",
+      "sha256": null,
+      "required": false
+    },
+    "pulse": {
+      "role": "pulse",
+      "layer": 2,
+      "pooled_player_slot": "air",
+      "bus": "Theme",
+      "file": "stems/pulse.wav",
+      "sha256": null,
+      "required": false
+    }
+  },
+  "allowed_combinations": [
+    {
+      "id": "fallback_full_mix",
+      "active_stems": [
+        "full_mix"
+      ],
+      "condition": "default safe mode or rejected separation"
+    },
+    {
+      "id": "standard_bed_plus_lead",
+      "active_stems": [
+        "bed",
+        "lead"
+      ],
+      "condition": "both solo and sum listening gates approved"
+    },
+    {
+      "id": "extended_three_stem",
+      "active_stems": [
+        "bed",
+        "lead",
+        "pulse"
+      ],
+      "condition": "pulse passes independent bleed and artifact review"
+    }
+  ],
+  "spatial_adaptation": {
+    "batch1_feature": "courtyard_enclosure",
+    "source_module": "scripts/audio/city_creation_music_affinity.gd",
+    "envelope_module": "scripts/audio/city_creation_affinity_envelope.gd",
+    "observe_hold_seconds": 6.0,
+    "removal_tail_seconds": 6.0,
+    "parameter_targets": "pending_approved_audio_and_listening"
+  },
+  "fallback_policy": {
+    "on_missing_or_unapproved_stems": "use_full_mix",
+    "on_missing_or_invalid_bundle": "revert_to_precompiled_bank_or_v3_comfort_baseline",
+    "on_city_switch_or_concert_or_phonograph": "retire_lyria_resources_and_restore_original_streams",
+    "preserve_legacy_schemas": [
+      "schema1_M80",
+      "master_v2",
+      "internal_v3",
+      "open_sample_sfz"
+    ]
+  },
+  "external_inventory_triage_20261102": {
+    "source_root": "D:/GODOT/Music",
+    "total_files": 19,
+    "batch1_selected": "Pastoral Riverside Dawn Chamber Music.mp3",
+    "batch1_alternates": [
+      "Pastoral Chamber Music Composition.mp3",
+      "Pastoral Chamber Trio Composition.mp3"
+    ],
+    "batch_policy": "all_sources_authorized_for_automatic_instrument_separation",
+    "authorized_batch_sources": [
+      "Acoustic Instrument Sampling Session.mp3",
+      "Comforting Neoclassical Chamber Music.mp3",
+      "Joyful Chamber Ensemble Celebration.mp3",
+      "Minimalist Botanical Chamber Composition.mp3",
+      "Minimalist Chamber Music Composition.mp3",
+      "Misty River Instrumental Chamber Music.mp3",
+      "Neoclassical Coastal Chamber Music.mp3",
+      "Nocturnal Chamber Music Composition.mp3",
+      "Renaissance Chamber Music Composition.mp3",
+      "Renaissance Chamber Pavane Trio.mp3",
+      "Serene Ecological City Soundscape.mp3",
+      "Soulful Cello Chamber Composition.mp3",
+      "Sunlight on Still Water.mp3",
+      "Tranquil Chinese Chamber Music Composition.mp3",
+      "Wakeup.mp3",
+      "Woodland Chamber Folk Instrumental.mp3"
+    ]
+  },
+  "verification": {
+    "technical_ok": false,
+    "cpu_contract_tests_passed": false,
+    "live_window_wasapi_passed": false
+  },
+  "listening_review": {
+    "approved": false,
+    "reviewer": null,
+    "evaluated_at": null,
+    "evaluated_audio_sha256": {},
+    "notes": "Instrumental source confirmed by user; instrument candidates ready, listening and game role assignment pending"
+  },
+  "offline_review": {
+    "evidence": "instrument_review_v2/review_manifest.json",
+    "grouping_approved": false,
+    "runtime_roles_confirmed": false,
+    "instrument_candidates": [
+      {
+        "id": "model_1_bass",
+        "group": "model_1",
+        "model_output_label": "bass",
+        "label": "低音候选",
+        "role": "unassigned",
+        "model_output_sha256": "8598b7073fb33866498cdf6efc4e51f3e953934bc189fffa107aea60d9ed728a"
+      },
+      {
+        "id": "model_1_drums",
+        "group": "model_1",
+        "model_output_label": "drums",
+        "label": "打击／起音候选",
+        "role": "unassigned",
+        "model_output_sha256": "d2e2156d0038e7b975125ddd71411795c12df82c54f0ed6a2d627c2b34bafd2f"
+      },
+      {
+        "id": "model_1_other",
+        "group": "model_1",
+        "model_output_label": "other",
+        "label": "其余器乐（未继续区分）",
+        "role": "unassigned",
+        "model_output_sha256": "03a0421cf41379fdd6c692a9e1250273646d651ecacaa3ed8ca7fc524fbf7607"
+      },
+      {
+        "id": "model_1_vocals",
+        "group": "model_1",
+        "model_output_label": "vocals",
+        "label": "未归类残余 A（模型槽位 Vocals，不代表存在人声）",
+        "role": "unassigned",
+        "model_output_sha256": "577b2c856ee8154432b91bdf2c466028fd38a376678dc7c6d6762c8741bc8bee"
+      },
+      {
+        "id": "model_1_guitar",
+        "group": "model_1",
+        "model_output_label": "guitar",
+        "label": "吉他候选",
+        "role": "unassigned",
+        "model_output_sha256": "9a96c9f18ae5c1c4de8ab177c30ca6f6deb0c38dff15a38c80e4a7b79542f7a5"
+      },
+      {
+        "id": "model_1_piano",
+        "group": "model_1",
+        "model_output_label": "piano",
+        "label": "钢琴候选",
+        "role": "unassigned",
+        "model_output_sha256": "f7a91d38cf7fc880c8f4c5fbc23240b7124470e37bc1c31ce374b7bc327660cf"
+      },
+      {
+        "id": "model_1_sum",
+        "group": "model_1",
+        "label": "该模型全部轨道回加",
+        "role": "comparison"
+      },
+      {
+        "id": "model_2_no_woodwinds",
+        "group": "model_2",
+        "model_output_label": "no woodwinds",
+        "label": "去木管后的其余器乐候选",
+        "role": "unassigned",
+        "model_output_sha256": "e30231a8fb21bfd1e8df197ace200a0820a98c5e124f01f21bd7afc490619611"
+      },
+      {
+        "id": "model_2_woodwinds",
+        "group": "model_2",
+        "model_output_label": "woodwinds",
+        "label": "木管候选",
+        "role": "unassigned",
+        "model_output_sha256": "5699da2c780f280777d15280dbc0f92956781ef645939ed3e8f3970295d81a48"
+      },
+      {
+        "id": "model_2_sum",
+        "group": "model_2",
+        "label": "该模型全部轨道回加",
+        "role": "comparison"
+      }
+    ],
+    "vocal_separation_required": false,
+    "instrument_batch_catalog": "数据/音乐制作/Lyria35_纯音乐分轨批次_20261102_v1.json",
+    "delivery_doc": "文档/音乐制作批次/Lyria35_纯音乐整批分轨交付_20261102.md"
+  }
+}

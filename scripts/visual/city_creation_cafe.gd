@@ -32,6 +32,7 @@ func prepare(renderer) -> Dictionary:
 	var market:Dictionary=preload("res://scripts/world/city_creation_market_frontages.gd").prepare(renderer.state)
 	var geometry:Array=preload("res://scripts/world/city_creation_frontage.gd").ground_geometry(renderer.state.houses)
 	var geometry_signature := hash([geometry,renderer.state.roads,renderer.state.waters,market,preload("res://scripts/world/city_creation_tradition_rules.gd").has(renderer.state,"garden_salons")])
+	if renderer.state.houses.any(func(h):return h.get("architecture","")=="cantilever_tea_deck"):geometry_signature=hash([geometry_signature,preload("res://scripts/world/city_creation_tea_deck_plan.gd").all(renderer.state)])
 	if Surface.enabled(renderer.state):geometry_signature=hash([geometry_signature,Surface.stamp(renderer.state)])
 	for house: Dictionary in renderer.state.houses:
 		if str(house.get("role",""))!="garden_cafe" and not market.has(str(house.id)): continue
@@ -84,6 +85,7 @@ func _remove(id: String) -> void:
 	fingerprints.erase(id)
 
 func _extras(city, plan: Dictionary, id: String) -> Dictionary:
+	if plan.has("tea_deck"):return {}
 	if plan.is_empty(): return {}
 	var center: Vector2=plan.center
 	var result := {}
@@ -111,18 +113,19 @@ func _extras(city, plan: Dictionary, id: String) -> Dictionary:
 func _build(root: Node3D, plan: Dictionary, extras: Dictionary,extra_y:Dictionary={}) -> void:
 	var center: Vector2=plan.center
 	var transform := Transform3D(Basis(Vector3.UP,float(plan.yaw)),Vector3(center.x,0.08,center.y))
-	_batch(root,"GardenTable",[transform],"table")
+	var compact:bool=plan.has("tea_deck")
+	_batch(root,"GardenTable",[transform],"deck_table" if compact else "table")
 	var chairs: Array = []
 	for seat: Vector2 in plan.seats:
 		var outward := seat-center
-		chairs.append(Transform3D(Basis(Vector3.UP,atan2(outward.x,outward.y)),Vector3(seat.x,0.08,seat.y)))
+		chairs.append(Transform3D(Basis(Vector3.UP,atan2(outward.x,outward.y)).scaled(Vector3(.7,1,.7) if compact else Vector3.ONE),Vector3(seat.x,0.08,seat.y)))
 	_batch(root,"ThreeChairs",chairs,"chair")
 	for name: String in extras:
 		var at: Vector2=extras[name]
 		_batch(root,name.capitalize(),[Transform3D(Basis.IDENTITY,Vector3(at.x,0.08+float(extra_y.get(name,0.)),at.y))],"flowers" if name=="flowers_extra" else name)
-	for index in range(3):
+	for index in range(plan.seats.size()):
 		var seat: Vector2 = plan.seats[index]
-		var cup := center+(seat-center).normalized()*0.31
+		var cup := center+(seat-center).normalized()*(.17 if compact else .31)
 		_batch(root,"Cup%d"%index,[Transform3D(Basis.IDENTITY,Vector3(cup.x,0.77,cup.y))],"cup")
 		_batch(root,"Chat%d"%index,[Transform3D(Basis.IDENTITY,Vector3(seat.x,1.28,seat.y))],"chat")
 	var activity_material:ShaderMaterial=material.duplicate()
@@ -174,6 +177,10 @@ func _mesh(kind: String) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	match kind:
+		"deck_table":
+			_cylinder(st,.24,.24,.07,Vector3(0,.66,0),WOOD,16)
+			_cylinder(st,.035,.035,.64,Vector3(0,.32,0),WOOD,8)
+			for side:float in [-1.,1.]:_box(st,Vector3(.06,.04,.34),Vector3(side*.08,.04,0),WOOD)
 		"table":
 			_cylinder(st,0.36,0.43,0.07,Vector3(0,0.66,0),WOOD,16)
 			_cylinder(st,0.045,0.045,0.64,Vector3(0,0.32,0),WOOD,8)

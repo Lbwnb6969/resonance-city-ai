@@ -65,7 +65,7 @@ static func _walk(key: String,parent: String,graph: Dictionary,visited: Dictiona
 
 static func _roundabout_owner(a:Vector2,b:Vector2,roads:Array,markers:Array)->String:
 	for marker: Dictionary in markers:
-		if absf(a.distance_to(marker.center)-Roundabouts.ROUTE_RADIUS)>.04 or absf(b.distance_to(marker.center)-Roundabouts.ROUTE_RADIUS)>.04:continue
+		if absf(a.distance_to(marker.center)-Roundabouts.route_radius(marker))>.04 or absf(b.distance_to(marker.center)-Roundabouts.route_radius(marker))>.04:continue
 		for road: Dictionary in roads:
 			for point: Array in road.points:
 				if Vector2(point[0],point[1]).distance_to(marker.center)<float(marker.radius)+.1:return str(road.id)

@@ -4,6 +4,8 @@ const DetailLod=preload("res://scripts/visual/city_creation_detail_lod.gd")
 const ShaderSource=preload("res://scripts/visual/shaders/creation_bakery_smoke.gdshader")
 var mesh: ArrayMesh
 var material: ShaderMaterial
+func build_roof(parent:Node3D,points:Array)->void:
+	for point:Vector3 in points if parent.has_meta("chimney_detail") else points.slice(0,1):build(parent,point)
 
 func build(parent: Node3D,at: Vector3) -> void:
 	if mesh==null: _prepare()
@@ -17,18 +19,16 @@ func build(parent: Node3D,at: Vector3) -> void:
 	DetailLod.bind(smoke,DetailLod.SMOKE)
 	smoke.visible=false
 	smoke.set_meta("working",false)
-	parent.add_child(smoke)
+	parent.add_child(smoke,true)
 
 static func working(status: Dictionary) -> bool:
-	return str(status.get("worker_phase",""))=="baking" and bool(status.get("open",false)) and int(status.get("stock",0))+int(status.get("batch_size",1))<=int(status.get("capacity",0))
+	return not bool(status.get("economy_paused",false)) and str(status.get("worker_phase",""))=="baking" and bool(status.get("open",false)) and int(status.get("stock",0))+int(status.get("batch_size",1))<=int(status.get("capacity",0))
 
 static func update(parent: Node3D,status: Dictionary) -> void:
 	# The existing resonance rig reparents independent-house visual meshes.
-	var smoke:=parent.find_child("BakerySmoke",true,false) as MeshInstance3D
-	if smoke==null: return
 	var active:=working(status)
-	smoke.visible=active
-	smoke.set_meta("working",active)
+	for smoke:MeshInstance3D in parent.find_children("BakerySmoke*","MeshInstance3D",true,false):
+		smoke.visible=active;smoke.set_meta("working",active)
 
 func _prepare() -> void:
 	var sphere:=SphereMesh.new()

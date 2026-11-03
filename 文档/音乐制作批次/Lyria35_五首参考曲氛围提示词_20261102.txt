@@ -1,0 +1,46 @@
+五首参考曲 · Lyria 3.5 可复制提示词
+2026-11-02
+
+每次只复制一首的英文正文。文件名用于人工区分，不要把五首提示词合成一次请求。
+目标是复现声音气质并创作新作品。旋律、具体和声进行与装饰由模型发挥；速度与结构描述是创作目标。
+每首是一首完整音乐，生成后再从同一母带分轨。不要另生成“去掉某件乐器版”来冒充同步分轨。
+分析依据和五首之间的区别见同目录《五首参考曲_分析与提示词说明_20261102.md》。
+
+01 / blau / 暗色水下流动
+
+Instrumental neoclassical ambient electronica, intimate yet immersive, with a flowing pulse around 124 BPM and a spacious half-time emotional feel. A close, softly muted felt piano carries gently uneven rolling arpeggios and a few exposed upper-register notes. Surround it with rounded low bass, slow-breathing string-like synth pads and a subdued, low-pass plucked synth pulse. The piano has tactile wooden attacks; the electronic layers feel smooth, dark and submerged. Keep the foreground intimate while the reverberant background gradually widens. Begin restrained, unfold into an emotional swell, then move into a contrasting passage where the piano recedes and the muffled synth becomes the focus: darker and denser in the low register, not simply quieter. Let the piano return sparsely and dissolve into soft resonant tails. Suspended, gently bittersweet harmony, inward-looking rather than tragic. Invent the melody, chord movement and small variations freely while preserving this acoustic-electronic balance. No vocals, humming, choir, bright hi-hats or dance-music drop.
+
+02 / jz / 海岸留白与远近呼吸
+
+Instrumental coastal ambient neoclassical music, open, wistful and quietly hopeful. Close-miked soft felt piano with audible but delicate wooden key texture, flowing broken chords and a simple spacious upper melody. Set its flowing passage around 130 BPM, with light touch and long melodic phrases so the motion remains unhurried. A warm, distant pad gradually opens behind the piano; its rounded swells should feel like a horizon expanding around a small human gesture. Begin sparsely, let the piano become more continuous and briefly lift into a luminous register, then withdraw most of the backing into an extended passage of isolated notes, fragile two-note answers and generous decay between gestures. Allow a gentle final return of motion. Warm major-key openness with occasional minor shading; retain intimacy even at the fullest point. Soft wind-like air may frame the opening and ending without masking the piano. Freely invent the theme and harmonic route. No vocals, choir, drum groove, sparkling bells or oversized orchestral climax.
+
+03 / novel / 大提琴独白与克制张力
+
+Instrumental neoclassical chamber music led by intimate soft piano and a warm, expressive solo cello. Give the piano a gently rolling, triple-subdivision feel; the cello sings in long, connected phrases with restrained vibrato, rounded body resonance and a little natural bow grain. The emotion is reflective, aching and dignified, with warmth inside the tension. Start with a modest piano statement, let the cello emerge as a distinct lyrical voice, then gradually introduce a small string ensemble. In the later development, add quiet, precise short-bowed lower strings underneath longer upper-string lines, creating urgency through articulation and interweaving parts rather than drums. Reach one concentrated, emotionally full crest, then clearly withdraw the ensemble and leave a vulnerable piano coda with breathing room. Keep the instruments close and tangible inside a deeper, softly darkened reverberant space. Freely shape an original melody and harmony, balancing melancholy with moments of release. No vocals, choir, heroic brass, trailer impacts, piercing violin peaks or relentless dramatic pressure.
+
+04 / paris / 钟摆、拨弦与空间浪潮
+
+Instrumental cinematic ambient neoclassical music with patient development and large changes of scale. Start with a quiet, middle-register piano figure that alternates like a gentle pendulum, with an underlying motion around 112 BPM and spacious long phrases. Build the sound from warm low strings, sustained bass drones, a small bowed string ensemble and rounded analog synth pads. Let each layer enter with a clear purpose. Move from intimate piano into a broad, slowly breathing string swell, thin the texture for a brief exchange of piano and soft pizzicato strings, then allow a deeper second expansion after a genuine quiet interval. The broadest moment should feel spacious and emotionally weighty rather than loud or heroic. Use open voicings, suspended tones and a sense of unresolved distance. Return to the small piano figure and let the low background recede. Keep detailed attacks in front and dark, deep reverberation behind. Freely invent the theme, transitions and harmonic direction. No vocals, choir, brass fanfares, pounding percussion or constant wall of sound.
+
+05 / star / 摇篮式叙事与温暖回归
+
+Instrumental intimate neoclassical piano-and-cello ballad with a gentle compound-meter sway, a relaxed two-beat rocking feel and flowing triplet subdivisions. Soft felt piano is the storyteller: a steady rolling left hand, a clear but unforced right-hand melody, small hesitations at phrase endings and warm wooden resonance. Begin with exposed piano, then bring in a rounded low cello line that supports and answers rather than competes. Gradually open the melody into a higher register while a small, silky chamber-string ensemble blooms underneath. Let the warmth grow from bittersweet introspection into a hopeful, sustained emotional crest, then let the strings retreat and return naturally to the intimate piano texture of the opening. Keep high notes soft-edged, the low register supportive and the room spacious without blurring individual notes. Freely invent a memorable original theme and the minor-to-major harmonic shading; preserve the rocking flow and the feeling of being gently held. No vocals, humming, choir, pop drums, bright music-box bells or theatrical orchestral hits.
+
+可选附句：用于《共鸣之城》的生成批次
+只在需要降低游戏干扰、便于后期分轨时，追加到所选的一首末尾；首次比较参考气质时可以不加。
+
+Keep the accompaniment musically complete whenever the lead rests. Give the piano, sustained accompaniment and moving inner parts distinct registers and clear attacks, with audible breathing spaces. Keep the climax moderate enough for extended background listening. Use musical texture rather than literal wind, water or city sound effects; the game supplies its own ambience.
+
+单句校准：一轮只选一个最明显的问题，并用于下一次完整生成
+
+blau 太像普通钢琴曲：Give the dark, low-pass plucked synth its own contrasting passage, and make the piano's return feel exposed and intimate.
+blau 太像舞曲：Remove the backbeat and bright percussion; let the rolling keys and muffled synth carry all forward motion.
+jz 全程太满：Make the sparse passage an essential part of the piece, with complete note decays and no pad filling every gap.
+novel 大提琴不突出：Keep the solo cello close, clearly phrased and lyrically distinct from the softer ensemble behind it.
+novel 过分悲壮：Reduce the upper-string pressure; keep the emotional weight in the cello's warm low and middle register.
+paris 太像预告片：Create scale through depth, sustained harmony and long crescendos, without impacts, brass or heavy percussion.
+paris 缺少发展：Separate the broad swells with a genuine small-scale piano-and-pizzicato interval, and let the returning theme change subtly.
+star 太像八音盒：Use warm felt-piano body and soft hammer attacks, with a rounded cello foundation and no bell-like doubling.
+star 摇摆消失：Keep a gentle two-beat compound-meter sway in the piano accompaniment throughout, including the quieter return.
+
+同一文字会产生不同作品。校准句表达下一次生成的方向，不承诺保留上一版录音、时间线或分轨同步。

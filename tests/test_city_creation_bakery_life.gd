@@ -2,6 +2,7 @@ extends SceneTree
 const State := preload("res://scripts/world/city_creation_state.gd")
 const Life := preload("res://scripts/world/city_creation_life.gd")
 var failures: Array[String] = []
+var out:=""
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -32,6 +33,10 @@ func _life(city: RefCounted) -> Node3D:
 	return life
 
 func _run() -> void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):out=arg.trim_prefix("--out-dir=")
+	if not OS.get_cmdline_user_args().has("--isolated-session") or not out.begins_with("res://验证记录/") or DirAccess.dir_exists_absolute(out):quit(1);return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
 	var city := _fixture()
 	var life := _life(city)
 	_check(life.bakery.workers.size() == 1 and life.residents.size() == 1,"one household supplies independent daily resident and baker")
@@ -121,7 +126,7 @@ func _run() -> void:
 	# A saved batch resumes, and must not appear once on load plus once later.
 	var checkpoint: Dictionary = life.checkpoint()
 	_check(city.set_journey_checkpoint(checkpoint).ok,"worker checkpoint passes authoritative validator")
-	var path := "user://creation_bakery_life_%d.json" % Time.get_ticks_usec()
+	var path := out+"/bakery_life.json"
 	_check(city.save_city(path).ok,"supply and worker journey save")
 	var loaded := State.new()
 	_check(loaded.load_city(path).ok,"supply and worker journey load")

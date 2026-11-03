@@ -54,6 +54,7 @@ const CreationPolicy=preload("res://scripts/world/city_creation_creation_policy.
 const PlacedLandmarks=preload("res://scripts/world/city_creation_placed_landmarks.gd")
 var creative_settings:Dictionary={}
 var placed_landmarks:Array[Dictionary]=[]
+var plaza_loops:Array[Dictionary]=[]
 var _next_landmark_id:=1;var _landmark_high_watermark:=0
 func initialize_free(empty:bool=true)->void:CreationPolicy.initialize(self,empty)
 func can_build_era(era:String)->bool:return CreationPolicy.can_build_era(self,era)
@@ -68,6 +69,8 @@ const QUALITY_CONTEXT_SCHEMA := 17
 const PLANNING_SCHEMA := 18
 const PERSONALIZATION_SCHEMA := 19
 const GardenSpecies=preload("res://scripts/world/city_creation_garden_species.gd")
+const Grillhouse=preload("res://scripts/world/city_creation_grillhouse.gd")
+const TeaDeck=preload("res://scripts/world/city_creation_tea_deck_plan.gd")
 const Signatures := preload("res://scripts/world/city_creation_signatures.gd")
 const AmphitheaterPlan=preload("res://scripts/world/city_creation_amphitheater_plan.gd")
 const GrandFestival=preload("res://scripts/world/city_creation_grand_festival.gd")
@@ -410,6 +413,7 @@ func _preview_house_stroke_cells(house: Dictionary, cells: Array, new_house: boo
 	if valid.ok and _house_overlaps(candidate, "" if new_house else str(house.id)):
 		valid = _fail("这里与另一栋房屋重叠")
 	if valid.ok:
+		if new_house:preload("res://scripts/world/city_creation_build_brush.gd").apply(self,candidate)
 		valid = _validate_house_site(candidate)
 	return _house_stroke_result(valid.ok, valid.message if not valid.ok else ("房屋笔画未变" if added.is_empty() else "已建成 %d 个模块" % added.size()), house, added, input_cells)
 
@@ -455,6 +459,7 @@ func preview_remove_cell(house_id: String, cell_id: String) -> Dictionary:
 		var result := _validate_house(candidate)
 		if not result.ok:
 			return _removal_failure(result.message)
+		if not preload("res://scripts/world/city_creation_wide_passage.gd").retained(self,houses[index],candidate):return _removal_failure("请先移走宽路，再拆除穿堂支撑")
 	var kept := {}
 	for cell in candidate.cells:
 		kept[cell.id] = true
@@ -615,9 +620,16 @@ func set_house_colors(house_id:String,wall:Color,roof:Color)->Dictionary:
 	_commit(before,"自选房屋配色")
 	return {"ok":true,"message":"已换上自选配色","appearance_house_id":house_id}
 
-
 func set_house_architecture(house_id: String, key: String) -> Dictionary:
 	return preload("res://scripts/world/city_creation_architecture_choice.gd").set_choice(self,house_id,key)
+func set_house_architecture_variant(house_id:String,key:String,slot:String="windows")->Dictionary:
+	return preload("res://scripts/world/city_creation_architecture_variants.gd").set_choice(self,house_id,key,slot)
+func set_house_dormer(house_id:String,key:String)->Dictionary:
+	return preload("res://scripts/world/city_creation_architecture_variants.gd").set_dormer(self,house_id,key)
+func set_house_chimney(house_id:String,key:String)->Dictionary:
+	return preload("res://scripts/world/city_creation_architecture_variants.gd").set_chimney(self,house_id,key)
+func set_house_skybridge_span(house_id:String,enabled:Variant)->Dictionary:return preload("res://scripts/world/city_creation_skybridge_span.gd").choose(self,house_id,enabled)
+func set_house_food_kind(house_id:String,key:String)->Dictionary:return Grillhouse.select(self,house_id,key)
 func set_house_style(house_id: String, style: String) -> Dictionary:
 	var index := _house_index(house_id)
 	if index<0: return _fail("房屋不存在")
@@ -627,6 +639,7 @@ func set_house_style(house_id: String, style: String) -> Dictionary:
 	var before := snapshot()
 	if style=="classic": houses[index].erase("style")
 	else: houses[index].style=style
+	if not preload("res://scripts/world/city_creation_wide_passage.gd").preserve(self,before,index):return _fail("此样式尚未适配宽穿堂，请先移走宽路")
 	_commit(before,"更改建筑样式")
 	return {"ok":true,"message":"已换为"+{"classic":"河湾灰泥屋","timber":"木构街屋","stone":"石砌街屋","round_tower":"圆塔望楼"}[style]}
 
@@ -844,6 +857,7 @@ func set_cluster_era(house_id:String,era:String)->Dictionary:
 	var before:=snapshot()
 	for house:Dictionary in houses:
 		if house.id in group.members and not house.has("signature"):house.era_theme=era
+	if not preload("res://scripts/world/city_creation_wide_passage.gd").preserve_all(self,before):return _fail("此风貌尚未适配宽穿堂，聚落保持原样")
 	Eras.refresh(self);_commit(before,"更改聚落时代")
 	return {"ok":true,"message":"整片聚落已换上共同风貌"}
 
@@ -1001,6 +1015,7 @@ func set_house_era(house_id: String, era: String) -> Dictionary:
 	if era == "district": houses[index].erase("era_theme")
 	else: houses[index].era_theme = era
 	preload("res://scripts/world/city_creation_build_brush.gd").align_selected_era(self,houses[index])
+	if not preload("res://scripts/world/city_creation_wide_passage.gd").preserve(self,before,index):return _fail("此风貌尚未适配宽穿堂，请先移走宽路")
 	if before == snapshot(): return {"ok":true,"message":"房屋风貌未变"}
 	_commit(before,"更改房屋时代风貌")
 	return {"ok":true,"message":"房屋风貌已更改"}
@@ -1128,6 +1143,10 @@ func water_clearance(position: Vector2) -> float:
 
 
 func street_height(position: Vector2) -> float:
+	var boat_y:float=preload("res://scripts/world/city_creation_boathouse_plan.gd").height(self,position)
+	if not is_nan(boat_y):return boat_y
+	var deck_y:float=TeaDeck.height(self,position)
+	if not is_nan(deck_y):return deck_y
 	if _ground_revision!=revision: prepare_ground_height()
 	if _street_marker_revision!=revision:_street_markers=Roundabouts.all(roads);_street_marker_revision=revision
 	for marker: Dictionary in _street_markers:
@@ -1202,17 +1221,21 @@ func preview_water(points: Array[Vector2], width: float = 2.4, kind: String = "c
 		valid.conflicts = []
 		return valid
 	if kind == "channel":
-		if water_clearance(points[0]) > 0.0:
-			return {"ok": false, "message": "引水需要从已有水域起笔", "conflicts": []}
-		if points.size() < 2 or water_clearance(points[-1]) <= 0.0:
-			return {"ok": false, "message": "请将水渠拖到干地", "conflicts": []}
+		var extension:=preload("res://scripts/world/city_creation_water_extension.gd").assess(self,points,width)
+		if not extension.ok or extension.get("no_op",false):return extension
 	var conflicts := _water_conflicts(encoded, width, houses, roads)
 	return {"ok": conflicts.is_empty(), "message": "水岸可建" if conflicts.is_empty() else "水岸与现有%s冲突" % {"house":"房屋","road":"道路","landmark":"传世地标"}.get(conflicts[0].kind,"建筑"), "conflicts": conflicts}
+
+func preview_water_crossing(points:Array[Vector2],width:float=2.4)->Dictionary:
+	return preload("res://scripts/world/city_creation_water_crossing.gd").plan(self,points,width)
+
+func commit_water_crossing(plan:Dictionary)->Dictionary:
+	return preload("res://scripts/world/city_creation_water_crossing.gd").commit(self,plan)
 
 
 func add_water(points: Array[Vector2], width: float = 2.4, kind: String = "channel") -> Dictionary:
 	var valid := preview_water(points, width, kind)
-	if not valid.ok:
+	if not valid.ok or valid.get("no_op",false):
 		return valid
 	var before := snapshot()
 	var number := maxi(_next_water_id, int(_high_watermark.get("water", 0)) + 1)
@@ -1346,15 +1369,7 @@ func road_at(at: Vector2) -> String:
 	return road_junctions().at(at)
 
 func add_roundabout(point: Vector2) -> Dictionary:
-	var valid:=Roundabouts.preview(self,point)
-	if not valid.ok: return valid
-	var before:=snapshot()
-	for road: Dictionary in roads:
-		if str(road.id)!=str(valid.owner_id): continue
-		if not road.has("roundabouts"): road.roundabouts=[]
-		road.roundabouts.append({"center":[valid.center.x,valid.center.y],"radius":valid.radius})
-	_commit(before,"营建环岛广场")
-	return valid
+	return preload("res://scripts/world/city_creation_roundabout_width.gd").add(self,point)
 
 func remove_roundabout(point: Vector2) -> Dictionary:
 	for road: Dictionary in roads:
@@ -1376,6 +1391,11 @@ func remove_road(road_id: String) -> Dictionary:
 		_commit(before,"移除道路")
 		return {"ok":true,"message":"道路已移除","road_id":road_id}
 	return _fail("道路不存在")
+
+func preview_road_trim(road_id:String,low:float,high:float)->Dictionary:
+	return preload("res://scripts/world/city_creation_road_trim.gd").plan(self,road_id,low,high)
+func commit_road_trim(plan:Dictionary)->Dictionary:
+	return preload("res://scripts/world/city_creation_road_trim.gd").commit(self,plan)
 
 func add_road(points: Array[Vector2],style: String = "path",assistance: String="snap",requested_width:float=0.,decoration:String="") -> Dictionary:
 	return preload("res://scripts/world/city_creation_road_drawing.gd").add(self,points,style,assistance,requested_width,decoration)
@@ -1552,7 +1572,7 @@ func record_life_event(kind: String) -> void:
 
 func bakery_capacity(house_id: String) -> int:
 	var index:=_house_index(house_id)
-	if index<0:return 0
+	if index<0 or houses[index].role!="bakery":return 0
 	var rooms:=0
 	for cell:Dictionary in houses[index].cells:
 		if cell.kind=="room":rooms+=1
@@ -1745,6 +1765,7 @@ func _prune_afterglow() -> void:
 
 
 func bakery_batch_size(house_id: String) -> int:
+	if Grillhouse.active(self,house_id):return 2
 	var index := _house_index(house_id)
 	if index < 0 or houses[index].role != "bakery":
 		return 0
@@ -1759,6 +1780,7 @@ func bakery_batch_size(house_id: String) -> int:
 
 
 func bakery_status(house_id: String) -> Dictionary:
+	if Grillhouse.active(self,house_id):return Grillhouse.status(self,house_id)
 	var row: Dictionary = bakery_supply.get(house_id, {})
 	var index := _house_index(house_id)
 	var opened: bool = index >= 0 and houses[index].role == "bakery" and houses[index].get("bakery_open", true)
@@ -1780,6 +1802,7 @@ func set_bakery_open(house_id: String, opened: bool) -> Dictionary:
 
 
 func produce_bread(house_id: String, quantity: int) -> bool:
+	if Grillhouse.active(self,house_id):return Grillhouse.produce(self,house_id,quantity)
 	if CreationPolicy.Save.Progression.paused(self):return false
 	var capacity := bakery_capacity(house_id)
 	var current := bakery_status(house_id)
@@ -1817,6 +1840,7 @@ func _mill_batch(house_id:String)->void:
 
 
 func serve_bread(house_id: String, home_id: String = "") -> bool:
+	if Grillhouse.active(self,house_id):return Grillhouse.serve(self,house_id,home_id)
 	if CreationPolicy.Save.Progression.paused(self):return false
 	var current := bakery_status(house_id)
 	if bakery_capacity(house_id) == 0 or int(current.stock) <= 0:
@@ -2505,9 +2529,11 @@ func _plant_geometry_compatible(plant: Dictionary, extra: Array, include_existin
 	if not _valid_plant_fields(plant):
 		return false
 	var position := Vector2(float(plant.position[0]), float(plant.position[1]))
-	if PlacedLandmarks.occupies(self,position,.3):return false
+	if preload("res://scripts/world/city_creation_landmark_vegetation.gd").hidden(self,plant):return false
 	var scale_value := float(plant.scale)
 	var clearance := GardenSpecies.clearance(str(plant.kind),scale_value)
+	if preload("res://scripts/world/city_creation_tea_deck_site.gd").plant_conflict(self,position,clearance):return false
+	if preload("res://scripts/world/city_creation_boathouse_site.gd").plant_conflict(self,position,clearance):return false
 	if not WORLD_RECT.has_point(position):
 		return false
 	if water_clearance(position) <= clearance:
@@ -2582,6 +2608,7 @@ func _make_cell(x: int, z: int, level: int, kind: String) -> Dictionary:
 
 
 func _commit(before: Dictionary, label: String) -> void:
+	preload("res://scripts/world/city_creation_plaza_loops.gd").prune(self)
 	preload("res://scripts/world/city_creation_balcony_plan.gd").prune(self)
 	preload("res://scripts/world/city_creation_curve_hug.gd").after_placement(self,before,label)
 	if journey_checkpoint.get("concert",{}).get("grand_festival",false):_prune_missing_journeys()
@@ -2651,6 +2678,8 @@ func _validate_house(house: Dictionary) -> Dictionary:
 
 
 func _house_overlaps(candidate: Dictionary, except_id: String = "") -> bool:
+	if preload("res://scripts/world/city_creation_boathouse_site.gd").house_conflict(self,candidate,except_id):return true
+	if preload("res://scripts/world/city_creation_tea_deck_site.gd").house_conflict(self,candidate,except_id):return true
 	if PlacedLandmarks.hits_house(self,candidate):return true
 	for house in houses:
 		if house.id == except_id:
@@ -2698,7 +2727,7 @@ func _apply_snapshot(data: Dictionary, preserve_issued_ids: bool = false) -> voi
 		_prune_missing_journeys()
 	_prune_afterglow()
 	_normalize_craft_transit()
-
+	if not preserve_issued_ids:preload("res://scripts/world/city_creation_epoch_counters.gd").loaded(self)
 
 func _read_snapshot(path: String) -> Dictionary:
 	return Serializer.read(self,path)
@@ -2739,6 +2768,7 @@ func house_passages(house_id: String) -> Array[Dictionary]:
 
 func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
 	var scene_roads: Array = roads if road_rows == null else road_rows
+	if preload("res://scripts/world/city_creation_wide_passage.gd").incompatible(house,scene_roads,Passage.for_house):return _fail("宽穿堂保留单向实体支撑，请避开交叉洞口")
 	if Rotation.Frame.transformed(house):return Rotation.site(self,house,scene_roads,waters if water_rows==null else water_rows)
 	for marker: Dictionary in Roundabouts.all(scene_roads):
 		for cell: Dictionary in house.cells:
@@ -2768,11 +2798,14 @@ func _validate_house_site(house: Dictionary, road_rows: Variant = null, water_ro
 	return {"ok": true, "message": ""}
 
 
-func _validate_road_site(points: Array, width: float, house_rows: Variant = null, water_rows: Variant = null) -> Dictionary:
+func _validate_road_site(points: Array, width: float, house_rows: Variant = null, water_rows: Variant = null, road_rows:Variant=null) -> Dictionary:
+	if house_rows==null and preload("res://scripts/world/city_creation_boathouse_site.gd").road_conflict(self,points,width):return _fail("道路需要避开船坞木架与泊船水槽")
+	if preload("res://scripts/world/city_creation_tea_deck_site.gd").road_conflict(self,points,width):return _fail("道路需要避开亲水木台及登台通路")
 	if house_rows==null and PlacedLandmarks.stroke_conflicts(self,points,width*.5+.3):return _fail("道路需要避开传世地标")
 	var scene_houses: Array = houses if house_rows == null else house_rows
 	var scene_waters: Array = waters if water_rows == null else water_rows
-	var bridge_valid := _road_water_crossings(points, width, scene_waters)
+	if not points.is_empty() and not preload("res://scripts/world/city_creation_wide_passage.gd").site(scene_houses,roads if road_rows==null else road_rows,points,width,Passage.for_house):return _fail("宽穿堂保留单向实体支撑，请避开交叉洞口")
+	var bridge_valid:Dictionary=preload("res://scripts/world/city_creation_water_ghat.gd").water_site(self,points,width,scene_waters,roads if road_rows==null else road_rows)
 	if not bridge_valid.ok:
 		return bridge_valid
 	var bridge: bool = bridge_valid.bridge

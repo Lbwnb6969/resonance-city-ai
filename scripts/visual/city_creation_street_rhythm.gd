@@ -40,4 +40,4 @@ static func decorate(renderer,job,frame,wall:Node3D,direction:Vector2i,width:flo
  if view.top and view.kind in ["gable_end","row_end"]:
   renderer._box(node,Vector3(width-.12,.065,.12),Vector3(0,1.49,.17),material).name="TerminalCorniceReturn"
  if view.court:
-  renderer._box(node,Vector3(width-.25,.06,.12),Vector3(0,1.30,.17),material).name="CourtyardLintel"
+  renderer._box(node,Vector3(width-.25,.06,.12),Vector3(0,1.49 if job.house.get("architecture","")=="recessed_townhouse" else 1.30,.17),material).name="CourtyardLintel"

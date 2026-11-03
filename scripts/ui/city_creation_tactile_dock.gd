@@ -3,6 +3,7 @@ extends RefCounted
 const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
 const Icons=preload("res://scripts/ui/city_creation_vector_icons.gd")
 const UI=preload("res://scripts/ui/valley_ui_theme.gd")
+const Layout=preload("res://scripts/ui/city_creation_dock_layout.gd")
 const DIAMETER:=46.0
 const GAP:=6
 const OPTION_ICONS:Dictionary={
@@ -36,8 +37,10 @@ var _house_palette_key:Variant=null
 var nature_row:HBoxContainer
 var road_palette
 var target_options
+var _layout_free:Variant=null
 const PRIMARY:=[0,2,4,5,8]
 const CAPTIONS:=["筑屋","修路","烟火","林水","地形"]
+func primary_tools()->Array:return Layout.primary(demo.state)
 
 func button_for(source_name:String,index:int=0)->Button:
 	for binding:Dictionary in bindings:
@@ -63,6 +66,7 @@ func _setup(owner:Node,parent_control:Control)->void:
 		button.visible=i in PRIMARY
 		button.tooltip_text=button.caption+" · 原快捷键 "+str(i+1)
 		if i==0:button.pressed.connect(func()->void:house_options=not house_options;refresh())
+	Layout.sync(self)
 	for button:Button in [demo.undo_button,demo.redo_button]:
 		button.set_script(Seal);button.configure("undo" if button==demo.undo_button else "redo",28.)
 	var legacy:=Control.new();legacy.name="LegacyToolOptions";legacy.hide();legacy.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -96,15 +100,9 @@ func _setup(owner:Node,parent_control:Control)->void:
 func refresh()->void:
 	if demo==null or popup==null:return
 	var tool:int=demo.tool
-	for index:int in PRIMARY:
-		var button:Button=demo.tool_buttons[index]
-		button.visible=true
-		if demo.intuitive_guidance!=null:button.disabled=not demo.intuitive_guidance.tool_available(index)
-		button.modulate.a=.28 if button.disabled else 1.
-		button.active=tool==index or (index==0 and tool in [1,3]) or (index==5 and tool==6)
-		button.queue_redraw()
+	Layout.sync(self)
 	popup.visible=tool!=7 and (bool(TOOL_GROUPS.has(tool)) or tool in [0,1,4]) and demo.ui_layer.visible and not demo.camera_rig.strolling and (tool!=0 or house_options)
-	nature_row.visible=tool in [5,6]
+	nature_row.visible=not _layout_free and tool in [5,6]
 	district_name_row.hide()
 	if not popup.visible:target_options.panel.hide();return
 	if tool in [0,1]:
@@ -201,7 +199,7 @@ func _sync()->void:
 
 func _position_popup()->void:
 	if not is_instance_valid(popup) or not popup.visible or active_tool<0:return
-	var source:Control=demo.tool_buttons[0 if active_tool in [1,3] else 5 if active_tool==6 else 4 if active_tool==7 else active_tool]
+	var source:Control=demo.tool_buttons[Layout.anchor(self)]
 	var anchor:=source.get_global_rect()
 	var extent:=bubble_rows.get_combined_minimum_size()
 	bubble_rows.size=extent

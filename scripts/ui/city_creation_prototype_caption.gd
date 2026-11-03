@@ -5,7 +5,7 @@ static func caption(pop,house:Dictionary)->String:
 	var root:Node3D=pop.demo.town.house_roots.get(str(house.id))
 	if root==null:return "营建中"
 	if root.has_meta("prototype_caption"):return root.get_meta("prototype_caption")
-	var label:="";var civic:Array=[];var neo:=-1
+	var label:=Choice.label("recessed_townhouse") if house.get("architecture","")=="recessed_townhouse" else "";var civic:Array=[];var neo:=-1
 	for node:Node in root.find_children("*","Node3D",true,false):
 		if node.has_meta("civic_archetype"):civic.append(str(node.get_meta("civic_archetype")))
 		if node.has_meta("neoclassical_kind"):neo=maxi(neo,int(node.get_meta("neoclassical_kind")))

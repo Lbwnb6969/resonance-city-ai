@@ -48,7 +48,7 @@ static func profile(material: Material, world_base_y: float, story_height: float
 		var box: AABB = instance.global_transform * instance.mesh.get_aabb()
 		bounds = Vector2(box.position.y, box.end.y)
 	return ["wall", wall.albedo_texture, wall.roughness, wall.cull_mode,
-		wall.uv1_scale, wall.uv1_offset, str(wall.get_meta("creation_wall_style", "classic")), world_base_y, story_height, kind, bounds, wall.metallic, wall.metallic_specular]
+		wall.uv1_scale, wall.uv1_offset, str(wall.get_meta("creation_wall_style", "classic")), world_base_y, story_height, kind, bounds, wall.metallic, wall.metallic_specular,bool(wall.get_meta("creation_fixed_color",false))]
 
 
 static func merged(source_material: StandardMaterial3D, world_base_y: float, story_height: float, shader: Shader, bounds: Vector2 = Vector2.ZERO) -> ShaderMaterial:
@@ -71,5 +71,5 @@ static func merged(source_material: StandardMaterial3D, world_base_y: float, sto
 	material.set_shader_parameter("micro_normal_strength", 0.025 if kind != Kind.PLASTER else (0.014 if str(source_material.get_meta("creation_wall_style", "classic")) == "stone" else 0.022))
 	if kind in [Kind.TIMBER,Kind.METAL]:material.set_shader_parameter("micro_normal_strength",.008 if kind==Kind.TIMBER else .006)
 	material.set_meta("creation_wall_batch", true)
-	material.set_meta("creation_fixed_color", kind == Kind.METAL)
+	material.set_meta("creation_fixed_color", bool(source_material.get_meta("creation_fixed_color",kind == Kind.METAL)))
 	return material

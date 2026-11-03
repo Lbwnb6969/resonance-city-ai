@@ -11,7 +11,10 @@ static func advance(owner:Node,now_usec:int)->int:
 	return step
 static func plan(owner:Node,base:Dictionary,step:int)->Dictionary:
 	if base.is_empty():return base
+	var physical:=preload("res://scripts/audio/city_creation_free_music_route.gd").plan(owner,base)
+	if not physical.is_empty():return physical
 	var result:=base.duplicate();var harmony:=Harmony.current(owner,Palette.Grid.transport_clock(owner));var chord:Array=harmony.chord
+	if harmony.get("unpitched",false):return result.merged({"midi":-1,"bar":-1,"stream_key":preload("res://scripts/audio/city_creation_game_music_shorts.gd").plan_key(owner,str(base.timbre),int(base.midi)),"harmony_signature":harmony.signature,"unpitched":true},true)
 	var tones:Array[int]=[]
 	for note in range(60,97):
 		if Palette.Grid.snap_to_chord_tone(note,chord)==note:tones.append(note)
@@ -19,6 +22,8 @@ static func plan(owner:Node,base:Dictionary,step:int)->Dictionary:
 	result.midi=midi;result.bar=harmony.bar;result.construction_step=step
 	if not harmony.signature.is_empty():result.harmony_signature=harmony.signature
 	result.stream_key=Pitch.stream_key(str(result.timbre),midi)
+	var candidate_key:=preload("res://scripts/audio/city_creation_game_music_shorts.gd").plan_key(owner,str(result.timbre),midi)
+	if not candidate_key.is_empty():result.stream_key=candidate_key
 	return result
 static func house(owner:Node,id:String)->bool:
 	if owner.muted or owner.concert_active or owner._loading or owner._pluck_city==null:return false

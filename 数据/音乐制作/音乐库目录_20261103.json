@@ -1,0 +1,1724 @@
+{
+  "schema": "local_music_library_v1",
+  "originals": [
+    {
+      "source_id": "01a8ed354b835f12df7a7671a83f150ca249abfabbc2d7be757d1fe65b520e5d",
+      "name": "Pastoral Riverside Dawn Chamber Music [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Pastoral Riverside Dawn Chamber Music.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35/ly35_river_dawn/v1/analysis/20261102-130707-788112/001_Pastoral Riverside Dawn Chamber Music/summary.json",
+        "sha256": "48a6298157be8a0d0bd4487c7cfc3f0c2278785a9b00dc22ac7aa5d127e6dcca",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 146.72979591836736,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 164.16178894,
+        "essentia_key_estimate": "A major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "41eb46deae028be4e50d15d0a2576303c52b1d64690e12162745dfec6df5b44f",
+      "name": "Acoustic Instrument Sampling Session [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Acoustic Instrument Sampling Session.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/001_Acoustic Instrument Sampling Session/summary.json",
+        "sha256": "493d46e9e371c3e7921ae2330e226c9b79b921c2447329cb3943683e828e07e6",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.94285714285715,
+        "librosa_bpm_estimate": 117.45383522727273,
+        "essentia_bpm_estimate": 119.697189331,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "b6f52a110a0af1901181af9f06aace39a5b52d20942a4226dea56ecd4186bc02",
+      "name": "Comforting Neoclassical Chamber Music [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Comforting Neoclassical Chamber Music.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/002_Comforting Neoclassical Chamber Music/summary.json",
+        "sha256": "05c65bd35d905e961ff3aaf8ba3c04461933f04e35fd69b2a0cd0dacd07e6a02",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 147.48734693877552,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 128.656265259,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "90a277ed169c5e895da22110f8c6947026792d3ae489b44f9d7aeb80faeebca2",
+      "name": "Joyful Chamber Ensemble Celebration [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Joyful Chamber Ensemble Celebration.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/003_Joyful Chamber Ensemble Celebration/summary.json",
+        "sha256": "9f30dd7675826171bfafb0ab4db80efe0927d6fb7a686dff44347ade928c6171",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 149.57714285714286,
+        "librosa_bpm_estimate": 92.28515625,
+        "essentia_bpm_estimate": 89.8453674316,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "bce5a2416e254a2d61dc7b5a801b516d8d731df85f44acb006e7c4850b326ed5",
+      "name": "Minimalist Botanical Chamber Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Minimalist Botanical Chamber Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/004_Minimalist Botanical Chamber Composition/summary.json",
+        "sha256": "26bfdf8b3817158c19c725d9644def74994b7439c607d2a5be21526494c48521",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 148.11428571428573,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.028869629,
+        "essentia_key_estimate": "Eb minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "e1f82908d73abd0d725eb6171d8ea0565077d56852fe7fc5e8323180bad9822a",
+      "name": "Minimalist Chamber Music Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Minimalist Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/005_Minimalist Chamber Music Composition/summary.json",
+        "sha256": "ba2c1685854637825caf9b764734f91e8500b4a8fe741a9eb50eed63932f1361",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 173.1134693877551,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 80.986656189,
+        "essentia_key_estimate": "G minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "63b4d6819dad065edf3a849b475e7dd0de140600d90169a936d594b9f859473d",
+      "name": "Misty River Instrumental Chamber Music [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Misty River Instrumental Chamber Music.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/006_Misty River Instrumental Chamber Music/summary.json",
+        "sha256": "1a9012e76e707c4448a979386d0dbe52eb07ce88e52fe3e2e2b1cf468cae4e7e",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 150.1518367346939,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.100280762,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "bcaf1a13910f33f9a3dcbf3e993c675fecc34ee7e02eb567614aca1a9caa25ed",
+      "name": "Neoclassical Coastal Chamber Music [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Neoclassical Coastal Chamber Music.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/007_Neoclassical Coastal Chamber Music/summary.json",
+        "sha256": "4bd1465e255dac86d6c74b7b2c2381255cc6293eeeefb9ccff9fd4a35e47bfa1",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 150.77877551020407,
+        "librosa_bpm_estimate": 117.45383522727273,
+        "essentia_bpm_estimate": 123.370376587,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "1070b2492cbe6553297f353d8003460bbe6511b5dae1118fbe14ad112938ec07",
+      "name": "Nocturnal Chamber Music Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Nocturnal Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/008_Nocturnal Chamber Music Composition/summary.json",
+        "sha256": "0fac4b80b5c5307a6825afdb8f55de7962e708e190a733c995a65f04181e711d",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 146.72979591836736,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 172.265563965,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "c194a9a9d01b186e25c244902254b9fe6a0e9a5c78f7b954dfb720e5875c7b76",
+      "name": "Pastoral Chamber Music Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Pastoral Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/009_Pastoral Chamber Music Composition/summary.json",
+        "sha256": "46295a3d8d9efec83a5dac2f3b238bafa46f25dd732fdd82b45a811e1e11c068",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 144.82285714285715,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 163.879653931,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "745c986623de307a6ca19c4615d9c554415a0631f9d03fabb6a6d55e6cec25a6",
+      "name": "Pastoral Chamber Trio Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Pastoral Chamber Trio Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/010_Pastoral Chamber Trio Composition/summary.json",
+        "sha256": "e1e23a281e673b87e98c575f3fc13431c9da5f0d3edf0b4adae8ac9c18566087",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 178.8865306122449,
+        "librosa_bpm_estimate": 143.5546875,
+        "essentia_bpm_estimate": 163.980819702,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "553cf9787956e896fe1d26fcf4defceff8a7306bade7feecc5b76c0b561a0177",
+      "name": "Renaissance Chamber Music Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Renaissance Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/011_Renaissance Chamber Music Composition/summary.json",
+        "sha256": "5b46bd2b1f541572da9dac8832b7f042fa6a178cccaadfd7237c8a33854324d0",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 148.66285714285715,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 164.149536133,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "299dfc96194530c13263077f844e3870280b9b3c7ac1cf3e026a5e245f5871ac",
+      "name": "Renaissance Chamber Pavane Trio [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Renaissance Chamber Pavane Trio.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/012_Renaissance Chamber Pavane Trio/summary.json",
+        "sha256": "e3edfc1233a0f6e07fe9a49c4ebf6a8dabe27d310ea68fd07eb992dcf09d2f0e",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.19591836734693,
+        "librosa_bpm_estimate": 112.34714673913044,
+        "essentia_bpm_estimate": 117.868011475,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "c8dfc3fb53e4c719865007379808f8860a90c25f72789855ba5074947a25226f",
+      "name": "Serene Ecological City Soundscape [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Serene Ecological City Soundscape.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/013_Serene Ecological City Soundscape/summary.json",
+        "sha256": "4293929e77e57f278b9b02779b743b094f527c62cc89b022c8c4865f77f49c38",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 151.74530612244897,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.499176025,
+        "essentia_key_estimate": "F# minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "6281a35da5928a5381800ef4ff0e6fc3ab62e6b8351802396992f526d19b00e8",
+      "name": "Soulful Cello Chamber Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Soulful Cello Chamber Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/014_Soulful Cello Chamber Composition/summary.json",
+        "sha256": "da5b411a6aaf2ac699740f00b0fd5df84e438d4aaf44aadad9f29bbbc5fb73e6",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 148.4538775510204,
+        "librosa_bpm_estimate": 117.45383522727273,
+        "essentia_bpm_estimate": 125.916465759,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "fc6dd428265f6f13de1686bc3f984b288f70e6ef33d6d769b99f7e8c6def9c4b",
+      "name": "Sunlight on Still Water [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Sunlight on Still Water.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/015_Sunlight on Still Water/summary.json",
+        "sha256": "c03a269a75d0c1155790716697277d1e14396c77f1c20c76c574c7c34613c68f",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 144.87510204081633,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 164.687149048,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "94effa99ebd29f680d37dd824d5f110d888ddaf558f5c2114985837943a8f894",
+      "name": "Tranquil Chinese Chamber Music Composition [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Tranquil Chinese Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/016_Tranquil Chinese Chamber Music Composition/summary.json",
+        "sha256": "158108d9ea6163e2a69d2370680091d1a23d6df178e218182471fdf9f768bd6c",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 146.15510204081633,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 79.9482116699,
+        "essentia_key_estimate": "F# minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "dc0817dd28c07ff3ca19f4ee024db155a969fad3648077f3090a8c028fd9f388",
+      "name": "Wakeup [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Wakeup.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/017_Wakeup/summary.json",
+        "sha256": "8e1d77e1a6586d8cf71cd6b02fe10af59f079fb0d5bdf33824d5ac441d65affe",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 29.779591836734692,
+        "librosa_bpm_estimate": 143.5546875,
+        "essentia_bpm_estimate": 144.369995117,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "1a0e9068ba1a1e61cb3fb121690a456b02b83baeada8a8ac141d078a8a70dca2",
+      "name": "Woodland Chamber Folk Instrumental [20261102].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261102/Woodland Chamber Folk Instrumental.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/制作批次/lyria35_instruments/20261102_v1/analysis/20261102-133225-780126/018_Woodland Chamber Folk Instrumental/summary.json",
+        "sha256": "becfbb1399a06c68c8da559c12b9bd378eae0baed6b165e093b8eee77a78393a",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 147.48734693877552,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.648574829,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "3528f0d8681b2a567e1f3bee1c8e35130c92ccda44f58e1d1fbdc4f764fdbced",
+      "name": "Acoustic Guitar Soundtrack Loop [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Acoustic Guitar Soundtrack Loop.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/001_Acoustic Guitar Soundtrack Loop/summary.json",
+        "sha256": "ece521cdc95f5f11868c93600c8ea07daa3e5b1a732ba52218fa3ba9e405e1f7",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 138.63183673469388,
+        "librosa_bpm_estimate": 107.666015625,
+        "essentia_bpm_estimate": 81.8955612183,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "be35cfacbc0666a140f6d06f25eea110a0298365999ac5958e53bccd8bcd5be0",
+      "name": "Acoustic Instrument Sampling Session [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Acoustic Instrument Sampling Session.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/002_Acoustic Instrument Sampling Session/summary.json",
+        "sha256": "ab283f0f913e02334e0895c96c7ab933ec5ce59e8f44dcb5585fc3812ab8f52b",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 99.68326530612245,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 120.13710022,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "55c50201dc3016f73a8c28da60ada9b855933b6fbae33978df835d90cc23c936",
+      "name": "Cinematic Neoclassical Ambient Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Cinematic Neoclassical Ambient Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/003_Cinematic Neoclassical Ambient Composition/summary.json",
+        "sha256": "049f19fa265dd24eb87493b605458cc0d24999175ad07d610fb2ee47441fc8b7",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 179.72244897959183,
+        "librosa_bpm_estimate": 112.34714673913044,
+        "essentia_bpm_estimate": 109.951530457,
+        "essentia_key_estimate": "C# minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "1aad98352b8efa3f62f47726fd846c29b047e8865f8aae326e5ae1bb6f1797db",
+      "name": "Clockwork Chamber Music Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Clockwork Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/004_Clockwork Chamber Music Composition/summary.json",
+        "sha256": "4535fd93e9a9b7e068d3e19e15b0e56c9be0282a35137a782325fee9e4192a90",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 150.0212244897959,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.960006714,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "b0f8656af3e02f097b6d87b6a0a839d7e772c21a9cb1603f940fc6482377b435",
+      "name": "Coastal Ambient Piano Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Coastal Ambient Piano Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/005_Coastal Ambient Piano Composition/summary.json",
+        "sha256": "47bc89f69d2a01fc35bd3bacaf7d2e52d60fb4beb2f9c9ba98a66119630074ea",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 174.88979591836735,
+        "librosa_bpm_estimate": 117.45383522727273,
+        "essentia_bpm_estimate": 120.034362793,
+        "essentia_key_estimate": "F# major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "046e57c4629a21e2e1b229722c21aaafe72a298a061e5dcbf5781897ab22d414",
+      "name": "Golden Autumn Chamber Music [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Golden Autumn Chamber Music.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/006_Golden Autumn Chamber Music/summary.json",
+        "sha256": "e57abcbda1b88ec0b8ae5cf2799e8ceeb7d7fe6c7a4d333a285040746cd0a43f",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 150.33469387755102,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 162.960388184,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "200d0c73687ac128abe1851289d99d803f66d4f9afcf7c580287b8cad77b1d70",
+      "name": "Intimate Chamber Music for Twilight [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Intimate Chamber Music for Twilight.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/007_Intimate Chamber Music for Twilight/summary.json",
+        "sha256": "7812d8c9a26e4c5b8b11dc0c8aad3558d9e95bc7d62986dc3ce97632d6b6d005",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 149.4726530612245,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 164.199020386,
+        "essentia_key_estimate": "C major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "090b1413d9fd5daf8582d6fbdd43b83bd758211431b595d3b7aa79fed87722a8",
+      "name": "Intimate Chamber Trio Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Intimate Chamber Trio Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/008_Intimate Chamber Trio Composition/summary.json",
+        "sha256": "23f1ec3e9c73785f020c8bcf45ea5ae64634b6acc81ed26e8804aeea7c276758",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.3265306122449,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 147.907669067,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "a0fd001c88648ab88ed3d57c7c885e6a2a22a55d0e77e6fe3ac3801371edc8e8",
+      "name": "Intimate Neoclassical Piano Cello Ballad [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Intimate Neoclassical Piano Cello Ballad.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/009_Intimate Neoclassical Piano Cello Ballad/summary.json",
+        "sha256": "1ce923b0d4ea6ce15a25e990447070892541680d4c37fa685ae358026f742199",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.4726530612245,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 135.086456299,
+        "essentia_key_estimate": "C major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "b159dc46cb24b2b5d11b8b718beda1e287687ac22d46d89b2d4ae6ebf24dc033",
+      "name": "Joyful Instrumental Chamber Celebration [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Joyful Instrumental Chamber Celebration.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/010_Joyful Instrumental Chamber Celebration/summary.json",
+        "sha256": "98028b14140a5e8d91e62f1a6d87b6b6e8ef5884e3bcec4c043156c402d373e4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 143.07265306122449,
+        "librosa_bpm_estimate": 107.666015625,
+        "essentia_bpm_estimate": 161.99508667,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "7177074b57f9d88b853463cd3d519b60b9e8ca1d47d62bab56375712c7fcbc3e",
+      "name": "Luminous Chamber Trio Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Luminous Chamber Trio Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/011_Luminous Chamber Trio Composition/summary.json",
+        "sha256": "3de38349b07f5fb4f2fc366fd6726a9d03436be048db78c28419d9b70711cede",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 123.74204081632654,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.516738892,
+        "essentia_key_estimate": "Ab major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "1e19b421b76c9722dbd55fb6abc676cae5eceba7794bc1822a82ced1a122f544",
+      "name": "Mediterranean Olive Grove Soundscape [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Mediterranean Olive Grove Soundscape.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/012_Mediterranean Olive Grove Soundscape/summary.json",
+        "sha256": "ff71f78df3ef2a5ca5677a4e806a34626f80565b636fced3a7e434bebf7331e5",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 166.42612244897958,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.499313354,
+        "essentia_key_estimate": "C major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "731cecdd3a4f8a07c479da2fd6fb10d1a310470e2faa36c804dd1d79388114d6",
+      "name": "Neoclassical Ambient Electronica Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Neoclassical Ambient Electronica Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/013_Neoclassical Ambient Electronica Composition/summary.json",
+        "sha256": "778b7bc9dcf7ce53a96e49d373e6c06170358e969b119d24cf6cdd3b8b00635c",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.71836734693878,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 123.790649414,
+        "essentia_key_estimate": "C# major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "78ffef6c0a20ae696f619797a7c53bf99611a527e537a8e78994f4137fe54d0e",
+      "name": "Neoclassical Chamber Composition Description [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Neoclassical Chamber Composition Description.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/014_Neoclassical Chamber Composition Description/summary.json",
+        "sha256": "ba57acb7ec2649c86f1943fd3b7ead6a90217395edbc5e5fc3b9a0271cf7164c",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 179.40897959183673,
+        "librosa_bpm_estimate": 117.45383522727273,
+        "essentia_bpm_estimate": 120.005004883,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "55c96560592aea0c72af4c477174fd3bdba14008e5b8a170880272d3314ae797",
+      "name": "Neoclassical Chamber Music Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Neoclassical Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/015_Neoclassical Chamber Music Composition/summary.json",
+        "sha256": "30d42cb13858740b4a0510dc2f337ed20764dc5405bc22f911a775aed273e30f",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 149.1330612244898,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.588928223,
+        "essentia_key_estimate": "B major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "6892f862cb20fcc17edf922d08c7cbf1ee4d58deeb164ef882004a86cc9574e3",
+      "name": "Pastoral European Chamber Folk Piece [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Pastoral European Chamber Folk Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/016_Pastoral European Chamber Folk Piece/summary.json",
+        "sha256": "db51943bb678097089468dbd52e79e53840c87dee74c079d7c24ecf66d551531",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 147.25224489795917,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.363983154,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "748684bae8b59355d3aa51a1bde4aa525d3977303c1457f07fbba849cbd2a1c1",
+      "name": "Reflective Felt Piano Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Reflective Felt Piano Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/017_Reflective Felt Piano Composition/summary.json",
+        "sha256": "67580109719c51b852719b3e16c01089f0071f8adccd67a2ca22eaf1272b58f4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.4204081632653,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.834243774,
+        "essentia_key_estimate": "Ab major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "f0581fbb40a74cf7d480a9e131e7987ee7e700bbf116ac77af1b87c2b7a8515a",
+      "name": "Serene Pastoral Chamber Quartet [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Serene Pastoral Chamber Quartet.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/018_Serene Pastoral Chamber Quartet/summary.json",
+        "sha256": "af7f2725f30adc4d7fc48a14bc027b11491d77a683e55295cde85ae1af5486e4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 149.96897959183673,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 163.66986084,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 2,
+          "excluded": 4
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "c4a650192f8d52c0b35e72add7d4ba5a60cbc2e83a9349451398e23ba965de7d",
+      "name": "Soothing Brook Field Recording [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Soothing Brook Field Recording.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/019_Soothing Brook Field Recording/summary.json",
+        "sha256": "8790b7ddf08f56cdb61e255301be6e8b67b11b7deb87a97e11253cb17f61250d",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 57.78285714285714,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.219436646,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "7541c967ad244fe84e80447bc4ec8d407e8a6f08315cb61d7dcaf1b747c2e8f1",
+      "name": "Sparse Marimba Game Soundtrack Stem [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Sparse Marimba Game Soundtrack Stem.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/020_Sparse Marimba Game Soundtrack Stem/summary.json",
+        "sha256": "acabe468cb374c33816c706af0be4822f498918d730febb9bb4b484fd791d59a",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.08081632653062,
+        "librosa_bpm_estimate": 80.74951171875,
+        "essentia_bpm_estimate": 80.0929031372,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "7dffeb68ac91e4702d78789406ebd16673ff66f3c999ddc264cdd414a4b0c691",
+      "name": "Sun-Shower Chamber Music Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Sun-Shower Chamber Music Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/021_Sun-Shower Chamber Music Composition/summary.json",
+        "sha256": "da9d0f538e3db7027282d2246e1fe9cdcca6d8e8b995913d52baa586488156f3",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 148.63673469387754,
+        "librosa_bpm_estimate": 107.666015625,
+        "essentia_bpm_estimate": 162.180511475,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "d005db9a2b3761a402d8b0deafbe3f1f7226a6f17a11da32984f661c82d2bb5c",
+      "name": "Warm Harmonic Game Soundtrack Bed [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Warm Harmonic Game Soundtrack Bed.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/022_Warm Harmonic Game Soundtrack Bed/summary.json",
+        "sha256": "105a2053f20907c626076e493230cf0a69d794e07ecab5c9dab084c50a01ef19",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 168.5681632653061,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 81.6404800415,
+        "essentia_key_estimate": "A major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "a0a98d7244bec5f83c594d2bf9b063134c457717d0b35f0232e83ffb9f13f8cf",
+      "name": "Warm Neoclassical Chamber Piece [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Warm Neoclassical Chamber Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/023_Warm Neoclassical Chamber Piece/summary.json",
+        "sha256": "fc43047ace56cd2f2e42bfc38f65fe645cfefe499ec965c59a6da092ea77c578",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 148.63673469387754,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.7943573,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "eae0e7319629c7507dbdb7e6a567ef4507051d7780fc934d663bcaa1e60241cf",
+      "name": "Woodland Chamber Folk Composition [20261103].mp3",
+      "source": "数据/音乐资产/原曲/Lyria/20261103/Woodland Chamber Folk Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/歌曲分析/20261103/20261103-003702-210565/024_Woodland Chamber Folk Composition/summary.json",
+        "sha256": "20ba4a005a94b507ad227367b425d57a7078ff9d30baef20e705efa5bd9da735",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 175.41224489795917,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 162.341552734,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "c4834ad5249f5412b8adb395ebb710681333c5a18840e19e9ed21b93e2deb583",
+      "name": "2-01.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-01.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/001_2-01/summary.json",
+        "sha256": "412ae1466aec5de5c9f6ed52fb03e459c87c69ad8aafb11cbf1f13006d2b4b61",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.71102040816328,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 132.549530029,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "82e7649382b57276c77e5b7b83f9f69a7a737d89b985ae5e4dedec0037d7e725",
+      "name": "2-02.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-02.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/002_2-02/summary.json",
+        "sha256": "a0ebbc39257915b28037d08ccbd1062b20d2a7e4bbbd9340c40d74e79fdb8266",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 178.41632653061225,
+        "librosa_bpm_estimate": 143.5546875,
+        "essentia_bpm_estimate": 143.738800049,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "7ae28dd8cac95364d4c4a795ae98bc590f868338201ac1035d35210d6501802d",
+      "name": "2-03.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-03.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/003_2-03/summary.json",
+        "sha256": "c00d7f3326f9bdd28b1e433762eba5d1f244ef0ab9415001ae907c839ae82f35",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 167.9934693877551,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 136.151748657,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "1bbe2dac0d27ea6333bbb146f657089fed1a8f0ffb8fb9b58a3b9333e28ada80",
+      "name": "4-01.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-01.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/004_4-01/summary.json",
+        "sha256": "19f2e48ec2d790fc12e65b4359880eca4de6a04dbbf93c80f44866e2a785a5d5",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 154.64489795918368,
+        "librosa_bpm_estimate": 99.38401442307692,
+        "essentia_bpm_estimate": 150.073318481,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "536f44fce3e04d0c71777cd2e963dab908b0a701e9912074ab38dca6c026b2de",
+      "name": "4-02.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-02.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/005_4-02/summary.json",
+        "sha256": "40c2ae5a44e2eb44b7563be0101def2807660421296e00848b7eb7a0fd270df0",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 169.3257142857143,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 163.829421997,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "674b920a3a8d64dce5592f8921c19f9fc5bfdc7c9ed4524feb83a9ac3d67eb9e",
+      "name": "4-03.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-03.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/006_4-03/summary.json",
+        "sha256": "dee70418549dde435a7c2083f5a483ba29335ccce2c81d40337149cb6a98e027",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 164.83265306122448,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 140.400497437,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "b0607682c39b837a29ccfaa715a2bb56f5a7336804e617d9d36ef1f30dc2010e",
+      "name": "4-04.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-04.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/007_4-04/summary.json",
+        "sha256": "746005a6bd5cd0f6bb8211709845fc344c50fab2a72bd4b76a6f455c55e6fc46",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 164.91102040816327,
+        "librosa_bpm_estimate": 89.10290948275862,
+        "essentia_bpm_estimate": 87.7410430908,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "f47617e77233fb47257279b3ee3d8e8f23eb769e0f5fda539fa28c579704f4eb",
+      "name": "4-05(2).mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-05(2).mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/009_4-05(2)/summary.json",
+        "sha256": "138a3fd98e52a48bb59cf2bbf0229f22af2597c317d7ea5d8dc7ab0f1b97e084",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.92,
+        "librosa_bpm_estimate": 172.265625,
+        "essentia_bpm_estimate": 172.265960693,
+        "essentia_key_estimate": "F# major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "b71b5f1a2da63ecbc5ca7c4e01ba15d5ff6c994e8f5e9618f6c38a3fdae12dc7",
+      "name": "4-05.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-05.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/008_4-05/summary.json",
+        "sha256": "6304d36a4c94ff6247c71f98608b210a7d51d2a3563712e4132cf628f48595b4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 145.84163265306123,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 165.200820923,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "cbdccc72de6d14a8c9fcd77ff0679d49725e7e87abff431cc4670f82cc318c0a",
+      "name": "4-06.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-06.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/010_4-06/summary.json",
+        "sha256": "f053bd86d61feb9a83c9e48354a6dce8e220580393090e7d56c784abb53c91c4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 154.12244897959184,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 132.286178589,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "483daa585133ec997c7ee388c0a636341cebc20f4734e2b2911eba9b489e2904",
+      "name": "Breezy Instrumental Pastoral Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Breezy Instrumental Pastoral Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/011_Breezy Instrumental Pastoral Composition/summary.json",
+        "sha256": "d8cdfb08f703a3a5cdeaf976aa529cb6c1284c737512fd50edd537dbcc0ecb7a",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.6138775510204,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 122.924201965,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "112e76a675f7f86a31e25523c6b425567c18fc912515cda3cafec0c43714da6f",
+      "name": "Chamber Trio for Strings.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Chamber Trio for Strings.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/012_Chamber Trio for Strings/summary.json",
+        "sha256": "c49e1a8816917804addff1d25738797268a40e29d7197efc2dd5758df444cd54",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 175.83020408163264,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 163.623519897,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "8902e7b714ff362c4e8af2076548833753ccbae3924714612c436382fa331423",
+      "name": "Coastal Neoclassical Piano Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Coastal Neoclassical Piano Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/013_Coastal Neoclassical Piano Composition/summary.json",
+        "sha256": "773c2196b7373aa3b811f0da829a9bc17c8f5c6daaa2d921b4a3aab0e23e3f4f",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.23755102040818,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 120.167449951,
+        "essentia_key_estimate": "C major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "a09cc7ff2311fe090db97c8dfaabce0846ae70c44e40a1c74f648112f5959a68",
+      "name": "Fluid Waterside Instrumental Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Fluid Waterside Instrumental Composition.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/014_Fluid Waterside Instrumental Composition/summary.json",
+        "sha256": "b6c9333e4007c79f404633670399e2dd76973d7be02d0c885dbe51b86855f431",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 134.92244897959185,
+        "librosa_bpm_estimate": 103.359375,
+        "essentia_bpm_estimate": 105.469718933,
+        "essentia_key_estimate": "Bb minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "7826d21cd45dd34589c8c0bfb3b1ca1cdc12754b6f0b168a0e53e33113c7bced",
+      "name": "Quiet Meadow Chamber Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Quiet Meadow Chamber Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/015_Quiet Meadow Chamber Piece/summary.json",
+        "sha256": "2d033042e3a1a6826361280064c13cfc194ef7a89e47c3468ade44652856dd41",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.87510204081633,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 120.122993469,
+        "essentia_key_estimate": "E minor",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "e97e2e417e3ab32e76f32d9cdc3534922fb683b451e7970ab30b59b446b9c1fb",
+      "name": "Rain-Inspired Chamber Music Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Rain-Inspired Chamber Music Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/016_Rain-Inspired Chamber Music Piece/summary.json",
+        "sha256": "76a98836c69a9b71d6c386928ba1092952262d46588710695e1025d7a5508f6e",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.50204081632654,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.709884644,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "715ba27fd9bc8f462a7984df23752ff067cdbd21062c1837f832e4955d9cea7f",
+      "name": "Sunlit Stone Stairway Chamber Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Sunlit Stone Stairway Chamber Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/017_Sunlit Stone Stairway Chamber Piece/summary.json",
+        "sha256": "2bec75d2c44579f3369b841d25adfc70ef3503f6eadc03ac6d979aa0ea88c259",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.44979591836736,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 81.1346740723,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    },
+    {
+      "source_id": "49ee59e292839273c4e670972fcc4da30a5304574db46e410ecf690387bc42e8",
+      "name": "Warm Instrumental Chamber Folk Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Warm Instrumental Chamber Folk Piece.mp3",
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/018_Warm Instrumental Chamber Folk Piece/summary.json",
+        "sha256": "ac871b9cfae72631602b1d6c8b89732d5ea306fbbaf702f799465e2c292c8c8b",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 173.79265306122448,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.627578735,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "prompt_assignment": null,
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "prompt_assignment_status": "unconfirmed",
+      "runtime_ready": false
+    }
+  ],
+  "distinct_generated_audio": 61,
+  "prompt_index": "数据/音乐制作/提示词来源/20261103/提示词索引.json",
+  "active_curation": "数据/音乐资产/目录/20261103_evening_v1/curation.json",
+  "totals": {
+    "kept": 671,
+    "excluded": 122,
+    "protected_sparse_or_combined": 5,
+    "silent": 0
+  },
+  "runtime_ready": false,
+  "listening_approved": false
+}

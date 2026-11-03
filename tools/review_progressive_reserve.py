@@ -5,9 +5,9 @@ import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / '文档/来源/20261031_Gemini_渐进内容储备深化与首批生产_原稿.txt'
+SOURCE = ROOT / '文档/来源/20261031_Gemini_渐进内容储备深化与首批生产_删项摘录.txt'
 DEST = ROOT / '数据/内容储备候选/Gemini渐进内容储备深化首批_v1.json'
-EXPECTED = 'e86d256c9898c76216633a304d82486608a2657a67ab16eca1b8d7ce91125f89'
+EXPECTED = '2aaae9efd6a5d52dd409aafede844706c40b5e5a5c3e747192b5c05bb9068eff'
 
 
 def main() -> None:
@@ -33,7 +33,6 @@ def main() -> None:
         'music_sections': catalog['batch']['music']['sections'],
         'mother_types': catalog['batch']['architecture']['mother_types'],
         'palette': catalog['batch']['visual']['palette'],
-        'plant': catalog['batch']['visual']['plant'],
         'game_run': False,
         'listening_pass': False,
         'shader_compiled': False,

@@ -11,6 +11,7 @@ var current_mode: Mode=Mode.MANAGING
 var backing_duck_db:=0.
 var dragging:=false
 var concerting:=false
+var sculpt_serial:=0
 var last_sculpt_sec:=-INF
 var _last_slot:=-1
 var _arp_queue: Array[Dictionary]=[]
@@ -18,7 +19,8 @@ var _events: Dictionary={}
 var _cooldowns: Dictionary={}
 var stats: Dictionary={"plucks":0,"coalesced":0,"superseded":0,"events":0,"late":0}
 
-func notify_sculpt_action(clock_sec: float)->void:last_sculpt_sec=clock_sec
+func notify_sculpt_action(clock_sec: float)->void:
+	last_sculpt_sec=clock_sec;sculpt_serial+=1
 
 func evaluate_mode(zoom:float,concert_active:bool,strolling:bool,delta:float,clock_sec:float)->Mode:
 	concerting=concert_active

@@ -37,6 +37,8 @@ func toggle(field:String)->void:
 		var button:Button=dock._seal(menu,"district","环岛",toggle_source.tooltip_text)
 		button.custom_minimum_size.x=86
 		button.pressed.connect(func()->void:toggle_source.button_pressed=not toggle_source.button_pressed;toggle("More"))
+		demo.get_meta("shallow_stair_control").install(menu)
+		demo.get_meta("roundabout_width_control").install(menu)
 	elif not opened.is_empty():_choices(opened)
 	sync();dock._position_popup.call_deferred()
 

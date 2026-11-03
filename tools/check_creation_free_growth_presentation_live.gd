@@ -26,7 +26,7 @@ func run()->void:
 		check(not ribbon.level_label.is_visible_in_tree() and ribbon.level_label.text.is_empty() and ribbon._lit_notes==0 and ribbon.chords.get_child_count()==0,"free HUD has no level, XP lights or missing-family targets "+str(size.x))
 		check(ribbon.staff_points.size()==5 and ribbon.staff.is_visible_in_tree() and ribbon.size.x<=209. and Rect2(Vector2.ZERO,Vector2(size)).encloses(ribbon.get_global_rect()),"compact actual staff and existing seals fit "+str(size.x))
 		await capture("free_hud_"+str(size.x));await key(KEY_F1);await settle();await tab(1)
-		check("不再积累新的等级或手札额度" in demo.guide.body.text and "无需二阶手札" in demo.guide.body.text and "Lv.5" not in demo.guide.body.text,"native free handbook explains spatial creation and retained rights "+str(size.x))
+		check("新账成长与历史手札分账" in demo.guide.body.text and "无需二阶手札" in demo.guide.body.text and "Lv.5" not in demo.guide.body.text,"native free handbook explains spatial creation and retained rights "+str(size.x))
 		await capture("free_guide_"+str(size.x))
 		var scroll:ScrollContainer=demo.guide.body.get_parent();var at:Vector2=scroll.get_global_rect().get_center()
 		var move:=InputEventMouseMotion.new();move.device=92;move.position=at;move.global_position=at;root.push_input(move);await process_frame

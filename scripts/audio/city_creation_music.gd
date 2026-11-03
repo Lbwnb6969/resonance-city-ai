@@ -319,6 +319,7 @@ func _play_queued_house(queued: Dictionary)->bool:
 	_pluck_last_usec=Time.get_ticks_usec()
 	play_effect_at(selected,_pluck_stream,plan.position)
 	_pluck_voices[selected.get_instance_id()]={"player":selected,"stream":_pluck_stream,"plan":plan}
+	preload("res://scripts/audio/city_creation_free_music_route.gd").attribute(self,selected)
 	return true
 
 func _prune_plucks() -> void:
@@ -559,6 +560,9 @@ func _cafe_at_phrase(phrase: int) -> void:
 
 
 func _playback_clock() -> float:
+	var candidate:=preload("res://scripts/audio/city_creation_game_music_harmony.gd").position(self)
+	if candidate>=0.:return candidate
+	if preload("res://scripts/audio/city_creation_free_music_route.gd").holds(self):return preload("res://scripts/audio/city_creation_free_music_route.gd").clock(self)
 	var authored:=preload("res://scripts/audio/city_creation_score_playback.gd").clock(self)
 	if authored>=0.:return authored
 	if _players.has("concert") and _players.concert.stream_paused:return _clock_cycles*SECONDS+_clock_previous
@@ -917,6 +921,7 @@ func set_muted(value: bool) -> void:
 
 
 func set_concert_active(active: bool) -> void:
+	if active:preload("res://scripts/audio/city_creation_free_music_route.gd").retire_candidate(self)
 	if active and not concert_active:attention.clear()
 	concert_active = active
 	if active:canon.clear()
@@ -1276,9 +1281,10 @@ func _process(delta: float) -> void:
 			var id:String="%s/0"%key
 			_players[key].stream = _variation_streams[id] if not concert_active and _variation_streams.has(id) else bank.streams[key]
 			if key in HarmonicEmergence.LEADS:_variation_active[key]=id if not concert_active else "original"
-			_players[key].play(restored_elapsed)
+			if not preload("res://scripts/audio/city_creation_free_music_route.gd").holds(self):_players[key].play(restored_elapsed)
 		_clock_previous = restored_elapsed
 		_concert_clock_origin = 0.0
+	if preload("res://scripts/audio/city_creation_free_music_route.gd").tick(self,delta):return
 	if _players.has("concert") and _players.concert.playing:
 		var position: float = fposmod(_players.concert.get_playback_position(),SECONDS)
 		if position + 0.1 < _clock_previous:

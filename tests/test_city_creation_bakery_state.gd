@@ -6,6 +6,11 @@ var checks := 0
 
 
 func _initialize() -> void:
+	var out:=""
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):out=arg.trim_prefix("--out-dir=")
+	if not OS.get_cmdline_user_args().has("--isolated-session") or not out.begins_with("res://验证记录/") or DirAccess.dir_exists_absolute(out):quit(1);return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out))
 	var city := State.new()
 	city.initialize()
 	_check(city.bakery_supply.is_empty(), "new town starts without invented stock")
@@ -42,7 +47,7 @@ func _initialize() -> void:
 	var restored := State.new()
 	_check(restored.restore(JSON.parse_string(JSON.stringify(saved, "", true, true))).ok and restored.snapshot() == saved, "JSON save round trip preserves inventory exactly")
 	_check(restored.bakery_supply.h2.stock is int and restored.bakery_supply.h2.produced is int and restored.bakery_supply.h2.served is int, "JSON integer fields restored as integer types")
-	_check(city.save_city("user://city_creation_bakery_state_contract.json").ok and restored.load_city("user://city_creation_bakery_state_contract.json").ok and restored.snapshot() == saved, "atomic file save and read preserves supply")
+	_check(city.save_city(out+"/bakery.json").ok and restored.load_city(out+"/bakery.json").ok and restored.snapshot() == saved, "atomic file save and read preserves supply")
 	_check(restored.serve_bread("h2") and restored.restore(saved).ok and restored.bakery_supply == saved.bakery_supply, "normal artwork restore replaces supply instead of preserving another artwork")
 	_test_invalid_supply(restored, saved)
 	_test_dormant_history()

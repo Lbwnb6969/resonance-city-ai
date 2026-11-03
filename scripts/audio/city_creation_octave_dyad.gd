@@ -7,6 +7,8 @@ static func stream(music:Node,base:AudioStreamWAV,mode:int,rank:int)->AudioStrea
 	return at_pitch(music,base,Palette.stair_pitch(mode,rank))
 static func at_pitch(music:Node,base:AudioStreamWAV,midi:int)->AudioStreamWAV:
 	if music._pluck_city==null or Families.tier(music._pluck_city,"highland")<2:return base
+	var candidate:=preload("res://scripts/audio/city_creation_game_music_harmony.gd").node(music)
+	if candidate!=null:return candidate.cues.wave("piano",midi,true)
 	var key:="%d/%d"%[base.get_instance_id(),midi]
 	if cache.has(key):return cache[key]
 	if cache.size()>=24:cache.clear()

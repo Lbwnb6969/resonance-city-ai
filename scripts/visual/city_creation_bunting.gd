@@ -16,7 +16,7 @@ static func _anchors(renderer: Node3D) -> Array[Dictionary]:
 		var hid := str(house.id)
 		var role := str(house.get("role", "residential"))
 		var imp := int(state.improvement_level(hid))
-		var festive: bool = imp >= 1 or state.house_harmony_tier(hid)>=2 or role in ["venue", "garden_cafe", "bakery", "workshop"]
+		var festive: bool = preload("res://scripts/world/city_creation_festival_scenery.gd").festive(state,imp >= 1 or state.house_harmony_tier(hid)>=2 or role in ["venue", "garden_cafe", "bakery", "workshop"])
 		var palette: Array = renderer.PALETTES[posmod(int(house.get("palette", 0)), renderer.PALETTES.size())]
 		if house.has("finish") and renderer.FINISH_PALETTES.has(str(house.finish)):
 			palette = renderer.FINISH_PALETTES[str(house.finish)]

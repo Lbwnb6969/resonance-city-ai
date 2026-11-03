@@ -1,0 +1,3051 @@
+{
+  "schema": "lyria_instrument_batch_v1",
+  "external_batch_root": "C:/Users/Administrator/Desktop/mIDDLEFILE/资产/音乐/制作批次/lyria35_instruments/20261102_v1",
+  "source_root": "D:\\GODOT\\Music",
+  "source_count": 19,
+  "technical_ready_count": 19,
+  "audio_files_verified": 304,
+  "elapsed_seconds": 780.954,
+  "runtime_ready": false,
+  "listening_status": "not_evaluated",
+  "vocal_separation_required": false,
+  "delivery_doc": "文档/音乐制作批次/Lyria35_纯音乐整批分轨交付_20261102.md",
+  "batch_report_sha256": "434e2b032a21dd4ad6611f830e7483aa85cbb819a15bec56351ec8ad443d7b68",
+  "audit_report_sha256": "4978ec7d7675b3efe93833a5b75263a1a1058fb03df9059846014fbd05fa0a66",
+  "models": [
+    {
+      "file": "htdemucs_6s.yaml",
+      "bytes": 21,
+      "sha256": "207405151270af8fd81c2373c25d27950916682ac91dca7884a11ce13dad6f58"
+    },
+    {
+      "file": "5c90dfd2-34c22ccb.th",
+      "bytes": 54996327,
+      "sha256": "34c22ccb381c6f9fdbf324f04e1e2fe21aaaf293f5ded163a162697ff9a02ddd"
+    },
+    {
+      "file": "17_HP-Wind_Inst-UVR.pth",
+      "bytes": 223661285,
+      "sha256": "acc6d472b4b478da9c9ab5af45b167749e05a7f65b30c7d5988b3700a513aeee"
+    }
+  ],
+  "songs": [
+    {
+      "name": "Pastoral Riverside Dawn Chamber Music.mp3",
+      "source_sha256": "01a8ed354b835f12df7a7671a83f150ca249abfabbc2d7be757d1fe65b520e5d",
+      "directory": "pastoral_riverside_dawn_chamber_music",
+      "frames": 6470784,
+      "duration_seconds": 146.72979591836736,
+      "delivery_report_sha256": "1e441fa5ae73d4113d271b2e46fefc3e3b48fc4fa1d5bd2f5616a3beb3122678",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\full_mix.wav",
+        "sha256": "dc616db5c9cc2255f6042ac97a9201e68ffd6053286e95a7632e1ec44fb0b697",
+        "rms": 0.0986320897936821,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_bass.wav",
+              "sha256": "774ca220c9e5091c874b1ec3c979deb67e85f8c24e5a2b4ace13275763828007",
+              "rms": 0.00021268379350658506,
+              "rms_relative_to_master_db": -53.32567674006724,
+              "peak": 0.007790603209286928,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_drums.wav",
+              "sha256": "4a9211c2e807827da1bdc63b1d97e6fd44a82d71db7f30ddb483d6fdf4879a5e",
+              "rms": 0.00022017661831341684,
+              "rms_relative_to_master_db": -53.024940756591896,
+              "peak": 0.003947525285184383,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_other.wav",
+              "sha256": "b50ea1b486a57f8c0997b44f99f42bb56ea0bbf44386629e0274924b1d1be9af",
+              "rms": 0.07235325872898102,
+              "rms_relative_to_master_db": -2.6912027760604995,
+              "peak": 0.4931778609752655,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_vocals.wav",
+              "sha256": "cbc718516aa065716bb313a20c7d76feda86d9228d0d148865307c4f02058764",
+              "rms": 0.012459949590265751,
+              "rms_relative_to_master_db": -17.97003899335236,
+              "peak": 0.3105890452861786,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_guitar.wav",
+              "sha256": "28efc54ddb96e60fe504ecd38f7e18f77b9493332652bc51898e90570d853c01",
+              "rms": 0.054613783955574036,
+              "rms_relative_to_master_db": -5.134319339308614,
+              "peak": 0.36393386125564575,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_piano.wav",
+              "sha256": "42f53db1e04808eadf19ce6a631c2cb918f7e9e016a8d6f70d5761e9dd81d9f1",
+              "rms": 0.00736823258921504,
+              "rms_relative_to_master_db": -22.533098167900903,
+              "peak": 0.19530516862869263,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\coarse_six_sum.wav",
+            "sha256": "a0e5bb8d0380db962bd36b4a4220a102b088dd8b68ea513924ae6b002b27e285",
+            "rms": 0.09568308293819427,
+            "rms_relative_to_master_db": -0.2636614996070092,
+            "peak": 0.5175761580467224,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.013305285014212132
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "c340aa4d2b62672b661bdf82a91acc04a201452519ca23bb397238129c4ab30c",
+              "rms": 0.061550647020339966,
+              "rms_relative_to_master_db": -4.095712247133109,
+              "peak": 0.44598388671875,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "f122dc46836b612f42dd5861e68d3028608ef5903686b73d262b8bdb24638443",
+              "rms": 0.00019153326866216958,
+              "rms_relative_to_master_db": -54.235480293085715,
+              "peak": 0.002033705823123455,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "d30f8e6209a0c4d9ef49a3b11cbb9a2926671fbfe8008bea677bfcc62dc38421",
+              "rms": 0.0003215588803868741,
+              "rms_relative_to_master_db": -49.735154541949534,
+              "peak": 0.008202976547181606,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "d56f1e7596c0c05cd740523e140f932019f4b240d1a6363d74a4361671b60609",
+              "rms": 0.02498132549226284,
+              "rms_relative_to_master_db": -11.92805513859414,
+              "peak": 0.3471052348613739,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "396897db5ea7af60ced6a37fb53e40f64d0119116e9f73c0efd2bdee2477fb56",
+              "rms": 0.00241553015075624,
+              "rms_relative_to_master_db": -32.22011544422946,
+              "peak": 0.06295837461948395,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "4aa7777c0cb160dc3d837d89492da307b8921ea3fc306f6afd509d340d7bd07f",
+              "rms": 0.059292182326316833,
+              "rms_relative_to_master_db": -4.420415990711967,
+              "peak": 0.37862905859947205,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "71021667206926c1a5be19f26c5a73b71be0248f62bf3e640c84fb3176989035",
+              "rms": 0.0014420882798731327,
+              "rms_relative_to_master_db": -36.70052775365383,
+              "peak": 0.10688633471727371,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_riverside_dawn_chamber_music\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "e3b0327032cc90edb64d8efee12a7b3ba0120fc4b913c8e75ceb300d7212511d",
+            "rms": 0.09515351057052612,
+            "rms_relative_to_master_db": -0.3118683855462647,
+            "peak": 0.536240816116333,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.011045655235648155
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35\\ly35_river_dawn\\v1\\analysis\\20261102-130707-788112\\001_Pastoral Riverside Dawn Chamber Music\\summary.json",
+        "report_sha256": "48a6298157be8a0d0bd4487c7cfc3f0c2278785a9b00dc22ac7aa5d127e6dcca",
+        "librosa_bpm": 129.19921875,
+        "essentia_bpm": 164.16178894,
+        "essentia_key_estimate": "A major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Acoustic Instrument Sampling Session.mp3",
+      "source_sha256": "41eb46deae028be4e50d15d0a2576303c52b1d64690e12162745dfec6df5b44f",
+      "directory": "acoustic_instrument_sampling_session",
+      "frames": 8023680,
+      "duration_seconds": 181.94285714285715,
+      "delivery_report_sha256": "a8418d89c4bcedfd7d2a477271eed2c4f974d6c81884c965590ac36ca5a3b07a",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\full_mix.wav",
+        "sha256": "551c066d1b848fa19a5a52bc73cc2bf5c41c56e1d79f1c674fa926aaa4219b21",
+        "rms": 0.0931711494922638,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_bass.wav",
+              "sha256": "5c7d6a56f7a419f19dc7c3e9bf00319aad521b15cbc2a3908559697112bfad16",
+              "rms": 0.0001467443216824904,
+              "rms_relative_to_master_db": -56.054402970295385,
+              "peak": 0.002657965524122119,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_drums.wav",
+              "sha256": "cf74da4da9a6ca01658bdb0be897a0f0abc8c966ed380ce896f96d685e2012df",
+              "rms": 5.722261994378641e-05,
+              "rms_relative_to_master_db": -64.23427430909274,
+              "peak": 0.0011941874399781227,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_other.wav",
+              "sha256": "3f68437130564e036be08659cddd9381e8450cd7bb8139c412506fadaa94f094",
+              "rms": 0.06816206127405167,
+              "rms_relative_to_master_db": -2.714774764728159,
+              "peak": 0.5131883025169373,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_vocals.wav",
+              "sha256": "c3974b0dd84556b2cd9c0af8673d4e1d33adf93e39277c3126f7e84dc91b23f4",
+              "rms": 0.0003549804969225079,
+              "rms_relative_to_master_db": -48.381539211521975,
+              "peak": 0.017697572708129883,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_guitar.wav",
+              "sha256": "050e9cd42a053a9a2cc4845b93034f288638ec32f4888dea647270e5fbe946cf",
+              "rms": 0.04338318109512329,
+              "rms_relative_to_master_db": -6.639201197518166,
+              "peak": 0.4858643114566803,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_piano.wav",
+              "sha256": "28a95f3aa51326418fb87b04724ed5daa9268f0efa20562aacdd34148d80870c",
+              "rms": 0.006790807005017996,
+              "rms_relative_to_master_db": -22.74720131242653,
+              "peak": 0.3118326961994171,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\coarse_six_sum.wav",
+            "sha256": "e04c0a817eb2035ba56ad3e9dd74a3358bcd3a66fefba0595c6e63bf941f9371",
+            "rms": 0.08918337523937225,
+            "rms_relative_to_master_db": -0.3799509787768027,
+            "peak": 0.7578425407409668,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.012464945204555988
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "fd31cfc165a21d8a93a96c78c07e18b07ff4e5a171922fe4f2d4a8c66614cbb6",
+              "rms": 0.011725367046892643,
+              "rms_relative_to_master_db": -18.003100139843525,
+              "peak": 0.4595947265625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "edb5a13c4b8a0dcf5ccc0af37c7e8f8f797d10ae8d8214794648109ffdc07312",
+              "rms": 0.00015146966325119138,
+              "rms_relative_to_master_db": -55.77911587419856,
+              "peak": 0.0024654343724250793,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "a0a72b54da19943576a355de9a4e297742a154ba0559b411103c9ccf4d5bff55",
+              "rms": 7.3425100708846e-05,
+              "rms_relative_to_master_db": -62.06873805461957,
+              "peak": 0.001658801338635385,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "ac0b427873f1b2805372cb39981ca32bb005acd3b5db65717e92820c014c6092",
+              "rms": 0.06872458010911942,
+              "rms_relative_to_master_db": -2.6433871702226703,
+              "peak": 0.6103787422180176,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "72248745c910fe85bc635f7e1c5287442640288df49de2135e1bea8fd52af6a5",
+              "rms": 0.00033601539325900376,
+              "rms_relative_to_master_db": -48.85844560427336,
+              "peak": 0.017330767586827278,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "6aaa770eaca570249f067e028604079522cb483de9b347414b89f4466c521c52",
+              "rms": 0.043342892080545425,
+              "rms_relative_to_master_db": -6.647271341746074,
+              "peak": 0.48528745770454407,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "b0789c6261537f973adc51ac706d41599d917bf63325b3ab36f964a72654aa8a",
+              "rms": 0.004743154160678387,
+              "rms_relative_to_master_db": -25.8642842679734,
+              "peak": 0.27578920125961304,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\acoustic_instrument_sampling_session\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "460407f3f80a7498c62134785d858d026d01e05fe109de45c414627be4bfa46a",
+            "rms": 0.08857065439224243,
+            "rms_relative_to_master_db": -0.4398320036616759,
+            "peak": 0.7362942695617676,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.01472557708621025
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\001_Acoustic Instrument Sampling Session\\summary.json",
+        "report_sha256": "493d46e9e371c3e7921ae2330e226c9b79b921c2447329cb3943683e828e07e6",
+        "librosa_bpm": 117.45383522727273,
+        "essentia_bpm": 119.697189331,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Comforting Neoclassical Chamber Music.mp3",
+      "source_sha256": "b6f52a110a0af1901181af9f06aace39a5b52d20942a4226dea56ecd4186bc02",
+      "directory": "comforting_neoclassical_chamber_music",
+      "frames": 6504192,
+      "duration_seconds": 147.48734693877552,
+      "delivery_report_sha256": "45dd59004e92ca232ec4fbb804dca32723525c3e43f2d1dc31c23e6ce07f22a6",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\full_mix.wav",
+        "sha256": "7e6889b6c8fc534d7b6f445c6e5f4d4dea952182c8f4556b88705e8cff2d07f6",
+        "rms": 0.09636683017015457,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_bass.wav",
+              "sha256": "fac4b8fd023489d139d3121cc5ee11862facf2c97c6d26bb469c04a0bd1a3f1d",
+              "rms": 0.004390357062220573,
+              "rms_relative_to_master_db": -26.82855463013624,
+              "peak": 0.11588688939809799,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_drums.wav",
+              "sha256": "3423de623b38747ff2756e62c5dd1a4cfaa4f5337d8f9a2b0844bb1ee31774c9",
+              "rms": 0.0002932832285296172,
+              "rms_relative_to_master_db": -50.33280690701959,
+              "peak": 0.0023024692200124264,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_other.wav",
+              "sha256": "e7f42f5b59612464dd0c78628b72ebd63152216ecd87e194aa09b4d988eccde2",
+              "rms": 0.0471067875623703,
+              "rms_relative_to_master_db": -6.216881703676611,
+              "peak": 0.4179795980453491,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_vocals.wav",
+              "sha256": "d5b86e37f2375927eeb370ee36c0546e514a02bcc64bc50f23ee4637e4fcf8d8",
+              "rms": 0.0024171099066734314,
+              "rms_relative_to_master_db": -32.012623509191506,
+              "peak": 0.06616245955228806,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_guitar.wav",
+              "sha256": "8023d78df04dc35ca59f5045f95e673e1503ad30a204f7f8478df82664d73109",
+              "rms": 0.015890074893832207,
+              "rms_relative_to_master_db": -15.65603259321211,
+              "peak": 0.2550167441368103,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_piano.wav",
+              "sha256": "1c094459d6e4c31e9dfa8dbe756ee64af871b236f35c006d2e6c10c297867fb7",
+              "rms": 0.061779577285051346,
+              "rms_relative_to_master_db": -3.8616528282185363,
+              "peak": 0.4632173180580139,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\coarse_six_sum.wav",
+            "sha256": "044608f74b9bda62a558842be082295359ed0cca81db11d068232380d8dbc56f",
+            "rms": 0.09007897973060608,
+            "rms_relative_to_master_db": -0.5860823052367021,
+            "peak": 0.5882543325424194,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.01695961505174637
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "97752b99c0321fe8a67ad2d7110b8ce9c75f6f0124520e348d931258b88a2647",
+              "rms": 0.017784923315048218,
+              "rms_relative_to_master_db": -14.677511537453789,
+              "peak": 0.28997802734375,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "4a0ff54fc6a3228da7d38e6e00609f3e1bb1b08bff1451ab7b785825dc919e7e",
+              "rms": 0.005613228306174278,
+              "rms_relative_to_master_db": -24.69429734444581,
+              "peak": 0.15152734518051147,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "9fe74fff05d256923702ebcd805a823699c712cc88c618747b7c140b678bec7a",
+              "rms": 0.0002776727778837085,
+              "rms_relative_to_master_db": -50.80788537519999,
+              "peak": 0.0020671116653829813,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "5e34bdcb52760ce7c0328b6d4aed8ceefdfcbb1a88c99849534fc1d1c1e4e885",
+              "rms": 0.03818946331739426,
+              "rms_relative_to_master_db": -8.039680372056297,
+              "peak": 0.36862441897392273,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "b6f81e72ec3a1c8fdad8e43bd8f99ef5556152e100ead4cfb6c07bf6ebd21990",
+              "rms": 0.008050374686717987,
+              "rms_relative_to_master_db": -21.562229594082783,
+              "peak": 0.23267897963523865,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "13b075b54015141338002cef5c12e0b73a08cce26fc34dc29f074e407758cc71",
+              "rms": 0.01628897897899151,
+              "rms_relative_to_master_db": -15.440674219347787,
+              "peak": 0.25025421380996704,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "9363b59c8a7759bc432bfcedd3ca7eb21d3cb3a2ccfcd826ec5480b51d9b9b7a",
+              "rms": 0.06180770695209503,
+              "rms_relative_to_master_db": -3.857698842349773,
+              "peak": 0.466796875,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\comforting_neoclassical_chamber_music\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "4447d30fe5e03bffc4b953ce96c36ca4f887d2922c44e2a38df35a7138e16d43",
+            "rms": 0.08980413526296616,
+            "rms_relative_to_master_db": -0.6126247694511009,
+            "peak": 0.597571849822998,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.016131415963172913
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\002_Comforting Neoclassical Chamber Music\\summary.json",
+        "report_sha256": "05c65bd35d905e961ff3aaf8ba3c04461933f04e35fd69b2a0cd0dacd07e6a02",
+        "librosa_bpm": 129.19921875,
+        "essentia_bpm": 128.656265259,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Joyful Chamber Ensemble Celebration.mp3",
+      "source_sha256": "90a277ed169c5e895da22110f8c6947026792d3ae489b44f9d7aeb80faeebca2",
+      "directory": "joyful_chamber_ensemble_celebration",
+      "frames": 6596352,
+      "duration_seconds": 149.57714285714286,
+      "delivery_report_sha256": "521a1d1a9358c2f6dbc59507acb3cf80155739a07369ff7f84ce069a8cdd9457",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\full_mix.wav",
+        "sha256": "036c2509241637dbe81eb25609a5d52184a353790354940f55c65491ca26f049",
+        "rms": 0.09466267377138138,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_bass.wav",
+              "sha256": "b62be243674bd58ebbf36fa33bae7a76fc79b0ee06a1d330f6d12e1da977bba7",
+              "rms": 0.02692336216568947,
+              "rms_relative_to_master_db": -10.920989476275391,
+              "peak": 0.2429606169462204,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_drums.wav",
+              "sha256": "c300eb9879e3fe3ca92d5590d283eef3c98f1b93d38abde15665ea9690095958",
+              "rms": 0.012489475309848785,
+              "rms_relative_to_master_db": -17.592691465422728,
+              "peak": 0.20532260835170746,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_other.wav",
+              "sha256": "75a30d8e9706d15646be403093ac737d5f49f0b16987d5b5baa5882712ce800b",
+              "rms": 0.08135387301445007,
+              "rms_relative_to_master_db": -1.3160106767593112,
+              "peak": 0.5355164408683777,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_vocals.wav",
+              "sha256": "fb9181ea98925899e131b17d3ee0c28f2c40b17d01d363612025a2e18c496139",
+              "rms": 0.0011957645183429122,
+              "rms_relative_to_master_db": -37.97066209025712,
+              "peak": 0.0676121786236763,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_guitar.wav",
+              "sha256": "c62722260589c85d75923fddc93effbd21016be321a31c49d097487f34621ebd",
+              "rms": 0.017398621886968613,
+              "rms_relative_to_master_db": -14.71327834181479,
+              "peak": 0.26801785826683044,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_piano.wav",
+              "sha256": "e50f658bd027f62cfb4ddd1240e2d911bacfe86bfd3afcfb015b5ba6b1ac3e45",
+              "rms": 0.003140221582725644,
+              "rms_relative_to_master_db": -29.584369457773153,
+              "peak": 0.1384739726781845,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\coarse_six_sum.wav",
+            "sha256": "4a690c9959d53fa4fc118791a7e64fe0d573971bce004d78115a4fb9322ff89f",
+            "rms": 0.09233567118644714,
+            "rms_relative_to_master_db": -0.21618513296608324,
+            "peak": 0.5533681511878967,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.010348076932132244
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "d558e3b4f6fa09fcfeabea78e23b04cc3730ac15390b35d19ca2d37e9dfdb7bf",
+              "rms": 0.023722510784864426,
+              "rms_relative_to_master_db": -12.02036228629556,
+              "peak": 0.301422119140625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "00e5d7dfc4d0a72dd223293615d647bec5a99cea8f9a3c86088a2da570eeed23",
+              "rms": 0.02775157243013382,
+              "rms_relative_to_master_db": -10.657823427499725,
+              "peak": 0.23515264689922333,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "34c8963cb55b9ca029007b89116b71948b7db0577cbb39cd65375da513381f1c",
+              "rms": 0.012430091388523579,
+              "rms_relative_to_master_db": -17.634088907804653,
+              "peak": 0.2036283016204834,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "9b2da1c360627663483d70075e24f92e68857b5f7191f969bb383759de1e4853",
+              "rms": 0.07708856463432312,
+              "rms_relative_to_master_db": -1.7837761549752982,
+              "peak": 0.5477336049079895,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "a90218902687befcf916b1b95eaa26257fae24bb5b58025fd3bf113ff4427d06",
+              "rms": 0.001145506277680397,
+              "rms_relative_to_master_db": -38.34362586963986,
+              "peak": 0.05895424261689186,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "a55b54d2bcb32a57da4593094053eeb8b983b47a012c61df517441eda1085c3a",
+              "rms": 0.015154283493757248,
+              "rms_relative_to_master_db": -15.912867193072117,
+              "peak": 0.2501024007797241,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "69bef2a3a727b99f26c096eb6f97b3048b9a137507a92eb01653d935aa83d010",
+              "rms": 0.0016486028907820582,
+              "rms_relative_to_master_db": -35.18125420062669,
+              "peak": 0.11010411381721497,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\joyful_chamber_ensemble_celebration\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "be79073e40d34bd491bed290a78b68a92350329991bd9389c223ec64d8f714ed",
+            "rms": 0.0925796627998352,
+            "rms_relative_to_master_db": -0.19326344863928088,
+            "peak": 0.5230537056922913,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.009521999396383762
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\003_Joyful Chamber Ensemble Celebration\\summary.json",
+        "report_sha256": "9f30dd7675826171bfafb0ab4db80efe0927d6fb7a686dff44347ade928c6171",
+        "librosa_bpm": 92.28515625,
+        "essentia_bpm": 89.8453674316,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Minimalist Botanical Chamber Composition.mp3",
+      "source_sha256": "bce5a2416e254a2d61dc7b5a801b516d8d731df85f44acb006e7c4850b326ed5",
+      "directory": "minimalist_botanical_chamber_composition",
+      "frames": 6531840,
+      "duration_seconds": 148.11428571428573,
+      "delivery_report_sha256": "02b9859e997fed3a4af65f5e16d7f9546e38edd666c47df5a21edae71dc9b69c",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\full_mix.wav",
+        "sha256": "fb1ddbcb616de2cf131e9f43604d08f45d855afe1eb640509a27399186a5d863",
+        "rms": 0.09767811745405197,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "393dd6bfa6efe70b91ca2bbf7d7f1706ab581a820392681baa322f5046a01375",
+              "rms": 0.02749897539615631,
+              "rms_relative_to_master_db": -11.009615368683917,
+              "peak": 0.3066466450691223,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "3cfe2375aeb7f1f34237ab5677b5010ef218a3785d095564e4e4106c470101c0",
+              "rms": 0.00048050828627310693,
+              "rms_relative_to_master_db": -46.161927989709454,
+              "peak": 0.023717625066637993,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_other.wav",
+              "sha256": "8a735ea73f731d7fbf9915be60e6b6bd991d59b40ddb11af1447bef013663202",
+              "rms": 0.0804346427321434,
+              "rms_relative_to_master_db": -1.6870828747078432,
+              "peak": 0.47769156098365784,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "ff08cefbbfca0eb543d871d493bd31e3f6e8167b1e0f2aee85dfb2c462a10a4b",
+              "rms": 0.01808979921042919,
+              "rms_relative_to_master_db": -14.647270689777143,
+              "peak": 0.19848214089870453,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "91841691f357fedc792a86368736d7cb3bd5dcfee7447ff38ac18c117eafb859",
+              "rms": 0.014025494456291199,
+              "rms_relative_to_master_db": -16.857582000340848,
+              "peak": 0.23409540951251984,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "ba6d759b2ed3f3ca2078098e4855714d9cab2809fecaeea08a58cab758b0d215",
+              "rms": 0.011393222957849503,
+              "rms_relative_to_master_db": -18.663013691210274,
+              "peak": 0.23304659128189087,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "46666be7641792fa85f98796da6a3afdd503cd719da1237e93791d250bb40d4e",
+            "rms": 0.09447558224201202,
+            "rms_relative_to_master_db": -0.2895540755184094,
+            "peak": 0.518667459487915,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.01213748287409544
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "f2a4d8278dcdc5cdca9cac10f8238b5fd6c9076aec610aaab00912400fab4b75",
+              "rms": 0.04607328400015831,
+              "rms_relative_to_master_db": -6.526962239775271,
+              "peak": 0.3419189453125,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "049e2952fd6cc1dbc98bcd5dbab80187e5698e6b6d2de6f892594cd6842513fc",
+              "rms": 0.028924815356731415,
+              "rms_relative_to_master_db": -10.570533711828016,
+              "peak": 0.3122725784778595,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "d66a556b6aac6f78b08ae649e730d1d15ec007755eb619887dcba403f8abccf2",
+              "rms": 0.0007545570842921734,
+              "rms_relative_to_master_db": -42.242103599366516,
+              "peak": 0.06356972455978394,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "128af40a13b5a8f22135aaaa47e21fbd6f5c8bd1012edeeee5a90549ba31b321",
+              "rms": 0.06604128330945969,
+              "rms_relative_to_master_db": -3.399635540554046,
+              "peak": 0.4870109260082245,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "12d598721299fcd8cbbf9a5747e1de57067a8a3918951aee8bda62980245c137",
+              "rms": 0.012059802189469337,
+              "rms_relative_to_master_db": -18.169141930374614,
+              "peak": 0.16975544393062592,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "f8131a5500ad793a6214b787af0fce058ed5687b47d7583a4361c4e2ef0ed191",
+              "rms": 0.00928544718772173,
+              "rms_relative_to_master_db": -20.43988913300915,
+              "peak": 0.1778402030467987,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "dd6d2d2e64514b96eebde038438485b9aa8e5f426f59da9b6c9af4b1d088e1ac",
+              "rms": 0.008383689448237419,
+              "rms_relative_to_master_db": -21.32724196481393,
+              "peak": 0.20690080523490906,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_botanical_chamber_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "dde4b2b14d503731152e92f345c368e75b159d9a8417a82a0462debde529a27e",
+            "rms": 0.09499883651733398,
+            "rms_relative_to_master_db": -0.24157989017087395,
+            "peak": 0.5193628072738647,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.009465716779232025
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\004_Minimalist Botanical Chamber Composition\\summary.json",
+        "report_sha256": "26bfdf8b3817158c19c725d9644def74994b7439c607d2a5be21526494c48521",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 162.028869629,
+        "essentia_key_estimate": "Eb minor",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Minimalist Chamber Music Composition.mp3",
+      "source_sha256": "e1f82908d73abd0d725eb6171d8ea0565077d56852fe7fc5e8323180bad9822a",
+      "directory": "minimalist_chamber_music_composition",
+      "frames": 7634304,
+      "duration_seconds": 173.1134693877551,
+      "delivery_report_sha256": "6de2b18b2225046eb5149ed35d5716faade31f4800d7a613f09f991e35c399a6",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\full_mix.wav",
+        "sha256": "9171799ebaab0c02bffd35060e63671ec653a6f91660f5019652c54d92171478",
+        "rms": 0.09845894575119019,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "73511cf0e2dc4e37697426a4442a7b35d6d015fa439d2c762b12a42f7d539f32",
+              "rms": 0.0005817536148242652,
+              "rms_relative_to_master_db": -44.57032181451623,
+              "peak": 0.013740571215748787,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "a50d541ad935e7cb9404d3ad34c9b449351f7ea4f795fc73e347ecb0cad145b1",
+              "rms": 0.0014191638911142945,
+              "rms_relative_to_master_db": -36.82445257435119,
+              "peak": 0.132508784532547,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_other.wav",
+              "sha256": "b9ec816848e909b37adf0d9939394bd3dd756252c5b17033c0b7793249dab682",
+              "rms": 0.08454490453004837,
+              "rms_relative_to_master_db": -1.3233548639337465,
+              "peak": 0.491698682308197,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "f944651df2666948cdee728889fee607e21e47ab48eefa9c6dcce141506523ce",
+              "rms": 0.006167327519506216,
+              "rms_relative_to_master_db": -24.06316337511708,
+              "peak": 0.11702939867973328,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "292a861dd4453568ab9b9b766c8346480fd05bb615b2276683ba006c3bd1cddd",
+              "rms": 0.012915204279124737,
+              "rms_relative_to_master_db": -17.643078029555532,
+              "peak": 0.19414086639881134,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "2e4747ba98681cd6354c5b9f579c8d2a708a3986a91be44c5cc0a06f9e4fe125",
+              "rms": 0.013329681940376759,
+              "rms_relative_to_master_db": -17.36870788841699,
+              "peak": 0.2625476121902466,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "e8eca40626e8d3aefb49eba30fb30dfa1308d090a27304b03ad313a1d1a2512a",
+            "rms": 0.09317430108785629,
+            "rms_relative_to_master_db": -0.47918075028840323,
+            "peak": 0.5277382135391235,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.01656864769756794
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "7eddaf2024b555edbaa4e2f2df106c5efa1a28d7bd888c015c1605ee6a9a2d61",
+              "rms": 0.046150218695402145,
+              "rms_relative_to_master_db": -6.581628357306485,
+              "peak": 0.372467041015625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "70d50c702032ec9f46bd01926fce042ba4f87c714396adeb94aead2cc053364e",
+              "rms": 0.0006356253870762885,
+              "rms_relative_to_master_db": -43.801078930323044,
+              "peak": 0.021117210388183594,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "9140ff364ab9a122af3fe0f6335340dc158f9bb9367b133c3c95574927054768",
+              "rms": 0.001309292740188539,
+              "rms_relative_to_master_db": -37.524368429233185,
+              "peak": 0.07584474980831146,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "b07d3e8d71b1b6b12c693594a8fffe7c0102e71db97278cf38b1e704357fab0f",
+              "rms": 0.06885886937379837,
+              "rms_relative_to_master_db": -3.1059058742685757,
+              "peak": 0.4939141571521759,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "96fd46bad34382ad3b498159c0644e375b389dbb0ac35f4b6d956b4966d31cbd",
+              "rms": 0.002073598327115178,
+              "rms_relative_to_master_db": -33.5306109486683,
+              "peak": 0.054956648498773575,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "2f73b0d397ec4fb1bbf8fe5a31af3398af76d4c441571615fb10e559212c2670",
+              "rms": 0.010779831558465958,
+              "rms_relative_to_master_db": -19.212864129422332,
+              "peak": 0.23933587968349457,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "b36f036b6aafc2b509a59cd34e94a688f02af7383f85a07a42cb66313cb123b6",
+              "rms": 0.01657545007765293,
+              "rms_relative_to_master_db": -15.475797030065175,
+              "peak": 0.265859991312027,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\minimalist_chamber_music_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "28c4e978c18b338a2ce63aea18065ccde6cdf25e4cd56f20559fdc6fd3e29f83",
+            "rms": 0.0933857262134552,
+            "rms_relative_to_master_db": -0.4594936166572808,
+            "peak": 0.6013271808624268,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.01573004573583603
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\005_Minimalist Chamber Music Composition\\summary.json",
+        "report_sha256": "ba2c1685854637825caf9b764734f91e8500b4a8fe741a9eb50eed63932f1361",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 80.986656189,
+        "essentia_key_estimate": "G minor",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Misty River Instrumental Chamber Music.mp3",
+      "source_sha256": "63b4d6819dad065edf3a849b475e7dd0de140600d90169a936d594b9f859473d",
+      "directory": "misty_river_instrumental_chamber_music",
+      "frames": 6621696,
+      "duration_seconds": 150.1518367346939,
+      "delivery_report_sha256": "ce828c77dd92e7c757fa044b9c3ccc0d6b6fa09ae1422e601abfd4572c6a577e",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\full_mix.wav",
+        "sha256": "99dfb0a2a01cf1d90d63fdcc439c76f00d131f3904f52e6192bb8d852ad54ef2",
+        "rms": 0.09789469838142395,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_bass.wav",
+              "sha256": "9a1a065c451d6d7c92046178ff54e5628e32b127021209f0aedc0420564a4f0e",
+              "rms": 0.00022371286468114704,
+              "rms_relative_to_master_db": -52.82136427159945,
+              "peak": 0.0008499312680214643,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_drums.wav",
+              "sha256": "b8f358046a74f363e5a25eb41234d6083d7e6ae83870df4c1a02a140b44b27f0",
+              "rms": 0.0002738779585342854,
+              "rms_relative_to_master_db": -51.064041812628254,
+              "peak": 0.012805367819964886,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_other.wav",
+              "sha256": "bbdd31e28ae58254c5ab4c72417124dd5af502bad9d38976a78586f0b83de966",
+              "rms": 0.07230798900127411,
+              "rms_relative_to_master_db": -2.6314577870011475,
+              "peak": 0.497695654630661,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_vocals.wav",
+              "sha256": "61fea04157a5df2b940392ce013cc4e802229ccb540cc1df35ccc66e088f80c1",
+              "rms": 0.00025056381127797067,
+              "rms_relative_to_master_db": -51.83681652484723,
+              "peak": 0.005906684324145317,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_guitar.wav",
+              "sha256": "04a9f726197031b8a749e93060063b64233388d986604844cf0dcb9567dfdf52",
+              "rms": 0.05279199406504631,
+              "rms_relative_to_master_db": -5.363822122205879,
+              "peak": 0.44591811299324036,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_piano.wav",
+              "sha256": "5e2d77e72b923e04ebfff7b94c96c50fb644a57737b9826ac3b7d17b0667f6f8",
+              "rms": 0.007892007939517498,
+              "rms_relative_to_master_db": -21.87143318302096,
+              "peak": 0.13115160167217255,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\coarse_six_sum.wav",
+            "sha256": "eeeb422ba1d55de4f95a20a653a9b7c05e7e6ce938a0972d031519799df5ba12",
+            "rms": 0.09598506987094879,
+            "rms_relative_to_master_db": -0.17110974554078046,
+            "peak": 0.5121511816978455,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.009178501553833485
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "f55f559967835e74313afa6e77d4eec2cfacd561c777ff488f256a0bf75c418a",
+              "rms": 0.05230436101555824,
+              "rms_relative_to_master_db": -5.444425436060487,
+              "peak": 0.445556640625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "87ee02140f76b5fdbbd36a40036ab332f7b7bbe1001cda1d729c853e7f838e1a",
+              "rms": 0.0002020338870352134,
+              "rms_relative_to_master_db": -53.70669906208231,
+              "peak": 0.0007784342160448432,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "f17fe62625598a6be0ca2310891d3a9e9a0514216a59fd31925e217b163582a1",
+              "rms": 0.00021160257165320218,
+              "rms_relative_to_master_db": -53.304764623350195,
+              "peak": 0.004192655440419912,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "88813f3338054e37d90685c4853cf6405f478f8990cfb527f86cd3a7298fe28e",
+              "rms": 0.039286550134420395,
+              "rms_relative_to_master_db": -7.930305576171435,
+              "peak": 0.45752227306365967,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "dfea5700b9f80e4710939bf5f66d17d69467f1d09377e4a9370331873302abb4",
+              "rms": 0.00029046216513961554,
+              "rms_relative_to_master_db": -50.553392046417656,
+              "peak": 0.009464210830628872,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "5cc364a41f9d9779cb1c69f93cd1f8daf78367ae175e2fa2cf0bed45747a87fe",
+              "rms": 0.056808359920978546,
+              "rms_relative_to_master_db": -4.726938428589049,
+              "peak": 0.4665226638317108,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "1defbccbdcaa4e30f52769c0c7c8bc5647a8dc9fa44f787a72b2f6ac1d3f2514",
+              "rms": 0.002396219875663519,
+              "rms_relative_to_master_db": -32.22465012999593,
+              "peak": 0.08799008280038834,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\misty_river_instrumental_chamber_music\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "24016902fb29aeee14d9c302c90c11fce710f74300ab5112eb468ac5fa51969d",
+            "rms": 0.09621602296829224,
+            "rms_relative_to_master_db": -0.15023542010420168,
+            "peak": 0.5218638181686401,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.0063724215142428875
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\006_Misty River Instrumental Chamber Music\\summary.json",
+        "report_sha256": "1a9012e76e707c4448a979386d0dbe52eb07ce88e52fe3e2e2b1cf468cae4e7e",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 162.100280762,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Neoclassical Coastal Chamber Music.mp3",
+      "source_sha256": "bcaf1a13910f33f9a3dcbf3e993c675fecc34ee7e02eb567614aca1a9caa25ed",
+      "directory": "neoclassical_coastal_chamber_music",
+      "frames": 6649344,
+      "duration_seconds": 150.77877551020407,
+      "delivery_report_sha256": "a8c704cc0520a10698d6c59629b6bcd15225a67cc7707cc4ac7925a9baf2ba36",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\full_mix.wav",
+        "sha256": "1d475aa41b69ec441c3cf5b6def3d70f6aa97e6919218d647fd4a4c8771ef2fb",
+        "rms": 0.09625198692083359,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_bass.wav",
+              "sha256": "5ec1d3d96fa25afff606e30e494c65f225f62ef1e46d62322e4e3dfbf6a13429",
+              "rms": 0.0008464528946205974,
+              "rms_relative_to_master_db": -41.116138177715335,
+              "peak": 0.014378168620169163,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_drums.wav",
+              "sha256": "2b5847873b6acdc86405e2b4a07c0bb5168c96260cd55d15699a4274e5d42ef5",
+              "rms": 0.0004136222996748984,
+              "rms_relative_to_master_db": -47.336115169592674,
+              "peak": 0.020674724131822586,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_other.wav",
+              "sha256": "96ffa4aef8e8033ffe6ea164c8699730a97eca10ee2fbd8aaee88012e4a845bb",
+              "rms": 0.054926395416259766,
+              "rms_relative_to_master_db": -4.872572086026235,
+              "peak": 0.44498124718666077,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_vocals.wav",
+              "sha256": "9846a0754fa4a86db93c626feacfaee610eeba8bae7755e54946f54ab9ae11d4",
+              "rms": 0.009459124878048897,
+              "rms_relative_to_master_db": -20.15117488746192,
+              "peak": 0.31883254647254944,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_guitar.wav",
+              "sha256": "72511b674f946c0a34e1afc6df4e76caddfbb42ada70ca545e828cf0c9076c01",
+              "rms": 0.028897667303681374,
+              "rms_relative_to_master_db": -10.450938332086206,
+              "peak": 0.333135187625885,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_piano.wav",
+              "sha256": "ca31f3e359c69aa5baea13cff3594b704195ed18725be39f7002efb0b69adac3",
+              "rms": 0.03618538752198219,
+              "rms_relative_to_master_db": -8.497529507502877,
+              "peak": 0.3929119408130646,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\coarse_six_sum.wav",
+            "sha256": "0abd2dc3053ff8b12e3e897ef27a428f0cdc4423e54395a9506f56f71fe3a1ef",
+            "rms": 0.08338307589292526,
+            "rms_relative_to_master_db": -1.2466358346186794,
+            "peak": 0.545009434223175,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.025244684889912605
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "a11bdf92ce7dd42dcfde7b0b216885dc0cde2e0ec96bb0ad618e89939e15677c",
+              "rms": 0.021818654611706734,
+              "rms_relative_to_master_db": -12.891634717796165,
+              "peak": 0.314117431640625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "f4ed295517e976084c1c39fd6f42a1c0727068acc37fa61e30363877700bc9fe",
+              "rms": 0.0005996983381919563,
+              "rms_relative_to_master_db": -44.109537159922965,
+              "peak": 0.011235440149903297,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "7bcc5edf2d908d2f994eae389c19c8b3f6e3ed165e7a09c1c81abfaed341bc96",
+              "rms": 0.00039657740853726864,
+              "rms_relative_to_master_db": -47.70163465713206,
+              "peak": 0.020907489582896233,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "fd293ad62f17b11851340f756f23e1a0df97bad1540f1dc5072ace9a0141b71f",
+              "rms": 0.045469045639038086,
+              "rms_relative_to_master_db": -6.513877291729826,
+              "peak": 0.44829171895980835,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "d4d94e4624fb975b776692f1d64a1c642b8d042a982b845c651275385b0f9a6c",
+              "rms": 0.014896988868713379,
+              "rms_relative_to_master_db": -16.2062242023945,
+              "peak": 0.3388822078704834,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "9c52fc2b00a0829e41a3697f65ffe35408afb1f3cf689c6f1c7c7a4a7d40a603",
+              "rms": 0.027160044759511948,
+              "rms_relative_to_master_db": -10.989584441025308,
+              "peak": 0.3090225160121918,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "a9a8aa3c888776b6f13e4639a31d9781f375069c0a10910984c99dbfb92b4c06",
+              "rms": 0.03528418764472008,
+              "rms_relative_to_master_db": -8.71659160683573,
+              "peak": 0.38622426986694336,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\neoclassical_coastal_chamber_music\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "098a57bcf5697d5994b5840b17845a33f4a4adf51f72d0b84c78e412be1c6915",
+            "rms": 0.0819203108549118,
+            "rms_relative_to_master_db": -1.4003622352900824,
+            "peak": 0.6881253719329834,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.027296017855405807
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\007_Neoclassical Coastal Chamber Music\\summary.json",
+        "report_sha256": "4bd1465e255dac86d6c74b7b2c2381255cc6293eeeefb9ccff9fd4a35e47bfa1",
+        "librosa_bpm": 117.45383522727273,
+        "essentia_bpm": 123.370376587,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Nocturnal Chamber Music Composition.mp3",
+      "source_sha256": "1070b2492cbe6553297f353d8003460bbe6511b5dae1118fbe14ad112938ec07",
+      "directory": "nocturnal_chamber_music_composition",
+      "frames": 6470784,
+      "duration_seconds": 146.72979591836736,
+      "delivery_report_sha256": "d9bd97bce5cc7cbe388a6952ac4d225d882f3f6572a10bc81f97af1744111b03",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\full_mix.wav",
+        "sha256": "8c966f01714e28f48dbc81bc5b301688bfb3e8387b7cbc45f92717de85de7111",
+        "rms": 0.09822505712509155,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "76113875e30e78a864d18772fa817a403d0b31b81f9cf57dc91266a666d78162",
+              "rms": 0.0006942519103176892,
+              "rms_relative_to_master_db": -43.01410413241216,
+              "peak": 0.046762749552726746,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "492c3ba11da5f401706c35f71fc3fb72c16444aba65b6395a33a7a2dd3f23e9c",
+              "rms": 0.0009287756984122097,
+              "rms_relative_to_master_db": -40.48622893148571,
+              "peak": 0.05283045396208763,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_other.wav",
+              "sha256": "7e152b20edb198891130e21e21051c1ba5045d729f0499ba4f0e944bce674195",
+              "rms": 0.056821465492248535,
+              "rms_relative_to_master_db": -4.754197191251838,
+              "peak": 0.48021644353866577,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "c7d3d22d419cd8ff4439c3c1c3b37731fc20a48e3b04687a0cffbdbc251367e8",
+              "rms": 0.011229699477553368,
+              "rms_relative_to_master_db": -18.83708311936376,
+              "peak": 0.20231899619102478,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "69d923f1899d2936480482fcb73f9efc603ec555ec5a3ca5c6f2f6ca8053216d",
+              "rms": 0.021593937650322914,
+              "rms_relative_to_master_db": -13.157808939767266,
+              "peak": 0.2834453880786896,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "c9c3bf8530fc68666fcb562a35ae403253db429c00e51531681ccd82574cdf87",
+              "rms": 0.04660101979970932,
+              "rms_relative_to_master_db": -6.476537386443104,
+              "peak": 0.44888556003570557,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "273aaf184cc841588e8a0f66a2bbd11f1d7011ffb711010d45fa3139fe21560a",
+            "rms": 0.0872645378112793,
+            "rms_relative_to_master_db": -1.027689944634874,
+            "peak": 0.5344513058662415,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.023481709882616997
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "57d90e294c985764026f316ba96593922050b1b296b8b725d6e616390da0bae5",
+              "rms": 0.0204666368663311,
+              "rms_relative_to_master_db": -13.623516119764865,
+              "peak": 0.4293212890625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "5b0b24334604c8e87a970f318cc882f87320d1b7d029fed99617b0a523d2f643",
+              "rms": 0.0004428880929481238,
+              "rms_relative_to_master_db": -46.918565712578214,
+              "peak": 0.006594956386834383,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "307db536cfcfcb9b3647449ad812bd26df1ec58bd54b6670fb6191848fcdeb54",
+              "rms": 0.0009956388967111707,
+              "rms_relative_to_master_db": -39.88240870339787,
+              "peak": 0.05862406641244888,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "30a3bd63bbe807942607ea12f78a45c962506dcfb02205d14f8322d63dc70a89",
+              "rms": 0.04947134107351303,
+              "rms_relative_to_master_db": -5.95737213281791,
+              "peak": 0.48759517073631287,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "9db0ce3d1d2f1299c47ec93238d33ff4df28718bc89eed003d81e330be898483",
+              "rms": 0.012190952897071838,
+              "rms_relative_to_master_db": -18.123692735937574,
+              "peak": 0.20603732764720917,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "f078d3e68f94776bc300a28411f998c0a6b35f4ea7750e2a877b9033ded2ec37",
+              "rms": 0.023183345794677734,
+              "rms_relative_to_master_db": -12.540923540215791,
+              "peak": 0.3226229250431061,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "743576e4158e2209ff7a4320fe5da3353313b230b86714ac7f49f0e42ad23928",
+              "rms": 0.0444098599255085,
+              "rms_relative_to_master_db": -6.894857734073968,
+              "peak": 0.42848777770996094,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\nocturnal_chamber_music_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "fc68996f991c76f779fae36ce8d58cbc9c6c38caaa98826e6188c755829a9437",
+            "rms": 0.08494450151920319,
+            "rms_relative_to_master_db": -1.261740358874153,
+            "peak": 0.5199092030525208,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.02514776773750782
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\008_Nocturnal Chamber Music Composition\\summary.json",
+        "report_sha256": "0fac4b80b5c5307a6825afdb8f55de7962e708e190a733c995a65f04181e711d",
+        "librosa_bpm": 129.19921875,
+        "essentia_bpm": 172.265563965,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Pastoral Chamber Music Composition.mp3",
+      "source_sha256": "c194a9a9d01b186e25c244902254b9fe6a0e9a5c78f7b954dfb720e5875c7b76",
+      "directory": "pastoral_chamber_music_composition",
+      "frames": 6386688,
+      "duration_seconds": 144.82285714285715,
+      "delivery_report_sha256": "3da29ac2aa3d92eb5d7d106eb54a7dd176fd6aa0c83f9a3ff1cba664240c7a28",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\full_mix.wav",
+        "sha256": "9170a5152fc320406c06be59a47c11fa1439e65b27c438ad9adbffc3acdd194d",
+        "rms": 0.09744870662689209,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "13c03baeba8b5b820e4683502bb28ff22f04676cb6ecdbcee97b5ee2eed485a3",
+              "rms": 0.0003224331885576248,
+              "rms_relative_to_master_db": -49.60672682666761,
+              "peak": 0.0017905462300404906,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "59a00291244612d891d0ae0cd87c20d842f5a5dd9139340b8e8bc7c027d35a24",
+              "rms": 0.0003482438041828573,
+              "rms_relative_to_master_db": -48.93785362033741,
+              "peak": 0.006302551832050085,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_other.wav",
+              "sha256": "68df3578879831a2abad93196975a32841ebf251b6e8607174658cf9725eeffd",
+              "rms": 0.06964779645204544,
+              "rms_relative_to_master_db": -2.91737397618324,
+              "peak": 0.522113561630249,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "a908423bb8f0e024318475502b5d694788ca9ac05b87d7ad1bf797fe1a12750d",
+              "rms": 0.0021692600566893816,
+              "rms_relative_to_master_db": -33.04928919733769,
+              "peak": 0.0946587473154068,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "95ae8ce63f969bc49875d703670926c246f44bcd2fa3b177dcf7abb815b36f3c",
+              "rms": 0.05831551551818848,
+              "rms_relative_to_master_db": -4.459839203505287,
+              "peak": 0.45012426376342773,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "d159c3d851a041a901493845b7d1ae011ad6881f19a5f0214768b7f806f99132",
+              "rms": 0.004518826026469469,
+              "rms_relative_to_master_db": -26.675009158937264,
+              "peak": 0.1187916100025177,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "c73d0fbd65e14a6829349529a323a8438e8121c24d9477f3f06cd06ba0a8c56a",
+            "rms": 0.09551600366830826,
+            "rms_relative_to_master_db": -0.1739987167402387,
+            "peak": 0.518010675907135,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.008233180269598961
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "20d810a77ff322d3ee12dd95db48d27288f64ce9ec7b491b01d0f00b3ae20528",
+              "rms": 0.04717255383729935,
+              "rms_relative_to_master_db": -6.301733811590737,
+              "peak": 0.4595947265625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "7f1209666f307c54626423e7d89616a9e2e832b0147fc6fd1f6e64d2a3fad1d3",
+              "rms": 0.001692715915851295,
+              "rms_relative_to_master_db": -35.20384003367034,
+              "peak": 0.028716590255498886,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "dea17877d0fc91008f965f2622949b3bdfb9959a07ad8bc7430df5c1417da213",
+              "rms": 0.000404984166380018,
+              "rms_relative_to_master_db": -47.626760708000845,
+              "peak": 0.007867326959967613,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "b4951c029e04c0baeefe23eee9f740796ce0c271f5d3d29724557927e4e00396",
+              "rms": 0.041739802807569504,
+              "rms_relative_to_master_db": -7.364513727978848,
+              "peak": 0.49308934807777405,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "c929afaf265d2f74d3480544ccb5f674e95e7c814c2352f16a6723f12fe68be7",
+              "rms": 0.005581201985478401,
+              "rms_relative_to_master_db": -24.840966786555924,
+              "peak": 0.10603918135166168,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "03bb5ef281be484621b15153047d0034ebc0bad3e070163978ac3f7643263ed7",
+              "rms": 0.06106078624725342,
+              "rms_relative_to_master_db": -4.060273744139347,
+              "peak": 0.45083531737327576,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "553bca270de4eb0127f374190861544b6307351766b99d57a9478679f8465b6f",
+              "rms": 0.0028804894536733627,
+              "rms_relative_to_master_db": -30.586195798001565,
+              "peak": 0.08991209417581558,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_music_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "94523530c4973d925bf17793d4df6ea3b93ad3af2744bed1b582e35ff8d26ceb",
+            "rms": 0.09547226130962372,
+            "rms_relative_to_master_db": -0.1779774041923688,
+            "peak": 0.5124613046646118,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.007245645858347416
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\009_Pastoral Chamber Music Composition\\summary.json",
+        "report_sha256": "46295a3d8d9efec83a5dac2f3b238bafa46f25dd732fdd82b45a811e1e11c068",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 163.879653931,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Pastoral Chamber Trio Composition.mp3",
+      "source_sha256": "745c986623de307a6ca19c4615d9c554415a0631f9d03fabb6a6d55e6cec25a6",
+      "directory": "pastoral_chamber_trio_composition",
+      "frames": 7888896,
+      "duration_seconds": 178.8865306122449,
+      "delivery_report_sha256": "4300076a5053eac90ef373222f2918006b4f58ee5e18c44d24e2bb374a097e0e",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\full_mix.wav",
+        "sha256": "bec6104d8ef8570faa07e7ecc3be0ed6d4022820bf3fd18d2d059865afcba3da",
+        "rms": 0.09756531566381454,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "113e728dc877e67622799887a572d931a48006497edce89cc2811bb28ed54fb1",
+              "rms": 0.001106065814383328,
+              "rms_relative_to_master_db": -38.91028968777013,
+              "peak": 0.032568007707595825,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "8e56ce1cfbe42bb67043c9d51d28cd8a28520938710d019f1c34c155efd6be0e",
+              "rms": 0.000397912401240319,
+              "rms_relative_to_master_db": -47.79015959073101,
+              "peak": 0.007674884516745806,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_other.wav",
+              "sha256": "147f1082e35c89d3fe1ba71c1847a816f1d75c84d0a5c0a1942bc441ed871277",
+              "rms": 0.07209881395101547,
+              "rms_relative_to_master_db": -2.627346670334865,
+              "peak": 0.49708834290504456,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "7b0290230af20d8021bb01975f4781843303abc974eeb782c7c7cf7e9cff51fa",
+              "rms": 0.0004062718653585762,
+              "rms_relative_to_master_db": -47.60957411741564,
+              "peak": 0.020278315991163254,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "7bcb9f292f1d5389b9fc214120ad0e5cc2b2d43acbc8061b2ae4823ce461aa3a",
+              "rms": 0.057158954441547394,
+              "rms_relative_to_master_db": -4.6442235596872585,
+              "peak": 0.42312726378440857,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "3b210293c13adf1ce359e4c8d1d009d8036979b531e1f9db67775b87ad15bf6c",
+              "rms": 0.00219273054972291,
+              "rms_relative_to_master_db": -32.966203733073236,
+              "peak": 0.0492103174328804,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "3df2e23a1513ee111c47a31ed51d7bc3770c717977395fcbb849cb1f4a38e6a9",
+            "rms": 0.09607520699501038,
+            "rms_relative_to_master_db": -0.1336825035982208,
+            "peak": 0.5272505283355713,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.00811633002012968
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "16ee6848ccd58bc014fbd1b8f1935aa5a456f8614a3c1b5ae5d7a8fb48adddc3",
+              "rms": 0.048344649374485016,
+              "rms_relative_to_master_db": -6.098940784077682,
+              "peak": 0.413055419921875,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "938c9d57a247364c8933e0b984d93ffe91089eb13c63b2c9ef53f0f85c4efa47",
+              "rms": 0.0023100702092051506,
+              "rms_relative_to_master_db": -32.513405490938055,
+              "peak": 0.05627994239330292,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "cd8c11b008f6abe649a0a1534e60542135c6e42b98e19b3be0fda69690cfe87a",
+              "rms": 0.000455503846751526,
+              "rms_relative_to_master_db": -46.61606810094484,
+              "peak": 0.01831120252609253,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "c8e9351894c1677dc5e848d285ff770b3a3817e3fdce49be99bab305fa1a73a4",
+              "rms": 0.04674283787608147,
+              "rms_relative_to_master_db": -6.391607560690452,
+              "peak": 0.4817400872707367,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "12f8ed59aaad6e75b74599092882061b728fdf0e565cfc407e2258d49904b913",
+              "rms": 0.0012810459593310952,
+              "rms_relative_to_master_db": -37.634614861155065,
+              "peak": 0.0514562614262104,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "c4852be112e04e6620dc3a5b99e01ac76474e5212fcd9a51684793d3a0414a84",
+              "rms": 0.057309310883283615,
+              "rms_relative_to_master_db": -4.621405354018245,
+              "peak": 0.4267641603946686,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "0a500d92a5a27a2e14302da330f86aa9848d3285717bd6f510fda5dc3e20a9a3",
+              "rms": 0.00244023185223341,
+              "rms_relative_to_master_db": -32.0372872471637,
+              "peak": 0.07834011316299438,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\pastoral_chamber_trio_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "e0da92dfb7ba4c5ffa7ffd85b53c79d364b707fd2259de35d30c8be402e823c4",
+            "rms": 0.09533560276031494,
+            "rms_relative_to_master_db": -0.2008067453070484,
+            "peak": 0.5214252471923828,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.009745690040290356
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\010_Pastoral Chamber Trio Composition\\summary.json",
+        "report_sha256": "e1e23a281e673b87e98c575f3fc13431c9da5f0d3edf0b4adae8ac9c18566087",
+        "librosa_bpm": 143.5546875,
+        "essentia_bpm": 163.980819702,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Renaissance Chamber Music Composition.mp3",
+      "source_sha256": "553cf9787956e896fe1d26fcf4defceff8a7306bade7feecc5b76c0b561a0177",
+      "directory": "renaissance_chamber_music_composition",
+      "frames": 6556032,
+      "duration_seconds": 148.66285714285715,
+      "delivery_report_sha256": "204c028619de410461ed21fbc227aaf02a3b0cee0cacbe1a9bbea28b855397c4",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\full_mix.wav",
+        "sha256": "0447c5e5a87e95c8649e9e8ae701f874b36a1c7c3343bd37f20a2547c9c21ea5",
+        "rms": 0.09595589339733124,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "a71cef28dd40198c66bb259f657d72c184d96ec4bfd78bb5e9d722cb9ef45bcb",
+              "rms": 4.2646170186344534e-05,
+              "rms_relative_to_master_db": -67.04383235181476,
+              "peak": 0.0007881660712882876,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "e2d74841c53b930f7ee894100026427af12a04e890dcc19e6ae31a1250b4c4e7",
+              "rms": 5.557780241360888e-05,
+              "rms_relative_to_master_db": -64.7434056565393,
+              "peak": 0.0008242569165304303,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_other.wav",
+              "sha256": "8ba42f7ec771468688d094482dd485e9297b71058bb2d4409ee0abe919a88e98",
+              "rms": 0.09152411669492722,
+              "rms_relative_to_master_db": -0.41072214241312405,
+              "peak": 0.5143203139305115,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "41828da3baaa7b50c335e5fe336f5fd0d3b2987e2759549d3f9bc80bf2cc6c5c",
+              "rms": 0.0002572366502135992,
+              "rms_relative_to_master_db": -51.434776156232694,
+              "peak": 0.014622447080910206,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "6ecc490d9832005598f59baee57e40c51d55bf431474e573f24d228d62700e54",
+              "rms": 0.01158966775983572,
+              "rms_relative_to_master_db": -18.360013340742356,
+              "peak": 0.1810239851474762,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "691425f455e53546b212999c4140bd177e2a99ed556575e133893999ce9a8ec1",
+              "rms": 0.004737672861665487,
+              "rms_relative_to_master_db": -26.130131681763736,
+              "peak": 0.1064118966460228,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "e56dd5c4d727becbabea9409378a64e99bfd1a4dea7d1dc1082bd5185e31d455",
+            "rms": 0.09424383193254471,
+            "rms_relative_to_master_db": -0.15637434349872611,
+            "peak": 0.5122771859169006,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.007267720066010952
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "8dfe83818888f10010d81c5a72ea9fa56bad9abce38c9cb7ab50f077155f2f6e",
+              "rms": 0.04309561476111412,
+              "rms_relative_to_master_db": -6.952771459326242,
+              "peak": 0.375030517578125,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "556f4913cfa4f7c02042b57de71bef693e4c62f077ee08ae358d7353b2a6285b",
+              "rms": 3.7046473153168336e-05,
+              "rms_relative_to_master_db": -68.26649568213969,
+              "peak": 0.0007581874961033463,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "a762e2f071d8291ea5da2ae6ce2f20d072e1210a6f6c2c96e675a43a24f9af02",
+              "rms": 9.372922795591876e-05,
+              "rms_relative_to_master_db": -60.20393227033773,
+              "peak": 0.005586864426732063,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "575b4c3c726effc51d91e87e144a02b881ebee79d895cc13cb6776953217a4ae",
+              "rms": 0.07610438764095306,
+              "rms_relative_to_master_db": -2.0132391489786423,
+              "peak": 0.5255022644996643,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "c15edc5c1c9f9a74c3142df75419abbae86d106a6b6cc7a5ae1b36c53763e95b",
+              "rms": 0.00021816600929014385,
+              "rms_relative_to_master_db": -52.865691314704904,
+              "peak": 0.007637709844857454,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "7a34d9f801057a88193088bd35e9ef7f60b8c8d6cff4b09990230f9d61ef53ab",
+              "rms": 0.017040029168128967,
+              "rms_relative_to_master_db": -15.012026389189451,
+              "peak": 0.20104561746120453,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "fa4d2ea57999e353adea93d2aeef323303597d629ed6fdeabfe03c80e003724d",
+              "rms": 0.003588598221540451,
+              "rms_relative_to_master_db": -28.542936314505994,
+              "peak": 0.11816053092479706,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_music_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "11e68a80a82a45ac4d07df5ec5a8f2fd012e2db5c53e2e41bebb0cd0b65f156a",
+            "rms": 0.09421218186616898,
+            "rms_relative_to_master_db": -0.15929183050930523,
+            "peak": 0.5139979124069214,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.007392462808638811
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\011_Renaissance Chamber Music Composition\\summary.json",
+        "report_sha256": "5b46bd2b1f541572da9dac8832b7f042fa6a178cccaadfd7237c8a33854324d0",
+        "librosa_bpm": 123.046875,
+        "essentia_bpm": 164.149536133,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Renaissance Chamber Pavane Trio.mp3",
+      "source_sha256": "299dfc96194530c13263077f844e3870280b9b3c7ac1cf3e026a5e245f5871ac",
+      "directory": "renaissance_chamber_pavane_trio",
+      "frames": 7770240,
+      "duration_seconds": 176.19591836734693,
+      "delivery_report_sha256": "eb298cc7d3fd2638a8c78c41ab0f11c17fba0655943f31315f99140a774def73",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\full_mix.wav",
+        "sha256": "c268fcd9904f0a670d940c7d232a15e6ae626f1e475492a65a72a11a701d3bd3",
+        "rms": 0.0951402336359024,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_bass.wav",
+              "sha256": "95d4e0a86082d063d1ff528f4f6cfcf67adba94b4f1ba1f384a3a93e6f538637",
+              "rms": 0.007066122721880674,
+              "rms_relative_to_master_db": -22.583660754948784,
+              "peak": 0.3153509497642517,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_drums.wav",
+              "sha256": "18c5f2f51518afa1da7919f08c32ae05ddbe2ef1c1d136d9dab2cb8a5f22627c",
+              "rms": 0.0014418824575841427,
+              "rms_relative_to_master_db": -36.388687109792606,
+              "peak": 0.10178365558385849,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_other.wav",
+              "sha256": "fae8a28791ade206d995463ece6c095954f4aa93ac6f95de246735baf89a817c",
+              "rms": 0.06909195333719254,
+              "rms_relative_to_master_db": -2.7787348508606557,
+              "peak": 0.5207423567771912,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_vocals.wav",
+              "sha256": "cabdd4a479a74a1b62877d276dea3009a2c186cda76696642be63dedb73b03af",
+              "rms": 0.004312019795179367,
+              "rms_relative_to_master_db": -26.873669353687056,
+              "peak": 0.14282704889774323,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_guitar.wav",
+              "sha256": "05969083e59ca995c99738de97e557ac762c0b4348f8d971a7ffc38fe0dd46d3",
+              "rms": 0.04603555053472519,
+              "rms_relative_to_master_db": -6.305417447555106,
+              "peak": 0.45678308606147766,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_piano.wav",
+              "sha256": "a1b1e1a43a441b48ee0c67ae3294fabd6d417744c893ea5f3fce5b3259efc6f3",
+              "rms": 0.005879671778529882,
+              "rms_relative_to_master_db": -24.180222609823353,
+              "peak": 0.13690216839313507,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\coarse_six_sum.wav",
+            "sha256": "f0a78c26501e2550268249357d92f2cb3903d7fca44dbdea013801621bc89606",
+            "rms": 0.09106546640396118,
+            "rms_relative_to_master_db": -0.38020994701426647,
+            "peak": 0.533937931060791,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.011655096895992756
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "a8ebce0bfa085befcebb43f2b0bad430d355993cd9ae91822d0d24f372535805",
+              "rms": 0.04503984749317169,
+              "rms_relative_to_master_db": -6.495346045519876,
+              "peak": 0.396148681640625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "40008366ed1e158a22af4d1aeb3c3d677fe6e7819bbc4d53b634201da7e2f47c",
+              "rms": 0.009127668105065823,
+              "rms_relative_to_master_db": -20.36008746894447,
+              "peak": 0.39980754256248474,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "ed8a6680ed5ad95b0e48bc2567d3e9f13941ea36e2dc2b665e49c433a8506317",
+              "rms": 0.0013472354039549828,
+              "rms_relative_to_master_db": -36.97841452932628,
+              "peak": 0.08374673128128052,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "ce7752dd70779b785731f5b823b39e7f34e0bf86a57132ea0ae8bc36069f5f5f",
+              "rms": 0.050652045756578445,
+              "rms_relative_to_master_db": -5.47534446119415,
+              "peak": 0.5595637559890747,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "6fabf31bd60f91ac05a0f7d357556ef0f00c59f9e71fd89f548231ff410e714c",
+              "rms": 0.006472275126725435,
+              "rms_relative_to_master_db": -23.34614486754959,
+              "peak": 0.14788734912872314,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "7910047403e6e61e26586c39549b19a87dfc7e32f5011149bcf29649064933cd",
+              "rms": 0.04564890265464783,
+              "rms_relative_to_master_db": -6.378677430190955,
+              "peak": 0.45474356412887573,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "74248b49d535e61fe8b7b3e0a28d012e1f48c1a7f4d6e3e7bf593e69527eedd3",
+              "rms": 0.0027048459742218256,
+              "rms_relative_to_master_db": -30.924433481315866,
+              "peak": 0.09983305633068085,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\renaissance_chamber_pavane_trio\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "4ac66e0cd5b5af17d9522716ba5156e9a866a78ceae15ce2512a135d26316335",
+            "rms": 0.09176117926836014,
+            "rms_relative_to_master_db": -0.3141045463948299,
+            "peak": 0.5130017995834351,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.010045953094959259
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\012_Renaissance Chamber Pavane Trio\\summary.json",
+        "report_sha256": "e3edfc1233a0f6e07fe9a49c4ebf6a8dabe27d310ea68fd07eb992dcf09d2f0e",
+        "librosa_bpm": 112.34714673913044,
+        "essentia_bpm": 117.868011475,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Serene Ecological City Soundscape.mp3",
+      "source_sha256": "c8dfc3fb53e4c719865007379808f8860a90c25f72789855ba5074947a25226f",
+      "directory": "serene_ecological_city_soundscape",
+      "frames": 6691968,
+      "duration_seconds": 151.74530612244897,
+      "delivery_report_sha256": "71e6ea1338aa565de3306621e38dafb074d7fc3dcbc3560ead7b89901f671507",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\full_mix.wav",
+        "sha256": "a5b0e3bf44d6814310c1233aa88576ca9992edd8fcbc1ccbbc5e98d2186e8b2d",
+        "rms": 0.09397269785404205,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_bass.wav",
+              "sha256": "cd4e4f0c6ae7d3bd40e9437eefa75d1fbcfeeff68cb4b2621cdcc276d7ecf955",
+              "rms": 0.05757821723818779,
+              "rms_relative_to_master_db": -4.25486962442892,
+              "peak": 0.24559395015239716,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_drums.wav",
+              "sha256": "e894974a898e27178efad7040047c59052fa26c85e6412d626c115184cfcc608",
+              "rms": 0.0374823696911335,
+              "rms_relative_to_master_db": -7.983493106610142,
+              "peak": 0.3718586564064026,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_other.wav",
+              "sha256": "0c301f69c3137dc95df89edb02a2f68066b1addc120bcb53415309bd98738aa9",
+              "rms": 0.023385243490338326,
+              "rms_relative_to_master_db": -12.081195979113197,
+              "peak": 0.26783233880996704,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_vocals.wav",
+              "sha256": "548c39fec8f42711f71edc313894ea908e70633f1b7ac000efb2b4585f0b756c",
+              "rms": 0.001901506562717259,
+              "rms_relative_to_master_db": -33.87807733030732,
+              "peak": 0.015064186416566372,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_guitar.wav",
+              "sha256": "8acead884cba73abaeacf0f702dfc26d3b9bc76ed172af4fbda00d541dcfabf6",
+              "rms": 0.0021079855505377054,
+              "rms_relative_to_master_db": -32.9826813106905,
+              "peak": 0.04798990488052368,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_piano.wav",
+              "sha256": "cc79cc2891ddbf250f6b2542450c4110371fa8c702c4dd53c621bb60096c67ea",
+              "rms": 0.04886290431022644,
+              "rms_relative_to_master_db": -5.680448363686855,
+              "peak": 0.44439175724983215,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\coarse_six_sum.wav",
+            "sha256": "1356079e60b834ad317efc3844779ad0040a718331009ddb1608e730c3b7bddb",
+            "rms": 0.09375404566526413,
+            "rms_relative_to_master_db": -0.020233554410664083,
+            "peak": 0.5292277336120605,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.013002719730138779
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "e62f6a2c7e7755291eb285b1458d2c52d1ae1bdec55cf406c2ec349265de42e9",
+              "rms": 0.0019461537012830377,
+              "rms_relative_to_master_db": -33.67649117233377,
+              "peak": 0.058013916015625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "0017b1f3af2b6d84586e97395d638c26d8a41d16fc50349b09a8c913dfa4fdf3",
+              "rms": 0.057560812681913376,
+              "rms_relative_to_master_db": -4.25749556380422,
+              "peak": 0.24829219281673431,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "b398a59851c6cc64c6ad51bd719406f73ab96a991767d0e4af3fcb7c5d6f2c67",
+              "rms": 0.037481993436813354,
+              "rms_relative_to_master_db": -7.983580297466284,
+              "peak": 0.3750241696834564,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "f76e3c8065683f6b4b05a9fba72d749e5835c87720585d2a19718e04aca30d7d",
+              "rms": 0.023409560322761536,
+              "rms_relative_to_master_db": -12.072168765637507,
+              "peak": 0.2692244350910187,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "d359bd21317b571436143a48dae74e9a979a66ffefc2b07c6443bb0af1c7ce99",
+              "rms": 0.001985569018870592,
+              "rms_relative_to_master_db": -33.502334146220186,
+              "peak": 0.03850872069597244,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "cc06808fa6c408aee65917aac6685f500a87ad68cc983b1a31ffe3c3e339c915",
+              "rms": 0.0021295705810189247,
+              "rms_relative_to_master_db": -32.89419313103665,
+              "peak": 0.05775592103600502,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "8a6f2fccfea47b2ee21a0822cf03c7d015ea7071d12ae853026ec7e2decea001",
+              "rms": 0.048864126205444336,
+              "rms_relative_to_master_db": -5.680231161814323,
+              "peak": 0.44344207644462585,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\serene_ecological_city_soundscape\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "f2f7439d5fd8adef14030d76131b7f919bd2ada506b9a96ee4d43235f1c8822a",
+            "rms": 0.0937439575791359,
+            "rms_relative_to_master_db": -0.021168220394701086,
+            "peak": 0.5259408950805664,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.013180225156247616
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\013_Serene Ecological City Soundscape\\summary.json",
+        "report_sha256": "4293929e77e57f278b9b02779b743b094f527c62cc89b022c8c4865f77f49c38",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 161.499176025,
+        "essentia_key_estimate": "F# minor",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "coarse_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Soulful Cello Chamber Composition.mp3",
+      "source_sha256": "6281a35da5928a5381800ef4ff0e6fc3ab62e6b8351802396992f526d19b00e8",
+      "directory": "soulful_cello_chamber_composition",
+      "frames": 6546816,
+      "duration_seconds": 148.4538775510204,
+      "delivery_report_sha256": "ef9c1f137f197d536c11c3bc5ea5af041fbc6998911c5b6849a060d75484149d",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\full_mix.wav",
+        "sha256": "e1f03a112fd0755ba6d10e504a9b241474976d00e418d1bf7ac2894353e6bee7",
+        "rms": 0.09489372372627258,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "9dbbdd9146847db1c472254098b3348dfd74a9803861e0d06aa3a20181acf931",
+              "rms": 0.001604934805072844,
+              "rms_relative_to_master_db": -35.43560187479245,
+              "peak": 0.04637803137302399,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "896a7aeb4429f522ccc2d849386049ede2a505a97e7577bf846d20dd375459c8",
+              "rms": 0.0015633925795555115,
+              "rms_relative_to_master_db": -35.66338885649574,
+              "peak": 0.07640914618968964,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_other.wav",
+              "sha256": "99d9f9a054858924dd10061493abd0d2906383e903cee05572bc042a3924eb20",
+              "rms": 0.058465201407670975,
+              "rms_relative_to_master_db": -4.206800779985541,
+              "peak": 0.46478477120399475,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "f11168b592049eeb28e82dc5f1104d6e5454fc802311ccf35e8b285b01022b95",
+              "rms": 0.0017904875567182899,
+              "rms_relative_to_master_db": -34.4853236393637,
+              "peak": 0.06497710943222046,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "f3ad63a226bcca66700345d71e953274f339bbbcec9ffb95ff06a62a76bdb54b",
+              "rms": 0.010913637466728687,
+              "rms_relative_to_master_db": -18.785359319922705,
+              "peak": 0.2513013184070587,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "7007f77f45eaece485f982cac9885dfe152861fcb50b211906f88ce97db71329",
+              "rms": 0.0582774318754673,
+              "rms_relative_to_master_db": -4.234741675177801,
+              "peak": 0.5305850505828857,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "20968ba1c6d92c99a946ddf1ca90d726581d02c2bbfa19b40a76c47c7a9c3562",
+            "rms": 0.09028565883636475,
+            "rms_relative_to_master_db": -0.4323743516571851,
+            "peak": 0.6002105474472046,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.018703550100326538
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "33732403671ee4016ae7dc40feb9c69a4128c8f59d7a1b19895bb02bcc7e733c",
+              "rms": 0.04491328448057175,
+              "rms_relative_to_master_db": -6.497253464352259,
+              "peak": 0.408203125,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "b6db16753680dab7c66b845323a158d30abf4dbe0adb12d7b97b3a38471d053e",
+              "rms": 0.0009453516104258597,
+              "rms_relative_to_master_db": -40.03288241518432,
+              "peak": 0.025527292862534523,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "ac3da16116396f432cf2814aef1a5c5b879bbca8b8146a47c1e583f00e955fda",
+              "rms": 0.002156945876777172,
+              "rms_relative_to_master_db": -32.86796482867827,
+              "peak": 0.08546143770217896,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "85e5756d9cb0e0101feff95f2e3faead167c729875415622028d8245416b1ca4",
+              "rms": 0.025222502648830414,
+              "rms_relative_to_master_db": -11.5089862562364,
+              "peak": 0.42171818017959595,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "14ac2824e11636fd823f6375005910a860b1fc3e205fee36f6bf4606d98e1883",
+              "rms": 0.003584646387025714,
+              "rms_relative_to_master_db": -28.455823373193677,
+              "peak": 0.08132302016019821,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "51158921b26c521d1d20221a93759af122c64d4d6ecd60590cf61a5394cc87d0",
+              "rms": 0.01531712431460619,
+              "rms_relative_to_master_db": -15.841205039961523,
+              "peak": 0.24683326482772827,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "72942d1261c667d4cd88e4a7839ebe9ab2f371c8808460901690b5519e6c07ac",
+              "rms": 0.05574642866849899,
+              "rms_relative_to_master_db": -4.6204087819484085,
+              "peak": 0.5339192748069763,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\soulful_cello_chamber_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "668f01a2c499fadcd1411f1e2d9ddc390248ff27af7eecbc075768924ba3a961",
+            "rms": 0.08682223409414291,
+            "rms_relative_to_master_db": -0.7721306458603341,
+            "peak": 0.5662391781806946,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.017753830179572105
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\014_Soulful Cello Chamber Composition\\summary.json",
+        "report_sha256": "da5b411a6aaf2ac699740f00b0fd5df84e438d4aaf44aadad9f29bbbc5fb73e6",
+        "librosa_bpm": 117.45383522727273,
+        "essentia_bpm": 125.916465759,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Sunlight on Still Water.mp3",
+      "source_sha256": "fc6dd428265f6f13de1686bc3f984b288f70e6ef33d6d769b99f7e8c6def9c4b",
+      "directory": "sunlight_on_still_water",
+      "frames": 6388992,
+      "duration_seconds": 144.87510204081633,
+      "delivery_report_sha256": "51401895dda2bac2409feb34cb5325a9c829aa8f8ac9dd81433cc874172df5e5",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\full_mix.wav",
+        "sha256": "0a8367ea9ad3e5ba721d7e39cb1ce2978fc15ede367b8fe8fba8c6ea69a040a0",
+        "rms": 0.09648997336626053,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_bass.wav",
+              "sha256": "ca3ec9ac09b93a6b287a98f329252f5b247542d1cca30a8b0bf4575063c9e2f6",
+              "rms": 0.001733439159579575,
+              "rms_relative_to_master_db": -34.91147166353662,
+              "peak": 0.059240106493234634,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_drums.wav",
+              "sha256": "6026a365458e458f66b0bf03cf2863cdb3082f88532f8b602ba0d620a0e6c95d",
+              "rms": 0.00047379356692545116,
+              "rms_relative_to_master_db": -46.17786053725584,
+              "peak": 0.029681749641895294,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_other.wav",
+              "sha256": "0c8865b89ff817ee1eeb492663f609332603acaf0402cba384840e8dbc7b8b4e",
+              "rms": 0.06597495079040527,
+              "rms_relative_to_master_db": -3.30206223132771,
+              "peak": 0.49455854296684265,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_vocals.wav",
+              "sha256": "3813c16705ff31d27ba2e4f3ac74a53f1d2bd3e145cc83c576e3b1bae74e123f",
+              "rms": 0.0016953470185399055,
+              "rms_relative_to_master_db": -35.104471593457404,
+              "peak": 0.07337603718042374,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_guitar.wav",
+              "sha256": "802e5c4a5a21d979cb485aeeb7ea19b8a55eb8f60e2104e2eeae3bd4cd76c506",
+              "rms": 0.01793261058628559,
+              "rms_relative_to_master_db": -14.616773376315793,
+              "peak": 0.3717207610607147,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_piano.wav",
+              "sha256": "9a2d90aabec4b8600ec985131e448d78c6a3b4b22129a8de96a30b79c9c445e8",
+              "rms": 0.02842126600444317,
+              "rms_relative_to_master_db": -10.616775343486271,
+              "peak": 0.42486509680747986,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\coarse_six_sum.wav",
+            "sha256": "3bbfabd1daf00fe7f541b1c32deb1c2efa1782eb701c6c4f7a44ead04967bfd8",
+            "rms": 0.08151953667402267,
+            "rms_relative_to_master_db": -1.4644096776929871,
+            "peak": 0.637221097946167,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.0285531934350729
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "831b6b6e6cb3bfd912cbe248ac849adb8f2e6d2208207b2eaa5d1d60ee0bc06a",
+              "rms": 0.01187851931899786,
+              "rms_relative_to_master_db": -18.194397563513,
+              "peak": 0.209808349609375,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "11be28710891fd73ea5fc2e0dc591a5453cd6fe9de08e3db763a100bf49fcf1c",
+              "rms": 0.0002276697487104684,
+              "rms_relative_to_master_db": -52.54353716660148,
+              "peak": 0.0019723467994481325,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "03a4681934e7ab3915207e95efaf37ffe78219457a8168684c95c36e5a354114",
+              "rms": 0.0009050215594470501,
+              "rms_relative_to_master_db": -40.55646522845758,
+              "peak": 0.06824155896902084,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "4ba04e1931287f34ce4b2a5594644774b462cb5f5694164607c75b730bd0ae8e",
+              "rms": 0.06624798476696014,
+              "rms_relative_to_master_db": -3.26619029506215,
+              "peak": 0.4913238286972046,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "59044d10ebe6f7f26a0b958d2202ed4d6bf1d2eabe28efe163dbe51a7dcee7ae",
+              "rms": 0.0010266061872243881,
+              "rms_relative_to_master_db": -39.46156618311414,
+              "peak": 0.025418510660529137,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "9d71c11d02035874dea8001ca7813986242e2378c45b429e807f4942ab618fcc",
+              "rms": 0.01482759416103363,
+              "rms_relative_to_master_db": -16.268229917428727,
+              "peak": 0.24122844636440277,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "540c30d29e534ac783996f747bad9ca82a4849cc7b46911370ff3e7c8641a375",
+              "rms": 0.02715189754962921,
+              "rms_relative_to_master_db": -11.013640004845147,
+              "peak": 0.4179437458515167,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\sunlight_on_still_water\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "d85b24f8d18acb647291580c66798ca25b26fb05bce4ebd009d61d474b5d1aa5",
+            "rms": 0.08241327852010727,
+            "rms_relative_to_master_db": -1.3696999035114406,
+            "peak": 0.602675199508667,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.027751969173550606
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\015_Sunlight on Still Water\\summary.json",
+        "report_sha256": "c03a269a75d0c1155790716697277d1e14396c77f1c20c76c574c7c34613c68f",
+        "librosa_bpm": 135.99917763157896,
+        "essentia_bpm": 164.687149048,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Tranquil Chinese Chamber Music Composition.mp3",
+      "source_sha256": "94effa99ebd29f680d37dd824d5f110d888ddaf558f5c2114985837943a8f894",
+      "directory": "tranquil_chinese_chamber_music_composition",
+      "frames": 6445440,
+      "duration_seconds": 146.15510204081633,
+      "delivery_report_sha256": "5bac418127cd8eecc4fb65aa30ebeaa9beba778265c1a6a3eaa873219218509f",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\full_mix.wav",
+        "sha256": "3a18df6989a63d235bbc8bba609ca6f62a22fc4e58a96bb40fe0d6b0e50d8c67",
+        "rms": 0.09512662887573242,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_bass.wav",
+              "sha256": "f5c4a743abbafb93eb0b7ffaea46d5aa5ec664c6b6e949d60ac56e0f560e7f15",
+              "rms": 0.0008863958064466715,
+              "rms_relative_to_master_db": -40.6134882726899,
+              "peak": 0.07759322971105576,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_drums.wav",
+              "sha256": "751ee39849413a30038ab71923d2a68279d412c7a2993792822b8bc1fd488268",
+              "rms": 0.00021934995311312377,
+              "rms_relative_to_master_db": -52.743291209207655,
+              "peak": 0.004748670384287834,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_other.wav",
+              "sha256": "6f6dc74f7db641bb1ee8a439f9f8583678830a94b03da3a4394f134ff3b931e5",
+              "rms": 0.07854225486516953,
+              "rms_relative_to_master_db": -1.6639748224018567,
+              "peak": 0.5473930239677429,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_vocals.wav",
+              "sha256": "669bd9fbfc9b5d57f69832a7fbb03e4f2f89c0f102b06ab281b506a914eda327",
+              "rms": 0.0007031033164821565,
+              "rms_relative_to_master_db": -42.62565919793459,
+              "peak": 0.04612968862056732,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_guitar.wav",
+              "sha256": "3e139c25ca7c9bb9bb541068474cb6b4c52f704ab874130140c5a095ee19180b",
+              "rms": 0.028760123997926712,
+              "rms_relative_to_master_db": -10.390227044281882,
+              "peak": 0.3682778477668762,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_piano.wav",
+              "sha256": "72d79c7e42ea39199d565ed21b359eef0366c595a4e201eda12975722ff77fac",
+              "rms": 0.014990703202784061,
+              "rms_relative_to_master_db": -16.049602012213626,
+              "peak": 0.29742854833602905,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\coarse_six_sum.wav",
+            "sha256": "be8122f2870cfe9dd57a7afef39039aedb6f314675917526601a478a45262ab3",
+            "rms": 0.09121830761432648,
+            "rms_relative_to_master_db": -0.36440191828468,
+            "peak": 0.5352903008460999,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.011696447618305683
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "24a82b7addb37e6a638d6adbf5f3731ae26a9d960507db2c67a65d6edfb9186d",
+              "rms": 0.04247378185391426,
+              "rms_relative_to_master_db": -7.003623483902118,
+              "peak": 0.409881591796875,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "4f65bcb9ef6f7d3d6a2185d97a376007bbe7ab2ee68923c26b9aa82037fded5f",
+              "rms": 0.004056831356137991,
+              "rms_relative_to_master_db": -27.40230304118661,
+              "peak": 0.13175101578235626,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "feea9d496dda90608e334264390853d7a4868296e7051a720210854e9a258c55",
+              "rms": 0.0002855052298400551,
+              "rms_relative_to_master_db": -50.453760767525885,
+              "peak": 0.014604783616960049,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "be3dee5435c3f9660545adb05a0e0a5c735dcfeb937286c51c1d65b88c311161",
+              "rms": 0.05869964137673378,
+              "rms_relative_to_master_db": -4.193333168389487,
+              "peak": 0.528478741645813,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "cf655d3fe92d88ad25849c840ff062ac6f7ffa9203047582036f627789556044",
+              "rms": 0.0012946410570293665,
+              "rms_relative_to_master_db": -37.32305461324129,
+              "peak": 0.06324474513530731,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "ec5b1a1467e75a450ffd86592ae646a0ac86c44e117ad396249bdf87959767d1",
+              "rms": 0.035182975232601166,
+              "rms_relative_to_master_db": -8.639390875516478,
+              "peak": 0.3763042986392975,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "3879168bace856f1e4c15b364f53d37e5d7828303aeabb3cfefd76b9c9cbf903",
+              "rms": 0.016093924641609192,
+              "rms_relative_to_master_db": -15.432802858388204,
+              "peak": 0.2402586191892624,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\tranquil_chinese_chamber_music_composition\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "66063f4b4ba15dacbf4dcc1f6d2bf995ead8f28d98214d2d6862b4cf0e6fcebf",
+            "rms": 0.09185880422592163,
+            "rms_relative_to_master_db": -0.3036263737779791,
+            "peak": 0.5294104218482971,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.010146035812795162
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\016_Tranquil Chinese Chamber Music Composition\\summary.json",
+        "report_sha256": "158108d9ea6163e2a69d2370680091d1a23d6df178e218182471fdf9f768bd6c",
+        "librosa_bpm": 151.99908088235293,
+        "essentia_bpm": 79.9482116699,
+        "essentia_key_estimate": "F# minor",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Wakeup.mp3",
+      "source_sha256": "dc0817dd28c07ff3ca19f4ee024db155a969fad3648077f3090a8c028fd9f388",
+      "directory": "wakeup",
+      "frames": 1313280,
+      "duration_seconds": 29.779591836734692,
+      "delivery_report_sha256": "7ea56fa3ca0a7550b1157633ab029c53769f20c5a842e2e0d24f365efe9a55cb",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\full_mix.wav",
+        "sha256": "3a7dc3b99430fe51f5527813667356e1294528dc99ce91d56a49410bd99be5b6",
+        "rms": 0.07321742922067642,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_bass.wav",
+              "sha256": "443ce90c14a13e6990c1292104fe840363877e2635471dbf22209ce528482ab2",
+              "rms": 0.007578322198241949,
+              "rms_relative_to_master_db": -19.70082820703081,
+              "peak": 0.051300473511219025,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_drums.wav",
+              "sha256": "d30e147a52c1b3c8337e784dae5b4aa3548be800252650c95f291a01eba195b5",
+              "rms": 0.00040690036257728934,
+              "rms_relative_to_master_db": -45.10252798417359,
+              "peak": 0.0009119774331338704,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_other.wav",
+              "sha256": "2bdee1601009421f17a5838629a3da3363a55de8c9b27324f35fe972e2da3af8",
+              "rms": 0.024509593844413757,
+              "rms_relative_to_master_db": -9.505567231152428,
+              "peak": 0.2339484691619873,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_vocals.wav",
+              "sha256": "1a12e5cf5e6f24cebfcd4c9dc918cbeb1ce9a926bc9a4195ae8034391311760a",
+              "rms": 0.0053287991322577,
+              "rms_relative_to_master_db": -22.759702522426043,
+              "peak": 0.07399750500917435,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_guitar.wav",
+              "sha256": "7c2448addfa14fba39355a12c4b6324b98be32f31089db8aca8a53add847c374",
+              "rms": 0.059888001531362534,
+              "rms_relative_to_master_db": -1.7454931034819265,
+              "peak": 0.5051137208938599,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_piano.wav",
+              "sha256": "6a83cc7cc95404a608dec8ff257a23924a86f6e402eb2a5aeb0a3138b6716217",
+              "rms": 0.00039656239096075296,
+              "rms_relative_to_master_db": -45.32605903377669,
+              "peak": 0.001224517123773694,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\coarse_six_sum.wav",
+            "sha256": "0acbcd5301d4ad5abdfad9769f41243b881622f9bada71b97276ad2bcf509e20",
+            "rms": 0.07017551362514496,
+            "rms_relative_to_master_db": -0.36857752129528965,
+            "peak": 0.5022996068000793,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.006732379086315632
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "dc4598851d6472f383e69d6c4e07955536c98a287a1faddb363638d14469de32",
+              "rms": 0.005784259177744389,
+              "rms_relative_to_master_db": -22.047334634215638,
+              "peak": 0.086181640625,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "88d94bbe756a9611003854d4fecc550af237a373075a0ff362f37be597d75564",
+              "rms": 0.013557086698710918,
+              "rms_relative_to_master_db": -14.648962052800412,
+              "peak": 0.07448530942201614,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "67cd4ff0bc9815d4a5f5eda2971b8282dd24fe28b1ac625c5e68a55553321d33",
+              "rms": 0.00039053475484251976,
+              "rms_relative_to_master_db": -45.45909573932715,
+              "peak": 0.0010911078425124288,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "ddf7e5ccc01060568ce1f57bb2c3a84bc014029932d3467a8cb40675275998a9",
+              "rms": 0.02388828434050083,
+              "rms_relative_to_master_db": -9.728590325247664,
+              "peak": 0.2121538519859314,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "29b14c1ec5aaf58141746663c1dc227da2ff2f22aced6efa6b0d8cbdeac26ee3",
+              "rms": 0.0029791693668812513,
+              "rms_relative_to_master_db": -27.81038564661221,
+              "peak": 0.03384013846516609,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "8af15763df875fb08ed70bbdd47890492e57f7161610949f3068778eb2457fb5",
+              "rms": 0.05981637164950371,
+              "rms_relative_to_master_db": -1.7558882011102055,
+              "peak": 0.5012924671173096,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "4e4c45fe29772e3d5d1ee5b857825fcaf7323968fa2e87ad2dd5a52bdb5a5b2c",
+              "rms": 0.0015037620905786753,
+              "rms_relative_to_master_db": -33.748706877284825,
+              "peak": 0.04460419714450836,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\wakeup\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "ef21406dd40ac2b46406ce29f120a76ff1c4a4f2a3ec678196fba67afca0e1e1",
+            "rms": 0.07108476758003235,
+            "rms_relative_to_master_db": -0.25675856537560837,
+            "peak": 0.4985133111476898,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.005993026774376631
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\017_Wakeup\\summary.json",
+        "report_sha256": "8e1d77e1a6586d8cf71cd6b02fe10af59f079fb0d5bdf33824d5ac441d65affe",
+        "librosa_bpm": 143.5546875,
+        "essentia_bpm": 144.369995117,
+        "essentia_key_estimate": "E major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    },
+    {
+      "name": "Woodland Chamber Folk Instrumental.mp3",
+      "source_sha256": "1a0e9068ba1a1e61cb3fb121690a456b02b83baeada8a8ac141d078a8a70dca2",
+      "directory": "woodland_chamber_folk_instrumental",
+      "frames": 6504192,
+      "duration_seconds": 147.48734693877552,
+      "delivery_report_sha256": "e051ade0f59a780e8c434a5832cefdf028c5e795747a56c63efe0e5e553f57b6",
+      "full_mix": {
+        "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\full_mix.wav",
+        "sha256": "ad7617e389d5b4620d2d044a6138398b0ba8d0e0e094f549bf87ef3b65acd4d8",
+        "rms": 0.09829139709472656,
+        "rms_relative_to_master_db": 0.0,
+        "peak": 0.5,
+        "role": "unassigned"
+      },
+      "groups": {
+        "coarse_six": {
+          "stems": {
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_bass.wav",
+              "sha256": "d91aca62e44fee580ddc398d765b93a07d78dba2f0dbdc1130d4e1bce9d233ce",
+              "rms": 0.0011407912243157625,
+              "rms_relative_to_master_db": -38.70618672869045,
+              "peak": 0.019193757325410843,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_drums.wav",
+              "sha256": "9dac10eefdb1c30376515b7c53e37d422ea45eed8508b714e9fc377f3181b4a9",
+              "rms": 0.0003520403988659382,
+              "rms_relative_to_master_db": -48.9184600741521,
+              "peak": 0.03805097937583923,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_other.wav",
+              "sha256": "ff1ba72d5dbee8f40492a1d8f9cd5b99c777853980c0f955cbb6080666d11ba9",
+              "rms": 0.07283036410808563,
+              "rms_relative_to_master_db": -2.6040605383460607,
+              "peak": 0.4820733964443207,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_vocals.wav",
+              "sha256": "28ff1a3ec5cb41f39e7c341325e5769c874e6401c01677e8eed0c53968521069",
+              "rms": 0.0002547096519265324,
+              "rms_relative_to_master_db": -51.72940211456043,
+              "peak": 0.009380978532135487,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_guitar.wav",
+              "sha256": "38ab3197d2ff565dcfbe22a4985e7901e4748bae9403821a19129ed132d058b0",
+              "rms": 0.05634070560336113,
+              "rms_relative_to_master_db": -4.833864527191392,
+              "peak": 0.41931813955307007,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_piano.wav",
+              "sha256": "b800821db2167dfe64e725553145f377970a1b3d9053fe4719a4a9bac37a5cad",
+              "rms": 0.01796712540090084,
+              "rms_relative_to_master_db": -14.76073818263125,
+              "peak": 0.5168639421463013,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\coarse_six_sum.wav",
+            "sha256": "03af92d69a5def516d49e3a0f7953e9fe36570bd648ecc0cecd8fc454a66f3c1",
+            "rms": 0.09736943244934082,
+            "rms_relative_to_master_db": -0.08185739014327285,
+            "peak": 0.5204613208770752,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.007334803696721792
+        },
+        "woodwind_plus_remaining_six": {
+          "stems": {
+            "woodwinds": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_woodwinds.wav",
+              "sha256": "9bc9d3dc0e1b119e9afb18ed5012464bdea5361c6516ebffdba6bed318514573",
+              "rms": 0.0551733523607254,
+              "rms_relative_to_master_db": -5.015722707546799,
+              "peak": 0.41619873046875,
+              "role": "unassigned"
+            },
+            "bass": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_bass.wav",
+              "sha256": "241edc9b8072d63dbc800735d1a512ec599a5e03b681012d5e98c192962bc8fd",
+              "rms": 0.0011102883145213127,
+              "rms_relative_to_master_db": -38.941594781591704,
+              "peak": 0.021074268966913223,
+              "role": "unassigned"
+            },
+            "drums": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_drums.wav",
+              "sha256": "5a7e8ffae668fd5296b24db4801157520ab55d76e92efc3a77a462d8e9788393",
+              "rms": 0.00034386460902169347,
+              "rms_relative_to_master_db": -49.12256056202385,
+              "peak": 0.036279015243053436,
+              "role": "unassigned"
+            },
+            "other": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_other.wav",
+              "sha256": "2e1ed23c4f5cb369d171f385f5585f600e8624d89edee8ff10ee7a66e83e9fb2",
+              "rms": 0.03859329596161842,
+              "rms_relative_to_master_db": -8.120072762503778,
+              "peak": 0.4078858494758606,
+              "role": "unassigned"
+            },
+            "vocals": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_vocals.wav",
+              "sha256": "257ed8a57431c2c09dccc5d706a21dd8e65c588a0e6b760aa4a4bed025480ede",
+              "rms": 0.00032023826497606933,
+              "rms_relative_to_master_db": -49.74084567912187,
+              "peak": 0.011704474687576294,
+              "role": "unassigned"
+            },
+            "guitar": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_guitar.wav",
+              "sha256": "bba6c71025c4417aa5251ee12431dfbfdf34f25de131d843605db8741f28a593",
+              "rms": 0.05691981688141823,
+              "rms_relative_to_master_db": -4.74504027713858,
+              "peak": 0.4569907784461975,
+              "role": "unassigned"
+            },
+            "piano": {
+              "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_piano.wav",
+              "sha256": "af9713e08a5836dacfedc0844da41091f1119d47ce18170bd93ddcd69211816b",
+              "rms": 0.018744349479675293,
+              "rms_relative_to_master_db": -14.392902704113249,
+              "peak": 0.5472954511642456,
+              "role": "unassigned"
+            }
+          },
+          "sum": {
+            "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\woodland_chamber_folk_instrumental\\stems\\woodwind_plus_remaining_six_sum.wav",
+            "sha256": "0b640593c00db8871c4909379fdd1075b4a877ea7371ae11f3b459a4ae00cc55",
+            "rms": 0.09717388451099396,
+            "rms_relative_to_master_db": -0.09931888314136378,
+            "peak": 0.5137874484062195,
+            "role": "unassigned"
+          },
+          "sum_minus_master_rms": 0.006954256445169449
+        }
+      },
+      "analysis": {
+        "report": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\analysis\\20261102-133225-780126\\018_Woodland Chamber Folk Instrumental\\summary.json",
+        "report_sha256": "becfbb1399a06c68c8da559c12b9bd378eae0baed6b165e093b8eee77a78393a",
+        "librosa_bpm": 161.4990234375,
+        "essentia_bpm": 161.648574829,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_approved": false
+      },
+      "first_comparison_by_reconstruction_error": "woodwind_plus_remaining_six",
+      "roles_assigned": false
+    }
+  ],
+  "active_curation": {
+    "path": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\curation_v2\\curation.json",
+    "sha256": "4f1cb6bca6b4979eec4fc16e8378618ada40efd824efe4e0af9477c25374c3e2",
+    "retained": 210,
+    "excluded": 37,
+    "excluded_source_files_preserved": 37,
+    "audit": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\curation_v2\\audit.json",
+    "delivery_doc": "文档/音乐制作批次/Lyria35_有效分轨与空间叠加_20261102.md",
+    "spatial_preview": "C:\\Users\\Administrator\\Desktop\\mIDDLEFILE\\资产\\音乐\\制作批次\\lyria35_instruments\\20261102_v1\\spatial_preview_v1\\bundle_manifest.json",
+    "live_report": "验证记录/M84/lyria_spatial_20261102/live_v4/report.json",
+    "live_checks": 25,
+    "live_ok": true,
+    "listening_approved": false,
+    "default_changed": false
+  }
+}

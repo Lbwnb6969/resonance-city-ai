@@ -34,8 +34,10 @@ func end_short(records:Array,label:String)->Array:
 	return result
 func stage(kind:String)->void:
 	var city:=State.new();city.initialize()
+	if OS.get_cmdline_user_args().has("--free-foley"):city.initialize_free(false)
 	check(city.set_house_role("h4","garden_cafe").ok,"public cafe for "+kind)
 	if kind=="wood":check(city.set_house_role("h3","workshop").ok,"public wood workshop")
+	if OS.get_cmdline_user_args().has("--free-foley"):check(city.begin_progression_epoch(OUT+"/"+kind+"_free.json").ok,"backed-up active free fixture "+kind)
 	await show(city,Vector2(-5,0),kind);quiet();demo.zoom=9.;demo.yaw=.25;demo.pitch=.75;demo._update_camera()
 	var actor:Dictionary={};var simulated:=0
 	for i in range(6000):
@@ -56,6 +58,7 @@ func stage(kind:String)->void:
 			seen[token]=true;events.append(event.duplicate(true))
 		var audio=helper()
 		if audio._owned() and audio.active.kind==kind and audio.active.player.playing:
+			if not progressed:check(audio.active.stream.get_meta("life_foley_kind","")==kind,"actual borrowed voice uses natural Foley WAV "+kind)
 			progressed=progressed or audio.active.player.get_playback_position()>.02
 	demo.life.set_process(false)
 	var master:=Span.finish(recording,OUT+"/"+kind+"_Master.wav");var buses:=end_short(shorts,kind)
@@ -65,6 +68,10 @@ func stage(kind:String)->void:
 	check(events.all(func(e):return e.activity==expected and e.zoom<18. and e.gain>0. and e.gain<=1.),"all sampled "+kind+" contacts match visible action and close range")
 	check(pre_pool==pool(),"source publication preserves every voice and bus "+kind)
 	facts[kind]={"master":master,"short_buses":buses,"events":events,"simulated_seconds":simulated*.05,"before":before,"report":helper().report()}
+	if OS.get_cmdline_user_args().has("--free-foley"):
+		check(demo.music.canon.cues==0,"free city emits no automatic canon "+kind)
+		var ornaments=demo.music.get_node_or_null("ChamberOrnaments")
+		check(ornaments==null or (ornaments.played==0 and ornaments.pending.is_empty()),"free ornament queue stays silent "+kind)
 	await capture(kind+"_near")
 	# Normal zoom and an off-screen focus must suppress new contacts, not queue them.
 	demo.zoom=24.;demo._update_camera();demo.life.set_process(true)
@@ -77,6 +84,8 @@ func run()->void:
 	OUT="res://验证记录/M74/accepted"
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(OUT)):
+		push_error("Use a fresh evidence directory: "+OUT);quit(2);return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=100
 	var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
 	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input();quiet()

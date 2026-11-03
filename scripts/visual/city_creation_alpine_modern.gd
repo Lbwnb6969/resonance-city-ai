@@ -36,11 +36,13 @@ static func roof(renderer, root: Node3D, house: Dictionary, p: Array, cell: Dict
 	if Plan.kind_for(house)>=3:return preload("res://scripts/visual/city_creation_alpine_lodge.gd").roof(renderer,root,house,p,cell)
 	var node: Node3D = root.get_node(str(cell.id))
 	var frame := Node3D.new(); frame.name="AlpineRoof_"+str(cell.id); node.add_child(frame)
+	frame.set_meta("street_detail_roof",house.get("architecture","")=="recessed_townhouse")
+	frame.set_meta("street_detail_cell",str(cell.id))
 	var kind := Plan.kind_for(house); var front := Plan.front(renderer.state,house)
 	frame.rotation.y=atan2(float(front.x),float(front.y)); frame.set_meta("alpine_kind",kind)
 	var y := (int(cell.level)+1)*1.7
 	var wood := Wall.source(p[2].lerp(Color("ad845b"),.48),null,"component",Wall.Kind.STONE)
-	var slate := Wall.source(Color("52636a"),null,"component",Wall.Kind.SLATE)
+	var slate := Wall.source(p[1] if house.get("architecture","")=="recessed_townhouse" else Color("52636a"),null,"component",Wall.Kind.SLATE)
 	var stone := Wall.source(p[0].lerp(Color("b8b3a0"),.55),null,"component",Wall.Kind.STONE)
 	var join := Plan.seams(renderer.state,house,cell,front)
 	var back := -.9 if join[0] else -1.08; var forward := .9 if join[1] else 1.08
@@ -92,6 +94,7 @@ static func _prism(renderer, root: Node3D, top: Array, material: Material) -> vo
 		var j: int=(i+1)%4; faces.append([low[i],top[i],top[j],low[i],top[j],low[j]])
 	for face: Array in faces:
 		var mesh: MeshInstance3D=renderer._triangles(root,face,material.albedo_color); mesh.material_override=material
+		if root.get_meta("street_detail_roof",false):mesh.set_meta("creation_detail_roof",true);mesh.set_meta("creation_detail_cell",str(root.get_meta("street_detail_cell")))
 
 static func _deck(renderer, parent: Node3D, house: Dictionary, cell: Dictionary, front: Vector2i, wood: Material, stone: Material) -> void:
 	var deck := Node3D.new(); deck.name="TerrainSupportedDeck"; parent.add_child(deck); deck.rotation.y=atan2(float(front.x),float(front.y))

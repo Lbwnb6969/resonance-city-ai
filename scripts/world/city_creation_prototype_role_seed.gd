@@ -5,6 +5,8 @@ const ROLES := {
 	"sawtooth_atrium":"workshop", "clock_turret":"clockmaker",
 	"iron_conservatory":"workshop", "twin_gable":"workshop",
 	"rotunda":"atelier", "guildhall":"venue",
+	"stepped_guildhouse":"atelier",
+	"cantilever_tea_deck":"garden_cafe",
 	"ionic_stoa":"venue", "roman_basilica":"venue"
 }
 static func apply(city:RefCounted, house:Dictionary)->void:

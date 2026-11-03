@@ -79,6 +79,10 @@ func begin(music:Node,value:Dictionary)->Dictionary:
 		if row.bank=="harmony" and str(row.key).begins_with("chamber_legato/"):preload("res://scripts/audio/city_creation_chamber_legato.gd").materialize(music,str(row.key))
 		if not banks[row.bank].has(row.key):return {"ok":false,"message":"请先准备本地音乐声部库"}
 	if active:stop(music)
+	# Retire explicit audition owners before capturing the bank to resume.
+	for name:String in ["GameMusicPlayer","LyriaSpatialPreview"]:
+		var audition:Node=music.get_node_or_null(NodePath(name))
+		if audition!=null:audition.stop()
 	_resume={"players":{},"pan":music.spatial.report(),"filters":[]}
 	for stem:String in STEMS:
 		var player:AudioStreamPlayer=music._players[stem]

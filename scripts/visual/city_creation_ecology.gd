@@ -3,6 +3,7 @@ extends RefCounted
 ## Geometry changes retire all placement caches; rewards change only consumers.
 const Bunting=preload("res://scripts/visual/city_creation_bunting.gd")
 const Flora=preload("res://scripts/visual/city_creation_harmony_flora.gd")
+const Festival=preload("res://scripts/world/city_creation_festival_scenery.gd")
 var geometry_key: Variant=null
 var habitat_key: Variant=null
 var bunting_key: Variant=null
@@ -28,7 +29,7 @@ func refresh(renderer: Node3D)->void:
 	for house: Dictionary in city.houses:
 		var id:=str(house.id);var tier: int=city.house_harmony_tier(id);var role:=str(house.role)
 		nectar.append(role in ["garden_cafe","venue"] or tier>0)
-		festive.append(city.improvement_level(id)>=1 or tier>=2 or role in ["venue","garden_cafe","bakery","workshop"])
+		festive.append(Festival.festive(city,city.improvement_level(id)>=1 or tier>=2 or role in ["venue","garden_cafe","bakery","workshop"]))
 		festive_houses[id]=festive[-1]
 		flowers.append(tier if role=="residential" else 0)
 		if renderer.resonance.rigs.has(id):

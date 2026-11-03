@@ -58,10 +58,17 @@ func setup(state: RefCounted, block: Vector2i, entrances_by_house: Dictionary = 
 		"setup_ms": float(Time.get_ticks_usec() - started) / 1000.0}
 
 func _collect_legacy(state:RefCounted,entrances_by_house:Dictionary)->void:
-	for landmark:Dictionary in state.placed_landmarks:
-		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark)
+	for plaza:Dictionary in preload("res://scripts/world/city_creation_plaza_loops.gd").plans(state):
+		var fp:Variant={"polygon":plaza.polygon}
 		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
 		for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
+	for fp:Variant in preload("res://scripts/world/city_creation_boathouse_plan.gd").ground_masks(state):
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
+		for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
+	for landmark:Dictionary in state.placed_landmarks:
+		for fp:Variant in preload("res://scripts/world/city_creation_landmark_vegetation.gd").footprints(landmark):
+			for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)
+			for index:int in _indices(Frame.bounds(Frame.grow(fp,EDGE_DISTANCE))):_bins[index].edge_footprints.append(fp)
 	# Ground solids suppress grass only; authored tree/shrub visibility stays separate.
 	for fp:Variant in preload("res://scripts/visual/city_creation_street_furniture_footprints.gd").plans(state):
 		for index:int in _indices(Frame.bounds(Frame.grow(fp,MAX_CLEARANCE))):_bins[index].footprints.append(fp)

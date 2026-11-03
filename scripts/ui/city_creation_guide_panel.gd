@@ -73,6 +73,7 @@ func setup(owner: Node3D, parent: Control) -> void:
 	body.add_theme_constant_override("line_separation", 6)
 	scroll.add_child(body)
 	var footer: Label = demo._label("提示：按 F1 可随时打开或收起本手札 · 按 J 查看河湾手记 · 按 L 查看生活账本", 13)
+	footer.name="GuideFooter"
 	footer.add_theme_color_override("font_color", UI.MUTED)
 	column.add_child(footer)
 	preload("res://scripts/ui/city_creation_creation_options.gd").install(demo,column)
@@ -94,8 +95,10 @@ func _fit() -> void:
 func _select_tab(index: int) -> void:
 	_current_tab = clampi(index, 0, Copy.GUIDE_TABS.size() - 1)
 	tabs.set_tab_title(1,"空间与权益" if demo.state.CreationPolicy.is_free(demo.state) else Copy.GUIDE_TABS[1])
+	paper.find_child("GuideFooter",true,false).text="F1 收起手札 · J 河湾手记 · L "+("城市总谱" if demo.state.CreationPolicy.is_free(demo.state) else "生活账本")
 	if body != null:
 		body.text = preload("res://scripts/ui/city_creation_creation_options.gd").guide_text(demo,_current_tab,Copy.guide_tab_text(_current_tab))
+		body.get_parent().scroll_vertical=0
 
 func open_panel(tab_index: int = -1) -> void:
 	if demo.edit_pending() or (demo.gallery != null and demo.gallery.busy): return

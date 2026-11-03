@@ -1,5 +1,6 @@
 extends RefCounted
 const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
+const Span=preload("res://scripts/world/city_creation_skybridge_span.gd")
 ## Shared derived bridges connect real second/third floors without new save IDs.
 const UNIT:=1.8
 const FLOOR:=1.7
@@ -21,7 +22,7 @@ static func for_house(city:RefCounted,house:Dictionary)->Array[Dictionary]:
 					var height:=float(other.get("base_y",0.))+int(target.level)*FLOOR+.15
 					if absf(height-y)>.02:continue
 					var to:=_center(other,target);var offset:=to-at;var distance:=offset.dot(normal)
-					if distance<2.2 or distance>preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city) or absf(offset.cross(normal))>.02 or distance>=closest:continue
+					if distance<2.2 or distance>Span.limit(city,house,other) or absf(offset.cross(normal))>.02 or distance>=closest:continue
 					var a:=at+normal*.87;var b:=to-normal*.87
 					if not _clear(city,a,b,y,str(cell.id),str(target.id)):continue
 					closest=distance;selected={"from_house":str(house.id),"to_house":str(other.id),"from_cell":str(cell.id),"to_cell":str(target.id),"a":a,"b":b,"floor_y":y,"width":WIDTH,"level":int(cell.level),"length":a.distance_to(b)}
@@ -67,11 +68,11 @@ static func adjacency_signature(city:RefCounted,house:Dictionary)->Array:
 	var result:Array=[city.terrain_policy]
 	for other:Dictionary in city.houses:
 		for cell:Dictionary in other.cells:
-			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),Frame.yaw(other),city.house_era(other)]);break
+			if bounds.grow(Span.search_distance(city)+1.).has_point(_center(other,cell)):result.append([other.id,other.origin,other.get("base_y",0.),other.cells,other.get("architecture",""),Frame.yaw(other),city.house_era(other),other.get(Span.FIELD,{})]);break
 	for field:String in ["roads","terrain_strokes","waters","districts"]:
 		for row:Dictionary in city.get(field):
 			var influence:=_stroke_bounds(row.points).grow(float(row.get("radius",row.get("width",0.)))*1.5)
-			if bounds.grow(preload("res://scripts/world/city_creation_tradition_rules.gd").bridge_distance(city)+1.).intersects(influence):result.append([field,row])
+			if bounds.grow(Span.search_distance(city)+1.).intersects(influence):result.append([field,row])
 	return result
 
 static func _stroke_bounds(points:Array)->Rect2:

@@ -9,7 +9,8 @@ static func road_reference(city:RefCounted,at:Vector2,radius:float=.9)->Dictiona
 			var a:=Vector2(road.points[i-1][0],road.points[i-1][1]);var b:=Vector2(road.points[i][0],road.points[i][1])
 			if a.distance_squared_to(b)<.000001:continue
 			var point:=Geometry2D.get_closest_point_to_segment(at,a,b);var distance:=point.distance_to(at)
-			if distance>best:continue
+			if distance>best+.000001:continue
+			if not result.is_empty() and absf(distance-best)<=.000001 and "%s/%08d"%[result.road_id,result.segment]<= "%s/%08d"%[road.id,i-1]:continue
 			best=distance;result={"road_id":str(road.id),"segment":i-1,"at":point,"axis":(b-a).normalized(),"distance":distance}
 	return result
 static func direction(origin:Vector2,target:Vector2,axis:Vector2,enable:bool)->Dictionary:

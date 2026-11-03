@@ -31,6 +31,7 @@ static func for_cell(house: Dictionary,cell: Dictionary,points: Array,width: flo
 		if not record.is_empty():record.center=Frame.point(house,record.center)
 		return record
 	if int(cell.level)!=0 or str(cell.kind)!="room" or points.size()<2: return {}
+	if width>1.56:return preload("res://scripts/world/city_creation_wide_passage.gd").for_cell(house,cell,points,width,road_id,clip)
 	var origin := center(house,cell)
 	var room := Rect2(origin-Vector2.ONE*HALF,Vector2.ONE*UNIT)
 	# An unfinished street inside a room cannot manufacture an archway.
@@ -90,6 +91,7 @@ static func for_house(house: Dictionary,roads: Array) -> Array[Dictionary]:
 				var high := maxf(existing.offset+existing.half_width,record.offset+record.half_width)
 				existing.offset=(low+high)*0.5
 				existing.half_width=(high-low)*0.5
+				if record.get("profile","")=="wide_lintel":existing.profile="wide_lintel"
 				merged=true
 				break
 			if not merged: result.append(record)
@@ -108,6 +110,9 @@ static func segment_blocked(house: Dictionary,cell: Dictionary,a: Vector2,b: Vec
 		for passage: Dictionary in passages:
 			if passage.cell_id!=str(cell.get("id","")): continue
 			var lateral := at.y if passage.axis.x==1 else at.x
-			if absf(lateral-float(passage.offset))<=float(passage.half_width)-0.10: open=true
+			var low:float=passage.offset-passage.half_width;var high:float=passage.offset+passage.half_width
+			var left_margin:=0. if passage.get("profile","")=="wide_lintel" and low<=-HALF+.001 else .10
+			var right_margin:=0. if passage.get("profile","")=="wide_lintel" and high>=HALF-.001 else .10
+			if lateral>=low+left_margin and lateral<=high-right_margin:open=true
 		if not open: return true
 	return false

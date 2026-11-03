@@ -87,6 +87,7 @@ func sync(city: RefCounted,prepared_groups:Variant=null)->void:
 	if _owner!=null:report()
 
 func _selected()->Dictionary:
+	if _city!=null and _city.CreationPolicy.is_free(_city):return {}
 	if _owner==null or _owner.muted or _owner.concert_active or _owner._loading or _owner.acoustic.mode=="city":return {}
 	var selected: Dictionary={};var best:=INF
 	for group: Dictionary in groups:
@@ -110,6 +111,7 @@ func reset()->void:clear();_last_beat=-1
 
 func step(clock: float,offset_sec:float=0.)->void:
 	report()
+	if _city!=null and _city.CreationPolicy.is_free(_city):clear();return
 	if clock<offset_sec:return
 	var beat:=floori(maxf(0.,clock-offset_sec)/BEAT_SECONDS)
 	if beat==_last_beat:return

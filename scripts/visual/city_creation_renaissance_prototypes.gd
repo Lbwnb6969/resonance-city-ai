@@ -5,6 +5,7 @@ const Parts=preload("res://scripts/visual/city_creation_clockwork_parts.gd")
 const Pick=preload("res://scripts/visual/city_creation_roof_pick.gd")
 const Choice=preload("res://scripts/world/city_creation_architecture_choice.gd")
 static func build(r,root:Node3D,house:Dictionary)->void:
+	if house.get("architecture","")=="corner_loggia_tower":preload("res://scripts/visual/city_creation_corner_loggia.gd").build(r,root,house);return
 	var kind:=str(house.architecture);var rows:Array=Plan.roofs(house);var records:Array=[]
 	var stone:Material=Parts.material(r,Color("e8d7b7"),Parts.Wall.Kind.STONE)
 	var tile:Material=Parts.material(r,Color("b56b4e"),Parts.Wall.Kind.TERRACOTTA)

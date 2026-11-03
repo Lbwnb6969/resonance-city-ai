@@ -2,6 +2,7 @@ extends RefCounted
 const Wall = preload("res://scripts/visual/city_creation_wall_material.gd")
 ## Original octagonal terracotta crown, articulated stone ribs and lit lantern.
 static func build(renderer, root: Node3D, house: Dictionary, plans: Array) -> void:
+	if preload("res://scripts/world/city_creation_stepped_guildhouse.gd").active(renderer.state,house):preload("res://scripts/visual/city_creation_stepped_guildhouse.gd").build(renderer,root,house);return
 	if preload("res://scripts/visual/city_creation_ancient_architecture.gd").active(house,renderer.state.house_era(house)):
 		preload("res://scripts/visual/city_creation_ancient_architecture.gd").finish(renderer,root,house,plans);return
 	if preload("res://scripts/world/city_creation_renaissance_prototype_plan.gd").active(renderer.state,house):

@@ -23,7 +23,7 @@ static func cell_inverse(house:Dictionary,cell:Dictionary,world:Vector2)->Vector
 	return Vector2(plan.pivot)+(at-Vector2(plan.pivot)).rotated(Hinge.angle(house)) if Hinge.wing(house,cell) else at
 static func points_local(house:Dictionary,points:Array,cell:Dictionary={})->Array:
 	var result:Array=[]
-	for p:Array in points:var at:=inverse(house,Vector2(p[0],p[1])) if cell.is_empty() else cell_inverse(house,cell,Vector2(p[0],p[1]));result.append([at.x,at.y])
+	for p:Variant in points:var at:=inverse(house,Vector2(p[0],p[1])) if cell.is_empty() else cell_inverse(house,cell,Vector2(p[0],p[1]));result.append([at.x,at.y])
 	return result
 static func normal(entry:Dictionary)->Vector2:return Vector2(entry.get("outward",entry.side))
 static func footprint(house:Dictionary,cell:Dictionary,margin:float=0.)->Variant:

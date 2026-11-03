@@ -25,6 +25,6 @@ static func refresh(widget:RefCounted)->void:
   if row.status.has("stock"):detail.text+="\n库存 %d / %d · 制成 %d · 送达 %d"%[int(row.status.stock),int(row.status.capacity),int(row.status.produced),int(row.status.get("delivered",row.status.get("served",0)))]
   var step:Dictionary=preload("res://scripts/ui/city_creation_business_step.gd").describe(widget.demo,str(row.id));var action:Button=node.get_node("NextBusinessStep");action.visible=not step.action.is_empty();action.text=step.action;action.tooltip_text=step.text
   if action.visible:detail.text=step.text+"\n"+detail.text
-  button.tooltip_text=str(widget.ROLE_NAMES[row.role])+" · "+title+"\n"+detail.text+"\n点击展开详情";detail.tooltip_text=button.tooltip_text
+  button.tooltip_text=("烤肉坊" if row.status.get("food","")=="烤肉" else str(widget.ROLE_NAMES[row.role]))+" · "+title+"\n"+detail.text+"\n点击展开详情";detail.tooltip_text=button.tooltip_text
  for node:Node in leaves.get_children():
   if str(node.name).trim_prefix("Workshop_") not in alive:leaves.remove_child(node);node.queue_free()

@@ -15,9 +15,11 @@ var candidate:Dictionary={}
 var preview:Node3D
 var epoch:Array=[]
 var preview_key:Array=[]
+var impact_label:Label
 static func setup(owner:Node3D,column:Control)->void:
 	var node=load("res://scripts/ui/city_creation_ground_landmark_tool.gd").new();node.demo=owner;node.name="GroundLandmarkTool";owner.add_child(node);owner.set_meta("ground_landmark_tool",node);node.build(column)
 func build(column:Control)->void:
+	impact_label=demo._label("",13);impact_label.name="LandmarkPlantImpact";impact_label.mouse_filter=Control.MOUSE_FILTER_IGNORE;demo.ui_layer.add_child(impact_label);impact_label.hide()
 	column.add_child(demo._label("传世蓝图 · 自由选址",18))
 	status=demo._label("",13);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;column.add_child(status)
 	for id:String in Plan.SIZES:
@@ -61,6 +63,7 @@ func begin(id:String,move:String="")->void:
 	placing=id;moving=move;selected="";yaw=float(Plan.row(demo.state,move).get("yaw",0.));preview_key.clear();refresh()
 	demo._message(Legacy.TITLES[id]+" · 点击空地落位 · Q/E旋转 · Esc取消")
 func cancel()->void:
+	impact_label.hide()
 	placing="";moving="";candidate.clear();preview_key.clear();demo.town.clear_preview()
 	if is_instance_valid(preview):preview.queue_free()
 	preview=null
@@ -71,11 +74,16 @@ func hover()->bool:
 	var key:Array=[at,yaw,demo.state.revision]
 	if key==preview_key:return true
 	preview_key=key;candidate=Plan.preview(demo.state,placing,at,yaw,moving);demo.town.clear_preview()
+	impact_label.text=str(candidate.message);impact_label.visible=not candidate.get("affected_plants",[]).is_empty();impact_label.position=Vector2(340,110)
 	if is_instance_valid(preview):preview.free()
 	preview=Node3D.new();demo.add_child(preview);preview.position=Vector3(at.x,float(candidate.get("base_y",demo.state.ground_height(at))),at.y);preview.rotation.y=yaw
 	var size:Vector2=Plan.SIZES[placing];var material:=StandardMaterial3D.new();material.albedo_color=Color(.35,.72,.49,.35) if candidate.ok else Color(.85,.28,.22,.38);material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
 	for dimensions:Vector3 in [Vector3(size.x,.12,size.y+.54),Vector3(.8,1.,.8)]:
 		var mesh:=MeshInstance3D.new();preview.add_child(mesh);var box:=BoxMesh.new();box.size=dimensions;mesh.mesh=box;mesh.material_override=material;mesh.position=Vector3(0,dimensions.y*.5,.27 if dimensions.y<.2 else size.y*.5+.85)
+	for plant:Dictionary in demo.state.plants:
+		if plant.id not in candidate.get("affected_plants",[]):continue
+		var marker:=MeshInstance3D.new();preview.add_child(marker);var ring:=TorusMesh.new();ring.inner_radius=.27;ring.outer_radius=.34;ring.rings=16;ring.ring_segments=8;marker.mesh=ring;marker.material_override=material
+		var p:=Vector2(plant.position[0],plant.position[1]);marker.global_position=Vector3(p.x,demo.state.ground_height(p)+.05,p.y)
 	demo.hint.text=str(candidate.message)+"\nQ/E每次90° · 点击确认 · 右键/Esc取消";return true
 func handle(event:InputEvent)->bool:
 	if placing.is_empty() and not selected.is_empty() and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:selected="";refresh();return true
@@ -96,6 +104,7 @@ func handle(event:InputEvent)->bool:
 	if not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT or demo.edit_pending() or demo.get_viewport().gui_get_hovered_control()!=null:return false
 	var hit:Dictionary=demo._ray_hit(event.position);var body:Object=hit.get("collider")
 	if body==null or not body.has_meta("landmark_id"):return false
+	demo.spatial_popover.close()
 	selected=str(body.get_meta("landmark_id"));demo.selected_house="";demo.place_panel.hide();refresh();return true
 func move_selected()->void:
 	var item:=Plan.row(demo.state,selected)

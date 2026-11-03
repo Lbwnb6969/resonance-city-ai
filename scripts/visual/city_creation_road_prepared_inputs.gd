@@ -27,4 +27,4 @@ static func fingerprint(renderer,road:Dictionary)->int:
 	var joins:Array=renderer._road_join_signature(road)
 	renderer.rebuild_stats["road_fingerprint_joins_ms"]=float(renderer.rebuild_stats.get("road_fingerprint_joins_ms",0.))+float(Time.get_ticks_usec()-part_started)/1000.
 	renderer.set_meta("next_road_decoration",{"key":key(renderer,road),"walk":walk,"era":era})
-	return hash([road.points,road.get("width",1.1),road.get("style","path"),renderer.state.biome_seed,renderer.state.music_mode,preload("res://scripts/world/city_creation_tradition_rules.gd").stair_rise(renderer.state),walk,era,tram,profile,shoulder_signature,water,joins,renderer.state._junctions.signature(str(road.id))])
+	return hash([road.points,road.get("width",1.1),road.get("style","path"),preload("res://scripts/world/city_creation_water_ghat.gd").plans(renderer.state,road),renderer.state.biome_seed,renderer.state.music_mode,preload("res://scripts/world/city_creation_stair_keys.gd").minimum_rise(renderer.state),walk,era,tram,profile,shoulder_signature,water,joins,renderer.state._junctions.signature(str(road.id))])

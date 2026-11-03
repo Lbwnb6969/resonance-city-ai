@@ -15,13 +15,14 @@ static func install(owner:Node3D,parent:Control)->void:
 	var page=load("res://scripts/ui/city_creation_progression_page.gd").new();page.demo=owner;parent.add_child(page);owner.set_meta("progression_page",page)
 func _ready()->void:
 	name="ProgressionPage";add_theme_constant_override("separation",6)
+	preload("res://scripts/ui/city_creation_creative_prompts_page.gd").install(demo,self)
 	heading=leaf("",15);heading.name="CurrentProgression"
 	summary=leaf("",13)
 	action=demo._button("",change_policy);action.name="ChangeProgression";add_child(action)
 	feedback=leaf("",12)
 	locations=demo._button("查看存档与备份位置",func()->void:paths.visible=not paths.visible);locations.name="ProgressionLocations";add_child(locations)
 	paths=leaf("",12);paths.name="ProgressionPaths"
-	preload("res://scripts/ui/city_creation_flowering_vines_page.gd").install(demo,self)
+	preload("res://scripts/ui/city_creation_scenery_foldout.gd").install(demo,self)
 	refresh()
 func leaf(text:String,size:int)->Label:
 	var label:Label=demo._label(text,size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.size_flags_horizontal=Control.SIZE_EXPAND_FILL;add_child(label);return label

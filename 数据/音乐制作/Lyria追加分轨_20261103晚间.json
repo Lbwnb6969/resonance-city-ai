@@ -1,0 +1,660 @@
+{
+  "schema": "instrument_stem_addition_v1",
+  "source_count": 18,
+  "user_stated_count": 15,
+  "separation_seconds": 849.525,
+  "curation_seconds": 48.079,
+  "totals": {
+    "kept": 192,
+    "excluded": 42,
+    "silent": 0,
+    "protected_sparse_or_combined": 2
+  },
+  "batch_report": "数据/音乐资产/制作批次/lyria_evening_20261103_v1/batch_report.json",
+  "batch_report_sha256": "fed1832db9d72a41c735dcaa8d675822679d74bdf9aff65c8ca345461110c9d6",
+  "curation": "数据/音乐资产/制作批次/lyria_evening_20261103_v1/curation_v1/curation.json",
+  "curation_sha256": "e482240019461c16846ea33435a61124f146f4ee2d032b5db9409ac774cb7e11",
+  "audit": "数据/音乐资产/制作批次/lyria_evening_20261103_v1/curation_v1/audit.json",
+  "audit_sha256": "fe8264c1616705db54f4b10d6ed91db9ab1818ce4f1ca7ffd11861701bf0bc09",
+  "listening_page": "数据/音乐资产/制作批次/lyria_evening_20261103_v1/listening/listen.html",
+  "songs": [
+    {
+      "source_id": "c4834ad5249f5412b8adb395ebb710681333c5a18840e19e9ed21b93e2deb583",
+      "name": "2-01.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-01.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/001_2-01/summary.json",
+        "sha256": "412ae1466aec5de5c9f6ed52fb03e459c87c69ad8aafb11cbf1f13006d2b4b61",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.71102040816328,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 132.549530029,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/c4834ad5249f5412/bundle.json",
+      "game_manifest_sha256": "6db223274f9a279d886372248f168794dfb7cb1feb3bb1e3e05990e2501c9ec6",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 61,
+        "total_seconds": 178,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "82e7649382b57276c77e5b7b83f9f69a7a737d89b985ae5e4dedec0037d7e725",
+      "name": "2-02.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-02.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/002_2-02/summary.json",
+        "sha256": "a0ebbc39257915b28037d08ccbd1062b20d2a7e4bbbd9340c40d74e79fdb8266",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 178.41632653061225,
+        "librosa_bpm_estimate": 143.5546875,
+        "essentia_bpm_estimate": 143.738800049,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/82e7649382b57276/bundle.json",
+      "game_manifest_sha256": "7719653ad3e5656369987ad5f2a9e283ba6cc9857e181d67351d7b28bdc32b82",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 45,
+        "total_seconds": 179,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "7ae28dd8cac95364d4c4a795ae98bc590f868338201ac1035d35210d6501802d",
+      "name": "2-03.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/2-03.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/003_2-03/summary.json",
+        "sha256": "c00d7f3326f9bdd28b1e433762eba5d1f244ef0ab9415001ae907c839ae82f35",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 167.9934693877551,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 136.151748657,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/7ae28dd8cac95364/bundle.json",
+      "game_manifest_sha256": "f4b6d021ae24e685f9cb404208924a6ca5a50530701ce742c5407f248c8ae1fb",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 44,
+        "total_seconds": 168,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "1bbe2dac0d27ea6333bbb146f657089fed1a8f0ffb8fb9b58a3b9333e28ada80",
+      "name": "4-01.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-01.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/004_4-01/summary.json",
+        "sha256": "19f2e48ec2d790fc12e65b4359880eca4de6a04dbbf93c80f44866e2a785a5d5",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 154.64489795918368,
+        "librosa_bpm_estimate": 99.38401442307692,
+        "essentia_bpm_estimate": 150.073318481,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/1bbe2dac0d27ea63/bundle.json",
+      "game_manifest_sha256": "d3d6fd9c15556c8ce2d7ed67078b93694a44cd1de86b845db2c25aa474f3d1e2",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 30,
+        "total_seconds": 155,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "536f44fce3e04d0c71777cd2e963dab908b0a701e9912074ab38dca6c026b2de",
+      "name": "4-02.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-02.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/005_4-02/summary.json",
+        "sha256": "40c2ae5a44e2eb44b7563be0101def2807660421296e00848b7eb7a0fd270df0",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 169.3257142857143,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 163.829421997,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/536f44fce3e04d0c/bundle.json",
+      "game_manifest_sha256": "98b45adec4dde1350cb430f0028051f5a85ce5cabf3018b28d352ecf5a3b5ba4",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 14,
+        "total_seconds": 170,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "674b920a3a8d64dce5592f8921c19f9fc5bfdc7c9ed4524feb83a9ac3d67eb9e",
+      "name": "4-03.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-03.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/006_4-03/summary.json",
+        "sha256": "dee70418549dde435a7c2083f5a483ba29335ccce2c81d40337149cb6a98e027",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 164.83265306122448,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 140.400497437,
+        "essentia_key_estimate": "Eb major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/674b920a3a8d64dc/bundle.json",
+      "game_manifest_sha256": "03523bd70b34773d74af8907e49218eab3d9e635648110e3d36cf027876c5a6a",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 79,
+        "total_seconds": 165,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "b0607682c39b837a29ccfaa715a2bb56f5a7336804e617d9d36ef1f30dc2010e",
+      "name": "4-04.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-04.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/007_4-04/summary.json",
+        "sha256": "746005a6bd5cd0f6bb8211709845fc344c50fab2a72bd4b76a6f455c55e6fc46",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 164.91102040816327,
+        "librosa_bpm_estimate": 89.10290948275862,
+        "essentia_bpm_estimate": 87.7410430908,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/b0607682c39b837a/bundle.json",
+      "game_manifest_sha256": "450d15828383f1a7e429de5984e9f6e798298a64108a76b9a3a6f11164732857",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 2,
+        "total_seconds": 165,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "f47617e77233fb47257279b3ee3d8e8f23eb769e0f5fda539fa28c579704f4eb",
+      "name": "4-05(2).mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-05(2).mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/009_4-05(2)/summary.json",
+        "sha256": "138a3fd98e52a48bb59cf2bbf0229f22af2597c317d7ea5d8dc7ab0f1b97e084",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.92,
+        "librosa_bpm_estimate": 172.265625,
+        "essentia_bpm_estimate": 172.265960693,
+        "essentia_key_estimate": "F# major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/f47617e77233fb47/bundle.json",
+      "game_manifest_sha256": "b4ca8cc1524ff6f4351c109e1af8ae2930b053ed9b1126931c73946d27bc4052",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 20,
+        "total_seconds": 178,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "b71b5f1a2da63ecbc5ca7c4e01ba15d5ff6c994e8f5e9618f6c38a3fdae12dc7",
+      "name": "4-05.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-05.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/008_4-05/summary.json",
+        "sha256": "6304d36a4c94ff6247c71f98608b210a7d51d2a3563712e4132cf628f48595b4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 145.84163265306123,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 165.200820923,
+        "essentia_key_estimate": "C minor",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/b71b5f1a2da63ecb/bundle.json",
+      "game_manifest_sha256": "4053365347359192488c01f1ab526b8798555e60ff957a542df79b32ae0e8825",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 11,
+        "total_seconds": 146,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "cbdccc72de6d14a8c9fcd77ff0679d49725e7e87abff431cc4670f82cc318c0a",
+      "name": "4-06.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/4-06.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/010_4-06/summary.json",
+        "sha256": "f053bd86d61feb9a83c9e48354a6dce8e220580393090e7d56c784abb53c91c4",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 154.12244897959184,
+        "librosa_bpm_estimate": 135.99917763157896,
+        "essentia_bpm_estimate": 132.286178589,
+        "essentia_key_estimate": "Bb major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/cbdccc72de6d14a8/bundle.json",
+      "game_manifest_sha256": "65a492a11815b9c65f9a38b20b0cccfd19355cb9557017ce59d4c842a8f98285",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 63,
+        "total_seconds": 155,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "483daa585133ec997c7ee388c0a636341cebc20f4734e2b2911eba9b489e2904",
+      "name": "Breezy Instrumental Pastoral Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Breezy Instrumental Pastoral Composition.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/011_Breezy Instrumental Pastoral Composition/summary.json",
+        "sha256": "d8cdfb08f703a3a5cdeaf976aa529cb6c1284c737512fd50edd537dbcc0ecb7a",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.6138775510204,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 122.924201965,
+        "essentia_key_estimate": "D major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/483daa585133ec99/bundle.json",
+      "game_manifest_sha256": "1c388ab71aaf194ae8a5e9b070f2a533dda7bc0f44cca45ab0ab11ed429210de",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 56,
+        "total_seconds": 177,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "112e76a675f7f86a31e25523c6b425567c18fc912515cda3cafec0c43714da6f",
+      "name": "Chamber Trio for Strings.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Chamber Trio for Strings.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/012_Chamber Trio for Strings/summary.json",
+        "sha256": "c49e1a8816917804addff1d25738797268a40e29d7197efc2dd5758df444cd54",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 175.83020408163264,
+        "librosa_bpm_estimate": 129.19921875,
+        "essentia_bpm_estimate": 163.623519897,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/112e76a675f7f86a/bundle.json",
+      "game_manifest_sha256": "b2d0ca20808724e5ce76f523fefe9ba1488c5fe1fb3d6d3ad9aa81482750143d",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 25,
+        "total_seconds": 176,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "8902e7b714ff362c4e8af2076548833753ccbae3924714612c436382fa331423",
+      "name": "Coastal Neoclassical Piano Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Coastal Neoclassical Piano Composition.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/013_Coastal Neoclassical Piano Composition/summary.json",
+        "sha256": "773c2196b7373aa3b811f0da829a9bc17c8f5c6daaa2d921b4a3aab0e23e3f4f",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 181.23755102040818,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 120.167449951,
+        "essentia_key_estimate": "C major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/8902e7b714ff362c/bundle.json",
+      "game_manifest_sha256": "648d449d4448f0db0a7c21fb693c73c1583fd108b59514e3e83111a07ffca19a",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 76,
+        "total_seconds": 182,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "a09cc7ff2311fe090db97c8dfaabce0846ae70c44e40a1c74f648112f5959a68",
+      "name": "Fluid Waterside Instrumental Composition.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Fluid Waterside Instrumental Composition.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/014_Fluid Waterside Instrumental Composition/summary.json",
+        "sha256": "b6c9333e4007c79f404633670399e2dd76973d7be02d0c885dbe51b86855f431",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 134.92244897959185,
+        "librosa_bpm_estimate": 103.359375,
+        "essentia_bpm_estimate": 105.469718933,
+        "essentia_key_estimate": "Bb minor",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/a09cc7ff2311fe09/bundle.json",
+      "game_manifest_sha256": "c940ddad54e1eaae5fa78c4ef09b7b0cb324180c6ea3c2b036fe35f551deef1c",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 41,
+        "total_seconds": 135,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "7826d21cd45dd34589c8c0bfb3b1ca1cdc12754b6f0b168a0e53e33113c7bced",
+      "name": "Quiet Meadow Chamber Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Quiet Meadow Chamber Piece.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 6,
+          "excluded": 0
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 7,
+          "excluded": 0
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/015_Quiet Meadow Chamber Piece/summary.json",
+        "sha256": "2d033042e3a1a6826361280064c13cfc194ef7a89e47c3468ade44652856dd41",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 176.87510204081633,
+        "librosa_bpm_estimate": 123.046875,
+        "essentia_bpm_estimate": 120.122993469,
+        "essentia_key_estimate": "E minor",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/7826d21cd45dd345/bundle.json",
+      "game_manifest_sha256": "f902dbba8a2f2119c7025c5bcc275428c7d3cbee62f64585613ba224018d19e2",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 56,
+        "total_seconds": 177,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "e97e2e417e3ab32e76f32d9cdc3534922fb683b451e7970ab30b59b446b9c1fb",
+      "name": "Rain-Inspired Chamber Music Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Rain-Inspired Chamber Music Piece.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 3,
+          "excluded": 3
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 4,
+          "excluded": 3
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/016_Rain-Inspired Chamber Music Piece/summary.json",
+        "sha256": "76a98836c69a9b71d6c386928ba1092952262d46588710695e1025d7a5508f6e",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.50204081632654,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 161.709884644,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/e97e2e417e3ab32e/bundle.json",
+      "game_manifest_sha256": "80a4e363b4972f21bc0a232b34886ff6c41b787fe6f290ece9da085f917eed8e",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 67,
+        "total_seconds": 178,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "715ba27fd9bc8f462a7984df23752ff067cdbd21062c1837f832e4955d9cea7f",
+      "name": "Sunlit Stone Stairway Chamber Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Sunlit Stone Stairway Chamber Piece.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 5,
+          "excluded": 1
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 6,
+          "excluded": 1
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/017_Sunlit Stone Stairway Chamber Piece/summary.json",
+        "sha256": "2bec75d2c44579f3369b841d25adfc70ef3503f6eadc03ac6d979aa0ea88c259",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 177.44979591836736,
+        "librosa_bpm_estimate": 151.99908088235293,
+        "essentia_bpm_estimate": 81.1346740723,
+        "essentia_key_estimate": "F major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/715ba27fd9bc8f46/bundle.json",
+      "game_manifest_sha256": "93fd204c038c144721a8ee5a46afd03559f0687e1a4eefb1872c6e1960cad0f3",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 54,
+        "total_seconds": 178,
+        "human_confirmed": false
+      }
+    },
+    {
+      "source_id": "49ee59e292839273c4e670972fcc4da30a5304574db46e410ecf690387bc42e8",
+      "name": "Warm Instrumental Chamber Folk Piece.mp3",
+      "source": "数据/音乐资产/原曲/Lyria/Warm Instrumental Chamber Folk Piece.mp3",
+      "groups": {
+        "coarse_six": {
+          "kept": 4,
+          "excluded": 2
+        },
+        "woodwind_plus_remaining_six": {
+          "kept": 5,
+          "excluded": 2
+        }
+      },
+      "listening_approved": false,
+      "runtime_ready": false,
+      "analysis": {
+        "path": "数据/音乐资产/参考分析/Lyria追加_20261103/20261103-230812-343070/018_Warm Instrumental Chamber Folk Piece/summary.json",
+        "sha256": "ac871b9cfae72631602b1d6c8b89732d5ea306fbbaf702f799465e2c292c8c8b",
+        "status": "dual_engine_analysis_ready",
+        "duration_seconds": 173.79265306122448,
+        "librosa_bpm_estimate": 161.4990234375,
+        "essentia_bpm_estimate": 162.627578735,
+        "essentia_key_estimate": "G major",
+        "human_beat_clock_confirmed": false
+      },
+      "game_manifest": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/49ee59e292839273/bundle.json",
+      "game_manifest_sha256": "fb374624ac5ca36d6c3699555af70cf2db42721ad9798762d6f34abe9732a471",
+      "technical_game_pack_ready": true,
+      "harmony_estimate": {
+        "pitched_seconds": 95,
+        "total_seconds": 174,
+        "human_confirmed": false
+      }
+    }
+  ],
+  "prompt_mapping": "unassigned; filenames and numeric IDs do not establish generation prompt identity",
+  "policy": "One song and one separation group at a time; all originals and excluded stems preserved. Existing 43-source active catalogs unchanged.",
+  "listening_approved": false,
+  "runtime_ready": false,
+  "game_pack_production_seconds": 40.422,
+  "game_catalog": "res://数据/音乐资产/游戏音乐包/20261103_harmony_v1/catalog.json",
+  "game_catalog_sha256": "6271797ec9ac2781ec7e1dabf86e25f0a6c9cb89f372b16d2dd214ea311b2627",
+  "playtest_report": "验证记录/M84/music_addition_20261103/trial_v1/report.json"
+}

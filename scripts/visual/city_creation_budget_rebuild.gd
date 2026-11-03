@@ -105,7 +105,7 @@ func _context(owner: Node3D, snapshot:Dictionary) -> Node3D:
 	city.plants.assign(snapshot.plants);city.waters.assign(snapshot.waters)
 	city.terrain_strokes.assign(snapshot.terrain)
 	city.terrain_policy=owner.state.terrain_policy
-	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","building_quality","era_unlocks","creative_settings","placed_landmarks","era_modifiers","harmony_journey","biome_seed","music_mode","automatic_neighborhoods","revision"])
+	_copy_fields(owner.state,city,["districts","musical_links","house_improvements","house_culture","house_clockwork","building_quality","era_unlocks","creative_settings","placed_landmarks","plaza_loops","era_modifiers","harmony_journey","biome_seed","music_mode","automatic_neighborhoods","revision"])
 	context.state = city
 	# Frontage records are immutable. A changed signature replaces its entry;
 	# the worker owns the map and never writes the published city's records.
@@ -319,6 +319,9 @@ func _changed_visual_blocks(context: Node3D, terrain_blocks: Array, houses: Arra
 				if Rect2(Vector2(block)*context.VEGETATION_BLOCK_SIZE,Vector2.ONE*context.VEGETATION_BLOCK_SIZE).intersects(context.EDITABLE_WORLD_RECT): result[block]=true
 	# Removed/moved obstacles have no current record: include their old extent.
 	for row:Dictionary in changes.get("bounds",[]):
+		if row.domain in ["landmarks","plazas"]:
+			for key:String in ["old","new"]:
+				if Rect2(row[key]).has_area():add_bounds.call(row[key])
 		if row.domain in ["houses","roads","waters"] and Rect2(row.old).has_area():add_bounds.call(Rect2(row.old).grow(1.5))
 	for change: Array in terrain_blocks:
 		add_bounds.call(Rect2(change[1]).grow(1.0))

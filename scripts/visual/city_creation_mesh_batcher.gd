@@ -136,7 +136,7 @@ func _solid_profile(material: Material) -> Array:
 	# Still reject a later texture assignment instead of baking over it.
 	for slot in range(BaseMaterial3D.TEXTURE_MAX):
 		if solid.get_texture(slot)!=null: return []
-	return [solid.roughness,solid.cull_mode,solid.shading_mode,solid.diffuse_mode,solid.specular_mode,solid.metallic_specular,solid.disable_receive_shadows,solid.disable_ambient_light,solid.disable_fog,solid.no_depth_test,solid.depth_draw_mode]
+	return [solid.roughness,solid.cull_mode,solid.shading_mode,solid.diffuse_mode,solid.specular_mode,solid.metallic_specular,solid.disable_receive_shadows,solid.disable_ambient_light,solid.disable_fog,solid.no_depth_test,solid.depth_draw_mode,bool(solid.get_meta("creation_fixed_color",false))]
 
 func _vertex_material(source: StandardMaterial3D,profile: Array) -> Material:
 	if profile[0] is String and str(profile[0]) == "wall":

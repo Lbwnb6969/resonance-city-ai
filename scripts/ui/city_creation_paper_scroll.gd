@@ -34,6 +34,8 @@ func fit()->void:
 	position=Vector2(0.,68.) if visible else Vector2(-310.,68.)
 	size=Vector2(310.,maxf(240.,get_parent().size.y-188.))
 func show_page(id:String)->void:
+	if demo.has_meta("batch_edit"):demo.get_meta("batch_edit").close()
+	demo.spatial_popover.close()
 	current=id
 	for key:String in pages:
 		pages[key].visible=key==id;tabs[key].button_pressed=key==id

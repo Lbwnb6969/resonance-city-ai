@@ -27,7 +27,7 @@ static func derive(houses: Array, roads: Array = []) -> Dictionary:
 	for house: Dictionary in houses:
 		# A sealed lookout has no visible bell. Ineligible styled houses keep
 		# the ordinary architecture's existing three-storey bell rule.
-		if not RoundTower.for_house(house,houses,roads).is_empty(): continue
+		if not RoundTower.for_house(house,houses,roads).is_empty() or preload("res://scripts/world/city_creation_stepped_guildhouse.gd").authored(house) or preload("res://scripts/world/city_creation_corner_loggia.gd").authored(house): continue
 		var occupied: Dictionary = supports[str(house.id)]
 		for cell: Dictionary in house.cells:
 			var level := int(cell.level)

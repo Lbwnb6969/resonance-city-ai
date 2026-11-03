@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode diffuse_burley, specular_disabled;
+render_mode diffuse_burley, specular_schlick_ggx;
 #include "res://scripts/visual/shaders/creation_safe_math.gdshaderinc"
 #include "res://scripts/visual/shaders/creation_roof_layer_direction.gdshaderinc"
 uniform vec4 roof_color : source_color = vec4(0.73,0.44,0.33,1.0);
@@ -71,5 +71,6 @@ void fragment() {
 	ALBEDO = base*cavity;
 	AO = cavity;
 	AO_LIGHT_AFFECT = 0.35;
-	ROUGHNESS = 0.90;
+	ROUGHNESS = 0.80;
+	SPECULAR = 0.32;
 }

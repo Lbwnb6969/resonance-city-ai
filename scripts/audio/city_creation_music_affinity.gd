@@ -7,14 +7,24 @@ var rebuilds:=0
 func refresh(city:RefCounted)->void:
 	if _city==city.get_instance_id() and _revision==city.revision:return
 	_city=city.get_instance_id();_revision=city.revision;rebuilds+=1;records=[]
-	var memberships:Dictionary={}
+	var memberships:Dictionary={};var values:Dictionary={}
 	for court:Dictionary in city.courtyard_plans():
 		for id:String in court.members:
 			if not memberships.has(id):memberships[id]=[]
 			if not memberships[id].has(court.id):memberships[id].append(court.id)
+			values[id]=1.
+	for space:Dictionary in city.functional_zones().spaces:
+		var geometry:=str(space.evidence.geometry)
+		if geometry not in ["half_enclosure","narrow_lane"]:continue
+		var amount:=.65 if geometry=="narrow_lane" else .70
+		for id:String in space.members:
+			values[id]=maxf(float(values.get(id,0.)),amount)
+			if not memberships.has(id):memberships[id]=[]
+			for source:String in space.source_ids:
+				if not memberships[id].has(source):memberships[id].append(source)
 	for house:Dictionary in city.houses:
 		var sources:Array=memberships.get(house.id,[]).duplicate();sources.sort()
-		records.append({"id":str(house.id),"at":Vector2(house.origin[0],house.origin[1]),"enclosure":1. if not sources.is_empty() else 0.,"sources":sources})
+		records.append({"id":str(house.id),"at":Vector2(house.origin[0],house.origin[1]),"enclosure":float(values.get(house.id,0.)),"sources":sources})
 	records.sort_custom(func(a,b):return a.id<b.id)
 func sample(focus:Vector2,zoom:float)->Dictionary:
 	var weights:Dictionary={};var source_ids:Array=[];var enclosure:=0.

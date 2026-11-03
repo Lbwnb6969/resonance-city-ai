@@ -15,7 +15,8 @@ func setup(owner:RefCounted)->void:
  var header:=HBoxContainer.new();column.add_child(header);title=Label.new();title.add_theme_font_size_override("font_size",13);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL;header.add_child(title)
  var close:=Button.new();close.name="CloseRoles";close.text="收起";close.pressed.connect(panel.hide);header.add_child(close)
  var row:=HBoxContainer.new();row.add_theme_constant_override("separation",6);column.add_child(row)
- buttons=pop.role_buttons
+ buttons=pop.role_buttons.duplicate()
+ buttons.grillhouse=pop._seal(column,"bakery","烤肉",choose.bind("grillhouse"));buttons.grillhouse.name="Role_grillhouse"
  for id:String in buttons:
   var button:Button=buttons[id];button.reparent(row)
   for connection:Dictionary in button.pressed.get_connections():button.pressed.disconnect(connection.callable)
@@ -24,6 +25,7 @@ func setup(owner:RefCounted)->void:
 func _sync_visibility()->void:
  for id:String in buttons:buttons[id].visible=pop.demo.state.CreationPolicy.is_free(pop.demo.state) or id not in ["venue","symphony_hall"]
 func show_for(single:bool)->void:
+ pop.demo.journal.scrollbook.close_all()
  batch=not single;_state_id=pop.demo.state.get_instance_id()
  if single and pop.target_house_id.is_empty():return
  title.text="此屋用途" if single else "批量安排 · 选用途后连续点房"
@@ -32,8 +34,9 @@ func show_for(single:bool)->void:
  var house:Dictionary=pop.demo.town._house_record(pop.target_house_id) if single else {}
  for id:String in buttons:
   var button:Button=buttons[id]
-  button.disabled=not pop.demo.state.can_assign_role(id) or (house.has("signature") and id!=str(house.role))
-  button.active=id==(str(house.get("role","")) if single else paint_role);button.modulate.a=.42 if button.disabled else 1.
+  button.disabled=not pop.demo.state.can_assign_role("bakery" if id=="grillhouse" else id) or (house.has("signature") and id!=str(house.role))
+  var selected:String=("grillhouse" if pop.demo.state.Grillhouse.active_house(house) else str(house.get("role",""))) if single else paint_role
+  button.active=id==selected;button.modulate.a=.42 if button.disabled else 1.
  panel.reset_size();panel.show();fit();panel.move_to_front()
 func fit()->void:
  var viewport:Vector2=pop.overlay.size;panel.reset_size()
@@ -41,14 +44,20 @@ func fit()->void:
 func choose(role:String)->void:
  if _state_id!=pop.demo.state.get_instance_id():panel.hide();return
  if batch:
-  paint_role=role;panel.hide();pop.close();pop.demo._message("连续点房安排"+str(pop.ROLE_LABELS[role])+"；Esc 结束批量安排。")
+  paint_role=role;panel.hide();pop.close();pop.demo._message("连续点房安排"+("烤肉坊" if role=="grillhouse" else str(pop.ROLE_LABELS[role]))+"；Esc 结束批量安排。")
   pop.demo.tactile_dock.refresh()
- else:pop._set_role(role);panel.hide()
+ else:
+  if role in ["bakery","grillhouse"]:pop.demo._after_edit(assign(pop.target_house_id,role),"room",true,pop.target_house_id);pop.refresh()
+  else:pop._set_role(role)
+  panel.hide()
+func assign(id:String,role:String)->Dictionary:
+ return pop.demo.state.set_house_food_kind(id,pop.demo.state.Grillhouse.KIND if role=="grillhouse" else "") if role in ["bakery","grillhouse"] else pop.demo.state.set_house_role(id,role)
 func paint(id:String)->bool:
  if pop.demo.tool!=4 or paint_role.is_empty():return false
  var house:Dictionary=pop.demo.town._house_record(id)
  if house.is_empty() or house.has("signature"):return false
- if str(house.role)!=paint_role:pop.demo._after_edit(pop.demo.state.set_house_role(id,paint_role),"room",true,id)
+ var current:String="grillhouse" if pop.demo.state.Grillhouse.active_house(house) else str(house.role)
+ if current!=paint_role:pop.demo._after_edit(assign(id,paint_role),"room",true,id)
  pop.close();return true
 func _process(_delta:float)->void:
  if _state_id!=pop.demo.state.get_instance_id():_state_id=pop.demo.state.get_instance_id();paint_role="";panel.hide();_sync_visibility()

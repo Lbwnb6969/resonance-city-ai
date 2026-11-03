@@ -60,9 +60,10 @@ static func build(renderer, wall: Node3D, house: Dictionary, cell: Dictionary, d
 	var total := floors(house, cell)
 	var corners := corner_sides(renderer.state, house, cell) if level > 0 else []
 	var choice: String=house.get("architecture","")
+	var shutters:=preload("res://scripts/world/city_creation_architecture_variants.gd").selected(house)=="timber_shutters"
 	if choice=="portico":total=1 if level==0 else maxi(2,total)
-	if choice=="townhouse":total=maxi(2,total)
-	if choice in ["portico","townhouse"]:corners=[]
+	if choice in ["townhouse","recessed_townhouse","stepped_guildhouse"]:total=maxi(2,total)
+	if choice in ["portico","townhouse","recessed_townhouse","stepped_guildhouse"]:corners=[]
 	var kind := classify(level, total, not corners.is_empty())
 	var details := Node3D.new()
 	details.name = ["NeoclassicalPortico", "TripartiteElevation", "CornerOrielBay"][kind]
@@ -78,16 +79,16 @@ static func build(renderer, wall: Node3D, house: Dictionary, cell: Dictionary, d
 		if door and level==0: _portico(renderer, details, stone, stone_col)
 	else:
 		if level == 0:
-			for x: float in [-.76,.76]:
+			for x: float in ([-.85,.85] if shutters else [-.78,.78] if choice=="recessed_townhouse" else [-.76,.76]):
 				for band in range(4):
-					renderer._box(details, Vector3(.25,.27,.12), Vector3(x,.30+band*.32,.12), base)
+					renderer._box(details, Vector3(.10 if shutters else .20 if choice=="recessed_townhouse" else .25,.27,.12), Vector3(x,.30+band*.32,.12), base)
 			renderer._box(details, Vector3(1.80,.13,.26), Vector3(0,1.57,.05), stone)
 		else:
-			for x: float in [-.76,0.,.76]:
+			for x: float in ([-.85,.85] if shutters and door else [-.76,.76] if door else [-.85,0.,.85] if shutters else [-.76,0.,.76]):
 				renderer._box(details, Vector3(.07,1.24,.08), Vector3(x,.86,.09), stone)
 			if level == total-1:
 				for i in range(9):
-					renderer._box(details, Vector3(.07,.12,.18), Vector3(-.80+i*.20,1.43,.13), stone)
+					renderer._box(details, Vector3(.07,.12,.18), Vector3(-.80+i*.20,1.54 if choice=="recessed_townhouse" else 1.43,.13), stone)
 				renderer._box(details, Vector3(1.90,.13,.34), Vector3(0,1.58,.08), stone)
 			else:
 				renderer._box(details, Vector3(1.80,.07,.20), Vector3(0,1.55,.04), stone)

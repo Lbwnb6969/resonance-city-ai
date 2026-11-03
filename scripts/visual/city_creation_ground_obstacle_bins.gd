@@ -33,8 +33,12 @@ func _segments(target:Dictionary,tag:String,points:Array,radius:float)->void:
 
 func prepare(city:RefCounted,entrances:Dictionary)->void:
 	meadow={};masks={};entries=0
+	for plaza:Dictionary in preload("res://scripts/world/city_creation_plaza_loops.gd").plans(city):
+		var fp:Variant={"polygon":plaza.polygon};_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
+	for fp:Variant in preload("res://scripts/world/city_creation_boathouse_plan.gd").ground_masks(city):
+		_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
 	for landmark:Dictionary in city.placed_landmarks:
-		var fp:Variant=load("res://scripts/world/city_creation_placed_landmarks.gd").footprint(landmark);_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
+		for fp:Variant in preload("res://scripts/world/city_creation_landmark_vegetation.gd").footprints(landmark):_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
 	for fp:Variant in preload("res://scripts/visual/city_creation_street_furniture_footprints.gd").plans(city):
 		_put(meadow,Frame.bounds(fp),["courtyard",fp],1.);_footprint(fp)
 	var wonders:Dictionary=preload("res://scripts/world/city_creation_street_wonder_plan.gd").derive(city)

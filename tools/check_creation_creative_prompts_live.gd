@@ -1,0 +1,55 @@
+extends "res://tools/check_creation_progression_ui_live.gd"
+const Prompts=preload("res://scripts/world/city_creation_creative_prompts.gd")
+func pick(page:Node,index:int)->void:
+	await reveal(page.previews[index]);await ui_click(page.previews[index])
+	await settle()
+func run()->void:
+	for arg:String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-dir="):OUT=arg.trim_prefix("--out-dir=")
+	if not OS.get_cmdline_user_args().has("--isolated-session") or not OUT.begins_with("res://验证记录/") or DirAccess.dir_exists_absolute(OUT):quit(1);return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT));root.size=Vector2i(1440,900);Engine.max_fps=60
+	var began:=Time.get_ticks_msec();var personal:=FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()
+	demo=Scene.instantiate();demo.persistence=false;demo.collection_directory=OUT+"/works";root.add_child(demo);await settle();isolate_input();quiet()
+	var city:=State.new();city.initialize_free();check(city.add_house(Vector2(-8,-8)).ok,"real free house fixture")
+	await show(city,Vector2(-8,-8),"自选创作题签");quiet()
+	var before:Dictionary=demo.state.snapshot();await journal()
+	var page:Node=demo.get_meta("creative_prompts_page")
+	check(page.is_visible_in_tree() and not page.take.disabled and page.leave.disabled,"J exposes optional prompts without an epoch")
+	check(demo.state.snapshot()==before,"opening J does not select or upgrade")
+	await pick(page,1)
+	check(page.preview_index==1 and "屋顶" in page.detail.text and demo.state.snapshot()==before,"native card previews another idea without changing city")
+	demo.save_blocked=true;await ui_click(page.take);await settle()
+	check(demo.state.creative_settings.version==1 and "题签未更改" in page.feedback.text,"blocked original cannot be upgraded")
+	demo.save_blocked=false
+	var directory:String=demo.gallery.library.directory
+	FileAccess.open(OUT+"/blocked",FileAccess.WRITE).store_string("existing original")
+	demo.gallery.library.directory=OUT+"/blocked";await ui_click(page.take);await settle()
+	check(not page.last_backup.get("ok",true) and demo.state.creative_settings.version==1 and Prompts.selected(demo.state).is_empty(),"failed immutable backup leaves original settings unchanged")
+	demo.gallery.library.directory=directory;await ui_click(page.take);await settle()
+	check(page.last_backup.get("ok",false) and Prompts.selected(demo.state)=="roof_walk","native selection succeeds after real original backup")
+	var original:Dictionary=demo.gallery.library.read(str(page.last_backup.id))
+	check(original.ok and original.reason=="before_creative_prompt" and original.world.creative_settings.version==1 and original.world.houses==before.houses,"immutable original retains version1 and real authored house")
+	for size:Vector2i in [Vector2i(1024,768),Vector2i(1440,900)]:
+		root.size=size;await settle();await reveal(page.take)
+		check(Rect2(Vector2.ZERO,Vector2(size)).encloses(page.take.get_global_rect()),"native prompt control fits "+str(size.x));await capture("chosen_"+str(size.x))
+	await key(KEY_ESCAPE);await key(KEY_Z,true)
+	check(demo.state.creative_settings.version==1 and Prompts.selected(demo.state).is_empty(),"native Undo restores settings before explicit choice")
+	await key(KEY_Y,true);check(Prompts.selected(demo.state)=="roof_walk","native Redo restores selected inspiration")
+	await journal();await pick(page,0);await ui_click(page.take);await settle()
+	check(Prompts.selected(demo.state)=="quiet_corner" and demo.state.houses==before.houses and demo.state.cozy_progression.is_empty(),"native replacement changes only author idea")
+	await ui_click(page.leave);await settle();check(Prompts.selected(demo.state).is_empty() and page.leave.disabled,"native opt-out keeps free construction available")
+	await key(KEY_ESCAPE);await key(KEY_Z,true)
+	check(Prompts.selected(demo.state)=="quiet_corner","native Undo restores put-aside idea")
+	check(demo.state.save_city(OUT+"/selected.json").ok,"real file saves selected prompt")
+	var cold:=State.new();check(cold.load_city(OUT+"/selected.json").ok,"real file cold load accepts version2")
+	await show(cold,Vector2(-8,-8),"题签冷读");quiet();await journal();page=demo.get_meta("creative_prompts_page")
+	check("给一角留白" in page.active.text and page.preview_index==0,"cold J reflects saved author selection")
+	await capture("cold_selected");await key(KEY_ESCAPE)
+	var legacy:=State.new();legacy.initialize_empty();await show(legacy,Vector2.ZERO,"经典城不转换");quiet();await journal()
+	check(not demo.get_meta("creative_prompts_page").is_visible_in_tree(),"legacy keeps classic journal without prompt migration")
+	await key(KEY_ESCAPE)
+	var fresh:=State.new();fresh.initialize_free();await show(fresh,Vector2.ZERO,"新城无题签");quiet();await journal();page=demo.get_meta("creative_prompts_page")
+	check(page.is_visible_in_tree() and Prompts.selected(demo.state).is_empty() and page.leave.disabled and "尚未选" in page.active.text,"switching cities never carries previous idea into new city")
+	check(personal==(FileAccess.get_file_as_bytes(State.DEFAULT_PATH) if FileAccess.file_exists(State.DEFAULT_PATH) else PackedByteArray()),"personal save bytes unchanged")
+	var report:={"ok":failures.is_empty(),"checks":checks,"failures":failures,"seconds":(Time.get_ticks_msec()-began)/1000.}
+	FileAccess.open(OUT+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"));print("CREATIVE_PROMPTS_LIVE ",JSON.stringify(report));demo.queue_free();await process_frame;quit(0 if failures.is_empty() else 1)

@@ -32,7 +32,7 @@ func free_journey(size:Vector2i)->void:
 	demo.zoom=31.;demo.yaw=0.;demo.pitch=.95;demo._update_camera();await settle()
 	check(Policy.is_free(demo.state) and demo.state.houses.is_empty(),"normal empty free city published "+str(size.x))
 	check(not demo.intuitive_guidance.banner.visible and demo.intuitive_guidance.target_points.is_empty(),"free entry has no forced construction objective")
-	for index:int in demo.tactile_dock.PRIMARY:
+	for index:int in demo.tactile_dock.primary_tools():
 		check(not demo.tool_buttons[index].disabled,"core tool available from an empty free city "+str(index))
 		await ui_click(demo.tool_buttons[index]);check(demo.tool==index,"native core tool selection "+str(index))
 	await ui_click(demo.tool_buttons[0]);await settle()
@@ -52,7 +52,7 @@ func free_journey(size:Vector2i)->void:
 	var target:String=ids[-1]
 	var roles:Node=demo.get_meta("role_palette")
 	for role:String in demo.state.HOUSE_ROLES:
-		await ui_click(demo.tool_buttons[4]);await settle()
+		await key(KEY_5);await settle()
 		var opener:Button=demo.ui_layer.find_child("BatchHousePurpose",true,false)
 		await ui_click(opener);check(roles.panel.visible and roles.buttons.has(role) and not roles.buttons[role].disabled,"native shared purpose menu enables "+role)
 		if not roles.buttons.has(role):return
@@ -111,7 +111,7 @@ func gallery_entry()->void:
 	await demo.gallery.open_biome("sunny_banks");await settle();pause_life()
 	check(Policy.is_free(demo.state) and demo.state.snapshot().schema==20 and demo.state.era_unlocks==["pastoral"],"production gallery new-biome entry uses free rights without fake history")
 	for size:Vector2i in [Vector2i(1440,900),Vector2i(1024,768)]:
-		root.size=size;await settle();await ui_click(demo.tool_buttons[4]);await settle()
+		root.size=size;await settle();await key(KEY_5);await settle()
 		await ui_click(demo.ui_layer.find_child("BatchHousePurpose",true,false));await settle()
 		var palette:Node=demo.get_meta("role_palette")
 		check(palette.panel.visible and palette.buttons.values().all(func(b):return b.visible and not b.disabled and Rect2(Vector2.ZERO,Vector2(size)).encloses(b.get_global_rect())),"all eight actual purpose buttons fit the free gallery city at "+str(size.x))

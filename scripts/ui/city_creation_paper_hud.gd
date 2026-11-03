@@ -32,6 +32,7 @@ static func setup(demo:Node3D)->void:
 	demo.tactile_dock=Dock.setup(demo,parent)
 	demo.spatial_popover=preload("res://scripts/ui/city_creation_spatial_popover.gd").new()
 	demo.spatial_popover.setup(demo,parent)
+	preload("res://scripts/ui/city_creation_batch_edit_bar.gd").install(demo,parent)
 	demo.intuitive_guidance=preload("res://scripts/ui/city_creation_intuitive_guidance.gd").new()
 	demo.intuitive_guidance.setup(demo,parent)
 	demo.wish_pins=preload("res://scripts/ui/city_creation_wish_pins.gd").new()

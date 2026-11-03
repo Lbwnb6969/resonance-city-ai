@@ -55,6 +55,9 @@ static func cursor(owner:Node)->Dictionary:
 	if data.is_empty():return {}
 	return {"signature":data.signature,"content_id":data.get("content_id",""),"orchestration":data.get("orchestration",{}),"declared_silence":data.get("declared_silence",[]),"render_profile":data.get("render_profile","original"),"master_signature":data.get("master_signature",""),"section":data.get("section",-1),"clock":clock,"position":position_at(owner,clock),"score_position":WholeScore.position(owner,clock,data),"duration":data.get("duration",24.),"section_signature":data.get("section_signature",data.signature),"bar":bar_at(owner,clock),"global_bar":int(data.get("section",0))*8+bar_at(owner,clock),"mode":int(data.document.harmony_mode),"harmony":data.get("harmony",[])}
 static func resolve_cue(owner:Node,wave:AudioStreamWAV,clock:float)->AudioStreamWAV:
+	var candidate:=preload("res://scripts/audio/city_creation_game_music_shorts.gd").resolve(owner,wave,clock)
+	if candidate!=null:return candidate
+	if preload("res://scripts/audio/city_creation_free_music_route.gd").holds(owner):return preload("res://scripts/audio/city_creation_free_music_route.gd").resolve(owner,wave)
 	var data:=at(owner,clock)
 	if data.is_empty():return wave
 	var key:=str(wave.get_meta("master_cue_key",owner.get_meta("score_cue_keys",{}).get(wave.get_instance_id(),"")))

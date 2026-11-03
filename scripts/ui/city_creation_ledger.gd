@@ -85,6 +85,7 @@ func refresh() -> void:
 		match role:
 			"bakery":
 				status=demo.life.bakery_status(id)
+				if status.get("food","")=="烤肉":lines.append("炭火烤肉坊 · 肉串慢烤，趁热分享。")
 				lines.append("柜台 %d / %d · 已出炉 %d · 已售出 %d"%[int(status.stock),int(status.capacity),int(status.produced),int(status.served)-int(status.gifted)])
 				lines.append(capsules.safe(business_activity(role,status)))
 			"workshop","atelier","clockmaker":
@@ -115,11 +116,13 @@ func _worker_counts(workers: Array, key: String) -> Dictionary:
 
 static func business_activity(role: String, status: Dictionary) -> String:
 	var phase := str(status.get("worker_phase", "unassigned"))
+	var roast:bool=status.get("food","")=="烤肉"
 	if phase == "unassigned": return "尚无可沿路到达且未分配工作的居所；连接另一处居所，让街坊来开工。"
 	if phase == "paused": return "居所、店家或配送目标之间的步行路线已中断，接回小路后继续。"
 	var working := phase == "baking" if role == "bakery" else phase == "crafting"
 	if working and not bool(status.open): return "暂停制作中；现有库存仍可采购或配送。"
 	if working and int(status.stock) + int(status.batch_size) > int(status.capacity):
+		if roast:return "烤肉已备好，等街坊来取，腾出烤架的位置。"
 		return "面包已备好，等街坊来买，腾出一整炉的位置。" if role == "bakery" else "木饰已备好，等待可达邻屋的送装或节庆订单。"
 	var activities := {
 		"walking": "面包师正在沿路来开炉。",
@@ -133,6 +136,7 @@ static func business_activity(role: String, status: Dictionary) -> String:
 		"to_home": "匠人正在沿路收工回家。",
 	}
 	var activity: String = activities.get(phase, "等待下一次日常。")
+	if roast:activity=activity.replace("面包师", "烤肉师").replace("开炉", "生火").replace("揉面、烘焙", "翻烤肉串")
 	if role == "atelier":
 		activity = activity.replace("匠人", "画师").replace("打磨木饰", "绘制挂毯与彩窗").replace("木饰", "画作")
 	elif role == "clockmaker":

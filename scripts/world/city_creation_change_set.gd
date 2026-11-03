@@ -5,7 +5,7 @@ const Frame=preload("res://scripts/world/city_creation_house_frame.gd")
 ## far to propagate them. This mirrors CS2's explicit change tags without
 ## sharing live Nodes or GPU resources with worker threads.
 
-const DOMAINS := ["houses", "roads", "waters", "terrain", "plants"]
+const DOMAINS := ["houses", "roads", "waters", "terrain", "plants","landmarks","plazas"]
 
 static func snapshot(state: RefCounted) -> Dictionary:
 	return {
@@ -16,6 +16,8 @@ static func snapshot(state: RefCounted) -> Dictionary:
 		"waters": state.waters.duplicate(true),
 		"terrain": state.terrain_strokes.duplicate(true),
 		"plants": state.plants.duplicate(true),
+		"landmarks":state.placed_landmarks.duplicate(true),
+		"plazas":preload("res://scripts/world/city_creation_plaza_loops.gd").change_rows(state),
 	}
 
 static func diff(previous: Dictionary, current: Dictionary) -> Dictionary:
@@ -73,6 +75,7 @@ static func _row_key(row: Dictionary) -> String:
 	return "index:" + str(hash(row))
 
 static func _bounds(domain: String, row: Dictionary) -> Rect2:
+	if domain=="landmarks" and not row.is_empty():return Frame.bounds(preload("res://scripts/world/city_creation_placed_landmarks.gd").footprint(row)).merge(Rect2(preload("res://scripts/world/city_creation_placed_landmarks.gd").entrance(row),Vector2.ZERO)).grow(2.)
 	if row.is_empty(): return Rect2()
 	var points: Array = row.get("points", [])
 	if points.is_empty() and row.has("origin"):
@@ -83,7 +86,7 @@ static func _bounds(domain: String, row: Dictionary) -> Rect2:
 			if int(cell.level)!=0: continue
 			var center := at+Vector2(float(cell.x),float(cell.z))*1.8
 			footprint=footprint.merge(Frame.bounds(Frame.footprint(row,cell,.1)))
-		return footprint.grow(.5)
+		return footprint.grow(preload("res://scripts/world/city_creation_boathouse_plan.gd").EXTENT+.6 if row.get("architecture","")=="creek_boathouse" else .5)
 	if points.is_empty() and row.has("position"):
 		var position: Variant = row.position
 		var at := Vector2(float(position[0]), float(position[1]))

@@ -4,7 +4,7 @@ const UI=preload("res://scripts/ui/valley_ui_theme.gd")
 const Brush=preload("res://scripts/world/city_creation_build_brush.gd")
 const Choice=preload("res://scripts/world/city_creation_architecture_choice.gd")
 const Icons=preload("res://scripts/ui/city_creation_vector_icons.gd")
-const NOTES={"ionic_stoa":"卷涡柱头与通长敞廊；完整矩形可逐层加高，局部加层/露台后随形保留。","roman_basilica":"高侧窗、中厅与半圆后殿；正面入户的矩形厅屋。侧向接路、穿堂、局部加层或露台转随形。","":"依照房形与周边环境生长。","portico":"低山花与柱廊，入口退入檐下。","townhouse":"分层街屋，适合沿街连续加建。","oriel":"转角上层凸窗；需上层与转角空地。","peristyle":"围绕露台的内院连柱；需露台空间。","rotunda":"独立圆厅与环形柱列。","guildhall":"宽山花与两翼；需完整横向空地。","venetian_loggia":"临水圆拱廊，沿岸留出通路。","belvedere_villa":"高低体量与眺望露台。","sawtooth_atrium":"折顶天窗与通透工坊。","clock_turret":"街角铜钟与窄塔尖顶。","iron_conservatory":"弧形铁肋与透光花房。","guild_arcade":"横向砖拱与沿街门廊。","chalet":"不对称山墙与深木檐。","pavilion":"单坡屋面与通透玻璃。","terrace":"随坡逐级退台的住屋。","panorama":"木框、景窗与深阳台。","twin_gable":"两座山墙以轻桥相连。","green_lodge":"厚石基、暖木与低矮绿顶。"}
+const NOTES={"creek_boathouse":"近水且净空足时展开木架船棚、双栈道与泊船水槽；中央保留真实水面。内陆或收水后保留岸上木船屋。","corner_loggia_tower":"最高外角的双向三连拱、四坡瓦冠与石栏露台；邻屋遮挡时换可用外角，折翼后保留选择并随形。","cantilever_tea_deck":"近岸时展开1.4米斜撑木台、侧边登台和玻璃护栏；避开房屋与道路。水岸或净空改变时保留选择。","stepped_guildhouse":"阶梯石山墙、逐跨瓦顶与石帽线；完整矩形各层同高。露台、折转或局部加层后保留选择，随形回到街屋屋顶。","ionic_stoa":"卷涡柱头与通长敞廊；完整矩形可逐层加高，局部加层/露台后随形保留。","roman_basilica":"高侧窗、中厅与半圆后殿；正面入户的矩形厅屋。侧向接路、穿堂、局部加层或露台转随形。","":"依照房形与周边环境生长。","portico":"低山花与柱廊，入口退入檐下。","townhouse":"分层街屋，适合沿街连续加建。","recessed_townhouse":"真实深窗洞、内退玻璃与石窗套；完整墙面适用，窄墙/廊下保留原适配。","oriel":"转角上层凸窗；需上层与转角空地。","peristyle":"围绕露台的内院连柱；需露台空间。","rotunda":"独立圆厅与环形柱列。","guildhall":"宽山花与两翼；需完整横向空地。","venetian_loggia":"临水圆拱廊，沿岸留出通路。","belvedere_villa":"高低体量与眺望露台。","sawtooth_atrium":"折顶天窗与通透工坊。","clock_turret":"街角铜钟与窄塔尖顶。","iron_conservatory":"弧形铁肋与透光花房。","guild_arcade":"横向砖拱与沿街门廊。","chalet":"不对称山墙与深木檐。","pavilion":"单坡屋面与通透玻璃。","terrace":"随坡逐级退台的住屋。","panorama":"木框、景窗与深阳台。","twin_gable":"两座山墙以轻桥相连。","green_lodge":"厚石基、暖木与低矮绿顶。"}
 var demo:Node3D
 var panel:PanelContainer
 var title:Label
@@ -45,11 +45,12 @@ func for_brush(updated:Callable=Callable())->void:
 func for_house(pop:RefCounted)->void:
  var house:Dictionary=demo.town._house_record(pop.target_house_id)
  if house.is_empty() or house.has("signature"):return
+ if demo.has_meta("house_style_picker"):demo.get_meta("house_style_picker").panel.hide()
  _target_id=str(house.id);_epoch=demo.state.get_instance_id();_era=demo.state.house_era(house)
  _choose=func(id:String)->void:
   if not valid_context():panel.hide();return
   demo._after_edit(demo.state.set_house_architecture(_target_id,id),"room",true,_target_id);pop.refresh();panel.hide()
- var catalog:Array=Choice.ALPINE if _era=="modern_eco" else Choice.CLOCKWORK if _era=="clockwork" else Choice.NEO+(Choice.RENAISSANCE if _era=="renaissance" else Choice.ANCIENT.IDS)
+ var catalog:Array=Choice.ALPINE+Choice.MODERN_EXTRAS if _era=="modern_eco" else Choice.CLOCKWORK if _era=="clockwork" else Choice.NEO+(Choice.RENAISSANCE if _era=="renaissance" else Choice.ANCIENT.IDS+Choice.PASTORAL_EXTRAS)
  populate(catalog,str(house.get("architecture","")),"此屋原型 · 依真实房形解锁",Choice.choices(demo.state,house))
 func valid_context()->bool:
  return demo.state.get_instance_id()==_epoch and (str(Brush.current(demo.state).era)==_era if _target_id.is_empty() else demo.spatial_popover.target_house_id==_target_id and demo.state._house_index(_target_id)>=0)

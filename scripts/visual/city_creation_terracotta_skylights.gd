@@ -2,6 +2,8 @@ extends RefCounted
 ## Small roof lights sit on actual broad, contiguous tiled roof triangles.
 const Wall=preload("res://scripts/visual/city_creation_wall_material.gd")
 static func build(r,parent:Node3D,house:Dictionary,palette:Array)->void:
+	var choice=preload("res://scripts/world/city_creation_architecture_variants.gd")
+	if not choice.dormer(house).is_empty() and choice.dormer_supported(r.state,house):preload("res://scripts/visual/city_creation_dormer_details.gd").build(r,parent,house,palette);return
 	if house.has("signature") or r.state.house_era(house) not in ["pastoral","renaissance"] or house.get("architecture","")=="rotunda" or house.get("style","")=="round_tower":return
 	var top:=-1
 	for c:Dictionary in house.cells:

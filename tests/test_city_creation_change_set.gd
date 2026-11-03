@@ -27,7 +27,7 @@ func _run() -> void:
 	var before := _state()
 	var first := ChangeSet.snapshot(before)
 	var initial := ChangeSet.diff({},first)
-	_check(initial.labels.size()==5,"initial snapshot marks every simulation domain")
+	_check(initial.labels.size()==ChangeSet.DOMAINS.size(),"initial snapshot marks every simulation domain")
 	_check(initial.bounds.size()==4,"initial snapshot emits finite support bounds")
 	var same := ChangeSet.diff(first,ChangeSet.snapshot(before))
 	_check(same.labels.is_empty() and same.bounds.is_empty(),"unchanged snapshot emits no invalidation")
