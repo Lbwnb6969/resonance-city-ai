@@ -27,6 +27,7 @@ var last_saved_id := ""
 var last_opened_id := ""
 var last_auto_id := ""
 var growth_opening:Dictionary={}
+var authorship
 
 func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	demo=owner
@@ -40,6 +41,8 @@ func setup(owner: Node3D, parent: Control, directory: String) -> void:
 	parent.add_child(panel)
 	panel.save_requested.connect(save_work)
 	panel.open_requested.connect(open_work)
+	panel.branch_requested.connect(branch_work)
+	authorship=preload("res://scripts/ui/city_creation_work_authorship.gd").new();authorship.setup(self)
 	panel.example_requested.connect(open_example)
 	panel.biome_requested.connect(open_biome)
 	panel.close_requested.connect(close_panel)
@@ -67,6 +70,7 @@ func close_panel() -> void:
 	stop_preview()
 	panel.hide()
 	panel.title_input.release_focus()
+	if authorship!=null:authorship.ui.closed()
 	demo.preview_key=""
 
 func _refresh() -> void:
@@ -100,7 +104,8 @@ func _capture(title: String, reason: String, is_current:Callable=Callable()) -> 
 	var image: Image=demo.get_viewport().get_texture().get_image()
 	demo._capture_journeys()
 	var mix:Dictionary=Phonograph.reconstruct(demo.state,_view()) if demo.music.muted or demo.music._loading or demo.music.has_meta("authored_score") else Phonograph.capture(demo.music)
-	var result: Dictionary=library.save(title,demo.state.snapshot(),_view(),image,reason,mix)
+	var result: Dictionary=library.save(title,demo.state.snapshot(),_view(),image,reason,mix,authorship.capture())
+	if result.ok:authorship.saved(str(result.id),reason,str(result.title))
 	demo.ui_layer.visible=ui_visible
 	capture_life.set_process(life_processing)
 	return result
@@ -123,6 +128,12 @@ func open_work(id: String) -> void:
 	# Validate before writing a switch checkpoint or touching the live city.
 	var chosen: Dictionary=library.read(id)
 	await _open_chosen(chosen)
+
+func branch_work(id:String)->void:
+	if busy or demo.edit_pending():return
+	var chosen:Dictionary=library.read(id);var previous:RefCounted=demo.state
+	await _open_chosen(chosen)
+	if demo.state!=previous and last_opened_id==id:current_title=str(chosen.title).left(58)+" · 衍生版";panel.title_input.text=current_title
 
 func open_example(id: String) -> void:
 	if busy or demo.edit_pending(): return
@@ -235,6 +246,7 @@ func _open_chosen(chosen: Dictionary) -> void:
 	demo.life.set_process(true)
 	current_title=str(chosen.title)
 	last_opened_id=str(chosen.id)
+	authorship.opened(chosen)
 	_set_busy(false)
 	close_panel()
 	demo._message("已打开「%s」，切换前的河湾也已收藏。" % current_title)

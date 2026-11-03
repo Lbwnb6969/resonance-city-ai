@@ -23,6 +23,7 @@ func _ready()->void:
 	locations=demo._button("查看存档与备份位置",func()->void:paths.visible=not paths.visible);locations.name="ProgressionLocations";add_child(locations)
 	paths=leaf("",12);paths.name="ProgressionPaths"
 	preload("res://scripts/ui/city_creation_scenery_foldout.gd").install(demo,self)
+	preload("res://scripts/ui/city_creation_city_chronicle_page.gd").install(demo,self)
 	refresh()
 func leaf(text:String,size:int)->Label:
 	var label:Label=demo._label(text,size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.size_flags_horizontal=Control.SIZE_EXPAND_FILL;add_child(label);return label

@@ -5,6 +5,7 @@ const Biomes=preload("res://scripts/world/city_creation_biome_seeds.gd")
 const Seal=preload("res://scripts/ui/city_creation_seal_button.gd")
 signal save_requested(title: String)
 signal open_requested(id: String)
+signal branch_requested(id:String)
 signal example_requested(id: String)
 signal biome_requested(id:String)
 signal preview_requested(id:String)
@@ -216,6 +217,7 @@ func set_busy(value: bool) -> void:
 	for b:Button in preview_buttons.values():b.disabled=value or not bool(b.get_meta("valid",false))
 	for id:String in mode_buttons:mode_buttons[id].disabled=value or (id!="" and not preload("res://scripts/world/city_creation_archive_rewards.gd").mode_available(id,_archive_rewards,_archive_free))
 	title_input.editable = not value
+	if has_meta("authorship_ui"):get_meta("authorship_ui").refresh()
 	for index in range(tabs.tab_count): tabs.set_tab_disabled(index, value)
 	for id: String in open_buttons:
 		var button: Button = open_buttons[id]
@@ -256,6 +258,7 @@ func _render_items() -> void:
 	cards.clear()
 	open_buttons.clear()
 	biome_buttons.clear();preview_buttons.clear();mode_buttons.clear()
+	preload("res://scripts/ui/city_creation_work_authorship_ui.gd").reset_cards(self)
 	source_filter.visible=not _biomes_selected and tabs.current_tab==0
 	if _biomes_selected:
 		_render_biomes();return
@@ -321,6 +324,7 @@ func _render_items() -> void:
 			var warning := _label(message if not message.is_empty() else fallback, 13)
 			warning.add_theme_color_override("font_color", UI.WARM_WARN)
 			column.add_child(warning)
+		if not _examples_selected:preload("res://scripts/ui/city_creation_work_authorship_ui.gd").card(self,item,card,column)
 		var is_example := _examples_selected
 		var open_button := _button("游玩这座河湾" if is_example else "打开这座河湾")
 		open_button.name = "PlayExample" if is_example else "OpenWork"

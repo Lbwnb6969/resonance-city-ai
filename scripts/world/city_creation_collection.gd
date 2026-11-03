@@ -4,12 +4,14 @@ extends RefCounted
 const Phonograph=preload("res://scripts/audio/city_creation_phonograph.gd")
 const State = preload("res://scripts/world/city_creation_state.gd")
 const DIRECTORY := "user://city_creation_works"
-const SCHEMA := "resonance_creation_work_v1"
+const LEGACY_SCHEMA := "resonance_creation_work_v1"
+const SCHEMA := "resonance_creation_work_v2"
+const Metadata=preload("res://scripts/world/city_creation_work_metadata.gd")
 const COVER_SIZE := Vector2i(480, 300)
 var directory := DIRECTORY
 
 
-func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reason: String = "manual", mix:Dictionary={}) -> Dictionary:
+func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reason: String = "manual", mix:Dictionary={}, metadata:Dictionary={}) -> Dictionary:
 	var clean_title := title.strip_edges()
 	if not _valid_text(clean_title): return _fail("请为作品填写单行名称")
 	if not _valid_text(reason): return _fail("作品保存来源无效")
@@ -17,6 +19,8 @@ func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reas
 	if not checked.ok: return _fail("作品城市无效：" + str(checked.message))
 	if not _valid_view(view): return _fail("作品镜头格式无效")
 	if not mix.is_empty() and not Phonograph.valid(mix):return _fail("作品混音格式无效")
+	var authored:=Metadata.prepare(metadata,world)
+	if not authored.ok:return _fail(authored.message)
 	if cover == null or cover.is_empty(): return _fail("作品封面为空")
 	if DirAccess.make_dir_recursive_absolute(directory) != OK: return _fail("无法创建作品收藏目录")
 	var saved_at := int(Time.get_unix_time_from_system() * 1000.0)
@@ -31,6 +35,7 @@ func save(title: String, world: Dictionary, view: Dictionary, cover: Image, reas
 	var payload := {"id":id,"title":clean_title,"saved_at":saved_at,"reason":reason,
 		"world":world.duplicate(true),"view":view.duplicate(true),"cover_sha256":_digest(cover_bytes)}
 	if not mix.is_empty():payload["phonograph_mix"]=mix.duplicate(true)
+	payload.merge(authored.data,true)
 	# Hash the exact serialized text: JSON.parse converts integer values to
 	# floats, so hashing a reserialized Dictionary would change valid digests.
 	var encoded_payload := JSON.stringify(payload, "", true, true)
@@ -69,6 +74,7 @@ func entries() -> Dictionary:
 			item.stats = _stats(result.world)
 			item.cover_path = result.cover_path
 			item.preview_valid = result.preview_valid
+			item.merge(Metadata.fields(result),true)
 		items.append(item)
 	items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		if int(a.saved_at) == int(b.saved_at): return str(a.id) > str(b.id)
@@ -89,14 +95,16 @@ func _read_path(path: String, id: String, cover_path: String) -> Dictionary:
 	file.close()
 	if error != OK or not json.data is Dictionary: return _fail("作品文件损坏")
 	var envelope: Dictionary = json.data
-	if envelope.get("schema") != SCHEMA: return _fail("作品收藏版本不支持")
+	if envelope.get("schema") not in [SCHEMA,LEGACY_SCHEMA]: return _fail("作品收藏版本不支持")
 	if not envelope.get("payload") is String or not envelope.get("sha256") is String: return _fail("作品封套不完整")
 	var encoded_payload: String = envelope.payload
 	if encoded_payload.sha256_text() != envelope.sha256: return _fail("作品完整性校验失败")
 	var parsed_payload: Variant = JSON.parse_string(encoded_payload)
 	if not parsed_payload is Dictionary: return _fail("作品内容损坏")
 	var payload: Dictionary = parsed_payload
-	if payload.size() not in [7,8] or (payload.size()==8 and not payload.has("phonograph_mix")) or payload.get("id") != id or not _valid_id(id): return _fail("作品身份与文件不一致")
+	var base_size:int=payload.size()-(4 if envelope.schema==SCHEMA else 0)
+	if base_size not in [7,8] or (base_size==8 and not payload.has("phonograph_mix")) or payload.get("id") != id or not _valid_id(id): return _fail("作品身份与文件不一致")
+	if envelope.schema==SCHEMA and not Metadata.FIELDS.all(func(key):return payload.has(key)):return _fail("作品题跋记录不完整")
 	if not payload.get("title") is String or not _valid_text(payload.title): return _fail("作品名称无效")
 	if not payload.get("reason") is String or not _valid_text(payload.reason): return _fail("作品保存来源无效")
 	if not _integer(payload.get("saved_at")) or payload.saved_at <= 0: return _fail("作品保存时间无效")
@@ -106,10 +114,13 @@ func _read_path(path: String, id: String, cover_path: String) -> Dictionary:
 	var city := State.new()
 	var checked := city.restore(payload.world)
 	if not checked.ok: return _fail("作品城市无效：" + str(checked.message))
+	var authored:=Metadata.prepare(Metadata.fields(payload) if envelope.schema==SCHEMA else {},city.snapshot(),id)
+	if not authored.ok:return _fail(authored.message)
 	var preview_valid := _preview_valid(cover_path, payload.get("cover_sha256"))
-	return {"ok":true,"message":"","id":id,"title":payload.title,"world":city.snapshot(),
+	var result:={"ok":true,"message":"","id":id,"title":payload.title,"world":city.snapshot(),
 		"phonograph_mix":payload.get("phonograph_mix",{}).duplicate(true),"view":payload.view,"saved_at":int(payload.saved_at),"reason":payload.reason,"path":path,
 		"cover_path":cover_path if preview_valid else "","preview_valid":preview_valid}
+	result.merge(authored.data,true);return result
 
 
 func _preview_valid(path: String, expected_digest: Variant) -> bool:
@@ -130,10 +141,7 @@ func _new_id(stamp: int) -> String:
 
 
 func _valid_id(id: String) -> bool:
-	if id.length() != 32: return false
-	var pattern := RegEx.new()
-	pattern.compile("^w_[0-9]{13}_[0-9a-f]{16}$")
-	return pattern.search(id) != null
+	return Metadata.valid_id(id)
 
 
 func _valid_text(value: String) -> bool:
