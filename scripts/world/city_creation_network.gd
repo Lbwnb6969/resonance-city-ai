@@ -54,6 +54,7 @@ func prepare(snapshot: Dictionary, prior: Dictionary, actors: Array[Dictionary])
 	state.placed_landmarks.assign(snapshot.get("placed_landmarks",[]));state.creative_settings=snapshot.get("creative_settings",{}).duplicate(true)
 	state.biome_seed=snapshot.get("biome_seed",{}).duplicate()
 	state.era_modifiers.assign(snapshot.get("era_modifiers",[]))
+	state.plaza_loops.assign(snapshot.get("plaza_loops",[]));state.plants.assign(snapshot.get("plants",[]));state.cozy_progression=snapshot.get("cozy_progression",{}).duplicate(true)
 	state.harmony_journey=snapshot.get("harmony_journey",{}).duplicate(true)
 	state.terrain_policy=int(snapshot.get("terrain_policy",1))
 	if snapshot.has("ground_cache"):
@@ -386,6 +387,7 @@ func _build_graph() -> void:
 			selected_entrances[house_id]=best.entrance
 	component_of = components
 	preload("res://scripts/world/city_creation_ghat_network.gd").attach(self)
+	preload("res://scripts/world/city_creation_plaza_pergola_network.gd").attach(self)
 	_build_attachment_index()
 
 func _build_attachment_index() -> void:

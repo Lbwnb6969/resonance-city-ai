@@ -103,7 +103,7 @@ func set_foreground(value: bool) -> void:
 func _refresh_trees(visible: Dictionary) -> void:
 	_trees.clear()
 	for plant: Dictionary in state.plants:
-		if str(plant.kind) not in ["olive","cypress","golden_tree"]: continue
+		if str(plant.kind) not in ["olive","cypress","golden_tree","weeping_willow"]: continue
 		var at := Vector2(float(plant.position[0]),float(plant.position[1]))
 		if not state.WORLD_RECT.has_point(at): continue
 		var accepted := bool(visible.get(str(plant.id),false)) if _visibility_source.is_valid() else bool(state.vegetation_visible(plant))

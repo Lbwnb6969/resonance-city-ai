@@ -79,12 +79,13 @@ func tick(delta:float)->void:
 		if moving:stats.moves+=1
 func _advance(actor:Dictionary,delta:float)->bool:
 	if actor.wait>0.:actor.wait=maxf(0.,actor.wait-delta);return false
-	actor.erase("ghat_rest")
+	actor.erase("ghat_rest");actor.erase("plaza_rest")
 	var distance:=delta*SPEED;var moving:=false
 	for transition in range(8):
 		if actor.index>=actor.route.size():
-			if preload("res://scripts/world/city_creation_ghat_network.gd").rest(life,actor):return false
-			var key:=Routes.next_key(life.graph,life.positions,actor.current,actor.previous,actor.origin,actor.seed,actor.turn)
+			if preload("res://scripts/world/city_creation_ghat_network.gd").rest(life,actor) or preload("res://scripts/world/city_creation_plaza_pergola_network.gd").rest(life,actor):return false
+			var key:String=preload("res://scripts/world/city_creation_plaza_pergola_network.gd").next_key(life._network,actor)
+			if key.is_empty():key=Routes.next_key(life.graph,life.positions,actor.current,actor.previous,actor.origin,actor.seed,actor.turn)
 			if key.is_empty():actor.wait=1.5;return moving
 			actor.previous=actor.current;actor.current=key;actor.turn+=1
 			var route:Array[Vector3]=[actor.node.position,life.positions[key]+Vector3.UP*.10]

@@ -44,9 +44,9 @@ static func settings_valid(city:RefCounted,value:Variant)->bool:
 	if music.mode=="fixed" and music.style.is_empty():return false
 	if not city._is_integer(music.get("seed")) or music.seed<0 or music.seed>2147483647:return false
 	var presentation:Variant=value.presentation
-	if not presentation is Dictionary or presentation.size()<2 or presentation.size()>7:return false
+	if not presentation is Dictionary or presentation.size()<2 or presentation.size()>8:return false
 	for field:Variant in presentation:
-		if field not in ["automatic_decoration","legacy_crowns","flowering_vines","paired_bridge_lamps","window_pennants","shallow_stair_keys","festival_bunting_and_lights"] or not presentation[field] is bool:return false
+		if field not in ["automatic_decoration","legacy_crowns","flowering_vines","paired_bridge_lamps","window_pennants","shallow_stair_keys","festival_bunting_and_lights","plaza_pergola_fountain"] or not presentation[field] is bool:return false
 	if presentation.has("shallow_stair_keys") and (value.creation_policy!="free" or not presentation.shallow_stair_keys):return false
 	return presentation.get("automatic_decoration") is bool and presentation.get("legacy_crowns") is bool
 

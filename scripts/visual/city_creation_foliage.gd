@@ -17,11 +17,12 @@ func parts(kind: String, variant: int) -> Dictionary:
 	var leaves := _geometry()
 	var wood := _geometry()
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 7391 + variant * 223 + {"olive":31,"cypress":71,"shrub":113}.get(kind,113)
+	rng.seed = 7391 + variant * 223 + {"olive":31,"cypress":71,"shrub":113,"weeping_willow":211}.get(kind,113)
 	match kind:
 		"olive": _olive(leaves, wood, rng, variant)
 		"cypress": _cypress(leaves, wood, rng, variant)
 		"golden_tree":_golden(leaves,wood,rng,variant)
+		"weeping_willow":preload("res://scripts/visual/city_creation_weeping_willow.gd").append(self,leaves,wood,rng,variant)
 		"pink_flower","white_flower","yellow_flower":_flowers(leaves,wood,rng,variant,kind)
 		_: _shrub(leaves, rng, variant)
 	var result := {"canopy":_mesh(leaves)}
@@ -179,6 +180,8 @@ func _leaf_vertex(data: Dictionary, position: Vector3, normal: Vector3, kind: St
 		high = Color("81a17b")
 	elif kind == "golden":
 		low=Color("b77b31");high=Color("e4bf52")
+	elif kind == "willow":
+		low=Color("617c4b");high=Color("b0c582")
 	elif kind == "shrub":
 		low = Color("57703f")
 		high = Color("a1b86c")

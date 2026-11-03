@@ -223,6 +223,7 @@ func begin_budget_sync() -> bool:
 	_budget_request.snapshot["biome_seed"]=state.biome_seed.duplicate()
 	_budget_request.snapshot["era_modifiers"]=state.era_modifiers.duplicate()
 	_budget_request.snapshot["harmony_journey"]=state.harmony_journey.duplicate(true)
+	_budget_request.snapshot.merge({"plaza_loops":state.plaza_loops.duplicate(true),"plants":state.plants.duplicate(true),"cozy_progression":state.cozy_progression.duplicate(true),"placed_landmarks":state.placed_landmarks.duplicate(true)})
 	var resident_stops:Dictionary={}
 	for resident:Dictionary in residents:resident_stops[str(resident.home_id)]=resident.stops.duplicate()
 	_budget_request.snapshot["resident_stops"]=resident_stops
@@ -570,6 +571,7 @@ func _tick_citizen(resident: Dictionary,delta: float,base_walk_step: float,has_t
 func _signature() -> Array:
 	var result: Array = [preload("res://scripts/world/city_creation_bridge_plan.gd").era_signature(state),state.era_modifiers.duplicate(),state.harmony_journey.get("traditions",[]).duplicate()]
 	result.append([state.terrain_policy,preload("res://scripts/world/city_creation_stair_keys.gd").minimum_rise(state)])
+	result.append(preload("res://scripts/world/city_creation_plaza_pergola.gd").signature(state))
 	if state.houses.any(func(h):return h.get("architecture","")=="cantilever_tea_deck"):result.append(preload("res://scripts/world/city_creation_tea_deck_plan.gd").all(state).duplicate(true))
 	if "arcade_market" in state.era_modifiers:
 		for house:Dictionary in state.houses:result.append([house.id,str(house.get("style","classic")),state.house_era(house),house.cells.duplicate(true)])
